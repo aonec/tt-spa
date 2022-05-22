@@ -1,15 +1,16 @@
+import { message } from 'antd';
 import {
   CalculatorListResponsePagedList,
   CalculatorResponse,
   CreateCalculatorRequest,
-  CreateHousingMeteringDeviceRequest,
-  CreateNodeRequest,
+  CreatePipeHousingMeteringDeviceRequest,
+  CreatePipeNodeRequest,
   HousingStockResponse,
   IndividualDeviceResponse,
-  NodeResponse,
+  PipeNodeResponse,
   TasksPagedList,
   UpdateIndividualDeviceRequest,
-  UpdateNodeRequest,
+  UpdatePipeNodeRequest,
 } from '../../myApi';
 import axios from '../axios';
 
@@ -41,7 +42,7 @@ export async function getObjectCalculators(id: number) {
 
 export async function getNode(id: number) {
   try {
-    const res = await axios.get<any, NodeResponse>(`Nodes/${id}`);
+    const res = await axios.get<any, PipeNodeResponse>(`PipeNodes/${id}`);
     return res;
   } catch (error) {
     throw {
@@ -108,10 +109,10 @@ export async function getCalculator(id: number) {
 }
 
 export async function addHousingMeteringDevice(
-  form: CreateHousingMeteringDeviceRequest
+  form: CreatePipeHousingMeteringDeviceRequest
 ) {
   try {
-    const res = await axios.post('HousingMeteringDevices', form);
+    const res = await axios.post('PipeHousingMeteringDevices', form);
     alert('ОДПУ успешно создан !');
     return res;
   } catch (error) {
@@ -151,13 +152,12 @@ export async function getHousingStockCalculators(id: number) {
   }
 }
 
-export async function addNode(form: CreateNodeRequest) {
+export async function addNode(form: CreatePipeNodeRequest) {
   try {
-    const res = await axios.post('Nodes', form);
+    const res = await axios.post('PipeNodes', form);
     alert('Узел успешно создан');
     return res;
   } catch (error) {
-    console.log(error);
     alert('Произошла ошибка создания Узла!');
     throw {
       resource: 'node',
@@ -166,13 +166,12 @@ export async function addNode(form: CreateNodeRequest) {
   }
 }
 
-export async function putNode(nodeId: number, form: UpdateNodeRequest) {
+export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
   try {
-    const res = await axios.put(`Nodes/${nodeId}`, form);
-    alert('Узел успешно изменен!');
+    const res = await axios.put(`PipeNodes/${nodeId}`, form);
+    message.success('Узел успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',
@@ -186,13 +185,8 @@ export async function putIndividualDevice(
 ) {
   try {
     const res = await axios.put(`IndividualDevices/${deviceId}`, form);
-    alert('Прибор успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка изменения прибора',
-    };
+    throw error;
   }
 }

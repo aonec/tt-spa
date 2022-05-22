@@ -13,7 +13,6 @@ interface InformationInterface {
 export const Information = ({ device }: InformationInterface) => {
   const loading = !device;
   const {
-    lastCommercialAccountingDate,
     futureCheckingDate,
     lastCheckingDate,
     mountPlace,
@@ -33,12 +32,6 @@ export const Information = ({ device }: InformationInterface) => {
           description={translateMountPlace(mountPlace)}
         />
         <ListItem
-          title={'Дата ввода в эксплуатацию'}
-          description={moment(lastCommercialAccountingDate).format(
-            'DD.MM.YYYY'
-          )}
-        />
-        <ListItem
           title={'Дата начальной поверки'}
           description={moment(lastCheckingDate).format('DD.MM.YYYY')}
         />
@@ -47,7 +40,7 @@ export const Information = ({ device }: InformationInterface) => {
           description={moment(futureCheckingDate).format('DD.MM.YYYY')}
         />
         <ListItem
-          title={'Магнитная пломба'}
+          title={'Пломба'}
           description={hasMagneticSeal ? 'Есть' : 'Нет'}
         />
         {/*<ListItem title={'title'} description={'description'} />*/}

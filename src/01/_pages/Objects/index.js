@@ -1,8 +1,8 @@
-import React, { useMemo, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
-import axios, { cancel } from '01/axios';
+import axios from '01/axios';
 import { Loader, Icon } from '../../components';
 import ObjectsSearchForm from './ObjectsSearchForm/ObjectsSearchForm';
 import { objectsSearchReducer } from '../../Redux/reducers/objectsSearchReducer';
@@ -45,6 +45,7 @@ const styles = css`
 
   aparts {
     opacity: 0.6;
+    text-align: right;
   }
 
   LinkRow {
@@ -63,6 +64,39 @@ const initialState = {
   Corpus: '',
 };
 
+export const StyledObject = ({
+  id,
+  street,
+  number,
+  corpus,
+  numberOfApartments,
+  numberOfTasks,
+  city,
+}) => {
+  const task = numberOfTasks ? (
+    <task>
+      <Icon icon="alarm" />
+      Задач: {numberOfTasks}
+    </task>
+  ) : null;
+
+  return styled(styles)(
+    <obj_item key={id}>
+      <LinkRow to={`/meters/houses/${id}`}>
+        <span>
+          <h4 style={{ whiteSpace: 'nowrap' }}>
+            {street}, {number} {corpus ? `, к.${corpus}` : null}
+          </h4>
+          {task}
+        </span>
+        <city>{city}</city>
+        <span />
+        <aparts>{numberOfApartments} квартир</aparts>
+      </LinkRow>
+    </obj_item>
+  );
+};
+
 export const Objects = ({ isReadings = false }) => {
   const [state, setState] = useState({ items: null });
   const [searchState, dispatchSearchState] = useReducer(
@@ -78,7 +112,6 @@ export const Objects = ({ isReadings = false }) => {
       const res = await axios.get(`HousingStocks${queryString}`);
       setState(res);
     })();
-    return () => cancel();
   }, [debouncedSearchState]);
 
   const { items } = state;

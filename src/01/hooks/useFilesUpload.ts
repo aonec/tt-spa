@@ -1,24 +1,30 @@
-import { deleteDoc } from '01/_api/task_profile_page';
+// import { deleteDoc } from '01/_api/task_profile_page';
 import { uploadFile } from '01/_api/upload';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DocumentResponse } from './../../myApi';
 
 export interface FileData {
   id: number;
-  loading: boolean;
   status?: 'done' | 'failed' | 'pending';
   fileResponse: DocumentResponse | null;
-  error?: string;
+  error?: Error;
+  onRemove?(): void;
 }
 
 interface FileUploader {
   files: FileData[];
   addFile: (file: File) => Promise<void>;
   removeFile: (id: number) => Promise<void>;
+  clearFiles: () => void;
+  pendingProcessing: boolean;
 }
 
-export function useFilesUpload(): FileUploader {
+export function useFilesUpload(
+  onChange?: (files: FileData[]) => void,
+  type?: string
+): FileUploader {
   const [files, setFiles] = useState<FileData[]>([]);
+  const pendingProcessing = files.some((elem) => elem.status === 'pending');
 
   const rewriteFile = (id: number, callback: (file: FileData) => FileData) => {
     setFiles((prev) =>
@@ -26,11 +32,12 @@ export function useFilesUpload(): FileUploader {
     );
   };
 
+  useEffect(() => onChange && onChange(files), [files]);
+
   async function addFile(file: File) {
     const id = new Date().getTime();
 
     const newFilesListItem: FileData = {
-      loading: true,
       id,
       fileResponse: null,
       status: 'pending',
@@ -39,20 +46,18 @@ export function useFilesUpload(): FileUploader {
     setFiles((prev) => [newFilesListItem, ...prev]);
 
     try {
-      const res = await uploadFile(file);
+      const res = await uploadFile(file, type);
 
       rewriteFile(id, (file) => ({
         ...file,
         fileResponse: res.newFile,
-        loading: false,
         status: 'done',
       }));
     } catch (e) {
       rewriteFile(id, (file) => ({
         ...file,
-        loading: false,
         status: 'failed',
-        error: e.message,
+        error: e as Error,
       }));
     }
   }
@@ -69,20 +74,29 @@ export function useFilesUpload(): FileUploader {
         status: 'pending',
       }));
 
-      await deleteDoc(fileId);
+      // await deleteDoc(fileId);
 
-      setFiles((prev) => prev.filter((elem) => elem.id !== id));
+      setFiles((prev) => {
+        const newFiles = prev.filter((elem) => elem.id !== id);
+
+        return newFiles;
+      });
     } catch (e) {
       rewriteFile(id, (file) => ({
         ...file,
-        loading: false,
-        status: 'done',
-        error: e.message,
+        status: 'failed',
+        error: e as Error,
       }));
     }
   }
 
-  return { files, addFile, removeFile };
+  return {
+    files,
+    addFile,
+    removeFile,
+    clearFiles: () => setFiles([]),
+    pendingProcessing,
+  };
 }
 
 const rewriteArrayElem = <T>(

@@ -1,15 +1,23 @@
-export const useApartmentInfo = ({ apartInfo = {} }) => {
-  const { housingStock = {}, apartmentNumber, homeowners = [] } = apartInfo;
+export const useApartmentInfo = (apartInfo, homeownerIndex) => {
+  const {
+    housingStock = {},
+    apartmentNumber,
+    homeownerAccounts = [],
+    comment,
+  } = apartInfo || {};
+
+  const homeowner = homeownerAccounts[homeownerIndex || 0] || {};
+
   return {
     title:
       apartmentNumber &&
-      `${housingStock.street}, ${housingStock.number}, кв.${apartmentNumber}`,
+      `${housingStock.street}, ${housingStock.number}${
+        housingStock.corpus || ''
+      }, кв.${apartmentNumber}`,
     userInfo: [
-      ['Собственник', homeowners[0]?.firstName],
-      ['Лицевой счет', homeowners[0]?.personalAccountNumber],
-      ['Телефон', homeowners[0]?.phoneNumber ?? '-'],
-      ['Управляющая компания', '-'],
-      ['Информация об УК', '-'],
+      ['Собственник', homeowner.name],
+      ['Телефон', homeowner?.phoneNumber ?? '-'],
     ],
+    comment: comment,
   };
 };

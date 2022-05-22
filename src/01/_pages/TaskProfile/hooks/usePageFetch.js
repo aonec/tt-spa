@@ -1,24 +1,25 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { useCancelFetch } from '01/_hooks';
 import { getTask, moveStage } from '01/_api/task_profile_page';
 import { getCalculator } from '../../../_api/device_page';
 
 export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams();
   const { replace } = useHistory();
-  useCancelFetch();
 
   React.useEffect(() => {
     const initTaskData = async () => {
       const task = await getTask(id);
-      if (!task.node) {
+      if (!task?.node) {
         dispatch({ type: 'success', data: task });
         return;
       }
       const calculator = await getCalculator(task.node.calculatorId);
-      dispatch({ type: 'success', data: { ...task, calculator } });
+      dispatch({
+        type: 'success',
+        data: { ...task, calculator, stages: task.stages },
+      });
     };
 
     initTaskData();
@@ -41,3 +42,5 @@ export const usePageFetch = (state, dispatch) => {
     }
   }, [state]);
 };
+
+// useEffect(() => pushStageFx.doneData.watch(initTaskData).unsubscribe, []);

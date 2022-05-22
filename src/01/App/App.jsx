@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import '01/css/index.css';
+import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
@@ -40,10 +40,21 @@ import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
+import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
+import { StatisticsPage } from '01/features/statistics';
+import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
+import styledC from 'styled-components';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ReportsPageContainer } from '01/features/reports';
+import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
+import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 
 moment.locale('ru');
 
 const Internal = () => {
+  const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -53,14 +64,29 @@ const Internal = () => {
       <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
       <Route path="/">
         <layout>
-          <menu as="div">
+          <LeftBlock style={{ position: 'fixed', height: '100vh' }}>
             <Logotip />
+            <Space />
             <Menu />
-          </menu>
+          </LeftBlock>
+          <div />
           <main>
             <Switch>
-              <Redirect from={'/'} to="/tasks/executing" exact />
-              <Redirect from={'/tasks'} to="/tasks/executing" exact />
+              <Redirect
+                from="/"
+                to={
+                  roles.includes('ManagingFirmOperator')
+                    ? '/meters/apartments'
+                    : '/tasks/executing'
+                }
+                exact
+              />
+              <Redirect from="/tasks" to="/tasks/executing" exact />
+
+              <Route path="/actsJournal" exact>
+                <ApartmentActs />
+              </Route>
+
               <Route
                 path="/tasks/(executing|observing|archived)/"
                 component={Tasks}
@@ -68,8 +94,8 @@ const Internal = () => {
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
               <Route path="/objects/" component={Objects} exact />
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              <Route path="/settings/:section?" component={Settings} />
-              <Route path="/settings/staff/:id" component={Settings} />
+              <Route path="/companyProfile/:section?" component={Settings} />
+              <Route path="/companyProfile/staff/:id" component={Settings} />
 
               <Route path="/devices/(\\d+)" component={Devices} exact />
 
@@ -88,9 +114,7 @@ const Internal = () => {
               />
 
               <Route
-                path={
-                  '/nodes/:nodeId/(stats|connection|readings|related|documents)?'
-                }
+                path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
                 component={NodeProfile}
                 exact
               />
@@ -140,7 +164,7 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|changes)?"
+                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|checksHistory)?"
                 component={ApartmentProfile}
                 exact
               />
@@ -157,12 +181,41 @@ const Internal = () => {
               />
 
               <Redirect from="/meters/" to="/meters/apartments" exact />
+
               <Route
-                path="/meters/(apartments|houses)"
+                path="/meters/(apartments|houses|accountingNodes)"
                 component={MetersPage}
               />
-              <Redirect to="/error/" />
+
+              <Route
+                path="/nodeArchive/:nodeId"
+                component={NodeArchivePageContainer}
+                exact
+              />
+
+              <Route path="/settings/editManagingFirmUser/:id">
+                <EditManagingFirmUserPage />
+              </Route>
+
+              <Route
+                path="/settings/:section"
+                component={SettingsPageContainer}
+                exact
+              />
+
+              <Redirect
+                from="/statistics/"
+                to="/statistics/subscribersConsumption"
+                exact
+              />
+
+              <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
+                <StatisticsPage />
+              </Route>
+
+              <Route path="/reports" component={ReportsPageContainer} exact />
             </Switch>
+            <ApartmentsRouteGroup />
           </main>
         </layout>
       </Route>
@@ -184,5 +237,11 @@ export function App() {
     </Provider>
   );
 }
+
+const LeftBlock = styledC.div`
+padding-top: 20px; 
+  width: 208px;
+  background: #2883e110;
+`;
 
 export default App;

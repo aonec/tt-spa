@@ -6,13 +6,10 @@ import { DevicesByAddressInterface } from '../utils/groupDevicesByObjects';
 const DevicesByAddress = ({
   addressDevicesGroup,
 }: DevicesByAddressPropsInterface) => {
-  const {
-    city = '',
-    street = '',
-    housingStockNumber = null,
-    corpus = null,
-    id = null,
-  } = addressDevicesGroup.address || {};
+  console.log(addressDevicesGroup)
+  const { city = '', street = '', number = null, corpus = null, id = null } =
+    (addressDevicesGroup.address as any)?.address?.mainAddress || {};
+
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
     <DeviceBlock device={device} key={device.id} />
   ));
@@ -21,9 +18,7 @@ const DevicesByAddress = ({
     <>
       {addressDevicesGroup.address ? (
         <Subtitle fontWeight={400} to={`/objects/${id}`}>
-          {`${city}, ${street}, ${housingStockNumber}${
-            corpus ? `, к.${corpus}` : ''
-          }`}
+          {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
         </Subtitle>
       ) : (
         'У данного прибора не указан адрес'

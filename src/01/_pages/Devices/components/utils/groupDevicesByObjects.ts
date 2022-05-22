@@ -7,7 +7,7 @@ export const groupDevicesByObjects = (
   devices: CalculatorListResponse[] | null
 ): DevicesByAddressInterface[] => {
   if (!devices) return [];
-  const newDevices = devices.reduce<DevicesByAddressInterface[]>(
+  const newDevices = devices.reduce<any[]>(
     (accum, device) => {
       if (!device.address) return [...accum, { devices: [{ ...device }] }];
       const { address, ...rest } = device;
@@ -25,7 +25,7 @@ export const groupDevicesByObjects = (
     },
     []
   );
-  return newDevices;
+  return newDevices as any;
 };
 
 export interface DevicesByAddressInterface {

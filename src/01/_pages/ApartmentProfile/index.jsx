@@ -20,6 +20,10 @@ import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 import Index from '../../tt-components/Breadcrumb';
 import { useAsync } from '../../hooks/useAsync';
 
+import { ChecksHistory } from './components/ChecksHistory';
+import { CheckApartmentModal } from '01/features/apartments/checkApartment';
+import { ApartmentGate } from '01/features/apartments/displayApartment/models';
+
 const ApartmentProfile = () => {
   const params = useParams();
   const apartmentId = params[1];
@@ -58,7 +62,7 @@ const ApartmentProfile = () => {
     numberOfLiving,
     normativeNumberOfLiving,
     housingStock,
-    homeowners,
+    homeownerAccounts,
   } = apartment;
 
   const { city, street, number, id } = housingStock;
@@ -66,6 +70,8 @@ const ApartmentProfile = () => {
   return styled(grid)(
     <>
       <Index path={`/objects/${id}/apartments`} />
+      <CheckApartmentModal />
+      <ApartmentGate id={Number(apartmentId)} />
       <Header
         apartmentNumber={apartmentNumber}
         city={city}
@@ -79,16 +85,13 @@ const ApartmentProfile = () => {
         <Wrapper>
           <div>
             <Comments />
-            <Tags />
             <Information
               style={{ paddingTop: '32px' }}
-              square={square || 'Данные обновляются'}
-              numberOfLiving={numberOfLiving || 'Данные обновляются'}
-              normativeNumberOfLiving={
-                normativeNumberOfLiving || 'Данные обновляются'
-              }
+              square={square}
+              numberOfLiving={numberOfLiving}
+              normativeNumberOfLiving={normativeNumberOfLiving}
             />
-            <Owners homeowners={homeowners} />
+            <Owners homeownerAccounts={homeownerAccounts} />
           </div>
 
           <div>
@@ -99,6 +102,10 @@ const ApartmentProfile = () => {
 
       <Route path="/*/(\\d+)/testimony" exact>
         <ApartmentDevices devices={devices} />
+      </Route>
+
+      <Route path="/*/(\\d+)/checksHistory" exact>
+        <ChecksHistory />
       </Route>
     </>
   );

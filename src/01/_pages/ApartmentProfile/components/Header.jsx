@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { Title } from './Title';
 import { Text } from './Text';
 import { MenuButtonTT } from '../../../tt-components';
+import { openCheckApartmentModal } from '01/features/apartments/checkApartment/models';
 
 export const Header = ({ apartmentNumber, city, street, number }) => {
+
   return (
     <HeaderWrap>
       <div className="apartment-header__wrap">
@@ -13,7 +15,15 @@ export const Header = ({ apartmentNumber, city, street, number }) => {
           {city}, {street}, {number}
         </Text>
       </div>
-      <MenuButtonTT menuButtonArr={[]} />
+      <MenuButtonTT
+        menuButtonArr={[
+          {
+            title: 'Создать проверку',
+            show: true,
+            cb: openCheckApartmentModal,
+          },
+        ]}
+      />
     </HeaderWrap>
   );
 };

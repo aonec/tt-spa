@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Alert, Form } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
@@ -13,20 +13,17 @@ import {
 } from '../../../tt-components';
 import { nodeStatusList, resources } from '../../../tt-components/localBases';
 import {
-  CalculatorResponse,
-  NodeResponse,
-  UpdateNodeRequest,
+  DocumentResponse,
+  PipeNodeResponse,
+  UpdatePipeNodeRequest,
 } from '../../../../myApi';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
-import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
-import Title from '../../../tt-components/Title';
 import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';
 import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
 import {
-  $chosenInput,
   $derivedChosenInput,
   $requestServiceZonesStatus,
   $serviceZones,
@@ -35,10 +32,13 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import { useUpload } from '01/components/Upload';
+import { DocumentsUpload } from './DocumentsUpload';
 import { FilesList } from '01/shared/ui/FilesList';
-import { FilesUpload } from './FilesUpload';
+import { FileData } from '01/hooks/useFilesUpload';
+import { postNodeDocuments } from '01/_api/editNode';
+import { deleteDoc } from '01/_api/task_profile_page';
+import _ from 'lodash';
+import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -46,7 +46,7 @@ interface EditNodeFormInterface {
   setTab: any;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
   setExistCalculator: Dispatch<SetStateAction<boolean>>;
-  node: NodeResponse;
+  node: PipeNodeResponse;
   setDeregisterDeviceValue: any;
   setDeregisterDevice: Dispatch<SetStateAction<boolean>>;
 }
@@ -67,12 +67,18 @@ const EditNodeForm = ({
     futureCommercialAccountingDate,
     id: nodeId,
     calculatorId,
+    documents,
   } = node;
   const { setVisibleAddDevice } = useContext(EditNodeContext);
   const serviceZones = useStore($serviceZones);
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
   const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
+
+  const [newDocuments, setNewDocuments] = useState<FileData[]>([]);
+  const [deletedDocumentIds, setDeletedDocumentIds] = useState<number[]>([]);
+
+  const [pendingSave, setPendingSave] = useState(false);
 
   if (!node) {
     return null;
@@ -95,22 +101,40 @@ const EditNodeForm = ({
   const [form] = Form.useForm();
   const { getFieldValue } = form;
 
+  const renderDocuments =
+    ([
+      ...(documents || []),
+      ..._.map(newDocuments, 'fileResponse'),
+    ] as DocumentResponse[]).filter(
+      (elem) => !deletedDocumentIds.includes(elem.id)
+    ) || [];
+
+  async function saveDocuments() {
+    const ids = _.map(renderDocuments, 'id');
+
+    return postNodeDocuments(nodeId, ids);
+  }
+
+  function deleteDocs() {
+    return Promise.all(deletedDocumentIds.map(deleteDoc));
+  }
+
   const onFinish = async () => {
-    const nodeForm: UpdateNodeRequest = {
+    const nodeForm: UpdatePipeNodeRequest = {
       number: Number(getFieldValue('number')),
-      nodeStatus: getFieldValue('nodeStatus'),
-      resource: getFieldValue('resource'),
       nodeServiceZoneId: chosenInputForSelect?.value,
-      // lastCommercialAccountingDate: getFieldValue(
-      //   'lastCommercialAccountingDate'
-      // )?.toISOString(),
-      // futureCommercialAccountingDate: getFieldValue(
-      //   'futureCommercialAccountingDate'
-      // )?.toISOString(),
       calculatorId,
     };
 
-    await putNode(nodeId, nodeForm);
+    setPendingSave(true);
+
+    await Promise.all([
+      saveDocuments(),
+      deleteDocs(),
+      putNode(nodeId, nodeForm),
+    ]);
+
+    setPendingSave(false);
   };
 
   if (zonesLoadingStatus === 'loading' || zonesLoadingStatus === 'init')
@@ -120,7 +144,7 @@ const EditNodeForm = ({
     resource: resource,
     number: number,
     serviceZone: initialServiceZoneLabel,
-    nodeStatus: nodeStatus.value,
+    nodeStatus: nodeStatus?.value,
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
       : null,
@@ -246,17 +270,11 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
-            <FilesUpload />
           </>
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          {/*<NodeConnection*/}
-          {/*  // calculator={calculator}*/}
-          {/*  edit={true}*/}
-          {/*  setDeregisterDeviceValue={setDeregisterDeviceValue}*/}
-          {/*  setDeregisterDevice={setDeregisterDevice}*/}
-          {/*/>*/}
+          <EditNodeCalculatorConnectionContainer />
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>
@@ -287,9 +305,16 @@ const EditNodeForm = ({
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 4}>
-          <Title size="16" color="black">
-            Компонент в разработке
-          </Title>
+          <FilesList
+            initialFiles={renderDocuments}
+            controlType="DELETE"
+            removeFile={(_, fileId = 0) => {
+              setDeletedDocumentIds((prev) => [...prev, fileId]);
+            }}
+          />
+          <DocumentsUpload
+            onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}
+          />
         </StyledFormPage>
 
         <StyledFooter form right>
@@ -305,15 +330,27 @@ const EditNodeForm = ({
           <ButtonTT
             color="blue"
             type="submit"
-            disabled={isRequestServiceZonesError}
+            disabled={isRequestServiceZonesError || pendingSave}
           >
-            Сохранить
+            <Flex>
+              {<ButtonLoader show={pendingSave} />}
+              Сохранить
+            </Flex>
           </ButtonTT>
         </StyledFooter>
       </Form>
     </>
   );
 };
+
+const ButtonLoader = styled(Loader)`
+  margin: 2px 6px 0 0;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const Zone = styled.div`
   display: flex;

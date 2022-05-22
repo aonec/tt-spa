@@ -1,37 +1,44 @@
+import { $isCancelSwitchInput } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import { useStore } from 'effector-react';
 import { useEffect } from 'react';
 
-export const useSwitchOnInputs = () => {
-  const onKeyDown = (e: KeyboardEvent) => {
+export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
+  const isCancelSwitch = useStore($isCancelSwitchInput);
+
+  const onKeyDown = (e: any, index: number, isForced?: boolean) => {
+    if (e.key !== 'Enter' && !isForced) return;
+
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      'input:not(:disabled)'
+      `[data-reading-input="current"]`
     );
 
-    if (e.key === 'Enter') {
-      const activeInput: Element | null = document.activeElement;
-      const activeIndex = Array.prototype.indexOf.call(inputList, activeInput);
+    const nextNode = inputList[index + 1];
 
-      if (
-        activeIndex === inputList.length - 1 &&
-        activeInput instanceof HTMLInputElement
-      ) {
-        activeInput.blur();
-      }
+    if (!nextNode) {
+      if (isCancelSwitch) return;
 
-      if (activeIndex === -1) {
-        inputList[0].focus();
-        inputList[0].select();
-      }
+      const firstNode = inputList[0];
 
-      const nextInput = inputList[activeIndex + 1];
-      if (!nextInput) return;
-      nextInput.focus();
-      nextInput.select();
+      const neededInputNode: any = firstNode?.getElementsByClassName(
+        'ant-input'
+      )[0];
+
+      neededInputNode && neededInputNode.focus && neededInputNode.focus();
+      return;
     }
+
+    const nextInputNode: any = nextNode?.getElementsByClassName('ant-input')[0];
+
+    nextInputNode?.focus && nextInputNode.focus();
   };
 
-  useEffect(() => {
-    document.addEventListener('keydown', onKeyDown);
+  const onKeyDownPrevious = (e: any) => e.key === 'Enter' && e.target?.blur();
 
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [onKeyDown]);
+  useEffect(() => {
+    if (focusOnFirst) {
+      onKeyDown({}, -1, true);
+    }
+  }, []);
+
+  return { onKeyDown, onKeyDownPrevious };
 };

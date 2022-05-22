@@ -23,10 +23,6 @@ a {
   text-decoration: none;
 }
 
-/* a:hover {
-  color: rgb(var(--primary));
-} */
-
 path {
   clip-rule: evenodd;
   fill-rule: evenodd;

@@ -37,7 +37,7 @@ export const DevicesReportModal = () => {
             key="submit"
             onClick={onSubmit}
           >
-            {pending ? <Loader show={true} /> : 'Выгрузить'}
+            {pending ? <Loader show /> : 'Выгрузить'}
           </ButtonTT>
         </Footer>
       }

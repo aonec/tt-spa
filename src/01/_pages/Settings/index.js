@@ -11,7 +11,6 @@ import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
 import { AddContractorsFormModal } from '01/features/contractors/addContractors';
 import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { getCurrentManagingFirm } from './apiSettings';
 
 export const SettingsContext = createContext();
@@ -50,11 +49,11 @@ export const Settings = () => {
   function getCurrentTabFromLink() {
     const { location } = history;
     switch (location.pathname) {
-      case '/settings':
+      case '/companyProfile':
         return '1';
-      case '/settings/staff':
+      case '/companyProfile/staff':
         return '2';
-      case '/settings/contractors':
+      case '/companyProfile/contractors':
         return '3';
       default:
         return '1';
@@ -64,16 +63,16 @@ export const Settings = () => {
   function handleChangeTab(value) {
     switch (value) {
       case '1':
-        push('/settings');
+        push('/companyProfile');
         break;
       case '2':
-        push('/settings/staff');
+        push('/companyProfile/staff');
         break;
       case '3':
-        push('/settings/contractors');
+        push('/companyProfile/contractors');
         break;
       default:
-        push('/settings');
+        push('/companyProfile');
     }
   }
 
@@ -103,7 +102,7 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const needShowByRoute = (route) => route === section
+  const needShowByRoute = (route) => route === section;
 
   const addContractorButton = {
     title: 'Добавить контрагента',
@@ -123,13 +122,6 @@ export const Settings = () => {
 
   const menuButtonArr = [addContractorButton, addStaffButton];
 
-  if (needShowByRoute('editManagingFirmUser'))
-    return (
-      <Route path="/settings/editManagingFirmUser/:id">
-        <EditManagingFirmUserPage />
-      </Route>
-    );
-
   return (
     <SettingsContext.Provider value={context}>
       <div>
@@ -142,13 +134,13 @@ export const Settings = () => {
           currentTabKey={getCurrentTabFromLink()}
           handleChangeTab={handleChangeTab}
         />
-        <Route path="/settings" exact>
+        <Route path="/companyProfile" exact>
           <CompanyInfo />
         </Route>
-        <Route path="/settings/staff" exact>
+        <Route path="/companyProfile/staff" exact>
           <Staff />
         </Route>
-        <Route path="/settings/contractors" exact>
+        <Route path="/companyProfile/contractors" exact>
           <Contractors />
         </Route>
         <ModalAddStaff />

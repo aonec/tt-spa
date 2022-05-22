@@ -17,10 +17,12 @@ import { ObjectContext } from '../../../index';
 import {
   CalculatorListResponse,
   HousingStockResponse,
+  CalculatorListResponsePagedList,
 } from '../../../../../../myApi';
 import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
 import Title from '../../../../../tt-components/Title';
+import axios from '01/axios';
 
 interface ObjectContextInterface {
   object: HousingStockResponse;
@@ -34,10 +36,6 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
   const handleCancel = () => {
     setVisible(false);
   };
-  const ids = calculators?.map((calculator, index) => {
-    const { id } = calculator;
-    return `calculatorsId[${index}]=${id}`;
-  });
 
   const { city, street, number } = object;
   const reportName = `Сводный_отчёт_${street}_${number}.xlsx`;
@@ -47,9 +45,22 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     const [form] = Form.useForm();
     const { setFieldsValue, getFieldValue } = form;
     const [isDisabled, setIsDisabled] = useState(true);
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
       const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
       const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+
+      const calculatorsResponse: CalculatorListResponsePagedList = await axios.get(
+        'Calculators',
+        {
+          params: { 'Filter.HousingStockId': object.id },
+        }
+      );
+
+      const ids = calculatorsResponse?.items?.map((calculator, index) => {
+        const { id } = calculator;
+        return `calculatorsId=${id}`;
+      });
+
       const calculatorsString = ids?.join('&');
 
       const link = `Reports/ConsolidatedReport?${calculatorsString}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
@@ -57,9 +68,7 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
       downloadReport(link);
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
-    };
+    const onFinishFailed = (errorInfo: any) => {};
 
     const onPeriodChange = (event: any) => {
       const period = event.target.value;

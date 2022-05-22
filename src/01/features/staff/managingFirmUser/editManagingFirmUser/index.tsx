@@ -82,12 +82,12 @@ export const EditManagingFirmUserPage = () => {
   const { fields, submit } = useForm(editManagingUserInfoForm);
 
   const onSubmit = () => submit();
-  const onCancel = () => history.push('/settings/staff');
+  const onCancel = () => history.push('/companyProfile/staff');
 
   const phoneMask = usePhoneMask();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem.competence.title,
+    label: '', //elem?.competence?.title,
     value: elem.id,
   }));
 
@@ -96,7 +96,7 @@ export const EditManagingFirmUserPage = () => {
     value: elem.id,
   }));
 
-  useRedirectAfterSuccessRequest(isSuccessUpdated, '/settings/staff');
+  useRedirectAfterSuccessRequest(isSuccessUpdated, '/companyProfile/staff');
 
   const form = (
     <FormContainer>
@@ -200,7 +200,7 @@ export const EditManagingFirmUserPage = () => {
       </Form.Item>
       <FormButtonsWrap>
         <ButtonTT color="blue" onClick={onSubmit} disabled={pendingEditRequest}>
-          {pendingEditRequest ? <Loader show={true} /> : 'Сохранить'}
+          {pendingEditRequest ? <Loader show /> : 'Сохранить'}
         </ButtonTT>
         <ButtonTT
           color="white"
@@ -231,7 +231,7 @@ export const EditManagingFirmUserPage = () => {
         />
         {pendingFetchRequest ? (
           <div>
-            <Loader show={true} />
+            <Loader show />
           </div>
         ) : (
           form

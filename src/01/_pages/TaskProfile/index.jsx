@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'reshadow/macro';
 import * as s from '01/r_comp';
+import styledC from 'styled-components';
+import { Link, NavLink } from 'react-router-dom';
+import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
 import { TasksProfileContext } from './context';
 import { usePageFetch } from './hooks/usePageFetch';
 import { usePanel } from './hooks/usePanel';
@@ -8,7 +11,6 @@ import { useStages } from './hooks/useStages';
 import { useDocuments } from './hooks/useDocuments';
 import { useInformation } from './hooks/useInformation';
 import { useInformationDevice } from './hooks/useInformationDevice';
-import styledC from 'styled-components';
 
 import { Header } from './components/Header';
 import { Panel } from './components/Panel';
@@ -22,7 +24,8 @@ import TaskComments from './components/Comments/TaskComments';
 import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
-import { Link, NavLink } from 'react-router-dom';
+import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
+import { getNodeIdFromTask } from './utlis';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -38,7 +41,6 @@ function reducer(state, action) {
       };
     // вернуть этап
     case 'push_stage':
-      // console.log("stagedata", data)
       return {
         ...state,
         stageData: { data, move: 'push' },
@@ -54,7 +56,6 @@ function reducer(state, action) {
 export const TaskProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   usePageFetch(state, dispatch);
-  console.log('state', state);
   const panel = usePanel(state, dispatch);
   // панель действий
   const stages = useStages(state, dispatch);
@@ -73,11 +74,20 @@ export const TaskProfile = () => {
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
+  const isIndividualDeviceReadingCheckType =
+    state.type === 'IndividualDeviceReadingsCheck';
+
+  const nodeId = state && getNodeIdFromTask(state);
+
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Index path="/tasks/" />
-      <Header {...state.header} />
-      <Panel {...panel} device={device} state={state} />
+      <Header {...state.header} state={state} />
+      {isIndividualDeviceReadingCheckType ? (
+        <CorrectionReadingsPanel />
+      ) : (
+        <Panel {...panel} device={device} state={state} />
+      )}
       <Steps />
       <Documents {...docs} />
       <grid>
@@ -87,8 +97,9 @@ export const TaskProfile = () => {
           ) : null}
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
+          {nodeId && <TaskNodeStatistic id={nodeId} />}
 
-          {/*подождать бэк и вынести в отдельный компонент*/}
+          {/* подождать бэк и вынести в отдельный компонент */}
           {node ? (
             <div style={{ marginTop: 16 }}>
               <NodeLink to={`/nodes/${node.id}`}>
@@ -111,7 +122,7 @@ export const TaskProfile = () => {
                   ({calculator.serialNumber})
                 </span>
               </div>
-              {/*</div>*/}
+              {/* </div> */}
               <NodeInformation node={node} calculator={calculator} task />
             </div>
           ) : null}

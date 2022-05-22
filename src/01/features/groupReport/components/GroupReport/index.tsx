@@ -139,7 +139,10 @@ const ModalGroupReport = () => {
       dispatch(
         setForm({
           ...values,
-          dates: [values.dates[0].toISOString(), values.dates[1].toISOString()],
+          dates: [
+            values.dates[0].toISOString(true),
+            values.dates[1].toISOString(true),
+          ],
         })
       );
 
@@ -194,9 +197,7 @@ const ModalGroupReport = () => {
       await report(downloadReport);
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
-    };
+    const onFinishFailed = (errorInfo: any) => {};
 
     const onPeriodChange = (event: any) => {
       const period = event.target.value;
@@ -230,13 +231,9 @@ const ModalGroupReport = () => {
       setFieldsValue({ subscribe: event });
     };
 
-    const onChange = (allFields: any) => {
-      // console.log('allFields', allFields);
-    };
+    const onChange = (allFields: any) => {};
 
-    const onFormLayoutChange = () => {
-      // formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false);
-    };
+    const onFormLayoutChange = () => {};
 
     const formHasErrors = () =>
       getFieldsError().some((item) => item.errors.length > 0);

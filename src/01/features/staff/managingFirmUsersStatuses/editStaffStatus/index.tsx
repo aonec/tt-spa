@@ -86,7 +86,7 @@ export const EditStaffStatusModal: React.FC = () => {
             onClick={onSubmit}
             disabled={pending}
           >
-            {pending ? <Loader show={true} /> : 'Изменить статус'}
+            {pending ? <Loader show /> : 'Изменить статус'}
           </ButtonTT>
         </Footer>
       }
@@ -136,8 +136,8 @@ export const EditStaffStatusModal: React.FC = () => {
                 moment.Moment
               ];
 
-              fields.startDate.onChange(startDate.toISOString());
-              fields.endDate.onChange(endDate.toISOString());
+              fields.startDate.onChange(startDate.toISOString(true));
+              fields.endDate.onChange(endDate.toISOString(true));
             }}
           />
           <ErrorMessage>

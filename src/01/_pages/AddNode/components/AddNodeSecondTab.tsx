@@ -64,14 +64,19 @@ const AddNodeSecondTab = () => {
     },
     validationSchema: nodeValidationSchema,
     onSubmit: async () => {
+
       const form = {
         resource: values.resource,
         number: Number(values.number),
         nodeServiceZoneId:
           chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
         nodeStatus: values.nodeStatus,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
+          true
+        ),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
+          true
+        ),
       };
       setNode((prevState: any) => ({
         ...prevState,
@@ -93,7 +98,7 @@ const AddNodeSecondTab = () => {
   return (
     <>
       <PageGate />
-      <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
+      <div hidden={Number(currentTabKey) !== 2}>
         <StyledFormPage>
           <Title color="black" style={styles.w100}>
             Общие данные
@@ -206,7 +211,7 @@ const AddNodeSecondTab = () => {
           ) : null}
         </StyledFormPage>
         <StyledFooter form>
-          <ButtonTT color="blue" big type="submit">
+          <ButtonTT color="blue" big onClick={handleSubmit}>
             Далее
           </ButtonTT>
 
@@ -216,10 +221,10 @@ const AddNodeSecondTab = () => {
             onClick={handleCancel}
             style={{ marginLeft: 16 }}
           >
-            Отмена
+            Назад
           </ButtonTT>
         </StyledFooter>
-      </form>
+      </div>
     </>
   );
 };

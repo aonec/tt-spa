@@ -18,7 +18,7 @@ const TaskComments = ({
 }) => {
   const { perpetrator } = useContext(TasksProfileContext);
   const currentUser = JSON.parse(localStorage.getItem('user')!);
-  const isPerpetrator = currentUser.id === perpetrator?.id;
+  const isPerpetrator = currentUser?.id === perpetrator?.id;
 
   const [data, setData] = useState(comments || []);
   const { 0: id } = useParams();

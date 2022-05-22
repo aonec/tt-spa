@@ -1,22 +1,49 @@
+import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Checkbox } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 interface HeaderInterface {
   slider: React.ReactElement;
+  showClosed: boolean;
+  setShowClosed(callback: (value: boolean) => void | boolean): void;
+  devicesCount: number;
 }
 
-export function Header({ slider }: HeaderInterface) {
+export function Header({
+  slider,
+  showClosed,
+  setShowClosed,
+  devicesCount,
+}: HeaderInterface) {
   return (
     <HeaderWrap>
-      <Title>Информация о приборе</Title>
+      <Flex>
+        <Title>Информация о приборе</Title>
+        <Space />
+        {devicesCount ? (
+          <Checkbox
+            checked={showClosed}
+            onChange={() => setShowClosed((prev) => !prev)}
+          >
+            показать закрытые ({devicesCount})
+          </Checkbox>
+        ) : (
+          <div></div>
+        )}
+      </Flex>
       <div>Статус</div>
       {slider}
+      <div style={{ paddingLeft: '90px' }}>{getPreviousReadingsMonth(-1)}</div>
     </HeaderWrap>
   );
 }
 
 const HeaderWrap = styled.div`
   display: grid;
-  grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
+  grid-template-columns: 380px 110px 190px 170px 2.2fr;
+  grid-gap: 15px;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
   align-items: center;

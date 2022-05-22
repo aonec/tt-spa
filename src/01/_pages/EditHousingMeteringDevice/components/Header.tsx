@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconTT } from '../../../tt-components';
-import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
@@ -8,12 +8,12 @@ import {
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HousingMeteringDeviceInterface {
-  device: HousingMeteringDeviceResponse;
+  device: PipeHousingMeteringDeviceResponse;
 }
 
 export const Header = ({ device }: HousingMeteringDeviceInterface) => {
   const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
-  const { city, street, housingStockNumber, corpus, id } =
+  const { city, street, number, corpus, id } =
     address || DEFAULT_BUILDING;
 
   return (
@@ -35,7 +35,7 @@ export const Header = ({ device }: HousingMeteringDeviceInterface) => {
 
         <Subtitle
           to={`/objects/${id}`}
-        >{`${city}, ${street}, ${housingStockNumber}${
+        >{`${city}, ${street}, ${number}${
           corpus ? `, к.${corpus}` : ''
         }`}</Subtitle>
       </div>

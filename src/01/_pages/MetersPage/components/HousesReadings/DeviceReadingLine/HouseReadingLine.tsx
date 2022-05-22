@@ -1,132 +1,133 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IndividualDeviceType } from '../../../../../../types/types';
 import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { Icon } from '../../../../../_components/Icon';
 import styles from '../../../../Devices/components/TabsDevices.module.scss';
-import { useReadings } from '../../../../../hooks/useReadings';
+import {
+  getNextPreviousReading,
+  round,
+  useReadings,
+} from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
-import { ButtonTT } from '../../../../../tt-components';
-import { Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
-import { Footer, Header, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
+import { HistoryIcon } from "ui-kit/icons";
 
-export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
-  const textInput = React.createRef<Input>();
-
-  const {
-    readingsState,
-    isVisible,
-    handleOk,
-    handleCancel,
-    previousReadings,
-    currentReadings,
-  } = useReadings(device, textInput);
-
-  const dispatch = useDispatch();
-
-  const [consumptionState, setConsumptionState] = useState<number[]>([]);
-
-  const numberOfReadings: number = rateTypeToNumber(device.rateType);
-
-  //useConsumption
-  useEffect(() => {
-    if (!readingsState) return;
-    const currentReadings = readingsState?.currentReadingsArray || {};
-    const previousReadings = readingsState?.previousReadingsArray || {};
-    let consumptionArray = Array.from(
-      { length: numberOfReadings },
-      (v, i) => i
+export const HouseReadingLine: React.FC<Props> = React.memo(
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {
+    const { readingsState, previousReadings, currentReadings } = useReadings(
+      device,
+      sliderIndex,
+      numberOfPreviousReadingsInputs,
+      false
     );
-    const consumption = consumptionArray.map((value, index) => {
-      return +currentReadings[index] - +previousReadings[index] > 0
-        ? +currentReadings[index] - +previousReadings[index]
-        : 0;
+
+    const dispatch = useDispatch();
+
+    const [consumptionState, setConsumptionState] = useState<
+      (number | string)[]
+    >([]);
+
+    const numberOfReadings: number = rateTypeToNumber(device.rateType);
+
+    //useConsumption
+    useEffect(() => {
+      if (!readingsState) return;
+      const currentReadings = readingsState?.currentReadingsArray || {};
+      const previousReadings: any = getNextPreviousReading(
+        readingsState?.previousReadings,
+        -1
+      );
+      let consumptionArray = Array.from(
+        { length: numberOfReadings },
+        (v, i) => i
+      );
+      const consumption = consumptionArray.map((_, index) => {
+        return (
+          round(
+            +currentReadings[index] - +previousReadings?.values[index] > 0
+              ? +currentReadings[index] - +previousReadings?.values[index]
+              : 0,
+            3
+          ) || ''
+        );
+      });
+
+      setConsumptionState(consumption);
+    }, [readingsState]);
+
+    //useInputsUnfocused
+    useEffect(() => {
+      if (!readingsState) return;
+      const isNull = isNullInArray(readingsState.currentReadingsArray);
+
+      if (!isNull) {
+        dispatch(setInputUnfocused());
+      }
+    }, [readingsState]);
+
+    const consumptionElems = consumptionState.map((el) => {
+      return <Consumption key={uuid()}>{el}</Consumption>;
     });
 
-    setConsumptionState(consumption);
-  }, [readingsState]);
+    const { icon, color } = DeviceIcons[device.resource];
 
-  //useInputsUnfocused
-  useEffect(() => {
-    if (!readingsState) return;
-    const isNull = isNullInArray(readingsState.currentReadingsArray);
-
-    if (!isNull) {
-      dispatch(setInputUnfocused());
-    }
-  }, [readingsState]);
-
-  const consumptionElems = consumptionState.map((el) => {
-    return <Consumption key={uuid()}>{el} кВтч</Consumption>;
-  });
-
-  const { icon, color } = DeviceIcons[device.resource];
-
-  return (
-    <HouseReadingsDevice>
-      <div>
-        <Span>{device.apartmentNumber}</Span>
-      </div>
-      <Column>
-        <OwnerName>
-          <Span>{device.homeownerName}</Span>
-        </OwnerName>
-        <div>{device.personalAccountNumber}</div>
-      </Column>
-
-      <IconContainer>
-        <Icon className={styles.icon} icon={icon} fill={color} />
-      </IconContainer>
-
-      <Column>
-        <div>
-          <Span>{device.model}</Span>
-        </div>
-        <div>{device.serialNumber}</div>
-      </Column>
-
-      {previousReadings}
-      {currentReadings}
-
-      <div>{consumptionElems}</div>
-      <div>-</div>
-
-      <StyledModal
-        visible={isVisible}
-        title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={800}
-        footer={
-          <Footer>
-            <ButtonTT color={'white'} key="back" onClick={handleCancel}>
-              Отмена
-            </ButtonTT>
-            <ButtonTT color={'red'} key="submit" onClick={handleOk}>
-              Выйти без сохранения
-            </ButtonTT>
-          </Footer>
-        }
+    return (
+      <HouseReadingsDevice
+        style={{
+          pointerEvents: disabled ? 'none' : undefined,
+          cursor: disabled ? 'not-allowed' : undefined,
+        }}
       >
-        <ModalText>
-          Вы внесли не все показания, если вы покинете страницу, то все
-          изменения, которые были сделаны вами на этой странице не сохранятся
-        </ModalText>
-      </StyledModal>
-    </HouseReadingsDevice>
-  );
-});
+        <div>{device.apartmentNumber}</div>
+
+        <Column>
+          <OwnerName>
+            <Span>{device.homeownerName}</Span>
+          </OwnerName>
+          <div>{device.personalAccountNumber}</div>
+        </Column>
+
+        <IconContainer>
+          <Icon className={styles.icon} icon={icon} fill={color} />
+        </IconContainer>
+
+        <Column>
+          <div>
+            <b>{device.serialNumber}</b>
+          </div>
+          <div>
+            <Span>{device.model}</Span>
+          </div>
+        </Column>
+
+        {previousReadings}
+        {currentReadings}
+
+        <div>{consumptionElems}</div>
+        <div>-</div>
+
+        <Flex style={{ minWidth: 80 }}>
+          <HistoryIcon
+            style={{ cursor: 'pointer' }}
+            onClick={() => openReadingsHistoryModal(device.id)}
+          />
+        </Flex>
+      </HouseReadingsDevice>
+    );
+  }
+);
 
 const HouseReadingsDevice = styled.div`
   display: grid;
   grid-template-columns:
-    32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(120px, 160px)
-    minmax(120px, 160px) 75px minmax(134px, 304px);
+    15px 100px 6px 130px 160px 160px 47px 115px
+    minmax(0, 80px);
   column-gap: 16px;
   color: var(--main-90);
   border-bottom: 1px solid var(--frame);
@@ -172,4 +173,7 @@ const Span = styled.span`
 
 type Props = {
   device: IndividualDeviceListItemResponse;
+  numberOfPreviousReadingsInputs: number;
+  sliderIndex: number;
+  disabled?: boolean;
 };

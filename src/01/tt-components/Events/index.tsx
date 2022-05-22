@@ -12,9 +12,7 @@ export interface EventsInterface {
 }
 
 export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
+  const buttonHandler = () => {};
 
   const Tasks = (tasks || []).map((task, index) => {
     const { currentStage, perpetrator, id } = task;
@@ -33,7 +31,7 @@ export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
         </TaskRow>
         <TaskRow>
           <Icon icon="username2" style={{ marginRight: '8px' }} />
-          {perpetrator.name}
+          {perpetrator?.name}
         </TaskRow>
       </Task>
     );

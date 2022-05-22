@@ -26,8 +26,8 @@ import {
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
 import {
-  CreateHousingMeteringDeviceRequest,
-  NodeResponse,
+  CreatePipeHousingMeteringDeviceRequest,
+  PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
   TabErrorsInterface,
@@ -47,7 +47,7 @@ import Warning from '../../../../../tt-components/Warning';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
-  node: NodeResponse;
+  node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -106,8 +106,6 @@ const ModalAddDeviceForm = ({
     calculatorId,
   } = node || DEFAULT_NODE;
 
-  const { city, street, housingStockNumber, corpus } = address;
-
   const entryNumber = communicationPipes?.length
     ? communicationPipes[0].entryNumber
     : null;
@@ -122,14 +120,14 @@ const ModalAddDeviceForm = ({
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
     serialNumber: undefined,
-    lastCheckingDate: moment().toISOString(),
-    futureCheckingDate: moment().add(3, 'years').toISOString(),
+    lastCheckingDate: moment().toISOString(true),
+    futureCheckingDate: moment().add(3, 'years').toISOString(true),
     lastCommercialAccountingDate: lastCommercialAccountingDate
-      ? moment(lastCommercialAccountingDate).toISOString()
-      : moment().toISOString(),
+      ? moment(lastCommercialAccountingDate).toISOString(true)
+      : moment().toISOString(true),
     futureCommercialAccountingDate: futureCommercialAccountingDate
-      ? moment(futureCommercialAccountingDate).toISOString()
-      : moment().toISOString(),
+      ? moment(futureCommercialAccountingDate).toISOString(true)
+      : moment().toISOString(true),
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
@@ -140,17 +138,15 @@ const ModalAddDeviceForm = ({
     pipeNumber: null,
     magistral: magistrals[0].value,
     number,
-    nodeStatus: nodeStatus.value,
+    nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
   };
 
   const handleSubmit = (values: any) => {
-    const form: CreateHousingMeteringDeviceRequest = {
+    const form: CreatePipeHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+      lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
+      futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       resource: values.resource,
       model: values.model,
@@ -240,9 +236,7 @@ const ModalAddDeviceForm = ({
                         : setValidationSchema(
                             validationSchemaTemperatureSensor
                           );
-                      value !== 'FlowMeter'
-                        ? setFieldValue('diameter', null)
-                        : console.log(values.diameter);
+                      value !== 'FlowMeter' && setFieldValue('diameter', null);
                       coldWaterValidation(value);
                     }}
                   />

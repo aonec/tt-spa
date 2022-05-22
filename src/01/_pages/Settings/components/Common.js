@@ -42,7 +42,6 @@ const Common = () => {
         timeZoneOffset: values.timeZoneOffset,
       };
 
-      console.log('form', form);
       putCurrentManagingFirm(id, form);
     },
   });
@@ -57,7 +56,6 @@ const Common = () => {
   };
 
   const buttonHandler = () => {
-    console.log('buttonHandler', values);
   };
 
   return (

@@ -62,7 +62,7 @@ export const EditCalculator = () => {
         </div>
       )}
       {status === 'pending' ||
-        (status === 'idle' && <Loader show={true} size={64} />)}
+        (status === 'idle' && <Loader show size={64} />)}
       {status === 'resolved' && (
         <>
           <Breadcrumb path={`/calculators/${deviceId}`} />

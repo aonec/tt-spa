@@ -2,11 +2,14 @@ import moment from 'moment';
 
 export const formReadingToPush = (device) => {
   const pushReadings = device.readings[0];
+
+  if (!pushReadings) return {};
+
   const deviceReadingObject = {
     deviceId: device.id,
-    value1: +pushReadings.value1,
-    readingDate: moment().toISOString(),
-    uploadTime: moment().toISOString(),
+    value1: +pushReadings?.value1,
+    readingDate: moment().toISOString(true),
+    uploadTime: moment().toISOString(true),
     isForced: true,
   };
   if (pushReadings.value2) {

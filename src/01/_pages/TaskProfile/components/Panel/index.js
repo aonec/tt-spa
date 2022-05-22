@@ -1,13 +1,19 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import * as s from '01/r_comp';
+import { Flex } from '01/shared/ui/Layout/Flex';
 import AddDate from '../../../../components/Select/selects/AddDate';
-import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
-import { addReadings } from '../../hooks/usePanel';
 import StyledTextArea from '../../../../tt-components/TextArea';
+import { Readings } from '../Readings';
+import { SetNextStageDeadlineContainer } from '../SetNextStageDeadlineService';
+import { CloseDevicesContainer } from '../CloseDeviceService';
 
 const styles = css`
   panel {
@@ -45,12 +51,11 @@ const styles = css`
         'ub ul ul ul push';
     }
     &[|styleReadings] {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      grid-template-areas:
-        'ar ar ar ar'
-        '. . . push';
+      display: block !important;
     }
     &[|styleAddPerpetratorAndSetNextStageDeadline] {
+      padding-top: 45px;
+      position: relative;
       grid-template-areas: 'p ad push';
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
@@ -100,27 +105,26 @@ const PushButton = ({ loading = false, ...props }) =>
     }
   `(
     <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
+      <Flex>
+        <div style={{ marginRight: loading ? 10 : 0 }}>
+          <Loader show={loading} />
+        </div>
+        <span>Завершить этап</span>
+      </Flex>
     </button>
   );
 
-export const Panel = (
-  {
-    expectedCompletionTime,
-    hiddenPanel = true,
-    actions = {},
-    state = {},
-    pushProps = {},
-    isObserver = false,
-    perpName = '',
-    apartment,
-    device,
-    dispatch = () => {},
-    stages = {},
-  },
-  ...props
-) => {
+export const Panel = ({
+  expectedCompletionTime,
+  hiddenPanel = true,
+  actions = {},
+  state = {},
+  pushProps = {},
+  isObserver = false,
+  perpName = '',
+  dispatch = () => {},
+  stages = {},
+}) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
   const [message, setMessage] = useState();
   if (hiddenPanel) return null;
@@ -130,9 +134,9 @@ export const Panel = (
     AddDocuments,
     Switch,
     Completion,
-    SwitchDevices,
     SetNextStageDeadline,
     UploadReadings,
+    CloseIndividualDevices,
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
@@ -141,7 +145,7 @@ export const Panel = (
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  const isPerpetrator = currentUser.id === taskPerpetrator?.id;
+  const isPerpetrator = currentUser?.id === taskPerpetrator?.id;
 
   if (isObserver && AddDocuments && Switch) {
     return styled(
@@ -169,7 +173,8 @@ export const Panel = (
         styleSwitchAndAddPerpetrator: Switch && AddPerpetrator,
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
-        styleReadings: UploadReadings || addReadingsDone,
+        styleReadings:
+          UploadReadings || addReadingsDone || CloseIndividualDevices,
         styleAddPerpetratorAndAddDocumentsAndAddEmailNotify:
           AddDocuments && AddPerpetrator && EmailNotify,
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
@@ -178,6 +183,8 @@ export const Panel = (
           AddPerpetrator && SetNextStageDeadline,
       })}
     >
+      {SetNextStageDeadline && <SetNextStageDeadlineContainer />}
+
       {AddPerpetrator && (
         <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
@@ -225,13 +232,16 @@ export const Panel = (
         <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
 
-      {(UploadReadings || addReadingsDone) && (
-        <AddReadings
-          apartmentId={apartment.id}
-          addReadings={(readings) => dispatch(addReadings(readings))}
-          readingsBlocked={addReadingsDone || isObserver}
+      {UploadReadings && (
+        <Readings getData={(data) => dispatch({ type: 'add_data', data })} />
+      )}
+
+      {CloseIndividualDevices && (
+        <CloseDevicesContainer
+          setData={(data) => dispatch({ type: 'add_data', data })}
         />
       )}
+
       {!isObserver && <PushButton {...pushProps} />}
     </panel>
   );

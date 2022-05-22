@@ -43,12 +43,10 @@ const CalculatorChangeForm = () => {
     taskId,
     perpetratorName,
   } = useContext(ChangeDeviceContext);
-  console.log('device', device);
   const {
     isConnected,
     connection: { ipV4, port, deviceAddress },
   } = device;
-  console.log(selected);
 
   const getCurrentInfoId = _.find(items, { label: selected.model });
   const currentInfoId =
@@ -87,9 +85,7 @@ const CalculatorChangeForm = () => {
       deviceAddress,
     },
     validationSchema: Yup.object(calculatorChangeValidationSchema),
-    onSubmit: () => {
-      console.log('DONE');
-    },
+    onSubmit: () => {},
   });
 
   useEffect(() => {
@@ -125,18 +121,14 @@ const CalculatorChangeForm = () => {
   );
 
   function handleChangeTab(value) {
-    console.log(currentTabKey);
     setCurrentTabKey(value);
   }
 
   function handleNextChangeTab() {
-    console.log('handleNextChangeTab');
     setCurrentTabKey(String(Number(currentTabKey) + 1));
   }
 
   function handleEdit() {
-    console.log('handleEdit');
-
     const PUT_EDIT_FORM = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
@@ -147,7 +139,6 @@ const CalculatorChangeForm = () => {
         deviceAddress: values.deviceAddress,
       },
     };
-    console.log(JSON.stringify(PUT_EDIT_FORM));
 
     const form = {
       calculatorSwitch: {
@@ -157,14 +148,7 @@ const CalculatorChangeForm = () => {
       documentsIds: [123456],
     };
 
-    console.log(JSON.stringify(form));
-
-    putCalculator(selected.id, PUT_EDIT_FORM).then((res) => {
-      console.log('res', res);
-      // pushStage(taskId, form);
-    });
-
-    // postTask(form)
+    putCalculator(selected.id, PUT_EDIT_FORM).then((res) => {});
   }
   function randomInteger(min, max) {
     // случайное число от min до (max+1)
@@ -186,14 +170,11 @@ const CalculatorChangeForm = () => {
       },
     };
 
-    console.log('res', JSON.stringify(POST_CALCULATOR_FORM));
-
     createCalculator(POST_CALCULATOR_FORM).then((res) => {
-      console.log('POST_CALCULATOR_FORM', res);
       const deregisterForm = {
         deviceId: res.id,
         documentsIds: [123456],
-        closingDateTime: moment().toISOString(),
+        closingDateTime: moment().toISOString(true),
       };
       deregisterDevice(deregisterForm).then((result) => {
         const form = {
@@ -206,20 +187,6 @@ const CalculatorChangeForm = () => {
         pushStage(taskId, form);
       });
     });
-
-    // createCalculator(POST_CALCULATOR_FORM).then((res) => {
-    //   console.log('res', res);
-    //   const { id } = res;
-    //   const form = {
-    //     calculatorSwitch: {
-    //       deviceId: device.id,
-    //       newDeviceId: id,
-    //     },
-    //     documentsIds: [123456],
-    //   };
-    //   console.log('form', form);
-    //   // pushStage(taskId, form);
-    // });
   }
 
   function Buttons() {

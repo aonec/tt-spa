@@ -24,9 +24,7 @@ const ModalAddDevice = () => {
           label: `${item.model} (${item.serialNumber})`,
         }));
         setCalculators(calcOnly);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
     setCalculatorsList();
   }, []);

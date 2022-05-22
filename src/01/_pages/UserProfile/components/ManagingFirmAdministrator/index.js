@@ -65,7 +65,6 @@ const ManagingFirmAdministrator = (props) => {
       };
 
       putManagingFirmUsersCurrent(id, form);
-      console.log('DONE', form);
     },
   });
 

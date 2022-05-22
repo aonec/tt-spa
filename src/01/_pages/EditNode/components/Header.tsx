@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorResponse, PipeNodeResponse } from '../../../../myApi';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   nodeId: number;
   setAddDevice?: Dispatch<SetStateAction<boolean>>;
 }
@@ -18,15 +18,16 @@ export const Header = ({ node }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, city, street, housingStockNumber, corpus } = address;
+  const { id: objectId, city, street, number: housingStockNumber, corpus } =
+    address || {};
 
   const getNodeStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.label ?? 'Статус не определен';
   const getNodeIconStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.icon ?? 'close';
 
   const NodeStatus = () => (

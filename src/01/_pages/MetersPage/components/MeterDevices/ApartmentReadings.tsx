@@ -1,61 +1,101 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useEffect } from 'react';
 import ApartmentReadingLine from './components/ApartmentReadingLine';
-import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDevices } from '../../../../Redux/ducks/readings/selectors';
-import { setDevices } from '../../../../Redux/ducks/readings/actionCreators';
 import styled from 'styled-components';
-import { useSwitchOnInputs } from '../../../../hooks/useSwitchInputsOnEnter';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
-import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import { EIndividualDeviceRateType } from '../../../../../myApi';
+import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
+import { useStore } from 'effector-react';
+import {
+  $individualDevices,
+  $isShownClosedDevices,
+  IndividualDevicesGate,
+} from '01/features/individualDevices/displayIndividualDevices/models';
+import { useParams } from 'react-router';
+import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { UserRolesGate } from '01/features/userRoles/displayUserRoles/models';
+import { ManagingFirmUserGate } from '01/features/staff/managingFirmUser/displayManagingFirmUser/models';
+import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 
-interface ApartmentReadingsProps {
-  items: IndividualDeviceListItemResponse[];
-}
+export const getIndividualDeviceRateNumByName = (
+  rateType: EIndividualDeviceRateType
+) => {
+  const values = [
+    EIndividualDeviceRateType.OneZone,
+    EIndividualDeviceRateType.TwoZone,
+    EIndividualDeviceRateType.ThreeZone,
+  ];
 
-export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
-  const dispatch = useDispatch();
+  const res = values.reduce(
+    (acc, elem, index) => (rateType === elem ? index + 1 : acc),
+    1
+  );
 
-  useSwitchOnInputs();
+  return res;
+};
 
-  useEffect(() => {
-    dispatch(setDevices(items));
-  }, [items]);
+export const ApartmentReadings = () => {
+  const devices = useStore($individualDevices);
+  const { id } = useParams<{ id: string }>();
+  const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+  const showClosed = useStore($isShownClosedDevices);
 
-  const devices = useSelector(selectDevices);
+  useEffect(() => reset && reset(), [id]);
 
-  const { sliderIndex, sliderProps } = useMonthSlider(items);
+  const validDevicesList = devices.filter((device) =>
+    showClosed ? true : device.closingDate === null
+  );
 
-  if (!devices.length || sliderIndex === undefined) return null;
+  const isSliderIndexExist = sliderIndex !== undefined;
 
-  const validDevices = devices
-    .filter((device) => device.closingDate === null)
-    .map((device) => (
-      <ApartmentReadingLine
-        sliderIndex={sliderIndex}
-        key={device.id}
-        device={device}
-      />
-    ));
-
-  const closedDevices = devices.filter((device) => device.closingDate !== null);
-
-  const currentMonth = getMonthFromDate();
+  const validDevices = !isSliderIndexExist
+    ? []
+    : validDevicesList.map((device, index) => (
+        <ApartmentReadingLine
+          closed={device.closingDate !== null}
+          sliderIndex={sliderIndex!}
+          key={device.id}
+          device={device}
+          numberOfPreviousReadingsInputs={validDevicesList
+            .slice(0, index)
+            .filter((elem) => elem.closingDate === null)
+            .reduce(
+              (acc, elem) =>
+                acc + getIndividualDeviceRateNumByName(elem.rateType),
+              0
+            )}
+        />
+      ));
 
   return (
-    <Meters>
-      <MetersHeader>
-        <span>Информация o приборe</span>
-        {sliderProps ? (
-          <MonthSlider sliderIndex={sliderIndex} {...sliderProps} />
-        ) : null}
-        <CenterContainer>{currentMonth}</CenterContainer>
-      </MetersHeader>
-      {validDevices}
-      <ClosedDevices devices={closedDevices} />
-    </Meters>
+    <>
+      <ReadingsHistoryModal />
+      <IndividualDevicesGate ApartmentId={Number(id)} />
+      <CloseIndividualDeviceModal />
+      <ConfirmReadingValueModal />
+      <DeleteIndividualDeviceModalContainer />
+      {isSliderIndexExist && (
+        <Meters id="meters-component">
+          <MetersHeader>
+            <Flex style={{ alignItems: 'center' }}>
+              <div>Информация o приборe</div>
+              <Space />
+              <ClosedDevices />
+            </Flex>
+            {sliderProps ? <MonthSlider {...sliderProps} /> : null}
+            <CenterContainer>{getPreviousReadingsMonth(-1)}</CenterContainer>
+          </MetersHeader>
+          {validDevices}
+        </Meters>
+      )}
+    </>
   );
 };
 

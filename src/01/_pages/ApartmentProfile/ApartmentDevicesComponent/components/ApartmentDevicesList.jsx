@@ -1,37 +1,26 @@
 import React, { useContext } from 'react';
 import { ApartmentDeviceItem } from './ApartmentDeviceItem';
 import { ApartmentDevicesContext } from '../ApartmentDevices';
-import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { useParams } from 'react-router';
 
-export function ApartmentDevicesList({ sliderIndex }) {
+export function ApartmentDevicesList({ sliderIndex, showClosed }) {
   const devices = useContext(ApartmentDevicesContext);
 
-  // const closedDevices = devices.filter(
-  //   ({ closingDate }) => closingDate !== null
-  // );
+  const params = useParams();
 
   if (!devices) return null;
 
-  const filteredDevices = devices.reduce(
-    (acc, device) => {
-      if (device.closingDate === null) {
-        return { ...acc, validDevices: [...acc.validDevices, device] };
-      }
-      return { ...acc, closedDevices: [...acc.closedDevices, device] };
-    },
-    { validDevices: [], closedDevices: [] }
-  );
-
-  const validDeviceElems = filteredDevices.validDevices
-    .filter(({ closingDate }) => closingDate === null)
+  const validDeviceElems = devices
+    ?.filter((elem) => (!showClosed ? elem.closingDate === null : true))
     .map((device) => (
       <ApartmentDeviceItem device={device} sliderIndex={sliderIndex} />
     ));
 
   return (
     <>
+      <ReadingsHistoryModal apartmentId={params[1]} readonly />
       {validDeviceElems}
-      <ClosedDevices devices={filteredDevices.closedDevices} />
     </>
   );
 }

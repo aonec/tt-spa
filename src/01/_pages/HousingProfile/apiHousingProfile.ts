@@ -1,15 +1,13 @@
 import axios from '../../axios';
 import {
-  HousingMeteringDeviceResponse,
-  TaskListResponse,
+  PipeHousingMeteringDeviceResponse,
   TasksPagedList,
-  TasksPagedListSuccessApiResponse,
 } from '../../../myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   try {
-    const res = await axios.get<any, HousingMeteringDeviceResponse>(
-      `HousingMeteringDevices/${id}`
+    const res = await axios.get<any, PipeHousingMeteringDeviceResponse>(
+      `PipeHousingMeteringDevices/${id}`
     );
     return res;
   } catch (error) {

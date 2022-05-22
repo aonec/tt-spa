@@ -19,26 +19,14 @@ import {
 } from '../../../_api/housing_metering_device_readings';
 import { forward, guard, sample } from 'effector';
 import { GetHousingMeteringDeviceReadingsResponse } from '../../../../myApi';
+import moment from 'moment';
+import { formatDate } from '01/utils/dates';
 
-requestReadingsFx.use(
-  // () =>
-  //   new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       reject({ message: 'Ошибка' });
-  //     }, 2000);
-  //   })
-  requestReadings
-);
+requestReadingsFx.use(requestReadings);
 
 postReadingFx.use((data) => {
   const { value, deviceId } = data;
-
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     reject({ message: 'Ошибка' });
-  //   }, 2000);
-  // });
-  return postReading({ value, deviceId });
+  return postReading({ value, deviceId, readingDate: formatDate(moment()) });
 });
 
 const addReadingsReducer = (

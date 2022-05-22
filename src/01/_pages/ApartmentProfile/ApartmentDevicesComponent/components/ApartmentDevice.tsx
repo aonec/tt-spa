@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../_components/Icon';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import moment from 'moment';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -20,26 +21,48 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
     mountPlace,
     lastCheckingDate,
     futureCheckingDate,
+    hasMagneticSeal,
   } = device;
   return (
     <DeviceColumn>
       <DeviceLink to={`/individualDevices/${id}`}>
-        <div>
-          <DeviceIcon icon={icon} fill={color} />
+        <div style={{ marginRight: 8 }}>
+          <StockIconTT dark icon={icon} fill={color} />
         </div>
         {`${model} `}
         <SerialNumber>{` (${serialNumber})`}</SerialNumber>
       </DeviceLink>
       <ApartmentInfo>
         <MountPlace>{translateMountPlace(mountPlace)}</MountPlace>
+        {device.closingDate && (
+          <ClosingDate>
+            {moment(device.closingDate).format('DD.MM.YYYY')}
+          </ClosingDate>
+        )}
         <DateLine
           lastCheckingDate={lastCheckingDate}
           futureCheckingDate={futureCheckingDate}
         />
       </ApartmentInfo>
+      {hasMagneticSeal && (
+        <MagneticSeal>
+          Пломба{' '}
+          {device.magneticSealInstallationDate &&
+            moment(device.magneticSealInstallationDate).format('DD.MM.YYYY')}
+        </MagneticSeal>
+      )}
     </DeviceColumn>
   );
 };
+
+const ClosingDate = styled.div`
+  font-weight: bold;
+  margin-right: 10px;
+`;
+
+const MagneticSeal = styled.div`
+  margin: 3px 0 0 24px;
+`;
 
 const DeviceColumn = styled.div`
   display: flex;
@@ -57,7 +80,7 @@ const DeviceLink = styled(Link)`
   color: #272f5a;
 `;
 
-const DeviceIcon = styled(Icon)`
+const StockIconTT = styled(Icon)`
   margin-right: 8px;
 `;
 

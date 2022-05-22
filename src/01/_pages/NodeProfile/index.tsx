@@ -9,19 +9,21 @@ import Graph from '../Graph/Graph';
 import { useAsync } from '../../hooks/useAsync';
 import {
   CalculatorResponse,
-  NodeResponse,
+  PipeNodeResponse,
   TaskListResponse,
 } from '../../../myApi';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
-import NodeConnection from '../../tt-components/NodeConnection';
+import { NodeConnection } from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
 import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
 import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
+import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
+import { SidePanel } from '01/shared/ui/SidePanel';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -30,7 +32,7 @@ export const NodeProfile = () => {
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
-  const { data: node, status, run } = useAsync<NodeResponse | null>();
+  const { data: node, status, run } = useAsync<PipeNodeResponse | null>();
   const { calculator } = node || {};
 
   useEffect(() => {
@@ -71,7 +73,6 @@ export const NodeProfile = () => {
     title: 'Ввод показаний',
     key: 'readings',
     cb: () => {
-      console.log('readings');
       push(`${path}/readings`);
     },
   };
@@ -107,10 +108,17 @@ export const NodeProfile = () => {
       },
     },
     {
-      title: 'Документы приборы',
+      title: 'Документы',
       key: 'documents',
       cb: () => {
         push(`${path}/documents`);
+      },
+    },
+    {
+      title: 'История проверок',
+      key: 'checks',
+      cb: () => {
+        push(`${path}/checks`);
       },
     },
   ];
@@ -148,11 +156,9 @@ export const NodeProfile = () => {
             </>
           )}
         </Route>
-
         <Route path={`${path}/readings`} exact>
           <HousingMeteringDeviceReadings nodeId={nodeId} resource={resource} />
         </Route>
-
         <Route path={`${path}/connection`} exact>
           <NodeConnection node={node} edit={false} />
         </Route>
@@ -162,7 +168,10 @@ export const NodeProfile = () => {
         <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
-        <Events title="Задачи с объектом" tasks={tasks} />
+        <Route path={`/nodes/:nodeId/checks`} exact>
+          <NodeChecksContainer />
+        </Route>
+        <SidePanel title="Архив" link={`/nodeArchive/${nodeId}`} />
       </Grid>
     </>
   );

@@ -1,68 +1,146 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Code requirements
 
-## Available Scripts
+### Наименование веток и коммитов
+1. Наименование веток - `R2-1318-add-incpectors-to-object`
+2. Наименование коммитов `[R2-1318]: add modal to main page`
 
-In the project directory, you can run:
+# Правила создания сервсиов
+1. новый сервис добавляется в папку features
+2. если он связан с некой центральной сущностью, то добавляем в папку этой сущности
 
-### `yarn start`
+- nodesService
+  - displayNodeService
+  - displayNodesListService
+  - editNodeService
+    - editNodeService.models.ts
+    - editNodeService.conainer.ts
+    - editNodeService.relations.ts
+    - editNodeService.types.ts
+    - editNodeService.container.ts
+    - editNodeService.api.ts
+    - views 
+      - EditNodeForm
+        - EditNodeForm.tsx
+        - EditNodeForm.styled.ts
+        - EditNodeForm.types.ts
+      - EditNodeModal.tsx
+      - EditNodeModal.types.ts
+      - EditNodeModal.styled.ts
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Что такое container
+Контейнер связывает локальную модель сервиса с ее view.
+Таким образом внутри контейнера может быть использована только локальная модель сервиса.
+Если нужны данные с другой модели, то реэкспортим внутри локальной модели.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### deleteIndividualDeviceService.models.ts
+Объявляются базовые компоненты сервиса, описывются связи внутри сервиса, экспортится объект модели с полями inputs и outputs 
+```ts
+import { createDomain, guard } from 'effector';
+import { IndividualDeviceListItemResponse } from 'myApi';
+import { deleteDevice } from './deleteIndividualDeviceService.api';
 
-### `yarn test`
+const deleteIndividualDeviceDomain = createDomain(
+  'deleteIndividualDeviceService'
+);
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const $currentIndividualDevice = deleteIndividualDeviceDomain.createStore<IndividualDeviceListItemResponse | null>(
+  null
+);
 
-### `yarn build`
+const $isModalOpen = $currentIndividualDevice.map(Boolean);
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const deleteDeviceModalOpened = deleteIndividualDeviceDomain.createEvent<IndividualDeviceListItemResponse>();
+const deleteDeviceModalClosed = deleteIndividualDeviceDomain.createEvent();
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+const acceptDeleteDevice = deleteIndividualDeviceDomain.createEvent();
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const deleteIndividualDeviceFx = deleteIndividualDeviceDomain.createEffect<
+  number,
+  void
+>(deleteDevice);
 
-### `yarn eject`
+const deletingComplete = deleteIndividualDeviceFx.doneData;
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+$currentIndividualDevice
+  .on(deleteDeviceModalOpened, (_, device) => device)
+  .reset(deleteDeviceModalClosed, deleteIndividualDeviceFx.doneData);
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+guard({
+  source: $currentIndividualDevice.map((device) => device?.id),
+  clock: acceptDeleteDevice,
+  filter: (id): id is number => typeof id === 'number',
+  target: deleteIndividualDeviceFx,
+});
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+export const deleteIndividualDeviceService = {
+  inputs: {
+    deleteDeviceModalOpened,
+    deleteDeviceModalClosed,
+    acceptDeleteDevice,
+    deletingComplete,
+  },
+  outputs: {
+    $isModalOpen,
+    $currentIndividualDevice,
+    $loading: deleteIndividualDeviceFx.pending,
+  },
+};
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### deleteIndividualDeviceService.relations.ts
+Описывются связи с внешними сервисами
 
-## Learn More
+```ts
+import { forward } from 'effector';
+import { deleteIndividualDeviceService } from './deleteIndividualDeviceService.models';
+import { refetchIndividualDevices } from '../displayIndividualDevices';
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+forward({
+  from: deleteIndividualDeviceService.inputs.deletingComplete,
+  to: refetchIndividualDevices,
+});
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### deleteIndividualDeviceService.api.ts
+Описываются ассинхранные запросы к апи
 
-### Code Splitting
+```ts
+import { axios } from '01/axios';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+export const deleteDevice = (id: number): Promise<void> =>
+  axios.post(`IndividualDevices/${id}/Delete`);
+```
 
-### Analyzing the Bundle Size
+### deleteIndividualDeviceService.container.tsx
+Контейнер связывает локальную модель сервиса с ее view
+```tsx
+import { useEvent, useStore } from 'effector-react';
+import React from 'react';
+import { deleteIndividualDeviceService } from './deleteIndividualDeviceService.models';
+import { DeleteIndividualDeviceModal } from './views/DeleteIndividualDeviceModal';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+export const DeleteIndividualDeviceModalContainer = () => {
+  const visible = useStore(deleteIndividualDeviceService.outputs.$isModalOpen);
+  const device = useStore(
+    deleteIndividualDeviceService.outputs.$currentIndividualDevice
+  );
+  const loading = useStore(deleteIndividualDeviceService.outputs.$loading);
 
-### Making a Progressive Web App
+  const handleClose = useEvent(
+    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed
+  );
+  const handleDelete = useEvent(
+    deleteIndividualDeviceService.inputs.acceptDeleteDevice
+  );
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+  return (
+    <DeleteIndividualDeviceModal
+      device={device}
+      visible={visible}
+      loading={loading}
+      handleClose={() => handleClose()}
+      handleDelete={() => handleDelete()}
+    />
+  );
+};
+```

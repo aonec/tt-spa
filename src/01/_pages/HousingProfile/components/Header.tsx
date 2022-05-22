@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
@@ -10,7 +10,7 @@ import {
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
 
 interface HousingMeteringDeviceInterface {
-  device: HousingMeteringDeviceResponse;
+  device: PipeHousingMeteringDeviceResponse;
   setDeregister: Dispatch<SetStateAction<boolean>>;
   setCheckVisible: Dispatch<SetStateAction<boolean>>;
 }
@@ -29,8 +29,7 @@ export const Header = ({
   }
 
   const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
-  const { city, street, housingStockNumber, corpus, id } =
-    address || DEFAULT_BUILDING;
+  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
 
   const menuButtonArr = [
     {
@@ -79,9 +78,7 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
 
-        <Subtitle
-          to={`/objects/${id}`}
-        >{`${city}, ${street}, ${housingStockNumber}${
+        <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${number}${
           corpus ? `, к.${corpus}` : ''
         }`}</Subtitle>
       </div>

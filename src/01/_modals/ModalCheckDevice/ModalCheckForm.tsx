@@ -7,7 +7,7 @@ import { checkDevice } from './apiCheckDevice';
 import {
   CalculatorResponse,
   CheckDeviceRequest,
-  HousingMeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
 } from '../../../myApi';
 import { StyledModalBody, StyledFormPage } from '../../tt-components/Modal';
 import {
@@ -24,7 +24,7 @@ import _ from 'lodash';
 
 interface ModalCheckFormInterface {
   handleCancel: any;
-  device: CalculatorResponse | HousingMeteringDeviceResponse;
+  device: CalculatorResponse | PipeHousingMeteringDeviceResponse;
 }
 
 const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
@@ -51,8 +51,8 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     onSubmit: async () => {
       const form: CheckDeviceRequest = {
         deviceId: values.deviceId,
-        currentCheckingDate: values.lastCheckingDate.toISOString(),
-        futureCheckingDate: values.futureCheckingDate.toISOString(),
+        currentCheckingDate: values.lastCheckingDate.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate.toISOString(true),
       };
       checkDevice(form).then((res) => {
         setTimeout(handleCancel, 1000);
@@ -60,7 +60,7 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     },
   });
 
-  if (!device) return <Loader show={true} size={32} />;
+  if (!device) return <Loader show size={32} />;
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

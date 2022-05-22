@@ -14,6 +14,7 @@ const StyledMenuButton = styled(Button).attrs((props) => ({
   justify-content: center;
   width: 48px;
   height: 48px;
+  border-radius: 4px;
 `;
 
 const MenuItem = styled(Menu.Item)`
@@ -76,7 +77,7 @@ export const MenuButtonTT = (props: any) => {
   return (
     <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
       <StyledMenuButton size={size}>
-        {loading ? <Loader show={true} /> : <MoreOutlined />}
+        {loading ? <Loader show /> : <MoreOutlined />}
       </StyledMenuButton>
     </Dropdown>
   );

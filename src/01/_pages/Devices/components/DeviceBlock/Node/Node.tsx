@@ -1,11 +1,17 @@
 import React from 'react';
 import { CommunicationPipeInterface } from '../../utils/groupDevicesByObjects';
 import { Dates } from '../Dates';
-import { DeviceLink, Diameter, SerialNumber } from '../DeviceBlock';
+import {
+  DeviceLink,
+  Diameter,
+  SerialNumber,
+  StockIconTT,
+} from '../DeviceBlock';
 import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import Icon from '../../../../../tt-components/Icon';
-import { NodeIntoCalculatorResponse } from '../../../../../../myApi';
+import { PipeNodeIntoCalculatorResponse } from '../../../../../../myApi';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 const Node: React.FC<Props> = ({ node }) => {
   const housingDevices = node.communicationPipes?.map((pipe) => {
@@ -43,7 +49,8 @@ const Node: React.FC<Props> = ({ node }) => {
         <div>
           <TitleWrapper>
             <DeviceLink to={`/nodes/${node.id}`}>
-              <NodeIcon icon={icon} color={color} />
+              <StockIconTT dark icon={icon} color={color} />
+              <Space w={6} />
               <span>{`Узел ${node.number}`}</span>
             </DeviceLink>
             <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>
@@ -107,7 +114,7 @@ interface NodeInterface {
 }
 
 interface Props {
-  node: NodeIntoCalculatorResponse;
+  node: PipeNodeIntoCalculatorResponse;
 }
 
 export default Node;

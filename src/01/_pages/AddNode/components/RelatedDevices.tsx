@@ -75,7 +75,7 @@ export const RelatedDevices = () => {
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
-        <Span>{`Ввод: ${entryNumber}`}</Span>
+        {<Span>{entryNumber && `Ввод: ${entryNumber}`}</Span>}
         <Span>{`Труба: ${pipeNumber}`}</Span>
         <Div>
           {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
@@ -138,7 +138,6 @@ const Title = styled.h2``;
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const ListItem = styled.div`

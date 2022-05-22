@@ -4,12 +4,15 @@ import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorIntoNodeResponse, NodeResponse } from '../../../../myApi';
+import {
+  CalculatorIntoNodeResponse,
+  PipeNodeResponse,
+} from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   calculator: CalculatorIntoNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
@@ -25,7 +28,8 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, city, street, housingStockNumber, corpus } = address;
+  const { id: objectId, city, street, number: housingStockNumber, corpus } =
+    address || {};
 
   const menuButtonArr: MenuButtonInterface[] = [
     {
@@ -46,11 +50,11 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
 
   const getNodeStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.label ?? 'Статус не определен';
   const getNodeIconStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.icon ?? 'close';
 
   const NodeStatus = () => (

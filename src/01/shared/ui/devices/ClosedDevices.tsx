@@ -1,69 +1,27 @@
-import React, { useState } from 'react';
-import { IndividualDeviceType } from '../../../../types/types';
-import styled from 'styled-components';
-import DeviceInfo from '../../../_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
-import Icon from '../../../tt-components/Icon';
-import { IndividualDeviceListItemResponse } from '../../../../myApi';
+import React from 'react';
+import {
+  $individualDevices,
+  $isShownClosedDevices,
+  hideClosedDevices,
+  showClosedDevices,
+} from '01/features/individualDevices/displayIndividualDevices/models';
+import { useStore } from 'effector-react';
+import { Checkbox } from 'antd';
 
-const ClosedDevices = ({
-  devices,
-}: {
-  devices: IndividualDeviceListItemResponse[];
-}) => {
-  const [showClosed, setShowClosed] = useState(false);
+const ClosedDevices = () => {
+  const showClosed = useStore($isShownClosedDevices);
+  const devices = useStore($individualDevices);
 
-  const closedDevices = devices.map((device) => (
-    <ClosedDevice>
-      <DeviceInfo device={device} />
-    </ClosedDevice>
-  ));
+  const closedDevices = devices.filter((device) => device.closingDate !== null);
+
   return (
-    <div>
-      <div>{showClosed ? closedDevices : null}</div>
-      <ShowClosedBlock onClick={() => setShowClosed((x) => !x)}>
-        <ShowToggle>
-          {showClosed ? (
-            <>
-              <Icon
-                icon="off"
-                color="var(--main-100)"
-                style={{ marginRight: 8, position: 'relative', top: 1 }}
-              />
-              <span>Скрыть закрытые приборы</span>
-            </>
-          ) : (
-            <>
-              <Icon
-                icon="on"
-                color="var(--main-100)"
-                style={{ marginRight: 8, position: 'relative', top: 1 }}
-              />
-              <span>Показать закрытые приборы</span>
-            </>
-          )}
-          <span style={{ marginLeft: 4 }}>({closedDevices?.length})</span>
-        </ShowToggle>
-      </ShowClosedBlock>
-    </div>
+    <Checkbox
+      checked={showClosed}
+      onClick={() => (showClosed ? hideClosedDevices() : showClosedDevices())}
+    >
+      Показать закрытые ({closedDevices.length})
+    </Checkbox>
   );
 };
-
-const ShowClosedBlock = styled.div`
-  color: var(--main-100);
-  font-size: 14px;
-  font-weight: 500;
-`;
-
-const ShowToggle = styled.div`
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ClosedDevice = styled.div`
-  padding: 8px 16px 16px;
-  opacity: 0.6;
-`;
 
 export default ClosedDevices;

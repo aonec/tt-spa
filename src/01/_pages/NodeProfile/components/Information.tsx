@@ -3,11 +3,11 @@ import moment from 'moment';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { nodeStatusList } from '../../../tt-components/localBases';
-import { CalculatorIntoNodeResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../myApi';
 import { useParams } from 'react-router-dom';
 
 interface HeaderInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   calculator: CalculatorIntoNodeResponse | null;
   task?: boolean;
 }
@@ -25,11 +25,11 @@ const Information = ({ node, task = false }: HeaderInterface) => {
   } = node;
 
   const { address } = node || {};
-  const { city, street, housingStockNumber, corpus, id } = address || {};
+  const { city, street, number, corpus, id } = address || {};
 
   const getNodeStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.label ?? 'Статус не определен';
 
   const renderAddressParam = (param: string | undefined | null) =>
@@ -42,7 +42,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
             {address
-              ? `${city}, ${street}, ${housingStockNumber} ${
+              ? `${city}, ${street}, ${number} ${
                   corpus ? `, к.${corpus}` : ''
                 }`
               : ''}

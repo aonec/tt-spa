@@ -1,11 +1,12 @@
 import axios from '01/axios';
 import { createDevice } from '01/_api/utils';
-import { IndividualDeviceType } from '../../../types/types';
 import { formReadingToPush } from '../../utils/formReadingsToPush';
 
-export async function getApartmetns(params) {
+export async function getApartments(params) {
   try {
-    const res = await axios.get('apartments', { params });
+    const res = await axios.get('apartments', {
+      params: { ...params, PageSize: 50, PageNumber: 1 },
+    });
     return { apartments: res };
   } catch (error) {}
 }

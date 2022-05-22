@@ -21,6 +21,5 @@ export const app = css`
 
   main {
     padding: 16px 56px;
-    overflow-y: scroll;
   }
 `;

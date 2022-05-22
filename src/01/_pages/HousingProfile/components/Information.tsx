@@ -6,11 +6,11 @@ import {
   DEFAULT_DEVICE,
   magistrals,
 } from '../../../tt-components/localBases';
-import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import { Subtitle } from '../../../_components/Headers';
 
 interface InformationInterface {
-  device: HousingMeteringDeviceResponse;
+  device: PipeHousingMeteringDeviceResponse;
 }
 
 export const Information = ({ device }: InformationInterface) => {
@@ -19,7 +19,7 @@ export const Information = ({ device }: InformationInterface) => {
   }
 
   const { address } = device || {};
-  const { city, street, housingStockNumber, corpus, id } =
+  const { city, street, number, corpus, id } =
     address || DEFAULT_BUILDING;
   const {
     futureCommercialAccountingDate,
@@ -31,7 +31,7 @@ export const Information = ({ device }: InformationInterface) => {
     hubConnection: {
       hub: { magistral },
     },
-  } = device || DEFAULT_DEVICE;
+  } = (device as any) || DEFAULT_DEVICE;
 
   const direction = magistrals.find((item) => item.value === magistral);
   const directionLabel = direction
@@ -43,7 +43,7 @@ export const Information = ({ device }: InformationInterface) => {
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          {`${city}, ${street}, ${housingStockNumber} ${
+          {`${city}, ${street}, ${number} ${
             corpus ? `, к.${corpus}` : ''
           }`}
         </Subtitle>

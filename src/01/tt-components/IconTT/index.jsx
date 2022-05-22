@@ -17,9 +17,9 @@ export const IconTT = (props) => {
         as="path"
         clipRule="evenodd"
         fillRule="evenodd"
-        d={icons[icon].path}
-        fill={icons[icon].fill}
-        stroke={icons[icon].stroke}
+        d={icons[icon]?.path}
+        fill={icons[icon]?.fill}
+        stroke={icons[icon]?.stroke}
       />
     </svg>
   );
