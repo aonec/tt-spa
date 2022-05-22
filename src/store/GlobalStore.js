@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useMemo } from 'react';
 
 import { GlobalStoreContext } from './context';

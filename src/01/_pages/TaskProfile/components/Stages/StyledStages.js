@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import styled, { css } from 'styled-components';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { Comment, Avatar, Form, List, Input } from 'antd';
 import moment from 'moment';

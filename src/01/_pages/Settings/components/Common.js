@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useContext, useEffect } from 'react';
 import { Form } from 'antd';
 import _ from 'lodash';

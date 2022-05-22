@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useContext } from 'react';
 import { SettingsContext } from '../index';
 import EditButtonTT from '../../../tt-components/EditButtonTT';

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { NavLink } from 'react-router-dom';
 import React from 'react';
 import t from 'prop-types';

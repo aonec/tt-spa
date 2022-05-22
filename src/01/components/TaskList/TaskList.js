@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow } from 'react-router-dom';

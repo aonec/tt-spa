@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useContext } from 'react';
 import { Modal } from 'antd';
 import ModalAddContractorForm from './ModalAddContractorForm';

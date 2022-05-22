@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import styled from 'reshadow/macro';
 import { useParams } from 'react-router-dom';
