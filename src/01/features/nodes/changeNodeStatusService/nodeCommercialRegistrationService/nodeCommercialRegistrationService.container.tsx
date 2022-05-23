@@ -3,15 +3,14 @@ import { useEvent, useStore } from 'effector-react';
 import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
 import React, { useEffect, useRef, useState } from 'react';
 import { nodeCommercialRegistrationService } from '.';
+import { nodeService } from '../../displayNode/models';
 import { RegisterNodeOnCommercialAccountingForm } from './view/RegisterNodeOnCommercialAccountingForm';
 
 export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
   nodeStatus: ENodeCommercialAccountStatus;
   resource: EResourceType;
   unitRecord: boolean;
-  setUnitRecord: (unitRecord: any) => void;
-  getData: () => void;
-}> = ({ nodeStatus, resource, setUnitRecord, unitRecord, getData }) => {
+}> = ({ nodeStatus, resource}) => {
   const status = nodeStatus === 'Registered';
   const isOpen = useStore(
     nodeCommercialRegistrationService.outputs.$isModalOpen
@@ -19,9 +18,6 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
 
   const loading = useStore(nodeCommercialRegistrationService.outputs.$loading);
 
-  const doneStatus = useStore(
-    nodeCommercialRegistrationService.outputs.$doneData
-  );
 
   const handleClose = useEvent(
     nodeCommercialRegistrationService.inputs.closeModal
@@ -33,15 +29,8 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
   const handleSumbit = useEvent(
     nodeCommercialRegistrationService.inputs.registerNodeOnCommercialAccounting
   );
-
-  useEffect(() => {
-    if (doneStatus && unitRecord) {
-      getData();
-      setUnitRecord(false);
-      setTimeout(() => setUnitRecord(true), 3000);
-    }
-  }, [doneStatus]);
-
+  const { NodeGate } = nodeService.gates
+console.log(status, nodeStatus)
   return (
     <ModalTT
       title={

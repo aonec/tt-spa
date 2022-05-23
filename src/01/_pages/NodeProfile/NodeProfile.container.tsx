@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
@@ -25,6 +25,8 @@ import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceR
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { SidePanel } from '01/shared/ui/SidePanel';
 import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
+import { nodeService } from '01/features/nodes/displayNode/models';
+import { useStore } from 'effector-react';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -33,48 +35,11 @@ export const NodeProfile = () => {
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
   const [unitRecord, setUnitRecord] = useState(true);
-
-  const { data: node, status, run } = useAsync<PipeNodeResponse | null>();
+  const { outputs, inputs } = nodeService;
+  const node = useStore(outputs.$node);
+  const loading = useStore(outputs.$loading);
   const { calculator } = node || {};
 
-  const getData = () => run(getNode(nodeId));
-
-  useEffect(() => {
-    run(getNode(nodeId));
-  }, [nodeId]);
-
-  useEffect(() => {
-    getNodeTasks(nodeId).then((res) => {
-      setTasks(res);
-    });
-    setUnitRecord(true);
-  }, []);
-
-  if (!node) {
-    return <Loader size={'32'} show />;
-  }
-
-  if (status === 'error')
-    return (
-      <Alert
-        message="Ошибка"
-        description="На сервере произошла непредвиденная ошибка. Попробуйте перезагрузить страницу"
-        type="error"
-        showIcon
-        closable
-        style={{ marginBottom: 24, marginTop: 24 }}
-      />
-    );
-
-  if (status === 'pending' || status === 'idle')
-    return <Loader size={'32'} show />;
-
-  const {
-    resource,
-    communicationPipes,
-    nodeStatus,
-    lastCommercialAccountingDate,
-  } = node;
   const isShowReadings =
     node?.calculator === null || node?.calculator?.isConnected === false;
 
@@ -132,14 +97,19 @@ export const NodeProfile = () => {
     },
   ];
 
-  return (
+  const content = useMemo(() => {
+    if (loading) {
+      return <Loader size={'32'} show />;
+    }
+    if (!node) {
+      return null;
+    }
+    const { resource, communicationPipes, nodeStatus } = node;
+    return (
     <>
       <RegisterNodeOnCommercialAccountingModalContainer
-        getData={getData}
-        unitRecord={unitRecord}
-        setUnitRecord={setUnitRecord}
         nodeStatus={nodeStatus?.value}
-        lastCommercialAccountingDate={lastCommercialAccountingDate}
+        resource={resource}
       />
       <Header
         node={node}
@@ -191,6 +161,39 @@ export const NodeProfile = () => {
         </Route>
         <SidePanel title="Архив" link={`/nodeArchive/${nodeId}`} />
       </Grid>
+    </>
+    );
+  }, [node, loading]);
+
+  useEffect(() => {
+    getNodeTasks(nodeId).then((res) => {
+      setTasks(res);
+    });
+    setUnitRecord(true);
+  }, []);
+
+  // if (status === 'error')
+  //   return (
+  //     <Alert
+  //       message="Ошибка"
+  //       description="На сервере произошла непредвиденная ошибка. Попробуйте перезагрузить страницу"
+  //       type="error"
+  //       showIcon
+  //       closable
+  //       style={{ marginBottom: 24, marginTop: 24 }}
+  //     />
+  //   );
+
+  // if (status === 'pending' || status === 'idle')
+  //   return <Loader size={'32'} show />;
+
+  
+  const { NodeGate } = nodeService.gates;
+
+  return (
+    <>
+      <NodeGate id={nodeId} />
+      {content}
     </>
   );
 };

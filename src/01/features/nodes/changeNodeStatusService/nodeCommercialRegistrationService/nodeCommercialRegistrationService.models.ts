@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { combine, createDomain, forward } from 'effector';
+import { nodeService } from '../../displayNode/models';
 import {
   registerPipeNode,
   unsetPipeNode,
@@ -16,8 +17,6 @@ const nodeCommercialRegistrationServiceDomain = createDomain(
 
 const $isModalOpen = nodeCommercialRegistrationServiceDomain.createStore(false);
 const $doneData = nodeCommercialRegistrationServiceDomain.createStore(false)
-
-const setDone = nodeCommercialRegistrationServiceDomain.createEvent();
 
 const openModal = nodeCommercialRegistrationServiceDomain.createEvent();
 const closeModal = nodeCommercialRegistrationServiceDomain.createEvent();
@@ -63,12 +62,12 @@ unsetNodeOnCommercialAccountingFx.done.watch(() => {
 });
 
 $isModalOpen.on(openModal, () => true).on(closeModal, () => false);
-$doneData.on(setDone, ()=>true).on(openModal, ()=>false)
 
 forward({
   from: [registrationNodeDone, unsetNodeDone],
-  to: [closeModal, setDone]
+  to: [nodeService.inputs.refetchNode, closeModal]
 });
+
 
 forward({
   from: registerNodeOnCommercialAccounting,

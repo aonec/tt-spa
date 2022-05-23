@@ -5,10 +5,11 @@ import { EDocumentType } from 'myApi';
 import { DatePicker, Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { NodeSetRegisteredRequest, NodeSetNotRegisteredRequest } from 'myApi';
+import { NodeSetRegisteredRequest} from 'myApi';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCommercialAccountingForm.types';
+import { nodeService } from '01/features/nodes/displayNode/models'; 
 
 export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercialAccountingFormProps> = ({
   handleSubmit,
@@ -42,7 +43,11 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
           }),
   });
 
+  const { NodeGate } = nodeService.gates
+console.log(status)
   return (
+    <>
+    <NodeGate id={Number(nodeId)} />
     <Form
       id="register-node-on-commertion-accounting-form"
       onSubmitCapture={submitForm}
@@ -106,5 +111,6 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
         }
       />
     </Form>
+    </>
   );
 };

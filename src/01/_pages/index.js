@@ -16,7 +16,7 @@ export * from './Settings';
 export * from './UserProfile';
 export * from './Contractor';
 export * from './Registration';
-export * from './NodeProfile';
+export * from './NodeProfile/NodeProfile.container';
 export * from './IndividualDevice';
 export * from './MapTemplate';
 export * from './EditNode';
