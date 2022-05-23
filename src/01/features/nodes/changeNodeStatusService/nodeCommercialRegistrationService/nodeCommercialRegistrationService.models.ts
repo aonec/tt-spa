@@ -68,7 +68,6 @@ forward({
   to: [nodeService.inputs.refetchNode, closeModal]
 });
 
-
 forward({
   from: registerNodeOnCommercialAccounting,
   to: registerNodeOnCommercialAccountingFx,

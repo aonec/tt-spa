@@ -6,10 +6,7 @@ import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
 import Documents from './components/Documents';
 import Graph from '../Graph/Graph';
-import { useAsync } from '../../hooks/useAsync';
 import {
-  CalculatorResponse,
-  PipeNodeResponse,
   TaskListResponse,
 } from '../../../myApi';
 import { Loader } from '../../components';
@@ -19,8 +16,7 @@ import Information from './components/Information';
 import { NodeConnection } from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
-import { Events } from '../../tt-components';
-import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
+import { getNodeTasks } from '../../_api/apiRequests';
 import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { SidePanel } from '01/shared/ui/SidePanel';

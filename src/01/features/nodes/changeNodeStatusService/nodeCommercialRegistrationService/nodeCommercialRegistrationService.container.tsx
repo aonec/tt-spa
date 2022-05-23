@@ -1,9 +1,8 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { nodeCommercialRegistrationService } from '.';
-import { nodeService } from '../../displayNode/models';
 import { RegisterNodeOnCommercialAccountingForm } from './view/RegisterNodeOnCommercialAccountingForm';
 
 export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
@@ -18,7 +17,6 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
 
   const loading = useStore(nodeCommercialRegistrationService.outputs.$loading);
 
-
   const handleClose = useEvent(
     nodeCommercialRegistrationService.inputs.closeModal
   );
@@ -29,8 +27,7 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
   const handleSumbit = useEvent(
     nodeCommercialRegistrationService.inputs.registerNodeOnCommercialAccounting
   );
-  const { NodeGate } = nodeService.gates
-console.log(status, nodeStatus)
+
   return (
     <ModalTT
       title={
