@@ -6,9 +6,8 @@ import { nodeCommercialRegistrationService } from '.';
 import { RegisterNodeOnCommercialAccountingForm } from './view/RegisterNodeOnCommercialAccountingForm';
 
 export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
-  nodeStatus: ENodeCommercialAccountStatus;
+  nodeStatus: ENodeCommercialAccountStatus | undefined;
   resource: EResourceType;
-  unitRecord: boolean;
 }> = ({ nodeStatus, resource}) => {
   const status = nodeStatus === 'Registered';
   const isOpen = useStore(

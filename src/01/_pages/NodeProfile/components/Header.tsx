@@ -15,7 +15,6 @@ import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeS
 
 interface HeaderInterface {
   node: PipeNodeResponse;
-  calculator: CalculatorIntoNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
   unitRecord: boolean;
@@ -24,7 +23,6 @@ interface HeaderInterface {
 
 export const Header = ({
   node,
-  calculator,
   nodeId,
   unitRecord,
   setUnitRecord,
