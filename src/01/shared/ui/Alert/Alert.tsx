@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { InfoIcon, StopIcon, WarningIcon } from 'ui-kit/icons';
 import { Flex } from '../Layout/Flex';
 import { Space } from '../Layout/Space/Space';
-import { ReactComponent as InfoIcon } from './icons/info.svg';
-import { ReactComponent as StopIcon } from './icons/stop.svg';
-import { ReactComponent as WarningIcon } from './icons/warning.svg'
 
 interface Props {
   type?: 'info' | 'stop' | 'warning';
