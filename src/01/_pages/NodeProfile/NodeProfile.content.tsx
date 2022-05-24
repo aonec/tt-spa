@@ -23,8 +23,6 @@ export const Content: React.FC<ContentProps> = React.memo(
     loading,
     setAddDevice,
     nodeId,
-    unitRecord,
-    setUnitRecord,
     path,
   }) => {
     if (loading) {
@@ -46,8 +44,6 @@ export const Content: React.FC<ContentProps> = React.memo(
           node={node}
           setAddDevice={setAddDevice}
           nodeId={Number(nodeId)}
-          unitRecord={unitRecord}
-          setUnitRecord={setUnitRecord}
         />
         <Tabs tabItems={tabItems} tabsType={'route'} />
         <Grid>

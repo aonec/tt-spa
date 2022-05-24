@@ -13,7 +13,6 @@ export const NodeProfile = () => {
   const path = `/nodes/${nodeId}`;
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
-  const [unitRecord, setUnitRecord] = useState(true);
   const { outputs, inputs } = nodeService;
   const node = useStore(outputs.$node);
   const loading = useStore(outputs.$loading);
@@ -78,15 +77,8 @@ export const NodeProfile = () => {
     [path]
   );
 
-  useEffect(() => {
-    getNodeTasks(Number(nodeId)).then((res) => {
-      setTasks(res);
-    });
-    setUnitRecord(true);
-  }, []);
-
   const { NodeGate } = nodeService.gates;
-  console.log('container')
+
   return (
     <>
       <NodeGate id={Number(nodeId)} />
@@ -97,8 +89,6 @@ export const NodeProfile = () => {
         loading={loading}
         setAddDevice={setAddDevice}
         nodeId={nodeId}
-        unitRecord={unitRecord}
-        setUnitRecord={setUnitRecord}
         path={path}
       />
     </>

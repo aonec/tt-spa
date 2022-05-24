@@ -43,6 +43,15 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
           }),
   });
 
+  const formValues = {
+    start: values.startCommercialAccountingDate
+      ? moment(values.startCommercialAccountingDate)
+      : undefined,
+    end: values.endCommercialAccountingDate
+      ? moment(values.endCommercialAccountingDate)
+      : undefined,
+  };
+
   return (
     <>
       <Form
@@ -52,11 +61,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
         {status ? (
           <Form.Item label="Дата снятия с коммерческого учёта">
             <DatePickerTT
-              value={
-                values.startCommercialAccountingDate
-                  ? moment(values.startCommercialAccountingDate)
-                  : undefined
-              }
+              value={formValues.start}
               onChange={(value) =>
                 setFieldValue(
                   'endCommercialAccountingDate',
@@ -69,11 +74,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
           <Grid temp="1fr 1fr" gap="15px">
             <Form.Item label="Дата начала действия акта-допуска">
               <DatePickerTT
-                value={
-                  values.startCommercialAccountingDate
-                    ? moment(values.startCommercialAccountingDate)
-                    : undefined
-                }
+                value={formValues.start}
                 onChange={(value) =>
                   setFieldValue(
                     'startCommercialAccountingDate',
@@ -84,11 +85,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
             </Form.Item>
             <Form.Item label="Дата окончания действия акта-допуска">
               <DatePickerTT
-                value={
-                  values.endCommercialAccountingDate
-                    ? moment(values.endCommercialAccountingDate)
-                    : undefined
-                }
+                value={formValues.end}
                 onChange={(value) =>
                   setFieldValue(
                     'endCommercialAccountingDate',

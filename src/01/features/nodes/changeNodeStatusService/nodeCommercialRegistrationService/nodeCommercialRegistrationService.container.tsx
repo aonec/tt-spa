@@ -2,7 +2,7 @@ import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
 import React from 'react';
-import { nodeCommercialRegistrationService } from '.';
+import { nodeCommercialRegistrationService } from './nodeCommercialRegistrationService.models';
 import { RegisterNodeOnCommercialAccountingForm } from './view/RegisterNodeOnCommercialAccountingForm';
 
 export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{

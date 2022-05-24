@@ -17,15 +17,11 @@ interface HeaderInterface {
   node: PipeNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
-  unitRecord: boolean;
-  setUnitRecord: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Header = ({
   node,
   nodeId,
-  unitRecord,
-  setUnitRecord,
 }: HeaderInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
@@ -59,13 +55,6 @@ export const Header = ({
           : 'Поставить узел на комерческий учет',
       show: true,
       cb: () => openRegisterNodeOnCommercialAccountingModal(),
-    },
-    {
-      title: 'Поставить/Снять узел на коммерческий учёт',
-      show: show('CalculatorUpdate'),
-      cb: () => {
-        setUnitRecord(true);
-      },
     },
   ];
 
