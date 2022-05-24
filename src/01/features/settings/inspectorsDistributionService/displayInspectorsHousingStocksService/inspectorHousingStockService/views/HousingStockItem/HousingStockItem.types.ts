@@ -3,7 +3,7 @@ import {
   InspectorResponse,
   UpdateInspectorOnHousingStockRequest,
 } from 'myApi';
-import { CurrentHousingStockUpdate } from '../../types';
+import { CurrentHousingStockUpdate } from '../../inspectorHousingStockService.types';
 
 export type HousingStockItemProps = {
   housingStock: InspectorOnHousingStockResponse;
@@ -11,6 +11,6 @@ export type HousingStockItemProps = {
   days: number[];
   updateHousingStock: (
     updatedData: UpdateInspectorOnHousingStockRequest
-    ) => void;
-    update?: CurrentHousingStockUpdate;
+  ) => void;
+  updateInfo?: CurrentHousingStockUpdate;
 };
