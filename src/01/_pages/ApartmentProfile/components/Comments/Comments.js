@@ -48,13 +48,16 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 export class Comments extends React.Component {
-  state = {
-    comments: [],
-    submitting: false,
-    value: '',
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      comments: [],
+      submitting: false,
+      value: '',
+    };
+  }
 
-  handleSubmit = () => {
+  handleSubmit() {
     if (!this.state.value) {
       return;
     }
@@ -84,13 +87,13 @@ export class Comments extends React.Component {
         ],
       });
     }, 1000);
-  };
+  }
 
-  handleChange = (e) => {
+  handleChange(e) {
     this.setState({
       value: e.target.value,
     });
-  };
+  }
 
   render() {
     const { comments, submitting, value } = this.state;
