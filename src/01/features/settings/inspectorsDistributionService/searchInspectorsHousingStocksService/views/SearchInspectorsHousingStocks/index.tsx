@@ -144,7 +144,6 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               placeholder="Улица"
             />
             <StyledInput
-              type="number"
               ref={homeNumberRef}
               placeholder="Дом"
               value={form.fields.HousingStockNumber.value}
