@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { useEvent } from 'effector-react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
@@ -10,7 +11,6 @@ import {
 } from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
-import { useEvent } from 'effector-react';
 import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 
 interface HeaderInterface {

@@ -11,8 +11,9 @@ const pathLookUp = {
 export const registerPipeNode = (
   payload: NodeCommercialRegistrationRequestPayload
 ): Promise<void> => {
+  const { type } = payload;
   return axios.post(
-    `/${pathLookUp[payload.type]}/${payload.nodeId}/SetRegisteredStatus`,
+    `/${pathLookUp[type]}/${payload.nodeId}/SetRegisteredStatus`,
     payload.data
   );
 };
@@ -20,8 +21,9 @@ export const registerPipeNode = (
 export const unsetPipeNode = (
   payload: unsetNodeCommercialRegistrationRequestPayload
 ): Promise<void> => {
+  const { type } = payload;
   return axios.post(
-    `/${pathLookUp[payload.type]}/${payload.nodeId}/SetNotRegisteredStatus`,
+    `/${pathLookUp[type]}/${payload.nodeId}/SetNotRegisteredStatus`,
     payload.data
-  ); 
+  );
 };
