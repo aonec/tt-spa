@@ -1,4 +1,4 @@
-import { ReadingType } from '../../../../types/types';
+import { ReadingType } from '../../../../types';
 
 export const individualDeviceTypeTemplate = {
   address: {
