@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 import { Label, Select } from 'antd';
 import axios from 'services/ajax';

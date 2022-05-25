@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useReducer, useMemo } from 'react';
 
 export const useUploadReducer = () => {

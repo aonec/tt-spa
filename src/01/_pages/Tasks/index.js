@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useReducer } from 'react';
 import styled from 'reshadow/macro';
 import { NavLink } from 'react-router-dom';

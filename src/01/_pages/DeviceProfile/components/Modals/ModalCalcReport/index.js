@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Modal } from 'antd';

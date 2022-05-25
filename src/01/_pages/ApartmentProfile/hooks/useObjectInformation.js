@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const objectInfo = [
   ['Статус прибора', 'city'],
   ['Дата ввода в эксплуатацию', 'district'],

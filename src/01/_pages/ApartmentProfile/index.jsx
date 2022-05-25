@@ -11,7 +11,7 @@ import {
 } from './apiApartmentProfile';
 import { Tabs } from './components/Tabs';
 import Owners from './components/Owners';
-import { Comments, Header, Tags, Information } from './components';
+import { Header, Tags, Information } from './components';
 
 import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 
@@ -84,7 +84,6 @@ const ApartmentProfile = () => {
       <Route path="/*/(\\d+)" exact>
         <Wrapper>
           <div>
-            <Comments />
             <Information
               style={{ paddingTop: '32px' }}
               square={square}
