@@ -6,7 +6,6 @@ export * from './ListItem';
 export * from './Text';
 export * from './Title';
 export * from '../ApartmentDevicesComponent';
-export * from './Comments';
 export * from './Header';
 export * from './Tags';
 export * from './Information';
