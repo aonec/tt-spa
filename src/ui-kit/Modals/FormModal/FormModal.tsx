@@ -28,7 +28,6 @@ export const FormModal: React.FC<FormModalProps> = ({
   formId,
   form,
 }) => {
-  
   return (
     <StyledModal
       visible={visible}
@@ -60,7 +59,7 @@ export const FormModal: React.FC<FormModalProps> = ({
       }
     >
       <ModalText>{children}</ModalText>
-      {React.isValidElement(form) && React.cloneElement(form, {id: {formId}})}
+      {form}
     </StyledModal>
   );
 };
