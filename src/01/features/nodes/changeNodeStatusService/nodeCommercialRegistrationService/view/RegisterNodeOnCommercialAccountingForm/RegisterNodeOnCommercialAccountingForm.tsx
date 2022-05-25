@@ -16,6 +16,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
   handleSubmitUnset,
   status,
   resource,
+  formId
 }) => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const resourceType = resource === 'Electricity' ? 'electric' : 'pipe';
@@ -55,7 +56,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
   return (
     <>
       <Form
-        id="register-node-on-commertion-accounting-form"
+        id={formId}
         onSubmitCapture={submitForm}
       >
         {status ? (

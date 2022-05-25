@@ -14,7 +14,7 @@ import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceR
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { SidePanel } from '01/shared/ui/SidePanel';
 import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
-import { ContentProps } from './NodeProfile';
+import { ContentProps } from './NodeProfile.types';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({
@@ -33,7 +33,9 @@ export const Content: React.FC<ContentProps> = React.memo(
     }
 
     const { resource, communicationPipes, nodeStatus, calculator } = node;
-    console.log('content')
+
+    const isVisible = resource && communicationPipes && communicationPipes.length > 0
+
     return (
       <>
         <RegisterNodeOnCommercialAccountingModalContainer
@@ -51,11 +53,11 @@ export const Content: React.FC<ContentProps> = React.memo(
             <Information calculator={calculator} node={node} />
           </Route>
           <Route path={`${path}/stats`} exact>
-            {resource && communicationPipes && communicationPipes.length > 0 ? (
+            {isVisible ? (
               <Graph
                 nodeId={Number(nodeId)}
                 resource={resource}
-                pipeCount={communicationPipes.length}
+                pipeCount={communicationPipes?.length || 0}
               />
             ) : (
               <>

@@ -15,8 +15,8 @@ const nodeCommercialRegistrationServiceDomain = createDomain(
   'nodeCommercialRegistrationService'
 );
 
-const $isModalOpen = nodeCommercialRegistrationServiceDomain.createStore(false);
-const $doneData = nodeCommercialRegistrationServiceDomain.createStore(false)
+const $isModalOpen = nodeCommercialRegistrationServiceDomain.createStore<boolean>(false);
+const $doneData = nodeCommercialRegistrationServiceDomain.createStore<boolean>(false)
 
 const openModal = nodeCommercialRegistrationServiceDomain.createEvent();
 const closeModal = nodeCommercialRegistrationServiceDomain.createEvent();

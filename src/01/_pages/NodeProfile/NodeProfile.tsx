@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {  useHistory, useParams } from 'react-router-dom';
 import { TaskListResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
-import { getNodeTasks } from '../../_api/apiRequests';
 import { nodeService } from '01/features/nodes/displayNode/models';
 import { useStore } from 'effector-react';
 import { Content } from './NodeProfile.content';
@@ -16,9 +15,7 @@ export const NodeProfile = () => {
   const { outputs, inputs } = nodeService;
   const node = useStore(outputs.$node);
   const loading = useStore(outputs.$loading);
-
-  const isShowReadings =
-    node?.calculator === null || node?.calculator?.isConnected === false;
+  const isReadings = useStore(outputs.$readings)
 
   const readings: TabsItemInterface = {
     title: 'Ввод показаний',
@@ -44,7 +41,7 @@ export const NodeProfile = () => {
           push(`${path}/stats`);
         },
       },
-      ...(isShowReadings ? [readings] : []),
+      ...(isReadings ? [readings] : []),
       {
         title: 'Настройки соединения',
         key: 'connection',
@@ -82,7 +79,6 @@ export const NodeProfile = () => {
   return (
     <>
       <NodeGate id={Number(nodeId)} />
-      {/* {content} */}
       <Content
         tabItems={tabItems}
         node={node}
