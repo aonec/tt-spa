@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { useEvent } from 'effector-react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
@@ -10,17 +11,25 @@ import {
 } from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
-  calculator: CalculatorIntoNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
+export const Header = ({
+  node,
+  nodeId,
+}: HeaderInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
+
+  const openRegisterNodeOnCommercialAccountingModal = useEvent(
+    nodeCommercialRegistrationService.inputs.openModal
+  );
+
   const { show } = access;
 
   if (!node) {
@@ -30,7 +39,7 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
   const { resource, nodeStatus, number, address } = node;
   const { id: objectId, city, street, number: housingStockNumber, corpus } =
     address || {};
-
+  const { value } = nodeStatus || {};
   const menuButtonArr: MenuButtonInterface[] = [
     {
       title: 'Редактировать узел',
@@ -40,11 +49,12 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
       },
     },
     {
-      title: 'Поставить/Снять узел на коммерческий учёт',
-      show: show('CalculatorUpdate'),
-      cb: () => {
-        alert('Поставить/Снять узел на коммерческий учёт');
-      },
+      title:
+        value === 'Registered'
+          ? 'Снять узел с комерческого учета'
+          : 'Поставить узел на комерческий учет',
+      show: true,
+      cb: () => openRegisterNodeOnCommercialAccountingModal(),
     },
   ];
 

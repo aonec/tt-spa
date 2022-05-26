@@ -6,7 +6,7 @@ import { DevicesByAddressInterface } from '../utils/groupDevicesByObjects';
 const DevicesByAddress = ({
   addressDevicesGroup,
 }: DevicesByAddressPropsInterface) => {
-  console.log(addressDevicesGroup)
+  
   const { city = '', street = '', number = null, corpus = null, id = null } =
     (addressDevicesGroup.address as any)?.address?.mainAddress || {};
 
