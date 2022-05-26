@@ -10,6 +10,13 @@ import TasksSearchForm from './components/TasksSearchForm/TasksSearchForm';
 import tasksSearchReducer from './components/TasksSearchForm/tasksSearchReducer';
 import { useDebounce } from '../../hooks/useDebounce';
 import getAccessesList from '../../_api/utils/getAccessesList';
+import { PageHeader } from '01/shared/ui/PageHeader';
+import { TasksListWrapper } from './Tasks.styled';
+import {
+  ExportTasksListContainer,
+  exportTasksListService,
+} from 'services/tasks/exportTasksListService';
+import { useEvent } from 'effector-react';
 
 const tabItems = [
   ['К исполнению', 'executing'],
@@ -49,15 +56,35 @@ export const Tasks = () => {
   const { items, executingTasksCount, observingTasksCount } = useTasks(
     debouncedSearchState
   );
+
+  const handleExportTasksList = useEvent(
+    exportTasksListService.inputs.openModal
+  );
+
   return (
-    <div style={{ maxWidth: 960 }}>
-      <h1 style={{ fontWeight: 300, marginBottom: 16 }}>Задачи</h1>
-      <Tabs total={[executingTasksCount, observingTasksCount]} />
-      <TasksSearchForm
-        searchState={searchState}
-        dispatchSearchState={dispatchSearchState}
-      />
-      <TasksList items={items} />
-    </div>
+    <>
+      <ExportTasksListContainer />
+      <div style={{ maxWidth: 960 }}>
+        <PageHeader
+          title="Задачи"
+          contextMenu={{
+            menuButtons: [
+              {
+                title: 'Выгрузить список задач',
+                onClick: handleExportTasksList,
+              },
+            ],
+          }}
+        />
+        <TasksListWrapper>
+          <Tabs total={[executingTasksCount, observingTasksCount]} />
+          <TasksSearchForm
+            searchState={searchState}
+            dispatchSearchState={dispatchSearchState}
+          />
+          <TasksList items={items} />
+        </TasksListWrapper>
+      </div>
+    </>
   );
 };
