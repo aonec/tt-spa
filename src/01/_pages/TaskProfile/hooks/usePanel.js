@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 
 const ADD_READINGS = 'ADD_READINGS';

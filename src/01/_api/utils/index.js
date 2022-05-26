@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import moment from 'moment';
 
 function formatTime(time = null) {

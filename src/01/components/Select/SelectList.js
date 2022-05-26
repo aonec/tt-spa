@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import styled, { use, css } from 'reshadow/macro';
 

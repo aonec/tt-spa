@@ -1,7 +1,5 @@
 import { Loader } from '01/components';
-import {
-  DeviceDataString,
-} from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -20,20 +18,25 @@ import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { NextStagesGate } from '../displayNextStages/models';
-import { $task, fetchTaskFx, TaskGate } from '../displayTask/models';
+import { $task, fetchTaskFx } from '../displayTask/models';
 import { pushStageFx } from '../pushingStage/models';
-import { Header, InfoBlock, ReadingInputStyled, Wrap } from './CorrectionReadings.styled';
+import {
+  Header,
+  InfoBlock,
+  ReadingInputStyled,
+  Wrap,
+} from './CorrectionReadings.styled';
 import {
   correctionReadingsForm,
   CorrectionReadingsGate,
   completeStage,
 } from './models';
-import {ReadingsHistoryButton} from "ui-kit/shared_components/reading_history_button";
+import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { getReadingValuesArray } from '01/features/readings/displayReadingHistory/utils';
+import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
 
 export const CorrectionReadingsPanel = () => {
-
   const task = useStore($task);
 
   const device = task?.individualDevice!;
@@ -82,31 +85,41 @@ export const CorrectionReadingsPanel = () => {
     </Flex>
   );
 
+  const readingDate = moment(problemReading?.readingDate).format('MMMM YYYY');
+  const rateNum = getIndividualDeviceRateNumByName(device?.rateType) || 0;
+
+  const problemReadingValues =
+    problemReading &&
+    getReadingValuesArray(
+      problemReading as IndividualDeviceReadingsItemHistoryResponse,
+      'value',
+      rateNum
+    );
+
   const editTaskInfo = (
     <Grid temp="0.7fr 0.5fr 0.8fr 1.2fr" gap="15px">
-      <InfoBlock
-        title="Некорректные показания"
-        value={problemReading?.value1!}
-        color="red"
-      />
-      <InfoBlock
-        title="Период"
-        value={moment(problemReading?.readingDate).format('MMMM YYYY')}
-      />
-      <InfoBlock title="Оператор" value={problemReading?.user?.name!} />
-      <InfoBlock title="Причина ошибки" value={task?.creationReason!} />
+      <InfoBlock title="Некорректные показания" color="red">
+        {problemReadingValues?.map((value, index) => (
+          <div>
+            <span style={{ color: 'gray', fontWeight: 300 }}>
+              T{index + 1}:
+            </span>{' '}
+            {value}
+          </div>
+        ))}
+      </InfoBlock>
+      <InfoBlock title="Период">{readingDate}</InfoBlock>
+      <InfoBlock title="Оператор">{problemReading?.user?.name!}</InfoBlock>
+      <InfoBlock title="Причина ошибки">{task?.creationReason!}</InfoBlock>
     </Grid>
   );
 
-  const rateNum = getIndividualDeviceRateNumByName(device?.rateType) || 0;
   const readingValues = getArrayByCountRange(
     rateNum,
     (count) => (fields.readingValue.value as any)[`value${count}`]
   );
 
-  const isReadOnly = !task?.isPerpertator;
-
-  const actions = task?.currentStage?.actions;
+  const isReadOnly = !task?.isPerpetrator;
 
   const inputReadings = device && (
     <Form.Item label="Исправленные показания">

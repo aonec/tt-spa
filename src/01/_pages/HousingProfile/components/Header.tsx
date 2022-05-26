@@ -29,8 +29,7 @@ export const Header = ({
   }
 
   const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
-  const { city, street, housingStockNumber, corpus, id } =
-    address || DEFAULT_BUILDING;
+  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
 
   const menuButtonArr = [
     {
@@ -79,9 +78,7 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
 
-        <Subtitle
-          to={`/objects/${id}`}
-        >{`${city}, ${street}, ${housingStockNumber}${
+        <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${number}${
           corpus ? `, к.${corpus}` : ''
         }`}</Subtitle>
       </div>

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as u from '_utils';
 
 const titles = ['Причина задачи', 'Номер задачи', 'Дата создания', 'Адрес'];

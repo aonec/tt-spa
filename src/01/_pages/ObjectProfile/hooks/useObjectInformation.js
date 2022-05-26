@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const objectInfo = [
   ['Город', 'city'],
   // ['Район', 'district'],

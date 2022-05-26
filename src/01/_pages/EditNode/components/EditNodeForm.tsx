@@ -122,15 +122,7 @@ const EditNodeForm = ({
   const onFinish = async () => {
     const nodeForm: UpdatePipeNodeRequest = {
       number: Number(getFieldValue('number')),
-      nodeStatus: getFieldValue('nodeStatus'),
-      resource: getFieldValue('resource'),
       nodeServiceZoneId: chosenInputForSelect?.value,
-      startCommercialAccountingDate: getFieldValue(
-        'lastCommercialAccountingDate'
-      )?.toISOString(true),
-      endCommercialAccountingDate: getFieldValue(
-        'futureCommercialAccountingDate'
-      )?.toISOString(true),
       calculatorId,
     };
 

@@ -9,7 +9,7 @@ import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EApartmentStatus } from 'myApi';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import styled from 'styled-components';
@@ -28,6 +28,12 @@ export const PauseApartmentModal = () => {
   const visible = useStore($isPauseApartmentModalVisible);
   const pendingRequest = useStore(pauseApartmentStatusFx.pending);
   const { fields, submit } = useForm(pauseApartmentForm);
+
+  const { id: apartmentId } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    fields.apartmentId.onChange(Number(apartmentId));
+  }, [apartmentId]);
 
   const form = (
     <Grid>

@@ -6,19 +6,22 @@ import { getHousingStockAddressString } from './utils';
 import { LoadingSkeleton } from './components/LoadingSkeleton';
 
 export const NodeInfo: FC<NodeInfoProps> = ({ node, loading }) => {
+  console.log(node?.address)
   const address = node?.address && getHousingStockAddressString(node.address);
 
   if (loading) {
     return <LoadingSkeleton />;
-  } else if (node) {
-    return (
-      <Wrap>
-        {address}
-        <IconTT style={{ marginLeft: 10 }} icon={node.resource.toLowerCase()} />
-        <NodeName>Узел {node.number}</NodeName>
-      </Wrap>
-    );
-  } else {
-    return null
   }
+
+  if (!node) {
+    return null;
+  }
+
+  return (
+    <Wrap>
+      {address}
+      <IconTT style={{ marginLeft: 10 }} icon={node.resource.toLowerCase()} />
+      <NodeName>Узел {node.entryNumber}</NodeName>
+    </Wrap>
+  );
 };

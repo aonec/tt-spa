@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useReducer, useState } from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';

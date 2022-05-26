@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { css } from 'reshadow/macro';
 
 export const information = css`
