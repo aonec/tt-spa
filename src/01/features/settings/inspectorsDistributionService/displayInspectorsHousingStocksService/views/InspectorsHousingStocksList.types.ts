@@ -2,7 +2,7 @@ import { InspectorOnHousingStockResponse, InspectorResponse } from 'myApi';
 import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
-} from '../inspectorHousingStockService/types';
+} from '../inspectorHousingStockService/inspectorHousingStockService.types';
 
 export type InspectorsHosuingsStocksListProps = {
   housingStocks: InspectorOnHousingStockResponse[] | null;
@@ -12,5 +12,5 @@ export type InspectorsHosuingsStocksListProps = {
   updateHousingStock: (
     updatedData: PatchHousingStockInspectorInfoPayload
   ) => void;
-  updates: CurrentHousingStockUpdate[];
+  updateInfo: CurrentHousingStockUpdate[];
 };

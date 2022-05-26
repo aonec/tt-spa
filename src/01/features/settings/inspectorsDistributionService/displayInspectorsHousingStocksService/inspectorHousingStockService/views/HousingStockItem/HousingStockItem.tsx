@@ -1,18 +1,19 @@
 import { StyledSelector } from '01/shared/ui/Fields';
 import { Select } from 'antd';
+import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
-import { Address, Wrap } from './components';
-import { HousingStockItemProps } from './types';
+import { Address, Wrap } from './HousingStockItem.styled';
+import { HousingStockItemProps } from './HousingStockItem.types';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
   inspectors,
   days,
-  update,
+  updateInfo,
   updateHousingStock,
 }) => {
-  const inspectedDatSelectRef = useRef<any>(null);
-  const inspectorSelectRef = useRef<any>(null);
+  const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
+  const inspectorSelectRef = useRef<RefSelectProps | null>(null);
 
   return (
     <Wrap>
@@ -23,11 +24,11 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       <StyledSelector
         ref={inspectedDatSelectRef}
         placeholder="Число"
-        noShadow
-        disabled={update?.status === 'loading'}
+        isShadow={false}
+        disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectedDay || void 0}
         style={{
-          borderColor: update?.status === 'failed' ? 'red' : void 0,
+          borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
         onChange={(value) => {
           inspectedDatSelectRef?.current?.blur();
@@ -46,11 +47,11 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       <StyledSelector
         ref={inspectorSelectRef}
         placeholder="Контролер"
-        noShadow
-        disabled={update?.status === 'loading'}
+        isShadow={false}
+        disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectorId || void 0}
         style={{
-          borderColor: update?.status === 'failed' ? 'red' : void 0,
+          borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
         onChange={(value) => {
           inspectorSelectRef?.current?.blur();
