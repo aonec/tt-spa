@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const getDeviceIconProps = (device) => {
   if (!device) return {};
   const cold = 'var(--cold-water)';

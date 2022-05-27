@@ -1,11 +1,17 @@
 import { forward } from 'effector';
+import { sortBy } from 'lodash';
 import { displayInspectorsService } from './displayInspectorsService.models';
-import { sortInspectorsByAlphabet } from './utils';
 
 displayInspectorsService.outputs.$inspectorsList
   .on(
     displayInspectorsService.inputs.fetchInspectorsListFx.doneData,
-    (_, inspectors) => inspectors && sortInspectorsByAlphabet(inspectors)
+    (_, inspectors) => {
+      if (!inspectors) return null;
+
+      const filteredInspectors = sortBy(inspectors, 'fullName');
+
+      return filteredInspectors;
+    }
   )
   .reset(displayInspectorsService.inputs.InspectorsGate.close);
 

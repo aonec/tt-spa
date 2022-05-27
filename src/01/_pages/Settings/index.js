@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { createContext, useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import { Header, MenuButtonTT } from '../../tt-components';
@@ -11,7 +13,6 @@ import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
 import { AddContractorsFormModal } from '01/features/contractors/addContractors';
 import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { getCurrentManagingFirm } from './apiSettings';
 
 export const SettingsContext = createContext();
@@ -122,13 +123,6 @@ export const Settings = () => {
   };
 
   const menuButtonArr = [addContractorButton, addStaffButton];
-
-  if (needShowByRoute('editManagingFirmUser'))
-    return (
-      <Route path="/settings/editManagingFirmUser/:id">
-        <EditManagingFirmUserPage />
-      </Route>
-    );
 
   return (
     <SettingsContext.Provider value={context}>

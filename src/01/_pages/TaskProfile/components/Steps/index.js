@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Route, Switch, useRouteMatch, Link } from 'react-router-dom';

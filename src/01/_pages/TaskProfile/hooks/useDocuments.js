@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { deleteDoc } from '01/_api/task_profile_page';

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useContext } from 'react';
 import ModalAddStaffForm from './ModalAddStaffForm';
 import { SettingsContext } from '../../../index';

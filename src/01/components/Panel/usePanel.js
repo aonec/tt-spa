@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { useSelectFetch } from '01/hooks/useSelectFetch';
 import { useUpload } from '01/components/Upload';

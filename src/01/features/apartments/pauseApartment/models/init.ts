@@ -1,6 +1,4 @@
-import {
-  GetProblemDevicesRequestPayload,
-} from './../../../../_api/apartments';
+import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
 import {
   ApartmentGate,
   refetchApartment,
@@ -41,16 +39,17 @@ forward({
 });
 
 const payload = combine(
-  ApartmentGate.state as any,
   pauseApartmentForm.$values as any,
-  (
-    { id: apartmentId }: { id: number },
-    values: { fromDate: string; toDate: string; documents: FileData[] }
-  ): GetProblemDevicesRequestPayload => ({
-    apartmentId,
+  (values: {
+    fromDate: string;
+    toDate: string;
+    documents: FileData[];
+    apartmentId: number;
+  }): GetProblemDevicesRequestPayload => ({
+    apartmentId: values.apartmentId,
     requestPayload: {
-      fromDate: moment(values.fromDate).format("YYYY-MM-DD"),
-      toDate: moment(values.toDate).format("YYYY-MM-DD"),
+      fromDate: moment(values.fromDate).format('YYYY-MM-DD'),
+      toDate: moment(values.toDate).format('YYYY-MM-DD'),
       status: EApartmentStatus.Pause,
       documentIds: values.documents
         .filter((elem) => elem.fileResponse)
@@ -69,9 +68,7 @@ sample({
   source: combine(
     ApartmentGate.state as any,
     pauseApartmentForm.$values as any,
-    (
-      { id: apartmentId }: { id: number },
-    ): GetProblemDevicesRequestPayload => ({
+    ({ id: apartmentId }: { id: number }): GetProblemDevicesRequestPayload => ({
       apartmentId,
       requestPayload: {
         fromDate: null,

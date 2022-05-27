@@ -8,15 +8,15 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
 );
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
-  inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx
-    .failData,
-  (prev, error: any) => {
-    const housingStockId = Number(error.config?.url?.split('/')[1]);
-    return prev.map((elem) =>
-      elem.housingStockId === housingStockId
-        ? { ...elem, status: 'failed' }
-        : elem
-    );
+  inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx.fail,
+  (prev, { params }) => {
+    const housingStockId = params.housingStockId;
+
+    return prev.map((elem) => {
+      if (elem.housingStockId !== housingStockId) return elem;
+
+      return { ...elem, status: 'failed' };
+    });
   }
 );
 
@@ -32,19 +32,24 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.reset(
   displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList
 );
 
-inspectorHousingStockService.outputs.$housingStocks.on(
+displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx
     .doneData,
-  (prev, hosuingStock) =>
-    prev?.map((elem) =>
-      elem.housingStockId === hosuingStock?.id
-        ? {
-            ...elem,
-            inspectedDay: hosuingStock.inspectedDay,
-            inspectorId: hosuingStock.inspectorId,
-          }
-        : elem
-    )
+  (hosuingStocks, updatedHosuingStock) => {
+    const updatedHousingStocks = hosuingStocks?.map((housingStock) => {
+      if (housingStock.housingStockId !== updatedHosuingStock?.id) {
+        return housingStock;
+      }
+
+      return {
+        ...housingStock,
+        inspectedDay: updatedHosuingStock.inspectedDay,
+        inspectorId: updatedHosuingStock.inspectorId,
+      };
+    });
+
+    return updatedHousingStocks;
+  }
 );
 
 sample({
