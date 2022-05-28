@@ -19,11 +19,11 @@ export const FormModal: React.FC<FormModalProps> = ({
   loading,
   onSubmit,
   submitBtnText = 'Подтвердить',
-  customSubmit,
+  DefaultModalSubmitButton,
   centered,
   footer,
   disabled,
-  submitButtonType,
+  submitButtonType = 'blue',
   cancelBtnText = 'Отмена',
   formId,
   form,
@@ -42,9 +42,9 @@ export const FormModal: React.FC<FormModalProps> = ({
             <ButtonTT color={'white'} key="back" onClick={onCancel}>
               {cancelBtnText}
             </ButtonTT>
-            {customSubmit || (
+            {DefaultModalSubmitButton || (
               <ButtonTT
-                color={submitButtonType || 'blue'}
+                color={submitButtonType}
                 key="submit"
                 type="submit"
                 form={formId}

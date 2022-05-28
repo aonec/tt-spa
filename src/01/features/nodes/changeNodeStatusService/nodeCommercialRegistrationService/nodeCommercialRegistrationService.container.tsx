@@ -27,7 +27,7 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
   const handleSumbit = useEvent(
     nodeCommercialRegistrationService.inputs.registerNodeOnCommercialAccounting
   );
-const formId = "register-node-on-commertion-accounting-form"
+  const formId = 'register-node-on-commertion-accounting-form';
   return (
     <FormModal
       title={

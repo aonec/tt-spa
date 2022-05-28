@@ -9,7 +9,7 @@ export interface FormModalProps {
     cancelBtnText?: string;
     loading?: boolean;
     onSubmit?(): void;
-    customSubmit?: ReactNode;
+    DefaultModalSubmitButton?: ReactNode;
     centered?: boolean;
     footer?: ReactNode;
     customCancelButton?(): void;
