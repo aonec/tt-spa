@@ -1,11 +1,19 @@
 import { axios } from './../../../01/axios';
 import { downloadURI } from '01/features/reports/CreateReportModal/utils';
-import { ExportTasksListRequestPayload } from './exportTasksListService.types';
+import {
+  ExportTasksListRequestPayload,
+  TaskType,
+} from './exportTasksListService.types';
+
+const exportTaskTypesLookup = {
+  [TaskType.CheckIndividualDevices]:
+    'Tasks/ExportExecutingIndividualDeviceCheckTasks',
+};
 
 export const downloadTasksList = async ({
   type,
 }: ExportTasksListRequestPayload) => {
-  const res: any = await axios.get('Reports/OperatorsWorkingReport', {
+  const res: any = await axios.get(exportTaskTypesLookup[type], {
     responseType: 'blob',
   });
 
