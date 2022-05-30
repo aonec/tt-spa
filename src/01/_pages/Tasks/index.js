@@ -13,7 +13,7 @@ import getAccessesList from '../../_api/utils/getAccessesList';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksListWrapper } from './Tasks.styled';
 import {
-  ExportTasksListContainer,
+  ExportTasksListModalContainer,
   exportTasksListService,
 } from 'services/tasks/exportTasksListService';
 import { useEvent } from 'effector-react';
@@ -63,7 +63,7 @@ export const Tasks = () => {
 
   return (
     <>
-      <ExportTasksListContainer />
+      <ExportTasksListModalContainer />
       <div style={{ maxWidth: 960 }}>
         <PageHeader
           title="Задачи"

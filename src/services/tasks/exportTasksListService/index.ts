@@ -1,2 +1,2 @@
 export { exportTasksListService } from './exportTasksListService.models';
-export { ExportTasksListContainer } from './exportTasksListService.container';
+export { ExportTasksListModalContainer } from './exportTasksListService.container';
