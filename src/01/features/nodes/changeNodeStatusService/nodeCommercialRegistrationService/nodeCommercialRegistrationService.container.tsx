@@ -1,4 +1,3 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
 import React from 'react';
@@ -10,40 +9,35 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
   nodeStatus: ENodeCommercialAccountStatus | undefined;
   resource: EResourceType;
 }> = ({ nodeStatus, resource }) => {
-  const status = nodeStatus === 'Registered';
-  const isOpen = useStore(
-    nodeCommercialRegistrationService.outputs.$isModalOpen
-  );
+  const isRegistered = nodeStatus === 'Registered';
+  const { inputs, outputs } = nodeCommercialRegistrationService;
+  const isOpen = useStore(outputs.$isModalOpen);
 
-  const loading = useStore(nodeCommercialRegistrationService.outputs.$loading);
+  const loading = useStore(outputs.$isLoading);
 
-  const handleClose = useEvent(
-    nodeCommercialRegistrationService.inputs.closeModal
-  );
+  const handleClose = useEvent(inputs.closeModal);
 
-  const handleSumbitUnset = useEvent(
-    nodeCommercialRegistrationService.inputs.unsetNodeOnCommercialAccounting
-  );
-  const handleSumbit = useEvent(
-    nodeCommercialRegistrationService.inputs.registerNodeOnCommercialAccounting
-  );
+  const handleSubmitUnset = useEvent(inputs.unsetNodeOnCommercialAccounting);
+  const handleSubmit = useEvent(inputs.registerNodeOnCommercialAccounting);
+
   const formId = 'register-node-on-commertion-accounting-form';
+
   return (
     <FormModal
       title={
-        status
+        isRegistered
           ? 'Снятие узла с коммерческого учёта'
           : 'Постановка узла на коммерческий учёт'
       }
       visible={isOpen}
       onCancel={() => handleClose()}
       loading={loading}
-      submitBtnText={status ? 'Снять с учета' : 'Поставить на учета'}
+      submitBtnText={isRegistered ? 'Снять с учета' : 'Поставить на учета'}
       form={
         <RegisterNodeOnCommercialAccountingForm
-          handleSubmit={handleSumbit}
-          handleSubmitUnset={handleSumbitUnset}
-          status={status}
+          handleSubmit={handleSubmit}
+          handleSubmitUnset={handleSubmitUnset}
+          isRegistered={isRegistered}
           resource={resource}
           formId={formId}
         />

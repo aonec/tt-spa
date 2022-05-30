@@ -9,9 +9,9 @@ export interface FormModalProps {
     cancelBtnText?: string;
     loading?: boolean;
     onSubmit?(): void;
-    DefaultModalSubmitButton?: ReactNode;
+    customSubmit?: ReactNode;
     centered?: boolean;
-    footer?: ReactNode;
+    customFooter?: ReactNode;
     customCancelButton?(): void;
     disabled?: boolean;
     submitButtonType?: 'blue' | 'red';

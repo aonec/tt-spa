@@ -16,13 +16,9 @@ import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeS
 interface HeaderInterface {
   node: PipeNodeResponse;
   nodeId: number;
-  setAddDevice: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({
-  node,
-  nodeId,
-}: HeaderInterface) => {
+export const Header = ({ node, nodeId }: HeaderInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
 

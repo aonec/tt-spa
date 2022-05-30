@@ -11,71 +11,69 @@ import {
   unsetNodeCommercialRegistrationRequestPayload,
 } from './nodeCommercialRegistrationService.types';
 
-const nodeCommercialRegistrationServiceDomain = createDomain(
+const domain = createDomain(
   'nodeCommercialRegistrationService'
 );
 
-const $isModalOpen = nodeCommercialRegistrationServiceDomain.createStore<boolean>(false);
-const $doneData = nodeCommercialRegistrationServiceDomain.createStore<boolean>(false)
+const $isModalOpen = domain.createStore<boolean>(false);
+const $doneData = domain.createStore<boolean>(false)
 
-const openModal = nodeCommercialRegistrationServiceDomain.createEvent();
-const closeModal = nodeCommercialRegistrationServiceDomain.createEvent();
+const openModal = domain.createEvent();
+const closeModal = domain.createEvent();
 
-const registerNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomain.createEffect<
+const registrationFx = domain.createEffect<
   NodeCommercialRegistrationRequestPayload,
   void,
   Error
 >(registerPipeNode);
 
-const unsetNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomain.createEffect<
+const unregistrationFx = domain.createEffect<
   unsetNodeCommercialRegistrationRequestPayload,
   void,
   Error
 >(unsetPipeNode);
 
-const registrationNodeDone = registerNodeOnCommercialAccountingFx.doneData;
-const unsetNodeDone = unsetNodeOnCommercialAccountingFx.doneData;
 
-const registerNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<NodeCommercialRegistrationRequestPayload>();
-const unsetNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<unsetNodeCommercialRegistrationRequestPayload>();
+const registerNodeOnCommercialAccounting = domain.createEvent<NodeCommercialRegistrationRequestPayload>();
+const unsetNodeOnCommercialAccounting = domain.createEvent<unsetNodeCommercialRegistrationRequestPayload>();
 
-const $loading = combine(
-  registerNodeOnCommercialAccountingFx.pending,
-  unsetNodeOnCommercialAccountingFx.pending,
+const $isLoading = combine(
+  registrationFx.pending,
+  unregistrationFx.pending,
   (...loading) => loading.some(Boolean)
 );
 
-registerNodeOnCommercialAccountingFx.failData.watch(({ response }) => {
+registrationFx.failData.watch(({ response }) => {
   message.error(response?.data.error.Text);
 });
 
-registerNodeOnCommercialAccountingFx.done.watch(() => {
+registrationFx.done.watch(() => {
   message.success('Статус изменен успешно');
 });
 
-unsetNodeOnCommercialAccountingFx.failData.watch(({ response }) => {
+unregistrationFx.failData.watch(({ response }) => {
   message.error(response?.data.error.Text);
 });
 
-unsetNodeOnCommercialAccountingFx.done.watch(() => {
+unregistrationFx.done.watch(() => {
   message.success('Статус изменен успешно');
 });
 
 $isModalOpen.on(openModal, () => true).on(closeModal, () => false);
 
 forward({
-  from: [registrationNodeDone, unsetNodeDone],
+  from: [registrationFx.doneData, unregistrationFx.doneData],
   to: [nodeService.inputs.refetchNode, closeModal]
 });
 
 forward({
   from: registerNodeOnCommercialAccounting,
-  to: registerNodeOnCommercialAccountingFx,
+  to: registrationFx,
 });
 
 forward({
   from: unsetNodeOnCommercialAccounting,
-  to: unsetNodeOnCommercialAccountingFx,
+  to: unregistrationFx,
 });
 
 export const nodeCommercialRegistrationService = {
@@ -87,7 +85,7 @@ export const nodeCommercialRegistrationService = {
   },
   outputs: {
     $isModalOpen,
-    $loading,
+    $isLoading,
     $doneData
   },
 };
