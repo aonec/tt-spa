@@ -7,9 +7,9 @@ import { ContentWrapper, SearchTypesWrapper } from './ObjectsProfile.styled';
 import { ObjectsProfileProps } from './ObjectsProfile.types';
 
 const objectListComponents: { [key: string]: FC } = {
-  [SearchType.Address]: ObjectsListContainer,
-  [SearchType.Apartment]: () => <></>,
-  [SearchType.PersonaNumber]: () => <></>,
+  [SearchType.Houses]: ObjectsListContainer,
+  [SearchType.Apartments]: () => <></>,
+  [SearchType.PersonaNumbers]: () => <></>,
 };
 
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
@@ -37,9 +37,11 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
           value={searchType}
           onChange={(e) => onChangeSearchType(e.target.value)}
         >
-          <Radio value="address">Поиск по адресу</Radio>
-          <Radio value="apartment">Поиск по квартире</Radio>
-          <Radio value="personalNumber">Поиск по лицевому счету</Radio>
+          <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
+          <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
+          <Radio value={SearchType.PersonaNumbers}>
+            Поиск по лицевому счету
+          </Radio>
         </Radio.Group>
       </SearchTypesWrapper>
       <ContentWrapper>

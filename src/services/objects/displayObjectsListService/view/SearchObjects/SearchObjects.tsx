@@ -11,7 +11,7 @@ export const SearchObjects: FC<SearchObjectsProps> = ({}) => {
       <ExtendedSearch>
         <AddressSearchContainer
           handleSubmit={console.log}
-          lastField={SearchFieldType.Apartment}
+          lastField={SearchFieldType.Corpus}
         />
       </ExtendedSearch>
     </Wrapper>

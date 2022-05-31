@@ -20,7 +20,7 @@ export const ObjectsProfileContainer = () => {
 
   useEffect(() => {
     if (!searchType) {
-      history.push(`/objects/${SearchType.Address}`);
+      history.push(`/objects/${SearchType.Houses}`);
     }
   }, [searchType]);
 

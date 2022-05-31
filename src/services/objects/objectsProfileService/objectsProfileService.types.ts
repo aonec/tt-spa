@@ -1,5 +1,5 @@
 export enum SearchType {
-  Address = 'address',
-  Apartment = 'apartment',
-  PersonaNumber = 'personalNumber',
+  Houses = 'houses',
+  Apartments = 'apartments',
+  PersonaNumbers = 'personalNumbers',
 }
