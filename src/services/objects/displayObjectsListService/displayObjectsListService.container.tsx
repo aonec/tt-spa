@@ -1,3 +1,4 @@
+import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { displayObjectsListService } from './displayObjectsListService.models';
@@ -11,6 +12,8 @@ export const ObjectsListContainer = () => {
 
   const housingStocks = pagedHousingStocks?.items;
 
+  const isNotEmpty = housingStocks?.length || 0 > 0;
+
   const handleSearch = useEvent(
     displayObjectsListService.inputs.fetchHosuingStocks
   );
@@ -21,6 +24,14 @@ export const ObjectsListContainer = () => {
     <>
       <SearchObjects handleSearch={handleSearch} />
       <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
+      {isNotEmpty && (
+        <Pagination
+          defaultCurrent={1}
+          total={pagedHousingStocks?.totalItems}
+          pageSize={pagedHousingStocks?.pageSize}
+          
+        />
+      )}
     </>
   );
 };

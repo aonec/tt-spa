@@ -6,7 +6,7 @@ export const Wrapper = styled(Link)`
   grid-template-columns: 1.2fr 0.5fr 0.5fr 32px;
   align-items: center;
 
-  padding: 8px 8px 8px 15px;
+  padding: 10px 10px 10px 0px;
   transition: 0.2s;
   cursor: pointer;
   border-radius: 4px;
@@ -18,8 +18,9 @@ export const Wrapper = styled(Link)`
   line-height: 16px;
 
   &:hover {
-    border-color: #189ee966;
-    background-color: #189ee913;
+    * {
+      color: #189ee9 !important;
+    }
   }
 `;
 
