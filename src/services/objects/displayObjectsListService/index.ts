@@ -1,2 +1,2 @@
 export { displayObjectsListService } from './displayObjectsListService.models';
-export { DisplayObjectsListContainer } from './displayObjectsListService.container';
+export { ObjectsListContainer } from './displayObjectsListService.container';
