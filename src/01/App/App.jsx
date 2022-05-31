@@ -49,6 +49,7 @@ import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 
 moment.locale('ru');
 
@@ -92,7 +93,11 @@ const Internal = () => {
                 component={Tasks}
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
-              <Route path="/objects/" component={Objects} exact />
+              <Route
+                path="/objects/:searchType?"
+                component={ObjectsProfileContainer}
+                exact
+              />
               <Route path="/devices/" component={DevicesFromSearch} exact />
               <Route path="/companyProfile/:section?" component={Settings} />
               <Route path="/companyProfile/staff/:id" component={Settings} />
