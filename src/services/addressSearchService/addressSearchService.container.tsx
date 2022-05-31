@@ -11,7 +11,7 @@ import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   lastField,
-  handleSubmit: onSubmit
+  handleSubmit: onSubmit,
 }) => {
   const {
     values,
@@ -25,7 +25,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       corpus: '',
       apartment: '',
     },
-    onSubmit: onSubmit,
+    onSubmit,
   });
 
   const cities = useStore(addressSearchService.outputs.cities);
