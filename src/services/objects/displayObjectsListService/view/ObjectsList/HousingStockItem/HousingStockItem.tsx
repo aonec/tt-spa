@@ -1,3 +1,4 @@
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import React, { FC } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
 import {
@@ -34,6 +35,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       </div>
       <div>{housingStock.city}</div>
       <div>Многоквартирный</div>
+      <ContextMenuButton size="small" />
     </Wrapper>
   );
 };

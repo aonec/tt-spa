@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 export const Wrapper = styled(Link)`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1.2fr 0.5fr 0.5fr 32px;
+  align-items: center;
 
-  padding: 20px 15px;
+  padding: 8px 8px 8px 15px;
   transition: 0.2s;
   cursor: pointer;
   border-radius: 4px;
