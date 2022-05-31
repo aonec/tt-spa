@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { InfoIcon, StopIcon, WarningIcon } from 'ui-kit/icons';
 import { Flex } from '../Layout/Flex';
 import { Space } from '../Layout/Space/Space';
-import { ReactComponent as InfoIcon } from './icons/info.svg';
-import { ReactComponent as StopIcon } from './icons/stop.svg';
 
 interface Props {
-  type?: 'info' | 'stop';
+  type?: 'info' | 'stop' | 'warning';
   color?: string;
 }
 
@@ -14,6 +13,7 @@ export const Alert: React.FC<Props> = ({ children, type = 'info', color }) => {
   const icons = {
     info: InfoIcon,
     stop: StopIcon,
+    warning: WarningIcon,
   };
 
   const Icon = icons[type];
