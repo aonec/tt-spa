@@ -1,5 +1,11 @@
 import React, { FC } from 'react';
-import { AdditionalAddress, Address, NumberOfTasks, Wrapper } from './HousingStockItem.styled';
+import { WarningIcon } from 'ui-kit/icons';
+import {
+  AdditionalAddress,
+  Address,
+  NumberOfTasks,
+  Wrapper,
+} from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
@@ -11,20 +17,23 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
     .map((elem) => `${elem.street}, ${elem.number}`)
     .join(' ');
 
-  const numberOfTasks = housingStock.numberOfTasks && (
+  const numberOfTasks = Boolean(housingStock.numberOfTasks) && (
     <NumberOfTasks>
-      
+      <WarningIcon /> Задач: {housingStock.numberOfTasks}
     </NumberOfTasks>
   );
 
   return (
-    <Wrapper>
+    <Wrapper to={`/objects/${housingStock.id}`}>
       <div>
-        <Address>{housingStock.street} </Address>
+        <Address>
+          {housingStock.street}, {housingStock.number}
+        </Address>
         <AdditionalAddress>{additionalAddressesString}</AdditionalAddress>
+        {numberOfTasks}
       </div>
       <div>{housingStock.city}</div>
-      <div>{housingStock.numberOfApartments}</div>
+      <div>Многоквартирный</div>
     </Wrapper>
   );
 };

@@ -15,7 +15,6 @@ import {
   Tasks,
   Login,
   TaskProfile,
-  Objects,
   ObjectProfile,
   MetersPage,
   ApartmentProfile,
@@ -93,11 +92,19 @@ const Internal = () => {
                 component={Tasks}
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+
+              <Route
+                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
+                component={ObjectProfile}
+                exact
+              />
+
               <Route
                 path="/objects/:searchType?"
                 component={ObjectsProfileContainer}
                 exact
               />
+
               <Route path="/devices/" component={DevicesFromSearch} exact />
               <Route path="/companyProfile/:section?" component={Settings} />
               <Route path="/companyProfile/staff/:id" component={Settings} />
@@ -153,12 +160,6 @@ const Internal = () => {
               <Route
                 path="/housingMeteringDevices/:deviceId/edit_odpu/"
                 component={EditODPU}
-                exact
-              />
-
-              <Route
-                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
-                component={ObjectProfile}
                 exact
               />
 
