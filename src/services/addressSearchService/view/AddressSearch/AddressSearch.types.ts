@@ -1,3 +1,11 @@
+export enum SearchFieldType {
+  City = 'city',
+  Street = 'street',
+  House = 'house',
+  Corpus = 'corpus',
+  Apartment = 'apartment',
+}
+
 export type AddressSearchValues = {
   city: string;
   street: string;
@@ -8,11 +16,9 @@ export type AddressSearchValues = {
 
 export type AddressSearchProps = {
   values: AddressSearchValues;
-  handleChange: (
-    field: 'city' | 'street' | 'house' | 'corpus' | 'apartment',
-    value: string
-  ) => void;
+  handleChange: (field: SearchFieldType, value: string) => void;
   handleSubmit: () => void;
   streets: string[];
   cities: string[];
+  lastField: SearchFieldType;
 };

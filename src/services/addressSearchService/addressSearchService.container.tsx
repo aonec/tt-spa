@@ -3,12 +3,16 @@ import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingSto
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { addressSearchService } from './addressSearchService.models';
+import { AddressSearchContainerProps } from './addressSearchService.types';
 import { AddressSearch } from './view/AddressSearch';
 import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 
-export const AddressSearchContainer = () => {
+export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
+  lastField,
+  handleSubmit: onSubmit
+}) => {
   const {
     values,
     handleSubmit,
@@ -21,7 +25,7 @@ export const AddressSearchContainer = () => {
       corpus: '',
       apartment: '',
     },
-    onSubmit: () => {},
+    onSubmit: onSubmit,
   });
 
   const cities = useStore(addressSearchService.outputs.cities);
@@ -43,6 +47,7 @@ export const AddressSearchContainer = () => {
         handleChange={setFieldValue}
         values={values}
         handleSubmit={handleSubmit}
+        lastField={lastField}
       />
     </>
   );
