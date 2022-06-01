@@ -17,4 +17,5 @@ export interface FormModalProps {
     submitButtonType?: 'blue' | 'red';
     formId: string;
     form: ReactNode
+    description?: string
   }

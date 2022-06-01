@@ -3,18 +3,17 @@ import {
   Header,
   ModalText,
   StyledModal,
-} from '01/shared/ui/Modal/Modal';
+} from './FormModalStyles';
 import { ButtonTT } from '01/tt-components';
 import { Loader } from '01/_components/Loader';
 import React from 'react';
 import { FormModalProps } from './formModal.types';
 
 export const FormModal: React.FC<FormModalProps> = ({
-  width,
+  width = 800,
   visible,
   onCancel,
   title,
-  children,
   loading,
   onSubmit,
   submitBtnText = 'Подтвердить',
@@ -26,6 +25,7 @@ export const FormModal: React.FC<FormModalProps> = ({
   cancelBtnText = 'Отмена',
   formId,
   form,
+  description
 }) => {
   
   const DefaultModalSubmitButton = (
@@ -54,13 +54,13 @@ export const FormModal: React.FC<FormModalProps> = ({
     <StyledModal
       visible={visible}
       onCancel={onCancel}
-      width={width || 800}
+      width={width}
       title={<Header>{title}</Header>}
       centered={centered}
       destroyOnClose
       footer={customFooter || DefaultModalFooter}
     >
-      <ModalText>{children}</ModalText>
+      <ModalText>{description}</ModalText>
       {form}
     </StyledModal>
   );
