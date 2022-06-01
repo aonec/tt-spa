@@ -12,10 +12,12 @@ import { FormModalProps } from './formModal.types';
 
 const defaultInnerProps = {
   width: 800,
+  destroyOnClose: true,
+  centered: true
 }
 
 export const FormModal: React.FC<FormModalProps> = ({
-  innerModalProps,
+  innerModalProps = {},
   visible,
   onCancel,
   title,
@@ -23,7 +25,6 @@ export const FormModal: React.FC<FormModalProps> = ({
   onSubmit,
   submitBtnText = 'Подтвердить',
   customSubmit,
-  centered,
   customFooter,
   disabled,
   submitButtonType = 'blue',
@@ -68,8 +69,6 @@ export const FormModal: React.FC<FormModalProps> = ({
       visible={visible}
       onCancel={onCancel}
       title={<Header>{title}</Header>}
-      centered={centered}
-      destroyOnClose
       footer={customFooter || DefaultModalFooter}
     >
       <ModalText>{description}</ModalText>
