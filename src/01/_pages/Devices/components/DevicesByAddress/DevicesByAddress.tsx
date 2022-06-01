@@ -6,9 +6,8 @@ import { DevicesByAddressInterface } from '../utils/groupDevicesByObjects';
 const DevicesByAddress = ({
   addressDevicesGroup,
 }: DevicesByAddressPropsInterface) => {
-  
   const { city = '', street = '', number = null, corpus = null, id = null } =
-    (addressDevicesGroup.address as any)?.address?.mainAddress || {};
+    addressDevicesGroup.address?.mainAddress || {};
 
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
     <DeviceBlock device={device} key={device.id} />
