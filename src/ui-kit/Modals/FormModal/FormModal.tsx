@@ -1,16 +1,21 @@
+import React, { useMemo } from 'react';
+
 import {
   Footer,
   Header,
   ModalText,
   StyledModal,
-} from './FormModalStyles';
+} from './FormModal.styled';
 import { ButtonTT } from '01/tt-components';
 import { Loader } from '01/_components/Loader';
-import React from 'react';
 import { FormModalProps } from './formModal.types';
 
+const defaultInnerProps = {
+  width: 800,
+}
+
 export const FormModal: React.FC<FormModalProps> = ({
-  width = 800,
+  innerModalProps,
   visible,
   onCancel,
   title,
@@ -50,11 +55,18 @@ export const FormModal: React.FC<FormModalProps> = ({
     </Footer>
   );
 
+  const innerProps = useMemo(() => {
+    return {
+      ...defaultInnerProps,
+      ...innerModalProps,
+    }
+  }, [innerModalProps]);
+
   return (
     <StyledModal
+      {...innerProps}
       visible={visible}
       onCancel={onCancel}
-      width={width}
       title={<Header>{title}</Header>}
       centered={centered}
       destroyOnClose

@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
+import {ModalProps} from "antd/es/modal";
 
 export interface FormModalProps {
-    width?: number;
+    innerModalProps: ModalProps,
     visible: boolean;
     onCancel?(): void;
     title: string | ReactNode;
