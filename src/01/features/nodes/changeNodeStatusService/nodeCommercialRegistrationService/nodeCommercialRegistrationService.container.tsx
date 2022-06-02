@@ -42,7 +42,7 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
           formId={formId}
         />
       }
-      // innerModalProps={{destroyOnClose: isOpen}} // changing default modal props
+      // innerModalProps={{destroyOnClose: false}} // changing default modal props
       formId={formId}
       description="После этого данные узла будут использоваться для мониторинга работы
         инженерной системы и расчета платы за потребленный объем ресурса"
