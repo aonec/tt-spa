@@ -9,7 +9,7 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
   const mainAddress = housingStock?.address?.mainAddress;
 
   return (
-    <Wrapper to={`/apartments/${apartment.id}`}>
+    <Wrapper to={`/objects/${housingStock?.id}/apartments/${apartment.id}`}>
       <Address>
         {mainAddress?.street}, {mainAddress?.number}, кв.{' '}
         {apartment?.apartmentNumber}
