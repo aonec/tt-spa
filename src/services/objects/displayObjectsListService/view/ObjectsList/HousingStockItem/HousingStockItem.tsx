@@ -35,7 +35,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         {numberOfTasks}
       </div>
       <div>{housingStock.city}</div>
-      <div>Многоквартирный</div>
+      <div>{housingStock.houseType}</div>
       <ContextMenuButton size="small" />
     </Wrapper>
   );

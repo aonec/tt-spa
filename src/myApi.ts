@@ -773,7 +773,6 @@ export interface CreateElectricHousingMeteringDeviceRequest {
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
-  resource: EResourceType;
   model: string;
 
   /** @format double */
@@ -898,7 +897,7 @@ export interface CreatePipeConnectionRequest {
   magistral: EMagistralType;
 
   /** @format int32 */
-  nodeId: number;
+  nodeId?: number;
 }
 
 export interface CreatePipeHousingMeteringDeviceRequest {
@@ -924,7 +923,6 @@ export interface CreatePipeHousingMeteringDeviceRequest {
   /** @format date-time */
   openingDate?: string | null;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
-  resource: EResourceType;
   model: string;
 
   /** @format double */
@@ -1363,10 +1361,18 @@ export interface ELivingHouseTypeStringDictionaryItem {
 }
 
 export enum EMagistralType {
-  None = "None",
   FeedFlow = "FeedFlow",
   FeedBackFlow = "FeedBackFlow",
   Recharge = "Recharge",
+}
+
+export interface EMagistralTypeStringDictionaryItem {
+  key?: EMagistralType;
+  value?: string | null;
+}
+
+export interface EMagistralTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: EMagistralTypeStringDictionaryItem[] | null;
 }
 
 export enum EManagementFirmEventType {
@@ -1521,7 +1527,6 @@ export enum EPhaseType {
 export enum EReportFormat {
   Consumption = "Consumption",
   Rso = "Rso",
-  Rso2 = "Rso2",
 }
 
 export enum EReportType {
@@ -2363,6 +2368,8 @@ export interface HousingStockFilterResponseSuccessApiResponse {
 export interface HousingStockListResponse {
   /** @format int32 */
   id: number;
+  houseCategory: string | null;
+  houseType: string | null;
   city: string | null;
   street: string | null;
   number: string | null;
@@ -2419,6 +2426,7 @@ export interface HousingStockResponse {
   corpus: string | null;
   coordinates: Point | null;
   houseCategory: string | null;
+  houseType: string | null;
 
   /** @format int32 */
   numberOfEntrances: number | null;
@@ -3821,6 +3829,31 @@ export interface RefreshResponseSuccessApiResponse {
 export interface RefreshTokenRequest {
   token: string;
   refreshToken: string;
+}
+
+export interface ReportDataModel {
+  columns?: ReportHeader[] | null;
+  rows?: ReportEntry[] | null;
+}
+
+export interface ReportEntry {
+  dateTimeText?: string | null;
+
+  /** @format date-time */
+  dateTime?: string;
+  values?: ReportEntryValue[] | null;
+}
+
+export interface ReportEntryValue {
+  text?: string | null;
+
+  /** @format double */
+  doubleValue?: number | null;
+}
+
+export interface ReportHeader {
+  text?: string | null;
+  group?: string | null;
 }
 
 export interface ResourceDisconnectingCreateRequest {
@@ -7711,6 +7744,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags Imports
+     * @name ImportsImportOrganizationWithoutNodesCreate
+     * @summary DataMigration
+     * @request POST:/api/Imports/ImportOrganizationWithoutNodes
+     * @secure
+     */
+    importsImportOrganizationWithoutNodesCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Imports/ImportOrganizationWithoutNodes`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags IndividualDeviceMountPlaces
@@ -9207,6 +9269,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesPipeMagistralTypesList
+     * @summary NodeRead
+     * @request GET:/api/PipeNodes/PipeMagistralTypes
+     * @secure
+     */
+    pipeNodesPipeMagistralTypesList: (query?: { resource?: EResourceType }, params: RequestParams = {}) =>
+      this.request<EMagistralTypeStringDictionaryItemListSuccessApiResponse, any>({
+        path: `/api/PipeNodes/PipeMagistralTypes`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
@@ -9278,11 +9359,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<ReportDataModel, ErrorApiResponse>({
         path: `/api/Reports/ReportData`,
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -9577,6 +9659,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Reports/RunnerReports`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор УК</li>
+     *
+     * @tags Reports
+     * @name ReportsMahallyaTasksReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/MahallyaTasksReport
+     * @secure
+     */
+    reportsMahallyaTasksReportList: (params: RequestParams = {}) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/MahallyaTasksReport`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор УК</li>
+     *
+     * @tags Reports
+     * @name ReportsDataForMlExportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/DataForMLExport
+     * @secure
+     */
+    reportsDataForMlExportList: (params: RequestParams = {}) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/DataForMLExport`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
