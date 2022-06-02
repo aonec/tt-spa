@@ -33,7 +33,9 @@ const Information = ({ node, task = false }: HeaderInterface) => {
     nodeStatusList.find(
       (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.label ?? 'Статус не определен';
-const isRegistered = nodeStatus?.value === 'Registered'
+
+  const isRegistered = nodeStatus?.value === 'Registered';
+
   return (
     <ListWrap>
       {!task ? (
