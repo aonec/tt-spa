@@ -4,7 +4,11 @@ import React, { FC } from 'react';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
 import { SearchType } from '../../objectsProfileService.types';
-import { ContentWrapper, SearchTypesWrapper } from './ObjectsProfile.styled';
+import {
+  Wrapper,
+  ContentWrapper,
+  SearchTypesWrapper,
+} from './ObjectsProfile.styled';
 import { ObjectsProfileProps } from './ObjectsProfile.types';
 
 const objectListComponents: { [key: string]: FC } = {
@@ -21,7 +25,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   const ObjectListComponent = searchType && objectListComponents[searchType];
 
   return (
-    <div>
+    <>
       <PageHeader
         title="Объекты"
         contextMenu={{
@@ -33,21 +37,23 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
           ],
         }}
       />
-      <SearchTypesWrapper>
-        <Radio.Group
-          value={searchType}
-          onChange={(e) => onChangeSearchType(e.target.value)}
-        >
-          <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
-          <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
-          <Radio value={SearchType.PersonaNumbers}>
-            Поиск по лицевому счету
-          </Radio>
-        </Radio.Group>
-      </SearchTypesWrapper>
-      <ContentWrapper>
-        {ObjectListComponent && <ObjectListComponent />}
-      </ContentWrapper>
-    </div>
+      <Wrapper>
+        <SearchTypesWrapper>
+          <Radio.Group
+            value={searchType}
+            onChange={(e) => onChangeSearchType(e.target.value)}
+          >
+            <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
+            <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
+            <Radio value={SearchType.PersonaNumbers}>
+              Поиск по лицевому счету
+            </Radio>
+          </Radio.Group>
+        </SearchTypesWrapper>
+        <ContentWrapper>
+          {ObjectListComponent && <ObjectListComponent />}
+        </ContentWrapper>
+      </Wrapper>
+    </>
   );
 };
