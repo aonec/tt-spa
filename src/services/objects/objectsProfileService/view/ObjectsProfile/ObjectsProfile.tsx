@@ -1,6 +1,7 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
 import React, { FC } from 'react';
+import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
 import { SearchType } from '../../objectsProfileService.types';
 import { ContentWrapper, SearchTypesWrapper } from './ObjectsProfile.styled';
@@ -8,7 +9,7 @@ import { ObjectsProfileProps } from './ObjectsProfile.types';
 
 const objectListComponents: { [key: string]: FC } = {
   [SearchType.Houses]: ObjectsListContainer,
-  [SearchType.Apartments]: () => <></>,
+  [SearchType.Apartments]: ApartmentsListContainer,
   [SearchType.PersonaNumbers]: () => <></>,
 };
 
