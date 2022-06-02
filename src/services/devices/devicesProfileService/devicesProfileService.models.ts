@@ -6,7 +6,7 @@ const devicesProfileServiceDomain = createDomain(
 
 export const devicesProfileService = {
   inputs: {
-  
+    
   },
   outputs: {
 
