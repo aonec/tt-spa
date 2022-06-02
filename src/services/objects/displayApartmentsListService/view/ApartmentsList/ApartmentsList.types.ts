@@ -1,6 +1,6 @@
 import { ApartmentListResponse } from 'myApi';
 
 export type ApartmentsListProps = {
-  apartmentsList?: ApartmentListResponse[] | null;
+  apartmentsList: ApartmentListResponse[];
   isLoading: boolean;
 };

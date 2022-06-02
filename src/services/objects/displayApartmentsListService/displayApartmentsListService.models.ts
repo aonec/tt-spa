@@ -15,8 +15,12 @@ const $apartmentsPagedList = displayApartmentsListServiceDomain.store<ApartmentL
   null
 );
 
-const $apartmentsList = $apartmentsPagedList.map((data) => data?.items);
-const $pageNumber = $apartmentsPagedList.map((data) => data?.pageNumber);
+const $apartmentsList = $apartmentsPagedList.map((data) => data?.items || []);
+const $pagedInfo = $apartmentsPagedList.map((data) => ({
+  pageNumber: data?.pageNumber,
+  totalItems: data?.totalItems,
+  pageSize: data?.pageSize,
+}));
 
 const fetchApartmentsFx = displayApartmentsListServiceDomain.createEffect<
   GetApartmentsListRequestPayload,
@@ -81,7 +85,7 @@ export const displayApartmentsListService = {
   },
   outputs: {
     $apartmentsList,
-    $pageNumber,
+    $pagedInfo,
     $isLoading,
   },
   gates: {
