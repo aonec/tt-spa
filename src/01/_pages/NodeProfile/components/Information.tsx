@@ -57,19 +57,23 @@ const Information = ({ node, task = false }: HeaderInterface) => {
         <div>{getNodeStatus}</div>
       </ListItem>
       {isRegistered && (
-        <ListItem>
-          <span>Дата начала действия акта-допуска</span>
-          <div>{moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}</div>
-        </ListItem>
+        <>
+          <ListItem>
+            <span>Дата начала действия акта-допуска</span>
+            <div>
+              {moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}
+            </div>
+          </ListItem>
+          <ListItem>
+            <span>Дата окончания действия акта-допуска</span>
+            <div>
+              {futureCommercialAccountingDate
+                ? moment(futureCommercialAccountingDate).format('DD.MM.YYYY')
+                : ''}
+            </div>
+          </ListItem>
+        </>
       )}
-      <ListItem>
-        <span>Дата окончания действия акта-допуска</span>
-        <div>
-          {futureCommercialAccountingDate
-            ? moment(futureCommercialAccountingDate).format('DD.MM.YYYY')
-            : ''}
-        </div>
-      </ListItem>
     </ListWrap>
   );
 };
