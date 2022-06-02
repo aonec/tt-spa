@@ -12,7 +12,13 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
     <Wrapper>
       <ExtendedSearch>
         <AddressSearchContainer
-          lastField={SearchFieldType.Apartment}
+          fields={[
+            SearchFieldType.City,
+            SearchFieldType.Street,
+            SearchFieldType.House,
+            SearchFieldType.Corpus,
+            SearchFieldType.Apartment,
+          ]}
           handleSubmit={handleSearch}
         />
       </ExtendedSearch>

@@ -6,7 +6,7 @@ import {
   StyledSelector,
 } from '01/shared/ui/Fields';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Wrapper } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 
@@ -16,11 +16,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   values,
   handleSubmit,
   handleChange,
-  lastField,
+  fields,
 }) => {
   const {
     keyDownEnterGuardedHandler,
-    refs: [cityRef, streetRef, homeNumberRef, corpusRef, apartmentRef],
+    refs,
   } = useOnEnterSwitch(5);
 
   const { match: streetMatch, options } = useAutocomplete(
@@ -28,11 +28,17 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     streets
   );
 
-  const citySearch = (
+  function clearFields(index: number) {
+    const clearingFieldsTypes = fields.slice(index, fields.length);
+
+    clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ''));
+  }
+
+  const citySearch = (index: number) => (
     <StyledSelector
       placeholder="Город"
-      ref={cityRef}
-      onKeyDown={keyDownEnterGuardedHandler(0)}
+      ref={refs[index]}
+      onKeyDown={keyDownEnterGuardedHandler(index)}
       onChange={(value) => handleChange(SearchFieldType.City, value.toString())}
       value={values.city}
     >
@@ -44,10 +50,10 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     </StyledSelector>
   );
 
-  const streetSearch = (
+  const streetSearch = (index: number) => (
     <StyledAutocomplete
       placeholder="Улица"
-      ref={streetRef}
+      ref={refs[index]}
       value={values.street}
       onChange={(value) =>
         handleChange(SearchFieldType.Street, value.toString())
@@ -57,70 +63,64 @@ export const AddressSearch: FC<AddressSearchProps> = ({
           if (values.street) handleChange(SearchFieldType.Street, streetMatch);
           handleSubmit();
         })(e);
-        keyDownEnterGuardedHandler(1)(e);
+        keyDownEnterGuardedHandler(index)(e);
       }}
       options={options}
       onClick={() => {
-        handleChange(SearchFieldType.Street, '');
-        handleChange(SearchFieldType.House, '');
-        handleChange(SearchFieldType.Corpus, '');
-        handleChange(SearchFieldType.Apartment, '');
+        clearFields(index);
       }}
     />
   );
 
-  const homeNumberSearch = (
+  const homeNumberSearch = (index: number) => (
     <StyledInput
       placeholder="Дом"
       value={values.house}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
-      ref={homeNumberRef}
+      ref={refs[index]}
       onClick={() => {
-        handleChange(SearchFieldType.House, '');
-        handleChange(SearchFieldType.Corpus, '');
-        handleChange(SearchFieldType.Apartment, '');
+        clearFields(index);
       }}
       onKeyDown={(e) => {
         fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(2)(e);
+        keyDownEnterGuardedHandler(index)(e);
       }}
     />
   );
 
-  const corpusSearch = (
+  const corpusSearch = (index: number) => (
     <StyledInput
       placeholder="Корпус"
       value={values.corpus}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
-      ref={corpusRef}
+      ref={refs[index]}
       onClick={() => {
-        handleChange(SearchFieldType.Corpus, '');
-        handleChange(SearchFieldType.Apartment, '');
+        clearFields(index);
       }}
       onKeyDown={(e) => {
         fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(3)(e);
+        keyDownEnterGuardedHandler(index)(e);
       }}
     />
   );
 
-  const apartmentSearch = (
+  const apartmentSearch = (index: number) => (
     <StyledInput
       placeholder="Квартира"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
-      ref={apartmentRef}
+      ref={refs[index]}
       onClick={() => {
-        handleChange(SearchFieldType.Apartment, '');
+        clearFields(index);
       }}
       onKeyDown={(e) => {
         fromEnter(handleSubmit)(e);
-        keyDownEnterGuardedHandler(4)(e);
+        keyDownEnterGuardedHandler(index)(e);
       }}
     />
   );
 
-  const fields = {
+  const fieldsLookup: { [key: string]: (index: number) => ReactElement } = {
     [SearchFieldType.City]: citySearch,
     [SearchFieldType.Street]: streetSearch,
     [SearchFieldType.House]: homeNumberSearch,
@@ -128,9 +128,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     [SearchFieldType.Apartment]: apartmentSearch,
   };
 
-  const lastFieldIndex = Object.keys(fields).lastIndexOf(lastField);
+  const searchFields = fields.map((fieldType, index) =>
+    fieldsLookup[fieldType](index)
+  );
 
-  const searchFields = Object.values(fields).slice(0, lastFieldIndex + 1);
-
-  return <Wrapper lastField={lastField}>{searchFields}</Wrapper>;
+  return <Wrapper fields={fields}>{searchFields}</Wrapper>;
 };

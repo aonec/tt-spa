@@ -10,7 +10,7 @@ import { AddressSearch } from './view/AddressSearch';
 import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
-  lastField,
+  fields,
   handleSubmit: onSubmit,
 }) => {
   const {
@@ -47,7 +47,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         handleChange={setFieldValue}
         values={values}
         handleSubmit={handleSubmit}
-        lastField={lastField}
+        fields={fields}
       />
     </>
   );

@@ -5,15 +5,18 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { Wrapper } from './SearchObjects.styled';
 import { SearchObjectsProps } from './SearchObjects.types';
 
-export const SearchObjects: FC<SearchObjectsProps> = ({
-  handleSearch,
-}) => {
+export const SearchObjects: FC<SearchObjectsProps> = ({ handleSearch }) => {
   return (
     <Wrapper>
       <ExtendedSearch>
         <AddressSearchContainer
           handleSubmit={handleSearch}
-          lastField={SearchFieldType.Corpus}
+          fields={[
+            SearchFieldType.City,
+            SearchFieldType.Street,
+            SearchFieldType.House,
+            SearchFieldType.Corpus,
+          ]}
         />
       </ExtendedSearch>
     </Wrapper>
