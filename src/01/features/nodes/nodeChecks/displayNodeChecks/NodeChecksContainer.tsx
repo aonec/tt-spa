@@ -7,7 +7,7 @@ import { checkNodeService } from '../checkNode/models';
 import { nodeChecksService } from './models';
 import { NodeChecks } from './NodeChecks/NodeChecks';
 
-export const NodeChecksContainer = () => {
+export const NodeChecksContainer: React.FC = () => {
   const nodeChecks = useStore(nodeChecksService.outputs.$nodeChecks);
   const loading = useStore(nodeChecksService.outputs.$loading);
 
@@ -16,13 +16,11 @@ export const NodeChecksContainer = () => {
 
   const { nodeId } = params;
 
-  const NodeGate = nodeService.gates.NodeGate;
 
   return (
     <>
       <NodeChecksGate NodeId={Number(nodeId)} />
       <CheckNodeModalContainer />
-      <NodeGate id={Number(nodeId)} />
       <NodeChecks
         documents={nodeChecks}
         pending={loading}
