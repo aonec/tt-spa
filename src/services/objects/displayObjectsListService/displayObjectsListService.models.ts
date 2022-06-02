@@ -1,5 +1,5 @@
 import { createGate } from 'effector-react';
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { HousingStockListResponsePagedList } from 'myApi';
 import { getHosuingStocks } from './displayObjectsListService.api';
 import {
@@ -31,6 +31,13 @@ const searchHosuingStocks = displayObjectsListServiceDomain.createEvent<SearchHo
 const setPageNumber = displayObjectsListServiceDomain.createEvent<number>();
 
 const clearSearchState = displayObjectsListServiceDomain.createEvent();
+
+const HousingStocksGate = createGate();
+
+forward({
+  from: HousingStocksGate.close,
+  to: clearSearchState,
+});
 
 $housingStocks
   .on(fetchHousingStocksFx.doneData, (_, result) => result)
@@ -64,10 +71,12 @@ export const displayObjectsListService = {
   inputs: {
     searchHosuingStocks,
     setPageNumber,
-    clearSearchState,
   },
   outputs: {
     $housingStocks,
     $isLoading,
+  },
+  gates: {
+    HousingStocksGate,
   },
 };

@@ -1,6 +1,6 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { displayObjectsListService } from './displayObjectsListService.models';
 import { ObjectsList } from './view/ObjectsList';
 import { SearchObjects } from './view/SearchObjects';
@@ -24,14 +24,11 @@ export const ObjectsListContainer = () => {
     displayObjectsListService.inputs.setPageNumber
   );
 
-  const clearSearchState = useEvent(
-    displayObjectsListService.inputs.clearSearchState
-  );
-
-  useEffect(() => () => clearSearchState(), []);
+  const { HousingStocksGate } = displayObjectsListService.gates;
 
   return (
     <>
+      <HousingStocksGate />
       <SearchObjects handleSearch={handleSearch} />
       <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
       {isNotEmpty && (
