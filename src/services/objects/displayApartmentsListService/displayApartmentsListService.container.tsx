@@ -31,13 +31,13 @@ export const ApartmentsListContainer = () => {
       <ApartmentsListGate />
       <ApartmentsSearch handleSearch={handleSearch} />
       <ApartmentsList apartmentsList={apartmentsList} isLoading={isLoading} />
-      {isNotEmpty && (
+      {isNotEmpty && !isLoading && (
         <Pagination
           showSizeChanger={false}
           current={pageNumber}
           onChange={setPageNumber}
           total={totalItems}
-          pageSize={pageSize || 30}
+          pageSize={pageSize}
         />
       )}
     </>
