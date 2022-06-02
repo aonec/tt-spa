@@ -15,8 +15,8 @@ export const ObjectsList: FC<ObjectsListProps> = ({
       groupBy(housingStocks, 'address.mainAddress.street')
     );
 
-    return grouped.map(([street, housingStocks]) => (
-      <StreetGroupWrapper>
+    return grouped.map(([street, housingStocks], index) => (
+      <StreetGroupWrapper key={index}>
         <StreetGroupHeader>{street}</StreetGroupHeader>
         {housingStocks?.map((housingStock) => (
           <HousingStockItem key={housingStock.id} housingStock={housingStock} />

@@ -12,6 +12,7 @@ import { HousingStockItemProps } from './HousingStockItem.types';
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
 }) => {
+  const mainAddress = housingStock.address?.mainAddress
   const additionalAddresses = housingStock.address?.additionalAddresses || [];
 
   const additionalAddressesString = additionalAddresses
@@ -28,7 +29,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
     <Wrapper to={`/objects/${housingStock.id}`}>
       <div>
         <Address>
-          {housingStock.street}, {housingStock.number}
+          {mainAddress?.street}, {mainAddress?.number}
         </Address>
         <AdditionalAddress>{additionalAddressesString}</AdditionalAddress>
         {numberOfTasks}

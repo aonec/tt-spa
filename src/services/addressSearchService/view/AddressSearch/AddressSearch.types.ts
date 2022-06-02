@@ -7,11 +7,11 @@ export enum SearchFieldType {
 }
 
 export type AddressSearchValues = {
-  city: string;
-  street: string;
-  house: string;
-  corpus: string;
-  apartment: string;
+  city?: string;
+  street?: string;
+  house?: string;
+  corpus?: string;
+  apartment?: string;
 };
 
 export type AddressSearchProps = {

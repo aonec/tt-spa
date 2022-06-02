@@ -26,4 +26,6 @@ export type GetHousingStocksRequestPayload = {
   OrderBy?: EOrderByRule;
 };
 
-export type SearchHousingStocksPayload = {} & AddressSearchValues;
+export type SearchHousingStocksPayload = {
+  pageNumber?: number;
+} & AddressSearchValues;

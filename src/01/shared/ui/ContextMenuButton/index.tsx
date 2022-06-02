@@ -51,6 +51,7 @@ const StyledMenuButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: gray !important;
   width: ${({ size }) => (size === 'small' ? '32px' : '48px')};
   height: ${({ size }) => (size === 'small' ? '32px' : '48px')};
   border-radius: 4px;
@@ -58,7 +59,7 @@ const StyledMenuButton = styled(Button)`
 
 const MenuItem = styled(Menu.Item)`
   min-width: 408px;
-  color: ${(props) => props.color || 'var(--primary)'};
+  color: ${(props) => props.color || 'var(--primary)'} !important;
 `;
 
 enum Color {
