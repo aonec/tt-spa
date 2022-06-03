@@ -29,6 +29,7 @@ import DeviceIcons from '../../_components/DeviceIcons';
 import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
 import { getNodeIdFromTask } from './utlis';
 import { IndividualDevicesList } from './components/IndividualDevicesList';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -90,6 +91,7 @@ export const TaskProfile = () => {
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
+      <ReadingsHistoryModal readonly />
       <Index path="/tasks/" />
       <Header {...state.header} state={state} />
       {isIndividualDeviceReadingCheckType ? (

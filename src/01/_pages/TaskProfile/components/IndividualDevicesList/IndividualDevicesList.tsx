@@ -19,7 +19,6 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
 
   return (
     <Wrapper>
-      <ReadingsHistoryModal readonly />
       <Header>
         <DeviceIcon style={{ transform: 'scale(1.2)' }} />
         <Title>Приборы</Title>
