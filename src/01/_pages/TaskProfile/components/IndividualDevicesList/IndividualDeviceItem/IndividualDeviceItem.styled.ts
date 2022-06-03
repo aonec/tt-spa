@@ -45,7 +45,7 @@ export const DeviceInfoItem = styled.div`
   padding: 12px 6px;
   border-bottom: 1px solid #dcdee4;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.4fr 0.6fr;
   color: #272f5ae5;
   font-weight: 400;
   font-size: 14px;

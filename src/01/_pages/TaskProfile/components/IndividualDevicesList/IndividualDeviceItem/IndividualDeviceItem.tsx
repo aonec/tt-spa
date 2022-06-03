@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { EActResourceType } from 'myApi';
 import React, { FC, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
@@ -15,6 +16,14 @@ import {
 } from './IndividualDeviceItem.styled';
 import { IndividualDeviceItemProps } from './IndividualDeviceItem.types';
 
+export const actResourceTypeNames = {
+  [EActResourceType.ColdWaterSupply]: 'Холодная вода',
+  [EActResourceType.HotWaterSupply]: 'Горячая вода',
+  [EActResourceType.Electricity]: 'Электричество',
+  [EActResourceType.Heat]: 'Тепло',
+  [EActResourceType.All]: 'Все',
+};
+
 export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
   device,
 }) => {
@@ -29,7 +38,7 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
   const deviceInfos = [
     {
       title: 'Тип ресурса',
-      value: device.resource,
+      value: actResourceTypeNames[device.resource],
     },
     {
       title: 'Место установки',
