@@ -17,4 +17,5 @@ export const Title = styled.div`
 
 export const DevicesListWrap = styled.div`
   margin-top: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 11, 0.15);
 `;

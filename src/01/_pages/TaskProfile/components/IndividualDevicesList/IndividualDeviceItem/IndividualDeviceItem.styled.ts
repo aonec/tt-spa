@@ -3,7 +3,11 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 11, 0.15);
+  border-bottom: 1px solid #dcdee499;
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 export const Header = styled.div`
@@ -35,4 +39,23 @@ export const LinkOnProfile = styled(Link)`
   &:hover {
     color: #189ee9;
   }
+`;
+
+export const DeviceInfoItem = styled.div`
+  padding: 12px 6px;
+  border-bottom: 1px solid #dcdee4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  color: #272f5ae5;
+  font-weight: 400;
+  font-size: 14px;
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+`;
+
+export const DeviceInfoItemLabel = styled.div`
+  opacity: 0.85;
 `;
