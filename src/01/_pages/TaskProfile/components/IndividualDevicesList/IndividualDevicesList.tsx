@@ -1,3 +1,4 @@
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import React, { FC } from 'react';
 import { DeviceIcon } from 'ui-kit/icons';
 import { IndividualDeviceItem } from './IndividualDeviceItem';
@@ -19,6 +20,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
 
   return (
     <Wrapper>
+      <ReadingsHistoryModal readonly />
       <Header>
         <DeviceIcon style={{ transform: 'scale(1.2)' }} />
         <Title>Приборы</Title>
