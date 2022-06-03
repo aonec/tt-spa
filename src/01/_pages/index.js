@@ -1,3 +1,7 @@
+/* eslint-disable */
+
+import { NodeProfile } from './NodeProfile/NodeProfile.container';
+
 export * from './Login';
 export * from './Tasks';
 export * from './TaskProfile';
@@ -16,7 +20,7 @@ export * from './Settings';
 export * from './UserProfile';
 export * from './Contractor';
 export * from './Registration';
-export * from './NodeProfile/NodeProfile';
+export { NodeProfile } from './NodeProfile/NodeProfile.container';
 export * from './IndividualDevice';
 export * from './MapTemplate';
 export * from './EditNode';

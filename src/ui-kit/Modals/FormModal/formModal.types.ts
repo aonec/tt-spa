@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
+import { ModalProps } from 'antd/es/modal';
 
 export interface FormModalProps {
-  width?: number;
+  innerModalProps?: ModalProps;
   visible: boolean;
   onCancel?(): void;
   title: string | ReactNode;
@@ -11,10 +12,11 @@ export interface FormModalProps {
   onSubmit?(): void;
   customSubmit?: ReactNode;
   centered?: boolean;
-  footer?: ReactNode;
+  customFooter?: ReactNode;
   customCancelButton?(): void;
   disabled?: boolean;
   submitButtonType?: 'blue' | 'red';
   formId: string;
   form: ReactNode;
+  description?: string;
 }

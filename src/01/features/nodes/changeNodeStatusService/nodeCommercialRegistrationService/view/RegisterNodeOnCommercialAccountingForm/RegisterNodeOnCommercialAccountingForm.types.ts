@@ -6,7 +6,7 @@ import {
 
 export type RegisterNodeOnCommercialAccountingFormProps = {
   handleSubmit: (payload: NodeCommercialRegistrationRequestPayload) => void;
-  status: boolean;
+  isRegistered: boolean;
   resource: EResourceType;
   handleSubmitUnset: (
     payload: unsetNodeCommercialRegistrationRequestPayload

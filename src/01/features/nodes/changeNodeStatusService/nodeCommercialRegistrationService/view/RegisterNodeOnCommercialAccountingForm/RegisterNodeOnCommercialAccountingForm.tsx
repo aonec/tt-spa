@@ -2,24 +2,24 @@ import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { DatePickerTT } from '01/tt-components';
 import { EDocumentType } from 'myApi';
-import { DatePicker, Form } from 'antd';
+import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { NodeSetRegisteredRequest } from 'myApi';
-import React, { FC } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCommercialAccountingForm.types';
-import { nodeService } from '01/features/nodes/displayNode/models';
 
 export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercialAccountingFormProps> = ({
   handleSubmit,
   handleSubmitUnset,
-  status,
+  isRegistered,
   resource,
-  formId
+  formId,
 }) => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const resourceType = resource === 'Electricity' ? 'electric' : 'pipe';
+
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -30,18 +30,21 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
       startCommercialAccountingDate: undefined,
       endCommercialAccountingDate: undefined,
     },
-    onSubmit: (values) =>
-      status
-        ? handleSubmitUnset({
-            data: values,
-            nodeId: Number(nodeId),
-            type: resourceType,
-          })
-        : handleSubmit({
-            data: values,
-            nodeId: Number(nodeId),
-            type: resourceType,
-          }),
+    onSubmit: useCallback(
+      (values) =>
+        isRegistered
+          ? handleSubmitUnset({
+              data: values,
+              nodeId: Number(nodeId),
+              type: resourceType,
+            })
+          : handleSubmit({
+              data: values,
+              nodeId: Number(nodeId),
+              type: resourceType,
+            }),
+      [isRegistered]
+    ),
   });
 
   const formValues = {
@@ -53,50 +56,53 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
       : undefined,
   };
 
-  return (
-    <>
-      <Form
-        id={formId}
-        onSubmitCapture={submitForm}
-      >
-        {status ? (
-          <Form.Item label="Дата снятия с коммерческого учёта">
+  const form = useMemo(
+    () =>
+      isRegistered ? (
+        <Form.Item label="Дата снятия с коммерческого учёта">
+          <DatePickerTT
+            value={formValues.start}
+            onChange={(value) =>
+              setFieldValue(
+                'endCommercialAccountingDate',
+                value?.toISOString(false)
+              )
+            }
+          />
+        </Form.Item>
+      ) : (
+        <Grid temp="1fr 1fr" gap="15px">
+          <Form.Item label="Дата начала действия акта-допуска">
             <DatePickerTT
               value={formValues.start}
               onChange={(value) =>
                 setFieldValue(
-                  'endCommercialAccountingDate',
-                  value?.toISOString(false)
+                  'startCommercialAccountingDate',
+                  value?.toISOString(true)
                 )
               }
             />
           </Form.Item>
-        ) : (
-          <Grid temp="1fr 1fr" gap="15px">
-            <Form.Item label="Дата начала действия акта-допуска">
-              <DatePickerTT
-                value={formValues.start}
-                onChange={(value) =>
-                  setFieldValue(
-                    'startCommercialAccountingDate',
-                    value?.toISOString(true)
-                  )
-                }
-              />
-            </Form.Item>
-            <Form.Item label="Дата окончания действия акта-допуска">
-              <DatePickerTT
-                value={formValues.end}
-                onChange={(value) =>
-                  setFieldValue(
-                    'endCommercialAccountingDate',
-                    value?.toISOString(true)
-                  )
-                }
-              />
-            </Form.Item>
-          </Grid>
-        )}
+          <Form.Item label="Дата окончания действия акта-допуска">
+            <DatePickerTT
+              value={formValues.end}
+              onChange={(value) =>
+                setFieldValue(
+                  'endCommercialAccountingDate',
+                  value?.toISOString(true)
+                )
+              }
+            />
+          </Form.Item>
+        </Grid>
+      ),
+    [isRegistered]
+  );
+
+  return (
+    <>
+      <Form id={formId} onSubmitCapture={submitForm}>
+        {form}
         <FilesUpload
           type={EDocumentType.NodeAdmissionAct}
           uniqId="accounting-form"

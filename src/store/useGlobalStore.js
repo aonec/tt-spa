@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useContext } from 'react';
 import { GlobalStoreContext } from './context';
 

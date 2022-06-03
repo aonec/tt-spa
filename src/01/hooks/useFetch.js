@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import axios from 'axios';
 import { middleError, middleSuccess, middleRequest } from '01/middleware';

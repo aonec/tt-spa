@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { createContext, useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import { Header, MenuButtonTT } from '../../tt-components';

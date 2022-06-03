@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const objectChanges = [
   ['Дата и время', 'dateandtime'],
   ['Действие', 'action'],

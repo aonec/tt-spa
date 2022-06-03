@@ -8,6 +8,7 @@ const pathLookUp = {
   pipe: 'PipeNodes',
   electric: 'ElectricNodes',
 };
+
 export const registerPipeNode = (
   payload: NodeCommercialRegistrationRequestPayload
 ): Promise<void> => {

@@ -1,36 +1,25 @@
+import { groupBy } from 'lodash';
 import {
   CalculatorListResponse,
   HousingStockAddressResponse,
 } from '../../../../../myApi';
 
 export const groupDevicesByObjects = (
-  devices: CalculatorListResponse[] | null
+  devices: CalculatorListResponse[]
 ): DevicesByAddressInterface[] => {
-  if (!devices) return [];
-  const newDevices = devices.reduce<any[]>(
-    (accum, device) => {
-      if (!device.address) return [...accum, { devices: [{ ...device }] }];
-      const { address, ...rest } = device;
-      const index = accum.findIndex((el) => el.address?.id === address?.id);
-      if (index === -1) {
-        return [...accum, { address, devices: [{ ...rest }] }];
-      } else {
-        return accum.map((el, i) => {
-          if (i !== index) return el;
-          return el.devices
-            ? { ...el, devices: [...el.devices, rest] }
-            : { ...el, devices: [rest] };
-        });
-      }
-    },
-    []
+  const devicesByAddresses = Object.values(groupBy(devices, 'address')).map(
+    (devices) => ({
+      devices,
+      address: devices[0].address?.address,
+    })
   );
-  return newDevices as any;
+
+  return devicesByAddresses;
 };
 
 export interface DevicesByAddressInterface {
-  devices: Omit<CalculatorListResponse, 'address'>[] | null;
-  address?: HousingStockAddressResponse;
+  devices: CalculatorListResponse[];
+  address?: HousingStockAddressResponse | null;
 }
 
 interface ManagementFirmInterface {

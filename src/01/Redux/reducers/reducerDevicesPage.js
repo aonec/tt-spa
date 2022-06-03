@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { devicesAPI } from '../../_api/devices_page';
 
 const SET_DEVICES = 'SET_DEVICES';
