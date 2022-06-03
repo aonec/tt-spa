@@ -7,6 +7,7 @@ import { ReactComponent as HotWaterSupplyIcon } from './svg/hotWaterSupply.svg';
 import { ReactComponent as AllResourcesIcon } from './svg/allResources.svg';
 import { ReactComponent as ElectricityIcon } from './svg/electricity.svg';
 import { ReactComponent as HeatIcon } from './svg/heat.svg';
+import { ReactComponent as DeviceIcon } from './svg/device.svg';
 
 export {
   StarIcon,
@@ -18,4 +19,5 @@ export {
   ElectricityIcon,
   HeatIcon,
   AllResourcesIcon,
+  DeviceIcon,
 };
