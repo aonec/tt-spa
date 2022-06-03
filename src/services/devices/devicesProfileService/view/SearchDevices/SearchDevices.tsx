@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styles from './DeviceSearchForm.module.scss';
 import { Wrapper } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Form, Input, Button, Tooltip, Select, Slider } from 'antd';
 import styled from 'styled-components';
 import { Icon } from '01/components';
+import { useFormik } from 'formik';
 
 const { Option } = Select;
 const onValuesChangeHandler = () => console.log('a');
@@ -19,7 +20,52 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
     0: '0',
     255: '255',
   };
-
+  const {
+    handleSubmit: submitForm,
+    setFieldValue,
+    values,
+  } = useFormik<CalculatorsListRequestPayload>({
+    initialValues: {
+      'Filter.DiameterRange.From'?: '',
+      'Filter.DiameterRange.To'?: '',
+  'Filter.ExpiresCheckingDateAt'?: ""
+  'Filter.Resource'?: '',
+  'Filter.Model'?: '',
+  'Filter.CommercialDateRange.From'?: '',
+  'Filter.CommercialDateRange.To'?: '',
+  'Filter.Address.City'?: '',
+  'Filter.Address.Street'?: ;
+  'Filter.Address.HousingStockNumber'?: string;
+  'Filter.Address.Corpus'?: string;
+  'Filter.Address.HouseCategory'?: EHouseCategory;
+  'Filter.HousingStockId'?: number;
+  'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
+  Question?: string;
+  OrderRule?: ECalculatorOrderRule;
+  IsConnected?: boolean;
+  CountTasks?: boolean;
+  IsClosed?: boolean;
+  FileName?: string;
+  PageNumber?: number;
+  PageSize?: number;
+  OrderBy?: EOrderByRule;
+    },
+    onSubmit: useCallback(
+      (values) =>
+        isRegistered
+          ? handleSubmitUnset({
+              data: values,
+              nodeId: Number(nodeId),
+              type: resourceType,
+            })
+          : handleSubmit({
+              data: values,
+              nodeId: Number(nodeId),
+              type: resourceType,
+            }),
+      [isRegistered]
+    ),
+  });
   return (
     <Wrapper>
       <Form
