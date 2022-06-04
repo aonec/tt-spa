@@ -1,8 +1,8 @@
-import { CalculatorListResponsePagedList } from 'myApi';
+import { CalculatorListResponse, CalculatorListResponsePagedList } from 'myApi';
 import React from 'react';
 
 export const DevicesListContainer: React.FC<{
-  calculatorsList: CalculatorListResponsePagedList[];
+  calculatorsList: CalculatorListResponse[] | null;
 }> = () => {
   return <>
   

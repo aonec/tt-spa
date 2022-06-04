@@ -6,16 +6,16 @@ import { Form, Input, Button, Tooltip, Select, Slider } from 'antd';
 import styled from 'styled-components';
 import { Icon } from '01/components';
 import { useFormik } from 'formik';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { EExpiresCheckingDateAt, EHouseCategory, EResourceType } from 'myApi';
+import { displayDevicesService } from 'services/devices/displayDevicesService';
+import { useEvent } from 'effector-react';
 
 const { Option } = Select;
-const onValuesChangeHandler = () => console.log('a');
-const handleOnSortChange = () => console.log('b');
-const handleOnExpirationChange = () => console.log('c');
 const debouncedFilterChange = () => console.log('d');
 export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
-  const searchState = {
-    searchTerm: 'a',
-  };
+  const { outputs, inputs } = displayDevicesService;
+  const fetchcalc = useEvent(inputs.fetchCalculators);
   const marks = {
     0: '0',
     255: '255',
@@ -26,45 +26,31 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
     values,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
-      'Filter.DiameterRange.From'?: '',
-      'Filter.DiameterRange.To'?: '',
-  'Filter.ExpiresCheckingDateAt'?: ""
-  'Filter.Resource'?: '',
-  'Filter.Model'?: '',
-  'Filter.CommercialDateRange.From'?: '',
-  'Filter.CommercialDateRange.To'?: '',
-  'Filter.Address.City'?: '',
-  'Filter.Address.Street'?: ;
-  'Filter.Address.HousingStockNumber'?: string;
-  'Filter.Address.Corpus'?: string;
-  'Filter.Address.HouseCategory'?: EHouseCategory;
-  'Filter.HousingStockId'?: number;
-  'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
-  Question?: string;
-  OrderRule?: ECalculatorOrderRule;
-  IsConnected?: boolean;
-  CountTasks?: boolean;
-  IsClosed?: boolean;
-  FileName?: string;
-  PageNumber?: number;
-  PageSize?: number;
-  OrderBy?: EOrderByRule;
+      'Filter.DiameterRange.From': undefined,
+      'Filter.DiameterRange.To': undefined,
+      'Filter.ExpiresCheckingDateAt': undefined,
+      'Filter.Resource': undefined,
+      'Filter.Model': undefined,
+      'Filter.CommercialDateRange.From': undefined,
+      'Filter.CommercialDateRange.To': undefined,
+      'Filter.Address.City': undefined,
+      'Filter.Address.Street': undefined,
+      'Filter.Address.HousingStockNumber': undefined,
+      'Filter.Address.Corpus': undefined,
+      'Filter.Address.HouseCategory': undefined,
+      'Filter.HousingStockId': undefined,
+      'Filter.NodeStatus': undefined,
+      Question: undefined,
+      OrderRule: undefined,
+      IsConnected: undefined,
+      CountTasks: undefined,
+      IsClosed: undefined,
+      FileName: undefined,
+      PageNumber: undefined,
+      PageSize: undefined,
+      OrderBy: undefined,
     },
-    onSubmit: useCallback(
-      (values) =>
-        isRegistered
-          ? handleSubmitUnset({
-              data: values,
-              nodeId: Number(nodeId),
-              type: resourceType,
-            })
-          : handleSubmit({
-              data: values,
-              nodeId: Number(nodeId),
-              type: resourceType,
-            }),
-      [isRegistered]
-    ),
+    onSubmit: (values) => fetchcalc(values),
   });
   return (
     <Wrapper>
@@ -73,7 +59,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
         name="normal_login"
         className="login-form"
         initialValues={{ remember: true }}
-        onChange={onValuesChangeHandler}
+        onChange={submitForm}
         style={{ marginBottom: 20, marginTop: 10 }}
       >
         <div
@@ -93,14 +79,17 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
             rules={[
               {
                 required: true,
-                message: 'Введите серийный номер прибора',
+                message: 'Введите серийный номер прибор',
               },
             ]}
             style={{ marginRight: 16 }}
           >
             <Input
+              onChange={(value) =>
+                setFieldValue('Question', value.target.value)
+              }
               className={styles.input}
-              value={searchState?.searchTerm || 'a'}
+              value={values.Question}
               placeholder="Введите серийный номер прибора"
               prefix={<Icon icon="search" />}
             />
@@ -111,7 +100,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
               <label htmlFor="sortBy" style={{ minWidth: 120, marginRight: 8 }}>
                 Сортировать по:
               </label>
-              <Select id="sortBy" onSelect={handleOnSortChange}>
+              <Select id="sortBy">
                 <Option value="descendingFutureCheckingDate">
                   Дате поверки (уб.)
                 </Option>
@@ -147,7 +136,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
               <Select
                 id="expirationDate"
                 style={{ width: '65%', marginRight: 16 }}
-                onSelect={handleOnExpirationChange}
+                onSelect={() => submitForm()}
               >
                 <Option value={0}>Ближайший месяц</Option>
                 <Option value={1}>В следующие два месяца</Option>

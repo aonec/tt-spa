@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { SearchDevices } from '../SearchDevices';
 import { Wrapper } from './DevicesProfile.styled';
 import { DevicesProfileProps } from './DevicesProfile.types';
+import { displayDevicesService } from '../../../displayDevicesService/displayDevicesService.models'
 
 export const DevicesProfile: FC<DevicesProfileProps> = ({}) => {
   const menuButtonArr = [
@@ -22,10 +23,9 @@ export const DevicesProfile: FC<DevicesProfileProps> = ({}) => {
     },
   ];
 
-  const calculators = useStore(calculatorsService.outputs.$calculators);
 
-  const { CalculatorsGate } = calculatorsService.inputs;
-
+  const { inputs, outputs } = displayDevicesService
+  const calculators = useStore(outputs.$calculators)
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -33,7 +33,7 @@ export const DevicesProfile: FC<DevicesProfileProps> = ({}) => {
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </HeaderWrapper>
       <SearchDevices />
-      <DevicesListContainer calculators={calculators}/>
+      <DevicesListContainer calculatorsList={calculators}/>
       <DevicesReportModal />
     </Wrapper>
   );
