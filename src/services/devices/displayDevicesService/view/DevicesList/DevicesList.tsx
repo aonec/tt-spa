@@ -13,7 +13,7 @@ const { outputs , inputs } = displayDevicesService
 const loading = useStore(outputs.$loading)
 const calculators = useStore(outputs.$calculators)
 // const fetchcalc = useEvent(inputs.fetchCalculators)
-console.log(calculators)
+console.log(calculators?.length&&calculators[0], 'aaa')
 const { DisplayCalculatorsGate } = inputs 
 
   return <Wrapper>
@@ -25,7 +25,7 @@ const { DisplayCalculatorsGate } = inputs
             </div>
           ) : (
             <div>
-              <div>{calculators}</div>
+              <div>{calculators?.length&&calculators[0]}</div>
               {/* <Pagination>{pagination}</Pagination> */}
             </div>
           )}

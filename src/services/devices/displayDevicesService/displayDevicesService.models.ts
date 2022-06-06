@@ -23,12 +23,12 @@ const fetchCalculatorsFx = displayDevicesServiceDomain.createEffect<
   CalculatorListResponsePagedList
 >(getCalculatorsList);
 
-const fetchCalculators = displayDevicesServiceDomain.createEvent();
+const fetchCalculators = displayDevicesServiceDomain.createEvent<CalculatorsListRequestPayload>();
 
 const $loading = fetchCalculatorsFx.pending;
 
 const DisplayCalculatorsGate = createGate<{ params: CalculatorsListRequestPayload }>();
-
+// $calculators.watch(console.log)
 $calculators
   .on(fetchCalculatorsFx.doneData, (_, data) => data.items)
   .reset(fetchCalculatorsFx.failData);
@@ -39,15 +39,14 @@ forward({
 });
 
 sample({
-  source: DisplayCalculatorsGate.state.map(({ params }) => params),
   clock: fetchCalculators,
   target: fetchCalculatorsFx,
 });
 
-forward({
-  from: createCalcuatorService.events.newCalculatorCreated,
-  to: fetchCalculators,
-});
+// forward({
+//   from: createCalcuatorService.events.newCalculatorCreated,
+//   to: fetchCalculators,
+// });
 
 export const displayDevicesService = {
   inputs: {

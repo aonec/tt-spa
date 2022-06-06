@@ -50,7 +50,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
       PageSize: undefined,
       OrderBy: undefined,
     },
-    onSubmit: (values) => fetchcalc(values),
+    onSubmit: (values) => void fetchcalc(values),
+
+    // onSubmit: (values) => console.log(values),
   });
   return (
     <Wrapper>
