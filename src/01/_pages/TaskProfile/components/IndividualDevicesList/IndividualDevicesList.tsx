@@ -1,4 +1,3 @@
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import React, { FC } from 'react';
 import { DeviceIcon } from 'ui-kit/icons';
 import { IndividualDeviceItem } from './IndividualDeviceItem';

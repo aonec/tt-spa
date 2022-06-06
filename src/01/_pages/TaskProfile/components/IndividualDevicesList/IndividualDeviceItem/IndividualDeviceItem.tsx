@@ -1,3 +1,5 @@
+import { $task } from '01/features/tasks/displayTask/models';
+import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EActResourceType } from 'myApi';
 import React, { FC, useState } from 'react';
@@ -16,7 +18,7 @@ import {
 } from './IndividualDeviceItem.styled';
 import { IndividualDeviceItemProps } from './IndividualDeviceItem.types';
 
-export const actResourceTypeNames = {
+export const actResourceTypeNames: { [key: string]: string } = {
   [EActResourceType.ColdWaterSupply]: 'Холодная вода',
   [EActResourceType.HotWaterSupply]: 'Горячая вода',
   [EActResourceType.Electricity]: 'Электричество',
@@ -72,7 +74,7 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
       {deviceInfos.map(({ title, value }) => (
         <DeviceInfoItem>
           <DeviceInfoItemLabel>{title}:</DeviceInfoItemLabel>
-          <div>{value || "—"}</div>
+          <div>{value || '—'}</div>
         </DeviceInfoItem>
       ))}
     </div>
@@ -83,7 +85,9 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
       <Header>
         <IndividualDeviceInfo device={device} />
         <RightHeaderPanel>
-          <LinkOnProfile to={`/meters/apartments/${apartmentId}`}>
+          <LinkOnProfile
+            to={`apartments/${apartmentId}/testimony`}
+          >
             Перейти в профиль
           </LinkOnProfile>
           <ReadingsHistoryButtonWrapper>
