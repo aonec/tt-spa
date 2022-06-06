@@ -1,6 +1,6 @@
-import { CalculatorListResponsePagedList } from "myApi";
+import { CalculatorListResponse } from 'myApi';
 
 export type DevicesListProps = {
-//   calculators: CalculatorListResponsePagedList
-    params: any
+  calculators: CalculatorListResponse[];
+  isLoading: boolean;
 };

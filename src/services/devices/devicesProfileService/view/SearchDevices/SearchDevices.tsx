@@ -12,6 +12,7 @@ import { displayDevicesService } from 'services/devices/displayDevicesService';
 import { useEvent } from 'effector-react';
 
 const { Option } = Select;
+
 const debouncedFilterChange = () => console.log('d');
 export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
   const { outputs, inputs } = displayDevicesService;
@@ -51,8 +52,6 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
       OrderBy: undefined,
     },
     onSubmit: (values) => void fetchcalc(values),
-
-    // onSubmit: (values) => console.log(values),
   });
   return (
     <Wrapper>
