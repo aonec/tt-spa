@@ -1,5 +1,3 @@
-import { $task } from '01/features/tasks/displayTask/models';
-import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EActResourceType } from 'myApi';
 import React, { FC, useState } from 'react';
@@ -35,6 +33,7 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
 
   const chevron = isOpen ? <ChevronUp /> : <ChevronDown />;
 
+  const objectId = device.address?.id;
   const apartmentId = device.address?.apartmentId;
 
   const deviceInfos = [
@@ -86,7 +85,7 @@ export const IndividualDeviceItem: FC<IndividualDeviceItemProps> = ({
         <IndividualDeviceInfo device={device} />
         <RightHeaderPanel>
           <LinkOnProfile
-            to={`apartments/${apartmentId}/testimony`}
+            to={`/objects/${objectId}/apartments/${apartmentId}/testimony`}
           >
             Перейти в профиль
           </LinkOnProfile>
