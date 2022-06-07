@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
 export interface ContextMenuElement {
   title: string;
@@ -13,10 +14,11 @@ export interface ContextMenuElement {
 export interface ContextMenuButtonProps {
   menuButtons?: ContextMenuElement[];
   disabled?: boolean;
+  size?: SizeType;
 }
 
 export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
-  const { menuButtons, disabled } = props;
+  const { menuButtons, disabled, size } = props;
 
   const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
 
@@ -38,7 +40,7 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
 
   return (
     <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
-      <StyledMenuButton>
+      <StyledMenuButton size={size}>
         <MoreOutlined />
       </StyledMenuButton>
     </Dropdown>
@@ -49,14 +51,15 @@ const StyledMenuButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  color: gray !important;
+  width: ${({ size }) => (size === 'small' ? '32px' : '48px')};
+  height: ${({ size }) => (size === 'small' ? '32px' : '48px')};
   border-radius: 4px;
 `;
 
 const MenuItem = styled(Menu.Item)`
   min-width: 408px;
-  color: ${(props) => props.color || 'var(--primary)'};
+  color: ${(props) => props.color || 'var(--primary)'} !important;
 `;
 
 enum Color {

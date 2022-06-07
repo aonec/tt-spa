@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'reshadow/macro';
 import * as s from '01/r_comp';
 import styledC from 'styled-components';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
+import { useStore } from 'effector-react';
+import { $task } from '01/features/tasks/displayTask/models';
 import { TasksProfileContext } from './context';
 import { usePageFetch } from './hooks/usePageFetch';
 import { usePanel } from './hooks/usePanel';
@@ -26,6 +28,8 @@ import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
 import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
 import { getNodeIdFromTask } from './utlis';
+import { IndividualDevicesList } from './components/IndividualDevicesList';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -79,8 +83,15 @@ export const TaskProfile = () => {
 
   const nodeId = state && getNodeIdFromTask(state);
 
+  const task = useStore($task);
+
+  const individualDevices = task?.individualDevices;
+
+  const isIndividualDevicesNotEmpty = individualDevices?.length > 0;
+
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
+      <ReadingsHistoryModal readonly />
       <Index path="/tasks/" />
       <Header {...state.header} state={state} />
       {isIndividualDeviceReadingCheckType ? (
@@ -98,8 +109,10 @@ export const TaskProfile = () => {
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
           {nodeId && <TaskNodeStatistic id={nodeId} />}
+          {isIndividualDevicesNotEmpty && (
+            <IndividualDevicesList devices={individualDevices} />
+          )}
 
-          {/* подождать бэк и вынести в отдельный компонент */}
           {node ? (
             <div style={{ marginTop: 16 }}>
               <NodeLink to={`/nodes/${node.id}`}>
@@ -122,7 +135,6 @@ export const TaskProfile = () => {
                   ({calculator.serialNumber})
                 </span>
               </div>
-              {/* </div> */}
               <NodeInformation node={node} calculator={calculator} task />
             </div>
           ) : null}

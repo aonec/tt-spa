@@ -53,6 +53,7 @@ export const ModalTT: React.FC<Props> = (props) => {
       width={width || 800}
       title={<Header>{title}</Header>}
       centered={centered}
+      destroyOnClose
       footer={
         footer || (
           <Footer>
@@ -67,6 +68,7 @@ export const ModalTT: React.FC<Props> = (props) => {
               <ButtonTT
                 color={saveButtonType || 'blue'}
                 key="submit"
+                type="submit"
                 onClick={onSubmit}
                 disabled={loading || disabled}
               >

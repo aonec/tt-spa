@@ -22,9 +22,9 @@ import {
 } from '../models';
 import { DocDate } from './AddNewActForm';
 import { gridTemp } from './TableHeader';
-import { ReactComponent as AllResourceIcon } from '../assets/allResourcesIcon.svg';
 import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 const pageSize = 20;
 
@@ -47,7 +47,7 @@ export const ApartmentActsList = () => {
   const renderAct = (act: ApartmentActResponse) => {
     const actType = actTypes?.find((elem) => elem.key === act.actType)?.value;
 
-    const resourceIcon = getIconFromResource(act.actResourceType);
+    const resourceIcon = <ResourceIconLookup icon={act.actResourceType} />;
 
     const resourceName = actResources?.find(
       (elem) => elem.key === act.actResourceType
@@ -128,20 +128,3 @@ const ActWrap = styled(Grid)`
     border-bottom: none;
   }
 `;
-
-export function getIconFromResource(resource: EActResourceType) {
-  const icons: { [key: string]: ReactElement } = {
-    [EActResourceType.All]: <AllResourceIcon />,
-    [EActResourceType.ColdWaterSupply]: (
-      <Icon name={EActResourceType.ColdWaterSupply} />
-    ),
-    [EActResourceType.HotWaterSupply]: (
-      <Icon name={EActResourceType.HotWaterSupply} />
-    ),
-    [EActResourceType.Electricity]: (
-      <Icon name={EActResourceType.Electricity} />
-    ),
-  };
-
-  return icons[resource];
-}
