@@ -7,7 +7,7 @@ import { createForm } from 'effector-forms';
 import { createStore, createEffect, createEvent } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';
 import { CheckApartmentPayload, RemoveCheckPayload } from '01/_api/apartments';
-import { EffectFailDataAxiosError } from '../../../../../types';
+import { EffectFailDataAxiosError } from 'types';
 
 export const $isCheckApartmentModalOpen = createStore(false);
 
