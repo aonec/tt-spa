@@ -4,6 +4,6 @@ import {
 } from './view/AddressSearch/AddressSearch.types';
 
 export type AddressSearchContainerProps = {
-  lastField: SearchFieldType;
+  fields: SearchFieldType[];
   handleSubmit: (values: AddressSearchValues) => void;
 };

@@ -36,7 +36,7 @@ export const ObjectsListContainer = () => {
           showSizeChanger={false}
           defaultCurrent={1}
           current={pagedHousingStocks?.pageNumber}
-          onChange={(pageNumber) => handlePageNumberChanged(pageNumber)}
+          onChange={handlePageNumberChanged}
           total={pagedHousingStocks?.totalItems}
           pageSize={pagedHousingStocks?.pageSize}
         />

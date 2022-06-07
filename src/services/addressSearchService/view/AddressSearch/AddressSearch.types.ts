@@ -20,5 +20,5 @@ export type AddressSearchProps = {
   handleSubmit: () => void;
   streets: string[];
   cities: string[];
-  lastField: SearchFieldType;
+  fields: SearchFieldType[];
 };

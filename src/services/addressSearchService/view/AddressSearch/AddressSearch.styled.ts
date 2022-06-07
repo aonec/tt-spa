@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { SearchFieldType } from './AddressSearch.types';
 
-function getGridTemplateByField(lastField: SearchFieldType) {
+function getGridTemplateByFields(fields: SearchFieldType[]) {
   const templates = {
     [SearchFieldType.City]: '0.5fr',
     [SearchFieldType.Street]: '0.9fr',
@@ -10,15 +10,11 @@ function getGridTemplateByField(lastField: SearchFieldType) {
     [SearchFieldType.Apartment]: '0.3fr',
   };
 
-  const lastFieldIndex = Object.keys(templates).lastIndexOf(lastField);
-  const fields = Object.values(templates).slice(0, lastFieldIndex + 1);
-
-  return fields.join(' ');
+  return fields.map((field) => templates[field]).join(' ');
 }
 
-export const Wrapper = styled.div<{ lastField: SearchFieldType }>`
+export const Wrapper = styled.div<{ fields: SearchFieldType[] }>`
   display: grid;
-  grid-template-columns: ${({ lastField }) =>
-    getGridTemplateByField(lastField)};
+  grid-template-columns: ${({ fields }) => getGridTemplateByFields(fields)};
   grid-gap: 15px;
 `;
