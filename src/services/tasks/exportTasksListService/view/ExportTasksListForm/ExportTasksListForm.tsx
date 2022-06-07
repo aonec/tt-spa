@@ -1,7 +1,7 @@
 import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { TaskType } from '../../exportTasksListService.types';
 import { ExportTasksListFormProps } from './ExportTasksListForm.types';
 import * as yup from 'yup';
@@ -32,15 +32,22 @@ export const ExportTasksListForm: FC<ExportTasksListFormProps> = ({
     },
   });
 
-  const taskTypeOptions = taskTypes.map(([type, name]) => (
-    <Select.Option value={type} key={type}>
-      {name}
-    </Select.Option>
-  ));
+  const taskTypeOptions = useMemo(
+    () =>
+      taskTypes.map(([type, name]) => (
+        <Select.Option value={type} key={type}>
+          {name}
+        </Select.Option>
+      )),
+    [taskTypes]
+  );
 
   const selectedTaskType = values.type || undefined;
 
-  const setSelectValue = (value: SelectValue) => setFieldValue('type', value);
+  const setSelectValue = useCallback(
+    (value: SelectValue) => setFieldValue('type', value),
+    [setFieldValue]
+  );
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>

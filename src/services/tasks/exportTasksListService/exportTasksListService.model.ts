@@ -3,22 +3,19 @@ import { message } from 'antd';
 import { createDomain, forward } from 'effector';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 
-const exportTasksListServiceDomain = createDomain('exportTasksListService');
+const domain = createDomain('exportTasksListService');
 
-const $isModalOpen = exportTasksListServiceDomain.createStore(false);
+const $isModalOpen = domain.createStore(false);
 
-const openModal = exportTasksListServiceDomain.createEvent();
-const closeModal = exportTasksListServiceDomain.createEvent();
+const openModal = domain.createEvent();
+const closeModal = domain.createEvent();
 
-const exportTasksListFx = exportTasksListServiceDomain.createEffect<
+const exportTasksListFx = domain.createEffect<
   ExportTasksListRequestPayload,
   void
 >(downloadTasksList);
 
-const exportTasksList = exportTasksListServiceDomain.createEvent<ExportTasksListRequestPayload>();
-
-const exportTasksListDone = exportTasksListFx.done;
-const exportTasksListFail = exportTasksListFx.fail;
+const exportTasksList = domain.createEvent<ExportTasksListRequestPayload>();
 
 const $isLoading = exportTasksListFx.pending;
 
@@ -28,17 +25,17 @@ forward({
 });
 
 forward({
-  from: exportTasksListDone,
+  from: exportTasksListFx.done,
   to: closeModal,
 });
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 
-exportTasksListDone.watch(() =>
+exportTasksListFx.done.watch(() =>
   message.success('Список задач успешно выгружен!')
 );
 
-exportTasksListFail.watch(() => {
+exportTasksListFx.fail.watch(() => {
   message.error('Ошибка выгрузки списка задач');
 });
 

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useReducer } from 'react';
+import React, { useMemo, useReducer } from 'react';
 import styled from 'reshadow/macro';
 import { NavLink } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ import tasksSearchReducer from './components/TasksSearchForm/tasksSearchReducer'
 import { useDebounce } from '../../hooks/useDebounce';
 import getAccessesList from '../../_api/utils/getAccessesList';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { TasksListWrapper } from './Tasks.styled';
+import { TasksListWrapper, Wrapper } from './Tasks.styled';
 import {
   ExportTasksListModalContainer,
   exportTasksListService,
@@ -63,30 +63,39 @@ export const Tasks = () => {
     exportTasksListService.inputs.openModal
   );
 
+  const header = useMemo(
+    () => (
+      <PageHeader
+        title="Задачи"
+        contextMenu={{
+          menuButtons: [
+            {
+              title: 'Выгрузить список задач',
+              onClick: handleExportTasksList,
+            },
+          ],
+        }}
+      />
+    ),
+    [handleExportTasksList]
+  );
+
+  const taskList = useMemo(() => <TasksList items={items} />, [items]);
+
   return (
     <>
       <ExportTasksListModalContainer />
-      <div style={{ maxWidth: 960 }}>
-        <PageHeader
-          title="Задачи"
-          contextMenu={{
-            menuButtons: [
-              {
-                title: 'Выгрузить список задач',
-                onClick: handleExportTasksList,
-              },
-            ],
-          }}
-        />
+      <Wrapper>
+        {header}
         <TasksListWrapper>
           <Tabs total={[executingTasksCount, observingTasksCount]} />
           <TasksSearchForm
             searchState={searchState}
             dispatchSearchState={dispatchSearchState}
           />
-          <TasksList items={items} />
+          {taskList}
         </TasksListWrapper>
-      </div>
+      </Wrapper>
     </>
   );
 };

@@ -5,7 +5,7 @@ import {
   TaskType,
 } from './exportTasksListService.types';
 
-const exportTaskTypesLookup = {
+const exportUrlTasksLookup = {
   [TaskType.CheckIndividualDevices]:
     'Tasks/ExportExecutingIndividualDeviceCheckTasks',
 };
@@ -13,7 +13,7 @@ const exportTaskTypesLookup = {
 export const downloadTasksList = async ({
   type,
 }: ExportTasksListRequestPayload) => {
-  const res: any = await axios.get(exportTaskTypesLookup[type], {
+  const res: any = await axios.get(exportUrlTasksLookup[type], {
     responseType: 'blob',
   });
 
