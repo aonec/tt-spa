@@ -1,6 +1,5 @@
 import { Loader } from '01/components';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
@@ -184,7 +183,6 @@ export const CorrectionReadingsPanel = () => {
     <PendingLoader loading={pending}>
       <Wrap>
         <CorrectionReadingsGate />
-        <ReadingsHistoryModal />
         {task?.id && <NextStagesGate taskId={task?.id} />}
         <Header>Введите исправленные показния</Header>
         <Space />

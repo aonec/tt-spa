@@ -1,14 +1,14 @@
 <svg
-  width="12"
-  height="14"
-  viewBox="0 0 12 14"
+  width="16"
+  height="18"
+  viewBox="0 0 16 18"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
 >
-    <path
+  <path
     fill-rule="evenodd"
     clip-rule="evenodd"
-    d="M4.01496 0H11.0403L7.04034 5H12L5 14H3.95972L5.35964 8H0L4.01496 0ZM5 1L2 7H7L6 11L9.5 6H4.95972L8.5 1H5Z"
+    d="M5.5187 0.25H14.3004L9.30043 6.5H15.5L6.75 17.75H5.44965L7.19955 10.25H0.5L5.5187 0.25Z"
     fill="#E2B104"
   />
-    </svg>
+  </svg>
