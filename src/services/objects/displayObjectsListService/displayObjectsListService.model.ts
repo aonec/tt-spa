@@ -7,9 +7,7 @@ import {
   SearchHousingStocksPayload,
 } from './displayObjectsListService.types';
 
-const domain = createDomain(
-  'displayObjectsListService'
-);
+const domain = createDomain('displayObjectsListService');
 
 const $housingStocks = domain.createStore<HousingStockListResponsePagedList | null>(
   null
@@ -53,7 +51,7 @@ $searchPayload
   .reset(clearSearchState);
 
 sample({
-  clock: guard({ clock: $searchPayload, filter: Boolean }),
+  clock: [guard({ clock: $searchPayload, filter: Boolean })],
   fn: (payload) => {
     return {
       City: payload?.city,
@@ -64,6 +62,12 @@ sample({
       PageNumber: payload?.pageNumber,
     };
   },
+  target: fetchHousingStocksFx,
+});
+
+sample({
+  clock: [HousingStocksGate.open],
+  fn: () => ({ PageSize: 30 }),
   target: fetchHousingStocksFx,
 });
 
