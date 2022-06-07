@@ -11,7 +11,7 @@ const fields = [
   SearchFieldType.House,
   SearchFieldType.Corpus,
   SearchFieldType.Apartment,
-]
+];
 
 export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   handleSearch,
@@ -19,10 +19,7 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   return (
     <Wrapper>
       <ExtendedSearch>
-        <AddressSearchContainer
-          fields={fields}
-          handleSubmit={handleSearch}
-        />
+        <AddressSearchContainer fields={fields} handleSubmit={handleSearch} />
       </ExtendedSearch>
     </Wrapper>
   );

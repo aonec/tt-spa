@@ -24,14 +24,16 @@ export const ApartmentsListContainer = () => {
 
   const { ApartmentsListGate } = displayApartmentsListService.gates;
 
-  const isNotEmpty = apartmentsList?.length || 0 > 0;
+  const isEmpty = !apartmentsList?.length;
+
+  const isShowPagination = !isEmpty && !isLoading;
 
   return (
     <>
       <ApartmentsListGate />
       <ApartmentsSearch handleSearch={handleSearch} />
       <ApartmentsList apartmentsList={apartmentsList} isLoading={isLoading} />
-      {isNotEmpty && !isLoading && (
+      {isShowPagination && (
         <Pagination
           showSizeChanger={false}
           current={pageNumber}
