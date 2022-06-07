@@ -10,10 +10,10 @@ import { CalculatorsListRequestPayload } from '01/features/carlculators/calculat
 import { EExpiresCheckingDateAt, EHouseCategory, EResourceType } from 'myApi';
 import { displayDevicesService } from 'services/devices/displayDevicesService';
 import { useEvent } from 'effector-react';
+import _, { debounce } from 'lodash';
 
 const { Option } = Select;
 
-const debouncedFilterChange = () => console.log('d');
 export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
   const { outputs, inputs } = displayDevicesService;
   const fetchcalc = useEvent(inputs.fetchCalculators);
@@ -29,7 +29,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
     initialValues: {
       'Filter.DiameterRange.From': undefined,
       'Filter.DiameterRange.To': undefined,
-      'Filter.ExpiresCheckingDateAt': undefined,
+      'Filter.ExpiresCheckingDateAt': undefined ,
       'Filter.Resource': undefined,
       'Filter.Model': undefined,
       'Filter.CommercialDateRange.From': undefined,
@@ -53,6 +53,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
     },
     onSubmit: (values) => void fetchcalc(values),
   });
+
+  const debouncedFilterChange = _.debounce(()=>submitForm(), 1000);
   return (
     <Wrapper>
       <Form
@@ -101,15 +103,19 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
               <label htmlFor="sortBy" style={{ minWidth: 120, marginRight: 8 }}>
                 Сортировать по:
               </label>
-              <Select id="sortBy">
-                <Option value="descendingFutureCheckingDate">
+              <Select
+                id="sortBy"
+                onChange={(value) => setFieldValue('OrderBy', value)}
+                onSelect={() => submitForm()}
+              >
+                {/* <Option value="descendingFutureCheckingDate">
                   Дате поверки (уб.)
                 </Option>
                 <Option value="ascendingFutureCheckingDate">
                   Дате поверки (возр.)
-                </Option>
-                <Option value="descendingStreet">Улице (уб.)</Option>
-                <Option value="ascendingStreet">Улице (возр.)</Option>
+                </Option> */}
+                <Option value="Descending">Улице (уб.)</Option>
+                <Option value="Ascending">Улице (возр.)</Option>
               </Select>
             </div>
           </Form.Item>
@@ -137,11 +143,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
               <Select
                 id="expirationDate"
                 style={{ width: '65%', marginRight: 16 }}
+                onChange={(value) =>
+                  setFieldValue('Filter.ExpiresCheckingDateAt', value)
+                }
                 onSelect={() => submitForm()}
               >
-                <Option value={0}>Ближайший месяц</Option>
-                <Option value={1}>В следующие два месяца</Option>
-                <Option value={2}>Истекла</Option>
+                <Option value='NextMonth'>Ближайший месяц</Option>
+                <Option value='NextTwoMonth'>В следующие два месяца</Option>
+                <Option value='Past'>Истекла</Option>
               </Select>
             </div>
           </Form.Item>
@@ -169,7 +178,11 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
                 max={255}
                 range
                 marks={marks}
-                onChange={debouncedFilterChange}
+                onChange={(value: [number, number]) => {
+                  setFieldValue('Filter.DiameterRange.From', value[0]);
+                  setFieldValue('Filter.DiameterRange.To', value[1]);
+                  debouncedFilterChange();
+                }}
               />
             </div>
           </Form.Item>

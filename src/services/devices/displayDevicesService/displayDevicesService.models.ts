@@ -35,7 +35,7 @@ sample({
     clock: $searchPayload,
     filter: Boolean,
   }),
-  fn: (payload) => ({ ...payload, pageSize: 30 }),
+  fn: (payload) => ({ ...payload, pageSize: 10 }),
   target: fetchCalculatorsFx,
 });
 
