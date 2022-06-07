@@ -1,7 +1,7 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { displayObjectsListService } from './displayObjectsListService.models';
+import { displayObjectsListService } from './displayObjectsListService.model';
 import { ObjectsList } from './view/ObjectsList';
 import { SearchObjects } from './view/SearchObjects';
 

@@ -1,7 +1,7 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { displayApartmentsListService } from './displayApartmentsListService.models';
+import { displayApartmentsListService } from './displayApartmentsListService.model';
 import { ApartmentsList } from './view/ApartmentsList';
 import { ApartmentsSearch } from './view/ApartmentsSearch';
 

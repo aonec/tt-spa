@@ -1,6 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
 import { SearchType } from '../../objectsProfileService.types';
@@ -11,7 +11,7 @@ import {
 } from './ObjectsProfile.styled';
 import { ObjectsProfileProps } from './ObjectsProfile.types';
 
-const objectListComponents: { [key: string]: FC } = {
+const objectListComponentsLookup: { [key: string]: FC } = {
   [SearchType.Houses]: ObjectsListContainer,
   [SearchType.Apartments]: ApartmentsListContainer,
   [SearchType.PersonaNumbers]: () => <></>,
@@ -22,19 +22,24 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   searchType,
   onChangeSearchType,
 }) => {
-  const ObjectListComponent = searchType && objectListComponents[searchType];
+  const ObjectListComponent = searchType && objectListComponentsLookup[searchType];
+
+  const menuButtons = useMemo(
+    () => [
+      {
+        title: 'Выгрузка группового отчёта',
+        onClick: handleExportGroupReport,
+      },
+    ],
+    [handleExportGroupReport]
+  );
 
   return (
     <>
       <PageHeader
         title="Объекты"
         contextMenu={{
-          menuButtons: [
-            {
-              title: 'Выгрузка группового отчёта',
-              onClick: handleExportGroupReport,
-            },
-          ],
+          menuButtons,
         }}
       />
       <Wrapper>

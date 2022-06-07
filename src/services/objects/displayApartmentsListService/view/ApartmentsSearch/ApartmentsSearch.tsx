@@ -5,6 +5,14 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { Wrapper } from './ApartmentsSearch.styled';
 import { ApartmentsSearchProps } from './ApartmentsSearch.types';
 
+const fields = [
+  SearchFieldType.City,
+  SearchFieldType.Street,
+  SearchFieldType.House,
+  SearchFieldType.Corpus,
+  SearchFieldType.Apartment,
+]
+
 export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   handleSearch,
 }) => {
@@ -12,13 +20,7 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
     <Wrapper>
       <ExtendedSearch>
         <AddressSearchContainer
-          fields={[
-            SearchFieldType.City,
-            SearchFieldType.Street,
-            SearchFieldType.House,
-            SearchFieldType.Corpus,
-            SearchFieldType.Apartment,
-          ]}
+          fields={fields}
           handleSubmit={handleSearch}
         />
       </ExtendedSearch>
