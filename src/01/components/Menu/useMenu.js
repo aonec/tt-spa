@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export function useMenu() {
   const user = JSON.parse(localStorage.getItem('user')) ?? {};
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];

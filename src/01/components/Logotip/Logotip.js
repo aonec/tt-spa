@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import styled from 'reshadow/macro';
 import logo from '01/assets/svg/logo.svg';

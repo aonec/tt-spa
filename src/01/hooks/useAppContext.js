@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { AppContext } from '01/context';
 

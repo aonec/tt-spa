@@ -1,0 +1,1 @@
+export { ResourceIconLookup } from './ResourceIconLookup';

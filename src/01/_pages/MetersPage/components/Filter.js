@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useRef } from 'react';
 import styled from 'reshadow/macro';
 import { input } from '01/r_comp';

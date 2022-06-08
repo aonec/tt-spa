@@ -24,7 +24,7 @@ import { combine } from 'effector';
 import { ApartmentActTypesGate } from '../../actsJournal/displayActTypes/models';
 import { CheckingActDocumentType } from '01/_pages/ApartmentProfile/components/ChecksHistory/utils';
 import { Select } from '01/shared/ui/Select';
-import { actTypes } from './utils';
+import { actTypes } from './checkApartment.types';
 import { ResourceInfo } from '01/_pages/ApartmentProfile/components/ChecksHistory/Components/CheckHistoryDocument/components/ResourceInfo';
 import { EActResourceType } from 'myApi';
 

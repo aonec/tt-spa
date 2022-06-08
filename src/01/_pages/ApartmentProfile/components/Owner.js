@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';

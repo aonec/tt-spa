@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import _ from 'lodash';
 
 export const groupNodesByCalculator = (nodes) => {

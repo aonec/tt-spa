@@ -2,7 +2,6 @@ import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorResponse } from 'myApi';
 import { getInspectors } from './displayInspectorsService.api';
-import { sortInspectorsByAlphabet } from './utils';
 
 const displayInspectorsServiceDomain = createDomain(
   'displayInspectorsServiceDomain'

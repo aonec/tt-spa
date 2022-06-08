@@ -1,16 +1,16 @@
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Empty, Skeleton } from 'antd';
-import React, { FC } from 'react';
-import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem';
-import { LoaderWrap, Wrap } from './components';
-import { InspectorsHosuingsStocksListProps } from './types';
+import React, { FC, useMemo } from 'react';
+import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem/HousingStockItem';
+import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
+import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
 
 export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> = ({
   housingStocks,
   inspectors,
   days,
   updateHousingStock,
-  updates,
+  updateInfo,
   loading,
 }) => {
   const loader = (
@@ -20,7 +20,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
   );
 
   const list = housingStocks?.map((housingStock) => {
-    const update = updates.find(
+    const update = updateInfo.find(
       (elem) => elem.housingStockId === housingStock.housingStockId
     );
     return (
@@ -29,7 +29,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
         housingStock={housingStock}
         inspectors={inspectors}
         days={days}
-        update={update}
+        updateInfo={update}
         updateHousingStock={(data) =>
           updateHousingStock({
             housingStockId: housingStock.housingStockId!,
@@ -40,19 +40,25 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
     );
   });
 
-  const content = (
-    <>
-      {housingStocks ? (
-        housingStocks?.length ? (
-          list
-        ) : (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        )
-      ) : (
-        <TypeAddressToStart />
-      )}
-    </>
-  );
+  const content = useMemo(() => {
+    const isHousingStocksListExist = Boolean(housingStocks);
+    const isHousingStocksListContainsElems = Boolean(housingStocks?.length);
 
-  return <Wrap>{loading ? loader : content}</Wrap>;
+    if (!isHousingStocksListExist) {
+      return <TypeAddressToStart />;
+    }
+
+    if (!isHousingStocksListContainsElems) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+    }
+
+    return list;
+  }, [housingStocks, updateInfo]);
+
+  return (
+    <Wrap>
+      {loading && loader}
+      {!loading && content}
+    </Wrap>
+  );
 };

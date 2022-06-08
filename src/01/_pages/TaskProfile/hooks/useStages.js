@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const useStages = ({ stages = {}, panelLoading }, dispatch) => {
   return {
     items: stages.items ?? [],

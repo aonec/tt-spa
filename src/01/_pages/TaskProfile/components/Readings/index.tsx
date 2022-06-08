@@ -45,7 +45,7 @@ export const Readings: FC<Props> = ({ getData }) => {
 
   useEffect(() => {
     if (readings.length) {
-      const readingValues = getData({
+      getData({
         readings: readings.map((elem) => ({
           ...elem,
           readingDate: moment().toISOString(true),

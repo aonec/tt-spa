@@ -6,7 +6,7 @@ import { getHousingStockAddressString } from './utils';
 import { LoadingSkeleton } from './components/LoadingSkeleton';
 
 export const NodeInfo: FC<NodeInfoProps> = ({ node, loading }) => {
-  console.log(node?.address)
+
   const address = node?.address && getHousingStockAddressString(node.address);
 
   if (loading) {

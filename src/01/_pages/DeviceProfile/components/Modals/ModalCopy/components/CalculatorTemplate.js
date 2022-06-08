@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const CalculatorTemplate = {
   connection: {
     isConnected: true,

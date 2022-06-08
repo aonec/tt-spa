@@ -20,7 +20,6 @@ const $loading = fetchInspectorsHousingStocksListFx.pending;
 
 const handleGetInspectorsHousingStocks = displayInspectorsHousingStocksServiceDomain.createEvent<GetInspectorsHousingStocksRequestParams>();
 
-
 export const displayInspectorsHousingStocksService = {
   inputs: {
     fetchInspectorsHousingStocksListFx,
