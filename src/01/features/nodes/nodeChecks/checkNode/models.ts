@@ -1,9 +1,8 @@
 import {
   CreateNodeCheckRequest,
-  UpdateNodeCheckRequest,
   ECheckType,
   ENodeCheckType,
-} from './../../../../../myApi';
+} from 'myApi';
 import { createForm } from 'effector-forms';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';

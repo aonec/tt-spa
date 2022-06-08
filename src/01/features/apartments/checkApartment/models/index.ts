@@ -2,7 +2,7 @@ import {
   CreateApartmentCheckRequest,
   EActResourceType,
   ECheckType,
-} from './../../../../../myApi';
+} from 'myApi';
 import { createForm } from 'effector-forms';
 import { createStore, createEffect, createEvent } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';
@@ -20,17 +20,12 @@ export const checkApartmentFx = createEffect<
   EffectFailDataAxiosError
 >();
 
-export const createApartmentCheckEv = createEvent();
-
 export const closeCheckApartmentModal = createEvent();
 export const openCheckApartmentModal = createEvent();
 
-export const removeApartmnetCheckFx = createEffect<RemoveCheckPayload, void>();
+export const removeApartmentCheckFx = createEffect<RemoveCheckPayload, void>();
 
 export const removeApartmentCheckEv = createEvent<number>();
-
-export const openEditCheckModal = createEvent();
-
 export interface EditApartmentCheckPayload {
   id: number;
   checkingDate: string;
@@ -98,7 +93,7 @@ export const checkApartmentForm = createForm({
       ],
     },
     checkingAct: {
-      init: null as null | null,
+      init: null,
     },
     actResourceType: {
       init: null as null | EActResourceType,

@@ -63,7 +63,7 @@ export const checkApartmentForm = createForm({
   },
 });
 
-export const removeApartmnetCheckFx = createEffect<RemoveCheckPayload, void>();
+export const removeApartmentCheckFx = createEffect<RemoveCheckPayload, void>();
 
 export const removeApartmentCheckEv = createEvent<number>();
 
