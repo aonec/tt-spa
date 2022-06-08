@@ -45,9 +45,9 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
           >
             <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
             <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
-            <Radio value={SearchType.PersonaNumbers}>
+            {/* <Radio value={SearchType.PersonaNumbers}>
               Поиск по лицевому счету
-            </Radio>
+            </Radio> */}
           </Radio.Group>
         </SearchTypesWrapper>
         <ContentWrapper>

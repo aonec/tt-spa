@@ -1,3 +1,4 @@
+import { DeviceIcon } from 'ui-kit/icons';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -18,4 +19,8 @@ export const Title = styled.div`
 export const DevicesListWrap = styled.div`
   margin-top: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 11, 0.15);
+`;
+
+export const StyledDeviceIcon = styled(DeviceIcon)`
+  transform: scale(1.2);
 `;

@@ -87,7 +87,7 @@ export const TaskProfile = () => {
 
   const individualDevices = task?.individualDevices;
 
-  const isIndividualDevicesNotEmpty = individualDevices?.length > 0;
+  const isIndividualDevicesEmpty = !individualDevices?.length;
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
@@ -109,7 +109,7 @@ export const TaskProfile = () => {
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
           {nodeId && <TaskNodeStatistic id={nodeId} />}
-          {isIndividualDevicesNotEmpty && (
+          {!isIndividualDevicesEmpty && (
             <IndividualDevicesList devices={individualDevices} />
           )}
 
