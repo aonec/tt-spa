@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 1.1fr 1fr 4fr 1.3fr 1.3fr;
+  grid-template-columns: 1fr 1fr 3.5fr 2fr;
   grid-column-gap: 15px;
 
   padding: 15px 25px;
@@ -29,4 +29,30 @@ export const DocumentNameText = styled.div`
   font-size: 14px;
   margin-left: 8px;
   color: #272f5a;
+`;
+
+export const DocumentType = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const DocumentTypeText = styled.div`
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 150px;
+`;
+
+export const ManageIconsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 40px;
+  margin-left: 10px;
+`;
+
+export const DocumentIconWrapper = styled.div`
+  min-width: 10px;
 `;

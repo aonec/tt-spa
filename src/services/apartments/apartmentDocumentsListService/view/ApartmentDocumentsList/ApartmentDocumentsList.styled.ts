@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
 
 export const ListHeader = styled.div`
   display: grid;
-  grid-template-columns: 1.1fr 1fr 4fr 1.3fr 1.3fr;
+  grid-template-columns: 1fr 1fr 3.5fr 2fr;
   grid-column-gap: 15px;
 
   background: rgba(39, 47, 90, 0.04);
@@ -19,4 +19,9 @@ export const ListHeader = styled.div`
   line-height: 16px;
   letter-spacing: 0em;
   text-align: left;
+`;
+
+export const AddButton = styled.div`
+  margin-top: 24px;
+  cursor: pointer;
 `;

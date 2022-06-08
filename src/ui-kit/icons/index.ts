@@ -12,6 +12,8 @@ import { ReactComponent as ElectricityIcon } from './svg/electricity.svg';
 import { ReactComponent as HeatIcon } from './svg/heat.svg';
 import { ReactComponent as DeviceIcon } from './svg/device.svg';
 import { ReactComponent as DocumentIcon } from './svg/document.svg';
+import { ReactComponent as PencilIcon } from './svg/pencil.svg';
+import { ReactComponent as TrashIcon } from './svg/trash.svg';
 
 export {
   StarIcon,
@@ -27,5 +29,7 @@ export {
   HeatIcon,
   AllResourcesIcon,
   DeviceIcon,
-  DocumentIcon
+  DocumentIcon,
+  PencilIcon,
+  TrashIcon,
 };

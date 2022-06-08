@@ -2,7 +2,11 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { ApartmentDocumentItem } from './ApartmentDocumentItem';
-import { ListHeader, Wrapper } from './ApartmentDocumentsList.styled';
+import {
+  AddButton,
+  ListHeader,
+  Wrapper,
+} from './ApartmentDocumentsList.styled';
 import { ApartmentDocumentsListProps } from './ApartmentDocumentsList.types';
 
 export const ApartmentDocumentsList: FC<ApartmentDocumentsListProps> = ({
@@ -35,10 +39,10 @@ export const ApartmentDocumentsList: FC<ApartmentDocumentsListProps> = ({
             <div>Дата</div>
             <div>№ док</div>
             <div>Название документа</div>
-            <div>Ресурс</div>
             <div>Тип</div>
           </ListHeader>
           {documentsList}
+          <AddButton className="ant-btn-link">+ Добавить документ</AddButton>
         </Wrapper>
       )}
     </>
