@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { DeviceIcon } from 'ui-kit/icons';
 import { IndividualDeviceItem } from './IndividualDeviceItem';
 import {
   Wrapper,
   Title,
   Header,
   DevicesListWrap,
+  StyledDeviceIcon,
 } from './IndividualDevicesList.styled';
 import { IndividualDevicesListProps } from './IndividualDevicesList.types';
 
@@ -19,7 +19,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   return (
     <Wrapper>
       <Header>
-        <DeviceIcon style={{ transform: 'scale(1.2)' }} />
+        <StyledDeviceIcon />
         <Title>Приборы</Title>
       </Header>
       <DevicesListWrap>{devicesList}</DevicesListWrap>

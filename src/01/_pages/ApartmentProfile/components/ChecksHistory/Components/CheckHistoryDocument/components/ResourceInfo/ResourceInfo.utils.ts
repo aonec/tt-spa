@@ -1,6 +1,6 @@
 import { EActResourceType } from 'myApi';
 
-export const actResourceTypeNames = {
+export const actResourceNamesLookup = {
   [EActResourceType.ColdWaterSupply]: 'ХВС',
   [EActResourceType.HotWaterSupply]: 'ГВС',
   [EActResourceType.Electricity]: 'ЭЭ',
