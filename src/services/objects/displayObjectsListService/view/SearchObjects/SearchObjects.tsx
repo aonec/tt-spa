@@ -15,7 +15,14 @@ const fields = [
 export const SearchObjects: FC<SearchObjectsProps> = ({ handleSearch }) => {
   return (
     <Wrapper>
-      <ExtendedSearch>
+      <ExtendedSearch
+        open={false}
+        handleApply={() => {}}
+        handleClear={() => {}}
+        handleClose={() => {}}
+        handleOpen={() => {}}
+        extendedSearchContent={<></>}
+      >
         <AddressSearchContainer handleSubmit={handleSearch} fields={fields} />
       </ExtendedSearch>
     </Wrapper>
