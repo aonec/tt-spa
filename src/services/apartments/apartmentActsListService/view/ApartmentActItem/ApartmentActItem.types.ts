@@ -1,5 +1,5 @@
 import { DocumentResponse } from 'myApi';
 
-export type ApartmentDocumentItemProps = {
+export type ApartmentActItemProps = {
   document: DocumentResponse;
 };

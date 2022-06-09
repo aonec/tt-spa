@@ -1,21 +1,21 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { DocumentResponse } from 'myApi';
-import { getApartmentDocumentsList } from './apartmentDocumentsListService.api';
+import { getapartmentActsList } from './apartmentActsListService.api';
 
-const domain = createDomain('apartmentDocumentsListService');
+const domain = createDomain('apartmentActsListService');
 
 const $documentsList = domain.createStore<DocumentResponse[]>([]);
 
 const fetchDocumentsListFx = domain.createEffect<number, DocumentResponse[]>(
-  getApartmentDocumentsList
+  getapartmentActsList
 );
-const ApartmentDocumentsListGate = createGate<{ apartmentId: number }>();
+const ApartmentActsListGate = createGate<{ apartmentId: number }>();
 
 const $isLoading = fetchDocumentsListFx.pending;
 
 forward({
-  from: ApartmentDocumentsListGate.state.map(({ apartmentId }) => apartmentId),
+  from: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
   to: fetchDocumentsListFx,
 });
 
@@ -24,11 +24,11 @@ $documentsList.on(
   (_, documentsList) => documentsList
 );
 
-export const apartmentDocumentsListService = {
+export const apartmentActsListService = {
   inputs: {},
   outputs: {
     $documentsList,
     $isLoading,
   },
-  gates: { ApartmentDocumentsListGate },
+  gates: { ApartmentActsListGate },
 };

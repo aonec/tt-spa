@@ -23,7 +23,7 @@ import { useAsync } from '../../hooks/useAsync';
 import { ChecksHistory } from './components/ChecksHistory';
 import { CheckApartmentModal } from '01/features/apartments/checkApartment';
 import { ApartmentGate } from '01/features/apartments/displayApartment/models';
-import { ApartmentDocumentsListContainer } from 'services/apartments/apartmentDocumentsListService';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -109,9 +109,8 @@ const ApartmentProfile = () => {
       </Route>
 
       <Route path="/*/(\\d+)/documents" exact>
-        <ApartmentDocumentsListContainer/>
+        <ApartmentActsListContainer />
       </Route>
-
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { EDocumentType } from 'myApi';
 
-export const ApartmentDocumentTypesLookup = {
+export const apartmentActTypesLookup = {
   [EDocumentType.AdditionalMaterials]: 'Давлоаывоа',
 };

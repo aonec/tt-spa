@@ -10,10 +10,10 @@ import {
   DocumentTypeText,
   ListItem,
   ManageIconsWrapper,
-} from './ApartmentDocumentItem.styled';
-import { ApartmentDocumentItemProps } from './ApartmentDocumentItem.types';
+} from './ApartmentActItem.styled';
+import { ApartmentActItemProps } from './ApartmentActItem.types';
 
-export const ApartmentDocumentItem: FC<ApartmentDocumentItemProps> = ({
+export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   document: { uploadingTime, id, name, type },
 }) => {
   return (
@@ -26,6 +26,9 @@ export const ApartmentDocumentItem: FC<ApartmentDocumentItemProps> = ({
         </DocumentIconWrapper>
         <DocumentNameText>{name}</DocumentNameText>
       </DocumentName>
+      <div>
+        
+      </div>
       <DocumentType>
         <DocumentTypeText>{type}</DocumentTypeText>
         <ManageIconsWrapper>
