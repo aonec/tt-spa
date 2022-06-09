@@ -95,8 +95,6 @@ const Internal = () => {
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
 
-              <Route path="/objects/" component={Objects} exact />
-
               <Route path="/devices/" component={DevicesProfile} exact />
 
               <Route
