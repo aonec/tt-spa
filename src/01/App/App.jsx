@@ -15,7 +15,6 @@ import {
   Tasks,
   Login,
   TaskProfile,
-  Objects,
   ObjectProfile,
   MetersPage,
   ApartmentProfile,
@@ -49,6 +48,9 @@ import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
 import { DevicesProfile } from 'services/devices/devicesProfileService/view/DevicesProfile';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
+
 
 moment.locale('ru');
 
@@ -92,9 +94,24 @@ const Internal = () => {
                 component={Tasks}
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+
               <Route path="/objects/" component={Objects} exact />
-              {/* <Route path="/devices/" component={DevicesFromSearch} exact /> */}
+
               <Route path="/devices/" component={DevicesProfile} exact />
+
+              <Route
+                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
+                component={ObjectProfile}
+                exact
+              />
+
+              <Route
+                path="/objects/:searchType?"
+                component={ObjectsProfileContainer}
+                exact
+              />
+
+              <Route path="/devices/" component={DevicesFromSearch} exact />
               <Route path="/companyProfile/:section?" component={Settings} />
               <Route path="/companyProfile/staff/:id" component={Settings} />
 
@@ -149,12 +166,6 @@ const Internal = () => {
               <Route
                 path="/housingMeteringDevices/:deviceId/edit_odpu/"
                 component={EditODPU}
-                exact
-              />
-
-              <Route
-                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
-                component={ObjectProfile}
                 exact
               />
 

@@ -40,7 +40,7 @@ const unsetNodeOnCommercialAccounting = domain.createEvent<unsetNodeCommercialRe
 const $isLoading = combine(
   registrationFx.pending,
   unregistrationFx.pending,
-  (...loading) => loading.some(Boolean)
+  (...loadings) => loadings.some(Boolean)
 );
 
 registrationFx.failData.watch(({ response }) => {

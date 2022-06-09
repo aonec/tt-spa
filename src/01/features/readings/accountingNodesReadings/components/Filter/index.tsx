@@ -101,6 +101,8 @@ export function useOnEnterSwitch(amount: number) {
   const lastRef = refs[refs.length - 1];
 
   function onEnterHandler(index: number) {
+    refs[index]?.current?.blur();
+
     if (index === amount - 1) lastRef?.current?.blur();
 
     if (refs[index + 1]?.current?.focus) {

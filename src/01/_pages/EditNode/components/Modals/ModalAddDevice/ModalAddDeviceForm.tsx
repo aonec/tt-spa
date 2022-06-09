@@ -148,14 +148,12 @@ const ModalAddDeviceForm = ({
       lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
       futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
-      resource: values.resource,
       model: values.model,
       diameter:
         values.housingMeteringDeviceType === 'FlowMeter'
           ? values.diameter
           : null,
       pipe: {
-        // calculatorId: calculatorId,
         pipeNumber: values.pipeNumber,
         magistral: values.magistral,
         nodeId: node.id,

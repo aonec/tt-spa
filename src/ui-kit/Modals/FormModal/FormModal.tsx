@@ -1,31 +1,37 @@
+import React, { useMemo } from 'react';
+
 import {
   Footer,
   Header,
   ModalText,
   StyledModal,
-} from '01/shared/ui/Modal/Modal';
+} from './FormModal.styled';
 import { ButtonTT } from '01/tt-components';
 import { Loader } from '01/_components/Loader';
-import React from 'react';
 import { FormModalProps } from './formModal.types';
 
+const defaultInnerProps = {
+  width: 800,
+  destroyOnClose: true,
+  centered: true
+}
+
 export const FormModal: React.FC<FormModalProps> = ({
-  width,
+  innerModalProps = {},
   visible,
   onCancel,
   title,
-  children,
   loading,
   onSubmit,
   submitBtnText = 'Подтвердить',
   customSubmit,
-  centered,
   customFooter,
   disabled,
   submitButtonType = 'blue',
   cancelBtnText = 'Отмена',
   formId,
   form,
+  description
 }) => {
   
   const DefaultModalSubmitButton = (
@@ -50,17 +56,22 @@ export const FormModal: React.FC<FormModalProps> = ({
     </Footer>
   );
 
+  const innerProps = useMemo(() => {
+    return {
+      ...defaultInnerProps,
+      ...innerModalProps,
+    }
+  }, [innerModalProps]);
+
   return (
     <StyledModal
+      {...innerProps}
       visible={visible}
       onCancel={onCancel}
-      width={width || 800}
       title={<Header>{title}</Header>}
-      centered={centered}
-      destroyOnClose
       footer={customFooter || DefaultModalFooter}
     >
-      <ModalText>{children}</ModalText>
+      <ModalText>{description}</ModalText>
       {form}
     </StyledModal>
   );

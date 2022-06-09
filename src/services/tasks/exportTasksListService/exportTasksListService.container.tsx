@@ -1,18 +1,25 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { exportTasksListService } from './exportTasksListService.models';
+import { exportTasksListService } from './exportTasksListService.model';
 import { ExportTasksListForm } from './view/ExportTasksListForm';
 
 export const ExportTasksListModalContainer = () => {
-  const isOpen = useStore(exportTasksListService.outputs.$isModalOpen);
-  const isLoading = useStore(exportTasksListService.outputs.$isLoading);
+  const { inputs, outputs } = exportTasksListService;
 
-  const handleClose = useEvent(exportTasksListService.inputs.closeModal);
+  const isOpen = useStore(outputs.$isModalOpen);
+  const isLoading = useStore(outputs.$isLoading);
 
-  const handleSubmit = useEvent(exportTasksListService.inputs.exportTasksList);
+  const handleClose = useEvent(inputs.closeModal);
+
+  const handleSubmit = useEvent(inputs.exportTasksList);
 
   const formId = 'export-tasks-list-form';
+
+  const form = useMemo(
+    () => <ExportTasksListForm formId={formId} handleSubmit={handleSubmit} />,
+    [formId, handleSubmit]
+  );
 
   return (
     <FormModal
@@ -21,7 +28,7 @@ export const ExportTasksListModalContainer = () => {
       visible={isOpen}
       onCancel={() => handleClose()}
       formId={formId}
-      form={<ExportTasksListForm formId={formId} handleSubmit={handleSubmit} />}
+      form={form}
     />
   );
 };
