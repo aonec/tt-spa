@@ -1,15 +1,19 @@
 import DevicesByAddress from '01/_pages/Devices/components/DevicesByAddress/DevicesByAddress';
 import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
-import { uniqueId } from 'lodash';
+import { Pagination } from 'antd';
 import React, { FC } from 'react';
-import { Wrapper } from './DevicesList.styled';
 import { DevicesListProps } from './DevicesList.types';
 
 export const DevicesList: FC<DevicesListProps> = ({
   calculators,
   isLoading,
+  total,
+  pageNumber,
+  pageSize,
+  setPageNumber,
 }) => {
-  const devices = groupDevicesByObjects(calculators)
+  const devices = groupDevicesByObjects(calculators);
+  const isDevicesListEmpty = !devices.length;
   const deviceArray = devices.map((addressDevicesGroup) => (
     <DevicesByAddress
       key={addressDevicesGroup.address?.mainAddress?.id}
@@ -17,16 +21,23 @@ export const DevicesList: FC<DevicesListProps> = ({
     />
   ));
   return (
-    <Wrapper>
+    <div>
       {isLoading ? (
         <div role="loader">ЗАГРУЗКА...</div>
       ) : (
-        <div>
-          <div>
-            {deviceArray}
-          </div>
-        </div>
+        <>
+          {deviceArray}
+          {!isDevicesListEmpty && (
+            <Pagination
+              total={total}
+              showSizeChanger={false}
+              current={Number(pageNumber)}
+              pageSize={Number(pageSize)}
+              onChange={setPageNumber}
+            />
+          )}
+        </>
       )}
-    </Wrapper>
+    </div>
   );
 };

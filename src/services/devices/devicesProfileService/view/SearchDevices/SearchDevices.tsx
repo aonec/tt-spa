@@ -1,21 +1,23 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import styles from './DeviceSearchForm.module.scss';
 import { Wrapper } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { Form, Input, Button, Tooltip, Select, Slider } from 'antd';
+import { Form, Input, Select, Slider } from 'antd';
 import styled from 'styled-components';
 import { Icon } from '01/components';
 import { useFormik } from 'formik';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
-import { EExpiresCheckingDateAt, EHouseCategory, EResourceType } from 'myApi';
 import { displayDevicesService } from 'services/devices/displayDevicesService';
 import { useEvent } from 'effector-react';
-import _, { debounce } from 'lodash';
+import _ from 'lodash';
 
 const { Option } = Select;
 
-export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
-  const { outputs, inputs } = displayDevicesService;
+export const SearchDevices: FC<SearchDevicesProps> = ({
+  children,
+  isExtendedSearchOpen,
+}) => {
+  const { inputs } = displayDevicesService;
   const fetchcalc = useEvent(inputs.fetchCalculators);
   const marks = {
     0: '0',
@@ -29,7 +31,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
     initialValues: {
       'Filter.DiameterRange.From': undefined,
       'Filter.DiameterRange.To': undefined,
-      'Filter.ExpiresCheckingDateAt': undefined ,
+      'Filter.ExpiresCheckingDateAt': undefined,
       'Filter.Resource': undefined,
       'Filter.Model': undefined,
       'Filter.CommercialDateRange.From': undefined,
@@ -54,7 +56,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
     onSubmit: (values) => void fetchcalc(values),
   });
 
-  const debouncedFilterChange = _.debounce(()=>submitForm(), 1000);
+  const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
   return (
     <Wrapper>
       <Form
@@ -68,125 +70,127 @@ export const SearchDevices: FC<SearchDevicesProps> = ({}) => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '0.5fr 8fr 3.5fr',
+            gridTemplateColumns: isExtendedSearchOpen
+              ? '1fr'
+              : '0.5fr 8fr 3.5fr',
           }}
         >
           <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
-            <Tooltip title="Расширенный поиск">
-              <Button icon={<Icon icon="filter" />} />
-            </Tooltip>
+            {children}
           </Form.Item>
-
-          <Form.Item
-            name="search"
-            rules={[
-              {
-                required: true,
-                message: 'Введите серийный номер прибор',
-              },
-            ]}
-            style={{ marginRight: 16 }}
-          >
-            <Input
-              onChange={(value) =>
-                setFieldValue('Question', value.target.value)
-              }
-              className={styles.input}
-              value={values.Question}
-              placeholder="Введите серийный номер прибора"
-              prefix={<Icon icon="search" />}
-            />
-          </Form.Item>
-
-          <Form.Item name="sortBy">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label htmlFor="sortBy" style={{ minWidth: 120, marginRight: 8 }}>
-                Сортировать по:
-              </label>
-              <Select
-                id="sortBy"
-                onChange={(value) => setFieldValue('OrderBy', value)}
-                onSelect={() => submitForm()}
+          {!isExtendedSearchOpen ? (
+            <>
+              <Form.Item
+                name="search"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Введите серийный номер прибор',
+                  },
+                ]}
+                style={{ marginRight: 16 }}
               >
-                {/* <Option value="descendingFutureCheckingDate">
-                  Дате поверки (уб.)
-                </Option>
-                <Option value="ascendingFutureCheckingDate">
-                  Дате поверки (возр.)
-                </Option> */}
-                <Option value="Descending">Улице (уб.)</Option>
-                <Option value="Ascending">Улице (возр.)</Option>
-              </Select>
-            </div>
-          </Form.Item>
+                <Input
+                  onChange={(value) =>
+                    setFieldValue('Question', value.target.value)
+                  }
+                  className={styles.input}
+                  value={values.Question}
+                  placeholder="Введите серийный номер прибора"
+                  prefix={<Icon icon="search" />}
+                />
+              </Form.Item>
+
+              <Form.Item name="OrderBy">
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <label
+                    htmlFor="sortBy"
+                    style={{ minWidth: 120, marginRight: 8 }}
+                  >
+                    Сортировать по:
+                  </label>
+                  <Select
+                    id="sortBy"
+                    onChange={(value) => setFieldValue('OrderBy', value)}
+                    onSelect={() => submitForm()}
+                  >
+                    <Option value="Descending">Улице (уб.)</Option>
+                    <Option value="Ascending">Улице (возр.)</Option>
+                  </Select>
+                </div>
+              </Form.Item>
+            </>
+          ) : null}
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            padding: 8,
-            alignItems: 'center',
-          }}
-        >
-          <Form.Item
-            name="lastCheckingDate"
-            style={{ width: '100%', marginRight: 25 }}
+        {!isExtendedSearchOpen ? (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              padding: 8,
+              alignItems: 'center',
+            }}
           >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label
-                htmlFor="expirationDate"
-                style={{ minWidth: 152, marginRight: 8 }}
-              >
-                Истекает дата поверки:{' '}
-              </label>
-              <Select
-                id="expirationDate"
-                style={{ width: '65%', marginRight: 16 }}
-                onChange={(value) =>
-                  setFieldValue('Filter.ExpiresCheckingDateAt', value)
-                }
-                onSelect={() => submitForm()}
-              >
-                <Option value='NextMonth'>Ближайший месяц</Option>
-                <Option value='NextTwoMonth'>В следующие два месяца</Option>
-                <Option value='Past'>Истекла</Option>
-              </Select>
-            </div>
-          </Form.Item>
+            <Form.Item
+              name="lastCheckingDate"
+              style={{ width: '100%', marginRight: 25 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label
+                  htmlFor="expirationDate"
+                  style={{ minWidth: 152, marginRight: 8 }}
+                >
+                  Истекает дата поверки:{' '}
+                </label>
+                <Select
+                  id="expirationDate"
+                  style={{ width: '65%', marginRight: 16 }}
+                  onChange={(value) =>
+                    setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+                  }
+                  onSelect={() => submitForm()}
+                >
+                  <Option value="NextMonth">Ближайший месяц</Option>
+                  <Option value="NextTwoMonth">В следующие два месяца</Option>
+                  <Option value="Past">Истекла</Option>
+                </Select>
+              </div>
+            </Form.Item>
 
-          <Form.Item name="deviceDiameter">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label
-                style={{
-                  width: '30%',
-                  minWidth: 150,
-                  display: 'block',
-                  textAlign: 'center',
-                  marginRight: 8,
-                }}
-              >
-                Диаметр прибора, мм{' '}
-              </label>
+            <Form.Item name="deviceDiameter">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label
+                  style={{
+                    width: '30%',
+                    minWidth: 150,
+                    display: 'block',
+                    textAlign: 'center',
+                    marginRight: 8,
+                  }}
+                >
+                  Диаметр прибора, мм{' '}
+                </label>
 
-              <StyledSlider
-                style={{ width: '70%' }}
-                getTooltipPopupContainer={(triggerNode) =>
-                  triggerNode.parentNode as HTMLElement
-                }
-                defaultValue={[0, 255]}
-                max={255}
-                range
-                marks={marks}
-                onChange={(value: [number, number]) => {
-                  setFieldValue('Filter.DiameterRange.From', value[0]);
-                  setFieldValue('Filter.DiameterRange.To', value[1]);
-                  debouncedFilterChange();
-                }}
-              />
-            </div>
-          </Form.Item>
-        </div>
+                <StyledSlider
+                  style={{ width: '70%' }}
+                  getTooltipPopupContainer={(triggerNode) =>
+                    triggerNode.parentNode as HTMLElement
+                  }
+                  defaultValue={[0, 255]}
+                  max={255}
+                  range
+                  marks={marks}
+                  onChange={(value: [number, number]) => {
+                    setFieldValue("['Filter.DiameterRange.From']", value[0]);
+                    setFieldValue("['Filter.DiameterRange.To']", value[1]);
+                    debouncedFilterChange();
+                  }}
+                />
+              </div>
+            </Form.Item>
+          </div>
+        ) : null}
       </Form>
     </Wrapper>
   );
@@ -195,15 +199,4 @@ const StyledSlider = styled(Slider)`
   &.ant-slider.ant-slider-with-marks {
     margin-bottom: 12px !important;
   }
-  //.ant-tooltip-arrow {
-  //  display: none;
-  //}
-  //.ant-tooltip-inner {
-  //  position: relative;
-  //  top: -11px;
-  //  color: black;
-  //  background-color: transparent;
-  //  box-shadow: none;
-  //  padding: 0;
-  //}
 `;
