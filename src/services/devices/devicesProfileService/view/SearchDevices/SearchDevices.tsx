@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styles from './DeviceSearchForm.module.scss';
 import { Wrapper } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
@@ -19,6 +19,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 }) => {
   const { inputs } = displayDevicesService;
   const fetchcalc = useEvent(inputs.fetchCalculators);
+
   const marks = {
     0: '0',
     255: '255',
@@ -55,6 +56,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     },
     onSubmit: (values) => void fetchcalc(values),
   });
+
+  useEffect(() => {
+    fetchcalc(values);
+  }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
   return (
