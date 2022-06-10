@@ -35,7 +35,7 @@ export const AdditionalAddress = styled.div`
   font-weight: 400;
   opacity: 0.8;
   margin-top: 7px;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: min-content;

@@ -8,7 +8,7 @@ export const ObjectsList: FC<ObjectsListProps> = ({
   isLoading,
   housingStocks,
 }) => {
-  const рousingStocksList = useMemo(() => {
+  const housingStocksList = useMemo(() => {
     return housingStocks?.map((housingStock) => (
       <HousingStockItem key={housingStock.id} housingStock={housingStock} />
     ));
@@ -19,7 +19,7 @@ export const ObjectsList: FC<ObjectsListProps> = ({
   return (
     <div>
       {isLoading && <Skeleton active />}
-      {!isLoading && рousingStocksList}
+      {!isLoading && housingStocksList}
       {isEmpty && !isLoading && <TypeAddressToStart />}
     </div>
   );

@@ -31,7 +31,7 @@ export const ObjectsListContainer = () => {
       <HousingStocksGate />
       <SearchObjects handleSearch={handleSearch} />
       <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
-      {isNotEmpty && (
+      {isNotEmpty && !isLoading && (
         <Pagination
           showSizeChanger={false}
           defaultCurrent={1}
