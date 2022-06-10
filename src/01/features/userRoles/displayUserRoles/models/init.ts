@@ -10,8 +10,6 @@ import {
 fetchUserRolesFx.use(fetchUserRoles);
 
 $userRoles.on(fetchUserRolesFx.doneData, (_, userRoles) => {
-  console.log(userRoles);
-
   return userRoles;
 });
 
