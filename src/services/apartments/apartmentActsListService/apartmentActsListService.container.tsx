@@ -31,8 +31,8 @@ export const ApartmentActsListContainer = () => {
 
   return (
     <>
-      <ApartmentActTypesGate/>
-      <ApartmentActsListGate apartmentId={apartmentId}/>
+      <ApartmentActTypesGate />
+      <ApartmentActsListGate apartmentId={apartmentId} />
       <ApartmentActsList
         acts={documents}
         isLoading={isLoading}

@@ -1,10 +1,8 @@
 import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
-import { createDomain, sample } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import {  ApartmentActResponse, ApartmentCheckResponse } from 'myApi';
-import {
-  getapartmentActsList,
-} from './apartmentActsListService.api';
+import { ApartmentActResponse, ApartmentCheckResponse } from 'myApi';
+import { getapartmentActsList } from './apartmentActsListService.api';
 
 const domain = createDomain('apartmentActsListService');
 
@@ -23,16 +21,20 @@ const refetchApartmentActs = domain.createEvent();
 
 sample({
   source: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
-  clock: [ApartmentActsListGate.state, refetchApartmentActs],
+  clock: refetchApartmentActs,
   target: fetchActsListFx,
 });
 
+forward({
+  from: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
+  to: fetchActsListFx,
+});
 
 $actsList.on(fetchActsListFx.doneData, (_, actsList) => actsList);
 
 export const apartmentActsListService = {
   inputs: {
-    refetchApartmentActs
+    refetchApartmentActs,
   },
   outputs: {
     $actsList,

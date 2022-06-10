@@ -55,12 +55,14 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
             {actsList}
           </>
         )}
-        <AddButton
-          className="ant-btn-link"
-          onClick={handleOpeningCreateActModal}
-        >
-          + Добавить акт
-        </AddButton>
+        {!isLoading && (
+          <AddButton
+            className="ant-btn-link"
+            onClick={handleOpeningCreateActModal}
+          >
+            + Добавить акт
+          </AddButton>
+        )}
       </Wrapper>
     </>
   );
