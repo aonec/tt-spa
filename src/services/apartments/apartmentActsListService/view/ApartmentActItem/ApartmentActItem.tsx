@@ -16,10 +16,19 @@ import {
 import { ApartmentActItemProps } from './ApartmentActItem.types';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({
-  act: { actJobDate, id, actType, actResourceType, registryNumber, document },
+  act,
   openDeleteActModal,
+  openEditActModal,
   actTypes,
 }) => {
+  const {
+    actJobDate,
+    id,
+    actType,
+    actResourceType,
+    registryNumber,
+    document,
+  } = act;
   const actTypeText = useMemo(
     () => actTypes?.find(({ key }) => key === actType)?.value,
     [actType, actTypes]
@@ -45,7 +54,7 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
       <DocumentType>
         <DocumentTypeText>{actTypeText}</DocumentTypeText>
         <ManageIconsWrapper>
-          <DocumentIconSC>
+          <DocumentIconSC onClick={() => openEditActModal(act)}>
             <PencilIcon />
           </DocumentIconSC>
 

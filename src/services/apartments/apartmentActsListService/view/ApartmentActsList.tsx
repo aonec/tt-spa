@@ -3,6 +3,7 @@ import { Empty } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { CreateApartmentActContainer } from 'services/apartments/createApartmentActService';
 import { DeleteApartmentActContainer } from 'services/apartments/deleteApartmentActService';
+import { EditApartmentActContainer } from 'services/apartments/editApartmentActService';
 import { ApartmentActItem } from './ApartmentActItem';
 import { AddButton, ListHeader, Wrapper } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
@@ -12,6 +13,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   isLoading,
   handleOpeningCreateActModal,
   handleOpeningDeleteActModal,
+  handleOpeningEditActModal,
   actTypes
 }) => {
   const isShowactsList = acts && acts.length && !isLoading;
@@ -24,6 +26,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
           act={act}
           actTypes= {actTypes}
           openDeleteActModal={handleOpeningDeleteActModal}
+          openEditActModal={handleOpeningEditActModal}
         />
       )),
     [acts, actTypes]
@@ -32,6 +35,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   return (
     <>
       <CreateApartmentActContainer />
+      <EditApartmentActContainer/>
       <DeleteApartmentActContainer />
       {isLoading && <PendingLoader loading={isLoading} />}
       {acts && !acts.length && !isLoading && (

@@ -13,25 +13,25 @@ const closeModal = domain.createEvent();
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 
-const createDocument = domain.createEvent<CreateActFormPayload>();
-const createDocumentFx = domain.createEffect<AddApartmentActRequest, void>(
+const createAct = domain.createEvent<CreateActFormPayload>();
+const createActFx = domain.createEffect<AddApartmentActRequest, void>(
   postApartmentAct
 );
 
-const $createActIsLoading = createDocumentFx.pending;
+const $createActIsLoading = createActFx.pending;
 
 sample({
   source: apartmentActsListService.gates.ApartmentActsListGate.state,
-  clock: createDocument,
+  clock: createAct,
   fn: (sourcePayload, clockPayload) => ({
     ...sourcePayload,
     ...clockPayload,
   }),
-  target: createDocumentFx,
+  target: createActFx,
 });
 
 forward({
-  from: createDocumentFx.doneData,
+  from: createActFx.doneData,
   to: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
 });
 
@@ -39,7 +39,7 @@ export const createApartmentActService = {
   inputs: {
     openModal,
     closeModal,
-    createDocument,
+    createAct,
   },
   outputs: {
     $isModalOpen,

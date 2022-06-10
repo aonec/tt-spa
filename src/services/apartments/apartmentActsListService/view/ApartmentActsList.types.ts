@@ -5,5 +5,6 @@ export type ApartmentActsListProps = {
   isLoading: boolean;
   handleOpeningCreateActModal: () => void;
   handleOpeningDeleteActModal: (actId: number) => void;
+  handleOpeningEditActModal: (act: ApartmentActResponse) => void;
   actTypes: EActTypeStringDictionaryItem[] | null;
 };

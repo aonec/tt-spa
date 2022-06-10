@@ -4,6 +4,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { createApartmentActService } from '../createApartmentActService';
 import { deleteApartmentActService } from '../deleteApartmentActService';
+import { editApartmentActService } from '../editApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
 
@@ -24,16 +25,20 @@ export const ApartmentActsListContainer = () => {
   const handleOpeningDeleteActModal = useEvent(
     deleteApartmentActService.inputs.openModal
   );
+  const handleOpeningEditActModal = useEvent(
+    editApartmentActService.inputs.openModal
+  );
 
   return (
     <>
-      <ApartmentActTypesGate />
-      <ApartmentActsListGate apartmentId={apartmentId} />
+      <ApartmentActTypesGate/>
+      <ApartmentActsListGate apartmentId={apartmentId}/>
       <ApartmentActsList
         acts={documents}
         isLoading={isLoading}
         handleOpeningCreateActModal={() => handleOpeningCreateActModal()}
         handleOpeningDeleteActModal={handleOpeningDeleteActModal}
+        handleOpeningEditActModal={handleOpeningEditActModal}
         actTypes={actTypes}
       />
     </>

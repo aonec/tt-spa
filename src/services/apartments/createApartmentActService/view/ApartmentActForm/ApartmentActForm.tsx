@@ -1,5 +1,3 @@
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import { FileData } from '01/hooks/useFilesUpload';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Select } from '01/shared/ui/Select';
 import { DatePickerTT, InputTT } from '01/tt-components';
@@ -9,15 +7,18 @@ import moment from 'moment';
 import { EActResourceType, EActType } from 'myApi';
 import React, { FC, SyntheticEvent } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import { FieldsWrapper, Wrapper } from './ApartmentActForm.styled';
-import { actResourceTypes, apartmentActFormProps } from './ApartmentActForm.types';
+import { ErrorMessage, FieldsWrapper } from './ApartmentActForm.styled';
+import {
+  actResourceTypes,
+  apartmentActFormProps,
+} from './ApartmentActForm.types';
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
 
 export const ApartmentActForm: FC<apartmentActFormProps> = ({
   formId,
   handleSubmit,
-  actTypes
+  actTypes,
 }) => {
   const {
     values,
@@ -44,7 +45,6 @@ export const ApartmentActForm: FC<apartmentActFormProps> = ({
   });
 
   return (
-    <Wrapper>
       <Form id={formId} onSubmitCapture={submitForm}>
         <FieldsWrapper>
           <Form.Item label="Дата">
@@ -93,7 +93,7 @@ export const ApartmentActForm: FC<apartmentActFormProps> = ({
               onChange={(value) => setFieldValue('actType', value as EActType)}
               style={{ maxWidth: 172, overflow: 'hidden' }}
             >
-              {actTypes?.map(({key, value}) => (
+              {actTypes?.map(({ key, value }) => (
                 <Select.Option value={key!} key={key}>
                   {value}
                 </Select.Option>
@@ -111,6 +111,5 @@ export const ApartmentActForm: FC<apartmentActFormProps> = ({
           max={1}
         />
       </Form>
-    </Wrapper>
   );
 };

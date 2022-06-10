@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { createApartmentActService } from './createApartmentActService.model';
 import { ApartmentActForm } from './view/ApartmentActForm';
@@ -13,7 +13,7 @@ export const CreateApartmentActContainer = () => {
 
   const handleClose = useEvent(inputs.closeModal);
 
-  const handleSubmit = useEvent(inputs.createDocument);
+  const handleSubmit = useEvent(inputs.createAct);
   const formId = 'create-apartment-document';
 
   const form = <ApartmentActForm formId={formId} handleSubmit={handleSubmit} actTypes={actTypes}/>;
