@@ -78,12 +78,6 @@ sample({
   target: fetchApartmentsFx,
 });
 
-sample({
-  clock: [ApartmentsListGate.open],
-  fn: () => ({ PageSize: 30 }),
-  target: fetchApartmentsFx,
-});
-
 export const displayApartmentsListService = {
   inputs: {
     searchApartments,
