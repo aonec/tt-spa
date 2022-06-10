@@ -1,34 +1,43 @@
-import { createDomain, forward } from 'effector';
+import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { DocumentResponse } from 'myApi';
-import { getapartmentActsList } from './apartmentActsListService.api';
+import {  ApartmentActResponse, ApartmentCheckResponse } from 'myApi';
+import {
+  getapartmentActsList,
+} from './apartmentActsListService.api';
 
 const domain = createDomain('apartmentActsListService');
 
-const $documentsList = domain.createStore<DocumentResponse[]>([]);
+const $actsList = domain.createStore<ApartmentActResponse[] | null>(null);
 
-const fetchDocumentsListFx = domain.createEffect<number, DocumentResponse[]>(
-  getapartmentActsList
-);
+const fetchActsListFx = domain.createEffect<
+  number,
+  ApartmentActResponse[] | null
+>(getapartmentActsList);
+
 const ApartmentActsListGate = createGate<{ apartmentId: number }>();
 
-const $isLoading = fetchDocumentsListFx.pending;
+const $isLoading = fetchActsListFx.pending;
 
-forward({
-  from: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
-  to: fetchDocumentsListFx,
+const refetchApartmentActs = domain.createEvent();
+
+sample({
+  source: ApartmentActsListGate.state.map(({ apartmentId }) => apartmentId),
+  clock: [ApartmentActsListGate.state, refetchApartmentActs],
+  target: fetchActsListFx,
 });
 
-$documentsList.on(
-  fetchDocumentsListFx.doneData,
-  (_, documentsList) => documentsList
-);
+
+$actsList.on(fetchActsListFx.doneData, (_, actsList) => actsList);
 
 export const apartmentActsListService = {
-  inputs: {},
+  inputs: {
+    refetchApartmentActs
+  },
   outputs: {
-    $documentsList,
+    $actsList,
     $isLoading,
+    $actTypes,
   },
   gates: { ApartmentActsListGate },
 };

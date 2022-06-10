@@ -1,8 +1,10 @@
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import moment from 'moment';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon } from 'ui-kit/icons';
 import {
   DateWrapper,
+  DocumentIconSC,
   DocumentIconWrapper,
   DocumentName,
   DocumentNameText,
@@ -14,26 +16,42 @@ import {
 import { ApartmentActItemProps } from './ApartmentActItem.types';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({
-  document: { uploadingTime, id, name, type },
+  act: { actJobDate, id, actType, actResourceType, registryNumber, document },
+  openDeleteActModal,
+  actTypes,
 }) => {
+  const actTypeText = useMemo(
+    () => actTypes?.find(({ key }) => key === actType)?.value,
+    [actType, actTypes]
+  );
+
   return (
     <ListItem>
-      <DateWrapper>{moment(uploadingTime).format('DD.MM.YYYY')}</DateWrapper>
-      <div>{id}</div>
+      <DateWrapper>{moment(actJobDate).format('DD.MM.YYYY')}</DateWrapper>
+      <div>{registryNumber}</div>
+
       <DocumentName>
         <DocumentIconWrapper>
           <DocumentIcon />
         </DocumentIconWrapper>
-        <DocumentNameText>{name}</DocumentNameText>
+
+        <DocumentNameText>
+          {document ? document.name : 'Нет документа'}
+        </DocumentNameText>
       </DocumentName>
-      <div>
-        
-      </div>
+
+      <ResourceInfo resource={actResourceType} />
+
       <DocumentType>
-        <DocumentTypeText>{type}</DocumentTypeText>
+        <DocumentTypeText>{actTypeText}</DocumentTypeText>
         <ManageIconsWrapper>
-          <PencilIcon style={{ fontSize: 16, cursor: 'pointer' }} />
-          <TrashIcon style={{ fontSize: 16, cursor: 'pointer' }} />
+          <DocumentIconSC>
+            <PencilIcon />
+          </DocumentIconSC>
+
+          <DocumentIconSC onClick={() => openDeleteActModal(id)}>
+            <TrashIcon />
+          </DocumentIconSC>
         </ManageIconsWrapper>
       </DocumentType>
     </ListItem>

@@ -9,7 +9,7 @@ export const ListItem = styled.div`
   border-bottom: 1px solid lightgray;
 `;
 
-export const DateWrapper = styled.b`
+export const DateWrapper = styled.span`
   color: rgb(39, 47, 90);
   font-weight: 500;
 `;
@@ -55,4 +55,9 @@ export const ManageIconsWrapper = styled.div`
 
 export const DocumentIconWrapper = styled.div`
   min-width: 10px;
+`;
+
+export const DocumentIconSC = styled.div`
+  font-size: 16;
+  cursor: pointer;
 `;

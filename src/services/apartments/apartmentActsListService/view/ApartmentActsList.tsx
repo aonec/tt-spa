@@ -2,41 +2,42 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { CreateApartmentActContainer } from 'services/apartments/createApartmentActService';
+import { DeleteApartmentActContainer } from 'services/apartments/deleteApartmentActService';
 import { ApartmentActItem } from './ApartmentActItem';
-import {
-  AddButton,
-  ListHeader,
-  Wrapper,
-} from './ApartmentActsList.styled';
+import { AddButton, ListHeader, Wrapper } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
-  documents,
-  isDocumentsEmpty,
+  acts,
   isLoading,
-  handleOpeningCreateDocumentModal,
+  handleOpeningCreateActModal,
+  handleOpeningDeleteActModal,
+  actTypes
 }) => {
-  const isShowDocumentsList = !isDocumentsEmpty && !isLoading;
+  const isShowactsList = acts && acts.length && !isLoading;
 
-  const documentsList = useMemo(
+  const actsList = useMemo(
     () =>
-      documents.map((document) => (
-        <ApartmentActItem document={document} />
+      acts &&
+      acts.map((act) => (
+        <ApartmentActItem
+          act={act}
+          actTypes= {actTypes}
+          openDeleteActModal={handleOpeningDeleteActModal}
+        />
       )),
-    [documents]
+    [acts, actTypes]
   );
 
   return (
     <>
-      <CreateApartmentActContainer/>
+      <CreateApartmentActContainer />
+      <DeleteApartmentActContainer />
       {isLoading && <PendingLoader loading={isLoading} />}
-      {isDocumentsEmpty && !isLoading && (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="Нет актов"
-        />
+      {acts && !acts.length && !isLoading && (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
       )}
-      {isShowDocumentsList && (
+      {isShowactsList && (
         <Wrapper>
           <ListHeader>
             <div>Дата</div>
@@ -45,12 +46,12 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
             <div>Ресурс</div>
             <div>Тип</div>
           </ListHeader>
-          {documentsList}
+          {actsList}
           <AddButton
             className="ant-btn-link"
-            onClick={handleOpeningCreateDocumentModal}
+            onClick={handleOpeningCreateActModal}
           >
-            + Добавить документ
+            + Добавить акт
           </AddButton>
         </Wrapper>
       )}

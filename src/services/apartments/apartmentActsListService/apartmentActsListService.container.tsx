@@ -1,7 +1,9 @@
+import { ApartmentActTypesGate } from '01/features/actsJournal/displayActTypes/models';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { createApartmentActService } from '../createApartmentActService';
+import { deleteApartmentActService } from '../deleteApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
 
@@ -12,25 +14,27 @@ export const ApartmentActsListContainer = () => {
   const { outputs } = apartmentActsListService;
   const { ApartmentActsListGate } = apartmentActsListService.gates;
 
-  const documents = useStore(outputs.$documentsList);
+  const documents = useStore(outputs.$actsList);
   const isLoading = useStore(outputs.$isLoading);
-
-  const isDocumentsEmpty = !documents?.length;
+  const actTypes = useStore(outputs.$actTypes);
 
   const handleOpeningCreateActModal = useEvent(
     createApartmentActService.inputs.openModal
   );
+  const handleOpeningDeleteActModal = useEvent(
+    deleteApartmentActService.inputs.openModal
+  );
 
   return (
     <>
+      <ApartmentActTypesGate />
       <ApartmentActsListGate apartmentId={apartmentId} />
       <ApartmentActsList
-        documents={documents}
+        acts={documents}
         isLoading={isLoading}
-        isDocumentsEmpty={isDocumentsEmpty}
-        handleOpeningCreateDocumentModal={() =>
-          handleOpeningCreateActModal()
-        }
+        handleOpeningCreateActModal={() => handleOpeningCreateActModal()}
+        handleOpeningDeleteActModal={handleOpeningDeleteActModal}
+        actTypes={actTypes}
       />
     </>
   );
