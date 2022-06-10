@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon } from 'ui-kit/icons';
 import {
   DateWrapper,
+  DocumentIconSC,
   DocumentIconWrapper,
   DocumentName,
   DocumentNameText,
@@ -29,8 +30,12 @@ export const ApartmentDocumentItem: FC<ApartmentDocumentItemProps> = ({
       <DocumentType>
         <DocumentTypeText>{type}</DocumentTypeText>
         <ManageIconsWrapper>
-          <PencilIcon style={{ fontSize: 16, cursor: 'pointer' }} />
-          <TrashIcon style={{ fontSize: 16, cursor: 'pointer' }} />
+          <DocumentIconSC>
+            <PencilIcon />
+          </DocumentIconSC>
+          <DocumentIconSC>
+            <TrashIcon/>
+          </DocumentIconSC>
         </ManageIconsWrapper>
       </DocumentType>
     </ListItem>

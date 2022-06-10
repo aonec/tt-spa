@@ -11,10 +11,9 @@ import { ApartmentDocumentsListProps } from './ApartmentDocumentsList.types';
 
 export const ApartmentDocumentsList: FC<ApartmentDocumentsListProps> = ({
   documents,
-  isDocumentsEmpty,
   isLoading,
 }) => {
-  const isShowDocumentsList = !isDocumentsEmpty && !isLoading;
+  const isShowDocumentsList = documents.length && !isLoading;
 
   const documentsList = useMemo(
     () =>
@@ -27,7 +26,7 @@ export const ApartmentDocumentsList: FC<ApartmentDocumentsListProps> = ({
   return (
     <>
       {isLoading && <PendingLoader loading={isLoading} />}
-      {isDocumentsEmpty && !isLoading && (
+      {documents && !documents.length && !isLoading && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description="Нет документов"

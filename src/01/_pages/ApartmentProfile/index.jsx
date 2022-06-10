@@ -79,10 +79,21 @@ const ApartmentProfile = () => {
         street={street}
         number={number}
       />
-
       <Tabs />
 
-      <Route path="/*/(\\d+)" exact>
+      <Route path="/*/:apartmentId/testimony" exact>
+        <ApartmentDevices devices={devices} />
+      </Route>
+
+      <Route path="/*/:apartmentId/checksHistory" exact>
+        <ChecksHistory />
+      </Route>
+
+      <Route path="/*/:apartmentId/documents" exact>
+        <ApartmentDocumentsListContainer />
+      </Route>
+
+      <Route path="/objects/:id/apartments/:apartmentId" exact>
         <Wrapper>
           <div>
             <Information
@@ -99,19 +110,6 @@ const ApartmentProfile = () => {
           </div>
         </Wrapper>
       </Route>
-
-      <Route path="/*/(\\d+)/testimony" exact>
-        <ApartmentDevices devices={devices} />
-      </Route>
-
-      <Route path="/*/(\\d+)/checksHistory" exact>
-        <ChecksHistory />
-      </Route>
-
-      <Route path="/*/(\\d+)/documents" exact>
-        <ApartmentDocumentsListContainer/>
-      </Route>
-
     </>
   );
 };

@@ -5,8 +5,8 @@ import { apartmentDocumentsListService } from './apartmentDocumentsListService.m
 import { ApartmentDocumentsList } from './view/ApartmentDocumentsList';
 
 export const ApartmentDocumentsListContainer = () => {
-  const params = useParams<{ 1: string }>();
-  const apartmentId = Number(params[1]);
+  const params = useParams<{apartmentId: string}>();
+  const apartmentId = Number(params.apartmentId);
 
   const { outputs } = apartmentDocumentsListService;
   const { ApartmentDocumentsListGate } = apartmentDocumentsListService.gates;
@@ -14,16 +14,10 @@ export const ApartmentDocumentsListContainer = () => {
   const documents = useStore(outputs.$documentsList);
   const isLoading = useStore(outputs.$isLoading);
 
-  const isDocumentsEmpty = !documents?.length;
-
   return (
     <>
       <ApartmentDocumentsListGate apartmentId={apartmentId} />
-      <ApartmentDocumentsList
-        documents={documents}
-        isLoading={isLoading}
-        isDocumentsEmpty={isDocumentsEmpty}
-      />
+      <ApartmentDocumentsList documents={documents} isLoading={isLoading} />
     </>
   );
 };
