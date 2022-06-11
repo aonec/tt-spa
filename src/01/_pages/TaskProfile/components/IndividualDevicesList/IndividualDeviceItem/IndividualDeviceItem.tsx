@@ -1,4 +1,4 @@
-import { actResourceNamesLookup } from '01/_pages/ApartmentProfile/components/ChecksHistory/Components/CheckHistoryDocument/components/ResourceInfo/ResourceInfo.utils';
+import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import moment from 'moment';
 import React, { FC, useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';

@@ -9,7 +9,7 @@ interface Props {
   max?: number;
   uniqId: string;
   text?: string;
-  filesInit?: FileData[];
+  filesInit?: FileData[] | null;
   withoutDeletion?: boolean;
   type?: string;
 }
@@ -32,7 +32,7 @@ export const FilesUpload: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (filesInit?.length === 0) clearFiles();
-  }, [filesInit?.map((elem) => elem.id).join('')]);
+  }, [filesInit]);
 
   return (
     <Wide>

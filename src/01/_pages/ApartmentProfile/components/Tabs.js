@@ -10,7 +10,7 @@ const tabItems = [
   ['Общие данные', ''],
   ['Приборы учёта', 'testimony'],
   ['История проверок', 'checksHistory'],
-  ['Документы', 'documents']
+  ['Журнал актов', 'documents'],
 ];
 
 export const Tabs = React.memo(() => {
