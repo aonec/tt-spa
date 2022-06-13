@@ -28,6 +28,7 @@ const extendedSearchOpened = domain.createEvent<CalculatorsListRequestPayload | 
 const extendedSearchClosed = domain.createEvent<CalculatorsListRequestPayload | null>();
 
 const applyFilters = domain.createEvent<CalculatorsListRequestPayload | null>();
+const clearForm = domain.createEvent<CalculatorsListRequestPayload | null>();
 
 $calculatorsPagedData
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
@@ -44,8 +45,7 @@ $searchPayload
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
     PageNumber: pageNumber,
-  }));
-
+  }))
 
 sample({
   clock: guard({
@@ -72,7 +72,8 @@ export const displayDevicesService = {
     fetchCalculators,
     extendedSearchOpened,
     extendedSearchClosed,
-    setPageNumber
+    setPageNumber,
+    clearForm
   },
   outputs: {
     $total,

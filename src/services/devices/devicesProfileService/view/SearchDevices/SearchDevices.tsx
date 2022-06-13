@@ -64,71 +64,67 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
   return (
     <Wrapper>
-      <Form
-        id="searchForm"
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: true }}
-        onChange={submitForm}
-        style={{ marginBottom: 20, marginTop: 10 }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: isExtendedSearchOpen
-              ? '1fr'
-              : '0.5fr 8fr 3.5fr',
-          }}
+      {!isExtendedSearchOpen ? (
+        <Form
+          id="searchForm"
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onChange={submitForm}
+          style={{ marginBottom: 20, marginTop: 10 }}
         >
-          <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
-            {children}
-          </Form.Item>
-          {!isExtendedSearchOpen ? (
-            <>
-              <Form.Item
-                name="search"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Введите серийный номер прибор',
-                  },
-                ]}
-                style={{ marginRight: 16 }}
-              >
-                <Input
-                  onChange={(value) =>
-                    setFieldValue('Question', value.target.value)
-                  }
-                  className={styles.input}
-                  value={values.Question}
-                  placeholder="Введите серийный номер прибора"
-                  prefix={<Icon icon="search" />}
-                />
-              </Form.Item>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: isExtendedSearchOpen
+                ? '1fr'
+                : '0.5fr 8fr 3.5fr',
+            }}
+          >
+            <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
+              {children}
+            </Form.Item>
+            <Form.Item
+              name="search"
+              rules={[
+                {
+                  required: true,
+                  message: 'Введите серийный номер прибор',
+                },
+              ]}
+              style={{ marginRight: 16 }}
+            >
+              <Input
+                onChange={(value) =>
+                  setFieldValue('Question', value.target.value)
+                }
+                className={styles.input}
+                value={values.Question}
+                placeholder="Введите серийный номер прибора"
+                prefix={<Icon icon="search" />}
+              />
+            </Form.Item>
 
-              <Form.Item name="OrderBy">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <label
-                    htmlFor="sortBy"
-                    style={{ minWidth: 120, marginRight: 8 }}
-                  >
-                    Сортировать по:
-                  </label>
-                  <Select
-                    id="sortBy"
-                    onChange={(value) => setFieldValue('OrderBy', value)}
-                    onSelect={() => submitForm()}
-                  >
-                    <Option value="Descending">Улице (уб.)</Option>
-                    <Option value="Ascending">Улице (возр.)</Option>
-                  </Select>
-                </div>
-              </Form.Item>
-            </>
-          ) : null}
-        </div>
+            <Form.Item name="OrderBy">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label
+                  htmlFor="sortBy"
+                  style={{ minWidth: 120, marginRight: 8 }}
+                >
+                  Сортировать по:
+                </label>
+                <Select
+                  id="sortBy"
+                  onChange={(value) => setFieldValue('OrderBy', value)}
+                  onSelect={() => submitForm()}
+                >
+                  <Option value="Descending">Улице (уб.)</Option>
+                  <Option value="Ascending">Улице (возр.)</Option>
+                </Select>
+              </div>
+            </Form.Item>
+          </div>
 
-        {!isExtendedSearchOpen ? (
           <div
             style={{
               display: 'grid',
@@ -195,8 +191,20 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
               </div>
             </Form.Item>
           </div>
-        ) : null}
-      </Form>
+        </Form>
+      ) :
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: isExtendedSearchOpen
+            ? '1fr'
+            : '0.5fr 8fr 3.5fr',
+        }}
+      >
+        <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
+              {children}
+            </Form.Item>
+        </div>}
     </Wrapper>
   );
 };

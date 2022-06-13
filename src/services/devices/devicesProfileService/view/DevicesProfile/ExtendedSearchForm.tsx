@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 import { ConfigProvider, Form, Input, Select, Slider } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
-import type { RangePickerProps } from 'antd/es/date-picker';
 import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import { DatePicker } from 'antd';
 import _ from 'lodash';
 import type { Moment } from 'moment';
+import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -37,7 +36,7 @@ export const ExtendedSearchForm: FC<{
           gridTemplateColumns: '4fr 4fr 2fr 2fr',
         }}
       >
-        <Form.Item name="city" style={{ marginRight: 16 }}>
+        <Form.Item name="city" style={{ marginRight: 8 }}>
           <label htmlFor="City" style={{ minWidth: 152, marginRight: 8 }}>
             Город :{' '}
           </label>
@@ -51,7 +50,7 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="street" style={{ marginRight: 16 }}>
+        <Form.Item name="street" style={{ marginRight: 8 }}>
           <label htmlFor="Street" style={{ minWidth: 152, marginRight: 8 }}>
             Улица :{' '}
           </label>
@@ -65,7 +64,7 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="house" style={{ marginRight: 16 }}>
+        <Form.Item name="house" style={{ marginRight: 8 }}>
           <label htmlFor="House" style={{ minWidth: 152, marginRight: 8 }}>
             Дом :{' '}
           </label>
@@ -82,7 +81,7 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="corpus" style={{ marginRight: 16 }}>
+        <Form.Item name="corpus" style={{ marginRight: 8 }}>
           <label htmlFor="Corpus" style={{ minWidth: 152, marginRight: 8 }}>
             Корпус :{' '}
           </label>
@@ -102,21 +101,23 @@ export const ExtendedSearchForm: FC<{
           gridTemplateColumns: '4fr 4fr 4fr',
         }}
       >
-        <Form.Item name="Resource" style={{ width: '100%', marginRight: 5 }}>
+        <Form.Item name="Resource" style={{ width: '100%', marginRight: 8 }}>
           <div>
-            <label htmlFor="Resource" style={{ minWidth: 152, marginRight: 1 }}>
+            <label htmlFor="Resource" style={{ minWidth: 152, marginRight: 8 }}>
               Тип ресурса:{' '}
             </label>
             <Select
               id="Resource"
               style={{ width: '97%', marginRight: 2 }}
+              value={values['Filter.Resource']}
               placeholder="Все ресурсы"
               onChange={(value) => setFieldValue("['Filter.Resource']", value)}
             >
+              <Option value="">Все ресурсы</Option>
               <Option value="Heat">Тепло</Option>
               <Option value="HotWaterSupply">Горячая вода</Option>
-              <Option value="ColdWaterSupply">Холодная</Option>
-              <Option value="Electricity">Електричество</Option>
+              <Option value="ColdWaterSupply">Холодная вода</Option>
+              <Option value="Electricity">Электричество</Option>
             </Select>
           </div>
         </Form.Item>
@@ -125,20 +126,21 @@ export const ExtendedSearchForm: FC<{
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <label
               htmlFor="nodeStatus"
-              style={{ minWidth: 152, marginRight: 1 }}
+              style={{ minWidth: 152, marginRight: 8 }}
             >
               Статус Узла :{' '}
             </label>
             <Select
               id="NodeStatus"
-              style={{ width: '97%', marginRight: 14 }}
+              style={{ width: '97%', marginRight: 8 }}
               placeholder="Любой статус"
               value={values['Filter.NodeStatus']}
               onChange={(value) =>
                 setFieldValue("['Filter.NodeStatus']", value)
               }
             >
-              <Option value="NotRegistered">Не на коммерческом учере</Option>
+              <Option value="">Любой статус</Option>
+              <Option value="NotRegistered">Не на коммерческом учете</Option>
               <Option value="Registered">Сдан на коммерческий учет</Option>
               <Option value="OnReview">На утверждении</Option>
               <Option value="Prepared">Подговлен к сдаче</Option>
@@ -160,6 +162,7 @@ export const ExtendedSearchForm: FC<{
               id="expirationDate"
               style={{ width: '97%', marginRight: 2 }}
               placeholder="Все"
+              value={values['Filter.ExpiresCheckingDateAt']}
               onChange={(value) =>
                 setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
               }
@@ -199,9 +202,18 @@ export const ExtendedSearchForm: FC<{
               defaultValue={[0, 255]}
               max={255}
               range
+              value={[
+                values['Filter.DiameterRange.From']
+                  ? values['Filter.DiameterRange.From']
+                  : 0,
+                values['Filter.DiameterRange.To']
+                  ? values['Filter.DiameterRange.To']
+                  : 255,
+              ]}
               marks={marks}
               onChange={(value: [number, number]) => {
                 setFieldValue("['Filter.DiameterRange.From']", value[0]);
+                setFieldValue("['Filter.DiameterRange.To']", value[1]);
               }}
             />
           </div>
@@ -213,7 +225,8 @@ export const ExtendedSearchForm: FC<{
             </label>
             <Select
               id="sortBy"
-              placeholder='Улиц'
+              placeholder="Улиц"
+              value={values.OrderBy}
               onChange={(value) => setFieldValue('OrderBy', value)}
             >
               <Option value="Descending">Улице (уб.)</Option>
@@ -230,14 +243,25 @@ export const ExtendedSearchForm: FC<{
           </label>
           <ConfigProvider>
             <RangePicker
+              value={[
+                values['Filter.CommercialDateRange.From']
+                  ? moment(
+                      values['Filter.CommercialDateRange.From'],
+                      dateFormat
+                    )
+                  : null,
+                values['Filter.CommercialDateRange.To']
+                  ? moment(values['Filter.CommercialDateRange.To'], dateFormat)
+                  : null,
+              ]}
               onChange={(value: RangeValue): void => {
                 setFieldValue(
                   "['Filter.CommercialDateRange.From']",
-                  value?.length && value[0]?.format('DD-MM-YYYY')
+                  value?.length && value[0]?.format('YYYY-MM-DD')
                 );
                 setFieldValue(
                   "['Filter.CommercialDateRange.To']",
-                  value?.length && value[1]?.format('DD-MM-YYYY')
+                  value?.length && value[1]?.format('YYYY-MM-DD')
                 );
               }}
               size={'small'}

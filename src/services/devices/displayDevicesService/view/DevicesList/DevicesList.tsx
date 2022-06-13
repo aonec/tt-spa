@@ -1,6 +1,7 @@
 import DevicesByAddress from '01/_pages/Devices/components/DevicesByAddress/DevicesByAddress';
 import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { Pagination } from 'antd';
+import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { DevicesListProps } from './DevicesList.types';
 
@@ -26,7 +27,7 @@ export const DevicesList: FC<DevicesListProps> = ({
         <div role="loader">ЗАГРУЗКА...</div>
       ) : (
         <>
-          {deviceArray}
+          {deviceArray.length ? deviceArray : <Empty />}
           {!isDevicesListEmpty && (
             <Pagination
               total={total}

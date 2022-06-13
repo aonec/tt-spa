@@ -35,6 +35,7 @@ export const DevicesProfile: FC = ({}) => {
     setFieldValue,
     values,
     handleReset,
+    resetForm,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
       'Filter.DiameterRange.From': undefined,
@@ -62,7 +63,6 @@ export const DevicesProfile: FC = ({}) => {
       OrderBy: undefined,
     },
     onSubmit: (values) => void fetchcalc(values),
-    onReset: (values) => handleReset(values),
   });
 
   return (
@@ -76,8 +76,10 @@ export const DevicesProfile: FC = ({}) => {
           open={isOpen}
           handleClose={() => close(null)}
           handleOpen={() => open(null)}
-          handleApply={() => fetchcalc(values)}
-          handleClear={() => console.log()}
+          handleApply={() => {
+            fetchcalc(values);
+          }}
+          handleClear={() => resetForm()}
           extendedSearchContent={
             <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
           }
