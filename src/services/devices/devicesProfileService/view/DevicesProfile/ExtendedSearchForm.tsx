@@ -91,7 +91,7 @@ export const ExtendedSearchForm: FC<{
             }
             className={styles.input}
             value={values['Filter.Address.Corpus']}
-            placeholder="Дом"
+            placeholder="Корпус"
           />
         </Form.Item>
       </div>
