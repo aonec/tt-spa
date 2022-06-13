@@ -68,7 +68,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
         <Form
           id="searchForm"
           name="normal_login"
-          className="login-form"
+          className="form"
           initialValues={{ remember: true }}
           onChange={submitForm}
           style={{ marginBottom: 20, marginTop: 10 }}
@@ -78,10 +78,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
               display: 'grid',
               gridTemplateColumns: isExtendedSearchOpen
                 ? '1fr'
-                : '0.5fr 8fr 3.5fr',
+                : '0.1fr 8fr 3.5fr',
             }}
           >
-            <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
+            <Form.Item name="advancedButton">
               {children}
             </Form.Item>
             <Form.Item
@@ -92,7 +92,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   message: 'Введите серийный номер прибор',
                 },
               ]}
-              style={{ marginRight: 16 }}
+              style={{ marginRight: 8 }}
             >
               <Input
                 onChange={(value) =>
@@ -201,7 +201,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             : '0.5fr 8fr 3.5fr',
         }}
       >
-        <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
+        <Form.Item name="advancedButton" style={{ marginRight: 8 }}>
               {children}
             </Form.Item>
         </div>}
