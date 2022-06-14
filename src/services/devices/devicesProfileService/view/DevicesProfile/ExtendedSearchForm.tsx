@@ -81,8 +81,8 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="corpus" style={{ marginRight: 8 }}>
-          <label htmlFor="Corpus" style={{ minWidth: 152, marginRight: 8 }}>
+        <Form.Item name="corpus">
+          <label htmlFor="Corpus" style={{ minWidth: 152 }}>
             Корпус :{' '}
           </label>
           <Input
@@ -101,14 +101,14 @@ export const ExtendedSearchForm: FC<{
           gridTemplateColumns: '4fr 4fr 4fr',
         }}
       >
-        <Form.Item name="Resource" style={{ width: '100%', marginRight: 8 }}>
+        <Form.Item name="Resource" style={{ width: '98%' }}>
           <div>
-            <label htmlFor="Resource" style={{ minWidth: 152, marginRight: 8 }}>
+            <label htmlFor="Resource" style={{ minWidth: 152 }}>
               Тип ресурса:{' '}
             </label>
             <Select
               id="Resource"
-              style={{ width: '97%', marginRight: 2 }}
+              style={{ width: '100%', marginRight: 8 }}
               value={values['Filter.Resource']}
               placeholder="Все ресурсы"
               onChange={(value) => setFieldValue("['Filter.Resource']", value)}
@@ -122,17 +122,14 @@ export const ExtendedSearchForm: FC<{
           </div>
         </Form.Item>
 
-        <Form.Item name="NodeStatus" style={{ width: '100%', marginRight: 0 }}>
+        <Form.Item name="NodeStatus" style={{ width: '100%' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label
-              htmlFor="nodeStatus"
-              style={{ minWidth: 152, marginRight: 8 }}
-            >
+            <label htmlFor="nodeStatus" style={{ minWidth: 152 }}>
               Статус Узла :{' '}
             </label>
             <Select
               id="NodeStatus"
-              style={{ width: '97%', marginRight: 8 }}
+              style={{ width: '98%' }}
               placeholder="Любой статус"
               value={values['Filter.NodeStatus']}
               onChange={(value) =>
@@ -149,24 +146,25 @@ export const ExtendedSearchForm: FC<{
         </Form.Item>
         <Form.Item
           name="lastCheckingDate"
-          style={{ width: '100%', marginRight: 5 }}
+          style={{ width: '100%', marginRight: 4 }}
         >
           <div>
             <label
               htmlFor="expirationDate"
-              style={{ minWidth: 152, marginRight: 1 }}
+              style={{ minWidth: 152, marginRight: 4 }}
             >
               Истекает дата поверки:{' '}
             </label>
             <Select
               id="expirationDate"
-              style={{ width: '97%', marginRight: 2 }}
+              style={{ width: '100%', marginRight: 2 }}
               placeholder="Все"
               value={values['Filter.ExpiresCheckingDateAt']}
               onChange={(value) =>
                 setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
               }
             >
+              <Option value="">Все</Option>
               <Option value="NextMonth">Ближайший месяц</Option>
               <Option value="NextTwoMonth">В следующие два месяца</Option>
               <Option value="Past">Истекла</Option>
@@ -219,13 +217,13 @@ export const ExtendedSearchForm: FC<{
           </div>
         </Form.Item>
         <Form.Item name="OrderBy">
-          <div style={{ marginRight: 16 }}>
+          <div style={{ marginRight: 8 }}>
             <label htmlFor="sortBy" style={{ minWidth: 120, marginRight: 1 }}>
               Сортировать по:
             </label>
             <Select
               id="sortBy"
-              placeholder="Улиц"
+              placeholder="Улица"
               value={values.OrderBy}
               onChange={(value) => setFieldValue('OrderBy', value)}
             >
@@ -264,9 +262,9 @@ export const ExtendedSearchForm: FC<{
                   value?.length && value[1]?.format('YYYY-MM-DD')
                 );
               }}
-              size={'small'}
+              size="middle"
               format={dateFormat}
-              style={{ height: '30px', width: '100%' }}
+              style={{ height: '32px', width: '100%' }}
             />
           </ConfigProvider>
         </Form.Item>
