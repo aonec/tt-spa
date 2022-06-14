@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type ExtendedSearchProps = {
-  open: boolean;
+  isOpen: boolean;
   handleClose: () => void;
   handleOpen: () => void;
   handleApply: () => void;

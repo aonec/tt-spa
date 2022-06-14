@@ -16,7 +16,7 @@ export const SearchObjects: FC<SearchObjectsProps> = ({ handleSearch }) => {
   return (
     <Wrapper>
       <ExtendedSearch
-        open={false}
+        isOpen={false}
         handleApply={() => {}}
         handleClear={() => {}}
         handleClose={() => {}}

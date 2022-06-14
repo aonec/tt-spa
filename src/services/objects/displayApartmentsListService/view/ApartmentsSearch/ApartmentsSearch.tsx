@@ -19,7 +19,7 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   return (
     <Wrapper>
       <ExtendedSearch
-        open={false}
+        isOpen={false}
         handleApply={() => {}}
         handleClear={() => {}}
         handleClose={() => {}}
