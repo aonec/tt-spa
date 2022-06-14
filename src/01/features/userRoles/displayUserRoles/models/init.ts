@@ -9,7 +9,9 @@ import {
 
 fetchUserRolesFx.use(fetchUserRoles);
 
-$userRoles.on(fetchUserRolesFx.doneData, (_, userRoles) => userRoles);
+$userRoles.on(fetchUserRolesFx.doneData, (_, userRoles) => {
+  return userRoles;
+});
 
 $isFetchingUserRolesFailed
   .on(fetchUserRolesFx.failData, () => true)
