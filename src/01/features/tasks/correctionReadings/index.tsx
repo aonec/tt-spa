@@ -38,9 +38,6 @@ import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
 export const CorrectionReadingsPanel = () => {
   const task = useStore($task);
 
-  const device = task?.individualDevice!;
-  const problemReading = device?.readings && device?.readings[0];
-
   const pending = useStore(fetchTaskFx.pending);
 
   const { fields } = useForm(correctionReadingsForm);
@@ -65,6 +62,14 @@ export const CorrectionReadingsPanel = () => {
       }).unsubscribe,
     []
   );
+
+  if (!task?.individualDevices) return null;
+
+  const device = task?.individualDevices[0];
+  const problemReading = device?.invalidReading;
+  const fixedReading = device?.fixedReading;
+
+  if (!device) return null;
 
   const deviceDataString = (
     <Flex style={{ justifyContent: 'space-between' }}>
@@ -126,7 +131,9 @@ export const CorrectionReadingsPanel = () => {
         {[...readingValues].map((elem, index) => (
           <ReadingInputStyled
             disabled={isReadOnly}
-            placeholder={`T${index + 1}`}
+            placeholder={`T${index + 1}: ${
+              fixedReading ? (fixedReading as any)[`value${index + 1}`] : ''
+            }`}
             resource={device.resource}
             type="number"
             value={elem}
