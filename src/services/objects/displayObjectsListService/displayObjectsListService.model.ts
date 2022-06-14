@@ -7,30 +7,28 @@ import {
   SearchHousingStocksPayload,
 } from './displayObjectsListService.types';
 
-const displayObjectsListServiceDomain = createDomain(
-  'displayObjectsListService'
-);
+const domain = createDomain('displayObjectsListService');
 
-const $housingStocks = displayObjectsListServiceDomain.createStore<HousingStockListResponsePagedList | null>(
+const $housingStocks = domain.createStore<HousingStockListResponsePagedList | null>(
   null
 );
 
-const fetchHousingStocksFx = displayObjectsListServiceDomain.createEffect<
+const fetchHousingStocksFx = domain.createEffect<
   GetHousingStocksRequestPayload,
   HousingStockListResponsePagedList
 >(getHosuingStocks);
 
 const $isLoading = fetchHousingStocksFx.pending;
 
-const $searchPayload = displayObjectsListServiceDomain.createStore<SearchHousingStocksPayload | null>(
+const $searchPayload = domain.createStore<SearchHousingStocksPayload | null>(
   null
 );
 
-const searchHosuingStocks = displayObjectsListServiceDomain.createEvent<SearchHousingStocksPayload>();
+const searchHosuingStocks = domain.createEvent<SearchHousingStocksPayload>();
 
-const setPageNumber = displayObjectsListServiceDomain.createEvent<number>();
+const setPageNumber = domain.createEvent<number>();
 
-const clearSearchState = displayObjectsListServiceDomain.createEvent();
+const clearSearchState = domain.createEvent();
 
 const HousingStocksGate = createGate();
 
@@ -53,7 +51,7 @@ $searchPayload
   .reset(clearSearchState);
 
 sample({
-  clock: guard({ clock: $searchPayload, filter: Boolean }),
+  clock: [guard({ clock: $searchPayload, filter: Boolean })],
   fn: (payload) => {
     return {
       City: payload?.city,
@@ -64,6 +62,12 @@ sample({
       PageNumber: payload?.pageNumber,
     };
   },
+  target: fetchHousingStocksFx,
+});
+
+sample({
+  clock: [HousingStocksGate.open],
+  fn: () => ({ PageSize: 30 }),
   target: fetchHousingStocksFx,
 });
 

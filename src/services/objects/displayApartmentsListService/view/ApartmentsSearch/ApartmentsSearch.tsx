@@ -5,22 +5,28 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { Wrapper } from './ApartmentsSearch.styled';
 import { ApartmentsSearchProps } from './ApartmentsSearch.types';
 
+const fields = [
+  SearchFieldType.City,
+  SearchFieldType.Street,
+  SearchFieldType.House,
+  SearchFieldType.Corpus,
+  SearchFieldType.Apartment,
+];
+
 export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
   handleSearch,
 }) => {
   return (
     <Wrapper>
-      <ExtendedSearch>
-        <AddressSearchContainer
-          fields={[
-            SearchFieldType.City,
-            SearchFieldType.Street,
-            SearchFieldType.House,
-            SearchFieldType.Corpus,
-            SearchFieldType.Apartment,
-          ]}
-          handleSubmit={handleSearch}
-        />
+      <ExtendedSearch
+        isOpen={false}
+        handleApply={() => {}}
+        handleClear={() => {}}
+        handleClose={() => {}}
+        handleOpen={() => {}}
+        extendedSearchContent={<></>}
+      >
+        <AddressSearchContainer fields={fields} handleSubmit={handleSearch} />
       </ExtendedSearch>
     </Wrapper>
   );
