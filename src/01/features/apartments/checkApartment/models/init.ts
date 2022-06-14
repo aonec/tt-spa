@@ -1,10 +1,10 @@
-import { refetchApartmentCheckHistory } from './../../displayApartmentChecksHistory/models/index';
+import { refetchApartmentCheckHistory } from '../../displayApartmentChecksHistory/models/index';
 import {
   openCheckApartmentModal,
   closeCheckApartmentModal,
   checkApartmentFx,
   checkApartmentForm,
-  removeApartmnetCheckFx,
+  removeApartmentCheckFx,
   removeApartmentCheckEv,
   $editApartmentCheckModalPayload,
   openEditApartmentCheckModal,
@@ -30,7 +30,7 @@ import moment from 'moment';
 checkApartmentFx.use(checkApartment);
 editApartmentCheckFx.use(putApartmentCheck);
 
-removeApartmnetCheckFx.use(removeApartmentCheck);
+removeApartmentCheckFx.use(removeApartmentCheck);
 
 $isCheckApartmentModalOpen
   .on(openCheckApartmentModal, () => true)
@@ -93,11 +93,11 @@ sample({
   source: $apartment,
   clock: removeApartmentCheckEv,
   fn: (apartment, checkId) => ({ apartmentId: apartment?.id!, checkId }),
-  target: removeApartmnetCheckFx,
+  target: removeApartmentCheckFx,
 });
 
 forward({
-  from: removeApartmnetCheckFx.done,
+  from: removeApartmentCheckFx.done,
   to: refetchApartmentCheckHistory,
 });
 

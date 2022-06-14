@@ -48,7 +48,7 @@ export const staffFormConfig: FormConfig<AnyFieldsConfigs> = {
         },
       ],
     },
-    userRoleIds: {
+    roleTypes: {
       init: [] as number[],
       rules: [
         {
