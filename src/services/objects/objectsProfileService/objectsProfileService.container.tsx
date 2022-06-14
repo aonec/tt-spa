@@ -14,10 +14,6 @@ export const ObjectsProfileContainer = () => {
   const dispatch = useAppDispatch();
   const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
 
-  function onChangeSearchType(searchType: SearchType) {
-    history.push(`/objects/${searchType}`);
-  }
-
   useEffect(() => {
     if (!searchType) {
       history.push(`/objects/${SearchType.Houses}`);
@@ -28,7 +24,6 @@ export const ObjectsProfileContainer = () => {
     <>
       <GroupReport />
       <ObjectsProfile
-        onChangeSearchType={onChangeSearchType}
         searchType={searchType}
         handleExportGroupReport={handleExportGroupReport}
       />

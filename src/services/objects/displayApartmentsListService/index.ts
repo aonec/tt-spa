@@ -1,2 +1,2 @@
-export { displayApartmentsListService } from './displayApartmentsListService.models';
+export { displayApartmentsListService } from './displayApartmentsListService.model';
 export { ApartmentsListContainer } from './displayApartmentsListService.container';
