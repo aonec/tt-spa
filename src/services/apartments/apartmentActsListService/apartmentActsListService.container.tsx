@@ -9,10 +9,10 @@ import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
 
 export const ApartmentActsListContainer = () => {
-  const params = useParams<{ 1: string }>();
-  const apartmentId = Number(params[1]);
+  const params = useParams<{ apartmentId: string }>();
+  const apartmentId = Number(params.apartmentId);
 
-  const { outputs } = apartmentActsListService;
+  const { outputs, inputs } = apartmentActsListService;
   const { ApartmentActsListGate } = apartmentActsListService.gates;
 
   const documents = useStore(outputs.$actsList);
@@ -28,6 +28,7 @@ export const ApartmentActsListContainer = () => {
   const handleOpeningEditActModal = useEvent(
     editApartmentActService.inputs.openModal
   );
+  const handleSaveFile = useEvent(inputs.saveFile)
 
   return (
     <>
@@ -39,6 +40,7 @@ export const ApartmentActsListContainer = () => {
         handleOpeningCreateActModal={() => handleOpeningCreateActModal()}
         handleOpeningDeleteActModal={handleOpeningDeleteActModal}
         handleOpeningEditActModal={handleOpeningEditActModal}
+        handleSaveFile={handleSaveFile}
         actTypes={actTypes}
       />
     </>

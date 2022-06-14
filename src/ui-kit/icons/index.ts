@@ -14,6 +14,7 @@ import { ReactComponent as DeviceIcon } from './svg/device.svg';
 import { ReactComponent as DocumentIcon } from './svg/document.svg';
 import { ReactComponent as PencilIcon } from './svg/pencil.svg';
 import { ReactComponent as TrashIcon } from './svg/trash.svg';
+import { ReactComponent as UploadIcon } from "./svg/upload.svg"
 
 export {
   StarIcon,
@@ -32,4 +33,5 @@ export {
   DocumentIcon,
   PencilIcon,
   TrashIcon,
+  UploadIcon
 };

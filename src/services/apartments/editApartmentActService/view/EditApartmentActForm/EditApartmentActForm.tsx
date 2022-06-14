@@ -3,7 +3,7 @@ import { Select } from '01/shared/ui/Select';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EActResourceType, EActType } from 'myApi';
+import { DocumentResponse, EActResourceType, EActType } from 'myApi';
 import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { actResourceTypes } from 'services/apartments/createApartmentActService/view/ApartmentActForm/ApartmentActForm.types';
 import { EditActFormPayload } from '../../editApartmentActService.types';
@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import moment from 'moment';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { FileData } from '01/hooks/useFilesUpload';
+import { FilesList } from '01/shared/ui/FilesList';
 
 export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   actTypes,
@@ -46,13 +47,7 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
 
   const [files, setFiles] = useState<FileData[] | null>(null);
 
-  useEffect(() => {
-    const document = initialValues?.document;
-
-    if (!document) return;
-
-    setFiles([{ id: 434, status: 'done', fileResponse: document } as FileData]);
-  }, [document]);
+  
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -110,7 +105,9 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
           <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>
+
       <FilesUpload
+        onChange={setFiles}
         filesInit={files}
         text="Добавьте акт допуска"
         uniqId="apartment-acts"

@@ -1,4 +1,4 @@
-import { ApartmentActResponse, EActTypeStringDictionaryItem } from 'myApi';
+import { ApartmentActResponse, DocumentResponse, EActTypeStringDictionaryItem } from 'myApi';
 
 export type ApartmentActsListProps = {
   acts: ApartmentActResponse[] | null;
@@ -6,5 +6,6 @@ export type ApartmentActsListProps = {
   handleOpeningCreateActModal: () => void;
   handleOpeningDeleteActModal: (actId: number) => void;
   handleOpeningEditActModal: (act: ApartmentActResponse) => void;
+  handleSaveFile: (document: DocumentResponse) => void;
   actTypes: EActTypeStringDictionaryItem[] | null;
 };

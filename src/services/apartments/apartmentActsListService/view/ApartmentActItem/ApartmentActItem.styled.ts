@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 3.5fr 1fr 2fr;
+  grid-template-columns: 1fr 1.5fr 3fr 1fr 3fr;
   grid-column-gap: 15px;
 
   padding: 15px 25px;
@@ -24,7 +24,7 @@ export const DocumentNameText = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  max-width: 370px;
+  max-width: 250px;
   font-weight: 500;
   font-size: 14px;
   margin-left: 8px;
@@ -41,7 +41,7 @@ export const DocumentTypeText = styled.div`
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 120px;
+  max-width: 170px;
 `;
 
 export const ManageIconsWrapper = styled.div`
@@ -49,7 +49,7 @@ export const ManageIconsWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  width: 40px;
+  width: 60px;
   margin-left: 10px;
 `;
 

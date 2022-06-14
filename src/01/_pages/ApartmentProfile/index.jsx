@@ -67,10 +67,9 @@ const ApartmentProfile = () => {
   } = apartment;
 
   const { city, street, number, id } = housingStock;
-
   return styled(grid)(
     <>
-      <Index path={`/objects/${id}/apartments`} />
+      <Index path={`/objects/:${id}/apartments`} />
       <CheckApartmentModal />
       <ApartmentGate id={Number(apartmentId)} />
       <Header
@@ -90,7 +89,7 @@ const ApartmentProfile = () => {
       </Route>
 
       <Route path="/*/:apartmentId/documents" exact>
-        <ApartmentDocumentsListContainer />
+        <ApartmentActsListContainer />
       </Route>
 
       <Route path="/objects/:id/apartments/:apartmentId" exact>
@@ -109,18 +108,6 @@ const ApartmentProfile = () => {
             <Tasks tasksList={tasksList} />
           </div>
         </Wrapper>
-      </Route>
-
-      <Route path="/*/:apartmentId/testimony" exact>
-        <ApartmentDevices devices={devices} />
-      </Route>
-
-      <Route path="/*/:apartmentId/checksHistory" exact>
-        <ChecksHistory />
-      </Route>
-
-      <Route path="/*/(\\d+)/documents" exact>
-        <ApartmentActsListContainer />
       </Route>
     </>
   );

@@ -14,6 +14,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   handleOpeningCreateActModal,
   handleOpeningDeleteActModal,
   handleOpeningEditActModal,
+  handleSaveFile,
   actTypes,
 }) => {
   const isShowActsList = Boolean(acts?.length && !isLoading);
@@ -27,6 +28,8 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
           actTypes={actTypes}
           openDeleteActModal={handleOpeningDeleteActModal}
           openEditActModal={handleOpeningEditActModal}
+          saveFile={handleSaveFile}
+          key={act.id}
         />
       )),
     [acts, actTypes]

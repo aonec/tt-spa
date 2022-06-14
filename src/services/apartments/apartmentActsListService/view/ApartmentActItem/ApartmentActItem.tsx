@@ -1,7 +1,7 @@
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import moment from 'moment';
 import React, { FC, useMemo } from 'react';
-import { DocumentIcon, PencilIcon, TrashIcon } from 'ui-kit/icons';
+import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {
   DateWrapper,
   DocumentIconSC,
@@ -14,11 +14,13 @@ import {
   ManageIconsWrapper,
 } from './ApartmentActItem.styled';
 import { ApartmentActItemProps } from './ApartmentActItem.types';
+import { DocumentResponse } from 'myApi';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   act,
   openDeleteActModal,
   openEditActModal,
+  saveFile,
   actTypes,
 }) => {
   const {
@@ -60,6 +62,9 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
 
           <DocumentIconSC onClick={() => openDeleteActModal(id)}>
             <TrashIcon />
+          </DocumentIconSC>
+          <DocumentIconSC onClick={()=> saveFile(document as DocumentResponse)}>
+            <UploadIcon/>
           </DocumentIconSC>
         </ManageIconsWrapper>
       </DocumentType>
