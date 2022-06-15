@@ -128,24 +128,28 @@ export const CorrectionReadingsPanel = () => {
   const inputReadings = device && (
     <Form.Item label="Исправленные показания">
       <Grid temp="1fr" gap="10px">
-        {[...readingValues].map((elem, index) => (
-          <ReadingInputStyled
-            disabled={isReadOnly}
-            placeholder={`T${index + 1}: ${
-              fixedReading ? (fixedReading as any)[`value${index + 1}`] : ''
-            }`}
-            resource={device.resource}
-            type="number"
-            value={elem}
-            onChange={(e: any) =>
-              fields.readingValue.onChange({
-                ...fields.readingValue.value,
-                [`value${index + 1}`]:
-                  e.target.value === '' ? '' : Number(e.target.value),
-              })
-            }
-          />
-        ))}
+        {[...readingValues].map((elem, index) => {
+          const placeholderText = `T${index + 1}: ${
+            fixedReading ? (fixedReading as any)[`value${index + 1}`] : ''
+          }`;
+
+          return (
+            <ReadingInputStyled
+              disabled={isReadOnly}
+              placeholder={placeholderText}
+              resource={device.resource}
+              type="number"
+              value={elem}
+              onChange={(e: any) =>
+                fields.readingValue.onChange({
+                  ...fields.readingValue.value,
+                  [`value${index + 1}`]:
+                    e.target.value === '' ? '' : Number(e.target.value),
+                })
+              }
+            />
+          );
+        })}
       </Grid>
     </Form.Item>
   );

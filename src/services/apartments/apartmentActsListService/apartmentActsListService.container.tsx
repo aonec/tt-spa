@@ -2,18 +2,19 @@ import { ApartmentActTypesGate } from '01/features/actsJournal/displayActTypes/m
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { createApartmentActService } from '../createApartmentActService';
-import { deleteApartmentActService } from '../deleteApartmentActService';
-import { editApartmentActService } from '../editApartmentActService';
+import { CreateApartmentActModalContainer, createApartmentActService } from '../createApartmentActService';
+import { DeleteApartmentActModalContainer, deleteApartmentActService } from '../deleteApartmentActService';
+import { EditApartmentActModalContainer, editApartmentActService } from '../editApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
+
+const { outputs, inputs, gates } = apartmentActsListService;
 
 export const ApartmentActsListContainer = () => {
   const params = useParams<{ apartmentId: string }>();
   const apartmentId = Number(params.apartmentId);
 
-  const { outputs, inputs } = apartmentActsListService;
-  const { ApartmentActsListGate } = apartmentActsListService.gates;
+  const { ApartmentActsListGate } = gates;
 
   const documents = useStore(outputs.$actsList);
   const isLoading = useStore(outputs.$isLoading);
@@ -34,6 +35,9 @@ export const ApartmentActsListContainer = () => {
     <>
       <ApartmentActTypesGate />
       <ApartmentActsListGate apartmentId={apartmentId} />
+      <CreateApartmentActModalContainer />
+      <EditApartmentActModalContainer />
+      <DeleteApartmentActModalContainer />
       <ApartmentActsList
         acts={documents}
         isLoading={isLoading}

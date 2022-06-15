@@ -2,11 +2,11 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { createApartmentActService } from './createApartmentActService.model';
-import { ApartmentActForm } from './view/ApartmentActForm';
+import { CreateApartmentActForm } from './view/CreateApartmentActForm';
 
-export const CreateApartmentActContainer = () => {
-  const { inputs, outputs } = createApartmentActService;
+const { inputs, outputs } = createApartmentActService;
 
+export const CreateApartmentActModalContainer = () => {
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$createActIsLoading);
   const actTypes = useStore(outputs.$actTypes);
@@ -16,7 +16,13 @@ export const CreateApartmentActContainer = () => {
   const handleSubmit = useEvent(inputs.createAct);
   const formId = 'create-apartment-document';
 
-  const form = <ApartmentActForm formId={formId} handleSubmit={handleSubmit} actTypes={actTypes}/>;
+  const form = (
+    <CreateApartmentActForm
+      formId={formId}
+      handleSubmit={handleSubmit}
+      actTypes={actTypes}
+    />
+  );
 
   return (
     <FormModal

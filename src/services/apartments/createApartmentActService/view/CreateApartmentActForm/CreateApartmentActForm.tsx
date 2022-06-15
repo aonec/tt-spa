@@ -3,36 +3,39 @@ import { Select } from '01/shared/ui/Select';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EActResourceType, EActType } from 'myApi';
-import React, { FC, SyntheticEvent, useState } from 'react';
-import { actResourceTypes } from 'services/apartments/createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.types';
-import { EditActFormPayload } from '../../editApartmentActService.types';
-import { ErrorMessage, FieldsWrapper } from './EditApartmentActForm.styled';
-import { EditApartmentActFormProps } from './EditApartmentActForm.types';
-import * as yup from 'yup';
 import moment from 'moment';
+import { EActResourceType, EActType } from 'myApi';
+import React, { FC, SyntheticEvent } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import { FileData } from '01/hooks/useFilesUpload';
-import { SelectSC } from 'services/apartments/createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.styled';
+import {
+  ErrorMessage,
+  FieldsWrapper,
+  SelectSC,
+} from './CreateApartmentActForm.styled';
+import {
+  actResourceTypes,
+  CreateApartmentActFormProps,
+} from './CreateApartmentActForm.types';
+import * as yup from 'yup';
+import { CreateActFormPayload } from '../../createApartmentActService.types';
 
-export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
-  actTypes,
+export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,
   handleSubmit,
-  initialValues,
+  actTypes,
 }) => {
   const {
     values,
     setFieldValue,
     handleSubmit: submitForm,
     errors,
-  } = useFormik<EditActFormPayload>({
+  } = useFormik<CreateActFormPayload>({
     initialValues: {
-      actJobDate: initialValues?.actJobDate,
-      registryNumber: initialValues?.registryNumber,
-      actResourceType: initialValues?.actResourceType,
-      actType: initialValues?.actType,
-      documentId: initialValues?.document?.id,
+      actJobDate: '',
+      registryNumber: '',
+      actResourceType: '' as EActResourceType,
+      actType: '' as EActType,
+      documentId: null,
     },
     validationSchema: yup.object().shape({
       actJobDate: yup.string().required('Это поле обязательно'),
@@ -44,8 +47,6 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
     validateOnChange: false,
     onSubmit: handleSubmit,
   });
-
-  const [files, setFiles] = useState<FileData[] | null>(null);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -101,15 +102,16 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
               ))}
             </Select>
           </SelectSC>
+
           <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>
-
       <FilesUpload
-        onChange={setFiles}
-        filesInit={files}
         text="Добавьте акт допуска"
         uniqId="apartment-acts"
+        onChange={(value) => {
+          setFieldValue('documentId', value[0]?.fileResponse?.id);
+        }}
         max={1}
       />
     </Form>
