@@ -3,7 +3,7 @@ import {
   closeCheckApartmentModal,
   checkApartmentFx,
   checkApartmentForm,
-  removeApartmnetCheckFx,
+  removeApartmentCheckFx,
   removeApartmentCheckEv,
   $editApartmentCheckModalPayload,
   openEditApartmentCheckModal,
@@ -28,7 +28,7 @@ import { refetchApartmentCheckHistory } from '01/features/apartments/displayApar
 checkApartmentFx.use(checkApartment);
 editApartmentCheckFx.use(putApartmentCheck);
 
-removeApartmnetCheckFx.use(removeApartmentCheck);
+removeApartmentCheckFx.use(removeApartmentCheck);
 
 $isCheckApartmentModalOpen
   .on(openCheckApartmentModal, () => true)
@@ -91,11 +91,11 @@ sample({
   source: $apartment,
   clock: removeApartmentCheckEv,
   fn: (apartment, checkId) => ({ apartmentId: apartment?.id!, checkId }),
-  target: removeApartmnetCheckFx,
+  target: removeApartmentCheckFx,
 });
 
 forward({
-  from: removeApartmnetCheckFx.done,
+  from: removeApartmentCheckFx.done,
   to: refetchApartmentCheckHistory,
 });
 

@@ -5,6 +5,7 @@ import {
   TaskType,
 } from './exportTasksListService.types';
 
+
 const exportUrlTasksLookup = {
   [TaskType.CheckIndividualDevices]:
     'Tasks/ExportExecutingIndividualDeviceCheckTasks',
