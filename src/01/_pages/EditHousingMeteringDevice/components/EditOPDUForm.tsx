@@ -158,10 +158,10 @@ const FormEditODPU = ({
   }
   useEffect(() => {
     axios
-      .get<axiosResponse[]>(
+      .get<any, axiosResponse[]>(
         `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
       )
-      .then((res: any) =>
+      .then((res) =>
         res?.reduce((acc: reduceResponse[], el: axiosResponse) => {
           acc.push({
             label: el.value,
