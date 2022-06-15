@@ -3,11 +3,11 @@ import { Select } from '01/shared/ui/Select';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { DocumentResponse, EActResourceType, EActType } from 'myApi';
-import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
-import { actResourceTypes } from 'services/apartments/createApartmentActService/view/ApartmentActForm/ApartmentActForm.types';
+import { EActResourceType, EActType } from 'myApi';
+import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { actResourceTypes } from 'services/apartments/createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.types';
 import { EditActFormPayload } from '../../editApartmentActService.types';
-import { ErrorMessage, FieldsWrapper } from './EditApartmentActForm.styled';
+import { ErrorMessage, FieldsWrapper, SelectSC } from './EditApartmentActForm.styled';
 import { EditApartmentActFormProps } from './EditApartmentActForm.types';
 import * as yup from 'yup';
 import moment from 'moment';
@@ -94,18 +94,19 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
         </Form.Item>
 
         <Form.Item label="Тип акта">
-          <Select
-            placeholder="Выберите"
-            value={values.actType || undefined}
-            onChange={(value) => setFieldValue('actType', value as EActType)}
-            style={{ maxWidth: 172, overflow: 'hidden' }}
-          >
-            {actTypes?.map(({ key, value }) => (
-              <Select.Option value={key!} key={key}>
-                {value}
-              </Select.Option>
-            ))}
-          </Select>
+          <SelectSC>
+            <Select
+              placeholder="Выберите"
+              value={values.actType || undefined}
+              onChange={(value) => setFieldValue('actType', value as EActType)}
+            >
+              {actTypes?.map(({ key, value }) => (
+                <Select.Option value={key!} key={key}>
+                  {value}
+                </Select.Option>
+              ))}
+            </Select>
+          </SelectSC>
           <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>

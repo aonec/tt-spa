@@ -10,7 +10,7 @@ import { CheckHistoryDocumentProps } from '../../CheckHistory.types';
 import { getCheckingActDocument, getOnSaveFile } from '../../utils';
 import { ReactComponent as DocumentIcon } from '../../assets/documentIcon.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/downloadIcon.svg';
-import { ResourceInfo } from '../../../../../../../ui-kit/shared_components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 
 export const CheckHistoryDocument = ({
   document: {

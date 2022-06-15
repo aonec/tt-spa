@@ -1,0 +1,1 @@
+export { CreateApartmentActForm } from './CreateApartmentActForm'

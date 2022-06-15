@@ -1,9 +1,6 @@
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
 import React, { FC, useMemo } from 'react';
-import { CreateApartmentActContainer } from 'services/apartments/createApartmentActService';
-import { DeleteApartmentActContainer } from 'services/apartments/deleteApartmentActService';
-import { EditApartmentActContainer } from 'services/apartments/editApartmentActService';
 import { ApartmentActItem } from './ApartmentActItem';
 import { AddButton, ListHeader, Wrapper } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
@@ -37,9 +34,6 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
 
   return (
     <>
-      <CreateApartmentActContainer />
-      <EditApartmentActContainer />
-      <DeleteApartmentActContainer />
       {isLoading && <PendingLoader loading={isLoading} />}
       {!acts?.length && !isLoading && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />

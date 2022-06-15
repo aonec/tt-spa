@@ -1,11 +1,12 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { deleteApartmentActService } from './deleteApartmentActService.models';
 
-export const DeleteApartmentActContainer = () => {
-  const { inputs, outputs } = deleteApartmentActService;
+const { inputs, outputs } = deleteApartmentActService;
 
+export const DeleteApartmentActModalContainer = () => {
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$deleteActIsLoading);
 
@@ -13,14 +14,14 @@ export const DeleteApartmentActContainer = () => {
   const handleSubmit = useEvent(inputs.deleteAct);
 
   return (
-    <ModalTT
-      loading={isLoading}
+    <Dialog
       title="Вы действительно хотите удалить акт?"
-      visible={isOpen}
+      isOpen={isOpen}
+      isLoading={isLoading}
       onCancel={() => handleClose()}
       onSubmit={() => handleSubmit()}
-      saveButtonType="red"
-      saveBtnText="Удалить документ"
+      submitText="Удалить документ"
+      type="danger"
     />
   );
 };

@@ -5,18 +5,21 @@ import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EActResourceType, EActType } from 'myApi';
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import { ErrorMessage, FieldsWrapper } from './ApartmentActForm.styled';
+import {
+  ErrorMessage,
+  FieldsWrapper,
+  SelectSC,
+} from './CreateApartmentActForm.styled';
 import {
   actResourceTypes,
-  apartmentActFormProps,
-} from './ApartmentActForm.types';
+  CreateApartmentActFormProps,
+} from './CreateApartmentActForm.types';
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
-import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 
-export const ApartmentActForm: FC<apartmentActFormProps> = ({
+export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,
   handleSubmit,
   actTypes,
@@ -44,8 +47,6 @@ export const ApartmentActForm: FC<apartmentActFormProps> = ({
     validateOnChange: false,
     onSubmit: handleSubmit,
   });
-
-  const [documents, setDocuments] = useState<Document[]>([]);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -88,27 +89,28 @@ export const ApartmentActForm: FC<apartmentActFormProps> = ({
         </Form.Item>
 
         <Form.Item label="Тип акта">
-          <Select
-            placeholder="Выберите"
-            value={values.actType || undefined}
-            onChange={(value) => setFieldValue('actType', value as EActType)}
-            style={{ maxWidth: 172, overflow: 'hidden' }}
-          >
-            {actTypes?.map(({ key, value }) => (
-              <Select.Option value={key!} key={key}>
-                {value}
-              </Select.Option>
-            ))}
-          </Select>
+          <SelectSC>
+            <Select
+              placeholder="Выберите"
+              value={values.actType || undefined}
+              onChange={(value) => setFieldValue('actType', value as EActType)}
+            >
+              {actTypes?.map(({ key, value }) => (
+                <Select.Option value={key!} key={key}>
+                  {value}
+                </Select.Option>
+              ))}
+            </Select>
+          </SelectSC>
+
           <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>
-      <DocumentsUploadContainer
-        documents={documents}
-        uniqId="edit-apartment-act-form"
-        onChange={(files) => {
-          setDocuments(files);
-          setFieldValue('documentId', files[0]?.id);
+      <FilesUpload
+        text="Добавьте акт допуска"
+        uniqId="apartment-acts"
+        onChange={(value) => {
+          setFieldValue('documentId', value[0]?.fileResponse?.id);
         }}
         max={1}
       />

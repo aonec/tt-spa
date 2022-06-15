@@ -24,12 +24,20 @@ export const DocumentNameText = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  max-width: 250px;
+  max-width: 240px;
   font-weight: 500;
   font-size: 14px;
   margin-left: 8px;
   color: #272f5a;
 `;
+
+export const ActNumber = styled.div`
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  max-width: 130px;
+`
 
 export const DocumentType = styled.div`
   display: flex;

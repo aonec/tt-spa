@@ -3,6 +3,7 @@ import moment from 'moment';
 import React, { FC, useMemo } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {
+  ActNumber,
   DateWrapper,
   DocumentIconSC,
   DocumentIconWrapper,
@@ -32,8 +33,9 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
     registryNumber,
     document,
   } = act;
+
   const actTypeText = useMemo(
-    () => actTypes?.find(({ key }) => key === actType)?.value,
+    () => actTypes?.find(({ key }) => key === actType)?.value || actType,
     [actType, actTypes]
   );
 
@@ -44,7 +46,7 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   return (
     <ListItem>
       <DateWrapper>{moment(actJobDate).format('DD.MM.YYYY')}</DateWrapper>
-      <div>{registryNumber}</div>
+      <ActNumber>{registryNumber}</ActNumber>
 
       <DocumentName>
         <DocumentIconWrapper>
