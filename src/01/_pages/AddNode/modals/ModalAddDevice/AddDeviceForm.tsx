@@ -31,6 +31,8 @@ import {
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import Title from '../../../../tt-components/Title';
+import { axios } from '01/axios';
+import { AxiosResponse } from 'axios';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;
@@ -45,6 +47,8 @@ const AddDeviceForm = (props: any) => {
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [fetchedMagistrals, setFetchedMagistrals] = useState<reduceResponse[]>(
+);
 
   const initialValues = {
     isConnected: isConnected[0].value,
@@ -153,6 +157,31 @@ const AddDeviceForm = (props: any) => {
       setFieldValue('diameter', null);
     }
   }, [values.housingMeteringDeviceType]);
+
+  interface axiosResponse {
+    key: string;
+    value: string;
+  }
+  interface reduceResponse {
+    label: string;
+    value: string;
+  }
+  useEffect(() => {
+    axios
+      .get<axiosResponse[]>(
+        `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
+      )
+      .then((res: any) =>
+        res?.reduce((acc: reduceResponse[], el: axiosResponse) => {
+          acc.push({
+            label: el.value,
+            value: el.key,
+          });
+          return acc;
+        }, [])
+      )
+      .then((data) => setFetchedMagistrals(data));
+  }, [values.resource]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -302,7 +331,7 @@ const AddDeviceForm = (props: any) => {
             <SelectTT
               placeholder="Выберите направление магистрали"
               name="magistral"
-              options={magistrals}
+              options={fetchedMagistrals}
               onChange={(value) => {
                 setFieldValue('magistral', value);
               }}

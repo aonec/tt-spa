@@ -27,8 +27,8 @@ export async function putOdpu(
     return res;
   } catch (error) {
     const handleError = error.response.data.error;
-    const { Data } = handleError;
-    const { Id } = Data;
-    return { show: true, id: Id };
+    // const { Data } = handleError;
+    // const { Id } = Data;
+    return { show: true, id: handleError?.text };
   }
 }

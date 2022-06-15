@@ -8,7 +8,6 @@ import moment from 'moment';
 import {
   entryNumberList,
   housingMeteringDeviceTypes,
-  magistrals,
   resources,
 } from '../../../tt-components/localBases';
 import {
@@ -33,6 +32,7 @@ import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from '../../../tt-components/validationSchemas';
+import { axios } from '01/axios';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -51,6 +51,7 @@ const FormEditODPU = ({
 }: FormEditODPUInterface) => {
   const { deviceId } = useParams();
   const [validationSchema, setValidationSchema] = useState<any>();
+  const [magistrals, setMagistrals] = useState<reduceResponse[]>();
 
   const {
     address: { city, street, housingStockNumber, corpus },
@@ -114,8 +115,12 @@ const FormEditODPU = ({
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(true),
         futureCheckingDate: values.futureCheckingDate?.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(true),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(
+          true
+        ),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(
+          true
+        ),
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
@@ -142,6 +147,31 @@ const FormEditODPU = ({
       ? setValidationSchema(validationSchemaFlowMeter)
       : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
+
+  interface axiosResponse {
+    key: string;
+    value: string;
+  }
+  interface reduceResponse {
+    label: string;
+    value: string;
+  }
+  useEffect(() => {
+    axios
+      .get<axiosResponse[]>(
+        `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
+      )
+      .then((res: any) =>
+        res?.reduce((acc: reduceResponse[], el: axiosResponse) => {
+          acc.push({
+            label: el.value,
+            value: el.key,
+          });
+          return acc;
+        }, [])
+      )
+      .then((data) => setMagistrals(data));
+  }, [values.resource]);
 
   const tabErrors = [
     {
