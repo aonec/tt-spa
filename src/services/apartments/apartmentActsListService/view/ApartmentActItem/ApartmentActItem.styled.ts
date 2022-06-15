@@ -61,3 +61,7 @@ export const DocumentIconSC = styled.div`
   font-size: 16;
   cursor: pointer;
 `;
+
+export const NoDocumentText = styled.span`
+  opacity: 0.5;
+`;

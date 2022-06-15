@@ -12,6 +12,7 @@ import {
   DocumentTypeText,
   ListItem,
   ManageIconsWrapper,
+  NoDocumentText,
 } from './ApartmentActItem.styled';
 import { ApartmentActItemProps } from './ApartmentActItem.types';
 import { DocumentResponse } from 'myApi';
@@ -36,6 +37,10 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
     [actType, actTypes]
   );
 
+  const documentName = document?.name || (
+    <NoDocumentText>Нет документа</NoDocumentText>
+  );
+
   return (
     <ListItem>
       <DateWrapper>{moment(actJobDate).format('DD.MM.YYYY')}</DateWrapper>
@@ -46,9 +51,7 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
           <DocumentIcon />
         </DocumentIconWrapper>
 
-        <DocumentNameText>
-          {document ? document.name : 'Нет документа'}
-        </DocumentNameText>
+        <DocumentNameText>{documentName}</DocumentNameText>
       </DocumentName>
 
       <ResourceInfo resource={actResourceType} />
@@ -63,8 +66,10 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
           <DocumentIconSC onClick={() => openDeleteActModal(id)}>
             <TrashIcon />
           </DocumentIconSC>
-          <DocumentIconSC onClick={()=> saveFile(document as DocumentResponse)}>
-            <UploadIcon/>
+          <DocumentIconSC
+            onClick={() => saveFile(document as DocumentResponse)}
+          >
+            <UploadIcon />
           </DocumentIconSC>
         </ManageIconsWrapper>
       </DocumentType>

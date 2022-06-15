@@ -12,8 +12,7 @@ import { EditApartmentActFormProps } from './EditApartmentActForm.types';
 import * as yup from 'yup';
 import moment from 'moment';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import { FileData } from '01/hooks/useFilesUpload';
-import { FilesList } from '01/shared/ui/FilesList';
+import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 
 export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   actTypes,
@@ -45,9 +44,15 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
     onSubmit: handleSubmit,
   });
 
-  const [files, setFiles] = useState<FileData[] | null>(null);
+  const initialDocument = initialValues?.document;
 
-  
+  const [documents, setDocuments] = useState<Document[]>([]);
+
+  useEffect(() => {
+    if (!initialDocument) return;
+
+    setDocuments([initialDocument]);
+  }, [document]);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -105,13 +110,10 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
           <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>
-
-      <FilesUpload
-        onChange={setFiles}
-        filesInit={files}
-        text="Добавьте акт допуска"
-        uniqId="apartment-acts"
-        max={1}
+      <DocumentsUploadContainer
+        documents={documents}
+        uniqId="edit-apartment-act-form"
+        onChange={setDocuments}
       />
     </Form>
   );
