@@ -5,7 +5,7 @@ import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EActResourceType, EActType } from 'myApi';
-import React, { FC, SyntheticEvent } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import {
   ErrorMessage,
@@ -18,6 +18,8 @@ import {
 } from './CreateApartmentActForm.types';
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
+import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+
 
 export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,
@@ -47,6 +49,8 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
     validateOnChange: false,
     onSubmit: handleSubmit,
   });
+
+  const [documents, setDocuments] = useState<Document[]>([]);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -106,11 +110,12 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
           <ErrorMessage>{errors.actType}</ErrorMessage>
         </Form.Item>
       </FieldsWrapper>
-      <FilesUpload
-        text="Добавьте акт допуска"
-        uniqId="apartment-acts"
-        onChange={(value) => {
-          setFieldValue('documentId', value[0]?.fileResponse?.id);
+      <DocumentsUploadContainer
+        documents={documents}
+        uniqId="edit-apartment-act-form"
+        onChange={(files) => {
+          setDocuments(files);
+          setFieldValue('documentId', files[0]?.id);
         }}
         max={1}
       />

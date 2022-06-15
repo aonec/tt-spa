@@ -21,6 +21,7 @@ export const DocumentName = styled.div`
 
 export const DocumentNameText = styled.div`
   overflow-x: hidden;
+  overflow-y: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
@@ -47,6 +48,7 @@ export const DocumentType = styled.div`
 
 export const DocumentTypeText = styled.div`
   overflow-x: hidden;
+  overflow-y: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 170px;
