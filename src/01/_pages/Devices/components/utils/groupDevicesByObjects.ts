@@ -7,12 +7,12 @@ import {
 export const groupDevicesByObjects = (
   devices: CalculatorListResponse[]
 ): DevicesByAddressInterface[] => {
-  const devicesByAddresses = Object.values(groupBy(devices, 'address')).map(
-    (devices) => ({
-      devices,
-      address: devices[0].address?.address,
-    })
-  );
+  const devicesByAddresses = Object.values(
+    groupBy(devices, 'address.address.mainAddress.housingStockId')
+  ).map((devices) => ({
+    devices,
+    address: devices[0].address?.address,
+  }));
 
   return devicesByAddresses;
 };
