@@ -111,7 +111,6 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
         </Form.Item>
       </FieldsWrapper>
       <DocumentsUploadContainer
-        max={1}
         documents={documents}
         uniqId="edit-apartment-act-form"
         onChange={setDocuments}

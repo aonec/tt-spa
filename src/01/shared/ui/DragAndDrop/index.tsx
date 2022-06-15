@@ -99,7 +99,7 @@ const DragAndDropContainer = styled.div<{ disabled: boolean }>`
   ${({ disabled }) =>
     disabled
       ? `
-  background: lightfray;
+  background: #efefef;
     `
       : `
   &:hover {
