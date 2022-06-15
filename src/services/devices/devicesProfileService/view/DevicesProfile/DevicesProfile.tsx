@@ -13,12 +13,25 @@ import { CalculatorsListRequestPayload } from '01/features/carlculators/calculat
 import _ from 'lodash';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 
-export const DevicesProfile: FC = ({}) => {
-  const { outputs, inputs } = displayDevicesService;
-  const fetchcalc = useEvent(inputs.fetchCalculators);
-  const isOpen = useStore(outputs.$isExtendedSearchOpen);
-  const close = useEvent(inputs.extendedSearchClosed);
-  const open = useEvent(inputs.extendedSearchOpened);
+interface DeviceProfileProps {
+  fetchcalc: (
+    payload: CalculatorsListRequestPayload
+  ) => CalculatorsListRequestPayload;
+  isOpen: boolean;
+  open: (
+    payload: CalculatorsListRequestPayload | null
+  ) => CalculatorsListRequestPayload | null;
+  close: (
+    payload: CalculatorsListRequestPayload | null
+  ) => CalculatorsListRequestPayload | null;
+}
+export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close, open}) => {
+
+  // const { outputs, inputs } = displayDevicesService;
+  // const fetchcalc = useEvent(inputs.fetchCalculators);
+  // const isOpen = useStore(outputs.$isExtendedSearchOpen);
+  // const close = useEvent(inputs.extendedSearchClosed);
+  // const open = useEvent(inputs.extendedSearchOpened);
 
   const menuButtonArr = [
     {
@@ -34,7 +47,6 @@ export const DevicesProfile: FC = ({}) => {
     handleSubmit: submitForm,
     setFieldValue,
     values,
-    handleReset,
     resetForm,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
@@ -71,7 +83,9 @@ export const DevicesProfile: FC = ({}) => {
         <h1 style={{ fontWeight: 300, marginBottom: 16 }}>Приборы</h1>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </HeaderWrapper>
-      <SearchDevices isExtendedSearchOpen={isOpen}>
+      <SearchDevices isExtendedSearchOpen={isOpen}
+       fetchcalc={fetchcalc}
+       >
         <ExtendedSearch
           open={isOpen}
           handleClose={() => close(null)}

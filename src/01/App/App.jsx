@@ -47,9 +47,9 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
-import { DevicesProfile } from 'services/devices/devicesProfileService/view/DevicesProfile';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
+import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 
 
 moment.locale('ru');
@@ -95,7 +95,7 @@ const Internal = () => {
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
 
-              <Route path="/devices/" component={DevicesProfile} exact />
+              <Route path="/devices/" component={DevicesProfileContainer} exact />
 
               <Route
                 path="/objects/:housingStockId(\\d+)/(apartments|devices)?"

@@ -7,18 +7,17 @@ import styled from 'styled-components';
 import { Icon } from '01/components';
 import { useFormik } from 'formik';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import _ from 'lodash';
 import { displayDevicesService } from 'services/devices/displayDevicesService';
 import { useEvent } from 'effector-react';
-import _ from 'lodash';
 
 const { Option } = Select;
 
 export const SearchDevices: FC<SearchDevicesProps> = ({
   children,
   isExtendedSearchOpen,
+  fetchcalc
 }) => {
-  const { inputs } = displayDevicesService;
-  const fetchcalc = useEvent(inputs.fetchCalculators);
 
   const marks = {
     0: '0',
@@ -35,16 +34,16 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       'Filter.ExpiresCheckingDateAt': undefined,
       'Filter.Resource': undefined,
       'Filter.Model': undefined,
-      'Filter.CommercialDateRange.From': undefined,
-      'Filter.CommercialDateRange.To': undefined,
-      'Filter.Address.City': undefined,
-      'Filter.Address.Street': undefined,
-      'Filter.Address.HousingStockNumber': undefined,
-      'Filter.Address.Corpus': undefined,
+      'Filter.CommercialDateRange.From': "",
+      'Filter.CommercialDateRange.To': "",
+      'Filter.Address.City': "",
+      'Filter.Address.Street': "",
+      'Filter.Address.HousingStockNumber': "",
+      'Filter.Address.Corpus': "",
       'Filter.Address.HouseCategory': undefined,
       'Filter.HousingStockId': undefined,
       'Filter.NodeStatus': undefined,
-      Question: undefined,
+      Question: "",
       OrderRule: undefined,
       IsConnected: undefined,
       CountTasks: undefined,
@@ -58,7 +57,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   });
 
   useEffect(() => {
-    fetchcalc(values);
+   fetchcalc(values);
   }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
