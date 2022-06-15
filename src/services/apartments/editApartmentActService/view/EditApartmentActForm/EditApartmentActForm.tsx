@@ -45,7 +45,6 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   });
 
   const initialDocument = initialValues?.document;
-
   const [documents, setDocuments] = useState<Document[]>([]);
 
   useEffect(() => {
@@ -113,7 +112,11 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
       <DocumentsUploadContainer
         documents={documents}
         uniqId="edit-apartment-act-form"
-        onChange={setDocuments}
+        onChange={(files) => {
+          setDocuments(files);
+          setFieldValue('documentId', files[0]?.id);
+        }}
+        max={1}
       />
     </Form>
   );

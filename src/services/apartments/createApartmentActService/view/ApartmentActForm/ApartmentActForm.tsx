@@ -5,7 +5,7 @@ import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EActResourceType, EActType } from 'myApi';
-import React, { FC, SyntheticEvent } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { ErrorMessage, FieldsWrapper } from './ApartmentActForm.styled';
 import {
@@ -14,6 +14,7 @@ import {
 } from './ApartmentActForm.types';
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
+import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 
 export const ApartmentActForm: FC<apartmentActFormProps> = ({
   formId,
@@ -44,72 +45,73 @@ export const ApartmentActForm: FC<apartmentActFormProps> = ({
     onSubmit: handleSubmit,
   });
 
+  const [documents, setDocuments] = useState<Document[]>([]);
+
   return (
-      <Form id={formId} onSubmitCapture={submitForm}>
-        <FieldsWrapper>
-          <Form.Item label="Дата">
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              onChange={(e) =>
-                setFieldValue('actJobDate', e?.toISOString(true))
-              }
-              value={values.actJobDate ? moment(values.actJobDate) : null}
-            />
-            <ErrorMessage>{errors.actJobDate}</ErrorMessage>
-          </Form.Item>
+    <Form id={formId} onSubmitCapture={submitForm}>
+      <FieldsWrapper>
+        <Form.Item label="Дата">
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            onChange={(e) => setFieldValue('actJobDate', e?.toISOString(true))}
+            value={values.actJobDate ? moment(values.actJobDate) : null}
+          />
+          <ErrorMessage>{errors.actJobDate}</ErrorMessage>
+        </Form.Item>
 
-          <Form.Item label="Номер документа">
-            <InputTT
-              value={values.registryNumber}
-              onChange={(e: SyntheticEvent<HTMLInputElement>) =>
-                setFieldValue('registryNumber', e.currentTarget.value)
-              }
-              placeholder="Введите номер"
-            />
-            <ErrorMessage>{errors.registryNumber}</ErrorMessage>
-          </Form.Item>
+        <Form.Item label="Номер документа">
+          <InputTT
+            value={values.registryNumber}
+            onChange={(e: SyntheticEvent<HTMLInputElement>) =>
+              setFieldValue('registryNumber', e.currentTarget.value)
+            }
+            placeholder="Введите номер"
+          />
+          <ErrorMessage>{errors.registryNumber}</ErrorMessage>
+        </Form.Item>
 
-          <Form.Item label="Ресурс">
-            <Select
-              placeholder="Выберите"
-              value={values.actResourceType || undefined}
-              onChange={(value) =>
-                setFieldValue('actResourceType', value as EActResourceType)
-              }
-            >
-              {actResourceTypes?.map((elem) => (
-                <Select.Option key={elem} value={elem}>
-                  <ResourceInfo resource={elem} />
-                </Select.Option>
-              ))}
-            </Select>
-            <ErrorMessage>{errors.actResourceType}</ErrorMessage>
-          </Form.Item>
+        <Form.Item label="Ресурс">
+          <Select
+            placeholder="Выберите"
+            value={values.actResourceType || undefined}
+            onChange={(value) =>
+              setFieldValue('actResourceType', value as EActResourceType)
+            }
+          >
+            {actResourceTypes?.map((elem) => (
+              <Select.Option key={elem} value={elem}>
+                <ResourceInfo resource={elem} />
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>{errors.actResourceType}</ErrorMessage>
+        </Form.Item>
 
-          <Form.Item label="Тип акта">
-            <Select
-              placeholder="Выберите"
-              value={values.actType || undefined}
-              onChange={(value) => setFieldValue('actType', value as EActType)}
-              style={{ maxWidth: 172, overflow: 'hidden' }}
-            >
-              {actTypes?.map(({ key, value }) => (
-                <Select.Option value={key!} key={key}>
-                  {value}
-                </Select.Option>
-              ))}
-            </Select>
-            <ErrorMessage>{errors.actType}</ErrorMessage>
-          </Form.Item>
-        </FieldsWrapper>
-        <FilesUpload
-          text="Добавьте акт допуска"
-          uniqId="apartment-acts"
-          onChange={(value) => {
-            setFieldValue('documentId', value[0]?.fileResponse?.id);
-          }}
-          max={1}
-        />
-      </Form>
+        <Form.Item label="Тип акта">
+          <Select
+            placeholder="Выберите"
+            value={values.actType || undefined}
+            onChange={(value) => setFieldValue('actType', value as EActType)}
+            style={{ maxWidth: 172, overflow: 'hidden' }}
+          >
+            {actTypes?.map(({ key, value }) => (
+              <Select.Option value={key!} key={key}>
+                {value}
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>{errors.actType}</ErrorMessage>
+        </Form.Item>
+      </FieldsWrapper>
+      <DocumentsUploadContainer
+        documents={documents}
+        uniqId="edit-apartment-act-form"
+        onChange={(files) => {
+          setDocuments(files);
+          setFieldValue('documentId', files[0]?.id);
+        }}
+        max={1}
+      />
+    </Form>
   );
 };
