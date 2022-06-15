@@ -87,7 +87,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
        fetchcalc={fetchcalc}
        >
         <ExtendedSearch
-          open={isOpen}
+          isOpen={isOpen}
           handleClose={() => close(null)}
           handleOpen={() => open(null)}
           handleApply={() => {
