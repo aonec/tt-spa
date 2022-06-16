@@ -9,7 +9,7 @@ export const DevicesProfileContainer = () => {
   const isOpen = useStore(outputs.$isExtendedSearchOpen);
   const close = useEvent(inputs.extendedSearchClosed);
   const open = useEvent(inputs.extendedSearchOpened);
-  console.log({fetchcalc})
+
   return (
     <>
       <DevicesProfile fetchcalc={fetchcalc} isOpen={isOpen} close={close} open={open}/>
