@@ -16,10 +16,7 @@ export const Perpetrator = ({ getData = () => {}, ...props }) => {
       axios
         .get('ManagingFirmUsers', {
           params: {
-            RoleNames:
-              task?.type === 'IndividualDeviceCheck'
-                ? 'Controller'
-                : 'ManagingFirmExecutor',
+            RoleNames: task.stages.at(-1).requiredUserRoles,
           },
         })
         .then((data) => setData({ items: data.items }));
