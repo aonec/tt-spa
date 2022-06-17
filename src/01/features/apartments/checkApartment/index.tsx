@@ -51,14 +51,6 @@ export const CheckApartmentModal = () => {
     []
   );
 
-  useEffect(
-    () =>
-      checkApartmentFx.failData.watch((error) =>
-        message.error(error.response.data.error.Text)
-      ).unsubscribe,
-    []
-  );
-
   return (
     <>
       <ApartmentActTypesGate />
@@ -133,11 +125,6 @@ export const CheckApartmentModal = () => {
                 </Select.Option>
               ))}
             </Select>
-            <ErrorMessage>
-              {fields.actResourceType.errorText({
-                required: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
           </Form.Item>
         </Grid>
         {payload?.checkingAct ? (

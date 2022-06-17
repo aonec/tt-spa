@@ -1,33 +1,37 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { displayApartmentsListService } from './displayApartmentsListService.model';
+import { displayApartmentsListService } from './displayApartmentsListService.models';
 import { ApartmentsList } from './view/ApartmentsList';
 import { ApartmentsSearch } from './view/ApartmentsSearch';
 
 export const ApartmentsListContainer = () => {
-  const { inputs, outputs } = displayApartmentsListService;
+  const handleSearch = useEvent(
+    displayApartmentsListService.inputs.searchApartments
+  );
+  const setPageNumber = useEvent(
+    displayApartmentsListService.inputs.setPageNumber
+  );
 
-  const handleSearch = useEvent(inputs.searchApartments);
-  const setPageNumber = useEvent(inputs.setPageNumber);
+  const apartmentsList = useStore(
+    displayApartmentsListService.outputs.$apartmentsList
+  );
+  const { pageNumber, pageSize, totalItems } = useStore(
+    displayApartmentsListService.outputs.$pagedInfo
+  );
 
-  const apartments = useStore(outputs.$apartmentsList);
-  const { pageNumber, pageSize, totalItems } = useStore(outputs.$pagedInfo);
-
-  const isLoading = useStore(outputs.$isLoading);
+  const isLoading = useStore(displayApartmentsListService.outputs.$isLoading);
 
   const { ApartmentsListGate } = displayApartmentsListService.gates;
 
-  const isEmpty = !apartments?.length;
-
-  const isShowPagination = !isEmpty && !isLoading;
+  const isNotEmpty = apartmentsList?.length || 0 > 0;
 
   return (
     <>
       <ApartmentsListGate />
       <ApartmentsSearch handleSearch={handleSearch} />
-      <ApartmentsList apartments={apartments} isLoading={isLoading} />
-      {isShowPagination && (
+      <ApartmentsList apartmentsList={apartmentsList} isLoading={isLoading} />
+      {isNotEmpty && !isLoading && (
         <Pagination
           showSizeChanger={false}
           current={pageNumber}

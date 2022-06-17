@@ -16,47 +16,43 @@ import { ExtendedSearchProps } from './types';
 
 export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   children,
-  isOpen,
+  open,
   handleClose,
   handleOpen,
   handleApply,
   extendedSearchContent,
   handleClear,
 }) => {
-  if (isOpen) {
-    return (
-      <ExtendedSearchWrap>
-        <Header>
-          <HideExtendedSearchButton onClick={handleClose}>
-            <ChevronUp />
-          </HideExtendedSearchButton>
-          <ButtonTT
-            style={{ marginLeft: '10px' }}
-            small
-            color="white"
-            onClick={handleClear}
-          >
-            Очистить <XLg />
-          </ButtonTT>
-        </Header>
-        <Content>{extendedSearchContent}</Content>
-        <Footer>
-          <ButtonTT color="white" onClick={handleClose}>
-            Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            onClick={handleApply}
-            style={{ marginLeft: '10px' }}
-          >
-            Применить фильтры
-          </ButtonTT>
-        </Footer>
-      </ExtendedSearchWrap>
-    );
-  }
-
-  return (
+  return open ? (
+    <ExtendedSearchWrap>
+      <Header>
+        <HideExtendedSearchButton onClick={handleClose}>
+          <ChevronUp />
+        </HideExtendedSearchButton>
+        <ButtonTT
+          style={{ marginLeft: '10px' }}
+          small
+          color="white"
+          onClick={handleClear}
+        >
+          Очистить <XLg />
+        </ButtonTT>
+      </Header>
+      <Content>{extendedSearchContent}</Content>
+      <Footer>
+        <ButtonTT color="white" onClick={handleClose}>
+          Отмена
+        </ButtonTT>
+        <ButtonTT
+          color="blue"
+          onClick={handleApply}
+          style={{ marginLeft: '10px' }}
+        >
+          Применить фильтры
+        </ButtonTT>
+      </Footer>
+    </ExtendedSearchWrap>
+  ) : (
     <SearchWrap>
       <ExtendedSearchButton onClick={handleOpen}>
         <FilerIcon />

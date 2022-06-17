@@ -70,10 +70,8 @@ export const EditManagingFirmUserPage = () => {
   const history = useHistory();
 
   const isSuccessUpdated = useStore($isUpdateManagingFirmUserSuccess);
-
   const competences = useStore($competencesCatalog);
   const userRoles = useStore($userRoles);
-
   const pendingFetchRequest = useStore($isFormDataLoading);
   const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
   const isFailedFetchFormData = useStore($isFetchingFormDataFailed);
@@ -89,13 +87,13 @@ export const EditManagingFirmUserPage = () => {
   const phoneMask = usePhoneMask();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: '',
+    label: '', //elem?.competence?.title,
     value: elem.id,
   }));
 
   const multipleSelectionUserRoles = userRoles?.map((elem) => ({
-    label: elem.value,
-    value: elem.key,
+    label: elem.title,
+    value: elem.id,
   }));
 
   useRedirectAfterSuccessRequest(isSuccessUpdated, '/companyProfile/staff');
@@ -182,12 +180,12 @@ export const EditManagingFirmUserPage = () => {
       <Form.Item label="Роль в системе">
         <MultiSelectTT
           mode="multiple"
-          value={fields.roleTypes.value}
+          value={fields.userRoleIds.value}
           options={multipleSelectionUserRoles}
-          onChange={fields.roleTypes.onChange}
+          onChange={fields.userRoleIds.onChange as any}
         />
         <ErrorMessage>
-          {fields.roleTypes.errorText({
+          {fields.userRoleIds.errorText({
             required: 'Выберите роль',
           })}
         </ErrorMessage>

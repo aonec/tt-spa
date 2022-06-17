@@ -7,11 +7,11 @@ import {
   SearchApartmentsPayload,
 } from './displayApartmentsListService.types';
 
-const domain = createDomain(
+const displayApartmentsListServiceDomain = createDomain(
   'displayApartmentsListService'
 );
 
-const $apartmentsPagedList = domain.store<ApartmentListResponsePagedList | null>(
+const $apartmentsPagedList = displayApartmentsListServiceDomain.store<ApartmentListResponsePagedList | null>(
   null
 );
 
@@ -22,22 +22,22 @@ const $pagedInfo = $apartmentsPagedList.map((data) => ({
   pageSize: data?.pageSize,
 }));
 
-const fetchApartmentsFx = domain.createEffect<
+const fetchApartmentsFx = displayApartmentsListServiceDomain.createEffect<
   GetApartmentsListRequestPayload,
   ApartmentListResponsePagedList
 >(getApartments);
 
-const searchApartments = domain.createEvent<SearchApartmentsPayload>();
+const searchApartments = displayApartmentsListServiceDomain.createEvent<SearchApartmentsPayload>();
 
-const $searchApartmentsPayload = domain.createStore<SearchApartmentsPayload | null>(
+const $searchApartmentsPayload = displayApartmentsListServiceDomain.createStore<SearchApartmentsPayload | null>(
   null
 );
 
 const $isLoading = fetchApartmentsFx.pending;
 
-const setPageNumber = domain.createEvent<number>();
+const setPageNumber = displayApartmentsListServiceDomain.createEvent<number>();
 
-const clearSearchPayload = domain.createEvent();
+const clearSearchPayload = displayApartmentsListServiceDomain.createEvent();
 
 const ApartmentsListGate = createGate();
 

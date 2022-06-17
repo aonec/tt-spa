@@ -9,9 +9,7 @@ import {
 
 fetchUserRolesFx.use(fetchUserRoles);
 
-$userRoles.on(fetchUserRolesFx.doneData, (_, userRoles) => {
-  return userRoles;
-});
+$userRoles.on(fetchUserRolesFx.doneData, (_, userRoles) => userRoles);
 
 $isFetchingUserRolesFailed
   .on(fetchUserRolesFx.failData, () => true)

@@ -1,8 +1,9 @@
 import {
   CreateNodeCheckRequest,
+  UpdateNodeCheckRequest,
   ECheckType,
   ENodeCheckType,
-} from 'myApi';
+} from './../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';
@@ -28,6 +29,50 @@ const createNodeCheckEv = checkNodeDomain.createEvent();
 
 const closeCheckNodeModal = checkNodeDomain.createEvent();
 const openCheckNodeModal = checkNodeDomain.createEvent();
+
+const checkNodeForm = createForm({
+  fields: {
+    checkingDate: {
+      init: null as null | string,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
+    },
+    checkType: {
+      init: null as null | ENodeCheckType,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
+    },
+    documentIds: {
+      init: [] as FileData[],
+      rules: [
+        {
+          name: 'required',
+          validator: (arr) => Boolean(arr.length),
+        },
+      ],
+    },
+    registryNumber: {
+      init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
+    },
+    checkingAct: {
+      init: null as null | null,
+    },
+  },
+});
 
 const removeNodeCheckFx = checkNodeDomain.createEffect<
   { nodeId: number; checkId: number },
@@ -61,56 +106,6 @@ const editNodeCheckFx = checkNodeDomain.createEffect<
 const clearPayloadFile = checkNodeDomain.createEvent();
 
 const saveEditNodeCheck = checkNodeDomain.createEvent();
-
-const checkNodeForm = createForm({
-  fields: {
-    checkingDate: {
-      init: null as null | string,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-    checkType: {
-      init: null as null | ENodeCheckType,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-    documentIds: {
-      init: [] as FileData[],
-      rules: [
-        {
-          name: 'required',
-          validator: (arr) => {
-            const isEditMode = $isEditNodeCheckModalOpen.getState();
-
-            if (isEditMode) return true;
-
-            return Boolean(arr.length);
-          },
-        },
-      ],
-    },
-    registryNumber: {
-      init: '',
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
-    },
-    checkingAct: {
-      init: null as null | null,
-    },
-  },
-});
 
 export const checkNodeService = {
   inputs: {

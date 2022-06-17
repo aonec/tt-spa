@@ -1,13 +1,13 @@
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { StringStringDictionaryItem } from 'myApi';
+import { UserRoleListResponse } from 'myApi';
 
-export const $userRoles = createStore<StringStringDictionaryItem[] | null>(null);
+export const $userRoles = createStore<UserRoleListResponse[] | null>(null);
 export const $isFetchingUserRolesFailed = createStore(false);
 
 export const fetchUserRolesFx = createEffect<
   void,
-  StringStringDictionaryItem[] | null
+  UserRoleListResponse[] | null
 >();
 
 export const UserRolesGate = createGate();

@@ -54,7 +54,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
     <>
       <Wrap>
         <ExtendedSearch
-          isOpen={isExtendedSearchOpen}
+          open={isExtendedSearchOpen}
           handleClose={handleExtendedSearchClose}
           handleOpen={handelExtendedSearchOpen}
           handleApply={handleApplyFilters}

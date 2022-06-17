@@ -24,22 +24,17 @@ export const Wrapper = styled(Link)`
   }
 `;
 
-export const Address = styled.div`
+export const Address = styled.span`
   font-size: 16px;
   font-weight: 500;
   color: #272f5a;
 `;
 
-export const AdditionalAddress = styled.div`
+export const AdditionalAddress = styled.span`
   font-size: 13px;
   font-weight: 400;
   opacity: 0.8;
-  margin-top: 7px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: min-content;
-  max-width: 400px;
+  margin-left: 10px;
 `;
 
 export const NumberOfTasks = styled.span`

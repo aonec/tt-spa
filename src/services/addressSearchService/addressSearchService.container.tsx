@@ -13,8 +13,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
   handleSubmit: onSubmit,
 }) => {
-  const { outputs } = addressSearchService;
-
   const {
     values,
     handleSubmit,
@@ -30,8 +28,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     onSubmit,
   });
 
-  const cities = useStore(outputs.cities);
-  const streets = useStore(outputs.streets);
+  const cities = useStore(addressSearchService.outputs.cities);
+  const streets = useStore(addressSearchService.outputs.streets);
 
   useEffect(() => {
     if (!cities?.length || values.city) return;

@@ -1,25 +1,36 @@
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Skeleton } from 'antd';
+import { groupBy } from 'lodash';
 import React, { FC, useMemo } from 'react';
 import { ApartmentItem } from './ApartmentItem';
+import { StreetGroupHeader, StreetGroupWrapper } from './ApartmentsList.styled';
 import { ApartmentsListProps } from './ApartmentsList.types';
 
 export const ApartmentsList: FC<ApartmentsListProps> = ({
-  apartments,
+  apartmentsList,
   isLoading,
 }) => {
-  const apartmentsList = useMemo(() => {
-    return apartments?.map((apartment) => (
-      <ApartmentItem key={apartment.id} apartment={apartment} />
-    ));
-  }, [apartments]);
+  const groupedApartments = useMemo(() => {
+    const grouped = Object.entries(
+      groupBy(apartmentsList, 'housingStock.address.mainAddress.street')
+    );
 
-  const isEmpty = useMemo(() => !apartments?.length, [apartments]);
+    return grouped.map(([street, apartment], index) => (
+      <StreetGroupWrapper key={index}>
+        <StreetGroupHeader>{street}</StreetGroupHeader>
+        {apartment?.map((apartment) => (
+          <ApartmentItem key={apartment.id} apartment={apartment} />
+        ))}
+      </StreetGroupWrapper>
+    ));
+  }, [apartmentsList]);
+
+  const isEmpty = useMemo(() => !apartmentsList?.length, [apartmentsList]);
 
   return (
     <div>
       {isLoading && <Skeleton active />}
-      {!isLoading && apartmentsList}
+      {!isLoading && groupedApartments}
       {isEmpty && !isLoading && <TypeAddressToStart />}
     </div>
   );

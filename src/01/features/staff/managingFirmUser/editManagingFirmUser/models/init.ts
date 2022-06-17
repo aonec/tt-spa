@@ -21,7 +21,7 @@ const prepareFormData = (user: ManagingFirmUserResponse | null) => ({
   lastName: user?.lastName,
   middleName: user?.middleName,
   cellphone: user?.cellphone,
-  roleTypes: user?.roles?.map((elem) => elem.key),
+  userRoleIds: user?.userRoles?.map((elem) => elem.id),
   firmCompetenceIds: user?.competences?.map((elem) => elem.id),
 });
 

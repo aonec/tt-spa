@@ -12,7 +12,7 @@ const StyledBreadcrumb = styled.div`
   }
 `;
 
-export const Breadcrumb = ({ path = '' }) => {
+export const Breadcrumb = ({ path = null }) => {
   const history = useHistory();
 
   const onClickHandler = () => (path ? history.push(path) : history.goBack());

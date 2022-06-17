@@ -1,8 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import React, { FC, useCallback, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FC } from 'react';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
 import { SearchType } from '../../objectsProfileService.types';
@@ -13,7 +11,7 @@ import {
 } from './ObjectsProfile.styled';
 import { ObjectsProfileProps } from './ObjectsProfile.types';
 
-const objectListComponentsLookup: { [key: string]: FC } = {
+const objectListComponents: { [key: string]: FC } = {
   [SearchType.Houses]: ObjectsListContainer,
   [SearchType.Apartments]: ApartmentsListContainer,
   [SearchType.PersonaNumbers]: () => <></>,
@@ -22,47 +20,39 @@ const objectListComponentsLookup: { [key: string]: FC } = {
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleExportGroupReport,
   searchType,
+  onChangeSearchType,
 }) => {
-  const menuButtons = useMemo(
-    () => [
-      {
-        title: 'Выгрузка группового отчёта',
-        onClick: handleExportGroupReport,
-      },
-    ],
-    [handleExportGroupReport]
-  );
-
-  const objectsProfileComponent = useMemo(() => {
-    if (!searchType) return null;
-
-    const Component = objectListComponentsLookup[searchType];
-
-    if (!Component) return null;
-
-    return <Component />;
-  }, [searchType]);
+  const ObjectListComponent = searchType && objectListComponents[searchType];
 
   return (
     <>
       <PageHeader
         title="Объекты"
         contextMenu={{
-          menuButtons,
+          menuButtons: [
+            {
+              title: 'Выгрузка группового отчёта',
+              onClick: handleExportGroupReport,
+            },
+          ],
         }}
       />
       <Wrapper>
         <SearchTypesWrapper>
-          <Radio.Group value={searchType}>
-            <Link to={`/objects/${SearchType.Houses}`}>
-              <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
-            </Link>
-            <Link to={`/objects/${SearchType.Apartments}`}>
-              <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
-            </Link>
+          <Radio.Group
+            value={searchType}
+            onChange={(e) => onChangeSearchType(e.target.value)}
+          >
+            <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
+            <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
+            {/* <Radio value={SearchType.PersonaNumbers}>
+              Поиск по лицевому счету
+            </Radio> */}
           </Radio.Group>
         </SearchTypesWrapper>
-        <ContentWrapper>{objectsProfileComponent}</ContentWrapper>
+        <ContentWrapper>
+          {ObjectListComponent && <ObjectListComponent />}
+        </ContentWrapper>
       </Wrapper>
     </>
   );

@@ -84,7 +84,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
           open={isOpen}
           handleClose={() => close()}
           handleOpen={() => open()}
-
           handleApply={() => {
             fetchcalc(values);
           }}

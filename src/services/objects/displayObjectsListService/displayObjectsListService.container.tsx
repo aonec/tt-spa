@@ -1,7 +1,7 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { displayObjectsListService } from './displayObjectsListService.model';
+import { displayObjectsListService } from './displayObjectsListService.models';
 import { ObjectsList } from './view/ObjectsList';
 import { SearchObjects } from './view/SearchObjects';
 
@@ -31,7 +31,7 @@ export const ObjectsListContainer = () => {
       <HousingStocksGate />
       <SearchObjects handleSearch={handleSearch} />
       <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
-      {isNotEmpty && !isLoading && (
+      {isNotEmpty && (
         <Pagination
           showSizeChanger={false}
           defaultCurrent={1}

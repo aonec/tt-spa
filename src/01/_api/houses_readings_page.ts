@@ -1,4 +1,5 @@
 import axios from '01/axios';
+import { IndividualDeviceType } from 'types/types';
 import { DisabledStateType } from '01/Redux/reducers/readingsReducer';
 import { IndividualDeviceListItemResponse } from '../../myApi';
 
