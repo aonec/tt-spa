@@ -44,12 +44,11 @@ export const ObjectProfile = () => {
     Promise.all([
       getNodes(housingStockId).then((res) => {
         const { pipeNodes } = res;
-        
+
         setNodes(pipeNodes);
       }),
       getObject(housingStockId).then((res) => {
         setObject(res);
-        
       }),
     ]).finally(() => setLoading(false));
   }, []);
@@ -85,14 +84,14 @@ export const ObjectProfile = () => {
     },
     {
       title: 'Квартиры',
-      key: 'connection',
+      key: 'apartments',
       cb: () => {
         push(`${path}/apartments`);
       },
     },
     {
       title: 'ОДПУ',
-      key: 'nodes',
+      key: 'devices',
       cb: () => {
         push(`${path}/devices`);
       },
