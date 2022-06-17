@@ -69,7 +69,7 @@ const ApartmentProfile = () => {
 
   return styled(grid)(
     <>
-      <Index path={`/objects/${id}/apartments`} />
+      <Index />
       <CheckApartmentModal />
       <ApartmentGate id={Number(apartmentId)} />
       <Header
