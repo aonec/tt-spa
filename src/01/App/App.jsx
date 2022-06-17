@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
-import { Logotip, Menu } from '01/components';
+import { Logotip } from '01/components';
 import moment from 'moment';
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
@@ -47,10 +47,9 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
-
+import { MenuContainer } from 'services/menuService';
 
 moment.locale('ru');
 
@@ -69,7 +68,7 @@ const Internal = () => {
           <LeftBlock style={{ position: 'fixed', height: '100vh' }}>
             <Logotip />
             <Space />
-            <Menu />
+            <MenuContainer />
           </LeftBlock>
           <div />
           <main>
@@ -95,7 +94,11 @@ const Internal = () => {
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
 
-              <Route path="/devices/" component={DevicesProfileContainer} exact />
+              <Route
+                path="/devices/"
+                component={DevicesProfileContainer}
+                exact
+              />
 
               <Route
                 path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
@@ -245,9 +248,9 @@ export function App() {
 }
 
 const LeftBlock = styledC.div`
-padding-top: 20px; 
+  padding-top: 20px; 
   width: 208px;
-  background: #2883e110;
+  background: #F3F5F6;
 `;
 
 export default App;

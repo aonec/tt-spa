@@ -1,4 +1,8 @@
 {
   "files.eol": "\n",
-  "editor.quickSuggestions": true
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on",
+    "other": "on"
+  }
 }
