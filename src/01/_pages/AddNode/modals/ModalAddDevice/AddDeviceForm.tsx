@@ -32,7 +32,7 @@ import {
 } from '../../../../tt-components/interfaces';
 import Title from '../../../../tt-components/Title';
 import { axios } from '01/axios';
-import { AxiosResponse } from 'axios';
+import { resourceParser } from 'utils/ResourceParser';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;
@@ -47,8 +47,9 @@ const AddDeviceForm = (props: any) => {
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  const [fetchedMagistrals, setFetchedMagistrals] = useState<reduceResponse[]>(
-);
+  const [fetchedMagistrals, setFetchedMagistrals] = useState<
+    reduceResponse[]
+  >();
 
   const initialValues = {
     isConnected: isConnected[0].value,
@@ -166,22 +167,15 @@ const AddDeviceForm = (props: any) => {
     label: string;
     value: string;
   }
+
   useEffect(() => {
     axios
       .get<any, axiosResponse[]>(
-        `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
+        `PipeNodes/PipeMagistralTypes?resource=${resource}`
       )
-      .then((res) =>
-        res?.reduce((acc: reduceResponse[], el: axiosResponse) => {
-          acc.push({
-            label: el.value,
-            value: el.key,
-          });
-          return acc;
-        }, [])
-      )
+      .then((res) => resourceParser(res))
       .then((data) => setFetchedMagistrals(data));
-  }, [values.resource]);
+  }, [resource]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

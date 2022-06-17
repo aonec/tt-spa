@@ -33,6 +33,7 @@ import {
   validationSchemaTemperatureSensor,
 } from '../../../tt-components/validationSchemas';
 import { axios } from '01/axios';
+import { resourceParcer } from 'utils/ResourceParser';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -152,24 +153,13 @@ const FormEditODPU = ({
     key: string;
     value: string;
   }
-  interface reduceResponse {
-    label: string;
-    value: string;
-  }
+
   useEffect(() => {
     axios
       .get<any, axiosResponse[]>(
         `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
       )
-      .then((res) =>
-        res?.reduce((acc: reduceResponse[], el: axiosResponse) => {
-          acc.push({
-            label: el.value,
-            value: el.key,
-          });
-          return acc;
-        }, [])
-      )
+      .then((res) => resourceParser(res))
       .then((data) => setMagistrals(data));
   }, [values.resource]);
 
