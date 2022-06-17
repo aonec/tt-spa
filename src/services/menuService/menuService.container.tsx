@@ -1,7 +1,3 @@
-import {
-  $userRoles,
-  UserRolesGate,
-} from '01/features/userRoles/displayUserRoles/models';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -14,8 +10,10 @@ import {
   StatisticIcon,
   TasksIcon,
 } from 'ui-kit/icons';
+import { menuService } from './menuService.model';
 import { MenuItem, MenyType } from './menuService.types';
 import { Menu } from './view/Menu';
+import { UserInfo } from './view/UserInfo';
 
 const menuItems: MenuItem[] = [
   {
@@ -87,8 +85,13 @@ const hidden: { [key: string]: string[] } = {
   [MenyType.Tasks]: ['ManagingFirmOperator'],
 };
 
+const { outputs, gates } = menuService;
+const { UserRolesGate, CurrentUserGate } = gates;
+
 export const MenuContainer = () => {
-  const roles = useStore($userRoles);
+  const roles = useStore(outputs.$userRoles);
+  const currentUser = useStore(outputs.$currentUser);
+  const isCurrentUserLoading = useStore(outputs.$isCurrentUserLoading);
 
   const filteredMenuItems = menuItems.filter(({ type }) => {
     const accessRoles = access[type];
@@ -102,6 +105,8 @@ export const MenuContainer = () => {
   return (
     <>
       <UserRolesGate />
+      <CurrentUserGate />
+      <UserInfo isLoading={isCurrentUserLoading} currentUser={currentUser} />
       <Menu menuItems={filteredMenuItems} />
     </>
   );
