@@ -1,5 +1,5 @@
 import { axios } from '01/axios';
-import { ManagementFirmResponse } from 'myApi';
+import { ManagingFirmUserResponse } from 'myApi';
 
-export const getCurrentUser = (): Promise<ManagementFirmResponse> =>
-  axios.get('ManagingFirms/current');
+export const getCurrentUser = (): Promise<ManagingFirmUserResponse> =>
+  axios.get('ManagingFirmUsers/current');

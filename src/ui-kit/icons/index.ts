@@ -18,6 +18,7 @@ import { ReactComponent as ObjectsIcon } from './svg/objects.svg';
 import { ReactComponent as CompanyProfileIcon } from './svg/companyProfile.svg';
 import { ReactComponent as DocumentIcon } from './svg/document.svg';
 import { ReactComponent as SettingsIcon } from './svg/settings.svg';
+import { ReactComponent as UserIcon } from './svg/user.svg';
 
 export {
   StarIcon,
@@ -40,4 +41,5 @@ export {
   CompanyProfileIcon,
   DocumentIcon,
   SettingsIcon,
+  UserIcon,
 };

@@ -1,15 +1,13 @@
 import { getCurrentUser } from './currentUserService.api';
 import { createGate } from 'effector-react';
 import { createDomain, forward } from 'effector';
-import { ManagementFirmResponse } from 'myApi';
+import { ManagementFirmResponse, ManagingFirmUserResponse } from 'myApi';
 
 const domain = createDomain('currentUserService');
 
-const $currentUser = domain.createStore<ManagementFirmResponse | null>(null);
+const $currentUser = domain.createStore<ManagingFirmUserResponse | null>(null);
 
-const fetchCurrentUserFx = domain.createEffect<void, ManagementFirmResponse>(
-  getCurrentUser
-);
+const fetchCurrentUserFx = domain.createEffect<void, ManagingFirmUserResponse>(getCurrentUser);
 
 const $isLoading = fetchCurrentUserFx.pending;
 

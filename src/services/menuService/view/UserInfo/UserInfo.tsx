@@ -1,7 +1,28 @@
+import { Tooltip } from 'antd';
 import React, { FC } from 'react';
-import { Wrapper } from './UserInfo.styled';
+import {
+  UserEmail,
+  UserEmailWrapper,
+  UserManagingFirmName,
+  UserInfoWrapper,
+  UserIconSC,
+} from './UserInfo.styled';
 import { UserInfoProps } from './UserInfo.types';
 
-export const UserInfo: FC<UserInfoProps> = ({}) => {
-  return <Wrapper></Wrapper>
+export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
+  return (
+    <UserInfoWrapper>
+      <UserEmailWrapper>
+        <UserIconSC />
+        <Tooltip title={currentUser?.email}>
+          <UserEmail to={`/user/${currentUser?.id}`}>
+            {currentUser?.email}
+          </UserEmail>
+        </Tooltip>
+      </UserEmailWrapper>
+      <UserManagingFirmName>
+        {currentUser?.managementFirm?.name}
+      </UserManagingFirmName>
+    </UserInfoWrapper>
+  );
 };
