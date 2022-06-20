@@ -9,18 +9,17 @@ export const useApartmentInfo = (apartInfo, homeownerIndex) => {
   } = apartInfo || {};
 
   const { street, number, corpus } = housingStock.address?.mainAddress || {
-    street: undefined,
+    street: '',
     number: undefined,
-    corpus: undefined,
+    corpus: '',
   };
   const homeowner = homeownerAccounts[homeownerIndex || 0] || {};
 
   return {
     title:
       apartmentNumber &&
-      `${street}, ${
-        number
-      }${corpus || ''}, кв.${apartmentNumber}`,
+      housingStock.address?.mainAddress &&
+      `${street}, ${number} ${corpus || ''}, кв.${apartmentNumber}`,
     userInfo: [
       ['Собственник', homeowner.name],
       ['Телефон', homeowner?.phoneNumber ?? '-'],
