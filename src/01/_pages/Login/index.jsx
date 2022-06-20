@@ -68,11 +68,12 @@ export const Login = () => {
       const res = await axios.get('ManagingFirmUsers/current');
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       replace(
-        res.userRoles.some((elem) => elem.type === 'ManagingFirmOperator')
+        res.roles.some((elem) => elem.type === 'ManagingFirmOperator')
           ? '/meters'
           : '/tasks/'
       );
     } catch (error) {
+      console.log(error);
       message.error('Корректно введите логин и пароль');
     } finally {
       setLoading(false);
