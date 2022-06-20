@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 // import { HeaderWrap, Title, Subtitle } from '01/_components';
 import { AddNodeContext } from '../AddNodeContext';
-import { Breadcrumb } from '../../../tt-components';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 export const Header = () => {
   const { housingStock } = useContext(AddNodeContext);
@@ -16,7 +16,7 @@ export const Header = () => {
       }}
     >
       <div>
-        <Breadcrumb path={`/objects/${id}`} />
+        <GoBack path={`/objects/${id}`} />
         <div>
           <Title>Добавление нового узла</Title>
           <Subtitle to={`/objects/${id}`}>

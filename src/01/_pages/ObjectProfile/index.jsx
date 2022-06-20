@@ -8,7 +8,7 @@ import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
-import Index from '../../tt-components/Breadcrumb';
+import { GoBack } from 'ui-kit/shared_components/GoBack/GoBack';
 import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
@@ -101,7 +101,7 @@ export const ObjectProfile = () => {
   return styled(grid)(
     <>
       <ObjectContext.Provider value={context}>
-        <Index path="/objects/" />
+        <GoBack path="/objects/" />
         <Header
           {...header}
           setCommonReport={setCommonReport}

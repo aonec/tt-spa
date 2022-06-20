@@ -5,13 +5,14 @@ import {
 } from '01/features/apartments/displayApartment/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Breadcrumb, ButtonTT } from '01/tt-components';
+import { ButtonTT } from '01/tt-components';
 import { Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import { ApartmentResponse, HousingStockListResponse } from 'myApi';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 interface Props {
   title: string;
@@ -45,7 +46,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   return (
     <Wrap>
       <ApartmentGate id={Number(id)} />
-      <Breadcrumb />
+      <GoBack />
       <Title>{title}</Title>
       {address}
       <Space />

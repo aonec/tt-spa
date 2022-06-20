@@ -1,5 +1,4 @@
 import React from 'react';
-import GoBack from '01/tt-components/Breadcrumb';
 import { Header } from '01/tt-components/Header';
 import { ManagingFirmUserGate } from '../displayManagingFirmUser/models';
 import { useHistory, useParams } from 'react-router-dom';
@@ -31,6 +30,7 @@ import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
 import { useEffect } from 'react';
 import { ErrorAlert } from '01/_components/Alert';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 const FormContainer = styled.div`
   max-width: 480px;
