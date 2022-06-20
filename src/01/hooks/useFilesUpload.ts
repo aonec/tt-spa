@@ -1,7 +1,6 @@
 import { uploadFile } from '01/_api/upload';
-// import { deleteDoc } from '01/_api/task_profile_page';
 import { useEffect, useState } from 'react';
-import { DocumentLiteResponse, DocumentResponse } from './../../myApi';
+import { DocumentResponse } from './../../myApi';
 
 export interface FileData {
   id: number;
