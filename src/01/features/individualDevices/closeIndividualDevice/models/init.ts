@@ -42,7 +42,6 @@ sample({
     (props, device) => ({
       ...props,
       deviceId: device?.id!,
-      closingDate: props.clousingDate!,
     })
   ),
   clock: closeIndividualDeviceForm.formValidated,
