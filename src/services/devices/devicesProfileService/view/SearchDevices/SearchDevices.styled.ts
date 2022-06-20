@@ -19,7 +19,7 @@ export const CustomGrid = styled.div`
   gap: 5px;
 `;
 
-export const StyledSlider = styled(Slider)`
+export const SCSlider = styled(Slider)`
   width: 70%;
   &.ant-slider.ant-slider-with-marks {
     margin-bottom: 12px !important;
