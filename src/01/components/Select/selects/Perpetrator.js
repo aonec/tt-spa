@@ -6,6 +6,7 @@ import axios from '01/axios';
 import { Select } from '../Select';
 import { useStore } from 'effector-react';
 import { $task } from '01/features/tasks/displayTask/models';
+import _ from 'lodash';
 
 export const Perpetrator = ({ getData = () => {}, ...props }) => {
   const [data, setData] = React.useState({ loading: null });
@@ -16,10 +17,7 @@ export const Perpetrator = ({ getData = () => {}, ...props }) => {
       axios
         .get('ManagingFirmUsers', {
           params: {
-            RoleNames:
-              task?.type === 'IndividualDeviceCheck'
-                ? 'Controller'
-                : 'ManagingFirmExecutor',
+            RoleNames: _.last(task.stages).requiredUserRoles.join(','),
           },
         })
         .then((data) => setData({ items: data.items }));
