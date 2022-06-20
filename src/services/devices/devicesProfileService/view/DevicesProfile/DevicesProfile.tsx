@@ -1,16 +1,16 @@
+import React, { FC } from 'react';
+import { Tabs } from 'antd';
+import { useFormik } from 'formik';
+import _ from 'lodash';
 import { DevicesReportModal } from '01/features/devicesReport';
 import { MenuButtonTT } from '01/tt-components';
-import React, { FC } from 'react';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
-import styled from 'styled-components';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { useFormik } from 'formik';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
-import _ from 'lodash';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { showDownloadDeviceReportButtonClicked } from '../../../../../01/features/devicesReport/models';
-import { Tabs } from 'antd';
+import { HeaderWrapper, HeaderText } from './DevicesProfile.styled';
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
   fetchcalc: (
@@ -98,13 +98,3 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     </div>
   );
 };
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const HeaderText = styled.h1`
-  font-weight: 300;
-  margin-bottom: 16;
-`;

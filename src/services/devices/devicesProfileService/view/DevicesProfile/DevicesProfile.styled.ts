@@ -31,3 +31,13 @@ export const StyledForm = styled(Form)`
   margin-bottom: 20px;
   margin-top: 10px;
 `;
+
+export const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const HeaderText = styled.h1`
+  font-weight: 300;
+  margin-bottom: 16;
+`;

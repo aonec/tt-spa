@@ -1,5 +1,9 @@
 import React, { FC, useEffect } from 'react';
+import styled from 'styled-components';
 import styles from './DeviceSearchForm.module.scss';
+import { Form, Input, Select, Slider } from 'antd';
+import { useFormik } from 'formik';
+import _ from 'lodash';
 import {
   CustomGrid,
   FlexCenterRow,
@@ -12,12 +16,8 @@ import {
   Grid,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { Form, Input, Select, Slider } from 'antd';
-import styled from 'styled-components';
 import { Icon } from '01/components';
-import { useFormik } from 'formik';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
-import _ from 'lodash';
 
 const { Option } = Select;
 
@@ -104,9 +104,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   Сортировать по:
                 </StyledLabelSimple>
                 <Select
-                  style={{width: '65%'}}
+                  style={{ width: '65%' }}
                   id="sortBy"
-                  placeholder='Дате проверки'
+                  placeholder="Дате проверки"
                   onChange={(value) => setFieldValue('OrderBy', value)}
                   onSelect={() => submitForm()}
                 >
