@@ -12,7 +12,6 @@ export const Menu: FC<MenuProps> = ({ menuItems }) => {
           <MenuItemComponent menuItem={menuItem} />
         ))}
       </div>
-
       <ExitButton />
     </Wrapper>
   );

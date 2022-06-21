@@ -72,19 +72,6 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const access: { [key: string]: string[] } = {
-  [MenyType.Reports]: ['ManagingFirmSeniorOperator'],
-  [MenyType.Meters]: ['ManagingFirmOperator'],
-  [MenyType.Statistics]: ['ManagingFirmSeniorOperator'],
-  [MenyType.CompanyProfile]: ['ManagingFirmAdministrator'],
-};
-
-const hidden: { [key: string]: string[] } = {
-  [MenyType.Statistics]: ['ManagingFirmOperator'],
-  [MenyType.ActsJournal]: ['ManagingFirmOperator'],
-  [MenyType.Tasks]: ['ManagingFirmOperator'],
-};
-
 const { outputs, gates } = menuService;
 const { UserRolesGate, CurrentUserGate } = gates;
 
@@ -94,11 +81,6 @@ export const MenuContainer = () => {
   const isCurrentUserLoading = useStore(outputs.$isCurrentUserLoading);
 
   const filteredMenuItems = menuItems.filter(({ type }) => {
-    const accessRoles = access[type];
-    const hiddenRoles = hidden[type];
-
-    if (!roles) return false;
-
     return true;
   });
 
