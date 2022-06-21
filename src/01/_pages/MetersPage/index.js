@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Filter } from './components/Filter';
+import { Filter } from './components/Filter.container';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
 import { Tabs } from 'antd';
