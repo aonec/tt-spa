@@ -13,7 +13,10 @@ import moment from 'moment';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { addIndividualDeviceForm, SwitchIndividualDeviceGate } from '../../models';
+import {
+  addIndividualDeviceForm,
+  SwitchIndividualDeviceGate,
+} from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
@@ -86,7 +89,9 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString(true));
+            fields.futureCheckingDate.onChange(
+              nextCheckingDate.toISOString(true)
+            );
           }}
           value={fields.lastCheckingDate.value}
         />
@@ -401,6 +406,7 @@ export const closingReasons = {
   [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
   [EClosingReason.CertificateIssued]: 'Выдана справка',
+  [EClosingReason.ByLetter]: 'Письмо из УК',
 };
 
 const ErrorMessage = styled.div`

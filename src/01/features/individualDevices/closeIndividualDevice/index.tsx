@@ -82,17 +82,17 @@ export const CloseIndividualDeviceModal = () => {
           <DatePickerTT
             style={{ borderRadius: '4px', width: '100%' }}
             value={
-              fields.clousingDate.value
-                ? moment(fields.clousingDate.value)
+              fields.closingDate.value
+                ? moment(fields.closingDate.value)
                 : null
             }
             onChange={(value) =>
-              value && fields.clousingDate.onChange(value?.toISOString(true))
+              value && fields.closingDate.onChange(value?.toISOString(true))
             }
             format="DD.MM.YYYY"
           />
           <ErrorMessage>
-            {fields.clousingDate.errorText({
+            {fields.closingDate.errorText({
               required: 'Это поле обязательное',
             })}
           </ErrorMessage>

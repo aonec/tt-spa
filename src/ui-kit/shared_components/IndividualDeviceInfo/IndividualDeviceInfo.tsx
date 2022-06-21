@@ -12,7 +12,7 @@ export const IndividualDeviceInfo: FC<IndividualDeviceInfoProps> = ({
 
   return (
     <Wrapper>
-      <ResourceIconLookup icon={device.resource} />
+      <ResourceIconLookup resource={device.resource} />
       <SerialNumber>{device.serialNumber}</SerialNumber>
       <Model>({device.model})</Model>
       <DeviceStatus isActive={isActive} closingReason={closingReason} />

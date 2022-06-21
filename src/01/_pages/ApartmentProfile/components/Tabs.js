@@ -10,10 +10,11 @@ const tabItems = [
   ['Общие данные', ''],
   ['Приборы учёта', 'testimony'],
   ['История проверок', 'checksHistory'],
+  ['Журнал актов', 'documents'],
 ];
 
 export const Tabs = React.memo(() => {
-  const { url } = useRouteMatch('/*/*/apartments/(\\d+)/');
+  const { url } = useRouteMatch('/*/*/apartments/:apartmentId');
   return styled(tabs)(
     <tabs>
       {tabItems.map((t) => (

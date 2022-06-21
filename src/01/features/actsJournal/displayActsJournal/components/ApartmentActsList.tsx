@@ -47,7 +47,7 @@ export const ApartmentActsList = () => {
   const renderAct = (act: ApartmentActResponse) => {
     const actType = actTypes?.find((elem) => elem.key === act.actType)?.value;
 
-    const resourceIcon = <ResourceIconLookup icon={act.actResourceType} />;
+    const resourceIcon = <ResourceIconLookup resource={act.actResourceType} />;
 
     const resourceName = actResources?.find(
       (elem) => elem.key === act.actResourceType
