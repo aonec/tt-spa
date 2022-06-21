@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 
 const ADD_READINGS = 'ADD_READINGS';
@@ -20,8 +22,8 @@ export const usePanel = (
     onClick() {
       !panelLoading && pageDispatch({ type: 'push_stage', data: state });
     },
-    disabled:
-      isDisabled(state, panel.actions ?? {}) || panelLoading || isObserver,
+    disabled: panelLoading,
+      // isDisabled(state, panel.actions ?? {}) || panelLoading || isObserver,
     loading: panelLoading,
   };
   return {

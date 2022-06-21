@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 
 import { store } from '01/App/App';

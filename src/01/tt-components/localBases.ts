@@ -212,7 +212,7 @@ export const UserRoles = [
 export const DEFAULT_BUILDING = {
   city: '',
   street: '',
-  housingStockNumber: null,
+  number: null,
   corpus: '',
   id: null,
 };

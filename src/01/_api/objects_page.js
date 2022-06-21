@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import axios from '01/axios';
 import { createTimeline, createTimer, createDevice } from './utils';
 
@@ -59,7 +61,7 @@ export async function getApartments(params) {
 
 // utils
 function createTitleObject(data) {
-  const { street, number, city, corpus } = data;
+  const { street, number, city, corpus } = data.address.mainAddress;
   if (corpus !== null) {
     return [`${street}, ${number}, корпус ${corpus}`, city];
   }

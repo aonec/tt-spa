@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import classes from '../Settings.module.scss';
 import { AddStaffModal } from '01/features/staff/addStaff';
@@ -51,7 +53,7 @@ const Staff = () => {
             },
             {
               title: 'Редактировать информацию о сотруднике',
-              cb: () => history.push(`/settings/editManagingFirmUser/${id}`),
+              cb: () => history.push(`/companyProfile/editManagingFirmUser/${id}`),
               show: true,
               color: 'default',
               clickable: true,

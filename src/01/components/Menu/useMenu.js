@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export function useMenu() {
   const user = JSON.parse(localStorage.getItem('user')) ?? {};
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
@@ -11,6 +13,13 @@ export function useMenu() {
       icon: 'statistics',
       perm: ['all'],
       hidden: ['ManagingFirmOperator'],
+      placePerm: 'SubscriberStatisticsRead',
+    },
+    {
+      name: 'Отчеты',
+      to: '/reports/',
+      icon: 'reports',
+      perm: ['ManagingFirmSeniorOperator'],
       placePerm: 'SubscriberStatisticsRead',
     },
     {
@@ -42,7 +51,7 @@ export function useMenu() {
     },
     {
       name: 'Профиль компании',
-      to: '/settings/',
+      to: '/companyProfile/',
       icon: 'company',
       perm: ['ManagingFirmAdministrator'],
     },
@@ -57,6 +66,12 @@ export function useMenu() {
       to: '/meters/',
       icon: 'doc',
       perm: ['ManagingFirmOperator'],
+    },
+    {
+      name: 'Настройки',
+      to: '/settings/controllers',
+      icon: 'settings',
+      perm: ['ManagingFirmSeniorOperator'],
     },
     {
       name: 'Лог действий',

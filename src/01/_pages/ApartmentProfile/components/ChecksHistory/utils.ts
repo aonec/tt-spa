@@ -1,6 +1,7 @@
 import axios from '01/axios';
 import { message } from 'antd';
 import { DocumentResponse, ECheckType } from 'myApi';
+import { saveAs } from 'file-saver';
 
 export const CheckingActDocumentType = {
   [ECheckType.Planned]: 'Плановая',

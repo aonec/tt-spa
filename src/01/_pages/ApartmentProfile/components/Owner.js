@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+/* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
@@ -55,7 +58,7 @@ export const Certificate = (props) => {
         >
           от абонентского отдела
           <br />
-          АО "НК-Инжиниринг"
+          ООО "Инженерный центр - НК"
         </div>
         <div style={{ paddingTop: '24px', float: 'left' }}>дана: </div>
         <div
@@ -228,9 +231,9 @@ export const Certificate = (props) => {
           </tbody>
         </table>
         <div style={{ paddingTop: '36px', float: 'left', fontWeight: 'bold' }}>
-          Представитель на основании
+          Заместитель генерального директора
           <br />
-          доверенности №6 от 11.01.2021г.
+          по работе с населением
         </div>
         <div style={{ paddingTop: '36px', float: 'right', fontWeight: 'bold' }}>
           <br />

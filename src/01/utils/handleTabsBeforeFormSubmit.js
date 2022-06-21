@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import _ from 'lodash';
 
 export function handleTabsBeforeFormSubmit(tabErrors, errors) {

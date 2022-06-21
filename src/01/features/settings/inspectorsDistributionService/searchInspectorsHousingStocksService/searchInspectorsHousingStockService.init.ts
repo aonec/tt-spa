@@ -1,0 +1,1 @@
+import './searchInspectorsHousingStockService.relations';

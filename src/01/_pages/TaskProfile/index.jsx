@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'reshadow/macro';
 import * as s from '01/r_comp';
+import styledC from 'styled-components';
+import { Link } from 'react-router-dom';
+import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
+import { useStore } from 'effector-react';
+import { $task } from '01/features/tasks/displayTask/models';
 import { TasksProfileContext } from './context';
 import { usePageFetch } from './hooks/usePageFetch';
 import { usePanel } from './hooks/usePanel';
@@ -8,7 +13,6 @@ import { useStages } from './hooks/useStages';
 import { useDocuments } from './hooks/useDocuments';
 import { useInformation } from './hooks/useInformation';
 import { useInformationDevice } from './hooks/useInformationDevice';
-import styledC from 'styled-components';
 
 import { Header } from './components/Header';
 import { Panel } from './components/Panel';
@@ -22,10 +26,10 @@ import TaskComments from './components/Comments/TaskComments';
 import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
-import { Link, NavLink, useParams } from 'react-router-dom';
-import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
-import { TaskGate } from '01/features/tasks/displayTask/models';
 import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
+import { getNodeIdFromTask } from './utlis';
+import { IndividualDevicesList } from './components/IndividualDevicesList';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -72,72 +76,72 @@ export const TaskProfile = () => {
   const { icon, color } = DeviceIcons[node?.resource] || {};
   const { calculator } = state;
 
-  const params = useParams();
-
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   const isIndividualDeviceReadingCheckType =
     state.type === 'IndividualDeviceReadingsCheck';
 
-  const isShowNodeStatistic = Boolean(
-    state?.device?.nodeId &&
-      (state?.type === 'HousingDeviceMalfunction' ||
-        state?.type === 'HousingDeviceMalfunctionNonCommercial')
-  );
+  const nodeId = state && getNodeIdFromTask(state);
+
+  const task = useStore($task);
+
+  const individualDevices = task?.individualDevices;
+
+  const isIndividualDevicesEmpty = !individualDevices?.length;
 
   return styled(s.grid)(
-    <>
-      <TaskGate id={Number(params[0])} />
-      <TasksProfileContext.Provider value={{ ...state, dispatch }}>
-        <Index path="/tasks/" />
-        <Header {...state.header} state={state} />
-        {isIndividualDeviceReadingCheckType ? (
-          <CorrectionReadingsPanel />
-        ) : (
-          <Panel {...panel} device={device} state={state} />
-        )}
-        <Steps />
-        <Documents {...docs} />
-        <grid>
-          <div>
-            {state.comments !== undefined ? (
-              <TaskComments comments={state.comments} />
-            ) : null}
-            <Information {...info} />
-            <InformationDevice {...infoDevice} type={type} id={id} />
+    <TasksProfileContext.Provider value={{ ...state, dispatch }}>
+      <ReadingsHistoryModal readonly />
+      <Index path="/tasks/" />
+      <Header {...state.header} state={state} />
+      {isIndividualDeviceReadingCheckType ? (
+        <CorrectionReadingsPanel />
+      ) : (
+        <Panel {...panel} device={device} state={state} />
+      )}
+      <Steps />
+      <Documents {...docs} />
+      <grid>
+        <div>
+          {state.comments !== undefined ? (
+            <TaskComments comments={state.comments} />
+          ) : null}
+          <Information {...info} />
+          <InformationDevice {...infoDevice} type={type} id={id} />
+          {nodeId && <TaskNodeStatistic id={nodeId} />}
+          {!isIndividualDevicesEmpty && (
+            <IndividualDevicesList devices={individualDevices} />
+          )}
 
-            {/*подождать бэк и вынести в отдельный компонент*/}
-            {node ? (
-              <div style={{ marginTop: 16 }}>
-                <NodeLink to={`/nodes/${node.id}`}>
-                  <div>
-                    <IconTT
-                      icon={icon}
-                      fill={color}
-                      size={24}
-                      style={{ marginRight: 8 }}
-                    />
-                    Узел {node.number}
-                  </div>
-                </NodeLink>
-
-                <div style={{ marginLeft: 32, marginTop: 8 }}>
-                  <span style={{ color: 'var(--main-100)' }}>
-                    {calculator.model}
-                  </span>{' '}
-                  <span style={{ color: 'var(--main-60)' }}>
-                    ({calculator.serialNumber})
-                  </span>
+          {node ? (
+            <div style={{ marginTop: 16 }}>
+              <NodeLink to={`/nodes/${node.id}`}>
+                <div>
+                  <IconTT
+                    icon={icon}
+                    fill={color}
+                    size={24}
+                    style={{ marginRight: 8 }}
+                  />
+                  Узел {node.number}
                 </div>
-                {/*</div>*/}
-                <NodeInformation node={node} calculator={calculator} task />
+              </NodeLink>
+
+              <div style={{ marginLeft: 32, marginTop: 8 }}>
+                <span style={{ color: 'var(--main-100)' }}>
+                  {calculator.model}
+                </span>{' '}
+                <span style={{ color: 'var(--main-60)' }}>
+                  ({calculator.serialNumber})
+                </span>
               </div>
-            ) : null}
-          </div>
-          <Stages {...stages} state={state} />
-        </grid>
-      </TasksProfileContext.Provider>
-    </>
+              <NodeInformation node={node} calculator={calculator} task />
+            </div>
+          ) : null}
+        </div>
+        <Stages {...stages} state={state} />
+      </grid>
+    </TasksProfileContext.Provider>
   );
 };
 

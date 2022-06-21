@@ -1,4 +1,6 @@
-import React, { useReducer } from 'react';
+/* eslint-disable */
+
+import React, { useMemo, useReducer } from 'react';
 import styled from 'reshadow/macro';
 import { NavLink } from 'react-router-dom';
 
@@ -10,6 +12,14 @@ import TasksSearchForm from './components/TasksSearchForm/TasksSearchForm';
 import tasksSearchReducer from './components/TasksSearchForm/tasksSearchReducer';
 import { useDebounce } from '../../hooks/useDebounce';
 import getAccessesList from '../../_api/utils/getAccessesList';
+import { PageHeader } from '01/shared/ui/PageHeader';
+import { TasksListWrapper, Wrapper } from './Tasks.styled';
+
+import {
+  ExportTasksListModalContainer,
+  exportTasksListService,
+} from 'services/tasks/exportTasksListService';
+import { useEvent } from 'effector-react';
 
 const tabItems = [
   ['К исполнению', 'executing'],
@@ -49,15 +59,45 @@ export const Tasks = () => {
   const { items, executingTasksCount, observingTasksCount } = useTasks(
     debouncedSearchState
   );
-  return (
-    <div style={{ maxWidth: 960 }}>
-      <h1 style={{ fontWeight: 300, marginBottom: 16 }}>Задачи</h1>
-      <Tabs total={[executingTasksCount, observingTasksCount]} />
-      <TasksSearchForm
-        searchState={searchState}
-        dispatchSearchState={dispatchSearchState}
+
+  const handleExportTasksList = useEvent(
+    exportTasksListService.inputs.openModal
+  );
+
+
+  const header = useMemo(
+    () => (
+      <PageHeader
+        title="Задачи"
+        contextMenu={{
+          menuButtons: [
+            {
+              title: 'Выгрузить список задач',
+              onClick: handleExportTasksList,
+            },
+          ],
+        }}
       />
-      <TasksList items={items} />
-    </div>
+    ),
+    [handleExportTasksList]
+  );
+
+  const taskList = useMemo(() => <TasksList items={items} />, [items]);
+
+  return (
+    <>
+      <ExportTasksListModalContainer />
+      <Wrapper>
+        {header}
+        <TasksListWrapper>
+          <Tabs total={[executingTasksCount, observingTasksCount]} />
+          <TasksSearchForm
+            searchState={searchState}
+            dispatchSearchState={dispatchSearchState}
+          />
+          {taskList}
+        </TasksListWrapper>
+      </Wrapper>
+    </>
   );
 };

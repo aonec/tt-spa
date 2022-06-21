@@ -70,8 +70,10 @@ export const EditManagingFirmUserPage = () => {
   const history = useHistory();
 
   const isSuccessUpdated = useStore($isUpdateManagingFirmUserSuccess);
+
   const competences = useStore($competencesCatalog);
   const userRoles = useStore($userRoles);
+
   const pendingFetchRequest = useStore($isFormDataLoading);
   const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
   const isFailedFetchFormData = useStore($isFetchingFormDataFailed);
@@ -82,21 +84,21 @@ export const EditManagingFirmUserPage = () => {
   const { fields, submit } = useForm(editManagingUserInfoForm);
 
   const onSubmit = () => submit();
-  const onCancel = () => history.push('/settings/staff');
+  const onCancel = () => history.push('/companyProfile/staff');
 
   const phoneMask = usePhoneMask();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem?.competence?.title,
+    label: '',
     value: elem.id,
   }));
 
   const multipleSelectionUserRoles = userRoles?.map((elem) => ({
-    label: elem.title,
-    value: elem.id,
+    label: elem.value,
+    value: elem.key,
   }));
 
-  useRedirectAfterSuccessRequest(isSuccessUpdated, '/settings/staff');
+  useRedirectAfterSuccessRequest(isSuccessUpdated, '/companyProfile/staff');
 
   const form = (
     <FormContainer>
@@ -180,12 +182,12 @@ export const EditManagingFirmUserPage = () => {
       <Form.Item label="Роль в системе">
         <MultiSelectTT
           mode="multiple"
-          value={fields.userRoleIds.value}
+          value={fields.roleTypes.value}
           options={multipleSelectionUserRoles}
-          onChange={fields.userRoleIds.onChange as any}
+          onChange={fields.roleTypes.onChange}
         />
         <ErrorMessage>
-          {fields.userRoleIds.errorText({
+          {fields.roleTypes.errorText({
             required: 'Выберите роль',
           })}
         </ErrorMessage>
@@ -219,7 +221,7 @@ export const EditManagingFirmUserPage = () => {
       <UserRolesGate />
       <ManagingFirmUserGate id={userId} />
       <EditManagingFirmUserGate />
-      <GoBack path="/settings/staff" />
+      <GoBack/>
       <Header>Информация о сотруднике. Редактирование </Header>
       <ErrorAlert
         show={isFailedFetchFormData}

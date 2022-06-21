@@ -1,0 +1,1 @@
+export { ApartmentActItem } from './ApartmentActItem'

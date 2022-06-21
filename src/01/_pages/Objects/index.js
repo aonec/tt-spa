@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useReducer, useState } from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
@@ -128,46 +130,72 @@ export const Objects = ({ isReadings = false }) => {
           dispatchSearchState={dispatchSearchState}
         />
         <Loader show={!items} size="32">
-          {items
-            ?.sort(sortObjects)
-            ?.map(
-              ({
-                city,
-                id,
-                number,
-                numberOfTasks,
-                street,
-                corpus,
-                numberOfApartments,
-              }) => {
-                const task = numberOfTasks ? (
-                  <task>
-                    <Icon icon="alarm" />
-                    Задач: {numberOfTasks}
-                  </task>
-                ) : null;
+          {items?.sort(sortObjects)?.map((object) => {
+            const {
+              city,
+              id,
+              number,
+              numberOfTasks,
+              street,
+              corpus,
+              numberOfApartments,
+              address,
+            } = object;
 
-                return (
-                  <obj_item key={id}>
-                    <LinkRow
-                      to={
-                        !isReadings ? `/objects/${id}` : `/meters/houses/${id}`
-                      }
+            const { additionalAddresses } = address;
+
+            const task = numberOfTasks ? (
+              <task>
+                <Icon icon="alarm" />
+                Задач: {numberOfTasks}
+              </task>
+            ) : null;
+
+            const additionalAddressesString = additionalAddresses
+              .map((elem) => `${elem.street}, ${elem.number}`)
+              .join(' ');
+
+            return (
+              <obj_item key={id}>
+                <LinkRow
+                  to={!isReadings ? `/objects/${id}` : `/meters/houses/${id}`}
+                >
+                  <span>
+                    <div
+                      style={{
+                        whiteSpace: 'nowrap',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
                     >
-                      <span>
-                        <h4 style={{ whiteSpace: 'nowrap' }}>
-                          {street}, {number} {corpus ? `, к.${corpus}` : null}
-                        </h4>
-                        {task}
+                      <div
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          color: '#272F5A',
+                        }}
+                      >
+                        {street}, {number} {corpus ? `, к.${corpus}` : null}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: '12px',
+                          color: '#272F5AAA',
+                          marginLeft: '10px',
+                        }}
+                      >
+                        {additionalAddressesString}
                       </span>
-                      <city>{city}</city>
-                      <span />
-                      <aparts>{numberOfApartments} квартир</aparts>
-                    </LinkRow>
-                  </obj_item>
-                );
-              }
-            )}
+                    </div>
+                    {task}
+                  </span>
+                  <city>{city}</city>
+                  <span />
+                  <aparts>{numberOfApartments} квартир</aparts>
+                </LinkRow>
+              </obj_item>
+            );
+          })}
         </Loader>
       </div>
     </div>

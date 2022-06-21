@@ -64,6 +64,7 @@ const AddNodeSecondTab = () => {
     },
     validationSchema: nodeValidationSchema,
     onSubmit: async () => {
+
       const form = {
         resource: values.resource,
         number: Number(values.number),

@@ -59,6 +59,7 @@ body {
   box-sizing: border-box;
 }
 ::-webkit-scrollbar {
+  height: 4px;
   width: 4px;
   border-radius: 4px;
   background-color: rgba(var(--primary), 0.1);

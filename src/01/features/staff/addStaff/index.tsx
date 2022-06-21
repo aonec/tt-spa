@@ -66,13 +66,13 @@ export const AddStaffModal: React.FC = () => {
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem?.competence?.title,
+    label: '', //elem?.competence?.title,
     value: elem.id,
   }));
 
   const multipleSelectionUserRoles = userRoles?.map((elem) => ({
-    label: elem.title,
-    value: elem.id,
+    label: elem.value,
+    value: elem.key,
   }));
 
   const isFailedAddingStaff = useStore($isAddStaffFailed);
@@ -192,12 +192,12 @@ export const AddStaffModal: React.FC = () => {
         <Form.Item label="Роль в системе">
           <MultiSelectTT
             mode="multiple"
-            value={fields.userRoleIds.value}
+            value={fields.roleTypes.value}
             options={multipleSelectionUserRoles}
-            onChange={fields.userRoleIds.onChange as any}
+            onChange={fields.roleTypes.onChange as any}
           />
           <ErrorMessage>
-            {fields.userRoleIds.errorText({
+            {fields.roleTypes.errorText({
               required: 'Выберите роль',
             })}
           </ErrorMessage>

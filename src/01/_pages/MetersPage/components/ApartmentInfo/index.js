@@ -1,8 +1,10 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from 'react';
 
 import { UserInfo } from './UserInfo';
 import { Icon, Loader } from '01/components';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import styled from 'styled-components';
@@ -33,7 +35,18 @@ import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displa
 import { ESecuredIdentityRoleName } from 'myApi';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
-import { $currentPersonalNumberIndex, setCurrentPersonalNumberIndex } from '01/features/homeowner/displayHomeowner/models';
+import {
+  $currentPersonalNumberIndex,
+  setCurrentPersonalNumberIndex,
+} from '01/features/homeowner/displayHomeowner/models';
+import {
+  AlertLink,
+  ApartmentAlertWrapper,
+  ArrowRight,
+  HomeownerAccountChangeDate,
+  Wrapper,
+} from './ApartmentInfo.styled';
+import { checkIsHomeownerAccountRecentlyModified } from './utils';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -80,6 +93,14 @@ export const ApartmentInfo = () => {
 
   const isPaused = apartment?.status === 'Pause';
 
+  const apartmentTaskId = apartment?.activeTaskIds[0];
+
+  const isApartmentTaskExist = Boolean(apartmentTaskId);
+
+  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
+    checkIsHomeownerAccountRecentlyModified
+  );
+
   const menuButtonArray = [
     {
       title: 'Поставить на паузу',
@@ -109,24 +130,61 @@ export const ApartmentInfo = () => {
   ];
 
   const pausedAlert = isPaused && (
-    <>
+    <ApartmentAlertWrapper>
       <Alert type="stop" color="FC525B">
         <AlertContent>
           <div>
             Квартира на паузе до{' '}
             {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
           </div>
-          <div
+          <AlertLink
             onClick={cancelPauseApartment}
             className="ant-btn-link"
             style={{ color: '#FC525B' }}
           >
             Снять с паузы
-          </div>
+          </AlertLink>
         </AlertContent>
       </Alert>
-      <Space />
-    </>
+    </ApartmentAlertWrapper>
+  );
+
+  const apartmentTaskAlert = (
+    <ApartmentAlertWrapper>
+      <Alert type="warning" color="FC525B">
+        <AlertContent>
+          <div>
+            По данной квартире есть незакрытая задача. Возможность вводить
+            показания появится после закрытия задачи.
+          </div>
+          <Link to={`/tasks/${apartmentTaskId}`}>
+            <AlertLink className="ant-btn-link" style={{ color: '#FC525B' }}>
+              Перейти к задаче
+              <ArrowRight />
+            </AlertLink>
+          </Link>
+        </AlertContent>
+      </Alert>
+    </ApartmentAlertWrapper>
+  );
+
+  const apartmentHomeownerAcconutChangeAlerts = recentlyModifiedApartmentPersonalAccounts?.map(
+    (homeownerAccount) => (
+      <ApartmentAlertWrapper key={homeownerAccount.id}>
+        <Alert type="info">
+          <AlertContent>
+            <div>
+              Добавлен новый номер лицевого счёта квартиры{' '}
+              {homeownerAccount.personalAccountNumber} ({homeownerAccount.name})
+            </div>
+            <HomeownerAccountChangeDate>
+              Дата изменения:{' '}
+              {moment(homeownerAccount.openAtFact).format('DD.MM.YYYY')}
+            </HomeownerAccountChangeDate>
+          </AlertContent>
+        </Alert>
+      </ApartmentAlertWrapper>
+    )
   );
 
   const houseManagementRender = houseManagement && (
@@ -181,7 +239,7 @@ export const ApartmentInfo = () => {
   );
 
   return (
-    <>
+    <Wrapper>
       <ApartmentGate id={Number(id)} />
       <PauseApartmentModal />
       <GetIssueCertificateModal />
@@ -212,8 +270,10 @@ export const ApartmentInfo = () => {
       </Flex>
       {!pending ? <ApartmentInfoWrap>{content}</ApartmentInfoWrap> : <Space />}
 
-      {apartment && <>{pausedAlert}</>}
-    </>
+      {apartment && pausedAlert}
+      {isApartmentTaskExist && apartmentTaskAlert}
+      {apartmentHomeownerAcconutChangeAlerts}
+    </Wrapper>
   );
 };
 
@@ -249,7 +309,7 @@ const Grid = styled.div`
 
 const ApartmentInfoWrap = styled.div`
   padding: 10px 10px 10px 15px;
-  margin: 15px 0;
+  margin: 15px 0 0;
   background: rgba(24, 158, 233, 0.1);
   border-radius: 10px;
 `;

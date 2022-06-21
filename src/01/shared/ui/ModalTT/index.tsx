@@ -14,6 +14,7 @@ interface Props {
   onCancel?(): void;
   title: string | ReactNode;
   saveBtnText?: string;
+  cancelBtnText?: string;
   loading?: boolean;
   onSubmit?(): void;
   customSubmit?: ReactNode;
@@ -40,6 +41,7 @@ export const ModalTT: React.FC<Props> = (props) => {
     customCancelButton,
     disabled,
     saveButtonType,
+    cancelBtnText = 'Отмена',
   } = props;
 
   const text = saveBtnText || 'Сохранить';
@@ -51,6 +53,7 @@ export const ModalTT: React.FC<Props> = (props) => {
       width={width || 800}
       title={<Header>{title}</Header>}
       centered={centered}
+      destroyOnClose
       footer={
         footer || (
           <Footer>
@@ -59,12 +62,13 @@ export const ModalTT: React.FC<Props> = (props) => {
               key="back"
               onClick={customCancelButton || onCancel}
             >
-              Отмена
+              {cancelBtnText}
             </ButtonTT>
             {customSubmit || (
               <ButtonTT
                 color={saveButtonType || 'blue'}
                 key="submit"
+                type="submit"
                 onClick={onSubmit}
                 disabled={loading || disabled}
               >

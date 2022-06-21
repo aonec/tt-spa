@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import axios from '../../axios';
 
 export async function getApartment(id = 0) {

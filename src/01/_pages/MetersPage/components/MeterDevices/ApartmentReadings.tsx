@@ -19,6 +19,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -76,6 +77,7 @@ export const ApartmentReadings = () => {
       <IndividualDevicesGate ApartmentId={Number(id)} />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />
+      <DeleteIndividualDeviceModalContainer />
       {isSliderIndexExist && (
         <Meters id="meters-component">
           <MetersHeader>

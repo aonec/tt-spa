@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { convertDateDots } from '../../../_api/utils/convertDate';
 
 export const useInformationDevice = ({

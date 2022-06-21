@@ -1,28 +1,29 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
-import { getCalculator } from './apiNodeConnection';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 interface ConnectionInterface {
-  // calculator: CalculatorIntoNodeResponse;
   node: PipeNodeResponse;
-  edit: boolean;
-  setDeregisterDeviceValue?: any;
-  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
+  edit?: boolean;
+  onEdit?: () => void;
+  onRemoveConnection?(): void;
 }
 
-const NodeConnection = ({
+export const NodeConnection = ({
   node,
   edit = false,
-  setDeregisterDeviceValue,
-  setDeregisterDevice,
+  onEdit,
+  onRemoveConnection,
 }: ConnectionInterface) => {
+
   const { calculator } = node;
 
   if (!calculator) return null;
+
   const {
     model,
     id,
@@ -35,11 +36,14 @@ const NodeConnection = ({
   const lastCheckingDateText = lastCheckingDate
     ? moment(lastCheckingDate).format('DD.MM.YYYY')
     : 'Дата поверки не указана';
+
   const futureCheckingDateText = futureCheckingDate
     ? moment(futureCheckingDate).format('DD.MM.YYYY')
     : 'Следующая Дата поверки не указана';
+
   const icon = closingDate ? 'red' : 'green';
   const status = closingDate ? 'Не активен' : 'Активен';
+
   return (
     <ListItem>
       <NavLink to={`/calculators/${id}`}>
@@ -61,39 +65,33 @@ const NodeConnection = ({
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
       </Div>
 
-      <div>
+      <Flex style={{ justifyContent: 'flex-end' }}>
         {edit ? (
           <>
-            <Link
-              to={`/calculators/${id}/edit`}
-              style={{ display: 'inline-flex', width: 'fit-content' }}
-              title="Редактирование Вычислителя"
-            >
-              <IconTT icon="edit" style={{ marginLeft: 8 }} />
-            </Link>
+            {onEdit && <IconTT icon="edit" style={{ marginLeft: 8, cursor: 'pointer' }} onClick={onEdit} />}
+
+            {!onEdit && (
+              <Link
+                to={`/calculators/${id}/edit`}
+                style={{ display: 'inline-flex', width: 'fit-content' }}
+                title="Редактирование Вычислителя"
+              >
+                <IconTT icon="edit" style={{ marginLeft: 8, cursor: 'pointer' }} />
+              </Link>
+            )}
 
             <IconTT
               icon="del"
               style={{ marginLeft: 8, cursor: 'pointer' }}
-              onClick={() => {
-                if (setDeregisterDeviceValue) {
-                  getCalculator(id).then((res) => {
-                    setDeregisterDeviceValue(res);
-                  });
-                }
-                if (setDeregisterDevice) {
-                  setDeregisterDevice(true);
-                }
-              }}
+              onClick={onRemoveConnection}
             />
+
           </>
         ) : null}
-      </div>
+      </Flex>
     </ListItem>
   );
 };
-
-export default NodeConnection;
 
 const NameWrap = styled.div`
   display: grid;

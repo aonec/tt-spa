@@ -1,4 +1,3 @@
-// import { deleteDoc } from '01/_api/task_profile_page';
 import { uploadFile } from '01/_api/upload';
 import { useEffect, useState } from 'react';
 import { DocumentResponse } from './../../myApi';

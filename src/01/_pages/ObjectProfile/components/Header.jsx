@@ -28,17 +28,16 @@ const styles = css`
 `;
 
 export const Header = React.memo(
-  ({
-    0: title,
-    1: subtitle,
-    corpus,
-    setCommonReport,
-    commonReport,
-    object,
-  }) => {
+  ({ 0: title, 1: subtitle, setCommonReport, commonReport, object }) => {
     const access = getAccessesList();
     const { show } = access;
     const { push } = useHistory();
+
+    const additionalAddresses = object?.address?.additionalAddresses || [];
+
+    const additionalAddressesString = additionalAddresses
+      .map((elem) => `${elem.street}, ${elem.number}`)
+      .join(' ');
 
     const menuButtonArr = [
       {
@@ -69,7 +68,17 @@ export const Header = React.memo(
         >
           <Loader show={!title} size="48">
             <div>
-              <h_title>{`${title}`}</h_title>
+              <h_title>
+                {`${title}`}{' '}
+                <span
+                  style={{
+                    fontSize: '20px',
+                    color: '#272F5AAA',
+                  }}
+                >
+                  {additionalAddressesString}
+                </span>
+              </h_title>
               <h_subtitle style={{ paddingTop: '8px' }}>{subtitle}</h_subtitle>
             </div>
             <div style={{ position: 'relative' }}>

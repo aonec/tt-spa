@@ -3,8 +3,10 @@ import moment from 'moment';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { nodeStatusList } from '../../../tt-components/localBases';
-import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../myApi';
-import { useParams } from 'react-router-dom';
+import {
+  CalculatorIntoNodeResponse,
+  PipeNodeResponse,
+} from '../../../../myApi';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -25,15 +27,14 @@ const Information = ({ node, task = false }: HeaderInterface) => {
   } = node;
 
   const { address } = node || {};
-  const { city, street, housingStockNumber, corpus, id } = address || {};
+  const { city, street, number, corpus, id } = address || {};
 
   const getNodeStatus =
     nodeStatusList.find(
       (nodeStatusItem) => nodeStatusItem.value === nodeStatus?.value
     )?.label ?? 'Статус не определен';
 
-  const renderAddressParam = (param: string | undefined | null) =>
-    param ? `, к.${param}` : '';
+  const isRegistered = nodeStatus?.value === 'Registered';
 
   return (
     <ListWrap>
@@ -42,9 +43,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
             {address
-              ? `${city}, ${street}, ${housingStockNumber} ${
-                  corpus ? `, к.${corpus}` : ''
-                }`
+              ? `${city}, ${street}, ${number} ${corpus ? `, к.${corpus}` : ''}`
               : ''}
           </Subtitle>
         </ListItem>
@@ -57,18 +56,24 @@ const Information = ({ node, task = false }: HeaderInterface) => {
         <span>Коммерческий учет показателей приборов</span>
         <div>{getNodeStatus}</div>
       </ListItem>
-      <ListItem>
-        <span>Дата начала действия акта-допуска</span>
-        <div>{moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}</div>
-      </ListItem>
-      <ListItem>
-        <span>Дата окончания действия акта-допуска</span>
-        <div>
-          {futureCommercialAccountingDate
-            ? moment(futureCommercialAccountingDate).format('DD.MM.YYYY')
-            : ''}
-        </div>
-      </ListItem>
+      {isRegistered && (
+        <>
+          <ListItem>
+            <span>Дата начала действия акта-допуска</span>
+            <div>
+              {moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}
+            </div>
+          </ListItem>
+          <ListItem>
+            <span>Дата окончания действия акта-допуска</span>
+            <div>
+              {futureCommercialAccountingDate
+                ? moment(futureCommercialAccountingDate).format('DD.MM.YYYY')
+                : ''}
+            </div>
+          </ListItem>
+        </>
+      )}
     </ListWrap>
   );
 };

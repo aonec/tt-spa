@@ -115,6 +115,10 @@ export const Search: React.FC = () => {
             keyDownEnterGuardedHandler(1)(e);
           }}
           options={options}
+          onClick={() => {
+            fields.street.onChange('');
+            fields.house.onChange('');
+          }}
         />
         <StyledAutocomplete
           onBlur={onFindHandler}
@@ -122,6 +126,7 @@ export const Search: React.FC = () => {
           value={fields.house.value}
           onChange={fields.house.onChange}
           ref={homeNumberRef}
+          onClick={() => fields.house.onChange('')}
           onKeyDown={(e) => {
             fromEnter(onSendHandler)(e);
             keyDownEnterGuardedHandler(2)(e);

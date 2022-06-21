@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { useRouteMatch, Route, Switch } from 'react-router-dom';
 import styled from 'reshadow/macro';
@@ -28,7 +30,6 @@ export const Pages = ({ children }) => {
       align-content: start;
       padding: 16px 56px;
       height: 100vh;
-      overflow: hidden;
       overflow-y: scroll;
     }
   `(

@@ -15,7 +15,6 @@ import {
   Tasks,
   Login,
   TaskProfile,
-  Objects,
   ObjectProfile,
   MetersPage,
   ApartmentProfile,
@@ -45,6 +44,12 @@ import { StatisticsPage } from '01/features/statistics';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 import styledC from 'styled-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ReportsPageContainer } from '01/features/reports';
+import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
+import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
+import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 
 moment.locale('ru');
 
@@ -65,11 +70,11 @@ const Internal = () => {
             <Space />
             <Menu />
           </LeftBlock>
-          <div></div>
+          <div />
           <main>
             <Switch>
               <Redirect
-                from={'/'}
+                from="/"
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
@@ -77,7 +82,7 @@ const Internal = () => {
                 }
                 exact
               />
-              <Redirect from={'/tasks'} to="/tasks/executing" exact />
+              <Redirect from="/tasks" to="/tasks/executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
@@ -88,10 +93,32 @@ const Internal = () => {
                 component={Tasks}
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
-              <Route path="/objects/" component={Objects} exact />
+
+              <Route
+                path="/devices/"
+                component={DevicesProfileContainer}
+                exact
+              />
+
+              <Route
+                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
+                component={ObjectProfile}
+                exact
+              />
+
+              <Route
+                path="/objects/:searchType?"
+                component={ObjectsProfileContainer}
+                exact
+              />
+
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              <Route path="/settings/:section?" component={Settings} />
-              <Route path="/settings/staff/:id" component={Settings} />
+              
+              <Route path="/companyProfile/editManagingFirmUser/:id" exact>
+                <EditManagingFirmUserPage />
+              </Route>
+              <Route path="/companyProfile/:section?" component={Settings} />
+              <Route path="/companyProfile/staff/:id" component={Settings} />
 
               <Route path="/devices/(\\d+)" component={Devices} exact />
 
@@ -110,9 +137,7 @@ const Internal = () => {
               />
 
               <Route
-                path={
-                  '/nodes/:nodeId/(stats|connection|readings|related|documents)?'
-                }
+                path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
                 component={NodeProfile}
                 exact
               />
@@ -150,12 +175,6 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
-                component={ObjectProfile}
-                exact
-              />
-
-              <Route
                 path="/objects/:housingStockId(\\d+)/add_node"
                 component={AddNode}
                 exact
@@ -185,6 +204,18 @@ const Internal = () => {
                 component={MetersPage}
               />
 
+              <Route
+                path="/nodeArchive/:nodeId"
+                component={NodeArchivePageContainer}
+                exact
+              />
+
+              <Route
+                path="/settings/:section"
+                component={SettingsPageContainer}
+                exact
+              />
+
               <Redirect
                 from="/statistics/"
                 to="/statistics/subscribersConsumption"
@@ -194,6 +225,8 @@ const Internal = () => {
               <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
                 <StatisticsPage />
               </Route>
+
+              <Route path="/reports" component={ReportsPageContainer} exact />
             </Switch>
             <ApartmentsRouteGroup />
           </main>

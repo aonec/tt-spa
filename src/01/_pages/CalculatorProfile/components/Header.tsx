@@ -31,7 +31,7 @@ export const Header = ({
   }
 
   const { address } = device || { address: DEFAULT_BUILDING };
-  const { city, street, housingStockNumber, corpus, id } =
+  const { city, street, number, corpus, id } =
     address || DEFAULT_BUILDING;
 
   const access = getAccessesList();
@@ -94,7 +94,7 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
         <Subtitle to={`/objects/${id}`}>
-          {`${city}, ${street}, ${housingStockNumber}${
+          {`${city}, ${street}, ${number}${
             corpus ? `, к.${corpus}` : ''
           }`}
         </Subtitle>

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { information } from '01/r_comp';
 import { useInfoHeader } from './useInfoHeder';
 

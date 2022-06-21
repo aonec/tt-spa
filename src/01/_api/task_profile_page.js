@@ -1,4 +1,7 @@
+/* eslint-disable */
+
 import axios from '01/axios';
+import { message } from 'antd';
 import {
   createTimeline,
   createTimer,
@@ -10,12 +13,12 @@ import {
 export async function getTask(id) {
   try {
     const res = await axios.get(`/tasks/${id}`);
-    sessionStorage.setItem('data', JSON.stringify(res));
+    // sessionStorage.setItem('data', JSON.stringify(res));
 
     const { currentStage, name, stages, userOperatingStatus } = res;
-    const items = stages.map((...rest) =>
-      changeItemStage(...rest, userOperatingStatus === 'Executor')
-    );
+    // const items = stages.map((...rest) =>
+    //   changeItemStage(...rest, userOperatingStatus === 'Executor')
+    // );
     return {
       ...res,
       header: {
@@ -31,14 +34,14 @@ export async function getTask(id) {
         perpName: currentStage?.perpetrator.name,
       },
       stages: {
-        items: [],
-      },
-      stages: {
-        items,
+        items: stages.map((...rest) =>
+          changeItemStage(...rest, userOperatingStatus === 'Executor')
+        ),
       },
       device: createDevice(res.device),
     };
-  } catch (error) {}
+  } catch (error) {
+  }
 }
 
 export async function moveStage(id = '', move = '', data = {}) {
@@ -71,7 +74,11 @@ export async function moveStage(id = '', move = '', data = {}) {
       panelLoading: false,
       stageData: null,
     };
-  } catch (error) {}
+  } catch (error) {
+    message.error(error?.response?.data?.error?.Message);
+    message.info(error?.response?.data?.error?.Text);
+  }
+  return { panelLoading: false };
 }
 
 export async function deleteDoc(docId) {

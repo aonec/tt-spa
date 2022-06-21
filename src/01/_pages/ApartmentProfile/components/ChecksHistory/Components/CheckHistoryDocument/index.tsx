@@ -10,6 +10,7 @@ import { CheckHistoryDocumentProps } from '../../CheckHistory.types';
 import { getCheckingActDocument, getOnSaveFile } from '../../utils';
 import { ReactComponent as DocumentIcon } from '../../assets/documentIcon.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/downloadIcon.svg';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 
 export const CheckHistoryDocument = ({
   document: {
@@ -18,6 +19,7 @@ export const CheckHistoryDocument = ({
     checkType,
     registryNumber,
     id,
+    actResourceType,
   },
   openEditApartmentCheckModal,
   removeApartmentCheck,
@@ -30,6 +32,9 @@ export const CheckHistoryDocument = ({
       </b>
       <div>{getCheckingActDocument(checkType)}</div>
       <div>{registryNumber || '—'}</div>
+      <div>
+        <ResourceInfo resource={actResourceType} />
+      </div>
       <Flex style={{ justifyContent: 'space-between' }}>
         <Flex>
           <div style={{ minWidth: 18 }}>
@@ -50,9 +55,10 @@ export const CheckHistoryDocument = ({
                 checkingDate,
                 checkingAct: document,
                 checkType,
-                registryNumber,
+                registryNumber: registryNumber!,
+                actResourceType, 
                 id,
-              } as any)
+              })
             }
           />
           <Space />

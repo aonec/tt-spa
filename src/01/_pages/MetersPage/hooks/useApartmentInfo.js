@@ -1,3 +1,8 @@
+/* eslint-disable */
+
+import { getHousingStockAddress } from "../utils/getHousingStockAddress";
+
+
 export const useApartmentInfo = (apartInfo, homeownerIndex) => {
   const {
     housingStock = {},
@@ -9,11 +14,7 @@ export const useApartmentInfo = (apartInfo, homeownerIndex) => {
   const homeowner = homeownerAccounts[homeownerIndex || 0] || {};
 
   return {
-    title:
-      apartmentNumber &&
-      `${housingStock.street}, ${housingStock.number}${
-        housingStock.corpus || ''
-      }, кв.${apartmentNumber}`,
+    title: getHousingStockAddress(apartmentNumber, housingStock),
     userInfo: [
       ['Собственник', homeowner.name],
       ['Телефон', homeowner?.phoneNumber ?? '-'],

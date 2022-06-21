@@ -1,12 +1,16 @@
+/* eslint-disable */
+
+import { message } from 'antd';
 import axios from '../../axios';
 
 export async function confirmRegistration(form) {
-  alert('Попытка подтверждения пользователя');
+  message.info('Попытка подтверждения пользователя');
   try {
     const res = await axios.post(`Auth/confirm`, form);
-    alert('Успешная попытка подтверждения пользователя');
+    message.success('Успешная попытка подтверждения пользователя');
     return res;
   } catch (error) {
+    message.error('Произошла ошибка подтверждения пользователя');
     throw {
       resource: 'device',
       message: 'Произошла ошибка подтверждения пользователя',

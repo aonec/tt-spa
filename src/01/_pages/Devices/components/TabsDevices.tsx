@@ -54,11 +54,11 @@ const TabsDevices = () => {
     searchStateChanged(debouncedSearchState);
   }, [currentPage, debouncedSearchState]);
 
-  const devicesByObject = groupDevicesByObjects(devicePage.items);
+  const devicesByObject = groupDevicesByObjects(devicePage.items || []);
 
   const deviceArray = devicesByObject.map((addressDevicesGroup) => (
     <DevicesByAddress
-      key={addressDevicesGroup.address?.id}
+      key={addressDevicesGroup.address?.mainAddress?.id}
       addressDevicesGroup={addressDevicesGroup}
     />
   ));

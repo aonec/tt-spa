@@ -18,7 +18,7 @@ export const Header = ({ node }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, city, street, housingStockNumber, corpus } =
+  const { id: objectId, city, street, number: housingStockNumber, corpus } =
     address || {};
 
   const getNodeStatus =

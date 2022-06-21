@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import styled from 'reshadow/macro';
 import { NavLink, useRouteMatch } from 'react-router-dom';

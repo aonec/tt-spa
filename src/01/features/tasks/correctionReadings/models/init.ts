@@ -17,8 +17,10 @@ sample({
     correctionReadingsForm.$values,
     $nextStages,
     (task, { needSeniorOperatorCheck, comment, readingValue }, nextStages) => {
-      const device = task?.individualDevice;
-      const reading = device?.readings && device?.readings[0];
+      if (!task?.individualDevices) return null;
+
+      const device = task?.individualDevices[0];
+      const reading = device?.invalidReading;
 
       const finalStage = nextStages?.find((elem) => elem.type === 'Final');
 
@@ -32,8 +34,14 @@ sample({
       };
 
       const payloadForEtraCheck = {
-        nextStagesId: finalStage?.id,
+        nextStageId: finalStage?.id,
         comment,
+        fixedReading: {
+          ...readingValue,
+          deviceId: device?.id,
+          readingDate: reading?.readingDate,
+          uploadTime: reading?.readingDateTime,
+        }
       };
 
       return {
