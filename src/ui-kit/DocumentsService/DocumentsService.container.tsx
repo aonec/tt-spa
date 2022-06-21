@@ -1,14 +1,11 @@
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import { message, Skeleton } from 'antd';
-import { EDocumentType } from 'myApi';
-import React, { FC, useState } from 'react';
-import { uploadDocument } from './DocumentsService.api';
+import React, { FC } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
-import {
-  Document,
-  DocumentsUploadContainerProps,
-} from './DocumentsService.types';
+import { DocumentsUploadContainerProps } from './DocumentsService.types';
 import { DocumentsList } from './view/DocumentsList';
+
+const accept =
+  'application/msword, application/vnd.ms-excel, application/pdf, image/*';
 
 export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   uniqId,
@@ -28,7 +25,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
       {!isMaxDocuments && (
         <DragAndDrop
           disabled={isLoading}
-          accept="application/msword, application/vnd.ms-excel, application/pdf, image/*"
+          accept={accept}
           fileHandler={(files) => handleFile(files[0])}
           uniqId={uniqId}
           style={{ marginBottom: 15 }}
