@@ -1,5 +1,5 @@
 import { DevicesReportModal } from '01/features/devicesReport';
-import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
+import { searchStateChanged, showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import { MenuButtonTT } from '01/tt-components';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
@@ -12,6 +12,7 @@ import { useFormik } from 'formik';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import _ from 'lodash';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
+import { DeviceSearchReducerStateType } from '01/_pages/Devices/devicesSearchReducer';
 
 interface DeviceProfileProps {
   fetchcalc: (
@@ -42,7 +43,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
       clickable: true,
     },
   ];
-
+  // const funcWrapper = (values: Partial<CalculatorsListRequestPayload>) => {
+  //   fetchcalc(values);
+  //   searchStateChanged(values);
+  // }
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -74,7 +78,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
       PageSize: undefined,
       OrderBy: undefined,
     },
-    onSubmit: (values) => void fetchcalc(values),
+    onSubmit: (values) => {
+      fetchcalc(values);
+      searchStateChanged(values);
+    },
   });
 
   return (
@@ -85,6 +92,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
       </HeaderWrapper>
       <SearchDevices isExtendedSearchOpen={isOpen}
        fetchcalc={fetchcalc}
+       searchStateChanged={searchStateChanged}
        >
         <ExtendedSearch
           isOpen={isOpen}
@@ -92,6 +100,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
           handleOpen={() => open(null)}
           handleApply={() => {
             fetchcalc(values);
+            searchStateChanged(values);
           }}
           handleClear={() => resetForm()}
           extendedSearchContent={

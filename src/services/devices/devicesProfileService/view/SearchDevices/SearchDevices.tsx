@@ -16,7 +16,8 @@ const { Option } = Select;
 export const SearchDevices: FC<SearchDevicesProps> = ({
   children,
   isExtendedSearchOpen,
-  fetchcalc
+  fetchcalc,
+  searchStateChanged
 }) => {
 
   const marks = {
@@ -53,7 +54,11 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       PageSize: undefined,
       OrderBy: undefined,
     },
-    onSubmit: (values) => void fetchcalc(values),
+    onSubmit: (values) => {
+      void fetchcalc(values)
+      searchStateChanged(values)
+    },
+
   });
 
   useEffect(() => {

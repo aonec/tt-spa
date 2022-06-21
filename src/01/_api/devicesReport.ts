@@ -8,6 +8,7 @@ import {
 } from '../../myApi';
 import qs from 'qs';
 import axiosWithHeaders from '../axiosWithHeaders';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 
 export type RequestDevicesReportQueryType = {
   'Filter.DiameterRange.From'?: number | null;
@@ -34,7 +35,7 @@ export type RequestDevicesReportQueryType = {
 };
 
 export const requestDevicesReport = async (
-  query?: RequestDevicesReportQueryType
+  query?: CalculatorsListRequestPayload
 ): Promise<File | null> => {
   const config: Partial<
     {
@@ -53,7 +54,7 @@ export const requestDevicesReport = async (
 };
 
 export const downloadDevicesReport = (
-  query?: RequestDevicesReportQueryType
+  query?: CalculatorsListRequestPayload
 ) => {
   return requestDevicesReport(query).then((response: any) => {
     const fileNameWithJunk = response.headers['content-disposition'].split(';');

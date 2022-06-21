@@ -1,16 +1,9 @@
-import { DeviceSearchReducerStateType } from '../../../_pages/Devices/devicesSearchReducer';
-import { RequestDevicesReportQueryType } from '../../../_api/devicesReport';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 
 export const mapDeviceSearchStateToDownloadQuery = (
-  searchState: Partial<DeviceSearchReducerStateType>
-): RequestDevicesReportQueryType => {
-  const {
-    searchTerm,
-    expirationDate,
-    diameterRange,
-    destination,
-    rule,
-  } = searchState;
+  searchState: Partial<CalculatorsListRequestPayload>
+): CalculatorsListRequestPayload => {
+  const filter = searchState['Filter.Address.Corpus']
 
   const formDiameterParams = (diameters: [number, number] | undefined) => {
     if (!diameters || (diameters[0] === 0 && diameters[1] === 255)) return {};
@@ -21,12 +14,12 @@ export const mapDeviceSearchStateToDownloadQuery = (
   };
 
   return {
-    ...(searchTerm ? { Question: searchTerm } : {}),
-    ...(expirationDate
-      ? { 'Filter.ExpiresCheckingDateAt': expirationDate }
-      : {}),
-    ...formDiameterParams(diameterRange),
-    ...(destination ? { OrderBy: destination } : {}),
-    ...(rule ? { OrderRule: rule } : {}),
+    // ...(searchTerm ? { Question: searchTerm } : {}),
+    // ...(expirationDate
+    //   ? { 'Filter.ExpiresCheckingDateAt': expirationDate }
+    //   : {}),
+    // ...formDiameterParams(diameterRange),
+    // ...(destination ? { OrderBy: destination } : {}),
+    // ...(rule ? { OrderRule: rule } : {}),
   };
 };
