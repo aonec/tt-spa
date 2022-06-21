@@ -76,7 +76,10 @@ export const ButtonTT = styled.button<Partial<Props>>`
         background: transparent;
         color: #272f5a;
         border: 1px solid #dcdee4;
-      `)};
+      `)|| 
+      (color === "yellow" && css`
+        background: #ffff68;
+      `)} ;
 
   ${({ color }) =>
     (color === 'red' &&

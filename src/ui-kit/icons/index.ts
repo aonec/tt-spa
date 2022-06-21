@@ -19,6 +19,11 @@ import { ReactComponent as CompanyProfileIcon } from './svg/companyProfile.svg';
 import { ReactComponent as DocumentIcon } from './svg/document.svg';
 import { ReactComponent as SettingsIcon } from './svg/settings.svg';
 import { ReactComponent as UserIcon } from './svg/user.svg';
+import { ReactComponent as PencilIcon } from './svg/pencil.svg';
+import { ReactComponent as TrashIcon } from './svg/trash.svg';
+import { ReactComponent as UploadIcon } from './svg/upload.svg';
+import { ReactComponent as DateIcon } from './svg/date.svg';
+import { ReactComponent as DownloadIcon } from './svg/download.svg';
 
 export {
   StarIcon,
@@ -39,7 +44,12 @@ export {
   TasksIcon,
   ObjectsIcon,
   CompanyProfileIcon,
-  DocumentIcon,
   SettingsIcon,
   UserIcon,
+  DocumentIcon,
+  PencilIcon,
+  TrashIcon,
+  UploadIcon,
+  DateIcon,
+  DownloadIcon,
 };
