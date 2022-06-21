@@ -25,7 +25,7 @@ import { ApartmentActTypesGate } from '../../actsJournal/displayActTypes/models'
 import { CheckingActDocumentType } from '01/_pages/ApartmentProfile/components/ChecksHistory/utils';
 import { Select } from '01/shared/ui/Select';
 import { actTypes } from './checkApartment.types';
-import { ResourceInfo } from '01/_pages/ApartmentProfile/components/ChecksHistory/Components/CheckHistoryDocument/components/ResourceInfo';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { EActResourceType } from 'myApi';
 
 export const CheckApartmentModal = () => {

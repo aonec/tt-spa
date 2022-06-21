@@ -221,7 +221,7 @@ export const EditManagingFirmUserPage = () => {
       <UserRolesGate />
       <ManagingFirmUserGate id={userId} />
       <EditManagingFirmUserGate />
-      <GoBack path="/settings/staff" />
+      <GoBack/>
       <Header>Информация о сотруднике. Редактирование </Header>
       <ErrorAlert
         show={isFailedFetchFormData}

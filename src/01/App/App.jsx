@@ -51,7 +51,6 @@ import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/edi
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 
-
 moment.locale('ru');
 
 const Internal = () => {
@@ -95,7 +94,11 @@ const Internal = () => {
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
 
-              <Route path="/devices/" component={DevicesProfileContainer} exact />
+              <Route
+                path="/devices/"
+                component={DevicesProfileContainer}
+                exact
+              />
 
               <Route
                 path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
@@ -110,6 +113,10 @@ const Internal = () => {
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
+              
+              <Route path="/companyProfile/editManagingFirmUser/:id" exact>
+                <EditManagingFirmUserPage />
+              </Route>
               <Route path="/companyProfile/:section?" component={Settings} />
               <Route path="/companyProfile/staff/:id" component={Settings} />
 

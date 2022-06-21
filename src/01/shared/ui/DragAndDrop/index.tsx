@@ -3,16 +3,24 @@ import styled from 'styled-components';
 import { ReactComponent as FileUploadIcon } from './upload.svg';
 
 interface Props {
-  fileHandler?(files: FileList): void;
+  fileHandler(files: FileList): void;
   accept?: string;
   uniqId: string;
   text?: string;
   style?: React.CSSProperties;
+  disabled?: boolean;
 }
 
 export const DragAndDrop: React.FC<Props> = (props) => {
-  const { fileHandler, accept, uniqId, text, style } = props;
-  const id = `file-input-${uniqId || ''}`;
+  const { fileHandler, accept, uniqId, text, style, disabled = false } = props;
+  const id = `file-input-${uniqId}`;
+
+  const handleFile = (files: FileList) => {
+    if (disabled) return;
+
+    fileHandler(files);
+  };
+
   return (
     <>
       <input
@@ -22,13 +30,14 @@ export const DragAndDrop: React.FC<Props> = (props) => {
         multiple={false}
         value=""
         onChange={(event) =>
-          event.target.files && fileHandler && fileHandler(event.target.files)
+          event.target.files && handleFile(event.target.files)
         }
         style={{ display: 'none' }}
         accept={accept}
       />
       <label htmlFor={id} style={{ margin: 0, width: '100%' }}>
         <DragAndDropContainer
+          disabled={disabled}
           onDragOver={(event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -36,7 +45,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
           onDrop={(event) => {
             event.preventDefault();
             event.stopPropagation();
-            fileHandler && fileHandler(event.dataTransfer.files);
+            handleFile(event.dataTransfer.files);
           }}
           style={{
             margin: '0',
@@ -75,7 +84,7 @@ const UploadFileIconContainer = styled(Center)`
   font-size: 25px;
 `;
 
-const DragAndDropContainer = styled.div`
+const DragAndDropContainer = styled.div<{ disabled: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,8 +96,15 @@ const DragAndDropContainer = styled.div`
   cursor: pointer;
   stroke-dasharray: 10px;
 
-  :hover {
+  ${({ disabled }) =>
+    disabled
+      ? `
+  background: #efefef;
+    `
+      : `
+  &:hover {
     border-color: #428dd8;
     background-color: #eaf5ff;
   }
+    `}
 `;
