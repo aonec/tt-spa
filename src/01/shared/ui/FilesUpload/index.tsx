@@ -9,7 +9,7 @@ interface Props {
   max?: number;
   uniqId: string;
   text?: string;
-  filesInit?: FileData[];
+  filesInit?: FileData[] | null;
   withoutDeletion?: boolean;
   type?: string;
 }

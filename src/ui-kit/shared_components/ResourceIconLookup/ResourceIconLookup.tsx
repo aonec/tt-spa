@@ -18,10 +18,10 @@ export const resourceIconLookup: Icons = {
 };
 
 export const ResourceIconLookup: FC<ResourceIconLookupProps> = ({
-  icon,
-  style
+  resource,
+  style,
 }) => {
-  const Icon = resourceIconLookup[icon];
+  const Icon = resourceIconLookup[resource];
 
   if (!Icon) return null;
 
