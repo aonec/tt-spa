@@ -23,6 +23,7 @@ import { useAsync } from '../../hooks/useAsync';
 import { ChecksHistory } from './components/ChecksHistory';
 import { CheckApartmentModal } from '01/features/apartments/checkApartment';
 import { ApartmentGate } from '01/features/apartments/displayApartment/models';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -65,11 +66,11 @@ const ApartmentProfile = () => {
     homeownerAccounts,
   } = apartment;
 
-  const { city, street, number, id } = housingStock;
+  const { city, street, number, housingStockId } = housingStock.address.mainAddress;
 
   return styled(grid)(
     <>
-      <Index path={`/objects/${id}/apartments`} />
+      <Index path={`/objects/${housingStockId}/apartments`} />
       <CheckApartmentModal />
       <ApartmentGate id={Number(apartmentId)} />
       <Header
@@ -80,8 +81,18 @@ const ApartmentProfile = () => {
       />
 
       <Tabs />
+      <Route path="/*/:apartmentId/testimony" exact>
+        <ApartmentDevices devices={devices} />
+      </Route>
 
-      <Route path="/*/(\\d+)" exact>
+      <Route path="/*/:apartmentId/checksHistory" exact>
+        <ChecksHistory />
+      </Route>
+
+      <Route path="/*/:apartmentId/documents" exact>
+        <ApartmentActsListContainer />
+      </Route>
+      <Route path="/objects/:id/apartments/:apartmentId" exact>
         <Wrapper>
           <div>
             <Information
@@ -97,14 +108,6 @@ const ApartmentProfile = () => {
             <Tasks tasksList={tasksList} />
           </div>
         </Wrapper>
-      </Route>
-
-      <Route path="/*/(\\d+)/testimony" exact>
-        <ApartmentDevices devices={devices} />
-      </Route>
-
-      <Route path="/*/(\\d+)/checksHistory" exact>
-        <ChecksHistory />
       </Route>
     </>
   );

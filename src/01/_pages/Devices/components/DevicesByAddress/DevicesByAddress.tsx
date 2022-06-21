@@ -6,7 +6,7 @@ import { DevicesByAddressInterface } from '../utils/groupDevicesByObjects';
 const DevicesByAddress = ({
   addressDevicesGroup,
 }: DevicesByAddressPropsInterface) => {
-  const { city = '', street = '', number = null, corpus = null, id = null } =
+  const { city = '', street = '', number = null, corpus = null, housingStockId = null } =
     addressDevicesGroup.address?.mainAddress || {};
 
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
@@ -16,7 +16,7 @@ const DevicesByAddress = ({
   return (
     <>
       {addressDevicesGroup.address ? (
-        <Subtitle fontWeight={400} to={`/objects/${id}`}>
+        <Subtitle fontWeight={400} to={`/objects/${housingStockId}`}>
           {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
         </Subtitle>
       ) : (

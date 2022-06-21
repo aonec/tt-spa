@@ -1,0 +1,1 @@
+export { ApartmentActsList } from './ApartmentActsList'

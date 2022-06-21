@@ -53,7 +53,7 @@ const Staff = () => {
             },
             {
               title: 'Редактировать информацию о сотруднике',
-              cb: () => history.push(`/settings/editManagingFirmUser/${id}`),
+              cb: () => history.push(`/companyProfile/editManagingFirmUser/${id}`),
               show: true,
               color: 'default',
               clickable: true,

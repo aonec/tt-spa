@@ -5,17 +5,16 @@ import { Wrapper } from './ApartmentItem.styled';
 import { ApartmentItemProps } from './ApartmentItem.types';
 
 export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
-  const housingStock = apartment?.housingStock;
-  const mainAddress = housingStock?.address?.mainAddress;
+  const address = apartment?.housingStock?.address?.mainAddress;
 
   return (
-    <Wrapper to={`/objects/${housingStock?.id}/apartments/${apartment.id}`}>
+    <Wrapper to={`/objects/${address?.id}/apartments/${apartment.id}`}>
       <Address>
-        {mainAddress?.street}, {mainAddress?.number}, кв.{' '}
+        {address?.street}, {address?.number}, кв.{' '}
         {apartment?.apartmentNumber}
       </Address>
-      <div>{housingStock?.city}</div>
-      <div>{housingStock?.houseType}</div>
+      <div>{address?.city}</div>
+      <div>{apartment?.housingStock?.houseType}</div>
       <ContextMenuButton size="small" />
     </Wrapper>
   );

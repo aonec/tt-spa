@@ -174,6 +174,10 @@ export interface ApartmentCheckResponse {
   actResourceType: EActResourceType;
 }
 
+export interface ApartmentCheckResponseListSuccessApiResponse {
+  successResponse: ApartmentCheckResponse[] | null;
+}
+
 export interface ApartmentCheckResponsePagedList {
   /** @format int32 */
   totalItems: number;
@@ -1345,6 +1349,9 @@ export interface ElectricNodeResponse {
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
 
+  /** @format date-time */
+  commercialAccountingDeregistrationDate: string | null;
+
   /** @format int32 */
   housingStockId: number;
   address: HousingStockShortResponse | null;
@@ -1596,22 +1603,6 @@ export interface ErrorResponse {
   text: string | null;
   data: Record<string, any>;
   requestId: string | null;
-}
-
-export enum ESecuredIdentityRoleName {
-  ManagingFirmAdministrator = "ManagingFirmAdministrator",
-  ManagingFirmExecutor = "ManagingFirmExecutor",
-  Homeowner = "Homeowner",
-  ManagingFirmOperator = "ManagingFirmOperator",
-  ErcService = "ErcService",
-  ScadaService = "ScadaService",
-  Admin = "Admin",
-  Worker = "Worker",
-  ManagingFirmSpectator = "ManagingFirmSpectator",
-  ManagingFirmDispatcher = "ManagingFirmDispatcher",
-  Controller = "Controller",
-  ManagingFirmSeniorOperator = "ManagingFirmSeniorOperator",
-  ManagingFirmSpectatorRestricted = "ManagingFirmSpectatorRestricted",
 }
 
 export enum ETaskApplicationStatus {
@@ -2382,10 +2373,6 @@ export interface HousingStockListResponse {
   id: number;
   houseCategory: string | null;
   houseType: string | null;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
@@ -3208,7 +3195,6 @@ export interface ManagingFirmUserCreateRequest {
   position?: string | null;
   number?: string | null;
   password?: string | null;
-  userRoleIds?: number[] | null;
   roleTypes?: string[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
@@ -3290,7 +3276,6 @@ export interface ManagingFirmUserResponse {
   managementFirm: ManagementFirmResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
-  userRoles: UserRoleResponse[] | null;
   roles: StringStringDictionaryItem[] | null;
   housingStocks: HousingStockShortResponse[] | null;
 }
@@ -3342,7 +3327,6 @@ export interface ManagingFirmUserUpdateRequest {
   department?: string | null;
   position?: string | null;
   number?: string | null;
-  userRoleIds?: number[] | null;
   roleTypes?: string[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
@@ -3802,6 +3786,9 @@ export interface PipeNodeResponse {
 
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
+
+  /** @format date-time */
+  commercialAccountingDeregistrationDate: string | null;
 
   /** @format int32 */
   housingStockId: number;
@@ -4836,28 +4823,6 @@ export interface UserCompetenceResponse {
   title: string | null;
 }
 
-export interface UserRoleListResponse {
-  /** @format int32 */
-  id: number;
-  type: ESecuredIdentityRoleName;
-  title: string | null;
-}
-
-export interface UserRoleListWrappedResponse {
-  items: UserRoleListResponse[] | null;
-}
-
-export interface UserRoleListWrappedResponseSuccessApiResponse {
-  successResponse: UserRoleListWrappedResponse | null;
-}
-
-export interface UserRoleResponse {
-  /** @format int32 */
-  id: number;
-  type: ESecuredIdentityRoleName;
-  title: string | null;
-}
-
 export interface UserStatusResponse {
   /** @format uuid */
   id: string | null;
@@ -5290,6 +5255,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Apartments/${apartmentId}/ApartmentChecks`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     *
+     * @tags Apartments
+     * @name ApartmentsActsDetail
+     * @summary ApartmentsRead
+     * @request GET:/api/Apartments/{apartmentId}/Acts
+     * @secure
+     */
+    apartmentsActsDetail: (apartmentId: number, params: RequestParams = {}) =>
+      this.request<ApartmentCheckResponseListSuccessApiResponse, any>({
+        path: `/api/Apartments/${apartmentId}/Acts`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -6035,15 +6018,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор системы</li>
      *
      * @tags DataMigrations
-     * @name DataMigrationsRevalidateReadingTasksCreate
+     * @name DataMigrationsValidateRecentReadingsCreate
      * @summary DataMigration
-     * @request POST:/api/DataMigrations/RevalidateReadingTasks
+     * @request POST:/api/DataMigrations/ValidateRecentReadings
      * @secure
      */
-    dataMigrationsRevalidateReadingTasksCreate: (params: RequestParams = {}) =>
+    dataMigrationsValidateRecentReadingsCreate: (data: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ValidateRecentReadings`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsRevalidateReadingTasksList
+     * @request GET:/api/DataMigrations/RevalidateReadingTasks
+     * @secure
+     */
+    dataMigrationsRevalidateReadingTasksList: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/DataMigrations/RevalidateReadingTasks`,
-        method: "POST",
+        method: "GET",
         secure: true,
         ...params,
       }),
@@ -8386,6 +8387,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
+     * @tags ManagingFirms
+     * @name ManagingFirmsConsumptionRatesDetail
+     * @summary ManagingFirmsRead
+     * @request GET:/api/ManagingFirms/{managingFirmId}/ConsumptionRates
+     * @secure
+     */
+    managingFirmsConsumptionRatesDetail: (managingFirmId: number, params: RequestParams = {}) =>
+      this.request<ManagementFirmResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirms/${managingFirmId}/ConsumptionRates`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersList
      * @summary ManagingFirmUsersRead
@@ -9010,17 +9029,80 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     nodeWorkingRangeList: (
-      query: {
-        Season: ENodeWorkingRangeSeason;
-        NodeResourceType: EResourceType;
-        HousingStockId?: number;
-        HousingManagementId?: string;
-        NodeId?: number;
-      },
+      query: { nodeResourceType: EResourceType; season: ENodeWorkingRangeSeason },
       params: RequestParams = {},
     ) =>
       this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/NodeWorkingRange`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeHouseManagementDetail
+     * @summary NodeWorkingRangeRead
+     * @request GET:/api/NodeWorkingRange/HouseManagement/{houseManagementId}
+     * @secure
+     */
+    nodeWorkingRangeHouseManagementDetail: (
+      houseManagementId: string,
+      query: { nodeResourceType: EResourceType; season: ENodeWorkingRangeSeason },
+      params: RequestParams = {},
+    ) =>
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/HouseManagement/${houseManagementId}`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeHousingStockDetail
+     * @summary NodeWorkingRangeRead
+     * @request GET:/api/NodeWorkingRange/HousingStock/{housingStockId}
+     * @secure
+     */
+    nodeWorkingRangeHousingStockDetail: (
+      housingStockId: number,
+      query: { nodeResourceType: EResourceType; season: ENodeWorkingRangeSeason },
+      params: RequestParams = {},
+    ) =>
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/HousingStock/${housingStockId}`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeNodeDetail
+     * @summary NodeWorkingRangeRead
+     * @request GET:/api/NodeWorkingRange/Node/{nodeId}
+     * @secure
+     */
+    nodeWorkingRangeNodeDetail: (
+      nodeId: number,
+      query: { season: ENodeWorkingRangeSeason },
+      params: RequestParams = {},
+    ) =>
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/Node/${nodeId}`,
         method: "GET",
         query: query,
         secure: true,
@@ -10427,42 +10509,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     tasksExportExecutingIndividualDeviceCheckTasksList: (params: RequestParams = {}) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTasks`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
-     *
-     * @tags UserRoles
-     * @name UserRolesList
-     * @summary UserRolesRead
-     * @request GET:/api/UserRoles
-     * @secure
-     */
-    userRolesList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/UserRoles`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
-     *
-     * @tags UserRoles
-     * @name UserRolesForManagementFirmList
-     * @summary UserRolesRead
-     * @request GET:/api/UserRoles/ForManagementFirm
-     * @secure
-     */
-    userRolesForManagementFirmList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/UserRoles/ForManagementFirm`,
         method: "GET",
         secure: true,
         format: "json",
