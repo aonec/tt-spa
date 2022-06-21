@@ -6,7 +6,6 @@ import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
-import moment from 'moment';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 
@@ -38,6 +37,7 @@ export const Readings: FC<Props> = ({ getData }) => {
           value3: undefined,
           value4: undefined,
           deviceId: device.id,
+          readingDate: device.invalidReading?.readingDate,
         }))
       );
     }
@@ -46,10 +46,7 @@ export const Readings: FC<Props> = ({ getData }) => {
   useEffect(() => {
     if (readings.length) {
       getData({
-        readings: readings.map((elem) => ({
-          ...elem,
-          readingDate: moment().toISOString(true),
-        })),
+        readings,
       });
     }
   }, [readings]);
@@ -117,7 +114,7 @@ const ReadingLine = ({
               value={value}
               resource={device.resource}
               type="number"
-              style={{ marginBottom: '15px', padding: "7px 12px" }}
+              style={{ marginBottom: '15px', padding: '7px 12px' }}
               placeholder={`T${index + 1}`}
             />
           ))}

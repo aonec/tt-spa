@@ -49,6 +49,8 @@ import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
+import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
+
 
 moment.locale('ru');
 
@@ -92,6 +94,8 @@ const Internal = () => {
                 component={Tasks}
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+
+              <Route path="/devices/" component={DevicesProfileContainer} exact />
 
               <Route
                 path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
@@ -198,10 +202,6 @@ const Internal = () => {
                 component={NodeArchivePageContainer}
                 exact
               />
-
-              <Route path="/settings/editManagingFirmUser/:id">
-                <EditManagingFirmUserPage />
-              </Route>
 
               <Route
                 path="/settings/:section"
