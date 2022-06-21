@@ -9,6 +9,8 @@ import { useHistory } from 'react-router-dom';
 import { useFilters } from './Filter.hook';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import { useStore } from 'effector-react';
 
 const searchfields = [
   SearchFieldType.City,
@@ -26,6 +28,18 @@ export const FilterContainer = () => {
   const isSerialNumberPage = searchContext === 2;
 
   const { syncSearchState, searchState } = useFilters();
+
+  const apartment = useStore($apartment);
+
+  useEffect(() => {
+    if (!apartment?.homeownerAccounts?.length) return;
+
+    const homeownerName = apartment?.homeownerAccounts[0]?.name;
+
+    if (homeownerName) {
+      setQuestion(homeownerName);
+    }
+  }, [apartment]);
 
   useEffect(() => {
     setQuestion(searchState.question || '');
@@ -59,7 +73,6 @@ export const FilterContainer = () => {
         onChange={(e) => setQuestion(e.target.value)}
         onClick={() => setQuestion('')}
         onKeyDown={fromEnter(() => {
-          console.log(question);
           syncSearchState({ question });
         })}
       />

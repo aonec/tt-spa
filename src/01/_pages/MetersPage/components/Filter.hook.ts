@@ -5,10 +5,10 @@ import { getApartment } from './Filter.api';
 
 export function useFilters() {
   const history = useHistory();
-
+  
   const [searchState, setSearchState] = useState<GetApartmentRequestPayload>(
     {}
-  );
+    );
 
   const syncSearchState = useCallback(
     (values: GetApartmentRequestPayload) =>
@@ -33,12 +33,6 @@ export function useFilters() {
       setSearchState({});
 
       return history.push('/meters/apartments/');
-    }
-
-    if (apartment.homeownerName) {
-      syncSearchState({
-        question: apartment.homeownerName,
-      });
     }
 
     history.push(`/meters/apartments/${apartment.id}`);
