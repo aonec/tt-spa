@@ -2,9 +2,6 @@ import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentActResponse, DocumentResponse } from 'myApi';
-import { createApartmentActService } from '../createApartmentActService';
-import { deleteApartmentActService } from '../deleteApartmentActService';
-import { editApartmentActService } from '../editApartmentActService';
 import {
   getapartmentActsList,
   saveFileRequest,
