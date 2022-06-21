@@ -50,6 +50,7 @@ import { SettingsPageContainer } from '../features/settings/SettingsPageContaine
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 
 moment.locale('ru');
 
