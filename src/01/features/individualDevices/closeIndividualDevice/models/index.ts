@@ -24,7 +24,7 @@ export const closeIndividualDeviceForm = createForm({
     documentIds: {
       init: [] as FileData[],
     },
-    clousingDate: {
+    closingDate: {
       init: null as null | string,
     },
     closingReason: {
