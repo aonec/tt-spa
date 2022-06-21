@@ -4,8 +4,9 @@ import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { editApartmentActService } from './editApartmentActService.models';
 import { EditApartmentActForm } from './view/EditApartmentActForm';
 
-export const EditApartmentActContainer = () => {
-  const { inputs, outputs } = editApartmentActService;
+const { inputs, outputs } = editApartmentActService;
+
+export const EditApartmentActModalContainer = () => {
 
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$editActIsLoading);

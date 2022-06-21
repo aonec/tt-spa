@@ -1,2 +1,2 @@
 export { createApartmentActService } from './createApartmentActService.model';
-export { CreateApartmentActContainer } from './createApartmentActService.container';
+export { CreateApartmentActModalContainer } from './createApartmentActService.container';

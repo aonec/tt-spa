@@ -23,9 +23,9 @@ const $createActIsLoading = createActFx.pending;
 sample({
   source: apartmentActsListService.gates.ApartmentActsListGate.state,
   clock: createAct,
-  fn: (sourcePayload, clockPayload) => ({
-    ...sourcePayload,
-    ...clockPayload,
+  fn: (apartmentId, createActPayload) => ({
+    ...apartmentId,
+    ...createActPayload,
   }),
   target: createActFx,
 });
