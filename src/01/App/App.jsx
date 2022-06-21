@@ -12,7 +12,6 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
-  Tasks,
   Login,
   TaskProfile,
   ObjectProfile,
@@ -32,6 +31,7 @@ import {
   EditNode,
   AddNode,
   IndividualDeviceEdit,
+  Tasks,
 } from '../_pages';
 import { useApp } from './useApp';
 import EditODPU from '../_pages/EditHousingMeteringDevice';
@@ -50,6 +50,7 @@ import { SettingsPageContainer } from '../features/settings/SettingsPageContaine
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
+import { TasksProfileContainer } from 'services/tasks/tasksProfileService';
 
 moment.locale('ru');
 
@@ -89,8 +90,8 @@ const Internal = () => {
               </Route>
 
               <Route
-                path="/tasks/(executing|observing|archived)/"
-                component={Tasks}
+                path="/tasks/:grouptype/"
+                component={TasksProfileContainer}
               />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
 
@@ -113,7 +114,7 @@ const Internal = () => {
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              
+
               <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                 <EditManagingFirmUserPage />
               </Route>
