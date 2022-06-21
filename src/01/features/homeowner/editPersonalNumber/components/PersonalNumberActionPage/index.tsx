@@ -85,7 +85,9 @@ const Wrap = styled.div`
 export const getApartmentAddressString = (apartment: ApartmentResponse) => {
   const housingStock = apartment.housingStock;
 
-  return `${housingStock?.city} ул. ${housingStock?.street}, д. ${
-    housingStock?.number
-  }, кв. ${apartment.apartmentNumber}${housingStock?.corpus || ''}`;
+  const address = housingStock?.address?.mainAddress;
+
+  return `${address?.city} ул. ${address?.street}, д. ${address?.number}, кв. ${
+    apartment.apartmentNumber
+  }${address?.corpus || ''}`;
 };

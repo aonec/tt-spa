@@ -52,11 +52,13 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
 export function useApartmentAddressString() {
   const apartment = useStore($apartment);
 
+  const address = apartment?.housingStock?.address?.mainAddress
+
   return (
     apartment &&
-    `ул. ${apartment.housingStock?.street}, д. ${
-      apartment.housingStock?.number
-    }${apartment.housingStock?.corpus || ''}, кв. ${apartment.apartmentNumber}`
+    `ул. ${address?.street}, д. ${
+      address?.number
+    }${address?.corpus || ''}, кв. ${apartment.apartmentNumber}`
   );
 }
 
