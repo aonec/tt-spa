@@ -74,6 +74,7 @@ export function useAutocomplete(street, streets) {
   };
 }
 
+
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
   const { apart, street, house, city } = state;
