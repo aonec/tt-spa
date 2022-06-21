@@ -113,6 +113,10 @@ const Internal = () => {
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
+              
+              <Route path="/companyProfile/editManagingFirmUser/:id" exact>
+                <EditManagingFirmUserPage />
+              </Route>
               <Route path="/companyProfile/:section?" component={Settings} />
               <Route path="/companyProfile/staff/:id" component={Settings} />
 
