@@ -65,11 +65,11 @@ const ApartmentProfile = () => {
     homeownerAccounts,
   } = apartment;
 
-  const { city, street, number, id } = housingStock;
+  const { city, street, number, housingStockId } = housingStock.address.mainAddress;
 
   return styled(grid)(
     <>
-      <Index path={`/objects/${id}/apartments`} />
+      <Index path={`/objects/${housingStockId}/apartments`} />
       <CheckApartmentModal />
       <ApartmentGate id={Number(apartmentId)} />
       <Header
