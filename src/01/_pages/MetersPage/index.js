@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Filter } from './components/Filter.container';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
 import { Tabs } from 'antd';
@@ -12,6 +11,7 @@ import { HousingStockFilter } from '01/features/housingStocks/displayHousingStoc
 import styled from 'styled-components';
 import { AccountingNodesReadings } from '01/features/readings/accountingNodesReadings';
 import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { FilterContainer } from './components/Filter.container';
 
 const { TabPane } = Tabs;
 
@@ -29,7 +29,7 @@ export const MetersPage = () => {
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
           <Route path="/meters/apartments">
-            <Filter />
+            <FilterContainer />
           </Route>
           <Route path="/meters/apartments/:id">
             <ApartmentInfo />

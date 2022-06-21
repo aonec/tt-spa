@@ -17,14 +17,36 @@ export function useFilters() {
   );
 
   const handleSubmit = useCallback(async () => {
+    const {
+      city,
+      street,
+      house,
+      apartment: apartmentNumber,
+      question,
+    } = searchState;
+
+    if (!question && (!city || !street || !house || !apartmentNumber)) return;
+
     const apartment = await getApartment(searchState);
 
-    if (apartment) history.push(`/meters/apartments/${apartment.id}`);
+    if (!apartment) {
+      setSearchState({});
+
+      return history.push('/meters/apartments/');
+    }
+
+    if (apartment.homeownerName) {
+      syncSearchState({
+        question: apartment.homeownerName,
+      });
+    }
+
+    history.push(`/meters/apartments/${apartment.id}`);
   }, [history, searchState]);
 
   useEffect(() => {
     handleSubmit();
   }, [searchState]);
 
-  return { syncSearchState };
+  return { syncSearchState, searchState };
 }
