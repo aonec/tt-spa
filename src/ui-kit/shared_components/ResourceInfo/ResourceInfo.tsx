@@ -7,7 +7,7 @@ import { actResourceNamesLookup } from './ResourceInfo.utils';
 export const ResourceInfo: FC<ResourceInfoProps> = ({ resource }) => {
   return (
     <Wrap>
-      <ResourceIconLookup icon={resource} />
+      <ResourceIconLookup resource={resource} />
       <Name>{actResourceNamesLookup[resource]}</Name>
     </Wrap>
   );

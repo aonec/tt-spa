@@ -23,6 +23,7 @@ import { useAsync } from '../../hooks/useAsync';
 import { ChecksHistory } from './components/ChecksHistory';
 import { CheckApartmentModal } from '01/features/apartments/checkApartment';
 import { ApartmentGate } from '01/features/apartments/displayApartment/models';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -80,8 +81,18 @@ const ApartmentProfile = () => {
       />
 
       <Tabs />
+      <Route path="/*/:apartmentId/testimony" exact>
+        <ApartmentDevices devices={devices} />
+      </Route>
 
-      <Route path="/*/(\\d+)" exact>
+      <Route path="/*/:apartmentId/checksHistory" exact>
+        <ChecksHistory />
+      </Route>
+
+      <Route path="/*/:apartmentId/documents" exact>
+        <ApartmentActsListContainer />
+      </Route>
+      <Route path="/objects/:id/apartments/:apartmentId" exact>
         <Wrapper>
           <div>
             <Information
@@ -97,14 +108,6 @@ const ApartmentProfile = () => {
             <Tasks tasksList={tasksList} />
           </div>
         </Wrapper>
-      </Route>
-
-      <Route path="/*/(\\d+)/testimony" exact>
-        <ApartmentDevices devices={devices} />
-      </Route>
-
-      <Route path="/*/(\\d+)/checksHistory" exact>
-        <ChecksHistory />
       </Route>
     </>
   );

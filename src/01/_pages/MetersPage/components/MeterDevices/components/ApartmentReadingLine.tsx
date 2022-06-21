@@ -18,13 +18,12 @@ import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 import { useEvent, useStore } from 'effector-react';
-import { ESecuredIdentityRoleName } from 'myApi';
 import { $userRoleTypes } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 
-import { FullDeviceLine } from './apartment_reading_line.styled'
-import { SwitchIcon, CheckIcon, HistoryIcon, StarIcon } from "ui-kit/icons";
-import {ActionButton} from "./action_button/action_button";
+import { FullDeviceLine } from './apartment_reading_line.styled';
+import { SwitchIcon, CheckIcon, HistoryIcon, StarIcon } from 'ui-kit/icons';
+import { ActionButton } from './action_button/action_button';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -53,7 +52,9 @@ const ApartmentReadingLine = ({
 
   const userRoletypes = useStore($userRoleTypes);
 
-  const isSeniorOperator = Boolean(userRoletypes) && userRoletypes?.includes(ESecuredIdentityRoleName.ManagingFirmSeniorOperator)
+  const isSeniorOperator =
+    Boolean(userRoletypes) &&
+    userRoletypes?.includes('ManagingFirmSeniorOperator');
 
   const onDeleteIndividualDevice = useEvent(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
@@ -207,12 +208,12 @@ const SelectSwitchDeiveTypeModal = ({
         <ActionButton
           onClick={setSwitchType('switch')}
           active={isSwitchActive('switch')}
-          type='switch'
+          type="switch"
         />
         <ActionButton
           onClick={setSwitchType('check')}
           active={isSwitchActive('check')}
-          type='check'
+          type="check"
         />
       </Flex>
     </StyledAntdModal>

@@ -15,18 +15,18 @@ export const NewApartmentForm = () => {
   const apartment = useStore($apartment);
   const { fields } = useForm(newApartmentPersonalNumberForm);
 
+  const address = apartment?.housingStock?.address?.mainAddress;
+
   return (
     <Wrap>
       <Grid temp="1fr 0.5fr 0.5fr" gap="15px">
         <Form.Item label="Улица">
-          <InputTT disabled value={apartment?.housingStock?.street} />
+          <InputTT disabled value={address?.street} />
         </Form.Item>
         <Form.Item label="Дом">
           <InputTT
             disabled
-            value={`${apartment?.housingStock?.number}${
-              apartment?.housingStock?.corpus || ''
-            }`}
+            value={`${address?.number}${address?.corpus || ''}`}
           />
         </Form.Item>
         <Form.Item label="Квартира">
