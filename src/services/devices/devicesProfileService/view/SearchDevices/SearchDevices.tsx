@@ -63,6 +63,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
   useEffect(() => {
    fetchcalc(values);
+   searchStateChanged(values)
   }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
