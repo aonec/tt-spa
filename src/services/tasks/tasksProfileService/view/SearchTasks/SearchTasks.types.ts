@@ -1,13 +1,13 @@
-import { EManagingFirmTaskFilterType } from 'myApi';
+import { EManagingFirmTaskFilterTypeNullableStringDictionaryItem } from 'myApi';
 
 export type SearchTasksProps = {
-  onSubmit: () => void;
+  onSubmit: (formFilter: SeacrhTasksForm) => void;
+  taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
 };
 
 export type SeacrhTasksForm = {
-  taskType?: string;
+  taskType: string | null;
   taskId?: number;
 };
 
-export const TasksFilterTypeDictionary = {
-};
+export const TasksFilterTypeDictionary = {};

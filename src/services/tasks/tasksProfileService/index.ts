@@ -1,2 +1,2 @@
-export { tasksProfileService } from './tasksProfileService.models';
+export { tasksProfileService } from './tasksProfileService.model';
 export { TasksProfileContainer } from './tasksProfileService.container';

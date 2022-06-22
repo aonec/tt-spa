@@ -1,21 +1,17 @@
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { StyledInput } from '01/shared/ui/Fields';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { EManagingFirmTaskFilterType } from 'myApi';
 import React, { FC } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
-import {
-  SeacrhTasksForm,
-  SearchTasksProps,
-  TasksFilterTypeDictionary,
-} from './SearchTasks.types';
+import { SeacrhTasksForm, SearchTasksProps } from './SearchTasks.types';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
 
-export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit }) => {
+export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit, taskTypes }) => {
   const { values, handleSubmit, setFieldValue } = useFormik<SeacrhTasksForm>({
     initialValues: {
-      taskType: undefined,
+      taskType: null,
       taskId: undefined,
     },
     onSubmit,
@@ -35,24 +31,32 @@ export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit }) => {
           <StyledInput
             placeholder="Номер задачи"
             value={values.taskId}
-            onChange={(e) => setFieldValue('taskId', e.currentTarget.value)}
-            
+            onKeyDown={(e) => {
+              fromEnter(() => {
+                e.currentTarget.blur();
+                setFieldValue('taskId', e.currentTarget.value);
+                handleSubmit();
+              })(e);
+            }}
+            onClick={(e) => {
+              setFieldValue('taskId', undefined);
+              e.currentTarget.value = '';
+            }}
           />
           <SelectSC
             placeholder="Тип задачи"
-            value={values.taskType || undefined}
-            onChange={(value) =>{
+            value={values.taskType!}
+            onChange={(value) => {
               setFieldValue('taskType', value as EManagingFirmTaskFilterType);
               handleSubmit();
-            }
-            }
-            allowClear
+            }}
           >
-            {Object.values(EManagingFirmTaskFilterType)?.map((key) => (
-              <Select.Option key={key} value={key}>
-                {TasksFilterTypeDictionary[key]}
-              </Select.Option>
-            ))}
+            {taskTypes &&
+              taskTypes.map(({ value, key }) => (
+                <Select.Option key={key!} value={key!}>
+                  {value}
+                </Select.Option>
+              ))}
           </SelectSC>
         </Wrapper>
       </ExtendedSearch>

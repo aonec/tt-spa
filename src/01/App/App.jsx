@@ -89,11 +89,11 @@ const Internal = () => {
                 <ApartmentActs />
               </Route>
 
+              <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
               <Route
                 path="/tasks/:grouptype/"
                 component={TasksProfileContainer}
               />
-              <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
 
               <Route
                 path="/devices/"
