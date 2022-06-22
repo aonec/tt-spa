@@ -28,12 +28,6 @@ interface DeviceProfileProps {
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close, open}) => {
 
-  // const { outputs, inputs } = displayDevicesService;
-  // const fetchcalc = useEvent(inputs.fetchCalculators);
-  // const isOpen = useStore(outputs.$isExtendedSearchOpen);
-  // const close = useEvent(inputs.extendedSearchClosed);
-  // const open = useEvent(inputs.extendedSearchOpened);
-
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -43,10 +37,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
       clickable: true,
     },
   ];
-  // const funcWrapper = (values: Partial<CalculatorsListRequestPayload>) => {
-  //   fetchcalc(values);
-  //   searchStateChanged(values);
-  // }
+
   const {
     handleSubmit: submitForm,
     setFieldValue,

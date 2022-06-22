@@ -1,5 +1,4 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { RequestDevicesReportQueryType } from '../../../_api/devicesReport';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 
 export const $devicesSearchState = createStore<Partial<CalculatorsListRequestPayload> | null>(
