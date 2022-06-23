@@ -5,14 +5,14 @@ import { useFormik } from 'formik';
 import { EManagingFirmTaskFilterType } from 'myApi';
 import React, { FC } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SeacrhTasksForm, SearchTasksProps } from './SearchTasks.types';
+import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 
 export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit, taskTypes }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<SeacrhTasksForm>({
+  const { values, handleSubmit, setFieldValue } = useFormik<SearchTasksForm>({
     initialValues: {
-      taskType: null,
-      taskId: undefined,
+      TaskType: null,
+      TaskId: undefined,
     },
     onSubmit,
   });
@@ -30,24 +30,22 @@ export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit, taskTypes }) => {
         <Wrapper>
           <StyledInput
             placeholder="Номер задачи"
-            value={values.taskId}
-            onKeyDown={(e) => {
-              fromEnter(() => {
-                e.currentTarget.blur();
-                setFieldValue('taskId', e.currentTarget.value);
-                handleSubmit();
-              })(e);
-            }}
+            value={values.TaskId}
+            onKeyDown={fromEnter((e) => {
+              e.currentTarget.blur();
+              setFieldValue('TaskId', e.currentTarget.value);
+              handleSubmit();
+            })}
             onClick={(e) => {
-              setFieldValue('taskId', undefined);
+              setFieldValue('TaskId', undefined);
               e.currentTarget.value = '';
             }}
           />
           <SelectSC
             placeholder="Тип задачи"
-            value={values.taskType!}
+            value={values.TaskType!}
             onChange={(value) => {
-              setFieldValue('taskType', value as EManagingFirmTaskFilterType);
+              setFieldValue('TaskType', value as EManagingFirmTaskFilterType);
               handleSubmit();
             }}
           >

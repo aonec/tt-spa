@@ -1,4 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
+import { TaskGroupingFilter } from 'myApi';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -13,7 +14,7 @@ import { TasksProfile } from './view/TasksProfile';
 const { inputs, outputs, gates } = tasksProfileService;
 
 export const TasksProfileContainer = () => {
-  const { grouptype } = useParams<{ grouptype: string }>();
+  const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
   const { TaskGroupTypeGate } = gates;
 
   const taskTypes = useStore(outputs.$taskTypes);
@@ -30,11 +31,11 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      <TaskGroupTypeGate grouptype={grouptype} />
+      <TaskGroupTypeGate GroupType={grouptype} />
       <TaskTypesGate />
       <ExportTasksListModalContainer />
       <TasksProfile
-        handleExportTasksList={handleExportTasksList}
+        handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
         handleSearch={handleSearch}
         taskTypes={taskTypes}

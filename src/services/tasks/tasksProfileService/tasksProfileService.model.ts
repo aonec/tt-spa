@@ -1,11 +1,14 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { TasksPagedList } from 'myApi';
+import { TaskGroupingFilter, TasksPagedList } from 'myApi';
 import { $taskTypes } from '../taskTypesService/taskTypesService.model';
 import { getTasks } from './tasksProfileService.api';
-import { SeacrhTasksForm } from './view/SearchTasks/SearchTasks.types';
+import { GetTasksListRequestPayload } from './tasksProfileService.types';
+import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
 
 const domain = createDomain('tasksProfileService');
+
+const $searchState = domain.createStore<GetTasksListRequestPayload>({});
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 
@@ -17,23 +20,31 @@ const $executingTasksCount = $tasksPagedData.map(
   (data) => data?.executingTasksCount
 );
 
-const searchTasks = domain.createEvent<SeacrhTasksForm>();
-const searchTasksFx = domain.createEffect<any, TasksPagedList>(getTasks);
+const searchTasks = domain.createEvent<SearchTasksForm>();
+const searchTasksFx = domain.createEffect<
+  GetTasksListRequestPayload,
+  TasksPagedList
+>(getTasks);
 const $isLoading = searchTasksFx.pending;
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
+$searchState.on(searchTasks, (_, filters) => ({ ...filters, PageNumber: 1 }));
 
-const TaskGroupTypeGate = createGate<{ grouptype: string }>();
+const TaskGroupTypeGate = createGate<{ GroupType: TaskGroupingFilter }>();
 
-forward({
-  from: TaskGroupTypeGate.open,
-  to: searchTasksFx,
+sample({
+  clock: TaskGroupTypeGate.open,
+  target: searchTasksFx as any,
 });
 
 sample({
-  source: TaskGroupTypeGate.state,
-  clock: searchTasks,
-  fn: (grouptype, formFilter) => ({ ...grouptype, ...formFilter }),
+  source: [TaskGroupTypeGate.state, $searchState],
+  clock: [TaskGroupTypeGate.state, $searchState],
+  fn: (searchTasksPayload) =>
+    searchTasksPayload.reduce((filters, currentFilter) => ({
+      ...currentFilter,
+      ...filters,
+    })),
   target: searchTasksFx,
 });
 

@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
-import { deleteApartmentActService } from './deleteApartmentActService.model';
+import { deleteApartmentActService } from './deleteApartmentActService.models';
 
 const { inputs, outputs } = deleteApartmentActService;
 

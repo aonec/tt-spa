@@ -1,2 +1,2 @@
-export { deleteApartmentActService } from './deleteApartmentActService.model';
+export { deleteApartmentActService } from './deleteApartmentActService.models';
 export { DeleteApartmentActModalContainer } from './deleteApartmentActService.container';
