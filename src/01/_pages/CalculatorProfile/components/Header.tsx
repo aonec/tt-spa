@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useMemo } from 'react';
 // import { HeaderWrap, Title, Subtitle } from '01/_components';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
@@ -10,6 +10,8 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { Tooltip } from 'antd';
+import { AdditionalAddress } from 'services/objects/displayObjectsListService/view/ObjectsList/HousingStockItem/HousingStockItem.styled';
 
 interface HeaderInterface {
   device: CalculatorResponse | null;
@@ -25,15 +27,28 @@ export const Header = ({
   setCheck,
 }: HeaderInterface) => {
   const { push } = useHistory();
-
+  
   if (!device) {
     return <Loader size={'32'} show />;
   }
-
+  
   const { address } = device || { address: DEFAULT_BUILDING };
+
+  const additionalAddressesString = () => {
+    const additionalAddresses = address?.address?.additionalAddresses || [];
+    
+
+    return additionalAddresses
+      .map((elem) => `${elem.city}, ${elem.street}, ${elem.number}`)
+      .join('; ');
+  };
+
+
   const { city, street, number, corpus, id } =
     address || DEFAULT_BUILDING;
 
+  
+    const adAdress = additionalAddressesString()
   const access = getAccessesList();
   const { show } = access;
   const { model, serialNumber } = device || DEFAULT_DEVICE;
@@ -94,9 +109,9 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
         <Subtitle to={`/objects/${id}`}>
-          {`${city}, ${street}, ${number}${
-            corpus ? `, к.${corpus}` : ''
-          }`}
+        <Tooltip title={adAdress}>
+          <AdditionalAddress>{adAdress}</AdditionalAddress>  
+        </Tooltip>
         </Subtitle>
       </div>
       <div style={{ position: 'relative' }}>

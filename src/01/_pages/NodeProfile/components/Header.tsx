@@ -12,6 +12,8 @@ import {
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
+import { Tooltip } from 'antd';
+import { AdditionalAddress } from 'services/objects/displayObjectsListService/view/ObjectsList/HousingStockItem/HousingStockItem.styled';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -35,6 +37,17 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
   const { resource, nodeStatus, number, address } = node;
   const { id: objectId, city, street, number: housingStockNumber, corpus } =
     address || {};
+
+    const additionalAddressesString = () => {
+      const additionalAddresses = address?.address?.additionalAddresses || [];
+      
+  
+      return additionalAddresses
+        .map((elem) => `${elem.city}, ${elem.street}, ${elem.number}`)
+        .join('; ');
+    };
+
+    const adAdress = additionalAddressesString()
   const { value } = nodeStatus || {};
   const menuButtonArr: MenuButtonInterface[] = [
     {
@@ -95,9 +108,9 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
 
         <SubtitleWrap>
           <Subtitle to={`/objects/${objectId}`}>
-            {`${city}, ${street}, ${housingStockNumber}${
-              corpus ? `, к.${corpus}` : ''
-            }`}
+          <Tooltip title={adAdress}>
+          <AdditionalAddress>{adAdress}</AdditionalAddress>  
+        </Tooltip>
           </Subtitle>
           <NodeStatus />
         </SubtitleWrap>
