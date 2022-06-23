@@ -33,7 +33,7 @@ import {
   validationSchemaTemperatureSensor,
 } from '../../../tt-components/validationSchemas';
 import { axios } from '01/axios';
-import { resourceParcer } from 'utils/ResourceParser';
+import { resourceParser } from 'utils/ResourceParser';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -52,7 +52,7 @@ const FormEditODPU = ({
 }: FormEditODPUInterface) => {
   const { deviceId } = useParams();
   const [validationSchema, setValidationSchema] = useState<any>();
-  const [magistrals, setMagistrals] = useState<reduceResponse[]>();
+  const [magistrals, setMagistrals] = useState<resourceType[]>();
 
   const {
     address: { city, street, housingStockNumber, corpus },
@@ -149,14 +149,17 @@ const FormEditODPU = ({
       : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
 
-  interface axiosResponse {
+  interface resourceDTO {
     key: string;
     value: string;
   }
-
+  interface resourceType {
+    label: string;
+    value: string;
+  }
   useEffect(() => {
     axios
-      .get<any, axiosResponse[]>(
+      .get<any, resourceDTO[]>(
         `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
       )
       .then((res) => resourceParser(res))

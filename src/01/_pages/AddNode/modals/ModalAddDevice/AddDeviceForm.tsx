@@ -47,9 +47,7 @@ const AddDeviceForm = (props: any) => {
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  const [fetchedMagistrals, setFetchedMagistrals] = useState<
-    reduceResponse[]
-  >();
+  const [fetchedMagistrals, setFetchedMagistrals] = useState<resourceType[]>();
 
   const initialValues = {
     isConnected: isConnected[0].value,
@@ -159,18 +157,18 @@ const AddDeviceForm = (props: any) => {
     }
   }, [values.housingMeteringDeviceType]);
 
-  interface axiosResponse {
+  interface resourceDTO {
     key: string;
     value: string;
   }
-  interface reduceResponse {
+  interface resourceType {
     label: string;
     value: string;
   }
 
   useEffect(() => {
     axios
-      .get<any, axiosResponse[]>(
+      .get<any, resourceDTO[]>(
         `PipeNodes/PipeMagistralTypes?resource=${resource}`
       )
       .then((res) => resourceParser(res))
