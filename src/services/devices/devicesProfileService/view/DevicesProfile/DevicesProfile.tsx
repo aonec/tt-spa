@@ -82,10 +82,9 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       </Tabs>
       <SearchDevices isExtendedSearchOpen={isOpen} fetchcalc={fetchcalc}>
         <ExtendedSearch
-          open={isOpen}
+          isOpen={isOpen}
           handleClose={() => close()}
           handleOpen={() => open()}
-
           handleApply={() => {
             fetchcalc(values);
           }}
