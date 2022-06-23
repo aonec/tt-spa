@@ -1,14 +1,14 @@
-interface axiosResponse {
+interface resourceDTO {
   key: string;
   value: string;
 }
-interface reduceResponse {
+interface resourceType {
   label: string;
   value: string;
 }
 
-export const resourceParser = (response: axiosResponse[]): reduceResponse[] => {
-  return response.reduce((acc: reduceResponse[], el: axiosResponse) => {
+export const resourceParser = (response: resourceDTO[]): resourceType[] => {
+  return response.reduce((acc: resourceType[], el: resourceDTO) => {
     acc.push({
       label: el.value,
       value: el.key,
