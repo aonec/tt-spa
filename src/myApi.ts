@@ -1349,6 +1349,9 @@ export interface ElectricNodeResponse {
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
 
+  /** @format date-time */
+  commercialAccountingDeregistrationDate: string | null;
+
   /** @format int32 */
   housingStockId: number;
   address: HousingStockShortResponse | null;
@@ -1600,22 +1603,6 @@ export interface ErrorResponse {
   text: string | null;
   data: Record<string, any>;
   requestId: string | null;
-}
-
-export enum ESecuredIdentityRoleName {
-  ManagingFirmAdministrator = "ManagingFirmAdministrator",
-  ManagingFirmExecutor = "ManagingFirmExecutor",
-  Homeowner = "Homeowner",
-  ManagingFirmOperator = "ManagingFirmOperator",
-  ErcService = "ErcService",
-  ScadaService = "ScadaService",
-  Admin = "Admin",
-  Worker = "Worker",
-  ManagingFirmSpectator = "ManagingFirmSpectator",
-  ManagingFirmDispatcher = "ManagingFirmDispatcher",
-  Controller = "Controller",
-  ManagingFirmSeniorOperator = "ManagingFirmSeniorOperator",
-  ManagingFirmSpectatorRestricted = "ManagingFirmSpectatorRestricted",
 }
 
 export enum ETaskApplicationStatus {
@@ -2386,10 +2373,6 @@ export interface HousingStockListResponse {
   id: number;
   houseCategory: string | null;
   houseType: string | null;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
@@ -3212,7 +3195,6 @@ export interface ManagingFirmUserCreateRequest {
   position?: string | null;
   number?: string | null;
   password?: string | null;
-  userRoleIds?: number[] | null;
   roleTypes?: string[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
@@ -3294,7 +3276,6 @@ export interface ManagingFirmUserResponse {
   managementFirm: ManagementFirmResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
-  userRoles: UserRoleResponse[] | null;
   roles: StringStringDictionaryItem[] | null;
   housingStocks: HousingStockShortResponse[] | null;
 }
@@ -3346,7 +3327,6 @@ export interface ManagingFirmUserUpdateRequest {
   department?: string | null;
   position?: string | null;
   number?: string | null;
-  userRoleIds?: number[] | null;
   roleTypes?: string[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
@@ -3806,6 +3786,9 @@ export interface PipeNodeResponse {
 
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
+
+  /** @format date-time */
+  commercialAccountingDeregistrationDate: string | null;
 
   /** @format int32 */
   housingStockId: number;
@@ -4837,28 +4820,6 @@ export interface UpdatePipeNodeRequest {
 export interface UserCompetenceResponse {
   /** @format uuid */
   id: string;
-  title: string | null;
-}
-
-export interface UserRoleListResponse {
-  /** @format int32 */
-  id: number;
-  type: ESecuredIdentityRoleName;
-  title: string | null;
-}
-
-export interface UserRoleListWrappedResponse {
-  items: UserRoleListResponse[] | null;
-}
-
-export interface UserRoleListWrappedResponseSuccessApiResponse {
-  successResponse: UserRoleListWrappedResponse | null;
-}
-
-export interface UserRoleResponse {
-  /** @format int32 */
-  id: number;
-  type: ESecuredIdentityRoleName;
   title: string | null;
 }
 
@@ -10548,42 +10509,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     tasksExportExecutingIndividualDeviceCheckTasksList: (params: RequestParams = {}) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTasks`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
-     *
-     * @tags UserRoles
-     * @name UserRolesList
-     * @summary UserRolesRead
-     * @request GET:/api/UserRoles
-     * @secure
-     */
-    userRolesList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/UserRoles`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
-     *
-     * @tags UserRoles
-     * @name UserRolesForManagementFirmList
-     * @summary UserRolesRead
-     * @request GET:/api/UserRoles/ForManagementFirm
-     * @secure
-     */
-    userRolesForManagementFirmList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/UserRoles/ForManagementFirm`,
         method: "GET",
         secure: true,
         format: "json",

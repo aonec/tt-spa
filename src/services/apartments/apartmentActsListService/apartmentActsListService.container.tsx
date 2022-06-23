@@ -2,9 +2,18 @@ import { ApartmentActTypesGate } from '01/features/actsJournal/displayActTypes/m
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { CreateApartmentActModalContainer, createApartmentActService } from '../createApartmentActService';
-import { DeleteApartmentActModalContainer, deleteApartmentActService } from '../deleteApartmentActService';
-import { EditApartmentActModalContainer, editApartmentActService } from '../editApartmentActService';
+import {
+  CreateApartmentActModalContainer,
+  createApartmentActService,
+} from '../createApartmentActService';
+import {
+  DeleteApartmentActModalContainer,
+  deleteApartmentActService,
+} from '../deleteApartmentActService';
+import {
+  EditApartmentActModalContainer,
+  editApartmentActService,
+} from '../editApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
 
@@ -29,8 +38,7 @@ export const ApartmentActsListContainer = () => {
   const handleOpeningEditActModal = useEvent(
     editApartmentActService.inputs.openModal
   );
-  const handleSaveFile = useEvent(inputs.saveFile)
-
+  const handleSaveFile = useEvent(inputs.saveFile);
   return (
     <>
       <ApartmentActTypesGate />

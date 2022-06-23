@@ -41,3 +41,14 @@ export type IndividualDeviceType = {
   serialNumber: string | null;
   transactionType: string | null;
 };
+
+export type EffectFailDataAxiosError = {
+  response: {
+    data: {
+      error: {
+        Message: string;
+        Text: string;
+      };
+    };
+  };
+};
