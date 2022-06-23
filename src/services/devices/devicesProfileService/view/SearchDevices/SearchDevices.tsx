@@ -11,9 +11,10 @@ import {
   StyledGrid,
   StyledLabel,
   StyledLabelSimple,
-  StyledSlider,
+  SCSlider,
   Wrapper,
   Grid,
+  StyledExpirationDate,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
@@ -142,7 +143,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <StyledLabel>Диаметр прибора, мм </StyledLabel>
 
-                <StyledSlider
+                <SCSlider
                   getTooltipPopupContainer={(triggerNode) =>
                     triggerNode.parentNode as HTMLElement
                   }
@@ -168,8 +169,3 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     </Wrapper>
   );
 };
-
-export const StyledExpirationDate = styled.div`
-  display: flex;
-  align-items: center;
-`;

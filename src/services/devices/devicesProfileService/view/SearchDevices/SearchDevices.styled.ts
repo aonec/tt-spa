@@ -53,3 +53,8 @@ export const Grid = styled.div`
   align-items: center;
   gap: 10px;
 `
+
+export const StyledExpirationDate = styled.div`
+  display: flex;
+  align-items: center;
+`;

@@ -9,7 +9,6 @@ import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
-import { showDownloadDeviceReportButtonClicked } from '../../../../../01/features/devicesReport/models';
 import { HeaderWrapper, HeaderText } from './DevicesProfile.styled';
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
@@ -19,12 +18,14 @@ interface DeviceProfileProps {
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
+  showDownloadDeviceReportButtonClicked: (payload: void) => void;
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   fetchcalc,
   isOpen,
   close,
   open,
+  showDownloadDeviceReportButtonClicked
 }) => {
   const menuButtonArr = [
     {
