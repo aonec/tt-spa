@@ -15,12 +15,13 @@ const { inputs, outputs, gates } = tasksProfileService;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
-  const { TaskGroupTypeGate } = gates;
+  const { TaskGroupTypeGate} = gates;
 
   const taskTypes = useStore(outputs.$taskTypes);
   const executingTasksCount = useStore(outputs.$executingTasksCount);
   const observingTasksCount = useStore(outputs.$observingTasksCount);
   const isLoading = useStore(outputs.$isLoading);
+  const initialValues = useStore(outputs.$searchState)
   const tasks = useStore(outputs.$tasks);
   const preparedTasks = isLoading ? undefined : preparedData(tasks, grouptype);
 
@@ -42,6 +43,7 @@ export const TasksProfileContainer = () => {
         executingTasksCount={executingTasksCount!}
         observingTasksCount={observingTasksCount!}
         tasks={preparedTasks}
+        initialValues={initialValues}
       />
     </>
   );

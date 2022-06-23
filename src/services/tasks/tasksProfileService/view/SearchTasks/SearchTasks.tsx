@@ -8,11 +8,15 @@ import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 
-export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit, taskTypes }) => {
+export const SearchTasks: FC<SearchTasksProps> = ({
+  onSubmit,
+  taskTypes,
+  currentFilter,
+}) => {
   const { values, handleSubmit, setFieldValue } = useFormik<SearchTasksForm>({
     initialValues: {
-      TaskType: null,
-      TaskId: undefined,
+      TaskType: currentFilter?.TaskType || null,
+      TaskId: currentFilter?.TaskId || '',
     },
     onSubmit,
   });
@@ -31,14 +35,16 @@ export const SearchTasks: FC<SearchTasksProps> = ({ onSubmit, taskTypes }) => {
           <StyledInput
             placeholder="Номер задачи"
             value={values.TaskId}
+            onChange={(e) => {
+              setFieldValue('TaskId', e.currentTarget.value);
+            }}
             onKeyDown={fromEnter((e) => {
               e.currentTarget.blur();
               setFieldValue('TaskId', e.currentTarget.value);
               handleSubmit();
             })}
             onClick={(e) => {
-              setFieldValue('TaskId', undefined);
-              e.currentTarget.value = '';
+              setFieldValue('TaskId', '');
             }}
           />
           <SelectSC

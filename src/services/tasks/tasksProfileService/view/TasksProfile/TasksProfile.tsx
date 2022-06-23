@@ -15,6 +15,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   taskTypes,
   executingTasksCount,
   observingTasksCount,
+  initialValues,
 }) => {
   const history = useHistory();
 
@@ -25,7 +26,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     ? `Наблюдаемые (${observingTasksCount})`
     : 'Наблюдаемые';
 
-  const tasksList = useMemo(() => <TasksList items={tasks}/>, [tasks]);
+  const tasksList = useMemo(() => <TasksList items={tasks} />, [tasks]);
 
   return (
     <Wrapper>
@@ -41,11 +42,15 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         }}
       />
       <TabsSC activeKey={grouptype} onChange={history.push}>
-        <TabPane tab={executingTabText} key="executing"></TabPane>
-        <TabPane tab={observingTabText} key="observing"></TabPane>
-        <TabPane tab="Архив" key="archived"></TabPane>
+        <TabPane tab={executingTabText} key="Executing"></TabPane>
+        <TabPane tab={observingTabText} key="Observing"></TabPane>
+        <TabPane tab="Архив" key="Archived"></TabPane>
       </TabsSC>
-      <SearchTasks onSubmit={handleSearch} taskTypes={taskTypes} />
+      <SearchTasks
+        onSubmit={handleSearch}
+        taskTypes={taskTypes}
+        currentFilter={initialValues}
+      />
       {tasksList}
     </Wrapper>
   );

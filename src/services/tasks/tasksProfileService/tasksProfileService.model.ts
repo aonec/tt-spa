@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { TaskGroupingFilter, TasksPagedList } from 'myApi';
 import { $taskTypes } from '../taskTypesService/taskTypesService.model';
@@ -8,7 +8,9 @@ import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
 
 const domain = createDomain('tasksProfileService');
 
-const $searchState = domain.createStore<GetTasksListRequestPayload>({});
+const $searchState = domain.createStore<GetTasksListRequestPayload | null>(
+  null
+);
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 
@@ -20,32 +22,38 @@ const $executingTasksCount = $tasksPagedData.map(
   (data) => data?.executingTasksCount
 );
 
+const clearFilters = domain.createEvent();
 const searchTasks = domain.createEvent<SearchTasksForm>();
 const searchTasksFx = domain.createEffect<
-  GetTasksListRequestPayload,
+  GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
 const $isLoading = searchTasksFx.pending;
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
-$searchState.on(searchTasks, (_, filters) => ({ ...filters, PageNumber: 1 }));
 
 const TaskGroupTypeGate = createGate<{ GroupType: TaskGroupingFilter }>();
 
-sample({
-  clock: TaskGroupTypeGate.open,
-  target: searchTasksFx as any,
+$searchState
+  .reset(clearFilters)
+  .on(searchTasks, (oldFilters, filters) => ({
+    ...oldFilters,
+    ...filters,
+    PageNumber: 1,
+  }))
+  .on(TaskGroupTypeGate.state, (filters, GroupType) => ({
+    ...filters,
+    ...GroupType,
+  }));
+
+forward({
+  from: TaskGroupTypeGate.close,
+  to: clearFilters,
 });
 
-sample({
-  source: [TaskGroupTypeGate.state, $searchState],
-  clock: [TaskGroupTypeGate.state, $searchState],
-  fn: (searchTasksPayload) =>
-    searchTasksPayload.reduce((filters, currentFilter) => ({
-      ...currentFilter,
-      ...filters,
-    })),
-  target: searchTasksFx,
+forward({
+  from: $searchState,
+  to: searchTasksFx,
 });
 
 export const tasksProfileService = {
@@ -58,6 +66,7 @@ export const tasksProfileService = {
     $executingTasksCount,
     $observingTasksCount,
     $isLoading,
+    $searchState,
   },
   gates: {
     TaskGroupTypeGate,

@@ -2,7 +2,7 @@ import { EManagingFirmTaskFilterType, EOrderByRule, ETaskClosingStatus, ETaskTar
 
 export type GetTasksListRequestPayload = {
   TargetType?: ETaskTargetType;
-  TaskId?: number;
+  TaskId?: string;
   TaskType?: EManagingFirmTaskFilterType | null;
   GroupType?: TaskGroupingFilter;
   DeviceId?: number;
