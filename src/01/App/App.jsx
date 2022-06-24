@@ -79,11 +79,11 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/executing'
+                    : '/tasks/Executing'
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/executing" exact />
+              <Redirect from="/tasks" to="/tasks/Executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />

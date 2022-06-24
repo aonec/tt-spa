@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import { TaskGroupingFilter } from 'myApi';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   ExportTasksListModalContainer,
@@ -15,24 +15,40 @@ const { inputs, outputs, gates } = tasksProfileService;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
-  const { TaskGroupTypeGate} = gates;
+  const { TasksProfileIsOpen } = gates;
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
   const executingTasksCount = useStore(outputs.$executingTasksCount);
   const observingTasksCount = useStore(outputs.$observingTasksCount);
   const isLoading = useStore(outputs.$isLoading);
-  const initialValues = useStore(outputs.$searchState)
-  const tasks = useStore(outputs.$tasks);
-  const preparedTasks = isLoading ? undefined : preparedData(tasks, grouptype);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.openModal
   );
   const handleSearch = useEvent(inputs.searchTasks);
+  const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
+  const changeGroupType = useEvent(inputs.changeGroupType);
+
+  useEffect(() => {
+    if (lastGroupTypeRef.current !== grouptype) {
+      if (lastGroupTypeRef.current === 'Archived')
+        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+      else if (grouptype === 'Archived')
+        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+      else changeGroupType(grouptype);
+
+      lastGroupTypeRef.current = grouptype;
+    }
+  }, [grouptype, lastGroupTypeRef]);
+
+  const initialValues = useStore(outputs.$searchState);
+  const tasks = useStore(outputs.$tasks);
+  const preparedTasks = isLoading ? undefined : preparedData(tasks, grouptype);
 
   return (
     <>
-      <TaskGroupTypeGate GroupType={grouptype} />
+      <TasksProfileIsOpen/>
       <TaskTypesGate />
       <ExportTasksListModalContainer />
       <TasksProfile

@@ -23,6 +23,10 @@ const $executingTasksCount = $tasksPagedData.map(
 );
 
 const clearFilters = domain.createEvent();
+
+const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
+const changeGroupType =  domain.createEvent<TaskGroupingFilter>();
+
 const searchTasks = domain.createEvent<SearchTasksForm>();
 const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
@@ -32,22 +36,20 @@ const $isLoading = searchTasksFx.pending;
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
-const TaskGroupTypeGate = createGate<{ GroupType: TaskGroupingFilter }>();
+const TasksProfileIsOpen = createGate();
 
 $searchState
-  .reset(clearFilters)
-  .on(searchTasks, (oldFilters, filters) => ({
-    ...oldFilters,
-    ...filters,
-    PageNumber: 1,
-  }))
-  .on(TaskGroupTypeGate.state, (filters, GroupType) => ({
-    ...filters,
-    ...GroupType,
-  }));
+.on(searchTasks, (oldFilters, filters) => ({
+  ...oldFilters,
+  ...filters,
+  PageNumber: 1,
+}))
+.on(changeFiltersByGroupType, (_, GroupType) => ({ GroupType }))
+.on(changeGroupType, (filters, GroupType) => ({...filters, GroupType}))
+.reset(clearFilters)
 
 forward({
-  from: TaskGroupTypeGate.close,
+  from: TasksProfileIsOpen.close,
   to: clearFilters,
 });
 
@@ -59,6 +61,8 @@ forward({
 export const tasksProfileService = {
   inputs: {
     searchTasks,
+    changeFiltersByGroupType,
+    changeGroupType,
   },
   outputs: {
     $taskTypes,
@@ -69,6 +73,6 @@ export const tasksProfileService = {
     $searchState,
   },
   gates: {
-    TaskGroupTypeGate,
+    TasksProfileIsOpen,
   },
 };
