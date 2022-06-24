@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const devUrl = 'https://management.demo.transparent-technology.ru/api'
-const baseURL = process.env.REACT_APP_API_URL || devUrl;
+const baseURL = 'http://localhost:5001/api/';
 
 let axiosWithHeaders = axios.create({
   baseURL: baseURL,
