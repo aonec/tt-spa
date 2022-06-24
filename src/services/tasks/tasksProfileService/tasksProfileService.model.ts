@@ -14,18 +14,11 @@ const $searchState = domain.createStore<GetTasksListRequestPayload | null>(
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 
-const $tasks = $tasksPagedData.map((data) => data?.items);
-const $observingTasksCount = $tasksPagedData.map(
-  (data) => data?.observingTasksCount
-);
-const $executingTasksCount = $tasksPagedData.map(
-  (data) => data?.executingTasksCount
-);
-
 const clearFilters = domain.createEvent();
 
 const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
-const changeGroupType =  domain.createEvent<TaskGroupingFilter>();
+const changeGroupType = domain.createEvent<TaskGroupingFilter>();
+const changePageNumber = domain.createEvent<number>();
 
 const searchTasks = domain.createEvent<SearchTasksForm>();
 const searchTasksFx = domain.createEffect<
@@ -39,14 +32,22 @@ $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 const TasksProfileIsOpen = createGate();
 
 $searchState
-.on(searchTasks, (oldFilters, filters) => ({
-  ...oldFilters,
-  ...filters,
-  PageNumber: 1,
-}))
-.on(changeFiltersByGroupType, (_, GroupType) => ({ GroupType }))
-.on(changeGroupType, (filters, GroupType) => ({...filters, GroupType}))
-.reset(clearFilters)
+  .on(searchTasks, (oldFilters, filters) => ({
+    ...oldFilters,
+    ...filters,
+    PageNumber: 1,
+  }))
+  .on(changeFiltersByGroupType, (_, GroupType) => ({
+    GroupType,
+    PageNumber: 1,
+  }))
+  .on(changeGroupType, (filters, GroupType) => ({
+    ...filters,
+    GroupType,
+    PageNumber: 1,
+  }))
+  .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
+  .reset(clearFilters);
 
 forward({
   from: TasksProfileIsOpen.close,
@@ -63,14 +64,13 @@ export const tasksProfileService = {
     searchTasks,
     changeFiltersByGroupType,
     changeGroupType,
+    changePageNumber,
   },
   outputs: {
     $taskTypes,
-    $tasks,
-    $executingTasksCount,
-    $observingTasksCount,
     $isLoading,
     $searchState,
+    $tasksPagedData
   },
   gates: {
     TasksProfileIsOpen,

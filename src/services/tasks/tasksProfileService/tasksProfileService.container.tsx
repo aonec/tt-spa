@@ -19,8 +19,7 @@ export const TasksProfileContainer = () => {
   const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
-  const executingTasksCount = useStore(outputs.$executingTasksCount);
-  const observingTasksCount = useStore(outputs.$observingTasksCount);
+  const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
 
   const handleExportTasksList = useEvent(
@@ -29,6 +28,7 @@ export const TasksProfileContainer = () => {
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
   const changeGroupType = useEvent(inputs.changeGroupType);
+  const changePageNumber = useEvent(inputs.changePageNumber);
 
   useEffect(() => {
     if (lastGroupTypeRef.current !== grouptype) {
@@ -43,23 +43,24 @@ export const TasksProfileContainer = () => {
   }, [grouptype, lastGroupTypeRef]);
 
   const initialValues = useStore(outputs.$searchState);
-  const tasks = useStore(outputs.$tasks);
-  const preparedTasks = isLoading ? undefined : preparedData(tasks, grouptype);
+  const preparedTasks = isLoading
+    ? undefined
+    : preparedData(pagedTasks?.items, grouptype);
 
   return (
     <>
-      <TasksProfileIsOpen/>
+      <TasksProfileIsOpen />
       <TaskTypesGate />
       <ExportTasksListModalContainer />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
         handleSearch={handleSearch}
+        changePageNumber={changePageNumber}
         taskTypes={taskTypes}
-        executingTasksCount={executingTasksCount!}
-        observingTasksCount={observingTasksCount!}
         tasks={preparedTasks}
         initialValues={initialValues}
+        pagedTasks={pagedTasks}
       />
     </>
   );

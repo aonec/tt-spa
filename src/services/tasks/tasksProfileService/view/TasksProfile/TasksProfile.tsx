@@ -3,7 +3,7 @@ import { TasksList } from '01/_pages/Tasks/components/TasksList';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
-import { TabsSC, Wrapper } from './TasksProfile.styled';
+import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 const { TabPane } = TabsSC;
 
@@ -13,11 +13,13 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   grouptype,
   handleSearch,
   taskTypes,
-  executingTasksCount,
-  observingTasksCount,
   initialValues,
+  changePageNumber,
+  pagedTasks,
 }) => {
   const history = useHistory();
+  const { executingTasksCount, observingTasksCount, totalItems } =
+    pagedTasks || {};
 
   const executingTabText = executingTasksCount
     ? `К исполнению (${executingTasksCount})`
@@ -52,6 +54,15 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         currentFilter={initialValues}
       />
       {tasksList}
+      {Boolean(tasks?.length) && (
+        <PaginationSC
+          defaultCurrent={1}
+          onChange={changePageNumber}
+          pageSize={20}
+          total={totalItems}
+          current={initialValues?.PageNumber}
+        />
+      )}
     </Wrapper>
   );
 };
