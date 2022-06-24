@@ -14,6 +14,7 @@ import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { Tooltip } from 'antd';
 import { AdditionalAddress } from 'services/objects/displayObjectsListService/view/ObjectsList/HousingStockItem/HousingStockItem.styled';
+import { additionalAddressesString } from 'utils/additionalAddressesString';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -38,16 +39,9 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
   const { id: objectId, city, street, number: housingStockNumber, corpus } =
     address || {};
 
-    const additionalAddressesString = () => {
-      const additionalAddresses = address?.address?.additionalAddresses || [];
-      
-  
-      return additionalAddresses
-        .map((elem) => `${elem.city}, ${elem.street}, ${elem.number}`)
-        .join('; ');
-    };
 
-    const adAdress = additionalAddressesString()
+  const adAdress = additionalAddressesString(address)
+
   const { value } = nodeStatus || {};
   const menuButtonArr: MenuButtonInterface[] = [
     {

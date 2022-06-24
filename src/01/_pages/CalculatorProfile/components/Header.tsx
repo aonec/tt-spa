@@ -12,6 +12,7 @@ import {
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { Tooltip } from 'antd';
 import { AdditionalAddress } from 'services/objects/displayObjectsListService/view/ObjectsList/HousingStockItem/HousingStockItem.styled';
+import { additionalAddressesString } from 'utils/additionalAddressesString';
 
 interface HeaderInterface {
   device: CalculatorResponse | null;
@@ -34,21 +35,13 @@ export const Header = ({
   
   const { address } = device || { address: DEFAULT_BUILDING };
 
-  const additionalAddressesString = () => {
-    const additionalAddresses = address?.address?.additionalAddresses || [];
-    
-
-    return additionalAddresses
-      .map((elem) => `${elem.city}, ${elem.street}, ${elem.number}`)
-      .join('; ');
-  };
-
 
   const { city, street, number, corpus, id } =
     address || DEFAULT_BUILDING;
 
   
-    const adAdress = additionalAddressesString()
+  const adAdress = additionalAddressesString(address)
+  
   const access = getAccessesList();
   const { show } = access;
   const { model, serialNumber } = device || DEFAULT_DEVICE;
