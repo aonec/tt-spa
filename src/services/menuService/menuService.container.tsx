@@ -11,7 +11,7 @@ import {
   TasksIcon,
 } from 'ui-kit/icons';
 import { menuService } from './menuService.model';
-import { MenuItem, MenyType } from './menuService.types';
+import { MenuItem, MenuType } from './menuService.types';
 import { Menu } from './view/Menu';
 import { UserInfo } from './view/UserInfo';
 
@@ -20,55 +20,55 @@ const menuItems: MenuItem[] = [
     title: 'Статистика',
     path: '/statistics',
     icon: StatisticIcon,
-    type: MenyType.Statistics,
+    type: MenuType.Statistics,
   },
   {
     title: 'Отчеты',
     path: '/reports',
     icon: ReportsIcon,
-    type: MenyType.Reports,
+    type: MenuType.Reports,
   },
   {
     title: 'Журнал актов',
     path: '/actsJournal',
     icon: StatisticIcon,
-    type: MenyType.ActsJournal,
+    type: MenuType.ActsJournal,
   },
   {
     title: 'Задачи',
     path: '/tasks',
     icon: TasksIcon,
-    type: MenyType.Tasks,
+    type: MenuType.Tasks,
   },
   {
     title: 'Объекты',
     path: '/objects',
     icon: ObjectsIcon,
-    type: MenyType.Objects,
+    type: MenuType.Objects,
   },
   {
     title: 'Приборы',
     path: '/devices',
     icon: DeviceIcon,
-    type: MenyType.Devices,
+    type: MenuType.Devices,
   },
   {
     title: 'Профиль компании',
     path: '/companyProfile',
     icon: CompanyProfileIcon,
-    type: MenyType.CompanyProfile,
+    type: MenuType.CompanyProfile,
   },
   {
     title: 'Ввод показаний',
     path: '/meters',
     icon: DocumentIcon,
-    type: MenyType.Meters,
+    type: MenuType.Meters,
   },
   {
     title: 'Настройки',
     path: '/settings/controllers',
     icon: SettingsIcon,
-    type: MenyType.Settings,
+    type: MenuType.Settings,
   },
 ];
 

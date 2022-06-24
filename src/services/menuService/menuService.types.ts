@@ -1,4 +1,4 @@
-export enum MenyType {
+export enum MenuType {
   Statistics = 'Statistics',
   Reports = 'Reports',
   ActsJournal = 'ActsJournal',
@@ -22,6 +22,6 @@ export type MenuItem = {
   title: string;
   path: string;
   icon: Icon;
-  type: MenyType;
+  type: MenuType;
   sub?: Omit<MenuItem, 'sub'>[];
 };
