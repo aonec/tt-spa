@@ -1,4 +1,3 @@
-import { getApartmentAddressString } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberActionPage';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
@@ -13,6 +12,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import {
   $checkedExistingApartmentId,
   $isConfirmExistingApartmentModalOpen,
