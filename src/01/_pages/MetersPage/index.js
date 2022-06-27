@@ -17,39 +17,35 @@ const { TabPane } = Tabs;
 
 export const MetersPage = () => {
   const history = useHistory();
-  const defaultKey = history.location.pathname.split('/')[2];
+  const key = history.location.pathname.split('/')[2];
 
   const handleTabClick = (key) => {
-    history.replace(`/meters/${key}`);
+    history.push(`/meters/${key}`);
   };
 
   return (
     <Wrap style={{ maxWidth: 960 }}>
       <CurrentManagingFirmUserGate />
-      <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
-        <TabPane tab="По квартирам" key="apartments">
-          <Route path="/meters/apartments">
-            <Filter />
-          </Route>
-          <Route path="/meters/apartments/:id">
-            <ApartmentInfo />
-            <ApartmentReadings />
-          </Route>
-        </TabPane>
-        <TabPane tab="По домам" key="houses">
-          <Route path="/meters/houses">
-            <HousingStockFilter />
-          </Route>
-          <Route path="/meters/houses/:id">
-            <HouseReadings />
-          </Route>
-        </TabPane>
-        <TabPane tab="По узлам учета" key="accountingNodes">
-          <Route path="/meters/accountingNodes">
-            <AccountingNodesReadings />
-          </Route>
-        </TabPane>
-      </Tabs>
+      <Route path="/meters/apartments">
+        <Filter />
+      </Route>
+
+      <Route path="/meters/apartments/:id">
+        <ApartmentInfo />
+        <ApartmentReadings />
+      </Route>
+
+      <Route path="/meters/houses">
+        <HousingStockFilter />
+      </Route>
+
+      <Route path="/meters/houses/:id">
+        <HouseReadings />
+      </Route>
+
+      <Route path="/meters/accountingNodes">
+        <AccountingNodesReadings />
+      </Route>
     </Wrap>
   );
 };

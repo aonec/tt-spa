@@ -65,12 +65,12 @@ const menuItems: MenuItem[] = [
     type: MenuType.Meters,
     sub: [
       {
-        title: 'По квартире',
+        title: 'По квартирам',
         path: '/meters/apartments',
         type: MenuType.MetersApartments,
       },
       {
-        title: 'По дому',
+        title: 'По домам',
         path: '/meters/houses',
         type: MenuType.MetersApartments,
       },
