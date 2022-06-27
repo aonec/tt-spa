@@ -1,38 +1,32 @@
-import { DevicesReportModal } from '01/features/devicesReport';
-import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
-import { MenuButtonTT } from '01/tt-components';
-import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
-import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
-import styled from 'styled-components';
-import { SearchDevices } from '../SearchDevices';
-import { displayDevicesService } from '../../../displayDevicesService/displayDevicesService.models';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { Tabs } from 'antd';
 import { useFormik } from 'formik';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import _ from 'lodash';
+import { DevicesReportModal } from '01/features/devicesReport';
+import { MenuButtonTT } from '01/tt-components';
+import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
+import { SearchDevices } from '../SearchDevices';
+import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
-
+import { HeaderWrapper, HeaderText } from './DevicesProfile.styled';
+const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
   fetchcalc: (
     payload: CalculatorsListRequestPayload
   ) => CalculatorsListRequestPayload;
   isOpen: boolean;
-  open: (
-    payload: CalculatorsListRequestPayload | null
-  ) => CalculatorsListRequestPayload | null;
-  close: (
-    payload: CalculatorsListRequestPayload | null
-  ) => CalculatorsListRequestPayload | null;
+  open: (payload: void) => void;
+  close: (payload: void) => void;
+  showDownloadDeviceReportButtonClicked: (payload: void) => void;
 }
-export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close, open}) => {
-
-  // const { outputs, inputs } = displayDevicesService;
-  // const fetchcalc = useEvent(inputs.fetchCalculators);
-  // const isOpen = useStore(outputs.$isExtendedSearchOpen);
-  // const close = useEvent(inputs.extendedSearchClosed);
-  // const open = useEvent(inputs.extendedSearchOpened);
-
+export const DevicesProfile: FC<DeviceProfileProps> = ({
+  fetchcalc,
+  isOpen,
+  close,
+  open,
+  showDownloadDeviceReportButtonClicked
+}) => {
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -80,16 +74,17 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
   return (
     <div>
       <HeaderWrapper>
-        <h1 style={{ fontWeight: 300, marginBottom: 16 }}>Приборы</h1>
+        <HeaderText>Приборы</HeaderText>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </HeaderWrapper>
-      <SearchDevices isExtendedSearchOpen={isOpen}
-       fetchcalc={fetchcalc}
-       >
+      <Tabs defaultActiveKey="1">
+        <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
+      </Tabs>
+      <SearchDevices isExtendedSearchOpen={isOpen} fetchcalc={fetchcalc}>
         <ExtendedSearch
           isOpen={isOpen}
-          handleClose={() => close(null)}
-          handleOpen={() => open(null)}
+          handleClose={() => close()}
+          handleOpen={() => open()}
           handleApply={() => {
             fetchcalc(values);
           }}
@@ -104,8 +99,3 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
     </div>
   );
 };
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
