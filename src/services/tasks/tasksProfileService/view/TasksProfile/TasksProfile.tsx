@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksList } from '01/_pages/Tasks/components/TasksList';
 import React, { FC, useMemo } from 'react';
@@ -16,6 +17,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   initialValues,
   changePageNumber,
   pagedTasks,
+  isLoading,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -53,7 +55,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         taskTypes={taskTypes}
         currentFilter={initialValues}
       />
-      {tasksList}
+      {isLoading || tasksList}
+      {isLoading && <Loader show size="32" />}
       {Boolean(tasks?.length) && (
         <PaginationSC
           defaultCurrent={1}

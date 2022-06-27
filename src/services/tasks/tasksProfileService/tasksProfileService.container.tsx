@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter } from 'myApi';
-import React, { useEffect, useRef } from 'react';
+import { TaskGroupingFilter, TaskListResponse } from 'myApi';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   ExportTasksListModalContainer,
@@ -43,9 +43,10 @@ export const TasksProfileContainer = () => {
   }, [grouptype, lastGroupTypeRef]);
 
   const initialValues = useStore(outputs.$searchState);
-  const preparedTasks = isLoading
-    ? undefined
-    : preparedData(pagedTasks?.items, grouptype);
+  const preparedTasks = useMemo(
+    () => preparedData(pagedTasks?.items || [], grouptype),
+    [pagedTasks?.items]
+  );
 
   return (
     <>
@@ -58,9 +59,10 @@ export const TasksProfileContainer = () => {
         handleSearch={handleSearch}
         changePageNumber={changePageNumber}
         taskTypes={taskTypes}
-        tasks={preparedTasks}
+        tasks={preparedTasks as TaskListResponse[]}
         initialValues={initialValues}
         pagedTasks={pagedTasks}
+        isLoading={isLoading}
       />
     </>
   );

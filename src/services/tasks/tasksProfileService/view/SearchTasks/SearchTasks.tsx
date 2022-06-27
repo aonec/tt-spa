@@ -3,7 +3,7 @@ import { StyledInput } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { EManagingFirmTaskFilterType } from 'myApi';
-import React, { FC, useEffect } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
@@ -22,6 +22,24 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     onSubmit,
   });
 
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setFieldValue(e.target.name, e.target.value);
+    },
+    [setFieldValue]
+  );
+  const handleKeyDown = useCallback(
+    fromEnter((e) => {
+      e.currentTarget.blur();
+      setFieldValue(e.target.name, e.target.value);
+      handleSubmit();
+    }),
+    [setFieldValue, handleSubmit]
+  );
+  const clearInput = useCallback(() => {
+    setFieldValue('TaskId', '');
+  }, [setFieldValue]);
+
   return (
     <ExtendedSearch
       isOpen={false}
@@ -30,22 +48,16 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       handleClose={() => {}}
       handleOpen={() => {}}
       extendedSearchContent={<></>}
+      disabled
     >
       <Wrapper>
         <StyledInput
           placeholder="Номер задачи"
           value={values.TaskId}
-          onChange={(e) => {
-            setFieldValue('TaskId', e.currentTarget.value);
-          }}
-          onKeyDown={fromEnter((e) => {
-            e.currentTarget.blur();
-            setFieldValue('TaskId', e.currentTarget.value);
-            handleSubmit();
-          })}
-          onClick={() => {
-            setFieldValue('TaskId', '');
-          }}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          onClick={clearInput}
+          name="TaskId"
         />
         <SelectSC
           placeholder="Тип задачи"

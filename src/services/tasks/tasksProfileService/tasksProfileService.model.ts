@@ -70,7 +70,7 @@ export const tasksProfileService = {
     $taskTypes,
     $isLoading,
     $searchState,
-    $tasksPagedData
+    $tasksPagedData,
   },
   gates: {
     TasksProfileIsOpen,
