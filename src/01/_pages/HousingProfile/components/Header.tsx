@@ -8,9 +8,6 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
-import { Tooltip } from 'antd';
-import { AdditionalAddress } from 'services/objects/displayObjectsListService/view/ObjectsList/HousingStockItem/HousingStockItem.styled';
-import { additionalAddressesString } from 'utils/additionalAddressesString';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -64,9 +61,6 @@ export const Header = ({
     },
   ];
 
-
-  const adAdress = additionalAddressesString(address)
-
   return (
     <HeaderWrap
       style={{
@@ -82,13 +76,11 @@ export const Header = ({
             style={{ marginRight: 8 }}
           />
           {`${model} (${serialNumber})`}
-
-
         </Title>
 
-        <Tooltip title={adAdress}>
-          <AdditionalAddress>{adAdress}</AdditionalAddress>  
-        </Tooltip>
+        <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${number}${
+          corpus ? `, к.${corpus}` : ''
+        }`}</Subtitle>
       </div>
 
       <MenuButtonTT menuButtonArr={menuButtonArr} />

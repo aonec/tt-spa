@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React from 'react';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import { Subtitle } from '../../../_components/Headers';
 import moment from 'moment';
@@ -7,7 +7,9 @@ import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
-
+import { Tooltip } from 'antd';
+import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { AdditionalAddress } from './Header.styled';
 interface InformationInterface {
   device: CalculatorResponse | null;
 }
@@ -17,12 +19,15 @@ export const Information = ({ device }: InformationInterface) => {
   const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
   const { futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
+  const adAdress = additionalAddressesString(address as any);
   return (
     <ListWrap>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
+          <Tooltip title={adAdress}>
+            <AdditionalAddress>{adAdress}</AdditionalAddress>
+          </Tooltip>
         </Subtitle>
       </ListItem>
       <ListItem>
