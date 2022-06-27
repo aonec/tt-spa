@@ -12,6 +12,7 @@ import { ApartmentResponse, HousingStockListResponse } from 'myApi';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 interface Props {
   title: string;
@@ -81,13 +82,3 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
 const Wrap = styled.div`
   max-width: 620px;
 `;
-
-export const getApartmentAddressString = (apartment: ApartmentResponse) => {
-  const housingStock = apartment.housingStock;
-
-  const address = housingStock?.address?.mainAddress;
-
-  return `${address?.city} ул. ${address?.street}, д. ${address?.number}, кв. ${
-    apartment.apartmentNumber
-  }${address?.corpus || ''}`;
-};
