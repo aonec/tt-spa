@@ -1,18 +1,15 @@
 import { DevicesReportModal } from '01/features/devicesReport';
 import { searchStateChanged, showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import { MenuButtonTT } from '01/tt-components';
-import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import styled from 'styled-components';
 import { SearchDevices } from '../SearchDevices';
-import { displayDevicesService } from '../../../displayDevicesService/displayDevicesService.models';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { useFormik } from 'formik';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import _ from 'lodash';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
-import { DeviceSearchReducerStateType } from '01/_pages/Devices/devicesSearchReducer';
 
 interface DeviceProfileProps {
   fetchcalc: (
