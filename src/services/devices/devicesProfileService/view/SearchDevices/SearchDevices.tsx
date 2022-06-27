@@ -26,6 +26,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   children,
   isExtendedSearchOpen,
   fetchcalc,
+  searchStateChanged
 }) => {
   const marks = {
     0: '0',
@@ -61,11 +62,16 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       PageSize: undefined,
       OrderBy: undefined,
     },
-    onSubmit: (values) => void fetchcalc(values),
+    onSubmit: (values) => {
+      void fetchcalc(values)
+      searchStateChanged(values)
+    },
+
   });
 
   useEffect(() => {
-    fetchcalc(values);
+   fetchcalc(values);
+   searchStateChanged(values)
   }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);

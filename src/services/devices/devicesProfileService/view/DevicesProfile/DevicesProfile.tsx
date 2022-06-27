@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { DevicesReportModal } from '01/features/devicesReport';
+import { searchStateChanged, showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import { MenuButtonTT } from '01/tt-components';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
@@ -20,13 +21,7 @@ interface DeviceProfileProps {
   close: (payload: void) => void;
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
 }
-export const DevicesProfile: FC<DeviceProfileProps> = ({
-  fetchcalc,
-  isOpen,
-  close,
-  open,
-  showDownloadDeviceReportButtonClicked
-}) => {
+export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close, open}) => {
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -68,7 +63,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       PageSize: undefined,
       OrderBy: undefined,
     },
-    onSubmit: (values) => void fetchcalc(values),
+    onSubmit: (values) => {
+      fetchcalc(values);
+      searchStateChanged(values);
+    },
   });
 
   return (
@@ -80,13 +78,18 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       <Tabs defaultActiveKey="1">
         <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
       </Tabs>
-      <SearchDevices isExtendedSearchOpen={isOpen} fetchcalc={fetchcalc}>
+      <SearchDevices 
+       isExtendedSearchOpen={isOpen}
+       fetchcalc={fetchcalc}
+       searchStateChanged={searchStateChanged}
+       >
         <ExtendedSearch
           isOpen={isOpen}
           handleClose={() => close()}
           handleOpen={() => open()}
           handleApply={() => {
             fetchcalc(values);
+            searchStateChanged(values);
           }}
           handleClear={() => resetForm()}
           extendedSearchContent={
