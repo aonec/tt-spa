@@ -55,11 +55,6 @@ export const FilterContainer = () => {
     },
     [history]
   );
-  const serialNumberComponent = (
-    <>
-      <SerialNumberSearch setSearchContext={setSearchContext} />
-    </>
-  );
 
   const addressSearch = (
     <SearchWrapper>
@@ -86,7 +81,10 @@ export const FilterContainer = () => {
         <Radio value={2}>Поиск по серийному номеру</Radio>
       </Radio.Group>
       <Space style={{ minHeight: 20 }} />
-      {isSerialNumberPage ? serialNumberComponent : addressSearch}
+      {isSerialNumberPage && (
+        <SerialNumberSearch setSearchContext={setSearchContext} />
+      )}
+      {!isSerialNumberPage && addressSearch}
     </Wrapper>
   );
 };
