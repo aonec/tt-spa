@@ -64,6 +64,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           pageSize={20}
           total={totalItems}
           current={initialValues?.PageNumber}
+          showSizeChanger={false}
         />
       )}
     </Wrapper>
