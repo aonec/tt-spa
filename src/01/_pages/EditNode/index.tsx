@@ -3,7 +3,6 @@ import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import EditNodeForm from './components/EditNodeForm';
-import { Breadcrumb } from '../../tt-components';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
@@ -13,6 +12,7 @@ import ModalAddDevice from './components/Modals/ModalAddDevice';
 import { EditNodeContext } from './Context';
 import { getCalculator, getNode } from '../../_api/apiRequests';
 import { PageGate } from '../../features/serviceZones/selectServiceZones/models';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 export const EditNode = () => {
   const { nodeId: nodeIdString } = useParams<{ nodeId: string }>();
@@ -81,7 +81,7 @@ export const EditNode = () => {
   return (
     <EditNodeContext.Provider value={context}>
       <PageGate />
-      <Breadcrumb path={`/nodes/${nodeId}`} />
+      <GoBack path={`/nodes/${nodeId}`} />
       <Header node={node} nodeId={nodeId} />
       <div style={{ width: '66%' }}>
         <Tabs tabItems={tabItems} tabsType={'tabs'} />
