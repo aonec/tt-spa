@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter } from 'myApi';
-import React, { useEffect, useRef } from 'react';
+import { TaskGroupingFilter, TaskListResponse } from 'myApi';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   ExportTasksListModalContainer,
@@ -19,8 +19,7 @@ export const TasksProfileContainer = () => {
   const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
-  const executingTasksCount = useStore(outputs.$executingTasksCount);
-  const observingTasksCount = useStore(outputs.$observingTasksCount);
+  const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
 
   const handleExportTasksList = useEvent(
@@ -43,12 +42,14 @@ export const TasksProfileContainer = () => {
   }, [grouptype, lastGroupTypeRef]);
 
   const initialValues = useStore(outputs.$searchState);
-  const tasks = useStore(outputs.$tasks);
-  const preparedTasks = isLoading ? undefined : preparedData(tasks, grouptype);
+  const preparedTasks = useMemo(
+    () => preparedData(pagedTasks?.items || [], grouptype),
+    [pagedTasks?.items]
+  );
 
   return (
     <>
-      <TasksProfileIsOpen/>
+      <TasksProfileIsOpen />
       <TaskTypesGate />
       <ExportTasksListModalContainer />
       <TasksProfile
@@ -56,10 +57,10 @@ export const TasksProfileContainer = () => {
         grouptype={grouptype}
         handleSearch={handleSearch}
         taskTypes={taskTypes}
-        executingTasksCount={executingTasksCount!}
-        observingTasksCount={observingTasksCount!}
-        tasks={preparedTasks}
+        tasks={preparedTasks as TaskListResponse[]}
         initialValues={initialValues}
+        pagedTasks={pagedTasks}
+        isLoading={isLoading}
       />
     </>
   );

@@ -2,10 +2,9 @@ import { createDevice } from '01/_api/utils';
 import { StageResponse, TaskListResponse } from 'myApi';
 
 export const preparedData = (
-  tasks: TaskListResponse[] | null | undefined,
+  tasks: TaskListResponse[],
   grouptype: string
 ) =>
-  tasks &&
   tasks.map((item) => ({
     ...item,
     timeline: createTimeline(item),

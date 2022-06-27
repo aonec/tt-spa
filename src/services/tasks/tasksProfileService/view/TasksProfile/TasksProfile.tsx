@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksList } from '01/_pages/Tasks/components/TasksList';
 import React, { FC, useMemo } from 'react';
@@ -13,11 +14,12 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   grouptype,
   handleSearch,
   taskTypes,
-  executingTasksCount,
-  observingTasksCount,
   initialValues,
+  pagedTasks,
+  isLoading,
 }) => {
   const history = useHistory();
+  const { executingTasksCount, observingTasksCount } = pagedTasks || {};
 
   const executingTabText = executingTasksCount
     ? `К исполнению (${executingTasksCount})`
@@ -51,7 +53,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         taskTypes={taskTypes}
         currentFilter={initialValues}
       />
-      {tasksList}
+      {isLoading || tasksList}
+      {isLoading && <Loader show size="32" />}
     </Wrapper>
   );
 };

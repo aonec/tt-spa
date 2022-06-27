@@ -199,6 +199,6 @@ export const TasksList = ({ items }) => {
           </task_item>
         );
       }
-    ) ?? <Loader show size="32" />
+    )
   );
 };
