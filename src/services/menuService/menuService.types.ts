@@ -8,6 +8,7 @@ export enum MenuType {
   CompanyProfile = 'CompanyProfile',
   Owners = 'Owners',
   Meters = 'Meters',
+  MetersApartments = 'MetersApartments',
   Settings = 'Settings',
   Log = 'Log',
 }
@@ -23,5 +24,5 @@ export type MenuItem = {
   path: string;
   icon: Icon;
   type: MenuType;
-  sub?: Omit<MenuItem, 'sub'>[];
+  sub?: Omit<MenuItem, 'sub' | 'icon'>[];
 };

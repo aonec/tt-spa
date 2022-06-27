@@ -46,23 +46,40 @@ const menuItems: MenuItem[] = [
     icon: ObjectsIcon,
     type: MenuType.Objects,
   },
-  {
-    title: 'Приборы',
-    path: '/devices',
-    icon: DeviceIcon,
-    type: MenuType.Devices,
-  },
-  {
-    title: 'Профиль компании',
-    path: '/companyProfile',
-    icon: CompanyProfileIcon,
-    type: MenuType.CompanyProfile,
-  },
+  // {
+  //   title: 'Приборы',
+  //   path: '/devices',
+  //   icon: DeviceIcon,
+  //   type: MenuType.Devices,
+  // },
+  // {
+  //   title: 'Профиль компании',
+  //   path: '/companyProfile',
+  //   icon: CompanyProfileIcon,
+  //   type: MenuType.CompanyProfile,
+  // },
   {
     title: 'Ввод показаний',
     path: '/meters',
     icon: DocumentIcon,
     type: MenuType.Meters,
+    sub: [
+      {
+        title: 'По квартире',
+        path: '/meters/apartments',
+        type: MenuType.MetersApartments,
+      },
+      {
+        title: 'По дому',
+        path: '/meters/houses',
+        type: MenuType.MetersApartments,
+      },
+      {
+        title: 'По узлам учёта',
+        path: '/meters/accountingNodes',
+        type: MenuType.MetersApartments,
+      },
+    ],
   },
   {
     title: 'Настройки',

@@ -1,5 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { ChevronDown } from 'react-bootstrap-icons';
+
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 15px;
+`;
 
 export const MenuItemWrapper = styled(NavLink)`
   display: flex;
@@ -22,4 +30,10 @@ export const MenuItemTitle = styled.div`
   margin-left: 12px;
   font-size: 14px;
   font-weight: 500;
+`;
+
+export const Chevron = styled(ChevronDown)<{ isOpen: boolean }>`
+  transform: translateY(9px)
+    ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : '')};
+  cursor: pointer;
 `;
