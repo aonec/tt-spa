@@ -2,6 +2,7 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
+import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 const { outputs, inputs } = displayDevicesService;
 
 export const DevicesProfileContainer = () => {
@@ -12,7 +13,15 @@ export const DevicesProfileContainer = () => {
 
   return (
     <>
-      <DevicesProfile fetchcalc={fetchcalc} isOpen={isOpen} close={close} open={open}/>
+      <DevicesProfile
+        showDownloadDeviceReportButtonClicked={
+          showDownloadDeviceReportButtonClicked
+        }
+        fetchcalc={fetchcalc}
+        isOpen={isOpen}
+        close={close}
+        open={open}
+      />
     </>
   );
 };

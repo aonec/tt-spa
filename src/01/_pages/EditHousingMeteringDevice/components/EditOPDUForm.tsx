@@ -8,7 +8,6 @@ import moment from 'moment';
 import {
   entryNumberList,
   housingMeteringDeviceTypes,
-  magistrals,
   resources,
 } from '../../../tt-components/localBases';
 import {
@@ -33,6 +32,8 @@ import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from '../../../tt-components/validationSchemas';
+import { axios } from '01/axios';
+import { resourceParser } from 'utils/ResourceParser';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -51,6 +52,7 @@ const FormEditODPU = ({
 }: FormEditODPUInterface) => {
   const { deviceId } = useParams();
   const [validationSchema, setValidationSchema] = useState<any>();
+  const [magistrals, setMagistrals] = useState<resourceType[]>();
 
   const {
     address: { city, street, housingStockNumber, corpus },
@@ -114,8 +116,12 @@ const FormEditODPU = ({
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(true),
         futureCheckingDate: values.futureCheckingDate?.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(true),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(
+          true
+        ),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(
+          true
+        ),
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
@@ -142,6 +148,23 @@ const FormEditODPU = ({
       ? setValidationSchema(validationSchemaFlowMeter)
       : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
+
+  interface resourceDTO {
+    key: string;
+    value: string;
+  }
+  interface resourceType {
+    label: string;
+    value: string;
+  }
+  useEffect(() => {
+    axios
+      .get<any, resourceDTO[]>(
+        `PipeNodes/PipeMagistralTypes?resource=${values.resource}`
+      )
+      .then((res) => resourceParser(res))
+      .then((data) => setMagistrals(data));
+  }, [values.resource]);
 
   const tabErrors = [
     {

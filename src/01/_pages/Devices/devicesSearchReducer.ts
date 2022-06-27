@@ -1,3 +1,4 @@
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import { Action } from 'redux';
 import {
   ECalculatorOrderRule,
@@ -27,9 +28,9 @@ export type FilterParameterType =
   | 'ascendingStreet';
 
 const devicesSearchReducer = (
-  state: Partial<DeviceSearchReducerStateType>,
+  state: Partial<CalculatorsListRequestPayload>,
   action: DeviceSearchActionTypes
-): Partial<DeviceSearchReducerStateType> => {
+): any => {
   switch (action.type) {
     case DevicesSearchActions.SET_SEARCHTERM:
       return {
