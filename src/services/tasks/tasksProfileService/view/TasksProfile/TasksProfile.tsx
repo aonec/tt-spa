@@ -1,6 +1,6 @@
-import { Loader } from '01/components';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksList } from '01/_pages/Tasks/components/TasksList';
+import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
@@ -56,7 +56,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         currentFilter={initialValues}
       />
       {isLoading || tasksList}
-      {isLoading && <Loader show size="32" />}
+      {isLoading && <Skeleton active />}
       {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC
           defaultCurrent={1}
