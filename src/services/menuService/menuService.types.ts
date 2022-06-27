@@ -24,5 +24,11 @@ export type MenuItem = {
   path: string;
   icon: Icon;
   type: MenuType;
-  sub?: Omit<MenuItem, 'sub' | 'icon'>[];
+  sub?: SubMenuItem[];
+};
+
+export type SubMenuItem = Omit<MenuItem, 'sub' | 'icon'>;
+
+export type MenuFiltrationConfig = {
+  [key: string]: MenuType[];
 };
