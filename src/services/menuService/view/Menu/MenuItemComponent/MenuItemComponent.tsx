@@ -17,16 +17,24 @@ export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
   const isSubMenuItemsExist = Boolean(menuItem.sub?.length);
   const isShowSubMenu = isOpen && isSubMenuItemsExist;
 
-  const toggleChevron = useCallback(() => setIsOpen(isOpen => !isOpen), []);
+  const toggleChevron = useCallback(() => setIsOpen((isOpen) => !isOpen), []);
+
+  const openSubMenu = useCallback(() => setIsOpen(true), []);
 
   return (
     <>
       <Wrapper>
-        <MenuItemWrapper to={path} activeClassName="active-menu-item-nav-link">
+        <MenuItemWrapper
+          onClick={openSubMenu}
+          to={path}
+          activeClassName="active-menu-item-nav-link"
+        >
           <Icon className="menu-item-icon" />
           <MenuItemTitle>{title}</MenuItemTitle>
         </MenuItemWrapper>
-        {isSubMenuItemsExist && <Chevron isOpen={isOpen} onClick={toggleChevron} />}
+        {isSubMenuItemsExist && (
+          <Chevron isOpen={isOpen} onClick={toggleChevron} />
+        )}
       </Wrapper>
       {isShowSubMenu && <SubMenu subMenuItems={menuItem.sub!} />}
     </>

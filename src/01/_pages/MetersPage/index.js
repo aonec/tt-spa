@@ -4,7 +4,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
-import { Tabs } from 'antd';
 import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -13,21 +12,15 @@ import { AccountingNodesReadings } from '01/features/readings/accountingNodesRea
 import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { FilterContainer } from './components/Filter.container';
 
-const { TabPane } = Tabs;
-
 export const MetersPage = () => {
   const history = useHistory();
   const key = history.location.pathname.split('/')[2];
 
-  const handleTabClick = (key) => {
-    history.push(`/meters/${key}`);
-  };
-
   return (
-    <Wrap style={{ maxWidth: 960 }}>
+    <Wrap>
       <CurrentManagingFirmUserGate />
-      <Route path="/meters/apartments">
-        <Filter />
+      <Route path="/meters/apartments/:id?">
+        <FilterContainer />
       </Route>
 
       <Route path="/meters/apartments/:id">
@@ -51,6 +44,8 @@ export const MetersPage = () => {
 };
 
 const Wrap = styled.div`
+  max-width: 960px;
+
   .ant-tabs {
     overflow: visible !important;
   }

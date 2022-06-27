@@ -46,6 +46,7 @@ import {
   Wrapper,
 } from './ApartmentInfo.styled';
 import { checkIsHomeownerAccountRecentlyModified } from './utils';
+import { Skeleton } from 'antd';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -267,11 +268,16 @@ export const ApartmentInfo = () => {
           />
         </MenuButtonWrap>
       </Flex>
-      {!pending ? <ApartmentInfoWrap>{content}</ApartmentInfoWrap> : <Space />}
+      {pending && <Skeleton />}
 
-      {apartment && pausedAlert}
-      {isApartmentTaskExist && apartmentTaskAlert}
-      {apartmentHomeownerAcconutChangeAlerts}
+      {!pending && (
+        <>
+          <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
+          {apartment && pausedAlert}
+          {isApartmentTaskExist && apartmentTaskAlert}
+          {apartmentHomeownerAcconutChangeAlerts}
+        </>
+      )}
     </Wrapper>
   );
 };
