@@ -10,7 +10,7 @@ import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import {
@@ -64,7 +64,7 @@ export const AddNewActForm = () => {
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
         <StyledInput
           value={fields.registryNumber.value || ''}
-          onChange={(e) => fields.registryNumber.onChange(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => fields.registryNumber.onChange(e.target.value)}
           placeholder="Введите"
           ref={registryNumberRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}

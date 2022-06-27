@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, AutoComplete, DatePicker } from 'antd';
+import { Select, AutoComplete, DatePicker, Input } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
 
@@ -54,7 +54,7 @@ export const StyledAutocomplete = styled(AutoComplete)`
   }
 `;
 
-export const StyledInput = styled.input`
+export const StyledInput = styled(Input)`
   color: #333333;
   border: 1px solid lightgray;
   padding: 3px 15px;
@@ -74,10 +74,6 @@ export const StyledInput = styled.input`
   &:hover,
   &:focus {
     border: 1px solid #1890ff;
-  }
-
-  &:focus {
-    box-shadow: 0 4px 8px #188fff52;
   }
 `;
 
