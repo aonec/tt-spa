@@ -23,7 +23,6 @@ export * from './Upload';
 export * from './TextArea';
 export * from './Events';
 export * from './IconTT';
-export * from './Breadcrumb';
 export * from './AutoCompleteTT';
 export * from './MenuButtonTT';
 export * from './Stages';
