@@ -5,7 +5,7 @@ import { DocumentIcon, DownloadIcon, TrashIcon } from 'ui-kit/icons';
 export const Wrapper = styled.div`
   padding: 18px;
   display: grid;
-  grid-template-columns: 1fr 0.3fr 0.1fr;
+  grid-template-columns: 1fr 0.35fr 0.1fr;
   align-items: center;
   border-bottom: 1px solid #d7d9e4;
   color: #272f5a;

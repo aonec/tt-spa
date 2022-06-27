@@ -5,9 +5,9 @@ import IsActive from '../../../tt-components/IsActive';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import MenuButtonTT from '../../../tt-components/MenuButtonTT';
-import { Breadcrumb } from '../../../tt-components/Breadcrumb';
 import { Loader } from '01/_components/Loader';
 import { Title, Subtitle } from '01/_components/Headers';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -63,7 +63,7 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <Breadcrumb path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
+      <GoBack path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
       <HeaderWrap>
         <div>
           <Title>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Breadcrumb } from '../../tt-components';
 import FormEditODPU from './components/EditOPDUForm';
 import { PipeHousingMeteringDeviceResponse } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
@@ -11,6 +10,7 @@ import Tabs from '../../tt-components/Tabs';
 import Header from './components/Header';
 import EditOdpuContext from './components/EditOdpuContext';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 const EditODPU = () => {
   const { deviceId } = useParams();
@@ -51,7 +51,7 @@ const EditODPU = () => {
 
   return (
     <EditOdpuContext.Provider value={context}>
-      <Breadcrumb path={`/housingMeteringDevices/${deviceId}`} />
+      <GoBack path={`/housingMeteringDevices/${deviceId}`} />
       <Header device={device} />
       <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
       <FormEditODPU

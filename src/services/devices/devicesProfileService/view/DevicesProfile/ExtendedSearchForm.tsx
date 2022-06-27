@@ -1,15 +1,19 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
 import { ConfigProvider, Form, Input, Select, Slider } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import styles from '../SearchDevices/DeviceSearchForm.module.scss';
-import { DatePicker } from 'antd';
+import {
+  StyledForm,
+  StyledRangePicker,
+  StyledContainerThreeItems,
+  StyledContainerFourItems,
+  StyledSlider,
+} from './DevicesProfile.styled';
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
 
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 export const ExtendedSearchForm: FC<{
   values: CalculatorsListRequestPayload;
@@ -23,23 +27,10 @@ export const ExtendedSearchForm: FC<{
 
   const dateFormat = 'YYYY-MM-DD';
   return (
-    <Form
-      id="searchForm"
-      name="normal_login"
-      className="login-form"
-      initialValues={{ remember: true }}
-      style={{ marginBottom: 20, marginTop: 10 }}
-    >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '4fr 4fr 2fr 2fr',
-        }}
-      >
-        <Form.Item name="city" style={{ marginRight: 8 }}>
-          <label htmlFor="City" style={{ minWidth: 152, marginRight: 8 }}>
-            Город :{' '}
-          </label>
+    <StyledForm id="searchForm" initialValues={{ remember: true }}>
+      <StyledContainerFourItems>
+        <Form.Item name="city">
+          <label htmlFor="City">Город : </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
@@ -50,10 +41,8 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="street" style={{ marginRight: 8 }}>
-          <label htmlFor="Street" style={{ minWidth: 152, marginRight: 8 }}>
-            Улица :{' '}
-          </label>
+        <Form.Item name="street">
+          <label htmlFor="Street">Улица : </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
@@ -64,10 +53,8 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="house" style={{ marginRight: 8 }}>
-          <label htmlFor="House" style={{ minWidth: 152, marginRight: 8 }}>
-            Дом :{' '}
-          </label>
+        <Form.Item name="house">
+          <label htmlFor="House">Дом : </label>
           <Input
             onChange={(value) =>
               setFieldValue(
@@ -82,9 +69,7 @@ export const ExtendedSearchForm: FC<{
         </Form.Item>
 
         <Form.Item name="corpus">
-          <label htmlFor="Corpus" style={{ minWidth: 152 }}>
-            Корпус :{' '}
-          </label>
+          <label htmlFor="Corpus">Корпус : </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
@@ -94,21 +79,13 @@ export const ExtendedSearchForm: FC<{
             placeholder="Корпус"
           />
         </Form.Item>
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '4fr 4fr 4fr',
-        }}
-      >
-        <Form.Item name="Resource" style={{ width: '98%' }}>
+      </StyledContainerFourItems>
+      <StyledContainerThreeItems>
+        <Form.Item name="Resource">
           <div>
-            <label htmlFor="Resource" style={{ minWidth: 152 }}>
-              Тип ресурса:{' '}
-            </label>
+            <label htmlFor="Resource">Тип ресурса: </label>
             <Select
               id="Resource"
-              style={{ width: '100%', marginRight: 8 }}
               value={values['Filter.Resource']}
               placeholder="Все ресурсы"
               onChange={(value) => setFieldValue("['Filter.Resource']", value)}
@@ -122,14 +99,11 @@ export const ExtendedSearchForm: FC<{
           </div>
         </Form.Item>
 
-        <Form.Item name="NodeStatus" style={{ width: '100%' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label htmlFor="nodeStatus" style={{ minWidth: 152 }}>
-              Статус Узла :{' '}
-            </label>
+        <Form.Item name="NodeStatus">
+          <div>
+            <label htmlFor="nodeStatus">Статус Узла : </label>
             <Select
               id="NodeStatus"
-              style={{ width: '98%' }}
               placeholder="Любой статус"
               value={values['Filter.NodeStatus']}
               onChange={(value) =>
@@ -144,20 +118,11 @@ export const ExtendedSearchForm: FC<{
             </Select>
           </div>
         </Form.Item>
-        <Form.Item
-          name="lastCheckingDate"
-          style={{ width: '100%', marginRight: 4 }}
-        >
+        <Form.Item name="lastCheckingDate">
           <div>
-            <label
-              htmlFor="expirationDate"
-              style={{ minWidth: 152, marginRight: 4 }}
-            >
-              Истекает дата поверки:{' '}
-            </label>
+            <label htmlFor="expirationDate">Истекает дата поверки: </label>
             <Select
               id="expirationDate"
-              style={{ width: '100%', marginRight: 2 }}
               placeholder="Все"
               value={values['Filter.ExpiresCheckingDateAt']}
               onChange={(value) =>
@@ -171,29 +136,13 @@ export const ExtendedSearchForm: FC<{
             </Select>
           </div>
         </Form.Item>
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '4fr 4fr 4fr',
-        }}
-      >
+      </StyledContainerThreeItems>
+      <StyledContainerThreeItems>
         <Form.Item name="deviceDiameter">
           <div>
-            <label
-              style={{
-                width: '30%',
-                minWidth: 150,
-                display: 'block',
-                textAlign: 'center',
-                marginRight: 8,
-              }}
-            >
-              Диаметр прибора, мм{' '}
-            </label>
+            <label>Диаметр прибора, мм </label>
 
             <StyledSlider
-              style={{ width: '90%' }}
               getTooltipPopupContainer={(triggerNode) =>
                 triggerNode.parentNode as HTMLElement
               }
@@ -216,31 +165,10 @@ export const ExtendedSearchForm: FC<{
             />
           </div>
         </Form.Item>
-        <Form.Item name="OrderBy">
-          <div style={{ marginRight: 8 }}>
-            <label htmlFor="sortBy" style={{ minWidth: 120, marginRight: 1 }}>
-              Сортировать по:
-            </label>
-            <Select
-              id="sortBy"
-              placeholder="Улица"
-              value={values.OrderBy}
-              onChange={(value) => setFieldValue('OrderBy', value)}
-            >
-              <Option value="Descending">Улице (уб.)</Option>
-              <Option value="Ascending">Улице (возр.)</Option>
-            </Select>
-          </div>
-        </Form.Item>
         <Form.Item>
-          <label
-            htmlFor="RangePicker"
-            style={{ minWidth: 152, marginRight: 1 }}
-          >
-            Период действия акта допуска :{' '}
-          </label>
+          <label htmlFor="RangePicker">Период действия акта допуска : </label>
           <ConfigProvider>
-            <RangePicker
+            <StyledRangePicker
               value={[
                 values['Filter.CommercialDateRange.From']
                   ? moment(
@@ -264,17 +192,24 @@ export const ExtendedSearchForm: FC<{
               }}
               size="middle"
               format={dateFormat}
-              style={{ height: '32px', width: '100%' }}
             />
           </ConfigProvider>
         </Form.Item>
-      </div>
-    </Form>
+        <Form.Item name="OrderBy">
+          <div>
+            <label htmlFor="sortBy">Сортировать по:</label>
+            <Select
+              id="sortBy"
+              placeholder="Улица"
+              value={values.OrderBy}
+              onChange={(value) => setFieldValue('OrderBy', value)}
+            >
+              <Option value="Descending">Улице (уб.)</Option>
+              <Option value="Ascending">Улице (возр.)</Option>
+            </Select>
+          </div>
+        </Form.Item>
+      </StyledContainerThreeItems>
+    </StyledForm>
   );
 };
-
-const StyledSlider = styled(Slider)`
-  &.ant-slider.ant-slider-with-marks {
-    margin-bottom: 12px !important;
-  }
-`;
