@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { NodeArchivePageProps } from './NodeArchivePage.types';
 import { FiltersWrap, Wrap } from './NodeArchivePage.styled';
-import { Breadcrumb } from '01/tt-components/Breadcrumb';
 import { NodeInfo } from './components/NodeInfo/';
 import { SearchNodeArchiveFiltersContainer } from '../../searchNodeArchiveFiltersService';
 import { NodeArchiveContainer } from '../../displayNodeArchiveService';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 export const NodeArchivePage: FC<NodeArchivePageProps> = ({
   node,
@@ -13,7 +13,7 @@ export const NodeArchivePage: FC<NodeArchivePageProps> = ({
 }) => {
   return (
     <>
-      <Breadcrumb />
+      <GoBack />
       <PageHeader title="Архив" />
       <NodeInfo node={node} loading={loading} />
       <Wrap>
