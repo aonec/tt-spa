@@ -1,24 +1,32 @@
 import React, { FC, useEffect } from 'react';
-import styles from './DeviceSearchForm.module.scss';
-import { Wrapper } from './SearchDevices.styled';
-import { SearchDevicesProps } from './SearchDevices.types';
-import { Form, Input, Select, Slider } from 'antd';
 import styled from 'styled-components';
-import { Icon } from '01/components';
+import styles from './DeviceSearchForm.module.scss';
+import { Form, Input, Select, Slider } from 'antd';
 import { useFormik } from 'formik';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import _ from 'lodash';
-import { displayDevicesService } from 'services/devices/displayDevicesService';
-import { useEvent } from 'effector-react';
+import {
+  CustomGrid,
+  FlexCenterRow,
+  StyledForm,
+  StyledGrid,
+  StyledLabel,
+  StyledLabelSimple,
+  SCSlider,
+  Wrapper,
+  Grid,
+  StyledExpirationDate,
+} from './SearchDevices.styled';
+import { SearchDevicesProps } from './SearchDevices.types';
+import { Icon } from '01/components';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 
 const { Option } = Select;
 
 export const SearchDevices: FC<SearchDevicesProps> = ({
   children,
   isExtendedSearchOpen,
-  fetchcalc
+  fetchcalc,
 }) => {
-
   const marks = {
     0: '0',
     255: '255',
@@ -34,16 +42,16 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       'Filter.ExpiresCheckingDateAt': undefined,
       'Filter.Resource': undefined,
       'Filter.Model': undefined,
-      'Filter.CommercialDateRange.From': "",
-      'Filter.CommercialDateRange.To': "",
-      'Filter.Address.City': "",
-      'Filter.Address.Street': "",
-      'Filter.Address.HousingStockNumber': "",
-      'Filter.Address.Corpus': "",
+      'Filter.CommercialDateRange.From': undefined,
+      'Filter.CommercialDateRange.To': undefined,
+      'Filter.Address.City': undefined,
+      'Filter.Address.Street': undefined,
+      'Filter.Address.HousingStockNumber': undefined,
+      'Filter.Address.Corpus': undefined,
       'Filter.Address.HouseCategory': undefined,
       'Filter.HousingStockId': undefined,
       'Filter.NodeStatus': undefined,
-      Question: "",
+      Question: undefined,
       OrderRule: undefined,
       IsConnected: undefined,
       CountTasks: undefined,
@@ -57,32 +65,20 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   });
 
   useEffect(() => {
-   fetchcalc(values);
+    fetchcalc(values);
   }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
   return (
     <Wrapper>
       {!isExtendedSearchOpen ? (
-        <Form
+        <StyledForm
           id="searchForm"
-          name="normal_login"
-          className="form"
           initialValues={{ remember: true }}
           onChange={submitForm}
-          style={{ marginBottom: 20, marginTop: 10 }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: isExtendedSearchOpen
-                ? '1fr'
-                : '0.1fr 8fr 3.5fr',
-            }}
-          >
-            <Form.Item name="advancedButton">
-              {children}
-            </Form.Item>
+          <StyledGrid isExtendedSearchOpen={isExtendedSearchOpen}>
+            <Form.Item name="advancedButton">{children}</Form.Item>
             <Form.Item
               name="search"
               rules={[
@@ -91,7 +87,6 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   message: 'Введите серийный номер прибор',
                 },
               ]}
-              style={{ marginRight: 8 }}
             >
               <Input
                 onChange={(value) =>
@@ -105,47 +100,33 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             </Form.Item>
 
             <Form.Item name="OrderBy">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <label
-                  htmlFor="sortBy"
-                  style={{ minWidth: 120, marginRight: 8 }}
-                >
+              <FlexCenterRow>
+                <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
-                </label>
+                </StyledLabelSimple>
                 <Select
+                  style={{ width: '65%' }}
                   id="sortBy"
+                  placeholder="Дате проверки"
                   onChange={(value) => setFieldValue('OrderBy', value)}
                   onSelect={() => submitForm()}
                 >
                   <Option value="Descending">Улице (уб.)</Option>
                   <Option value="Ascending">Улице (возр.)</Option>
                 </Select>
-              </div>
+              </FlexCenterRow>
             </Form.Item>
-          </div>
+          </StyledGrid>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              padding: 8,
-              alignItems: 'center',
-            }}
-          >
-            <Form.Item
-              name="lastCheckingDate"
-              style={{ width: '100%', marginRight: 25 }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <label
-                  htmlFor="expirationDate"
-                  style={{ minWidth: 152, marginRight: 8 }}
-                >
+          <Grid>
+            <Form.Item name="lastCheckingDate">
+              <StyledExpirationDate>
+                <StyledLabelSimple htmlFor="expirationDate">
                   Истекает дата поверки:{' '}
-                </label>
+                </StyledLabelSimple>
                 <Select
                   id="expirationDate"
-                  style={{ width: '65%', marginRight: 16 }}
+                  style={{ width: '65%' }}
                   onChange={(value) =>
                     setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
                   }
@@ -155,25 +136,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
                 </Select>
-              </div>
+              </StyledExpirationDate>
             </Form.Item>
 
             <Form.Item name="deviceDiameter">
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <label
-                  style={{
-                    width: '30%',
-                    minWidth: 150,
-                    display: 'block',
-                    textAlign: 'center',
-                    marginRight: 8,
-                  }}
-                >
-                  Диаметр прибора, мм{' '}
-                </label>
+                <StyledLabel>Диаметр прибора, мм </StyledLabel>
 
-                <StyledSlider
-                  style={{ width: '70%' }}
+                <SCSlider
                   getTooltipPopupContainer={(triggerNode) =>
                     triggerNode.parentNode as HTMLElement
                   }
@@ -189,26 +159,13 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 />
               </div>
             </Form.Item>
-          </div>
-        </Form>
-      ) :
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: isExtendedSearchOpen
-            ? '1fr'
-            : '0.5fr 8fr 3.5fr',
-        }}
-      >
-        <Form.Item name="advancedButton" style={{ marginRight: 8 }}>
-              {children}
-            </Form.Item>
-        </div>}
+          </Grid>
+        </StyledForm>
+      ) : (
+        <CustomGrid>
+          <Form.Item name="advancedButton">{children}</Form.Item>
+        </CustomGrid>
+      )}
     </Wrapper>
   );
 };
-const StyledSlider = styled(Slider)`
-  &.ant-slider.ant-slider-with-marks {
-    margin-bottom: 12px !important;
-  }
-`;
