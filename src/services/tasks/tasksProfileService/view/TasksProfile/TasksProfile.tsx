@@ -53,7 +53,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         taskTypes={taskTypes}
         currentFilter={initialValues}
       />
-      {isLoading || tasksList}
+      {!isLoading && tasksList}
       {isLoading && <Loader show size="32" />}
     </Wrapper>
   );
