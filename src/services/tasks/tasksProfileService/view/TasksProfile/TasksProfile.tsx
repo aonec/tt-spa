@@ -57,7 +57,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       />
       {isLoading || tasksList}
       {isLoading && <Loader show size="32" />}
-      {Boolean(tasks?.length) && (
+      {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC
           defaultCurrent={1}
           onChange={changePageNumber}
