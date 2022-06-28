@@ -55,7 +55,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         taskTypes={taskTypes}
         currentFilter={initialValues}
       />
-      {isLoading || tasksList}
+      {!isLoading && tasksList}
       {isLoading && <Skeleton active />}
       {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC

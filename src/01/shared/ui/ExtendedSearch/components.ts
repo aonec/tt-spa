@@ -82,5 +82,3 @@ export const ExtendedSearchWrap = styled.div`
   margin: 0 5px 10px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 `;
-
-export const DisabledIcon = styled;
