@@ -10,8 +10,10 @@ const { outputs, gates } = menuService;
 const { UserRolesGate, CurrentUserGate } = gates;
 
 export const MenuContainer = () => {
-  const userRoles = useStore(outputs.$userRoles);
   const currentUser = useStore(outputs.$currentUser);
+
+  const userRoles = useMemo(() => currentUser?.roles || [], [currentUser]);
+
   const isCurrentUserLoading = useStore(outputs.$isCurrentUserLoading);
 
   const filteredMenuItems = useMemo(() => {

@@ -96,6 +96,5 @@ export const privates: MenuFiltrationConfig = {
 };
 
 export const hidden: MenuFiltrationConfig = {
-  [MenuType.Statistics]: [ESecuredIdentityRoleName.ManagingFirmOperator],
   [MenuType.Devices]: [ESecuredIdentityRoleName.ManagingFirmOperator],
 };

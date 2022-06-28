@@ -24,6 +24,8 @@ export function filterMenuItems(
     if (hiddenMenuItemRoles) {
       const isHideMenuItem = isArraysIntersect(hiddenMenuItemRoles, userRoles);
 
+      console.log(isHideMenuItem, hiddenMenuItemRoles, userRoles);
+
       if (isHideMenuItem) return acc;
     }
 
