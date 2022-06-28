@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { AccountingNodesReadings } from '01/features/readings/accountingNodesReadings';
 import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { FilterContainer } from './components/Filter.container';
+import { MeteringDeviceReadingsSumPanel } from '01/features/readings/accountingNodesReadings/components/MeteringDeviceReadingsSumPanel';
 
 const { TabPane } = Tabs;
 

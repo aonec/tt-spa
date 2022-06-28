@@ -3,7 +3,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ElectricNodeResponse } from 'myApi';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -11,18 +11,21 @@ import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
-import {HistoryIcon} from "ui-kit/icons";
+import { HistoryIcon } from 'ui-kit/icons';
+import { MeteringDeviceReadings } from '../MeteringDevicesList/meteringDevicesListService.types';
 
 interface Props {
   sliderIndex: number;
   node: ElectricNodeResponse;
   inputIndex: number;
+  addReadings: (readings: MeteringDeviceReadings) => void;
 }
 
 export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   node,
   sliderIndex,
   inputIndex,
+  addReadings,
 }) => {
   const counter = node.counter;
 
@@ -30,8 +33,14 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     loading,
     currentReading,
     previousReading,
+    previousExistingReading,
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
+
+  useEffect(
+    () => addReadings({ id: node.id, currentReading, previousExistingReading }),
+    [currentReading, previousExistingReading]
+  );
 
   const readingsInput = () => (
     <>

@@ -32,7 +32,6 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   const preparedPreviousReadingsArray = getReadingsArrayWithEmpties(
     readings || []
   );
-
   return {
     refetch: fetchMeteringDeviceReadings,
     readings,
@@ -40,8 +39,15 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     preparedPreviousReadingsArray,
     currentReading: getCurrentReading(readings?.filter(({ id }) => id) || []),
     previousReading: preparedPreviousReadingsArray[sliderIndex || 0],
+    previousExistingReading: getPreviousExistingReading(readings || []),
   };
 }
+const getPreviousExistingReading = (readings: MeteringDeviceReading[]) => {
+  const sortReadings = readings.sort((firstReading, secondReading) =>
+    moment(firstReading.readingDate).diff(moment(secondReading.readingDate))
+  );
+  return sortReadings[sortReadings.length - 2];
+};
 
 const getCurrentReading = (readings: MeteringDeviceReading[]) => {
   const currentDate = moment();

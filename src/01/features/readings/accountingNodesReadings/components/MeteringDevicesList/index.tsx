@@ -8,14 +8,26 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import Arrow from '01/_components/Arrow/Arrow';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
+import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
+import { calcSumOfReadings } from './meteringDeviceListService.utils';
+import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
+
+const { inputs, outputs, gates } = meteringDeviceReadingsService;
 
 export const MeteringDevicesList = () => {
   const pendingNodes = useStore(fetchNodes.pending);
   const electricNodes = useStore($electricNodes);
+  const readingsList = useStore(outputs.$readingsList);
+  const sum = calcSumOfReadings(readingsList);
+
+  const addReadings = useEvent(inputs.addNodeReadings);
+
+  const { MeteringDevicesListIsOpen } = gates;
+
   const { sliderIndex, up, down, canDown, canUp } = useSliderIndex();
 
   const header = (
@@ -44,21 +56,24 @@ export const MeteringDevicesList = () => {
     </Header>
   );
 
-  const renderPage = () =>{
+  const renderPage = () => {
     return (
-        <>
-            {header}
-            {electricNodes?.map((node, index) => (
-                <MeteringDeviceReadingsLine
-                    sliderIndex={sliderIndex}
-                    node={node}
-                    inputIndex={index + 1}
-                    key={index}
-                />
-            ))}
-        </>
+      <>
+        {header}
+        {electricNodes?.map((node, index) => (
+          <MeteringDeviceReadingsLine
+            sliderIndex={sliderIndex}
+            node={node}
+            inputIndex={index + 1}
+            key={index}
+            addReadings={addReadings}
+          />
+        ))}
+        <MeteringDeviceReadingsSumPanel sum={sum} />
+        <MeteringDevicesListIsOpen />
+      </>
     );
-  }
+  };
 
   const isNullElectricNodes = electricNodes === undefined;
   const isEmptyElectricNodes = electricNodes?.length === 0;
@@ -66,9 +81,9 @@ export const MeteringDevicesList = () => {
 
   return (
     <PendingLoader loading={pendingNodes}>
-        { isNullElectricNodes && null }
-        { isEmptyElectricNodes && 'Нет приборов' }
-        { isShowPage && renderPage() }
+      {isNullElectricNodes && null}
+      {isEmptyElectricNodes && 'Нет приборов'}
+      {isShowPage && renderPage()}
     </PendingLoader>
   );
 };
