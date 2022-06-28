@@ -1,7 +1,7 @@
 import { getCurrentUser } from './currentUserService.api';
 import { createGate } from 'effector-react';
 import { createDomain, forward } from 'effector';
-import { ManagementFirmResponse, ManagingFirmUserResponse } from 'myApi';
+import { ManagingFirmUserResponse } from 'myApi';
 
 const domain = createDomain('currentUserService');
 

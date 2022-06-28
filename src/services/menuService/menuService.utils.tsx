@@ -1,4 +1,4 @@
-import { StringStringDictionaryItem } from 'myApi';
+import { ESecuredIdentityRoleNameStringDictionaryItem } from 'myApi';
 import {
   MenuFiltrationConfig,
   MenuItem,
@@ -9,7 +9,7 @@ export function filterMenuItems(
   menuItems: MenuItem[],
   privates: MenuFiltrationConfig,
   hidden: MenuFiltrationConfig,
-  roles: StringStringDictionaryItem[]
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[]
 ) {
     
   return menuItems.reduce((acc, item) => {
