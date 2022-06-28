@@ -1,3 +1,4 @@
+import { ESecuredIdentityRoleName } from './../../myApi';
 export enum MenuType {
   Statistics = 'Statistics',
   Reports = 'Reports',
@@ -22,7 +23,7 @@ type Icon = React.FunctionComponent<
 export type MenuItem = {
   title: string;
   path: string;
-  icon: Icon;
+  icon?: Icon;
   type: MenuType;
   sub?: SubMenuItem[];
 };
@@ -30,5 +31,5 @@ export type MenuItem = {
 export type SubMenuItem = Omit<MenuItem, 'sub' | 'icon'>;
 
 export type MenuFiltrationConfig = {
-  [key: string]: MenuType[];
+  [key in keyof typeof MenuType]?: ESecuredIdentityRoleName[];
 };

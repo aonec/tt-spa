@@ -1,3 +1,4 @@
+import { ESecuredIdentityRoleName } from 'myApi';
 import {
   CompanyProfileIcon,
   DeviceIcon,
@@ -85,11 +86,16 @@ export const menuItems: MenuItem[] = [
 ];
 
 export const privates: MenuFiltrationConfig = {
-  ['ManagingFirmOperator']: [MenuType.Meters, MenuType.ActsJournal],
-  ['ManagingFirmSeniorOperator']: [MenuType.Reports, MenuType.Settings],
-  ['ManagingFirmAdministrator']: [MenuType.CompanyProfile],
+  [MenuType.Meters]: [ESecuredIdentityRoleName.ManagingFirmOperator],
+  [MenuType.ActsJournal]: [ESecuredIdentityRoleName.ManagingFirmOperator],
+  [MenuType.Reports]: [ESecuredIdentityRoleName.ManagingFirmSeniorOperator],
+  [MenuType.Settings]: [ESecuredIdentityRoleName.ManagingFirmSeniorOperator],
+  [MenuType.CompanyProfile]: [
+    ESecuredIdentityRoleName.ManagingFirmAdministrator,
+  ],
 };
 
 export const hidden: MenuFiltrationConfig = {
-  ['ManagingFirmOperator']: [MenuType.Statistics],
+  [MenuType.Statistics]: [ESecuredIdentityRoleName.ManagingFirmOperator],
+  [MenuType.Devices]: [ESecuredIdentityRoleName.ManagingFirmOperator],
 };
