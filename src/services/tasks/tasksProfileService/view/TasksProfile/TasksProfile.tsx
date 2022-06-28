@@ -1,10 +1,10 @@
-import { Loader } from '01/components';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksList } from '01/_pages/Tasks/components/TasksList';
+import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
-import { TabsSC, Wrapper } from './TasksProfile.styled';
+import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 const { TabPane } = TabsSC;
 
@@ -15,11 +15,13 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   handleSearch,
   taskTypes,
   initialValues,
+  changePageNumber,
   pagedTasks,
   isLoading,
 }) => {
   const history = useHistory();
-  const { executingTasksCount, observingTasksCount } = pagedTasks || {};
+  const { executingTasksCount, observingTasksCount, totalItems } =
+    pagedTasks || {};
 
   const executingTabText = executingTasksCount
     ? `К исполнению (${executingTasksCount})`
@@ -54,7 +56,17 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         currentFilter={initialValues}
       />
       {!isLoading && tasksList}
-      {isLoading && <Loader show size="32" />}
+      {isLoading && <Skeleton active />}
+      {!isLoading && Boolean(tasks?.length) && (
+        <PaginationSC
+          defaultCurrent={1}
+          onChange={changePageNumber}
+          pageSize={20}
+          total={totalItems}
+          current={initialValues?.PageNumber}
+          showSizeChanger={false}
+        />
+      )}
     </Wrapper>
   );
 };

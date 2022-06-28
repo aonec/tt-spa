@@ -28,6 +28,7 @@ export const TasksProfileContainer = () => {
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
   const changeGroupType = useEvent(inputs.changeGroupType);
+  const changePageNumber = useEvent(inputs.changePageNumber);
 
   useEffect(() => {
     if (lastGroupTypeRef.current !== grouptype) {
@@ -56,6 +57,7 @@ export const TasksProfileContainer = () => {
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
         handleSearch={handleSearch}
+        changePageNumber={changePageNumber}
         taskTypes={taskTypes}
         tasks={preparedTasks as TaskListResponse[]}
         initialValues={initialValues}

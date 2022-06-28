@@ -18,6 +18,7 @@ const clearFilters = domain.createEvent();
 
 const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
 const changeGroupType = domain.createEvent<TaskGroupingFilter>();
+const changePageNumber = domain.createEvent<number>();
 
 const searchTasks = domain.createEvent<SearchTasksForm>();
 const searchTasksFx = domain.createEffect<
@@ -45,6 +46,7 @@ $searchState
     GroupType,
     PageNumber: 1,
   }))
+  .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
   .reset(clearFilters);
 
 forward({
@@ -62,6 +64,7 @@ export const tasksProfileService = {
     searchTasks,
     changeFiltersByGroupType,
     changeGroupType,
+    changePageNumber,
   },
   outputs: {
     $taskTypes,

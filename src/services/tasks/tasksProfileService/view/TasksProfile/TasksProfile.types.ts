@@ -11,6 +11,7 @@ export type TasksProfileProps = {
   grouptype: string;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   handleSearch: (formFilter: SearchTasksForm) => void;
+  changePageNumber: (PageNumber: number) => void;
   tasks: TaskListResponse[];
   initialValues: GetTasksListRequestPayload | null;
   pagedTasks: TasksPagedList | null;

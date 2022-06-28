@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css, use } from 'reshadow/macro';
-import { Loader, Icon } from '01/components';
+import { Icon } from '01/components';
 import styledComp from 'styled-components';
 import { Icon as IconTT } from '../../../tt-components/Icon';
 
