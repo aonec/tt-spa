@@ -2,7 +2,7 @@ import { Loader } from '01/components';
 import { AddressIdSearch } from '01/features/addressIdSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { StyledInput, StyledSelector } from '01/shared/ui/Fields';
+import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
@@ -62,14 +62,14 @@ export const AddNewActForm = () => {
       <ActResourcesGate />
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
-        <StyledInput
+        <InputSC
           value={fields.registryNumber.value || ''}
           onChange={(e: ChangeEvent<HTMLInputElement>) => fields.registryNumber.onChange(e.target.value)}
           placeholder="Введите"
           ref={registryNumberRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
         />
-        <StyledSelector
+        <SelectSC
           value={fields.actType.value as any}
           onChange={fields.actType.onChange as any}
           placeholder="Выберите тип документа"
@@ -77,12 +77,12 @@ export const AddNewActForm = () => {
           onKeyDown={keyDownEnterGuardedHandler(1)}
         >
           {actTypes?.map((type) => (
-            <StyledSelector.Option key={type.key} value={type.key!}>
+            <SelectSC.Option key={type.key} value={type.key!}>
               {type.value}
-            </StyledSelector.Option>
+            </SelectSC.Option>
           ))}
-        </StyledSelector>
-        <StyledSelector
+        </SelectSC>
+        <SelectSC
           value={fields.actResourceType.value as any}
           onChange={fields.actResourceType.onChange as any}
           placeholder="Выберите"
@@ -90,11 +90,11 @@ export const AddNewActForm = () => {
           onKeyDown={keyDownEnterGuardedHandler(2)}
         >
           {actResources?.map((type) => (
-            <StyledSelector.Option key={type.key} value={type.key!}>
+            <SelectSC.Option key={type.key} value={type.key!}>
               {type.value}
-            </StyledSelector.Option>
+            </SelectSC.Option>
           ))}
-        </StyledSelector>
+        </SelectSC>
         <AddressIdSearch
           firstInputRef={addressRef}
           onExit={() => {

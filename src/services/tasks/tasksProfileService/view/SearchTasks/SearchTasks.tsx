@@ -1,9 +1,9 @@
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { StyledInput } from '01/shared/ui/Fields';
+import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { EManagingFirmTaskFilterType } from 'myApi';
-import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
+import React, { ChangeEvent, FC, useCallback } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
@@ -51,7 +51,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       disabled
     >
       <Wrapper>
-        <StyledInput
+        <InputSC
           placeholder="Номер задачи"
           value={values.TaskId}
           onChange={handleInputChange}

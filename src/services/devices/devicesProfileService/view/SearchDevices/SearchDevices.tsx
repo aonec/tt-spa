@@ -18,7 +18,7 @@ import {
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
-import { StyledInput, StyledSelector } from '01/shared/ui/Fields';
+import { InputSC, SelectSC } from '01/shared/ui/Fields';
 
 const { Option } = Select;
 
@@ -94,7 +94,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 },
               ]}
             >
-              <StyledInput
+              <InputSC
                 onChange={(value) =>
                   setFieldValue('Question', value.target.value)
                 }
@@ -110,7 +110,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
                 </StyledLabelSimple>
-                <StyledSelector
+                <SelectSC
                   style={{ width: '65%' }}
                   id="sortBy"
                   placeholder="Дате проверки"
@@ -119,7 +119,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 >
                   <Option value="Descending">Улице (уб.)</Option>
                   <Option value="Ascending">Улице (возр.)</Option>
-                </StyledSelector>
+                </SelectSC>
               </FlexCenterRow>
             </Form.Item>
           </StyledGrid>
@@ -130,7 +130,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="expirationDate">
                   Истекает дата поверки:{' '}
                 </StyledLabelSimple>
-                <StyledSelector
+                <SelectSC
                   id="expirationDate"
                   style={{ width: '65%' }}
                   onChange={(value) =>
@@ -141,7 +141,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="NextMonth">Ближайший месяц</Option>
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
-                </StyledSelector>
+                </SelectSC>
               </StyledExpirationDate>
             </Form.Item>
 

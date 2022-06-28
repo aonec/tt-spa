@@ -3,7 +3,7 @@ import { Select, AutoComplete, DatePicker, Input } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
 
-export const StyledSelector = styled(Select)<{ isShadow?: boolean }>`
+export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
   width: 100%;
 
   .ant-select-selector {
@@ -54,7 +54,7 @@ export const StyledAutocomplete = styled(AutoComplete)`
   }
 `;
 
-export const StyledInput = styled(Input)`
+export const InputSC = styled(Input)`
   color: #333333;
   border: 1px solid lightgray;
   padding: 3px 15px;
