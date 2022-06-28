@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListWrap, ListItem, Title } from '01/_components/List';
+import { ListWrap, ListItem } from '01/_components/List';
 import { Subtitle } from '../../../_components/Headers';
 import moment from 'moment';
 import { CalculatorResponse } from '../../../../myApi';
@@ -8,15 +8,15 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
+import { AdditionalAddressDescription } from './Header.styled';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { AdditionalAddress } from './Header.styled';
 interface InformationInterface {
   device: CalculatorResponse | null;
 }
 
 export const Information = ({ device }: InformationInterface) => {
   const { address } = device || { address: DEFAULT_BUILDING };
-  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
+  const { id } = address || DEFAULT_BUILDING;
   const { futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const adAdress = additionalAddressesString(address as any);
@@ -26,7 +26,7 @@ export const Information = ({ device }: InformationInterface) => {
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
           <Tooltip title={adAdress}>
-            <AdditionalAddress>{adAdress}</AdditionalAddress>
+            <AdditionalAddressDescription>{adAdress}</AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>
       </ListItem>

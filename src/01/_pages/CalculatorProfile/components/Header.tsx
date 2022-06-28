@@ -9,6 +9,9 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { Tooltip } from 'antd';
+import { AdditionalAddress } from './Header.styled';
+import { fullAddressesString } from 'utils/additionalAddressesString';
 
 interface HeaderInterface {
   device: CalculatorResponse | null;
@@ -31,7 +34,7 @@ export const Header = ({
 
   const { address } = device || { address: DEFAULT_BUILDING };
 
-  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
+  const { id } = address || DEFAULT_BUILDING;
 
   const access = getAccessesList();
   const { show } = access;
@@ -80,6 +83,8 @@ export const Header = ({
       ]
     : null;
 
+    const adAdress = fullAddressesString(address);
+
   return (
     <HeaderWrap
       style={{
@@ -93,7 +98,9 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
         <Subtitle to={`/objects/${id}`}>
-          {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
+        <Tooltip title={adAdress}>
+            <AdditionalAddress>{adAdress}</AdditionalAddress>
+          </Tooltip>
         </Subtitle>
       </div>
       <div style={{ position: 'relative' }}>

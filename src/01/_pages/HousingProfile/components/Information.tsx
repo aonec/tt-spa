@@ -8,7 +8,7 @@ import {
 } from '../../../tt-components/localBases';
 import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import { Subtitle } from '../../../_components/Headers';
-import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { Tooltip } from 'antd';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 
@@ -48,7 +48,7 @@ export const Information = ({ device }: InformationInterface) => {
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
           <Tooltip title={adAdress}>
-            <AdditionalAddress>{adAdress}</AdditionalAddress>
+            <AdditionalAddressDescription>{adAdress}</AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>
       </ListItem>

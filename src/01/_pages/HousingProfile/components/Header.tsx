@@ -8,6 +8,9 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
+import { Tooltip } from 'antd';
+import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { fullAddressesString } from 'utils/additionalAddressesString';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -29,7 +32,7 @@ export const Header = ({
   }
 
   const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
-  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
+  const { id } = address || DEFAULT_BUILDING;
 
   const menuButtonArr = [
     {
@@ -61,6 +64,8 @@ export const Header = ({
     },
   ];
 
+  const adAdress = fullAddressesString(address);
+
   return (
     <HeaderWrap
       style={{
@@ -78,9 +83,11 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
 
-        <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${number}${
-          corpus ? `, к.${corpus}` : ''
-        }`}</Subtitle>
+        <Subtitle to={`/objects/${id}`}>
+          <Tooltip title={adAdress}>
+            <AdditionalAddress>{adAdress}</AdditionalAddress>
+          </Tooltip>
+        </Subtitle>
       </div>
 
       <MenuButtonTT menuButtonArr={menuButtonArr} />

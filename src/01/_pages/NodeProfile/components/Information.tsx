@@ -8,7 +8,7 @@ import {
   PipeNodeResponse,
 } from '../../../../myApi';
 import { Tooltip } from 'antd';
-import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 
 interface HeaderInterface {
@@ -48,7 +48,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
             <Tooltip title={adAdress}>
-              <AdditionalAddress>{adAdress}</AdditionalAddress>
+              <AdditionalAddressDescription>{adAdress}</AdditionalAddressDescription>
             </Tooltip>
           </Subtitle>
         </ListItem>
