@@ -1,4 +1,3 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';

@@ -4,7 +4,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
-import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
@@ -13,13 +12,10 @@ import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/dis
 import { FilterContainer } from './components/Filter.container';
 
 export const MetersPage = () => {
-  const history = useHistory();
-  const key = history.location.pathname.split('/')[2];
-
   return (
     <Wrap>
       <CurrentManagingFirmUserGate />
-      <Route path="/meters/apartments/:id?">
+      <Route path="/meters/apartments">
         <FilterContainer />
       </Route>
 

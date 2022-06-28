@@ -22,6 +22,7 @@ export const SearchObjects: FC<SearchObjectsProps> = ({ handleSearch }) => {
         handleClose={() => {}}
         handleOpen={() => {}}
         extendedSearchContent={<></>}
+        disabled
       >
         <AddressSearchContainer handleSubmit={handleSearch} fields={fields} />
       </ExtendedSearch>
