@@ -1,5 +1,5 @@
-import { ExitButton } from '01/components/Menu/Menu';
 import React, { FC } from 'react';
+import { ExitButton } from './ExitButton';
 import { Wrapper } from './Menu.styled';
 import { MenuProps } from './Menu.types';
 import { MenuItemComponent } from './MenuItemComponent';
