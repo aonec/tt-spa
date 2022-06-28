@@ -7,4 +7,5 @@ export type ExtendedSearchProps = {
   handleApply: () => void;
   handleClear: () => void;
   extendedSearchContent: ReactElement;
+  disabled?: boolean;
 };

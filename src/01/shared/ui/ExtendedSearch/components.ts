@@ -26,6 +26,19 @@ export const ExtendedSearchButton = styled.div`
   }
 `;
 
+export const DisabledExtendedSearchButton = styled.div`
+  display: flex;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border: 1px solid #dcdee4;
+  justify-content: center;
+  border-radius: 4px;
+  background: #dfdfdf99;
+  opacity: 0.7;
+`;
+
 export const HideExtendedSearchButton = styled.div`
   display: flex;
   align-items: center;
