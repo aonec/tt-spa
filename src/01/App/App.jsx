@@ -12,7 +12,6 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
-  Tasks,
   Login,
   TaskProfile,
   ObjectProfile,
@@ -32,6 +31,7 @@ import {
   EditNode,
   AddNode,
   IndividualDeviceEdit,
+  Tasks,
 } from '../_pages';
 import { useApp } from './useApp';
 import EditODPU from '../_pages/EditHousingMeteringDevice';
@@ -51,6 +51,7 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { TasksProfileContainer } from 'services/tasks/tasksProfileService';
 
 moment.locale('ru');
 
@@ -79,21 +80,21 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/executing'
+                    : '/tasks/Executing'
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/executing" exact />
+              <Redirect from="/tasks" to="/tasks/Executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
               </Route>
 
-              <Route
-                path="/tasks/(executing|observing|archived)/"
-                component={Tasks}
-              />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+              <Route
+                path="/tasks/:grouptype/"
+                component={TasksProfileContainer}
+              />
 
               <Route
                 path="/devices/"
@@ -114,7 +115,7 @@ const Internal = () => {
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              
+
               <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                 <EditManagingFirmUserPage />
               </Route>
