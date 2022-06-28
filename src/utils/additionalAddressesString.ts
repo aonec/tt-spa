@@ -12,10 +12,10 @@ export const fullAddressesString = (
             address?.number
           }${
             address?.corpus ? `, к.${address.corpus}` : ''
-          } ${String.fromCharCode(8226)} ${`ул. ${elem?.street}`}, ${elem.number}${
+          }, ${elem?.street}, ${elem.number}${
             elem.corpus ? `, к.${elem.corpus}` : ''
           }`
-        : `${`ул. ${elem.street}`}, ${elem.number}`
+        : `${elem.street}, ${elem.number}`
     )
     .join('; ');
 };
@@ -30,10 +30,10 @@ export const additionalAddressesString = (
       i === 0
         ? `${address?.city}, ${`ул. ${address?.street}`}, ${address?.number}${
             address?.corpus ? `, к.${address?.corpus}` : ''
-          }; ${`ул. ${elem?.street}`}, ${elem.number}${
+          }, ${elem?.street}, ${elem.number}${
             elem.corpus ? `, к.${elem.corpus}` : ''
           }`
-        : `${`ул. ${elem.street}`}, ${elem.number}`
+        : `${elem.street}, ${elem.number}`
     )
     .join('; ');
 };

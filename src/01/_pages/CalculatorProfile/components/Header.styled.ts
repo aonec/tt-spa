@@ -12,12 +12,12 @@ export const AdditionalAddress = styled.div`
 `;
 
 export const AdditionalAddressDescription = styled.div`
-  font-size: 16px;
-  font-weight: 450;
+  font-size: 14px;
+  font-weight: 500;
   margin-top: 7px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: min-content;
-  max-width: 400px;
+  max-width: 300px;
 `;
