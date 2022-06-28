@@ -1489,6 +1489,31 @@ export interface EResourceTypeStringDictionaryItem {
   value?: string | null;
 }
 
+export enum ESecuredIdentityRoleName {
+  ManagingFirmAdministrator = "ManagingFirmAdministrator",
+  ManagingFirmExecutor = "ManagingFirmExecutor",
+  Homeowner = "Homeowner",
+  ManagingFirmOperator = "ManagingFirmOperator",
+  ErcService = "ErcService",
+  ScadaService = "ScadaService",
+  Admin = "Admin",
+  Worker = "Worker",
+  ManagingFirmSpectator = "ManagingFirmSpectator",
+  ManagingFirmDispatcher = "ManagingFirmDispatcher",
+  Controller = "Controller",
+  ManagingFirmSeniorOperator = "ManagingFirmSeniorOperator",
+  ManagingFirmSpectatorRestricted = "ManagingFirmSpectatorRestricted",
+}
+
+export interface ESecuredIdentityRoleNameStringDictionaryItem {
+  key?: ESecuredIdentityRoleName;
+  value?: string | null;
+}
+
+export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse {
+  successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
+}
+
 export enum ETaskApplicationStatus {
   Open = "Open",
   Closed = "Closed",
@@ -1507,6 +1532,18 @@ export enum ETaskClosingStatus {
 
 export interface ETaskClosingStatusNullableStringDictionaryItem {
   key?: ETaskClosingStatus | null;
+  value?: string | null;
+}
+
+export enum ETaskConfirmationType {
+  Confirm = "Confirm",
+  PipeRuptureNotConfirmAnomaly = "PipeRuptureNotConfirm_Anomaly",
+  PipeRuptureNotConfirmCalculatorMalfunction = "PipeRuptureNotConfirm_CalculatorMalfunction",
+  PipeRuptureNotConfirmPowerMalfunction = "PipeRuptureNotConfirm_PowerMalfunction",
+}
+
+export interface ETaskConfirmationTypeStringDictionaryItem {
+  key?: ETaskConfirmationType;
   value?: string | null;
 }
 
@@ -3195,7 +3232,7 @@ export interface ManagingFirmUserCreateRequest {
   position?: string | null;
   number?: string | null;
   password?: string | null;
-  roleTypes?: string[] | null;
+  roleTypes?: ESecuredIdentityRoleName[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
 }
@@ -3276,7 +3313,7 @@ export interface ManagingFirmUserResponse {
   managementFirm: ManagementFirmResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
-  roles: StringStringDictionaryItem[] | null;
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
   housingStocks: HousingStockShortResponse[] | null;
 }
 
@@ -3327,7 +3364,7 @@ export interface ManagingFirmUserUpdateRequest {
   department?: string | null;
   position?: string | null;
   number?: string | null;
-  roleTypes?: string[] | null;
+  roleTypes?: ESecuredIdentityRoleName[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
 }
@@ -4077,15 +4114,6 @@ export interface StringPagedListSuccessApiResponse {
   successResponse: StringPagedList | null;
 }
 
-export interface StringStringDictionaryItem {
-  key?: string | null;
-  value?: string | null;
-}
-
-export interface StringStringDictionaryItemListSuccessApiResponse {
-  successResponse: StringStringDictionaryItem[] | null;
-}
-
 export interface StringSuccessApiResponse {
   successResponse: string | null;
 }
@@ -4561,7 +4589,7 @@ export interface TaskResponse {
   stages: StageListResponse[] | null;
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
-  taskConfirmationTypes: StringStringDictionaryItem[] | null;
+  taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -8575,7 +8603,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managingFirmUsersRoleTypesList: (params: RequestParams = {}) =>
-      this.request<StringStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+      this.request<ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirmUsers/RoleTypes`,
         method: "GET",
         secure: true,
