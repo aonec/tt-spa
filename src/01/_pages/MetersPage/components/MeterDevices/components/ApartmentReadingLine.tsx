@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useReadings } from '../../../../../hooks/useReadings';
 import { message, Tooltip } from 'antd';
 import DeviceInfo from './DeviceInfo';
-import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
+import {
+  IndividualDeviceListItemResponse,
+  ESecuredIdentityRoleName,
+} from 'myApi';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import { useHistory, useParams } from 'react-router-dom';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
@@ -22,7 +25,7 @@ import { $userRoleTypes } from '01/features/managementFirmUsers/displayCurrentUs
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 
 import { FullDeviceLine } from './apartment_reading_line.styled';
-import { SwitchIcon, CheckIcon, HistoryIcon, StarIcon } from 'ui-kit/icons';
+import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { ActionButton } from './action_button/action_button';
 
 interface ApartmentReadingLineProps {
@@ -54,7 +57,9 @@ const ApartmentReadingLine = ({
 
   const isSeniorOperator =
     Boolean(userRoletypes) &&
-    userRoletypes?.includes('ManagingFirmSeniorOperator');
+    userRoletypes?.includes(
+      ESecuredIdentityRoleName.ManagingFirmSeniorOperator
+    );
 
   const onDeleteIndividualDevice = useEvent(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
