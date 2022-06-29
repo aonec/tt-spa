@@ -119,7 +119,7 @@ export const AddressSearch: FC<Props> = (props) => {
     >
       {loading ? <Loader show size={14} /> : <SearchIcon />}
       <PopoverWrap>
-        <StyledInput
+        <InputSC
           autoComplete="off"
           name="street"
           onChange={onChangeHandler}
@@ -145,7 +145,7 @@ export const AddressSearch: FC<Props> = (props) => {
       </PopoverWrap>
 
       <PopoverWrap>
-        <StyledInput
+        <InputSC
           autoComplete="off"
           name="house"
           onFocus={clearValuesOnFocusCallback(1)}
@@ -169,7 +169,7 @@ export const AddressSearch: FC<Props> = (props) => {
       </PopoverWrap>
 
       <PopoverWrap>
-        <StyledInput
+        <InputSC
           style={{ borderRadius: '0 3px 3px 0' }}
           autoComplete="off"
           name="apartment"
@@ -200,7 +200,7 @@ const PopoverWrap = styled.div`
   position: relative;
 `;
 
-const StyledInput = styled.input`
+const InputSC = styled.input`
   height: 30px;
   border-left: 1px solid lightgray;
   padding: 0 7px;
