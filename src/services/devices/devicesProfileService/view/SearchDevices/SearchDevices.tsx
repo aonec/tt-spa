@@ -18,7 +18,7 @@ import {
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 const { Option } = Select;
 

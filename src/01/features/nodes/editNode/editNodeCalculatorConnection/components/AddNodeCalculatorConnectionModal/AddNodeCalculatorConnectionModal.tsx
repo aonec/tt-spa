@@ -1,10 +1,8 @@
 import { Button, Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
+import { CalculatorIntoHousingStockResponse, PipeNodeResponse } from 'myApi';
 import React, { FC } from 'react';
-import {
-  CalculatorListResponse,
-  PipeNodeResponse,
-} from '../../../../../../../myApi';
+
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
@@ -17,7 +15,7 @@ import { AddNodeCalculatorConnectionForm } from './models';
 interface Props {
   onClose(): void;
   isOpen: boolean;
-  calculators: CalculatorListResponse[] | null;
+  calculators: CalculatorIntoHousingStockResponse[] | null;
   form: AddNodeCalculatorConnectionForm;
   loading: boolean;
   node?: PipeNodeResponse | null;
@@ -59,7 +57,7 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
             {calculators &&
               calculators?.map((calculator) => (
                 <StyledSelect.Option key={calculator.id} value={calculator.id}>
-                  {calculator.serialNumber} ({calculator.model})
+                  {/* {calculator.serialNumber} ({calculator.model}) */}
                 </StyledSelect.Option>
               ))}
           </StyledSelect>
