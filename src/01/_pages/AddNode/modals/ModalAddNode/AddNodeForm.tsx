@@ -41,8 +41,8 @@ const AddNodeForm = (props: any) => {
   const {
     calculatorId,
     entryNumber,
-    futureCheckingDate,
-    lastCheckingDate,
+    futureCommercialAccountingDate,
+    lastCommercialAccountingDate,
     nodeStatus,
     number,
     resource,
@@ -123,8 +123,8 @@ const AddNodeForm = (props: any) => {
         <List>
           <Info>Даты действия акта-допуска</Info>
           <Description>
-            {moment(lastCheckingDate).format('DD.MM.YYYY')} -{' '}
-            {moment(futureCheckingDate).format('DD.MM.YYYY')}
+            {moment(lastCommercialAccountingDate).format('DD.MM.YYYY')} -{' '}
+            {moment(futureCommercialAccountingDate).format('DD.MM.YYYY')}
           </Description>
         </List>
       </ul>
