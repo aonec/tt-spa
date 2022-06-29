@@ -3,14 +3,17 @@ import { Tabs } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { DevicesReportModal } from '01/features/devicesReport';
-import { searchStateChanged, showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
+import {
+  searchStateChanged,
+  showDownloadDeviceReportButtonClicked,
+} from '01/features/devicesReport/models';
 import { MenuButtonTT } from '01/tt-components';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
-import { HeaderWrapper, HeaderText } from './DevicesProfile.styled';
+import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
   fetchcalc: (
@@ -21,7 +24,12 @@ interface DeviceProfileProps {
   close: (payload: void) => void;
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
 }
-export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close, open}) => {
+export const DevicesProfile: FC<DeviceProfileProps> = ({
+  fetchcalc,
+  isOpen,
+  close,
+  open,
+}) => {
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -75,30 +83,35 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({fetchcalc, isOpen, close
         <HeaderText>Приборы</HeaderText>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </HeaderWrapper>
-      <Tabs defaultActiveKey="1">
-        <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
-      </Tabs>
-      <SearchDevices 
-       isExtendedSearchOpen={isOpen}
-       fetchcalc={fetchcalc}
-       searchStateChanged={searchStateChanged}
-       >
-        <ExtendedSearch
-          isOpen={isOpen}
-          handleClose={() => close()}
-          handleOpen={() => open()}
-          handleApply={() => {
-            fetchcalc(values);
-            searchStateChanged(values);
-          }}
-          handleClear={() => resetForm()}
-          extendedSearchContent={
-            <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
-          }
-        />
-      </SearchDevices>
-      <DevicesListContainer />
-      <DevicesReportModal />
+      <Wrapper>
+        <Tabs defaultActiveKey="1">
+          <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
+        </Tabs>
+        <SearchDevices
+          isExtendedSearchOpen={isOpen}
+          fetchcalc={fetchcalc}
+          searchStateChanged={searchStateChanged}
+        >
+          <ExtendedSearch
+            isOpen={isOpen}
+            handleClose={() => close()}
+            handleOpen={() => open()}
+            handleApply={() => {
+              fetchcalc(values);
+              searchStateChanged(values);
+            }}
+            handleClear={() => resetForm()}
+            extendedSearchContent={
+              <ExtendedSearchForm
+                setFieldValue={setFieldValue}
+                values={values}
+              />
+            }
+          />
+        </SearchDevices>
+        <DevicesListContainer />
+        <DevicesReportModal />
+      </Wrapper>
     </div>
   );
 };

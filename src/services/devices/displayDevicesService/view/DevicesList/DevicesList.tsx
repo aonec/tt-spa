@@ -1,6 +1,6 @@
 import DevicesByAddress from '01/_pages/Devices/components/DevicesByAddress/DevicesByAddress';
 import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
-import { Pagination } from 'antd';
+import { Pagination, Skeleton } from 'antd';
 import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { DevicesListProps } from './DevicesList.types';
@@ -24,7 +24,7 @@ export const DevicesList: FC<DevicesListProps> = ({
   return (
     <div>
       {isLoading ? (
-        <div role="loader">ЗАГРУЗКА...</div>
+        <Skeleton active />
       ) : (
         <>
           {deviceArray.length ? deviceArray : <Empty />}

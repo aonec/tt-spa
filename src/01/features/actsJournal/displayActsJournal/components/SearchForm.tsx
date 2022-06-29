@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
-import { StyledAutocomplete, StyledSelector } from '01/shared/ui/Fields';
+import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
@@ -59,7 +59,7 @@ export const SearchForm = () => {
       <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="0.75fr 1.5fr 0.75fr 0.75fr 0.3fr" gap="15px">
-        <StyledSelector
+        <SelectSC
           placeholder="Город"
           ref={cityRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
@@ -68,11 +68,11 @@ export const SearchForm = () => {
           value={fields.city.value!}
         >
           {cities?.map((elem, index) => (
-            <StyledSelector.Option key={index} value={elem}>
+            <SelectSC.Option key={index} value={elem}>
               {elem}
-            </StyledSelector.Option>
+            </SelectSC.Option>
           ))}
-        </StyledSelector>
+        </SelectSC>
         <StyledAutocomplete
           placeholder="Улица"
           ref={streetRef}
