@@ -12,16 +12,14 @@ export const DevicesProfileContainer = () => {
   const open = useEvent(inputs.extendedSearchOpened);
 
   return (
-    <>
-      <DevicesProfile
-        showDownloadDeviceReportButtonClicked={
-          showDownloadDeviceReportButtonClicked
-        }
-        fetchcalc={fetchcalc}
-        isOpen={isOpen}
-        close={close}
-        open={open}
-      />
-    </>
+    <DevicesProfile
+      showDownloadDeviceReportButtonClicked={
+        showDownloadDeviceReportButtonClicked
+      }
+      fetchcalc={fetchcalc}
+      isOpen={isOpen}
+      close={close}
+      open={open}
+    />
   );
 };

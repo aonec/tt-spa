@@ -2,8 +2,8 @@ import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/c
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import {
   StyledAutocomplete,
-  StyledInput,
-  StyledSelector,
+  InputSC,
+  SelectSC,
 } from '01/shared/ui/Fields';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
@@ -35,7 +35,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   }
 
   const citySearch = (index: number) => (
-    <StyledSelector
+    <SelectSC
       placeholder="Город"
       ref={refs[index]}
       onKeyDown={keyDownEnterGuardedHandler(index)}
@@ -43,11 +43,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       value={values.city}
     >
       {cities?.map((elem, index) => (
-        <StyledSelector.Option key={index} value={elem}>
+        <SelectSC.Option key={index} value={elem}>
           {elem}
-        </StyledSelector.Option>
+        </SelectSC.Option>
       ))}
-    </StyledSelector>
+    </SelectSC>
   );
 
   const streetSearch = (index: number) => (
@@ -73,7 +73,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const homeNumberSearch = (index: number) => (
-    <StyledInput
+    <InputSC
       placeholder="Дом"
       value={values.house}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
@@ -89,7 +89,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const corpusSearch = (index: number) => (
-    <StyledInput
+    <InputSC
       placeholder="Корпус"
       value={values.corpus}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
@@ -105,7 +105,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const apartmentSearch = (index: number) => (
-    <StyledInput
+    <InputSC
       placeholder="Квартира"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
