@@ -128,6 +128,10 @@ export const magistrals: Array<MagistralsInterface> = [
     value: EMagistralType.FeedBackFlow,
     label: 'Обратная',
   },
+  {
+    value: EMagistralType.Recharge,
+    label: 'Подпитка',
+  }
 ];
 
 export const isConnected = [
