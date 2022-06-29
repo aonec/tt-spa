@@ -19,14 +19,14 @@ export const Information = ({ device }: InformationInterface) => {
   const { id } = address || DEFAULT_BUILDING;
   const { futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
-  const adAdress = additionalAddressesString(address as any);
+  const additionalAdress = additionalAddressesString(address as any);
   return (
     <ListWrap>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          <Tooltip title={adAdress}>
-            <AdditionalAddressDescription>{adAdress}</AdditionalAddressDescription>
+          <Tooltip title={additionalAdress}>
+            <AdditionalAddressDescription>{additionalAdress}</AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>
       </ListItem>

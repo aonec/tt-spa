@@ -40,15 +40,15 @@ export const Information = ({ device }: InformationInterface) => {
     ? direction.label
     : 'Направление магистрали не указано';
 
-  const adAdress = additionalAddressesString(address);
+  const additionalAdress = additionalAddressesString(address);
 
   return (
     <ListWrap>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          <Tooltip title={adAdress}>
-            <AdditionalAddressDescription>{adAdress}</AdditionalAddressDescription>
+          <Tooltip title={additionalAdress}>
+            <AdditionalAddressDescription>{additionalAdress}</AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>
       </ListItem>

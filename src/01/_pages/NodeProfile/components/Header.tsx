@@ -76,7 +76,7 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
       {getNodeStatus}
     </div>
   );
-  const adAdress = fullAddressesString(address);
+  const additionalAdress = fullAddressesString(address);
 
   return (
     <HeaderWrap
@@ -97,8 +97,8 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
 
         <SubtitleWrap>
           <Subtitle to={`/objects/${objectId}`}>
-          <Tooltip title={adAdress}>
-            <AdditionalAddress>{adAdress}</AdditionalAddress>
+          <Tooltip title={additionalAdress}>
+            <AdditionalAddress>{additionalAdress}</AdditionalAddress>
           </Tooltip>
           </Subtitle>
           <NodeStatus />

@@ -64,7 +64,7 @@ export const Header = ({
     },
   ];
 
-  const adAdress = fullAddressesString(address);
+  const additionalAdress = fullAddressesString(address);
 
   return (
     <HeaderWrap
@@ -84,8 +84,8 @@ export const Header = ({
         </Title>
 
         <Subtitle to={`/objects/${id}`}>
-          <Tooltip title={adAdress}>
-            <AdditionalAddress>{adAdress}</AdditionalAddress>
+          <Tooltip title={additionalAdress}>
+            <AdditionalAddress>{additionalAdress}</AdditionalAddress>
           </Tooltip>
         </Subtitle>
       </div>

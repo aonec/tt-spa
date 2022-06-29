@@ -39,7 +39,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
 
   const isRegistered = nodeStatus?.value === 'Registered';
 
-  const adAdress = additionalAddressesString(address);
+  const additionalAdress = additionalAddressesString(address);
 
   return (
     <ListWrap>
@@ -47,8 +47,8 @@ const Information = ({ node, task = false }: HeaderInterface) => {
         <ListItem>
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
-            <Tooltip title={adAdress}>
-              <AdditionalAddressDescription>{adAdress}</AdditionalAddressDescription>
+            <Tooltip title={additionalAdress}>
+              <AdditionalAddressDescription>{additionalAdress}</AdditionalAddressDescription>
             </Tooltip>
           </Subtitle>
         </ListItem>
