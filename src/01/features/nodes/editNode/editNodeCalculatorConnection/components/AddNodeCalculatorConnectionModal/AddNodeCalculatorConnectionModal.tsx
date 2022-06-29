@@ -2,7 +2,6 @@ import { Button, Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { CalculatorIntoHousingStockResponse, PipeNodeResponse } from 'myApi';
 import React, { FC } from 'react';
-
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
@@ -21,7 +20,7 @@ interface Props {
   node?: PipeNodeResponse | null;
 }
 
-const calculatorConnectionInputNumbers = [1, 2, 3]
+const calculatorConnectionInputNumbers = [1, 2, 3];
 
 export const AddNodeCalculatorConnectionModal: FC<Props> = ({
   onClose,
@@ -57,7 +56,7 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
             {calculators &&
               calculators?.map((calculator) => (
                 <StyledSelect.Option key={calculator.id} value={calculator.id}>
-                  {/* {calculator.serialNumber} ({calculator.model}) */}
+                  {calculator.serialNumber} ({calculator.model})
                 </StyledSelect.Option>
               ))}
           </StyledSelect>

@@ -387,6 +387,7 @@ export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
 export interface CalculatorIntoHousingStockResponse {
   /** @format int32 */
   id: number;
+  serialNumber: string | null;
   model: string | null;
 
   /** @format int32 */

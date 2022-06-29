@@ -5,5 +5,3 @@ export const getCalculatorsList = (
   housingStockId: number
 ): Promise<CalculatorIntoHousingStockResponse[]> =>
   axios.get(`HousingStocks/${housingStockId}/Calculators`);
-
-console.log(axios.get('Calculators'));
