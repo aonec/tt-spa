@@ -46,18 +46,18 @@ const menuItems: MenuItem[] = [
     icon: ObjectsIcon,
     type: MenuType.Objects,
   },
-  // {
-  //   title: 'Приборы',
-  //   path: '/devices',
-  //   icon: DeviceIcon,
-  //   type: MenuType.Devices,
-  // },
-  // {
-  //   title: 'Профиль компании',
-  //   path: '/companyProfile',
-  //   icon: CompanyProfileIcon,
-  //   type: MenuType.CompanyProfile,
-  // },
+  {
+    title: 'Приборы',
+    path: '/devices',
+    icon: DeviceIcon,
+    type: MenuType.Devices,
+  },
+  {
+    title: 'Профиль компании',
+    path: '/companyProfile',
+    icon: CompanyProfileIcon,
+    type: MenuType.CompanyProfile,
+  },
   {
     title: 'Ввод показаний',
     path: '/meters',
