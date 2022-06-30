@@ -1,4 +1,4 @@
-import { StyledSelector } from '01/shared/ui/Fields';
+import { SelectSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
@@ -21,7 +21,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         housingStock.corpus || ''
       }`}</Address>
       <div>{housingStock.houseManagement}</div>
-      <StyledSelector
+      <SelectSC
         ref={inspectedDatSelectRef}
         placeholder="Число"
         isShadow={false}
@@ -43,8 +43,8 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {day} число
           </Select.Option>
         ))}
-      </StyledSelector>
-      <StyledSelector
+      </SelectSC>
+      <SelectSC
         ref={inspectorSelectRef}
         placeholder="Контролер"
         isShadow={false}
@@ -63,7 +63,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {inspector.fullName}
           </Select.Option>
         ))}
-      </StyledSelector>
+      </SelectSC>
     </Wrap>
   );
 };

@@ -1,7 +1,6 @@
 import React, { FC, useEffect } from 'react';
-import styled from 'styled-components';
 import styles from './DeviceSearchForm.module.scss';
-import { Form, Input, Select, Slider } from 'antd';
+import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import {
@@ -19,6 +18,7 @@ import {
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { InputSC, SelectSC } from '01/shared/ui/Fields';
 
 const { Option } = Select;
 
@@ -26,7 +26,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   children,
   isExtendedSearchOpen,
   fetchcalc,
-  searchStateChanged
+  searchStateChanged,
 }) => {
   const marks = {
     0: '0',
@@ -63,18 +63,18 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       OrderBy: undefined,
     },
     onSubmit: (values) => {
-      void fetchcalc(values)
-      searchStateChanged(values)
+      void fetchcalc(values);
+      searchStateChanged(values);
     },
-
   });
 
   useEffect(() => {
-   fetchcalc(values);
-   searchStateChanged(values)
+    fetchcalc(values);
+    searchStateChanged(values);
   }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
+  
   return (
     <Wrapper>
       {!isExtendedSearchOpen ? (
@@ -84,7 +84,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
           onChange={submitForm}
         >
           <StyledGrid isExtendedSearchOpen={isExtendedSearchOpen}>
-            <Form.Item name="advancedButton">{children}</Form.Item>
+            {children}
             <Form.Item
               name="search"
               rules={[
@@ -94,7 +94,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 },
               ]}
             >
-              <Input
+              <InputSC
                 onChange={(value) =>
                   setFieldValue('Question', value.target.value)
                 }
@@ -110,7 +110,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
                 </StyledLabelSimple>
-                <Select
+                <SelectSC
                   style={{ width: '65%' }}
                   id="sortBy"
                   placeholder="Дате проверки"
@@ -119,7 +119,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 >
                   <Option value="Descending">Улице (уб.)</Option>
                   <Option value="Ascending">Улице (возр.)</Option>
-                </Select>
+                </SelectSC>
               </FlexCenterRow>
             </Form.Item>
           </StyledGrid>
@@ -130,7 +130,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="expirationDate">
                   Истекает дата поверки:{' '}
                 </StyledLabelSimple>
-                <Select
+                <SelectSC
                   id="expirationDate"
                   style={{ width: '65%' }}
                   onChange={(value) =>
@@ -141,7 +141,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="NextMonth">Ближайший месяц</Option>
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
-                </Select>
+                </SelectSC>
               </StyledExpirationDate>
             </Form.Item>
 

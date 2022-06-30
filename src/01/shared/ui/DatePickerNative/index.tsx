@@ -39,7 +39,7 @@ export const DatePickerNative: React.FC<Props> = ({
   useEffect(setInitialInnerValue, [value]);
 
   return (
-    <StyledInput
+    <InputSC
       fullSize={fullSize}
       searchStyle={searchStyle}
       id={id}
@@ -56,7 +56,7 @@ export const DatePickerNative: React.FC<Props> = ({
   );
 };
 
-const StyledInput = styled.input<{
+const InputSC = styled.input<{
   searchStyle?: boolean;
   focused?: boolean;
   fullSize?: boolean;
