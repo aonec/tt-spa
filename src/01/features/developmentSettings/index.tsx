@@ -1,4 +1,4 @@
-import { StyledInput } from '01/shared/ui/Fields';
+import { InputSC } from '01/shared/ui/Fields';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -23,7 +23,7 @@ export const DevSettingsModal = () => {
       onCancel={closeDevSettingsModal}
     >
       <Form.Item label="URL">
-        <StyledInput
+        <InputSC
           value={fields.devUrl.value}
           onChange={(e: any) => fields.devUrl.onChange(e.target.value)}
         />
