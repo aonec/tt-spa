@@ -66,7 +66,6 @@ export const TaskProfile = () => {
   // ?
   const docs = useDocuments(state, dispatch);
   // прикрепленные файлы
-
   const info = useInformation(state);
   // ?
   const infoDevice = useInformationDevice(state);
