@@ -32,7 +32,6 @@ import { GetIssueCertificateModal } from '01/features/apartments/printIssueCerti
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
-import { ESecuredIdentityRoleName } from 'myApi';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 import {
@@ -47,6 +46,7 @@ import {
   Wrapper,
 } from './ApartmentInfo.styled';
 import { checkIsHomeownerAccountRecentlyModified } from './utils';
+import { Skeleton } from 'antd';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -75,8 +75,8 @@ export const ApartmentInfo = () => {
 
   const user = useStore($currentManagingFirmUser);
 
-  const isSeniorOperator = user?.userRoles?.find(
-    ({ type }) => type === ESecuredIdentityRoleName.ManagingFirmSeniorOperator
+  const isSeniorOperator = user?.roles?.find(
+    ({ key }) => key === 'ManagingFirmSeniorOperator'
   );
 
   const cancelPauseApartment = () =>
@@ -268,11 +268,16 @@ export const ApartmentInfo = () => {
           />
         </MenuButtonWrap>
       </Flex>
-      {!pending ? <ApartmentInfoWrap>{content}</ApartmentInfoWrap> : <Space />}
+      {pending && <Skeleton />}
 
-      {apartment && pausedAlert}
-      {isApartmentTaskExist && apartmentTaskAlert}
-      {apartmentHomeownerAcconutChangeAlerts}
+      {!pending && (
+        <>
+          <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
+          {apartment && pausedAlert}
+          {isApartmentTaskExist && apartmentTaskAlert}
+          {apartmentHomeownerAcconutChangeAlerts}
+        </>
+      )}
     </Wrapper>
   );
 };

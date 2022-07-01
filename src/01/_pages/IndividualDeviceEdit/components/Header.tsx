@@ -2,13 +2,13 @@ import React from 'react';
 import { IndividualDeviceResponse } from '../../../../myApi';
 import { HeaderWrap } from '../../../tt-components';
 import IsActive from '../../../tt-components/IsActive';
-import { Breadcrumb } from '../../../tt-components/Breadcrumb';
 import { Loader } from '01/_components/Loader';
 import { Title, Subtitle } from '01/_components/Headers';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -26,7 +26,7 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <Breadcrumb />
+      <GoBack />
       <HeaderWrap>
         <div>
           <Title>

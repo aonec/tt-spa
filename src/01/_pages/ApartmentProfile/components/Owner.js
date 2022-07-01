@@ -9,7 +9,7 @@ import { ListItem, ListItemDescription, ListItemValue } from './ListItem';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { CheckLg, Pen, XLg } from 'react-bootstrap-icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { StyledInput } from '01/shared/ui/Fields';
+import { InputSC } from '01/shared/ui/Fields';
 import axios from '01/axios';
 import { message } from 'antd';
 import { useEffect } from 'react';
@@ -269,7 +269,7 @@ const Owner = (props) => {
 
   const edtCellphone = (
     <Flex>
-      <StyledInput
+      <InputSC
         disabled={loading}
         onChange={(e) => setCellphone(e.target.value)}
         value={cellphone}

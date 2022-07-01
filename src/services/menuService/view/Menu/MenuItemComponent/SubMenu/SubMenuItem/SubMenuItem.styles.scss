@@ -1,0 +1,18 @@
+.menu-item-icon {
+    path {
+      fill: #272f5a;
+    }
+  
+  }
+  
+  .active-menu-item-nav-link {
+    color: #189ee9 !important;
+    border-left: 3px solid #189ee9 !important;
+  
+    .menu-item-icon {
+      path {
+        fill: #189ee9 !important;
+      }
+    }
+  }
+  

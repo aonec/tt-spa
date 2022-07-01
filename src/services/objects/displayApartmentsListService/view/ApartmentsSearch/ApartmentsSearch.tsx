@@ -25,6 +25,7 @@ export const ApartmentsSearch: FC<ApartmentsSearchProps> = ({
         handleClose={() => {}}
         handleOpen={() => {}}
         extendedSearchContent={<></>}
+        disabled
       >
         <AddressSearchContainer fields={fields} handleSubmit={handleSearch} />
       </ExtendedSearch>

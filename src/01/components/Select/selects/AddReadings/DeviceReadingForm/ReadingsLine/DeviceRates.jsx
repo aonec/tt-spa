@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Input } from 'antd';
 import { InputTT } from '../../../../../../tt-components/InputTT';
 
-const StyledInput = styled(Input)`
+const InputSC = styled(Input)`
   // color: var(--main-70);
   // border: 0;
   // padding: 0;
@@ -41,7 +41,7 @@ const DeviceRates = ({
 
   return (
     <ReadingLineStyled>
-      <StyledInput
+      <InputSC
         prefix={
           isPrevOperatorReadings ? null : (
             <TarifLabel>

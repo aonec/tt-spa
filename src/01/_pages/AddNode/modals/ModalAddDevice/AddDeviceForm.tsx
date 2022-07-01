@@ -31,6 +31,8 @@ import {
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import Title from '../../../../tt-components/Title';
+import { axios } from '01/axios';
+import { resourceParser } from 'utils/ResourceParser';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;
@@ -45,6 +47,7 @@ const AddDeviceForm = (props: any) => {
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [fetchedMagistrals, setFetchedMagistrals] = useState<resourceType[]>();
 
   const initialValues = {
     isConnected: isConnected[0].value,
@@ -153,6 +156,24 @@ const AddDeviceForm = (props: any) => {
       setFieldValue('diameter', null);
     }
   }, [values.housingMeteringDeviceType]);
+
+  interface resourceDTO {
+    key: string;
+    value: string;
+  }
+  interface resourceType {
+    label: string;
+    value: string;
+  }
+
+  useEffect(() => {
+    axios
+      .get<any, resourceDTO[]>(
+        `PipeNodes/PipeMagistralTypes?resource=${resource}`
+      )
+      .then((res) => resourceParser(res))
+      .then((data) => setFetchedMagistrals(data));
+  }, [resource]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -265,6 +286,7 @@ const AddDeviceForm = (props: any) => {
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', date);
+                setFieldValue('futureCheckingDate', moment(date).add(4, 'years'))
               }}
               value={values.lastCheckingDate}
             />
@@ -302,7 +324,7 @@ const AddDeviceForm = (props: any) => {
             <SelectTT
               placeholder="Выберите направление магистрали"
               name="magistral"
-              options={magistrals}
+              options={fetchedMagistrals}
               onChange={(value) => {
                 setFieldValue('magistral', value);
               }}

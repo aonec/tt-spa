@@ -268,6 +268,7 @@ const EditCalculatorForm = ({
             placeholder="Укажите дату..."
             onChange={(date) => {
               setFieldValue('lastCommercialAccountingDate', date);
+              setFieldValue('futureCommercialAccountingDate', moment(date).add(4, 'years'));
             }}
             value={values.lastCommercialAccountingDate}
           />

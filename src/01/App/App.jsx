@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
-import { Logotip, Menu } from '01/components';
+import { Logotip } from '01/components';
 import moment from 'moment';
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
@@ -12,7 +12,6 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
-  Tasks,
   Login,
   TaskProfile,
   ObjectProfile,
@@ -32,6 +31,7 @@ import {
   EditNode,
   AddNode,
   IndividualDeviceEdit,
+  Tasks,
 } from '../_pages';
 import { useApp } from './useApp';
 import EditODPU from '../_pages/EditHousingMeteringDevice';
@@ -47,9 +47,11 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
+import { MenuContainer } from 'services/menuService';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { TasksProfileContainer } from 'services/tasks/tasksProfileService';
 
 moment.locale('ru');
 
@@ -68,7 +70,7 @@ const Internal = () => {
           <LeftBlock style={{ position: 'fixed', height: '100vh' }}>
             <Logotip />
             <Space />
-            <Menu />
+            <MenuContainer />
           </LeftBlock>
           <div />
           <main>
@@ -78,21 +80,21 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/executing'
+                    : '/tasks/Executing'
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/executing" exact />
+              <Redirect from="/tasks" to="/tasks/Executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
               </Route>
 
-              <Route
-                path="/tasks/(executing|observing|archived)/"
-                component={Tasks}
-              />
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+              <Route
+                path="/tasks/:grouptype/"
+                component={TasksProfileContainer}
+              />
 
               <Route
                 path="/devices/"
@@ -113,7 +115,7 @@ const Internal = () => {
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              
+
               <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                 <EditManagingFirmUserPage />
               </Route>
@@ -252,9 +254,9 @@ export function App() {
 }
 
 const LeftBlock = styledC.div`
-padding-top: 20px; 
+  padding-top: 20px; 
   width: 208px;
-  background: #2883e110;
+  background: #F3F5F6;
 `;
 
 export default App;

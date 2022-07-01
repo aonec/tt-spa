@@ -384,6 +384,20 @@ export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
   successResponse: CalculatorInfoListWrappedResponse | null;
 }
 
+export interface CalculatorIntoHousingStockResponse {
+  /** @format int32 */
+  id: number;
+  serialNumber: string | null;
+  model: string | null;
+
+  /** @format int32 */
+  calculatorInfoId: number | null;
+}
+
+export interface CalculatorIntoHousingStockResponseArraySuccessApiResponse {
+  successResponse: CalculatorIntoHousingStockResponse[] | null;
+}
+
 export interface CalculatorIntoNodeResponse {
   /** @format int32 */
   id: number;
@@ -1174,21 +1188,6 @@ export enum EClosingReason {
   ByLetter = "ByLetter",
 }
 
-export interface EditApartmentCheckRequest {
-  /** @format date-time */
-  checkingDate?: string | null;
-  checkType?: ECheckType | null;
-
-  /** @format int32 */
-  documentId?: number | null;
-  registryNumber?: string | null;
-  actResourceType?: EActResourceType | null;
-}
-
-export interface EditIndividualDeviceReadingsHistoryRequest {
-  newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
-}
-
 export enum EDocumentType {
   Common = "Common",
   DeviceCommissionCheckAct = "DeviceCommissionCheckAct",
@@ -1274,92 +1273,6 @@ export enum EIndividualDeviceReadingsSource {
   Duplicated = "Duplicated",
   Erc = "Erc",
   TtmFromErc = "TtmFromErc",
-}
-
-export interface ElectricHousingMeteringDeviceResponse {
-  /** @format int32 */
-  id: number;
-  transactionType: string | null;
-  model: string | null;
-  serialNumber: string | null;
-  sealNumber: string | null;
-
-  /** @format date-time */
-  sealInstallationDate: string | null;
-
-  /** @format date-time */
-  lastCheckingDate: string | null;
-
-  /** @format date-time */
-  futureCheckingDate: string | null;
-
-  /** @format date-time */
-  openingDate: string | null;
-
-  /** @format date-time */
-  closingDate: string | null;
-  closingReason: EClosingReason;
-  isActive: boolean | null;
-
-  /** @format int32 */
-  bitDepth: number | null;
-
-  /** @format double */
-  scaleFactor: number | null;
-  resource: EResourceType;
-  housingMeteringDeviceType: EHousingMeteringDeviceType;
-  address: HousingStockShortResponse | null;
-  comment: HousingMeteringDeviceCommentResponse | null;
-
-  /** @format int32 */
-  manufactureYear: number;
-
-  /** @format int32 */
-  stateVerificationYear: number;
-  stateVerificationQuarter: EYearQuarter;
-
-  /** @format int32 */
-  stateVerificationIntervalYears: number;
-
-  /** @format int32 */
-  nextStateVerificationYear: number;
-  phaseNumber: EPhaseNumberType;
-
-  /** @format int32 */
-  nodeId: number | null;
-}
-
-export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
-  successResponse: ElectricHousingMeteringDeviceResponse | null;
-}
-
-export interface ElectricNodeResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format int32 */
-  number: number;
-  nodeStatus: NodeCommercialStatusResponse | null;
-  resource: EResourceType;
-  nodeServiceZone: NodeServiceZoneResponse | null;
-
-  /** @format date-time */
-  lastCommercialAccountingDate: string | null;
-
-  /** @format date-time */
-  futureCommercialAccountingDate: string | null;
-
-  /** @format int32 */
-  housingStockId: number;
-  address: HousingStockShortResponse | null;
-  documents: DocumentLiteResponse[] | null;
-  locationName: string | null;
-  counter: ElectricHousingMeteringDeviceResponse | null;
-  currentTransformers: CurrentTransformerResponse[] | null;
-}
-
-export interface ElectricNodeResponseSuccessApiResponse {
-  successResponse: ElectricNodeResponse | null;
 }
 
 export enum ELivingHouseType {
@@ -1590,18 +1503,6 @@ export interface EResourceTypeStringDictionaryItem {
   value?: string | null;
 }
 
-export interface ErrorApiResponse {
-  errorResponse: ErrorResponse | null;
-}
-
-export interface ErrorResponse {
-  code: string | null;
-  message: string | null;
-  text: string | null;
-  data: Record<string, any>;
-  requestId: string | null;
-}
-
 export enum ESecuredIdentityRoleName {
   ManagingFirmAdministrator = "ManagingFirmAdministrator",
   ManagingFirmExecutor = "ManagingFirmExecutor",
@@ -1616,6 +1517,15 @@ export enum ESecuredIdentityRoleName {
   Controller = "Controller",
   ManagingFirmSeniorOperator = "ManagingFirmSeniorOperator",
   ManagingFirmSpectatorRestricted = "ManagingFirmSpectatorRestricted",
+}
+
+export interface ESecuredIdentityRoleNameStringDictionaryItem {
+  key?: ESecuredIdentityRoleName;
+  value?: string | null;
+}
+
+export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse {
+  successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
 export enum ETaskApplicationStatus {
@@ -1636,6 +1546,18 @@ export enum ETaskClosingStatus {
 
 export interface ETaskClosingStatusNullableStringDictionaryItem {
   key?: ETaskClosingStatus | null;
+  value?: string | null;
+}
+
+export enum ETaskConfirmationType {
+  Confirm = "Confirm",
+  PipeRuptureNotConfirmAnomaly = "PipeRuptureNotConfirm_Anomaly",
+  PipeRuptureNotConfirmCalculatorMalfunction = "PipeRuptureNotConfirm_CalculatorMalfunction",
+  PipeRuptureNotConfirmPowerMalfunction = "PipeRuptureNotConfirm_PowerMalfunction",
+}
+
+export interface ETaskConfirmationTypeStringDictionaryItem {
+  key?: ETaskConfirmationType;
   value?: string | null;
 }
 
@@ -1672,6 +1594,129 @@ export enum EValueNodeWorkingRangeRelation {
   HousingStock = "HousingStock",
 }
 
+export enum EYearQuarter {
+  First = "First",
+  Second = "Second",
+  Third = "Third",
+  Forth = "Forth",
+}
+
+export interface EditApartmentCheckRequest {
+  /** @format date-time */
+  checkingDate?: string | null;
+  checkType?: ECheckType | null;
+
+  /** @format int32 */
+  documentId?: number | null;
+  registryNumber?: string | null;
+  actResourceType?: EActResourceType | null;
+}
+
+export interface EditIndividualDeviceReadingsHistoryRequest {
+  newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+}
+
+export interface ElectricHousingMeteringDeviceResponse {
+  /** @format int32 */
+  id: number;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
+  sealNumber: string | null;
+
+  /** @format date-time */
+  sealInstallationDate: string | null;
+
+  /** @format date-time */
+  lastCheckingDate: string | null;
+
+  /** @format date-time */
+  futureCheckingDate: string | null;
+
+  /** @format date-time */
+  openingDate: string | null;
+
+  /** @format date-time */
+  closingDate: string | null;
+  closingReason: EClosingReason;
+  isActive: boolean | null;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format double */
+  scaleFactor: number | null;
+  resource: EResourceType;
+  housingMeteringDeviceType: EHousingMeteringDeviceType;
+  address: HousingStockShortResponse | null;
+  comment: HousingMeteringDeviceCommentResponse | null;
+
+  /** @format int32 */
+  manufactureYear: number;
+
+  /** @format int32 */
+  stateVerificationYear: number;
+  stateVerificationQuarter: EYearQuarter;
+
+  /** @format int32 */
+  stateVerificationIntervalYears: number;
+
+  /** @format int32 */
+  nextStateVerificationYear: number;
+  phaseNumber: EPhaseNumberType;
+
+  /** @format int32 */
+  nodeId: number | null;
+}
+
+export interface ElectricHousingMeteringDeviceResponseSuccessApiResponse {
+  successResponse: ElectricHousingMeteringDeviceResponse | null;
+}
+
+export interface ElectricNodeResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
+  nodeStatus: NodeCommercialStatusResponse | null;
+  resource: EResourceType;
+  nodeServiceZone: NodeServiceZoneResponse | null;
+
+  /** @format date-time */
+  lastCommercialAccountingDate: string | null;
+
+  /** @format date-time */
+  futureCommercialAccountingDate: string | null;
+
+  /** @format date-time */
+  commercialAccountingDeregistrationDate: string | null;
+
+  /** @format int32 */
+  housingStockId: number;
+  address: HousingStockShortResponse | null;
+  documents: DocumentLiteResponse[] | null;
+  locationName: string | null;
+  counter: ElectricHousingMeteringDeviceResponse | null;
+  currentTransformers: CurrentTransformerResponse[] | null;
+}
+
+export interface ElectricNodeResponseSuccessApiResponse {
+  successResponse: ElectricNodeResponse | null;
+}
+
+export interface ErrorApiResponse {
+  errorResponse: ErrorResponse | null;
+}
+
+export interface ErrorResponse {
+  code: string | null;
+  message: string | null;
+  text: string | null;
+  data: Record<string, any>;
+  requestId: string | null;
+}
+
 export interface ExportResultServiceModel {
   error?: string[] | null;
   warning?: string[] | null;
@@ -1680,13 +1725,6 @@ export interface ExportResultServiceModel {
 
 export interface ExportResultServiceModelSuccessApiResponse {
   successResponse: ExportResultServiceModel | null;
-}
-
-export enum EYearQuarter {
-  First = "First",
-  Second = "Second",
-  Third = "Third",
-  Forth = "Forth",
 }
 
 export interface FileContentResultSuccessApiResponse {
@@ -2386,10 +2424,6 @@ export interface HousingStockListResponse {
   id: number;
   houseCategory: string | null;
   houseType: string | null;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
@@ -3065,17 +3099,17 @@ export interface ManagementFirmCompetenceResponse {
   nomenclatures: WorkNomenclatureResponse[] | null;
 }
 
+export interface ManagementFirmCompetenceUserResponse {
+  /** @format int32 */
+  userId: number;
+}
+
 export interface ManagementFirmCompetencesListResponse {
   competences: ManagementFirmCompetenceResponse[] | null;
 }
 
 export interface ManagementFirmCompetencesListResponseSuccessApiResponse {
   successResponse: ManagementFirmCompetencesListResponse | null;
-}
-
-export interface ManagementFirmCompetenceUserResponse {
-  /** @format int32 */
-  userId: number;
 }
 
 export interface ManagementFirmEventDataApartmentResponse {
@@ -3212,8 +3246,7 @@ export interface ManagingFirmUserCreateRequest {
   position?: string | null;
   number?: string | null;
   password?: string | null;
-  userRoleIds?: number[] | null;
-  roleTypes?: string[] | null;
+  roleTypes?: ESecuredIdentityRoleName[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
 }
@@ -3294,8 +3327,7 @@ export interface ManagingFirmUserResponse {
   managementFirm: ManagementFirmResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
-  userRoles: UserRoleResponse[] | null;
-  roles: StringStringDictionaryItem[] | null;
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
   housingStocks: HousingStockShortResponse[] | null;
 }
 
@@ -3346,8 +3378,7 @@ export interface ManagingFirmUserUpdateRequest {
   department?: string | null;
   position?: string | null;
   number?: string | null;
-  userRoleIds?: number[] | null;
-  roleTypes?: string[] | null;
+  roleTypes?: ESecuredIdentityRoleName[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
 }
@@ -3807,6 +3838,9 @@ export interface PipeNodeResponse {
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
 
+  /** @format date-time */
+  commercialAccountingDeregistrationDate: string | null;
+
   /** @format int32 */
   housingStockId: number;
   address: HousingStockShortResponse | null;
@@ -4092,15 +4126,6 @@ export interface StringPagedList {
 
 export interface StringPagedListSuccessApiResponse {
   successResponse: StringPagedList | null;
-}
-
-export interface StringStringDictionaryItem {
-  key?: string | null;
-  value?: string | null;
-}
-
-export interface StringStringDictionaryItemListSuccessApiResponse {
-  successResponse: StringStringDictionaryItem[] | null;
 }
 
 export interface StringSuccessApiResponse {
@@ -4578,11 +4603,22 @@ export interface TaskResponse {
   stages: StageListResponse[] | null;
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
-  taskConfirmationTypes: StringStringDictionaryItem[] | null;
+  taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
 }
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
+}
+
+export interface TaskTriggersInformation {
+  /** @format date-time */
+  triggerTime?: string;
+
+  /** @format int32 */
+  previousTriggersCount?: number | null;
+
+  /** @format int32 */
+  currentTriggersCount?: number;
 }
 
 export interface TasksPagedList {
@@ -4616,17 +4652,6 @@ export interface TasksPagedList {
 
 export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
-}
-
-export interface TaskTriggersInformation {
-  /** @format date-time */
-  triggerTime?: string;
-
-  /** @format int32 */
-  previousTriggersCount?: number | null;
-
-  /** @format int32 */
-  currentTriggersCount?: number;
 }
 
 export interface TimeSpan {
@@ -4837,28 +4862,6 @@ export interface UpdatePipeNodeRequest {
 export interface UserCompetenceResponse {
   /** @format uuid */
   id: string;
-  title: string | null;
-}
-
-export interface UserRoleListResponse {
-  /** @format int32 */
-  id: number;
-  type: ESecuredIdentityRoleName;
-  title: string | null;
-}
-
-export interface UserRoleListWrappedResponse {
-  items: UserRoleListResponse[] | null;
-}
-
-export interface UserRoleListWrappedResponseSuccessApiResponse {
-  successResponse: UserRoleListWrappedResponse | null;
-}
-
-export interface UserRoleResponse {
-  /** @format int32 */
-  id: number;
-  type: ESecuredIdentityRoleName;
   title: string | null;
 }
 
@@ -7299,6 +7302,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksCalculatorsDetail
+     * @summary MeteringDevicesRead
+     * @request GET:/api/HousingStocks/{housingStockId}/Calculators
+     * @secure
+     */
+    housingStocksCalculatorsDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<CalculatorIntoHousingStockResponseArraySuccessApiResponse, any>({
+        path: `/api/HousingStocks/${housingStockId}/Calculators`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
@@ -7921,7 +7942,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesUpdate
@@ -8034,7 +8055,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchMagneticSealCreate
@@ -8058,7 +8079,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSetMagneticSealCreate
@@ -8614,7 +8635,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managingFirmUsersRoleTypesList: (params: RequestParams = {}) =>
-      this.request<StringStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+      this.request<ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirmUsers/RoleTypes`,
         method: "GET",
         secure: true,
@@ -10548,42 +10569,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     tasksExportExecutingIndividualDeviceCheckTasksList: (params: RequestParams = {}) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTasks`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
-     *
-     * @tags UserRoles
-     * @name UserRolesList
-     * @summary UserRolesRead
-     * @request GET:/api/UserRoles
-     * @secure
-     */
-    userRolesList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/UserRoles`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
-     *
-     * @tags UserRoles
-     * @name UserRolesForManagementFirmList
-     * @summary UserRolesRead
-     * @request GET:/api/UserRoles/ForManagementFirm
-     * @secure
-     */
-    userRolesForManagementFirmList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/UserRoles/ForManagementFirm`,
         method: "GET",
         secure: true,
         format: "json",

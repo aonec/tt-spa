@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { information } from '01/r_comp';
+import moment from 'moment';
 import { useInfoHeader } from './useInfoHeder';
 
 const taskInfo = [
@@ -21,7 +22,7 @@ export const useInformation = (state = {}) => {
           {
             title,
             value: state[value]
-              ? new Date(state[value]).toLocaleDateString()
+              ? moment(state[value]).format('DD.MM.YYYY')
               : '',
           },
         ];

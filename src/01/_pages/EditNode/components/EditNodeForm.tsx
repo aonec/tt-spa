@@ -99,7 +99,7 @@ const EditNodeForm = ({
   const { label: initialServiceZoneLabel } = initialServiceZoneInfo || {};
 
   const [form] = Form.useForm();
-  const { getFieldValue } = form;
+  const { getFieldValue, setFieldsValue } = form;
 
   const renderDocuments =
     ([
@@ -250,6 +250,9 @@ const EditNodeForm = ({
                 format="DD.MM.YYYY"
                 placeholder="Укажите дату..."
                 allowClear={false}
+                onChange={(value)=>{
+                  setFieldsValue({"futureCommercialAccountingDate": moment(value).add(4, 'years')})
+                }}
               />
             </Form.Item>
 

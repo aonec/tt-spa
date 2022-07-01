@@ -21,7 +21,6 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import Index from '../../tt-components/Breadcrumb';
 import TaskComments from './components/Comments/TaskComments';
 import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
@@ -30,6 +29,7 @@ import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStat
 import { getNodeIdFromTask } from './utlis';
 import { IndividualDevicesList } from './components/IndividualDevicesList';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -66,7 +66,6 @@ export const TaskProfile = () => {
   // ?
   const docs = useDocuments(state, dispatch);
   // прикрепленные файлы
-
   const info = useInformation(state);
   // ?
   const infoDevice = useInformationDevice(state);
@@ -92,7 +91,7 @@ export const TaskProfile = () => {
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <ReadingsHistoryModal readonly />
-      <Index path="/tasks/" />
+      <GoBack path="/tasks/" />
       <Header {...state.header} state={state} />
       {isIndividualDeviceReadingCheckType ? (
         <CorrectionReadingsPanel />

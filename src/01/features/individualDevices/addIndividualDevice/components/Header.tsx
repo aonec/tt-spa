@@ -1,7 +1,7 @@
-import { Breadcrumb } from '01/tt-components';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import React from 'react';
 import styled from 'styled-components';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HousingStockAddress } from './HousingStockAddress';
 
 export const CreateIndividualDeviceFormHeader: React.FC = () => (
@@ -13,7 +13,7 @@ export const CreateIndividualDeviceFormHeader: React.FC = () => (
       }}
     >
       <div>
-        <Breadcrumb />
+        <GoBack />
         <div>
           <Title>Добавление нового прибора</Title>
           <HousingStockAddress />

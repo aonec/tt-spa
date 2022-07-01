@@ -243,7 +243,7 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
                   setFieldValue('lastCheckingDate', date);
                   setFieldValue(
                     'futureCheckingDate',
-                    moment(date).add(3, 'years')
+                    moment(date).add(4, 'years')
                   );
                 }}
                 value={values.lastCheckingDate}
