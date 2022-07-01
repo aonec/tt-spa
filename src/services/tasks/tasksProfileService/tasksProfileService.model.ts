@@ -8,9 +8,9 @@ import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
 
 const domain = createDomain('tasksProfileService');
 
-const $searchState = domain.createStore<GetTasksListRequestPayload | null>(
-  null
-);
+const $searchState = domain.createStore<GetTasksListRequestPayload>({
+  GroupType: TaskGroupingFilter.Executing,
+});
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 
