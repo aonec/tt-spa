@@ -1,7 +1,9 @@
 import { getMeteringDeviceReadings } from '01/_api/meteringDeviceReadings';
+import { useEvent } from 'effector-react';
 import moment from 'moment';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 import { useState, useEffect } from 'react';
+import { meteringDeviceReadingsService } from '../MeteringDevicesList/meteringDevicesListService.model';
 
 export interface MeteringDeviceReading
   extends HousingMeteringDeviceReadingsIncludingPlacementResponse {}
@@ -10,6 +12,23 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   const [readings, setReadings] = useState<MeteringDeviceReading[] | null>(
     null
   );
+
+  const updateReadings = useEvent(
+    meteringDeviceReadingsService.inputs.updateNodeReadings
+  );
+
+  const previousExistingReading = getPreviousExistingReading(readings || []);
+  
+  if (previousExistingReading)
+    updateReadings({
+      id,
+      value: {
+        currentReading: getCurrentReading(
+          readings?.filter(({ id }) => id) || []
+        ),
+        previousExistingReading,
+      },
+    });
 
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +51,6 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   const preparedPreviousReadingsArray = getReadingsArrayWithEmpties(
     readings || []
   );
-
   return {
     refetch: fetchMeteringDeviceReadings,
     readings,
@@ -42,6 +60,12 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     previousReading: preparedPreviousReadingsArray[sliderIndex || 0],
   };
 }
+const getPreviousExistingReading = (readings: MeteringDeviceReading[]) => {
+  const sortReadings = readings.sort((firstReading, secondReading) =>
+    moment(firstReading.readingDate).diff(moment(secondReading.readingDate))
+  );
+  return sortReadings[sortReadings.length - 2];
+};
 
 const getCurrentReading = (readings: MeteringDeviceReading[]) => {
   const currentDate = moment();

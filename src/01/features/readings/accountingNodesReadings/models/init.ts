@@ -1,6 +1,8 @@
 import { accountingNodesFilterForm, getAccountingNodesDevices } from './index';
-import { sample } from 'effector';
+import { forward, sample } from 'effector';
 import { fetchNodes } from '01/features/nodes/displayNodes/models';
+import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import _ from 'lodash';
 
 sample({
   source: accountingNodesFilterForm.$values.map((elem) => ({
@@ -10,4 +12,10 @@ sample({
   })),
   clock: [getAccountingNodesDevices, accountingNodesFilterForm.formValidated],
   target: fetchNodes,
+});
+
+sample({
+  clock: fetchExistingCities.doneData,
+  fn: (values): string => (values ? values[values.length - 1] : ''),
+  target: accountingNodesFilterForm.fields.city.set,
 });
