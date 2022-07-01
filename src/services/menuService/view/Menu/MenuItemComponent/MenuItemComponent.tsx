@@ -29,7 +29,7 @@ export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
           to={path}
           activeClassName="active-menu-item-nav-link"
         >
-          <Icon className="menu-item-icon" />
+          {Icon && <Icon className="menu-item-icon" />}
           <MenuItemTitle>{title}</MenuItemTitle>
         </MenuItemWrapper>
         {isSubMenuItemsExist && (
