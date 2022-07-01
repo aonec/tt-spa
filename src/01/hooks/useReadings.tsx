@@ -29,6 +29,7 @@ import { refetchIndividualDevices } from '01/features/individualDevices/displayI
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -37,6 +38,8 @@ export const useReadings = (
   closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
+
+  const {} = useManagingFirmConsumptionRates(device.managementFirm?.id);
 
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
 
@@ -67,10 +70,15 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
-        const dateFormat = "YYYY-MM"
+        const dateFormat = 'YYYY-MM';
 
-        const currentMonthDate = moment(moment().format(dateFormat), dateFormat)
-        const readingMonthDate = moment(moment(elem.readingDateTime).format(dateFormat))
+        const currentMonthDate = moment(
+          moment().format(dateFormat),
+          dateFormat
+        );
+        const readingMonthDate = moment(
+          moment(elem.readingDateTime).format(dateFormat)
+        );
 
         if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
 
