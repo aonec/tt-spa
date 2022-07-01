@@ -59,7 +59,7 @@ const AddNodeSecondTab = () => {
       serviceZone: chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment(),
-      futureCommercialAccountingDate: moment().add(1, 'years'),
+      futureCommercialAccountingDate: moment().add(4, 'years'),
       disabledSecond: false,
     },
     validationSchema: nodeValidationSchema,
@@ -186,6 +186,7 @@ const AddNodeSecondTab = () => {
                   allowClear={false}
                   onChange={(date) => {
                     setFieldValue('lastCommercialAccountingDate', date);
+                    setFieldValue('futureCommercialAccountingDate', moment(date).add(4, 'years'));
                   }}
                   value={values.lastCommercialAccountingDate}
                 />

@@ -286,6 +286,7 @@ const AddDeviceForm = (props: any) => {
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', date);
+                setFieldValue('futureCheckingDate', moment(date).add(4, 'years'))
               }}
               value={values.lastCheckingDate}
             />
