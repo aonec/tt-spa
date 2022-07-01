@@ -6,4 +6,5 @@ import {
 export type AddressSearchContainerProps = {
   fields: SearchFieldType[];
   handleSubmit: (values: AddressSearchValues) => void;
+  initialValues?: AddressSearchValues;
 };
