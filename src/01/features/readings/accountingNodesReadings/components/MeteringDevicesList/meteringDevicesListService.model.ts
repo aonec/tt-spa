@@ -34,7 +34,7 @@ $readingsList
     readingsList[newReadings.id] = newReadings.value;
     return { ...readingsList };
   })
-  .reset(clearReadingsList);
+  .on(clearReadingsList, () => ({}));
 
 const MeteringDevicesListIsOpen = createGate();
 
