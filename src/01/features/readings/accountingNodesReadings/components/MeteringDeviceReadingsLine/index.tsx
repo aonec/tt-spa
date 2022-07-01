@@ -13,35 +13,27 @@ import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
 import { HistoryIcon } from 'ui-kit/icons';
 import { MeteringDeviceReadings } from '../MeteringDevicesList/meteringDevicesListService.types';
+import { meteringDeviceReadingsService } from '../MeteringDevicesList/meteringDevicesListService.model';
+import { useStore } from 'effector-react';
 
 interface Props {
   sliderIndex: number;
   node: ElectricNodeResponse;
   inputIndex: number;
-  addReadings: (readings: MeteringDeviceReadings) => void;
 }
 
 export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   node,
   sliderIndex,
   inputIndex,
-  addReadings,
 }) => {
   const counter = node.counter;
-
   const {
     loading,
     currentReading,
     previousReading,
-    previousExistingReading,
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
-
-  useEffect(
-    () => addReadings({ id: node.id, currentReading, previousExistingReading }),
-    [currentReading, previousExistingReading]
-  );
-
   const readingsInput = () => (
     <>
       <MeteringDeviceReadingInput
