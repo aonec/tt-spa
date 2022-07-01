@@ -11,7 +11,7 @@ import { MenuButtonTT } from '01/tt-components';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
 const { TabPane: Tab } = Tabs;

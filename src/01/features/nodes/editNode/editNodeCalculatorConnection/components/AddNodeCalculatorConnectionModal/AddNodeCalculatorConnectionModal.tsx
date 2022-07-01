@@ -1,10 +1,7 @@
 import { Button, Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
+import { CalculatorIntoHousingStockResponse, PipeNodeResponse } from 'myApi';
 import React, { FC } from 'react';
-import {
-  CalculatorListResponse,
-  PipeNodeResponse,
-} from '../../../../../../../myApi';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
@@ -17,13 +14,13 @@ import { AddNodeCalculatorConnectionForm } from './models';
 interface Props {
   onClose(): void;
   isOpen: boolean;
-  calculators: CalculatorListResponse[] | null;
+  calculators: CalculatorIntoHousingStockResponse[] | null;
   form: AddNodeCalculatorConnectionForm;
   loading: boolean;
   node?: PipeNodeResponse | null;
 }
 
-const calculatorConnectionInputNumbers = [1, 2, 3]
+const calculatorConnectionInputNumbers = [1, 2, 3];
 
 export const AddNodeCalculatorConnectionModal: FC<Props> = ({
   onClose,

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Radio } from 'antd';
 import { useState } from 'react';
 import { SerialNumberSearch } from './SerialNumberSearch';
@@ -62,6 +62,16 @@ export const FilterContainer = () => {
     },
     [history]
   );
+
+  const initialSearchValues = useMemo(() => {
+    const address = apartment?.housingStock?.address?.mainAddress;
+    return {
+      city: address?.city || '',
+      street: address?.street || '',
+      house: address?.number || '',
+      apartment: apartment?.apartmentNumber || '',
+    };
+  }, [apartment]);
 
   const addressSearch = (
     <>

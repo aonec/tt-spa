@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ConfigProvider, Form, Input, Select, Slider } from 'antd';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import {
   StyledForm,
