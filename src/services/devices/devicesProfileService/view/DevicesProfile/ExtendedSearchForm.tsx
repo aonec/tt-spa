@@ -29,8 +29,7 @@ export const ExtendedSearchForm: FC<{
   return (
     <StyledForm id="searchForm" initialValues={{ remember: true }}>
       <StyledContainerFourItems>
-        <Form.Item name="city">
-          <label htmlFor="City">Город : </label>
+        <Form.Item name="city" label="Город">
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
@@ -41,8 +40,7 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="street">
-          <label htmlFor="Street">Улица : </label>
+        <Form.Item name="street" label="Улица">
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
@@ -53,8 +51,7 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="house">
-          <label htmlFor="House">Дом : </label>
+        <Form.Item name="house" label="Дом">
           <Input
             onChange={(value) =>
               setFieldValue(
@@ -68,8 +65,7 @@ export const ExtendedSearchForm: FC<{
           />
         </Form.Item>
 
-        <Form.Item name="corpus">
-          <label htmlFor="Corpus">Корпус : </label>
+        <Form.Item name="corpus" label="Корпус">
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
@@ -81,92 +77,76 @@ export const ExtendedSearchForm: FC<{
         </Form.Item>
       </StyledContainerFourItems>
       <StyledContainerThreeItems>
-        <Form.Item name="Resource">
-          <div>
-            <label htmlFor="Resource">Тип ресурса: </label>
-            <Select
-              id="Resource"
-              value={values['Filter.Resource']}
-              placeholder="Все ресурсы"
-              onChange={(value) => setFieldValue("['Filter.Resource']", value)}
-            >
-              <Option value="">Все ресурсы</Option>
-              <Option value="Heat">Тепло</Option>
-              <Option value="HotWaterSupply">Горячая вода</Option>
-              <Option value="ColdWaterSupply">Холодная вода</Option>
-              <Option value="Electricity">Электричество</Option>
-            </Select>
-          </div>
+        <Form.Item name="Resource" label="Тип ресурса">
+          <Select
+            id="Resource"
+            value={values['Filter.Resource']}
+            placeholder="Все ресурсы"
+            onChange={(value) => setFieldValue("['Filter.Resource']", value)}
+          >
+            <Option value="">Все ресурсы</Option>
+            <Option value="Heat">Тепло</Option>
+            <Option value="HotWaterSupply">Горячая вода</Option>
+            <Option value="ColdWaterSupply">Холодная вода</Option>
+            <Option value="Electricity">Электричество</Option>
+          </Select>
         </Form.Item>
 
-        <Form.Item name="NodeStatus">
-          <div>
-            <label htmlFor="nodeStatus">Статус Узла : </label>
-            <Select
-              id="NodeStatus"
-              placeholder="Любой статус"
-              value={values['Filter.NodeStatus']}
-              onChange={(value) =>
-                setFieldValue("['Filter.NodeStatus']", value)
-              }
-            >
-              <Option value="">Любой статус</Option>
-              <Option value="NotRegistered">Не на коммерческом учете</Option>
-              <Option value="Registered">Сдан на коммерческий учет</Option>
-              <Option value="OnReview">На утверждении</Option>
-              <Option value="Prepared">Подговлен к сдаче</Option>
-            </Select>
-          </div>
+        <Form.Item name="NodeStatus" label="Статус Узла">
+          <Select
+            id="NodeStatus"
+            placeholder="Любой статус"
+            value={values['Filter.NodeStatus']}
+            onChange={(value) => setFieldValue("['Filter.NodeStatus']", value)}
+          >
+            <Option value="">Любой статус</Option>
+            <Option value="NotRegistered">Не на коммерческом учете</Option>
+            <Option value="Registered">Сдан на коммерческий учет</Option>
+            <Option value="OnReview">На утверждении</Option>
+            <Option value="Prepared">Подговлен к сдаче</Option>
+          </Select>
         </Form.Item>
-        <Form.Item name="lastCheckingDate">
-          <div>
-            <label htmlFor="expirationDate">Истекает дата поверки: </label>
-            <Select
-              id="expirationDate"
-              placeholder="Все"
-              value={values['Filter.ExpiresCheckingDateAt']}
-              onChange={(value) =>
-                setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
-              }
-            >
-              <Option value="">Все</Option>
-              <Option value="NextMonth">Ближайший месяц</Option>
-              <Option value="NextTwoMonth">В следующие два месяца</Option>
-              <Option value="Past">Истекла</Option>
-            </Select>
-          </div>
+        <Form.Item name="lastCheckingDate" label="Истекает дата поверки">
+          <Select
+            id="expirationDate"
+            placeholder="Все"
+            value={values['Filter.ExpiresCheckingDateAt']}
+            onChange={(value) =>
+              setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
+            }
+          >
+            <Option value="">Все</Option>
+            <Option value="NextMonth">Ближайший месяц</Option>
+            <Option value="NextTwoMonth">В следующие два месяца</Option>
+            <Option value="Past">Истекла</Option>
+          </Select>
         </Form.Item>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
-        <Form.Item name="deviceDiameter">
-          <div>
-            <label>Диаметр прибора, мм </label>
-
-            <StyledSlider
-              getTooltipPopupContainer={(triggerNode) =>
-                triggerNode.parentNode as HTMLElement
-              }
-              defaultValue={[0, 255]}
-              max={255}
-              range
-              value={[
-                values['Filter.DiameterRange.From']
-                  ? values['Filter.DiameterRange.From']
-                  : 0,
-                values['Filter.DiameterRange.To']
-                  ? values['Filter.DiameterRange.To']
-                  : 255,
-              ]}
-              marks={marks}
-              onChange={(value: [number, number]) => {
-                setFieldValue("['Filter.DiameterRange.From']", value[0]);
-                setFieldValue("['Filter.DiameterRange.To']", value[1]);
-              }}
-            />
-          </div>
+        <Form.Item name="deviceDiameter" label="Диаметр прибора, мм">
+          <StyledSlider
+            getTooltipPopupContainer={(triggerNode) =>
+              triggerNode.parentNode as HTMLElement
+            }
+            defaultValue={[0, 255]}
+            max={255}
+            range
+            value={[
+              values['Filter.DiameterRange.From']
+                ? values['Filter.DiameterRange.From']
+                : 0,
+              values['Filter.DiameterRange.To']
+                ? values['Filter.DiameterRange.To']
+                : 255,
+            ]}
+            marks={marks}
+            onChange={(value: [number, number]) => {
+              setFieldValue("['Filter.DiameterRange.From']", value[0]);
+              setFieldValue("['Filter.DiameterRange.To']", value[1]);
+            }}
+          />
         </Form.Item>
-        <Form.Item>
-          <label htmlFor="RangePicker">Период действия акта допуска : </label>
+        <Form.Item label="Период действия акта допуска">
           <ConfigProvider>
             <StyledRangePicker
               value={[
@@ -195,19 +175,16 @@ export const ExtendedSearchForm: FC<{
             />
           </ConfigProvider>
         </Form.Item>
-        <Form.Item name="OrderBy">
-          <div>
-            <label htmlFor="sortBy">Сортировать по:</label>
-            <Select
-              id="sortBy"
-              placeholder="Улица"
-              value={values.OrderBy}
-              onChange={(value) => setFieldValue('OrderBy', value)}
-            >
-              <Option value="Descending">Улице (уб.)</Option>
-              <Option value="Ascending">Улице (возр.)</Option>
-            </Select>
-          </div>
+        <Form.Item name="OrderBy" label="Сортировать по">
+          <Select
+            id="sortBy"
+            placeholder="Улица"
+            value={values.OrderBy}
+            onChange={(value) => setFieldValue('OrderBy', value)}
+          >
+            <Option value="Descending">Улице (уб.)</Option>
+            <Option value="Ascending">Улице (возр.)</Option>
+          </Select>
         </Form.Item>
       </StyledContainerThreeItems>
     </StyledForm>

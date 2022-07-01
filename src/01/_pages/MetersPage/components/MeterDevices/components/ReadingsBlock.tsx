@@ -56,7 +56,7 @@ interface DeviceRatesVerticalProps {
   status?: RequestStatusShared;
 }
 
-const StyledInput = styled(Input)`
+const InputSC = styled(Input)`
   color: var(--main-70);
   border: 0;
   border-left-width: 3px;
@@ -160,7 +160,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
       }
       {...(!closed && dataString ? { 'data-reading-input': dataString } : {})}
     >
-      <StyledInput
+      <InputSC
         status={status}
         suffix={
           <div style={{ marginLeft: -5 }}>

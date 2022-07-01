@@ -7,14 +7,14 @@ import {
   resetApartment,
   switchApartmentEditMode,
 } from './index';
-import { sample } from 'effector';
+import { sample, forward } from 'effector';
 import { $apartment, fetchApartmentFx } from '.';
 
 $apartment
   .on(fetchApartmentFx.doneData, (_, apartment) => {
     return apartment;
   })
-  .on(resetApartment, () => null);
+  .reset(resetApartment);
 
 fetchApartmentFx.use(getApartment);
 
@@ -27,3 +27,8 @@ sample({
 $apartmentEditMode
   .on(switchApartmentEditMode, (mode) => !mode)
   .reset(ApartmentEditModeGate.close);
+
+forward({
+  from: ApartmentGate.close,
+  to: resetApartment,
+});
