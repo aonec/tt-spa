@@ -70,6 +70,13 @@ export const Menu = () => {
   return <Wrap>{component}</Wrap>;
 };
 
+export const ExitButton = () => (
+  <ExitLink key={'10'} to={'/login/'} activeClassName={style.active}>
+    <ExitIcon icon={'exitIcon'} />
+    <span>Выйти</span>
+  </ExitLink>
+);
+
 const User = styled.div``;
 
 const MenuList = styled.div``;

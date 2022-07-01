@@ -10,10 +10,16 @@ export const DevicesProfileContainer = () => {
   const isOpen = useStore(outputs.$isExtendedSearchOpen);
   const close = useEvent(inputs.extendedSearchClosed);
   const open = useEvent(inputs.extendedSearchOpened);
-  
+
   return (
-    <>
-      <DevicesProfile showDownloadDeviceReportButtonClicked={showDownloadDeviceReportButtonClicked} fetchcalc={fetchcalc} isOpen={isOpen} close={close} open={open}/>
-    </>
+    <DevicesProfile
+      showDownloadDeviceReportButtonClicked={
+        showDownloadDeviceReportButtonClicked
+      }
+      fetchcalc={fetchcalc}
+      isOpen={isOpen}
+      close={close}
+      open={open}
+    />
   );
 };

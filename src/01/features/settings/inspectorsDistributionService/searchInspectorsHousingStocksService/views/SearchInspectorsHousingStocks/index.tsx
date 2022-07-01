@@ -3,8 +3,8 @@ import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/c
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import {
   StyledAutocomplete,
-  StyledInput,
-  StyledSelector,
+  InputSC,
+  SelectSC,
 } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
@@ -62,7 +62,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
           extendedSearchContent={
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">
-                <StyledSelector
+                <SelectSC
                   placeholder="Выберите из списка"
                   value={form.fields.InspectorId.value || undefined}
                   onChange={(value) => {
@@ -79,10 +79,10 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                       {inspector.fullName}
                     </Select.Option>
                   ))}
-                </StyledSelector>
+                </SelectSC>
               </Form.Item>
               <Form.Item label="Домоуправление">
-                <StyledSelector
+                <SelectSC
                   value={form.fields.HouseManagement.value || undefined}
                   onChange={(value) => {
                     if (!value) {
@@ -102,13 +102,13 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                       {houseManagement.value}
                     </Select.Option>
                   ))}
-                </StyledSelector>
+                </SelectSC>
               </Form.Item>
             </ExtendedSearchWrap>
           }
         >
           <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
-            <StyledSelector
+            <SelectSC
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(0)(e);
                 fromEnter(handleSearch)(e);
@@ -125,7 +125,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                     {city}
                   </Select.Option>
                 ))}
-            </StyledSelector>
+            </SelectSC>
             <StyledAutocomplete
               ref={streetRef}
               value={form.fields.Street.value}
@@ -143,7 +143,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               options={options}
               placeholder="Улица"
             />
-            <StyledInput
+            <InputSC
               ref={homeNumberRef}
               placeholder="Дом"
               value={form.fields.HousingStockNumber.value}

@@ -1,4 +1,4 @@
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { Action } from 'redux';
 import {
   ECalculatorOrderRule,

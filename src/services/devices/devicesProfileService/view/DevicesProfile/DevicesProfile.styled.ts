@@ -1,7 +1,11 @@
-import { Slider, Form } from "antd";
-import styled from "styled-components";
+import { Slider, Form } from 'antd';
+import styled from 'styled-components';
 import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
+
+export const Wrapper = styled.div`
+  max-width: 960px;
+`;
 
 export const StyledSlider = styled(Slider)`
   width: 95%;
