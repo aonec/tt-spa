@@ -617,6 +617,20 @@ export interface ConfirmRequest {
   password: string;
 }
 
+export interface ConsumptionRateResponse {
+  /** @format double */
+  minimumConsumptionRatePerPerson: number | null;
+
+  /** @format double */
+  minimumConsumptionRate: number | null;
+
+  /** @format double */
+  minimumAverageConsumptionOverPastThreeMonth: number | null;
+
+  /** @format double */
+  maximumConsumptionRate: number | null;
+}
+
 export interface ContractorCreateRequest {
   name?: string | null;
   cellphone?: string | null;
@@ -1333,6 +1347,7 @@ export enum EManagingFirmTaskFilterType {
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   PlannedApplication = "PlannedApplication",
   MeasurementErrorAny = "MeasurementErrorAny",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1354,6 +1369,7 @@ export enum EManagingFirmTaskType {
   PlannedApplication = "PlannedApplication",
   MeasurementErrorCommercial = "MeasurementErrorCommercial",
   MeasurementErrorNonCommercial = "MeasurementErrorNonCommercial",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export enum EManagingFirmUserWorkingStatusType {
@@ -1493,6 +1509,15 @@ export enum EResourceType {
   Electricity = "Electricity",
 }
 
+export interface EResourceTypeConsumptionRateResponseDictionaryItem {
+  key?: EResourceType;
+  value?: ConsumptionRateResponse | null;
+}
+
+export interface EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse {
+  successResponse: EResourceTypeConsumptionRateResponseDictionaryItem[] | null;
+}
+
 export interface EResourceTypeNullableStringDictionaryItem {
   key?: EResourceType | null;
   value?: string | null;
@@ -1569,6 +1594,7 @@ export enum ETaskCreateType {
   IndividualDeviceCheck = "IndividualDeviceCheck",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   MeasurementError = "MeasurementError",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export enum ETaskTargetObjectRequestType {
@@ -1577,6 +1603,7 @@ export enum ETaskTargetObjectRequestType {
   Node = "Node",
   Application = "Application",
   Reading = "Reading",
+  IndividualDevice = "IndividualDevice",
 }
 
 export enum ETaskTargetType {
@@ -4491,6 +4518,8 @@ export interface TaskCommentResponseSuccessApiResponse {
 }
 
 export interface TaskCreateRequest {
+  /** @format int32 */
+  key?: number;
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
@@ -8167,6 +8196,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags IndividualDevices
+     * @name IndividualDevicesCreateTaskForDeviceWithoutReadingsCreate
+     * @summary IndividualDeviceClose
+     * @request POST:/api/IndividualDevices/createTaskForDeviceWithoutReadings
+     * @secure
+     */
+    individualDevicesCreateTaskForDeviceWithoutReadingsCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualDevices/createTaskForDeviceWithoutReadings`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     *
+     * @tags IndividualDevices
      * @name IndividualDevicesCloseDevicesWithoutReadingsCreate
      * @summary IndividualDeviceClose
      * @request POST:/api/IndividualDevices/closeDevicesWithoutReadings
@@ -8454,7 +8500,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managingFirmsConsumptionRatesDetail: (managingFirmId: number, params: RequestParams = {}) =>
-      this.request<ManagementFirmResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}/ConsumptionRates`,
         method: "GET",
         secure: true,
