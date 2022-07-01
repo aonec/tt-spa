@@ -4,8 +4,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
-import { Tabs } from 'antd';
-import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
@@ -13,48 +11,37 @@ import { AccountingNodesReadings } from '01/features/readings/accountingNodesRea
 import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { FilterContainer } from './components/Filter.container';
 
-const { TabPane } = Tabs;
-
 export const MetersPage = () => {
-  const history = useHistory();
-  const defaultKey = history.location.pathname.split('/')[2];
-
-  const handleTabClick = (key) => {
-    history.replace(`/meters/${key}`);
-  };
-
   return (
-    <Wrap style={{ maxWidth: 960 }}>
+    <Wrap>
       <CurrentManagingFirmUserGate />
-      <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
-        <TabPane tab="По квартирам" key="apartments">
-          <Route path="/meters/apartments">
-            <FilterContainer />
-          </Route>
-          <Route path="/meters/apartments/:id">
-            <ApartmentInfo />
-            <ApartmentReadings />
-          </Route>
-        </TabPane>
-        <TabPane tab="По домам" key="houses">
-          <Route path="/meters/houses">
-            <HousingStockFilter />
-          </Route>
-          <Route path="/meters/houses/:id">
-            <HouseReadings />
-          </Route>
-        </TabPane>
-        <TabPane tab="По узлам учета" key="accountingNodes">
-          <Route path="/meters/accountingNodes">
-            <AccountingNodesReadings />
-          </Route>
-        </TabPane>
-      </Tabs>
+      <Route path="/meters/apartments/:id?">
+        <FilterContainer />
+      </Route>
+
+      <Route path="/meters/apartments/:id">
+        <ApartmentInfo />
+        <ApartmentReadings />
+      </Route>
+
+      <Route path="/meters/houses">
+        <HousingStockFilter />
+      </Route>
+
+      <Route path="/meters/houses/:id">
+        <HouseReadings />
+      </Route>
+
+      <Route path="/meters/accountingNodes">
+        <AccountingNodesReadings />
+      </Route>
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
+  max-width: 960px;
+
   .ant-tabs {
     overflow: visible !important;
   }

@@ -5,12 +5,16 @@ import { SerialNumberSearch } from './SerialNumberSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchInput, SearchWrapper, Wrapper } from './Filters.styled';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useFilters } from './Filter.hook';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { $apartment } from '01/features/apartments/displayApartment/models';
+import {
+  $apartment,
+  fetchApartmentFx,
+} from '01/features/apartments/displayApartment/models';
 import { useStore } from 'effector-react';
+import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 
 const searchfields = [
   SearchFieldType.City,
@@ -21,6 +25,7 @@ const searchfields = [
 
 export const FilterContainer = () => {
   const history = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   const [searchContext, setSearchContext] = useState(1);
   const [question, setQuestion] = useState('');
@@ -30,6 +35,8 @@ export const FilterContainer = () => {
   const { syncSearchState, searchState } = useFilters();
 
   const apartment = useStore($apartment);
+
+  const pendingApartment = useStore(fetchApartmentFx.pending);
 
   useEffect(() => {
     if (!apartment?.homeownerAccounts?.length) return;
@@ -67,22 +74,24 @@ export const FilterContainer = () => {
   }, [apartment]);
 
   const addressSearch = (
-    <SearchWrapper>
-      <AddressSearchContainer
-        fields={searchfields}
-        handleSubmit={syncSearchState}
-        initialValues={initialSearchValues}
-      />
-      <SearchInput
-        placeholder="Л/с или ФИО"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        onClick={() => setQuestion('')}
-        onKeyDown={fromEnter(() => {
-          syncSearchState({ question });
-        })}
-      />
-    </SearchWrapper>
+    <>
+      <SearchWrapper>
+        <AddressSearchContainer
+          fields={searchfields}
+          handleSubmit={syncSearchState}
+        />
+        <SearchInput
+          placeholder="Л/с или ФИО"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          onClick={() => setQuestion('')}
+          onKeyDown={fromEnter(() => {
+            syncSearchState({ question });
+          })}
+        />
+      </SearchWrapper>
+      {(!apartment || !id) && !pendingApartment && <TypeAddressToStart />}
+    </>
   );
 
   return (
