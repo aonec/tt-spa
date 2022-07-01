@@ -15,7 +15,7 @@ export const MetersPage = () => {
   return (
     <Wrap>
       <CurrentManagingFirmUserGate />
-      <Route path="/meters/apartments">
+      <Route path="/meters/apartments/:id?">
         <FilterContainer />
       </Route>
 

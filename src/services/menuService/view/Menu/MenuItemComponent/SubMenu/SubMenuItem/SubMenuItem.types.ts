@@ -1,5 +1,5 @@
-import { MenuItem } from './../../../../../menuService.types';
+import { SubMenuItem } from '../../../../../menuService.types';
 
 export type SubMenuItemProps = {
-  subMenuItem: Omit<MenuItem, 'sub' | 'icon'>;
+  subMenuItem: SubMenuItem;
 };
