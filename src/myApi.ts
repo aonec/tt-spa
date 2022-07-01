@@ -384,6 +384,20 @@ export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
   successResponse: CalculatorInfoListWrappedResponse | null;
 }
 
+export interface CalculatorIntoHousingStockResponse {
+  /** @format int32 */
+  id: number;
+  serialNumber: string | null;
+  model: string | null;
+
+  /** @format int32 */
+  calculatorInfoId: number | null;
+}
+
+export interface CalculatorIntoHousingStockResponseArraySuccessApiResponse {
+  successResponse: CalculatorIntoHousingStockResponse[] | null;
+}
+
 export interface CalculatorIntoNodeResponse {
   /** @format int32 */
   id: number;
@@ -7282,6 +7296,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ManagingFirmUserShortResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/ReassignController/${controllerId}`,
         method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksCalculatorsDetail
+     * @summary MeteringDevicesRead
+     * @request GET:/api/HousingStocks/{housingStockId}/Calculators
+     * @secure
+     */
+    housingStocksCalculatorsDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<CalculatorIntoHousingStockResponseArraySuccessApiResponse, any>({
+        path: `/api/HousingStocks/${housingStockId}/Calculators`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
