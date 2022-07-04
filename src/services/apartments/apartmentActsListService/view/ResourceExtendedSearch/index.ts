@@ -1,0 +1,1 @@
+export { ResourceExtendedSearch } from './ResourceExtendedSearch'
