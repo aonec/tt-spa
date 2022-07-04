@@ -31,5 +31,5 @@ export function useManagingFirmConsumptionRates(
     if (managementFirmId) loadConsumptionRates(managementFirmId);
   }, [managementFirmId]);
 
-  return managementFirmConsumptionRates;
+  return managementFirmConsumptionRates || {};
 }
