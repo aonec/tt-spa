@@ -1,1 +1,0 @@
-export { ResourceExtendedSearch } from './ResourceExtendedSearch'

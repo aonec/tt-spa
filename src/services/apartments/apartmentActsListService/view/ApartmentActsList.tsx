@@ -1,7 +1,9 @@
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
+import { EActResourceType } from 'myApi';
 import React, { FC, useMemo } from 'react';
-import { ActTypeExtendedSearch } from './ActTypeExtendedSearch';
+import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
+import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import { ApartmentActItem } from './ApartmentActItem';
 import {
   AddButton,
@@ -11,7 +13,6 @@ import {
   Wrapper,
 } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
-import { ResourceExtendedSearch } from './ResourceExtendedSearch';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   acts,
@@ -42,6 +43,10 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
     [acts, actTypes]
   );
 
+  const resources = Object.entries(
+    actResourceNamesLookup
+  ).map(([key, value]) => ({ key: key as EActResourceType, value }));
+
   return (
     <>
       <Wrapper>
@@ -53,17 +58,18 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
             <ColumnTitle>
               Ресурс
               <ExtendedSearchWrapper>
-              <ResourceExtendedSearch
-                handleUpdateResources={handleUpdateResources}
-              />
-                </ExtendedSearchWrapper>
+                <FilterExtendedSearch
+                  allowedFilters={resources}
+                  handleUpdate={handleUpdateResources}
+                />
+              </ExtendedSearchWrapper>
             </ColumnTitle>
             <ColumnTitle>
               Тип
               <ExtendedSearchWrapper>
-                <ActTypeExtendedSearch
-                  actTypes={actTypes}
-                  handleUpdateTypes={handleUpdateTypes}
+                <FilterExtendedSearch
+                  allowedFilters={actTypes}
+                  handleUpdate={handleUpdateTypes}
                 />
               </ExtendedSearchWrapper>
             </ColumnTitle>
