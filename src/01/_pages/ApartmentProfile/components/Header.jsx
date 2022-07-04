@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Title } from './Title';
 import { Text } from './Text';
 import { MenuButtonTT } from '../../../tt-components';
-import { openCheckApartmentModal } from '01/features/apartments/checkApartment/models';
 
 export const Header = ({ apartmentNumber, city, street, number }) => {
 
@@ -20,7 +19,6 @@ export const Header = ({ apartmentNumber, city, street, number }) => {
           {
             title: 'Создать проверку',
             show: true,
-            cb: openCheckApartmentModal,
           },
         ]}
       />
