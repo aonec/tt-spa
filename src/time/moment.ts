@@ -1,7 +1,5 @@
-import moment from 'moment-timezone';
+import moment from 'moment';
 
-const timezone = moment.tz.guess();
-
-moment.tz.setDefault(timezone);
+moment.utc();
 
 export { moment };

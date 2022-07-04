@@ -242,7 +242,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
 
     const uploadTime = reading && (
-      <div>{moment(reading.uploadTime).format('DD.MM.YYYY HH:mm')}</div>
+      <div>
+        {moment.utc(reading.uploadTime).local().format('DD.MM.YYYY HH:mm')}
+      </div>
     );
 
     const arrowButtonComponent =

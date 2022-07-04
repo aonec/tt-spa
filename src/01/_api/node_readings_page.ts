@@ -3,7 +3,7 @@ import {
   ReadingsInterface,
   ReportType,
 } from '../_pages/Graph/components/GraphView';
-import moment, { Moment } from 'time';
+import moment, { Moment } from 'moment';
 
 delete axios.defaults.headers.common['Authorization'];
 
