@@ -4,7 +4,7 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import { ApartmentActResponse, EActResourceType } from 'myApi';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';

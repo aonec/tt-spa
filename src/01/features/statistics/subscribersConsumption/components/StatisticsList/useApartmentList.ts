@@ -4,7 +4,7 @@ import { $consumptionStatistics } from '../../models';
 import { useStore } from 'effector-react';
 import { useForm } from 'effector-forms/dist';
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'time';
 
 type IterateArrayCallback<T> = ((apartment: T) => boolean)[];
 

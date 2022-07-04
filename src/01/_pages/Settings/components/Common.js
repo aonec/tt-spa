@@ -3,7 +3,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Form } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'time';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ButtonTT, InputTT, SelectTT } from '../../../tt-components';

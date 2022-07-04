@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { fetchConsumptionStatistics } from '../../models';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
-import moment from 'moment';
+import moment from 'time';
 import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import _ from 'lodash';

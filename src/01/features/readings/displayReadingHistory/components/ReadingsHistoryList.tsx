@@ -1,6 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,

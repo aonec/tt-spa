@@ -2,7 +2,7 @@ import React from 'react';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
 import { translateResource } from '../../../utils/translateResource';
 import { IndividualDeviceResponse } from '../../../../myApi';
-import moment from 'moment';
+import moment from 'time';
 import styled from 'styled-components';
 import { Loader } from '../../../_components/Loader';
 

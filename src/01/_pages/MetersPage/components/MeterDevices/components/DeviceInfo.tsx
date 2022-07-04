@@ -8,7 +8,7 @@ import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import moment from 'moment';
+import moment from 'time';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;

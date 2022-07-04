@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 // библиотека обработки дат и локализация СНГ
 // import 'moment/locale/ru';
 

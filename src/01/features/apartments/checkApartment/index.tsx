@@ -17,7 +17,7 @@ import { DatePickerTT, InputTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, message } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import moment from 'moment';
+import moment from 'time';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { FilesList } from '01/shared/ui/FilesList';
 import { combine } from 'effector';

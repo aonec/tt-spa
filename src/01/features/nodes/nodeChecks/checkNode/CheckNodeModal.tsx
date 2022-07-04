@@ -6,7 +6,7 @@ import { ModalTT } from '01/shared/ui/ModalTT';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form } from 'antd';
-import moment from 'moment';
+import moment from 'time';
 import React, { FC, SyntheticEvent } from 'react';
 import { EditNodeCheckPayload } from './models';
 import { CheckingActDocumentType } from './utils';

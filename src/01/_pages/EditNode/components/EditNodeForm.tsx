@@ -18,7 +18,7 @@ import {
   UpdatePipeNodeRequest,
 } from '../../../../myApi';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
-import moment from 'moment';
+import moment from 'time';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
 import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';

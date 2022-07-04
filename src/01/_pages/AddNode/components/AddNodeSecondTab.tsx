@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Form } from 'antd';
-import moment from 'moment';
+import moment from 'time';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { resources, nodeStatusList } from '../../../tt-components/localBases';

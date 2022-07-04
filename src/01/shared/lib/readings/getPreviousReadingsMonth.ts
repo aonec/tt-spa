@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
 
 export const getPreviousReadingsMonth = (sliderIndex: number) => {

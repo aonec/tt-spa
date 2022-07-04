@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'time';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { PipeNodeResponse } from '../../../myApi';

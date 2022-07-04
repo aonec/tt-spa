@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import { Subtitle } from '../../../_components/Headers';
-import moment from 'moment';
+import moment from 'time';
 import { CalculatorResponse } from '../../../../myApi';
 import {
   DEFAULT_BUILDING,

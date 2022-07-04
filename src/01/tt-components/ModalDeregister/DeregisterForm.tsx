@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'antd';
-import moment from 'moment';
+import moment from 'time';
 import { deregisterDevice } from './apiDeregisterDevice';
 import { StyledFooter, StyledModalBody } from '../Modal';
 import { DatePickerTT } from '../DatePicker';

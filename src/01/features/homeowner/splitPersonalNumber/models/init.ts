@@ -18,7 +18,7 @@ import {
 import { combine, forward, guard, sample } from 'effector';
 import { splitHomeownerAccount } from '01/_api/homeowners';
 import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
-import moment from 'moment';
+import moment from 'time';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { doesApartmentExist } from '01/_api/housingStocks';
 

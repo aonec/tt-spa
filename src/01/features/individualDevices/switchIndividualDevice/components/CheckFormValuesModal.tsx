@@ -7,7 +7,7 @@ import { ButtonTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import { EResourceType, IndividualDeviceMountPlaceListResponse } from 'myApi';
 import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';

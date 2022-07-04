@@ -18,7 +18,7 @@ import {
   putApartmentCheck,
   removeApartmentCheck,
 } from '01/_api/apartments';
-import moment from 'moment';
+import moment from 'time';
 import {
   $apartment,
   ApartmentGate,

@@ -1,7 +1,7 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { updateHousingMeteringDeviceReading } from '01/_api/meteringDeviceReadings';
-import moment from 'moment';
+import moment from 'time';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyledMeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';

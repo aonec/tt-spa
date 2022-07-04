@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 import React, { FC, useCallback, useMemo } from 'react';
 import { saveDocument } from 'ui-kit/DocumentsService/DocumentsService.api';
 import { DateIcon } from 'ui-kit/icons';

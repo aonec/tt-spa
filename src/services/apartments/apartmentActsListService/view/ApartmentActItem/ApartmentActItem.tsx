@@ -1,5 +1,5 @@
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import moment from 'moment';
+import moment from 'time';
 import React, { FC, useMemo } from 'react';
 import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {

@@ -10,8 +10,8 @@ import {
   StyledSlider,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
-import type { Moment } from 'moment';
-import moment from 'moment';
+import type { Moment } from 'time';
+import moment from 'time';
 
 const { Option } = Select;
 

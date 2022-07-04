@@ -1,7 +1,7 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import confirm from 'antd/lib/modal/confirm';
-import moment from 'moment';
+import moment from 'time';
 import React from 'react';
 import { Pen, Trash } from 'react-bootstrap-icons';
 import { checkHistoryTemp, ListItem } from '../NodeChecks';

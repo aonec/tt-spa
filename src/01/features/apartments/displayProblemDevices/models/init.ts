@@ -5,7 +5,7 @@ import {
   $problemDevices,
 } from './index';
 import { forward } from 'effector';
-import moment from 'moment';
+import moment from 'time';
 
 fetchProblemDevicesFx.use(getProblemDevices);
 

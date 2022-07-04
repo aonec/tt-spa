@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { information } from '01/r_comp';
-import moment from 'moment';
+import moment from 'time';
 import { useInfoHeader } from './useInfoHeder';
 
 const taskInfo = [

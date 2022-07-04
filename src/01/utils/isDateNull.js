@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 
 const isDateNull = (date) => {
   return date === null ? null : moment(date);

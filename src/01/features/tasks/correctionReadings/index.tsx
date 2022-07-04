@@ -15,7 +15,7 @@ import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import React, { useEffect } from 'react';
 import { NextStagesGate } from '../displayNextStages/models';
 import { $task, fetchTaskFx } from '../displayTask/models';

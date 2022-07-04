@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import rateTypeToNumber from '../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
-import moment from 'moment';
+import moment from 'time';
 import axios from '../axios';
 
 import ReadingsBlock, {

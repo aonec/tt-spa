@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'time';
 import $ from 'jquery';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 

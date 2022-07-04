@@ -8,7 +8,7 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, message, Select } from 'antd';
-import moment from 'moment';
+import moment from 'time';
 import { resources } from '../../../tt-components/localBases';
 import {
   ButtonTT,

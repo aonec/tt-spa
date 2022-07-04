@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../_components/Icon';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
-import moment from 'moment';
+import moment from 'time';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;

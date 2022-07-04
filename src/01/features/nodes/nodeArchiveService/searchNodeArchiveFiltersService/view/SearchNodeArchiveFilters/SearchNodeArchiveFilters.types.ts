@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 import { EReportType } from 'myApi';
 import { LoadNodeArchiveDataPayload } from '../../../displayNodeArchiveService/displayNodeArchiveService.types';
 

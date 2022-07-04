@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { combine, createDomain, forward, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import moment from 'moment';
+import moment from 'time';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, ReportType } from './types';
 import { downloadURI } from './utils';

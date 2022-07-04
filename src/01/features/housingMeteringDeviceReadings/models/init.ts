@@ -19,7 +19,7 @@ import {
 } from '../../../_api/housing_metering_device_readings';
 import { forward, guard, sample } from 'effector';
 import { GetHousingMeteringDeviceReadingsResponse } from '../../../../myApi';
-import moment from 'moment';
+import moment from 'time';
 import { formatDate } from '01/utils/dates';
 
 requestReadingsFx.use(requestReadings);

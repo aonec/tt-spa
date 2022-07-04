@@ -4,7 +4,7 @@ import { DatePickerTT } from '01/tt-components';
 import { EDocumentType } from 'myApi';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import moment from 'time';
 import { NodeSetRegisteredRequest } from 'myApi';
 import React, { FC, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';

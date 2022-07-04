@@ -21,7 +21,7 @@ import {
 import {
   addressSearchForm,
 } from '01/features/addressIdSearch/models';
-import moment from 'moment';
+import moment from 'time';
 import { $apartmentSearchId } from '01/features/addressIdSearch/models';
 
 fetchApartmentActsFx.use(getApartmentActs);

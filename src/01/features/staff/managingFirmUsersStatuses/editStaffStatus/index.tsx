@@ -24,7 +24,7 @@ import styled from 'styled-components';
 import { StaffStatus } from '../../displayStaff/models/components/StaffStatus';
 import { useForm } from 'effector-forms';
 import { EManagingFirmUserWorkingStatusType } from 'myApi';
-import moment from 'moment';
+import moment from 'time';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Loader } from '01/_components/Loader';
 import { ErrorAlert } from '01/_components/Alert';

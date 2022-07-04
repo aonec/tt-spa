@@ -14,7 +14,7 @@ import {
 } from '../../models';
 import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { ButtonTT } from '01/tt-components';
-import moment from 'moment';
+import moment from 'time';
 import { useParams } from 'react-router';
 
 export const ExpandedSearch = () => {

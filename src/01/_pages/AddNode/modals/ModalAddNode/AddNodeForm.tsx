@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import moment from 'moment';
+import moment from 'time';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';

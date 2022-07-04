@@ -24,7 +24,7 @@ import {
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
 import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
-import moment from 'moment';
+import moment from 'time';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 

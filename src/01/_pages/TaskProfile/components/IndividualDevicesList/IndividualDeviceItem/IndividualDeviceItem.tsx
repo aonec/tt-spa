@@ -1,5 +1,5 @@
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
-import moment from 'moment';
+import moment from 'time';
 import React, { FC, useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';

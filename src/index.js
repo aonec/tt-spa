@@ -5,6 +5,9 @@ import ReactDOM from 'react-dom';
 import { App } from '01/App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import moment from "moment"
+
+moment.tz
 
 ReactDOM.render(
   <BrowserRouter>

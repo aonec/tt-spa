@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import moment from 'moment';
+import moment from 'time';
 
 function formatTime(time = null) {
   if (!time) return {};

@@ -12,7 +12,7 @@ import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
 import axios from '01/axios';
-import moment from 'moment';
+import moment from 'time';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 

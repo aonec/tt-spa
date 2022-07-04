@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FileIcon } from './file.svg';
 import { ReactComponent as UserIcon } from './user.svg';
-import moment from 'moment';
+import moment from 'time';
 import { Flex } from '../Layout/Flex';
 import { MenuButtonTT } from '01/tt-components';
 import { FileData } from '01/hooks/useFilesUpload';

@@ -13,7 +13,7 @@ import { InputSC } from '01/shared/ui/Fields';
 import axios from '01/axios';
 import { message } from 'antd';
 import { useEffect } from 'react';
-import moment from 'moment';
+import moment from 'time';
 
 export const Certificate = (props) => {
   const { certificate } = props;

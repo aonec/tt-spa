@@ -9,7 +9,7 @@ import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import React, { ChangeEvent, useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';

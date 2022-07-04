@@ -1,7 +1,7 @@
 import { ButtonTT } from '01/tt-components';
 import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import moment from 'time';
 import { EReportType } from 'myApi';
 import React, { FC } from 'react';
 import {

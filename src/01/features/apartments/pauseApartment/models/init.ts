@@ -14,7 +14,7 @@ import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
 import { FileData } from '01/hooks/useFilesUpload';
-import moment from 'moment';
+import moment from 'time';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 

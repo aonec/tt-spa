@@ -4,7 +4,7 @@ import { Icon } from '01/_components/Icon';
 
 import { NavLink } from 'react-router-dom';
 import { IconTT } from '../../../tt-components';
-import moment from 'moment';
+import moment from 'time';
 
 interface RelatedDevicesInterface {
   device: any;

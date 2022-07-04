@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import moment from 'moment';
+import moment from 'time';
 import { IndividualDeviceResponse } from 'myApi';
 import axios from '01/axios';
 

@@ -3,7 +3,7 @@ import { Select } from '01/shared/ui/Select';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import moment from 'moment';
+import moment from 'time';
 import { EActResourceType, EActType } from 'myApi';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';

@@ -1,6 +1,6 @@
 import { DatePickerTT } from '01/tt-components';
 import FormItem from 'antd/lib/form/FormItem';
-import moment from 'moment';
+import moment from 'time';
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import moment, { Moment } from 'moment';
+import moment, { Moment } from 'time';
 import { GroupReportValuesInterface } from '../components/GroupReport';
 
 interface GroupReducerState {

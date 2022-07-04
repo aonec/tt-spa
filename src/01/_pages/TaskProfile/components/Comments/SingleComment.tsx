@@ -2,7 +2,7 @@ import React from 'react';
 import { TaskCommentResponse } from '../../../../../myApi';
 import { Icon } from '../../../../tt-components/Icon';
 import styled from 'styled-components';
-import moment from 'moment';
+import moment from 'time';
 
 const SingleComment = ({ comment }: { comment: TaskCommentResponse }) => {
   return (

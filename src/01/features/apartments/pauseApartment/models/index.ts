@@ -8,7 +8,7 @@ import {
   createEvent,
   fromObservable,
 } from 'effector';
-import moment from 'moment';
+import moment from 'time';
 
 export const $isPauseApartmentModalVisible = createStore(false);
 

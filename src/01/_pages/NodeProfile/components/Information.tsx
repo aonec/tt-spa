@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'time';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { nodeStatusList } from '../../../tt-components/localBases';

@@ -12,7 +12,7 @@ import {
 
 import { Divider, Form, Radio } from 'antd';
 import { StyledRadio } from '../../../../../tt-components/Radio';
-import moment from 'moment';
+import moment from 'time';
 import { ObjectContext } from '../../../index';
 import {
   CalculatorListResponse,

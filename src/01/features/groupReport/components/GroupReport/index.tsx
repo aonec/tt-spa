@@ -17,7 +17,7 @@ import {
 
 import { Divider, Form, Radio } from 'antd';
 
-import moment, { Moment } from 'moment';
+import moment, { Moment } from 'time';
 import { getReports } from '../../../../_pages/Objects/apiObjects';
 import {
   EEmailSubscriptionType,

@@ -4,7 +4,7 @@ import {
   createOrUpdateLast,
   deleteMeteringDeviceReading,
 } from '01/_api/meteringDeviceReadings';
-import moment from 'moment';
+import moment from 'time';
 import { useState, useEffect } from 'react';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 

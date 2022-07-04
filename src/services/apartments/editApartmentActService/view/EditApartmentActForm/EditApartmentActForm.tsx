@@ -10,7 +10,7 @@ import { EditActFormPayload } from '../../editApartmentActService.types';
 import { ErrorMessage, FieldsWrapper, SelectSC } from './EditApartmentActForm.styled';
 import { EditApartmentActFormProps } from './EditApartmentActForm.types';
 import * as yup from 'yup';
-import moment from 'moment';
+import moment from 'time';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 

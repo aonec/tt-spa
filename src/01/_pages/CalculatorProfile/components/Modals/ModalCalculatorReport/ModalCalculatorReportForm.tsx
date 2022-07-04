@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox, Form, Radio, Tabs } from 'antd';
-import moment from 'moment';
+import moment from 'time';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _, { setWith } from 'lodash';

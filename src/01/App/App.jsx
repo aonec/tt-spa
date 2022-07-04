@@ -5,7 +5,7 @@ import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip } from '01/components';
-import moment from 'moment';
+import moment from 'time';
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
 import { ConfigProvider } from 'antd';

@@ -26,7 +26,7 @@ import {
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { Alert } from '01/shared/ui/Alert/Alert';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';

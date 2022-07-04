@@ -24,7 +24,7 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
-import moment from 'moment';
+import moment from 'time';
 
 createIndividualDeviceFx.use(createIndividualDevice);
 

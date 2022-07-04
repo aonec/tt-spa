@@ -9,7 +9,7 @@ import { combine, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { $homeowner } from '../../displayHomeowner/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import moment from 'moment';
+import moment from 'time';
 
 switchPersonalNumberFx.use(replaceHomeownerAccount);
 

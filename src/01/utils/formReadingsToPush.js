@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'time';
 
 export const formReadingToPush = (device) => {
   const pushReadings = device.readings[0];

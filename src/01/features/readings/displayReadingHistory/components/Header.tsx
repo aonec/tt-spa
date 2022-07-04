@@ -6,7 +6,7 @@ import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import { IsActiveBool } from '01/tt-components/IsActive';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import React from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 

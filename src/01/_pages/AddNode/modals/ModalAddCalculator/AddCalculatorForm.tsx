@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import moment from 'moment';
+import moment from 'time';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { Form, message } from 'antd';

@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { ApartmentCheckResponse, ECheckType, DocumentResponse } from 'myApi';
-import moment from 'moment';
+import moment from 'time';
 import { ReactComponent as DocumentIcon } from './documentIcon.svg';
 import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
 import { saveAs } from 'file-saver';

@@ -8,7 +8,7 @@ import {
   IndividualDeviceReadingsResponse,
 } from '../../../../../myApi';
 import IsActive from '../../../../tt-components/IsActive';
-import moment from 'moment';
+import moment from 'time';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';

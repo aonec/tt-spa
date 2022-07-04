@@ -7,7 +7,7 @@ import { DatePickerTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import { EApartmentStatus } from 'myApi';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';

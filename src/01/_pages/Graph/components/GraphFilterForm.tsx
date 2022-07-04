@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import moment, { Moment } from 'moment';
+import moment, { Moment } from 'time';
 import {
   FormItem,
   DatePicker,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GraphView, { ReportType } from './components/GraphView';
 import GraphFilterForm from './components/GraphFilterForm';
-import moment from 'moment';
+import moment from 'time';
 import {
   QueryInterface,
   requestNodeReadings,

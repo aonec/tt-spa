@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Divider } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'time';
 import styled from 'styled-components';
 import {
   ButtonTT,

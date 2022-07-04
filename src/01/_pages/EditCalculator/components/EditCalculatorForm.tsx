@@ -3,7 +3,7 @@ import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
 
 import { NavLink } from 'react-router-dom';
-import moment from 'moment';
+import moment from 'time';
 import {
   InputTT,
   SelectTT,

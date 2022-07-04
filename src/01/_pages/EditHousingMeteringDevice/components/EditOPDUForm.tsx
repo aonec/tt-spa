@@ -4,7 +4,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
-import moment from 'moment';
+import moment from 'time';
 import {
   entryNumberList,
   housingMeteringDeviceTypes,

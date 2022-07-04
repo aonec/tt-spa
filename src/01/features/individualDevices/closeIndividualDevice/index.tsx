@@ -11,7 +11,7 @@ import { Form, Select } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import React from 'react';
 import styled from 'styled-components';
 import { closingReasons } from '../switchIndividualDevice/components/stages/BaseInfoStage';

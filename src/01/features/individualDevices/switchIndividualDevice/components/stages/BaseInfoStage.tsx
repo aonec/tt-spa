@@ -9,7 +9,7 @@ import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/Individu
 import { AutoComplete, Form, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import moment from 'moment';
+import moment from 'time';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';

@@ -14,7 +14,7 @@ import {
   getPreviousReadingsMonth,
   getDateByReadingMonthSlider,
 } from '01/shared/lib/readings/getPreviousReadingsMonth';
-import moment from 'moment';
+import moment from 'time';
 import { RenderReadingFields } from './RenderReadingFields';
 
 interface Props {
