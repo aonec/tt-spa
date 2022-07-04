@@ -10,7 +10,9 @@ export function useManagingFirmConsumptionRates(
 ) {
   const consumptionRates = useStore(outputs.$consumptionRates);
 
-  const managementFirmConsumptionRates: ConsumptionRatesDictionary | void = useMemo(() => {
+  const managementFirmConsumptionRates:
+    | ConsumptionRatesDictionary
+    | undefined = useMemo(() => {
     if (!managementFirmId) return;
 
     const consumptionRatesArray = consumptionRates[managementFirmId];
@@ -18,10 +20,13 @@ export function useManagingFirmConsumptionRates(
     if (!consumptionRatesArray) return;
 
     return consumptionRatesArray.reduce(
-      (acc, elem) => ({ ...acc, [elem.key!.toString()]: elem.value }),
+      (acc, elem) => ({
+        ...acc,
+        [elem.key!.toString()]: elem.value,
+      }),
       {} as ConsumptionRatesDictionary
     );
-  }, [consumptionRates]);
+  }, [consumptionRates, managementFirmId]);
 
   const loadConsumptionRates = useEvent(
     inputs.loadManagemenFirmConsumptionRates
@@ -31,5 +36,5 @@ export function useManagingFirmConsumptionRates(
     if (managementFirmId) loadConsumptionRates(managementFirmId);
   }, [managementFirmId]);
 
-  return managementFirmConsumptionRates || {};
+  return { managementFirmConsumptionRates };
 }

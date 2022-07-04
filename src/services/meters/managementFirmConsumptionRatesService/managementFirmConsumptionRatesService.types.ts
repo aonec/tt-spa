@@ -5,9 +5,9 @@ import {
 } from 'myApi';
 
 export type MangingFirmsConsumptionRatesDictionary = {
-  [
-    managementFirmId: number
-  ]: EResourceTypeConsumptionRateResponseDictionaryItem[];
+  [managementFirmId: number]:
+    | EResourceTypeConsumptionRateResponseDictionaryItem[]
+    | null;
 };
 
 export type ConsumptionRatesDictionary = {

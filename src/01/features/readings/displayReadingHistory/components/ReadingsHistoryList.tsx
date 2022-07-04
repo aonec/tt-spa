@@ -29,11 +29,12 @@ import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 import {
   CorrectReadingValuesValidationResult,
-  getResourceUpLimit,
   round,
 } from '01/hooks/useReadings';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 
 interface Props {
   isModal?: boolean;
@@ -53,6 +54,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const readingsHistory = values;
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
+
+  // const {} = useManagingFirmConsumptionRates(device?.);
 
   const {
     isYearOpen,
@@ -138,7 +141,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               device?.resource!
             );
 
-            if (validationResult.validated) {
+            if (!validationResult || validationResult.validated) {
               return request();
             }
 
@@ -198,7 +201,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               device?.resource!
             );
 
-            if (validationResult.validated) {
+            if (!validationResult || validationResult.validated) {
               return request();
             }
 
@@ -378,9 +381,12 @@ const validateReadings = (
   prevValues: (number | null)[],
   newValues: (number | null)[],
   rateNum: number,
-  resource: EResourceType
+  resource: EResourceType,
+  limits?: ConsumptionRatesDictionary
 ) => {
-  const limit = getResourceUpLimit(resource);
+  const limit = limits && limits[resource]?.maximumConsumptionRate;
+
+  if (!limit) return false;
 
   const res = newValues.reduce(
     (acc, elem, index) => {
@@ -436,8 +442,6 @@ const slide = keyframes`
 	}
 	100% {
 		background-position: 0% 0%;
-	} 
-  }
 	} 
 `;
 

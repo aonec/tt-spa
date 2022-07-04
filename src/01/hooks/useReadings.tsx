@@ -30,6 +30,7 @@ import { RequestStatusShared } from '01/features/readings/displayReadingHistory/
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -39,7 +40,9 @@ export const useReadings = (
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
-  const {} = useManagingFirmConsumptionRates(device.managementFirm?.id);
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    device.managementFirm?.id
+  );
 
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
 
@@ -299,7 +302,8 @@ export const useReadings = (
       readingsState?.previousReadings[sliderIndex]?.values || [],
       getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
         ?.values || [],
-      index
+      index,
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -427,7 +431,8 @@ export const useReadings = (
       readingsState.currentReadingsArray,
       getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
         ?.values || [],
-      index
+      index,
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -846,16 +851,6 @@ const getPreviousReadingTooltipString = (
   return `Последнее показание: ${valuesString} (${month})`;
 };
 
-const limits = {
-  [EResourceType.ColdWaterSupply]: 25,
-  [EResourceType.HotWaterSupply]: 15,
-  [EResourceType.Electricity]: 1000,
-};
-
-export const getResourceUpLimit = (resource: EResourceType) => {
-  return (limits as any)[resource] || Infinity;
-};
-
 export interface CorrectReadingValuesValidationResult {
   validated: boolean;
   valuesValidationResults?: {
@@ -874,12 +869,16 @@ const isCorrectReadingValues = (
   rateType: EIndividualDeviceRateType,
   nextReadings: number[],
   previousReadings: number[],
-  currentIndex: number
+  currentIndex: number,
+  limits?: ConsumptionRatesDictionary
 ): CorrectReadingValuesValidationResult => {
   if (!previousReadings.length) return { validated: true };
 
+  console.log(limits)
+
   const rateNum = getIndividualDeviceRateNumByName(rateType);
-  const limit = getResourceUpLimit(resource);
+  const limit =
+    (limits && limits[resource]?.maximumConsumptionRate) || Infinity;
 
   const res = nextReadings.reduce(
     (acc, elem, index) => {
