@@ -868,8 +868,6 @@ const isCorrectReadingValues = (
 ): CorrectReadingValuesValidationResult => {
   if (!previousReadings.length) return { validated: true };
 
-  console.log(limits)
-
   const rateNum = getIndividualDeviceRateNumByName(rateType);
   const limit =
     (limits && limits[resource]?.maximumConsumptionRate) || Infinity;
