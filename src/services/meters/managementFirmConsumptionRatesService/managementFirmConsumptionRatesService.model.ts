@@ -24,21 +24,12 @@ $consumptionRates
       [managementFirmId]: result,
     })
   )
-  .on(loadManagemenFirmConsumptionRates, (prev, id) => ({
-    ...prev,
-    [id]: null,
-  }));
 
 sample({
   clock: guard({
     source: $consumptionRates,
     clock: loadManagemenFirmConsumptionRates,
     filter: (consumptionRates, managementFirmId) => {
-      console.log(
-        consumptionRates,
-        managementFirmId,
-        !consumptionRates[managementFirmId]
-      );
       return !consumptionRates[managementFirmId];
     },
   }),
