@@ -134,7 +134,7 @@ export function changeItemStage(item, i, arr, uos) {
   const canRevert = uos && arr[i + 1]?.status === 'InProgress';
   const info = closingTime
     ? {
-        name: perpetrator.name,
+        name: perpetrator?.name,
         time: new Date(closingTime).toLocaleString(),
       }
     : null;
