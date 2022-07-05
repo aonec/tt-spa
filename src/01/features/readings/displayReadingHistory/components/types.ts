@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
+import { IndividualDeviceReadingsItemHistoryResponse } from "myApi";
 
-export type ReadingLineProps = {
+export type RenderReading = {
   reading?: IndividualDeviceReadingsItemHistoryResponse;
   isFirst?: boolean;
   arrowButton?: ReactElement;
@@ -10,10 +10,4 @@ export type ReadingLineProps = {
   readingsLength: number;
   isHasArchived: boolean;
   prevReading?: IndividualDeviceReadingsItemHistoryResponse;
-  isReadonly: boolean;
-};
-
-export type ReadingsHistoryListProps = {
-  isModal?: boolean;
-  readonly?: boolean;
-};
+}
