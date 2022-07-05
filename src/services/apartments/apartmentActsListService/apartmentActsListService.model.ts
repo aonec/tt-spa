@@ -78,6 +78,7 @@ export const apartmentActsListService = {
     $filteredActsList,
     $isLoading,
     $actTypes,
+    $actsFilter
   },
   gates: { ApartmentActsListGate },
 };

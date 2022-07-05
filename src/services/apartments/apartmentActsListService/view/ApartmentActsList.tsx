@@ -24,6 +24,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   handleUpdateTypes,
   handleUpdateResources,
   actTypes,
+  selectedFilters,
 }) => {
   const isShowActsList = Boolean(acts?.length && !isLoading);
 
@@ -61,6 +62,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
                 <FilterExtendedSearch
                   allowedFilters={resources}
                   handleUpdate={handleUpdateResources}
+                  selectedFilters={selectedFilters.resources}
                 />
               </ExtendedSearchWrapper>
             </ColumnTitle>
@@ -70,6 +72,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
                 <FilterExtendedSearch
                   allowedFilters={actTypes}
                   handleUpdate={handleUpdateTypes}
+                  selectedFilters={selectedFilters.actTypes}
                 />
               </ExtendedSearchWrapper>
             </ColumnTitle>

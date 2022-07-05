@@ -1,51 +1,42 @@
 import { FilterButton } from '01/features/actsJournal/displayActsJournal/components/filterButton/FIlterButton';
-import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { CheckboxSC } from './FilterExtendedSearch.styled';
 import {
-  Filter,
   FilterExtendedSearchProps,
+  SearchFilterType,
 } from './FilterExtendedSearch.types';
 
 export function FilterExtendedSearch<T>({
   handleUpdate,
+  selectedFilters,
   allowedFilters,
 }: FilterExtendedSearchProps<T>) {
-  const { values, handleSubmit, setFieldValue } = useFormik<Filter<T>>({
-    initialValues: {
-      selectedFilters: [],
-    },
-    onSubmit: ({ selectedFilters }) => handleUpdate(selectedFilters),
-  });
-
-  useEffect(() => {
-    handleSubmit();
-  }, [values.selectedFilters]);
+  const handleFilterClick = useCallback(
+    (filterField: SearchFilterType<T>, checked: boolean) =>
+      handleUpdate(
+        checked
+          ? selectedFilters?.filter((type) => type !== filterField.key)
+          : [...(selectedFilters || []), filterField.key!]
+      ),
+    [selectedFilters, allowedFilters]
+  );
 
   return (
     <FilterButton
-      onClear={() => setFieldValue('selectedFilters', [])}
-      active={Boolean(values.selectedFilters.length)}
+      onClear={() => handleUpdate([])}
+      active={Boolean(selectedFilters?.length)}
     >
       {allowedFilters &&
         allowedFilters.map((filterField) => {
-          const checked = values.selectedFilters?.includes(filterField.key!);
-
+          const checked = selectedFilters?.includes(filterField.key!);
           return (
             <div>
               <CheckboxSC
                 checked={checked}
-                onClick={() =>
-                  setFieldValue(
-                    'selectedFilters',
-                    checked
-                      ? values.selectedFilters!.filter(
-                          (type) => type !== filterField.key
-                        )
-                      : [...(values.selectedFilters || []), filterField.key]
-                  )
-                }
-              >{`${filterField.value}`}</CheckboxSC>{' '}
+                onClick={() => handleFilterClick(filterField, checked)}
+              >
+                {filterField.value}
+              </CheckboxSC>
             </div>
           );
         })}

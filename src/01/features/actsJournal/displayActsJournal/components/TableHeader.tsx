@@ -94,6 +94,7 @@ const ResourceExtendedSearch = () => {
     <FilterExtendedSearch
       allowedFilters={resources}
       handleUpdate={handleUpdateResources}
+      selectedFilters={allowedActResources.value}
     />
   );
 };
@@ -112,6 +113,7 @@ const TypeDocumentExtendedSearch = () => {
     <FilterExtendedSearch
       allowedFilters={actTypes}
       handleUpdate={handleUpdateActTypes}
+      selectedFilters={allowedActTypes.value}
     />
   );
 };

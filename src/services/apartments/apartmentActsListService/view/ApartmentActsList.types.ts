@@ -5,6 +5,7 @@ import {
   EActType,
   EActTypeStringDictionaryItem,
 } from 'myApi';
+import { ActsFilter } from '../apartmentActsListService.types';
 
 export type ApartmentActsListProps = {
   acts: ApartmentActResponse[];
@@ -16,4 +17,5 @@ export type ApartmentActsListProps = {
   handleUpdateTypes: (types: EActType[]) => void;
   handleUpdateResources: (resources: EActResourceType[]) => void;
   actTypes: EActTypeStringDictionaryItem[] | null;
+  selectedFilters: ActsFilter;
 };
