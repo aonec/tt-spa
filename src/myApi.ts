@@ -409,6 +409,9 @@ export interface CalculatorIntoNodeResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -508,6 +511,9 @@ export interface CalculatorResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -1654,6 +1660,9 @@ export interface ElectricHousingMeteringDeviceResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -2186,6 +2195,9 @@ export interface HousingMeteringDeviceIncludingReadingsResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -2744,6 +2756,9 @@ export interface IndividualDeviceOnTaskResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -2910,6 +2925,9 @@ export interface IndividualDeviceResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -2969,6 +2987,9 @@ export interface IndividualDeviceWithExpiredCheckingDateResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -3514,6 +3535,9 @@ export interface MeteringDeviceResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -3780,6 +3804,9 @@ export interface PipeHousingMeteringDeviceResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -6082,41 +6109,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsValidateRecentReadingsCreate
-     * @summary DataMigration
-     * @request POST:/api/DataMigrations/ValidateRecentReadings
-     * @secure
-     */
-    dataMigrationsValidateRecentReadingsCreate: (data: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/ValidateRecentReadings`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsRevalidateReadingTasksList
-     * @request GET:/api/DataMigrations/RevalidateReadingTasks
-     * @secure
-     */
-    dataMigrationsRevalidateReadingTasksList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/RevalidateReadingTasks`,
-        method: "GET",
-        secure: true,
         ...params,
       }),
 

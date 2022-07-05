@@ -200,12 +200,6 @@ export const useReadings = (
   };
 
   const sendPreviousReading = async (requestPayload: any) => {
-    const values = getReadingValuesArray(
-      requestPayload,
-      getIndividualDeviceRateNumByName(device.rateType)
-    );
-
-    // if (!values.every(Boolean)) return;
 
     setReadingsState((prev: any) => ({
       ...prev,

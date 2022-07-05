@@ -55,7 +55,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 
-  // const {} = useManagingFirmConsumptionRates(device?.);
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    device?.managementFirmId
+  );
 
   const {
     isYearOpen,
@@ -138,7 +140,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
               rateNum!,
-              device?.resource!
+              device?.resource!,
+              managementFirmConsumptionRates
             );
 
             if (!validationResult || validationResult.validated) {
@@ -198,7 +201,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
               rateNum!,
-              device?.resource!
+              device?.resource!,
+              managementFirmConsumptionRates
             );
 
             if (!validationResult || validationResult.validated) {
@@ -382,7 +386,7 @@ const validateReadings = (
   newValues: (number | null)[],
   rateNum: number,
   resource: EResourceType,
-  limits?: ConsumptionRatesDictionary
+  limits?: ConsumptionRatesDictionary,
 ) => {
   const limit = limits && limits[resource]?.maximumConsumptionRate;
 
