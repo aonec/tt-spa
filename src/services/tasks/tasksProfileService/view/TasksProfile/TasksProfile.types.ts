@@ -16,4 +16,7 @@ export type TasksProfileProps = {
   initialValues: GetTasksListRequestPayload | null;
   pagedTasks: TasksPagedList | null;
   isLoading: boolean;
+  isExtendedSearchOpen: boolean;
+  closeExtendedSearch: () => void;
+  openExtendedSearch: () => void;
 };

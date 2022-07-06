@@ -18,6 +18,9 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   changePageNumber,
   pagedTasks,
   isLoading,
+  isExtendedSearchOpen,
+  closeExtendedSearch,
+  openExtendedSearch
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -45,7 +48,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           ],
         }}
       />
-      <TabsSC activeKey={grouptype} onChange={history.push}>
+      <TabsSC activeKey={grouptype} onChange={history.push} >
         <TabPane tab={executingTabText} key="Executing"></TabPane>
         <TabPane tab={observingTabText} key="Observing"></TabPane>
         <TabPane tab="Архив" key="Archived"></TabPane>
@@ -54,6 +57,9 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         onSubmit={handleSearch}
         taskTypes={taskTypes}
         currentFilter={initialValues}
+        isExtendedSearchOpen={isExtendedSearchOpen}
+        closeExtendedSearch={closeExtendedSearch}
+        openExtendedSearch={openExtendedSearch}
       />
       {!isLoading && tasksList}
       {isLoading && <Skeleton active />}

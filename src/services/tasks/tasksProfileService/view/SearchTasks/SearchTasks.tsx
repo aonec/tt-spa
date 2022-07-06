@@ -2,21 +2,45 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType } from 'myApi';
+import {
+  EManagingFirmTaskFilterType,
+  ETaskTargetType,
+  TaskGroupingFilter,
+} from 'myApi';
 import React, { ChangeEvent, FC, useCallback } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-
+import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { TasksExtendedSearchForm } from './TasksExtendedSearch';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
   currentFilter,
+  isExtendedSearchOpen,
+  openExtendedSearch,
+  closeExtendedSearch,
 }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<SearchTasksForm>({
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
       TaskId: currentFilter?.TaskId || '',
+      TargetType: undefined,
+      GroupType: currentFilter?.GroupType || undefined,
+      DeviceId: undefined,
+      HousingStockId: undefined,
+      ApartmentId: undefined,
+      HasChanged: undefined,
+      PipeNodeId: undefined,
+      ClosingStatuses: undefined,
+      ApplicationCompetenceId: undefined,
+      PageNumber: undefined,
+      PageSize: undefined,
+      OrderBy: undefined,
     },
     enableReinitialize: true,
     onSubmit,
@@ -39,16 +63,22 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearInput = useCallback(() => {
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
-
   return (
     <ExtendedSearch
-      isOpen={false}
-      handleApply={() => {}}
+      isOpen={isExtendedSearchOpen}
+      handleApply={() => handleSubmit()}
       handleClear={() => {}}
-      handleClose={() => {}}
-      handleOpen={() => {}}
-      extendedSearchContent={<></>}
-      disabled
+      handleClose={() => closeExtendedSearch()}
+      handleOpen={() => openExtendedSearch()}
+      extendedSearchContent={
+        <>
+          <TasksExtendedSearchForm
+            setFieldValue={setFieldValue}
+            taskTypes={taskTypes}
+            values={values}
+          />
+        </>
+      }
     >
       <Wrapper>
         <InputSC
