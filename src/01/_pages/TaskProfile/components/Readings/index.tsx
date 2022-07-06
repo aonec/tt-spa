@@ -8,6 +8,8 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { firstLetterToUpperCase } from '01/utils/getMonthFromDate';
+import moment from 'moment';
 
 type Props = {
   getData: (data: any) => void;
@@ -19,6 +21,7 @@ type Reading = {
   value3?: number;
   value4?: number;
   deviceId: number;
+  readingDate: string;
 };
 
 export const Readings: FC<Props> = ({ getData }) => {
@@ -31,14 +34,18 @@ export const Readings: FC<Props> = ({ getData }) => {
 
     if (devices) {
       setReadings(
-        devices.map((device) => ({
-          value1: undefined,
-          value2: undefined,
-          value3: undefined,
-          value4: undefined,
-          deviceId: device.id,
-          readingDate: device.invalidReading?.readingDate,
-        }))
+        devices.map((device) => {
+          const readingDate =
+            device.invalidReading?.readingDate || task?.creationTime!;
+          return {
+            value1: undefined,
+            value2: undefined,
+            value3: undefined,
+            value4: undefined,
+            deviceId: device.id,
+            readingDate,
+          };
+        })
       );
     }
   }, [task]);
@@ -106,21 +113,30 @@ const ReadingLine = ({
         <DeviceInfo device={device} />
         <Flex style={{ flexDirection: 'column' }}>
           {readingValues.map((value, index) => (
-            <ReadingInputStyled
-              index={index + 1}
-              onChange={(e) =>
-                onChangeReading(e.target.value as any, index + 1)
-              }
-              value={value}
-              resource={device.resource}
-              type="number"
-              style={{ marginBottom: '15px', padding: '7px 12px' }}
-              placeholder={`T${index + 1}`}
-            />
+            <>
+              {reading && getReadingMonth(reading.readingDate)}
+              <ReadingInputStyled
+                index={index + 1}
+                onChange={(e) =>
+                  onChangeReading(e.target.value as any, index + 1)
+                }
+                value={value}
+                resource={device.resource}
+                type="number"
+                style={{ marginBottom: '15px', padding: '7px 12px' }}
+                placeholder={`T${index + 1}`}
+              />
+            </>
           ))}
         </Flex>
       </Flex>
       <SpaceLine />
     </div>
   );
+};
+
+const getReadingMonth = (readingDate: string) => {
+  const month = moment(readingDate).subtract(-1, 'months').format('MMMM');
+
+  return firstLetterToUpperCase(month);
 };
