@@ -15,13 +15,12 @@ import { ActsFilter } from './apartmentActsListService.types';
 
 const domain = createDomain('apartmentActsListService');
 
-const $actsList = domain.createStore<ApartmentActResponse[] | null>(null);
+const $actsList = domain.createStore<ApartmentActResponse[]>([]);
 const $actsFilter = domain.createStore<ActsFilter>({} as ActsFilter);
 
-const fetchActsListFx = domain.createEffect<
-  number,
-  ApartmentActResponse[] | null
->(getapartmentActsList);
+const fetchActsListFx = domain.createEffect<number, ApartmentActResponse[]>(
+  getapartmentActsList
+);
 
 const ApartmentActsListGate = createGate<{ apartmentId: number }>();
 
@@ -39,14 +38,23 @@ $actsFilter
   .on(updateResources, (filter, resources) => ({ ...filter, resources }));
 
 const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
-  const filteredByActsTypes = Boolean(filters.actTypes?.length)
-    ? acts?.filter((act) => filters.actTypes.includes(act.actType)) || []
-    : acts || [];
-  const filteredByResources = Boolean(filters.resources?.length)
-    ? acts?.filter((act) => filters.resources.includes(act.actResourceType)) ||
-      []
-    : acts || [];
-  return filteredByActsTypes.filter((act) => filteredByResources.includes(act));
+  const hasActTypes = filters.actTypes?.length;
+  const hasActResources = filters.resources?.length;
+
+  let filteredActs = acts;
+
+  if (hasActTypes) {
+    filteredActs = filteredActs.filter((act) =>
+      filters.actTypes.includes(act.actType)
+    );
+  }
+  if (hasActResources) {
+    filteredActs = filteredActs.filter((act) =>
+      filters.resources.includes(act.actResourceType)
+    );
+  }
+
+  return filteredActs;
 });
 
 forward({
@@ -78,7 +86,7 @@ export const apartmentActsListService = {
     $filteredActsList,
     $isLoading,
     $actTypes,
-    $actsFilter
+    $actsFilter,
   },
   gates: { ApartmentActsListGate },
 };
