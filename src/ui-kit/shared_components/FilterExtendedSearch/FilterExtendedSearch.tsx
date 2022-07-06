@@ -12,18 +12,21 @@ export function FilterExtendedSearch<T>({
   allowedFilters,
 }: FilterExtendedSearchProps<T>) {
   const handleFilterClick = useCallback(
-    (filterField: SearchFilterType<T>, checked: boolean) =>
+    (clickPayload: { filterField: SearchFilterType<T>; checked: boolean }) =>
       handleUpdate(
-        checked
-          ? selectedFilters?.filter((type) => type !== filterField.key)
-          : [...(selectedFilters || []), filterField.key!]
+        clickPayload.checked
+          ? selectedFilters?.filter(
+              (type) => type !== clickPayload.filterField.key
+            )
+          : [...(selectedFilters || []), clickPayload.filterField.key!]
       ),
     [selectedFilters, allowedFilters]
   );
+  const handleClearFilter = useCallback(() => handleUpdate([]), [handleUpdate]);
 
   return (
     <FilterButton
-      onClear={() => handleUpdate([])}
+      onClear={handleClearFilter}
       active={Boolean(selectedFilters?.length)}
     >
       {allowedFilters &&
@@ -33,7 +36,7 @@ export function FilterExtendedSearch<T>({
             <div>
               <CheckboxSC
                 checked={checked}
-                onClick={() => handleFilterClick(filterField, checked)}
+                onClick={() => handleFilterClick({ filterField, checked })}
               >
                 {filterField.value}
               </CheckboxSC>
