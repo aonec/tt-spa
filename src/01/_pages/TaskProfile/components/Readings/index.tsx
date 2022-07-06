@@ -8,8 +8,8 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { firstLetterToUpperCase } from '01/utils/getMonthFromDate';
-import moment from 'moment';
+import { getReadingMonth } from './Readings.utils';
+import { MonthWrapper } from './Readings.styled';
 
 type Props = {
   getData: (data: any) => void;
@@ -114,7 +114,9 @@ const ReadingLine = ({
         <Flex style={{ flexDirection: 'column' }}>
           {readingValues.map((value, index) => (
             <>
-              {reading && getReadingMonth(reading.readingDate)}
+              <MonthWrapper>
+                {reading && getReadingMonth(reading.readingDate)}
+              </MonthWrapper>
               <ReadingInputStyled
                 index={index + 1}
                 onChange={(e) =>
@@ -133,10 +135,4 @@ const ReadingLine = ({
       <SpaceLine />
     </div>
   );
-};
-
-const getReadingMonth = (readingDate: string) => {
-  const month = moment(readingDate).subtract(-1, 'months').format('MMMM');
-
-  return firstLetterToUpperCase(month);
 };
