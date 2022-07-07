@@ -1,11 +1,9 @@
-import React, { ChangeEvent, FC } from 'react';
-import { ConfigProvider, Form, Input, Select, Slider } from 'antd';
+import React, { ChangeEvent } from 'react';
+import { Form, Input, Select } from 'antd';
 import {
   StyledForm,
-  StyledRangePicker,
   StyledContainerThreeItems,
   StyledContainerFourItems,
-  StyledSlider,
 } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import _ from 'lodash';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
@@ -18,17 +16,23 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   values,
   taskTypes,
 }) => {
-    console.log(values)
+  console.log(values);
   return (
-    <StyledForm id="searchForm" initialValues={{ remember: true }}>
+    <StyledForm
+      id="searchForm"
+      initialValues={{
+        TaskId: values?.TaskId,
+        TaskType: values?.TargetType,
+        ClosingStatuses: values?.ClosingStatuses,
+      }}
+    >
       <StyledContainerFourItems>
         <Form.Item name="city" label="Город">
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
             }
-            // className={styles.input}
-            value='тест'
+            value="тест"
             placeholder="Город"
             disabled
           />
@@ -53,7 +57,6 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
                 value.target.value
               )
             }
-
             value={'тест'}
             placeholder="Дом"
             disabled
@@ -65,14 +68,14 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
-            value='тест'
+            value="тест"
             placeholder="Корпус"
             disabled
           />
         </Form.Item>
       </StyledContainerFourItems>
       <StyledContainerThreeItems>
-        <Form.Item name="Resource" label="Тип ресурса">
+        <Form.Item name="TaskId" label="Тип ресурса">
           <InputSC
             placeholder="Номер задачи"
             value={values.TaskId}
@@ -85,6 +88,7 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
         <Form.Item name="TaskType" label="Тип задачи">
           <SelectSC
             placeholder="Тип задачи"
+            defaultValue={values.TaskType!}
             value={values.TaskType!}
             onChange={(value) => {
               setFieldValue('TaskType', value);
@@ -106,7 +110,6 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             onChange={(value) => {
               setFieldValue('ClosingStatuses', value);
             }}
-            //   mode="multiple"
           >
             <Option key={'Properly'} value={'Properly'}>
               {'Обычная'}
