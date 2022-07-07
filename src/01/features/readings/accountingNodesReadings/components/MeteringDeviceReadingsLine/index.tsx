@@ -11,8 +11,12 @@ import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
-import { HistoryIconSC, MeteringDeviceContextMenuSC } from './MeteringDeviceReadingsLine.styled';
+import {
+  HistoryIconSC,
+  ContextMenuWrapper,
+} from './MeteringDeviceReadingsLine.styled';
 import { useHistory } from 'react-router-dom';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 
 interface Props {
   sliderIndex: number;
@@ -109,16 +113,18 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       {readingsInput()}
       {getConsumption()}
       {getConsumptionInput()}
-      <Flex style={{ justifyContent: 'center' }}>
+      <Flex>
         <HistoryIconSC />
-        <MeteringDeviceContextMenuSC
-          menuButtons={[
-            {
-              title: 'Заменить прибор',
-              onClick: handleChangeODPU,
-            },
-          ]}
-        />
+        <ContextMenuWrapper>
+          <ContextMenuButton
+            menuButtons={[
+              {
+                title: 'Заменить прибор',
+                onClick: handleChangeODPU,
+              },
+            ]}
+          />
+        </ContextMenuWrapper>
       </Flex>
     </Wrap>
   );

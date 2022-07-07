@@ -1,8 +1,7 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import styled from 'styled-components';
 import { HistoryIcon } from 'ui-kit/icons';
+import styled from 'styled-components';
 
-export const MeteringDeviceContextMenuSC = styled(ContextMenuButton)`
+export const ContextMenuWrapper = styled.div`
   margin-left: 15px;
 `;
 
