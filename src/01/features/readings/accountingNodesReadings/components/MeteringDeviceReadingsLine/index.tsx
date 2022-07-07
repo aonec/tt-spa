@@ -11,8 +11,7 @@ import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
-import { HistoryIcon } from 'ui-kit/icons';
-import { MeteringDeviceContextMenuSC } from './MeteringDeviceReadingsLine.styled';
+import { HistoryIconSC, MeteringDeviceContextMenuSC } from './MeteringDeviceReadingsLine.styled';
 import { useHistory } from 'react-router-dom';
 
 interface Props {
@@ -111,7 +110,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       {getConsumption()}
       {getConsumptionInput()}
       <Flex style={{ justifyContent: 'center' }}>
-        <HistoryIcon />
+        <HistoryIconSC />
         <MeteringDeviceContextMenuSC
           menuButtons={[
             {
