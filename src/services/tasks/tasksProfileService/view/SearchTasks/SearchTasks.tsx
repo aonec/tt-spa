@@ -2,8 +2,8 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType } from 'myApi';
-import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
@@ -22,6 +22,8 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     isInitialValid: true,
     onSubmit,
   });
+
+  const lastGroupTypeRef = useRef<TaskGroupingFilter>('' as TaskGroupingFilter);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,8 +44,18 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [setFieldValue]);
 
   useEffect(() => {
-    clearInput();
-  }, [currentFilter?.GroupType]);
+    if (lastGroupTypeRef.current !== currentFilter?.GroupType!) {
+      if (lastGroupTypeRef.current === 'Archived') clearInput();
+      else if (
+        currentFilter?.GroupType === 'Archived' &&
+        lastGroupTypeRef.current
+      )
+        clearInput();
+
+      lastGroupTypeRef.current =
+        currentFilter?.GroupType || ('' as TaskGroupingFilter);
+    }
+  }, [currentFilter?.GroupType, lastGroupTypeRef]);
 
   return (
     <ExtendedSearch
