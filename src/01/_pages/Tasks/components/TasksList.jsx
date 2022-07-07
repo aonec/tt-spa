@@ -122,13 +122,13 @@ export const TasksList = ({ items }) => {
         const { icon, color } = DeviceIcons[node?.resource] || {};
         return (
           <task_item
-            to={`/tasks/${id}`}
+            to={`/tasks/profile/${id}`}
             key={id}
-            onClick={() => push(`/tasks/${id}`)}
+            onClick={() => push(`/tasks/profile/${id}`)}
           >
             {/* one */}
             <row>
-              <TaskItem to={`/tasks/${id}`} key={id}>
+              <TaskItem to={`/tasks/profile/${id}`} key={id}>
                 <task_title as="h4">
                   {currentStage ? currentStage.name : name}
                 </task_title>

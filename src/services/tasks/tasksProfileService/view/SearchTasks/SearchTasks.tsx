@@ -3,7 +3,7 @@ import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { EManagingFirmTaskFilterType } from 'myApi';
-import React, { ChangeEvent, FC, useCallback } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
@@ -19,6 +19,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       TaskId: currentFilter?.TaskId || '',
     },
     enableReinitialize: true,
+    isInitialValid: true,
     onSubmit,
   });
 
@@ -39,6 +40,10 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearInput = useCallback(() => {
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
+
+  useEffect(() => {
+    clearInput();
+  }, [currentFilter?.GroupType]);
 
   return (
     <ExtendedSearch
