@@ -19,7 +19,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       TaskId: currentFilter?.TaskId || '',
     },
     enableReinitialize: true,
-    isInitialValid: true,
     onSubmit,
   });
 
