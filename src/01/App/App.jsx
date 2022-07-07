@@ -104,7 +104,7 @@ const Internal = () => {
               />
 
               <Route
-                path="changeODPU/:oldDeviceId"
+                path="/changeODPU/:oldDeviceId"
                 component={ChangeODPUContainer}
                 exact
               />
