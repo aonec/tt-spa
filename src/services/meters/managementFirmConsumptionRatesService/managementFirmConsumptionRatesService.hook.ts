@@ -1,15 +1,14 @@
 import { useEffect, useMemo } from 'react';
-import { useStore, useEvent } from 'effector-react';
-import { managementFirmConsumptionRatesService } from './managementFirmConsumptionRatesService.model';
-import { ConsumptionRatesDictionary } from './managementFirmConsumptionRatesService.types';
-
-const { outputs, inputs } = managementFirmConsumptionRatesService;
+import {
+  ConsumptionRatesDictionary,
+  MangingFirmsConsumptionRatesDictionary,
+} from './managementFirmConsumptionRatesService.types';
 
 export function useManagingFirmConsumptionRates(
+  consumptionRates: MangingFirmsConsumptionRatesDictionary,
+  loadConsumptionRates: (payload: number) => number,
   managementFirmId?: number | null
 ) {
-  const consumptionRates = useStore(outputs.$consumptionRates);
-
   const managementFirmConsumptionRates:
     | ConsumptionRatesDictionary
     | undefined = useMemo(() => {
@@ -27,10 +26,6 @@ export function useManagingFirmConsumptionRates(
       {} as ConsumptionRatesDictionary
     );
   }, [consumptionRates, managementFirmId]);
-
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates
-  );
 
   useEffect(() => {
     if (managementFirmId) loadConsumptionRates(managementFirmId);

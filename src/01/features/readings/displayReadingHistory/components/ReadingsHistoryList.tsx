@@ -1,5 +1,5 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
@@ -34,12 +34,17 @@ import {
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+import {
+  managementFirmConsumptionRatesService,
+  useManagingFirmConsumptionRates,
+} from 'services/meters/managementFirmConsumptionRatesService';
 
 interface Props {
   isModal?: boolean;
   readonly?: boolean;
 }
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const {
@@ -55,7 +60,14 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
     device?.managementFirmId
   );
 
@@ -386,7 +398,7 @@ const validateReadings = (
   newValues: (number | null)[],
   rateNum: number,
   resource: EResourceType,
-  limits?: ConsumptionRatesDictionary,
+  limits?: ConsumptionRatesDictionary
 ) => {
   const limit = limits && limits[resource]?.maximumConsumptionRate;
 
