@@ -22,7 +22,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     onSubmit,
   });
 
-  const lastGroupTypeRef = useRef<TaskGroupingFilter>('' as TaskGroupingFilter);
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,17 +43,17 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [setFieldValue]);
 
   useEffect(() => {
-    if (lastGroupTypeRef.current !== currentFilter?.GroupType!) {
-      if (lastGroupTypeRef.current === 'Archived') clearInput();
-      else if (
-        currentFilter?.GroupType === 'Archived' &&
-        lastGroupTypeRef.current
-      )
-        clearInput();
-
-      lastGroupTypeRef.current =
-        currentFilter?.GroupType || ('' as TaskGroupingFilter);
+    if (lastGroupTypeRef.current === currentFilter?.GroupType!) {
+      return;
     }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive =
+      currentFilter?.GroupType === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      clearInput();
+    }
+
+    lastGroupTypeRef.current = currentFilter.GroupType;
   }, [currentFilter?.GroupType, lastGroupTypeRef]);
 
   return (
