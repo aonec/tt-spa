@@ -3,7 +3,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ElectricNodeResponse } from 'myApi';
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -12,9 +12,8 @@ import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
 import { HistoryIcon } from 'ui-kit/icons';
-import { MeteringDeviceReadings } from '../MeteringDevicesList/meteringDevicesListService.types';
-import { meteringDeviceReadingsService } from '../MeteringDevicesList/meteringDevicesListService.model';
-import { useStore } from 'effector-react';
+import { MeteringDeviceContextMenuSC } from './MeteringDeviceReadingsLine.styled';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   sliderIndex: number;
@@ -34,6 +33,14 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     previousReading,
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
+
+  const history = useHistory();
+
+  const handleChangeODPU = useCallback(
+    () => history.push(`/changeODPU/${counter?.id}`),
+    []
+  );
+
   const readingsInput = () => (
     <>
       <MeteringDeviceReadingInput
@@ -105,6 +112,14 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       {getConsumptionInput()}
       <Flex style={{ justifyContent: 'center' }}>
         <HistoryIcon />
+        <MeteringDeviceContextMenuSC
+          menuButtons={[
+            {
+              title: 'Заменить прибор',
+              onClick: handleChangeODPU,
+            },
+          ]}
+        />
       </Flex>
     </Wrap>
   );
