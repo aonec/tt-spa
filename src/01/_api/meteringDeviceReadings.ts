@@ -30,23 +30,17 @@ export async function putMeteringDeviceReading(
 export async function createOrUpdateLast(
   payload: CreateHousingMeteringDeviceReadingsRequest
 ) {
-  return await axios.post(
-    'HousingMeteringDeviceReadings',
-    payload
-  );
+  return await axios.post('HousingMeteringDeviceReadings', payload);
 }
 
 export async function updateHousingMeteringDeviceReading(
   payload: UpdateHousingMeteringDeviceReadingsRequest
 ) {
-  return await axios.put(
-    'HousingMeteringDeviceReadings',
-    payload
-  );
+  return await axios.put('HousingMeteringDeviceReadings', payload);
 }
 
 export async function deleteMeteringDeviceReading(id: string) {
-  return await axios.delete('HousingMeteringDeviceReadings', {
-    params: { id },
+  return await axios.post(`HousingMeteringDeviceReadings/${id}/remove`, {
+    readingId: id,
   });
 }
