@@ -11,12 +11,12 @@ export function useManagingFirmConsumptionRates(
 ) {
   const managementFirmConsumptionRates:
     | ConsumptionRatesDictionary
-    | undefined = useMemo(() => {
-    if (!managementFirmId) return;
+    | null = useMemo(() => {
+    if (!managementFirmId) return null;
 
     const consumptionRatesArray = consumptionRates[managementFirmId];
 
-    if (!consumptionRatesArray) return;
+    if (!consumptionRatesArray) return null;
 
     return consumptionRatesArray.reduce(
       (acc, elem) => ({

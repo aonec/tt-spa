@@ -873,7 +873,7 @@ const isCorrectReadingValues = (
   nextReadings: number[],
   previousReadings: number[],
   currentIndex: number,
-  limits?: ConsumptionRatesDictionary
+  limits: ConsumptionRatesDictionary | null
 ): CorrectReadingValuesValidationResult => {
   if (!previousReadings.length) return { validated: true };
 

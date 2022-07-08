@@ -398,7 +398,7 @@ const validateReadings = (
   newValues: (number | null)[],
   rateNum: number,
   resource: EResourceType,
-  limits?: ConsumptionRatesDictionary
+  limits: ConsumptionRatesDictionary | null
 ) => {
   const limit = limits && limits[resource]?.maximumConsumptionRate;
 
