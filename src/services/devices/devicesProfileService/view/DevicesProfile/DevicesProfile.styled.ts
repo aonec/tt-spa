@@ -16,7 +16,7 @@ export const StyledSlider = styled(Slider)`
 
 export const StyledContainerFourItems = styled.div`
   display: grid;
-  grid-template-columns: 4fr 4fr 1.93fr 1.93fr;
+  grid-template-columns: 4fr 4fr 1.9fr 1.9fr;
   gap: 16px;
 `;
 

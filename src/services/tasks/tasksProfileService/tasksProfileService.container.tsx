@@ -32,6 +32,7 @@ export const TasksProfileContainer = () => {
   const changePageNumber = useEvent(inputs.changePageNumber);
   const closeExtendedSearch = useEvent(inputs.extendedSearchClosed)
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened)
+  const clearFilters = useEvent(inputs.clearFilters)
 
   useEffect(() => {
     closeExtendedSearch()
@@ -70,6 +71,7 @@ export const TasksProfileContainer = () => {
         isExtendedSearchOpen={isExtendedSearchOpen}
         closeExtendedSearch={() => closeExtendedSearch()}
         openExtendedSearch={() => openExtendedSearch()}
+        clearFilters={()=> clearFilters()}
       />
     </>
   );

@@ -12,6 +12,7 @@ export type SearchTasksProps = {
   isExtendedSearchOpen: boolean;
   closeExtendedSearch: () => void;
   openExtendedSearch: () => void;
+  clearFilters: () => void;
 };
 
 export type SearchTasksForm = {

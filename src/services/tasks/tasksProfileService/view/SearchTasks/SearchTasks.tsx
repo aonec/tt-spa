@@ -20,11 +20,13 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   isExtendedSearchOpen,
   openExtendedSearch,
   closeExtendedSearch,
+  clearFilters,
 }) => {
   const {
     values,
     handleSubmit,
     setFieldValue,
+    resetForm,
   } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
@@ -63,11 +65,17 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearInput = useCallback(() => {
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
+
+  const clearAllFilters = () => {
+    clearFilters();
+    resetForm()
+  };
+
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
       handleApply={() => handleSubmit()}
-      handleClear={() => {}}
+      handleClear={() => clearAllFilters()}
       handleClose={() => closeExtendedSearch()}
       handleOpen={() => openExtendedSearch()}
       extendedSearchContent={

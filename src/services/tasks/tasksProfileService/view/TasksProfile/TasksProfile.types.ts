@@ -19,4 +19,5 @@ export type TasksProfileProps = {
   isExtendedSearchOpen: boolean;
   closeExtendedSearch: () => void;
   openExtendedSearch: () => void;
+  clearFilters: () => void
 };

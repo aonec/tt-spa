@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Form, Input, Select } from 'antd';
 import {
   StyledForm,
@@ -9,6 +9,7 @@ import _ from 'lodash';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
 
 import { ExtendedSearchTypes } from './SearchTasks.types';
+import styled from 'styled-components';
 
 const { Option } = Select;
 export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
@@ -16,18 +17,13 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   values,
   taskTypes,
 }) => {
-  console.log(values);
   return (
     <StyledForm
       id="searchForm"
-      initialValues={{
-        TaskId: values?.TaskId,
-        TaskType: values?.TargetType,
-        ClosingStatuses: values?.ClosingStatuses,
-      }}
     >
       <StyledContainerFourItems>
-        <Form.Item name="city" label="Город">
+        <FormItem>
+          <label>Город: </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
@@ -36,9 +32,10 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             placeholder="Город"
             disabled
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="street" label="Улица">
+        <FormItem>
+          <label>Улица: </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
@@ -47,9 +44,10 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             placeholder="Улица"
             disabled
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="house" label="Дом">
+        <FormItem>
+          <label>Дом: </label>
           <Input
             onChange={(value) =>
               setFieldValue(
@@ -61,9 +59,10 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             placeholder="Дом"
             disabled
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="corpus" label="Корпус">
+        <FormItem>
+          <label>Корпус: </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
@@ -72,10 +71,11 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             placeholder="Корпус"
             disabled
           />
-        </Form.Item>
+        </FormItem>
       </StyledContainerFourItems>
       <StyledContainerThreeItems>
-        <Form.Item name="TaskId" label="Тип ресурса">
+        <FormItem>
+          <label>Номер задачи: </label>
           <InputSC
             placeholder="Номер задачи"
             value={values.TaskId}
@@ -84,11 +84,12 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             }
             name="TaskId"
           />
-        </Form.Item>
-        <Form.Item name="TaskType" label="Тип задачи">
+        </FormItem>
+        <FormItem>
+          <label>Тип задачи: </label>
           <SelectSC
+            id="TaskType"
             placeholder="Тип задачи"
-            defaultValue={values.TaskType!}
             value={values.TaskType!}
             onChange={(value) => {
               setFieldValue('TaskType', value);
@@ -101,12 +102,13 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
                 </Select.Option>
               ))}
           </SelectSC>
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="ClosingStatuses" label="Статус Задачи">
+        <FormItem>
+          <label>Статус Задачи: </label>
           <SelectSC
             placeholder="Статус Задачи"
-            value={values.ClosingStatuses}
+            value={values?.ClosingStatuses}
             onChange={(value) => {
               setFieldValue('ClosingStatuses', value);
             }}
@@ -118,8 +120,13 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
               {'Закрыта автоматически'}
             </Select.Option>
           </SelectSC>
-        </Form.Item>
+        </FormItem>
       </StyledContainerThreeItems>
     </StyledForm>
   );
 };
+
+export const FormItem = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

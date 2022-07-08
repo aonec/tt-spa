@@ -73,7 +73,8 @@ export const tasksProfileService = {
     changeGroupType,
     changePageNumber,
     extendedSearchClosed,
-    extendedSearchOpened
+    extendedSearchOpened,
+    clearFilters
   },
   outputs: {
     $taskTypes,
