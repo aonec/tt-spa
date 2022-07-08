@@ -25,3 +25,12 @@ export const AddButton = styled.div`
   margin-top: 24px;
   cursor: pointer;
 `;
+
+export const ColumnTitle = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ExtendedSearchWrapper = styled.div`
+  margin-left: 20px; 
+`

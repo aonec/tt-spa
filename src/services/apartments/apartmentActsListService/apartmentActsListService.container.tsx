@@ -25,9 +25,10 @@ export const ApartmentActsListContainer = () => {
 
   const { ApartmentActsListGate } = gates;
 
-  const documents = useStore(outputs.$actsList);
+  const documents = useStore(outputs.$filteredActsList);
   const isLoading = useStore(outputs.$isLoading);
   const actTypes = useStore(outputs.$actTypes);
+  const selectedFilters= useStore(outputs.$actsFilter)
 
   const handleOpeningCreateActModal = useEvent(
     createApartmentActService.inputs.openModal
@@ -39,6 +40,8 @@ export const ApartmentActsListContainer = () => {
     editApartmentActService.inputs.openModal
   );
   const handleSaveFile = useEvent(inputs.saveFile);
+  const updateTypes = useEvent(inputs.updateType);
+  const updateResources = useEvent(inputs.updateResources);
   return (
     <>
       <ApartmentActTypesGate />
@@ -53,7 +56,10 @@ export const ApartmentActsListContainer = () => {
         handleOpeningDeleteActModal={handleOpeningDeleteActModal}
         handleOpeningEditActModal={handleOpeningEditActModal}
         handleSaveFile={handleSaveFile}
+        handleUpdateTypes={updateTypes}
+        handleUpdateResources={updateResources}
         actTypes={actTypes}
+        selectedFilters={selectedFilters}
       />
     </>
   );

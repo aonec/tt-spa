@@ -79,15 +79,14 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
       inputIndex && onKeyDown(inputIndex - 1);
     })(e);
 
-    fromEnter(() => {
-      if (value === '')
+    if (value === '' && reading?.value) {
+      fromEnter(() => {
         return openConfirmReadingModal({
           callback: deleteReading,
           title: 'Вы уверены, что хотите удалить показание?',
         });
-    })(e);
-
-    fromEnter(saveReading)(e);
+      })(e);
+    } else fromEnter(saveReading)(e);
   };
 
   return (

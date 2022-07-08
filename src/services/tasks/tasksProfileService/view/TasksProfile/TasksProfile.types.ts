@@ -13,7 +13,7 @@ export type TasksProfileProps = {
   handleSearch: (formFilter: SearchTasksForm) => void;
   changePageNumber: (PageNumber: number) => void;
   tasks: TaskListResponse[];
-  initialValues: GetTasksListRequestPayload | null;
+  initialValues: GetTasksListRequestPayload;
   pagedTasks: TasksPagedList | null;
   isLoading: boolean;
 };
