@@ -10,3 +10,8 @@ export const SelectSC = styled(Select)`
   width: 300px;
   margin-left: 16px;
 `;
+
+export const FormItem = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

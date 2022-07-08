@@ -1,17 +1,17 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Form, Input, Select } from 'antd';
+import React, { ChangeEvent } from 'react';
+import { Input, Select } from 'antd';
+import _ from 'lodash';
+import { InputSC, SelectSC } from '01/shared/ui/Fields';
+import { ExtendedSearchTypes } from './SearchTasks.types';
 import {
   StyledForm,
   StyledContainerThreeItems,
   StyledContainerFourItems,
 } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
-import _ from 'lodash';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
-
-import { ExtendedSearchTypes } from './SearchTasks.types';
-import styled from 'styled-components';
+import { FormItem } from './SearchTasks.styled';
 
 const { Option } = Select;
+
 export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   setFieldValue,
   values,
@@ -125,8 +125,3 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
     </StyledForm>
   );
 };
-
-export const FormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
