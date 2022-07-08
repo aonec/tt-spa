@@ -50,7 +50,7 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import { TasksProfileContainer } from 'services/tasks/tasksProfileService';
+import { TasksProfileContainer, tasksProfileService } from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/ChangeODPUService';
 
 moment.locale('ru');
