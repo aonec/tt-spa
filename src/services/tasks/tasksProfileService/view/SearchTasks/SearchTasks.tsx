@@ -44,7 +44,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     onSubmit,
   });
 
-  const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | undefined>(undefined);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       clearInput();
     }
 
-    lastGroupTypeRef.current = currentFilter.GroupType;
+    lastGroupTypeRef.current = currentFilter?.GroupType;
   }, [currentFilter?.GroupType, lastGroupTypeRef]);
 
   return (

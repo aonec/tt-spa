@@ -5,10 +5,12 @@ import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
 import {
   StyledForm,
-  StyledContainerThreeItems,
   StyledContainerFourItems,
 } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
-import { FormItem } from './SearchTasks.styled';
+import {
+  FormItem,
+  StyledContainerThreeItemsWithMarginTop,
+} from './SearchTasks.styled';
 
 const { Option } = Select;
 
@@ -18,9 +20,7 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   taskTypes,
 }) => {
   return (
-    <StyledForm
-      id="searchForm"
-    >
+    <StyledForm id="searchForm">
       <StyledContainerFourItems>
         <FormItem>
           <label>Город: </label>
@@ -73,7 +73,7 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
           />
         </FormItem>
       </StyledContainerFourItems>
-      <StyledContainerThreeItems>
+      <StyledContainerThreeItemsWithMarginTop>
         <FormItem>
           <label>Номер задачи: </label>
           <InputSC
@@ -121,7 +121,7 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             </Select.Option>
           </SelectSC>
         </FormItem>
-      </StyledContainerThreeItems>
+      </StyledContainerThreeItemsWithMarginTop>
     </StyledForm>
   );
 };
