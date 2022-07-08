@@ -91,7 +91,7 @@ export const TaskProfile = () => {
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <ReadingsHistoryModal readonly />
-      <GoBack path="/tasks/" />
+      <GoBack />
       <Header {...state.header} state={state} />
       {isIndividualDeviceReadingCheckType ? (
         <CorrectionReadingsPanel />

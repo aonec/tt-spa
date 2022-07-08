@@ -11,7 +11,13 @@ import { useForm } from 'effector-forms/dist';
 import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
 import { ReactComponent as SortIconTop } from './filterButton/assets/sortArrowsTop.svg';
 import { ReactComponent as SortIconBottom } from './filterButton/assets/sortArrowsBottom.svg';
-import { EActResourceTypeStringDictionaryItem, EOrderByRule } from 'myApi';
+import {
+  EActResourceType,
+  EActResourceTypeStringDictionaryItem,
+  EActType,
+  EOrderByRule,
+} from 'myApi';
+import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
 
 export const TableHeader = () => {
   const columnTitles = [
@@ -74,55 +80,22 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
   );
 };
 
-const CheckboxWrap = styled.div`
-  margin-bottom: 9px;
-  width: 90px;
-
-  &:last-child {
-    margin-bottom: none;
-  }
-`;
-
 const ResourceExtendedSearch = () => {
   const resources = useStore($actResources);
   const {
     fields: { allowedActResources },
   } = useForm(expandedFilterForm);
 
-  const checkboxClickHandler = ({
-    checked,
-    resource,
-  }: {
-    checked: boolean;
-    resource: EActResourceTypeStringDictionaryItem;
-  }) =>
-    allowedActResources.onChange(
-      checked
-        ? allowedActResources.value.filter(
-            (allowedResource) => allowedResource !== resource.key
-          )
-        : [...allowedActResources.value, resource.key!]
-    );
+  const handleUpdateResources = (resources: EActResourceType[]) => {
+    allowedActResources.onChange(resources);
+  };
 
   return (
-    <FilterButton
-      onClear={() => allowedActResources.onChange([])}
-      active={allowedActResources.value.length !== 0}
-    >
-      {resources?.map((resource) => {
-        const checked = allowedActResources.value.includes(resource.key!);
-        return (
-          <CheckboxWrap>
-            <Checkbox
-              checked={checked}
-              onClick={() => checkboxClickHandler({ checked, resource })}
-            >
-              {resource.value}
-            </Checkbox>
-          </CheckboxWrap>
-        );
-      })}
-    </FilterButton>
+    <FilterExtendedSearch
+      allowedFilters={resources}
+      handleUpdate={handleUpdateResources}
+      selectedFilters={allowedActResources.value}
+    />
   );
 };
 
@@ -132,42 +105,16 @@ const TypeDocumentExtendedSearch = () => {
     fields: { allowedActTypes },
   } = useForm(expandedFilterForm);
 
-  const CheckboxWrap = styled.div`
-    margin-bottom: 9px;
-
-    &:last-child {
-      margin-bottom: none;
-    }
-  `;
+  const handleUpdateActTypes = (actTypes: EActType[]) => {
+    allowedActTypes.onChange(actTypes);
+  };
 
   return (
-    <FilterButton
-      onClear={() => allowedActTypes.onChange([])}
-      active={allowedActTypes.value.length !== 0}
-    >
-      {actTypes?.map((elem) => {
-        const checked = allowedActTypes.value.includes(elem.key!);
-
-        return (
-          <CheckboxWrap>
-            <Checkbox
-              checked={checked}
-              onClick={() =>
-                allowedActTypes.onChange(
-                  checked
-                    ? allowedActTypes.value.filter(
-                        (resource) => resource !== elem.key
-                      )
-                    : [...allowedActTypes.value, elem.key!]
-                )
-              }
-            >
-              {elem.value}
-            </Checkbox>
-          </CheckboxWrap>
-        );
-      })}
-    </FilterButton>
+    <FilterExtendedSearch
+      allowedFilters={actTypes}
+      handleUpdate={handleUpdateActTypes}
+      selectedFilters={allowedActTypes.value}
+    />
   );
 };
 
