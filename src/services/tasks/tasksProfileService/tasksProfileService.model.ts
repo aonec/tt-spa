@@ -29,7 +29,7 @@ const $isLoading = searchTasksFx.pending;
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
-const TasksProfileIsOpen = createGate();
+const TasksIsOpen = createGate();
 
 $searchState
   .on(searchTasks, (oldFilters, filters) => ({
@@ -50,7 +50,7 @@ $searchState
   .reset(clearFilters);
 
 forward({
-  from: TasksProfileIsOpen.close,
+  from: TasksIsOpen.close,
   to: clearFilters,
 });
 
@@ -73,6 +73,6 @@ export const tasksProfileService = {
     $tasksPagedData,
   },
   gates: {
-    TasksProfileIsOpen,
+    TasksIsOpen,
   },
 };
