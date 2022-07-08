@@ -2,14 +2,10 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import {
-  EManagingFirmTaskFilterType,
-  ETaskTargetType,
-  TaskGroupingFilter,
-} from 'myApi';
+import { EManagingFirmTaskFilterType } from 'myApi';
 import React, { ChangeEvent, FC, useCallback } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
+import { SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { TasksExtendedSearchForm } from './TasksExtendedSearch';
@@ -68,7 +64,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
 
   const clearAllFilters = () => {
     clearFilters();
-    resetForm()
+    resetForm();
   };
 
   return (
