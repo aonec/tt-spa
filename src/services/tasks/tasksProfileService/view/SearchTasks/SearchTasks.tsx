@@ -43,18 +43,18 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [setFieldValue]);
 
   useEffect(() => {
-    if (lastGroupTypeRef.current === currentFilter?.GroupType!) {
+    if (lastGroupTypeRef.current === currentFilter.GroupType) {
       return;
     }
     const isFromArchive = lastGroupTypeRef.current === 'Archived';
     const isToArchive =
-      currentFilter?.GroupType === 'Archived' && lastGroupTypeRef.current;
+      currentFilter.GroupType === 'Archived' && lastGroupTypeRef.current;
     if (isFromArchive || isToArchive) {
       clearInput();
     }
 
     lastGroupTypeRef.current = currentFilter.GroupType;
-  }, [currentFilter?.GroupType, lastGroupTypeRef]);
+  }, [currentFilter.GroupType, lastGroupTypeRef]);
 
   return (
     <ExtendedSearch

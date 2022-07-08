@@ -30,15 +30,18 @@ export const TasksProfileContainer = () => {
   const changePageNumber = useEvent(inputs.changePageNumber);
 
   useEffect(() => {
-    if (lastGroupTypeRef.current !== grouptype) {
-      if (lastGroupTypeRef.current === 'Archived')
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      else if (grouptype === 'Archived' && lastGroupTypeRef.current)
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      else changeGroupType(grouptype);
-
-      lastGroupTypeRef.current = grouptype;
+    if (lastGroupTypeRef.current === grouptype) {
+      return;
     }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+    } else {
+      changeGroupType(grouptype);
+    }
+
+    lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 
   const initialValues = useStore(outputs.$searchState);
