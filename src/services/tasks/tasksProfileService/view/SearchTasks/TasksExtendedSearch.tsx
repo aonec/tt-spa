@@ -113,10 +113,13 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
               setFieldValue('ClosingStatuses', value);
             }}
           >
-            <Option key={'Properly'} value={'Properly'}>
-              {'Обычная'}
+            <Option key='Properly' value='Properly'>
+              {'Выполнена в срок'}
             </Option>
-            <Select.Option key={'Interrupted'} value={'Interrupted'}>
+            <Select.Option key='Lated' value='Lated' disabled>
+              {'Просрочена'}
+            </Select.Option>
+            <Select.Option key='Interrupted' value='Interrupted'>
               {'Закрыта автоматически'}
             </Select.Option>
           </SelectSC>
