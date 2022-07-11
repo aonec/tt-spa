@@ -1,5 +1,6 @@
 import { ElectricHousingMeteringDeviceResponse, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
-export type ChangeODPUPageProps = {
-  oldDevice: ElectricHousingMeteringDeviceResponse | null;
+
+export type ChangeODPUReadingsProps = {
+  device: ElectricHousingMeteringDeviceResponse | null;
   addNewReading: (payload: SwitchHousingDeviceReadingsCreateRequest) => void;
 };

@@ -1,6 +1,9 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+import {
+  ElectricHousingMeteringDeviceResponse,
+  SwitchHousingDeviceReadingsCreateRequest,
+} from 'myApi';
 import { fetchHousingMeteringDevice } from './ChangeODPUService.api';
 
 const domain = createDomain('ChangeODPUService');
@@ -10,6 +13,14 @@ const OldDeviceIdGate = createGate<{ oldDeviceId: number }>();
 const $oldDevice = domain.createStore<ElectricHousingMeteringDeviceResponse | null>(
   null
 );
+const $newReadings = domain.createStore<
+  SwitchHousingDeviceReadingsCreateRequest[]
+>([]);
+const addNewReadings = domain.createEvent<SwitchHousingDeviceReadingsCreateRequest>();
+$newReadings.on(addNewReadings, (readings, newReading) => [
+  ...readings,
+  newReading,
+]);
 
 const getHousingMeteringDeviceFx = domain.createEffect<
   number,
@@ -24,7 +35,9 @@ forward({
 });
 
 export const ChangeODPUService = {
-  inputs: {},
+  inputs: {
+    addNewReadings
+  },
   outputs: {
     $oldDevice,
   },
@@ -32,4 +45,3 @@ export const ChangeODPUService = {
     OldDeviceIdGate,
   },
 };
-

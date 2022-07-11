@@ -11,8 +11,12 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { ChangeODPUReadingsContainer } from '../ChangeODPUReadingsService';
 
-export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({ oldDevice }) => {
+export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
+  oldDevice,
+  addNewReading,
+}) => {
   const { resource, address, serialNumber, model } = oldDevice || {};
   const hosuingstockAddress = address && getHousingStockAddress(address, true);
 
@@ -26,6 +30,10 @@ export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({ oldDevice }) => {
         <SerialNumberWrapper>{serialNumber}</SerialNumberWrapper>
         <ModelWrapper>{model}</ModelWrapper>
       </TitleWrapper>
+      <ChangeODPUReadingsContainer
+        device={oldDevice}
+        addNewReading={addNewReading}
+      />
     </Wrapper>
   );
 };
