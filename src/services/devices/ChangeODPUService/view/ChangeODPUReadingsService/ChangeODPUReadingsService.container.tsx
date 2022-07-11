@@ -1,10 +1,11 @@
 import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
+import { useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { ChangeODPUReadingsService } from './ChangeODPUReadings.model';
 import { ChangeODPUReadingsProps } from './ChangeODPUReadingsService.types';
 import { ChangeODPUReadingsInputs } from './view/ChangeODPUReadingsInputs';
 
-const { gates } = ChangeODPUReadingsService;
+const { gates, outputs } = ChangeODPUReadingsService;
 
 export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   device,
@@ -13,6 +14,9 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
 
   const oldDeviceSlider = useSliderIndex();
   const deviceSlider = useSliderIndex();
+
+  const oldReadings = useStore(outputs.$oldReadings);
+
   const { OldDeviceNodeIdGate } = gates;
 
   return (
@@ -22,6 +26,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
         title="Заменяемый прибор"
         deviceInfo={{ resource, serialNumber, model }}
         slider={oldDeviceSlider}
+        oldReadings={oldReadings}
       />
       <ChangeODPUReadingsInputs
         title="Новый прибор"
@@ -31,6 +36,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
           model: 'Модель',
         }}
         slider={deviceSlider}
+        oldReadings={oldReadings}
       />
     </>
   );

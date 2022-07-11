@@ -15,7 +15,6 @@ import { ChangeODPUReadingsContainer } from '../ChangeODPUReadingsService';
 
 export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
   oldDevice,
-  addNewReading,
 }) => {
   const { resource, address, serialNumber, model } = oldDevice || {};
   const hosuingstockAddress = address && getHousingStockAddress(address, true);
@@ -32,7 +31,6 @@ export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
       </TitleWrapper>
       <ChangeODPUReadingsContainer
         device={oldDevice}
-        addNewReading={addNewReading}
       />
     </Wrapper>
   );

@@ -2,5 +2,4 @@ import { ElectricHousingMeteringDeviceResponse, SwitchHousingDeviceReadingsCreat
 
 export type ChangeODPUReadingsProps = {
   device: ElectricHousingMeteringDeviceResponse | null;
-  addNewReading: (payload: SwitchHousingDeviceReadingsCreateRequest) => void;
 };

@@ -1,4 +1,7 @@
-import { ElectricHousingMeteringDeviceResponse, EResourceType, HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import {
+  EResourceType,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
+} from 'myApi';
 
 export type ChangeODPUReadingsInputsProps = {
   title: string;
@@ -14,5 +17,10 @@ export type ChangeODPUReadingsInputsProps = {
     canUp: boolean;
     canDown: boolean;
   };
-
+  oldReadings: {
+    [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse;
+  };
+  newReadings?: {
+    [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse;
+  };
 };

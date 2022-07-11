@@ -10,13 +10,11 @@ export const ChangeODPUContainer = () => {
   const { oldDeviceId } = useParams<{ oldDeviceId: string }>();
   const { OldDeviceIdGate } = gates;
   const oldDevice = useStore(outputs.$oldDevice);
-
-  const addNewReading = useEvent(inputs.addNewReadings);
-
+  
   return (
     <>
       <OldDeviceIdGate oldDeviceId={Number(oldDeviceId)} />
-      <ChangeODPUPage oldDevice={oldDevice} addNewReading={addNewReading} />
+      <ChangeODPUPage oldDevice={oldDevice}/>
     </>
   );
 };

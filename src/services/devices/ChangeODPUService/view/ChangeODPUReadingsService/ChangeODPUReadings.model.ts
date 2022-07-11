@@ -5,18 +5,21 @@ import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
 } from 'myApi';
 import { fetchOldReadings } from './ChangeODPUReadings.api';
+import { prepareDataWithEmpties } from './ChangeODPUReadings.utils';
 
 const domain = createDomain('ChangeODPUReadingsService');
-const $oldReadings = domain.createStore<
-  HousingMeteringDeviceReadingsIncludingPlacementResponse[] | null
->([]);
+const $oldReadings = domain.createStore<{
+  [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse;
+}>({});
 
 const getOldReadings = domain.createEffect<
   number,
   GetHousingMeteringDeviceReadingsResponse
 >(fetchOldReadings);
 
-$oldReadings.on(getOldReadings.doneData, (_, res) => res.items);
+$oldReadings.on(getOldReadings.doneData, (_, res) =>
+  prepareDataWithEmpties(res.items!)
+);
 
 const OldDeviceNodeIdGate = createGate<{ nodeId: number }>();
 

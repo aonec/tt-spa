@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 4px 8px #1115352d;
   border-radius: 4px;
   padding: 16px 24px;
+  max-width: 700px;
 `;
 
 export const ReadingsWrapper = styled.div`
@@ -20,7 +21,7 @@ export const OldReadingWrapper = styled.div`
 `;
 
 export const NewReadingWrapper = styled.div`
-  margin-left: 20px;
+  margin-left: 16px;
 `;
 
 export const SerialNumberWrapper = styled.div`
@@ -46,6 +47,7 @@ export const DeviceInfo = styled.div`
 
 export const Input = styled.input<{ color: string; edited?: boolean }>`
   height: 35px;
+  width: 150px;
   padding: 2px 10px;
   border: 1px solid ${({ color }) => color};
   border-left: 5px solid ${({ color }) => color};
