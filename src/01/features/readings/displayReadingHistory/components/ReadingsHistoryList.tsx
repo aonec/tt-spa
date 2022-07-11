@@ -1,5 +1,5 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
@@ -29,16 +29,22 @@ import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 import {
   CorrectReadingValuesValidationResult,
-  getResourceUpLimit,
   round,
 } from '01/hooks/useReadings';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import {
+  managementFirmConsumptionRatesService,
+  useManagingFirmConsumptionRates,
+} from 'services/meters/managementFirmConsumptionRatesService';
 
 interface Props {
   isModal?: boolean;
   readonly?: boolean;
 }
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const {
@@ -53,6 +59,17 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const readingsHistory = values;
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
+
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    device?.managementFirmId
+  );
 
   const {
     isYearOpen,
@@ -135,10 +152,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
               rateNum!,
-              device?.resource!
+              device?.resource!,
+              managementFirmConsumptionRates
             );
 
-            if (validationResult.validated) {
+            if (!validationResult || validationResult.validated) {
               return request();
             }
 
@@ -195,10 +213,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
               rateNum!,
-              device?.resource!
+              device?.resource!,
+              managementFirmConsumptionRates
             );
 
-            if (validationResult.validated) {
+            if (!validationResult || validationResult.validated) {
               return request();
             }
 
@@ -378,9 +397,12 @@ const validateReadings = (
   prevValues: (number | null)[],
   newValues: (number | null)[],
   rateNum: number,
-  resource: EResourceType
+  resource: EResourceType,
+  limits: ConsumptionRatesDictionary | null
 ) => {
-  const limit = getResourceUpLimit(resource);
+  const limit = limits && limits[resource]?.maximumConsumptionRate;
+
+  if (!limit) return false;
 
   const res = newValues.reduce(
     (acc, elem, index) => {
@@ -436,8 +458,6 @@ const slide = keyframes`
 	}
 	100% {
 		background-position: 0% 0%;
-	} 
-  }
 	} 
 `;
 
