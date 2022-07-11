@@ -25,7 +25,6 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   deviceInfo,
   slider,
   oldReadings,
-  newReadings,
 }) => {
   const [readings, setReadings] = useState<
     SwitchHousingDeviceReadingsCreateRequest[]
@@ -35,12 +34,21 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   const { canDown, canUp, down, sliderIndex, up } = slider;
   const color = resource ? DeviceIcons[resource].color : '#c3c3c3';
 
-  const newReading = oldReadings[-1] || { value: '', readingDate: moment() };
+  const currentDate = moment().format('YYYY-MM-01');
+  const currentMonth = moment().month() + 1;
+  const readingDate = moment().format(`YYYY-${currentMonth - sliderIndex}-01`);
 
-  const reading =
-    readings.find(
-      (elem) => elem.readingDate === oldReadings[sliderIndex].readingDate
-    ) || oldReadings[sliderIndex];
+  const currentReading = oldReadings[-1]
+    ? readings.find(
+        (elem) => elem?.readingDate === oldReadings[-1]?.readingDate
+      ) || oldReadings[-1]
+    : readings.find((elem) => elem.readingDate === currentDate);
+
+  const prevReading = oldReadings[sliderIndex]
+    ? readings.find(
+        (elem) => elem?.readingDate === oldReadings[sliderIndex]?.readingDate
+      ) || oldReadings[sliderIndex]
+    : readings.find((elem) => elem.readingDate === readingDate);
 
   const handleChange = useCallback(
     ({ value, readingDate }: { value: number; readingDate: string }) =>
@@ -48,11 +56,11 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         const isValuesEqual = value === oldReadings[sliderIndex]?.value;
         if (isValuesEqual) {
           return [
-            ...prevReadings.filter((elem) => elem.readingDate !== readingDate),
+            ...prevReadings.filter((elem) => elem?.readingDate !== readingDate),
           ];
         }
         return [
-          ...prevReadings.filter((elem) => elem.readingDate !== readingDate),
+          ...prevReadings.filter((elem) => elem?.readingDate !== readingDate),
           { readingDate, value },
         ];
       }),
@@ -84,12 +92,12 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
           />
           <Input
             color="#c3c3c3"
-            value={reading?.value}
+            value={prevReading?.value || ''}
             type="number"
             onChange={(e) => {
               handleChange({
                 value: Number(e.target.value),
-                readingDate: reading.readingDate,
+                readingDate: prevReading?.readingDate || readingDate,
               });
             }}
           />
@@ -98,11 +106,11 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
           <Input
             color={color}
             type="number"
-            value={newReading.value}
+            value={currentReading?.value || ''}
             onChange={(e) => {
               handleChange({
                 value: Number(e.target.value),
-                readingDate: newReading.readingDate,
+                readingDate: currentReading?.readingDate || currentDate,
               });
             }}
           />

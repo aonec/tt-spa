@@ -36,7 +36,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
           model: 'Модель',
         }}
         slider={deviceSlider}
-        oldReadings={oldReadings}
+        oldReadings={{}}
       />
     </>
   );

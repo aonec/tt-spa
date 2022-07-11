@@ -20,7 +20,4 @@ export type ChangeODPUReadingsInputsProps = {
   oldReadings: {
     [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse;
   };
-  newReadings?: {
-    [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse;
-  };
 };

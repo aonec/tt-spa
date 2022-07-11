@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 4px 8px #1115352d;
   border-radius: 4px;
   padding: 16px 24px;
+  margin-top: 16px;
   max-width: 700px;
 `;
 
@@ -45,7 +46,7 @@ export const DeviceInfo = styled.div`
   margin-top: 12px;
 `;
 
-export const Input = styled.input<{ color: string; edited?: boolean }>`
+export const Input = styled.input<{ color: string }>`
   height: 35px;
   width: 150px;
   padding: 2px 10px;

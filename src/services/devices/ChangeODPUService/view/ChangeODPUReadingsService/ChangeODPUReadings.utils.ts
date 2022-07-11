@@ -6,7 +6,6 @@ export const prepareDataWithEmpties = (
 ) =>
   readings.reduce((acc, elem) => {
     const dateFormat = 'YYYY-MM';
-
     const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
     const readingMonthDate = moment(
       moment(elem.readingDate).format(dateFormat)
