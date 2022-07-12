@@ -80,7 +80,7 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/Executing'
+                    : '/tasks/list/Executing'
                 }
                 exact
               />
