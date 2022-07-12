@@ -1,4 +1,6 @@
-import { ElectricHousingMeteringDeviceResponse, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
+import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+
 export type ChangeODPUPageProps = {
   oldDevice: ElectricHousingMeteringDeviceResponse | null;
+  isLoading: boolean;
 };
