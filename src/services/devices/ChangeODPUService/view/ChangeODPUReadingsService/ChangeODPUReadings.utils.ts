@@ -20,10 +20,11 @@ export const prepareData = (
         .subtract(index - 1, 'month')
         .format('MMMM')
     );
+
     return {
       text,
-      value: null,
       id: text,
+      value: null,
       readingDate: moment(currentMonthDate).subtract(index, 'month').format(),
     };
   });
@@ -36,7 +37,8 @@ export const prepareData = (
 
       const diff = currentMonthDate.diff(readingMonthDate, 'months');
 
-      if (diff > 6 || currentReading.isRemoved) return acc;
+      if (diff > 6 || currentReading.isRemoved || currentReading.isArchived)
+        return acc;
 
       acc[diff] = { ...acc[diff], ...currentReading };
       return acc;

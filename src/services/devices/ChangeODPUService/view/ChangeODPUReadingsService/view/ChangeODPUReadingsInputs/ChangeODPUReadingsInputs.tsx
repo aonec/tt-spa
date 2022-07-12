@@ -64,7 +64,6 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
               handleChange({ newValue: value, id: String(id) })
             }
             resource={resource}
-            inputType="number"
           />
         </NewReadingWrapper>
       </ReadingsWrapper>

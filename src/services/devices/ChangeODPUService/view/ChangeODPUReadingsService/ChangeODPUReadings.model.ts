@@ -17,16 +17,19 @@ const getOldReadings = domain.createEffect<
 
 $oldReadings.on(getOldReadings.doneData, (_, res) => prepareData(res.items!));
 
+const $loading = getOldReadings.pending;
+
 const OldDeviceNodeIdGate = createGate<{ nodeId: number }>();
 
 forward({
-  from: OldDeviceNodeIdGate.state.map(({ nodeId }) => nodeId),
+  from: OldDeviceNodeIdGate.open.map(({ nodeId }) => nodeId),
   to: getOldReadings,
 });
 
 export const ChangeODPUReadingsService = {
   outputs: {
     $oldReadings,
+    $loading,
   },
   gates: {
     OldDeviceNodeIdGate,

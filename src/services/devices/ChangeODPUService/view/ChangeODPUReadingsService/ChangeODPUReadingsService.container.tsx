@@ -1,6 +1,8 @@
 import { useStore } from 'effector-react';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { ChangeODPUReadingsService } from './ChangeODPUReadings.model';
+import { Wrapper } from './ChangeODPUReadings.styled';
+import { prepareReadingsToFormik } from './ChangeODPUReadings.utils';
 import {
   ChangeODPUReadingsProps,
   PreparedHousingMeteringDeviceReadings,
@@ -11,50 +13,78 @@ const { gates, outputs } = ChangeODPUReadingsService;
 
 export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   device,
+  onChangeNewReadings,
+  onChangeOldReadings,
 }) => {
   const { resource, serialNumber, model, nodeId } = device || {};
-  const oldReadings = useStore(outputs.$oldReadings);
 
-  const [newReadings, setNewReadings] = useState<
+  const loading = useStore(outputs.$loading);
+
+  const oldDeviceInitialReadings = useStore(outputs.$oldReadings);
+  const newDeviceInitialReadings = useMemo(
+    () =>
+      oldDeviceInitialReadings.map((elem) => {
+        return {
+          readingDate: elem.readingDate,
+          id: elem.id,
+          text: elem.text,
+          value: null,
+        };
+      }),
+    [oldDeviceInitialReadings]
+  );
+
+  const [newDeviceReadings, setNewDeviceReadings] = useState<
     PreparedHousingMeteringDeviceReadings[]
   >([]);
-  const [editedReadings, setEditedReadings] = useState(oldReadings);
+  const [oldDeviceReadings, setOldDeviceReadings] = useState(
+    oldDeviceInitialReadings
+  );
 
   useEffect(() => {
-    setNewReadings(
-      oldReadings.map((elem) => ({
-        readingDate: elem.readingDate,
-        id: elem.id,
-        text: elem.text,
-        value: null,
-      }))
+    setNewDeviceReadings(newDeviceInitialReadings);
+    setOldDeviceReadings(oldDeviceInitialReadings);
+  }, [oldDeviceInitialReadings]);
+
+  useEffect(() => {
+    const preparedNewDeviceReadings = prepareReadingsToFormik(
+      newDeviceReadings,
+      newDeviceInitialReadings
     );
-    setEditedReadings(oldReadings);
-  }, [oldReadings]);
+    onChangeNewReadings(preparedNewDeviceReadings);
+  }, [newDeviceReadings]);
+
+  useEffect(() => {
+    const preparedOldDeviceReadings = prepareReadingsToFormik(
+      oldDeviceReadings,
+      oldDeviceInitialReadings
+    );
+    onChangeOldReadings(preparedOldDeviceReadings);
+  }, [oldDeviceReadings]);
 
   const { OldDeviceNodeIdGate } = gates;
 
   return (
     <>
       <OldDeviceNodeIdGate nodeId={nodeId!} />
-      {oldReadings.length && (
+      <Wrapper disabled={loading}>
         <ChangeODPUReadingsInputs
           title="Заменяемый прибор"
           deviceInfo={{ resource, serialNumber, model }}
-          oldReadings={editedReadings}
-          onChange={({ readings }) => setEditedReadings(readings)}
+          oldReadings={oldDeviceReadings}
+          onChange={({ readings }) => setOldDeviceReadings(readings)}
         />
-      )}
-      <ChangeODPUReadingsInputs
-        title="Новый прибор"
-        deviceInfo={{
-          resource,
-          serialNumber: 'Серийный номер',
-          model: 'Модель',
-        }}
-        oldReadings={newReadings}
-        onChange={({ readings }) => setNewReadings(readings)}
-      />
+        <ChangeODPUReadingsInputs
+          title="Новый прибор"
+          deviceInfo={{
+            resource,
+            serialNumber: 'Серийный номер',
+            model: 'Модель',
+          }}
+          oldReadings={newDeviceReadings}
+          onChange={({ readings }) => setNewDeviceReadings(readings)}
+        />
+      </Wrapper>
     </>
   );
 };

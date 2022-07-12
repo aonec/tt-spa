@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { EResourceType } from 'myApi';
+import React, { FC, useCallback } from 'react';
+import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   BaseInfoWrapper,
@@ -28,14 +28,28 @@ import {
   ODPUPhaseDictionary,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
-import Button from '01/_components/Button';
 import { ButtonTT } from '01/tt-components';
+import { ChangeODPUReadingsContainer } from '../../ChangeODPUReadingsService';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
   const { values, handleChange, setFieldValue, submitForm } = useFormik({
     initialValues: { ...initialValues, id: oldDevice.id },
     onSubmit: console.log,
   });
+
+  const handleNewReadingsChange = useCallback(
+    (newDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
+      setFieldValue('newDeviceReadings', newDeviceReadings);
+    },
+    [setFieldValue]
+  );
+
+  const handleOldReadingsChange = useCallback(
+    (oldDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
+      setFieldValue('oldDeviceReadings', oldDeviceReadings);
+    },
+    [setFieldValue]
+  );
 
   return (
     <FormSC onSubmitCapture={submitForm}>
@@ -196,6 +210,11 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
           </FormItem>
         </ChangingReasonSelectWrapper>
       </ChangingDeviceInfoWrapper>
+      <ChangeODPUReadingsContainer
+        device={oldDevice}
+        onChangeNewReadings={handleNewReadingsChange}
+        onChangeOldReadings={handleOldReadingsChange}
+      />
       <SealInfoWrapper>
         <FormItem label="Номер пломбы">
           <Input
