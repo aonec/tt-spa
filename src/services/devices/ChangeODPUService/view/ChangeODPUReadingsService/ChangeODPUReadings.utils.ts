@@ -23,6 +23,7 @@ export const prepareData = (
 
     return {
       text,
+      id: text,
       value: null,
       readingDate: moment(currentMonthDate).subtract(index, 'month').format(),
     };
