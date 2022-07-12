@@ -5,7 +5,7 @@ import styledComp from 'styled-components';
 import { Icon as IconTT } from '../../../tt-components/Icon';
 
 import { time_line } from '01/r_comp';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import DeviceIcons from '../../../_components/DeviceIcons';
 
 const styles = css`
@@ -86,7 +86,7 @@ const styles = css`
   }
 `;
 
-const TaskItem = styledComp(Link)`
+const TaskItem = styledComp.div`
 display: flex;
 width: 100%;
 padding-left: 0px;
@@ -118,17 +118,18 @@ export const TasksList = ({ items }) => {
         perpetrator,
         showExecutor,
         node,
+        closingStatus,
       }) => {
         const { icon, color } = DeviceIcons[node?.resource] || {};
         return (
           <task_item
-            to={`/tasks/${id}`}
+            to={`/tasks/profile/${id}`}
             key={id}
-            onClick={() => push(`/tasks/${id}`)}
+            onClick={() => push(`/tasks/profile/${id}`)}
           >
             {/* one */}
             <row>
-              <TaskItem to={`/tasks/${id}`} key={id}>
+              <TaskItem key={id}>
                 <task_title as="h4">
                   {currentStage ? currentStage.name : name}
                 </task_title>
@@ -149,14 +150,21 @@ export const TasksList = ({ items }) => {
             )}
             {/* tree */}
             <row>
-              <timer>
-                <Icon {...timer.icon} />
-                <timer_text as="span">{timer.text}</timer_text>
-                <span {...use({ fail: timer?.stage?.fail ?? null })}>
-                  {timer.stage?.timeStr ?? timer.final.timeStr}
-                </span>
-                <time>{timer.stage?.before ?? timer.diff.timeStr}</time>
-              </timer>
+              {closingStatus !== 'Interrupted' ? (
+                <timer>
+                  <Icon {...timer.icon} />
+                  <timer_text as="span">{timer.text}</timer_text>
+                  <span {...use({ fail: timer?.stage?.fail ?? null })}>
+                    {timer.stage?.timeStr ?? timer.final.timeStr}
+                  </span>
+                  <time>{timer.stage?.before ?? timer.diff.timeStr}</time>
+                </timer>
+              ) : (
+                <>
+                  <Icon icon="close" fill={'var(--error)'} />
+                  <span style={{opacity: '0.7'}}>Закрыта автоматически</span>
+                </>
+              )}
               {showExecutor && (
                 <executor>
                   <Icon icon="username2" />

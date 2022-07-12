@@ -7,7 +7,7 @@ import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 export type SearchTasksProps = {
   onSubmit: (formFilter: SearchTasksForm) => void;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
-  currentFilter: GetTasksListRequestPayload | null;
+  currentFilter: GetTasksListRequestPayload;
 };
 
 export type SearchTasksForm = {

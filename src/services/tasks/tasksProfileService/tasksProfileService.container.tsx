@@ -11,11 +11,10 @@ import { tasksProfileService } from './tasksProfileService.model';
 import { preparedData } from './tasksProfileService.utils';
 import { TasksProfile } from './view/TasksProfile';
 
-const { inputs, outputs, gates } = tasksProfileService;
+const { inputs, outputs } = tasksProfileService;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
-  const { TasksProfileIsOpen } = gates;
   const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
@@ -31,15 +30,18 @@ export const TasksProfileContainer = () => {
   const changePageNumber = useEvent(inputs.changePageNumber);
 
   useEffect(() => {
-    if (lastGroupTypeRef.current !== grouptype) {
-      if (lastGroupTypeRef.current === 'Archived')
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      else if (grouptype === 'Archived')
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      else changeGroupType(grouptype);
-
-      lastGroupTypeRef.current = grouptype;
+    if (lastGroupTypeRef.current === grouptype) {
+      return;
     }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+    } else {
+      changeGroupType(grouptype);
+    }
+
+    lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 
   const initialValues = useStore(outputs.$searchState);
@@ -50,7 +52,6 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      <TasksProfileIsOpen />
       <TaskTypesGate />
       <ExportTasksListModalContainer />
       <TasksProfile

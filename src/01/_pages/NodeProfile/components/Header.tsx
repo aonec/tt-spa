@@ -1,17 +1,17 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useEvent } from 'effector-react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import {
-  CalculatorIntoNodeResponse,
-  PipeNodeResponse,
-} from '../../../../myApi';
+import { PipeNodeResponse } from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
+import { Tooltip } from 'antd';
+import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { fullAddressesString } from 'utils/additionalAddressesString';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -33,8 +33,9 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, city, street, number: housingStockNumber, corpus } =
+  const { id: objectId  } =
     address || {};
+
   const { value } = nodeStatus || {};
   const menuButtonArr: MenuButtonInterface[] = [
     {
@@ -75,6 +76,7 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
       {getNodeStatus}
     </div>
   );
+  const additionalAdress = fullAddressesString(address);
 
   return (
     <HeaderWrap
@@ -95,9 +97,9 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
 
         <SubtitleWrap>
           <Subtitle to={`/objects/${objectId}`}>
-            {`${city}, ${street}, ${housingStockNumber}${
-              corpus ? `, к.${corpus}` : ''
-            }`}
+          <Tooltip title={additionalAdress}>
+            <AdditionalAddress>{additionalAdress}</AdditionalAddress>
+          </Tooltip>
           </Subtitle>
           <NodeStatus />
         </SubtitleWrap>

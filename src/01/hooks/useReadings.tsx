@@ -29,6 +29,11 @@ import { refetchIndividualDevices } from '01/features/individualDevices/displayI
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import { useEvent, useStore } from 'effector-react';
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -37,6 +42,17 @@ export const useReadings = (
   closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
+
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    device.managementFirm?.id,
+  );
 
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
 
@@ -67,10 +83,15 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
-        const dateFormat = "YYYY-MM"
+        const dateFormat = 'YYYY-MM';
 
-        const currentMonthDate = moment(moment().format(dateFormat), dateFormat)
-        const readingMonthDate = moment(moment(elem.readingDateTime).format(dateFormat))
+        const currentMonthDate = moment(
+          moment().format(dateFormat),
+          dateFormat
+        );
+        const readingMonthDate = moment(
+          moment(elem.readingDateTime).format(dateFormat)
+        );
 
         if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
 
@@ -189,13 +210,6 @@ export const useReadings = (
   };
 
   const sendPreviousReading = async (requestPayload: any) => {
-    const values = getReadingValuesArray(
-      requestPayload,
-      getIndividualDeviceRateNumByName(device.rateType)
-    );
-
-    // if (!values.every(Boolean)) return;
-
     setReadingsState((prev: any) => ({
       ...prev,
       previousReadings: {
@@ -291,7 +305,8 @@ export const useReadings = (
       readingsState?.previousReadings[sliderIndex]?.values || [],
       getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
         ?.values || [],
-      index
+      index,
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -419,7 +434,8 @@ export const useReadings = (
       readingsState.currentReadingsArray,
       getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
         ?.values || [],
-      index
+      index,
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -838,16 +854,6 @@ const getPreviousReadingTooltipString = (
   return `Последнее показание: ${valuesString} (${month})`;
 };
 
-const limits = {
-  [EResourceType.ColdWaterSupply]: 25,
-  [EResourceType.HotWaterSupply]: 15,
-  [EResourceType.Electricity]: 1000,
-};
-
-export const getResourceUpLimit = (resource: EResourceType) => {
-  return (limits as any)[resource] || Infinity;
-};
-
 export interface CorrectReadingValuesValidationResult {
   validated: boolean;
   valuesValidationResults?: {
@@ -866,12 +872,14 @@ const isCorrectReadingValues = (
   rateType: EIndividualDeviceRateType,
   nextReadings: number[],
   previousReadings: number[],
-  currentIndex: number
+  currentIndex: number,
+  limits: ConsumptionRatesDictionary | null
 ): CorrectReadingValuesValidationResult => {
   if (!previousReadings.length) return { validated: true };
 
   const rateNum = getIndividualDeviceRateNumByName(rateType);
-  const limit = getResourceUpLimit(resource);
+  const limit =
+    (limits && limits[resource]?.maximumConsumptionRate) || Infinity;
 
   const res = nextReadings.reduce(
     (acc, elem, index) => {

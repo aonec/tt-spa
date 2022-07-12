@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GoBackTypes } from './GoBack.types';
 import { GoBackSC } from './GoBack.styled';
