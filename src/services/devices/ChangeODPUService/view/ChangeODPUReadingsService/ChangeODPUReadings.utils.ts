@@ -23,7 +23,6 @@ export const prepareData = (
 
     return {
       text,
-      id: text,
       value: null,
       readingDate: moment(currentMonthDate).subtract(index, 'month').format(),
     };
@@ -40,7 +39,9 @@ export const prepareData = (
       if (diff > 6 || currentReading.isRemoved || currentReading.isArchived)
         return acc;
 
-      acc[diff] = { ...acc[diff], ...currentReading };
+      const id = currentReading.id || acc[diff].text;
+
+      acc[diff] = { ...acc[diff], ...currentReading, id };
       return acc;
     }, preparedArray as PreparedHousingMeteringDeviceReadings[])
     .sort((firstReading, secondReading) =>
