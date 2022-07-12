@@ -4,17 +4,15 @@ import styled from 'styled-components';
 export const SelectSC = styled(Select)`
   height: 48px;
 
+  * {
+    font-size: 16px !important;
+    line-height: 32px;
+  }
+
   .ant-select-selector {
     height: 100% !important;
     padding: 8px 16px !important;
     border-radius: 4px !important;
-  }
-
-  .ant-picker-input {
-    input {
-      font-size: 16px;
-      line-height: 32px;
-    }
   }
 
   .ant-select-arrow {
@@ -42,4 +40,3 @@ export const SelectSC = styled(Select)`
     }
   }
 `;
-

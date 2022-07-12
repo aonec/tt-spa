@@ -1,6 +1,7 @@
+import { Form } from 'antd';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const FormSC = styled(Form)`
   margin-top: 15px;
 `;
 
@@ -82,4 +83,10 @@ export const SealInfoWrapper = styled.div`
   margin-top: 25px;
   padding-top: 15px;
   border-top: 1px solid #dcdee4;
+`;
+
+export const ButtonsWrapper = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
 `;
