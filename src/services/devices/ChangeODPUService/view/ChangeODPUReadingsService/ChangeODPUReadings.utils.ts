@@ -1,9 +1,12 @@
 import { firstLetterToUpperCase } from '01/utils/getMonthFromDate';
 import moment from 'moment';
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import {
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
+  SwitchHousingDeviceReadingsCreateRequest,
+} from 'myApi';
 import { PreparedHousingMeteringDeviceReadings } from './ChangeODPUReadingsService.types';
 
-const getFilledArray = (length: number) => Array.from(Array(7).keys());
+const getFilledArray = (length: number) => Array.from(Array(length).keys());
 
 export const prepareData = (
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
@@ -42,3 +45,13 @@ export const prepareData = (
       moment(secondReading.readingDate).diff(firstReading.readingDate)
     );
 };
+
+export const prepareReadingsToFormik = (
+  readings: PreparedHousingMeteringDeviceReadings[],
+  oldReadings: PreparedHousingMeteringDeviceReadings[]
+): SwitchHousingDeviceReadingsCreateRequest[] =>
+  readings.reduce((acc, elem, index) => {
+    if (elem.value === oldReadings[index].value || elem.value === null)
+      return acc;
+    return [...acc, { value: elem.value, readingDate: elem.readingDate }];
+  }, [] as SwitchHousingDeviceReadingsCreateRequest[]);

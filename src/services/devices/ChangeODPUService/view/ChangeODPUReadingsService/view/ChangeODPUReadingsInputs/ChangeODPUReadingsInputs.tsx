@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Slider } from '../Slider';
 import {
@@ -25,11 +25,12 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   const { model, resource, serialNumber } = deviceInfo;
 
   const handleChange = useCallback(
-    ({ value, id }: { value: number; id: string }) =>
+    ({ newValue, id }: { newValue: string; id: string }) =>
       onChange({
         readings: [
           ...oldReadings.map((elem) => {
             if (elem.id !== id) return elem;
+            const value = newValue === '' ? null : Number(newValue);
             return { ...elem, value };
           }),
         ],
@@ -52,7 +53,7 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
           <Slider
             values={prevReadings}
             onChange={({ value, id }) =>
-              handleChange({ value: Number(value), id: String(id) })
+              handleChange({ newValue: value, id: String(id) })
             }
           />
         </OldReadingWrapper>
@@ -60,9 +61,10 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
           <Slider
             values={[currentReading]}
             onChange={({ value, id }) =>
-              handleChange({ value: Number(value), id: String(id) })
+              handleChange({ newValue: value, id: String(id) })
             }
             resource={resource}
+            inputType="number"
           />
         </NewReadingWrapper>
       </ReadingsWrapper>

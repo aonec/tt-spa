@@ -26,7 +26,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
         readingDate: elem.readingDate,
         id: elem.id,
         text: elem.text,
-        value: 0,
+        value: null,
       }))
     );
     setEditedReadings(oldReadings);

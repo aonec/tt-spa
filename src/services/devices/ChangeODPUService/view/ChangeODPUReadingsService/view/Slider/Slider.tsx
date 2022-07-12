@@ -4,7 +4,12 @@ import React, { FC, useState } from 'react';
 import { ArrowContainer, Input, TextWrapper, Wrapper } from './Slider.styled';
 import { SliderProps } from './Slider.types';
 
-export const Slider: FC<SliderProps> = ({ values, onChange, resource }) => {
+export const Slider: FC<SliderProps> = ({
+  values,
+  onChange,
+  resource,
+  inputType = 'number',
+}) => {
   const color = resource ? DeviceIcons[resource].color : '#c3c3c3';
 
   const limit = values.length - 1;
@@ -40,8 +45,8 @@ export const Slider: FC<SliderProps> = ({ values, onChange, resource }) => {
       </Wrapper>
       <Input
         color={color}
-        type="number"
-        value={values[sliderIndex]?.value || ''}
+        type={inputType}
+        value={String(values[sliderIndex]?.value)}
         onChange={(e) =>
           onChange({ value: e.target.value, id: values[sliderIndex].id! })
         }

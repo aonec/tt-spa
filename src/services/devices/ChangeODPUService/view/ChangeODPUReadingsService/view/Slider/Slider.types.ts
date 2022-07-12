@@ -8,6 +8,7 @@ export type SliderProps = {
   }[];
   onChange: (payload: OnChangePayload) => void;
   resource?: EResourceType;
+  inputType?: 'number' | 'text';
 };
 
 type OnChangePayload = {

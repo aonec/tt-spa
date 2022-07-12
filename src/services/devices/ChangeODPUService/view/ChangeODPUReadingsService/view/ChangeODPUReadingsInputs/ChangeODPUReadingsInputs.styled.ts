@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   border-radius: 4px;
   padding: 16px 24px;
   margin-top: 16px;
-  max-width: 700px;
+  width: 700px;
 `;
 
 export const ReadingsWrapper = styled.div`
@@ -42,7 +42,7 @@ export const Title = styled.div`
 
 export const DeviceInfo = styled.div`
   display: flex;
-  justify-content: center;
+  align-items: center;
   margin-top: 12px;
 `;
 
