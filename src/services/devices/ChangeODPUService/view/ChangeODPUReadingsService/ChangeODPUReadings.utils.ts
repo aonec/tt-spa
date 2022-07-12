@@ -11,14 +11,19 @@ export const prepareData = (
   const dateFormat = 'YYYY-MM';
   const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
 
-  const preparedArray = getFilledArray(7).map((index) => ({
-    text: firstLetterToUpperCase(
+  const preparedArray = getFilledArray(7).map((index) => {
+    const text = firstLetterToUpperCase(
       moment(currentMonthDate)
         .subtract(index - 1, 'month')
         .format('MMMM')
-    ),
-    value: null,
-  }));
+    );
+    return {
+      text,
+      value: null,
+      id: text,
+      readingDate: moment(currentMonthDate).subtract(index, 'month').format(),
+    };
+  });
 
   return readings
     .reduce((acc, currentReading) => {

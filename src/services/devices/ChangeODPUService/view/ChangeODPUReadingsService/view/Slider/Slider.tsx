@@ -1,10 +1,10 @@
 import Arrow from '01/_components/Arrow/Arrow';
 import DeviceIcons from '01/_components/DeviceIcons';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ArrowContainer, Input, TextWrapper, Wrapper } from './Slider.styled';
 import { SliderProps } from './Slider.types';
 
-export function Slider({ values, onChange, resource  }: SliderProps) {
+export const Slider: FC<SliderProps> = ({ values, onChange, resource }) => {
   const color = resource ? DeviceIcons[resource].color : '#c3c3c3';
 
   const limit = values.length - 1;
@@ -45,8 +45,7 @@ export function Slider({ values, onChange, resource  }: SliderProps) {
         onChange={(e) =>
           onChange({ value: e.target.value, id: values[sliderIndex].id! })
         }
-        
       />
     </>
   );
-}
+};

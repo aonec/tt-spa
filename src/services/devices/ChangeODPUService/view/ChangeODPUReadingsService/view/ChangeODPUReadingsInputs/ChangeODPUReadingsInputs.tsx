@@ -28,7 +28,7 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
     ({ value, id }: { value: number; id: string }) =>
       onChange({
         readings: [
-          ...prevReadings.map((elem) => {
+          ...oldReadings.map((elem) => {
             if (elem.id !== id) return elem;
             return { ...elem, value };
           }),
@@ -59,7 +59,9 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         <NewReadingWrapper>
           <Slider
             values={[currentReading]}
-            onChange={console.log}
+            onChange={({ value, id }) =>
+              handleChange({ value: Number(value), id: String(id) })
+            }
             resource={resource}
           />
         </NewReadingWrapper>

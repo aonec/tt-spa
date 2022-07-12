@@ -1,7 +1,10 @@
 import { useStore } from 'effector-react';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { ChangeODPUReadingsService } from './ChangeODPUReadings.model';
-import { ChangeODPUReadingsProps } from './ChangeODPUReadingsService.types';
+import {
+  ChangeODPUReadingsProps,
+  PreparedHousingMeteringDeviceReadings,
+} from './ChangeODPUReadingsService.types';
 import { ChangeODPUReadingsInputs } from './view/ChangeODPUReadingsInputs';
 
 const { gates, outputs } = ChangeODPUReadingsService;
@@ -10,14 +13,24 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   device,
 }) => {
   const { resource, serialNumber, model, nodeId } = device || {};
-
   const oldReadings = useStore(outputs.$oldReadings);
-  const newReadings = oldReadings.map((elem) => ({
-    readingDate: elem.readingDate,
-    id: elem.id,
-    text: elem.text,
-    value: 0,
-  }));
+
+  const [newReadings, setNewReadings] = useState<
+    PreparedHousingMeteringDeviceReadings[]
+  >([]);
+  const [editedReadings, setEditedReadings] = useState(oldReadings);
+
+  useEffect(() => {
+    setNewReadings(
+      oldReadings.map((elem) => ({
+        readingDate: elem.readingDate,
+        id: elem.id,
+        text: elem.text,
+        value: 0,
+      }))
+    );
+    setEditedReadings(oldReadings);
+  }, [oldReadings]);
 
   const { OldDeviceNodeIdGate } = gates;
 
@@ -28,8 +41,8 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
         <ChangeODPUReadingsInputs
           title="Заменяемый прибор"
           deviceInfo={{ resource, serialNumber, model }}
-          oldReadings={oldReadings}
-          onChange={console.log}
+          oldReadings={editedReadings}
+          onChange={({ readings }) => setEditedReadings(readings)}
         />
       )}
       <ChangeODPUReadingsInputs
@@ -40,7 +53,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
           model: 'Модель',
         }}
         oldReadings={newReadings}
-        onChange={console.log}
+        onChange={({ readings }) => setNewReadings(readings)}
       />
     </>
   );
