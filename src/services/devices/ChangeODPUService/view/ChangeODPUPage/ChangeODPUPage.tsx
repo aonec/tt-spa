@@ -26,7 +26,7 @@ export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
             <AddressWrapper>{hosuingstockAddress}</AddressWrapper>
             {oldDevice && <ODPUInfoString device={oldDevice} />}
           </InforWrapper>
-          <ChangeODPUForm />
+          {oldDevice && <ChangeODPUForm oldDevice={oldDevice} />}
         </>
       )}
     </Wrapper>

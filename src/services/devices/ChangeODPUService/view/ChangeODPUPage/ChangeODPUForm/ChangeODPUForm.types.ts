@@ -1,7 +1,13 @@
-import { EYearQuarter } from './../../../../../../myApi';
-import { EPhaseNumberType, EClosingReason } from 'myApi';
+import {
+  EYearQuarter,
+  ElectricHousingMeteringDeviceResponse,
+  EPhaseNumberType,
+  EClosingReason,
+} from 'myApi';
 
-export type ChangeODPUFormProps = {};
+export type ChangeODPUFormProps = {
+  oldDevice: ElectricHousingMeteringDeviceResponse;
+};
 
 export const ODPUPhaseDictionary = [
   { key: EPhaseNumberType.SinglePhase, value: 'Однофазный счетчик' },

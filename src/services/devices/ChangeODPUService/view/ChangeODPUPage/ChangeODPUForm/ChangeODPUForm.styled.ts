@@ -10,7 +10,7 @@ export const BaseInfoWrapper = styled.div`
   grid-template-areas:
     'a a b b'
     'c c d e'
-    'f f g g';
+    'f f g h';
 
   grid-gap: 15px;
 
@@ -40,7 +40,10 @@ export const BaseInfoWrapper = styled.div`
 
   #scaleFactor {
     grid-area: g;
-    width: 50%;
+  }
+
+  #bitDepth {
+    grid-area: h;
   }
 `;
 

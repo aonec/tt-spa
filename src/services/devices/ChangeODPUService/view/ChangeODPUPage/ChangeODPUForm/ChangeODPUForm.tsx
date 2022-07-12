@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { EResourceType } from 'myApi';
-import { FormFields } from 'ui-kit/Inputs/FormFields';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   BaseInfoWrapper,
@@ -19,110 +18,148 @@ import {
 } from './ChangeODPUForm.types';
 import { checkIsDateNotFuture } from './ChangeODPUForm.utils';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { useFormik } from 'formik';
+import { FormItem } from 'ui-kit/FormItem';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { DatePicker } from 'ui-kit/DatePicker';
 
-export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({}) => {
+const initialValues = {
+  model: '',
+  serialNumber: '',
+  bitDepth: null,
+  openingDate: null,
+  manufactureYear: null,
+  stateVerificationQuarter: null,
+  stateVerificationYear: null,
+  nextStateVerificationYear: null,
+  stateVerificationIntervalYears: null,
+  oldDeviceClosingReason: null,
+  sealNumber: '',
+  sealInstallationDate: null,
+  lastCheckingDate: null,
+  futureCheckingDate: null,
+  oldDeviceReadings: [],
+  newDeviceReadings: [],
+};
+
+export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
+  const {} = useFormik({
+    initialValues: { ...initialValues, id: oldDevice.id },
+    onSubmit: console.log,
+  });
+
   return (
     <Wrapper>
       <BaseInfoWrapper>
         <div id="resourceType">
-          <FormFields.Item label="Тип ресурса">
-            <FormFields.Select value={1} disabled>
-              <FormFields.Select.Option value={1}>
+          <FormItem label="Тип ресурса">
+            <Select value={1} disabled>
+              <Select.Option value={1}>
                 <DeviceResourceOptionWrapper>
                   <ResourceIconLookup resource={EResourceType.Electricity} />
                   <span className="device-resource-name">Электричество</span>
                 </DeviceResourceOptionWrapper>
-              </FormFields.Select.Option>
-            </FormFields.Select>
-          </FormFields.Item>
+              </Select.Option>
+            </Select>
+          </FormItem>
         </div>
         <div id="deviceType">
-          <FormFields.Item label="Тип прибора">
-            <FormFields.Select placeholder="Выберите тип прибора">
+          <FormItem label="Тип прибора">
+            <Select
+              placeholder="Выберите тип прибора"
+              disabled
+              value={oldDevice.phaseNumber || void 0}
+            >
               {ODPUPhaseDictionary.map(({ key, value }) => (
-                <FormFields.Select.Option key={key} value={key}>
+                <Select.Option key={key} value={key}>
                   {value}
-                </FormFields.Select.Option>
+                </Select.Option>
               ))}
-            </FormFields.Select>
-          </FormFields.Item>
+            </Select>
+          </FormItem>
         </div>
         <div id="deviceModel">
-          <FormFields.Item label="Модель прибора">
-            <FormFields.Input placeholder="Введите модель" />
-          </FormFields.Item>
+          <FormItem label="Модель прибора">
+            <Input placeholder="Введите модель" />
+          </FormItem>
         </div>
         <div id="serialNumber">
-          <FormFields.Item label="Серийный номер">
-            <FormFields.Input placeholder="Введите серийный номер" />
-          </FormFields.Item>
+          <FormItem label="Серийный номер">
+            <Input placeholder="Введите серийный номер" />
+          </FormItem>
         </div>
         <div id="yearOfManufacture">
-          <FormFields.Item label="Год выпуска">
-            <FormFields.DatePicker
+          <FormItem label="Год выпуска">
+            <DatePicker
               disabledDate={checkIsDateNotFuture}
               picker="year"
               placeholder="Введите год"
             />
-          </FormFields.Item>
+          </FormItem>
         </div>
         <div id="deviceInstallationDate">
-          <FormFields.Item label="Дата установки прибора">
+          <FormItem label="Дата установки прибора">
             <DatePickerNative placeholder="Введите дату" />
-          </FormFields.Item>
+          </FormItem>
         </div>
         <div id="scaleFactor">
-          <FormFields.Item label="Коэффициент">
-            <FormFields.Input type="number" placeholder="Введите коэффициент" />
-          </FormFields.Item>
+          <FormItem label="Коэффициент">
+            <Input type="number" placeholder="Введите коэффициент" />
+          </FormItem>
+        </div>
+        <div id="bitDepth">
+          <FormItem label="Разрядность">
+            <Input type="number" placeholder="Введите разрядность" />
+          </FormItem>
         </div>
       </BaseInfoWrapper>
       <CheckingDatesWrapper>
-        <FormFields.Item label="Год посл. поверки">
-          <FormFields.DatePicker
+        <FormItem label="Год посл. поверки">
+          <DatePicker
             picker="year"
             placeholder="Введите год посл. поверки"
           />
-        </FormFields.Item>
-        <FormFields.Item label="Год след. поверки">
-          <FormFields.DatePicker
+        </FormItem>
+        <FormItem label="Год след. поверки">
+          <DatePicker
             picker="year"
             placeholder="Введите год след. поверки"
           />
-        </FormFields.Item>
-        <FormFields.Item label="Квартал">
-          <FormFields.Select placeholder="Выберите">
+        </FormItem>
+        <FormItem label="Квартал">
+          <Select placeholder="Выберите">
             {yearQuarterDictionary.map(({ key, value }) => (
-              <FormFields.Select.Option key={key} value={key}>
+              <Select.Option key={key} value={key}>
                 {value}
-              </FormFields.Select.Option>
+              </Select.Option>
             ))}
-          </FormFields.Select>
-        </FormFields.Item>
-        <FormFields.Item label="Интервал">
-          <FormFields.Input placeholder="Введите интервал" />
-        </FormFields.Item>
+          </Select>
+        </FormItem>
+        <FormItem label="Интервал">
+          <Input placeholder="Введите интервал" />
+        </FormItem>
       </CheckingDatesWrapper>
       <ChangingDeviceInfoWrapper>
         <ChangingReasonSelectWrapper>
-          <FormFields.Item label="Причина замены">
-            <FormFields.Select placeholder="Выберите причину замены">
+          <FormItem label="Причина замены">
+            <Select placeholder="Выберите причину замены">
               {closingReasonDictionary.map(({ key, value }) => (
-                <FormFields.Select.Option key={key} value={key}>
+                <Select.Option key={key} value={key}>
                   {value}
-                </FormFields.Select.Option>
+                </Select.Option>
               ))}
-            </FormFields.Select>
-          </FormFields.Item>
+            </Select>
+          </FormItem>
         </ChangingReasonSelectWrapper>
       </ChangingDeviceInfoWrapper>
       <SealInfoWrapper>
-        <FormFields.Item label="Номер пломбы">
-          <FormFields.Input placeholder="Введите номер пломбы" />
-        </FormFields.Item>
-        <FormFields.Item label="Дата установки пломбы">
-          <FormFields.DatePicker placeholder="Выберите дату" />
-        </FormFields.Item>
+        <FormItem label="Номер пломбы">
+          <Input placeholder="Введите номер пломбы" />
+        </FormItem>
+        <FormItem label="Дата установки пломбы">
+          <DatePickerNative placeholder="Выберите дату" />
+        </FormItem>
       </SealInfoWrapper>
     </Wrapper>
   );

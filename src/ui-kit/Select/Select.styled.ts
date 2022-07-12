@@ -1,19 +1,7 @@
+import { Select } from 'antd';
 import styled from 'styled-components';
-import {
-  Form,
-  Input as InputAntd,
-  Select as SelectAntd,
-  DatePicker as DatePickerAntd,
-} from 'antd';
 
-const Input = styled(InputAntd)`
-  border-radius: 4px;
-  height: 48px;
-  font-size: 16px;
-  padding: 0px 16px;
-`;
-
-const Select = styled(SelectAntd)`
+export const SelectSC = styled(Select)`
   height: 48px;
 
   .ant-select-selector {
@@ -55,27 +43,3 @@ const Select = styled(SelectAntd)`
   }
 `;
 
-export const Item = Form.Item;
-
-export const DatePicker = styled(DatePickerAntd)`
-  height: 48px;
-  width: 100%;
-  border-radius: 4px;
-
-  .ant-picker-range {
-    height: 100% !important;
-    padding: 8px 24px !important;
-
-    span {
-      font-size: 16px;
-      line-height: 32px;
-    }
-  }
-`;
-
-export const FormFields = {
-  Item,
-  Input,
-  Select,
-  DatePicker,
-};
