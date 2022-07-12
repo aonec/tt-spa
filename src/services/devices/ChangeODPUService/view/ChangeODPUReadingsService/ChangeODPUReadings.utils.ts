@@ -1,21 +1,39 @@
+import { firstLetterToUpperCase } from '01/utils/getMonthFromDate';
 import moment from 'moment';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { PreparedHousingMeteringDeviceReadings } from './ChangeODPUReadingsService.types';
 
-export const prepareDataWithEmpties = (
+const getFilledArray = (length: number) => Array.from(Array(7).keys());
+
+export const prepareData = (
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
-) =>
-  readings.reduce((acc, elem) => {
-    const dateFormat = 'YYYY-MM';
-    const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
-    const readingMonthDate = moment(
-      moment(elem.readingDate).format(dateFormat)
+) => {
+  const dateFormat = 'YYYY-MM';
+  const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
+
+  const preparedArray = getFilledArray(7).map((index) => ({
+    text: firstLetterToUpperCase(
+      moment(currentMonthDate)
+        .subtract(index - 1, 'month')
+        .format('MMMM')
+    ),
+    value: null,
+  }));
+
+  return readings
+    .reduce((acc, currentReading) => {
+      const readingMonthDate = moment(
+        moment(currentReading.readingDate).format(dateFormat)
+      );
+
+      const diff = currentMonthDate.diff(readingMonthDate, 'months');
+
+      if (diff > 6 || currentReading.isRemoved) return acc;
+
+      acc[diff] = { ...acc[diff], ...currentReading };
+      return acc;
+    }, preparedArray as PreparedHousingMeteringDeviceReadings[])
+    .sort((firstReading, secondReading) =>
+      moment(secondReading.readingDate).diff(firstReading.readingDate)
     );
-
-    if (currentMonthDate.diff(readingMonthDate, 'months') > 7) return acc;
-
-    const index = currentMonthDate.diff(readingMonthDate, 'months') - 1;
-
-    acc[index] = elem;
-
-    return acc;
-  }, {} as { [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse });
+};

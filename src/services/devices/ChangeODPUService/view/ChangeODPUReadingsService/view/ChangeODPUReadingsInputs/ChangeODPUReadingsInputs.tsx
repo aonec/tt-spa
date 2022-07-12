@@ -1,15 +1,8 @@
-import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
-import { MeteringDeviceReadingInput } from '01/features/readings/accountingNodesReadings/components/MeteringDeviceReadingInput';
-import { useMeteringDeviceReadings } from '01/features/readings/accountingNodesReadings/components/MeteringDeviceReadingsLine/useMeteringDeviceReadings';
-import MonthSlider from '01/shared/ui/devices/MonthSlider';
-import DeviceIcons from '01/_components/DeviceIcons';
-import moment from 'moment';
-import { SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { Slider } from '../Slider';
 import {
   DeviceInfo,
-  Input,
   ModelWrapper,
   NewReadingWrapper,
   OldReadingWrapper,
@@ -23,53 +16,26 @@ import { ChangeODPUReadingsInputsProps } from './ChangeODPUReadingsInputs.types'
 export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   title,
   deviceInfo,
-  slider,
   oldReadings,
+  onChange,
 }) => {
-  const [readings, setReadings] = useState<
-    SwitchHousingDeviceReadingsCreateRequest[]
-  >([]);
+  const currentReading = oldReadings[0];
+  const prevReadings = oldReadings.slice(1);
 
   const { model, resource, serialNumber } = deviceInfo;
-  const { canDown, canUp, down, sliderIndex, up } = slider;
-  const color = resource ? DeviceIcons[resource].color : '#c3c3c3';
-
-  const currentDate = moment().format('YYYY-MM-01');
-  const currentMonth = moment().month() + 1;
-  const readingDate = moment().format(`YYYY-${currentMonth - sliderIndex}-01`);
-
-  const currentReading = oldReadings[-1]
-    ? readings.find(
-        (elem) => elem?.readingDate === oldReadings[-1]?.readingDate
-      ) || oldReadings[-1]
-    : readings.find((elem) => elem.readingDate === currentDate);
-
-  const prevReading = oldReadings[sliderIndex]
-    ? readings.find(
-        (elem) => elem?.readingDate === oldReadings[sliderIndex]?.readingDate
-      ) || oldReadings[sliderIndex]
-    : readings.find((elem) => elem.readingDate === readingDate);
 
   const handleChange = useCallback(
-    ({ value, readingDate }: { value: number; readingDate: string }) =>
-      setReadings((prevReadings) => {
-        const isValuesEqual = value === oldReadings[sliderIndex]?.value;
-        if (isValuesEqual) {
-          return [
-            ...prevReadings.filter((elem) => elem?.readingDate !== readingDate),
-          ];
-        }
-        return [
-          ...prevReadings.filter((elem) => elem?.readingDate !== readingDate),
-          { readingDate, value },
-        ];
+    ({ value, id }: { value: number; id: string }) =>
+      onChange({
+        readings: [
+          ...prevReadings.map((elem) => {
+            if (elem.id !== id) return elem;
+            return { ...elem, value };
+          }),
+        ],
       }),
-    [setReadings, oldReadings]
+    [oldReadings, onChange]
   );
-
-  useEffect(() => {
-    console.log(readings);
-  }, [readings]);
 
   return (
     <Wrapper>
@@ -83,36 +49,18 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
       </Title>
       <ReadingsWrapper>
         <OldReadingWrapper>
-          <MonthSlider
-            onClickIncrease={up}
-            onClickDecrease={down}
-            isNextArrowDisabled={!canDown}
-            isPreviousArrowDisabled={!canUp}
-            sliderIndex={sliderIndex}
-          />
-          <Input
-            color="#c3c3c3"
-            value={prevReading?.value || ''}
-            type="number"
-            onChange={(e) => {
-              handleChange({
-                value: Number(e.target.value),
-                readingDate: prevReading?.readingDate || readingDate,
-              });
-            }}
+          <Slider
+            values={prevReadings}
+            onChange={({ value, id }) =>
+              handleChange({ value: Number(value), id: String(id) })
+            }
           />
         </OldReadingWrapper>
         <NewReadingWrapper>
-          <Input
-            color={color}
-            type="number"
-            value={currentReading?.value || ''}
-            onChange={(e) => {
-              handleChange({
-                value: Number(e.target.value),
-                readingDate: currentReading?.readingDate || currentDate,
-              });
-            }}
+          <Slider
+            values={[currentReading]}
+            onChange={console.log}
+            resource={resource}
           />
         </NewReadingWrapper>
       </ReadingsWrapper>

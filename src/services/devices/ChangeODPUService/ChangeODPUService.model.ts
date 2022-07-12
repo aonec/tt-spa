@@ -2,7 +2,6 @@ import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ElectricHousingMeteringDeviceResponse,
-  SwitchHousingDeviceReadingsCreateRequest,
 } from 'myApi';
 import { fetchHousingMeteringDevice } from './ChangeODPUService.api';
 

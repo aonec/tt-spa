@@ -1,7 +1,7 @@
 import {
   EResourceType,
-  HousingMeteringDeviceReadingsIncludingPlacementResponse,
 } from 'myApi';
+import { PreparedHousingMeteringDeviceReadings } from '../../ChangeODPUReadingsService.types';
 
 export type ChangeODPUReadingsInputsProps = {
   title: string;
@@ -10,14 +10,10 @@ export type ChangeODPUReadingsInputsProps = {
     serialNumber?: string | null;
     model?: string | null;
   };
-  slider: {
-    sliderIndex: number;
-    up: () => void;
-    down: () => void;
-    canUp: boolean;
-    canDown: boolean;
-  };
-  oldReadings: {
-    [key: number]: HousingMeteringDeviceReadingsIncludingPlacementResponse;
-  };
+  oldReadings: PreparedHousingMeteringDeviceReadings[];
+  onChange: (payload: OnChangePayload) => void;
+};
+
+type OnChangePayload = {
+  readings: PreparedHousingMeteringDeviceReadings[];
 };
