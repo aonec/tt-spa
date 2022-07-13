@@ -20,6 +20,7 @@ export const TasksProfileContainer = () => {
   const taskTypes = useStore(outputs.$taskTypes);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
+  const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen)
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.openModal
@@ -28,8 +29,13 @@ export const TasksProfileContainer = () => {
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
   const changeGroupType = useEvent(inputs.changeGroupType);
   const changePageNumber = useEvent(inputs.changePageNumber);
+  const closeExtendedSearch = useEvent(inputs.extendedSearchClosed)
+  const openExtendedSearch = useEvent(inputs.extendedSearchOpened)
+  const clearFilters = useEvent(inputs.clearFilters)
 
   useEffect(() => {
+    closeExtendedSearch()
+
     if (lastGroupTypeRef.current === grouptype) {
       return;
     }
@@ -64,6 +70,11 @@ export const TasksProfileContainer = () => {
         initialValues={initialValues}
         pagedTasks={pagedTasks}
         isLoading={isLoading}
+        isExtendedSearchOpen={isExtendedSearchOpen}
+        closeExtendedSearch={() => closeExtendedSearch()}
+        openExtendedSearch={() => openExtendedSearch()}
+        clearFilters={()=> clearFilters()}
+        changeFiltersByGroupType={changeFiltersByGroupType}
       />
     </>
   );

@@ -13,8 +13,11 @@ const $searchState = domain.createStore<GetTasksListRequestPayload>({
 });
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
+const $isExtendedSearchOpen = domain.createStore(false);
 
 const clearFilters = domain.createEvent();
+const extendedSearchOpened = domain.createEvent();
+const extendedSearchClosed = domain.createEvent();
 
 const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
 const changeGroupType = domain.createEvent<TaskGroupingFilter>();
@@ -30,6 +33,10 @@ const $isLoading = searchTasksFx.pending;
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
 const TasksIsOpen = createGate();
+
+$isExtendedSearchOpen
+  .on(extendedSearchOpened, () => true)
+  .reset(extendedSearchClosed);
 
 $searchState
   .on(searchTasks, (oldFilters, filters) => ({
@@ -65,12 +72,16 @@ export const tasksProfileService = {
     changeFiltersByGroupType,
     changeGroupType,
     changePageNumber,
+    extendedSearchClosed,
+    extendedSearchOpened,
+    clearFilters
   },
   outputs: {
     $taskTypes,
     $isLoading,
     $searchState,
     $tasksPagedData,
+    $isExtendedSearchOpen
   },
   gates: {
     TasksIsOpen,
