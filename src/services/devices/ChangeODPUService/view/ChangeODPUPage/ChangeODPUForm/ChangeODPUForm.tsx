@@ -28,13 +28,12 @@ import {
   ODPUPhaseDictionary,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
-import Button from '01/_components/Button';
 import { ButtonTT } from '01/tt-components';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
   const { values, handleChange, setFieldValue, submitForm } = useFormik({
     initialValues: { ...initialValues, id: oldDevice.id },
-    onSubmit: console.log,
+    onSubmit: () => {},
   });
 
   return (
