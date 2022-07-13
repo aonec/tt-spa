@@ -13,6 +13,10 @@ export const RangePickerSC = styled(RangePicker)`
   height: 100% !important;
   padding: 16px 24px !important;
   font-size: 16px;
+
+  .ant-picker-clear {
+    margin-right: 14px;
+  }
 `;
 
 export default DatePickerTT;

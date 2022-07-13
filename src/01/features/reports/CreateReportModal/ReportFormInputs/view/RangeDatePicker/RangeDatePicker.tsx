@@ -10,7 +10,7 @@ export const RangeDatePicker: FC<RangeDatePickerProps> = ({
 }) => {
   const handleChange = useCallback(
     (value: [moment.Moment | null, moment.Moment | null] | null) =>
-      value && onChange(value),
+      onChange(value),
     [onChange]
   );
 
@@ -20,6 +20,7 @@ export const RangeDatePicker: FC<RangeDatePickerProps> = ({
         <RangePickerSC
           value={rangePeriod}
           onChange={(range) => handleChange(range)}
+          format="DD MMMM YYYY"
         />
       </Wrapper>
     </FormItem>
