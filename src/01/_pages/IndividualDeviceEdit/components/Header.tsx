@@ -9,6 +9,7 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -20,9 +21,8 @@ export const Header = ({ device }: HeaderInterface) => {
   }
   const loading = !device;
   const { address, model, serialNumber, resource, closingDate } = device;
+  const { id, apartmentId } = address || {};
 
-  const { city, street, housingStockNumber, apartmentNumber, id, apartmentId } =
-    address || {};
 
   return (
     <Loader show={loading} size="32">
@@ -32,16 +32,20 @@ export const Header = ({ device }: HeaderInterface) => {
           <Title>
             <Flex>
               <div style={{ transform: 'translateY(-2px)' }}>
-                <StockIconTT icon={DeviceIcons[resource]?.icon} size="24" dark />
+                <StockIconTT
+                  icon={DeviceIcons[resource]?.icon}
+                  size="24"
+                  dark
+                />
               </div>
               <Space w={9} />
               <div>{`${model} (${serialNumber}). Редактирование`}</div>
             </Flex>
           </Title>
           <div style={{ display: 'flex' }}>
-            <Subtitle
-              to={`/objects/${id}/apartments/${apartmentId}`}
-            >{`${city}, ${street}, д. ${housingStockNumber}, кв. ${apartmentNumber}`}</Subtitle>
+            <Subtitle to={`/objects/${id}/apartments/${apartmentId}`}>
+              {/* {getApartmentAddressString(address)} */}
+            </Subtitle>
             <IsActive closingDate={closingDate} />
           </div>
         </div>
