@@ -50,10 +50,8 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import {
-  TasksProfileContainer,
-  tasksProfileService,
-} from 'services/tasks/tasksProfileService';
+import { TasksProfileContainer, tasksProfileService } from 'services/tasks/tasksProfileService';
+import { ChangeODPUContainer } from 'services/devices/ChangeODPUService';
 
 moment.locale('ru');
 
@@ -82,7 +80,7 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/Executing'
+                    : '/tasks/list/Executing'
                 }
                 exact
               />
@@ -109,6 +107,12 @@ const Internal = () => {
               <Route
                 path="/devices/"
                 component={DevicesProfileContainer}
+                exact
+              />
+
+              <Route
+                path="/changeODPU/:oldDeviceId"
+                component={ChangeODPUContainer}
                 exact
               />
 

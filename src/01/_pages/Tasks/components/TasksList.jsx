@@ -118,6 +118,7 @@ export const TasksList = ({ items }) => {
         perpetrator,
         showExecutor,
         node,
+        closingStatus,
       }) => {
         const { icon, color } = DeviceIcons[node?.resource] || {};
         return (
@@ -149,14 +150,21 @@ export const TasksList = ({ items }) => {
             )}
             {/* tree */}
             <row>
-              <timer>
-                <Icon {...timer.icon} />
-                <timer_text as="span">{timer.text}</timer_text>
-                <span {...use({ fail: timer?.stage?.fail ?? null })}>
-                  {timer.stage?.timeStr ?? timer.final.timeStr}
-                </span>
-                <time>{timer.stage?.before ?? timer.diff.timeStr}</time>
-              </timer>
+              {closingStatus !== 'Interrupted' ? (
+                <timer>
+                  <Icon {...timer.icon} />
+                  <timer_text as="span">{timer.text}</timer_text>
+                  <span {...use({ fail: timer?.stage?.fail ?? null })}>
+                    {timer.stage?.timeStr ?? timer.final.timeStr}
+                  </span>
+                  <time>{timer.stage?.before ?? timer.diff.timeStr}</time>
+                </timer>
+              ) : (
+                <>
+                  <Icon icon="close" fill={'var(--error)'} />
+                  <span style={{opacity: '0.7'}}>Закрыта автоматически</span>
+                </>
+              )}
               {showExecutor && (
                 <executor>
                   <Icon icon="username2" />

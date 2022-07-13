@@ -409,6 +409,9 @@ export interface CalculatorIntoNodeResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -508,6 +511,9 @@ export interface CalculatorResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -615,6 +621,20 @@ export interface CommunicationPipeResponse {
 export interface ConfirmRequest {
   token: string;
   password: string;
+}
+
+export interface ConsumptionRateResponse {
+  /** @format double */
+  minimumConsumptionRatePerPerson: number | null;
+
+  /** @format double */
+  minimumConsumptionRate: number | null;
+
+  /** @format double */
+  minimumAverageConsumptionOverPastThreeMonth: number | null;
+
+  /** @format double */
+  maximumConsumptionRate: number | null;
 }
 
 export interface ContractorCreateRequest {
@@ -1333,6 +1353,7 @@ export enum EManagingFirmTaskFilterType {
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   PlannedApplication = "PlannedApplication",
   MeasurementErrorAny = "MeasurementErrorAny",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1354,6 +1375,7 @@ export enum EManagingFirmTaskType {
   PlannedApplication = "PlannedApplication",
   MeasurementErrorCommercial = "MeasurementErrorCommercial",
   MeasurementErrorNonCommercial = "MeasurementErrorNonCommercial",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export enum EManagingFirmUserWorkingStatusType {
@@ -1493,6 +1515,15 @@ export enum EResourceType {
   Electricity = "Electricity",
 }
 
+export interface EResourceTypeConsumptionRateResponseDictionaryItem {
+  key?: EResourceType;
+  value?: ConsumptionRateResponse | null;
+}
+
+export interface EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse {
+  successResponse: EResourceTypeConsumptionRateResponseDictionaryItem[] | null;
+}
+
 export interface EResourceTypeNullableStringDictionaryItem {
   key?: EResourceType | null;
   value?: string | null;
@@ -1569,6 +1600,7 @@ export enum ETaskCreateType {
   IndividualDeviceCheck = "IndividualDeviceCheck",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   MeasurementError = "MeasurementError",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export enum ETaskTargetObjectRequestType {
@@ -1577,6 +1609,7 @@ export enum ETaskTargetObjectRequestType {
   Node = "Node",
   Application = "Application",
   Reading = "Reading",
+  IndividualDevice = "IndividualDevice",
 }
 
 export enum ETaskTargetType {
@@ -1626,6 +1659,9 @@ export interface ElectricHousingMeteringDeviceResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -2159,6 +2195,9 @@ export interface HousingMeteringDeviceIncludingReadingsResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -2717,6 +2756,9 @@ export interface IndividualDeviceOnTaskResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -2883,6 +2925,9 @@ export interface IndividualDeviceResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -2942,6 +2987,9 @@ export interface IndividualDeviceWithExpiredCheckingDateResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -3487,6 +3535,9 @@ export interface MeteringDeviceResponse {
   /** @format date-time */
   sealInstallationDate: string | null;
 
+  /** @format int32 */
+  managementFirmId: number | null;
+
   /** @format date-time */
   lastCheckingDate: string | null;
 
@@ -3753,6 +3804,9 @@ export interface PipeHousingMeteringDeviceResponse {
 
   /** @format date-time */
   sealInstallationDate: string | null;
+
+  /** @format int32 */
+  managementFirmId: number | null;
 
   /** @format date-time */
   lastCheckingDate: string | null;
@@ -4491,6 +4545,8 @@ export interface TaskCommentResponseSuccessApiResponse {
 }
 
 export interface TaskCreateRequest {
+  /** @format int32 */
+  key?: number;
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
@@ -6053,41 +6109,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsValidateRecentReadingsCreate
-     * @summary DataMigration
-     * @request POST:/api/DataMigrations/ValidateRecentReadings
-     * @secure
-     */
-    dataMigrationsValidateRecentReadingsCreate: (data: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/ValidateRecentReadings`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsRevalidateReadingTasksList
-     * @request GET:/api/DataMigrations/RevalidateReadingTasks
-     * @secure
-     */
-    dataMigrationsRevalidateReadingTasksList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/RevalidateReadingTasks`,
-        method: "GET",
-        secure: true,
         ...params,
       }),
 
@@ -8167,6 +8188,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags IndividualDevices
+     * @name IndividualDevicesCreateTaskForDeviceWithoutReadingsCreate
+     * @summary IndividualDeviceClose
+     * @request POST:/api/IndividualDevices/createTaskForDeviceWithoutReadings
+     * @secure
+     */
+    individualDevicesCreateTaskForDeviceWithoutReadingsCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualDevices/createTaskForDeviceWithoutReadings`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     *
+     * @tags IndividualDevices
      * @name IndividualDevicesCloseDevicesWithoutReadingsCreate
      * @summary IndividualDeviceClose
      * @request POST:/api/IndividualDevices/closeDevicesWithoutReadings
@@ -8454,7 +8492,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managingFirmsConsumptionRatesDetail: (managingFirmId: number, params: RequestParams = {}) =>
-      this.request<ManagementFirmResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}/ConsumptionRates`,
         method: "GET",
         secure: true,
