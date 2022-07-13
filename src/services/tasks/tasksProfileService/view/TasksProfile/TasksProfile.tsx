@@ -18,6 +18,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   changePageNumber,
   pagedTasks,
   isLoading,
+  isExtendedSearchOpen,
+  closeExtendedSearch,
+  openExtendedSearch,
+  clearFilters,
+  changeFiltersByGroupType
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -54,6 +59,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         onSubmit={handleSearch}
         taskTypes={taskTypes}
         currentFilter={initialValues}
+        isExtendedSearchOpen={isExtendedSearchOpen}
+        closeExtendedSearch={closeExtendedSearch}
+        openExtendedSearch={openExtendedSearch}
+        clearFilters={clearFilters}
+        changeFiltersByGroupType={changeFiltersByGroupType}
       />
       {!isLoading && tasksList}
       {isLoading && <Skeleton active />}

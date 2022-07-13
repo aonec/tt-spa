@@ -4,7 +4,7 @@ export type GetTasksListRequestPayload = {
   TargetType?: ETaskTargetType;
   TaskId?: string;
   TaskType?: EManagingFirmTaskFilterType | null;
-  GroupType: TaskGroupingFilter;
+  GroupType?: TaskGroupingFilter;
   DeviceId?: number;
   HousingStockId?: number;
   ApartmentId?: number;
