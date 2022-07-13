@@ -74,6 +74,7 @@ export const TasksProfileContainer = () => {
         closeExtendedSearch={() => closeExtendedSearch()}
         openExtendedSearch={() => openExtendedSearch()}
         clearFilters={()=> clearFilters()}
+        changeFiltersByGroupType={changeFiltersByGroupType}
       />
     </>
   );

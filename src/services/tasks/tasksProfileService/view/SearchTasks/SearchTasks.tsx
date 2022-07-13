@@ -9,6 +9,7 @@ import { SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { TasksExtendedSearchForm } from './TasksExtendedSearch';
+import { useParams } from 'react-router-dom';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
@@ -17,6 +18,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   openExtendedSearch,
   closeExtendedSearch,
   clearFilters,
+  changeFiltersByGroupType
 }) => {
   const {
     values,
@@ -64,19 +66,21 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
 
-
+  const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
+  
   const clearAllFilters = () => {
     clearFilters();
     resetForm();
+    changeFiltersByGroupType(grouptype as TaskGroupingFilter)
   };
   
   useEffect(() => {
-    if (lastGroupTypeRef.current === currentFilter.GroupType) {
+    if (lastGroupTypeRef.current === currentFilter?.GroupType) {
       return;
     }
     const isFromArchive = lastGroupTypeRef.current === 'Archived';
     const isToArchive =
-      currentFilter.GroupType === 'Archived' && lastGroupTypeRef.current;
+      currentFilter?.GroupType === 'Archived' && lastGroupTypeRef.current;
     if (isFromArchive || isToArchive) {
       clearInput();
     }
@@ -88,18 +92,16 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
       disabled={!(currentFilter?.GroupType === 'Archived')}
-      handleApply={() => handleSubmit()}
-      handleClear={() => clearAllFilters()}
-      handleClose={() => closeExtendedSearch()}
-      handleOpen={() => openExtendedSearch()}
+      handleApply={handleSubmit}
+      handleClear={clearAllFilters}
+      handleClose={closeExtendedSearch}
+      handleOpen={openExtendedSearch}
       extendedSearchContent={
-        <>
           <TasksExtendedSearchForm
             setFieldValue={setFieldValue}
             taskTypes={taskTypes}
             values={values}
           />
-        </>
       }
     >
       <Wrapper>

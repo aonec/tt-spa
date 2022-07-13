@@ -2,6 +2,7 @@ import { FormikErrors } from 'formik';
 import {
   EManagingFirmTaskFilterType,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  TaskGroupingFilter,
 } from 'myApi';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
@@ -13,6 +14,7 @@ export type SearchTasksProps = {
   closeExtendedSearch: () => void;
   openExtendedSearch: () => void;
   clearFilters: () => void;
+  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter
 };
 
 export type SearchTasksForm = {

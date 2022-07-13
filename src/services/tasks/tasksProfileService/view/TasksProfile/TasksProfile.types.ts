@@ -1,5 +1,6 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  TaskGroupingFilter,
   TaskListResponse,
   TasksPagedList,
 } from 'myApi';
@@ -19,5 +20,6 @@ export type TasksProfileProps = {
   isExtendedSearchOpen: boolean;
   closeExtendedSearch: () => void;
   openExtendedSearch: () => void;
-  clearFilters: () => void
+  clearFilters: () => void;
+  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter
 };
