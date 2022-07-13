@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import moment from 'moment';
+import moment, { Moment, unitOfTime } from 'moment';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, ReportType } from './types';
 import { downloadURI } from './utils';
@@ -24,14 +24,11 @@ export const form = createForm({
         },
       ],
     },
-    monthPeriod: {
+    period: {
       init: null as moment.Moment | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
+    },
+    rangePeriod: {
+      init: [null, null] as [moment.Moment | null, moment.Moment | null] | null,
     },
   },
 });
@@ -72,18 +69,25 @@ forward({
 
 sample({
   source: form.$values,
-  clock: guard({
-    source: form.fields.monthPeriod.$value,
-    clock: createReport,
-    filter: Boolean,
-  }),
-  fn: ({ type, monthPeriod }) => {
-    const startOfMonth = moment(monthPeriod).startOf('month').toISOString();
-    const endOfMonth = moment(monthPeriod).endOf('month').toISOString();
-
-    return { type: type!, date: { From: startOfMonth, To: endOfMonth } };
+  clock: createReport,
+  fn: ({ type, period, rangePeriod }) => {
+    if (
+      type === ReportType.HouseManagementsReport ||
+      type === ReportType.OperatorsWorkingReport
+    ) {
+      const startOfPeriod = moment(period).startOf('month').toISOString();
+      const endOfPeriod = moment(period).endOf('month').toISOString();
+      return { type: type!, date: { From: startOfPeriod, To: endOfPeriod } };
+    }
+    return {
+      type: type!,
+      date: {
+        From: rangePeriod![0]?.toISOString(),
+        To: rangePeriod![1]?.toISOString(),
+      },
+    };
   },
-  target: createReportFx,
+  // target: createReportFx,
 });
 
 createReport.watch(() => {});
