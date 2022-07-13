@@ -82,12 +82,12 @@ sample({
     return {
       type: type!,
       date: {
-        From: rangePeriod![0]?.toISOString(),
-        To: rangePeriod![1]?.toISOString(),
+        From: rangePeriod![0]?.startOf('day')?.toISOString(),
+        To: rangePeriod![1]?.startOf('day')?.toISOString(),
       },
     };
   },
-  // target: createReportFx,
+  target: createReportFx,
 });
 
 createReport.watch(() => {});
