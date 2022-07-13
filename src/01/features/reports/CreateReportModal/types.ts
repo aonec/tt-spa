@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export enum ReportType {
   OperatorsWorkingReport = 'OperatorsWorkingReport',
   HouseManagementsReport = 'HouseManagementsReport',
@@ -18,3 +20,5 @@ export const reportTypeTitleNames = Object.keys(ReportType).map((key) => ({
   name: getReportTypeTitleName(key as ReportType),
   type: key,
 }));
+
+export type RangePeriod = ([moment.Moment | null, moment.Moment | null] | null);

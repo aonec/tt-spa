@@ -3,7 +3,7 @@ import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import moment, { Moment, unitOfTime } from 'moment';
 import { reportsInputs } from '../models';
-import { getReportTypeTitleName, ReportType } from './types';
+import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
 
 const createReportDomain = createDomain('CreateReport');
@@ -28,7 +28,7 @@ export const form = createForm({
       init: null as moment.Moment | null,
     },
     rangePeriod: {
-      init: [null, null] as [moment.Moment | null, moment.Moment | null] | null,
+      init: [null, null] as RangePeriod,
     },
   },
 });

@@ -1,6 +1,6 @@
-import moment from "moment";
+import { RangePeriod } from '../../../types';
 
 export type RangeDatePickerProps = {
-  rangePeriod: [moment.Moment | null, moment.Moment | null] | null;
-  onChange: (values: [moment.Moment | null, moment.Moment | null] | null) => void;
+  rangePeriod: RangePeriod;
+  onChange: (values: RangePeriod) => void;
 };
