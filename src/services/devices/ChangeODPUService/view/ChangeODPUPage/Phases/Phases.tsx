@@ -3,7 +3,17 @@ import { DownOutlined, CheckOutlined } from '@ant-design/icons';
 import React from 'react';
 import moment from 'moment';
 import { ElectricPhasesProps } from './Phases.types';
-import { CollapseSC, FormItem, GovernmentCheckingContainer, InputSC, PlombsContainer, StyledContainerFourItemsEqual, StyledContainerThreeItemUnequal, StyledContinerMainRows, StyledSectionHeader } from './Phases.styled';
+import {
+  CollapseSC,
+  FormItem,
+  GovernmentCheckingContainer,
+  InputSC,
+  PlombsContainer,
+  StyledContainerFourItemsEqual,
+  StyledContainerThreeItemUnequal,
+  StyledContinerMainRows,
+  StyledSectionHeader,
+} from './Phases.styled';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -14,7 +24,6 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
   setFieldValue,
   values,
 }) => {
-
   const Blocks: React.ReactNode[] = [];
   for (let i = 1; i < 5; i++) {
     Blocks.push(
@@ -126,10 +135,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
                 picker="year"
                 placeholder="Год посл. поверки "
                 onChange={(value): void => {
-                  setFieldValue(
-                    `${phase}.`,
-                    moment(value).format('YYYY')
-                  );
+                  setFieldValue(`${phase}.`, moment(value).format('YYYY'));
                 }}
               />
             </FormItem>
@@ -139,10 +145,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
                 picker="year"
                 placeholder="Год след. поверки "
                 onChange={(value): void => {
-                  setFieldValue(
-                    `${phase}.`,
-                    moment(value).format('YYYY')
-                  );
+                  setFieldValue(`${phase}.`, moment(value).format('YYYY'));
                 }}
               />
             </FormItem>
@@ -186,17 +189,14 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             />
           </FormItem>
           <FormItem>
-              <label>Дата установки пломбы: </label>
-              <DatePicker
-                format={'DD.MM.YYYY'}
-                onChange={(value): void => {
-                  setFieldValue(
-                    `${phase}.`,
-                    moment(value).format('MM-DD-YYYY')
-                  );
-                }}
-              />
-            </FormItem>
+            <label>Дата установки пломбы: </label>
+            <DatePicker
+              format={'DD.MM.YYYY'}
+              onChange={(value): void => {
+                setFieldValue(`${phase}.`, moment(value).format('MM-DD-YYYY'));
+              }}
+            />
+          </FormItem>
         </PlombsContainer>
       </>
     );
@@ -236,8 +236,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
   );
 };
 
-
-// usage 
+// usage
 
 // let status = {
 //     first: true,
@@ -245,9 +244,11 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
 //     third: true,
 //   };
 
-{/* <ElectricityPhases
+{
+  /* <ElectricityPhases
         setFieldValue={setFeildValues}
         values={{...}}
         phasesStatus={status}
         amountOfPhases={ 3 | 1}
-    /> */}
+    /> */
+}
