@@ -93,7 +93,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
-      // disabled={!(currentFilter?.GroupType === 'Archived')}
       handleApply={handleSubmit}
       handleClear={clearAllFilters}
       handleClose={closeExtendedSearch}
