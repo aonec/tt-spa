@@ -1,14 +1,16 @@
 import { useForm } from 'effector-forms/dist';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { form } from '../models';
 import { ReportType } from '../types';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
+import { RangeDatePicker } from './view/RangeDatePicker';
 
 export const ReportFormInputsContainer = () => {
   const {
     fields: {
       type: { value: type },
-      monthPeriod: { value: monthPeriod, onChange: changeMonthPeriod },
+      period: { value: period, onChange: changePeriod },
+      rangePeriod: { value: rangePeriod, onChange: changeRangePeriod },
     },
   } = useForm(form);
 
@@ -20,11 +22,24 @@ export const ReportFormInputsContainer = () => {
           ReportType.OperatorsWorkingReport,
         ],
         element: (
-          <PeriodDatePicker date={monthPeriod} onChange={changeMonthPeriod} />
+          <PeriodDatePicker
+            date={period}
+            onChange={changePeriod}
+            format="MMMM YYYY"
+          />
+        ),
+      },
+      {
+        reportTypes: [ReportType.CallCenterWorkingReport],
+        element: (
+          <RangeDatePicker
+            rangePeriod={rangePeriod}
+            onChange={changeRangePeriod}
+          />
         ),
       },
     ],
-    [monthPeriod, changeMonthPeriod]
+    [rangePeriod, period, changePeriod]
   );
 
   const formInputsElement =

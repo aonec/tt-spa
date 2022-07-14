@@ -7,9 +7,10 @@ import styled from 'styled-components';
 interface Props {
   date: moment.Moment | null;
   onChange(date: moment.Moment): void;
+  format?: string;
 }
 
-export const PeriodDatePicker: FC<Props> = ({ date, onChange }) => {
+export const PeriodDatePicker: FC<Props> = ({ date, onChange, format }) => {
   const handleChange = useCallback(
     (value: moment.Moment | null) => value && onChange(value),
     [onChange]
@@ -18,7 +19,7 @@ export const PeriodDatePicker: FC<Props> = ({ date, onChange }) => {
     <FormItem label="Период">
       <Wrap>
         <DatePickerTT
-          format="MMMM YYYY"
+          format={format}
           picker="month"
           value={date}
           onChange={handleChange}
