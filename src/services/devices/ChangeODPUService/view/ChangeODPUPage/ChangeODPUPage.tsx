@@ -11,7 +11,6 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { ElectricityPhases } from './Phases/Phases';
 
 export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({ oldDevice }) => {
   const { resource, address, serialNumber, model } = oldDevice || {};
