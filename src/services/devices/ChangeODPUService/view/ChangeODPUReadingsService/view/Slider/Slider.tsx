@@ -1,20 +1,24 @@
 import Arrow from '01/_components/Arrow/Arrow';
-import DeviceIcons from '01/_components/DeviceIcons';
 import React, { FC, useState } from 'react';
-import { ArrowContainer, Input, TextWrapper, Wrapper } from './Slider.styled';
+import {
+  ArrowContainer,
+  Input,
+  TextWrapper,
+  TitleWrapper,
+  Wrapper,
+} from './Slider.styled';
 import { SliderProps } from './Slider.types';
 
 export const Slider: FC<SliderProps> = ({
   values,
   onChange,
-  resource,
+  colors,
   inputType = 'number',
+  fields = ['value'],
+  titles,
 }) => {
-  const color = resource ? DeviceIcons[resource].color : '#c3c3c3';
-
   const limit = values.length - 1;
   const [sliderIndex, setSliderIndex] = useState(0);
-
   const canUp = sliderIndex < limit;
   const canDown = sliderIndex > 0;
   const up = () => {
@@ -32,7 +36,7 @@ export const Slider: FC<SliderProps> = ({
             <Arrow />
           </ArrowContainer>
         )}
-        <TextWrapper>{values[sliderIndex]?.text}</TextWrapper>
+        <TextWrapper>{values[sliderIndex]?.text }</TextWrapper>
         {Boolean(limit) && (
           <ArrowContainer
             onClick={down}
@@ -43,14 +47,22 @@ export const Slider: FC<SliderProps> = ({
           </ArrowContainer>
         )}
       </Wrapper>
-      <Input
-        color={color}
-        type={inputType}
-        value={String(values[sliderIndex]?.value)}
-        onChange={(e) =>
-          onChange({ value: e.target.value, id: values[sliderIndex].id! })
-        }
-      />
+      {fields.map((field, index) => (
+        <>
+          {titles?.[index] && <TitleWrapper>{titles?.[index]}</TitleWrapper>}
+          <Input
+            color={colors[index]}
+            type={inputType}
+            value={String(values[sliderIndex]?.[field])}
+            onChange={(e) =>
+              onChange({
+                values: { [field]: e.target.value },
+                id: values[sliderIndex].id!,
+              })
+            }
+          />
+        </>
+      ))}
     </>
   );
 };

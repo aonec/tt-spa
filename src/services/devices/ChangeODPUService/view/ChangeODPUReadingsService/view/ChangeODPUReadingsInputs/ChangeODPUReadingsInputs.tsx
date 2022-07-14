@@ -1,3 +1,4 @@
+import DeviceIcons from '01/_components/DeviceIcons';
 import React, { FC, useCallback, useEffect } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Slider } from '../Slider';
@@ -22,15 +23,30 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   const currentReading = oldReadings[0];
   const prevReadings = oldReadings.slice(1);
 
+  const color = deviceInfo.resource
+    ? DeviceIcons[deviceInfo.resource].color
+    : '#c3c3c3';
+
   const { model, resource, serialNumber } = deviceInfo;
 
   const handleChange = useCallback(
-    ({ newValue, id }: { newValue: string; id: string }) =>
+    ({
+      newValues,
+      id,
+    }: {
+      newValues: { value?: string; nonResidentialRoomConsumption?: string };
+      id: string;
+    }) =>
       onChange({
         readings: [
           ...oldReadings.map((elem) => {
             if (elem.id !== id) return elem;
-            const value = newValue === '' ? null : Number(newValue);
+            if (newValues.value === undefined) {
+              const nonResidentialRoomConsumption = newValues.nonResidentialRoomConsumption!;
+              return { ...elem, nonResidentialRoomConsumption };
+            }
+            const value = newValues.value;
+
             return { ...elem, value };
           }),
         ],
@@ -52,18 +68,24 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         <OldReadingWrapper>
           <Slider
             values={prevReadings}
-            onChange={({ value, id }) =>
-              handleChange({ newValue: value, id: String(id) })
+            onChange={({ values, id }) =>
+              handleChange({ newValues: values, id: String(id) })
             }
+            colors={['#c3c3c3', '#c3c3c3']}
+            fields={['value', 'nonResidentialRoomConsumption']}
+            titles={['Основной расход', 'Расход на нежилые пом.']}
           />
         </OldReadingWrapper>
+
         <NewReadingWrapper>
           <Slider
             values={[currentReading]}
-            onChange={({ value, id }) =>
-              handleChange({ newValue: value, id: String(id) })
-            }
-            resource={resource}
+            onChange={({ values, id }) => {
+              handleChange({ newValues: values, id: String(id) });
+            }}
+            colors={[`${color}`, '#c3c3c3']}
+            fields={['value', 'nonResidentialRoomConsumption']}
+            titles={[' ', ' ']}
           />
         </NewReadingWrapper>
       </ReadingsWrapper>

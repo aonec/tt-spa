@@ -25,6 +25,7 @@ export const prepareData = (
       text,
       id: text,
       value: null,
+      nonResidentialRoomConsumption: null,
       readingDate: moment(currentMonthDate).subtract(index, 'month').format(),
     };
   });
@@ -40,9 +41,19 @@ export const prepareData = (
       if (diff > 6 || currentReading.isRemoved || currentReading.isArchived)
         return acc;
 
-      const id = currentReading.id || acc[diff].text;
-
-      acc[diff] = { ...acc[diff], ...currentReading, id };
+      const id = currentReading.id;
+      const currentReadingValue = String(currentReading.value);
+      const currentNonResidentialRoomConsumption = String(
+        currentReading.nonResidentialRoomConsumption
+      );
+      const currentReadingDate = currentReading.readingDate;
+      acc[diff] = {
+        ...acc[diff],
+        readingDate: currentReadingDate,
+        value: currentReadingValue,
+        nonResidentialRoomConsumption: currentNonResidentialRoomConsumption,
+        id,
+      };
       return acc;
     }, preparedArray as PreparedHousingMeteringDeviceReadings[])
     .sort((firstReading, secondReading) =>
@@ -55,7 +66,27 @@ export const prepareReadingsToFormik = (
   oldReadings: PreparedHousingMeteringDeviceReadings[]
 ): SwitchHousingDeviceReadingsCreateRequest[] =>
   readings.reduce((acc, elem, index) => {
-    if (elem.value === oldReadings[index].value || elem.value === null)
+    const readingValue =
+      elem.value === '' ? oldReadings[index].value : elem.value;
+    const readingNonResidentialRoomConsumption =
+      elem.nonResidentialRoomConsumption === ''
+        ? oldReadings[index].nonResidentialRoomConsumption
+        : elem.nonResidentialRoomConsumption;
+
+    if (
+      readingValue === oldReadings[index].value &&
+      readingNonResidentialRoomConsumption ===
+        oldReadings[index].nonResidentialRoomConsumption
+    )
       return acc;
-    return [...acc, { value: elem.value, readingDate: elem.readingDate }];
+    return [
+      ...acc,
+      {
+        value: Number(readingValue),
+        readingDate: elem.readingDate,
+        nonResidentialRoomConsumption: Number(
+          readingNonResidentialRoomConsumption
+        ),
+      },
+    ];
   }, [] as SwitchHousingDeviceReadingsCreateRequest[]);

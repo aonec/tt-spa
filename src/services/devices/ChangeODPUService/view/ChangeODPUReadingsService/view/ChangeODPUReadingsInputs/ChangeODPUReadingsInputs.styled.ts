@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
 
 export const ReadingsWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
 `;
 
 export const OldReadingWrapper = styled.div`
@@ -23,6 +22,7 @@ export const OldReadingWrapper = styled.div`
 
 export const NewReadingWrapper = styled.div`
   margin-left: 16px;
+  width: 150px;
 `;
 
 export const SerialNumberWrapper = styled.div`
@@ -44,18 +44,4 @@ export const DeviceInfo = styled.div`
   display: flex;
   align-items: center;
   margin-top: 12px;
-`;
-
-export const Input = styled.input<{ color: string }>`
-  height: 35px;
-  width: 150px;
-  padding: 2px 10px;
-  border: 1px solid ${({ color }) => color};
-  border-left: 5px solid ${({ color }) => color};
-  border-radius: 5px;
-  transition: 0.2s;
-
-  &:focus {
-    box-shadow: 0 4px 8px rgba(7, 0, 44, 0.15);
-  }
 `;

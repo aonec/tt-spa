@@ -29,6 +29,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
           id: elem.id,
           text: elem.text,
           value: null,
+          nonResidentialRoomConsumption: null,
         };
       }),
     [oldDeviceInitialReadings]

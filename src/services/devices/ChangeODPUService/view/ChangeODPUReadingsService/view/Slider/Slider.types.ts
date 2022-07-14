@@ -1,17 +1,19 @@
-import { EResourceType } from 'myApi';
-
 export type SliderProps = {
   values: {
     text: string;
     id: number | string | null;
-    value: string | number | null;
+    [key: string]: string | number | null;
   }[];
   onChange: (payload: OnChangePayload) => void;
-  resource?: EResourceType;
   inputType?: 'number' | 'text';
+  colors: string[];
+  fields?: string[];
+  titles?: string[];
 };
 
 type OnChangePayload = {
-  value: string;
   id: string | number;
+  values: {
+    [key: string]: string;
+  };
 };

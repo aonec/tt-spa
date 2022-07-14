@@ -17,4 +17,4 @@ export type ChangeODPUReadingsProps = {
 export type PreparedHousingMeteringDeviceReadings = Pick<
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   'readingDate' | 'id'
-> & { text: string; value: number | null };
+> & { text: string; value: string | null, nonResidentialRoomConsumption: string| null };
