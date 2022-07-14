@@ -7,6 +7,4 @@ export interface ElectricPhasesProps {
   setFieldValue: (key: string, value: string) => void;
   amountOfPhases: 1 | 3;
   phasesStatus: PhasesTypes;
-  secondPhaseStatus?: boolean;
-  thirdPhaseStatus?: boolean;
 }
