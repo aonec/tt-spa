@@ -71,9 +71,20 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
             onChange={({ values, id }) =>
               handleChange({ newValues: values, id: String(id) })
             }
-            colors={['#c3c3c3', '#c3c3c3']}
-            fields={['value', 'nonResidentialRoomConsumption']}
-            titles={['Основной расход', 'Расход на нежилые пом.']}
+            inputs={[
+              {
+                field: 'value',
+                color,
+                inputType: 'number',
+                title: 'Основной расход',
+              },
+              {
+                field: 'nonResidentialRoomConsumption',
+                color: '#c3c3c3',
+                inputType: 'number',
+                title: 'Расход на нежилые пом.',
+              },
+            ]}
           />
         </OldReadingWrapper>
 
@@ -83,9 +94,15 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
             onChange={({ values, id }) => {
               handleChange({ newValues: values, id: String(id) });
             }}
-            colors={[`${color}`, '#c3c3c3']}
-            fields={['value', 'nonResidentialRoomConsumption']}
-            titles={[' ', ' ']}
+            inputs={[
+              { field: 'value', color, inputType: 'number', title: ' ' },
+              {
+                field: 'nonResidentialRoomConsumption',
+                color: '#c3c3c3',
+                inputType: 'number',
+                title: ' ',
+              },
+            ]}
           />
         </NewReadingWrapper>
       </ReadingsWrapper>

@@ -12,10 +12,7 @@ import { SliderProps } from './Slider.types';
 export const Slider: FC<SliderProps> = ({
   values,
   onChange,
-  colors,
-  inputType = 'number',
-  fields = ['value'],
-  titles,
+  inputs 
 }) => {
   const limit = values.length - 1;
   const [sliderIndex, setSliderIndex] = useState(0);
@@ -36,7 +33,7 @@ export const Slider: FC<SliderProps> = ({
             <Arrow />
           </ArrowContainer>
         )}
-        <TextWrapper>{values[sliderIndex]?.text }</TextWrapper>
+        <TextWrapper>{values[sliderIndex]?.text}</TextWrapper>
         {Boolean(limit) && (
           <ArrowContainer
             onClick={down}
@@ -47,13 +44,13 @@ export const Slider: FC<SliderProps> = ({
           </ArrowContainer>
         )}
       </Wrapper>
-      {fields.map((field, index) => (
+      {inputs.map(({color, inputType, field, title}) => (
         <>
-          {titles?.[index] && <TitleWrapper>{titles?.[index]}</TitleWrapper>}
+          {title && <TitleWrapper>{title}</TitleWrapper>}
           <Input
-            color={colors[index]}
+            color={color}
             type={inputType}
-            value={String(values[sliderIndex]?.[field])}
+            value={String(values[sliderIndex]?.[field] || '')}
             onChange={(e) =>
               onChange({
                 values: { [field]: e.target.value },

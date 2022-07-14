@@ -5,10 +5,7 @@ export type SliderProps = {
     [key: string]: string | number | null;
   }[];
   onChange: (payload: OnChangePayload) => void;
-  inputType?: 'number' | 'text';
-  colors: string[];
-  fields?: string[];
-  titles?: string[];
+  inputs: InputConfiguration[];
 };
 
 type OnChangePayload = {
@@ -16,4 +13,11 @@ type OnChangePayload = {
   values: {
     [key: string]: string;
   };
+};
+
+type InputConfiguration = {
+  color: string;
+  field: string;
+  inputType: 'string' | 'number';
+  title?: string;
 };
