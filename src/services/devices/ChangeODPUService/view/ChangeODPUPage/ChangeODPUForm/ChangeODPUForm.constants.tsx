@@ -1,26 +1,21 @@
-import {
-  EClosingReason,
-  EPhaseNumberType,
-  EYearQuarter,
-  SwitchHousingDeviceReadingsCreateRequest,
-} from 'myApi';
+import { EClosingReason, EPhaseNumberType, EYearQuarter } from 'myApi';
 
 export const initialValues = {
   model: '',
   serialNumber: '',
   bitDepth: '',
   scaleFactor: '',
-  openingDate: null as string | null,
-  manufactureYear: null as string | null,
-  stateVerificationQuarter: null as EYearQuarter | null,
-  stateVerificationYear: null as string | null,
-  nextStateVerificationYear: null as string | null,
+  openingDate: null,
+  manufactureYear: null,
+  stateVerificationQuarter: null,
+  stateVerificationYear: null,
+  nextStateVerificationYear: null,
   stateVerificationIntervalYears: '',
-  oldDeviceClosingReason: null as EClosingReason | null,
+  oldDeviceClosingReason: null,
   sealNumber: '',
-  sealInstallationDate: null as string | null,
-  oldDeviceReadings: [] as SwitchHousingDeviceReadingsCreateRequest[],
-  newDeviceReadings: [] as SwitchHousingDeviceReadingsCreateRequest[],
+  sealInstallationDate: null,
+  oldDeviceReadings: [],
+  newDeviceReadings: [],
 };
 
 export const ODPUPhaseDictionary = [

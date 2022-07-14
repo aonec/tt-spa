@@ -34,7 +34,7 @@ import { ChangeODPUReadingsContainer } from '../../ChangeODPUReadingsService';
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
   const { values, handleChange, setFieldValue, submitForm } = useFormik({
     initialValues: { ...initialValues, id: oldDevice.id },
-    onSubmit: console.log,
+    onSubmit: () => {},
   });
 
   const handleNewReadingsChange = useCallback(

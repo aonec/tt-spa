@@ -5,18 +5,18 @@ const { RangePicker } = DatePicker;
 
 export const DatePickerTT = styled(DatePicker)`
   height: 48px;
-  width: 100%;
+  width: 320px;
   border-radius: 4px;
+`;
 
-  .ant-picker-range {
-    height: 100% !important;
-    padding: 8px 24px !important;
+export const RangePickerSC = styled(RangePicker)`
+  height: 100% !important;
+  padding: 16px 24px !important;
+  font-size: 16px;
 
-    span {
-      font-size: 16px;
-      line-height: 32px;
-    }
+  .ant-picker-clear {
+    margin-right: 14px;
   }
 `;
 
-export default DatePicker;
+export default DatePickerTT;

@@ -1,7 +1,7 @@
-import { Select } from 'antd';
+import { Select as AntSelect } from 'antd';
 import styled from 'styled-components';
 
-export const SelectSC = styled(Select)`
+export const Select = styled(AntSelect)`
   height: 48px;
 
   * {
