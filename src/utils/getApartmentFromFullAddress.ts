@@ -5,10 +5,12 @@ export const getApartmentFromFullAddress = (
   isCityNeeded?: boolean
 ) => {
   if (!address) return null;
-  const { city, apartmentNumber, housingStockNumber, street, corpus } = address;
 
-  const cityText = isCityNeeded ? `${city},` : '';
-  const corpusText = corpus ? ` корпус ${address?.corpus},` : '';
+  const cityText = isCityNeeded ? `${address.city},` : '';
+  const corpusText = address.corpus ? `, корпус ${address?.corpus}` : '';
+  const apartmentNumberText = address?.apartmentNumber
+    ? `, кв. ${address.apartmentNumber}`
+    : '';
 
-  return `${cityText} ул. ${street}, д. ${housingStockNumber},${corpusText} кв. ${apartmentNumber}`;
+  return `${cityText} ул. ${address.street}, д. ${address.housingStockNumber}${corpusText}${apartmentNumberText}`;
 };
