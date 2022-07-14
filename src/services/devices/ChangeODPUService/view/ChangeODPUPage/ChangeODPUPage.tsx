@@ -11,16 +11,12 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { ElectricityPhases } from './Phases';
+import { ElectricityPhases } from './Phases/Phases';
 
 export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({ oldDevice }) => {
   const { resource, address, serialNumber, model } = oldDevice || {};
   const hosuingstockAddress = address && getHousingStockAddress(address, true);
-  let Phases = {
-    first: true,
-    second: false,
-    third: true,
-  };
+
   return (
     <Wrapper>
       <GoBack />
@@ -31,12 +27,6 @@ export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({ oldDevice }) => {
         <SerialNumberWrapper>{serialNumber}</SerialNumberWrapper>
         <ModelWrapper>{model}</ModelWrapper>
       </TitleWrapper>
-      <ElectricityPhases
-        setFieldValue={(a, b) => console.log(b)}
-        values={'a'}
-        phasesStatus={Phases}
-        amountOfPhases={'ThreePhases'}
-      />
     </Wrapper>
   );
 };

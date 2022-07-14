@@ -1,44 +1,19 @@
 import { Collapse, DatePicker, Divider, Input, Select } from 'antd';
 import { DownOutlined, CheckOutlined } from '@ant-design/icons';
 import React from 'react';
-import styled from 'styled-components';
-import type { Moment } from 'moment';
-import type { RangePickerProps } from 'antd/es/date-picker';
 import moment from 'moment';
+import { ElectricPhasesProps } from './Phases.types';
+import { CollapseSC, FormItem, GovernmentCheckingContainer, InputSC, PlombsContainer, StyledContainerFourItemsEqual, StyledContainerThreeItemUnequal, StyledContinerMainRows, StyledSectionHeader } from './Phases.styled';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
-interface PhasesTypes {
-    [key: string]: boolean
-}
-export interface ElectricPhasesProps {
-  values: any;
-  setFieldValue: (key: string, value: string) => void;
-  amountOfPhases: 'OnePhase' | 'ThreePhases';
-  phasesStatus: PhasesTypes;
-  secondPhaseStatus?: boolean;
-  thirdPhaseStatus?: boolean;
-}
-
 export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
-phasesStatus,
+  phasesStatus,
   amountOfPhases,
   setFieldValue,
   values,
 }) => {
-  const Interval = '1/5';
-  console.log(Boolean(Interval?.match(/^\d+(\/\d+)$/)?.length));
-  const dateFormat = 'YYYY-MM-DD';
-
-  const children: React.ReactNode[] = [];
-  for (let i = 10; i < 36; i++) {
-    children.push(
-      <Option value={'s'} key={i.toString(36) + i}>
-        {i.toString(36) + i}
-      </Option>
-    );
-  }
 
   const Blocks: React.ReactNode[] = [];
   for (let i = 1; i < 5; i++) {
@@ -53,7 +28,7 @@ phasesStatus,
   for (let i = 1; i < 17; i++) {
     Intervals.push(
       <Option value={i} key={i}>
-        {i === 1 ? `${i} год` : i < 5 ? `${i} года`: `${i} лет`}
+        {i === 1 ? `${i} год` : i < 5 ? `${i} года` : `${i} лет`}
       </Option>
     );
   }
@@ -66,19 +41,21 @@ phasesStatus,
             <FormItem>
               <label>Модель прибора: </label>
               <Input
+                // value={`${phase}.`}
                 placeholder="Выберите модель"
                 style={{ width: '100%' }}
                 onSelect={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFieldValue(`Model.${phase}`, e.target.value);
+                  setFieldValue(`${phase}.`, e.target.value);
                 }}
               />
             </FormItem>
             <FormItem>
               <label>Серийной номер: </label>
               <Input
+                // value={`${phase}.`}
                 placeholder="Выберите номер"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFieldValue(`number.${phase}`, e.target.value);
+                  setFieldValue(`${phase}.`, e.target.value);
                 }}
               />
             </FormItem>
@@ -89,10 +66,7 @@ phasesStatus,
                 suffixIcon={<CheckOutlined />}
                 placeholder="Выберите год"
                 onChange={(value): void => {
-                  setFieldValue(
-                    `yearOfIssue.${phase}`,
-                    moment(value).format('YYYY')
-                  );
+                  setFieldValue(`${phase}.`, moment(value).format('YYYY'));
                 }}
               />
             </FormItem>
@@ -101,24 +75,26 @@ phasesStatus,
             <FormItem>
               <label>Номинал: </label>
               <InputSC
+                // value={`${phase}.`}
                 style={{ width: '100%' }}
                 placeholder="Номинал"
                 status={
-                  Boolean(Interval?.match(/^\d+(\/\d+)$/)?.length)
+                  Boolean(values?.match(/^\d+(\/\d+)$/)?.length) //specify values.
                     ? true
                     : false
                 }
                 onSelect={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFieldValue(`Nominal.${phase}`, e.target.value);
+                  setFieldValue(`${phase}.`, e.target.value);
                 }}
               />
             </FormItem>
             <FormItem>
               <label>Коэффициент: </label>
               <Input
+                // value={`${phase}.`}
                 placeholder="Коэффициент"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFieldValue(`cofficient.${phase}`, e.target.value);
+                  setFieldValue(`${phase}.`, e.target.value);
                 }}
               />
             </FormItem>
@@ -130,7 +106,7 @@ phasesStatus,
                 format={'DD.MM.YYYY'}
                 onChange={(value): void => {
                   setFieldValue(
-                    `deviceMountingDate${phase}`,
+                    `${phase}.`,
                     moment(value).format('MM-DD-YYYY')
                   );
                 }}
@@ -148,11 +124,10 @@ phasesStatus,
               <label>Год посл. поверки: </label>
               <DatePicker
                 picker="year"
-                // suffixIcon={<CheckOutlined />}
                 placeholder="Год посл. поверки "
                 onChange={(value): void => {
                   setFieldValue(
-                    `yearOfIssue.${phase}`,
+                    `${phase}.`,
                     moment(value).format('YYYY')
                   );
                 }}
@@ -165,7 +140,7 @@ phasesStatus,
                 placeholder="Год след. поверки "
                 onChange={(value): void => {
                   setFieldValue(
-                    `yearOfIssue.${phase}`,
+                    `${phase}.`,
                     moment(value).format('YYYY')
                   );
                 }}
@@ -174,13 +149,10 @@ phasesStatus,
             <FormItem>
               <label>Квартал: </label>
               <Select
-                // suffixIcon={<CheckOutlined />}
                 placeholder="Квартал"
+                // value={`${phase}.`}
                 onChange={(value: string): void => {
-                  setFieldValue(
-                    `yearOfIssue.${phase}`,
-                    moment(value).format('YYYY')
-                  );
+                  setFieldValue(`${phase}.`, moment(value).format('YYYY'));
                 }}
               >
                 {Blocks}
@@ -189,13 +161,10 @@ phasesStatus,
             <FormItem>
               <label>Интервал: </label>
               <Select
-                // suffixIcon={<CheckOutlined />}
                 placeholder="Интервал"
+                // value={`${phase}.`}
                 onChange={(value: string): void => {
-                  setFieldValue(
-                    `yearOfIssue.${phase}`,
-                    moment(value).format('YYYY')
-                  );
+                  setFieldValue(`${phase}.`, moment(value).format('YYYY'));
                 }}
               >
                 {Intervals}
@@ -209,21 +178,25 @@ phasesStatus,
           <FormItem>
             <label>Серийной номер: </label>
             <Input
+              // value={`${phase}.`}
               placeholder="Выберите номер"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setFieldValue(`number.${phase}`, e.target.value);
+                setFieldValue(`${phase}.`, e.target.value);
               }}
             />
           </FormItem>
           <FormItem>
-            <label>Серийной номер: </label>
-            <Input
-              placeholder="Выберите номер"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setFieldValue(`number.${phase}`, e.target.value);
-              }}
-            />
-          </FormItem>
+              <label>Дата установки пломбы: </label>
+              <DatePicker
+                format={'DD.MM.YYYY'}
+                onChange={(value): void => {
+                  setFieldValue(
+                    `${phase}.`,
+                    moment(value).format('MM-DD-YYYY')
+                  );
+                }}
+              />
+            </FormItem>
         </PlombsContainer>
       </>
     );
@@ -249,7 +222,7 @@ phasesStatus,
       <Panel header="Фаза А" key="1" extra={genExtra(phasesStatus.first)}>
         {Form('a')}
       </Panel>
-      {amountOfPhases !== 'OnePhase' && (
+      {amountOfPhases !== 1 && (
         <>
           <Panel header="Фаза Б" key="2" extra={genExtra(phasesStatus.second)}>
             {Form('b')}
@@ -263,73 +236,18 @@ phasesStatus,
   );
 };
 
-export const CollapseSC = styled(Collapse)`
-  border: 1px solid #dcdee4;
-  border-radius: 4px 4px 0px 0px;
-  background-color: #f3f5f6;
 
-  & .ant-collapse-item-active {
-    background-color: white;
-    border: 0px;
-    .ant-collapse-content-active {
-      border-top: unset;
-    }
-  }
-  & .ant-collapse-item {
-    border-bottom: 1px solid #dcdee4;
-  }
-`;
+// usage 
 
-export const FormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// let status = {
+//     first: true,
+//     second: false,
+//     third: true,
+//   };
 
-export const StyledContainerThreeItemUnequal = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 2fr 2fr;
-  gap: 16px;
-`;
-
-export const StyledContinerMainRows = styled.div`
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 8px;
-  max-height: 500px;
-`;
-
-export const GovernmentCheckingContainer = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  gap: 8px;
-`;
-
-export const PlombsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 8px 3px;
-
-  & h2 {
-    grid-column: 1/3;
-  }
-`;
-
-export const StyledContainerFourItemsEqual = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr 2fr;
-  gap: 16px;
-`;
-
-export const InputSC = styled(Input)`
-  border-color: ${({ status }: { status: boolean }) =>
-    status ? 'red' : undefined};
-`;
-
-export const StyledSectionHeader = styled.h2`
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 32px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
+{/* <ElectricityPhases
+        setFieldValue={setFeildValues}
+        values={{...}}
+        phasesStatus={status}
+        amountOfPhases={ 3 | 1}
+    /> */}
