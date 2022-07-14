@@ -1,15 +1,14 @@
 import React, { ChangeEvent } from 'react';
-import { Input, Select } from 'antd';
+import { Select } from 'antd';
 import _ from 'lodash';
 import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
-import {
-  StyledForm,
-  StyledContainerFourItems,
-} from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
+  SelectSCC,
   StyledContainerThreeItemsWithMarginTop,
+  StyledFormThreeRows,
 } from './SearchTasks.styled';
 
 const { Option } = Select;
@@ -20,11 +19,11 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
   taskTypes,
 }) => {
   return (
-    <StyledForm id="searchForm">
+    <StyledFormThreeRows id="searchForm">
       <StyledContainerFourItems>
         <FormItem>
           <label>Город: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
             }
@@ -36,7 +35,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem>
           <label>Улица: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
             }
@@ -48,7 +47,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem>
           <label>Дом: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
@@ -63,7 +62,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem>
           <label>Корпус: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
@@ -77,6 +76,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
         <FormItem>
           <label>Номер задачи: </label>
           <InputSC
+            width={'100%'}
             placeholder="Номер задачи"
             value={values.TaskId}
             onChange={(value: ChangeEvent<HTMLInputElement>) =>
@@ -87,7 +87,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
         </FormItem>
         <FormItem>
           <label>Тип задачи: </label>
-          <Select
+          <SelectSCC
             id="TaskType"
             placeholder="Тип задачи"
             value={values.TaskType!}
@@ -101,11 +101,11 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
                   {value}
                 </Select.Option>
               ))}
-          </Select>
+          </SelectSCC>
         </FormItem>
         <FormItem>
           <label>Статус Задачи: </label>
-          <Select
+          <SelectSCC
             placeholder="Статус Задачи"
             value={values?.ClosingStatuses}
             onChange={(value) => {
@@ -121,9 +121,9 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
             <Select.Option key="Interrupted" value="Interrupted">
               {'Закрыта автоматически'}
             </Select.Option>
-          </Select>
+          </SelectSCC>
         </FormItem>
       </StyledContainerThreeItemsWithMarginTop>
-    </StyledForm>
+    </StyledFormThreeRows>
   );
 };

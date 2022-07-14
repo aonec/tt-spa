@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { StyledContainerThreeItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import {
+  StyledContainerThreeItems,
+  StyledForm,
+} from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import { Select } from 'antd';
 
 export const Wrapper = styled.div`
@@ -20,7 +23,7 @@ export const FormItem = styled.div`
 export const StyledContainerThreeItemsWithMarginTop = styled(
   StyledContainerThreeItems
 )`
-  margin-top: 10px
+  margin-top: 7px;
   grid-template-columns: 4fr 4fr 4fr;
   gap: 16px;
 `;
@@ -52,4 +55,8 @@ export const SelectSCC = styled(Select)<{ isShadow?: boolean }>`
   width: 100%;
   box-shadow: ${({ isShadow = true }) =>
     isShadow ? `0 4px 7px #02004b1f` : 'none'};
+`;
+
+export const StyledFormThreeRows = styled(StyledForm)`
+  grid-template-rows: 1fr 1fr;
 `;
