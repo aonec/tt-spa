@@ -79,15 +79,19 @@ sample({
       const endOfPeriod = moment(period).endOf('month').toISOString();
       return { type: type!, date: { From: startOfPeriod, To: endOfPeriod } };
     }
+    console.log( {
+      From: rangePeriod![0]?.startOf('day')?.toISOString(),
+      To: rangePeriod![1]?.endOf('day')?.toISOString(),
+    })
     return {
       type: type!,
       date: {
         From: rangePeriod![0]?.startOf('day')?.toISOString(),
-        To: rangePeriod![1]?.startOf('day')?.toISOString(),
+        To: rangePeriod![1]?.endOf('day')?.toISOString(),
       },
     };
   },
-  target: createReportFx,
+  // target: createReportFx,
 });
 
 createReport.watch(() => {});
