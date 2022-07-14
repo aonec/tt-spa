@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Input, Select, Tooltip } from 'antd';
+import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputSC } from '01/shared/ui/Fields';
@@ -8,15 +8,13 @@ import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesP
 import {
   FormItem,
   OverFlowSelectSC,
+  SelectSCC,
   StyledContainerAdressSection,
   StyledContainerThreeItemsWithMarginTop,
   StyledTooltiContainer,
 } from './SearchTasks.styled';
 import { axios } from '01/axios';
-import {
-  GuidStringDictionaryItem,
-  HousingStockFilterResponse,
-} from 'myApi';
+import { GuidStringDictionaryItem, HousingStockFilterResponse } from 'myApi';
 
 const { Option } = Select;
 
@@ -40,7 +38,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
       <StyledContainerAdressSection>
         <FormItem>
           <label>Город: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
             }
@@ -52,7 +50,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
 
         <FormItem>
           <label>Улица: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
             }
@@ -64,7 +62,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
 
         <FormItem>
           <label>Дом: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
@@ -79,7 +77,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
 
         <FormItem>
           <label>Корпус: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
@@ -98,7 +96,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
               <QuestionCircleOutlined width={14} height={14} />
             </Tooltip>
           </StyledTooltiContainer>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
@@ -114,7 +112,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
           <InputSC
             disabled
             placeholder="Элемент"
-            value=''
+            value=""
             onChange={(value: ChangeEvent<HTMLInputElement>) =>
               setFieldValue('TaskId', value.target.value)
             }
@@ -123,18 +121,18 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
         </FormItem>
         <FormItem>
           <label>Тип ресурса: </label>
-          <Select
+          <SelectSCC
             disabled
             placeholder="Тип ресурса"
             value={''}
             onChange={(value) => {
               setFieldValue('', value);
             }}
-          ></Select>
+          ></SelectSCC>
         </FormItem>
         <FormItem>
           <label>Домоуправление: </label>
-          <Select
+          <SelectSCC
             id="HouseManagementId"
             placeholder="Домоуправление"
             value={values?.HouseManagementId}
@@ -145,24 +143,24 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
           >
             {housingStocks &&
               housingStocks.map(({ value, key }) => (
-                <Select.Option key={key!} value={key!}>
+                <Option key={key!} value={key!}>
                   {value}
-                </Select.Option>
+                </Option>
               ))}
-          </Select>
+          </SelectSCC>
         </FormItem>
       </StyledContainerThreeItemsWithMarginTop>
       <StyledContainerThreeItemsWithMarginTop>
         <FormItem>
           <label>Статус: </label>
-          <Select
+          <SelectSCC
             disabled
             placeholder="Статус"
             value={''}
             onChange={(value) => {
               setFieldValue('', value);
             }}
-          ></Select>
+          ></SelectSCC>
         </FormItem>
         <FormItem>
           <label>Тип задачи: </label>
@@ -176,25 +174,24 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
           >
             {taskTypes &&
               taskTypes.map(({ value, key }) => (
-                <Select.Option key={key!} value={key!}>
+                <Option key={key!} value={key!}>
                   {value}
-                </Select.Option>
+                </Option>
               ))}
           </OverFlowSelectSC>
         </FormItem>
         <FormItem>
           <label>Исполнитель: </label>
-          <Select
+          <SelectSCC
             disabled
             placeholder="Исполнитель"
             value={''}
             onChange={(value) => {
               setFieldValue('', value);
             }}
-          ></Select>
+          ></SelectSCC>
         </FormItem>
       </StyledContainerThreeItemsWithMarginTop>
     </StyledForm>
   );
 };
-

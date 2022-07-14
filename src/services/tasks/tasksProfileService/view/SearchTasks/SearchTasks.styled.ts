@@ -1,6 +1,6 @@
-import { SelectSC as Select } from '01/shared/ui/Fields';
 import styled from 'styled-components';
 import { StyledContainerThreeItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { Select } from 'antd';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -17,29 +17,39 @@ export const FormItem = styled.div`
   flex-direction: column;
 `;
 
-export const StyledContainerThreeItemsWithMarginTop = styled(StyledContainerThreeItems)`
+export const StyledContainerThreeItemsWithMarginTop = styled(
+  StyledContainerThreeItems
+)`
   margin-top: 10px
   grid-template-columns: 4fr 4fr 4fr;
   gap: 16px;
-`
+`;
 
 export const StyledContainerAdressSection = styled.div`
   display: grid;
   grid-template-columns: 4fr 4fr 1.2fr 1.2fr 1.2fr;
   gap: 16px;
-`
-
+`;
 
 export const StyledTooltiContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-export const OverFlowSelectSC = styled(Select)`
+export const OverFlowSelectSC = styled(Select)<{ isShadow?: boolean }>`
   max-width: 300;
 
-  & .ant-select-selection-item{
+  & .ant-select-selection-item {
     text-overflow: ellipsis;
     max-width: 260px;
   }
+
+  box-shadow: ${({ isShadow = true }) =>
+    isShadow ? `0 4px 7px #02004b1f` : 'none'};
+`;
+
+export const SelectSCC = styled(Select)<{ isShadow?: boolean }>`
+  width: 100%;
+  box-shadow: ${({ isShadow = true }) =>
+    isShadow ? `0 4px 7px #02004b1f` : 'none'};
 `;
