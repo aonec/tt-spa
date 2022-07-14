@@ -87,7 +87,7 @@ sample({
       },
     };
   },
-  // target: createReportFx,
+  target: createReportFx,
 });
 
 createReport.watch(() => {});
