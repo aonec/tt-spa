@@ -10,7 +10,9 @@ import { Skeleton } from 'antd';
 
 export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
   oldDevice,
-  isLoading,
+  isLoadingDevice,
+  isLoadingSwitch,
+  handleSwitchDevice,
 }) => {
   const address = oldDevice?.address;
   const hosuingstockAddress = address && getHousingStockAddress(address, true);
@@ -19,14 +21,20 @@ export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
     <Wrapper>
       <GoBack />
       <PageHeader title="Замена ОДПУ" />
-      {isLoading && <Skeleton active />}
-      {!isLoading && (
+      {isLoadingDevice && <Skeleton active />}
+      {!isLoadingDevice && (
         <>
           <InforWrapper>
             <AddressWrapper>{hosuingstockAddress}</AddressWrapper>
             {oldDevice && <ODPUInfoString device={oldDevice} />}
           </InforWrapper>
-          {oldDevice && <ChangeODPUForm oldDevice={oldDevice} />}
+          {oldDevice && (
+            <ChangeODPUForm
+              oldDevice={oldDevice}
+              isLoading={isLoadingSwitch}
+              handleSwitchDevice={handleSwitchDevice}
+            />
+          )}
         </>
       )}
     </Wrapper>

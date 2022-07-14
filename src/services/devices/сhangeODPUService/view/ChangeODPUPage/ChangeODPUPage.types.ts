@@ -1,6 +1,11 @@
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+import {
+  ElectricHousingMeteringDeviceResponse,
+  SwitchElectricHousingDeviceRequest,
+} from 'myApi';
 
 export type ChangeODPUPageProps = {
   oldDevice: ElectricHousingMeteringDeviceResponse | null;
-  isLoading: boolean;
+  isLoadingDevice: boolean;
+  isLoadingSwitch: boolean;
+  handleSwitchDevice: (payload: SwitchElectricHousingDeviceRequest) => void;
 };

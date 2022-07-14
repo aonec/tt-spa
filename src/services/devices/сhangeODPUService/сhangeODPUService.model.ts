@@ -1,7 +1,15 @@
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from './../../../types/index';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
-import { fetchHousingMeteringDevice } from './сhangeODPUService.api';
+import {
+  ElectricHousingMeteringDeviceResponse,
+  SwitchElectricHousingDeviceRequest,
+} from 'myApi';
+import {
+  fetchHousingMeteringDevice,
+  postSwitchHousingMeteringDevice,
+} from './сhangeODPUService.api';
 
 const domain = createDomain('changeODPUService');
 
@@ -16,7 +24,16 @@ const getHousingMeteringDeviceFx = domain.createEffect<
   ElectricHousingMeteringDeviceResponse
 >(fetchHousingMeteringDevice);
 
-const $isLoading = getHousingMeteringDeviceFx.pending;
+const switchHousingMeteringDeviceFx = domain.createEffect<
+  SwitchElectricHousingDeviceRequest,
+  void,
+  EffectFailDataAxiosError
+>(postSwitchHousingMeteringDevice);
+
+const switchHousingMeteringDevice = domain.createEvent<SwitchElectricHousingDeviceRequest>();
+
+const $isLoadingDevice = getHousingMeteringDeviceFx.pending;
+const $isLoadingSwitch = switchHousingMeteringDeviceFx.pending;
 
 $oldDevice.on(getHousingMeteringDeviceFx.doneData, (_, device) => device);
 
@@ -25,11 +42,28 @@ forward({
   to: getHousingMeteringDeviceFx,
 });
 
+forward({
+  from: switchHousingMeteringDevice,
+  to: switchHousingMeteringDeviceFx,
+});
+
+switchHousingMeteringDeviceFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+switchHousingMeteringDeviceFx.doneData.watch(() =>
+  message.success('Прибор успешно заменен')
+);
+
 export const сhangeODPUService = {
-  inputs: {},
+  inputs: {
+    switchHousingMeteringDevice,
+    switchHousingMeteringDeviceFx,
+  },
   outputs: {
     $oldDevice,
-    $isLoading,
+    $isLoadingDevice,
+    $isLoadingSwitch,
   },
   gates: {
     OldDeviceIdGate,

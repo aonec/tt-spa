@@ -26,15 +26,45 @@ import {
   closingReasonDictionary,
   initialValues,
   ODPUPhaseDictionary,
+  switchDeviceValidationSchema,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
 import { ButtonTT } from '01/tt-components';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
-export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
-  const { values, handleChange, setFieldValue, submitForm } = useFormik({
-    initialValues: { ...initialValues, id: oldDevice.id },
-    onSubmit: () => {},
-  });
+export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
+  oldDevice,
+  handleSwitchDevice,
+  isLoading,
+}) => {
+  const { values, handleChange, setFieldValue, submitForm, errors } = useFormik(
+    {
+      initialValues: { ...initialValues, id: oldDevice.id },
+      validationSchema: switchDeviceValidationSchema,
+      onSubmit: (values) => {
+        handleSwitchDevice({
+          deviceId: oldDevice.id,
+          model: values.model,
+          serialNumber: values.serialNumber,
+          bitDepth: Number(values.bitDepth),
+          scaleFactor: Number(values.scaleFactor),
+          openingDate: values.openingDate!,
+          manufactureYear: Number(values.manufactureYear),
+          stateVerificationQuarter: values.stateVerificationQuarter,
+          stateVerificationYear: Number(values.stateVerificationYear),
+          nextStateVerificationYear: Number(values.nextStateVerificationYear),
+          stateVerificationIntervalYears: Number(
+            values.stateVerificationIntervalYears
+          ),
+          oldDeviceClosingReason: values.oldDeviceClosingReason!,
+          sealNumber: values.sealNumber,
+          sealInstallationDate: values.sealInstallationDate,
+          oldDeviceReadings: [],
+          newDeviceReadings: [],
+        });
+      },
+    }
+  );
 
   return (
     <FormSC onSubmitCapture={submitForm}>
@@ -74,6 +104,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
               onChange={handleChange}
               placeholder="Введите модель"
             />
+            <ErrorMessage>{errors.model}</ErrorMessage>
           </FormItem>
         </div>
         <div id="serialNumber">
@@ -84,6 +115,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
               onChange={handleChange}
               placeholder="Введите серийный номер"
             />
+            <ErrorMessage>{errors.serialNumber}</ErrorMessage>
           </FormItem>
         </div>
         <div id="yearOfManufacture">
@@ -106,6 +138,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
               onChange={(value) => setFieldValue('openingDate', value)}
               placeholder="Введите дату"
             />
+            <ErrorMessage>{errors.openingDate}</ErrorMessage>
           </FormItem>
         </div>
         <div id="scaleFactor">
@@ -117,6 +150,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
               type="number"
               placeholder="Введите коэффициент"
             />
+            <ErrorMessage>{errors.scaleFactor}</ErrorMessage>
           </FormItem>
         </div>
         <div id="bitDepth">
@@ -128,6 +162,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
               type="number"
               placeholder="Введите разрядность"
             />
+            <ErrorMessage>{errors.bitDepth}</ErrorMessage>
           </FormItem>
         </div>
       </BaseInfoWrapper>
@@ -192,6 +227,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
                 </Select.Option>
               ))}
             </Select>
+            <ErrorMessage>{errors.oldDeviceClosingReason}</ErrorMessage>
           </FormItem>
         </ChangingReasonSelectWrapper>
       </ChangingDeviceInfoWrapper>
@@ -213,8 +249,9 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({ oldDevice }) => {
         </FormItem>
       </SealInfoWrapper>
       <ButtonsWrapper>
-        <ButtonTT color="blue" type="submit">
-          Заменить прибор
+        <ButtonTT color="blue" type="submit" disabled={isLoading}>
+          {isLoading && 'Загрузка...'}
+          {!isLoading && 'Сохранить'}
         </ButtonTT>
       </ButtonsWrapper>
     </FormSC>
