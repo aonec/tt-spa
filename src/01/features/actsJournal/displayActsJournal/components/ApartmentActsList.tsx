@@ -54,8 +54,7 @@ export const ApartmentActsList = () => {
       (elem) => elem.key === act.actResourceType
     )?.value;
 
-    const actAddress =
-      act.apartment && getApartmentFromFullAddress(act.apartment);
+    const actAddress = getApartmentFromFullAddress(act.apartment, false);
 
     return (
       <ActWrap temp={gridTemp} key={act.id} gap="15px">
