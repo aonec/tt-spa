@@ -8,8 +8,9 @@ import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
-import { TasksExtendedSearchForm } from './TasksExtendedSearch';
+import { TasksExtendedSearchFormArchive } from './TasksExtendedSearchArchive';
 import { useParams } from 'react-router-dom';
+import { TasksExtendedSearchFormExecution } from './TasksExtendedSearchExecution';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
@@ -18,7 +19,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   openExtendedSearch,
   closeExtendedSearch,
   clearFilters,
-  changeFiltersByGroupType
+  changeFiltersByGroupType,
 }) => {
   const {
     values,
@@ -28,9 +29,10 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
-      TaskId: currentFilter?.TaskId || '',
+      TaskId: currentFilter?.TaskId || undefined,
       TargetType: undefined,
       GroupType: currentFilter?.GroupType || undefined,
+      HouseManagementId: currentFilter?.HouseManagementId || undefined,
       DeviceId: undefined,
       HousingStockId: undefined,
       ApartmentId: undefined,
@@ -67,13 +69,13 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   }, [setFieldValue]);
 
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
-  
+
   const clearAllFilters = () => {
     clearFilters();
     resetForm();
-    changeFiltersByGroupType(grouptype as TaskGroupingFilter)
+    changeFiltersByGroupType(grouptype as TaskGroupingFilter);
   };
-  
+
   useEffect(() => {
     if (lastGroupTypeRef.current === currentFilter?.GroupType) {
       return;
@@ -91,17 +93,25 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
-      disabled={!(currentFilter?.GroupType === 'Archived')}
+      // disabled={!(currentFilter?.GroupType === 'Archived')}
       handleApply={handleSubmit}
       handleClear={clearAllFilters}
       handleClose={closeExtendedSearch}
       handleOpen={openExtendedSearch}
       extendedSearchContent={
-          <TasksExtendedSearchForm
+        (currentFilter?.GroupType === 'Archived') ? (
+          <TasksExtendedSearchFormArchive
             setFieldValue={setFieldValue}
             taskTypes={taskTypes}
             values={values}
           />
+        ) : (
+          <TasksExtendedSearchFormExecution
+            setFieldValue={setFieldValue}
+            taskTypes={taskTypes}
+            values={values}
+          />
+        )
       }
     >
       <Wrapper>

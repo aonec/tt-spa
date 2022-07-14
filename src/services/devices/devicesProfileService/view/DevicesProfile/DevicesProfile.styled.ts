@@ -34,6 +34,10 @@ export const StyledRangePicker = styled(RangePicker)`
 export const StyledForm = styled(Form)`
   margin-bottom: 20px;
   margin-top: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 16px;
+
 `;
 
 export const HeaderWrapper = styled.div`
