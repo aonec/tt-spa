@@ -9,5 +9,5 @@ export const checkIsDateNotFuture = (date: moment.Moment): boolean => {
 };
 
 export const getDatePickerValue = (
-  date: string | null
+  date?: string | null
 ): moment.Moment | undefined => (date ? moment(date) : void 0);
