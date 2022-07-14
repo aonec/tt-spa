@@ -16,6 +16,8 @@ const getHousingMeteringDeviceFx = domain.createEffect<
   ElectricHousingMeteringDeviceResponse
 >(fetchHousingMeteringDevice);
 
+const $isLoading = getHousingMeteringDeviceFx.pending;
+
 $oldDevice.on(getHousingMeteringDeviceFx.doneData, (_, device) => device);
 
 forward({
@@ -27,9 +29,9 @@ export const ChangeODPUService = {
   inputs: {},
   outputs: {
     $oldDevice,
+    $isLoading,
   },
   gates: {
     OldDeviceIdGate,
   },
 };
-

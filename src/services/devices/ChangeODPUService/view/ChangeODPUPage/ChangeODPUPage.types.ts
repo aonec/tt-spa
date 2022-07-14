@@ -1,4 +1,6 @@
 import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+
 export type ChangeODPUPageProps = {
-    oldDevice: ElectricHousingMeteringDeviceResponse | null;
+  oldDevice: ElectricHousingMeteringDeviceResponse | null;
+  isLoading: boolean;
 };
