@@ -16,7 +16,7 @@ export const StyledSlider = styled(Slider)`
 export const StyledContainerFourItems = styled.div`
   display: grid;
   grid-template-columns: 4fr 4fr 1.9fr 1.9fr;
-  gap: 16px;
+  gap: 15px;
 `;
 
 export const StyledContainerThreeItems = styled.div`
@@ -34,7 +34,7 @@ export const StyledForm = styled(Form)`
   margin-bottom: 10px;
   margin-top: 10px;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 2px;
 `;
 

@@ -23,7 +23,7 @@ export const FormItem = styled.div`
 export const StyledContainerThreeItemsWithMarginTop = styled(
   StyledContainerThreeItems
 )`
-  margin-top: 7px;
+  margin-top: 10px;
   grid-template-columns: 4fr 4fr 4fr;
   gap: 16px;
 `;
@@ -32,6 +32,7 @@ export const StyledContainerAdressSection = styled.div`
   display: grid;
   grid-template-columns: 4fr 4fr 1.2fr 1.2fr 1.2fr;
   gap: 16px;
+  margin-top: 10px;
 `;
 
 export const StyledTooltiContainer = styled.div`
@@ -58,5 +59,10 @@ export const SelectSCC = styled(Select)<{ isShadow?: boolean }>`
 `;
 
 export const StyledFormThreeRows = styled(StyledForm)`
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 5px
+`;
+
+export const StyledFormTwoRows = styled(StyledForm)`
   grid-template-rows: 1fr 1fr;
 `;

@@ -12,6 +12,7 @@ import {
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
+import { StyledFormThreeRows, StyledFormTwoRows } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 
 const { Option } = Select;
 
@@ -27,7 +28,7 @@ export const ExtendedSearchForm: FC<{
 
   const dateFormat = 'YYYY-MM-DD';
   return (
-    <StyledForm id="searchForm" initialValues={{ remember: true }}>
+    <StyledFormThreeRows id="searchForm" initialValues={{ remember: true }}>
       <StyledContainerFourItems>
         <Form.Item name="city" label="Город">
           <Input
@@ -187,6 +188,6 @@ export const ExtendedSearchForm: FC<{
           </Select>
         </Form.Item>
       </StyledContainerThreeItems>
-    </StyledForm>
+    </StyledFormThreeRows>
   );
 };
