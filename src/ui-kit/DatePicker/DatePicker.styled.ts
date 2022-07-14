@@ -1,7 +1,7 @@
-import { DatePicker } from 'antd';
+import { DatePicker as AntDatePicker } from 'antd';
 import styled from 'styled-components';
 
-export const DatePickerSC = styled(DatePicker)`
+export const DatePicker = styled(AntDatePicker)`
   height: 48px;
   width: 100%;
   border-radius: 4px;
