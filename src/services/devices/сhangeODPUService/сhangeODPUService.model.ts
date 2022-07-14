@@ -1,9 +1,9 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { ElectricHousingMeteringDeviceResponse } from 'myApi';
-import { fetchHousingMeteringDevice } from './ChangeODPUService.api';
+import { fetchHousingMeteringDevice } from './сhangeODPUService.api';
 
-const domain = createDomain('ChangeODPUService');
+const domain = createDomain('changeODPUService');
 
 const OldDeviceIdGate = createGate<{ oldDeviceId: number }>();
 
@@ -25,7 +25,7 @@ forward({
   to: getHousingMeteringDeviceFx,
 });
 
-export const ChangeODPUService = {
+export const сhangeODPUService = {
   inputs: {},
   outputs: {
     $oldDevice,

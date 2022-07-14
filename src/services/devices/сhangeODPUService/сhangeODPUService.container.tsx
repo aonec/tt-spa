@@ -1,10 +1,10 @@
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ChangeODPUService } from './ChangeODPUService.model';
+import { сhangeODPUService } from './сhangeODPUService.model';
 import { ChangeODPUPage } from './view/ChangeODPUPage';
 
-const { gates, outputs } = ChangeODPUService;
+const { gates, outputs } = сhangeODPUService;
 const { OldDeviceIdGate } = gates;
 
 export const ChangeODPUContainer = () => {
