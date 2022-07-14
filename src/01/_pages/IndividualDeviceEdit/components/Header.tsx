@@ -9,7 +9,7 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -22,7 +22,6 @@ export const Header = ({ device }: HeaderInterface) => {
   const loading = !device;
   const { address, model, serialNumber, resource, closingDate } = device;
   const { id, apartmentId } = address || {};
-
 
   return (
     <Loader show={loading} size="32">
@@ -44,7 +43,7 @@ export const Header = ({ device }: HeaderInterface) => {
           </Title>
           <div style={{ display: 'flex' }}>
             <Subtitle to={`/objects/${id}/apartments/${apartmentId}`}>
-              {/* {getApartmentAddressString(address)} */}
+              {getApartmentFromFullAddress(address, true)}
             </Subtitle>
             <IsActive closingDate={closingDate} />
           </div>

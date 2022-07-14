@@ -1,14 +1,12 @@
 import {
   ApartmentListResponse,
   ApartmentResponse,
-  FullAddressResponse,
 } from 'myApi';
 
 export const getApartmentAddressString = (
   apartment: ApartmentResponse | ApartmentListResponse | null,
   isCityNeeded?: boolean
 ) => {
-  console.log(apartment);
   if (!apartment) return null;
 
   const housingStock = apartment?.housingStock;
