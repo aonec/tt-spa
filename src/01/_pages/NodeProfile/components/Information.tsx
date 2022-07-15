@@ -10,6 +10,7 @@ import {
 import { Tooltip } from 'antd';
 import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -47,8 +48,11 @@ const Information = ({ node, task = false }: HeaderInterface) => {
         <ListItem>
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
+            {getHousingStockAddress(address, true)}
             <Tooltip title={additionalAdress}>
-              <AdditionalAddressDescription>{additionalAdress}</AdditionalAddressDescription>
+              <AdditionalAddressDescription>
+                {additionalAdress}
+              </AdditionalAddressDescription>
             </Tooltip>
           </Subtitle>
         </ListItem>

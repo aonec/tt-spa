@@ -10,12 +10,14 @@ import {
 import { Tooltip } from 'antd';
 import { AdditionalAddressDescription } from './Header.styled';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 interface InformationInterface {
   device: CalculatorResponse | null;
 }
 
 export const Information = ({ device }: InformationInterface) => {
-  const { address } = device || { address: DEFAULT_BUILDING };
+  const { address } = device || {};
   const { id } = address || DEFAULT_BUILDING;
   const { futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
@@ -25,8 +27,11 @@ export const Information = ({ device }: InformationInterface) => {
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
+          {address && getHousingStockAddress(address, true)}
           <Tooltip title={additionalAdress}>
-            <AdditionalAddressDescription>{additionalAdress}</AdditionalAddressDescription>
+            <AdditionalAddressDescription>
+              {additionalAdress}
+            </AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>
       </ListItem>
