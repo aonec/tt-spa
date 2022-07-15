@@ -71,6 +71,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             <FormItem>
               <label>Год выпуска: </label>
               <DatePicker
+              style={{height: '32px'}}
                 picker="year"
                 suffixIcon={<CheckOutlined />}
                 placeholder="Выберите год"
@@ -112,6 +113,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             <FormItem>
               <label>Дата установки прибора: </label>
               <DatePicker
+              style={{height: '32px'}}
                 format={'DD.MM.YYYY'}
                 onChange={(value): void => {
                   setFieldValue(
@@ -132,6 +134,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             <FormItem>
               <label>Год посл. поверки: </label>
               <DatePicker
+              style={{height: '32px'}}
                 picker="year"
                 placeholder="Год посл. поверки "
                 onChange={(value): void => {
@@ -142,6 +145,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             <FormItem>
               <label>Год след. поверки: </label>
               <DatePicker
+              style={{height: '32px'}}
                 picker="year"
                 placeholder="Год след. поверки "
                 onChange={(value): void => {
@@ -152,6 +156,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             <FormItem>
               <label>Квартал: </label>
               <Select
+              style={{height: '32px'}}
                 placeholder="Квартал"
                 // value={`${phase}.`}
                 onChange={(value: string): void => {
@@ -164,6 +169,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
             <FormItem>
               <label>Интервал: </label>
               <Select
+              style={{height: '32px'}}
                 placeholder="Интервал"
                 // value={`${phase}.`}
                 onChange={(value: string): void => {
@@ -191,6 +197,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
           <FormItem>
             <label>Дата установки пломбы: </label>
             <DatePicker
+              style={{height: '32px'}}
               format={'DD.MM.YYYY'}
               onChange={(value): void => {
                 setFieldValue(`${phase}.`, moment(value).format('MM-DD-YYYY'));
@@ -212,8 +219,10 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
   );
 
   return (
+    <>
+    <Divider />
     <CollapseSC
-      defaultActiveKey={['1']}
+      // defaultActiveKey={['1']}
       expandIcon={({ isActive }) => (
         <DownOutlined rotate={isActive ? 180 : 0} />
       )}
@@ -233,6 +242,7 @@ export const ElectricityPhases: React.FC<ElectricPhasesProps> = ({
         </>
       )}
     </CollapseSC>
+    </>
   );
 };
 

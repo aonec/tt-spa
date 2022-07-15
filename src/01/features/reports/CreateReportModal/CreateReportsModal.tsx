@@ -6,10 +6,15 @@ interface Props {
   isOpen: boolean;
   onHide(): void;
   onSave(): void;
-  loading: boolean
+  loading: boolean;
 }
 
-export const CreateReportModal: FC<Props> = ({ isOpen, onHide, onSave, loading }) => {
+export const CreateReportModal: FC<Props> = ({
+  isOpen,
+  onHide,
+  onSave,
+  loading,
+}) => {
   return (
     <ModalTT
       title="Создать отчет"
