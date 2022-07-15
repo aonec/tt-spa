@@ -1,4 +1,5 @@
-import { useStore } from 'effector-react';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
@@ -23,7 +24,6 @@ import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
-import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import {
   confirmReading,
   getActiveReadings,
@@ -42,11 +42,24 @@ import {
   Year,
 } from './styled';
 import { RenderReading } from './types';
+import {
+  CorrectReadingValuesValidationResult,
+  round,
+} from '01/hooks/useReadings';
+import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
+import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import {
+  managementFirmConsumptionRatesService,
+  useManagingFirmConsumptionRates,
+} from 'services/meters/managementFirmConsumptionRatesService';
 
 interface Props {
   isModal?: boolean;
   readonly?: boolean;
 }
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const {
@@ -62,7 +75,14 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
     device?.managementFirmId
   );
 

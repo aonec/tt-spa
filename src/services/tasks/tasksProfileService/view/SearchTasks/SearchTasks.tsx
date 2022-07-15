@@ -2,25 +2,51 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType } from 'myApi';
-import React, { ChangeEvent, FC, useCallback } from 'react';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
+import { SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-
+import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { TasksExtendedSearchForm } from './TasksExtendedSearch';
+import { useParams } from 'react-router-dom';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
   currentFilter,
+  isExtendedSearchOpen,
+  openExtendedSearch,
+  closeExtendedSearch,
+  clearFilters,
+  changeFiltersByGroupType
 }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<SearchTasksForm>({
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    resetForm,
+  } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
       TaskId: currentFilter?.TaskId || '',
+      TargetType: undefined,
+      GroupType: currentFilter?.GroupType || undefined,
+      DeviceId: undefined,
+      HousingStockId: undefined,
+      ApartmentId: undefined,
+      HasChanged: undefined,
+      PipeNodeId: undefined,
+      ClosingStatuses: undefined,
+      ApplicationCompetenceId: undefined,
+      PageNumber: undefined,
+      PageSize: undefined,
+      OrderBy: undefined,
     },
     enableReinitialize: true,
     onSubmit,
   });
+
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | undefined>(undefined);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,15 +66,43 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
 
+  const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
+  
+  const clearAllFilters = () => {
+    clearFilters();
+    resetForm();
+    changeFiltersByGroupType(grouptype as TaskGroupingFilter)
+  };
+  
+  useEffect(() => {
+    if (lastGroupTypeRef.current === currentFilter?.GroupType) {
+      return;
+    }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive =
+      currentFilter?.GroupType === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      clearInput();
+    }
+
+    lastGroupTypeRef.current = currentFilter?.GroupType;
+  }, [currentFilter?.GroupType, lastGroupTypeRef]);
+
   return (
     <ExtendedSearch
-      isOpen={false}
-      handleApply={() => {}}
-      handleClear={() => {}}
-      handleClose={() => {}}
-      handleOpen={() => {}}
-      extendedSearchContent={<></>}
-      disabled
+      isOpen={isExtendedSearchOpen}
+      disabled={!(currentFilter?.GroupType === 'Archived')}
+      handleApply={handleSubmit}
+      handleClear={clearAllFilters}
+      handleClose={closeExtendedSearch}
+      handleOpen={openExtendedSearch}
+      extendedSearchContent={
+          <TasksExtendedSearchForm
+            setFieldValue={setFieldValue}
+            taskTypes={taskTypes}
+            values={values}
+          />
+      }
     >
       <Wrapper>
         <InputSC

@@ -1,7 +1,7 @@
-import { HousingStockListResponse } from 'myApi';
+import { HousingStockListResponse, HousingStockShortResponse } from 'myApi';
 
 export const getHousingStockAddress = (
-  housingStock: HousingStockListResponse,
+  housingStock: HousingStockListResponse | HousingStockShortResponse,
   isCityNeeded?: boolean
 ) => {
   const { city, corpus, street, number } =

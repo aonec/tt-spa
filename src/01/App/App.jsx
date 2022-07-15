@@ -31,7 +31,6 @@ import {
   EditNode,
   AddNode,
   IndividualDeviceEdit,
-  Tasks,
 } from '../_pages';
 import { useApp } from './useApp';
 import EditODPU from '../_pages/EditHousingMeteringDevice';
@@ -51,13 +50,14 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import { TasksProfileContainer } from 'services/tasks/tasksProfileService';
+import { TasksProfileContainer, tasksProfileService } from 'services/tasks/tasksProfileService';
+import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 
 moment.locale('ru');
 
 const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
-
+  const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -80,25 +80,39 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/Executing'
+                    : '/tasks/list/Executing'
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/Executing" exact />
+              <Redirect from="/tasks" to="/tasks/list/Executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
               </Route>
 
-              <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
-              <Route
-                path="/tasks/:grouptype/"
-                component={TasksProfileContainer}
-              />
+              <Route path="/tasks">
+                <TasksIsOpen />
+                <Route
+                  path="/tasks/profile/(\\d+)"
+                  component={TaskProfile}
+                  exact
+                />
+                <Route
+                  path="/tasks/list/:grouptype"
+                  component={TasksProfileContainer}
+                  exact
+                />
+              </Route>
 
               <Route
                 path="/devices/"
                 component={DevicesProfileContainer}
+                exact
+              />
+
+              <Route
+                path="/changeODPU/:oldDeviceId"
+                component={ChangeODPUContainer}
                 exact
               />
 
@@ -183,7 +197,7 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|checksHistory)?"
+                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|actsJournal)?"
                 component={ApartmentProfile}
                 exact
               />

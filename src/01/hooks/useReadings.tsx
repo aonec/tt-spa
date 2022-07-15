@@ -29,8 +29,11 @@ import { refetchIndividualDevices } from '01/features/individualDevices/displayI
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
-import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import { useEvent, useStore } from 'effector-react';
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -40,8 +43,15 @@ export const useReadings = (
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
-    device.managementFirm?.id
+    consumptionRates,
+    loadConsumptionRates,
+    device.managementFirm?.id,
   );
 
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
@@ -200,7 +210,6 @@ export const useReadings = (
   };
 
   const sendPreviousReading = async (requestPayload: any) => {
-
     setReadingsState((prev: any) => ({
       ...prev,
       previousReadings: {
@@ -864,7 +873,7 @@ const isCorrectReadingValues = (
   nextReadings: number[],
   previousReadings: number[],
   currentIndex: number,
-  limits?: ConsumptionRatesDictionary
+  limits: ConsumptionRatesDictionary | null
 ): CorrectReadingValuesValidationResult => {
   if (!previousReadings.length) return { validated: true };
 

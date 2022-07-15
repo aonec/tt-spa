@@ -37,7 +37,7 @@ export const Header = React.memo(
 
     const additionalAddressesString = additionalAddresses
       .map((elem) => `${elem.street}, ${elem.number}`)
-      .join(' ');
+      .join('; ');
 
     const menuButtonArr = [
       {
