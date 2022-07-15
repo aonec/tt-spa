@@ -1,5 +1,6 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  GuidStringDictionaryItem,
   TaskGroupingFilter,
   TaskListResponse,
   TasksPagedList,
@@ -21,5 +22,6 @@ export type TasksProfileProps = {
   closeExtendedSearch: () => void;
   openExtendedSearch: () => void;
   clearFilters: () => void;
-  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter
+  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
+  housingManagments: GuidStringDictionaryItem[] | null
 };

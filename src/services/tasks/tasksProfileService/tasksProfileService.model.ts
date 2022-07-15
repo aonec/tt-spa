@@ -1,7 +1,7 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { TaskGroupingFilter, TasksPagedList } from 'myApi';
-import { $taskTypes } from '../taskTypesService/taskTypesService.model';
+import { $taskTypes, $housingManagments } from '../taskTypesService/taskTypesService.model';
 import { getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
 import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
@@ -81,7 +81,8 @@ export const tasksProfileService = {
     $isLoading,
     $searchState,
     $tasksPagedData,
-    $isExtendedSearchOpen
+    $isExtendedSearchOpen,
+    $housingManagments
   },
   gates: {
     TasksIsOpen,

@@ -8,9 +8,9 @@ import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesP
 import {
   FormItem,
   OverFlowSelectSC,
-  SelectSCC,
+  SelectSC,
   StyledContainerAdressSection,
-  StyledContainerThreeItemsWithMarginTop,
+  StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
 } from './SearchTasks.styled';
 import { axios } from '01/axios';
@@ -18,20 +18,12 @@ import { GuidStringDictionaryItem, HousingStockFilterResponse } from 'myApi';
 
 const { Option } = Select;
 
-export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = ({
+export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   setFieldValue,
   values,
   taskTypes,
+  housingManagments
 }) => {
-  const [housingStocks, setHousingStocks] = useState<
-    GuidStringDictionaryItem[] | null
-  >(null);
-
-  useEffect(() => {
-    axios
-      .get<any, HousingStockFilterResponse>('/HousingStocks/filters')
-      .then((res) => setHousingStocks(res.houseManagements));
-  }, []);
 
   return (
     <StyledForm id="searchForm">
@@ -106,7 +98,7 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
           />
         </FormItem>
       </StyledContainerAdressSection>
-      <StyledContainerThreeItemsWithMarginTop>
+      <StyledContainerThreeItemsMainTypes>
         <FormItem>
           <label>Элемент инженерной сети: </label>
           <InputSC
@@ -121,18 +113,18 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
         </FormItem>
         <FormItem>
           <label>Тип ресурса: </label>
-          <SelectSCC
+          <SelectSC
             disabled
             placeholder="Тип ресурса"
             value={''}
             onChange={(value) => {
               setFieldValue('', value);
             }}
-          ></SelectSCC>
+          ></SelectSC>
         </FormItem>
         <FormItem>
           <label>Домоуправление: </label>
-          <SelectSCC
+          <SelectSC
             id="HouseManagementId"
             placeholder="Домоуправление"
             value={values?.HouseManagementId}
@@ -141,26 +133,26 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
             }}
             style={{ textOverflow: 'ellipsis', maxWidth: '300' }}
           >
-            {housingStocks &&
-              housingStocks.map(({ value, key }) => (
+            {housingManagments &&
+              housingManagments.map(({ value, key }) => (
                 <Option key={key!} value={key!}>
                   {value}
                 </Option>
               ))}
-          </SelectSCC>
+          </SelectSC>
         </FormItem>
-      </StyledContainerThreeItemsWithMarginTop>
-      <StyledContainerThreeItemsWithMarginTop>
+      </StyledContainerThreeItemsMainTypes>
+      <StyledContainerThreeItemsMainTypes>
         <FormItem>
           <label>Статус: </label>
-          <SelectSCC
+          <SelectSC
             disabled
             placeholder="Статус"
             value={''}
             onChange={(value) => {
               setFieldValue('', value);
             }}
-          ></SelectSCC>
+          ></SelectSC>
         </FormItem>
         <FormItem>
           <label>Тип задачи: </label>
@@ -182,16 +174,16 @@ export const TasksExtendedSearchFormExecution: React.FC<ExtendedSearchTypes> = (
         </FormItem>
         <FormItem>
           <label>Исполнитель: </label>
-          <SelectSCC
+          <SelectSC
             disabled
             placeholder="Исполнитель"
             value={''}
             onChange={(value) => {
               setFieldValue('', value);
             }}
-          ></SelectSCC>
+          ></SelectSC>
         </FormItem>
-      </StyledContainerThreeItemsWithMarginTop>
+      </StyledContainerThreeItemsMainTypes>
     </StyledForm>
   );
 };

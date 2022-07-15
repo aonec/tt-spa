@@ -6,20 +6,20 @@ import { ExtendedSearchTypes } from './SearchTasks.types';
 import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
-  SelectSCC,
-  StyledContainerThreeItemsWithMarginTop,
-  StyledFormThreeRows,
+  SelectSC,
+  StyledContainerThreeItemsMainTypes,
+  StyledFormTwoRows,
 } from './SearchTasks.styled';
 
 const { Option } = Select;
 
-export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
+export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   setFieldValue,
   values,
   taskTypes,
 }) => {
   return (
-    <StyledFormThreeRows id="searchForm">
+    <StyledFormTwoRows id="searchForm">
       <StyledContainerFourItems>
         <FormItem>
           <label>Город: </label>
@@ -72,7 +72,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
           />
         </FormItem>
       </StyledContainerFourItems>
-      <StyledContainerThreeItemsWithMarginTop>
+      <StyledContainerThreeItemsMainTypes>
         <FormItem>
           <label>Номер задачи: </label>
           <InputSC
@@ -87,7 +87,7 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
         </FormItem>
         <FormItem>
           <label>Тип задачи: </label>
-          <SelectSCC
+          <SelectSC
             id="TaskType"
             placeholder="Тип задачи"
             value={values.TaskType!}
@@ -101,11 +101,11 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
                   {value}
                 </Select.Option>
               ))}
-          </SelectSCC>
+          </SelectSC>
         </FormItem>
         <FormItem>
           <label>Статус Задачи: </label>
-          <SelectSCC
+          <SelectSC
             placeholder="Статус Задачи"
             value={values?.ClosingStatuses}
             onChange={(value) => {
@@ -121,9 +121,9 @@ export const TasksExtendedSearchFormArchive: React.FC<ExtendedSearchTypes> = ({
             <Select.Option key="Interrupted" value="Interrupted">
               {'Закрыта автоматически'}
             </Select.Option>
-          </SelectSCC>
+          </SelectSC>
         </FormItem>
-      </StyledContainerThreeItemsWithMarginTop>
-    </StyledFormThreeRows>
+      </StyledContainerThreeItemsMainTypes>
+    </StyledFormTwoRows>
   );
 };

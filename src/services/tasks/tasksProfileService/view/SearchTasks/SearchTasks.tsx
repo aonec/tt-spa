@@ -8,9 +8,9 @@ import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
-import { TasksExtendedSearchFormArchive } from './TasksExtendedSearchArchive';
+import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { useParams } from 'react-router-dom';
-import { TasksExtendedSearchFormExecution } from './TasksExtendedSearchExecution';
+import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
@@ -20,6 +20,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   closeExtendedSearch,
   clearFilters,
   changeFiltersByGroupType,
+  housingManagments
 }) => {
   const {
     values,
@@ -29,10 +30,10 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
-      TaskId: currentFilter?.TaskId || undefined,
+      TaskId: currentFilter?.TaskId,
       TargetType: undefined,
-      GroupType: currentFilter?.GroupType || undefined,
-      HouseManagementId: currentFilter?.HouseManagementId || undefined,
+      GroupType: currentFilter?.GroupType,
+      HouseManagementId: currentFilter?.HouseManagementId,
       DeviceId: undefined,
       HousingStockId: undefined,
       ApartmentId: undefined,
@@ -73,7 +74,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearAllFilters = () => {
     clearFilters();
     resetForm();
-    changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+    changeFiltersByGroupType(grouptype);
   };
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
 
     lastGroupTypeRef.current = currentFilter?.GroupType;
   }, [currentFilter?.GroupType, lastGroupTypeRef]);
-
+  const isArchived = currentFilter?.GroupType === 'Archived';
   return (
     <ExtendedSearch
       isOpen={isExtendedSearchOpen}
@@ -98,19 +99,23 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       handleClose={closeExtendedSearch}
       handleOpen={openExtendedSearch}
       extendedSearchContent={
-        (currentFilter?.GroupType === 'Archived') ? (
-          <TasksExtendedSearchFormArchive
-            setFieldValue={setFieldValue}
-            taskTypes={taskTypes}
-            values={values}
-          />
-        ) : (
-          <TasksExtendedSearchFormExecution
-            setFieldValue={setFieldValue}
-            taskTypes={taskTypes}
-            values={values}
-          />
-        )
+        <>
+          {isArchived && (
+            <ArchiveTasksExtendedSearchForm
+              setFieldValue={setFieldValue}
+              taskTypes={taskTypes}
+              values={values}
+            />
+          )}
+          {!isArchived && (
+            <ToExecutionTasksExtendedSearchForm
+              setFieldValue={setFieldValue}
+              taskTypes={taskTypes}
+              values={values}
+              housingManagments={housingManagments}
+            />
+          )}
+        </>
       }
     >
       <Wrapper>
