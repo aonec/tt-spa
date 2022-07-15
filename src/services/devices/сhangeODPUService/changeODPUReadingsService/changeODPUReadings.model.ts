@@ -1,9 +1,9 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { GetHousingMeteringDeviceReadingsResponse } from 'myApi';
-import { fetchOldReadings } from './ChangeODPUReadings.api';
-import { prepareData } from './ChangeODPUReadings.utils';
-import { PreparedHousingMeteringDeviceReadings } from './ChangeODPUReadingsService.types';
+import { fetchOldReadings } from './changeODPUReadings.api';
+import { prepareData } from './changeODPUReadings.utils';
+import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
 
 const domain = createDomain('ChangeODPUReadingsService');
 const $oldReadings = domain.createStore<

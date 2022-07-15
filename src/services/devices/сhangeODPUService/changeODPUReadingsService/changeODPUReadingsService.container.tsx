@@ -1,12 +1,12 @@
 import { useStore } from 'effector-react';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { ChangeODPUReadingsService } from './ChangeODPUReadings.model';
-import { Wrapper } from './ChangeODPUReadings.styled';
-import { prepareReadingsToFormik } from './ChangeODPUReadings.utils';
+import { ChangeODPUReadingsService } from './changeODPUReadings.model';
+import { Wrapper } from './changeODPUReadings.styled';
+import { prepareReadingsToFormik } from './changeODPUReadings.utils';
 import {
   ChangeODPUReadingsProps,
   PreparedHousingMeteringDeviceReadings,
-} from './ChangeODPUReadingsService.types';
+} from './changeODPUReadingsService.types';
 import { ChangeODPUReadingsInputs } from './view/ChangeODPUReadingsInputs';
 
 const { gates, outputs } = ChangeODPUReadingsService;

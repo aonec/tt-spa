@@ -4,7 +4,7 @@ import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   SwitchHousingDeviceReadingsCreateRequest,
 } from 'myApi';
-import { PreparedHousingMeteringDeviceReadings } from './ChangeODPUReadingsService.types';
+import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
 
 const getFilledArray = (length: number) => Array.from(Array(length).keys());
 
