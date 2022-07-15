@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import { SelectValue } from 'antd/lib/select';
 import React, { FC, useCallback } from 'react';
-import { PeriodDatePickerContainer } from '../PeriodDatePicker/PeriodDatePickerContainer';
+import { ReportFormInputsContainer } from '../ReportFormInputs';
 import { ReportType, reportTypeTitleNames } from '../types';
 
 interface Props {
@@ -32,7 +32,7 @@ export const CreateReportForm: FC<Props> = ({ type, setType }) => {
           ))}
         </StyledSelect>
         <Space />
-        <PeriodDatePickerContainer />
+        <ReportFormInputsContainer />
       </FormItem>
     </>
   );

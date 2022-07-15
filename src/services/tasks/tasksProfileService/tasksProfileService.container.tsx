@@ -20,6 +20,7 @@ export const TasksProfileContainer = () => {
   const taskTypes = useStore(outputs.$taskTypes);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
+  const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen)
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.openModal
@@ -28,17 +29,25 @@ export const TasksProfileContainer = () => {
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
   const changeGroupType = useEvent(inputs.changeGroupType);
   const changePageNumber = useEvent(inputs.changePageNumber);
+  const closeExtendedSearch = useEvent(inputs.extendedSearchClosed)
+  const openExtendedSearch = useEvent(inputs.extendedSearchOpened)
+  const clearFilters = useEvent(inputs.clearFilters)
 
   useEffect(() => {
-    if (lastGroupTypeRef.current !== grouptype) {
-      if (lastGroupTypeRef.current === 'Archived')
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      else if (grouptype === 'Archived' && lastGroupTypeRef.current)
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      else changeGroupType(grouptype);
+    closeExtendedSearch()
 
-      lastGroupTypeRef.current = grouptype;
+    if (lastGroupTypeRef.current === grouptype) {
+      return;
     }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+    } else {
+      changeGroupType(grouptype);
+    }
+
+    lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 
   const initialValues = useStore(outputs.$searchState);
@@ -61,6 +70,11 @@ export const TasksProfileContainer = () => {
         initialValues={initialValues}
         pagedTasks={pagedTasks}
         isLoading={isLoading}
+        isExtendedSearchOpen={isExtendedSearchOpen}
+        closeExtendedSearch={() => closeExtendedSearch()}
+        openExtendedSearch={() => openExtendedSearch()}
+        clearFilters={()=> clearFilters()}
+        changeFiltersByGroupType={changeFiltersByGroupType}
       />
     </>
   );

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { reportsInputs } from '../models';
@@ -36,15 +36,18 @@ export const form = createForm({
   },
 });
 
-const createOperatorsReportFx = createReportDomain.createEffect<
+const createReportFx = createReportDomain.createEffect<
   {
-    From?: string | null;
-    To?: string | null;
+    type: ReportType;
+    date: {
+      From?: string | null;
+      To?: string | null;
+    };
   },
   void
->(async (params) => {
-  const res: any = await axios.get('Reports/OperatorsWorkingReport', {
-    params,
+>(async ({ date, type }) => {
+  const res: any = await axios.get(`Reports/${type}`, {
+    params: date,
     responseType: 'blob',
   });
 
@@ -53,12 +56,12 @@ const createOperatorsReportFx = createReportDomain.createEffect<
   downloadURI(
     url,
     `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
-      params.To
+      date.To
     ).format('MMMM_YYYY')}`
   );
 });
 
-$isModalOpen.reset(createOperatorsReportFx.doneData);
+$isModalOpen.reset(createReportFx.doneData);
 
 const createReport = createReportDomain.createEvent();
 
@@ -68,22 +71,19 @@ forward({
 });
 
 sample({
-  clock: createReport,
-  fn: () => {
-    const type = form.fields.type.$value.getState();
-    const monthPeriod = form.fields.monthPeriod.$value.getState();
+  source: form.$values,
+  clock: guard({
+    source: form.fields.monthPeriod.$value,
+    clock: createReport,
+    filter: Boolean,
+  }),
+  fn: ({ type, monthPeriod }) => {
+    const startOfMonth = moment(monthPeriod).startOf('month').toISOString();
+    const endOfMonth = moment(monthPeriod).endOf('month').toISOString();
 
-    switch (type) {
-      case ReportType.OperatorsWorkingReport:
-        const startOfMonth = moment(monthPeriod).startOf('month').toISOString();
-        const endOfMonth = moment(monthPeriod).endOf('month').toISOString();
-
-        return { From: startOfMonth, To: endOfMonth };
-      default:
-        return { From: null, To: null };
-    }
+    return { type: type!, date: { From: startOfMonth, To: endOfMonth } };
   },
-  target: createOperatorsReportFx,
+  target: createReportFx,
 });
 
 createReport.watch(() => {});
@@ -97,7 +97,7 @@ forward({
   to: openModalButtonClicked,
 });
 
-const $loading = combine(createOperatorsReportFx.pending, (...pendings) =>
+const $loading = combine(createReportFx.pending, (...pendings) =>
   pendings.some(Boolean)
 );
 
