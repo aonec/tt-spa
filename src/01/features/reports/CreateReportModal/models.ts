@@ -73,7 +73,8 @@ sample({
   fn: ({ type, period, rangePeriod }) => {
     if (
       type === ReportType.HouseManagementsReport ||
-      type === ReportType.OperatorsWorkingReport
+      type === ReportType.OperatorsWorkingReport || 
+      type === ReportType.InspectorsWorkingReport
     ) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
