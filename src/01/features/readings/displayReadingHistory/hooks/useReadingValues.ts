@@ -43,6 +43,41 @@ export function useReadingHistoryValues() {
     } catch (error) {}
   }
 
+  const resetValue = (address: {
+    year: number;
+    month: number;
+    id: number | null;
+  }) => {
+    const initialValue = initialValues?.yearReadings
+      ?.find((year) => year.year === address.year)
+      ?.monthReadings?.find((month) => month.month === address.month)
+      ?.readings!.find((reading) => reading.id === address.id)!;
+
+    setBufferedValues((prev) => ({
+      ...prev,
+      yearReadings:
+        prev?.yearReadings?.map((year) =>
+          year.year === address.year
+            ? {
+                ...year,
+                monthReadings:
+                  year.monthReadings?.map((month) =>
+                    month.month === address.month
+                      ? {
+                          ...month,
+                          readings:
+                            month.readings?.map((elem) =>
+                              elem.id === address.id ? initialValue : elem
+                            ) || [],
+                        }
+                      : month
+                  ) || [],
+              }
+            : year
+        ) || [],
+    }));
+  };
+
   const setFieldValue = (
     value: string,
     address: { year: number; month: number; id: number | null; index: number }
@@ -120,5 +155,6 @@ export function useReadingHistoryValues() {
     uploadingReadingsStatuses,
     uploadReading,
     deleteReading,
+    resetValue,
   };
 }

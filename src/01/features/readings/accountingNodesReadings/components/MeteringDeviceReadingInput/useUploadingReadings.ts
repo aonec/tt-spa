@@ -76,7 +76,7 @@ export function useUploadingReadings(params: Params) {
       if (prevValue && Number(value) < prevValue)
         return openConfirmReadingModal({
           title: `Показание ${value} меньше предыдущего (${prevValue})`,
-          callback: saveReading,
+          onOk: saveReading,
         });
 
       saveReading();

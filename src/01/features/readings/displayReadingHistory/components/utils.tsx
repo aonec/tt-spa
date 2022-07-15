@@ -25,7 +25,7 @@ export function validateReadings(
   newValues: (number | null)[],
   rateNum: number,
   resource: EResourceType,
-  limits?: ConsumptionRatesDictionary
+  limits?: ConsumptionRatesDictionary | null
 ) {
   const limit = limits && limits[resource]?.maximumConsumptionRate;
 
@@ -81,7 +81,8 @@ export function getClone<T>(value: T): T {
 
 export function confirmReading(
   { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
-  callback: () => void,
+  onOk: () => void,
+  onCancel: () => void,
   device: IndividualDeviceResponse
 ) {
   const neededValueWarning = valuesValidationResults?.find((elem) =>
@@ -107,7 +108,8 @@ export function confirmReading(
           </b>
         </>
       ),
-      callback: () => void callback(),
+      onOk: () => void onOk(),
+      onCancel: () => void onCancel(),
     });
     return;
   }
@@ -121,7 +123,8 @@ export function confirmReading(
           )}${unit}, больше чем лимит ${limit}${unit}`
         : ''
     }`,
-    callback: () => void callback(),
+    onOk: () => void onOk(),
+    onCancel: () => void onCancel(),
   });
 }
 

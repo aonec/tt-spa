@@ -68,6 +68,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     uploadingReadingsStatuses,
     uploadReading,
     deleteReading,
+    resetValue,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
@@ -167,6 +168,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       return confirmReading(
         validationResult,
         () => createReading(values),
+        () => resetValue({ year, month, id: reading?.id || null }),
         device
       );
     };
