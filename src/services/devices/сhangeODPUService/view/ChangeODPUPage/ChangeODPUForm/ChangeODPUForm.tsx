@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
@@ -42,6 +42,8 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
     {
       initialValues: { ...initialValues, id: oldDevice.id },
       validationSchema: switchDeviceValidationSchema,
+      validateOnChange: false,
+      validateOnBlur: false,
       onSubmit: (values) => {
         handleSwitchDevice({
           deviceId: oldDevice.id,
@@ -60,8 +62,8 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           oldDeviceClosingReason: values.oldDeviceClosingReason!,
           sealNumber: values.sealNumber,
           sealInstallationDate: values.sealInstallationDate,
-          oldDeviceReadings: [],
-          newDeviceReadings: [],
+          oldDeviceReadings: values.oldDeviceReadings,
+          newDeviceReadings: values.newDeviceReadings,
         });
       },
     }
@@ -246,11 +248,14 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           </FormItem>
         </ChangingReasonSelectWrapper>
       </ChangingDeviceInfoWrapper>
+
       <ChangeODPUReadingsContainer
         device={oldDevice}
         onChangeNewReadings={handleNewReadingsChange}
         onChangeOldReadings={handleOldReadingsChange}
       />
+      <ErrorMessage>{errors.newDeviceReadings}</ErrorMessage>
+
       <SealInfoWrapper>
         <FormItem label="Номер пломбы">
           <Input

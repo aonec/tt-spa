@@ -1,7 +1,8 @@
 import DeviceIcons from '01/_components/DeviceIcons';
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Slider } from '../Slider';
+import { oldDeviceReadingsInputsConfig } from './ChangeODPUReadings.inputs.constants';
 import {
   DeviceInfo,
   ModelWrapper,
@@ -29,6 +30,19 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
 
   const { model, resource, serialNumber } = deviceInfo;
 
+  const newDeviceReadingsInputsConfig = useMemo(
+    () => [
+      { field: 'value', color, inputType: 'number', title: ' ' },
+      {
+        field: 'nonResidentialRoomConsumption',
+        color: '#c3c3c3',
+        inputType: 'number',
+        title: ' ',
+      },
+    ],
+    [color]
+  );
+
   const handleChange = useCallback(
     ({
       newValues,
@@ -38,20 +52,23 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
       id: string;
     }) =>
       onChange({
-        readings: [
-          ...oldReadings.map((elem) => {
-            if (elem.id !== id) return elem;
-            if (newValues.value === undefined) {
-              const nonResidentialRoomConsumption = newValues.nonResidentialRoomConsumption!;
-              return { ...elem, nonResidentialRoomConsumption };
-            }
-            const value = newValues.value;
+        readings: oldReadings.map((elem) => {
+          if (elem.id !== id) return elem;
+          if (newValues.value === undefined) {
+            const nonResidentialRoomConsumption = newValues.nonResidentialRoomConsumption!;
+            return { ...elem, nonResidentialRoomConsumption };
+          }
+          const value = newValues.value;
 
-            return { ...elem, value };
-          }),
-        ],
+          return { ...elem, value };
+        }),
       }),
     [oldReadings, onChange]
+  );
+
+  const handleChangeValue = useCallback(
+    ({ values, id }) => handleChange({ newValues: values, id: String(id) }),
+    [handleChange]
   );
 
   return (
@@ -68,41 +85,16 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         <OldReadingWrapper>
           <Slider
             values={prevReadings}
-            onChange={({ values, id }) =>
-              handleChange({ newValues: values, id: String(id) })
-            }
-            inputs={[
-              {
-                field: 'value',
-                color,
-                inputType: 'number',
-                title: 'Основной расход',
-              },
-              {
-                field: 'nonResidentialRoomConsumption',
-                color: '#c3c3c3',
-                inputType: 'number',
-                title: 'Расход на нежилые пом.',
-              },
-            ]}
+            onChange={handleChangeValue}
+            inputs={oldDeviceReadingsInputsConfig}
           />
         </OldReadingWrapper>
 
         <NewReadingWrapper>
           <Slider
             values={[currentReading]}
-            onChange={({ values, id }) => {
-              handleChange({ newValues: values, id: String(id) });
-            }}
-            inputs={[
-              { field: 'value', color, inputType: 'number', title: ' ' },
-              {
-                field: 'nonResidentialRoomConsumption',
-                color: '#c3c3c3',
-                inputType: 'number',
-                title: ' ',
-              },
-            ]}
+            onChange={handleChangeValue}
+            inputs={newDeviceReadingsInputsConfig}
           />
         </NewReadingWrapper>
       </ReadingsWrapper>

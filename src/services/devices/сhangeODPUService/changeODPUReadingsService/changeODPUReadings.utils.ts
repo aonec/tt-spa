@@ -4,17 +4,15 @@ import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   SwitchHousingDeviceReadingsCreateRequest,
 } from 'myApi';
+import { getFilledArray } from 'utils/getFilledArray';
 import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
-
-const getFilledArray = (length: number) => Array.from(Array(length).keys());
 
 export const prepareData = (
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 ) => {
   const dateFormat = 'YYYY-MM';
   const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
-
-  const preparedArray = getFilledArray(7).map((index) => {
+  const preparedArray = getFilledArray(7, (index) => {
     const text = firstLetterToUpperCase(
       moment(currentMonthDate)
         .subtract(index - 1, 'month')
@@ -66,19 +64,19 @@ export const prepareReadingsToFormik = (
   oldReadings: PreparedHousingMeteringDeviceReadings[]
 ): SwitchHousingDeviceReadingsCreateRequest[] =>
   readings.reduce((acc, elem, index) => {
-    const readingValue =
-      elem.value === '' ? oldReadings[index].value : elem.value;
+    const readingValue = elem.value || oldReadings[index].value;
     const readingNonResidentialRoomConsumption =
-      elem.nonResidentialRoomConsumption === ''
-        ? oldReadings[index].nonResidentialRoomConsumption
-        : elem.nonResidentialRoomConsumption;
+      elem.nonResidentialRoomConsumption ||
+      oldReadings[index].nonResidentialRoomConsumption;
 
-    if (
-      readingValue === oldReadings[index].value &&
+    const isReadingValueNotChanged = readingValue === oldReadings[index].value;
+    const isNonResidentialRoomConsumptionNotChanged =
       readingNonResidentialRoomConsumption ===
-        oldReadings[index].nonResidentialRoomConsumption
-    )
+      oldReadings[index].nonResidentialRoomConsumption;
+
+    if (isReadingValueNotChanged && isNonResidentialRoomConsumptionNotChanged) {
       return acc;
+    }
     return [
       ...acc,
       {

@@ -10,6 +10,16 @@ const $oldReadings = domain.createStore<
   PreparedHousingMeteringDeviceReadings[]
 >([]);
 
+const $newDeviceInitialReadings = $oldReadings.map((readings) =>
+  readings.map((elem) => ({
+    readingDate: elem.readingDate,
+    id: elem.id,
+    text: elem.text,
+    value: null,
+    nonResidentialRoomConsumption: null,
+  }))
+);
+
 const getOldReadings = domain.createEffect<
   number,
   GetHousingMeteringDeviceReadingsResponse
@@ -30,6 +40,7 @@ export const ChangeODPUReadingsService = {
   outputs: {
     $oldReadings,
     $loading,
+    $newDeviceInitialReadings,
   },
   gates: {
     OldDeviceNodeIdGate,

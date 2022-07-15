@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ChangeODPUReadingsService } from './changeODPUReadings.model';
 import { Wrapper } from './changeODPUReadings.styled';
 import { prepareReadingsToFormik } from './changeODPUReadings.utils';
@@ -11,6 +11,8 @@ import { ChangeODPUReadingsInputs } from './view/ChangeODPUReadingsInputs';
 
 const { gates, outputs } = ChangeODPUReadingsService;
 
+const { OldDeviceNodeIdGate } = gates;
+
 export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   device,
   onChangeNewReadings,
@@ -21,19 +23,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   const loading = useStore(outputs.$loading);
 
   const oldDeviceInitialReadings = useStore(outputs.$oldReadings);
-  const newDeviceInitialReadings = useMemo(
-    () =>
-      oldDeviceInitialReadings.map((elem) => {
-        return {
-          readingDate: elem.readingDate,
-          id: elem.id,
-          text: elem.text,
-          value: null,
-          nonResidentialRoomConsumption: null,
-        };
-      }),
-    [oldDeviceInitialReadings]
-  );
+  const newDeviceInitialReadings = useStore(outputs.$newDeviceInitialReadings);
 
   const [newDeviceReadings, setNewDeviceReadings] = useState<
     PreparedHousingMeteringDeviceReadings[]
@@ -63,7 +53,14 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
     onChangeOldReadings(preparedOldDeviceReadings);
   }, [oldDeviceReadings]);
 
-  const { OldDeviceNodeIdGate } = gates;
+  const handleChangeOldDeviceReadings = useCallback(
+    ({ readings }) => setOldDeviceReadings(readings),
+    [setOldDeviceReadings]
+  );
+  const handleChangeNewDeviceReadings = useCallback(
+    ({ readings }) => setNewDeviceReadings(readings),
+    [setNewDeviceReadings]
+  );
 
   return (
     <>
@@ -73,7 +70,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
           title="Заменяемый прибор"
           deviceInfo={{ resource, serialNumber, model }}
           oldReadings={oldDeviceReadings}
-          onChange={({ readings }) => setOldDeviceReadings(readings)}
+          onChange={handleChangeOldDeviceReadings}
         />
         <ChangeODPUReadingsInputs
           title="Новый прибор"
@@ -83,7 +80,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
             model: 'Модель',
           }}
           oldReadings={newDeviceReadings}
-          onChange={({ readings }) => setNewDeviceReadings(readings)}
+          onChange={handleChangeNewDeviceReadings}
         />
       </Wrapper>
     </>

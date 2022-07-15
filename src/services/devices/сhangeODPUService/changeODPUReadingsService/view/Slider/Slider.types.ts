@@ -1,3 +1,5 @@
+import { InputConfiguration } from "../CustomInput/CustomInput.types";
+
 export type SliderProps = {
   values: {
     text: string;
@@ -5,7 +7,7 @@ export type SliderProps = {
     [key: string]: string | number | null;
   }[];
   onChange: (payload: OnChangePayload) => void;
-  inputs: InputConfiguration[];
+  inputs: (InputConfiguration & {field: string})[];
 };
 
 type OnChangePayload = {
@@ -15,9 +17,4 @@ type OnChangePayload = {
   };
 };
 
-type InputConfiguration = {
-  color: string;
-  field: string;
-  inputType: 'string' | 'number';
-  title?: string;
-};
+

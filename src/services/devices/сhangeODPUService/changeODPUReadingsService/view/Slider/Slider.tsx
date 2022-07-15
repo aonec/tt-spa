@@ -1,19 +1,10 @@
 import Arrow from '01/_components/Arrow/Arrow';
-import React, { FC, useState } from 'react';
-import {
-  ArrowContainer,
-  Input,
-  TextWrapper,
-  TitleWrapper,
-  Wrapper,
-} from './Slider.styled';
+import React, { FC, useCallback, useState } from 'react';
+import { CustomInput } from '../CustomInput';
+import { ArrowContainer, TextWrapper, Wrapper } from './Slider.styled';
 import { SliderProps } from './Slider.types';
 
-export const Slider: FC<SliderProps> = ({
-  values,
-  onChange,
-  inputs 
-}) => {
+export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
   const limit = values.length - 1;
   const [sliderIndex, setSliderIndex] = useState(0);
   const canUp = sliderIndex < limit;
@@ -24,6 +15,16 @@ export const Slider: FC<SliderProps> = ({
   const down = () => {
     setSliderIndex((prev) => (prev !== 0 ? --prev : prev));
   };
+
+  const handleChange = useCallback(
+    ({ value, field }: { value: string; field: string }) => {
+      onChange({
+        values: { [field]: value },
+        id: values[sliderIndex].id!,
+      });
+    },
+    [onChange]
+  );
 
   return (
     <>
@@ -44,21 +45,12 @@ export const Slider: FC<SliderProps> = ({
           </ArrowContainer>
         )}
       </Wrapper>
-      {inputs.map(({color, inputType, field, title}) => (
-        <>
-          {title && <TitleWrapper>{title}</TitleWrapper>}
-          <Input
-            color={color}
-            type={inputType}
-            value={String(values[sliderIndex]?.[field] || '')}
-            onChange={(e) =>
-              onChange({
-                values: { [field]: e.target.value },
-                id: values[sliderIndex].id!,
-              })
-            }
-          />
-        </>
+      {inputs.map(({ color, inputType, field, title }) => (
+        <CustomInput
+          configuration={{ color, inputType, title }}
+          onChange={(value) => handleChange({ value, field })}
+          value={String(values[sliderIndex]?.[field] || '')}
+        />
       ))}
     </>
   );
