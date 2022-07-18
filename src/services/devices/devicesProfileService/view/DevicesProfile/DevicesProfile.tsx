@@ -23,12 +23,16 @@ interface DeviceProfileProps {
   open: (payload: void) => void;
   close: (payload: void) => void;
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
+  searchState: CalculatorsListRequestPayload | null;
+  clearSearchPayload: (payload: void) => void
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   fetchcalc,
   isOpen,
   close,
   open,
+  searchState,
+  clearSearchPayload
 }) => {
   const menuButtonArr = [
     {
@@ -47,33 +51,34 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     resetForm,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
-      'Filter.DiameterRange.From': undefined,
-      'Filter.DiameterRange.To': undefined,
-      'Filter.ExpiresCheckingDateAt': undefined,
-      'Filter.Resource': undefined,
-      'Filter.Model': undefined,
-      'Filter.CommercialDateRange.From': undefined,
-      'Filter.CommercialDateRange.To': undefined,
-      'Filter.Address.City': undefined,
-      'Filter.Address.Street': undefined,
-      'Filter.Address.HousingStockNumber': undefined,
-      'Filter.Address.Corpus': undefined,
-      'Filter.Address.HouseCategory': undefined,
-      'Filter.HousingStockId': undefined,
-      'Filter.NodeStatus': undefined,
-      Question: undefined,
-      OrderRule: undefined,
-      IsConnected: undefined,
-      CountTasks: undefined,
-      IsClosed: undefined,
-      FileName: undefined,
-      PageNumber: undefined,
-      PageSize: undefined,
-      OrderBy: undefined,
+      'Filter.DiameterRange.From': searchState?.['Filter.DiameterRange.From'],
+      'Filter.DiameterRange.To': searchState?.['Filter.DiameterRange.To'],
+      'Filter.ExpiresCheckingDateAt': searchState?.['Filter.ExpiresCheckingDateAt'],
+      'Filter.Resource': searchState?.['Filter.Resource'],
+      'Filter.Model': searchState?.['Filter.Model'],
+      'Filter.CommercialDateRange.From': searchState?.['Filter.CommercialDateRange.From'],
+      'Filter.CommercialDateRange.To': searchState?.['Filter.CommercialDateRange.To'],
+      'Filter.Address.City': searchState?.['Filter.Address.City'],
+      'Filter.Address.Street': searchState?.['Filter.Address.Street'],
+      'Filter.Address.HousingStockNumber': searchState?.['Filter.Address.HousingStockNumber'],
+      'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
+      'Filter.Address.HouseCategory': searchState?.['Filter.Address.HouseCategory'],
+      'Filter.HousingStockId': searchState?.['Filter.HousingStockId'],
+      'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
+      Question: searchState?.Question,
+      OrderRule: searchState?.OrderRule,
+      IsConnected: searchState?.IsConnected,
+      CountTasks: searchState?.CountTasks,
+      IsClosed: searchState?.IsClosed,
+      FileName: searchState?.FileName,
+      PageNumber: searchState?.PageNumber,
+      PageSize: searchState?.PageSize,
+      OrderBy: searchState?.OrderBy,
     },
     onSubmit: (values) => {
       fetchcalc(values);
       searchStateChanged(values);
+      clearSearchPayload()
     },
   });
 

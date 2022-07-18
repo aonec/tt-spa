@@ -12,6 +12,7 @@ import {
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
+import { FormItem } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 
 const { Option } = Select;
 
@@ -29,7 +30,8 @@ export const ExtendedSearchForm: FC<{
   return (
     <StyledForm id="searchForm" initialValues={{ remember: true }}>
       <StyledContainerFourItems>
-        <Form.Item name="city" label="Город">
+        <FormItem>
+          <label>Город: </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
@@ -38,9 +40,10 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.City']}
             placeholder="Город"
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="street" label="Улица">
+        <FormItem>
+          <label>Улица: </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
@@ -49,9 +52,10 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.Street']}
             placeholder="Улица"
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="house" label="Дом">
+        <FormItem>
+        <label>Дом: </label>
           <Input
             onChange={(value) =>
               setFieldValue(
@@ -63,9 +67,10 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.HousingStockNumber']}
             placeholder="Дом"
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="corpus" label="Корпус">
+        <FormItem>
+        <label>Корпус: </label>
           <Input
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
@@ -74,10 +79,11 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.Corpus']}
             placeholder="Корпус"
           />
-        </Form.Item>
+        </FormItem>
       </StyledContainerFourItems>
       <StyledContainerThreeItems>
-        <Form.Item name="Resource" label="Тип ресурса">
+        <FormItem>
+        <label>Тип ресурса: </label>
           <Select
             id="Resource"
             value={values['Filter.Resource']}
@@ -90,9 +96,10 @@ export const ExtendedSearchForm: FC<{
             <Option value="ColdWaterSupply">Холодная вода</Option>
             <Option value="Electricity">Электричество</Option>
           </Select>
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="NodeStatus" label="Статус Узла">
+        <FormItem>
+        <label>Статус Узла: </label>
           <Select
             id="NodeStatus"
             placeholder="Любой статус"
@@ -105,8 +112,9 @@ export const ExtendedSearchForm: FC<{
             <Option value="OnReview">На утверждении</Option>
             <Option value="Prepared">Подговлен к сдаче</Option>
           </Select>
-        </Form.Item>
-        <Form.Item name="lastCheckingDate" label="Истекает дата поверки">
+        </FormItem>
+        <FormItem>
+        <label>Истекает дата поверки: </label>
           <Select
             id="expirationDate"
             placeholder="Все"
@@ -120,10 +128,11 @@ export const ExtendedSearchForm: FC<{
             <Option value="NextTwoMonth">В следующие два месяца</Option>
             <Option value="Past">Истекла</Option>
           </Select>
-        </Form.Item>
+        </FormItem>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
-        <Form.Item name="deviceDiameter" label="Диаметр прибора, мм">
+        <FormItem>
+        <label>Диаметр прибора, мм: </label>
           <StyledSlider
             getTooltipPopupContainer={(triggerNode) =>
               triggerNode.parentNode as HTMLElement
@@ -145,8 +154,9 @@ export const ExtendedSearchForm: FC<{
               setFieldValue("['Filter.DiameterRange.To']", value[1]);
             }}
           />
-        </Form.Item>
-        <Form.Item label="Период действия акта допуска">
+        </FormItem>
+        <FormItem>
+        <label>Период действия акта допуска: </label>
           <ConfigProvider>
             <StyledRangePicker
               value={[
@@ -174,8 +184,9 @@ export const ExtendedSearchForm: FC<{
               format={dateFormat}
             />
           </ConfigProvider>
-        </Form.Item>
-        <Form.Item name="OrderBy" label="Сортировать по">
+        </FormItem>
+        <FormItem>
+        <label>Сортировать по: </label>
           <Select
             id="sortBy"
             placeholder="Улица"
@@ -185,7 +196,7 @@ export const ExtendedSearchForm: FC<{
             <Option value="Descending">Улице (уб.)</Option>
             <Option value="Ascending">Улице (возр.)</Option>
           </Select>
-        </Form.Item>
+        </FormItem>
       </StyledContainerThreeItems>
     </StyledForm>
   );

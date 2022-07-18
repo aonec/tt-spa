@@ -27,6 +27,8 @@ const $searchPayload = domain.createStore<CalculatorsListRequestPayload | null>(
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
 
+const clearSearchPayload = domain.createEvent();
+
 $calculatorsPagedData
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
   .reset(fetchCalculatorsFx.failData);
@@ -42,8 +44,11 @@ $searchPayload
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
     PageNumber: pageNumber,
-  }));
+  }))
+  .reset(clearSearchPayload)
 
+  $searchPayload.watch(console.log)
+  
 sample({
   clock: guard({
     clock: $searchPayload,
@@ -65,6 +70,7 @@ export const displayDevicesService = {
     extendedSearchOpened,
     extendedSearchClosed,
     setPageNumber,
+    clearSearchPayload
   },
   outputs: {
     $total,
@@ -73,5 +79,6 @@ export const displayDevicesService = {
     $isExtendedSearchOpen,
     $pageNumber,
     $pageSize,
+    $searchPayload
   },
 };
