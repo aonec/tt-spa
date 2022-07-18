@@ -10,6 +10,6 @@ export const fetchElectricNode = (
 export const updateElectricHousingMeteringDevice = (
   device: UpdateElectricHousingMeteringDevice
 ): Promise<void> =>
-  axios.put(`ElectricHousingMeteringDevices/${device.deviceId}`, {
+  axios.put(`ElectricHousingMeteringDevices/${device.deviceId}`, null, {
     params: { ...device },
   });

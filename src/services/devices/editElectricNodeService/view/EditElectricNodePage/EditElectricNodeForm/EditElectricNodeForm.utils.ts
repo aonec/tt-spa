@@ -1,6 +1,7 @@
-import moment from "moment";
+import moment from 'moment';
 
 export const getDatePickerValue = (
-    date?: number | null
-  ): moment.Moment | undefined => {
-    return(date ? moment(date) : void 0)};
+  date?: string | null
+): moment.Moment | undefined => {
+  return date ? moment(date) : void null;
+};

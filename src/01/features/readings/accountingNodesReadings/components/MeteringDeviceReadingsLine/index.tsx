@@ -45,7 +45,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   );
 
   const handleEditODPU = useCallback(
-    () => history.push(`/editElectricNode/${counter?.id}`),
+    () => history.push(`/electricNode/${counter?.id}/edit`),
     []
   );
 

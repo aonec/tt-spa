@@ -1,5 +1,7 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
+import { Skeleton } from 'antd';
 import React, { FC } from 'react';
+import { Route, useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { EditElectricNodeForm } from './EditElectricNodeForm';
@@ -13,25 +15,46 @@ const { TabPane } = TabsSC;
 
 export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
   device,
-  handleUpdateDevice
+  handleUpdateDevice,
+  isLoadingUpdate,
+  isLoadingDevice,
+  grouptype,
 }) => {
-  const address = device.address;
-  const hosuingstockAddress = address && getHousingStockAddress(address, true);
+  const deviceTitle = device ? `${device.model} (${device.serialNumber}).` : '';
+  const history = useHistory();
 
   return (
     <div>
-      <GoBack />
-      <PageHeader
-        title={`${device.model} (${device.serialNumber}). Редактирование`}
-      />
-      <InfoWrapper>
-        <AddressWrapper>{hosuingstockAddress}</AddressWrapper>
-      </InfoWrapper>
-      {/* <TabsSC activeKey={} onChange={}>
-        <TabPane tab={'Общие данные'} key="EditForm"></TabPane>
-        <TabPane tab={'Документы'} key="Documents"></TabPane>
-      </TabsSC> */}
-      <EditElectricNodeForm device={device} handleUpdateElectricHousingMeteringDevice={handleUpdateDevice}/>
+      <GoBack path="/meters/accountingNodes" />
+      <PageHeader title={`${deviceTitle} Редактирование`} />
+
+      {isLoadingDevice && <Skeleton active />}
+      {!isLoadingDevice && (
+        <>
+          <InfoWrapper>
+            {device && (
+              <AddressWrapper>
+                {getHousingStockAddress(device?.address, true)}
+              </AddressWrapper>
+            )}
+          </InfoWrapper>
+          {device && (
+            <>
+              <TabsSC activeKey={grouptype} onChange={history.push}>
+                <TabPane tab={'Общие данные'} key="edit"></TabPane>
+                <TabPane tab={'Документы'} key="documents"></TabPane>
+              </TabsSC>
+              <Route path="/electricNode/:deviceId/edit" exact>
+                <EditElectricNodeForm
+                  device={device}
+                  handleUpdateElectricHousingMeteringDevice={handleUpdateDevice}
+                  isLoading={isLoadingUpdate}
+                />
+              </Route>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };

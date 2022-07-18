@@ -39,12 +39,12 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
     setFieldValue,
   } = useFormik<UpdateElectricHousingMeteringDeviceForm>({
     initialValues: {
-      model: device.model || '',
-      openingDate: device.openingDate || '',
-      stateVerificationYear: device.stateVerificationYear,
-      nextStateVerificationYear: device.nextStateVerificationYear,
-      stateVerificationQuarter: device.stateVerificationQuarter,
-      stateVerificationIntervalYears: device.stateVerificationIntervalYears,
+      Model: device.model || '',
+      InstallationDate: device.openingDate || '',
+      StateVerificationYear: String(device.stateVerificationYear),
+      NextStateVerificationYear: String(device.nextStateVerificationYear),
+      StateVerificationQuarter: device.stateVerificationQuarter,
+      StateVerificationIntervalYears: device.stateVerificationIntervalYears,
     },
     enableReinitialize: true,
     onSubmit: (values) =>
@@ -86,8 +86,8 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
         <div id="deviceModel">
           <FormItem label="Модель прибора">
             <Input
-              value={values.model}
-              name="model"
+              value={values.Model}
+              name="Model"
               onChange={handleChange}
               placeholder="Введите модель"
             />
@@ -106,8 +106,8 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
         <div id="deviceInstallationDate">
           <FormItem label="Дата установки прибора">
             <DatePickerNative
-              value={values.openingDate}
-              onChange={(value) => setFieldValue('openingDate', value)}
+              value={values.InstallationDate}
+              onChange={(value) => setFieldValue('InstallationDate', value)}
               placeholder="Введите дату"
             />
           </FormItem>
@@ -116,9 +116,9 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
       <CheckingDatesWrapper>
         <FormItem label="Год посл. поверки">
           <DatePicker
-            value={getDatePickerValue(values.stateVerificationYear)}
+            value={getDatePickerValue(values.StateVerificationYear)}
             onChange={(_, dateString) =>
-              setFieldValue('stateVerificationYear', dateString)
+              setFieldValue('StateVerificationYear', dateString)
             }
             picker="year"
             placeholder="Введите год посл. поверки"
@@ -126,9 +126,9 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
         </FormItem>
         <FormItem label="Квартал">
           <Select
-            value={values.stateVerificationQuarter || void 0}
+            value={values.StateVerificationQuarter || void 0}
             onChange={(value) =>
-              setFieldValue('stateVerificationQuarter', value)
+              setFieldValue('StateVerificationQuarter', value)
             }
             placeholder="Выберите"
           >
@@ -141,17 +141,17 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
         </FormItem>
         <FormItem label="Интервал">
           <Input
-            value={values.stateVerificationIntervalYears}
-            name="stateVerificationIntervalYears"
+            value={values.StateVerificationIntervalYears}
+            name="StateVerificationIntervalYears"
             onChange={handleChange}
             placeholder="Введите интервал"
           />
         </FormItem>
         <FormItem label="Год след. поверки">
           <DatePicker
-            value={getDatePickerValue(values.nextStateVerificationYear)}
+            value={getDatePickerValue(values.NextStateVerificationYear)}
             onChange={(_, dateString) =>
-              setFieldValue('nextStateVerificationYear', dateString)
+              setFieldValue('NextStateVerificationYear', dateString)
             }
             picker="year"
             placeholder="Введите год след. поверки"

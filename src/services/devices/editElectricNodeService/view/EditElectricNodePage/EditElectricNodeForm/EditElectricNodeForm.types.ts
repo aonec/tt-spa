@@ -3,10 +3,13 @@ import { UpdateElectricHousingMeteringDevice } from '../EditElectricNodePage.typ
 
 export type EditElectricNodeFormProps = {
   device: ElectricHousingMeteringDeviceResponse;
-  isLoading?: boolean;
+  isLoading: boolean;
   handleUpdateElectricHousingMeteringDevice: (
     payload: UpdateElectricHousingMeteringDevice
   ) => void;
 };
 
-export type UpdateElectricHousingMeteringDeviceForm = Omit<UpdateElectricHousingMeteringDevice, 'deviceId'>
+export type UpdateElectricHousingMeteringDeviceForm = Omit<
+  UpdateElectricHousingMeteringDevice,
+  'deviceId'
+>;
