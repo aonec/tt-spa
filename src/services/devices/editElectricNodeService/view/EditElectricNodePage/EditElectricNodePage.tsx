@@ -1,6 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Skeleton } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
@@ -10,7 +10,10 @@ import {
   InfoWrapper,
   TabsSC,
 } from './EditElectricNodePage.styled';
-import { EditElectricNodePageProps } from './EditElectricNodePage.types';
+import {
+  EditElectricNodeGrouptype,
+  EditElectricNodePageProps,
+} from './EditElectricNodePage.types';
 const { TabPane } = TabsSC;
 
 export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
@@ -18,10 +21,11 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
   handleUpdateDevice,
   isLoadingUpdate,
   isLoadingDevice,
-  grouptype,
 }) => {
   const deviceTitle = device ? `${device.model} (${device.serialNumber}).` : '';
-  const history = useHistory();
+  const [grouptype, setGrouptype] = useState<EditElectricNodeGrouptype>(
+    EditElectricNodeGrouptype.edit
+  );
 
   return (
     <div>
@@ -40,17 +44,29 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
           </InfoWrapper>
           {device && (
             <>
-              <TabsSC activeKey={grouptype} onChange={history.push}>
-                <TabPane tab={'Общие данные'} key="edit"></TabPane>
-                <TabPane tab={'Документы'} key="documents"></TabPane>
+              <TabsSC
+                activeKey={grouptype}
+                onChange={(grouptype) =>
+                  setGrouptype(grouptype as EditElectricNodeGrouptype)
+                }
+              >
+                <TabPane
+                  tab={'Общие данные'}
+                  key={EditElectricNodeGrouptype.edit}
+                >
+                  <EditElectricNodeForm
+                    device={device}
+                    handleUpdateElectricHousingMeteringDevice={
+                      handleUpdateDevice
+                    }
+                    isLoading={isLoadingUpdate}
+                  />
+                </TabPane>
+                <TabPane
+                  tab={'Документы'}
+                  key={EditElectricNodeGrouptype.documents}
+                ></TabPane>
               </TabsSC>
-              <Route path="/electricNode/:deviceId/edit" exact>
-                <EditElectricNodeForm
-                  device={device}
-                  handleUpdateElectricHousingMeteringDevice={handleUpdateDevice}
-                  isLoading={isLoadingUpdate}
-                />
-              </Route>
             </>
           )}
         </>

@@ -121,7 +121,7 @@ const Internal = () => {
               />
 
               <Route
-                path="/electricNode/:deviceId/:grouptype?"
+                path="/electricNode/:deviceId/edit"
                 component={EditElectricNodeContainer}
               />
 

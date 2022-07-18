@@ -1,12 +1,10 @@
 import { ElectricHousingMeteringDeviceResponse, EYearQuarter } from 'myApi';
-import { EditElectricNodePageGrouptype } from '../../editElectricNodeService.types';
 
 export type EditElectricNodePageProps = {
   device: ElectricHousingMeteringDeviceResponse | null;
   handleUpdateDevice: (payload: UpdateElectricHousingMeteringDevice) => void;
   isLoadingUpdate: boolean;
   isLoadingDevice: boolean;
-  grouptype: EditElectricNodePageGrouptype;
 };
 
 export type UpdateElectricHousingMeteringDevice = {
@@ -18,3 +16,8 @@ export type UpdateElectricHousingMeteringDevice = {
   StateVerificationIntervalYears: number;
   deviceId: number;
 };
+
+export enum EditElectricNodeGrouptype {
+  edit = 'edit',
+  documents = 'documents',
+}
