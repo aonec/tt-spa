@@ -50,8 +50,12 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import { TasksProfileContainer, tasksProfileService } from 'services/tasks/tasksProfileService';
+import {
+  TasksProfileContainer,
+  tasksProfileService,
+} from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
+import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 
 moment.locale('ru');
 
@@ -113,6 +117,12 @@ const Internal = () => {
               <Route
                 path="/changeODPU/:oldDeviceId"
                 component={ChangeODPUContainer}
+                exact
+              />
+
+              <Route
+                path="/editElectricNode/:deviceId"
+                component={EditElectricNodeContainer}
                 exact
               />
 

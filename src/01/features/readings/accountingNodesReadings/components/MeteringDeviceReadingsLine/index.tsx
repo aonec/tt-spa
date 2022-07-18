@@ -44,6 +44,11 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     []
   );
 
+  const handleEditODPU = useCallback(
+    () => history.push(`/editElectricNode/${counter?.id}`),
+    []
+  );
+
   const readingsInput = () => (
     <>
       <MeteringDeviceReadingInput
@@ -121,6 +126,10 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
               {
                 title: 'Заменить прибор',
                 onClick: handleChangeODPU,
+              },
+              {
+                title: 'Редактировать прибор',
+                onClick: handleEditODPU,
               },
             ]}
           />
