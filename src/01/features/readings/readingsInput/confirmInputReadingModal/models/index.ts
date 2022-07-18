@@ -3,7 +3,7 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
 
 interface Payload {
-  onOk(): void;
+  onSubmit(): void;
   onCancel?: () => void;
   title: string | ReactNode;
 }

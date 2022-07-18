@@ -27,9 +27,9 @@ executeConfirmReadingCallback.watch(() => {
   const payload = $onConfirmReadingInputCallback.getState();
   if (!payload) return;
 
-  const { onOk } = payload;
+  const { onSubmit } = payload;
 
-  onOk();
+  onSubmit();
   closeConfirmReadingModal();
 });
 

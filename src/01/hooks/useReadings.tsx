@@ -183,7 +183,7 @@ export const useReadings = (
       title: `Вы точно хотите удалить показание за ${readingDate.toLowerCase()} на приборе ${
         device.model
       } (${device.serialNumber})?`,
-      onOk: () => void request(),
+      onSubmit: () => void request(),
     });
   }
 
@@ -347,7 +347,7 @@ export const useReadings = (
               </b>
             </>
           ),
-          onOk: () => void sendPreviousReading(requestPayload),
+          onSubmit: () => void sendPreviousReading(requestPayload),
         });
         return;
       }
@@ -361,7 +361,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        onOk: () => void sendPreviousReading(requestPayload),
+        onSubmit: () => void sendPreviousReading(requestPayload),
       });
     }
 
@@ -463,7 +463,7 @@ export const useReadings = (
               </b>
             </>
           ),
-          onOk: () => void sendCurrentReadings(),
+          onSubmit: () => void sendCurrentReadings(),
         });
         return;
       }
@@ -477,7 +477,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        onOk: () => void sendCurrentReadings(),
+        onSubmit: () => void sendCurrentReadings(),
       });
     }
 

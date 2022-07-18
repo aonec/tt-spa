@@ -30,7 +30,7 @@ import {
   getNewReadingDate,
   getPreviousReadingByHistory,
   validateReadings,
-} from './utils';
+} from './displayReadingHistory.utils';
 import {
   ArrowButton,
   ArrowButtonBlock,
@@ -40,8 +40,8 @@ import {
   TableHeader,
   Wrapper,
   Year,
-} from './styled';
-import { RenderReading } from './types';
+} from './displayReadingHistory.styled';
+import { RenderReading } from './displayReadingHistory.types';
 import {
   CorrectReadingValuesValidationResult,
   round,

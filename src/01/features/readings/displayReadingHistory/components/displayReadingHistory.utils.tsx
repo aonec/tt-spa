@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import { round } from 'lodash';
+import _, { round } from 'lodash';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
@@ -72,7 +72,7 @@ export function getActiveReadings(
 ) {
   if (!readings) return;
 
-  return readings.find((elem) => !elem.isArchived) || void 0;
+  return readings.find((elem) => !elem.isArchived) || void null;
 }
 
 export function getClone<T>(value: T): T {
@@ -81,7 +81,7 @@ export function getClone<T>(value: T): T {
 
 export function confirmReading(
   { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
-  onOk: () => void,
+  onSubmit: () => void,
   onCancel: () => void,
   device: IndividualDeviceResponse
 ) {
@@ -108,7 +108,7 @@ export function confirmReading(
           </b>
         </>
       ),
-      onOk: () => void onOk(),
+      onSubmit: () => void onSubmit(),
       onCancel: () => void onCancel(),
     });
     return;
@@ -123,7 +123,7 @@ export function confirmReading(
           )}${unit}, больше чем лимит ${limit}${unit}`
         : ''
     }`,
-    onOk: () => void onOk(),
+    onSubmit: () => void onSubmit(),
     onCancel: () => void onCancel(),
   });
 }
@@ -132,13 +132,15 @@ export function getPreviousReadingByHistory(
   readingsHistoryRaw: IndividualDeviceReadingsHistoryResponse,
   address: { year: number; month: number }
 ): IndividualDeviceReadingsItemHistoryResponse | null {
-  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = getClone(
+  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = _.cloneDeep(
     readingsHistoryRaw
   );
-
-  const readingsHistoryCleared = readingsHistoryClone.yearReadings
-    ?.map((yearReading) =>
-      yearReading.monthReadings?.map((monthReading) => {
+  const yearReadings = readingsHistoryClone?.yearReadings || [];
+  const readingsHistoryCleared = yearReadings
+    .map((yearReading) => {
+      const monthReadings = yearReading.monthReadings || [];
+      
+      return monthReadings.map((monthReading) => {
         const activeReading = monthReading.readings?.find(
           (reading) => !reading.isArchived && !reading.isRemoved
         );
@@ -148,8 +150,8 @@ export function getPreviousReadingByHistory(
           month: monthReading.month,
           year: yearReading.year,
         };
-      })
-    )
+      });
+    })
     .flat();
 
   const currentIndex = readingsHistoryCleared?.reduce(
