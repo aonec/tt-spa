@@ -18,6 +18,7 @@ export const TasksProfileContainer = () => {
   const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
+  const housingManagments = useStore(outputs.$housingManagments)
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen)
@@ -75,6 +76,7 @@ export const TasksProfileContainer = () => {
         openExtendedSearch={() => openExtendedSearch()}
         clearFilters={()=> clearFilters()}
         changeFiltersByGroupType={changeFiltersByGroupType}
+        housingManagments={housingManagments}
       />
     </>
   );

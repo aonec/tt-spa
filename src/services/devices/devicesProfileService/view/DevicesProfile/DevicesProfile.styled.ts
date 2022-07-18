@@ -1,6 +1,5 @@
-import { Slider, Form } from 'antd';
+import { Slider, Form, DatePicker } from 'antd';
 import styled from 'styled-components';
-import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 
 export const Wrapper = styled.div`
@@ -16,8 +15,8 @@ export const StyledSlider = styled(Slider)`
 
 export const StyledContainerFourItems = styled.div`
   display: grid;
-  grid-template-columns: 4fr 4fr 1.93fr 1.93fr;
-  gap: 16px;
+  grid-template-columns: 4fr 4fr 1.9fr 1.9fr;
+  gap: 15px;
 `;
 
 export const StyledContainerThreeItems = styled.div`
@@ -32,8 +31,11 @@ export const StyledRangePicker = styled(RangePicker)`
 `;
 
 export const StyledForm = styled(Form)`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-top: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
 `;
 
 export const HeaderWrapper = styled.div`

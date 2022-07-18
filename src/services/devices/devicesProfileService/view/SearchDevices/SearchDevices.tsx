@@ -74,7 +74,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
-  
+
   return (
     <Wrapper>
       {!isExtendedSearchOpen ? (
@@ -84,13 +84,13 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
           onChange={submitForm}
         >
           <StyledGrid isExtendedSearchOpen={isExtendedSearchOpen}>
-            {children}
+            <div>{children}</div>
             <Form.Item
               name="search"
               rules={[
                 {
                   required: true,
-                  message: 'Введите серийный номер прибор',
+                  message: 'Введите серийный номер приборa',
                 },
               ]}
             >
