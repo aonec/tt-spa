@@ -13,6 +13,7 @@ const { TabPane } = TabsSC;
 
 export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
   device,
+  handleUpdateDevice
 }) => {
   const address = device.address;
   const hosuingstockAddress = address && getHousingStockAddress(address, true);
@@ -30,7 +31,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
         <TabPane tab={'Общие данные'} key="EditForm"></TabPane>
         <TabPane tab={'Документы'} key="Documents"></TabPane>
       </TabsSC> */}
-      <EditElectricNodeForm device={device}/>
+      <EditElectricNodeForm device={device} handleUpdateElectricHousingMeteringDevice={handleUpdateDevice}/>
     </div>
   );
 };
