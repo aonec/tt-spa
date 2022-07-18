@@ -47,4 +47,7 @@ export const switchDeviceValidationSchema = yup.object().shape({
     .string()
     .nullable()
     .required('Это поле обязательное'),
+  newDeviceReadings: yup
+    .array()
+    .required('Необходимо указать начальные показания на новом приборе'),
 });

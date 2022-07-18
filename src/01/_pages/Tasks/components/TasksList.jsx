@@ -7,6 +7,7 @@ import { Icon as IconTT } from '../../../tt-components/Icon';
 import { time_line } from '01/r_comp';
 import { useHistory } from 'react-router-dom';
 import DeviceIcons from '../../../_components/DeviceIcons';
+import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 
 const styles = css`
   task_item {
@@ -162,7 +163,7 @@ export const TasksList = ({ items }) => {
               ) : (
                 <>
                   <Icon icon="close" fill={'var(--error)'} />
-                  <span style={{opacity: '0.7'}}>Закрыта автоматически</span>
+                  <span style={{ opacity: '0.7' }}>Закрыта автоматически</span>
                 </>
               )}
               {showExecutor && (
@@ -191,9 +192,7 @@ export const TasksList = ({ items }) => {
               ) : null}
               <addr>
                 <Icon icon="map" />
-                {/* {address} */}
-                {address.city}, {address.street}, {address.housingStockNumber}
-                {address.corpus ? `, к.${address.corpus}` : ''}
+                {getApartmentFromFullAddress(address, true)}
               </addr>
               <num>
                 <Icon icon="number" />

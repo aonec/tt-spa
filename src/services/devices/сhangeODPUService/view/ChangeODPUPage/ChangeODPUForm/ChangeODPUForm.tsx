@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { EResourceType } from 'myApi';
+import React, { FC, useCallback, useEffect } from 'react';
+import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   BaseInfoWrapper,
@@ -31,6 +31,7 @@ import {
 } from './ChangeODPUForm.constants';
 import { ButtonTT } from '01/tt-components';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ChangeODPUReadingsContainer } from 'services/devices/сhangeODPUService/changeODPUReadingsService';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
   oldDevice,
@@ -41,6 +42,8 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
     {
       initialValues: { ...initialValues, id: oldDevice.id },
       validationSchema: switchDeviceValidationSchema,
+      validateOnChange: false,
+      validateOnBlur: false,
       onSubmit: (values) => {
         handleSwitchDevice({
           deviceId: oldDevice.id,
@@ -59,11 +62,25 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           oldDeviceClosingReason: values.oldDeviceClosingReason!,
           sealNumber: values.sealNumber,
           sealInstallationDate: values.sealInstallationDate,
-          oldDeviceReadings: [],
-          newDeviceReadings: [],
+          oldDeviceReadings: values.oldDeviceReadings,
+          newDeviceReadings: values.newDeviceReadings,
         });
       },
     }
+  );
+
+  const handleNewReadingsChange = useCallback(
+    (newDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
+      setFieldValue('newDeviceReadings', newDeviceReadings);
+    },
+    [setFieldValue]
+  );
+
+  const handleOldReadingsChange = useCallback(
+    (oldDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
+      setFieldValue('oldDeviceReadings', oldDeviceReadings);
+    },
+    [setFieldValue]
   );
 
   return (
@@ -231,6 +248,14 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           </FormItem>
         </ChangingReasonSelectWrapper>
       </ChangingDeviceInfoWrapper>
+
+      <ChangeODPUReadingsContainer
+        device={oldDevice}
+        onChangeNewReadings={handleNewReadingsChange}
+        onChangeOldReadings={handleOldReadingsChange}
+      />
+      <ErrorMessage>{errors.newDeviceReadings}</ErrorMessage>
+
       <SealInfoWrapper>
         <FormItem label="Номер пломбы">
           <Input

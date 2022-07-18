@@ -2,6 +2,7 @@ import { FormikErrors } from 'formik';
 import {
   EManagingFirmTaskFilterType,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  GuidStringDictionaryItem,
   TaskGroupingFilter,
 } from 'myApi';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
@@ -14,7 +15,8 @@ export type SearchTasksProps = {
   closeExtendedSearch: () => void;
   openExtendedSearch: () => void;
   clearFilters: () => void;
-  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter
+  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
+  housingManagments: GuidStringDictionaryItem[] | null;
 };
 
 export type SearchTasksForm = {
@@ -31,5 +33,6 @@ export type ExtendedSearchTypes = {
     value: any,
     shouldValidate?: boolean | undefined
   ) => Promise<void> | Promise<FormikErrors<GetTasksListRequestPayload>>;
-  taskTypes:  EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null
+  taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
+  housingManagments?: GuidStringDictionaryItem[] | null
 };
