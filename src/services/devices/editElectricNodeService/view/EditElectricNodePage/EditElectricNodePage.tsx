@@ -1,4 +1,5 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
+import IsActive from '01/tt-components/IsActive';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
 import { Route, useHistory } from 'react-router-dom';
@@ -27,7 +28,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
   const [grouptype, setGrouptype] = useState<EditElectricNodeGrouptype>(
     EditElectricNodeGrouptype.edit
   );
-
+  console.log(device)
   return (
     <div>
       <GoBack path="/meters/accountingNodes" />
@@ -40,6 +41,8 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
             <AddressWrapper>
               {getHousingStockAddress(device?.address, true)}
             </AddressWrapper>
+            
+            <IsActive closingdate={device.closingDate} />
           </InfoWrapper>
 
           <TabsSC
