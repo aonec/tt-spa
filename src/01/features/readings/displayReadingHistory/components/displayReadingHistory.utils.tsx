@@ -85,14 +85,14 @@ export function confirmReading(
   onCancel: () => void,
   device: IndividualDeviceResponse
 ) {
-  const neededValueWarning = valuesValidationResults?.find((elem) =>
+  const valueWarning = valuesValidationResults?.find((elem) =>
     Boolean(elem.type)
   );
 
   const unit = getMeasurementUnit(device.resource);
 
-  if (neededValueWarning?.type === 'down') {
-    const failedReadingValidateResult = valuesValidationResults?.find(
+  if (valueWarning?.type === 'down') {
+    const failedValidateReading = valuesValidationResults?.find(
       (elem) => !elem.validated
     );
 
@@ -101,9 +101,9 @@ export function confirmReading(
         <>
           Введенное показание по прибору <b>{device.serialNumber}</b> (
           {device.model}) меньше предыдущего на T
-          {failedReadingValidateResult?.index}:{' '}
+          {failedValidateReading?.index}:{' '}
           <b>
-            {Math.abs(round(failedReadingValidateResult?.difference || 0, 3))}{' '}
+            {Math.abs(round(failedValidateReading?.difference || 0, 3))}{' '}
             {unit}{' '}
           </b>
         </>
@@ -116,9 +116,9 @@ export function confirmReading(
 
   openConfirmReadingModal({
     title: `${
-      neededValueWarning?.type === 'up'
+      valueWarning?.type === 'up'
         ? `Расход ${round(
-            neededValueWarning.difference,
+          valueWarning.difference,
             3
           )}${unit}, больше чем лимит ${limit}${unit}`
         : ''

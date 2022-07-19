@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
-import _ from 'lodash';
+import _ from 'lodash/fp';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -49,47 +49,38 @@ export function useReadingHistoryValues() {
     month: number;
     id: number | null;
   }) => {
-    const initialValue = initialValues?.yearReadings
-      ?.find((year) => year.year === address.year)
-      ?.monthReadings?.find((month) => month.month === address.month)
-      ?.readings!.find((reading) => reading.id === address.id)!;
+    const initialValue = _.pipe([
+      _.getOr([], 'yearReadings'),
+      _.find({ year: address.year }),
+      _.getOr([], 'monthReadings'),
+      _.find({ month: address.month }),
+      _.getOr([], 'readings'),
+      _.find({ id: address.id }),
+    ])(initialValues);
 
-    const yearReadings = bufferedValues?.yearReadings || [];
-    const requiredMonthReading =
-      yearReadings.find((year) => year.year === address.year)?.monthReadings ||
-      [];
-    const requiredReadings =
-      requiredMonthReading.find((month) => month.month === address.month)
-        ?.readings || [];
+    const yearIndex = _.findIndex({ year: address.year })(
+      bufferedValues?.yearReadings
+    );
+    const monthIndex = _.findIndex({ month: address.month })(
+      bufferedValues?.yearReadings?.[yearIndex].monthReadings
+    );
+    const readingIndex = _.findIndex({ id: address.id })(
+      bufferedValues?.yearReadings?.[yearIndex].monthReadings?.[monthIndex]
+        .readings
+    );
+    const setInitValue = _.assoc(
+      [
+        'yearReadings',
+        `${yearIndex}`,
+        'monthReadings',
+        `${monthIndex}`,
+        'readings',
+        `${readingIndex}`,
+      ],
+      initialValue
+    );
 
-    const editReadings = [
-      ...requiredReadings.filter((reading) => reading.id !== address.id),
-      initialValue,
-    ];
-
-
-    setBufferedValues((prev) => ({
-      yearReadings:
-        prev?.yearReadings?.map((year) =>
-          year.year === address.year
-            ? {
-                ...year,
-                monthReadings:
-                  year.monthReadings?.map((month) =>
-                    month.month === address.month
-                      ? {
-                          ...month,
-                          readings:
-                            month.readings?.map((elem) =>
-                              elem.id === address.id ? initialValue : elem
-                            ) || [],
-                        }
-                      : month
-                  ) || [],
-              }
-            : year
-        ) || [],
-    }));
+    setBufferedValues((prev) => prev && setInitValue(prev));
   };
 
   const setFieldValue = (
