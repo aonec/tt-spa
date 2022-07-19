@@ -9,6 +9,7 @@ export const ExportTasksListModalContainer = () => {
 
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$isLoading);
+  const taskFilters = useStore(outputs.$exportTaskFilters)
 
   const handleClose = useEvent(inputs.closeModal);
 
@@ -17,8 +18,8 @@ export const ExportTasksListModalContainer = () => {
   const formId = 'export-tasks-list-form';
 
   const form = useMemo(
-    () => <ExportTasksListForm formId={formId} handleSubmit={handleSubmit} />,
-    [formId, handleSubmit]
+    () => <ExportTasksListForm formId={formId} handleSubmit={handleSubmit} taskFilters={taskFilters}/>,
+    [formId, handleSubmit, taskFilters]
   );
 
   return (
