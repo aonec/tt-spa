@@ -54,8 +54,21 @@ export function useReadingHistoryValues() {
       ?.monthReadings?.find((month) => month.month === address.month)
       ?.readings!.find((reading) => reading.id === address.id)!;
 
+    const yearReadings = bufferedValues?.yearReadings || [];
+    const requiredMonthReading =
+      yearReadings.find((year) => year.year === address.year)?.monthReadings ||
+      [];
+    const requiredReadings =
+      requiredMonthReading.find((month) => month.month === address.month)
+        ?.readings || [];
+
+    const editReadings = [
+      ...requiredReadings.filter((reading) => reading.id !== address.id),
+      initialValue,
+    ];
+
+
     setBufferedValues((prev) => ({
-      ...prev,
       yearReadings:
         prev?.yearReadings?.map((year) =>
           year.year === address.year
