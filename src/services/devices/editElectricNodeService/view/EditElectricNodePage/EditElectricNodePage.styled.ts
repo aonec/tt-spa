@@ -17,3 +17,11 @@ export const TabsSC = styled(Tabs)`
     font-size: 16px;
   }
 `;
+
+export const WarningWrapper = styled.div`
+  font-weight: 300;
+  color: #272f5a;
+  font-size: 32px;
+  line-height: 1.5;
+  margin-bottom: 22px;
+`;

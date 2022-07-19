@@ -9,6 +9,7 @@ import {
   AddressWrapper,
   InfoWrapper,
   TabsSC,
+  WarningWrapper,
 } from './EditElectricNodePage.styled';
 import {
   EditElectricNodeGrouptype,
@@ -33,42 +34,34 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
       <PageHeader title={`${deviceTitle} Редактирование`} />
 
       {isLoadingDevice && <Skeleton active />}
-      {!isLoadingDevice && (
+      {!isLoadingDevice && device && (
         <>
           <InfoWrapper>
-            {device && (
-              <AddressWrapper>
-                {getHousingStockAddress(device?.address, true)}
-              </AddressWrapper>
-            )}
+            <AddressWrapper>
+              {getHousingStockAddress(device?.address, true)}
+            </AddressWrapper>
           </InfoWrapper>
-          {device && (
-            <>
-              <TabsSC
-                activeKey={grouptype}
-                onChange={(grouptype) =>
-                  setGrouptype(grouptype as EditElectricNodeGrouptype)
-                }
-              >
-                <TabPane
-                  tab={'Общие данные'}
-                  key={EditElectricNodeGrouptype.edit}
-                >
-                  <EditElectricNodeForm
-                    device={device}
-                    handleUpdateElectricHousingMeteringDevice={
-                      handleUpdateDevice
-                    }
-                    isLoading={isLoadingUpdate}
-                  />
-                </TabPane>
-                <TabPane
-                  tab={'Документы'}
-                  key={EditElectricNodeGrouptype.documents}
-                ></TabPane>
-              </TabsSC>
-            </>
-          )}
+
+          <TabsSC
+            activeKey={grouptype}
+            onChange={(grouptype) =>
+              setGrouptype(grouptype as EditElectricNodeGrouptype)
+            }
+          >
+            <TabPane tab={'Общие данные'} key={EditElectricNodeGrouptype.edit}>
+              <EditElectricNodeForm
+                device={device}
+                handleUpdateElectricHousingMeteringDevice={handleUpdateDevice}
+                isLoading={isLoadingUpdate}
+              />
+            </TabPane>
+            <TabPane
+              tab={'Документы'}
+              key={EditElectricNodeGrouptype.documents}
+            >
+              <WarningWrapper>Компонент в разработке</WarningWrapper>
+            </TabPane>
+          </TabsSC>
         </>
       )}
     </div>
