@@ -7,9 +7,8 @@ import styled from 'styled-components';
 
 const CompanyInfo = () => {
   const { firm } = useContext(SettingsContext);
-  const { id, name, phoneNumber, timeZoneOffset } = firm || {};
+  const { id, name, phoneNumber } = firm || {};
 
-  const timeOffset = Number(timeZoneOffset.split(':')[0]);
   return (
     <div style={{ width: '66%' }}>
       <Title>Информация о компании</Title>
@@ -28,10 +27,6 @@ const CompanyInfo = () => {
       <CompanyItem>
         <span>Контактный телефон</span>
         <div>{phoneNumber ? phoneNumber : '+7 888 888-88-88'}</div>
-      </CompanyItem>
-      <CompanyItem>
-        <span>Часовой пояс</span>
-        <div>UTC+{timeOffset}</div>
       </CompanyItem>
     </div>
   );

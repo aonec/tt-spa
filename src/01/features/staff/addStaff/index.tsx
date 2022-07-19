@@ -66,7 +66,7 @@ export const AddStaffModal: React.FC = () => {
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: '', //elem?.competence?.title,
+    label: elem.title,
     value: elem.id,
   }));
 
@@ -119,6 +119,7 @@ export const AddStaffModal: React.FC = () => {
             <ErrorMessage>
               {fields.lastName.errorText({
                 required: 'Это поле обязательное',
+                minLength: 'Минимальная длина фамилии 2 символа',
               })}
             </ErrorMessage>
           </Form.Item>
@@ -133,6 +134,7 @@ export const AddStaffModal: React.FC = () => {
             <ErrorMessage>
               {fields.firstName.errorText({
                 required: 'Это поле обязательное',
+                minLength: 'Минимальная длина имени 2 символа',
               })}
             </ErrorMessage>
           </Form.Item>
