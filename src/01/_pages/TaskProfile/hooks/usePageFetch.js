@@ -5,22 +5,24 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import { getTask, moveStage } from '01/_api/task_profile_page';
 import { getCalculator } from '../../../_api/device_page';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams();
   const { replace } = useHistory();
-
   React.useEffect(() => {
     const initTaskData = async () => {
       const task = await getTask(id);
+      const address = getApartmentAddressString(task.apartment, true);
+
       if (!task?.node) {
-        dispatch({ type: 'success', data: task });
+        dispatch({ type: 'success', data: {...task, address} });
         return;
       }
       const calculator = await getCalculator(task.node.calculatorId);
       dispatch({
         type: 'success',
-        data: { ...task, calculator, stages: task.stages },
+        data: { ...task, calculator, stages: task.stages, address },
       });
     };
 

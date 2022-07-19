@@ -11,6 +11,7 @@ import { Subtitle } from '../../../_components/Headers';
 import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { Tooltip } from 'antd';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 interface InformationInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -47,8 +48,11 @@ export const Information = ({ device }: InformationInterface) => {
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
+          {getHousingStockAddress(address, true)}
           <Tooltip title={additionalAdress}>
-            <AdditionalAddressDescription>{additionalAdress}</AdditionalAddressDescription>
+            <AdditionalAddressDescription>
+              {additionalAdress}
+            </AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>
       </ListItem>

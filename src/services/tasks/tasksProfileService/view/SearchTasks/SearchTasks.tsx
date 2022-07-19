@@ -5,24 +5,51 @@ import { useFormik } from 'formik';
 import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
 import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
+import { SearchTasksProps } from './SearchTasks.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-
+import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
+import { useParams } from 'react-router-dom';
+import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
   currentFilter,
+  isExtendedSearchOpen,
+  openExtendedSearch,
+  closeExtendedSearch,
+  clearFilters,
+  changeFiltersByGroupType,
+  housingManagments
 }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<SearchTasksForm>({
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    resetForm,
+  } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
-      TaskId: currentFilter?.TaskId || '',
+      TaskId: currentFilter?.TaskId,
+      TargetType: undefined,
+      GroupType: currentFilter?.GroupType,
+      HouseManagementId: currentFilter?.HouseManagementId,
+      DeviceId: undefined,
+      HousingStockId: undefined,
+      ApartmentId: undefined,
+      HasChanged: undefined,
+      PipeNodeId: undefined,
+      ClosingStatuses: undefined,
+      ApplicationCompetenceId: undefined,
+      PageNumber: undefined,
+      PageSize: undefined,
+      OrderBy: undefined,
     },
     enableReinitialize: true,
     onSubmit,
   });
 
-  const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | undefined>(undefined);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,29 +69,54 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
 
+  const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
+
+  const clearAllFilters = () => {
+    clearFilters();
+    resetForm();
+    changeFiltersByGroupType(grouptype);
+  };
+
   useEffect(() => {
-    if (lastGroupTypeRef.current === currentFilter.GroupType) {
+    if (lastGroupTypeRef.current === currentFilter?.GroupType) {
       return;
     }
     const isFromArchive = lastGroupTypeRef.current === 'Archived';
     const isToArchive =
-      currentFilter.GroupType === 'Archived' && lastGroupTypeRef.current;
+      currentFilter?.GroupType === 'Archived' && lastGroupTypeRef.current;
     if (isFromArchive || isToArchive) {
       clearInput();
     }
 
-    lastGroupTypeRef.current = currentFilter.GroupType;
-  }, [currentFilter.GroupType, lastGroupTypeRef]);
-
+    lastGroupTypeRef.current = currentFilter?.GroupType;
+  }, [currentFilter?.GroupType, lastGroupTypeRef]);
+  const isArchived = currentFilter?.GroupType === 'Archived';
   return (
     <ExtendedSearch
-      isOpen={false}
-      handleApply={() => {}}
-      handleClear={() => {}}
-      handleClose={() => {}}
-      handleOpen={() => {}}
-      extendedSearchContent={<></>}
-      disabled
+      isOpen={isExtendedSearchOpen}
+      handleApply={handleSubmit}
+      handleClear={clearAllFilters}
+      handleClose={closeExtendedSearch}
+      handleOpen={openExtendedSearch}
+      extendedSearchContent={
+        <>
+          {isArchived && (
+            <ArchiveTasksExtendedSearchForm
+              setFieldValue={setFieldValue}
+              taskTypes={taskTypes}
+              values={values}
+            />
+          )}
+          {!isArchived && (
+            <ToExecutionTasksExtendedSearchForm
+              setFieldValue={setFieldValue}
+              taskTypes={taskTypes}
+              values={values}
+              housingManagments={housingManagments}
+            />
+          )}
+        </>
+      }
     >
       <Wrapper>
         <InputSC

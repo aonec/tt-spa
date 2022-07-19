@@ -1,5 +1,7 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  GuidStringDictionaryItem,
+  TaskGroupingFilter,
   TaskListResponse,
   TasksPagedList,
 } from 'myApi';
@@ -16,4 +18,10 @@ export type TasksProfileProps = {
   initialValues: GetTasksListRequestPayload;
   pagedTasks: TasksPagedList | null;
   isLoading: boolean;
+  isExtendedSearchOpen: boolean;
+  closeExtendedSearch: () => void;
+  openExtendedSearch: () => void;
+  clearFilters: () => void;
+  changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
+  housingManagments: GuidStringDictionaryItem[] | null
 };

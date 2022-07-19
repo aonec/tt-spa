@@ -60,27 +60,14 @@ const ApartmentProfile = () => {
     square,
     numberOfLiving,
     normativeNumberOfLiving,
-    housingStock,
     homeownerAccounts,
   } = apartment;
-
-  const {
-    city,
-    street,
-    number,
-    housingStockId,
-  } = housingStock.address.mainAddress;
 
   return styled(grid)(
     <>
       <GoBack />
       <ApartmentGate id={Number(apartmentId)} />
-      <Header
-        apartmentNumber={apartmentNumber}
-        city={city}
-        street={street}
-        number={number}
-      />
+      <Header apartment={apartment} />
 
       <Tabs />
       <Route path="/*/:apartmentId/testimony" exact>

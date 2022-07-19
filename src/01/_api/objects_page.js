@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import axios from '01/axios';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { createTimeline, createTimer, createDevice } from './utils';
 
 const URL = 'HousingStocks';
@@ -10,8 +11,14 @@ const replaceURL = (url = '') => url.replace(/objects/, URL);
 export async function getInfo(url = '') {
   try {
     const res = await axios.get(replaceURL(url));
-    return { ...res, info: true, header: createTitleObject(res) };
-  } catch (error) {}
+    return {
+      ...res,
+      info: true,
+      header: [getHousingStockAddress(res), res.address.mainAddress.city],
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getDevices(url = '') {
@@ -19,7 +26,10 @@ export async function getDevices(url = '') {
     const res = await axios.get(replaceURL(url));
     return {
       ...res,
-      header: createTitleObject(res.housingStock),
+      header: [
+        getHousingStockAddress(res.housingStock),
+        res.housingStock.address.mainAddress.city,
+      ],
       city: res.housingStock.city,
       devices: {
         items: res.devices.map(createDevice),
@@ -57,14 +67,4 @@ export async function getApartments(params) {
     const res = await axios.get('apartments', { params });
     return { apartments: { ...res, loading: false } };
   } catch (error) {}
-}
-
-// utils
-function createTitleObject(data) {
-  const { street, number, city, corpus } = data.address.mainAddress;
-  if (corpus !== null) {
-    return [`${street}, ${number}, корпус ${corpus}`, city];
-  }
-
-  return [`${street}, ${number}`, city];
 }
