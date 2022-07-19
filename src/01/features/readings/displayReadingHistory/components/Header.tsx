@@ -2,14 +2,15 @@ import { $apartment } from '01/features/apartments/displayApartment/models';
 import { HousingStockAddress } from '01/features/individualDevices/addIndividualDevice/components/HousingStockAddress';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
-import { Breadcrumb } from '01/tt-components';
 import { IsActiveBool } from '01/tt-components/IsActive';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 
 interface Props {
   isModal?: boolean;
@@ -17,8 +18,8 @@ interface Props {
 
 export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
-  
-  const address = useApartmentAddressString();
+
+  const address = getApartmentFromFullAddress(device?.address|| null, false);
 
   const checkingDates = useDeviceCheckingDates();
 
@@ -31,7 +32,7 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
         }}
       >
         <div>
-          {!isModal && <Breadcrumb />}
+          {!isModal && <GoBack />}
           <div style={{ marginTop: 5 }}>
             {!isModal && <Title>История показаний</Title>}
             <Spaces flex>
@@ -48,19 +49,6 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
     </>
   );
 };
-
-export function useApartmentAddressString() {
-  const apartment = useStore($apartment);
-
-  const address = apartment?.housingStock?.address?.mainAddress
-
-  return (
-    apartment &&
-    `ул. ${address?.street}, д. ${
-      address?.number
-    }${address?.corpus || ''}, кв. ${apartment.apartmentNumber}`
-  );
-}
 
 export function useDeviceCheckingDates() {
   const device = useStore($individualDevice);

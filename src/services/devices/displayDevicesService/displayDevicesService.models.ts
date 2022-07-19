@@ -1,7 +1,7 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { getCalculatorsList } from './displayDevicesService.api';
 import { CalculatorListResponse, CalculatorListResponsePagedList } from 'myApi';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculators/types';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 const domain = createDomain('displayDevicesService');
 
@@ -24,11 +24,8 @@ const $searchPayload = domain.createStore<CalculatorsListRequestPayload | null>(
   null
 );
 
-const extendedSearchOpened = domain.createEvent<CalculatorsListRequestPayload | null>();
-const extendedSearchClosed = domain.createEvent<CalculatorsListRequestPayload | null>();
-
-const applyFilters = domain.createEvent<CalculatorsListRequestPayload | null>();
-const clearForm = domain.createEvent<CalculatorsListRequestPayload | null>();
+const extendedSearchOpened = domain.createEvent();
+const extendedSearchClosed = domain.createEvent();
 
 $calculatorsPagedData
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
@@ -45,7 +42,7 @@ $searchPayload
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
     PageNumber: pageNumber,
-  }))
+  }));
 
 sample({
   clock: guard({
@@ -62,18 +59,12 @@ $isExtendedSearchOpen
   .on(extendedSearchOpened, () => true)
   .reset(extendedSearchClosed);
 
-forward({
-  from: applyFilters,
-  to: [fetchCalculators, extendedSearchClosed],
-});
-
 export const displayDevicesService = {
   inputs: {
     fetchCalculators,
     extendedSearchOpened,
     extendedSearchClosed,
     setPageNumber,
-    clearForm
   },
   outputs: {
     $total,

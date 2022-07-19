@@ -12,6 +12,7 @@ import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
   handleSubmit: onSubmit,
+  initialValues,
 }) => {
   const { outputs } = addressSearchService;
 
@@ -19,8 +20,9 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     values,
     handleSubmit,
     setFieldValue,
+    setValues,
   } = useFormik<AddressSearchValues>({
-    initialValues: {
+    initialValues: initialValues || {
       city: '',
       street: '',
       house: '',
@@ -29,6 +31,10 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     },
     onSubmit,
   });
+
+  useEffect(() => {
+    if (initialValues) setValues(initialValues);
+  }, [initialValues]);
 
   const cities = useStore(outputs.cities);
   const streets = useStore(outputs.streets);

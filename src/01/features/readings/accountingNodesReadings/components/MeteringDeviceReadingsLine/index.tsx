@@ -3,7 +3,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ElectricNodeResponse } from 'myApi';
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -11,7 +11,12 @@ import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
-import {HistoryIcon} from "ui-kit/icons";
+import {
+  HistoryIconSC,
+  ContextMenuWrapper,
+} from './MeteringDeviceReadingsLine.styled';
+import { useHistory } from 'react-router-dom';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 
 interface Props {
   sliderIndex: number;
@@ -25,13 +30,19 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   inputIndex,
 }) => {
   const counter = node.counter;
-
   const {
     loading,
     currentReading,
     previousReading,
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
+
+  const history = useHistory();
+
+  const handleChangeODPU = useCallback(
+    () => history.push(`/changeODPU/${counter?.id}`),
+    []
+  );
 
   const readingsInput = () => (
     <>
@@ -102,8 +113,18 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       {readingsInput()}
       {getConsumption()}
       {getConsumptionInput()}
-      <Flex style={{ justifyContent: 'center' }}>
-        <HistoryIcon />
+      <Flex>
+        <HistoryIconSC />
+        <ContextMenuWrapper>
+          <ContextMenuButton
+            menuButtons={[
+              {
+                title: 'Заменить прибор',
+                onClick: handleChangeODPU,
+              },
+            ]}
+          />
+        </ContextMenuWrapper>
       </Flex>
     </Wrap>
   );

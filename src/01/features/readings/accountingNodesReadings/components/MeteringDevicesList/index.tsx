@@ -12,10 +12,17 @@ import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
+import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
+import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
+
+const { inputs, outputs, gates } = meteringDeviceReadingsService;
 
 export const MeteringDevicesList = () => {
   const pendingNodes = useStore(fetchNodes.pending);
   const electricNodes = useStore($electricNodes);
+  const sum = useStore(outputs.$sumOfReadings);
+  const { MeteringDevicesListIsOpen } = gates;
+
   const { sliderIndex, up, down, canDown, canUp } = useSliderIndex();
 
   const header = (
@@ -44,21 +51,23 @@ export const MeteringDevicesList = () => {
     </Header>
   );
 
-  const renderPage = () =>{
+  const renderPage = () => {
     return (
-        <>
-            {header}
-            {electricNodes?.map((node, index) => (
-                <MeteringDeviceReadingsLine
-                    sliderIndex={sliderIndex}
-                    node={node}
-                    inputIndex={index + 1}
-                    key={index}
-                />
-            ))}
-        </>
+      <>
+        {header}
+        {electricNodes?.map((node, index) => (
+          <MeteringDeviceReadingsLine
+            sliderIndex={sliderIndex}
+            node={node}
+            inputIndex={index + 1}
+            key={index}
+          />
+        ))}
+        <MeteringDeviceReadingsSumPanel sum={sum}/>
+        <MeteringDevicesListIsOpen />
+      </>
     );
-  }
+  };
 
   const isNullElectricNodes = electricNodes === undefined;
   const isEmptyElectricNodes = electricNodes?.length === 0;
@@ -66,9 +75,9 @@ export const MeteringDevicesList = () => {
 
   return (
     <PendingLoader loading={pendingNodes}>
-        { isNullElectricNodes && null }
-        { isEmptyElectricNodes && 'Нет приборов' }
-        { isShowPage && renderPage() }
+      {isNullElectricNodes && null}
+      {isEmptyElectricNodes && 'Нет приборов'}
+      {isShowPage && renderPage()}
     </PendingLoader>
   );
 };
@@ -82,7 +91,7 @@ const MonthSlider = styled(Flex)`
   font-weight: bold;
 `;
 
-export const gridTemp = '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 50px';
+export const gridTemp = '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 70px';
 
 const HeaderTitleElem = styled.div`
   font-size: 12px;

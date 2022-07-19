@@ -12,7 +12,7 @@ import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/c
 import {
   StyledAutocomplete,
   FilterButton,
-  StyledSelector,
+  SelectSC,
 } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
@@ -90,7 +90,7 @@ export const Search: React.FC = () => {
         <div onClick={() => void openExpandedSearch()}>
           <FilterButton />
         </div>
-        <StyledSelector
+        <SelectSC
           onBlur={onFindHandler}
           placeholder="Город"
           ref={cityRef}
@@ -99,11 +99,11 @@ export const Search: React.FC = () => {
           value={fields.city.value}
         >
           {cities?.map((elem, index) => (
-            <StyledSelector.Option key={index} value={elem}>
+            <SelectSC.Option key={index} value={elem}>
               {elem}
-            </StyledSelector.Option>
+            </SelectSC.Option>
           ))}
-        </StyledSelector>
+        </SelectSC>
         <StyledAutocomplete
           onBlur={onFindHandler}
           placeholder="Улица"

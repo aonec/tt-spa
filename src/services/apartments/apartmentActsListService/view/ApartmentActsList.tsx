@@ -1,8 +1,17 @@
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
+import { EActResourceType } from 'myApi';
 import React, { FC, useMemo } from 'react';
+import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
+import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import { ApartmentActItem } from './ApartmentActItem';
-import { AddButton, ListHeader, Wrapper } from './ApartmentActsList.styled';
+import {
+  AddButton,
+  ColumnTitle,
+  ExtendedSearchWrapper,
+  ListHeader,
+  Wrapper,
+} from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
@@ -12,13 +21,16 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   handleOpeningDeleteActModal,
   handleOpeningEditActModal,
   handleSaveFile,
+  handleUpdateTypes,
+  handleUpdateResources,
   actTypes,
+  selectedFilters,
 }) => {
   const isShowActsList = Boolean(acts?.length && !isLoading);
 
   const actsList = useMemo(
     () =>
-      Boolean(acts?.length) &&
+      Boolean(acts.length) &&
       acts?.map((act) => (
         <ApartmentActItem
           act={act}
@@ -32,26 +44,48 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
     [acts, actTypes]
   );
 
+  const resources = Object.entries(
+    actResourceNamesLookup
+  ).map(([key, value]) => ({ key: key as EActResourceType, value }));
+
   return (
     <>
-      {isLoading && <PendingLoader loading={isLoading} />}
-      {!acts?.length && !isLoading && (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
-      )}
-
       <Wrapper>
-        {isShowActsList && (
-          <>
-            <ListHeader>
-              <div>Дата</div>
-              <div>№ акта</div>
-              <div>Название документа</div>
-              <div>Ресурс</div>
-              <div>Тип</div>
-            </ListHeader>
-            {actsList}
-          </>
+        {!isLoading && (
+          <ListHeader>
+            <ColumnTitle>Дата</ColumnTitle>
+            <ColumnTitle>№ акта</ColumnTitle>
+            <ColumnTitle>Название документа</ColumnTitle>
+            <ColumnTitle>
+              Ресурс
+              <ExtendedSearchWrapper>
+                <FilterExtendedSearch
+                  allowedFilters={resources}
+                  handleUpdate={handleUpdateResources}
+                  selectedFilters={selectedFilters.resources}
+                />
+              </ExtendedSearchWrapper>
+            </ColumnTitle>
+            <ColumnTitle>
+              Тип
+              <ExtendedSearchWrapper>
+                <FilterExtendedSearch
+                  allowedFilters={actTypes}
+                  handleUpdate={handleUpdateTypes}
+                  selectedFilters={selectedFilters.actTypes}
+                />
+              </ExtendedSearchWrapper>
+            </ColumnTitle>
+          </ListHeader>
         )}
+
+        {isShowActsList && actsList}
+
+        {isLoading && <PendingLoader loading={isLoading} />}
+        {!acts.length && !isLoading && (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
+        )}
+
         {!isLoading && (
           <AddButton
             className="ant-btn-link"

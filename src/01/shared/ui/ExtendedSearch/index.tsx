@@ -11,6 +11,7 @@ import {
   Content,
   Footer,
   Header,
+  DisabledExtendedSearchButton,
 } from './components';
 import { ExtendedSearchProps } from './types';
 
@@ -22,6 +23,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   handleApply,
   extendedSearchContent,
   handleClear,
+  disabled = false,
 }) => {
   if (isOpen) {
     return (
@@ -58,9 +60,16 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
 
   return (
     <SearchWrap>
-      <ExtendedSearchButton onClick={handleOpen}>
-        <FilerIcon />
-      </ExtendedSearchButton>
+      {!disabled && (
+        <ExtendedSearchButton onClick={handleOpen}>
+          <FilerIcon />
+        </ExtendedSearchButton>
+      )}
+      {disabled && (
+        <DisabledExtendedSearchButton>
+          <FilerIcon />
+        </DisabledExtendedSearchButton>
+      )}
       <SearchContentWrap>{children}</SearchContentWrap>
     </SearchWrap>
   );

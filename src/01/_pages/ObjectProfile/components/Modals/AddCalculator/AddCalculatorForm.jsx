@@ -245,7 +245,7 @@ const AddCalculatorForm = (props) => {
                   setFieldValue('lastCheckingDate', date.toISOString(true));
                   setFieldValue(
                     'futureCheckingDate',
-                    moment(date).add(3, 'years')
+                    moment(date).add(4, 'years')
                   );
                 }}
                 value={moment(values.lastCheckingDate)}

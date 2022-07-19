@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
-import { Breadcrumb } from '../../tt-components';
 import { getCalculator } from './components/apiEditCalculator';
 import { CalculatorResponse } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
@@ -10,6 +9,7 @@ import { Loader } from '../../components';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 
 export const EditCalculator = () => {
   const { deviceId } = useParams();
@@ -65,7 +65,7 @@ export const EditCalculator = () => {
         (status === 'idle' && <Loader show size={64} />)}
       {status === 'resolved' && (
         <>
-          <Breadcrumb path={`/calculators/${deviceId}`} />
+          <GoBack path={`/calculators/${deviceId}`} />
           <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
           <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={tab} />
           <EditCalculatorForm

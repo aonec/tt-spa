@@ -8,8 +8,8 @@ import {
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import {
   StyledAutocomplete,
-  StyledInput,
-  StyledSelector,
+  InputSC,
+  SelectSC,
 } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
@@ -81,7 +81,7 @@ export const HousingStockFilter = () => {
     <FieldsWrap>
       <ExistingCitiesGate />
       <ExistingStreetsGate City={filterFields.City} />
-      <StyledSelector
+      <SelectSC
         placeholder="Город"
         value={filterFields.City || undefined}
         onChange={(value: any) => setValue('City', value)}
@@ -91,7 +91,7 @@ export const HousingStockFilter = () => {
         {cities?.map((city) => (
           <Select.Option value={city}>{city}</Select.Option>
         ))}
-      </StyledSelector>
+      </SelectSC>
       <StyledAutocomplete
         options={options}
         placeholder="Название улицы"
@@ -108,7 +108,7 @@ export const HousingStockFilter = () => {
         ref={refs[1]}
         onFocus={onFocus}
       />
-      <StyledInput
+      <InputSC
         name="HousingStockNumber"
         placeholder="дом"
         value={filterFields.HousingStockNumber}

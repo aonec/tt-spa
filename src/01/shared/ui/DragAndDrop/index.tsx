@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FileUploadIcon } from './upload.svg';
 
 interface Props {
-  fileHandler(files: FileList): void;
+  fileHandler: (files: FileList) => void;
   accept?: string;
   uniqId: string;
   text?: string;
@@ -15,11 +15,38 @@ export const DragAndDrop: React.FC<Props> = (props) => {
   const { fileHandler, accept, uniqId, text, style, disabled = false } = props;
   const id = `file-input-${uniqId}`;
 
-  const handleFile = (files: FileList) => {
-    if (disabled) return;
+  const handleFile = useCallback(
+    (files: FileList) => {
+      if (disabled) return;
 
-    fileHandler(files);
-  };
+      fileHandler(files);
+    },
+    [fileHandler, disabled]
+  );
+
+  const handleDragOver = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    []
+  );
+
+  const handleDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      handleFile(event.dataTransfer.files);
+    },
+    [handleFile]
+  );
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) handleFile(event.target.files);
+    },
+    [handleFile]
+  );
 
   return (
     <>
@@ -29,24 +56,15 @@ export const DragAndDrop: React.FC<Props> = (props) => {
         name="file"
         multiple={false}
         value=""
-        onChange={(event) =>
-          event.target.files && handleFile(event.target.files)
-        }
+        onChange={handleChange}
         style={{ display: 'none' }}
         accept={accept}
       />
       <label htmlFor={id} style={{ margin: 0, width: '100%' }}>
         <DragAndDropContainer
           disabled={disabled}
-          onDragOver={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-          onDrop={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            handleFile(event.dataTransfer.files);
-          }}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
           style={{
             margin: '0',
             ...style,

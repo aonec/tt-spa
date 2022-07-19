@@ -1,12 +1,16 @@
 import React from 'react';
 import moment from 'moment';
-import { ListWrap, ListItem, Title } from '../../../tt-components/List';
+import { ListWrap, ListItem } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import {
   CalculatorIntoNodeResponse,
   PipeNodeResponse,
 } from '../../../../myApi';
+import { Tooltip } from 'antd';
+import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -27,7 +31,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
   } = node;
 
   const { address } = node || {};
-  const { city, street, number, corpus, id } = address || {};
+  const { id } = address || {};
 
   const getNodeStatus =
     nodeStatusList.find(
@@ -36,15 +40,20 @@ const Information = ({ node, task = false }: HeaderInterface) => {
 
   const isRegistered = nodeStatus?.value === 'Registered';
 
+  const additionalAdress = additionalAddressesString(address);
+
   return (
     <ListWrap>
       {!task ? (
         <ListItem>
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
-            {address
-              ? `${city}, ${street}, ${number} ${corpus ? `, к.${corpus}` : ''}`
-              : ''}
+            {getHousingStockAddress(address, true)}
+            <Tooltip title={additionalAdress}>
+              <AdditionalAddressDescription>
+                {additionalAdress}
+              </AdditionalAddressDescription>
+            </Tooltip>
           </Subtitle>
         </ListItem>
       ) : null}

@@ -6,6 +6,7 @@ import IconTT from '../IconTT';
 import { Link } from 'react-router-dom';
 import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';
+import { magistrals } from '../localBases';
 
 interface NodesInterface {
   node: PipeNodeResponse;
@@ -41,10 +42,15 @@ export const NodeRelatedDevices = ({
   const result = flattenRelated.map((value: any) => {
     const { model, serialNumber, closingDate, hub, resource, id } = value;
 
-    const { pipeNumber = '', entryNumber = '' } = hub || {
+    const { pipeNumber = '', entryNumber = '', magistral = '' } = hub || {
       pipeNumber: '',
       entryNumber: '',
     };
+
+    const direction = magistrals.find((item) => item.value === magistral);
+    const directionLabel = direction
+      ? direction.label
+      : 'Направление магистрали не указано';
 
     const icon = !closingDate ? 'green' : 'red';
     const state = !closingDate ? 'Активен' : 'Не активен';
@@ -69,7 +75,9 @@ export const NodeRelatedDevices = ({
           <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
           <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
         </ConnectionProps>
-
+        <MagistralProps>
+          <Span>{`Магистраль: ${directionLabel}`} </Span>
+        </MagistralProps>
         <EditOptions>
           {edit ? (
             <Link
@@ -158,8 +166,8 @@ const ListWrap = styled.div`
 
 const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 5fr 2fr 3fr 2fr;
-  grid-gap: 8px;
+  grid-template-columns: 4fr 2fr 3fr 4fr;
+  grid-gap: 4px;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
@@ -167,4 +175,7 @@ const ListItem = styled.div`
 `;
 const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
+`;
+const MagistralProps = styled.div`
+  justify-self: center;
 `;

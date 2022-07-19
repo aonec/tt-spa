@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
-import { Logotip, Menu } from '01/components';
+import { Logotip } from '01/components';
 import moment from 'moment';
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
@@ -12,7 +12,6 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
-  Tasks,
   Login,
   TaskProfile,
   ObjectProfile,
@@ -47,15 +46,18 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
+import { MenuContainer } from 'services/menuService';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { TasksProfileContainer, tasksProfileService } from 'services/tasks/tasksProfileService';
+import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 
 moment.locale('ru');
 
 const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
-
+  const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -68,7 +70,7 @@ const Internal = () => {
           <LeftBlock style={{ position: 'fixed', height: '100vh' }}>
             <Logotip />
             <Space />
-            <Menu />
+            <MenuContainer />
           </LeftBlock>
           <div />
           <main>
@@ -78,25 +80,39 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/executing'
+                    : '/tasks/list/Executing'
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/executing" exact />
+              <Redirect from="/tasks" to="/tasks/list/Executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
               </Route>
 
-              <Route
-                path="/tasks/(executing|observing|archived)/"
-                component={Tasks}
-              />
-              <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+              <Route path="/tasks">
+                <TasksIsOpen />
+                <Route
+                  path="/tasks/profile/(\\d+)"
+                  component={TaskProfile}
+                  exact
+                />
+                <Route
+                  path="/tasks/list/:grouptype"
+                  component={TasksProfileContainer}
+                  exact
+                />
+              </Route>
 
               <Route
                 path="/devices/"
                 component={DevicesProfileContainer}
+                exact
+              />
+
+              <Route
+                path="/changeODPU/:oldDeviceId"
+                component={ChangeODPUContainer}
                 exact
               />
 
@@ -113,7 +129,7 @@ const Internal = () => {
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              
+
               <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                 <EditManagingFirmUserPage />
               </Route>
@@ -181,7 +197,7 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|checksHistory)?"
+                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|actsJournal)?"
                 component={ApartmentProfile}
                 exact
               />
@@ -252,9 +268,9 @@ export function App() {
 }
 
 const LeftBlock = styledC.div`
-padding-top: 20px; 
+  padding-top: 20px; 
   width: 208px;
-  background: #2883e110;
+  background: #F3F5F6;
 `;
 
 export default App;

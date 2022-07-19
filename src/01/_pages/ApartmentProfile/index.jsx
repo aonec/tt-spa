@@ -17,12 +17,10 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
-import Index from '../../tt-components/Breadcrumb';
 import { useAsync } from '../../hooks/useAsync';
 
-import { ChecksHistory } from './components/ChecksHistory';
-import { CheckApartmentModal } from '01/features/apartments/checkApartment';
 import { ApartmentGate } from '01/features/apartments/displayApartment/models';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 const ApartmentProfile = () => {
@@ -62,34 +60,21 @@ const ApartmentProfile = () => {
     square,
     numberOfLiving,
     normativeNumberOfLiving,
-    housingStock,
     homeownerAccounts,
   } = apartment;
 
-  const { city, street, number, housingStockId } = housingStock.address.mainAddress;
-
   return styled(grid)(
     <>
-      <Index path={`/objects/${housingStockId}/apartments`} />
-      <CheckApartmentModal />
+      <GoBack />
       <ApartmentGate id={Number(apartmentId)} />
-      <Header
-        apartmentNumber={apartmentNumber}
-        city={city}
-        street={street}
-        number={number}
-      />
+      <Header apartment={apartment} />
 
       <Tabs />
       <Route path="/*/:apartmentId/testimony" exact>
         <ApartmentDevices devices={devices} />
       </Route>
 
-      <Route path="/*/:apartmentId/checksHistory" exact>
-        <ChecksHistory />
-      </Route>
-
-      <Route path="/*/:apartmentId/documents" exact>
+      <Route path="/*/:apartmentId/actsJournal" exact>
         <ApartmentActsListContainer />
       </Route>
       <Route path="/objects/:id/apartments/:apartmentId" exact>

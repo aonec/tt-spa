@@ -1,0 +1,1 @@
+export { FilterExtendedSearch } from './FilterExtendedSearch';

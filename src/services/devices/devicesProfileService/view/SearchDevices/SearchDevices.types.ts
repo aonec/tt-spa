@@ -1,6 +1,7 @@
-import { CalculatorsListRequestPayload } from "01/features/carlculators/calculators/types";
+import { CalculatorsListRequestPayload } from "01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types";
 
 export type SearchDevicesProps = {
   isExtendedSearchOpen: boolean
   fetchcalc: (payload: CalculatorsListRequestPayload) => CalculatorsListRequestPayload
+  searchStateChanged: (payload: Partial<CalculatorsListRequestPayload>) => CalculatorsListRequestPayload
 };
