@@ -28,7 +28,6 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
   const [grouptype, setGrouptype] = useState<EditElectricNodeGrouptype>(
     EditElectricNodeGrouptype.edit
   );
-  console.log(device)
   return (
     <div>
       <GoBack path="/meters/accountingNodes" />
@@ -41,7 +40,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
             <AddressWrapper>
               {getHousingStockAddress(device?.address, true)}
             </AddressWrapper>
-            
+
             <IsActive closingdate={device.closingDate} />
           </InfoWrapper>
 
