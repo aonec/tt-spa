@@ -2,44 +2,42 @@ import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import React, { FC, useCallback, useMemo } from 'react';
-import { TaskType } from '../../exportTasksListService.types';
 import { ExportTasksListFormProps } from './ExportTasksListForm.types';
 import * as yup from 'yup';
 import { SelectValue } from 'antd/lib/select';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-
-const TaskTypeLookup: { [key in keyof typeof TaskType]: string } = {
-  [TaskType.CheckIndividualDevices]: 'Проверка ИПУ',
-};
-
-const taskTypes = Object.entries(TaskTypeLookup);
+import { ExportTasksListRequestPayload } from '../../exportTasksListService.types';
 
 export const ExportTasksListForm: FC<ExportTasksListFormProps> = ({
   formId,
   handleSubmit,
+  taskFilters,
 }) => {
   const { values, submitForm, setFieldValue, errors } = useFormik<{
-    type: TaskType | null;
+    type: string;
   }>({
     initialValues: {
-      type: null,
+      type: '',
     },
     validationSchema: yup.object().shape({
       type: yup.string().nullable().required('Это поле обязательное'),
     }),
     onSubmit: ({ type }) => {
-      handleSubmit({ type: type! });
+      handleSubmit({
+        type,
+        name: taskFilters.find((elem) => elem.key === type)?.value!,
+      });
     },
   });
 
   const taskTypeOptions = useMemo(
     () =>
-      taskTypes.map(([type, name]) => (
-        <Select.Option value={type} key={type}>
-          {name}
+      taskFilters.map(({ key, value }) => (
+        <Select.Option value={key} key={key}>
+          {value}
         </Select.Option>
       )),
-    [taskTypes]
+    [taskFilters]
   );
 
   const selectedTaskType = values.type || undefined;
