@@ -190,8 +190,7 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
       </AddressInfowrapper>
       <ButtonsWrapper>
         <ButtonTT color="blue" type="submit" disabled={isLoading}>
-          {isLoading && 'Загрузка...'}
-          {!isLoading && 'Сохранить'}
+          {isLoading ? 'Загрузка...' : 'Сохранить'}
         </ButtonTT>
       </ButtonsWrapper>
     </FormSC>
