@@ -3,7 +3,7 @@ import { createEvent, createStore } from 'effector';
 
 const devUrl = 'https://management.staging.transparent-technology.ru/api/'
 
-const baseURL = 'http://localhost:5001/api/';
+const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axiosHttpClient.defaults.baseURL = baseURL;
 
