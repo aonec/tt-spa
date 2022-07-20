@@ -13,11 +13,11 @@ interface Params {
   refetch: () => void;
   deviceId: number;
   prevValue?: number;
+  monthIndex:number;
 }
 
 export function useUploadingReadings(params: Params) {
   const { meteringDeviceReading, refetch, deviceId, prevValue } = params;
-
   const [value, setValue] = useState<string>(
     getReadingValue(meteringDeviceReading?.value)
   );
@@ -36,10 +36,7 @@ export function useUploadingReadings(params: Params) {
 
     setStatus('pending');
 
-    const date = moment();
-
-    date.add(1, 'month');
-
+    const date = moment().subtract(params.monthIndex, 'month');
     try {
       await createOrUpdateLast({
         deviceId,

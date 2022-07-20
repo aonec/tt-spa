@@ -23,6 +23,7 @@ interface Props {
   current?: boolean;
   deviceId: number;
   inputIndex?: number;
+  monthIndex: number;
 }
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
@@ -31,11 +32,11 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     resource = EResourceType.Electricity,
     loading,
     refetch,
-    disabled,
     current,
     deviceId,
     inputIndex,
     prevReading,
+    monthIndex,
   } = props;
 
   const colored = Boolean(current);
@@ -57,6 +58,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     refetch,
     deviceId,
     prevValue: prevReading?.value,
+    monthIndex,
   });
 
   const fieldValue = scopedValue === '0' ? 0 : scopedValue || '';
@@ -94,7 +96,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
       <Input
         data-reading-input={inputIndex ? 'current' : ''}
         value={fieldValue}
-        disabled={loading || disabled}
+        disabled={loading}
         loading={reading ? false : loading || status === 'pending'}
         onFocus={onFocusHandler}
         type="number"
