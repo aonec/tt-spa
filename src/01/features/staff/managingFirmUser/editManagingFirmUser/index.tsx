@@ -89,7 +89,7 @@ export const EditManagingFirmUserPage = () => {
   const phoneMask = usePhoneMask();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: '',
+    label: elem.title,
     value: elem.id,
   }));
 
@@ -114,6 +114,7 @@ export const EditManagingFirmUserPage = () => {
         <ErrorMessage>
           {fields.lastName.errorText({
             required: 'Это поле обязательное',
+            minLength: 'Минимальная длина фамилии 2 символа',
           })}
         </ErrorMessage>
       </Form.Item>
@@ -128,6 +129,7 @@ export const EditManagingFirmUserPage = () => {
         <ErrorMessage>
           {fields.firstName.errorText({
             required: 'Это поле обязательное',
+            minLength: 'Минимальная длина имени 2 символа',
           })}
         </ErrorMessage>
       </Form.Item>
@@ -221,7 +223,7 @@ export const EditManagingFirmUserPage = () => {
       <UserRolesGate />
       <ManagingFirmUserGate id={userId} />
       <EditManagingFirmUserGate />
-      <GoBack/>
+      <GoBack />
       <Header>Информация о сотруднике. Редактирование </Header>
       <ErrorAlert
         show={isFailedFetchFormData}
