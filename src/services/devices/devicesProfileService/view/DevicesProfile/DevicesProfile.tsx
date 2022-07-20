@@ -75,10 +75,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       PageSize: searchState?.PageSize,
       OrderBy: searchState?.OrderBy,
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
       fetchcalc(values);
       searchStateChanged(values);
-      clearSearchPayload()
     },
   });
 
@@ -94,18 +94,26 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         </Tabs>
         <SearchDevices
           isExtendedSearchOpen={isOpen}
-          fetchcalc={fetchcalc}
-          searchStateChanged={searchStateChanged}
+          submitForm={submitForm}
+          setFieldValue={setFieldValue}
+          values={values}
         >
           <ExtendedSearch
             isOpen={isOpen}
-            handleClose={() => close()}
+            handleClose={() => {
+              close();
+              clearSearchPayload()
+              resetForm()
+            }}
             handleOpen={() => open()}
             handleApply={() => {
               fetchcalc(values);
               searchStateChanged(values);
             }}
-            handleClear={() => resetForm()}
+            handleClear={() => {
+              resetForm()
+              clearSearchPayload()
+            }}
             extendedSearchContent={
               <ExtendedSearchForm
                 setFieldValue={setFieldValue}

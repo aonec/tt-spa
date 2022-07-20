@@ -45,10 +45,8 @@ $searchPayload
     ...state,
     PageNumber: pageNumber,
   }))
-  .reset(clearSearchPayload)
+  .reset(clearSearchPayload);
 
-  $searchPayload.watch(console.log)
-  
 sample({
   clock: guard({
     clock: $searchPayload,
@@ -70,7 +68,7 @@ export const displayDevicesService = {
     extendedSearchOpened,
     extendedSearchClosed,
     setPageNumber,
-    clearSearchPayload
+    clearSearchPayload,
   },
   outputs: {
     $total,
@@ -79,6 +77,6 @@ export const displayDevicesService = {
     $isExtendedSearchOpen,
     $pageNumber,
     $pageSize,
-    $searchPayload
+    $searchPayload,
   },
 };
