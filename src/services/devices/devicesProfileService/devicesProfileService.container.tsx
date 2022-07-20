@@ -6,12 +6,13 @@ import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport
 const { outputs, inputs } = displayDevicesService;
 
 export const DevicesProfileContainer = () => {
-  const fetchcalc = useEvent(inputs.fetchCalculators);
   const isOpen = useStore(outputs.$isExtendedSearchOpen);
+  const searchState = useStore(outputs.$searchPayload);
+
+  const clearSearchPayload = useEvent(inputs.clearSearchPayload);
+  const fetchcalc = useEvent(inputs.fetchCalculators);
   const close = useEvent(inputs.extendedSearchClosed);
   const open = useEvent(inputs.extendedSearchOpened);
-  const searchState = useStore(outputs.$searchPayload)
-  const clearSearchPayload = useEvent(inputs.clearSearchPayload)
 
   return (
     <DevicesProfile

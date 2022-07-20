@@ -343,7 +343,7 @@ export interface ApartmentStatusSetRequest {
 
 export interface BaseIndividualDeviceReadingsCreateRequest {
   /** @format date-time */
-  readingDate: string;
+  readingDate?: string | null;
 
   /** @format double */
   value1: number;
@@ -1243,6 +1243,11 @@ export enum EExpiresCheckingDateAt {
   NextMonth = "NextMonth",
   NextTwoMonth = "NextTwoMonth",
   Past = "Past",
+}
+
+export enum EExportExecutingIndividualDeviceCheckTaskType {
+  IndividualDeviceCheck = "IndividualDeviceCheck",
+  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
 export enum EHouseCategory {
@@ -2797,9 +2802,6 @@ export interface IndividualDeviceReadingsCreateListResponseSuccessApiResponse {
 }
 
 export interface IndividualDeviceReadingsCreateRequest {
-  /** @format date-time */
-  readingDate: string;
-
   /** @format double */
   value1: number;
 
@@ -2811,6 +2813,9 @@ export interface IndividualDeviceReadingsCreateRequest {
 
   /** @format double */
   value4?: number | null;
+
+  /** @format date-time */
+  readingDate: string;
 
   /** @format int32 */
   deviceId: number;
@@ -3240,7 +3245,6 @@ export interface ManagementFirmResponse {
   name: string | null;
   phoneNumber: string | null;
   information: string | null;
-  timeZoneOffset: TimeSpan;
   email: string | null;
   workingTime: string | null;
   address: ManagementFirmAddressResponse | null;
@@ -3280,7 +3284,6 @@ export interface ManagementFirmResponseSuccessApiResponse {
 export interface ManagementFirmUpdateRequest {
   name?: string | null;
   phoneNumber?: string | null;
-  timeZoneOffset?: TimeSpan | null;
 }
 
 export interface ManagingFirmUserCreateRequest {
@@ -3490,7 +3493,6 @@ export interface MeteringDeviceListResponse {
 
   /** @format date-time */
   futureCheckingDate: string | null;
-  timeZoneOffset: TimeSpan;
 }
 
 export interface MeteringDeviceListResponseIEnumerableSuccessApiResponse {
@@ -4349,9 +4351,6 @@ export interface SwitchHousingMeteringDeviceRequest {
 }
 
 export interface SwitchIndividualDeviceReadingsCreateRequest {
-  /** @format date-time */
-  readingDate: string;
-
   /** @format double */
   value1: number;
 
@@ -4363,6 +4362,9 @@ export interface SwitchIndividualDeviceReadingsCreateRequest {
 
   /** @format double */
   value4?: number | null;
+
+  /** @format date-time */
+  readingDate: string;
 }
 
 export interface SwitchIndividualDeviceRequest {
@@ -4708,41 +4710,6 @@ export interface TasksPagedList {
 
 export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
-}
-
-export interface TimeSpan {
-  /** @format int64 */
-  ticks?: number;
-
-  /** @format int32 */
-  days?: number;
-
-  /** @format int32 */
-  hours?: number;
-
-  /** @format int32 */
-  milliseconds?: number;
-
-  /** @format int32 */
-  minutes?: number;
-
-  /** @format int32 */
-  seconds?: number;
-
-  /** @format double */
-  totalDays?: number;
-
-  /** @format double */
-  totalHours?: number;
-
-  /** @format double */
-  totalMilliseconds?: number;
-
-  /** @format double */
-  totalMinutes?: number;
-
-  /** @format double */
-  totalSeconds?: number;
 }
 
 export interface TokenResponse {
@@ -8193,10 +8160,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/IndividualDevices/createTaskForDeviceWithoutReadings
      * @secure
      */
-    individualDevicesCreateTaskForDeviceWithoutReadingsCreate: (params: RequestParams = {}) =>
+    individualDevicesCreateTaskForDeviceWithoutReadingsCreate: (
+      query?: { fromDate?: string },
+      params: RequestParams = {},
+    ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualDevices/createTaskForDeviceWithoutReadings`,
         method: "POST",
+        query: query,
         secure: true,
         ...params,
       }),
@@ -9844,7 +9815,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Reports/RunnerReports
      * @secure
      */
-    reportsRunnerReportsList: (query?: { yearRange?: YearRangeType; hmIds?: string[] }, params: RequestParams = {}) =>
+    reportsRunnerReportsList: (query: { yearRange: YearRangeType; hmIds?: string[] }, params: RequestParams = {}) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/RunnerReports`,
         method: "GET",
@@ -10276,6 +10247,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         TaskId?: number;
         TaskType?: EManagingFirmTaskFilterType;
         GroupType?: TaskGroupingFilter;
+        HouseManagementId?: string;
         DeviceId?: number;
         HousingStockId?: number;
         ApartmentId?: number;
@@ -10313,6 +10285,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         TaskId?: number;
         TaskType?: EManagingFirmTaskFilterType;
         GroupType?: TaskGroupingFilter;
+        HouseManagementId?: string;
         DeviceId?: number;
         HousingStockId?: number;
         ApartmentId?: number;
@@ -10604,9 +10577,31 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Tasks/ExportExecutingIndividualDeviceCheckTasks
      * @secure
      */
-    tasksExportExecutingIndividualDeviceCheckTasksList: (params: RequestParams = {}) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+    tasksExportExecutingIndividualDeviceCheckTasksList: (
+      query?: { taskType?: EExportExecutingIndividualDeviceCheckTaskType },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTasks`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksExportExecutingIndividualDeviceCheckTaskFiltersList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ExportExecutingIndividualDeviceCheckTaskFilters
+     * @secure
+     */
+    tasksExportExecutingIndividualDeviceCheckTaskFiltersList: (params: RequestParams = {}) =>
+      this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTaskFilters`,
         method: "GET",
         secure: true,
         format: "json",

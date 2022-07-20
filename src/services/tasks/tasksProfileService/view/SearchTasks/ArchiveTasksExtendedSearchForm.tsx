@@ -1,34 +1,33 @@
 import React, { ChangeEvent } from 'react';
-import { Input, Select } from 'antd';
+import { Select } from 'antd';
 import _ from 'lodash';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
+import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
-import {
-  StyledForm,
-  StyledContainerFourItems,
-} from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
-  StyledContainerThreeItemsWithMarginTop,
+  SelectSC,
+  StyledContainerThreeItemsMainTypes,
+  StyledFormTwoRows,
 } from './SearchTasks.styled';
 
 const { Option } = Select;
 
-export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
+export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   setFieldValue,
   values,
   taskTypes,
 }) => {
   return (
-    <StyledForm id="searchForm">
+    <StyledFormTwoRows id="searchForm">
       <StyledContainerFourItems>
         <FormItem>
           <label>Город: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
             }
-            value="тест"
+            value=""
             placeholder="Город"
             disabled
           />
@@ -36,11 +35,11 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem>
           <label>Улица: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
             }
-            value={'тест'}
+            value=""
             placeholder="Улица"
             disabled
           />
@@ -48,14 +47,14 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem>
           <label>Дом: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
                 value.target.value
               )
             }
-            value={'тест'}
+            value=""
             placeholder="Дом"
             disabled
           />
@@ -63,20 +62,21 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem>
           <label>Корпус: </label>
-          <Input
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
-            value="тест"
+            value=""
             placeholder="Корпус"
             disabled
           />
         </FormItem>
       </StyledContainerFourItems>
-      <StyledContainerThreeItemsWithMarginTop>
+      <StyledContainerThreeItemsMainTypes>
         <FormItem>
           <label>Номер задачи: </label>
           <InputSC
+            width={'100%'}
             placeholder="Номер задачи"
             value={values.TaskId}
             onChange={(value: ChangeEvent<HTMLInputElement>) =>
@@ -103,7 +103,6 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
               ))}
           </SelectSC>
         </FormItem>
-
         <FormItem>
           <label>Статус Задачи: </label>
           <SelectSC
@@ -113,18 +112,18 @@ export const TasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
               setFieldValue('ClosingStatuses', value);
             }}
           >
-            <Option key='Properly' value='Properly'>
+            <Option key="Properly" value="Properly">
               {'Выполнена в срок'}
             </Option>
-            <Select.Option key='Lated' value='Lated' disabled>
+            <Select.Option key="Lated" value="Lated" disabled>
               {'Просрочена'}
             </Select.Option>
-            <Select.Option key='Interrupted' value='Interrupted'>
+            <Select.Option key="Interrupted" value="Interrupted">
               {'Закрыта автоматически'}
             </Select.Option>
           </SelectSC>
         </FormItem>
-      </StyledContainerThreeItemsWithMarginTop>
-    </StyledForm>
+      </StyledContainerThreeItemsMainTypes>
+    </StyledFormTwoRows>
   );
 };

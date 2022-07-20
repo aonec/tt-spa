@@ -101,7 +101,7 @@ export const ObjectProfile = () => {
   return styled(grid)(
     <>
       <ObjectContext.Provider value={context}>
-        <GoBack path="/objects/" />
+        <GoBack />
         <Header
           {...header}
           setCommonReport={setCommonReport}
