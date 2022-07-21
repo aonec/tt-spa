@@ -97,7 +97,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             value={values.EngineeringElement}
             onChange={(value) => setFieldValue('EngineeringElement', value)}
           >
-            <Option value={''}>Все</Option>
+            <Option value={null!}>Все</Option>
             {Object.keys(ETaskEngineeringElement).map((el) => {
               return (
                 <Option value={el}>
@@ -116,7 +116,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('Resource', value);
             }}
           >
-            <Option value={''}>Все</Option>
+            <Option value={null!}>Все</Option>
             {Object.keys(EResourceType).map((el) => {
               return (
                 <Option value={el}>{getResource(el as EResourceType)}</Option>
@@ -135,7 +135,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             }}
             style={{ textOverflow: 'ellipsis', maxWidth: '300' }}
           >
-            <Option value={''}>Все</Option>
+            <Option value={null!}>Все</Option>
             {housingManagments &&
               housingManagments.map(({ value, key }) => (
                 <Option key={key!} value={key!}>
@@ -155,7 +155,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('TimeStatus', value);
             }}
           >
-            <Option value={''}>Все</Option>
+            <Option value={null!}>Все</Option>
             {Object.keys(ETaskTimeStatus).map((el) => {
               return (
                 <Option value={el}>
@@ -192,7 +192,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('PerpetratorId', value);
             }}
           >
-            <Option value={''}>Все</Option>
+            <Option value={null!}>Все</Option>
             {perpetrators &&
               perpetrators.map(({ id, name }) => (
                 <Option key={id} value={id}>
