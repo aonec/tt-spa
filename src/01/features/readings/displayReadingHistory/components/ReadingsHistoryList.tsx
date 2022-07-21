@@ -38,6 +38,7 @@ import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 interface Props {
   isModal?: boolean;
@@ -261,7 +262,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
 
     const uploadTime = reading && (
-      <div>{moment(reading.uploadTime).format('DD.MM.YYYY HH:mm')}</div>
+      <div>{getTimeStringByUTC(reading.uploadTime)}</div>
     );
 
     const arrowButtonComponent =
