@@ -1608,6 +1608,11 @@ export enum ETaskCreateType {
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
+export enum ETaskEngineeringElement {
+  Node = "Node",
+  IndividualDevice = "IndividualDevice",
+}
+
 export enum ETaskTargetObjectRequestType {
   Apartment = "Apartment",
   MeteringDevice = "MeteringDevice",
@@ -1623,6 +1628,12 @@ export enum ETaskTargetType {
   Housing = "Housing",
   Node = "Node",
   Application = "Application",
+}
+
+export enum ETaskTimeStatus {
+  Normal = "Normal",
+  RunningOut = "RunningOut",
+  Expired = "Expired",
 }
 
 export enum EValueNodeWorkingRangeRelation {
@@ -4624,6 +4635,7 @@ export interface TaskListResponse {
 
   /** @format int32 */
   totalHomeownersCount: number;
+  timeStatus: ETaskTimeStatus;
 }
 
 export interface TaskResponse {
@@ -4662,6 +4674,7 @@ export interface TaskResponse {
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
   taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
+  timeStatus: ETaskTimeStatus;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -5028,7 +5041,7 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   api = {
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsList
@@ -5123,7 +5136,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsActTypesList
@@ -5141,7 +5154,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsActResourceTypesList
@@ -8635,7 +8648,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersRoleTypesList
@@ -10255,6 +10268,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         ApplicationCompetenceId?: string;
+        TimeStatus?: ETaskTimeStatus;
+        PerpetratorId?: number;
+        Resource?: EResourceType;
+        EngineeringElement?: ETaskEngineeringElement;
+        City?: string;
+        Street?: string;
+        HousingStockNumber?: string;
+        Corpus?: string;
+        ApartmentNumber?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -10293,6 +10315,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         ApplicationCompetenceId?: string;
+        TimeStatus?: ETaskTimeStatus;
+        PerpetratorId?: number;
+        Resource?: EResourceType;
+        EngineeringElement?: ETaskEngineeringElement;
+        City?: string;
+        Street?: string;
+        HousingStockNumber?: string;
+        Corpus?: string;
+        ApartmentNumber?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -10563,6 +10594,53 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/return`,
         method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksExportLiteList
+     * @summary TasksRead
+     * @request GET:/api/Tasks/ExportLite
+     * @secure
+     */
+    tasksExportLiteList: (
+      query?: {
+        TargetType?: ETaskTargetType;
+        TaskId?: number;
+        TaskType?: EManagingFirmTaskFilterType;
+        GroupType?: TaskGroupingFilter;
+        HouseManagementId?: string;
+        DeviceId?: number;
+        HousingStockId?: number;
+        ApartmentId?: number;
+        HasChanged?: boolean;
+        PipeNodeId?: number;
+        ClosingStatuses?: ETaskClosingStatus[];
+        ApplicationCompetenceId?: string;
+        TimeStatus?: ETaskTimeStatus;
+        PerpetratorId?: number;
+        Resource?: EResourceType;
+        EngineeringElement?: ETaskEngineeringElement;
+        City?: string;
+        Street?: string;
+        HousingStockNumber?: string;
+        Corpus?: string;
+        ApartmentNumber?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Tasks/ExportLite`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,

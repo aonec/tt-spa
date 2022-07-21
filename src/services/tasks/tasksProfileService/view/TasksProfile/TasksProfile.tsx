@@ -1,8 +1,8 @@
+import React, { FC, useMemo } from 'react';
+import { Skeleton } from 'antd';
+import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksList } from '01/_pages/Tasks/components/TasksList';
-import { Skeleton } from 'antd';
-import React, { FC, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
@@ -23,7 +23,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   openExtendedSearch,
   clearFilters,
   changeFiltersByGroupType,
-  housingManagments
+  housingManagments,
+  perpetrators,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -66,6 +67,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         clearFilters={clearFilters}
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
+        perpetrators={perpetrators}
       />
       {!isLoading && tasksList}
       {isLoading && <Skeleton active />}

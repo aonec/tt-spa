@@ -5,6 +5,7 @@ import {
   TaskListResponse,
   TasksPagedList,
 } from 'myApi';
+import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksForm } from '../SearchTasks/SearchTasks.types';
 
@@ -23,5 +24,6 @@ export type TasksProfileProps = {
   openExtendedSearch: () => void;
   clearFilters: () => void;
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
-  housingManagments: GuidStringDictionaryItem[] | null
+  housingManagments: GuidStringDictionaryItem[] | null;
+  perpetrators: perpetratorItemsProps[] | null
 };

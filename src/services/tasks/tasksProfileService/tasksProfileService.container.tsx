@@ -1,7 +1,7 @@
-import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter, TaskListResponse } from 'myApi';
 import React, { useEffect, useMemo, useRef } from 'react';
+import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
+import { TaskGroupingFilter, TaskListResponse } from 'myApi';
 import {
   ExportTasksListModalContainer,
   exportTasksListService,
@@ -20,6 +20,7 @@ export const TasksProfileContainer = () => {
 
   const taskTypes = useStore(outputs.$taskTypes);
   const housingManagments = useStore(outputs.$housingManagments);
+  const perpetrators = useStore(outputs.$perpetratorIdStore);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
@@ -79,6 +80,7 @@ export const TasksProfileContainer = () => {
         clearFilters={() => clearFilters()}
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
+        perpetrators={perpetrators}
       />
     </>
   );

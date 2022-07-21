@@ -1,16 +1,16 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { InputSC } from '01/shared/ui/Fields';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
-import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SearchTasksProps } from './SearchTasks.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
-import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { useParams } from 'react-router-dom';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { InputSC } from '01/shared/ui/Fields';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { SelectSC, Wrapper } from './SearchTasks.styled';
+import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { SearchTasksProps } from './SearchTasks.types';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
@@ -20,7 +20,8 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   closeExtendedSearch,
   clearFilters,
   changeFiltersByGroupType,
-  housingManagments
+  housingManagments,
+  perpetrators,
 }) => {
   const {
     values,
@@ -41,6 +42,15 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       PipeNodeId: undefined,
       ClosingStatuses: undefined,
       ApplicationCompetenceId: undefined,
+      TimeStatus: currentFilter?.TimeStatus,
+      PerpetratorId: currentFilter?.PerpetratorId,
+      Resource: currentFilter?.Resource,
+      EngineeringElement: currentFilter?.EngineeringElement,
+      City: currentFilter?.City,
+      Street: currentFilter?.Street,
+      HousingStockNumber: currentFilter?.HousingStockNumber,
+      Corpus: currentFilter?.Corpus,
+      ApartmentNumber: currentFilter?.ApartmentNumber,
       PageNumber: undefined,
       PageSize: undefined,
       OrderBy: undefined,
@@ -113,6 +123,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               taskTypes={taskTypes}
               values={values}
               housingManagments={housingManagments}
+              perpetrators={perpetrators}
             />
           )}
         </>
