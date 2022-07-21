@@ -1,23 +1,32 @@
-import { Form } from 'antd';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Form, TimePicker } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash/fp';
-import {
-  EResourceDisconnectingType,
-  EResourceType,
-  ResourceDisconnectingCreateRequest,
-} from 'myApi';
+import moment from 'moment';
+import { EResourceDisconnectingType, EResourceType } from 'myApi';
 import React, { FC } from 'react';
+import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import {
+  createResourceDisconnectionValidationSchema,
+  hours,
+} from './CreateResourceDisconnectionForm.constants';
+import {
   BaseInfoWrapper,
   ResourceOptionWrapper,
+  TimeWrapper,
 } from './CreateResourceDisconnectionForm.styled';
-import { CreateResourceDisconnectionFormProps } from './CreateResourceDisconnectionForm.types';
+import {
+  CreateResourceDisconnectionFormTypes,
+  CreateResourceDisconnectionFormProps,
+} from './CreateResourceDisconnectionForm.types';
+import { resourceDisconnectingNamesLookup } from './CreateresourceDisconnectionForm.utils';
 
 export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
   formId,
@@ -34,17 +43,36 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     submitForm,
     setFieldValue,
     handleChange,
-  } = useFormik<ResourceDisconnectingCreateRequest>({
+    errors,
+  } = useFormik<CreateResourceDisconnectionFormTypes>({
     initialValues: {
-      resource: EResourceType.Electricity,
-      disconnectingType: EResourceDisconnectingType.Emergency,
-      endDate: '',
+      resource: null,
+      disconnectingType: null,
       housingStockIds: [],
       sender: '',
       startDate: '',
+      startHour: '0:00',
+      endDate: '',
+      endHour: '0:00',
       heatingStationId: '',
     },
-    onSubmit: handleSubmit,
+    validationSchema: createResourceDisconnectionValidationSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: (formValues) =>
+      handleSubmit({
+        ...formValues,
+        resource: formValues.resource!,
+        disconnectingType: formValues.disconnectingType!,
+        startDate: moment(
+          `${formValues.startDate} ${formValues.startHour}`,
+          'DD.MM.YYYY HH:00'
+        ).toISOString(),
+        endDate: moment(
+          `${formValues.endDate} ${formValues.endHour}`,
+          'DD.MM.YYYY HH:00'
+        ).toISOString(),
+      }),
   });
 
   const heatingStationPlaceholderText = selectedCity
@@ -78,6 +106,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.resource}</ErrorMessage>
         </FormItem>
         <FormItem label="Отправитель отключения">
           <Input
@@ -86,6 +115,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
             name="sender"
             onChange={handleChange}
           />
+          <ErrorMessage>{errors.sender}</ErrorMessage>
         </FormItem>
         <FormItem label="Город">
           <Select
@@ -122,6 +152,66 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
             }
             placeholder="Выберите адрес из списка"
           />
+        </FormItem>
+        <FormItem label="Класс отключения">
+          <Select
+            onChange={(type) => setFieldValue('disconnectingType', type)}
+            value={values.disconnectingType || undefined}
+            placeholder="Выберите класс отключения"
+          >
+            {Object.keys(EResourceDisconnectingType).map((elem) => (
+              <Select.Option key={elem} value={elem}>
+                {resourceDisconnectingNamesLookup[elem]}
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>{errors.disconnectingType}</ErrorMessage>
+        </FormItem>
+        <FormItem label="Дата и время отключения ресурса">
+          <TimeWrapper>
+            <DatePicker
+              value={getDatePickerValue(values.startDate, 'DD.MM.YYYY')}
+              format="DD.MM.YYYY"
+              placeholder="Дата"
+              onChange={(_, stringDate) =>
+                setFieldValue('startDate', stringDate)
+              }
+            />
+            <Select
+              value={values.startHour}
+              placeholder="Час"
+              onChange={(hour) => setFieldValue('startHour', hour)}
+            >
+              {hours.map((hour) => (
+                <Select.Option key={hour} value={hour}>
+                  {hour}
+                </Select.Option>
+              ))}
+            </Select>
+          </TimeWrapper>
+          <ErrorMessage>{errors.startDate}</ErrorMessage>
+        </FormItem>
+        <FormItem label="Дата и время включения ресурса">
+          <TimeWrapper>
+            <DatePicker
+              value={getDatePickerValue(values.endDate, 'DD.MM.YYYY')}
+              format="DD.MM.YYYY"
+              placeholder="Дата"
+              onChange={(_, stringDate) => setFieldValue('endDate', stringDate)}
+            />
+            <Select
+              value={values.endHour}
+              placeholder="Час"
+              onChange={(hour) => setFieldValue('endHour', hour)}
+            >
+              {hours.map((hour) => (
+                <Select.Option key={hour} value={hour}>
+                  {hour}
+                </Select.Option>
+              ))}
+            </Select>
+          </TimeWrapper>
+          <ErrorMessage>{errors.endDate}</ErrorMessage>
         </FormItem>
       </BaseInfoWrapper>
     </Form>

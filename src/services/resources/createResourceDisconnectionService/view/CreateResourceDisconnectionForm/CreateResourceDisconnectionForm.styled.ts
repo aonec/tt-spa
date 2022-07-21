@@ -14,3 +14,9 @@ export const ResourceOptionWrapper = styled.div`
     margin-left: 10px;
   }
 `;
+
+export const TimeWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 15px;
+`;
