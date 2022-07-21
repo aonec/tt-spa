@@ -1,7 +1,9 @@
-export enum TaskType {
-  CheckIndividualDevices = 'CheckIndividualDevices',
-}
+export type ExportTaskType = {
+  key: string;
+  value: string;
+};
 
 export type ExportTasksListRequestPayload = {
-  type: TaskType;
+  type: string;
+  name: string;
 };
