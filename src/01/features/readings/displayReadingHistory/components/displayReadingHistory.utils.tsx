@@ -5,12 +5,14 @@ import {
   EResourceType,
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsItemHistoryResponse,
+  IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceResponse,
 } from 'myApi';
 import moment from 'moment';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import _, { round } from 'lodash';
+import _ from 'lodash/fp';
+import { round } from 'lodash';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
@@ -75,10 +77,6 @@ export function getActiveReadings(
   return readings.find((elem) => !elem.isArchived) || void null;
 }
 
-export function getClone<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value));
-}
-
 export function confirmReading(
   { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
   onSubmit: () => void,
@@ -100,11 +98,9 @@ export function confirmReading(
       title: (
         <>
           Введенное показание по прибору <b>{device.serialNumber}</b> (
-          {device.model}) меньше предыдущего на T
-          {failedValidateReading?.index}:{' '}
+          {device.model}) меньше предыдущего на T{failedValidateReading?.index}:{' '}
           <b>
-            {Math.abs(round(failedValidateReading?.difference || 0, 3))}{' '}
-            {unit}{' '}
+            {Math.abs(round(failedValidateReading?.difference || 0, 3))} {unit}{' '}
           </b>
         </>
       ),
@@ -118,7 +114,7 @@ export function confirmReading(
     title: `${
       valueWarning?.type === 'up'
         ? `Расход ${round(
-          valueWarning.difference,
+            valueWarning.difference,
             3
           )}${unit}, больше чем лимит ${limit}${unit}`
         : ''
@@ -139,7 +135,7 @@ export function getPreviousReadingByHistory(
   const readingsHistoryCleared = yearReadings
     .map((yearReading) => {
       const monthReadings = yearReading.monthReadings || [];
-      
+
       return monthReadings.map((monthReading) => {
         const activeReading = monthReading.readings?.find(
           (reading) => !reading.isArchived && !reading.isRemoved
