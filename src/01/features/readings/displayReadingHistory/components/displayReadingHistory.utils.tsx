@@ -72,9 +72,9 @@ export function validateReadings(
 export function getActiveReadings(
   readings?: IndividualDeviceReadingsItemHistoryResponse[] | null
 ) {
-  if (!readings) return;
+  if (!readings) return null;
 
-  return readings.find((elem) => !elem.isArchived) || void null;
+  return readings.find((elem) => !elem.isArchived) || null;
 }
 
 export function confirmReading(

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { IndividualDeviceReadingsItemHistoryResponse } from "myApi";
+import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
 
 export type RenderReading = {
   reading?: IndividualDeviceReadingsItemHistoryResponse;
@@ -9,5 +9,5 @@ export type RenderReading = {
   year: number;
   readingsLength: number;
   isHasArchived: boolean;
-  prevReading?: IndividualDeviceReadingsItemHistoryResponse;
-}
+  prevReading?: IndividualDeviceReadingsItemHistoryResponse | null;
+};

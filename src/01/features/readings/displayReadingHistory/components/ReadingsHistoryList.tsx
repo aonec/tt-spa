@@ -256,7 +256,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     prevReading,
   }: IndividualDeviceReadingsMonthHistoryResponse & {
     year: number;
-    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
+    prevReading?: IndividualDeviceReadingsItemHistoryResponse | null;
   }) => {
     const isOpen = isMonthOpen(year, month);
 
