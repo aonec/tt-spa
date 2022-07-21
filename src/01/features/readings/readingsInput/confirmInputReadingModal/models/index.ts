@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
-import { createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
 
 interface Payload {
-  callback(): void;
+  onSubmit(): void;
+  onCancel?: () => void;
   title: string | ReactNode;
 }
 
@@ -21,7 +22,9 @@ export const openConfirmReadingModal = createEvent<Payload>();
 
 export const executeConfirmReadingCallback = createEvent();
 
-export const closeConfirmReadingCallbackModal = createEvent();
+export const closeConfirmReadingModal = createEvent();
+
+export const executeCancelReadingCallback = createEvent();
 
 export const CancelSwitchInputGate = createGate();
 
