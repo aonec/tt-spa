@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
 import { CalculatorResponse, PipeNodeResponse } from '../../../../myApi';
+import { useHistory } from 'react-router-dom';
 
 interface RelatedDevicesInterface {
   device: CalculatorResponse | null;
 }
 
 export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
+  const history = useHistory();
   if (!device) {
     return null;
   }
@@ -47,7 +49,9 @@ export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
 
       return (
         <ListItem key={id}>
-          <NameWrap href={`/housingMeteringDevices/${id}`}>
+          <NameWrap
+            onClick={() => history.push(`/housingMeteringDevices/${id}`)}
+          >
             <IconTT
               icon={(resource || 'next').toLowerCase()}
               style={{ marginRight: 8 }}
@@ -73,7 +77,7 @@ export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
 
 export default NodeRelatedDevices;
 
-const NameWrap = styled.a`
+const NameWrap = styled.div`
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
