@@ -34,9 +34,9 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     loading,
     currentReading,
     previousReading,
+    prePreviousReading,
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
-
   const history = useHistory();
 
   const handleChangeODPU = useCallback(
@@ -53,10 +53,11 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     <>
       <MeteringDeviceReadingInput
         deviceId={counter?.id!}
+        prevReading={prePreviousReading}
         reading={previousReading}
         loading={loading}
-        disabled
         refetch={refetch}
+        monthIndex={sliderIndex}
       />
       <MeteringDeviceReadingInput
         prevReading={previousReading}
@@ -66,6 +67,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
         current
         refetch={refetch}
         inputIndex={inputIndex}
+        monthIndex={-1}
       />
     </>
   );
