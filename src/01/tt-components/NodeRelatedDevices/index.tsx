@@ -1,9 +1,9 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';
 import { magistrals } from '../localBases';
@@ -23,6 +23,8 @@ export const NodeRelatedDevices = ({
   setDeregisterDeviceValue,
   setDeregisterDevice,
 }: NodesInterface) => {
+  const history = useHistory();
+
   if (!node) {
     return <Loader show size={32} />;
   }
@@ -57,7 +59,7 @@ export const NodeRelatedDevices = ({
 
     return (
       <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
+        <NameWrap onClick={() => history.push(`/housingMeteringDevices/${id}`)}>
           <IconTT
             icon={(resource || 'next').toLowerCase()}
             style={{ marginRight: 8 }}
@@ -114,7 +116,7 @@ export const NodeRelatedDevices = ({
 
 export default NodeRelatedDevices;
 
-const NameWrap = styled.a`
+const NameWrap = styled.div`
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
