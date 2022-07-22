@@ -32,9 +32,9 @@ import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsum
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   numberOfPreviousReadingsInputs: number;
   closed?: boolean;
-  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
 }
 
 const ApartmentReadingLine = ({
@@ -52,9 +52,9 @@ const ApartmentReadingLine = ({
   const { readingsState, previousReadings, currentReadings } = useReadings(
     device,
     sliderIndex,
+    managementFirmConsumptionRates,
     numberOfPreviousReadingsInputs,
     closed,
-    managementFirmConsumptionRates
   );
 
   const userRoletypes = useStore($userRoleTypes);

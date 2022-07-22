@@ -34,9 +34,9 @@ import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsum
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null,
   numberOfPreviousReadingsInputs?: number,
   closed?: boolean,
-  managementFirmConsumptionRates?: ConsumptionRatesDictionary | null
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -292,7 +292,7 @@ export const useReadings = (
       getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
         ?.values || [],
       index,
-      managementFirmConsumptionRates!
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -421,7 +421,7 @@ export const useReadings = (
       getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
         ?.values || [],
       index,
-      managementFirmConsumptionRates!
+      managementFirmConsumptionRates
     );
 
     if (validated) {

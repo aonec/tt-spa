@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { v4 as uuid } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { HistoryIcon } from "ui-kit/icons";
 import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { Icon } from '../../../../../_components/Icon';
@@ -10,21 +13,20 @@ import {
   useReadings,
 } from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
-import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
-import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
-import { HistoryIcon } from "ui-kit/icons";
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
-  ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled, managementFirmConsumptionRates }) => {
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
       sliderIndex,
+      managementFirmConsumptionRates,
       numberOfPreviousReadingsInputs,
-      false
+      false,
     );
 
     const dispatch = useDispatch();
@@ -175,4 +177,5 @@ type Props = {
   numberOfPreviousReadingsInputs: number;
   sliderIndex: number;
   disabled?: boolean;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null
 };

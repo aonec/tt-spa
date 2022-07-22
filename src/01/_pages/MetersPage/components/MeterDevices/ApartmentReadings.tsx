@@ -49,7 +49,13 @@ export const ApartmentReadings = () => {
   const { id } = useParams<{ id: string }>();
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
   const showClosed = useStore($isShownClosedDevices);
+
   const apartment = useStore($apartment);
+
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
 
   useEffect(() => reset && reset(), [id]);
 
@@ -58,11 +64,6 @@ export const ApartmentReadings = () => {
   );
 
   const isSliderIndexExist = sliderIndex !== undefined;
-
-  const consumptionRates = useStore(outputs.$consumptionRates);
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates
-  );
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
