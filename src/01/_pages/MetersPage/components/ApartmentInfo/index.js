@@ -237,7 +237,7 @@ export const ApartmentInfo = () => {
       <ApartmentComment comment={comment} />
     </Grid>
   );
-
+console.log(apartment?.housingStock.managingFirmId)
   return (
     <Wrapper>
       <ApartmentGate id={Number(id)} />
