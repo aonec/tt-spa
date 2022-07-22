@@ -1,5 +1,5 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { Form, TimePicker } from 'antd';
+import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash/fp';
 import moment from 'moment';
@@ -15,18 +15,23 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import {
   createResourceDisconnectionValidationSchema,
+  formInitialValues,
   hours,
 } from './CreateResourceDisconnectionForm.constants';
 import {
   BaseInfoWrapper,
   ResourceOptionWrapper,
+  SelectSC,
   TimeWrapper,
 } from './CreateResourceDisconnectionForm.styled';
 import {
   CreateResourceDisconnectionFormTypes,
   CreateResourceDisconnectionFormProps,
 } from './CreateResourceDisconnectionForm.types';
-import { resourceDisconnectingNamesLookup } from './CreateresourceDisconnectionForm.utils';
+import {
+  getDate,
+  resourceDisconnectingNamesLookup,
+} from './CreateresourceDisconnectionForm.utils';
 
 export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
   formId,
@@ -45,33 +50,19 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     handleChange,
     errors,
   } = useFormik<CreateResourceDisconnectionFormTypes>({
-    initialValues: {
-      resource: null,
-      disconnectingType: null,
-      housingStockIds: [],
-      sender: '',
-      startDate: '',
-      startHour: '0:00',
-      endDate: '',
-      endHour: '0:00',
-      heatingStationId: '',
-    },
+    initialValues: formInitialValues,
     validationSchema: createResourceDisconnectionValidationSchema,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (formValues) =>
       handleSubmit({
-        ...formValues,
         resource: formValues.resource!,
         disconnectingType: formValues.disconnectingType!,
-        startDate: moment(
-          `${formValues.startDate} ${formValues.startHour}`,
-          'DD.MM.YYYY HH:00'
-        ).toISOString(),
-        endDate: moment(
-          `${formValues.endDate} ${formValues.endHour}`,
-          'DD.MM.YYYY HH:00'
-        ).toISOString(),
+        startDate: getDate(formValues.startDate, formValues.startHour),
+        endDate: getDate(formValues.endDate, formValues.endHour),
+        housingStockIds: formValues.housingStockIds,
+        heatingStationId: formValues.heatingStationId,
+        sender: formValues.sender,
       }),
   });
 
@@ -132,9 +123,10 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="ЦТП">
           <Select
             placeholder={heatingStationPlaceholderText}
-            onChange={(stationId) =>
-              handleSelectHeatingStation(String(stationId))
-            }
+            onChange={(stationId) => {
+              handleSelectHeatingStation(String(stationId));
+              setFieldValue('heatingStationId', stationId);
+            }}
           >
             {heatingStations?.map((station) => (
               <Select.Option key={station.id} value={station.id}>
@@ -144,7 +136,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           </Select>
         </FormItem>
         <FormItem label="Адрес">
-          <Select
+          <SelectSC
             mode="multiple"
             options={multipleSelectionAddress}
             onChange={(selectedAddresses) =>

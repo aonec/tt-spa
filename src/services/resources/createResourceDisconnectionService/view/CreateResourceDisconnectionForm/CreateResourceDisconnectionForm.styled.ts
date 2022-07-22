@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Select } from 'ui-kit/Select';
 
 export const BaseInfoWrapper = styled.div`
   display: grid;
@@ -19,4 +20,11 @@ export const TimeWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-gap: 15px;
+`;
+
+export const SelectSC = styled(Select)`
+  height: auto !important;
+  * {
+    line-height: 22px !important;
+  }
 `;
