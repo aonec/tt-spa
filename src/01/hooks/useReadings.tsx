@@ -39,20 +39,11 @@ export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean
+  closed?: boolean,
+  managementFirmConsumptionRates?: ConsumptionRatesDictionary | null,
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
-  const consumptionRates = useStore(outputs.$consumptionRates);
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates
-  );
-
-  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
-    consumptionRates,
-    loadConsumptionRates,
-    device.managementFirm?.id,
-  );
 
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
 
@@ -306,7 +297,7 @@ export const useReadings = (
       getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
         ?.values || [],
       index,
-      managementFirmConsumptionRates
+      managementFirmConsumptionRates!
     );
 
     if (validated) {
@@ -436,7 +427,7 @@ export const useReadings = (
       getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
         ?.values || [],
       index,
-      managementFirmConsumptionRates
+      managementFirmConsumptionRates!
     );
 
     if (validated) {

@@ -7,7 +7,7 @@ import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 import { EIndividualDeviceRateType } from '../../../../../myApi';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import {
   $individualDevices,
   $isShownClosedDevices,
@@ -20,6 +20,10 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -43,6 +47,7 @@ export const ApartmentReadings = () => {
   const { id } = useParams<{ id: string }>();
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
   const showClosed = useStore($isShownClosedDevices);
+  const apartment = useStore($apartment);
 
   useEffect(() => reset && reset(), [id]);
 
@@ -52,6 +57,17 @@ export const ApartmentReadings = () => {
 
   const isSliderIndexExist = sliderIndex !== undefined;
 
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    apartment?.housingStock?.managingFirmId
+  );
+
   const validDevices = !isSliderIndexExist
     ? []
     : validDevicesList.map((device, index) => (
@@ -60,6 +76,7 @@ export const ApartmentReadings = () => {
           sliderIndex={sliderIndex!}
           key={device.id}
           device={device}
+          managementFirmConsumptionRates={managementFirmConsumptionRates}
           numberOfPreviousReadingsInputs={validDevicesList
             .slice(0, index)
             .filter((elem) => elem.closingDate === null)

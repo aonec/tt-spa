@@ -27,12 +27,14 @@ import { deleteIndividualDeviceService } from '01/features/individualDevices/del
 import { FullDeviceLine } from './apartment_reading_line.styled';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { ActionButton } from './action_button/action_button';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
   numberOfPreviousReadingsInputs: number;
   closed?: boolean;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null
 }
 
 const ApartmentReadingLine = ({
@@ -40,6 +42,7 @@ const ApartmentReadingLine = ({
   sliderIndex,
   numberOfPreviousReadingsInputs,
   closed,
+  managementFirmConsumptionRates
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -50,7 +53,8 @@ const ApartmentReadingLine = ({
     device,
     sliderIndex,
     numberOfPreviousReadingsInputs,
-    closed
+    closed, 
+    managementFirmConsumptionRates,
   );
 
   const userRoletypes = useStore($userRoleTypes);

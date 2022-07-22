@@ -76,7 +76,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     });
 
     const { icon, color } = DeviceIcons[device.resource];
-
     return (
       <HouseReadingsDevice
         style={{
