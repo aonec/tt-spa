@@ -1,19 +1,18 @@
-import React from 'react';
-import { useEffect } from 'react';
-import ApartmentReadingLine from './components/ApartmentReadingLine';
+import React, { useEffect } from 'react';
+import { useEvent, useStore } from 'effector-react';
 import styled from 'styled-components';
+import ApartmentReadingLine from './components/ApartmentReadingLine';
+import { useParams } from 'react-router';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 import { EIndividualDeviceRateType } from '../../../../../myApi';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
-import { useEvent, useStore } from 'effector-react';
 import {
   $individualDevices,
   $isShownClosedDevices,
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
-import { useParams } from 'react-router';
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
@@ -21,7 +20,10 @@ import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/con
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+import {
+  managementFirmConsumptionRatesService,
+  useManagingFirmConsumptionRates,
+} from 'services/meters/managementFirmConsumptionRatesService';
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 

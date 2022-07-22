@@ -34,7 +34,7 @@ interface ApartmentReadingLineProps {
   sliderIndex: number;
   numberOfPreviousReadingsInputs: number;
   closed?: boolean;
-  managementFirmConsumptionRates: ConsumptionRatesDictionary | null
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
 }
 
 const ApartmentReadingLine = ({
@@ -42,7 +42,7 @@ const ApartmentReadingLine = ({
   sliderIndex,
   numberOfPreviousReadingsInputs,
   closed,
-  managementFirmConsumptionRates
+  managementFirmConsumptionRates,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -53,8 +53,8 @@ const ApartmentReadingLine = ({
     device,
     sliderIndex,
     numberOfPreviousReadingsInputs,
-    closed, 
-    managementFirmConsumptionRates,
+    closed,
+    managementFirmConsumptionRates
   );
 
   const userRoletypes = useStore($userRoleTypes);
