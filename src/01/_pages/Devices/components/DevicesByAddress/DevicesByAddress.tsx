@@ -1,4 +1,5 @@
 import React from 'react';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { Subtitle } from '../../../../_components/Headers';
 import DeviceBlock from '../DeviceBlock/DeviceBlock';
 import { DevicesByAddressInterface } from '../utils/groupDevicesByObjects';
@@ -6,7 +7,7 @@ import { DevicesByAddressInterface } from '../utils/groupDevicesByObjects';
 const DevicesByAddress = ({
   addressDevicesGroup,
 }: DevicesByAddressPropsInterface) => {
-  const { city = '', street = '', number = null, corpus = null, housingStockId = null } =
+  const { housingStockId = null } =
     addressDevicesGroup.address?.mainAddress || {};
 
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
@@ -17,7 +18,7 @@ const DevicesByAddress = ({
     <>
       {addressDevicesGroup.address ? (
         <Subtitle fontWeight={400} to={`/objects/${housingStockId}`}>
-          {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
+          {getHousingStockAddress(addressDevicesGroup, true)}
         </Subtitle>
       ) : (
         'У данного прибора не указан адрес'

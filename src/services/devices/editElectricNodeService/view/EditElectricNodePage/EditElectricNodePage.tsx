@@ -2,7 +2,6 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import IsActive from '01/tt-components/IsActive';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
-import { Route, useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { EditElectricNodeForm } from './EditElectricNodeForm';
