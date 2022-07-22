@@ -2,26 +2,35 @@ import {
   $isCancelSwitchInput,
   executeConfirmReadingCallback,
   CancelSwitchInputGate,
+  executeCancelReadingCallback,
 } from './index';
 import {
   $onConfirmReadingInputCallback,
-  closeConfirmReadingCallbackModal,
+  closeConfirmReadingModal,
   openConfirmReadingModal,
 } from '.';
 
 $onConfirmReadingInputCallback
   .on(openConfirmReadingModal, (_, payload) => payload)
-  .reset(closeConfirmReadingCallbackModal);
+  .reset(closeConfirmReadingModal);
+
+executeCancelReadingCallback.watch(() => {
+  const payload = $onConfirmReadingInputCallback.getState();
+  const onCancel = payload?.onCancel;
+  if (onCancel) {
+    onCancel();
+  }
+  closeConfirmReadingModal();
+});
 
 executeConfirmReadingCallback.watch(() => {
   const payload = $onConfirmReadingInputCallback.getState();
-
   if (!payload) return;
 
-  const { callback } = payload;
+  const { onSubmit } = payload;
 
-  callback();
-  closeConfirmReadingCallbackModal();
+  onSubmit();
+  closeConfirmReadingModal();
 });
 
 $isCancelSwitchInput
