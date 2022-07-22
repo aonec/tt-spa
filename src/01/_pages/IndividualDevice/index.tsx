@@ -8,18 +8,21 @@ import { useAsync } from '../../hooks/useAsync';
 import { IndividualDeviceResponse, TaskListResponse } from '../../../myApi';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import Events from '../../tt-components/Events';
-import { TabsItemInterface } from '../../tt-components/interfaces';
-import Tabs from '../../tt-components/Tabs';
 import {
   getIndividualDevice,
   getIndividualDeviceTasks,
 } from '../../_api/apiRequests';
 import { Grid } from '01/_components/Grid';
+import { TabsSC } from './IndividualDevice.styled';
+import { IndividualDeviceGrouptype } from './IndividualDevice.types';
+const { TabPane } = TabsSC;
 
 export const IndividualDevice = () => {
-  const { push } = useHistory();
   const { deviceId } = useParams();
   const path = `/individualDevices/${deviceId}`;
+  const [grouptype, setGrouptype] = useState<IndividualDeviceGrouptype>(
+    IndividualDeviceGrouptype.info
+  );
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
 
   const [deregister, setDeregister] = useState(false);
@@ -36,23 +39,6 @@ export const IndividualDevice = () => {
     return <Loader size={'32'} show />;
   }
 
-  const tabItems: Array<TabsItemInterface> = [
-    {
-      title: 'Общая информация',
-      key: '',
-      cb: () => {
-        push(`${path}`);
-      },
-    },
-    {
-      title: 'Документы',
-      key: 'documents',
-      cb: () => {
-        push(`${path}/documents`);
-      },
-    },
-  ];
-
   return (
     <>
       {status === 'error' ? (
@@ -64,18 +50,32 @@ export const IndividualDevice = () => {
       {status === 'resolved' ? (
         <>
           <Header device={device} />
-          <Tabs tabItems={tabItems} tabsType={'route'} />
-          <Grid>
-            <Route path={path} exact>
-              <Information device={device} />
-            </Route>
+          <TabsSC
+            activeKey={grouptype}
+            onChange={(grouptype) =>
+              setGrouptype(grouptype as IndividualDeviceGrouptype)
+            }
+          >
+            <TabPane
+              tab={'Общая информация'}
+              key={IndividualDeviceGrouptype.info}
+            >
+              <Grid>
+                <Information device={device} />
+                <Events title="Задачи с объектом" tasks={tasks} />
+              </Grid>
+            </TabPane>
+            <TabPane
+              tab={'Документы'}
+              key={IndividualDeviceGrouptype.documents}
+            >
+              <Grid>
+                <Title color="black">Компонент в разработке</Title>
+                <Events title="Задачи с объектом" tasks={tasks} />
+              </Grid>
+            </TabPane>
+          </TabsSC>
 
-            <Route path={`${path}/documents`} exact>
-              <Title color="black">Компонент в разработке</Title>
-            </Route>
-
-            <Events title="Задачи с объектом" tasks={tasks} />
-          </Grid>
           <ModalDeregister
             visible={deregister}
             setVisible={setDeregister}

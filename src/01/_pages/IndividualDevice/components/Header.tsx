@@ -64,7 +64,7 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <GoBack path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
+      <GoBack />
       <HeaderWrap>
         <div>
           <Title>
