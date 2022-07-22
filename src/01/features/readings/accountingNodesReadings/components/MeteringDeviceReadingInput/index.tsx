@@ -113,6 +113,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 };
 
 const ReadingDate = styled(Flex)`
+  margin-top: 3px;
   justify-content: flex-end;
   color: #858585;
 `;
