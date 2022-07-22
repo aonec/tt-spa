@@ -1,15 +1,15 @@
-import { EManagingFirmUserWorkingStatusTypeStringDictionaryItem } from '../../../../../../myApi';
+import { EOrganizationUserWorkingStatusTypeStringDictionaryItem } from 'myApi';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
 
 export const $staffStatuses = createStore<
-EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null
+  EOrganizationUserWorkingStatusTypeStringDictionaryItem[] | null
 >(null);
 export const $isFetchingStaffStatusesFailed = createStore(false);
 
 export const fetchStaffStatusesFx = createEffect<
   void,
-  EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null
+  EOrganizationUserWorkingStatusTypeStringDictionaryItem[] | null
 >();
 
 export const StaffStatusesGate = createGate();
