@@ -38,5 +38,5 @@ export const IconLookup = [
     key: 'timer',
     element: TimerIcon,
   },
-  { key: 'close', element: XIcon },
+  { key: 'x', element: XIcon },
 ];

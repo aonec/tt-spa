@@ -1,5 +1,9 @@
-import moment from 'moment';
-import { ETaskTimeStatus, StageResponse, TaskListResponse } from 'myApi';
+import {
+  ETaskClosingStatus,
+  ETaskTimeStatus,
+  StageResponse,
+  TaskListResponse,
+} from 'myApi';
 
 export const preparedData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
@@ -7,7 +11,7 @@ export const preparedData = (tasks: TaskListResponse[], grouptype: string) =>
     timeline: createTimeline(item),
     timer: createTimer(item),
     calendar: new Date(item.creationTime!).toLocaleString(),
-    showExecutor: grouptype === 'observing',
+    showExecutor: grouptype === 'Observing',
   }));
 
 const createTimeline = ({
@@ -64,11 +68,13 @@ const createTimer = ({
   creationTime,
   expectedCompletionTime,
   closingTime,
+  closingStatus,
   currentStage,
 }: {
   creationTime: string | null;
   expectedCompletionTime: string | null;
   closingTime: string | null;
+  closingStatus: ETaskClosingStatus | null;
   currentStage: StageResponse | null;
 }) => {
   if (currentStage) {
@@ -80,6 +86,13 @@ const createTimer = ({
       },
       text: 'Время на этап:',
       icon: 'timer',
+    };
+  }
+  if (closingStatus === 'Interrupted') {
+    return {
+      icon: 'x',
+      text: 'Закрыта автоматически',
+      stage: null,
     };
   }
 

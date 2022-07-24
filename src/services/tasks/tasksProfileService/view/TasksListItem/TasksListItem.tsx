@@ -15,12 +15,13 @@ import {
   Infowrapper,
   Line,
   MapIconSC,
-  RowWrapper,
+  NameRowWrapper,
   TaskItemWrapper,
   TaskNameWrapper,
   TextWrapper,
   TimeLine,
   TimeLineWrapper,
+  TimerWrapper,
   TimeWrapper,
 } from './TasksListItem.styled';
 import { IconLookup, TasksListItemProps } from './TasksListItem.types';
@@ -29,7 +30,6 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const {
     currentStage,
     name,
-    closingStatus,
     timeline,
     timer,
     showExecutor,
@@ -42,15 +42,14 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const history = useHistory();
 
   const taskName = currentStage ? currentStage.name : name;
-  const isInterrupted = closingStatus === 'Interrupted';
   const Icon = IconLookup.find((elem) => elem.key === timer?.icon)?.element;
 
   return (
     <TaskItemWrapper onClick={() => history.push(`/tasks/profile/${id}`)}>
-      <RowWrapper>
+      <NameRowWrapper>
         <TaskNameWrapper>{taskName}</TaskNameWrapper>
         <span>{currentStage && name}</span>
-      </RowWrapper>
+      </NameRowWrapper>
       {timeline && (
         <TimeLineWrapper>
           <TimeLine>
@@ -63,24 +62,24 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
           <span>{timeline.before}</span>
         </TimeLineWrapper>
       )}
-      <RowWrapper>
-        {!isInterrupted && timer && (
+      <TimerWrapper>
+        {timer && (
           <div>
-            {Icon && <Icon />}
+            {Icon && <Icon width="14px" />}
             <TextWrapper>{timer.text}</TextWrapper>
             <TimeWrapper fail={timer.stage?.fail}>
-              {timer.stage?.timeStr ?? timer.final.timeStr}
+              {timer.stage?.timeStr || timer?.final?.timeStr}
             </TimeWrapper>
             <span>{timer.stage?.before || timer?.diff?.timeStr}</span>
           </div>
         )}
         {showExecutor && (
-          <>
+          <div>
             <UserIcon />
-            <span>{perpetrator?.name}</span>
-          </>
+            <TextWrapper>{perpetrator?.name}</TextWrapper>
+          </div>
         )}
-      </RowWrapper>
+      </TimerWrapper>
       <Infowrapper>
         {device && (
           <div>

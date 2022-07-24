@@ -15,7 +15,7 @@ export const TaskItemWrapper = styled.div`
   }
 `;
 
-export const RowWrapper = styled.div`
+export const NameRowWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,7 +26,17 @@ export const Infowrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 6px;
-`
+  svg {
+    transform: scale(0.8);
+  }
+`;
+
+export const TimerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+`;
 
 export const TaskNameWrapper = styled.div`
   font-weight: 500;
@@ -60,8 +70,6 @@ export const TimeLineWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .time {
-  }
 `;
 
 export const TimeWrapper = styled.span<{ fail?: boolean }>`
@@ -70,9 +78,9 @@ export const TimeWrapper = styled.span<{ fail?: boolean }>`
 `;
 
 export const TextWrapper = styled.span`
-  margin: 0 6px;
+  margin: 0 8px;
 `;
 
 export const MapIconSC = styled(MapIcon)`
-  margin-left: 10px;
-`
+  margin-left: 12px;
+`;
