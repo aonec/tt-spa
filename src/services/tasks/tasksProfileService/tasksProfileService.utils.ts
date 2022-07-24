@@ -1,16 +1,11 @@
-import { createDevice } from '01/_api/utils';
-import { StageResponse, TaskListResponse } from 'myApi';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import moment from 'moment';
+import { ETaskTimeStatus, StageResponse, TaskListResponse } from 'myApi';
 
-export const preparedData = (
-  tasks: TaskListResponse[],
-  grouptype: string
-) =>
+export const preparedData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
     ...item,
     timeline: createTimeline(item),
     timer: createTimer(item),
-    device: createDevice(item.device),
     calendar: new Date(item.creationTime!).toLocaleString(),
     showExecutor: grouptype === 'observing',
   }));
@@ -19,10 +14,12 @@ const createTimeline = ({
   creationTime,
   expectedCompletionTime,
   closingTime,
+  timeStatus,
 }: {
   creationTime: string | null;
   expectedCompletionTime: string | null;
   closingTime: string | null;
+  timeStatus: ETaskTimeStatus;
 }) => {
   if (closingTime) return null;
   const start = new Date(creationTime!);
@@ -32,16 +29,11 @@ const createTimeline = ({
   const percent = Math.abs(
     ((current - start.valueOf()) / (deadline.valueOf() - start.valueOf())) * 100
   );
-  const color =
-    percent < 60
-      ? 'var(--success)'
-      : percent < 90
-      ? 'var(--warning)'
-      : 'var(--error)';
+
   const { timeStr, fail } = formatTime(deadline.valueOf() - current);
   return {
     style: {
-      background: color,
+      background: ColorLookup[timeStatus],
       width: percent > 100 ? '100%' : `${percent}%`,
     },
     before: `(до ${new Date(deadline).toLocaleDateString()})`,
@@ -87,7 +79,7 @@ const createTimer = ({
         before: `(до ${new Date(ext!).toLocaleDateString()})`,
       },
       text: 'Время на этап:',
-      icon: { icon: 'timer', fill: 'var(--main-100)' },
+      icon: 'timer',
     };
   }
 
@@ -107,8 +99,14 @@ const createTimer = ({
       timeStr: !final.fail ? `(${diff.timeStr})` : `(-${diff.timeStr})`,
     },
     final,
-    icon: { icon: 'ok', fill: 'var(--success)' },
+    icon: 'ok',
     stage: null,
     text: 'Выполнено за:',
   };
+};
+
+const ColorLookup = {
+  [ETaskTimeStatus.Normal]: 'var(--success)',
+  [ETaskTimeStatus.RunningOut]: 'var(--warning)',
+  [ETaskTimeStatus.Expired]: 'var(--error)',
 };

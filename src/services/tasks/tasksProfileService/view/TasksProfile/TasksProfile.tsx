@@ -1,9 +1,10 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { TasksList } from '01/_pages/Tasks/components/TasksList';
 import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
+import { TasksListItem } from '../TasksListItem';
+import { TaskType } from '../TasksListItem/TasksListItem.types';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 const { TabPane } = TabsSC;
@@ -23,7 +24,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   openExtendedSearch,
   clearFilters,
   changeFiltersByGroupType,
-  housingManagments
+  housingManagments,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -36,7 +37,13 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     ? `Наблюдаемые (${observingTasksCount})`
     : 'Наблюдаемые';
 
-  const tasksList = useMemo(() => <TasksList items={tasks} />, [tasks]);
+  const tasksList = useMemo(
+    () =>
+      tasks.map((task) => (
+        <TasksListItem key={task.id} task={task as TaskType} />
+      )),
+    [tasks]
+  );
 
   return (
     <Wrapper>
