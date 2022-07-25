@@ -20,6 +20,7 @@ import {
 } from './CreateResourceDisconnectionForm.constants';
 import {
   BaseInfoWrapper,
+  HeatingStationInputSC,
   ResourceOptionWrapper,
   SelectSC,
   TimeWrapper,
@@ -121,10 +122,11 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           </Select>
         </FormItem>
         <FormItem label="ЦТП">
-          <Select
+          <HeatingStationInputSC
+            allowClear
             placeholder={heatingStationPlaceholderText}
             onChange={(stationId) => {
-              handleSelectHeatingStation(String(stationId));
+              handleSelectHeatingStation(String(stationId || ''));
               setFieldValue('heatingStationId', stationId);
             }}
           >
@@ -133,10 +135,11 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
                 {station.name}
               </Select.Option>
             ))}
-          </Select>
+          </HeatingStationInputSC>
         </FormItem>
         <FormItem label="Адрес">
           <SelectSC
+            showSearch
             mode="multiple"
             options={multipleSelectionAddress}
             onChange={(selectedAddresses) =>

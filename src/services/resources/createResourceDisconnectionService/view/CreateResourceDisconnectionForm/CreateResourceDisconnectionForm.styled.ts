@@ -28,3 +28,9 @@ export const SelectSC = styled(Select)`
     line-height: 22px !important;
   }
 `;
+
+export const HeatingStationInputSC = styled(Select)`
+  .ant-select-clear {
+    transform: translateY(-9px) translateX(-16px);
+  }
+`;
