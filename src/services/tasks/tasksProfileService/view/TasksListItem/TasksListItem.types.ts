@@ -1,4 +1,4 @@
-import { TaskListResponse } from 'myApi';
+import { ETaskClosingStatus, TaskListResponse } from 'myApi';
 import { OkIcon, TimerIcon, XIcon } from 'ui-kit/icons';
 
 export type TasksListItemProps = {
@@ -6,37 +6,35 @@ export type TasksListItemProps = {
 };
 
 export type TaskType = TaskListResponse & {
-  timeline: Timeline;
+  timeline: Timeline | null;
   timer: Timer;
   showExecutor: boolean;
-  calendar: string;
+  formatedCreationTime: string;
 };
 
 export type Timeline = {
-  before: string;
-  timeStr: string;
-  style: {
-    background: string;
+  deadlineDate: string;
+  remainingTime: string;
+  timelineStyle: {
+    color: string;
     width: string;
   };
-  fail?: boolean;
+  isFailed?: boolean;
 };
 
 export type Timer = {
   icon: string;
-  diff?: {
-    timeStr: string;
-  };
-  stage?: Timeline | null;
-  text?: string;
-  final: Omit<Timeline, 'style' | 'before'>;
+  statusDescription: string;
+  diffTime?: string;
+  stage?: Omit<Timeline, 'timelineStyle'> | null;
+  executionTime?: string;
 };
 
 export const IconLookup = [
-  { key: 'ok', element: OkIcon },
+  { icon: ETaskClosingStatus.Properly, element: OkIcon },
   {
-    key: 'timer',
+    icon: 'timer',
     element: TimerIcon,
   },
-  { key: 'x', element: XIcon },
+  { icon: ETaskClosingStatus.Interrupted, element: XIcon },
 ];

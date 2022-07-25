@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   ETaskClosingStatus,
   ETaskTimeStatus,
@@ -5,12 +6,12 @@ import {
   TaskListResponse,
 } from 'myApi';
 
-export const preparedData = (tasks: TaskListResponse[], grouptype: string) =>
+export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
     ...item,
     timeline: createTimeline(item),
     timer: createTimer(item),
-    calendar: new Date(item.creationTime!).toLocaleString(),
+    formatedCreationTime: new Date(item.creationTime!).toLocaleString(),
     showExecutor: grouptype === 'Observing',
   }));
 
@@ -26,6 +27,7 @@ const createTimeline = ({
   timeStatus: ETaskTimeStatus;
 }) => {
   if (closingTime) return null;
+
   const start = new Date(creationTime!);
   const deadline = new Date(expectedCompletionTime!);
   const current = Date.now();
@@ -34,34 +36,17 @@ const createTimeline = ({
     ((current - start.valueOf()) / (deadline.valueOf() - start.valueOf())) * 100
   );
 
-  const { timeStr, fail } = formatTime(deadline.valueOf() - current);
+  const remainingTime = getFormatedTime(deadline.valueOf() - current);
+  const isFailed = deadline.valueOf() - current < 0;
   return {
-    style: {
-      background: ColorLookup[timeStatus],
+    timelineStyle: {
+      color: ColorLookup[timeStatus],
       width: percent > 100 ? '100%' : `${percent}%`,
     },
-    before: `(до ${new Date(deadline).toLocaleDateString()})`,
-    timeStr: !fail ? timeStr : `-${timeStr}`,
-    fail,
+    deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
+    remainingTime,
+    isFailed,
   };
-};
-
-const formatTime = (time: number) => {
-  if (!time) return {};
-  let timeStr = '';
-  const fail = time < 0;
-  const days = Math.abs(time) / 1000 / 60 / 60 / 24;
-  const hours = (days - (days >> 0)) * 24;
-  const minutes = (hours - (hours >> 0)) * 60;
-
-  if (days >> 0) {
-    timeStr = `${days >> 0}д ${hours >> 0}ч`;
-  } else if (hours >> 0) {
-    timeStr = `${hours >> 0}ч ${minutes >> 0}м`;
-  } else {
-    timeStr = `${minutes >> 0}м`;
-  }
-  return { timeStr, fail };
 };
 
 const createTimer = ({
@@ -77,22 +62,27 @@ const createTimer = ({
   closingStatus: ETaskClosingStatus | null;
   currentStage: StageResponse | null;
 }) => {
-  if (currentStage) {
-    const { expectedCompletionTime: ext } = currentStage;
+  if (!closingTime) {
+    const { expectedCompletionTime: ext } = currentStage!;
+    const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
+
     return {
       stage: {
-        ...formatTime(new Date(ext!).valueOf() - Date.now()),
-        before: `(до ${new Date(ext!).toLocaleDateString()})`,
+        remainingTime: getFormatedTime(
+          Math.abs(new Date(ext!).valueOf() - Date.now())
+        ),
+        isFailed,
+        deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
       },
-      text: 'Время на этап:',
+      statusDescription: 'Время на этап:',
       icon: 'timer',
     };
   }
+
   if (closingStatus === 'Interrupted') {
     return {
-      icon: 'x',
-      text: 'Закрыта автоматически',
-      stage: null,
+      icon: closingStatus,
+      statusDescription: 'Закрыта автоматически',
     };
   }
 
@@ -100,22 +90,34 @@ const createTimer = ({
   const deadline = expectedCompletionTime;
   const finish = closingTime;
 
-  const diff = formatTime(
-    new Date(deadline!).valueOf() - new Date(start!).valueOf()
+  const diffTimeStr = getFormatedTime(
+    new Date(deadline!).valueOf() - new Date(finish!).valueOf()
   );
-  const final = formatTime(
-    new Date(start!).valueOf() - new Date(finish!).valueOf()
+
+  const executionTime = getFormatedTime(
+    new Date(finish!).valueOf() - new Date(start!).valueOf()
   );
 
   return {
-    diff: {
-      timeStr: !final.fail ? `(${diff.timeStr})` : `(-${diff.timeStr})`,
-    },
-    final,
-    icon: 'ok',
-    stage: null,
-    text: 'Выполнено за:',
+    diffTime: `(${diffTimeStr})`,
+    executionTime,
+    icon: closingStatus,
+    statusDescription: 'Выполнено за:',
   };
+};
+
+const getFormatedTime = (time: number) => {
+  const days = moment.duration(time).asDays();
+  const hours = moment.duration(Math.abs(time)).hours();
+  const minutes = moment.duration(Math.abs(time)).minutes();
+
+  if (days >> 0) {
+    return `${days >> 0}д ${hours}ч`;
+  } else if (hours > 0) {
+    return `${hours}ч ${minutes}м`;
+  } else {
+    return `${minutes}м`;
+  }
 };
 
 const ColorLookup = {

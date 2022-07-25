@@ -1,15 +1,29 @@
 import styled from 'styled-components';
-import { MapIcon } from 'ui-kit/icons';
+import { CalendarIcon, MapIcon, UserIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
-  cursor: pointer;
-  padding: 8px;
+  min-width: 850px;
+  padding: 6px 12px 8px 12px;
+  margin-top: 12px;
+  border-radius: 4px;
+  border: 1px solid transparent;
   color: #272f5a;
 
-  &:hover {
-    color: var(--primary-100);
-    box-shadow: var(--shadow);
+  transition: 0.2s;
+  cursor: pointer;
+  &:first-child {
+    margin-top: 0px;
   }
+
+  &:hover {
+    border-color: #11043319;
+    box-shadow: 0 4px 12px rgba(0, 0, 20, 0.16);
+
+    .task-item-title {
+      color: var(--primary-100);
+    }
+  }
+
   span {
     opacity: 0.8;
   }
@@ -21,27 +35,39 @@ export const NameRowWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const Infowrapper = styled.div`
+export const InfoWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 6px;
-  svg {
-    transform: scale(0.8);
+`;
+
+export const TimerRowWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+`;
+
+export const DeviceInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  svg:first-of-type {
+    transform: scale(0.9);
   }
 `;
 
-export const TimerWrapper = styled.div`
+export const InfoBlockWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
+  svg:nth-child(1) {
+    margin-left: 0px !important;
+  }
 `;
 
 export const TaskNameWrapper = styled.div`
   font-weight: 500;
   font-size: 16px;
-  color: #272f5a !important;
+  color: #272f5a;
 `;
 
 export const TimeLine = styled.div`
@@ -66,7 +92,7 @@ export const Line = styled.div<{
 `;
 
 export const TimeLineWrapper = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -78,9 +104,17 @@ export const TimeWrapper = styled.span<{ fail?: boolean }>`
 `;
 
 export const TextWrapper = styled.span`
-  margin: 0 8px;
+  margin-left: 8px;
 `;
 
 export const MapIconSC = styled(MapIcon)`
   margin-left: 12px;
+`;
+
+export const CalendarIconSC = styled(CalendarIcon)`
+  margin-left: 8px;
+`;
+
+export const UserIconSC = styled(UserIcon)`
+  margin-left: 10px;
 `;

@@ -4,7 +4,6 @@ import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
 import { TasksListItem } from '../TasksListItem';
-import { TaskType } from '../TasksListItem/TasksListItem.types';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 const { TabPane } = TabsSC;
@@ -38,10 +37,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     : 'Наблюдаемые';
 
   const tasksList = useMemo(
-    () =>
-      tasks.map((task) => (
-        <TasksListItem key={task.id} task={task as TaskType} />
-      )),
+    () => tasks.map((task) => <TasksListItem key={task.id} task={task} />),
     [tasks]
   );
 
@@ -74,7 +70,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
       />
-      {!isLoading && tasksList}
+      <div>{!isLoading && tasksList}</div>
       {isLoading && <Skeleton active />}
       {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC
