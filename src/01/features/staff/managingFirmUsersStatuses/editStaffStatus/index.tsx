@@ -23,7 +23,7 @@ import { Form, Select as AntdSelect, DatePicker as AntdDatePicker } from 'antd';
 import styled from 'styled-components';
 import { StaffStatus } from '../../displayStaff/models/components/StaffStatus';
 import { useForm } from 'effector-forms';
-import { EManagingFirmUserWorkingStatusType } from 'myApi';
+import { EOrganizationUserWorkingStatusType } from 'myApi';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Loader } from '01/_components/Loader';
@@ -104,7 +104,7 @@ export const EditStaffStatusModal: React.FC = () => {
           <Select
             value={fields.type.value || undefined}
             onChange={(value) =>
-              fields.type.onChange(value as EManagingFirmUserWorkingStatusType)
+              fields.type.onChange(value as EOrganizationUserWorkingStatusType)
             }
             placeholder="Выберите статус"
           >

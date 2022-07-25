@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
+import _ from 'lodash/fp';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -42,6 +43,45 @@ export function useReadingHistoryValues() {
       refetchReadingHistory(Number(deviceId));
     } catch (error) {}
   }
+
+  const resetValue = (address: {
+    year: number;
+    month: number;
+    id: number | null;
+  }) => {
+    const initialValue = _.pipe([
+      _.getOr([], 'yearReadings'),
+      _.find({ year: address.year }),
+      _.getOr([], 'monthReadings'),
+      _.find({ month: address.month }),
+      _.getOr([], 'readings'),
+      _.find({ id: address.id }),
+    ])(initialValues);
+
+    const yearIndex = _.findIndex({ year: address.year })(
+      bufferedValues?.yearReadings
+    );
+    const monthIndex = _.findIndex({ month: address.month })(
+      bufferedValues?.yearReadings?.[yearIndex].monthReadings
+    );
+    const readingIndex = _.findIndex({ id: address.id })(
+      bufferedValues?.yearReadings?.[yearIndex].monthReadings?.[monthIndex]
+        .readings
+    );
+    const setInitValue = _.assoc(
+      [
+        'yearReadings',
+        `${yearIndex}`,
+        'monthReadings',
+        `${monthIndex}`,
+        'readings',
+        `${readingIndex}`,
+      ],
+      initialValue
+    );
+
+    setBufferedValues((prev) => prev && setInitValue(prev));
+  };
 
   const setFieldValue = (
     value: string,
@@ -120,5 +160,6 @@ export function useReadingHistoryValues() {
     uploadingReadingsStatuses,
     uploadReading,
     deleteReading,
+    resetValue,
   };
 }

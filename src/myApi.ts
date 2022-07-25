@@ -32,18 +32,6 @@ export interface AddHeatingStationRequest {
   address?: CreateAddressRequest | null;
 }
 
-export interface AddManagingFirmUserWorkingStatusRequest {
-  /** @format int32 */
-  userId?: number;
-  type?: EManagingFirmUserWorkingStatusType;
-
-  /** @format date-time */
-  startDate?: string | null;
-
-  /** @format date-time */
-  endDate?: string | null;
-}
-
 export interface AddNodeDocumentsRequest {
   documentsIds?: number[] | null;
 }
@@ -85,6 +73,18 @@ export interface AddOrUpdateNodeWorkingRangeRequest {
 
   /** @format float */
   max?: number | null;
+}
+
+export interface AddOrganizationUserWorkingStatusRequest {
+  /** @format int32 */
+  userId?: number;
+  type?: EOrganizationUserWorkingStatusType;
+
+  /** @format date-time */
+  startDate?: string | null;
+
+  /** @format date-time */
+  endDate?: string | null;
 }
 
 export interface AddressResponse {
@@ -1383,22 +1383,6 @@ export enum EManagingFirmTaskType {
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
 
-export enum EManagingFirmUserWorkingStatusType {
-  Working = "Working",
-  OnVacation = "OnVacation",
-  Sick = "Sick",
-  OnDuty = "OnDuty",
-}
-
-export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItem {
-  key?: EManagingFirmUserWorkingStatusType;
-  value?: string | null;
-}
-
-export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null;
-}
-
 export enum EMeteringDeviceType {
   Calculator = "Calculator",
   HousingPipe = "HousingPipe",
@@ -1459,6 +1443,22 @@ export interface ENonResidentialHouseTypeStringDictionaryItem {
 export enum EOrderByRule {
   Ascending = "Ascending",
   Descending = "Descending",
+}
+
+export enum EOrganizationUserWorkingStatusType {
+  Working = "Working",
+  OnVacation = "OnVacation",
+  Sick = "Sick",
+  OnDuty = "OnDuty",
+}
+
+export interface EOrganizationUserWorkingStatusTypeStringDictionaryItem {
+  key?: EOrganizationUserWorkingStatusType;
+  value?: string | null;
+}
+
+export interface EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: EOrganizationUserWorkingStatusTypeStringDictionaryItem[] | null;
 }
 
 export enum EPersonType {
@@ -1540,18 +1540,17 @@ export interface EResourceTypeStringDictionaryItem {
 }
 
 export enum ESecuredIdentityRoleName {
-  ManagingFirmAdministrator = "ManagingFirmAdministrator",
+  Administrator = "Administrator",
   ManagingFirmExecutor = "ManagingFirmExecutor",
   Homeowner = "Homeowner",
-  ManagingFirmOperator = "ManagingFirmOperator",
+  Operator = "Operator",
   ErcService = "ErcService",
-  ScadaService = "ScadaService",
   Admin = "Admin",
   Worker = "Worker",
   ManagingFirmSpectator = "ManagingFirmSpectator",
   ManagingFirmDispatcher = "ManagingFirmDispatcher",
   Controller = "Controller",
-  ManagingFirmSeniorOperator = "ManagingFirmSeniorOperator",
+  SeniorOperator = "SeniorOperator",
   ManagingFirmSpectatorRestricted = "ManagingFirmSpectatorRestricted",
 }
 
@@ -2291,13 +2290,13 @@ export interface HousingMeteringDeviceReadingsHistoryItemResponse {
 
   /** @format double */
   nonResidentialRoomConsumption: number | null;
-  user: ManagingFirmUserShortResponse | null;
+  user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
 
   /** @format date-time */
   removedTime: string | null;
-  removedByUser: ManagingFirmUserShortResponse | null;
+  removedByUser: OrganizationUserShortResponse | null;
 
   /** @format double */
   consumption: number;
@@ -2334,13 +2333,13 @@ export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
 
   /** @format double */
   nonResidentialRoomConsumption: number | null;
-  user: ManagingFirmUserShortResponse | null;
+  user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
 
   /** @format date-time */
   removedTime: string | null;
-  removedByUser: ManagingFirmUserShortResponse | null;
+  removedByUser: OrganizationUserShortResponse | null;
 
   /** @format int32 */
   nodeId: number;
@@ -2385,13 +2384,13 @@ export interface HousingMeteringDeviceReadingsResponse {
 
   /** @format double */
   nonResidentialRoomConsumption: number | null;
-  user: ManagingFirmUserShortResponse | null;
+  user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
 
   /** @format date-time */
   removedTime: string | null;
-  removedByUser: ManagingFirmUserShortResponse | null;
+  removedByUser: OrganizationUserShortResponse | null;
 }
 
 export interface HousingMeteringDeviceReadingsResponseSuccessApiResponse {
@@ -2477,6 +2476,9 @@ export interface HousingStockFilterResponseSuccessApiResponse {
 export interface HousingStockListResponse {
   /** @format int32 */
   id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
   houseCategory: string | null;
   houseType: string | null;
 
@@ -2519,6 +2521,9 @@ export interface HousingStockListResponsePagedListSuccessApiResponse {
 export interface HousingStockResponse {
   /** @format int32 */
   id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
 
   /** @format uuid */
   fiasId: string | null;
@@ -2578,6 +2583,9 @@ export interface HousingStockResponseSuccessApiResponse {
 export interface HousingStockShortResponse {
   /** @format int32 */
   id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
   city: string | null;
   street: string | null;
   number: string | null;
@@ -2848,7 +2856,7 @@ export interface IndividualDeviceReadingsCreateResponse {
   /** @format date-time */
   uploadDate: string;
   source: EIndividualDeviceReadingsSource;
-  user: ManagingFirmUserShortResponse | null;
+  user: OrganizationUserShortResponse | null;
 }
 
 export interface IndividualDeviceReadingsHistoryResponse {
@@ -2874,12 +2882,12 @@ export interface IndividualDeviceReadingsItemHistoryResponse {
   /** @format date-time */
   uploadTime: string;
   source: EIndividualDeviceReadingsSource;
-  user: ManagingFirmUserShortResponse | null;
+  user: OrganizationUserShortResponse | null;
   isRemoved: boolean;
 
   /** @format date-time */
   removedTime: string | null;
-  removedByUser: ManagingFirmUserShortResponse | null;
+  removedByUser: OrganizationUserShortResponse | null;
   isArchived: boolean;
   consumption1: string | null;
   consumption2: string | null;
@@ -2912,12 +2920,12 @@ export interface IndividualDeviceReadingsResponse {
   /** @format date-time */
   uploadTime: string;
   source: EIndividualDeviceReadingsSource;
-  user: ManagingFirmUserShortResponse | null;
+  user: OrganizationUserShortResponse | null;
   isRemoved: boolean;
 
   /** @format date-time */
   removedTime: string | null;
-  removedByUser: ManagingFirmUserShortResponse | null;
+  removedByUser: OrganizationUserShortResponse | null;
 }
 
 export interface IndividualDeviceReadingsResponseSuccessApiResponse {
@@ -3261,33 +3269,6 @@ export interface ManagementFirmResponse {
   address: ManagementFirmAddressResponse | null;
 }
 
-export interface ManagementFirmResponsePagedList {
-  /** @format int32 */
-  totalItems: number;
-
-  /** @format int32 */
-  pageNumber: number;
-
-  /** @format int32 */
-  pageSize: number;
-
-  /** @format int32 */
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-
-  /** @format int32 */
-  nextPageNumber: number;
-
-  /** @format int32 */
-  previousPageNumber: number;
-  items: ManagementFirmResponse[] | null;
-}
-
-export interface ManagementFirmResponsePagedListSuccessApiResponse {
-  successResponse: ManagementFirmResponsePagedList | null;
-}
-
 export interface ManagementFirmResponseSuccessApiResponse {
   successResponse: ManagementFirmResponse | null;
 }
@@ -3313,15 +3294,6 @@ export interface ManagingFirmUserCreateRequest {
   housingStockIds?: number[] | null;
 }
 
-export interface ManagingFirmUserEventResponse {
-  title: string | null;
-  eventType: EManagementFirmEventType;
-
-  /** @format date-time */
-  eventTime: string;
-  data: ManagementFirmEventDataResponse | null;
-}
-
 export interface ManagingFirmUserListResponse {
   /** @format int32 */
   id: number;
@@ -3332,10 +3304,6 @@ export interface ManagingFirmUserListResponse {
   /** @format int32 */
   executingTaskCount: number;
   status: UserStatusResponse | null;
-}
-
-export interface ManagingFirmUserListResponseListSuccessApiResponse {
-  successResponse: ManagingFirmUserListResponse[] | null;
 }
 
 export interface ManagingFirmUserListResponsePagedList {
@@ -3397,39 +3365,6 @@ export interface ManagingFirmUserResponseSuccessApiResponse {
   successResponse: ManagingFirmUserResponse | null;
 }
 
-export interface ManagingFirmUserShortResponse {
-  /** @format int32 */
-  id: number;
-  name: string | null;
-  email: string | null;
-}
-
-export interface ManagingFirmUserShortResponseSuccessApiResponse {
-  successResponse: ManagingFirmUserShortResponse | null;
-}
-
-export interface ManagingFirmUserStatisticsResponse {
-  /** @format int32 */
-  userId: number;
-
-  /** @format int32 */
-  openedTasksCount: number;
-
-  /** @format int32 */
-  closedTasksCount: number;
-
-  /** @format int32 */
-  expiredTasksCount: number;
-
-  /** @format double */
-  inTimeClosedTasksPercent: number;
-  events: ManagingFirmUserEventResponse[] | null;
-}
-
-export interface ManagingFirmUserStatisticsResponseSuccessApiResponse {
-  successResponse: ManagingFirmUserStatisticsResponse | null;
-}
-
 export interface ManagingFirmUserUpdateRequest {
   /** @format email */
   email?: string | null;
@@ -3443,22 +3378,6 @@ export interface ManagingFirmUserUpdateRequest {
   roleTypes?: ESecuredIdentityRoleName[] | null;
   firmCompetenceIds?: string[] | null;
   housingStockIds?: number[] | null;
-}
-
-export interface ManagingFirmUserWorkingStatusResponse {
-  /** @format uuid */
-  id: string | null;
-  type: EManagingFirmUserWorkingStatusType;
-
-  /** @format date-time */
-  startDate: string | null;
-
-  /** @format date-time */
-  endDate: string | null;
-}
-
-export interface ManagingFirmUserWorkingStatusResponseSuccessApiResponse {
-  successResponse: ManagingFirmUserWorkingStatusResponse | null;
 }
 
 export interface MeasurableIntervalResponse {
@@ -3739,6 +3658,224 @@ export interface NumberIdResponseArraySuccessApiResponse {
 export enum OrderByRule {
   Ascending = "Ascending",
   Descending = "Descending",
+}
+
+export interface OrganizationAddressResponse {
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  corpus: string | null;
+}
+
+export interface OrganizationResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+  information: string | null;
+  email: string | null;
+  workingTime: string | null;
+  address: OrganizationAddressResponse | null;
+}
+
+export interface OrganizationResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: OrganizationResponse[] | null;
+}
+
+export interface OrganizationResponsePagedListSuccessApiResponse {
+  successResponse: OrganizationResponsePagedList | null;
+}
+
+export interface OrganizationResponseSuccessApiResponse {
+  successResponse: OrganizationResponse | null;
+}
+
+export interface OrganizationUpdateRequest {
+  name?: string | null;
+  phoneNumber?: string | null;
+}
+
+export interface OrganizationUserCreateRequest {
+  /** @format email */
+  email?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  middleName?: string | null;
+  cellphone?: string | null;
+  department?: string | null;
+  position?: string | null;
+  number?: string | null;
+  password?: string | null;
+  roleTypes?: ESecuredIdentityRoleName[] | null;
+  competenceIds?: string[] | null;
+  housingStockIds?: number[] | null;
+}
+
+export interface OrganizationUserEventResponse {
+  title: string | null;
+  eventType: EManagementFirmEventType;
+
+  /** @format date-time */
+  eventTime: string;
+  data: ManagementFirmEventDataResponse | null;
+}
+
+export interface OrganizationUserListResponse {
+  /** @format int32 */
+  id: number;
+  email: string | null;
+  name: string | null;
+  cellphone: string | null;
+
+  /** @format int32 */
+  executingTaskCount: number;
+  status: UserStatusResponse | null;
+}
+
+export interface OrganizationUserListResponseListSuccessApiResponse {
+  successResponse: OrganizationUserListResponse[] | null;
+}
+
+export interface OrganizationUserListResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: OrganizationUserListResponse[] | null;
+}
+
+export interface OrganizationUserListResponsePagedListSuccessApiResponse {
+  successResponse: OrganizationUserListResponsePagedList | null;
+}
+
+export interface OrganizationUserResponse {
+  /** @format int32 */
+  id: number;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
+  cellphone: string | null;
+  department: string | null;
+  position: string | null;
+  number: string | null;
+  profilePhoto: DocumentResponse | null;
+
+  /** @format date-time */
+  hireDate: string | null;
+
+  /** @format date-time */
+  dismissalDate: string | null;
+
+  /** @format date-time */
+  suspendedFromDate: string | null;
+  organization: OrganizationResponse | null;
+  status: UserStatusResponse | null;
+  competences: UserCompetenceResponse[] | null;
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
+  housingStocks: HousingStockShortResponse[] | null;
+}
+
+export interface OrganizationUserResponseSuccessApiResponse {
+  successResponse: OrganizationUserResponse | null;
+}
+
+export interface OrganizationUserShortResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  email: string | null;
+}
+
+export interface OrganizationUserShortResponseSuccessApiResponse {
+  successResponse: OrganizationUserShortResponse | null;
+}
+
+export interface OrganizationUserStatisticsResponse {
+  /** @format int32 */
+  userId: number;
+
+  /** @format int32 */
+  openedTasksCount: number;
+
+  /** @format int32 */
+  closedTasksCount: number;
+
+  /** @format int32 */
+  expiredTasksCount: number;
+
+  /** @format double */
+  inTimeClosedTasksPercent: number;
+  events: OrganizationUserEventResponse[] | null;
+}
+
+export interface OrganizationUserStatisticsResponseSuccessApiResponse {
+  successResponse: OrganizationUserStatisticsResponse | null;
+}
+
+export interface OrganizationUserUpdateRequest {
+  /** @format email */
+  email?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  middleName?: string | null;
+  cellphone?: string | null;
+  department?: string | null;
+  position?: string | null;
+  number?: string | null;
+  roleTypes?: ESecuredIdentityRoleName[] | null;
+  competenceIds?: string[] | null;
+  housingStockIds?: number[] | null;
+}
+
+export interface OrganizationUserWorkingStatusResponse {
+  /** @format uuid */
+  id: string | null;
+  type: EOrganizationUserWorkingStatusType;
+
+  /** @format date-time */
+  startDate: string | null;
+
+  /** @format date-time */
+  endDate: string | null;
+}
+
+export interface OrganizationUserWorkingStatusResponseSuccessApiResponse {
+  successResponse: OrganizationUserWorkingStatusResponse | null;
 }
 
 export interface ParseResultResponse {
@@ -4089,7 +4226,7 @@ export interface StageListResponse {
   number: number;
   name: string | null;
   hint: string | null;
-  perpetrator: ManagingFirmUserShortResponse | null;
+  perpetrator: OrganizationUserShortResponse | null;
   status: string | null;
   type: string | null;
 
@@ -4142,7 +4279,7 @@ export interface StageResponse {
   /** @format int32 */
   number: number;
   name: string | null;
-  perpetrator: ManagingFirmUserShortResponse | null;
+  perpetrator: OrganizationUserShortResponse | null;
   status: string | null;
   actions: string[] | null;
   additionalActions: string[] | null;
@@ -4489,7 +4626,7 @@ export interface TaskApplicationResponse {
   nomenclatures: WorkNomenclatureResponse[] | null;
   address: TaskApplicationAddressResponse | null;
   comment: string | null;
-  executor: ManagingFirmUserShortResponse | null;
+  executor: OrganizationUserShortResponse | null;
 }
 
 export interface TaskApplicationResponseSuccessApiResponse {
@@ -4622,7 +4759,7 @@ export interface TaskListResponse {
   closingTime: string | null;
   closingStatus: ETaskClosingStatus | null;
   address: FullAddressResponse | null;
-  perpetrator: ManagingFirmUserShortResponse | null;
+  perpetrator: OrganizationUserShortResponse | null;
   isResponsible: boolean;
   hasChanged: boolean;
   needsValidation: boolean;
@@ -4649,7 +4786,7 @@ export interface TaskResponse {
   /** @format int32 */
   housingStockId: number;
   isPerpetrator: boolean;
-  perpetrator: ManagingFirmUserShortResponse | null;
+  perpetrator: OrganizationUserShortResponse | null;
 
   /** @format date-time */
   creationTime: string | null;
@@ -4905,7 +5042,7 @@ export interface UserStatusResponse {
   /** @format uuid */
   id: string | null;
   title: string | null;
-  type: EManagingFirmUserWorkingStatusType;
+  type: EOrganizationUserWorkingStatusType;
 
   /** @format date-time */
   startDate: string | null;
@@ -5078,7 +5215,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Наблюдатель УК</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsCreate
@@ -5098,7 +5235,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Наблюдатель УК</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsUpdate
@@ -5118,7 +5255,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Наблюдатель УК</li>
      *
      * @tags ApartmentActs
      * @name ApartmentActsDelete
@@ -5136,6 +5273,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags ApartmentActs
@@ -5154,6 +5292,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags ApartmentActs
@@ -5172,7 +5311,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags Apartments
      * @name ApartmentsCreate
@@ -5192,7 +5331,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsList
@@ -5226,7 +5365,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Apartments
      * @name ApartmentsUpdate
@@ -5257,7 +5396,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsDetail
@@ -5275,7 +5414,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsApartmentStatusList
@@ -5293,7 +5432,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsHomeownerAccountsDetail
@@ -5316,7 +5455,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsApartmentChecksDetail
@@ -5339,7 +5478,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsActsDetail
@@ -5357,7 +5496,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Apartments
      * @name ApartmentsSetStatusProblemDevicesDetail
@@ -5380,7 +5519,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Apartments
      * @name ApartmentsSetStatusPartialUpdate
@@ -5404,7 +5543,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsAddCheckCreate
@@ -5424,7 +5563,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsEditCheckUpdate
@@ -5449,7 +5588,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsRemoveCheckDelete
@@ -5467,7 +5606,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsDocumentsDetail
@@ -5485,7 +5624,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags Apartments
      * @name ApartmentsDuplicateReadingsCreate
@@ -5502,7 +5641,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsFindApartmentIdList
@@ -5524,7 +5663,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsCheckTypesList
@@ -5652,7 +5791,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags CalculatorInfos
      * @name CalculatorInfosList
@@ -5670,7 +5809,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsExportLiteList
@@ -5688,7 +5827,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsExportList
@@ -5734,7 +5873,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsList
@@ -5780,7 +5919,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags Calculators
      * @name CalculatorsCreate
@@ -5800,7 +5939,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsDetail
@@ -5818,7 +5957,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags Calculators
      * @name CalculatorsUpdate
@@ -5838,7 +5977,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags Calculators
      * @name CalculatorsSwitchCreate
@@ -5858,7 +5997,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags Calculators
      * @name CalculatorsFiltersList
@@ -5876,7 +6015,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Contractors
      * @name ContractorsList
@@ -5894,7 +6033,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags Contractors
      * @name ContractorsCreate
@@ -5914,7 +6053,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Contractors
      * @name ContractorsDetail
@@ -5932,7 +6071,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags Contractors
      * @name ContractorsUpdate
@@ -5952,7 +6091,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags Contractors
      * @name ContractorsDelete
@@ -5969,7 +6108,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags CurrentTransformers
      * @name CurrentTransformersDetail
@@ -5987,7 +6126,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags CurrentTransformers
      * @name CurrentTransformersUpdate
@@ -6025,7 +6164,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags CurrentTransformers
      * @name CurrentTransformersCreate
@@ -6045,7 +6184,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags CurrentTransformers
      * @name CurrentTransformersCloseCreate
@@ -6069,7 +6208,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags CurrentTransformers
      * @name CurrentTransformersCheckCreate
@@ -6226,7 +6365,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsUploadCreate
@@ -6246,7 +6385,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsDetail
@@ -6264,7 +6403,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Контролёр</li>
      *
      * @tags Documents
      * @name DocumentsDelete
@@ -6281,7 +6420,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesDetail
@@ -6299,7 +6438,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesUpdate
@@ -6340,7 +6479,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesCreate
@@ -6363,7 +6502,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ElectricHousingMeteringDevices
      * @name ElectricHousingMeteringDevicesSwitchCreate
@@ -6386,7 +6525,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesDetail
@@ -6404,7 +6543,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesCreate
@@ -6424,7 +6563,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesUpdate
@@ -6444,7 +6583,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesSetRegisteredStatusCreate
@@ -6467,7 +6606,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesSetNotRegisteredStatusCreate
@@ -6490,7 +6629,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Exports
      * @name ExportsMilurDevicesList
@@ -6509,7 +6648,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Exports
      * @name ExportsIndividualDeviceReadingsList
@@ -6528,7 +6667,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Exports
      * @name ExportsHousingDeviceReadingsList
@@ -6547,7 +6686,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsList
@@ -6565,7 +6704,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsUpdate
@@ -6593,7 +6732,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsSwitchCreate
@@ -6613,7 +6752,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsAddOrUpdateForHouseManagementCreate
@@ -6636,7 +6775,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags HeatingStation
      * @name HeatingStationList
@@ -6654,7 +6793,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingStation
      * @name HeatingStationCreate
@@ -6674,7 +6813,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags HeatingStation
      * @name HeatingStationDetail
@@ -6692,7 +6831,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingStation
      * @name HeatingStationUpdate
@@ -6712,7 +6851,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HeatingStation
      * @name HeatingStationDelete
@@ -6729,7 +6868,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsList
@@ -6759,7 +6898,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsCreate
@@ -6779,7 +6918,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsDetail
@@ -6797,7 +6936,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsUpdate
@@ -6817,7 +6956,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsCloseCreate
@@ -6836,7 +6975,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsReplaceCreate
@@ -6856,7 +6995,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsCertificateDetail
@@ -6874,7 +7013,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsSplitCreate
@@ -6894,7 +7033,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HouseManagements
      * @name HouseManagementsCreate
@@ -6918,7 +7057,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsList
@@ -6937,7 +7076,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsCreate
@@ -6960,7 +7099,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsUpdate
@@ -6983,7 +7122,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsRemoveCreate
@@ -7001,7 +7140,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesList
@@ -7032,7 +7171,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesSwitchCreate
@@ -7052,7 +7191,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentDetail
@@ -7070,7 +7209,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentCreate
@@ -7094,7 +7233,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentUpdate
@@ -7118,7 +7257,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCommentDelete
@@ -7135,7 +7274,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesReadingsHistoryDetail
@@ -7153,7 +7292,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesCloseDevicesByCheckingDateCreate
@@ -7170,7 +7309,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags HousingStocks
      * @name HousingStocksCreate
@@ -7190,7 +7329,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksList
@@ -7229,7 +7368,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingStocks
      * @name HousingStocksUpdate
@@ -7249,7 +7388,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDetail
@@ -7267,7 +7406,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksControllerDetail
@@ -7276,7 +7415,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksControllerDetail: (housingStockId: number, params: RequestParams = {}) =>
-      this.request<ManagingFirmUserShortResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<OrganizationUserShortResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Controller`,
         method: "GET",
         secure: true,
@@ -7285,7 +7424,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags HousingStocks
      * @name HousingStocksReassignControllerCreate
@@ -7294,7 +7433,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksReassignControllerCreate: (housingStockId: number, controllerId: number, params: RequestParams = {}) =>
-      this.request<ManagingFirmUserShortResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<OrganizationUserShortResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/ReassignController/${controllerId}`,
         method: "POST",
         secure: true,
@@ -7303,7 +7442,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksCalculatorsDetail
@@ -7321,7 +7460,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDevicesDetail
@@ -7339,7 +7478,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDevicesDetail2
@@ -7359,7 +7498,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDevicesRelatedDetail
@@ -7377,7 +7516,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDevicesCommunicationPipesDetail
@@ -7399,7 +7538,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksFiltersList
@@ -7417,7 +7556,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksGetFiasIdList
@@ -7439,7 +7578,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksExistingCitiesList
@@ -7461,7 +7600,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksExistingStreetsList
@@ -7483,7 +7622,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksExistingHousingStockNumberList
@@ -7505,7 +7644,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksExistingApartmentNumberDetail
@@ -7523,7 +7662,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksInspectorsList
@@ -7551,7 +7690,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingStocks
      * @name HousingStocksInspectorPartialUpdate
@@ -7575,7 +7714,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingStocks
      * @name HousingStocksInspectorDelete
@@ -7593,7 +7732,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
      * @name HousingStocksDoesApartmentExistDetail
@@ -7615,7 +7754,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags ImportLogs
      * @name ImportLogsList
@@ -7633,7 +7772,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags ImportLogs
      * @name ImportLogsDetail
@@ -7651,7 +7790,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags Imports
      * @name ImportsIndividualDevicesCreate
@@ -7681,7 +7820,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags Imports
      * @name ImportsReadingsFromErcMultipleCreate
@@ -7704,7 +7843,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags Imports
      * @name ImportsReadingsFromErcCreate
@@ -7736,7 +7875,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags Imports
      * @name ImportsReadingsFromErcNewCreate
@@ -7767,7 +7906,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Imports
      * @name ImportsPersonalAccountNumbersCreate
@@ -7845,7 +7984,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesList
@@ -7864,7 +8003,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsCreateLiteCreate
@@ -7887,7 +8026,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsCreateCreate
@@ -7907,7 +8046,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Фоновый рабочий</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsRemoveCreate
@@ -7925,7 +8064,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesDetail
@@ -7943,7 +8082,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesUpdate
@@ -7963,7 +8102,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesList
@@ -7998,7 +8137,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCreate
@@ -8018,7 +8157,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCloseCreate
@@ -8038,7 +8177,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesReopenCreate
@@ -8056,7 +8195,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchMagneticSealCreate
@@ -8080,7 +8219,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSetMagneticSealCreate
@@ -8104,7 +8243,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchCreate
@@ -8124,7 +8263,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesReadingsHistoryDetail
@@ -8142,7 +8281,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesEditReadingsHistoryCreate
@@ -8165,7 +8304,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCreateTaskForDeviceWithoutReadingsCreate
@@ -8186,7 +8325,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCloseDevicesWithoutReadingsCreate
@@ -8203,7 +8342,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesCloseDevicesByCheckingDateCreate
@@ -8220,7 +8359,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesDeleteCreate
@@ -8237,7 +8376,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsList
@@ -8255,7 +8394,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsCreate
@@ -8275,7 +8414,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsDetail
@@ -8293,7 +8432,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsPartialUpdate
@@ -8313,7 +8452,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsDelete
@@ -8330,7 +8469,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksPartialUpdate
@@ -8354,7 +8493,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Оператор</li>
      *
      * @tags Inspectors
      * @name InspectorsHousingStocksDelete
@@ -8372,68 +8511,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
-     *
-     * @tags ManagementFirmCompetences
-     * @name ManagementFirmCompetencesList
-     * @summary ManagementFirmCompetenceRead
-     * @request GET:/api/ManagementFirmCompetences
-     * @secure
-     */
-    managementFirmCompetencesList: (params: RequestParams = {}) =>
-      this.request<ManagementFirmCompetencesListResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagementFirmCompetences`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li>
-     *
-     * @tags ManagementFirmCompetences
-     * @name ManagementFirmCompetencesDelete
-     * @summary ManagementFirmCompetenceUpdate
-     * @request DELETE:/api/ManagementFirmCompetences/{id}
-     * @secure
-     */
-    managementFirmCompetencesDelete: (id: string, params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/ManagementFirmCompetences/${id}`,
-        method: "DELETE",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Фоновый рабочий</li>
-     *
-     * @tags ManagingFirms
-     * @name ManagingFirmsList
-     * @summary ManagingFirmsReadAll
-     * @request GET:/api/ManagingFirms
-     * @secure
-     */
-    managingFirmsList: (
-      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
-      params: RequestParams = {},
-    ) =>
-      this.request<ManagementFirmResponsePagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirms`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags ManagingFirms
      * @name ManagingFirmsCurrentList
-     * @summary ManagingFirmsRead
+     * @summary OrganizationsRead
      * @request GET:/api/ManagingFirms/current
      * @secure
      */
@@ -8447,11 +8529,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags ManagingFirms
      * @name ManagingFirmsUpdate
-     * @summary ManagingFirmsUpdate
+     * @summary OrganizationsUpdate
      * @request PUT:/api/ManagingFirms/{managingFirmId}
      * @secure
      */
@@ -8467,11 +8549,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags ManagingFirms
      * @name ManagingFirmsConsumptionRatesDetail
-     * @summary ManagingFirmsRead
+     * @summary OrganizationsRead
      * @request GET:/api/ManagingFirms/{managingFirmId}/ConsumptionRates
      * @secure
      */
@@ -8485,11 +8567,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersList
-     * @summary ManagingFirmUsersRead
+     * @summary OrganizationUsersRead
      * @request GET:/api/ManagingFirmUsers
      * @secure
      */
@@ -8514,11 +8596,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersCreate
-     * @summary ManagingFirmUsersCreate
+     * @summary OrganizationUsersCreate
      * @request POST:/api/ManagingFirmUsers
      * @secure
      */
@@ -8534,34 +8616,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags ManagingFirmUsers
-     * @name ManagingFirmUsersStatisticsDetail
-     * @summary ManagingFirmUsersRead
-     * @request GET:/api/ManagingFirmUsers/{userId}/statistics
-     * @secure
-     */
-    managingFirmUsersStatisticsDetail: (
-      userId: number,
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<ManagingFirmUserStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirmUsers/${userId}/statistics`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersDetail
-     * @summary ManagingFirmUsersRead
+     * @summary OrganizationUsersRead
      * @request GET:/api/ManagingFirmUsers/{userId}
      * @secure
      */
@@ -8575,11 +8634,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersUpdate
-     * @summary ManagingFirmUsersUpdate
+     * @summary OrganizationUsersUpdate
      * @request PUT:/api/ManagingFirmUsers/{userId}
      * @secure
      */
@@ -8595,11 +8654,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersCurrentList
-     * @summary ManagingFirmUsersRead
+     * @summary OrganizationUsersRead
      * @request GET:/api/ManagingFirmUsers/current
      * @secure
      */
@@ -8613,11 +8672,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersSuspendCreate
-     * @summary ManagingFirmUsersUpdate
+     * @summary OrganizationUsersUpdate
      * @request POST:/api/ManagingFirmUsers/{userId}/suspend
      * @secure
      */
@@ -8631,11 +8690,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersAddressesResetCreate
-     * @summary ManagingFirmUsersUpdate
+     * @summary OrganizationUsersUpdate
      * @request POST:/api/ManagingFirmUsers/addressesReset
      * @secure
      */
@@ -8666,16 +8725,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags ManagingFirmUserWorkingStatuses
      * @name ManagingFirmUserWorkingStatusesList
-     * @summary ManagementFirmUserWorkingStatusRead
+     * @summary OrganizationUserWorkingStatusRead
      * @request GET:/api/ManagingFirmUserWorkingStatuses
      * @secure
      */
     managingFirmUserWorkingStatusesList: (params: RequestParams = {}) =>
-      this.request<EManagingFirmUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+      this.request<EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirmUserWorkingStatuses`,
         method: "GET",
         secure: true,
@@ -8684,30 +8743,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
-     *
-     * @tags ManagingFirmUserWorkingStatuses
-     * @name ManagingFirmUserWorkingStatusesCreate
-     * @summary ManagementFirmUserWorkingStatusCreate
-     * @request POST:/api/ManagingFirmUserWorkingStatuses
-     * @secure
-     */
-    managingFirmUserWorkingStatusesCreate: (
-      data: AddManagingFirmUserWorkingStatusRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<ManagingFirmUserWorkingStatusResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirmUserWorkingStatuses`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesList
@@ -8741,7 +8777,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesSearchList
@@ -8763,7 +8799,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesDetail
@@ -8781,7 +8817,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesRelatedList
@@ -8800,7 +8836,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Сервис ЕРЦ</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Сервис ЕРЦ</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesCloseCreate
@@ -8819,7 +8855,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesCheckCreate
@@ -8838,7 +8874,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags MeteringDevices
      * @name MeteringDevicesExistingModelsList
@@ -8866,7 +8902,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesList
@@ -8909,7 +8945,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags Nodes
      * @name NodesDocumentsCreate
@@ -8928,7 +8964,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksDetail
@@ -8951,7 +8987,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksCreate
@@ -8971,7 +9007,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksUpdate
@@ -8991,7 +9027,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksDelete
@@ -9009,7 +9045,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesList
@@ -9027,7 +9063,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesCreate
@@ -9047,7 +9083,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesDetail
@@ -9065,7 +9101,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesUpdate
@@ -9085,7 +9121,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags NodeServiceZones
      * @name NodeServiceZonesDelete
@@ -9102,7 +9138,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeList
@@ -9124,7 +9160,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeHouseManagementDetail
@@ -9147,7 +9183,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeHousingStockDetail
@@ -9170,7 +9206,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeNodeDetail
@@ -9193,7 +9229,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeAddOrUpdateCreate
@@ -9213,7 +9249,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeDisableDelete
@@ -9232,7 +9268,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeTypesList
@@ -9250,7 +9286,324 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Сервис Scada</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
+     *
+     * @tags OrganizationCompetences
+     * @name OrganizationCompetencesList
+     * @summary OrganizationCompetenceRead
+     * @request GET:/api/OrganizationCompetences
+     * @secure
+     */
+    organizationCompetencesList: (params: RequestParams = {}) =>
+      this.request<ManagementFirmCompetencesListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationCompetences`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags OrganizationCompetences
+     * @name OrganizationCompetencesDelete
+     * @summary OrganizationCompetenceUpdate
+     * @request DELETE:/api/OrganizationCompetences/{id}
+     * @secure
+     */
+    organizationCompetencesDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/OrganizationCompetences/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Фоновый рабочий</li>
+     *
+     * @tags Organizations
+     * @name OrganizationsList
+     * @summary OrganizationsReadAll
+     * @request GET:/api/Organizations
+     * @secure
+     */
+    organizationsList: (
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
+      this.request<OrganizationResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Organizations`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Organizations
+     * @name OrganizationsCurrentList
+     * @summary OrganizationsRead
+     * @request GET:/api/Organizations/current
+     * @secure
+     */
+    organizationsCurrentList: (params: RequestParams = {}) =>
+      this.request<OrganizationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Organizations/current`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags Organizations
+     * @name OrganizationsUpdate
+     * @summary OrganizationsUpdate
+     * @request PUT:/api/Organizations/{managingFirmId}
+     * @secure
+     */
+    organizationsUpdate: (managingFirmId: number, data: OrganizationUpdateRequest, params: RequestParams = {}) =>
+      this.request<OrganizationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Organizations/${managingFirmId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersList
+     * @summary OrganizationUsersRead
+     * @request GET:/api/OrganizationUsers
+     * @secure
+     */
+    organizationUsersList: (
+      query?: {
+        Name?: string;
+        IsSuspended?: boolean;
+        RoleNames?: string[];
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<OrganizationUserListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersCreate
+     * @summary OrganizationUsersCreate
+     * @request POST:/api/OrganizationUsers
+     * @secure
+     */
+    organizationUsersCreate: (data: OrganizationUserCreateRequest, params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersDetail
+     * @summary OrganizationUsersRead
+     * @request GET:/api/OrganizationUsers/{userId}
+     * @secure
+     */
+    organizationUsersDetail: (userId: number, params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/${userId}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersUpdate
+     * @summary OrganizationUsersUpdate
+     * @request PUT:/api/OrganizationUsers/{userId}
+     * @secure
+     */
+    organizationUsersUpdate: (userId: number, data: OrganizationUserUpdateRequest, params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/${userId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersCurrentList
+     * @summary OrganizationUsersRead
+     * @request GET:/api/OrganizationUsers/current
+     * @secure
+     */
+    organizationUsersCurrentList: (params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/current`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersSuspendCreate
+     * @summary OrganizationUsersUpdate
+     * @request POST:/api/OrganizationUsers/{userId}/suspend
+     * @secure
+     */
+    organizationUsersSuspendCreate: (userId: number, params: RequestParams = {}) =>
+      this.request<OrganizationUserResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/${userId}/suspend`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersAddressesResetCreate
+     * @summary OrganizationUsersUpdate
+     * @request POST:/api/OrganizationUsers/addressesReset
+     * @secure
+     */
+    organizationUsersAddressesResetCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/addressesReset`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersRoleTypesList
+     * @summary UserRolesRead
+     * @request GET:/api/OrganizationUsers/RoleTypes
+     * @secure
+     */
+    organizationUsersRoleTypesList: (params: RequestParams = {}) =>
+      this.request<ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/RoleTypes`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersStatisticsDetail
+     * @summary OrganizationUsersRead
+     * @request GET:/api/OrganizationUsers/{userId}/statistics
+     * @secure
+     */
+    organizationUsersStatisticsDetail: (
+      userId: number,
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<OrganizationUserStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/${userId}/statistics`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
+     *
+     * @tags OrganizationUserWorkingStatuses
+     * @name OrganizationUserWorkingStatusesList
+     * @summary OrganizationUserWorkingStatusRead
+     * @request GET:/api/OrganizationUserWorkingStatuses
+     * @secure
+     */
+    organizationUserWorkingStatusesList: (params: RequestParams = {}) =>
+      this.request<EOrganizationUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUserWorkingStatuses`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags OrganizationUserWorkingStatuses
+     * @name OrganizationUserWorkingStatusesCreate
+     * @summary OrganizationUserWorkingStatusCreate
+     * @request POST:/api/OrganizationUserWorkingStatuses
+     * @secure
+     */
+    organizationUserWorkingStatusesCreate: (
+      data: AddOrganizationUserWorkingStatusRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<OrganizationUserWorkingStatusResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/OrganizationUserWorkingStatuses`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesDetail
@@ -9268,7 +9621,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesUpdate
@@ -9292,7 +9645,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesCreate
@@ -9312,7 +9665,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesDetail
@@ -9330,7 +9683,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesUpdate
@@ -9350,7 +9703,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesCreate
@@ -9370,7 +9723,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesSetRegisteredStatusCreate
@@ -9393,7 +9746,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesSetNotRegisteredStatusCreate
@@ -9416,7 +9769,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipesForAddingDeviceDetail
@@ -9443,7 +9796,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipeMagistralTypesList
@@ -9462,7 +9815,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsList
@@ -9480,7 +9833,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags Reports
      * @name ReportsCreate
@@ -9500,7 +9853,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsArchivesList
@@ -9521,7 +9874,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsReportDataList
@@ -9543,7 +9896,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsReportList
@@ -9564,7 +9917,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsConsolidatedReportList
@@ -9591,7 +9944,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsGroupReportList
@@ -9626,7 +9979,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsOperatorsWorkingReportList
@@ -9645,7 +9998,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsInspectorsWorkingReportList
@@ -9664,7 +10017,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsCallCenterWorkingReportList
@@ -9683,7 +10036,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsIndividualMeteringDevicesReportList
@@ -9702,7 +10055,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsHouseManagementsReportList
@@ -9721,7 +10074,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsCheckingDatesReportList
@@ -9740,7 +10093,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsReadingsReportList
@@ -9759,7 +10112,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsManuallyClosedDevicesReportList
@@ -9781,7 +10134,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsApartmentsWithPreviousBrokenDevicesReportList
@@ -9799,7 +10152,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
      * @name ReportsReportWithNsList
@@ -9820,7 +10173,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsRunnerReportsList
@@ -9839,7 +10192,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsMahallyaTasksReportList
@@ -9857,7 +10210,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li>
+     * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
      * @name ReportsDataForMlExportList
@@ -9875,7 +10228,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingList
@@ -9905,7 +10258,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingCreate
@@ -9925,7 +10278,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingDetail
@@ -9943,7 +10296,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li>
+     * @description Роли:<li>Администратор</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingUpdate
@@ -9971,7 +10324,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingFiltersList
@@ -9989,7 +10342,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsList
@@ -10017,7 +10370,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsExportList
@@ -10045,7 +10398,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplications
      * @name TaskApplicationsLinkCreate
@@ -10065,7 +10418,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplications
      * @name TaskApplicationsSimilarList
@@ -10093,7 +10446,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplications
      * @name TaskApplicationsCreate
@@ -10113,7 +10466,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplications
      * @name TaskApplicationsManagingFirmUsersList
@@ -10125,7 +10478,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { Type?: ETaskApplicationType; CompetenceId?: string; HousingStockId?: number },
       params: RequestParams = {},
     ) =>
-      this.request<ManagingFirmUserListResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<OrganizationUserListResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/TaskApplications/managingFirmUsers`,
         method: "GET",
         query: query,
@@ -10135,7 +10488,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplications
      * @name TaskApplicationsTypesList
@@ -10153,7 +10506,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplicationSources
      * @name TaskApplicationSourcesList
@@ -10171,7 +10524,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplicationSources
      * @name TaskApplicationSourcesCreate
@@ -10191,7 +10544,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplicationSources
      * @name TaskApplicationSourcesDetail
@@ -10209,7 +10562,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplicationSources
      * @name TaskApplicationSourcesUpdate
@@ -10229,7 +10582,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li>
      *
      * @tags TaskApplicationSources
      * @name TaskApplicationSourcesDelete
@@ -10246,7 +10599,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksExportList
@@ -10293,7 +10646,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksList
@@ -10340,7 +10693,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksDetail
@@ -10375,7 +10728,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Диспетчер УК</li>
      *
      * @tags Tasks
      * @name TasksCreateCreate
@@ -10413,7 +10766,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksPushStageCreate
@@ -10433,7 +10786,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksRevertStageCreate
@@ -10453,7 +10806,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksNextStagesDetail
@@ -10471,7 +10824,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsCreate
@@ -10491,7 +10844,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsUpdate
@@ -10511,7 +10864,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsDelete
@@ -10545,7 +10898,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li>
      *
      * @tags Tasks
      * @name TasksAssignMultipleCreate
@@ -10564,7 +10917,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksFiltersList
@@ -10582,7 +10935,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksReturnCreate
@@ -10647,6 +11000,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
@@ -10669,7 +11023,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksExportExecutingIndividualDeviceCheckTaskFiltersList

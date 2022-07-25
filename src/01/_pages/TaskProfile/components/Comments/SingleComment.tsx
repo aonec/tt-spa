@@ -3,6 +3,7 @@ import { TaskCommentResponse } from '../../../../../myApi';
 import { Icon } from '../../../../tt-components/Icon';
 import styled from 'styled-components';
 import moment from 'moment';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 const SingleComment = ({ comment }: { comment: TaskCommentResponse }) => {
   return (
@@ -14,7 +15,7 @@ const SingleComment = ({ comment }: { comment: TaskCommentResponse }) => {
         <div style={{ display: 'flex' }}>
           <Author>{comment.author}</Author>
           <CommentDate>
-            {moment(comment.createdAt).format('DD.MM.YYYY HH:mm')}
+            {getTimeStringByUTC(comment.createdAt)}
           </CommentDate>
         </div>
         <CommentText>{comment.text}</CommentText>
