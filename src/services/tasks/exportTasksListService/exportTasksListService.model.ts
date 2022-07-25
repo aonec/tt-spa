@@ -1,57 +1,29 @@
-import {
-  downloadTasksList,
-  fetchExportTaskFilters,
-} from './exportTasksListService.api';
+import { downloadTasksList } from './exportTasksListService.api';
 import { message } from 'antd';
-import { createDomain, forward } from 'effector';
-import {
-  ExportTasksListRequestPayload,
-  ExportTaskType,
-} from './exportTasksListService.types';
-import { createGate } from 'effector-react';
+import { createDomain, sample } from 'effector';
+import { ExportTasksListRequestPayload } from './exportTasksListService.types';
+import { tasksProfileService } from '../tasksProfileService';
 
 const domain = createDomain('exportTasksListService');
-
-const $isModalOpen = domain.createStore(false);
-const $exportTaskFilters = domain.createStore<ExportTaskType[]>([]);
-
-const openModal = domain.createEvent();
-const closeModal = domain.createEvent();
-
-const getExportTaskFilters = domain.createEffect<void, ExportTaskType[]>(
-  fetchExportTaskFilters
-);
 
 const exportTasksListFx = domain.createEffect<
   ExportTasksListRequestPayload,
   void
 >(downloadTasksList);
-const exportTasksList = domain.createEvent<ExportTasksListRequestPayload>();
+const exportTasksList = domain.createEvent();
 
 const $isLoading = exportTasksListFx.pending;
 
-const ExportTaskFiltersGate = createGate();
-
-forward({
-  from: ExportTaskFiltersGate.open,
-  to: getExportTaskFilters,
+sample({
+  source: tasksProfileService.outputs.$searchState,
+  clock: exportTasksList,
+  fn: (payload): ExportTasksListRequestPayload => {
+    return { ...payload, PageSize: 20 };
+  },
+  target: exportTasksListFx,
 });
 
-forward({
-  from: exportTasksList,
-  to: exportTasksListFx,
-});
-
-forward({
-  from: exportTasksListFx.done,
-  to: closeModal,
-});
-
-$isModalOpen.on(openModal, () => true).reset(closeModal);
-$exportTaskFilters.on(
-  getExportTaskFilters.doneData,
-  (_, taskFilters) => taskFilters
-);
+exportTasksList.watch(() => message.info('Выгрузка задач...'));
 
 exportTasksListFx.done.watch(() =>
   message.success('Список задач успешно выгружен!')
@@ -63,16 +35,9 @@ exportTasksListFx.fail.watch(() => {
 
 export const exportTasksListService = {
   inputs: {
-    openModal,
-    closeModal,
     exportTasksList,
   },
   outputs: {
-    $isModalOpen,
     $isLoading,
-    $exportTaskFilters,
-  },
-  gates: {
-    ExportTaskFiltersGate,
   },
 };

@@ -1,28 +1,19 @@
-import { axios } from './../../../01/axios';
+import { axios } from '01/axios';
 import { downloadURI } from '01/features/reports/CreateReportModal/utils';
-import {
-  ExportTasksListRequestPayload,
-  ExportTaskType,
-} from './exportTasksListService.types';
+import moment from 'moment';
+import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 
-export const downloadTasksList = async ({
-  type,
-  name,
-}: ExportTasksListRequestPayload) => {
-  const res: any = await axios.get(
-    `Tasks/ExportExecutingIndividualDeviceCheckTasks`,
-    {
-      responseType: 'blob',
-      params: {
-        taskType: type,
-      },
-    }
-  );
+export const downloadTasksList = async (
+  params: ExportTasksListRequestPayload
+) => {
+  const res: string = await axios.get(`Tasks/Export`, {
+    responseType: 'blob',
+    params: params,
+  });
 
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  return downloadURI(url, `Список_задач_${name}`);
-};
+  const date = moment().format('DD-MM-YYYY');
 
-export const fetchExportTaskFilters = (): Promise<ExportTaskType[]> =>
-  axios.get('Tasks/ExportExecutingIndividualDeviceCheckTaskFilters');
+  return downloadURI(url, `Список_задач_${date}`);
+};
