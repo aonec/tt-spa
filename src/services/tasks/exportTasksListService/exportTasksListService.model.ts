@@ -3,12 +3,14 @@ import { message } from 'antd';
 import { createDomain, sample } from 'effector';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 import { tasksProfileService } from '../tasksProfileService';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('exportTasksListService');
 
 const exportTasksListFx = domain.createEffect<
   ExportTasksListRequestPayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(downloadTasksList);
 const exportTasksList = domain.createEvent();
 
@@ -28,10 +30,6 @@ exportTasksList.watch(() => message.info('Выгрузка задач...'));
 exportTasksListFx.done.watch(() =>
   message.success('Список задач успешно выгружен!')
 );
-
-exportTasksListFx.fail.watch(() => {
-  message.error('Ошибка выгрузки списка задач');
-});
 
 export const exportTasksListService = {
   inputs: {
