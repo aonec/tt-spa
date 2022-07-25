@@ -6,7 +6,7 @@ import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 export const downloadTasksList = async (
   params: ExportTasksListRequestPayload
 ) => {
-  const res: string = await axios.get(`Tasks/Export`, {
+  const res: string = await axios.get(`Tasks/ExportLite`, {
     responseType: 'blob',
     params: params,
   });
