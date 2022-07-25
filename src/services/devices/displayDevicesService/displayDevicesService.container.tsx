@@ -6,14 +6,13 @@ import { DevicesList } from './view/DevicesList';
 export const DevicesListContainer = () => {
   const { outputs, inputs } = displayDevicesService;
 
-  const setPageNumber = useEvent(inputs.setPageNumber);
-
   const calculators = useStore(outputs.$calculators);
   const isLoading = useStore(outputs.$loading);
-
   const total = useStore(outputs.$total);
   const pageNumber = useStore(outputs.$pageNumber);
   const pageSize = useStore(outputs.$pageSize);
+
+  const setPageNumber = useEvent(inputs.setPageNumber);
 
   return (
     <DevicesList

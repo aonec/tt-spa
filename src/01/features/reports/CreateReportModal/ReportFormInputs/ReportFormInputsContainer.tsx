@@ -20,6 +20,7 @@ export const ReportFormInputsContainer = () => {
         reportTypes: [
           ReportType.HouseManagementsReport,
           ReportType.OperatorsWorkingReport,
+          ReportType.InspectorsWorkingReport
         ],
         element: (
           <PeriodDatePicker

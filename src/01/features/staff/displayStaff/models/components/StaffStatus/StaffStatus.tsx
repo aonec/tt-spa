@@ -1,9 +1,9 @@
-import { EManagingFirmUserWorkingStatusType } from 'myApi';
+import { EOrganizationUserWorkingStatusType } from 'myApi';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  status: EManagingFirmUserWorkingStatusType | null;
+  status: EOrganizationUserWorkingStatusType | null;
 }
 
 const staffStatusColors = {
