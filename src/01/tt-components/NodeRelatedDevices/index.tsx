@@ -23,8 +23,6 @@ export const NodeRelatedDevices = ({
   setDeregisterDeviceValue,
   setDeregisterDevice,
 }: NodesInterface) => {
-  const history = useHistory();
-
   if (!node) {
     return <Loader show size={32} />;
   }
@@ -59,7 +57,7 @@ export const NodeRelatedDevices = ({
 
     return (
       <ListItem key={id}>
-        <NameWrap onClick={() => history.push(`/housingMeteringDevices/${id}`)}>
+        <NameWrap to={`/housingMeteringDevices/${id}`}>
           <IconTT
             icon={(resource || 'next').toLowerCase()}
             style={{ marginRight: 8 }}
@@ -116,7 +114,7 @@ export const NodeRelatedDevices = ({
 
 export default NodeRelatedDevices;
 
-const NameWrap = styled.div`
+const NameWrap = styled(Link)`
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
