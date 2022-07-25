@@ -57,9 +57,7 @@ const ApartmentReadingLine = ({
 
   const isSeniorOperator =
     Boolean(userRoletypes) &&
-    userRoletypes?.includes(
-      ESecuredIdentityRoleName.ManagingFirmSeniorOperator
-    );
+    userRoletypes?.includes(ESecuredIdentityRoleName.SeniorOperator);
 
   const onDeleteIndividualDevice = useEvent(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened

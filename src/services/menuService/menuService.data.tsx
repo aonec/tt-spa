@@ -86,15 +86,15 @@ export const menuItems: MenuItem[] = [
 ];
 
 export const privates: MenuFiltrationConfig = {
-  [MenuType.Meters]: [ESecuredIdentityRoleName.ManagingFirmOperator],
-  [MenuType.ActsJournal]: [ESecuredIdentityRoleName.ManagingFirmOperator],
-  [MenuType.Reports]: [ESecuredIdentityRoleName.ManagingFirmSeniorOperator],
-  [MenuType.Settings]: [ESecuredIdentityRoleName.ManagingFirmSeniorOperator],
+  [MenuType.Meters]: [ESecuredIdentityRoleName.Operator],
+  [MenuType.ActsJournal]: [ESecuredIdentityRoleName.Operator],
+  [MenuType.Reports]: [ESecuredIdentityRoleName.SeniorOperator],
+  [MenuType.Settings]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.CompanyProfile]: [
-    ESecuredIdentityRoleName.ManagingFirmAdministrator,
+    ESecuredIdentityRoleName.Administrator,
   ],
 };
 
 export const hidden: MenuFiltrationConfig = {
-  [MenuType.Devices]: [ESecuredIdentityRoleName.ManagingFirmOperator],
+  [MenuType.Devices]: [ESecuredIdentityRoleName.Operator],
 };
