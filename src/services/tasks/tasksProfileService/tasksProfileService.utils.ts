@@ -1,10 +1,5 @@
 import moment from 'moment';
-import {
-  ETaskClosingStatus,
-  ETaskTimeStatus,
-  StageResponse,
-  TaskListResponse,
-} from 'myApi';
+import { ETaskTimeStatus, TaskListResponse } from 'myApi';
 
 export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
@@ -15,17 +10,14 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     showExecutor: grouptype === 'Observing',
   }));
 
-const createTimeline = ({
-  creationTime,
-  expectedCompletionTime,
-  closingTime,
-  timeStatus,
-}: {
-  creationTime: string | null;
-  expectedCompletionTime: string | null;
-  closingTime: string | null;
-  timeStatus: ETaskTimeStatus;
-}) => {
+const createTimeline = (task: TaskListResponse) => {
+  const {
+    closingTime,
+    expectedCompletionTime,
+    creationTime,
+    timeStatus,
+  } = task;
+
   if (closingTime) return null;
 
   const start = new Date(creationTime!);
@@ -38,6 +30,7 @@ const createTimeline = ({
 
   const remainingTime = getFormatedTime(deadline.valueOf() - current);
   const isFailed = deadline.valueOf() - current < 0;
+
   return {
     timelineStyle: {
       color: ColorLookup[timeStatus],
@@ -49,19 +42,15 @@ const createTimeline = ({
   };
 };
 
-const createTimer = ({
-  creationTime,
-  expectedCompletionTime,
-  closingTime,
-  closingStatus,
-  currentStage,
-}: {
-  creationTime: string | null;
-  expectedCompletionTime: string | null;
-  closingTime: string | null;
-  closingStatus: ETaskClosingStatus | null;
-  currentStage: StageResponse | null;
-}) => {
+const createTimer = (task: TaskListResponse) => {
+  const {
+    closingTime,
+    currentStage,
+    closingStatus,
+    creationTime,
+    expectedCompletionTime,
+  } = task;
+
   if (!closingTime) {
     const { expectedCompletionTime: ext } = currentStage!;
     const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
