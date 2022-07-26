@@ -5,7 +5,7 @@ import {
   fetchElectricNode,
   updateElectricHousingMeteringDevice,
 } from './editElectricNodeService.api';
-import { UpdateElectricHousingMeteringDevice } from './view/EditElectricNodePage/EditElectricNodePage.types';
+import { EditElectricNodePayload } from './editElectricNodeService.types';
 
 const domain = createDomain('editElectricNodeService');
 
@@ -18,9 +18,9 @@ const getElectricNode = domain.createEffect<
 >(fetchElectricNode);
 const refetchElectricNode = domain.createEvent<number>();
 
-const updateDevice = domain.createEvent<UpdateElectricHousingMeteringDevice>();
+const updateDevice = domain.createEvent<EditElectricNodePayload>();
 const updateDeviceFx = domain.createEffect<
-  UpdateElectricHousingMeteringDevice,
+EditElectricNodePayload,
   void
 >(updateElectricHousingMeteringDevice);
 
