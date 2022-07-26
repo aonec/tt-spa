@@ -46,6 +46,9 @@ export const TimerRowWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 8px;
+  .status {
+    margin-left: 8px;
+  }
 `;
 
 export const DeviceInfoWrapper = styled.div`

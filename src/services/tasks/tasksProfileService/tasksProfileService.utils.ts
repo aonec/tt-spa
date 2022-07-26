@@ -12,21 +12,16 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
 
 const createTimeline = (task: TaskListResponse) => {
   const {
+    timeProgress,
     closingTime,
     expectedCompletionTime,
-    creationTime,
     timeStatus,
   } = task;
 
   if (closingTime) return null;
 
-  const start = new Date(creationTime!);
   const deadline = new Date(expectedCompletionTime!);
   const current = Date.now();
-
-  const percent = Math.abs(
-    ((current - start.valueOf()) / (deadline.valueOf() - start.valueOf())) * 100
-  );
 
   const remainingTime = getFormatedTime(deadline.valueOf() - current);
   const isFailed = deadline.valueOf() - current < 0;
@@ -34,7 +29,7 @@ const createTimeline = (task: TaskListResponse) => {
   return {
     timelineStyle: {
       color: ColorLookup[timeStatus],
-      width: percent > 100 ? '100%' : `${percent}%`,
+      width: `${timeProgress}%`,
     },
     deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
     remainingTime,
@@ -70,6 +65,7 @@ const createTimer = (task: TaskListResponse) => {
 
   if (closingStatus === 'Interrupted') {
     return {
+      stage: null,
       icon: closingStatus,
       statusDescription: 'Закрыта автоматически',
     };
@@ -78,24 +74,26 @@ const createTimer = (task: TaskListResponse) => {
   const start = creationTime;
   const deadline = expectedCompletionTime;
   const finish = closingTime;
+  const diffTime = new Date(deadline!).valueOf() - new Date(finish!).valueOf();
 
-  const diffTimeStr = getFormatedTime(
-    Math.abs(new Date(deadline!).valueOf() - new Date(finish!).valueOf())
-  );
+  const diffTimeStr = getFormatedTime(Math.abs(diffTime));
 
   const executionTime = getFormatedTime(
     new Date(finish!).valueOf() - new Date(start!).valueOf()
   );
 
-  if (new Date(deadline!).valueOf() - new Date(finish!).valueOf() < 0) {
+  if (diffTime < 0) {
     return {
+      stage: null,
       diffTime: diffTimeStr,
       icon: 'redTimer',
       statusDescription: 'Просрочена на',
+      isFailed: true,
     };
   }
 
   return {
+    stage: null,
     diffTime: `(+${diffTimeStr})`,
     executionTime,
     icon: closingStatus,

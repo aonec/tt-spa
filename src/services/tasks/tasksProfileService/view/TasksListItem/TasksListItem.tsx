@@ -60,17 +60,21 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
           <TimeWrapper fail={timeline.isFailed}>
             {timeline.remainingTime}
           </TimeWrapper>
-          <span>{timeline.deadlineDate}</span>
+          <TimeWrapper>{timeline.deadlineDate}</TimeWrapper>
         </TimeLineWrapper>
       )}
       <TimerRowWrapper>
         <div>
           {Icon && <Icon />}
-          <TextWrapper>{timer.statusDescription}</TextWrapper>
-          <TimeWrapper fail={timer.stage?.isFailed}>
-            {timer.stage?.remainingTime || timer?.executionTime}
+          <TimeWrapper className="status" fail={timer?.isFailed}>
+            {timer.statusDescription}
           </TimeWrapper>
-          <span>{timer.stage?.deadlineDate || timer?.diffTime}</span>
+          {!timer?.isFailed && <TimeWrapper fail={timer.stage?.isFailed}>
+            {timer.stage?.remainingTime || timer?.executionTime}
+          </TimeWrapper>}
+          <TimeWrapper fail={timer?.isFailed}>
+            {timer.stage?.deadlineDate || timer?.diffTime}
+          </TimeWrapper>
         </div>
         {showExecutor && (
           <>

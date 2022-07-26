@@ -1,4 +1,3 @@
-import { resetEditManagingUserRequest } from '01/features/staff/managingFirmUser/editManagingFirmUser/models';
 import { ETaskClosingStatus, TaskListResponse } from 'myApi';
 import { OkIcon, RedTimerIcon, TimerIcon, XIcon } from 'ui-kit/icons';
 
@@ -24,10 +23,10 @@ export type Timeline = {
 };
 
 export type Timer = {
+  stage: Omit<Timeline, 'timelineStyle'> | null;
   icon: string;
   statusDescription: string;
   diffTime?: string;
-  stage?: Omit<Timeline, 'timelineStyle'> | null;
   executionTime?: string;
   isFailed?: boolean;
 };
