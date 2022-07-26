@@ -71,6 +71,7 @@ export const TaskNameWrapper = styled.div`
   font-weight: 500;
   font-size: 16px;
   color: #272f5a;
+  white-space: nowrap;
 `;
 
 export const TimeLine = styled.div`
