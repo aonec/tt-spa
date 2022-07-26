@@ -102,12 +102,14 @@ const createTimer = (task: TaskListResponse) => {
 };
 
 const getFormatedTime = (time: number) => {
-  const days = moment.duration(time).asDays();
+  const days = Math.floor(moment.duration(Math.abs(time)).asDays());
   const hours = moment.duration(Math.abs(time)).hours();
   const minutes = moment.duration(Math.abs(time)).minutes();
 
-  if (days >> 0) {
-    return `${days >> 0}д ${hours}ч`;
+  if (time > 0 && days > 0) {
+    return `${days}д ${hours}ч`;
+  } else if (time < 0 && days > 0) {
+    return `-${days}д ${hours}ч`;
   } else if (hours > 0) {
     return `${hours}ч ${minutes}м`;
   } else {

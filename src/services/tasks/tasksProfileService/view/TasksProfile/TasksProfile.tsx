@@ -3,7 +3,7 @@ import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchTasks } from '../SearchTasks';
-import { TasksListItem } from '../TasksListItem';
+import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 const { TabPane } = TabsSC;
@@ -36,10 +36,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     ? `Наблюдаемые (${observingTasksCount})`
     : 'Наблюдаемые';
 
-  const tasksList = useMemo(
-    () => tasks.map((task) => <TasksListItem key={task.id} task={task} />),
-    [tasks]
-  );
+  const tasksList = useMemo(() => <TasksList tasks={tasks} />, [tasks]);
 
   return (
     <Wrapper>

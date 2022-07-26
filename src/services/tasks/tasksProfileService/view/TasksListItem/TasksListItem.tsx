@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -22,7 +22,7 @@ import {
   TimeWrapper,
   UserIconSC,
 } from './TasksListItem.styled';
-import {  TasksListItemProps } from './TasksListItem.types';
+import { TasksListItemProps } from './TasksListItem.types';
 
 export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const {
@@ -41,6 +41,14 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
 
   const taskName = currentStage ? currentStage.name : name;
   const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
+  const DeviceIcon = useMemo(() => {
+    return device && (
+      <>
+        {device.resource && <ResourceIconLookup resource={device.resource} />}
+        {!device.resource && <CalculatorIcon />}
+      </>
+    );
+  }, [device]);
 
   return (
     <TaskItemWrapper onClick={() => history.push(`/tasks/profile/${id}`)}>
@@ -70,9 +78,11 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
           <TimeWrapper className="status" fail={timer?.isFailed}>
             {timer.statusDescription}
           </TimeWrapper>
-          {!timer?.isFailed && <TimeWrapper fail={timer.stage?.isFailed}>
-            {timer.stage?.remainingTime || timer?.executionTime}
-          </TimeWrapper>}
+          {!timer?.isFailed && (
+            <TimeWrapper fail={timer.stage?.isFailed}>
+              {timer.stage?.remainingTime || timer?.executionTime}
+            </TimeWrapper>
+          )}
           <TimeWrapper fail={timer?.isFailed}>
             {timer.stage?.deadlineDate || timer?.diffTime}
           </TimeWrapper>
@@ -88,10 +98,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
         <InfoBlockWrapper>
           {device && (
             <DeviceInfoWrapper>
-              {device.resource && (
-                <ResourceIconLookup resource={device.resource} />
-              )}
-              {!device.resource && <CalculatorIcon />}
+              {DeviceIcon}
               <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
               <TextWrapper>{device.model}</TextWrapper>
             </DeviceInfoWrapper>
