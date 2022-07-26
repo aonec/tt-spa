@@ -1,6 +1,5 @@
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Select } from '01/shared/ui/Select';
-import { DatePickerTT, InputTT } from '01/tt-components';
+import { InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -8,6 +7,7 @@ import { EActResourceType, EActType } from 'myApi';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import {
+  DatePickerSC,
   ErrorMessage,
   FieldsWrapper,
   SelectSC,
@@ -19,7 +19,6 @@ import {
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-
 
 export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,
@@ -56,7 +55,7 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
     <Form id={formId} onSubmitCapture={submitForm}>
       <FieldsWrapper>
         <Form.Item label="Дата">
-          <DatePickerTT
+          <DatePickerSC
             format="DD.MM.YYYY"
             onChange={(e) => setFieldValue('actJobDate', e?.toISOString(true))}
             value={values.actJobDate ? moment(values.actJobDate) : null}

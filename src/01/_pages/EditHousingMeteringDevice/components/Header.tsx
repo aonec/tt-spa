@@ -6,16 +6,18 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import IsActive from '01/tt-components/IsActive';
+import { Infowrapper } from './Header.styled';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;
 }
 
 export const Header = ({ device }: HousingMeteringDeviceInterface) => {
-  const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
-  const { city, street, number, corpus, id } =
-    address || DEFAULT_BUILDING;
-
+  const { address, model, serialNumber, resource, closingDate } =
+    device || DEFAULT_DEVICE;
+  const { id } = address || DEFAULT_BUILDING;
   return (
     <HeaderWrap
       style={{
@@ -32,14 +34,13 @@ export const Header = ({ device }: HousingMeteringDeviceInterface) => {
           />
           {`${model} (${serialNumber})`}
         </Title>
-
-        <Subtitle
-          to={`/objects/${id}`}
-        >{`${city}, ${street}, ${number}${
-          corpus ? `, к.${corpus}` : ''
-        }`}</Subtitle>
+        <Infowrapper>
+          <Subtitle to={`/objects/${id}`}>
+            {getHousingStockAddress(address, true)}
+          </Subtitle>
+          <IsActive closingDate={closingDate} />
+        </Infowrapper>
       </div>
-
       {/*<MenuButtonTT menuButtonArr={menuButtonArr} />*/}
     </HeaderWrap>
   );

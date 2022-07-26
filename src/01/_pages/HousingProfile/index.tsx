@@ -1,25 +1,25 @@
-import { Route, useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { getHousingTasks, getHousingMeteringDevice } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
-import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import {
   PipeHousingMeteringDeviceResponse,
   TaskListResponse,
 } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
-import { TabsItemInterface } from '../../tt-components/interfaces';
-import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import ModalCheckDevice from '../../_modals/ModalCheckDevice';
 import Events from '../../tt-components/Events';
 import { Grid } from '01/_components/Grid';
+import { DocumentsWrapper, TabsSC } from './HousingProfile.styled';
+import { HousingProfileGrouptype } from './HousingProfile.types';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
+const { TabPane } = TabsSC;
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
-  const { push } = useHistory();
   const path = `/housingMeteringDevices/${deviceId}`;
 
   const {
@@ -31,6 +31,9 @@ export const HousingProfile = () => {
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
   const [deregister, setDeregister] = useState<boolean>(false);
   const [checkVisible, setCheckVisible] = useState(false);
+  const [grouptype, setGrouptype] = useState<HousingProfileGrouptype>(
+    HousingProfileGrouptype.info
+  );
 
   useEffect(() => {
     run(getHousingMeteringDevice(deviceId));
@@ -46,50 +49,45 @@ export const HousingProfile = () => {
     return null;
   }
 
-  const tabItems: Array<TabsItemInterface> = [
-    {
-      title: 'Общая информация',
-      key: '',
-      cb: () => {
-        push(`${path}`);
-      },
-    },
-    {
-      title: 'Подключенные приборы',
-      key: 'related',
-      cb: () => {
-        push(`${path}/related`);
-      },
-    },
-    {
-      title: 'Документы',
-      key: 'documents',
-      cb: () => {
-        push(`${path}/documents`);
-      },
-    },
-  ];
-
   return (
     <>
+      <GoBack />
       <Header
         device={device}
         setDeregister={setDeregister}
         setCheckVisible={setCheckVisible}
       />
-      <Tabs tabItems={tabItems} tabsType={'route'} />
-      <Grid>
-        <Route path={`${path}`} exact>
-          <Information device={device} />
-        </Route>
-        <Route path={`${path}/related`} exact>
-          <RelatedDevices device={device} />
-        </Route>
-        <Route path={`${path}/documents`} exact>
-          <Documents />
-        </Route>
-        <Events title="Задачи с объектом" tasks={tasks} />
-      </Grid>
+      <TabsSC
+        activeKey={grouptype}
+        onChange={(grouptype) =>
+          setGrouptype(grouptype as HousingProfileGrouptype)
+        }
+      >
+        <TabPane tab="Общая информация" key={HousingProfileGrouptype.info}>
+          <Grid>
+            <Information device={device} />
+            <Events title="Задачи с объектом" tasks={tasks} />
+          </Grid>
+        </TabPane>
+        <TabPane
+          tab="Подключенные приборы"
+          key={HousingProfileGrouptype.related}
+        >
+          <Grid>
+            <RelatedDevices device={device} />
+            <Events title="Задачи с объектом" tasks={tasks} />
+          </Grid>
+        </TabPane>
+        <TabPane tab="Документы" key={HousingProfileGrouptype.documents}>
+          <Grid>
+            <DocumentsWrapper>
+              Компонент Документы в процессе разработки
+            </DocumentsWrapper>
+            <Events title="Задачи с объектом" tasks={tasks} />
+          </Grid>
+        </TabPane>
+      </TabsSC>
+
       <ModalDeregister
         visible={deregister}
         setVisible={setDeregister}

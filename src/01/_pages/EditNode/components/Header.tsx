@@ -5,6 +5,7 @@ import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { CalculatorResponse, PipeNodeResponse } from '../../../../myApi';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -18,8 +19,7 @@ export const Header = ({ node }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, city, street, number: housingStockNumber, corpus } =
-    address || {};
+  const { id: objectId, number: housingStockNumber } = address || {};
 
   const getNodeStatus =
     nodeStatusList.find(
@@ -62,9 +62,7 @@ export const Header = ({ node }: HeaderInterface) => {
 
         <SubtitleWrap>
           <Subtitle to={`/objects/${objectId}`}>
-            {`${city}, ${street}, ${housingStockNumber}${
-              corpus ? `, к.${corpus}` : ''
-            }`}
+            {getHousingStockAddress(address, true)}
           </Subtitle>
           <NodeStatus />
         </SubtitleWrap>

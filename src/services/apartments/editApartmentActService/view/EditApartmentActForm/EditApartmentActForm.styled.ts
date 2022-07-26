@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 export const ErrorMessage = styled.div`
   margin: 5px 0 5px;
@@ -15,3 +16,7 @@ export const SelectSC = styled.div`
   max-width: 172px;
   overflow: hidden;
 `;
+
+export const DatePickerSC = styled(DatePicker)`
+  width: auto !important;
+`
