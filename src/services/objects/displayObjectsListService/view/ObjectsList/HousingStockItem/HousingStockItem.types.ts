@@ -1,4 +1,4 @@
-import { HousingStockListResponse } from 'myApi';
+import { HousingStockListResponse } from "../../../../../../api/types";
 
 export type HousingStockItemProps = {
   housingStock: HousingStockListResponse;

@@ -1,31 +1,13 @@
 {
-  "name": "tt",
+  "name": "tt-management",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@jackfranklin/test-data-bot": "^1.3.0",
-    "@material-ui/core": "^4.11.0",
-    "@reduxjs/toolkit": "^1.5.1",
-    "@reshadow/macro": "0.0.1",
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/react-hooks": "^5.1.1",
-    "@testing-library/user-event": "^13.1.1",
-    "@types/axios": "^0.14.0",
-    "@types/file-saver": "^2.0.3",
-    "@types/jest": "^26.0.16",
-    "@types/lodash": "^4.14.168",
-    "@types/node": "^16.11.45",
-    "@types/qs": "^6.9.6",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-redux": "^7.1.15",
-    "@types/react-router-dom": "^5.1.6",
-    "@types/react-virtualized": "^9.21.14",
-    "@types/redux-saga": "^0.10.5",
-    "@types/uuid": "^8.3.0",
-    "@types/victory": "^33.1.4",
-    "@types/yup": "^0.29.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0",
     "antd": "4.21.7",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
@@ -49,13 +31,10 @@
     "msw": "^0.28.0",
     "qs": "^6.10.1",
     "query-string": "^6.13.8",
-    "react": "^17.0.1",
     "react-bootstrap-icons": "^1.5.0",
-    "react-dom": "^17.0.1",
     "react-is": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.3",
     "react-tagsinput": "^3.19.0",
     "react-test-render": "^1.1.2",
     "react-thunk": "^1.0.0",
@@ -75,18 +54,49 @@
     "svg-sprite-loader": "^5.0.0",
     "swagger-typescript-api": "^6.1.1",
     "tsc-watch": "^4.2.9",
-    "typescript": "^4.7.4",
     "uuid": "^8.3.2",
     "victory": "^35.4.6",
     "yup": "^0.29.3"
+  },
+  "devDependencies": {
+    "@jackfranklin/test-data-bot": "^1.3.0",
+    "@material-ui/core": "^4.11.0",
+    "@reduxjs/toolkit": "^1.5.1",
+    "@reshadow/macro": "0.0.1",
+    "@testing-library/react-hooks": "^5.1.1",
+    "@types/axios": "^0.14.0",
+    "@types/file-saver": "^2.0.3",
+    "@types/lodash": "^4.14.168",
+    "@types/qs": "^6.9.6",
+    "@types/react-redux": "^7.1.15",
+    "@types/react-router-dom": "^5.1.6",
+    "@types/react-virtualized": "^9.21.14",
+    "@types/redux-saga": "^0.10.5",
+    "@types/uuid": "^8.3.0",
+    "@types/victory": "^33.1.4",
+    "@types/yup": "^0.29.11",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/styled-components": "^5.1.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://management.staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios",
+    "api-codegen": "npx swagger-typescript-api -p https://management.staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src/api -n types.ts --axios",
     "prettify": "yarn prettier --write ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -99,16 +109,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/helper-define-map": "^7.13.12",
-    "@types/styled-components": "^5.1.7",
-    "prettier": "^2.2.1"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 2,
-    "semi": true,
-    "singleQuote": true
   }
 }

@@ -1,4 +1,4 @@
-import { HousingStockShortResponse } from 'myApi';
+import { HousingStockShortResponse } from "../api/types";
 
 export const fullAddressesString = (
   address: HousingStockShortResponse | null

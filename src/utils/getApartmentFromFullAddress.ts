@@ -1,4 +1,4 @@
-import { FullAddressResponse } from 'myApi';
+import { FullAddressResponse } from "../api/types";
 
 export const getApartmentFromFullAddress = (
   address: FullAddressResponse | null,

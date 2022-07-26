@@ -1,4 +1,4 @@
-import { EActResourceType } from 'myApi';
+import { EActResourceType } from "../../../api/types";
 
 export type ResourceInfoProps = {
   resource: EActResourceType;

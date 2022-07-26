@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from '@reshadow/macro';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import '01/css/index.scss';
-import '01/css/styles.css';
-import { app } from '01/styles/app';
-import { Logotip } from '01/components';
-import moment from 'moment';
-import { Provider } from 'react-redux';
-import 'moment/locale/ru';
-import { ConfigProvider } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
-import { YMaps } from 'react-yandex-maps';
+import React from "react";
+import styled from "@reshadow/macro";
+import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
+import "01/css/index.scss";
+import "01/css/styles.css";
+import { app } from "01/styles/app";
+import { Logotip } from "01/components";
+import moment from "moment";
+import { Provider } from "react-redux";
+import "moment/locale/ru";
+import { ConfigProvider } from "antd";
+import ruRu from "antd/es/locale/ru_RU";
+import { YMaps } from "react-yandex-maps";
 import {
   Login,
   TaskProfile,
@@ -31,47 +31,47 @@ import {
   EditNode,
   AddNode,
   IndividualDeviceEdit,
-} from '../_pages';
-import { useApp } from './useApp';
-import EditODPU from '../_pages/EditHousingMeteringDevice';
-import { Devices } from '../_pages/ObjectProfile/components/Devices';
-import { store } from '../Redux/store';
-import { DevicesFromSearch } from '../_pages/Devices';
-import '../features/init';
-import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
-import { StatisticsPage } from '01/features/statistics';
-import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
-import styledC from 'styled-components';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ReportsPageContainer } from '01/features/reports';
-import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
-import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
-import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
-import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
-import { MenuContainer } from 'services/menuService';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+} from "../_pages";
+import { useApp } from "./useApp";
+import EditODPU from "../_pages/EditHousingMeteringDevice";
+import { Devices } from "../_pages/ObjectProfile/components/Devices";
+import { store } from "../Redux/store";
+import { DevicesFromSearch } from "../_pages/Devices";
+import "../features/init";
+import { ApartmentsRouteGroup } from "./routeGroups/ApartmentsRouteGroup";
+import { StatisticsPage } from "01/features/statistics";
+import { ApartmentActs } from "01/features/actsJournal/displayActsJournal";
+import styledC from "styled-components";
+import { Space } from "01/shared/ui/Layout/Space/Space";
+import { ReportsPageContainer } from "01/features/reports";
+import { NodeArchivePageContainer } from "01/features/nodes/nodeArchiveService";
+import { SettingsPageContainer } from "../features/settings/SettingsPageContainer";
+import { ObjectsProfileContainer } from "services/objects/objectsProfileService";
+import { DevicesProfileContainer } from "services/devices/devicesProfileService";
+import { MenuContainer } from "services/menuService";
+import { EditManagingFirmUserPage } from "01/features/staff/managingFirmUser/editManagingFirmUser";
 import {
   TasksProfileContainer,
   tasksProfileService,
-} from 'services/tasks/tasksProfileService';
-import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
-import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
+} from "services/tasks/tasksProfileService";
+import { ChangeODPUContainer } from "services/devices/сhangeODPUService";
+import { EditElectricNodeContainer } from "services/devices/editElectricNodeService";
 
-moment.locale('ru');
+moment.locale("ru");
 
 const Internal = () => {
-  const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+  const roles = JSON.parse(localStorage.getItem("roles")) ?? [];
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
-      <Route path="/logout" render={() => 'logout'} />
+      <Route path="/logout" render={() => "logout"} />
       <Route path="/error/" render={() => <ErrorPage />} />
       <Route path="/registration*" render={() => <Registration />} />
       <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
       <Route path="/">
         <layout>
-          <LeftBlock style={{ position: 'fixed', height: '100vh' }}>
+          <LeftBlock style={{ position: "fixed", height: "100vh" }}>
             <Logotip />
             <Space />
             <MenuContainer />
@@ -82,9 +82,9 @@ const Internal = () => {
               <Redirect
                 from="/"
                 to={
-                  roles.includes('ManagingFirmOperator')
-                    ? '/meters/apartments'
-                    : '/tasks/list/Executing'
+                  roles.includes("ManagingFirmOperator")
+                    ? "/meters/apartments"
+                    : "/tasks/list/Executing"
                 }
                 exact
               />
@@ -149,7 +149,7 @@ const Internal = () => {
 
               <Route
                 path={[
-                  '/calculators/:deviceId/(connection|related|nodes|documents)?',
+                  "/calculators/:deviceId/(connection|related|nodes|documents)?",
                 ]}
                 component={CalculatorProfile}
                 exact
@@ -175,20 +175,20 @@ const Internal = () => {
 
               <Route
                 path={[
-                  '/housingMeteringDevices/:deviceId/(related|documents)?',
+                  "/housingMeteringDevices/:deviceId/(related|documents)?",
                 ]}
                 component={HousingProfile}
                 exact
               />
 
               <Route
-                path={['/user/:userId', '/user/staff/:userId']}
+                path={["/user/:userId", "/user/staff/:userId"]}
                 component={UserProfile}
                 exact
               />
 
               <Route
-                path={['/user/:userId', '/user/contractor/:userId']}
+                path={["/user/:userId", "/user/contractor/:userId"]}
                 component={Contractor}
                 exact
               />
@@ -264,15 +264,17 @@ const Internal = () => {
 export function App() {
   const AppProvider = useApp();
   return styled(app)(
-    <Provider store={store}>
-      <AppProvider>
-        <ConfigProvider locale={ruRu}>
-          <YMaps>
-            <Internal />
-          </YMaps>
-        </ConfigProvider>
-      </AppProvider>
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppProvider>
+          <ConfigProvider locale={ruRu}>
+            <YMaps>
+              <Internal />
+            </YMaps>
+          </ConfigProvider>
+        </AppProvider>
+      </Provider>
+    </BrowserRouter>
   );
 }
 

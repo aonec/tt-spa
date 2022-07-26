@@ -1,8 +1,8 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { Tooltip } from 'antd';
-import React, { FC, useMemo } from 'react';
-import { WarningIcon } from 'ui-kit/icons';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { FC, useMemo } from 'react';
+import { ContextMenuButton } from '../../../../../../01/shared/ui/ContextMenuButton';
+import { WarningIcon } from '../../../../../../ui-kit/icons';
+import { getHousingStockAddress } from '../../../../../../utils/getHousingStockAddress';
 import {
   AdditionalAddress,
   Address,
