@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { IconLookup } from './TasksListItem.constants';
 import {
   CalendarIconSC,
   DeviceInfoWrapper,
@@ -21,7 +22,7 @@ import {
   TimeWrapper,
   UserIconSC,
 } from './TasksListItem.styled';
-import { IconLookup, TasksListItemProps } from './TasksListItem.types';
+import {  TasksListItemProps } from './TasksListItem.types';
 
 export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const {

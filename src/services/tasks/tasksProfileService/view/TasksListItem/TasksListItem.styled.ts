@@ -8,9 +8,9 @@ export const TaskItemWrapper = styled.div`
   border-radius: 4px;
   border: 1px solid transparent;
   color: #272f5a;
-
   transition: 0.2s;
   cursor: pointer;
+
   &:first-child {
     margin-top: 0px;
   }
@@ -46,6 +46,7 @@ export const TimerRowWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 8px;
+
   .status {
     margin-left: 8px;
   }
@@ -54,6 +55,7 @@ export const TimerRowWrapper = styled.div`
 export const DeviceInfoWrapper = styled.div`
   display: flex;
   align-items: center;
+
   svg:first-of-type {
     transform: scale(0.9);
   }
@@ -62,6 +64,7 @@ export const DeviceInfoWrapper = styled.div`
 export const InfoBlockWrapper = styled.div`
   display: flex;
   align-items: center;
+  
   svg:nth-child(1) {
     margin-left: 0px !important;
   }

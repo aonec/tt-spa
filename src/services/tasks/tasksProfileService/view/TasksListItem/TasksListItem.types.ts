@@ -31,12 +31,3 @@ export type Timer = {
   isFailed?: boolean;
 };
 
-export const IconLookup = [
-  { icon: ETaskClosingStatus.Properly, element: OkIcon },
-  { icon: ETaskClosingStatus.Interrupted, element: XIcon },
-  {
-    icon: 'timer',
-    element: TimerIcon,
-  },
-  { icon: 'redTimer', element: RedTimerIcon },
-];
