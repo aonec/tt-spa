@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,9 +10,11 @@ interface Props {
   id?: string;
   searchStyle?: boolean;
   fullSize?: boolean;
+  ref?: ((instance: HTMLInputElement | null) => void) | RefObject<HTMLInputElement> | null | undefined
+  onKeyDown?: (e: any) => any;
 }
 
-export const DatePickerNative: React.FC<Props> = ({
+export const DatePickerNative: React.FC<Props> = React.forwardRef(({
   value: incomingValue,
   placeholder,
   onChange,
@@ -20,7 +22,8 @@ export const DatePickerNative: React.FC<Props> = ({
   id,
   searchStyle,
   fullSize,
-}) => {
+  onKeyDown
+}, ref) => {
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString(true);
   const currentValueToMoment = moment(innerValue);
@@ -44,7 +47,16 @@ export const DatePickerNative: React.FC<Props> = ({
       searchStyle={searchStyle}
       id={id}
       disabled={disabled}
-      onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
+      ref={ref}
+      onKeyDown={(e) => {
+        onKeyDown && onKeyDown(e)
+        fromEnter((e) => {
+        isCurrentValueValid && e.target.blur();
+      })
+        fromEnter((e) => {
+          isCurrentValueValid && e.target.blur();
+        })
+      }}
       onBlur={onChangeGlobal}
       value={innerValue}
       onChange={(e: { target: { value: string } }) => {
@@ -54,7 +66,7 @@ export const DatePickerNative: React.FC<Props> = ({
       type="date"
     />
   );
-};
+});
 
 const InputSC = styled.input<{
   searchStyle?: boolean;

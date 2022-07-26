@@ -40,6 +40,7 @@ import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -60,6 +61,8 @@ const IndividualDeviceEditForm = ({
   setExistDevice,
 }: FormEditODPUInterface) => {
   const [loading, setLoading] = useState(false);
+
+  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(9);
 
   const history = useHistory();
 
@@ -91,7 +94,7 @@ const IndividualDeviceEditForm = ({
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
     sealNumber: device.sealNumber,
-    sealInstallationDate: moment(sealInstallationDate).format('DD.MM.YYYY'),
+    sealInstallationDate: sealInstallationDate ? moment(sealInstallationDate) : null,
   };
 
   const {
@@ -167,7 +170,9 @@ const IndividualDeviceEditForm = ({
         <IndividualDeviceMountPlacesGate apartmentId={address?.apartmentId} />
       )}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
         style={{ paddingBottom: 40, maxWidth: 480 }}
       >
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
@@ -200,11 +205,15 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Модель прибора" style={styles.w100}>
             <InputTT
+              ref={refs[0]}
               name="model"
               placeholder="Укажите модель..."
               type="text"
               onChange={handleChange}
               value={values.model}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(0)(e);
+              }}
               onBlur={handleBlur}
             />
             <Alert name="model" />
@@ -218,6 +227,10 @@ const IndividualDeviceEditForm = ({
               onChange={handleChange}
               value={values.serialNumber}
               onBlur={handleBlur}
+              ref={refs[1]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(1)(e);
+              }}
             />
             <Alert name="serialNumber" />
           </Form.Item>
@@ -227,6 +240,10 @@ const IndividualDeviceEditForm = ({
               value={values.mountPlaceId || undefined}
               onChange={(value) => setFieldValue('mountPlaceId', value)}
               placeholder="Укажите место"
+              ref={refs[2]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(2)(e);
+              }}
             >
               {mountPlaces?.map((elem) => (
                 <Select.Option value={elem.id}>
@@ -249,6 +266,10 @@ const IndividualDeviceEditForm = ({
                 value={values.bitDepth || void 0}
                 step="1"
                 onBlur={handleBlur}
+                ref={refs[3]}
+                onKeyDown={(e) => {
+                  keyDownEnterGuardedHandler(3)(e);
+                }}
               />
             </Form.Item>
             <Form.Item label="Множитель" style={styles.w100}>
@@ -260,6 +281,10 @@ const IndividualDeviceEditForm = ({
                 value={values.scaleFactor || void 0}
                 step="1"
                 onBlur={handleBlur}
+                ref={refs[4]}
+                onKeyDown={(e) => {
+                  keyDownEnterGuardedHandler(4)(e);
+                }}
               />
             </Form.Item>
           </Flex>
@@ -268,6 +293,10 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative
+              ref={refs[5]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(5)(e)
+              }}
               value={values.lastCheckingDate?.toISOString(true) || null}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', moment(date));
@@ -285,6 +314,10 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата Следующей поверки" style={styles.w100}>
             <DatePickerNative
+              ref={refs[6]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(6)(e);
+              }}
               value={values.futureCheckingDate?.toISOString(true) || null}
               onChange={(date) => {
                 setFieldValue('futureCheckingDate', moment(date));
@@ -296,6 +329,10 @@ const IndividualDeviceEditForm = ({
           <Form.Item label="Пломба" style={styles.w100}>
             <Flex>
               <InputTT
+              ref={refs[7]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(7)(e);
+              }}
                 placeholder="Номер пломбы"
                 value={values.sealNumber}
                 onChange={(value: any) =>
@@ -306,34 +343,26 @@ const IndividualDeviceEditForm = ({
           </Form.Item>
 
           <Form.Item label="Дата установки пломбы" style={styles.w100}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              placeholder="Укажите дату..."
-              onChange={(value) => {
-                value &&
-                  setFieldValue(
-                    'sealInstallationDate',
-                    value.format('DD.MM.YYYY')
-                  );
+          <DatePickerNative
+              ref={refs[8]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(8)(e);
               }}
-              value={
-                values.sealInstallationDate &&
-                moment(values.sealInstallationDate, 'DD.MM.YYYY').isValid()
-                  ? moment(values.sealInstallationDate, 'DD.MM.YYYY')
-                  : undefined
-              }
-              name="futureCheckingDate"
+              value={values.sealInstallationDate?.toISOString(true) || null}
+              onChange={(date) => {
+                setFieldValue('sealInstallationDate', moment(date));
+              }}
             />
-            <Alert name="futureCheckingDate" />
+            <Alert name="sealInstallationDate" />
           </Form.Item>
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
           <Header>Компонент в разработке</Header>
         </StyledFormPage>
-
-        <StyledFooter form>
-          <ButtonTT color="blue" type={'submit'} disabled={loading}>
+        
+        <StyledFooter form >
+          <ButtonTT color="blue" type={'submit'} disabled={loading} >
             {loading ? <Loader show /> : 'Сохранить'}
           </ButtonTT>
 
