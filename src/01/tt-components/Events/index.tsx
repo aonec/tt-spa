@@ -4,7 +4,7 @@ import React from 'react';
 import { Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
-import { TaskListResponse } from '../../../myApi';
+import { TaskListResponse } from '.../../api/types';
 
 export interface EventsInterface {
   title: string;

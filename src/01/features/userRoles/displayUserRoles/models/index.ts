@@ -1,6 +1,6 @@
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { ESecuredIdentityRoleNameStringDictionaryItem } from 'myApi';
+import { ESecuredIdentityRoleNameStringDictionaryItem } from '../../api/types';
 
 export const $userRoles = createStore<ESecuredIdentityRoleNameStringDictionaryItem[] | null>(null);
 export const $isFetchingUserRolesFailed = createStore(false);

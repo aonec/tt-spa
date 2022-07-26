@@ -6,7 +6,7 @@ import { nodeStatusList } from '../../../tt-components/localBases';
 import {
   CalculatorIntoNodeResponse,
   PipeNodeResponse,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import { Tooltip } from 'antd';
 import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { additionalAddressesString } from 'utils/additionalAddressesString';

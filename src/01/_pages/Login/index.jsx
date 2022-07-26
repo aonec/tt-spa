@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Loader } from '01/components';
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
 import { Label, Button, Input, Icon, ButtonTT } from '01/tt-components';

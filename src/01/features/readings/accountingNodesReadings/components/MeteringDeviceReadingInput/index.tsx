@@ -5,7 +5,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import moment from 'moment';
-import { EResourceType } from 'myApi';
+import { EResourceType } from '../../api/types';
 import React from 'react';
 import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';

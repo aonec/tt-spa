@@ -31,7 +31,7 @@ import {
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import Title from '../../../../tt-components/Title';
-import { axios } from '01/axios';
+import { axios } from '../../api/axios';
 import { resourceParser } from 'utils/ResourceParser';
 
 const AddDeviceForm = (props: any) => {

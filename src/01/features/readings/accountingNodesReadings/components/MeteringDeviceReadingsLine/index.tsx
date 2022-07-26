@@ -2,7 +2,7 @@ import { Icon } from '01/shared/ui/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ElectricNodeResponse } from 'myApi';
+import { ElectricNodeResponse } from '../../api/types';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';

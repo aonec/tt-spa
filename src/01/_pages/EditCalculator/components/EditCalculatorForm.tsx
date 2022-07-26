@@ -20,7 +20,7 @@ import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import isEmptyString from '../../../utils/isEmptyString';
-import { CalculatorResponse, UpdateCalculatorRequest } from '../../../../myApi';
+import { CalculatorResponse, UpdateCalculatorRequest } from '../.../../api/types';
 import {
   DEFAULT_CALCULATOR,
   ItemInterface,

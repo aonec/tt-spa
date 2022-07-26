@@ -1,4 +1,4 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import {
   $existingCities,
   ExistingCitiesGate,
@@ -18,7 +18,7 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import { HousingStockListResponsePagedList } from 'myApi';
+import { HousingStockListResponsePagedList } from '../../api/types';
 import React from 'react';
 import {
   $isExpandedSearchOpen,

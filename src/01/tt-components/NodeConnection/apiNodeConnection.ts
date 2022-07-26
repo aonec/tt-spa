@@ -1,5 +1,5 @@
-import axios from '../../axios';
-import { CalculatorResponse } from '../../../myApi';
+import axios from '../../../api/axios';
+import { CalculatorResponse } from '.../../api/types';
 
 export async function getCalculator(id: number) {
   try {

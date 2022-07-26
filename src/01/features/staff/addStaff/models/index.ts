@@ -1,7 +1,7 @@
 import {
   ManagingFirmUserCreateRequest,
   ManagingFirmUserResponse,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { createForm } from 'effector-forms';
 import { createStore, createEvent, createEffect } from 'effector';
 import { AnyFieldsConfigs, FormConfig } from 'effector-forms/dist/types';

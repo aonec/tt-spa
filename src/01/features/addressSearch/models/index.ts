@@ -1,7 +1,7 @@
 import { GetExistingHousingStockParams } from '01/_api/housingStocks';
 import { createStore, createEffect, createEvent } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { NumberIdResponse } from 'myApi';
+import { NumberIdResponse } from '../../api/types';
 
 export const $existingApartmentNumbers = createStore<NumberIdResponse[] | null>(
   null

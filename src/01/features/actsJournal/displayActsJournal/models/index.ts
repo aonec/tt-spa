@@ -4,7 +4,7 @@ import {
   EOrderByRule,
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import moment from 'moment';

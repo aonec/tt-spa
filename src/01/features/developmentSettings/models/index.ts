@@ -1,4 +1,4 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 

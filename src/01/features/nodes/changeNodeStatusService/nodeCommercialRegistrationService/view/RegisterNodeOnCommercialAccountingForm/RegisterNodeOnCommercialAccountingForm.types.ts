@@ -1,4 +1,4 @@
-import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
+import { ENodeCommercialAccountStatus, EResourceType } from '../../api/types';
 import {
   NodeCommercialRegistrationRequestPayload,
   unsetNodeCommercialRegistrationRequestPayload,

@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { Select } from '01/components/Select';
-import axios from '01/axios';
+import axios from '../../api/axios';
 
 const defautlProps = {
   perpetrator: ['Исполнитель', 'Выберите исполнителя'],

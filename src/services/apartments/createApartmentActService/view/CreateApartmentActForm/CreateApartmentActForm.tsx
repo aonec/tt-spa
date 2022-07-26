@@ -4,7 +4,7 @@ import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EActResourceType, EActType } from 'myApi';
+import { EActResourceType, EActType } from '../../api/types';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import {

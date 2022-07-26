@@ -1,4 +1,4 @@
-import { TaskListResponse } from '../../myApi';
+import { TaskListResponse } from '../../api/types';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface MenuButtonInterface {

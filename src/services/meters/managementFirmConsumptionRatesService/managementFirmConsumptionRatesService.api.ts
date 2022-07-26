@@ -1,5 +1,5 @@
-import { EResourceTypeConsumptionRateResponseDictionaryItem } from 'myApi';
-import { axios } from '01/axios';
+import { EResourceTypeConsumptionRateResponseDictionaryItem } from '../../api/types';
+import { axios } from '../../api/axios';
 
 export const getConsuptionRates = (
   managementFirmId: number

@@ -3,7 +3,7 @@ import ModalCheckForm from './ModalCheckForm';
 import {
   CalculatorResponse,
   PipeHousingMeteringDeviceResponse,
-} from '../../../myApi';
+} from '.../../api/types';
 import { StyledModal } from '../../tt-components/Modal';
 
 interface ModalCheckFormInterface {

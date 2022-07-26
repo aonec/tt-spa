@@ -33,7 +33,7 @@ import {
 } from './models';
 import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
 import { getReadingValuesArray } from '01/features/readings/displayReadingHistory/utils';
-import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
+import { IndividualDeviceReadingsItemHistoryResponse } from '../../api/types';
 
 export const CorrectionReadingsPanel = () => {
   const task = useStore($task);

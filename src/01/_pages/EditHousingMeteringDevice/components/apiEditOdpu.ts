@@ -1,8 +1,8 @@
-import axios from '../../../axios';
+import axios from '../../../../api/axios';
 import {
   PipeHousingMeteringDeviceResponse,
   UpdatePipeHousingMeteringDeviceRequest,
-} from '../../../../myApi';
+} from '../.../../api/types';
 
 export async function getOdpu(id: number) {
   try {

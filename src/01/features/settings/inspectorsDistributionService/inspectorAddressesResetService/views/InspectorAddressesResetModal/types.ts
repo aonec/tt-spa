@@ -1,4 +1,4 @@
-import { InspectorResponse } from 'myApi';
+import { InspectorResponse } from '../../api/types';
 import { ResetInspectorHousingStocksAddressesForm } from '../../types';
 
 export type InspectorAddressesResetModalProps = {

@@ -1,4 +1,4 @@
-import { EManagingFirmTaskFilterType, EOrderByRule, ETaskClosingStatus, ETaskTargetType, TaskGroupingFilter } from "myApi";
+import { EManagingFirmTaskFilterType, EOrderByRule, ETaskClosingStatus, ETaskTargetType, TaskGroupingFilter } from "../../api/types";
 
 export type GetTasksListRequestPayload = {
   TargetType?: ETaskTargetType;

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { CalculatorResponse, TaskListResponse } from '../../../myApi';
+import { CalculatorResponse, TaskListResponse } from '.../../api/types';
 
 export interface CalculatorProfileContextInterface {
   device?: CalculatorResponse | null;

@@ -17,7 +17,7 @@ import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from '../../api/types';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
   $individualDevicesNames,

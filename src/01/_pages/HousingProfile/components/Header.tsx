@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../.../../api/types';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,

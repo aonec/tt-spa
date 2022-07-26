@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import FormEditODPU from './components/EditOPDUForm';
-import { PipeHousingMeteringDeviceResponse } from '../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '.../../api/types';
 import { useAsync } from '../../hooks/useAsync';
 import { getHousingMeteringDevice } from '../HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';

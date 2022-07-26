@@ -1,6 +1,6 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { message } from 'antd';
-import { DocumentResponse, ECheckType, ENodeCheckType } from 'myApi';
+import { DocumentResponse, ECheckType, ENodeCheckType } from '../../api/types';
 import { saveAs } from 'file-saver';
 
 export const CheckingActDocumentType = {

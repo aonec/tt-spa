@@ -6,7 +6,7 @@ import {
   DEFAULT_DEVICE,
   magistrals,
 } from '../../../tt-components/localBases';
-import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../.../../api/types';
 import { Subtitle } from '../../../_components/Headers';
 import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { Tooltip } from 'antd';

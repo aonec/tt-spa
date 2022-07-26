@@ -1,15 +1,15 @@
-import axios from '01/axios';
+import { axios } from "../../api/axios";
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
   UpdateHousingMeteringDeviceReadingsRequest,
-} from '../../myApi';
+} from "../../api/types";
 
 export const requestReadings = (query: {
   nodeId?: number;
 }): Promise<GetHousingMeteringDeviceReadingsResponse> => {
-  return axios.get('HousingMeteringDeviceReadings', {
+  return axios.get("HousingMeteringDeviceReadings", {
     params: query,
   });
 };
@@ -17,9 +17,9 @@ export const requestReadings = (query: {
 export const postReading = (
   query: CreateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
-  axios.post('housingMeteringDeviceReadings/CreateOrUpdateLast', query);
+  axios.post("housingMeteringDeviceReadings/CreateOrUpdateLast", query);
 
 export const updateReading = (
   query: UpdateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
-  axios.put('HousingMeteringDeviceReadings', query);
+  axios.put("HousingMeteringDeviceReadings", query);

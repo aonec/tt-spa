@@ -1,5 +1,5 @@
-import { CalculatorListResponsePagedList } from './../../../myApi';
-import { axios } from '01/axios';
+import { CalculatorListResponsePagedList } from './.../../api/types';
+import { axios } from '../../api/axios';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 export const getCalculatorsList = (

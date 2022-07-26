@@ -1,5 +1,5 @@
 import { sample } from 'effector';
-import { EReportFormat, EReportType } from 'myApi';
+import { EReportFormat, EReportType } from '../../api/types';
 import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 
 displayNodeArchiveService.outputs.$nodeArchiveData

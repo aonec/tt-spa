@@ -3,7 +3,7 @@ import rateTypeToNumber from '../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
-import axios from '../axios';
+import axios from '../../api/axios';
 
 import ReadingsBlock, {
   getMeasurementUnit,
@@ -15,7 +15,7 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
   IndividualDeviceReadingsCreateRequest,
-} from '../../myApi';
+} from '../../api/types';
 import {
   getDateByReadingMonthSlider,
   getPreviousReadingsMonth,

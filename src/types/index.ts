@@ -1,4 +1,4 @@
-import { EResourceType } from '../myApi';
+import { EResourceType } from '../../../api/types';
 
 export type ReadingType = {
   id: number;

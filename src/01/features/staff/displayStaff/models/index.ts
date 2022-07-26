@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { ManagingFirmUserListResponse } from 'myApi';
+import { ManagingFirmUserListResponse } from '../../api/types';
 
 export const $staffList = createStore<ManagingFirmUserListResponse[] | null>(
   null

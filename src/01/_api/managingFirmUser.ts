@@ -1,5 +1,5 @@
-import axios from '01/axios';
-import { ManagingFirmUserResponse } from 'myApi';
+import axios from '../../api/axios';
+import { ManagingFirmUserResponse } from '../../api/types';
 
 export const getManagingFirmUser = (
   id: number

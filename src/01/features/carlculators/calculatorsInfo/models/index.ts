@@ -1,7 +1,7 @@
 import { SelectItem } from '01/tt-components/localBases';
 import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
-import { CalculatorInfoListResponse } from 'myApi';
+import { CalculatorInfoListResponse } from '../../api/types';
 
 const calculatorInfosDomain = createDomain('calculatorInfos');
 

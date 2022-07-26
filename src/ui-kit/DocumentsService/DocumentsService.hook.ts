@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { EDocumentType } from 'myApi';
+import { EDocumentType } from '../../api/types';
 import { useState } from 'react';
 import { uploadDocument } from './DocumentsService.api';
 import { Document } from './DocumentsService.types';

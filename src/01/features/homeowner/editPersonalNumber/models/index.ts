@@ -3,7 +3,7 @@ import { RequestStatusShared } from './../../../readings/displayReadingHistory/h
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountUpdateRequest,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { createStore, createEvent, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 

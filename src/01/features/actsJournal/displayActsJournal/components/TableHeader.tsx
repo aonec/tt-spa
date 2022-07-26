@@ -16,7 +16,7 @@ import {
   EActResourceTypeStringDictionaryItem,
   EActType,
   EOrderByRule,
-} from 'myApi';
+} from '../../api/types';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
 
 export const TableHeader = () => {

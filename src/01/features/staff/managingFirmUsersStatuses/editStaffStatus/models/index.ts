@@ -3,7 +3,7 @@ import {
   EOrganizationUserWorkingStatusType,
   ManagingFirmUserResponse,
   OrganizationUserWorkingStatusResponseSuccessApiResponse,
-} from 'myApi';
+} from '../../api/types';
 import { createForm } from 'effector-forms';
 import { createEffect, createStore, createEvent } from 'effector';
 

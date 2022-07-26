@@ -6,7 +6,7 @@ import {
   EOrderByRule,
   EResourceType,
   NodesPagedList,
-} from 'myApi';
+} from '../../api/types';
 
 interface RequestPayload {
   CalculatorId?: number | null;

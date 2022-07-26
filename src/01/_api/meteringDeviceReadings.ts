@@ -1,9 +1,9 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
   UpdateHousingMeteringDeviceReadingsRequest,
-} from 'myApi';
+} from '../../api/types';
 
 export async function getMeteringDeviceReadings(
   nodeId: number

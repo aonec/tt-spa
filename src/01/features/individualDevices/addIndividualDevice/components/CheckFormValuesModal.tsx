@@ -8,7 +8,7 @@ import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, IndividualDeviceMountPlaceListResponse } from 'myApi';
+import { EResourceType, IndividualDeviceMountPlaceListResponse } from '../../api/types';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import {

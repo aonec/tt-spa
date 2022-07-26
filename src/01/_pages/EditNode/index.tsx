@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import EditNodeForm from './components/EditNodeForm';
 import { useAsync } from '../../hooks/useAsync';
-import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
+import { CalculatorResponse, PipeNodeResponse } from '.../../api/types';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';

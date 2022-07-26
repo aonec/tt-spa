@@ -1,10 +1,9 @@
-import { ReadingsStateType } from './houses_readings_page';
 import {
   EEmailSubscriptionType,
   ENodeCommercialAccountStatus,
   EResourceType,
-} from '../../myApi';
-import axiosWithHeaders from '../axiosWithHeaders';
+} from '../../api/types';
+import axiosWithHeaders from '../../api/axiosWithHeaders';
 import qs from 'qs';
 
 export const sendGroupReport = async (query?: {

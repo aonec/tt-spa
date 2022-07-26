@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import Icon from '../../../../../tt-components/Icon';
-import { PipeNodeIntoCalculatorResponse } from '../../../../../../myApi';
+import { PipeNodeIntoCalculatorResponse } from '../../../.../../api/types';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
 const Node: React.FC<Props> = ({ node }) => {

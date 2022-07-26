@@ -5,7 +5,7 @@ import { createGate } from 'effector-react';
 import {
   ElectricHousingMeteringDeviceResponse,
   SwitchElectricHousingDeviceRequest,
-} from 'myApi';
+} from '../../api/types';
 import {
   fetchHousingMeteringDevice,
   postSwitchHousingMeteringDevice,

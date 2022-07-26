@@ -1,6 +1,6 @@
 import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { createDomain, forward, sample } from 'effector';
-import { ApartmentActResponse } from 'myApi';
+import { ApartmentActResponse } from '../../api/types';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { updateApartmentAct } from './editApartmentActService.api';
 import {

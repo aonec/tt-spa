@@ -1,5 +1,5 @@
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { EResourceType } from 'myApi';
+import { EResourceType } from '../../api/types';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 

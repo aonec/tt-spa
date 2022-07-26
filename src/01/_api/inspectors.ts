@@ -1,5 +1,5 @@
-import { InspectorResponse } from './../../myApi';
-import axios from '01/axios';
+import { InspectorResponse } from '../../api/types';
+import axios from '../../api/axios';
 
 export const getInspector = (id: number): Promise<InspectorResponse> =>
   axios.get(`Inspectors/${id}`);

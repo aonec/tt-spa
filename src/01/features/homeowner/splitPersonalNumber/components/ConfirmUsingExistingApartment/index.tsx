@@ -7,7 +7,7 @@ import { getIndividualDevices } from '01/_api/individualDevices';
 import { PersonalNumber } from '01/_pages/MetersPage/components/ApartmentInfo';
 import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
-import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
+import { ApartmentResponse, IndividualDeviceListItemResponse } from '../../api/types';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';

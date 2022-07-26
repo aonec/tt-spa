@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { ElectricHousingMeteringDeviceResponse } from 'myApi';
+import { axios } from '../../api/axios';
+import { ElectricHousingMeteringDeviceResponse } from '../../api/types';
 import { UpdateElectricHousingMeteringDevice } from './view/EditElectricNodePage/EditElectricNodePage.types';
 
 export const fetchElectricNode = (

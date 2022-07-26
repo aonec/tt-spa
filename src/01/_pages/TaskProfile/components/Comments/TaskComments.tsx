@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TaskCommentResponse } from '../../../../../myApi';
+import { TaskCommentResponse } from '../../.../../api/types';
 import InputTT from '../../../../tt-components/InputTT';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
 import { useParams } from 'react-router-dom';
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { Alert } from 'antd';
 import { TasksProfileContext } from '../../context';
 import SingleComment from './SingleComment';

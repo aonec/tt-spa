@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndividualDeviceResponse } from '../../../../myApi';
+import { IndividualDeviceResponse } from '../.../../api/types';
 import { HeaderWrap } from '../../../tt-components';
 import IsActive from '../../../tt-components/IsActive';
 import { Loader } from '01/_components/Loader';

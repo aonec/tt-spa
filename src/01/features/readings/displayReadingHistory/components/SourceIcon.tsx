@@ -3,7 +3,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   EIndividualDeviceReadingsSource,
   OrganizationUserShortResponse,
-} from 'myApi';
+} from '../../api/types';
 import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
 import { ReactComponent as ErcIcon } from '../icons/erc.svg';
 import { ReactComponent as GosUslugiIcon } from '../icons/gosuslugi.svg';

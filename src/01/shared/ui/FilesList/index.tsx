@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Flex } from '../Layout/Flex';
 import { MenuButtonTT } from '01/tt-components';
 import { FileData } from '01/hooks/useFilesUpload';
-import { DocumentResponse } from 'myApi';
+import { DocumentResponse } from '../../api/types';
 import { ReactComponent as DropIcon } from './drop.svg';
 import confirm from 'antd/lib/modal/confirm';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';

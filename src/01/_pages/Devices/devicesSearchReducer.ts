@@ -4,7 +4,7 @@ import {
   ECalculatorOrderRule,
   EExpiresCheckingDateAt,
   EOrderByRule,
-} from '../../../myApi';
+} from '.../../api/types';
 
 enum DevicesSearchActions {
   SET_EXPIRATION_DATE = 'SET_EXPIRATION_DATE',

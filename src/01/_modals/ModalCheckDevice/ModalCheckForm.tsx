@@ -8,7 +8,7 @@ import {
   CalculatorResponse,
   CheckDeviceRequest,
   PipeHousingMeteringDeviceResponse,
-} from '../../../myApi';
+} from '.../../api/types';
 import { StyledModalBody, StyledFormPage } from '../../tt-components/Modal';
 import {
   DatePickerTT,

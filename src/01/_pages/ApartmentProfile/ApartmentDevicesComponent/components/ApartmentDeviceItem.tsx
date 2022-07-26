@@ -6,7 +6,7 @@ import {
   EIndividualDeviceRateType,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
-} from '../../../../../myApi';
+} from '../../.../../api/types';
 import IsActive from '../../../../tt-components/IsActive';
 import moment from 'moment';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';

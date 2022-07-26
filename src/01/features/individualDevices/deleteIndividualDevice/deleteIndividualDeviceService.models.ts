@@ -1,5 +1,5 @@
 import { createDomain } from 'effector';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from '../../api/types';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
 const deleteIndividualDeviceDomain = createDomain(

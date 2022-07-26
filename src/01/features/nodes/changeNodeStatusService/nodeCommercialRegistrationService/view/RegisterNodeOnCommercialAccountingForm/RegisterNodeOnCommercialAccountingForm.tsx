@@ -1,11 +1,11 @@
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { DatePickerTT } from '01/tt-components';
-import { EDocumentType } from 'myApi';
+import { EDocumentType } from '../../api/types';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { NodeSetRegisteredRequest } from 'myApi';
+import { NodeSetRegisteredRequest } from '../../api/types';
 import React, { FC, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCommercialAccountingForm.types';

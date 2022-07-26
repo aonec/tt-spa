@@ -5,7 +5,7 @@ import { Loader } from '../../components';
 import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from './AddNodeContext';
 import { TabsItemInterface } from '../../tt-components/interfaces';
-import { HousingStockResponse } from '../../../myApi';
+import { HousingStockResponse } from '.../../api/types';
 import {
   getHousingStock,
   getHousingStockCalculators,

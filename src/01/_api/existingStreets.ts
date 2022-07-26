@@ -1,6 +1,6 @@
-import axios from '01/axios';
-import { formQueryString } from '01/utils/formQueryString';
-import { EOrderByRule } from 'myApi';
+import axios from '../../api/axios';
+import { EOrderByRule } from '../../api/types';
+import { formQueryString } from '../utils/formQueryString';
 
 interface Params {
   Street?: string | null;

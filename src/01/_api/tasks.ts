@@ -8,7 +8,7 @@ import {
   StagePushRequest,
   TaskGroupingFilter,
   TaskResponse,
-} from 'myApi';
+} from '../../api/types';
 
 export interface GetTasksParams {
   SearchingFilter?: string | null;

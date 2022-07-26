@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { FC } from 'react';
+import { ResourceIconLookup } from '../ResourceIconLookup';
 import { Name, Wrap } from './ResourceInfo.styled';
 import { ResourceInfoProps } from './ResourceInfo.types';
 import { actResourceNamesLookup } from './ResourceInfo.utils';

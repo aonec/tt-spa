@@ -1,6 +1,6 @@
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
-import { EActResourceType } from 'myApi';
+import { EActResourceType } from '../../api/types';
 import React, { FC, useMemo } from 'react';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';

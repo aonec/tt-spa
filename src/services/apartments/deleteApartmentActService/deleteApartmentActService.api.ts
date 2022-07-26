@@ -1,4 +1,4 @@
-import { axios } from '01/axios';
+import { axios } from '../../api/axios';
 
 export const deleteApartmentAct = (actId: number): Promise<void> =>
   axios.delete(`ApartmentActs/${actId}`);

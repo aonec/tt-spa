@@ -3,7 +3,7 @@ import React, { MutableRefObject, useEffect } from 'react';
 import { Input, Tooltip } from 'antd';
 import styled from 'styled-components';
 import { useSwitchOnInputs } from '01/hooks/useSwitchInputsOnEnter';
-import { EIndividualDeviceReadingsSource } from 'myApi';
+import { EIndividualDeviceReadingsSource } from '../../api/types';
 import {
   getSourceIcon,
   getSourceName,

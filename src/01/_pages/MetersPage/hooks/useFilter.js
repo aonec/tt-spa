@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 import React from 'react';
 import { useHistory } from 'react-router';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';

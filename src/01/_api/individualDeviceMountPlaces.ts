@@ -1,5 +1,5 @@
-import { IndividualDeviceMountPlaceListResponse } from './../../myApi';
-import axios from '01/axios';
+import { IndividualDeviceMountPlaceListResponse } from '../../api/types';
+import axios from '../../api/axios';
 
 export const getIndividualDeviceMountPlaces = async (
   id: number

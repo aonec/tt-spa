@@ -1,4 +1,4 @@
-import { AddApartmentActRequest } from 'myApi';
+import { AddApartmentActRequest } from '../../api/types';
 
 export type CreateActFormPayload = Omit<
   AddApartmentActRequest,

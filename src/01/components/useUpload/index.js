@@ -2,7 +2,7 @@
 
 import React, { useEffect, useReducer } from 'react';
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { UploadBtn } from './UploadBtn';
 import { UploadList } from './UploadList';
 

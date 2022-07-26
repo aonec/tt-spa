@@ -10,7 +10,7 @@ import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { HousingStockResponse } from '../../../../../../myApi';
+import { HousingStockResponse } from '../../../.../../api/types';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   const inspector = useStore($inspector);

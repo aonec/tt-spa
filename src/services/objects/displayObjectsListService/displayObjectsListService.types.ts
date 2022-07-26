@@ -4,7 +4,7 @@ import {
   ELivingHouseType,
   ENonResidentialHouseType,
   EOrderByRule,
-} from 'myApi';
+} from '../../api/types';
 import { AddressSearchValues } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 
 export type GetHousingStocksRequestPayload = {

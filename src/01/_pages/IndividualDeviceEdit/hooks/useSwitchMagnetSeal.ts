@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import { IndividualDeviceResponse } from 'myApi';
-import axios from '01/axios';
+import { IndividualDeviceResponse } from '../../api/types';
+import axios from '../../api/axios';
 
 export interface MagnetSeal {
   magneticSealInstallationDate: string | null;

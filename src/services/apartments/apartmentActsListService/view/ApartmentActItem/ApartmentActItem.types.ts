@@ -1,4 +1,4 @@
-import { ApartmentActResponse, DocumentResponse, EActTypeStringDictionaryItem } from 'myApi';
+import { ApartmentActResponse, DocumentResponse, EActTypeStringDictionaryItem } from '../../api/types';
 
 export type ApartmentActItemProps = {
   act: ApartmentActResponse;

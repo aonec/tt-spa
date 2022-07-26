@@ -1,5 +1,5 @@
 import { createDevice } from '01/_api/utils';
-import { StageResponse, TaskListResponse } from 'myApi';
+import { StageResponse, TaskListResponse } from '../../api/types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const preparedData = (

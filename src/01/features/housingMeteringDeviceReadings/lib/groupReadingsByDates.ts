@@ -1,7 +1,7 @@
 import {
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
-} from '../../../../myApi';
+} from '../.../../api/types';
 
 const groupReadingsByDates = (
   readings: GetHousingMeteringDeviceReadingsResponse

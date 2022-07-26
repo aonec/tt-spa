@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useStore } from 'effector-react';
 import { $task } from '01/features/tasks/displayTask/models';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from '../../api/types';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';

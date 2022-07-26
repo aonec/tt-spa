@@ -1,5 +1,5 @@
-import axios from '01/axios';
-import { NodesPagedList } from 'myApi';
+import axios from '../../api/axios';
+import { NodesPagedList } from '../../api/types';
 import { GetNodesRequestPayload } from '../features/nodes/displayNodes/models';
 
 export const getNodes = async (

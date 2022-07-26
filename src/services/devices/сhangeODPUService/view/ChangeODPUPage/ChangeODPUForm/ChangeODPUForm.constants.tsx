@@ -1,4 +1,4 @@
-import { EClosingReason, EPhaseNumberType, EYearQuarter } from 'myApi';
+import { EClosingReason, EPhaseNumberType, EYearQuarter } from '../../api/types';
 import { SwitchElectricHousingDeviceRequestFormPayload } from './ChangeODPUForm.types';
 import * as yup from 'yup';
 

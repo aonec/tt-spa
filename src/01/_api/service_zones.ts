@@ -1,8 +1,8 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import {
   NodeServiceZoneListResponse,
   NodeServiceZoneResponse,
-} from '../../myApi';
+} from '../../api/types';
 
 export const getServiceZones = (): Promise<NodeServiceZoneListResponse> =>
   axios.get('NodeServiceZones');

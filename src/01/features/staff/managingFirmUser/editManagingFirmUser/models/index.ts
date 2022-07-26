@@ -15,7 +15,7 @@ import { createGate } from 'effector-react';
 import { staffFormConfig } from '01/features/staff/addStaff/models';
 import { createEvent, createEffect, createStore, combine } from 'effector';
 import { createForm } from 'effector-forms';
-import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from 'myApi';
+import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from '../../api/types';
 
 export const editManagingUserInfoForm = createForm(staffFormConfig);
 

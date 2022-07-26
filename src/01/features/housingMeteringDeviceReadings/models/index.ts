@@ -3,7 +3,7 @@ import {
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
   EResourceType,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import { createGate } from 'effector-react';
 import { prepareReadings } from '../lib/groupReadingsByDates';
 

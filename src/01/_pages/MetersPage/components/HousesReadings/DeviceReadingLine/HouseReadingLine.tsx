@@ -13,7 +13,7 @@ import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
-import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
+import { IndividualDeviceListItemResponse } from '../../../.../../api/types';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 import { HistoryIcon } from "ui-kit/icons";

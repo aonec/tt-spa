@@ -1,7 +1,7 @@
 import {
   IndividualDeviceReadingsCreateListResponse,
   IndividualDeviceReadingsCreateRequest,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { createEffect, createEvent } from 'effector';
 
 export const readingFieldButtonClicked = createEvent<IndividualDeviceReadingsCreateRequest>();

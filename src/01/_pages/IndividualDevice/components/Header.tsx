@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndividualDeviceResponse } from '../../../../myApi';
+import { IndividualDeviceResponse } from '../.../../api/types';
 import { IconTT, HeaderWrap } from '../../../tt-components';
 import IsActive from '../../../tt-components/IsActive';
 import { useHistory } from 'react-router-dom';

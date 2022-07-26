@@ -1,7 +1,7 @@
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { ButtonTT } from '01/tt-components';
 import { useFormik } from 'formik';
-import { EResourceType } from 'myApi';
+import { EResourceType } from '../../api/types';
 import React, { FC } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';

@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { TaskGroupingFilter, TasksPagedList } from 'myApi';
+import { TaskGroupingFilter, TasksPagedList } from '../../api/types';
 import { $taskTypes, $housingManagments } from '../taskTypesService/taskTypesService.model';
 import { getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';

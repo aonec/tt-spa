@@ -1,4 +1,4 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { Loader } from '01/components';
 import ActiveLine from '01/components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
@@ -8,7 +8,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
 import { CancelTokenSource } from 'axios';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from '../../api/types';
 import React from 'react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';

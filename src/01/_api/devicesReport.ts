@@ -1,5 +1,5 @@
 import qs from 'qs';
-import axiosWithHeaders from '../axiosWithHeaders';
+import axiosWithHeaders from '../../api/axiosWithHeaders';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 export const requestDevicesReport = async (

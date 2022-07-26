@@ -2,14 +2,14 @@ import {
   CreateNodeCheckRequest,
   ECheckType,
   ENodeCheckType,
-} from 'myApi';
+} from '../../api/types';
 import { createForm } from 'effector-forms';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';
 import { nodeService } from '../../displayNode/models';
 import moment from 'moment';
 import { nodeChecksService } from '../displayNodeChecks/models';
-import { axios } from '01/axios';
+import { axios } from '../../api/axios';
 import { message } from 'antd';
 
 const checkNodeDomain = createDomain('checkNode');

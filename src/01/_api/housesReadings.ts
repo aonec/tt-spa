@@ -1,9 +1,9 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import {
   HousingStockResponse,
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
-} from 'myApi';
+} from '../../api/types';
 
 export const requestDevicesByHouse = async (
   HousingStockId: string

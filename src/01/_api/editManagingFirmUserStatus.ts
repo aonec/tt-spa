@@ -1,5 +1,5 @@
-import axios from '01/axios';
-import { AddOrganizationUserWorkingStatusRequest } from 'myApi';
+import axios from '../../api/axios';
+import { AddOrganizationUserWorkingStatusRequest } from '../../api/types';
 
 export const postManagingFirmUserStatus = (
   data: AddOrganizationUserWorkingStatusRequest

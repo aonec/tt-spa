@@ -1,4 +1,4 @@
-import { HousingStockListResponse } from './../../../../../myApi';
+import { HousingStockListResponse } from './../../.../../api/types';
 import { createStore, createEffect, createEvent } from 'effector';
 import { GetHousingStockParams } from '01/_api/housingStocks';
 

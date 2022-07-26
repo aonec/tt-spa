@@ -1,4 +1,4 @@
-import { EHousingMeteringDeviceType, EMagistralType } from '../../myApi';
+import { EHousingMeteringDeviceType, EMagistralType } from '../../api/types';
 
 export interface ItemInterface {
   id: number;

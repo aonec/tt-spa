@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
-import { CalculatorResponse } from '../../../../myApi';
+import { CalculatorResponse } from '../.../../api/types';
 import { Loader } from '../../../components';
 import {
   DEFAULT_BUILDING,

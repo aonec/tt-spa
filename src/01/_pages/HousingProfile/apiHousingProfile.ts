@@ -1,8 +1,8 @@
-import axios from '../../axios';
+import axios from '../../../api/axios';
 import {
   PipeHousingMeteringDeviceResponse,
   TasksPagedList,
-} from '../../../myApi';
+} from '.../../api/types';
 
 export async function getHousingMeteringDevice(id: number) {
   try {

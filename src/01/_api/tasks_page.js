@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios from '../axios';
+import axios from '../../api/axios';
 import { createTimeline, createTimer, createDevice } from './utils';
 
 export async function getTasks(grouptype = null, searchState = {}) {

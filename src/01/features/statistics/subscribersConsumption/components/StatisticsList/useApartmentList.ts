@@ -1,4 +1,4 @@
-import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
 import { subscribersConsumptionFilterForm } from './../../models/index';
 import { $consumptionStatistics } from '../../models';
 import { useStore } from 'effector-react';

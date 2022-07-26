@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
-import { CalculatorResponse } from '../../../../myApi';
+import { CalculatorResponse } from '../.../../api/types';
 import DeviceIcons from '../../../_components/DeviceIcons';
 import Icon from '../../../tt-components/Icon';
 

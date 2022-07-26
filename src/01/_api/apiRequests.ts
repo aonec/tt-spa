@@ -11,8 +11,8 @@ import {
   TasksPagedList,
   UpdateIndividualDeviceRequest,
   UpdatePipeNodeRequest,
-} from '../../myApi';
-import axios from '../axios';
+} from '../../api/types';
+import axios from '../../api/axios';
 
 //Создание вычислителя
 export async function addCalculator(form: CreateCalculatorRequest) {

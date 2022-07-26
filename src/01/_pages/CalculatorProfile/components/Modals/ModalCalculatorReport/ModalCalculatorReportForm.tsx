@@ -16,7 +16,7 @@ import {
   StyledModalBody,
 } from '../../../../../tt-components';
 import { getReport } from './apiCalculatorReport';
-import { CalculatorResponse } from '../../../../../../myApi';
+import { CalculatorResponse } from '../../../.../../api/types';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 

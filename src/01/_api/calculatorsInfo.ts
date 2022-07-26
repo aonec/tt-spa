@@ -1,14 +1,14 @@
-import axios from '01/axios';
+import { axios } from "../../api/axios";
 import {
   CalculatorInfoListResponse,
   CalculatorInfoListWrappedResponse,
-} from 'myApi';
+} from "../../api/types";
 
 export const getCalculatorInfos = async (): Promise<
   CalculatorInfoListResponse[] | null
 > => {
   const res: CalculatorInfoListWrappedResponse = await axios.get(
-    'CalculatorInfos'
+    "CalculatorInfos"
   );
 
   return res.items;

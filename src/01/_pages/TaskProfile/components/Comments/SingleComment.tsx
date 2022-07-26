@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskCommentResponse } from '../../../../../myApi';
+import { TaskCommentResponse } from '../../.../../api/types';
 import { Icon } from '../../../../tt-components/Icon';
 import styled from 'styled-components';
 import moment from 'moment';

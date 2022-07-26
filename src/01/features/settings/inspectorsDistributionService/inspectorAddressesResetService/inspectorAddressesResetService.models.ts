@@ -1,7 +1,7 @@
 import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
 import { createDomain } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { InspectorResponse } from 'myApi';
+import { InspectorResponse } from '../../api/types';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
 
 const inspectorAddressesResetServiceDomain = createDomain(

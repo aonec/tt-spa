@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 
 export async function uploadFile(file, type = 'AdditionalMaterials') {
   const formData = new FormData();

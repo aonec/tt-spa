@@ -1,6 +1,6 @@
-import { EOrderByRule } from './../../myApi';
-import axios from '01/axios';
-import { EMeteringDeviceType } from 'myApi';
+import { EOrderByRule } from '../../api/types';
+import axios from '../../api/axios';
+import { EMeteringDeviceType } from '../../api/types';
 import { formQueryString } from '01/utils/formQueryString';
 
 export interface GetMeteringDevicesModelsRequest {

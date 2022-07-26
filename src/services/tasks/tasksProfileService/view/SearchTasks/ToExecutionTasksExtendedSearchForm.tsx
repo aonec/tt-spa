@@ -13,8 +13,8 @@ import {
   StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
 } from './SearchTasks.styled';
-import { axios } from '01/axios';
-import { GuidStringDictionaryItem, HousingStockFilterResponse } from 'myApi';
+import { axios } from '../../api/axios';
+import { GuidStringDictionaryItem, HousingStockFilterResponse } from '../../api/types';
 
 const { Option } = Select;
 

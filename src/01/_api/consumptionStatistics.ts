@@ -1,5 +1,5 @@
-import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
-import axios from '01/axios';
+import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
+import axios from '../../api/axios';
 
 export const getConsumptionStatistics = (params: {
   HousingStockId: number;

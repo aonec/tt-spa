@@ -22,7 +22,7 @@ import { Form, Select as AntdSelect, DatePicker as AntdDatePicker } from 'antd';
 import styled from 'styled-components';
 import { StaffStatus } from '../../displayStaff/models/components/StaffStatus';
 import { useForm } from 'effector-forms';
-import { EOrganizationUserWorkingStatusType } from 'myApi';
+import { EOrganizationUserWorkingStatusType } from '../../api/types';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Loader } from '01/_components/Loader';

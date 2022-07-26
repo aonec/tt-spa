@@ -5,7 +5,7 @@ import { Information } from './components/Information';
 import { Loader } from '../../components';
 import { Title } from '../../tt-components/Title';
 import { useAsync } from '../../hooks/useAsync';
-import { IndividualDeviceResponse, TaskListResponse } from '../../../myApi';
+import { IndividualDeviceResponse, TaskListResponse } from '.../../api/types';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import Events from '../../tt-components/Events';
 import { TabsItemInterface } from '../../tt-components/interfaces';

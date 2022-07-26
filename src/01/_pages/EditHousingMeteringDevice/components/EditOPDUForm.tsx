@@ -24,7 +24,7 @@ import {
   HousingMeteringDeviceResponse,
   EMagistralType,
   UpdatePipeHousingMeteringDeviceRequest,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import { putOdpu } from './apiEditOdpu';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
@@ -32,7 +32,7 @@ import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from '../../../tt-components/validationSchemas';
-import { axios } from '01/axios';
+import { axios } from '../../api/axios';
 import { resourceParser } from 'utils/ResourceParser';
 
 interface FormEditODPUInterface {

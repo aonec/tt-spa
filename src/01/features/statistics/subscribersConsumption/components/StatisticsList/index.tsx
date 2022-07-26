@@ -3,7 +3,7 @@ import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 import { fetchConsumptionStatistics } from '../../models';
-import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
 import moment from 'moment';
 import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';

@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
 import { createStore, createEffect } from 'effector';
-import { ManagingFirmUserResponse } from 'myApi';
+import { ManagingFirmUserResponse } from '../../api/types';
 
 export const $currentManagingFirmUser = createStore<ManagingFirmUserResponse | null>(
   null

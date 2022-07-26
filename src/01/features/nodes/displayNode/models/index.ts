@@ -1,7 +1,7 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
-import { PipeNodeResponse } from '../../../../../myApi';
+import { PipeNodeResponse } from '../../.../../api/types';
 
 const nodeDomain = createDomain('node');
 

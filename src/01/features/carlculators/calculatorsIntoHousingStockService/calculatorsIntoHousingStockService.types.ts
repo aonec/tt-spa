@@ -5,7 +5,7 @@ import {
   ECalculatorOrderRule,
   EOrderByRule,
   EResourceType,
-} from '../../../../myApi';
+} from '../.../../api/types';
 
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;

@@ -1,5 +1,5 @@
-import axios from '../../axios';
-import { GroupReportFormResponse } from '../../../myApi';
+import axios from '../../../api/axios';
+import { GroupReportFormResponse } from '.../../api/types';
 
 export async function getReports() {
   try {

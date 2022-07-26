@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { setModalCalcReportVisible } from '../../../../../Redux/actions/actions';
 import { ButtonTT } from '../../../../../tt-components';
 
-import axios from '../../../../../axios';
+import axios from '../../../../../../api/axios';
 import CalcReportForm from './CalcReportForm';
 
 // import CalculatorTemplate from './CalculatorTemplate';

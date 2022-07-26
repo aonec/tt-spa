@@ -5,7 +5,7 @@ import {
   ReportType,
 } from './components/GraphView';
 import { GraphParamsType } from './Graph';
-import { EResourceType } from '../../../myApi';
+import { EResourceType } from '.../../api/types';
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);

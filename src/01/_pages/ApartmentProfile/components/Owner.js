@@ -10,7 +10,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { CheckLg, Pen, XLg } from 'react-bootstrap-icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { InputSC } from '01/shared/ui/Fields';
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { message } from 'antd';
 import { useEffect } from 'react';
 import moment from 'moment';

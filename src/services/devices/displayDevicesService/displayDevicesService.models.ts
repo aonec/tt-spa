@@ -1,6 +1,6 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { getCalculatorsList } from './displayDevicesService.api';
-import { CalculatorListResponse, CalculatorListResponsePagedList } from 'myApi';
+import { CalculatorListResponse, CalculatorListResponsePagedList } from '../../api/types';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 const domain = createDomain('displayDevicesService');

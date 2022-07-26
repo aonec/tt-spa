@@ -1,4 +1,4 @@
-import { ManagingFirmUserResponse } from '../../../myApi';
+import { ManagingFirmUserResponse } from '.../../api/types';
 
 const initialState = {};
 

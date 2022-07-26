@@ -3,7 +3,7 @@ import {
   EEmailSubscriptionType,
   ENodeCommercialAccountStatus,
   EResourceType,
-} from '../../../../../myApi';
+} from '../../.../../api/types';
 
 export type reportQuery = {
   GroupReportId?: string | null;

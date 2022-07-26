@@ -1,6 +1,6 @@
 import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { createDomain, forward, sample } from 'effector';
-import { UpdateApartmentActRequest, ApartmentActResponse } from 'myApi';
+import { UpdateApartmentActRequest, ApartmentActResponse } from '../../api/types';
 import { actionChannel } from 'redux-saga/effects';
 import { apartmentActsListService } from '../apartmentActsListService';
 import { updateApartmentAct } from './editApartmentActService.api';

@@ -1,9 +1,9 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { NodeCheckResponse, NodeCheckResponsePagedList } from 'myApi';
+import { NodeCheckResponse, NodeCheckResponsePagedList } from '../../api/types';
 import { GetNodeChecksRequest } from './types';
 import { forward } from 'effector';
-import { axios } from '01/axios';
+import { axios } from '../../api/axios';
 
 const displayNodeChecksDomain = createDomain('displayNodeChecksDomain');
 

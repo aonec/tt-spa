@@ -18,7 +18,7 @@ import {
   postReading,
 } from '../../../_api/housing_metering_device_readings';
 import { forward, guard, sample } from 'effector';
-import { GetHousingMeteringDeviceReadingsResponse } from '../../../../myApi';
+import { GetHousingMeteringDeviceReadingsResponse } from '../.../../api/types';
 import moment from 'moment';
 import { formatDate } from '01/utils/dates';
 

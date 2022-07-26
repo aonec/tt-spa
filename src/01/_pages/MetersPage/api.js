@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { createDevice } from '01/_api/utils';
 import { formReadingToPush } from '../../utils/formReadingsToPush';
 

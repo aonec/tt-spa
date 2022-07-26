@@ -3,7 +3,7 @@ import { Select } from '01/shared/ui/Select';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EActResourceType, EActType } from 'myApi';
+import { EActResourceType, EActType } from '../../api/types';
 import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { actResourceTypes } from 'services/apartments/createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.types';
 import { EditActFormPayload } from '../../editApartmentActService.types';

@@ -9,7 +9,7 @@ import {
   requestReadingsFx,
   ResourceGate,
 } from '../models';
-import { EResourceType } from '../../../../myApi';
+import { EResourceType } from '../.../../api/types';
 import { Alert } from 'antd';
 import { HousingMeteringReadingsHeader } from './HousingMeteringReadingsHeader';
 import { YearReading } from './YearReading';

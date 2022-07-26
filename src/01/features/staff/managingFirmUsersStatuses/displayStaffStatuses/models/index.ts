@@ -1,4 +1,4 @@
-import { EOrganizationUserWorkingStatusTypeStringDictionaryItem } from 'myApi';
+import { EOrganizationUserWorkingStatusTypeStringDictionaryItem } from '../../api/types';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
 

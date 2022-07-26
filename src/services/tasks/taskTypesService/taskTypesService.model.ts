@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
-} from 'myApi';
+} from '../../api/types';
 import { getHousingManagements, getTaskTypes } from './taskTypesService.api';
 
 export const $taskTypes = createStore<

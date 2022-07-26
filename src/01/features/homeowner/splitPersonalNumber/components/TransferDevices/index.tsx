@@ -8,7 +8,7 @@ import { DateLine } from '01/_components/DateLine/DateLine';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceListItemResponse } from '../../api/types';
 import React from 'react';
 import styled from 'styled-components';
 import { transferDevicesForm } from '../../models';

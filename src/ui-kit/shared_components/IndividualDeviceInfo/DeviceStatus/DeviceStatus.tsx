@@ -1,4 +1,4 @@
-import { EClosingReason } from 'myApi';
+import { EClosingReason } from '../../api/types';
 import React, { FC } from 'react';
 import {
   ClosingReasonText,

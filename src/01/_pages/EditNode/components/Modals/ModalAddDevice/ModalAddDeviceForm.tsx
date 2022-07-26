@@ -28,7 +28,7 @@ import {
 import {
   CreatePipeHousingMeteringDeviceRequest,
   PipeNodeResponse,
-} from '../../../../../../myApi';
+} from '../../../.../../api/types';
 import {
   TabErrorsInterface,
   TabsItemInterface,

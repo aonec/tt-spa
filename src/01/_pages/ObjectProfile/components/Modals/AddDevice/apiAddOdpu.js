@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios from '../../../../../axios';
+import axios from '../../../../../../api/axios';
 
 export async function getObjectCalculators(id = '') {
   try {

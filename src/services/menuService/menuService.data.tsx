@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from '../../api/types';
 import {
   CompanyProfileIcon,
   DeviceIcon,

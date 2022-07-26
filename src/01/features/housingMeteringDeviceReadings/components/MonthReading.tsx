@@ -6,7 +6,7 @@ import { $isColdWaterSupply, $readings } from '../models';
 import {
   EMagistralType,
   HousingMeteringDeviceReadingsResponse,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
 import React from 'react';
 import styled from 'styled-components';

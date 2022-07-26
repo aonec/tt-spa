@@ -16,7 +16,7 @@ import {
   DocumentResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';

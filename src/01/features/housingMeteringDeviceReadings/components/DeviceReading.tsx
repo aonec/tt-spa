@@ -1,4 +1,4 @@
-import { HousingMeteringDeviceReadingsResponse } from '../../../../myApi';
+import { HousingMeteringDeviceReadingsResponse } from '../.../../api/types';
 import { useStore } from 'effector-react';
 import {
   $chosenInputId,

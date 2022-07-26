@@ -8,7 +8,7 @@ import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus } from '../../api/types';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';

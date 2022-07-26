@@ -4,7 +4,7 @@ import { createForm } from 'effector-forms';
 import {
   CreateCalculatorRequest,
   MeteringDeviceResponse,
-} from '../../../../../../../../myApi';
+} from '../../../../../.../../api/types';
 import axios from 'axios';
 import { nodeService } from '../../../../../displayNode/models';
 import { addNodeCalculatorService } from '../models';

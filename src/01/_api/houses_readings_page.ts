@@ -1,6 +1,6 @@
-import axios from '01/axios';
-import { DisabledStateType } from '01/Redux/reducers/readingsReducer';
-import { IndividualDeviceListItemResponse } from '../../myApi';
+import axios from '../../api/axios';
+import { IndividualDeviceListItemResponse } from '../../api/types';
+import { DisabledStateType } from '../Redux/reducers/readingsReducer';
 
 export type ReadingsStateType = {
   hasNextPage: boolean;

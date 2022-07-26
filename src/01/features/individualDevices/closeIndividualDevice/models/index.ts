@@ -1,7 +1,7 @@
 import {
   EClosingReason,
   IndividualDeviceListItemResponse,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';

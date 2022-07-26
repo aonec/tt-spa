@@ -6,10 +6,10 @@ import {
   CreateApartmentCheckRequest,
   ApartmentCheckResponsePagedList,
   EditApartmentCheckRequest,
-} from './../../myApi';
-import axios from '01/axios';
-import { formQueryString } from '01/utils/formQueryString';
-import { FindApartmentIdQueryPayload } from '01/features/addressIdSearch/models';
+} from '../../api/types';
+import axios from '../../api/axios';
+import { formQueryString } from '../utils/formQueryString';
+import { FindApartmentIdQueryPayload } from '../features/addressIdSearch/models';
 import { SetApartmentStatusRequest } from './apartments.types';
 
 export const getApartment = async (id: number): Promise<ApartmentResponse> => {

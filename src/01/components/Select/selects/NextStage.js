@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { useParams } from 'react-router-dom';
 
 import { Select } from '../Select';

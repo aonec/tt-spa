@@ -5,7 +5,7 @@ import { translateMountPlace } from '01/utils/translateMountPlace';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../_components/Icon';
-import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import { IndividualDeviceListItemResponse } from '../../.../../api/types';
 import moment from 'moment';
 
 interface DeviceInfoProps {

@@ -6,7 +6,7 @@ import {
   SwitchIndividualDeviceReadingsCreateRequest,
   EClosingReason,
   SwitchIndividualDeviceRequest,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';

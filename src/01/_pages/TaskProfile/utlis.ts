@@ -1,4 +1,4 @@
-import { TaskResponse } from 'myApi';
+import { TaskResponse } from '../../api/types';
 
 export const getNodeIdFromTask = (task: TaskResponse) => {
   if (task.pipeNode?.id) return task.pipeNode?.id;

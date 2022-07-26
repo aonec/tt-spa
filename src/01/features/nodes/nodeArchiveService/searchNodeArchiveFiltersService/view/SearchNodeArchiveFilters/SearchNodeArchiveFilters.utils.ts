@@ -1,4 +1,4 @@
-import { EReportType } from 'myApi';
+import { EReportType } from '../../api/types';
 
 export const reportTypes = [
   {

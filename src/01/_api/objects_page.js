@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { createTimeline, createTimer, createDevice } from './utils';
 

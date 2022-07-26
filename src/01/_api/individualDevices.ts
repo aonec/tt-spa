@@ -1,4 +1,4 @@
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import _ from 'lodash';
 import {
@@ -8,7 +8,7 @@ import {
   MeteringDeviceResponse,
   EOrderByRule,
   IndividualDeviceListItemResponsePagedList,
-} from '../../myApi';
+} from '../../api/types';
 
 export interface CloseIndividualDeviceRequestBody {
   deviceId: number;

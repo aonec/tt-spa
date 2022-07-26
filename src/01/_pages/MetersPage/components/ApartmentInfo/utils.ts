@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { HomeownerAccountListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from '../../api/types';
 
 export const checkIsHomeownerAccountRecentlyModified = (
   account: HomeownerAccountListResponse

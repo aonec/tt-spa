@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter, TaskListResponse } from 'myApi';
+import { TaskGroupingFilter, TaskListResponse } from '../../api/types';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {

@@ -1,4 +1,4 @@
-import { InspectorResponse } from './../../../../myApi';
+import { InspectorResponse } from './../.../../api/types';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
 

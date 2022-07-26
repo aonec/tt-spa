@@ -1,4 +1,4 @@
-import { IndividualDeviceResponse } from 'myApi';
+import { IndividualDeviceResponse } from '../../api/types';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
 

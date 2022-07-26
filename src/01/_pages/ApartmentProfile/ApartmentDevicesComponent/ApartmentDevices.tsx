@@ -4,7 +4,7 @@ import { ApartmentDevicesList } from './components/ApartmentDevicesList';
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import MonthSlider from '../../../shared/ui/devices/MonthSlider';
 import { useState } from 'react';
 import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';

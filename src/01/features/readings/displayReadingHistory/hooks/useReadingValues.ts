@@ -7,11 +7,11 @@ import { createReading } from './../../../../_api/readings';
 import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
-import axios from '01/axios';
+import axios from '../../api/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
 

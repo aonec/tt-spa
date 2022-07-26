@@ -2,14 +2,14 @@ import {
   CreateIndividualDeviceRequest,
   EIndividualDeviceRateType,
   EResourceType,
-} from './../../../../../myApi';
+} from './../../.../../api/types';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
   createIndividualDevice,
 } from '01/_api/individualDevices';
 import { forward, sample } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
+import { BaseIndividualDeviceReadingsCreateRequest } from '../../api/types';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,

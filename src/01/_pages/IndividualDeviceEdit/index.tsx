@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Loader } from '../../components';
 import { useAsync } from '../../hooks/useAsync';
-import { IndividualDeviceResponse } from '../../../myApi';
+import { IndividualDeviceResponse } from '.../../api/types';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { getIndividualDevice } from '../../_api/apiRequests';
 import IndividualDeviceEditForm from './components/IndividualDeviceEditForm';

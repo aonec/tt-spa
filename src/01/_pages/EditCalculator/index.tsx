@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
 import { getCalculator } from './components/apiEditCalculator';
-import { CalculatorResponse } from '../../../myApi';
+import { CalculatorResponse } from '.../../api/types';
 import { useAsync } from '../../hooks/useAsync';
 import EditCalculatorForm from './components/EditCalculatorForm';
 import { Loader } from '../../components';

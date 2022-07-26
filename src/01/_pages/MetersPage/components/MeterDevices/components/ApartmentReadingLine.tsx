@@ -5,7 +5,7 @@ import DeviceInfo from './DeviceInfo';
 import {
   IndividualDeviceListItemResponse,
   ESecuredIdentityRoleName,
-} from 'myApi';
+} from '../../api/types';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import { useHistory, useParams } from 'react-router-dom';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';

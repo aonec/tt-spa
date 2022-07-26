@@ -3,9 +3,9 @@ import {
   HousingStockResponse,
   NumberIdResponse,
   StringPagedList,
-} from './../../myApi';
-import axios from '01/axios';
-import { formQueryString } from '01/utils/formQueryString';
+} from '../../api/types';
+import axios from '../../api/axios';
+import { formQueryString } from '../utils/formQueryString';
 
 export interface GetHousingStockParams {
   City: string;

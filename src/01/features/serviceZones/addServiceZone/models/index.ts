@@ -6,7 +6,7 @@ import {
   guard,
   Store,
 } from 'effector';
-import { NodeServiceZoneResponse } from '../../../../../myApi';
+import { NodeServiceZoneResponse } from '../../.../../api/types';
 
 export const addServiceZoneButtonClicked = createEvent();
 

@@ -1,7 +1,7 @@
 import { createGate } from 'effector-react';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms';
-import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
 
 export const $selectedHousingsStockId = createStore<number | null>(null);
 

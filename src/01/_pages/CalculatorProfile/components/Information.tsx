@@ -2,7 +2,7 @@ import React from 'react';
 import { ListWrap, ListItem } from '01/_components/List';
 import { Subtitle } from '../../../_components/Headers';
 import moment from 'moment';
-import { CalculatorResponse } from '../../../../myApi';
+import { CalculatorResponse } from '../.../../api/types';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,

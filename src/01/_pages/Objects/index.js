@@ -4,7 +4,7 @@ import React, { useReducer, useState } from 'react';
 import styled, { css } from '@reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
-import axios from '01/axios';
+import axios from '../../api/axios';
 import { Loader, Icon } from '../../components';
 import ObjectsSearchForm from './ObjectsSearchForm/ObjectsSearchForm';
 import { objectsSearchReducer } from '../../Redux/reducers/objectsSearchReducer';

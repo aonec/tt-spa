@@ -1,5 +1,5 @@
 import { createGate } from 'effector-react';
-import { HomeownerCertificateResponse } from './../../../../../myApi';
+import { HomeownerCertificateResponse } from './../../.../../api/types';
 import { createStore, createEvent, createEffect } from 'effector';
 
 export const $homeownerCertificatre = createStore<HomeownerCertificateResponse | null>(

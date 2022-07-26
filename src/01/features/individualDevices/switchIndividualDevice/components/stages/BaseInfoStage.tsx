@@ -24,7 +24,7 @@ import {
   EIndividualDeviceRateType,
   EResourceType,
   EClosingReason,
-} from 'myApi';
+} from '../../api/types';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,

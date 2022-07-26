@@ -1,6 +1,6 @@
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { SetApartmentStatusRequest } from './../../../../_api/apartments.types';
-import { IndividualDeviceWithExpiredCheckingDateListResponse } from './../../../../../myApi';
+import { IndividualDeviceWithExpiredCheckingDateListResponse } from './../../.../../api/types';
 import { createForm } from 'effector-forms';
 import {
   createStore,

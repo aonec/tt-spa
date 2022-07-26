@@ -5,7 +5,7 @@ import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { ApartmentActResponse, EActResourceType } from 'myApi';
+import { ApartmentActResponse, EActResourceType } from '../../api/types';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';

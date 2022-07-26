@@ -24,7 +24,7 @@ import {
   GroupReportFormResponse,
   ENodeCommercialAccountStatus,
   EResourceType,
-} from '../../../../../myApi';
+} from '../../.../../api/types';
 import { useAsync } from '../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport, reportQuery } from './apiGroupReport';

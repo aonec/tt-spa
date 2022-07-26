@@ -8,7 +8,7 @@ import { checkHistoryTemp, ListItem } from '../NodeChecks';
 import { getCheckingActDocument, getOnSaveFile } from '../utils';
 import { ReactComponent as DocumentIcon } from '../assets/documentIcon.svg';
 import { ReactComponent as DownloadIcon } from '../assets/downloadIcon.svg';
-import { NodeCheckResponse } from 'myApi';
+import { NodeCheckResponse } from '../../api/types';
 import styled from 'styled-components';
 
 interface Props {

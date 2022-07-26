@@ -24,7 +24,7 @@ import {
   EResourceType,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
 import { putIndividualDevice } from '../../../_api/apiRequests';

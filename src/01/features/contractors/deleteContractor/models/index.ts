@@ -1,4 +1,4 @@
-import { ContractorResponse } from './../../../../../myApi';
+import { ContractorResponse } from './../../.../../api/types';
 import { createEvent, createStore, createEffect } from 'effector';
 
 export const $contractorIdToDelete = createStore<number | null>(null);

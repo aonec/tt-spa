@@ -2,7 +2,7 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from '../../api/types';
 import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksProps } from './SearchTasks.types';

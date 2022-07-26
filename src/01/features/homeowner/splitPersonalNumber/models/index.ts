@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { createGate } from 'effector-react';
-import { HomeownerAccountSplitRequest } from 'myApi';
+import { HomeownerAccountSplitRequest } from '../../api/types';
 
 export const splitPersonalNumberFx = createEffect<
   HomeownerAccountSplitRequest,

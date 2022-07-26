@@ -1,4 +1,4 @@
-import { EActResourceType, EResourceType } from 'myApi';
+import { EActResourceType, EResourceType } from '../../api/types';
 import React, { FC } from 'react';
 import {
   AllResourcesIcon,

@@ -1,5 +1,5 @@
-import { axios } from '01/axios';
-import { ApartmentListResponsePagedList } from './../../../myApi';
+import { axios } from '../../api/axios';
+import { ApartmentListResponsePagedList } from './.../../api/types';
 import { GetApartmentsListRequestPayload } from './displayApartmentsListService.types';
 
 export const getApartments = (

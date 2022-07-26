@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { message } from 'antd';
-import axios from '../../axios';
+import axios from '../../../api/axios';
 
 export async function confirmRegistration(form) {
   message.info('Попытка подтверждения пользователя');

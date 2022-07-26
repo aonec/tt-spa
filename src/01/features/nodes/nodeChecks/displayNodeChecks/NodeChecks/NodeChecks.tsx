@@ -5,7 +5,7 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { CheckHistoryDocument } from './CheckHistoryDocument';
 import styled from 'styled-components';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { NodeCheckResponse } from 'myApi';
+import { NodeCheckResponse } from '../../api/types';
 import { EditNodeCheckPayload } from '../../checkNode/models';
 
 interface Props {

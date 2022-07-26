@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { nodeService } from './../../../../displayNode/models/index';
 import { createForm } from 'effector-forms';
 import { createDomain, sample, forward } from 'effector';
-import axios from '../../../../../../axios';
+import axios from '../../../../../../../api/axios';
 
 const addNodeCalculatorConnection = createDomain('addNodeCalculatorConnection');
 

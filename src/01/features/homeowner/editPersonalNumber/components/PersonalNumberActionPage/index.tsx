@@ -8,7 +8,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
 import { Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
-import { ApartmentResponse, HousingStockListResponse } from 'myApi';
+import { ApartmentResponse, HousingStockListResponse } from '../../api/types';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';

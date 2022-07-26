@@ -27,7 +27,7 @@ import {
   AlertInterface,
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
-import { CreateCalculatorRequest } from '../../../../../myApi';
+import { CreateCalculatorRequest } from '../../.../../api/types';
 import {
   calculatorNoConnectionValidationSchema,
   calculatorValidationSchema,

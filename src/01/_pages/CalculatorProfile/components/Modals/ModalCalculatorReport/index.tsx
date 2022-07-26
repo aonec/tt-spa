@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import ModalCalculatorReportForm from './ModalCalculatorReportForm';
 import ModalSonoSafeReportForm from './ModalSonoSafeReportForm';
 import { StyledModal } from '../../../../../tt-components';
-import { CalculatorResponse } from '../../../../../../myApi';
+import { CalculatorResponse } from '../../../.../../api/types';
 import ButtonTT from '../../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';

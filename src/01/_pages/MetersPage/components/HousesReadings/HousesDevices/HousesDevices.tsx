@@ -16,7 +16,7 @@ import {
   $housingStock,
   HousingStockGate,
 } from '01/features/housingStocks/displayHousingStock/models';
-import { EResourceType, IndividualDeviceListItemResponse } from 'myApi';
+import { EResourceType, IndividualDeviceListItemResponse } from '../../api/types';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';

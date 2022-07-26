@@ -7,7 +7,7 @@ import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceResponse,
-} from 'myApi';
+} from '../../api/types';
 import moment from 'moment';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';

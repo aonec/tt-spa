@@ -8,7 +8,7 @@ import { RelatedDevices } from './components/RelatedDevices';
 import {
   PipeHousingMeteringDeviceResponse,
   TaskListResponse,
-} from '../../../myApi';
+} from '.../../api/types';
 import { useAsync } from '../../hooks/useAsync';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';

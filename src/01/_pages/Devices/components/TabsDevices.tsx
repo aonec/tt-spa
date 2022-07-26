@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import {
   CalculatorListResponsePagedList,
   EExpiresCheckingDateAt,
-} from '../../../../myApi';
+} from '../.../../api/types';
 import { RootState } from '../../../Redux/store';
 import { DevicePageType } from '../../../Redux/rootReducer';
 import { searchStateChanged } from '../../../features/devicesReport/models';

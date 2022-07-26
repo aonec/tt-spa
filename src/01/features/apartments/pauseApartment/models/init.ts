@@ -12,7 +12,7 @@ import {
 import { $isPauseApartmentModalVisible, pauseApartmentButtonClicked } from '.';
 import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus } from '../../api/types';
 import { FileData } from '01/hooks/useFilesUpload';
 import moment from 'moment';
 

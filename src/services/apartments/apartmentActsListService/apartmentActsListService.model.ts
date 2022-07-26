@@ -6,7 +6,7 @@ import {
   DocumentResponse,
   EActResourceType,
   EActType,
-} from 'myApi';
+} from '../../api/types';
 import {
   getapartmentActsList,
   saveFileRequest,

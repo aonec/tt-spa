@@ -1,5 +1,5 @@
 import { createEffect } from 'effector';
-import { StagePushRequest } from 'myApi';
+import { StagePushRequest } from '../../api/types';
 
 export interface PushStageParams {
   taskId: number;

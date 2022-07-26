@@ -18,11 +18,11 @@ import {
   CalculatorListResponse,
   HousingStockResponse,
   CalculatorListResponsePagedList,
-} from '../../../../../../myApi';
+} from '../../../.../../api/types';
 import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
 import Title from '../../../../../tt-components/Title';
-import axios from '01/axios';
+import axios from '../../api/axios';
 
 interface ObjectContextInterface {
   object: HousingStockResponse;

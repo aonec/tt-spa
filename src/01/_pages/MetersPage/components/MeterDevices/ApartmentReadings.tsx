@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
-import { EIndividualDeviceRateType } from '../../../../../myApi';
+import { EIndividualDeviceRateType } from '../../.../../api/types';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { useStore } from 'effector-react';
 import {

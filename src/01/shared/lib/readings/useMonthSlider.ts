@@ -1,4 +1,4 @@
-import { IndividualDeviceListItemResponse } from '../../../../myApi';
+import { IndividualDeviceListItemResponse } from '../.../../api/types';
 import { useState } from 'react';
 import { IndividualDeviceType } from '../../../../types';
 

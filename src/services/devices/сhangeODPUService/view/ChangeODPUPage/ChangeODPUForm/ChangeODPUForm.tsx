@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
+import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from '../../api/types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   BaseInfoWrapper,

@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName } from '../../api/types';
 import { MenuFiltrationConfig, MenuItem } from './menuService.types';
 
 export function filterMenuItems(
