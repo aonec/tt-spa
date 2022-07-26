@@ -4305,6 +4305,38 @@ export enum StatusType {
   NotClosed = "NotClosed",
 }
 
+export interface StreetWithHousingStockNumbersResponse {
+  street: string | null;
+  housingStockNumbers: string[] | null;
+}
+
+export interface StreetWithHousingStockNumbersResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: StreetWithHousingStockNumbersResponse[] | null;
+}
+
+export interface StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse {
+  successResponse: StreetWithHousingStockNumbersResponsePagedList | null;
+}
+
 export interface StringPagedList {
   /** @format int32 */
   totalItems: number;
@@ -4773,6 +4805,9 @@ export interface TaskListResponse {
   /** @format int32 */
   totalHomeownersCount: number;
   timeStatus: ETaskTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface TaskResponse {
@@ -4812,6 +4847,9 @@ export interface TaskResponse {
   consumableMaterials: string | null;
   taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
   timeStatus: ETaskTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -4912,6 +4950,46 @@ export interface UpdateCalculatorRequest {
   /** @format int32 */
   infoId?: number | null;
   connection?: MeteringDeviceConnection | null;
+}
+
+export interface UpdateElectricHousingMeteringDeviceRequest {
+  serialNumber?: string | null;
+  sealNumber?: string | null;
+
+  /** @format date-time */
+  sealInstallationDate?: string | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format double */
+  scaleFactor?: number | null;
+
+  /** @format date-time */
+  lastCheckingDate?: string | null;
+
+  /** @format date-time */
+  futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
+
+  /** @format date-time */
+  installationDate?: string | null;
+
+  /** @format int32 */
+  manufactureYear?: number | null;
+
+  /** @format int32 */
+  stateVerificationYear?: number | null;
+  stateVerificationQuarter?: EYearQuarter | null;
+
+  /** @format int32 */
+  stateVerificationIntervalYears?: number | null;
+
+  /** @format int32 */
+  nextStateVerificationYear?: number | null;
+  phaseNumber?: EPhaseNumberType | null;
 }
 
 export interface UpdateElectricNodeRequest {
@@ -6446,32 +6524,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     electricHousingMeteringDevicesUpdate: (
       deviceId: number,
-      query?: {
-        InstallationDate?: string;
-        ManufactureYear?: number;
-        StateVerificationYear?: number;
-        StateVerificationQuarter?: EYearQuarter;
-        StateVerificationIntervalYears?: number;
-        NextStateVerificationYear?: number;
-        PhaseNumber?: EPhaseNumberType;
-        HousingMeteringDeviceType?: EHousingMeteringDeviceType;
-        Resource?: EResourceType;
-        Model?: string;
-        SerialNumber?: string;
-        SealNumber?: string;
-        SealInstallationDate?: string;
-        BitDepth?: number;
-        ScaleFactor?: number;
-        LastCheckingDate?: string;
-        FutureCheckingDate?: string;
-      },
+      data: UpdateElectricHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
       this.request<ElectricHousingMeteringDeviceResponseSuccessApiResponse, any>({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: "PUT",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -7634,6 +7695,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/ExistingHousingStockNumber`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingStreetsWithHousingStockNumbersList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/ExistingStreetsWithHousingStockNumbers
+     * @secure
+     */
+    housingStocksExistingStreetsWithHousingStockNumbersList: (
+      query?: { Street?: string; City?: string; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
+      this.request<StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbers`,
         method: "GET",
         query: query,
         secure: true,
