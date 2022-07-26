@@ -1,20 +1,20 @@
 import { ElectricHousingMeteringDeviceResponse, EYearQuarter } from 'myApi';
+import { EditElectricNodePayload } from '../../editElectricNodeService.types';
 
 export type EditElectricNodePageProps = {
   device: ElectricHousingMeteringDeviceResponse | null;
-  handleUpdateDevice: (payload: UpdateElectricHousingMeteringDevice) => void;
+  handleUpdateDevice: (payload: EditElectricNodePayload) => void;
   isLoadingUpdate: boolean;
   isLoadingDevice: boolean;
 };
 
 export type UpdateElectricHousingMeteringDevice = {
-  Model: string;
-  InstallationDate: string;
-  StateVerificationYear: string;
-  NextStateVerificationYear: string;
-  StateVerificationQuarter: EYearQuarter;
-  StateVerificationIntervalYears: number;
-  deviceId: number;
+  model: string;
+  installationDate: string;
+  stateVerificationYear: string;
+  nextStateVerificationYear: string;
+  stateVerificationQuarter: EYearQuarter;
+  stateVerificationIntervalYears: number;
 };
 
 export enum EditElectricNodeGrouptype {

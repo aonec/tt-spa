@@ -4773,6 +4773,9 @@ export interface TaskListResponse {
   /** @format int32 */
   totalHomeownersCount: number;
   timeStatus: ETaskTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface TaskResponse {
@@ -4812,6 +4815,9 @@ export interface TaskResponse {
   consumableMaterials: string | null;
   taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
   timeStatus: ETaskTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -4912,6 +4918,46 @@ export interface UpdateCalculatorRequest {
   /** @format int32 */
   infoId?: number | null;
   connection?: MeteringDeviceConnection | null;
+}
+
+export interface UpdateElectricHousingMeteringDeviceRequest {
+  serialNumber?: string | null;
+  sealNumber?: string | null;
+
+  /** @format date-time */
+  sealInstallationDate?: string | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format double */
+  scaleFactor?: number | null;
+
+  /** @format date-time */
+  lastCheckingDate?: string | null;
+
+  /** @format date-time */
+  futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
+
+  /** @format date-time */
+  installationDate?: string | null;
+
+  /** @format int32 */
+  manufactureYear?: number | null;
+
+  /** @format int32 */
+  stateVerificationYear?: number | null;
+  stateVerificationQuarter?: EYearQuarter | null;
+
+  /** @format int32 */
+  stateVerificationIntervalYears?: number | null;
+
+  /** @format int32 */
+  nextStateVerificationYear?: number | null;
+  phaseNumber?: EPhaseNumberType | null;
 }
 
 export interface UpdateElectricNodeRequest {
@@ -6446,32 +6492,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     electricHousingMeteringDevicesUpdate: (
       deviceId: number,
-      query?: {
-        InstallationDate?: string;
-        ManufactureYear?: number;
-        StateVerificationYear?: number;
-        StateVerificationQuarter?: EYearQuarter;
-        StateVerificationIntervalYears?: number;
-        NextStateVerificationYear?: number;
-        PhaseNumber?: EPhaseNumberType;
-        HousingMeteringDeviceType?: EHousingMeteringDeviceType;
-        Resource?: EResourceType;
-        Model?: string;
-        SerialNumber?: string;
-        SealNumber?: string;
-        SealInstallationDate?: string;
-        BitDepth?: number;
-        ScaleFactor?: number;
-        LastCheckingDate?: string;
-        FutureCheckingDate?: string;
-      },
+      data: UpdateElectricHousingMeteringDeviceRequest,
       params: RequestParams = {},
     ) =>
       this.request<ElectricHousingMeteringDeviceResponseSuccessApiResponse, any>({
         path: `/api/ElectricHousingMeteringDevices/${deviceId}`,
         method: "PUT",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
