@@ -3,7 +3,7 @@ import { CalendarIcon, MapIcon, UserIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
   min-width: 850px;
-  padding: 6px 12px 8px 12px;
+  padding: 10px;
   margin-top: 12px;
   border-radius: 4px;
   border: 1px solid transparent;
@@ -100,7 +100,12 @@ export const TimeLineWrapper = styled.div`
 
 export const TimeWrapper = styled.span<{ fail?: boolean }>`
   color: ${({ fail }) => fail && 'var(--error)'};
-  margin: 0 4px;
+  margin-left: 4px;
+`;
+
+export const SerialNumberWrapper = styled.span`
+  font-weight: 600;
+  margin-left: 6px;
 `;
 
 export const TextWrapper = styled.span`
@@ -108,7 +113,7 @@ export const TextWrapper = styled.span`
 `;
 
 export const MapIconSC = styled(MapIcon)`
-  margin-left: 12px;
+  margin-left: 14px;
 `;
 
 export const CalendarIconSC = styled(CalendarIcon)`

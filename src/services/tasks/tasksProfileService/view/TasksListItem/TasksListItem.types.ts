@@ -1,5 +1,6 @@
+import { resetEditManagingUserRequest } from '01/features/staff/managingFirmUser/editManagingFirmUser/models';
 import { ETaskClosingStatus, TaskListResponse } from 'myApi';
-import { OkIcon, TimerIcon, XIcon } from 'ui-kit/icons';
+import { OkIcon, RedTimerIcon, TimerIcon, XIcon } from 'ui-kit/icons';
 
 export type TasksListItemProps = {
   task: TaskType;
@@ -28,13 +29,15 @@ export type Timer = {
   diffTime?: string;
   stage?: Omit<Timeline, 'timelineStyle'> | null;
   executionTime?: string;
+  isFailed?: boolean;
 };
 
 export const IconLookup = [
   { icon: ETaskClosingStatus.Properly, element: OkIcon },
+  { icon: ETaskClosingStatus.Interrupted, element: XIcon },
   {
     icon: 'timer',
     element: TimerIcon,
   },
-  { icon: ETaskClosingStatus.Interrupted, element: XIcon },
+  { icon: 'redTimer', element: RedTimerIcon },
 ];

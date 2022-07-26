@@ -80,15 +80,23 @@ const createTimer = (task: TaskListResponse) => {
   const finish = closingTime;
 
   const diffTimeStr = getFormatedTime(
-    new Date(deadline!).valueOf() - new Date(finish!).valueOf()
+    Math.abs(new Date(deadline!).valueOf() - new Date(finish!).valueOf())
   );
 
   const executionTime = getFormatedTime(
     new Date(finish!).valueOf() - new Date(start!).valueOf()
   );
 
+  if (new Date(deadline!).valueOf() - new Date(finish!).valueOf() < 0) {
+    return {
+      diffTime: diffTimeStr,
+      icon: 'redTimer',
+      statusDescription: 'Просрочена на',
+    };
+  }
+
   return {
-    diffTime: `(${diffTimeStr})`,
+    diffTime: `(+${diffTimeStr})`,
     executionTime,
     icon: closingStatus,
     statusDescription: 'Выполнено за:',

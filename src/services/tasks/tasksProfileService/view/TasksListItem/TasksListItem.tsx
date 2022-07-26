@@ -11,6 +11,7 @@ import {
   Line,
   MapIconSC,
   NameRowWrapper,
+  SerialNumberWrapper,
   TaskItemWrapper,
   TaskNameWrapper,
   TextWrapper,
@@ -67,7 +68,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
           {Icon && <Icon />}
           <TextWrapper>{timer.statusDescription}</TextWrapper>
           <TimeWrapper fail={timer.stage?.isFailed}>
-            {timer.stage?.remainingTime || timer.executionTime}
+            {timer.stage?.remainingTime || timer?.executionTime}
           </TimeWrapper>
           <span>{timer.stage?.deadlineDate || timer?.diffTime}</span>
         </div>
@@ -86,8 +87,8 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
                 <ResourceIconLookup resource={device.resource} />
               )}
               {!device.resource && <CalculatorIcon />}
+              <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
               <TextWrapper>{device.model}</TextWrapper>
-              <span>({device.serialNumber})</span>
             </DeviceInfoWrapper>
           )}
 
