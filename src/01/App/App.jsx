@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';

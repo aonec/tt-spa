@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { TasksItem } from '01/components/items/TasksItem';
 import { ObjectItem } from '01/components/items/ObjectItem';
 

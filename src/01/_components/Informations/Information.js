@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 
 import { Loader } from '01/components/Loader';
 import { information } from '01/r_comp';

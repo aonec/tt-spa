@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 import { useHistory } from 'react-router-dom';
 import { Loader, Icon } from '01/components';
 const styles = css`

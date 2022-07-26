@@ -3,7 +3,7 @@
 import { NavLink } from 'react-router-dom';
 import React from 'react';
 import t from 'prop-types';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 
 const style = css`
   div {

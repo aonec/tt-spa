@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Route, useHistory, useRouteMatch } from 'react-router-dom';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 
 import { Icon } from '01/components/Icon';
 import { button } from '01/r_comp';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Route } from 'react-router-dom';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 
 import { Loader } from '01/components';
 import * as style from '_reshadow';

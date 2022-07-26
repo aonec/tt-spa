@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 import { Loader } from '01/components/Loader';
 import { HeaderWrap } from '../../../_components/Headers';
 import ModalCalculator from './Modals/AddCalculator';

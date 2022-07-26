@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouteMatch, Route, Switch } from 'react-router-dom';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { Menu } from '01/components/Menu';
 import menuItems from '01/menu.json';
 import { TasksPage } from '01/pages/TasksPage';

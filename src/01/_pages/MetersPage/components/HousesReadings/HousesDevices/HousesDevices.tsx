@@ -27,7 +27,6 @@ import { useRef } from 'react';
 import { ButtonTT } from '01/tt-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { List } from 'react-virtualized';
 import { TopButton } from './TopButton/TopButton';
 
 type ParamsType = {
@@ -121,19 +120,7 @@ const HousesDevices: React.FC = () => {
       {!!deviceElems.length && (
         <HouseReadingsHeader sliderProps={sliderProps} />
       )}
-      <List
-        rowCount={devices.length}
-        rowHeight={({ index }) => {
-          const num = getIndividualDeviceRateNumByName(
-            devices[index]?.rateType
-          );
-
-          return 100 + (num - 1) * 40;
-        }}
-        rowRenderer={renderDeviceRow}
-        height={getHeight()}
-        width={956}
-      />
+      {devices.map(renderDeviceRow)}
       <Space />
       {!isAllDevicesDone && (
         <ButtonTT

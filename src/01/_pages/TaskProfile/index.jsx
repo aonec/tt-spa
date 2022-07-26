@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import * as s from '01/r_comp';
 import styledC from 'styled-components';
 import { Link } from 'react-router-dom';

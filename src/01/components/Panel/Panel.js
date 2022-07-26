@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css, use } from 'reshadow/macro';
+import styled, { css, use } from '@reshadow/macro';
 
 import { useSelectFetch } from '01/hooks/useSelectFetch';
 import { Select } from '01/components/Select';

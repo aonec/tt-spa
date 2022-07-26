@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 
 export const Page = ({ children, columns = '8fr 5fr', ...props }) =>
   styled()`

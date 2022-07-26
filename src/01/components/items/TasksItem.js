@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 import { Icon } from '01/components/Icon';
 import { date } from '01/servises/date';
 import { Timeline } from '01/components/Timeline';

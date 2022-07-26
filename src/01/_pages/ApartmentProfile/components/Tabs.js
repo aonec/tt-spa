@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { tabs } from '01/r_comp';

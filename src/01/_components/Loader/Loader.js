@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 import t from 'prop-types';
 import { Icon } from '01/components/Icon';
 

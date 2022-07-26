@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 
 export const Tab = ({ styles, name, ...props }) =>
   styled(styles)(

@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { use } from 'reshadow/macro';
+import styled, { use } from '@reshadow/macro';
 import { useHistory } from 'react-router-dom';
 
 import { Loader } from '01/components/Loader';

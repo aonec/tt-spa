@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { button } from '../../r_comp';
 
 import './AccessDeniedPage.css';

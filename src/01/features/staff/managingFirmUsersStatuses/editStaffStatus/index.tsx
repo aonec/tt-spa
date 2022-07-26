@@ -1,6 +1,5 @@
 import {
   Footer,
-  ModalText,
   StyledModal,
   Header,
 } from '01/shared/ui/Modal/Modal';

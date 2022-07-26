@@ -1,5 +1,5 @@
 import React from 'react';
-import styledReshadow from 'reshadow/macro';
+import styledReshadow from '@reshadow/macro';
 import icons from '01/assets/icons.json';
 import styled from 'styled-components';
 import { ReactComponent as WaterIcon } from './icons/water.svg';

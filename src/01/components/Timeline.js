@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 
 import { formatTime, date } from '01/servises/date';
 

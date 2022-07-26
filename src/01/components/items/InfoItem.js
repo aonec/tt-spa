@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import t from 'prop-types';
 
 import { LinkWrap } from '01/components/LinkWrap';

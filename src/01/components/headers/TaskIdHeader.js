@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 
 import { Timeline } from '01/components/Timeline';
 import { Timer } from '01/components/Timer';

@@ -14,9 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/01/features/nodes/nodeArchiveService/searchNodeArchiveFiltersService/.tsx"],
+  "include": ["src"],
   "typeRoots": ["../node_modules/@types", "../@types"]
 }

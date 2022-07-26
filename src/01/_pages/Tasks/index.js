@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React, { useMemo, useReducer } from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { NavLink } from 'react-router-dom';
 
 import { tabs } from '01/r_comp';

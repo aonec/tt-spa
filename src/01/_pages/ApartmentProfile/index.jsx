@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import styledComponents from 'styled-components';
 import { grid } from '01/r_comp';
 import { Loader } from '01/components/Loader';

@@ -15,7 +15,7 @@ import { useUploadingReadings } from './useUploadingReadings';
 interface Props {
   prevReading?: MeteringDeviceReading;
   reading?: MeteringDeviceReading;
-  onChange?(value: number): void;
+  onChange?: (value: number) => void;
   resource?: EResourceType;
   loading?: boolean;
   refetch(): void;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { use, css } from 'reshadow/macro';
+import styled, { use, css } from '@reshadow/macro';
 import { useHistory } from 'react-router-dom';
 
 import { Icon } from '01/components';

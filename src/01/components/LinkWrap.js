@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 
 export const LinkWrap = ({ children, to, ...props }) =>
   to ? (

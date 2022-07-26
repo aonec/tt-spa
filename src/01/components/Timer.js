@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css, use } from 'reshadow/macro';
+import styled, { css, use } from '@reshadow/macro';
 
 import { formatTime, date } from '01/servises/date';
 import { Icon } from '01/components/Icon';

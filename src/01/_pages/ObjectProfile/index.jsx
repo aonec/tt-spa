@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'reshadow/macro';
+import styled from '@reshadow/macro';
 import { Route, useParams, useHistory } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { Header } from './components/Header';

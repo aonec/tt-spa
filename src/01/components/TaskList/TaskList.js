@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
+import styled, { css } from '@reshadow/macro';
 import { Link as LinkRow } from 'react-router-dom';
 
 import { Timeline } from '01/components/Timeline';

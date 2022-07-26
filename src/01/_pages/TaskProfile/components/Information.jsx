@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { use } from 'reshadow/macro';
+import styled, { use } from '@reshadow/macro';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 import { Loader } from '01/components/Loader';

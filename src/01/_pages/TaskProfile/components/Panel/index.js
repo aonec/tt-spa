@@ -5,7 +5,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
-import styled, { css, use } from 'reshadow/macro';
+import styled, { css, use } from '@reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
