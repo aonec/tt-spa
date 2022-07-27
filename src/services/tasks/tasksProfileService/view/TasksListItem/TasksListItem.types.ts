@@ -1,5 +1,4 @@
 import { ETaskClosingStatus, TaskListResponse } from 'myApi';
-import { OkIcon, RedTimerIcon, TimerIcon, XIcon } from 'ui-kit/icons';
 
 export type TasksListItemProps = {
   task: TaskType;
