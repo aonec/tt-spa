@@ -21,6 +21,7 @@ import { addNode } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
 import { useStore } from 'effector-react';
 import { $serviceZones } from '../../../../features/serviceZones/selectServiceZones/models';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 const AddNodeForm = (props: any) => {
   const history = useHistory();
@@ -35,8 +36,6 @@ const AddNodeForm = (props: any) => {
   } = useContext(AddNodeContext);
 
   const serviceZones = useStore($serviceZones);
-
-  const { city, street, number: houseNumber, corpus } = housingStock;
 
   const {
     calculatorId,
@@ -100,9 +99,9 @@ const AddNodeForm = (props: any) => {
       <ul>
         <List>
           <Info>Адрес</Info>
-          <Description>{`${city}, ${street}, ${houseNumber} ${
-            corpus ? ',' + corpus : ''
-          }`}</Description>
+          <Description>
+            {getHousingStockAddress(housingStock, true)}
+          </Description>
         </List>
         <List>
           <Info>Тип ресурса</Info>
@@ -220,7 +219,6 @@ const AddNodeForm = (props: any) => {
         <ThirdBlock />
       </StyledModalBody>
       <StyledFooter>
-        
         <ButtonTT
           onClick={handleSubmit}
           color="blue"
