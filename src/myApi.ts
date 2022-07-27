@@ -93,6 +93,12 @@ export interface AddressResponse {
   housingStockNumber: string | null;
 }
 
+export interface AddressShortResponse {
+  /** @format int32 */
+  housingStockId: number;
+  housingStockNumber: string | null;
+}
+
 export interface AllNodeWorkingRangeResponse {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
@@ -4307,7 +4313,7 @@ export enum StatusType {
 
 export interface StreetWithHousingStockNumbersResponse {
   street: string | null;
-  housingStockNumbers: string[] | null;
+  addresses: AddressShortResponse[] | null;
 }
 
 export interface StreetWithHousingStockNumbersResponsePagedList {
@@ -6437,6 +6443,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/DataMigrations/CheckReadingsHistory`,
         method: "POST",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportHousingStockInfoCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportHousingStockInfo
+     * @secure
+     */
+    dataMigrationsImportHousingStockInfoCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportHousingStockInfo`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
         ...params,
       }),
 
