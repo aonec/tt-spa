@@ -34,9 +34,9 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     loading,
     currentReading,
     previousReading,
+    prePreviousReading,
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
-
   const history = useHistory();
 
   const handleChangeODPU = useCallback(
@@ -44,14 +44,20 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     []
   );
 
+  const handleEditODPU = useCallback(
+    () => history.push(`/electricNode/${counter?.id}/edit`),
+    []
+  );
+
   const readingsInput = () => (
     <>
       <MeteringDeviceReadingInput
         deviceId={counter?.id!}
+        prevReading={prePreviousReading}
         reading={previousReading}
         loading={loading}
-        disabled
         refetch={refetch}
+        monthIndex={sliderIndex}
       />
       <MeteringDeviceReadingInput
         prevReading={previousReading}
@@ -61,6 +67,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
         current
         refetch={refetch}
         inputIndex={inputIndex}
+        monthIndex={-1}
       />
     </>
   );
@@ -121,6 +128,10 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
               {
                 title: 'Заменить прибор',
                 onClick: handleChangeODPU,
+              },
+              {
+                title: 'Редактировать прибор',
+                onClick: handleEditODPU,
               },
             ]}
           />

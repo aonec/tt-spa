@@ -67,31 +67,31 @@ export const Header = ({
   const additionalAdress = fullAddressesString(address);
 
   return (
-    <HeaderWrap
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div>
-        <Title>
-          <IconTT
-            icon={resource?.toLowerCase()}
-            size="24"
-            style={{ marginRight: 8 }}
-          />
-          {`${model} (${serialNumber})`}
-        </Title>
+      <HeaderWrap
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div>
+          <Title>
+            <IconTT
+              icon={resource?.toLowerCase()}
+              size="24"
+              style={{ marginRight: 8 }}
+            />
+            {`${model} (${serialNumber})`}
+          </Title>
 
-        <Subtitle to={`/objects/${id}`}>
-          <Tooltip title={additionalAdress}>
-            <AdditionalAddress>{additionalAdress}</AdditionalAddress>
-          </Tooltip>
-        </Subtitle>
-      </div>
+          <Subtitle to={`/objects/${id}`}>
+            <Tooltip title={additionalAdress}>
+              <AdditionalAddress>{additionalAdress}</AdditionalAddress>
+            </Tooltip>
+          </Subtitle>
+        </div>
 
-      <MenuButtonTT menuButtonArr={menuButtonArr} />
-    </HeaderWrap>
+        <MenuButtonTT menuButtonArr={menuButtonArr} />
+      </HeaderWrap>
   );
 };
 

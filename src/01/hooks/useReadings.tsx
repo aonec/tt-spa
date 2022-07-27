@@ -4,6 +4,8 @@ import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
 import axios from '../axios';
+import { message, Tooltip } from 'antd';
+import styled from 'styled-components';
 
 import ReadingsBlock, {
   getMeasurementUnit,
@@ -23,36 +25,20 @@ import {
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
-import styled from 'styled-components';
-import { message, Tooltip } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
-import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import { useEvent, useStore } from 'effector-react';
-
-const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean
+  closed?: boolean,
 ) => {
   const unit = getMeasurementUnit(device.resource);
-
-  const consumptionRates = useStore(outputs.$consumptionRates);
-  const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates
-  );
-
-  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
-    consumptionRates,
-    loadConsumptionRates,
-    device.managementFirm?.id,
-  );
 
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
 
@@ -183,7 +169,7 @@ export const useReadings = (
       title: `Вы точно хотите удалить показание за ${readingDate.toLowerCase()} на приборе ${
         device.model
       } (${device.serialNumber})?`,
-      callback: () => void request(),
+      onSubmit: () => void request(),
     });
   }
 
@@ -346,7 +332,7 @@ export const useReadings = (
               </b>
             </>
           ),
-          callback: () => void sendPreviousReading(requestPayload),
+          onSubmit: () => void sendPreviousReading(requestPayload),
         });
         return;
       }
@@ -360,7 +346,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        callback: () => void sendPreviousReading(requestPayload),
+        onSubmit: () => void sendPreviousReading(requestPayload),
       });
     }
 
@@ -462,7 +448,7 @@ export const useReadings = (
               </b>
             </>
           ),
-          callback: () => void sendCurrentReadings(),
+          onSubmit: () => void sendCurrentReadings(),
         });
         return;
       }
@@ -476,7 +462,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        callback: () => void sendCurrentReadings(),
+        onSubmit: () => void sendCurrentReadings(),
       });
     }
 

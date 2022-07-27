@@ -27,10 +27,12 @@ import { deleteIndividualDeviceService } from '01/features/individualDevices/del
 import { FullDeviceLine } from './apartment_reading_line.styled';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { ActionButton } from './action_button/action_button';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   numberOfPreviousReadingsInputs: number;
   closed?: boolean;
 }
@@ -40,6 +42,7 @@ const ApartmentReadingLine = ({
   sliderIndex,
   numberOfPreviousReadingsInputs,
   closed,
+  managementFirmConsumptionRates,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -49,17 +52,16 @@ const ApartmentReadingLine = ({
   const { readingsState, previousReadings, currentReadings } = useReadings(
     device,
     sliderIndex,
+    managementFirmConsumptionRates,
     numberOfPreviousReadingsInputs,
-    closed
+    closed,
   );
 
   const userRoletypes = useStore($userRoleTypes);
 
   const isSeniorOperator =
     Boolean(userRoletypes) &&
-    userRoletypes?.includes(
-      ESecuredIdentityRoleName.ManagingFirmSeniorOperator
-    );
+    userRoletypes?.includes(ESecuredIdentityRoleName.SeniorOperator);
 
   const onDeleteIndividualDevice = useEvent(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened

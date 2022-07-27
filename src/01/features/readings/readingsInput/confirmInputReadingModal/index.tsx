@@ -5,7 +5,7 @@ import React from 'react';
 import {
   $confirmModalTitle,
   $isConfirmReadingInputModalOpen,
-  closeConfirmReadingCallbackModal,
+  executeCancelReadingCallback,
   executeConfirmReadingCallback,
 } from './models';
 import { ExclamationCircle } from 'react-bootstrap-icons';
@@ -29,7 +29,7 @@ export const ConfirmReadingValueModal: React.FC = () => {
       visible={visible}
       title={header}
       centered
-      onCancel={closeConfirmReadingCallbackModal}
+      onCancel={executeCancelReadingCallback}
       onSubmit={executeConfirmReadingCallback}
     >
       <TextWrap>{title}</TextWrap>

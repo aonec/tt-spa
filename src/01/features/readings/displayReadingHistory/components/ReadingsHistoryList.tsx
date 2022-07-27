@@ -5,12 +5,9 @@ import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
-  EResourceType,
-  IndividualDeviceReadingsHistoryResponse,
-  IndividualDeviceResponse,
+  IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
 import { useOpenedYears } from '../hooks/useOpenedYears';
 import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
@@ -28,6 +25,24 @@ import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 import {
+  confirmReading,
+  getActiveReadings,
+  getNewReadingDate,
+  getPreviousReadingByHistory,
+  validateReadings,
+} from './displayReadingHistory.utils';
+import {
+  ArrowButton,
+  ArrowButtonBlock,
+  GradientLoader,
+  Month,
+  PreviousReading,
+  TableHeader,
+  Wrapper,
+  Year,
+} from './displayReadingHistory.styled';
+import { RenderReading } from './displayReadingHistory.types';
+import {
   CorrectReadingValuesValidationResult,
   round,
 } from '01/hooks/useReadings';
@@ -38,6 +53,7 @@ import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 interface Props {
   isModal?: boolean;
@@ -53,6 +69,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     uploadingReadingsStatuses,
     uploadReading,
     deleteReading,
+    resetValue,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
@@ -79,17 +96,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     closeMonth,
     isMonthOpen,
   } = useOpenedYears(values?.yearReadings || []);
-
-  interface RenderReading {
-    reading?: IndividualDeviceReadingsItemHistoryResponse;
-    isFirst?: boolean;
-    arrowButton?: React.ReactElement;
-    month: number;
-    year: number;
-    readingsLength: number;
-    isHasArchived: boolean;
-    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
-  }
 
   const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
 
@@ -119,52 +125,59 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         getIndividualDeviceRateNumByName(device?.rateType!)
       );
 
-    const readings = reading ? (
+    const createReading = (values: (number | null)[]) => {
+      if (!device?.id) return;
+
+      const readingDate =
+        reading?.readingDateTime || getNewReadingDate(month, year);
+
+      uploadReading({
+        ...getReadingValuesObject(
+          values,
+          getIndividualDeviceRateNumByName(device?.rateType!)
+        ),
+        deviceId: device?.id,
+        readingDate,
+      } as IndividualDeviceReadingsCreateRequest);
+    };
+
+    const handleEnter = (values: (number | null)[]) => {
+      if (reading && values.every((elem) => elem === null)) {
+        return deleteReading(reading.id);
+      }
+
+      const prevReading =
+        readingsHistory &&
+        getPreviousReadingByHistory(readingsHistory, { month, year });
+
+      if (!(prevReading && device)) return createReading(values);
+
+      const validationResult = validateReadings(
+        getReadingValuesArray(prevReading, 'value', rateNum!).map((elem) =>
+          typeof elem === 'string' ? Number(elem) : elem
+        ),
+        values,
+        rateNum!,
+        device?.resource!,
+        managementFirmConsumptionRates
+      );
+
+      if (!validationResult || validationResult.validated) {
+        return createReading(values);
+      }
+
+      return confirmReading(
+        validationResult,
+        () => createReading(values),
+        () => resetValue({ year, month, id: reading?.id || null }),
+        device
+      );
+    };
+
+    const readingsInputs = reading ? (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={(values) => {
-          if (values.every((elem) => elem === null)) {
-            return deleteReading(reading.id);
-          }
-
-          const request = () =>
-            uploadReading({
-              ...getReadingValuesObject(
-                values,
-                getIndividualDeviceRateNumByName(device?.rateType!)
-              ),
-              deviceId: device?.id!,
-              readingDate:
-                reading.readingDateTime || moment().toISOString(true),
-              isForced: true,
-            } as any);
-
-          const prevReading =
-            readingsHistory &&
-            getPreviousReadingByHistory(readingsHistory, { month, year });
-
-          if (prevReading && device) {
-            const validationResult = validateReadings(
-              getReadingValuesArray(
-                prevReading,
-                'value',
-                rateNum!
-              ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
-              values,
-              rateNum!,
-              device?.resource!,
-              managementFirmConsumptionRates
-            );
-
-            if (!validationResult || validationResult.validated) {
-              return request();
-            }
-
-            return confirmReading(validationResult, request, device);
-          }
-
-          request();
-        }}
+        onEnter={handleEnter}
         status={uploadingReadingsStatuses[`${month}.${year}`]}
         editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
@@ -182,50 +195,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     ) : (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={(values) => {
-          const request = () =>
-            uploadReading({
-              ...getReadingValuesObject(
-                values,
-                getIndividualDeviceRateNumByName(device?.rateType!)
-              ),
-              deviceId: device?.id!,
-              readingDate: (() => {
-                const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
-
-                date.set('month', month - 2);
-
-                return date.toISOString();
-              })(),
-              isForced: true,
-            } as any);
-
-          const prevReading =
-            readingsHistory &&
-            getPreviousReadingByHistory(readingsHistory, { month, year });
-
-          if (prevReading && device) {
-            const validationResult = validateReadings(
-              getReadingValuesArray(
-                prevReading,
-                'value',
-                rateNum!
-              ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
-              values,
-              rateNum!,
-              device?.resource!,
-              managementFirmConsumptionRates
-            );
-
-            if (!validationResult || validationResult.validated) {
-              return request();
-            }
-
-            return confirmReading(validationResult, request, device);
-          }
-
-          request();
-        }}
+        onEnter={handleEnter}
         editable={true}
         values={
           getReadingValues('value') ||
@@ -261,7 +231,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
 
     const uploadTime = reading && (
-      <div>{moment(reading.uploadTime).format('DD.MM.YYYY HH:mm')}</div>
+      <div>{getTimeStringByUTC(reading.uploadTime)}</div>
     );
 
     const arrowButtonComponent =
@@ -270,7 +240,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     return (
       <WrapComponent>
         {monthName}
-        <div>{readings}</div>
+        <div>{readingsInputs}</div>
         <div>{consumption}</div>
         <div>{averageConsumption}</div>
         <div>{source}</div>
@@ -287,7 +257,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     prevReading,
   }: IndividualDeviceReadingsMonthHistoryResponse & {
     year: number;
-    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
+    prevReading?: IndividualDeviceReadingsItemHistoryResponse | null;
   }) => {
     const isOpen = isMonthOpen(year, month);
 
@@ -335,14 +305,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
   };
 
-  const getActiveReadings = (
-    readings?: IndividualDeviceReadingsItemHistoryResponse[] | null
-  ) => {
-    if (!readings) return;
-
-    return readings.find((elem) => !elem.isArchived) || void 0;
-  };
-
   const renderYear = ({
     year,
     monthReadings,
@@ -373,7 +335,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   };
 
   return (
-    <Wrap isModal={isModal}>
+    <Wrapper isModal={isModal}>
       <GradientLoader loading={pendingHistory} />
       <ConfirmReadingValueModal />
       <TableHeader>
@@ -389,55 +351,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             values?.yearReadings[index + 1]?.monthReadings,
         })
       )}
-    </Wrap>
+    </Wrapper>
   );
-};
-
-const validateReadings = (
-  prevValues: (number | null)[],
-  newValues: (number | null)[],
-  rateNum: number,
-  resource: EResourceType,
-  limits: ConsumptionRatesDictionary | null
-) => {
-  const limit = limits && limits[resource]?.maximumConsumptionRate;
-
-  if (!limit) return false;
-
-  const res = newValues.reduce(
-    (acc, elem, index) => {
-      if (index + 1 > rateNum) return acc;
-
-      const currentValue = Number(elem) || 0;
-      const prevValue = Number(prevValues[index]) || 0;
-
-      const isDown = currentValue < prevValue;
-      const isUp = currentValue - prevValue > limit;
-      const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
-      const difference = currentValue - prevValue;
-
-      const validated = acc.validated && !isDown && !isUp;
-
-      return {
-        ...acc,
-        validated,
-        valuesValidationResults: [
-          ...(acc.valuesValidationResults || []),
-          {
-            validated,
-            index: index + 1,
-            type,
-            difference,
-            currentValue,
-            prevValue,
-          },
-        ],
-      };
-    },
-    { validated: true, limit } as CorrectReadingValuesValidationResult
-  );
-
-  return res;
 };
 
 const Arrow = ({ open }: { open?: boolean }) =>
@@ -451,196 +366,3 @@ const columnsNames = [
   'Источник',
   'Последние показания',
 ];
-
-const slide = keyframes`
-  0% {
-		background-position: 100% 0%;
-	}
-	100% {
-		background-position: 0% 0%;
-	} 
-`;
-
-const GradientLoader = styled.div`
-  background: ${(props: { loading: boolean }) =>
-    props.loading
-      ? `repeating-linear-gradient(
-    45deg,
-    #e8ebff,
-    #e8ebff 10px,
-    #7584d6 10px,
-    #7584d6 20px
-  )`
-      : 'none'};
-  height: 5px;
-  background-size: 400% 400%;
-  animation: ${slide} 40s linear infinite;
-  transform: scale(1, -1);
-`;
-
-interface WrapProps {
-  isModal?: boolean;
-}
-
-const Wrap = styled.div`
-  max-width: 1080px;
-  ${({ isModal }: WrapProps) =>
-    isModal
-      ? `
-
-    max-height: 520px;
-    overflow-y: auto;
-  
-  `
-      : ''}
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1fr 0.75fr 0.85fr 1.35fr 1fr 30px;
-`;
-
-const TableHeader = styled(Grid)`
-  padding: 16px;
-  background: rgba(39, 47, 90, 0.04);
-  border-bottom: 1px solid #dcdee4;
-`;
-
-const Year = styled(Flex)`
-  font-size: 14px;
-  user-select: none;
-  cursor: pointer;
-  justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid #dcdee4;
-`;
-
-const Month = styled(Grid)`
-  padding: 16px;
-  align-items: center;
-  user-select: none;
-  color: #272f5ab2;
-
-  .month-name {
-    text-transform: capitalize;
-    font-weight: 600;
-    font-size: 16px;
-    color: #272f5a;
-  }
-`;
-
-const PreviousReading = styled(Month)`
-  background: #272f5a08;
-`;
-
-const ArrowButton = styled(Flex)`
-  justify-content: center;
-  transform: translateX(10px);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  transition: 0.4s;
-
-  &:hover {
-    background: #eff0f1;
-  }
-`;
-
-const ArrowButtonBlock = styled.div`
-  width: 30px;
-  height: 30px;
-`;
-
-const getPreviousReadingByHistory = (
-  readingsHistoryRaw: IndividualDeviceReadingsHistoryResponse,
-  address: { year: number; month: number }
-): IndividualDeviceReadingsItemHistoryResponse | null => {
-  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = getClone(
-    readingsHistoryRaw
-  );
-
-  const readingsHistoryCleared = readingsHistoryClone.yearReadings
-    ?.map((yearReading) =>
-      yearReading.monthReadings?.map((monthReading) => {
-        const activeReading = monthReading.readings?.find(
-          (reading) => !reading.isArchived && !reading.isRemoved
-        );
-
-        return {
-          reading: activeReading,
-          month: monthReading.month,
-          year: yearReading.year,
-        };
-      })
-    )
-    .flat();
-
-  const currentIndex = readingsHistoryCleared?.reduce(
-    (acc, readingsHistoryElement, index) =>
-      readingsHistoryElement?.month === address.month &&
-      readingsHistoryElement?.year === address.year
-        ? index
-        : acc,
-    null as number | null
-  );
-
-  if (typeof currentIndex !== 'number') return null;
-
-  const res =
-    readingsHistoryCleared
-      ?.slice(currentIndex + 1, readingsHistoryCleared.length)
-      .find((elem) => Boolean(elem?.reading))?.reading || null;
-
-  return res;
-};
-
-export function getClone<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value));
-}
-
-const confirmReading = (
-  { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
-  callback: () => void,
-  device: IndividualDeviceResponse
-) => {
-  const neededValueWarning = valuesValidationResults?.find((elem) =>
-    Boolean(elem.type)
-  );
-
-  const unit = getMeasurementUnit(device.resource);
-
-  if (neededValueWarning?.type === 'down') {
-    const failedReadingValidateResult = valuesValidationResults?.find(
-      (elem) => !elem.validated
-    );
-
-    openConfirmReadingModal({
-      title: (
-        <>
-          Введенное показание по прибору <b>{device.serialNumber}</b> (
-          {device.model}) меньше предыдущего на T
-          {failedReadingValidateResult?.index}:{' '}
-          <b>
-            {Math.abs(round(failedReadingValidateResult?.difference || 0, 3))}{' '}
-            {unit}{' '}
-          </b>
-        </>
-      ),
-      callback: () => void callback(),
-    });
-    return;
-  }
-
-  openConfirmReadingModal({
-    title: `${
-      neededValueWarning?.type === 'up'
-        ? `Расход ${round(
-            neededValueWarning.difference,
-            3
-          )}${unit}, больше чем лимит ${limit}${unit}`
-        : ''
-    }`,
-    callback: () => void callback(),
-  });
-};

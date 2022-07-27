@@ -24,10 +24,12 @@ const changeGroupType = domain.createEvent<TaskGroupingFilter>();
 const changePageNumber = domain.createEvent<number>();
 
 const searchTasks = domain.createEvent<SearchTasksForm>();
+
 const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
+
 const $isLoading = searchTasksFx.pending;
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);

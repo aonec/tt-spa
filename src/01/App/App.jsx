@@ -50,8 +50,12 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import { TasksProfileContainer, tasksProfileService } from 'services/tasks/tasksProfileService';
+import {
+  TasksProfileContainer,
+  tasksProfileService,
+} from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
+import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 
 moment.locale('ru');
 
@@ -117,6 +121,11 @@ const Internal = () => {
               />
 
               <Route
+                path="/electricNode/:deviceId/edit"
+                component={EditElectricNodeContainer}
+              />
+
+              <Route
                 path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
                 component={ObjectProfile}
                 exact
@@ -165,9 +174,7 @@ const Internal = () => {
               />
 
               <Route
-                path={[
-                  '/housingMeteringDevices/:deviceId/(related|documents)?',
-                ]}
+                path={['/housingMeteringDevices/:deviceId/']}
                 component={HousingProfile}
                 exact
               />
@@ -202,7 +209,7 @@ const Internal = () => {
                 exact
               />
               <Route
-                path="/individualDevices/:deviceId/(readings|documents|changes)?"
+                path="/individualDevices/:deviceId"
                 component={IndividualDevice}
                 exact
               />

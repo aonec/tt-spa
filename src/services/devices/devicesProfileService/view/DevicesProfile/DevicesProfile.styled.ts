@@ -25,9 +25,11 @@ export const StyledContainerThreeItems = styled.div`
   gap: 16px;
 `;
 
-export const StyledRangePicker = styled(RangePicker)`
+export const StyledRangePicker = styled(RangePicker)<{ isShadow?: boolean }>`
   height: 32px;
   width: 100%;
+  box-shadow: ${({ isShadow = true }) =>
+    isShadow ? `0 4px 7px #02004b1f` : 'none'};
 `;
 
 export const StyledForm = styled(Form)`
@@ -46,4 +48,9 @@ export const HeaderWrapper = styled.div`
 export const HeaderText = styled.h1`
   font-weight: 300;
   margin-bottom: 16;
+`;
+
+export const LabelCS = styled.label`
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;

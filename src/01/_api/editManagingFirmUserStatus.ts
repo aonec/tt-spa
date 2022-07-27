@@ -1,6 +1,6 @@
 import axios from '01/axios';
-import { AddManagingFirmUserWorkingStatusRequest } from 'myApi';
+import { AddOrganizationUserWorkingStatusRequest } from 'myApi';
 
 export const postManagingFirmUserStatus = (
-  data: AddManagingFirmUserWorkingStatusRequest
+  data: AddOrganizationUserWorkingStatusRequest
 ) => axios.post('ManagingFirmUserWorkingStatuses', data);

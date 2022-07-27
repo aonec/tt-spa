@@ -2,10 +2,7 @@ import { useEvent, useStore } from 'effector-react';
 import { TaskGroupingFilter, TaskListResponse } from 'myApi';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  ExportTasksListModalContainer,
-  exportTasksListService,
-} from '../exportTasksListService';
+import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
 import { preparedData } from './tasksProfileService.utils';
@@ -18,24 +15,24 @@ export const TasksProfileContainer = () => {
   const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
-  const housingManagments = useStore(outputs.$housingManagments)
+  const housingManagments = useStore(outputs.$housingManagments);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
-  const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen)
+  const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
 
   const handleExportTasksList = useEvent(
-    exportTasksListService.inputs.openModal
+    exportTasksListService.inputs.exportTasksList
   );
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
   const changeGroupType = useEvent(inputs.changeGroupType);
   const changePageNumber = useEvent(inputs.changePageNumber);
-  const closeExtendedSearch = useEvent(inputs.extendedSearchClosed)
-  const openExtendedSearch = useEvent(inputs.extendedSearchOpened)
-  const clearFilters = useEvent(inputs.clearFilters)
+  const closeExtendedSearch = useEvent(inputs.extendedSearchClosed);
+  const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
+  const clearFilters = useEvent(inputs.clearFilters);
 
   useEffect(() => {
-    closeExtendedSearch()
+    closeExtendedSearch();
 
     if (lastGroupTypeRef.current === grouptype) {
       return;
@@ -60,7 +57,6 @@ export const TasksProfileContainer = () => {
   return (
     <>
       <TaskTypesGate />
-      <ExportTasksListModalContainer />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
@@ -74,7 +70,7 @@ export const TasksProfileContainer = () => {
         isExtendedSearchOpen={isExtendedSearchOpen}
         closeExtendedSearch={() => closeExtendedSearch()}
         openExtendedSearch={() => openExtendedSearch()}
-        clearFilters={()=> clearFilters()}
+        clearFilters={() => clearFilters()}
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
       />

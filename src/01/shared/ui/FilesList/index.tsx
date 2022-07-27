@@ -9,6 +9,7 @@ import { FileData } from '01/hooks/useFilesUpload';
 import { DocumentResponse } from 'myApi';
 import { ReactComponent as DropIcon } from './drop.svg';
 import confirm from 'antd/lib/modal/confirm';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 interface Props {
   files?: FileData[];
@@ -134,7 +135,7 @@ export const FilesList: React.FC<Props> = ({
 };
 
 const getFormattedDate = (date: string) =>
-  moment(date).format('DD.MM.YYYY HH:mm');
+  getTimeStringByUTC(date);
 
 const ControlPanelWrap = styled.div`
   width: 33px;
