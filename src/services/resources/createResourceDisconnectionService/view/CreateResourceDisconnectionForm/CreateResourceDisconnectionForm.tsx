@@ -81,6 +81,8 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   const treeData = addressesFromHeatingStation.length
     ? multipleSelectionAddressFromHeatingStation
     : existingHousingStocks;
+  console.log(values.housingStockIds);
+  console.log(treeData);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>

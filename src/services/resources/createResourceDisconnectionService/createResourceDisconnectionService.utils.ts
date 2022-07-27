@@ -1,12 +1,19 @@
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 
 export const prepareData = (items: StreetWithHousingStockNumbersResponse[]) =>
-  items.map((street, indx) => ({
-    title: street.street,
-    key: `${street.street}`,
-    children: street.housingStockNumbers?.map((housingStock) => ({
-      title: `${street.street}, ${housingStock}`,
-      value: `${street.street}, ${housingStock}`,
-      key: `${street.street}, ${housingStock}`,
+  items.map(({ street, addresses }) => ({
+    title: street!,
+    key: addresses?.reduce(
+      (acc, elem) => elem.housingStockId.toString() + ' '+ acc,
+      ''
+    )!,
+    value: addresses?.reduce(
+      (acc, elem) => elem.housingStockId.toString() + ' ' + acc,
+      ''
+    )!,
+    children: addresses?.map((address) => ({
+      title: `${street}, ${address.housingStockNumber}`,
+      value: address.housingStockId,
+      key: address.housingStockId,
     })),
   }));
