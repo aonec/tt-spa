@@ -127,7 +127,6 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             placeholder="Город"
             value={values.City}
             onChange={(value) => setFieldValue('City', value)}
-            defaultValue={cities ? cities[0] : ''}
           >
             {cities &&
               cities.map((el) => {

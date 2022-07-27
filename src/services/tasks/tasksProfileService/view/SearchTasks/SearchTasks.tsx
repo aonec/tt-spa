@@ -28,6 +28,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   streets,
   cities,
 }) => {
+
   const {
     values,
     handleSubmit,
@@ -53,7 +54,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       EngineeringElement: currentFilter?.EngineeringElement,
       City: currentFilter?.City
         ? currentFilter?.City
-        : cities?.length
+        : cities?.length === 1
         ? cities[0]
         : currentFilter?.City,
       Street: currentFilter?.Street,
