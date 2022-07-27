@@ -123,17 +123,17 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
       <StyledContainerAdressSection>
         <FormItem>
           <label>Город:</label>
-          <StyledAutocomplete
+          <SelectSC
             placeholder="Город"
             value={values.City}
-            onChange={(value) => setFieldValue('City', value.toString())}
-            onKeyDown={(e) => {
-              fromEnter(() => {
-                if (values.Street) setFieldValue('City', cityMatch);
-              })(e);
-            }}
-            options={cityOptions}
-          />
+            onChange={(value) => setFieldValue('City', value)}
+            defaultValue={cities ? cities[0] : ''}
+          >
+            {cities &&
+              cities.map((el) => {
+                return <Option value={el}>{el}</Option>;
+              })}
+          </SelectSC>
         </FormItem>
 
         <FormItem>
