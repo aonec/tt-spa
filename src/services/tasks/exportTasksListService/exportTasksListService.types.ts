@@ -5,7 +5,7 @@ import {
   ETaskClosingStatus,
   ETaskEngineeringElement,
   ETaskTargetType,
-  ETaskTimeStatus,
+  EStageTimeStatus,
   TaskGroupingFilter,
 } from 'myApi';
 
@@ -22,7 +22,7 @@ export type ExportTasksListRequestPayload = {
   PipeNodeId?: number;
   ClosingStatuses?: ETaskClosingStatus[];
   ApplicationCompetenceId?: string;
-  TimeStatus?: ETaskTimeStatus;
+  TimeStatus?: EStageTimeStatus;
   PerpetratorId?: number;
   Resource?: EResourceType;
   EngineeringElement?: ETaskEngineeringElement;

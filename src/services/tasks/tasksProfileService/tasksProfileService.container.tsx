@@ -3,7 +3,6 @@ import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { TaskGroupingFilter, TaskListResponse } from 'myApi';
 import {
-  ExportTasksListModalContainer,
   exportTasksListService,
 } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
@@ -11,11 +10,11 @@ import { tasksProfileService } from './tasksProfileService.model';
 import { preparedData } from './tasksProfileService.utils';
 import { TasksProfile } from './view/TasksProfile';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+import { $existingCities, ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 
 const { inputs, outputs } = tasksProfileService;
 const { outputs: adresses } = addressSearchService;
-const { ExportTaskFiltersGate } = exportTasksListService.gates;
+
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -28,6 +27,7 @@ export const TasksProfileContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
   const streets = useStore(adresses.streets)
+  const cities = useStore($existingCities);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.exportTasksList
@@ -66,8 +66,6 @@ export const TasksProfileContainer = () => {
   return (
     <>
       <TaskTypesGate />
-      <ExportTaskFiltersGate />
-      <ExportTasksListModalContainer />
       <ExistingCitiesGate />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
@@ -87,6 +85,7 @@ export const TasksProfileContainer = () => {
         housingManagments={housingManagments}
         perpetrators={perpetrators}
         streets={streets}
+        cities={cities}
       />
     </>
   );

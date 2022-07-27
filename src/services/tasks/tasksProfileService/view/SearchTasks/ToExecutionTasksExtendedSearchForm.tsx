@@ -37,18 +37,23 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
   housingManagments,
   perpetrators,
   streets,
+  cities,
 }) => {
   const { match: streetMatch, options } = useAutocomplete(
     values.Street,
     streets
   );
 
+  const { match: cityMatch, options: cityOptions } = useAutocomplete(
+    values.City,
+    cities
+  );
+
   useEffect(() => {
-    !(
-      values.TaskType === 'IndividualDeviceCheck' ||
-      values.TaskType === 'IndividualDeviceCheckNoReadings'
-    ) && setFieldValue('ApartmentNumber', null);
-  }, [values.TaskType]);
+    !(values.EngineeringElement !== 'IndividualDevice') &&
+      setFieldValue('ApartmentNumber', null);
+    setFieldValue('TaskType', null);
+  }, [values.EngineeringElement]);
 
   const Categories: CategotyI = {
     All: Object.keys(
@@ -97,43 +102,43 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     );
   }, [values?.EngineeringElement]);
 
-  const FilteredEngineeringElement = useMemo(() => {
-    return !values?.TaskType
-      ? Object.keys(ETaskEngineeringElement)
-      : Object.keys(ETaskEngineeringElement).filter((el) => {
-          return (
-            Object.values(Categories[el as keyof CategotyI]).filter((ell) => {
-              return (
-                ell ===
-                (values?.TaskType as Partial<EManagingFirmTaskFilterType>)
-              );
-            }).length > 0
-          );
-        });
-  }, [values?.TaskType]);
+  // const FilteredEngineeringElement = useMemo(() => {
+  //   return !values?.TaskType
+  //     ? Object.keys(ETaskEngineeringElement)
+  //     : Object.keys(ETaskEngineeringElement).filter((el) => {
+  //         return (
+  //           Object.values(Categories[el as keyof CategotyI]).filter((ell) => {
+  //             return (
+  //               ell ===
+  //               (values?.TaskType as Partial<EManagingFirmTaskFilterType>)
+  //             );
+  //           }).length > 0
+  //         );
+  //       });
+  // }, [values?.TaskType]);
 
   return (
     <StyledForm id="searchForm">
       <StyledContainerAdressSection>
         <FormItem>
           <label>Город:</label>
-          <InputSC
-            onChange={(value) => setFieldValue('City', value.target.value)}
-            value={values.City}
+          <StyledAutocomplete
             placeholder="Город"
+            value={values.City}
+            onChange={(value) => setFieldValue('City', value.toString())}
+            onKeyDown={(e) => {
+              fromEnter(() => {
+                if (values.Street) setFieldValue('City', cityMatch);
+              })(e);
+            }}
+            options={cityOptions}
           />
         </FormItem>
 
         <FormItem>
           <label>Улица: </label>
-          {/* <InputSC
-            onChange={(value) => setFieldValue('Street', value.target.value)}
-            value={values.Street}
-            placeholder="Улица"
-          /> */}
           <StyledAutocomplete
             placeholder="Улица"
-            // ref={refs[index]}
             value={values.Street}
             onChange={(value) => setFieldValue('Street', value.toString())}
             onKeyDown={(e) => {
@@ -169,7 +174,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             <label>Кв: </label>
             <Tooltip
               placement="topRight"
-              title={`Поиск по квартире будет доступен только при выборе типов задач "Проверка ИПУ" и "Отсутствие показаний ИПУ"`}
+              title={`Поиск по квартире будет доступен только при выборе элемента инженерной сети "Индивидуальный прибор учета"`}
             >
               <QuestionCircleOutlined width={14} height={14} />
             </Tooltip>
@@ -180,12 +185,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             }
             value={values.ApartmentNumber}
             placeholder="Квартира"
-            disabled={
-              !(
-                values.TaskType === 'IndividualDeviceCheck' ||
-                values.TaskType === 'IndividualDeviceCheckNoReadings'
-              )
-            }
+            disabled={values.EngineeringElement !== 'IndividualDevice'}
           />
         </FormItem>
       </StyledContainerAdressSection>
@@ -198,7 +198,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             onChange={(value) => setFieldValue('EngineeringElement', value)}
           >
             <Option value={null!}>Все</Option>
-            {FilteredEngineeringElement.map((el) => {
+            {Object.keys(ETaskEngineeringElement).map((el) => {
               return (
                 <Option value={el}>
                   {getEngineeringElement(el as ETaskEngineeringElement)}

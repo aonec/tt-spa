@@ -27,4 +27,5 @@ export type TasksProfileProps = {
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: perpetratorItemsProps[] | null;
   streets: string[];
+  cities: string[] | null;
 };

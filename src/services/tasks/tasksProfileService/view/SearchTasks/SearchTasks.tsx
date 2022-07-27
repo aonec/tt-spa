@@ -12,6 +12,7 @@ import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
@@ -24,7 +25,8 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   changeFiltersByGroupType,
   housingManagments,
   perpetrators,
-  streets
+  streets,
+  cities,
 }) => {
   const {
     values,
@@ -128,12 +130,14 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               housingManagments={housingManagments}
               perpetrators={perpetrators}
               streets={streets}
+              cities={cities}
             />
           )}
         </>
       }
     >
       <ExistingStreetsGate />
+      <ExistingCitiesGate />
       <Wrapper>
         <InputSC
           placeholder="Номер задачи"

@@ -19,7 +19,8 @@ export type SearchTasksProps = {
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: perpetratorItemsProps[] | null;
-  streets: string[]
+  streets: string[];
+  cities: string[] | null;
 };
 
 export type SearchTasksForm = {
@@ -40,6 +41,7 @@ export type ExtendedSearchTypes = {
   housingManagments?: GuidStringDictionaryItem[] | null;
   perpetrators?: perpetratorItemsProps[] | null;
   streets?: string[]
+  cities?: string[] | null
 };
 
 export type CategotyI = {
