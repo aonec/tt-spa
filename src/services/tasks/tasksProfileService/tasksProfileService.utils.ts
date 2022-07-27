@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ETaskTimeStatus, TaskListResponse } from 'myApi';
+import { EStageTimeStatus, TaskListResponse } from 'myApi';
 
 export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
@@ -12,10 +12,9 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
 
 const createTimeline = (task: TaskListResponse) => {
   const {
-    timeProgress,
     closingTime,
     expectedCompletionTime,
-    timeStatus,
+    currentStage,
   } = task;
 
   if (closingTime) return null;
@@ -28,8 +27,8 @@ const createTimeline = (task: TaskListResponse) => {
 
   return {
     timelineStyle: {
-      color: ColorLookup[timeStatus],
-      width: `${timeProgress}%`,
+      color: ColorLookup[currentStage?.timeStatus!],
+      width: `${currentStage?.timeProgress!}%`,
     },
     deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
     remainingTime,
@@ -118,7 +117,7 @@ const getFormatedTime = (time: number) => {
 };
 
 const ColorLookup = {
-  [ETaskTimeStatus.Normal]: 'var(--success)',
-  [ETaskTimeStatus.RunningOut]: 'var(--warning)',
-  [ETaskTimeStatus.Expired]: 'var(--error)',
+  [EStageTimeStatus.Normal]: 'var(--success)',
+  [EStageTimeStatus.RunningOut]: 'var(--warning)',
+  [EStageTimeStatus.Expired]: 'var(--error)',
 };
