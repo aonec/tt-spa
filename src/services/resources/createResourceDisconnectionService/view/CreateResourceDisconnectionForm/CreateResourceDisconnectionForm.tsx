@@ -1,8 +1,7 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { Form } from 'antd';
+import { Form, TreeSelect } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash/fp';
-import moment from 'moment';
 import { EResourceDisconnectingType, EResourceType } from 'myApi';
 import React, { FC } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
@@ -22,7 +21,6 @@ import {
   BaseInfoWrapper,
   HeatingStationInputSC,
   ResourceOptionWrapper,
-  SelectSC,
   TimeWrapper,
 } from './CreateResourceDisconnectionForm.styled';
 import {
@@ -33,6 +31,7 @@ import {
   getDate,
   resourceDisconnectingNamesLookup,
 } from './CreateresourceDisconnectionForm.utils';
+const { SHOW_PARENT } = TreeSelect;
 
 export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
   formId,
@@ -42,7 +41,8 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   handleSelectCity,
   heatingStations,
   handleSelectHeatingStation,
-  addresses,
+  addressesFromHeatingStation,
+  existingHousingStocks,
 }) => {
   const {
     values,
@@ -71,10 +71,16 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     ? 'Выберите ЦТП'
     : 'Выберите город';
 
-  const multipleSelectionAddress = addresses?.map((elem) => ({
-    label: getHousingStockAddress(elem),
-    value: elem.id,
-  }));
+  const multipleSelectionAddressFromHeatingStation = addressesFromHeatingStation?.map(
+    (elem) => ({
+      title: getHousingStockAddress(elem),
+      value: elem.id,
+      key: elem.id,
+    })
+  );
+  const treeData = addressesFromHeatingStation.length
+    ? multipleSelectionAddressFromHeatingStation
+    : existingHousingStocks;
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -138,10 +144,11 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           </HeatingStationInputSC>
         </FormItem>
         <FormItem label="Адрес">
-          <SelectSC
+          <TreeSelect
+            treeCheckable
             showSearch
-            mode="multiple"
-            options={multipleSelectionAddress}
+            treeData={treeData}
+            showCheckedStrategy={SHOW_PARENT}
             onChange={(selectedAddresses) =>
               setFieldValue('housingStockIds', selectedAddresses)
             }

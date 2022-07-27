@@ -5,11 +5,13 @@ import {
   HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
 } from 'myApi';
+import { ExistingStreetWithHousingStocks } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
   cities: string[] | null;
-  addresses: HousingStockShortResponse[];
+  addressesFromHeatingStation: HousingStockShortResponse[];
   heatingStations: HeatingStationResponse[];
+  existingHousingStocks: ExistingStreetWithHousingStocks[];
   selectedCity: string;
   formId: string;
   handleSubmit: (payload: ResourceDisconnectingCreateRequest) => void;

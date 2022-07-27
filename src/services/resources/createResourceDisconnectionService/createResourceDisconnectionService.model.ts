@@ -4,11 +4,15 @@ import {
   HeatingStationResponse,
   ResourceDisconnectingCreateRequest,
   HeatingStationResponsePagedList,
+  StreetWithHousingStockNumbersResponsePagedList,
+  StreetWithHousingStockNumbersResponse,
 } from 'myApi';
 import {
   fetchCreateResourceDisconnection,
+  fetchExistingHousingStocks,
   fetchHeatingStations,
 } from './createResourceDisconnectionService.api';
+import { prepareData } from './createResourceDisconnectionService.utils';
 
 const domain = createDomain('createResourceDisconnectionService');
 
@@ -16,7 +20,10 @@ const $isModalOpen = domain.createStore(false);
 const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore<string>('');
 const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
-const $addresses = combine(
+const $existingHousingStocks = domain.createStore<
+  StreetWithHousingStockNumbersResponse[]
+>([]);
+const $addressesFromHeatingStation = combine(
   $heatingStations,
   $selectedHeatingStation,
   (stations, selectedStation) =>
@@ -33,6 +40,10 @@ const getHeatingStationFx = domain.createEffect<
   string,
   HeatingStationResponsePagedList
 >(fetchHeatingStations);
+const getExistingHosuingStocksFx = domain.createEffect<
+  string,
+  StreetWithHousingStockNumbersResponsePagedList
+>(fetchExistingHousingStocks);
 
 const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
@@ -47,6 +58,15 @@ $heatingStations.on(
   getHeatingStationFx.doneData,
   (_, stations) => stations.items || []
 );
+$existingHousingStocks.on(
+  getExistingHosuingStocksFx.doneData,
+  (_, housingStocks) => housingStocks.items || []
+);
+
+forward({
+  from: $selectedCity,
+  to: getExistingHosuingStocksFx,
+});
 
 forward({
   from: $selectedCity,
@@ -76,6 +96,7 @@ export const createResourceDisconnectionService = {
     $existingCities,
     $selectedCity,
     $heatingStations,
-    $addresses,
+    $addressesFromHeatingStation,
+    $existingHousingStocks,
   },
 };

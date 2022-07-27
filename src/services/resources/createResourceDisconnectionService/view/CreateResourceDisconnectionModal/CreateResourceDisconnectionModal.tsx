@@ -12,7 +12,8 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   handleSelectCity,
   heatingStations,
   handleSelectHeatingStation,
-  addresses
+  addressesFromHeatingStation,
+  existingHousingStocks,
 }) => {
   return (
     <FormModal
@@ -26,7 +27,8 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
           formId="createResourceDisconnection"
           heatingStations={heatingStations}
           cities={cities}
-          addresses={addresses}
+          addressesFromHeatingStation={addressesFromHeatingStation}
+          existingHousingStocks={existingHousingStocks}
           selectedCity={selectedCity}
           handleSelectCity={handleSelectCity}
           handleSelectHeatingStation={handleSelectHeatingStation}
