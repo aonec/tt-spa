@@ -25,6 +25,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   changeFiltersByGroupType,
   housingManagments,
   perpetrators,
+  streets
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -68,6 +69,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
         perpetrators={perpetrators}
+        streets={streets}
       />
       {!isLoading && tasksList}
       {isLoading && <Skeleton active />}

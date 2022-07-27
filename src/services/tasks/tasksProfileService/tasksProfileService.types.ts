@@ -5,7 +5,7 @@ import {
   ETaskClosingStatus,
   ETaskEngineeringElement,
   ETaskTargetType,
-  ETaskTimeStatus,
+  EStageTimeStatus,
   TaskGroupingFilter,
 } from 'myApi';
 
@@ -22,7 +22,7 @@ export type GetTasksListRequestPayload = {
   PipeNodeId?: number;
   ClosingStatuses?: ETaskClosingStatus[];
   ApplicationCompetenceId?: string;
-  TimeStatus?: ETaskTimeStatus;
+  TimeStatus?: EStageTimeStatus;
   PerpetratorId?: number;
   Resource?: EResourceType;
   EngineeringElement?: ETaskEngineeringElement;
@@ -40,16 +40,17 @@ export function getEngineeringElement(type: ETaskEngineeringElement) {
   const types: { [Kye in ETaskEngineeringElement]: string } = {
     [ETaskEngineeringElement.Node]: 'Узел учета',
     [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
+    [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
   };
 
   return types[type];
 }
 
-export function getTimeStatuses(type: ETaskTimeStatus) {
-  const types: { [key in ETaskTimeStatus]: string } = {
-    [ETaskTimeStatus.Normal]: 'Нормально',
-    [ETaskTimeStatus.RunningOut]: 'Истекает',
-    [ETaskTimeStatus.Expired]: 'Просроченно',
+export function getTimeStatuses(type: EStageTimeStatus) {
+  const types: { [key in EStageTimeStatus]: string } = {
+    [EStageTimeStatus.Normal]: 'Нормально',
+    [EStageTimeStatus.RunningOut]: 'Истекает',
+    [EStageTimeStatus.Expired]: 'Просроченно',
   };
 
   return types[type];

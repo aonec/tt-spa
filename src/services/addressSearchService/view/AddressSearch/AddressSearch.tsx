@@ -51,6 +51,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const streetSearch = (index: number) => (
+    
     <StyledAutocomplete
       placeholder="Улица"
       ref={refs[index]}

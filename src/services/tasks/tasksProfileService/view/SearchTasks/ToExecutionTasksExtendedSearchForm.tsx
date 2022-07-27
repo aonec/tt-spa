@@ -2,7 +2,7 @@ import React from 'react';
 import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { InputSC } from '01/shared/ui/Fields';
+import { InputSC, StyledAutocomplete } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
 import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
@@ -13,12 +13,20 @@ import {
   StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
 } from './SearchTasks.styled';
-import { EResourceType, ETaskEngineeringElement, ETaskTimeStatus } from 'myApi';
+import {
+  EManagingFirmTaskFilterType,
+  EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  EResourceType,
+  ETaskEngineeringElement,
+  EStageTimeStatus,
+} from 'myApi';
 import {
   getEngineeringElement,
   getResource,
   getTimeStatuses,
 } from '../../tasksProfileService.types';
+import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 
 const { Option } = Select;
 
@@ -28,7 +36,81 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
   taskTypes,
   housingManagments,
   perpetrators,
+  streets,
 }) => {
+  const { match: streetMatch, options } = useAutocomplete(
+    values.Street,
+    streets
+  );
+  //   {key: null, value: 'Все'}
+  // 1: {key: 'CalculatorMalfunctionAny', value: 'Неполадки с вычислителем'}
+  // 2: {key: 'HousingDeviceMalfunctionAny', value: 'Неполадки с ОДПУ'}
+  // 3: {key: 'CalculatorLackOfConnection', value: 'Отсутствие подключения с вычислителем'}
+  // 4: {key: 'IndividualDeviceCheck', value: 'Некорректные показания ИПУ'}
+  // 5: {key: 'PipeRupture', value: 'Порыв трубопровода'}
+  // 6: {key: 'CurrentApplication', value: 'Текущая заявка'}
+  // 7: {key: 'EmergencyApplication', value: 'Аварийная заявка'}
+  // 8: {key: 'IndividualDeviceReadingsCheck', value: 'Ошибка при вводе показаний'}
+  // 9: {key: 'PlannedApplication', value: 'Плановая заявка'}
+  // 10: {key: 'MeasurementErrorAny', value: 'Превышение погрешности измерения'}
+  // 11: {key: 'IndividualDeviceCheckNoReadings', value: 'Отсутствие показаний ИПУ'}
+  // length:
+  type CategotyI = {
+    Node: Partial<EManagingFirmTaskFilterType>[];
+    All: Partial<EManagingFirmTaskFilterType>[];
+    IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
+  };
+  const Categories: CategotyI = {
+    All: Object.keys(
+      EManagingFirmTaskFilterType
+    ) as Partial<EManagingFirmTaskFilterType>[],
+    Node: [
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.CalculatorMalfunctionAny
+      ],
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny
+      ],
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.CalculatorLackOfConnection
+      ],
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.MeasurementErrorAny
+      ],
+    ],
+    IndividualDevice: [
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.IndividualDeviceCheck
+      ],
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck
+      ],
+      EManagingFirmTaskFilterType[
+        EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings
+      ],
+    ],
+  };
+
+  const FilteredTaskTypes = taskTypes?.filter(
+    (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
+      return (values?.EngineeringElement
+        ? Object.values(Categories[values?.EngineeringElement as keyof CategotyI])
+        : Categories.All
+      ).includes(el.key as EManagingFirmTaskFilterType);
+    }
+  );
+  const FilteredEngineeringElement = !values?.TaskType
+    ? Object.keys(ETaskEngineeringElement)
+    : Object.keys(ETaskEngineeringElement).filter((el) => {
+        return (
+          Object.values(Categories[el as keyof CategotyI]).filter((ell) => {
+            return (
+              ell === (values?.TaskType as Partial<EManagingFirmTaskFilterType>)
+            );
+          }).length > 0
+        );
+      });
+
   return (
     <StyledForm id="searchForm">
       <StyledContainerAdressSection>
@@ -43,10 +125,22 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
 
         <FormItem>
           <label>Улица: </label>
-          <InputSC
+          {/* <InputSC
             onChange={(value) => setFieldValue('Street', value.target.value)}
             value={values.Street}
             placeholder="Улица"
+          /> */}
+          <StyledAutocomplete
+            placeholder="Улица"
+            // ref={refs[index]}
+            value={values.Street}
+            onChange={(value) => setFieldValue('Street', value.toString())}
+            onKeyDown={(e) => {
+              fromEnter(() => {
+                if (values.Street) setFieldValue('Street', streetMatch);
+              })(e);
+            }}
+            options={options}
           />
         </FormItem>
 
@@ -85,7 +179,12 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             }
             value={values.ApartmentNumber}
             placeholder="Квартира"
-            disabled
+            disabled={
+              !(
+                values.TaskType === 'IndividualDeviceCheck' ||
+                values.TaskType === 'IndividualDeviceCheckNoReadings'
+              )
+            }
           />
         </FormItem>
       </StyledContainerAdressSection>
@@ -98,7 +197,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             onChange={(value) => setFieldValue('EngineeringElement', value)}
           >
             <Option value={null!}>Все</Option>
-            {Object.keys(ETaskEngineeringElement).map((el) => {
+            {FilteredEngineeringElement.map((el) => {
               return (
                 <Option value={el}>
                   {getEngineeringElement(el as ETaskEngineeringElement)}
@@ -156,10 +255,10 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             }}
           >
             <Option value={null!}>Все</Option>
-            {Object.keys(ETaskTimeStatus).map((el) => {
+            {Object.keys(EStageTimeStatus).map((el) => {
               return (
                 <Option value={el}>
-                  {getTimeStatuses(el as ETaskTimeStatus)}
+                  {getTimeStatuses(el as EStageTimeStatus)}
                 </Option>
               );
             })}
@@ -175,8 +274,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('TaskType', value);
             }}
           >
-            {taskTypes &&
-              taskTypes.map(({ value, key }) => (
+            <Option value={null!}>Все</Option>
+            {FilteredTaskTypes &&
+              FilteredTaskTypes.map(({ value, key }) => (
                 <Option key={key!} value={key!}>
                   {value}
                 </Option>

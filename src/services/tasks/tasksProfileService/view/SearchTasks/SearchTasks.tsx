@@ -22,6 +22,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   changeFiltersByGroupType,
   housingManagments,
   perpetrators,
+  streets
 }) => {
   const {
     values,
@@ -124,6 +125,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               values={values}
               housingManagments={housingManagments}
               perpetrators={perpetrators}
+              streets={streets}
             />
           )}
         </>

@@ -10,8 +10,10 @@ import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
 import { preparedData } from './tasksProfileService.utils';
 import { TasksProfile } from './view/TasksProfile';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs } = tasksProfileService;
+const { outputs: adresses } = addressSearchService;
 const { ExportTaskFiltersGate } = exportTasksListService.gates;
 
 export const TasksProfileContainer = () => {
@@ -24,6 +26,7 @@ export const TasksProfileContainer = () => {
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
+  const streets = useStore(adresses.streets)
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.openModal
@@ -81,6 +84,7 @@ export const TasksProfileContainer = () => {
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
         perpetrators={perpetrators}
+        streets={streets}
       />
     </>
   );
