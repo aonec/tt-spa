@@ -11,6 +11,8 @@ import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSe
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
+import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
@@ -131,6 +133,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         </>
       }
     >
+      <ExistingStreetsGate />
       <Wrapper>
         <InputSC
           placeholder="Номер задачи"

@@ -11,6 +11,7 @@ import { tasksProfileService } from './tasksProfileService.model';
 import { preparedData } from './tasksProfileService.utils';
 import { TasksProfile } from './view/TasksProfile';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 
 const { inputs, outputs } = tasksProfileService;
 const { outputs: adresses } = addressSearchService;
@@ -67,6 +68,7 @@ export const TasksProfileContainer = () => {
       <TaskTypesGate />
       <ExportTaskFiltersGate />
       <ExportTasksListModalContainer />
+      <ExistingCitiesGate />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}

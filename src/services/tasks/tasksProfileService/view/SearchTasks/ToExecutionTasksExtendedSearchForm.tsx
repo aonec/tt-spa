@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -42,6 +42,18 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     values.Street,
     streets
   );
+
+  useEffect(() => {
+    console.log(
+      !(
+        values.TaskType === 'IndividualDeviceCheck' ||
+        values.TaskType === 'IndividualDeviceCheckNoReadings'
+      )
+    );
+    !(values.TaskType === 'IndividualDeviceCheck' ||
+      values.TaskType === 'IndividualDeviceCheckNoReadings') &&
+      setFieldValue('ApartmentNumber', null);
+  }, [values.TaskType]);
   //   {key: null, value: 'Все'}
   // 1: {key: 'CalculatorMalfunctionAny', value: 'Неполадки с вычислителем'}
   // 2: {key: 'HousingDeviceMalfunctionAny', value: 'Неполадки с ОДПУ'}
@@ -59,6 +71,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     Node: Partial<EManagingFirmTaskFilterType>[];
     All: Partial<EManagingFirmTaskFilterType>[];
     IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
+    HouseNetwork: Partial<EManagingFirmTaskFilterType>[];
   };
   const Categories: CategotyI = {
     All: Object.keys(
@@ -89,16 +102,22 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings
       ],
     ],
+    HouseNetwork: [
+      EManagingFirmTaskFilterType[EManagingFirmTaskFilterType.PipeRupture],
+    ],
   };
 
   const FilteredTaskTypes = taskTypes?.filter(
     (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
       return (values?.EngineeringElement
-        ? Object.values(Categories[values?.EngineeringElement as keyof CategotyI])
+        ? Object.values(
+            Categories[values?.EngineeringElement as keyof CategotyI]
+          )
         : Categories.All
       ).includes(el.key as EManagingFirmTaskFilterType);
     }
   );
+
   const FilteredEngineeringElement = !values?.TaskType
     ? Object.keys(ETaskEngineeringElement)
     : Object.keys(ETaskEngineeringElement).filter((el) => {
