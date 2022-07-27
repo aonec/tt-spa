@@ -1,3 +1,4 @@
+import { TreeSelect } from 'antd';
 import styled from 'styled-components';
 import { Select } from 'ui-kit/Select';
 
@@ -30,7 +31,37 @@ export const SelectSC = styled(Select)`
 `;
 
 export const HeatingStationInputSC = styled(Select)`
-  .ant-select-clear {
+  .anticon-close-circle {
     transform: translateY(-9px) translateX(-16px);
+    background-color: white;
   }
+`;
+
+export const TreeSelectSC = styled(TreeSelect)`
+  height: 48px;
+
+  * {
+    font-size: 16px !important;
+    line-height: 32px;
+  }
+
+  .ant-select-selector {
+    height: 100% !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    &:focus {
+      background-color: yellow !important;
+    }
+  }
+  .ant-select-selection-item {
+    background-color: transparent;
+    border: none;
+  }
+`;
+
+export const TagPlaceholder = styled.div`
+  color: #272f5ae5;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
 `;

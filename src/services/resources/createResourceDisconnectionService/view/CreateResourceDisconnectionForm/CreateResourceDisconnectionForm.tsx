@@ -1,9 +1,9 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { Form, TreeSelect } from 'antd';
+import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash/fp';
 import { EResourceDisconnectingType, EResourceType } from 'myApi';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -21,7 +21,9 @@ import {
   BaseInfoWrapper,
   HeatingStationInputSC,
   ResourceOptionWrapper,
+  TagPlaceholder,
   TimeWrapper,
+  TreeSelectSC,
 } from './CreateResourceDisconnectionForm.styled';
 import {
   CreateResourceDisconnectionFormTypes,
@@ -31,7 +33,6 @@ import {
   getDate,
   resourceDisconnectingNamesLookup,
 } from './CreateresourceDisconnectionForm.utils';
-const { SHOW_PARENT } = TreeSelect;
 
 export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
   formId,
@@ -71,18 +72,22 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     ? 'Выберите ЦТП'
     : 'Выберите город';
 
-  const multipleSelectionAddressFromHeatingStation = addressesFromHeatingStation?.map(
-    (elem) => ({
-      title: getHousingStockAddress(elem),
-      value: elem.id,
-      key: elem.id,
-    })
+  const multipleSelectionAddressFromHeatingStation = useMemo(
+    () =>
+      addressesFromHeatingStation?.map((elem) => ({
+        title: getHousingStockAddress(elem),
+        value: elem.id,
+        key: elem.id,
+      })),
+    [addressesFromHeatingStation]
   );
   const treeData = addressesFromHeatingStation.length
     ? multipleSelectionAddressFromHeatingStation
     : existingHousingStocks;
-  console.log(values.housingStockIds);
-  console.log(treeData);
+
+  useEffect(() => {
+    setFieldValue('housingStockIds', []);
+  }, [treeData]);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -146,11 +151,16 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           </HeatingStationInputSC>
         </FormItem>
         <FormItem label="Адрес">
-          <TreeSelect
+          <TreeSelectSC
+            value={values.housingStockIds}
             treeCheckable
+            maxTagCount={0}
+            maxTagPlaceholder={(values) => (
+              <TagPlaceholder>Выбрано: {values.length}</TagPlaceholder>
+            )}
             showSearch
             treeData={treeData}
-            showCheckedStrategy={SHOW_PARENT}
+            showCheckedStrategy="SHOW_CHILD"
             onChange={(selectedAddresses) =>
               setFieldValue('housingStockIds', selectedAddresses)
             }

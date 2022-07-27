@@ -22,6 +22,5 @@ export type CreateResourceDisconnectionModalProps = {
 export type ExistingStreetWithHousingStocks = {
   title: string;
   key: string;
-  value: string;
-  children?: { title: string; value: number; key: number }[];
+  children: { title: string; value: number; key: number }[];
 };
