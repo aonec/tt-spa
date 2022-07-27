@@ -66,15 +66,16 @@ forward({
   from: form.formValidated,
   to: createReport,
 });
-
+const workingReports = [
+  ReportType.HouseManagementsReport,
+  ReportType.OperatorsWorkingReport,
+  ReportType.InspectorsWorkingReport,
+];
 sample({
   source: form.$values,
   clock: createReport,
   fn: ({ type, period, rangePeriod }) => {
-    if (
-      type === ReportType.HouseManagementsReport ||
-      type === ReportType.OperatorsWorkingReport
-    ) {
+    if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
       return { type: type!, date: { From: startOfPeriod, To: endOfPeriod } };
