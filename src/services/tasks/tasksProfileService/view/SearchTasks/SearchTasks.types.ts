@@ -41,3 +41,10 @@ export type ExtendedSearchTypes = {
   perpetrators?: perpetratorItemsProps[] | null;
   streets?: string[]
 };
+
+export type CategotyI = {
+  Node: Partial<EManagingFirmTaskFilterType>[];
+  All: Partial<EManagingFirmTaskFilterType>[];
+  IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
+  HouseNetwork: Partial<EManagingFirmTaskFilterType>[];
+};

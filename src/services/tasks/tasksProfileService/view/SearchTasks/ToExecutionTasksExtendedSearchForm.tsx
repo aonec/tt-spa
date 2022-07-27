@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputSC, StyledAutocomplete } from '01/shared/ui/Fields';
-import { ExtendedSearchTypes } from './SearchTasks.types';
+import { CategotyI, ExtendedSearchTypes } from './SearchTasks.types';
 import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
@@ -44,35 +44,12 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
   );
 
   useEffect(() => {
-    console.log(
-      !(
-        values.TaskType === 'IndividualDeviceCheck' ||
-        values.TaskType === 'IndividualDeviceCheckNoReadings'
-      )
-    );
-    !(values.TaskType === 'IndividualDeviceCheck' ||
-      values.TaskType === 'IndividualDeviceCheckNoReadings') &&
-      setFieldValue('ApartmentNumber', null);
+    !(
+      values.TaskType === 'IndividualDeviceCheck' ||
+      values.TaskType === 'IndividualDeviceCheckNoReadings'
+    ) && setFieldValue('ApartmentNumber', null);
   }, [values.TaskType]);
-  //   {key: null, value: 'Все'}
-  // 1: {key: 'CalculatorMalfunctionAny', value: 'Неполадки с вычислителем'}
-  // 2: {key: 'HousingDeviceMalfunctionAny', value: 'Неполадки с ОДПУ'}
-  // 3: {key: 'CalculatorLackOfConnection', value: 'Отсутствие подключения с вычислителем'}
-  // 4: {key: 'IndividualDeviceCheck', value: 'Некорректные показания ИПУ'}
-  // 5: {key: 'PipeRupture', value: 'Порыв трубопровода'}
-  // 6: {key: 'CurrentApplication', value: 'Текущая заявка'}
-  // 7: {key: 'EmergencyApplication', value: 'Аварийная заявка'}
-  // 8: {key: 'IndividualDeviceReadingsCheck', value: 'Ошибка при вводе показаний'}
-  // 9: {key: 'PlannedApplication', value: 'Плановая заявка'}
-  // 10: {key: 'MeasurementErrorAny', value: 'Превышение погрешности измерения'}
-  // 11: {key: 'IndividualDeviceCheckNoReadings', value: 'Отсутствие показаний ИПУ'}
-  // length:
-  type CategotyI = {
-    Node: Partial<EManagingFirmTaskFilterType>[];
-    All: Partial<EManagingFirmTaskFilterType>[];
-    IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
-    HouseNetwork: Partial<EManagingFirmTaskFilterType>[];
-  };
+
   const Categories: CategotyI = {
     All: Object.keys(
       EManagingFirmTaskFilterType
@@ -107,28 +84,33 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     ],
   };
 
-  const FilteredTaskTypes = taskTypes?.filter(
-    (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
-      return (values?.EngineeringElement
-        ? Object.values(
-            Categories[values?.EngineeringElement as keyof CategotyI]
-          )
-        : Categories.All
-      ).includes(el.key as EManagingFirmTaskFilterType);
-    }
-  );
+  const FilteredTaskTypes = useMemo(() => {
+    return taskTypes?.filter(
+      (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
+        return (values?.EngineeringElement
+          ? Object.values(
+              Categories[values?.EngineeringElement as keyof CategotyI]
+            )
+          : Categories.All
+        ).includes(el.key as EManagingFirmTaskFilterType);
+      }
+    );
+  }, [values?.EngineeringElement]);
 
-  const FilteredEngineeringElement = !values?.TaskType
-    ? Object.keys(ETaskEngineeringElement)
-    : Object.keys(ETaskEngineeringElement).filter((el) => {
-        return (
-          Object.values(Categories[el as keyof CategotyI]).filter((ell) => {
-            return (
-              ell === (values?.TaskType as Partial<EManagingFirmTaskFilterType>)
-            );
-          }).length > 0
-        );
-      });
+  const FilteredEngineeringElement = useMemo(() => {
+    return !values?.TaskType
+      ? Object.keys(ETaskEngineeringElement)
+      : Object.keys(ETaskEngineeringElement).filter((el) => {
+          return (
+            Object.values(Categories[el as keyof CategotyI]).filter((ell) => {
+              return (
+                ell ===
+                (values?.TaskType as Partial<EManagingFirmTaskFilterType>)
+              );
+            }).length > 0
+          );
+        });
+  }, [values?.TaskType]);
 
   return (
     <StyledForm id="searchForm">
