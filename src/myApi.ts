@@ -4822,6 +4822,9 @@ export interface TaskListResponse {
   /** @format int32 */
   totalHomeownersCount: number;
   timeStatus: ETaskTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface TaskResponse {
@@ -4861,6 +4864,9 @@ export interface TaskResponse {
   consumableMaterials: string | null;
   taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
   timeStatus: ETaskTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface TaskResponseSuccessApiResponse {

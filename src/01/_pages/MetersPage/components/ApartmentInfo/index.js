@@ -237,7 +237,7 @@ export const ApartmentInfo = () => {
       <ApartmentComment comment={comment} />
     </Grid>
   );
-
+  
   return (
     <Wrapper>
       <ApartmentGate id={Number(id)} />

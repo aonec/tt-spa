@@ -174,9 +174,7 @@ const Internal = () => {
               />
 
               <Route
-                path={[
-                  '/housingMeteringDevices/:deviceId/(related|documents)?',
-                ]}
+                path={['/housingMeteringDevices/:deviceId/']}
                 component={HousingProfile}
                 exact
               />
@@ -211,7 +209,7 @@ const Internal = () => {
                 exact
               />
               <Route
-                path="/individualDevices/:deviceId/(readings|documents|changes)?"
+                path="/individualDevices/:deviceId"
                 component={IndividualDevice}
                 exact
               />

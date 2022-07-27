@@ -7,6 +7,7 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { Menu, EditButton } from './EditButton';
 import { DeviceContext } from '../DeviceProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 export const Template = styled.div``;
 
@@ -47,8 +48,6 @@ export const Header = () => {
 
   const loading = loadingDevice || loadingBuilding;
 
-  const { city, street, housingStockNumber, corpus } =
-    building || DEFAULT_BUILDING;
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
@@ -86,9 +85,7 @@ export const Header = () => {
             {`${calcModel || 'Вычислитель'} (${serialNumber})`}
           </Title>
 
-          <Subtitle>{`${city}, ${street}, ${housingStockNumber}${
-            corpus ? `, к.${corpus}` : ''
-          }`}</Subtitle>
+          <Subtitle>{getHousingStockAddress(building, true)}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>{MenuOPDU}</div>
       </Loader>

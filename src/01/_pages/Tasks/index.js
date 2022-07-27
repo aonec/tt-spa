@@ -16,7 +16,6 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import { TasksListWrapper, Wrapper } from './Tasks.styled';
 
 import {
-  ExportTasksListModalContainer,
   exportTasksListService,
 } from 'services/tasks/exportTasksListService';
 import { useEvent } from 'effector-react';
@@ -86,7 +85,6 @@ export const Tasks = () => {
 
   return (
     <>
-      <ExportTasksListModalContainer />
       <Wrapper>
         {header}
         <TasksListWrapper>

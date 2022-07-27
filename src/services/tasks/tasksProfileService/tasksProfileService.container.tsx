@@ -30,7 +30,7 @@ export const TasksProfileContainer = () => {
   const streets = useStore(adresses.streets)
 
   const handleExportTasksList = useEvent(
-    exportTasksListService.inputs.openModal
+    exportTasksListService.inputs.exportTasksList
   );
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
