@@ -1,25 +1,31 @@
-import React from 'react';
-import { useEffect } from 'react';
-import ApartmentReadingLine from './components/ApartmentReadingLine';
+import React, { useEffect } from 'react';
+import { useEvent, useStore } from 'effector-react';
 import styled from 'styled-components';
+import ApartmentReadingLine from './components/ApartmentReadingLine';
+import { useParams } from 'react-router';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 import { EIndividualDeviceRateType } from '../../../../../myApi';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
-import { useStore } from 'effector-react';
 import {
   $individualDevices,
   $isShownClosedDevices,
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
-import { useParams } from 'react-router';
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import {
+  managementFirmConsumptionRatesService,
+  useManagingFirmConsumptionRates,
+} from 'services/meters/managementFirmConsumptionRatesService';
+
+const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -44,6 +50,13 @@ export const ApartmentReadings = () => {
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
   const showClosed = useStore($isShownClosedDevices);
 
+  const apartment = useStore($apartment);
+
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+
   useEffect(() => reset && reset(), [id]);
 
   const validDevicesList = devices.filter((device) =>
@@ -51,6 +64,12 @@ export const ApartmentReadings = () => {
   );
 
   const isSliderIndexExist = sliderIndex !== undefined;
+
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    apartment?.housingStock?.managingFirmId
+  );
 
   const validDevices = !isSliderIndexExist
     ? []
@@ -60,6 +79,7 @@ export const ApartmentReadings = () => {
           sliderIndex={sliderIndex!}
           key={device.id}
           device={device}
+          managementFirmConsumptionRates={managementFirmConsumptionRates}
           numberOfPreviousReadingsInputs={validDevicesList
             .slice(0, index)
             .filter((elem) => elem.closingDate === null)
