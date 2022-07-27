@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
-import { Subtitle } from '../../../_components/Headers';
 import { ListItem, Title } from '../../../tt-components/List';
-import moment from 'moment';
 import { SettingsContext } from '../index';
 import styled from 'styled-components';
 
 const CompanyInfo = () => {
   const { firm } = useContext(SettingsContext);
-  const { id, name, phoneNumber } = firm || {};
+  const { name, phoneNumber } = firm || {};
 
   return (
     <div style={{ width: '66%' }}>

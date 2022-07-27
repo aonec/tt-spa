@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   EIndividualDeviceReadingsSource,
-  ManagingFirmUserShortResponse,
+  OrganizationUserShortResponse,
 } from 'myApi';
 import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
 import { ReactComponent as ErcIcon } from '../icons/erc.svg';
@@ -46,7 +46,7 @@ export const SourceName = ({
   user,
 }: {
   sourceType: EIndividualDeviceReadingsSource;
-  user?: ManagingFirmUserShortResponse | null;
+  user?: OrganizationUserShortResponse | null;
 }) => {
   const userName = user?.name;
 

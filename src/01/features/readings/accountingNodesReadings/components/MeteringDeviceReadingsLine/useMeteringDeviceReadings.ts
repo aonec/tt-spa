@@ -18,7 +18,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   );
 
   const previousExistingReading = getPreviousExistingReading(readings || []);
-  
+
   if (previousExistingReading)
     updateReadings({
       id,
@@ -58,6 +58,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     preparedPreviousReadingsArray,
     currentReading: getCurrentReading(readings?.filter(({ id }) => id) || []),
     previousReading: preparedPreviousReadingsArray[sliderIndex || 0],
+    prePreviousReading: preparedPreviousReadingsArray[(sliderIndex || 0) + 1],
   };
 }
 const getPreviousExistingReading = (readings: MeteringDeviceReading[]) => {
@@ -92,7 +93,6 @@ const getReadingsArrayWithEmpties = (readings: MeteringDeviceReading[]) => {
     );
 
     if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
-
     const index = currentMonthDate.diff(readingMonthDate, 'months') - 1;
 
     acc[index] = elem;

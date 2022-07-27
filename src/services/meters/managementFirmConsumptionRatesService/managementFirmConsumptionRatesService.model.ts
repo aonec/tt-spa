@@ -16,21 +16,23 @@ const fetchConsumptionRatesFx = domain.createEffect<
 
 const loadManagemenFirmConsumptionRates = domain.createEvent<number>();
 
-$consumptionRates
-  .on(
-    fetchConsumptionRatesFx.done,
-    (prev, { params: managementFirmId, result }) => ({
-      ...prev,
-      [managementFirmId]: result,
-    })
-  )
+$consumptionRates.on(
+  fetchConsumptionRatesFx.done,
+  (prev, { params: managementFirmId, result }) => ({
+    ...prev,
+    [managementFirmId]: result,
+  })
+);
 
 sample({
   clock: guard({
-    source: $consumptionRates,
+    source: [$consumptionRates, fetchConsumptionRatesFx.inFlight],
     clock: loadManagemenFirmConsumptionRates,
-    filter: (consumptionRates, managementFirmId) => {
-      return !consumptionRates[managementFirmId];
+    filter: ([consumptionRates, inFlight], managementFirmId) => {
+      const isLimitsForManagementFirmExists =
+        consumptionRates[managementFirmId];
+
+      return inFlight === 0 || !isLimitsForManagementFirmExists;
     },
   }),
   source: loadManagemenFirmConsumptionRates,
