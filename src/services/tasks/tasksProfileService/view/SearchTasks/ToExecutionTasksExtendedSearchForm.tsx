@@ -50,9 +50,10 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
   );
 
   useEffect(() => {
-    !(values.EngineeringElement !== 'IndividualDevice') &&
+    if (values.EngineeringElement !== 'IndividualDevice') {
+      setFieldValue('TaskType', null);
       setFieldValue('ApartmentNumber', null);
-    setFieldValue('TaskType', null);
+    }
   }, [values.EngineeringElement]);
 
   const Categories: CategotyI = {
