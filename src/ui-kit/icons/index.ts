@@ -25,10 +25,8 @@ import { ReactComponent as UploadIcon } from './svg/upload.svg';
 import { ReactComponent as DateIcon } from './svg/date.svg';
 import { ReactComponent as DownloadIcon } from './svg/download.svg';
 import { ReactComponent as ExitIcon } from './svg/exit.svg';
-import { ReactComponent as SearchIcon } from './svg/search.svg';
 
 export {
-  SearchIcon,
   StarIcon,
   CheckIcon,
   HistoryIcon,

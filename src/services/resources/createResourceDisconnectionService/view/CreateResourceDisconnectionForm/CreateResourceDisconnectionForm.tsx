@@ -11,7 +11,6 @@ import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import {
   createResourceDisconnectionValidationSchema,
@@ -43,8 +42,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   handleSelectCity,
   heatingStations,
   handleSelectHeatingStation,
-  addressesFromHeatingStation,
-  existingHousingStocks,
+  treeData,
 }) => {
   const {
     values,
@@ -75,19 +73,6 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   const addressPlaceholderText = selectedCity
     ? 'Выберите адрес из списка'
     : 'Выберите город';
-
-  const multipleSelectionAddressFromHeatingStation = useMemo(
-    () =>
-      addressesFromHeatingStation?.map((elem) => ({
-        title: getHousingStockAddress(elem),
-        value: elem.id,
-        key: elem.id,
-      })),
-    [addressesFromHeatingStation]
-  );
-  const treeData = addressesFromHeatingStation.length
-    ? multipleSelectionAddressFromHeatingStation
-    : existingHousingStocks;
 
   useEffect(() => {
     setFieldValue('housingStockIds', []);

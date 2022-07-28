@@ -9,9 +9,8 @@ import { ExistingStreetWithHousingStocks } from '../CreateResourceDisconnectionM
 
 export type CreateResourceDisconnectionFormProps = {
   cities: string[] | null;
-  addressesFromHeatingStation: HousingStockShortResponse[];
   heatingStations: HeatingStationResponse[];
-  existingHousingStocks: ExistingStreetWithHousingStocks[];
+  treeData: ExistingStreetWithHousingStocks[];
   selectedCity: string;
   formId: string;
   handleSubmit: (payload: ResourceDisconnectingCreateRequest) => void;

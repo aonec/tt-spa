@@ -1,6 +1,7 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { prepareDataForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
@@ -16,10 +17,24 @@ export const CreateResourceDisconnectionContainer = () => {
     outputs.$addressesFromHeatingStation
   );
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
+
+  const preparedAddressesFromHeatingStation = useMemo(
+    () =>
+      addressesFromHeatingStation?.map((elem) => ({
+        title: getHousingStockAddress(elem)!,
+        value: elem.id,
+        key: elem.id,
+      })),
+    [addressesFromHeatingStation]
+  );
   const preparedExistingHousingStocks = useMemo(
     () => prepareDataForTreeSelect(existingHousingStocks),
     [existingHousingStocks]
   );
+
+  const treeData = addressesFromHeatingStation.length
+    ? preparedAddressesFromHeatingStation
+    : preparedExistingHousingStocks;
 
   const handleCloseModal = useEvent(inputs.closeModal);
   const handleCreateResourceDisconnection = useEvent(
@@ -35,8 +50,7 @@ export const CreateResourceDisconnectionContainer = () => {
         selectedCity={selectedCity}
         cities={cities}
         heatingStations={heatingStations}
-        addressesFromHeatingStation={addressesFromHeatingStation}
-        existingHousingStocks={preparedExistingHousingStocks}
+        treeData={treeData}
         isOpen={isOpen}
         handleClose={() => handleCloseModal()}
         handleCreateResourceDisconnection={handleCreateResourceDisconnection}

@@ -8,8 +8,7 @@ export type CreateResourceDisconnectionModalProps = {
   selectedCity: string;
   cities: string[] | null;
   heatingStations: HeatingStationResponse[];
-  addressesFromHeatingStation: HousingStockShortResponse[];
-  existingHousingStocks: ExistingStreetWithHousingStocks[];
+  treeData: ExistingStreetWithHousingStocks[];
   isOpen: boolean;
   handleClose: () => void;
   handleCreateResourceDisconnection: (
@@ -21,6 +20,7 @@ export type CreateResourceDisconnectionModalProps = {
 
 export type ExistingStreetWithHousingStocks = {
   title: string;
-  key: string;
-  children: { title: string; value: number; key: number }[];
+  key: string | number;
+  value: string | number;
+  children?: { title: string; value: number; key: number }[];
 };

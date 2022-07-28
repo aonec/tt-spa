@@ -1,5 +1,6 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, forward } from 'effector';
+import _ from 'lodash/fp';
 import {
   HeatingStationResponse,
   ResourceDisconnectingCreateRequest,
@@ -16,8 +17,10 @@ import {
 const domain = createDomain('createResourceDisconnectionService');
 
 const $isModalOpen = domain.createStore(false);
+
 const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore<string>('');
+
 const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
 const $existingHousingStocks = domain.createStore<
   StreetWithHousingStockNumbersResponse[]
