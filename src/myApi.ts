@@ -93,6 +93,12 @@ export interface AddressResponse {
   housingStockNumber: string | null;
 }
 
+export interface AddressShortResponse {
+  /** @format int32 */
+  housingStockId: number;
+  housingStockNumber: string | null;
+}
+
 export interface AllNodeWorkingRangeResponse {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
@@ -1563,6 +1569,12 @@ export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiRespo
   successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
+export enum EStageTimeStatus {
+  Normal = "Normal",
+  RunningOut = "RunningOut",
+  Expired = "Expired",
+}
+
 export enum ETaskApplicationStatus {
   Open = "Open",
   Closed = "Closed",
@@ -1610,6 +1622,7 @@ export enum ETaskCreateType {
 export enum ETaskEngineeringElement {
   Node = "Node",
   IndividualDevice = "IndividualDevice",
+  HouseNetwork = "HouseNetwork",
 }
 
 export enum ETaskTargetObjectRequestType {
@@ -1627,12 +1640,6 @@ export enum ETaskTargetType {
   Housing = "Housing",
   Node = "Node",
   Application = "Application",
-}
-
-export enum ETaskTimeStatus {
-  Normal = "Normal",
-  RunningOut = "RunningOut",
-  Expired = "Expired",
 }
 
 export enum EValueNodeWorkingRangeRelation {
@@ -4293,6 +4300,10 @@ export interface StageResponse {
 
   /** @format date-time */
   expectedCompletionTime: string | null;
+  timeStatus: EStageTimeStatus;
+
+  /** @format double */
+  timeProgress: number;
 }
 
 export interface StageRevertRequest {
@@ -4303,6 +4314,38 @@ export enum StatusType {
   All = "All",
   Closed = "Closed",
   NotClosed = "NotClosed",
+}
+
+export interface StreetWithHousingStockNumbersResponse {
+  street: string | null;
+  addresses: AddressShortResponse[] | null;
+}
+
+export interface StreetWithHousingStockNumbersResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: StreetWithHousingStockNumbersResponse[] | null;
+}
+
+export interface StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse {
+  successResponse: StreetWithHousingStockNumbersResponsePagedList | null;
 }
 
 export interface StringPagedList {
@@ -4772,10 +4815,6 @@ export interface TaskListResponse {
 
   /** @format int32 */
   totalHomeownersCount: number;
-  timeStatus: ETaskTimeStatus;
-
-  /** @format double */
-  timeProgress: number;
 }
 
 export interface TaskResponse {
@@ -4814,10 +4853,6 @@ export interface TaskResponse {
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
   taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
-  timeStatus: ETaskTimeStatus;
-
-  /** @format double */
-  timeProgress: number;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -6409,6 +6444,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportHousingStockInfoCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportHousingStockInfo
+     * @secure
+     */
+    dataMigrationsImportHousingStockInfoCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportHousingStockInfo`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Documents
@@ -7663,6 +7727,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/ExistingHousingStockNumber`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingStreetsWithHousingStockNumbersList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/ExistingStreetsWithHousingStockNumbers
+     * @secure
+     */
+    housingStocksExistingStreetsWithHousingStockNumbersList: (
+      query?: { Street?: string; City?: string; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
+      this.request<StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbers`,
         method: "GET",
         query: query,
         secure: true,
@@ -10648,7 +10734,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         ApplicationCompetenceId?: string;
-        TimeStatus?: ETaskTimeStatus;
+        TimeStatus?: EStageTimeStatus;
         PerpetratorId?: number;
         Resource?: EResourceType;
         EngineeringElement?: ETaskEngineeringElement;
@@ -10695,7 +10781,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         ApplicationCompetenceId?: string;
-        TimeStatus?: ETaskTimeStatus;
+        TimeStatus?: EStageTimeStatus;
         PerpetratorId?: number;
         Resource?: EResourceType;
         EngineeringElement?: ETaskEngineeringElement;
@@ -11002,7 +11088,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
         ApplicationCompetenceId?: string;
-        TimeStatus?: ETaskTimeStatus;
+        TimeStatus?: EStageTimeStatus;
         PerpetratorId?: number;
         Resource?: EResourceType;
         EngineeringElement?: ETaskEngineeringElement;

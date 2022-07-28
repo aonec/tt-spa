@@ -1,11 +1,12 @@
 import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter, TaskListResponse } from 'myApi';
+import { TaskGroupingFilter } from 'myApi';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
-import { preparedData } from './tasksProfileService.utils';
+import { prepareData } from './tasksProfileService.utils';
+import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 
 const { inputs, outputs } = tasksProfileService;
@@ -50,7 +51,7 @@ export const TasksProfileContainer = () => {
 
   const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
-    () => preparedData(pagedTasks?.items || [], grouptype),
+    () => prepareData(pagedTasks?.items || [], grouptype),
     [pagedTasks?.items]
   );
 
@@ -63,7 +64,7 @@ export const TasksProfileContainer = () => {
         handleSearch={handleSearch}
         changePageNumber={changePageNumber}
         taskTypes={taskTypes}
-        tasks={preparedTasks as TaskListResponse[]}
+        tasks={preparedTasks as TaskType[]}
         initialValues={initialValues}
         pagedTasks={pagedTasks}
         isLoading={isLoading}
