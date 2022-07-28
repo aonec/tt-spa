@@ -2,10 +2,7 @@ import { useEvent, useStore } from 'effector-react';
 import { TaskGroupingFilter } from 'myApi';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  ExportTasksListModalContainer,
-  exportTasksListService,
-} from '../exportTasksListService';
+import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
 import { prepareData } from './tasksProfileService.utils';
@@ -13,7 +10,6 @@ import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 
 const { inputs, outputs } = tasksProfileService;
-const { ExportTaskFiltersGate } = exportTasksListService.gates;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -26,7 +22,7 @@ export const TasksProfileContainer = () => {
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
 
   const handleExportTasksList = useEvent(
-    exportTasksListService.inputs.openModal
+    exportTasksListService.inputs.exportTasksList
   );
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
@@ -62,8 +58,6 @@ export const TasksProfileContainer = () => {
   return (
     <>
       <TaskTypesGate />
-      <ExportTaskFiltersGate />
-      <ExportTasksListModalContainer />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}

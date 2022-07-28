@@ -5,6 +5,7 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 export const InformationNotCalculator = (loading = true) => {
   const { device, building, loadings, error } = useContext(DeviceContext);
@@ -14,8 +15,6 @@ export const InformationNotCalculator = (loading = true) => {
 
   loading = loadingDevice || loadingBuilding;
 
-  const { city, street, housingStockNumber, corpus } =
-    building || DEFAULT_BUILDING;
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } =
     device || DEFAULT_DEVICE;
 
@@ -35,9 +34,7 @@ export const InformationNotCalculator = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city}, ${street}, ${housingStockNumber} ${
-              corpus ? `, к.${corpus}` : ''
-            }`}
+            {getHousingStockAddress(building, true)}
           </span>
         </ListItem>
         <ListItem>
