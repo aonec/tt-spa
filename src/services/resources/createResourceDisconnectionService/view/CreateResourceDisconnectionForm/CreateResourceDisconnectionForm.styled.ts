@@ -47,15 +47,15 @@ export const TreeSelectSC = styled(TreeSelect)`
 
   .ant-select-selector {
     height: 100% !important;
-    padding: 8px 16px !important;
+    padding: 8px 14px !important;
     border-radius: 4px !important;
-    &:focus {
-      background-color: yellow !important;
-    }
   }
   .ant-select-selection-item {
     background-color: transparent;
     border: none;
+  }
+  .ant-select-selection-placeholder {
+    padding-left: 10px;
   }
 `;
 

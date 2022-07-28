@@ -12,7 +12,6 @@ import {
   fetchExistingHousingStocks,
   fetchHeatingStations,
 } from './createResourceDisconnectionService.api';
-import { prepareData } from './createResourceDisconnectionService.utils';
 
 const domain = createDomain('createResourceDisconnectionService');
 

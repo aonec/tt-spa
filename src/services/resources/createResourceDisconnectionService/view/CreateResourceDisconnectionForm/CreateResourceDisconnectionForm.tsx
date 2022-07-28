@@ -6,6 +6,7 @@ import { EResourceDisconnectingType, EResourceType } from 'myApi';
 import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
+import { SearchIcon } from 'ui-kit/icons';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -70,6 +71,9 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
 
   const heatingStationPlaceholderText = selectedCity
     ? 'Выберите ЦТП'
+    : 'Выберите город';
+  const addressPlaceholderText = selectedCity
+    ? 'Выберите адрес из списка'
     : 'Выберите город';
 
   const multipleSelectionAddressFromHeatingStation = useMemo(
@@ -152,20 +156,23 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         </FormItem>
         <FormItem label="Адрес">
           <TreeSelectSC
+            showSearch
             value={values.housingStockIds}
             treeCheckable
             maxTagCount={0}
             maxTagPlaceholder={(values) => (
-              <TagPlaceholder>Выбрано: {values.length}</TagPlaceholder>
+              <TagPlaceholder>
+                Выбрано {values.length} адреса(-ов)
+              </TagPlaceholder>
             )}
-            showSearch
             treeData={treeData}
             showCheckedStrategy="SHOW_CHILD"
             onChange={(selectedAddresses) =>
               setFieldValue('housingStockIds', selectedAddresses)
             }
-            placeholder="Выберите адрес из списка"
+            placeholder={addressPlaceholderText}
           />
+          <ErrorMessage>{errors.housingStockIds}</ErrorMessage>
         </FormItem>
         <FormItem label="Класс отключения">
           <Select

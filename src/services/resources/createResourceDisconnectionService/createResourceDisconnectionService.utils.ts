@@ -1,6 +1,6 @@
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 
-export const prepareData = (items: StreetWithHousingStockNumbersResponse[]) =>
+export const prepareDataForTreeSelect = (items: StreetWithHousingStockNumbersResponse[]) =>
   items.map(({ street, addresses }) => ({
     title: street!,
     key: street!,

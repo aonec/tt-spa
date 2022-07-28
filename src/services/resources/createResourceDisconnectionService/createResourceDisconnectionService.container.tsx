@@ -2,7 +2,7 @@ import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStoc
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
-import { prepareData } from './createResourceDisconnectionService.utils';
+import { prepareDataForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 
 const { inputs, outputs } = createResourceDisconnectionService;
@@ -12,9 +12,14 @@ export const CreateResourceDisconnectionContainer = () => {
   const cities = useStore(outputs.$existingCities);
   const heatingStations = useStore(outputs.$heatingStations);
   const selectedCity = useStore(outputs.$selectedCity);
-  const addressesFromHeatingStation = useStore(outputs.$addressesFromHeatingStation);
+  const addressesFromHeatingStation = useStore(
+    outputs.$addressesFromHeatingStation
+  );
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
-  const preparedExistingHousingStocks = useMemo(()=>prepareData(existingHousingStocks),[existingHousingStocks])
+  const preparedExistingHousingStocks = useMemo(
+    () => prepareDataForTreeSelect(existingHousingStocks),
+    [existingHousingStocks]
+  );
 
   const handleCloseModal = useEvent(inputs.closeModal);
   const handleCreateResourceDisconnection = useEvent(
