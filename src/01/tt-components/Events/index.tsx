@@ -20,7 +20,7 @@ export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
       return null;
     }
     return (
-      <Task key={id} href={`/tasks/${id}`}>
+      <Task key={id} href={`/tasks/profile/${id}`}>
         <StageName>{currentStage.name}</StageName>
         <TaskName>{`Причина: ${task.name}`}</TaskName>
         <TaskRow>

@@ -87,7 +87,7 @@ export const Tasks = (props) => {
     }
 
     return (
-      <Link to={`/Tasks/${id}`}>
+      <Link to={`/Tasks/profile/${id}`}>
         <ApartmentTask key={ind}>
           <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
           <ApartmentTaskState color={color}>
