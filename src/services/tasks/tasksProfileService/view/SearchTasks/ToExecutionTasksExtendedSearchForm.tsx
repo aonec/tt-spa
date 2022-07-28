@@ -3,7 +3,7 @@ import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputSC, StyledAutocomplete } from '01/shared/ui/Fields';
-import { CategotyI, ExtendedSearchTypes } from './SearchTasks.types';
+import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
 import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
@@ -51,49 +51,35 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     }
   }, [values.EngineeringElement]);
 
-  const Categories: CategotyI = {
+  const taskCategories: taskCategotiesProps = {
     All: Object.keys(
       EManagingFirmTaskFilterType
     ) as Partial<EManagingFirmTaskFilterType>[],
     Node: [
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.CalculatorMalfunctionAny
-      ],
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny
-      ],
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.CalculatorLackOfConnection
-      ],
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.MeasurementErrorAny
-      ],
+      EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
+      EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
+      EManagingFirmTaskFilterType.CalculatorLackOfConnection,
+      EManagingFirmTaskFilterType.MeasurementErrorAny,
     ],
     IndividualDevice: [
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.IndividualDeviceCheck
-      ],
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck
-      ],
-      EManagingFirmTaskFilterType[
-        EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings
-      ],
+      EManagingFirmTaskFilterType.IndividualDeviceCheck,
+      EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck,
+      EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings,
     ],
-    HouseNetwork: [
-      EManagingFirmTaskFilterType[EManagingFirmTaskFilterType.PipeRupture],
-    ],
+    HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
   };
 
   const FilteredTaskTypes = useMemo(() => {
     return taskTypes?.filter(
       (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
-        return (values?.EngineeringElement
-          ? Object.values(
-              Categories[values?.EngineeringElement as keyof CategotyI]
-            )
-          : Categories.All
-        ).includes(el.key as EManagingFirmTaskFilterType);
+        if (!el.key) return taskTypes;
+        if (values?.EngineeringElement) {
+          return Object.values(
+            taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
+          ).includes(el?.key);
+        } else {
+          return taskCategories.All.includes(el?.key);
+        }
       }
     );
   }, [values?.EngineeringElement]);
@@ -255,7 +241,6 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('TaskType', value);
             }}
           >
-            <Option value={null!}>Все</Option>
             {FilteredTaskTypes &&
               FilteredTaskTypes.map(({ value, key }) => (
                 <Option key={key!} value={key!}>

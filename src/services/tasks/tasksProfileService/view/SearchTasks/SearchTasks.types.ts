@@ -44,7 +44,7 @@ export type ExtendedSearchTypes = {
   cities?: string[] | null
 };
 
-export type CategotyI = {
+export type taskCategotiesProps = {
   Node: Partial<EManagingFirmTaskFilterType>[];
   All: Partial<EManagingFirmTaskFilterType>[];
   IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
