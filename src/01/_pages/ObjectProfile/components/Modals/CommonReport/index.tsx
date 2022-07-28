@@ -23,6 +23,7 @@ import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
 import Title from '../../../../../tt-components/Title';
 import axios from '01/axios';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 interface ObjectContextInterface {
   object: HousingStockResponse;
@@ -39,7 +40,7 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
 
   const { city, street, number } = object;
   const reportName = `Сводный_отчёт_${street}_${number}.xlsx`;
-  const addressString = `${city}, ${street}, ${number}`;
+  const addressString = getHousingStockAddress(object, true);
 
   const RegistrationForm = () => {
     const [form] = Form.useForm();
