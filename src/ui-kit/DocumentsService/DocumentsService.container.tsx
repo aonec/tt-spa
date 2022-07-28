@@ -1,5 +1,5 @@
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { DragAndDrop } from '../../01/shared/ui/DragAndDrop';
 import { useDocumentsUpload } from './DocumentsService.hook';
 import { DocumentsUploadContainerProps } from './DocumentsService.types';
 import { DocumentsList } from './view/DocumentsList';

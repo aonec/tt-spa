@@ -1,6 +1,5 @@
-import { Skeleton } from 'antd';
 import styled from 'styled-components';
-import { DocumentIcon, DownloadIcon, TrashIcon } from 'ui-kit/icons';
+import { DocumentIcon, DownloadIcon, TrashIcon } from '../../../../../ui-kit/icons';
 
 export const Wrapper = styled.div`
   padding: 18px;

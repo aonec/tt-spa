@@ -4,7 +4,7 @@ import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
   TaskGroupingFilter,
-} from '../../api/types';
+} from '../../../../../api/types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
 export type SearchTasksProps = {

@@ -1,3 +1,4 @@
+import { saveAs } from 'file-saver';
 import { axios } from '../../api/axios';
 import { Document } from './DocumentsService.types';
 

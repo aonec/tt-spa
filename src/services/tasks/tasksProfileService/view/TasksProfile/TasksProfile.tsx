@@ -1,11 +1,12 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { TasksList } from '01/_pages/Tasks/components/TasksList';
 import { Skeleton } from 'antd';
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
+import { PageHeader } from '../../../../../01/shared/ui/PageHeader';
+import { TasksList } from '../../../../../01/_pages/Tasks/components/TasksList';
 import { SearchTasks } from '../SearchTasks';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
+
 const { TabPane } = TabsSC;
 
 export const TasksProfile: FC<TasksProfileProps> = ({

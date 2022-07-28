@@ -1,5 +1,5 @@
-import { EClosingReason } from '../../api/types';
-import React, { FC } from 'react';
+import { EClosingReason } from '../../../../api/types';
+import { FC } from 'react';
 import {
   ClosingReasonText,
   StatusBar,

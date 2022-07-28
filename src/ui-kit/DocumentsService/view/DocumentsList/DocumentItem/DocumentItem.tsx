@@ -1,8 +1,7 @@
-import moment from 'moment';
-import React, { FC, useCallback, useMemo } from 'react';
-import { saveDocument } from 'ui-kit/DocumentsService/DocumentsService.api';
-import { DateIcon } from 'ui-kit/icons';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import { FC, useCallback, useMemo } from 'react';
+import { saveDocument } from '../../../../../ui-kit/DocumentsService/DocumentsService.api';
+import { DateIcon } from '../../../../../ui-kit/icons';
+import { getTimeStringByUTC } from '../../../../../utils/getTimeStringByUTC';
 import {
   DocumentDate,
   DocumentDateWrapper,

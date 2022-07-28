@@ -1,5 +1,5 @@
-import { EOrderByRule } from '../../api/types';
-import { AddressSearchValues } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { EOrderByRule } from '../../../api/types';
+import { AddressSearchValues } from '../../addressSearchService/view/AddressSearch/AddressSearch.types';
 
 export type GetApartmentsListRequestPayload = {
   City?: string;

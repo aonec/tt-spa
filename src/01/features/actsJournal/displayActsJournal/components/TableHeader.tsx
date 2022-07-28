@@ -1,7 +1,7 @@
 import { Grid } from '01/shared/ui/Layout/Grid';
 import React from 'react';
 import styled from 'styled-components';
-import { FilterButton } from './filterButton/FIlterButton';
+import { FilterButton } from './filterButton/FilterButton';
 import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
 import { Checkbox } from 'antd';

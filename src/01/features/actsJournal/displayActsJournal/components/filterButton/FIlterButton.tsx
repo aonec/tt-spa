@@ -1,12 +1,13 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Popover } from 'antd';
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { SpaceLine } from '../../../../../shared/ui/Layout/Space/Space';
 import { ReactComponent as FilterIcon } from './assets/filterIcon.svg';
 import { ReactComponent as FilterIconBlue } from './assets/filterIconBlue.svg';
 
 interface Props {
   onClear?(): void;
   active?: boolean;
+  children?: ReactNode;
 }
 
 export const FilterButton: React.FC<Props> = ({

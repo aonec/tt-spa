@@ -1,6 +1,6 @@
 import { Skeleton } from 'antd';
 import React from 'react';
-import { DateIcon } from 'ui-kit/icons';
+import { DateIcon } from '../../../../../ui-kit/icons';
 import {
   DocumentDate,
   DocumentDateWrapper,

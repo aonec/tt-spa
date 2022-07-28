@@ -1,10 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
-import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
   OverFlowSelectSC,
@@ -13,8 +11,8 @@ import {
   StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
 } from './SearchTasks.styled';
-import { axios } from '../../api/axios';
-import { GuidStringDictionaryItem, HousingStockFilterResponse } from '../../api/types';
+import { StyledForm } from '../../../../devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { InputSC } from '../../../../../01/shared/ui/Fields';
 
 const { Option } = Select;
 

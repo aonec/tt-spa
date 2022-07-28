@@ -1,6 +1,6 @@
-import { Loader } from '01/components';
-import { ButtonTT } from '01/tt-components';
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { ButtonTT } from '../../../01/tt-components';
+import { Loader } from '../../../01/_components/Loader';
 import { StyledDialog, TitleText } from './Dialog.styled';
 import { BtnType, DialogProps } from './Dialog.types';
 

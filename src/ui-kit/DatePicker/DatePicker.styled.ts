@@ -1,7 +1,5 @@
 import { DatePicker as AntDatePicker } from 'antd';
 import styled from 'styled-components';
-import { DatePickerProps } from 'antd/lib/date-picker';
-import { FC } from 'react';
 
 export const DatePicker = styled(AntDatePicker)`
   height: 48px;

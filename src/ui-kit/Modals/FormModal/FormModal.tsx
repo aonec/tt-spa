@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import { ButtonTT } from '../../../01/tt-components';
+import { Loader } from '../../../01/_components/Loader';
 
 import {
   Footer,
@@ -6,8 +8,6 @@ import {
   ModalText,
   StyledModal,
 } from './FormModal.styled';
-import { ButtonTT } from '01/tt-components';
-import { Loader } from '01/_components/Loader';
 import { FormModalProps } from './formModal.types';
 
 const defaultInnerProps = {

@@ -10,7 +10,7 @@ export type DialogProps = {
 };
 
 export enum BtnType {
-  Danger = 'red',
-  Warn = 'yellow',
-  Success = 'blue',
+  danger = 'red',
+  warn = 'yellow',
+  success = 'blue',
 }
