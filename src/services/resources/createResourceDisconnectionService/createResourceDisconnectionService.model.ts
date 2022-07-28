@@ -8,6 +8,7 @@ import {
   StreetWithHousingStockNumbersResponsePagedList,
   StreetWithHousingStockNumbersResponse,
 } from 'myApi';
+import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
   fetchCreateResourceDisconnection,
   fetchExistingHousingStocks,
@@ -19,12 +20,24 @@ const domain = createDomain('createResourceDisconnectionService');
 const $isModalOpen = domain.createStore(false);
 
 const $selectedCity = domain.createStore('');
-const $selectedHeatingStation = domain.createStore<string>('');
+const $selectedHeatingStation = domain.createStore('');
+
+const $cities = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
+  (store) => store?.cities || []
+);
+const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
+  (store) => store?.resourceTypes || []
+);
+const $disconnectingTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
+  (store) => store?.disconnectingTypes || []
+);
 
 const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
+
 const $existingHousingStocks = domain.createStore<
   StreetWithHousingStockNumbersResponse[]
 >([]);
+
 const $addressesFromHeatingStation = combine(
   $heatingStations,
   $selectedHeatingStation,
@@ -39,6 +52,7 @@ const clearStore = domain.createEvent();
 
 const selectCity = domain.createEvent<string>();
 const selectHeatingStation = domain.createEvent<string>();
+
 const getHeatingStationFx = domain.createEffect<
   string,
   HeatingStationResponsePagedList
@@ -107,5 +121,8 @@ export const createResourceDisconnectionService = {
     $heatingStations,
     $addressesFromHeatingStation,
     $existingHousingStocks,
+    $cities,
+    $resourceTypes,
+    $disconnectingTypes,
   },
 };

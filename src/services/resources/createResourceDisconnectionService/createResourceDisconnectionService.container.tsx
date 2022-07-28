@@ -7,23 +7,27 @@ import { prepareAddressesForTreeSelect } from './createResourceDisconnectionServ
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 
 const { inputs, outputs } = createResourceDisconnectionService;
-const { gates, outputs: resourceFilters } = resourceDisconnectionFiltersService;
+const { gates } = resourceDisconnectionFiltersService;
 const { ResourceDisconnectigFiltersGate } = gates;
 
 export const CreateResourceDisconnectionContainer = () => {
   const isOpen = useStore(outputs.$isModalOpen);
-  const filters = useStore(resourceFilters.$resourceDisconnectionFilters);
-
-  const cities = filters?.cities || [];
-  const resourceTypes = filters?.resourceTypes || [];
-  const disconnectingTypes = filters?.disconnectingTypes || [];
-
+  const cities = useStore(outputs.$cities);
+  const resourceTypes = useStore(outputs.$resourceTypes);
+  const disconnectingTypes = useStore(outputs.$disconnectingTypes);
   const heatingStations = useStore(outputs.$heatingStations);
   const selectedCity = useStore(outputs.$selectedCity);
   const addressesFromHeatingStation = useStore(
     outputs.$addressesFromHeatingStation
   );
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
+
+  const handleCloseModal = useEvent(inputs.closeModal);
+  const handleCreateResourceDisconnection = useEvent(
+    inputs.createResourceDisconnection
+  );
+  const handleSelectCity = useEvent(inputs.selectCity);
+  const handleSelectHeatingStation = useEvent(inputs.selectHeatingStation);
 
   const preparedAddressesFromHeatingStation = useMemo(
     () =>
@@ -42,13 +46,6 @@ export const CreateResourceDisconnectionContainer = () => {
   const treeData = addressesFromHeatingStation.length
     ? preparedAddressesFromHeatingStation
     : preparedExistingHousingStocks;
-
-  const handleCloseModal = useEvent(inputs.closeModal);
-  const handleCreateResourceDisconnection = useEvent(
-    inputs.createResourceDisconnection
-  );
-  const handleSelectCity = useEvent(inputs.selectCity);
-  const handleSelectHeatingStation = useEvent(inputs.selectHeatingStation);
 
   return (
     <>
