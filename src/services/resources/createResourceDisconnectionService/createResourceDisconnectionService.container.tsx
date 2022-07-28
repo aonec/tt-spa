@@ -3,7 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
-import { prepareDataForTreeSelect } from './createResourceDisconnectionService.utils';
+import { prepareAddressesForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 
 const { inputs, outputs } = createResourceDisconnectionService;
@@ -28,7 +28,7 @@ export const CreateResourceDisconnectionContainer = () => {
     [addressesFromHeatingStation]
   );
   const preparedExistingHousingStocks = useMemo(
-    () => prepareDataForTreeSelect(existingHousingStocks),
+    () => prepareAddressesForTreeSelect(existingHousingStocks),
     [existingHousingStocks]
   );
 
