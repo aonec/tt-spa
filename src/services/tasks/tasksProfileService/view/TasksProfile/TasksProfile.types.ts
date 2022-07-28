@@ -2,12 +2,12 @@ import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
   TaskGroupingFilter,
-  TaskListResponse,
   TasksPagedList,
 } from 'myApi';
 import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksForm } from '../SearchTasks/SearchTasks.types';
+import { TaskType } from '../TasksListItem/TasksListItem.types';
 
 export type TasksProfileProps = {
   handleExportTasksList: () => void;
@@ -15,7 +15,7 @@ export type TasksProfileProps = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   handleSearch: (formFilter: SearchTasksForm) => void;
   changePageNumber: (PageNumber: number) => void;
-  tasks: TaskListResponse[];
+  tasks: TaskType[];
   initialValues: GetTasksListRequestPayload;
   pagedTasks: TasksPagedList | null;
   isLoading: boolean;

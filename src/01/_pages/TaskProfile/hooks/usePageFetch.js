@@ -13,10 +13,10 @@ export const usePageFetch = (state, dispatch) => {
   React.useEffect(() => {
     const initTaskData = async () => {
       const task = await getTask(id);
-      const address = getApartmentAddressString(task.apartment, true);
+      const address = task.address;
 
       if (!task?.node) {
-        dispatch({ type: 'success', data: {...task, address} });
+        dispatch({ type: 'success', data: { ...task, address } });
         return;
       }
       const calculator = await getCalculator(task.node.calculatorId);

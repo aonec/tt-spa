@@ -1642,12 +1642,6 @@ export enum ETaskTargetType {
   Application = "Application",
 }
 
-export enum ETaskTimeStatus {
-  Normal = "Normal",
-  RunningOut = "RunningOut",
-  Expired = "Expired",
-}
-
 export enum EValueNodeWorkingRangeRelation {
   Self = "Self",
   ManagementFirm = "ManagementFirm",
@@ -4821,10 +4815,6 @@ export interface TaskListResponse {
 
   /** @format int32 */
   totalHomeownersCount: number;
-  timeStatus: ETaskTimeStatus;
-
-  /** @format double */
-  timeProgress: number;
 }
 
 export interface TaskResponse {
@@ -4863,10 +4853,6 @@ export interface TaskResponse {
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
   taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
-  timeStatus: ETaskTimeStatus;
-
-  /** @format double */
-  timeProgress: number;
 }
 
 export interface TaskResponseSuccessApiResponse {
