@@ -14,7 +14,6 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
-import { displayDevicesService } from 'services/devices/displayDevicesService/displayDevicesService.models';
 
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
@@ -36,7 +35,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   searchState,
   clearSearchPayload,
 }) => {
-  const CalculatorsGate = displayDevicesService.gates.CalculatorsGate
 
   const menuButtonArr = [
     {
@@ -93,7 +91,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
 
   return (
     <div>
-      <CalculatorsGate />
       <HeaderWrapper>
         <HeaderText>Приборы</HeaderText>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
