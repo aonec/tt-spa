@@ -75,7 +75,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         if (!el.key) return taskTypes;
         if (values?.EngineeringElement) {
           return Object.values(
-            taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
+            taskCategories[
+              values?.EngineeringElement as keyof taskCategotiesProps
+            ]
           ).includes(el?.key);
         } else {
           return taskCategories.All.includes(el?.key);
