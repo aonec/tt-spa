@@ -44,11 +44,6 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     streets
   );
 
-  const { match: cityMatch, options: cityOptions } = useAutocomplete(
-    values.City,
-    cities
-  );
-
   useEffect(() => {
     if (values.EngineeringElement !== 'IndividualDevice') {
       setFieldValue('TaskType', null);
@@ -102,21 +97,6 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
       }
     );
   }, [values?.EngineeringElement]);
-
-  // const FilteredEngineeringElement = useMemo(() => {
-  //   return !values?.TaskType
-  //     ? Object.keys(ETaskEngineeringElement)
-  //     : Object.keys(ETaskEngineeringElement).filter((el) => {
-  //         return (
-  //           Object.values(Categories[el as keyof CategotyI]).filter((ell) => {
-  //             return (
-  //               ell ===
-  //               (values?.TaskType as Partial<EManagingFirmTaskFilterType>)
-  //             );
-  //           }).length > 0
-  //         );
-  //       });
-  // }, [values?.TaskType]);
 
   return (
     <StyledForm id="searchForm">
