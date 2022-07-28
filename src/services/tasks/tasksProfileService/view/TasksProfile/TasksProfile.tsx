@@ -2,7 +2,6 @@ import React, { FC, useMemo } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { TasksList } from '01/_pages/Tasks/components/TasksList';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
