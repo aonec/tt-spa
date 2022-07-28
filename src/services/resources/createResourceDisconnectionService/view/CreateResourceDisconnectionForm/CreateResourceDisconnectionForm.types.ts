@@ -1,6 +1,8 @@
 import {
   EResourceDisconnectingType,
+  EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceType,
+  EResourceTypeNullableStringDictionaryItem,
   HeatingStationResponse,
   HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
@@ -8,7 +10,9 @@ import {
 import { ExistingStreetWithHousingStocks } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
-  cities: string[] | null;
+  cities: string[];
+  resourceTypes: EResourceTypeNullableStringDictionaryItem[];
+  disconnectingTypes: EResourceDisconnectingTypeNullableStringDictionaryItem[];
   heatingStations: HeatingStationResponse[];
   treeData: ExistingStreetWithHousingStocks[];
   selectedCity: string;

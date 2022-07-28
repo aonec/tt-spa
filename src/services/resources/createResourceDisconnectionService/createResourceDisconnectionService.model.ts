@@ -35,6 +35,7 @@ const $addressesFromHeatingStation = combine(
 
 const openModal = domain.createEvent();
 const closeModal = domain.createEvent();
+const clearStore = domain.createEvent();
 
 const selectCity = domain.createEvent<string>();
 const selectHeatingStation = domain.createEvent<string>();
@@ -55,7 +56,9 @@ const createResourceDisconnectionFx = domain.createEffect<
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 $selectedCity.on(selectCity, (_, city) => city);
-$selectedHeatingStation.on(selectHeatingStation, (_, id) => id);
+$selectedHeatingStation
+  .on(selectHeatingStation, (_, id) => id)
+  .reset(clearStore);
 $heatingStations.on(
   getHeatingStationFx.doneData,
   (_, stations) => stations.items || []
@@ -85,6 +88,11 @@ forward({
   to: closeModal,
 });
 
+forward({
+  from: closeModal,
+  to: clearStore,
+});
+
 export const createResourceDisconnectionService = {
   inputs: {
     openModal,
@@ -95,7 +103,6 @@ export const createResourceDisconnectionService = {
   },
   outputs: {
     $isModalOpen,
-    $existingCities,
     $selectedCity,
     $heatingStations,
     $addressesFromHeatingStation,

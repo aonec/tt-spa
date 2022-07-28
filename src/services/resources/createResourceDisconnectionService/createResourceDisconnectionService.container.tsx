@@ -1,16 +1,23 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
+import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { prepareAddressesForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 
 const { inputs, outputs } = createResourceDisconnectionService;
+const { gates, outputs: resourceFilters } = resourceDisconnectionFiltersService;
+const { ResourceDisconnectigFiltersGate } = gates;
 
 export const CreateResourceDisconnectionContainer = () => {
   const isOpen = useStore(outputs.$isModalOpen);
-  const cities = useStore(outputs.$existingCities);
+  const filters = useStore(resourceFilters.$resourceDisconnectionFilters);
+
+  const cities = filters?.cities || [];
+  const resourceTypes = filters?.resourceTypes || [];
+  const disconnectingTypes = filters?.disconnectingTypes || [];
+
   const heatingStations = useStore(outputs.$heatingStations);
   const selectedCity = useStore(outputs.$selectedCity);
   const addressesFromHeatingStation = useStore(
@@ -45,10 +52,12 @@ export const CreateResourceDisconnectionContainer = () => {
 
   return (
     <>
-      <ExistingCitiesGate />
+      <ResourceDisconnectigFiltersGate />
       <CreateResourceDisconnectionModal
         selectedCity={selectedCity}
         cities={cities}
+        resourceTypes={resourceTypes}
+        disconnectingTypes={disconnectingTypes}
         heatingStations={heatingStations}
         treeData={treeData}
         isOpen={isOpen}

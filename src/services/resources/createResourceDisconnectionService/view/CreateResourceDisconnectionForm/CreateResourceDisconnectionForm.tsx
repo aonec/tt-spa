@@ -3,14 +3,13 @@ import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash/fp';
 import { EResourceDisconnectingType, EResourceType } from 'myApi';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
-import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import {
   createResourceDisconnectionValidationSchema,
   formInitialValues,
@@ -28,10 +27,7 @@ import {
   CreateResourceDisconnectionFormTypes,
   CreateResourceDisconnectionFormProps,
 } from './CreateResourceDisconnectionForm.types';
-import {
-  getDate,
-  resourceDisconnectingNamesLookup,
-} from './CreateresourceDisconnectionForm.utils';
+import { getDate } from './CreateresourceDisconnectionForm.utils';
 
 export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
   formId,
@@ -42,6 +38,8 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   heatingStations,
   handleSelectHeatingStation,
   treeData,
+  disconnectingTypes,
+  resourceTypes,
 }) => {
   const {
     values,
@@ -88,13 +86,11 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
               setFieldValue('resource', value as EResourceType)
             }
           >
-            {Object.keys(EResourceType)?.map((elem) => (
-              <Select.Option key={elem} value={elem}>
+            {resourceTypes?.map(({ key, value }) => (
+              <Select.Option key={key!} value={key!}>
                 <ResourceOptionWrapper>
-                  <ResourceIconLookup resource={elem as EResourceType} />
-                  <span className="device-resource-name">
-                    {resourceNamesLookup[elem]}
-                  </span>
+                  <ResourceIconLookup resource={key as EResourceType} />
+                  <span className="device-resource-name">{value}</span>
                 </ResourceOptionWrapper>
               </Select.Option>
             ))}
@@ -112,6 +108,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         </FormItem>
         <FormItem label="Город">
           <Select
+            value={selectedCity || undefined}
             placeholder="Выберите город"
             onChange={(value) => handleSelectCity(String(value))}
           >
@@ -164,9 +161,9 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
             value={values.disconnectingType || undefined}
             placeholder="Выберите класс отключения"
           >
-            {Object.keys(EResourceDisconnectingType).map((elem) => (
-              <Select.Option key={elem} value={elem}>
-                {resourceDisconnectingNamesLookup[elem]}
+            {disconnectingTypes.map(({ key, value }) => (
+              <Select.Option key={key!} value={key!}>
+                {value}
               </Select.Option>
             ))}
           </Select>

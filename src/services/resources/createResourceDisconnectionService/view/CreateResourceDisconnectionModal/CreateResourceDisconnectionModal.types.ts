@@ -1,4 +1,6 @@
 import {
+  EResourceDisconnectingTypeNullableStringDictionaryItem,
+  EResourceTypeNullableStringDictionaryItem,
   HeatingStationResponse,
   HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
@@ -6,7 +8,9 @@ import {
 
 export type CreateResourceDisconnectionModalProps = {
   selectedCity: string;
-  cities: string[] | null;
+  cities: string[];
+  resourceTypes: EResourceTypeNullableStringDictionaryItem[];
+  disconnectingTypes: EResourceDisconnectingTypeNullableStringDictionaryItem[];
   heatingStations: HeatingStationResponse[];
   treeData: ExistingStreetWithHousingStocks[];
   isOpen: boolean;
