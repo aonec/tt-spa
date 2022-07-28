@@ -162,7 +162,7 @@ export const ApartmentInfo = () => {
             По данной квартире есть незакрытая задача. Возможность вводить
             показания появится после закрытия задачи.
           </div>
-          <Link to={`/tasks/${apartmentTaskId}`}>
+          <Link to={`/tasks/profile/${apartmentTaskId}`}>
             <AlertLink className="ant-btn-link" style={{ color: '#FC525B' }}>
               Перейти к задаче
               <ArrowRight />

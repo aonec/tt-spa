@@ -57,7 +57,7 @@ export const Events = ({ title = '', loading = true, items = [] }) => {
             return null;
           }
           return (
-            <e_item key={id} onClick={() => push('/tasks/' + id)}>
+            <e_item key={id} onClick={() => push('/tasks/profile/' + id)}>
               <e_title as="h4">{currentStage.name}</e_title>
               <e_name>{name}</e_name>
               <timer>
