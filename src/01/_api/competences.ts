@@ -8,7 +8,7 @@ export const getCompetencesCatalog = async (): Promise<
   ManagementFirmCompetenceResponse[] | null
 > => {
   const res: ManagementFirmCompetencesListResponse = await axios.get(
-    'ManagementFirmCompetences'
+    'OrganizationCompetences'
   );
   return res.competences;
 };
