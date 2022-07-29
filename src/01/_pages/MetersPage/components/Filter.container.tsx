@@ -39,11 +39,13 @@ export const FilterContainer = () => {
   const pendingApartment = useStore(fetchApartmentFx.pending);
 
   useEffect(() => {
-    if (!apartment?.homeownerAccounts?.length) return;
+    if (!apartment?.homeownerAccounts?.length) {
+      return setQuestion('');
+    }
 
     const homeownerName = apartment?.homeownerAccounts[0]?.name;
 
-    if (homeownerName) {
+    if (homeownerName && id) {
       setQuestion(homeownerName);
     }
   }, [apartment]);
