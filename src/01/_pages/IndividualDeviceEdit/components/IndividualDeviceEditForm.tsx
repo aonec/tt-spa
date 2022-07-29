@@ -94,7 +94,9 @@ const IndividualDeviceEditForm = ({
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
     sealNumber: device.sealNumber,
-    sealInstallationDate: sealInstallationDate ? moment(sealInstallationDate) : null,
+    sealInstallationDate: sealInstallationDate
+      ? moment(sealInstallationDate)
+      : null,
   };
 
   const {
@@ -295,7 +297,7 @@ const IndividualDeviceEditForm = ({
             <DatePickerNative
               ref={refs[5]}
               onKeyDown={(e) => {
-                keyDownEnterGuardedHandler(5)(e)
+                keyDownEnterGuardedHandler(5)(e);
               }}
               value={values.lastCheckingDate?.toISOString(true) || null}
               onChange={(date) => {
@@ -329,10 +331,10 @@ const IndividualDeviceEditForm = ({
           <Form.Item label="Пломба" style={styles.w100}>
             <Flex>
               <InputTT
-              ref={refs[7]}
-              onKeyDown={(e) => {
-                keyDownEnterGuardedHandler(7)(e);
-              }}
+                ref={refs[7]}
+                onKeyDown={(e) => {
+                  keyDownEnterGuardedHandler(7)(e);
+                }}
                 placeholder="Номер пломбы"
                 value={values.sealNumber}
                 onChange={(value: any) =>
@@ -343,7 +345,7 @@ const IndividualDeviceEditForm = ({
           </Form.Item>
 
           <Form.Item label="Дата установки пломбы" style={styles.w100}>
-          <DatePickerNative
+            <DatePickerNative
               ref={refs[8]}
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(8)(e);
@@ -360,15 +362,21 @@ const IndividualDeviceEditForm = ({
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
           <Header>Компонент в разработке</Header>
         </StyledFormPage>
-        
-        <StyledFooter form >
-          <ButtonTT color="blue" type={'submit'} disabled={loading} >
+
+        <StyledFooter>
+          <ButtonTT
+            color="blue"
+            type="button"
+            disabled={loading}
+            onClick={handleSubmit}
+          >
             {loading ? <Loader show /> : 'Сохранить'}
           </ButtonTT>
 
           <ButtonTT
             style={{ marginLeft: 16 }}
             color="white"
+            type="button"
             onClick={(e: BaseSyntheticEvent) => {
               e.stopPropagation();
               e.preventDefault();
