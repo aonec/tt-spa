@@ -1,4 +1,3 @@
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import React from 'react';
 import styled from 'styled-components';
 import { useStore } from '../../../../../node_modules/effector-react';
@@ -10,6 +9,7 @@ import {
   subscribersConsumptionFilterForm,
 } from './models';
 import { useForm } from 'effector-forms';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
 
 export const SubscribersConsumption = () => {
   const id = useStore($selectedHousingsStockId);

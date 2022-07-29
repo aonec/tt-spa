@@ -1,9 +1,9 @@
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
 import React, { FC, useEffect } from 'react';
+import { ExistingCitiesGate } from '../../01/features/housingStocks/displayHousingStockCities/models';
+import { ExistingStreetsGate } from '../../01/features/housingStocks/displayHousingStockStreets/model';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
 import { AddressSearch } from './view/AddressSearch';

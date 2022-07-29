@@ -1,17 +1,7 @@
 import React from 'react';
-import { Header } from '01/tt-components/Header';
 import { ManagingFirmUserGate } from '../displayManagingFirmUser/models';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  $competencesCatalog,
-  CompetencesGate,
-} from '01/features/competences/fetchCompetences/models';
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import {
-  $userRoles,
-  UserRolesGate,
-} from '01/features/userRoles/displayUserRoles/models';
-import { ButtonTT, InputTT, MultiSelectTT } from '01/tt-components';
+
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -27,10 +17,14 @@ import {
   $isEditingManagingFirmUserInfoRequestFailed,
 } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
-import { Loader } from '01/_components/Loader';
 import { useEffect } from 'react';
-import { ErrorAlert } from '01/_components/Alert';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { ButtonTT, Header, InputTT, MultiSelectTT } from '../../../../tt-components';
+import { ErrorMessage } from '../../../contractors/addContractors';
+import { $competencesCatalog, CompetencesGate } from '../../../competences/fetchCompetences/models';
+import { $userRoles, UserRolesGate } from '../../../userRoles/displayUserRoles/models';
+import { Loader } from '../../../../_components/Loader';
+import { ErrorAlert } from '../../../../_components/Alert';
+import { GoBack } from '../../../../../ui-kit/shared_components/GoBack';
 
 const FormContainer = styled.div`
   max-width: 480px;

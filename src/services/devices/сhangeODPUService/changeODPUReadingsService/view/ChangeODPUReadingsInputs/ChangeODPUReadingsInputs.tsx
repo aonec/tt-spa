@@ -1,8 +1,8 @@
-import DeviceIcons from '01/_components/DeviceIcons';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { Slider } from '../Slider';
-import { oldDeviceReadingsInputsConfig } from './ChangeODPUReadings.inputs.constants';
+import React, { FC, useCallback, useEffect, useMemo } from "react";
+import DeviceIcons from "../../../../../../01/_components/DeviceIcons";
+import { ResourceIconLookup } from "../../../../../../ui-kit/shared_components/ResourceIconLookup";
+import { Slider } from "../Slider";
+import { oldDeviceReadingsInputsConfig } from "./ChangeODPUReadings.inputs.constants";
 import {
   DeviceInfo,
   ModelWrapper,
@@ -12,8 +12,8 @@ import {
   SerialNumberWrapper,
   Title,
   Wrapper,
-} from './ChangeODPUReadingsInputs.styled';
-import { ChangeODPUReadingsInputsProps } from './ChangeODPUReadingsInputs.types';
+} from "./ChangeODPUReadingsInputs.styled";
+import { ChangeODPUReadingsInputsProps } from "./ChangeODPUReadingsInputs.types";
 
 export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   title,
@@ -26,18 +26,18 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
 
   const color = deviceInfo.resource
     ? DeviceIcons[deviceInfo.resource].color
-    : '#c3c3c3';
+    : "#c3c3c3";
 
   const { model, resource, serialNumber } = deviceInfo;
 
   const newDeviceReadingsInputsConfig = useMemo(
     () => [
-      { field: 'value', color, inputType: 'number', title: ' ' },
+      { field: "value", color, inputType: "number", title: " " },
       {
-        field: 'nonResidentialRoomConsumption',
-        color: '#c3c3c3',
-        inputType: 'number',
-        title: ' ',
+        field: "nonResidentialRoomConsumption",
+        color: "#c3c3c3",
+        inputType: "number",
+        title: " ",
       },
     ],
     [color]
@@ -55,7 +55,8 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         readings: oldReadings.map((elem) => {
           if (elem.id !== id) return elem;
           if (newValues.value === undefined) {
-            const nonResidentialRoomConsumption = newValues.nonResidentialRoomConsumption!;
+            const nonResidentialRoomConsumption =
+              newValues.nonResidentialRoomConsumption!;
             return { ...elem, nonResidentialRoomConsumption };
           }
           const value = newValues.value;
@@ -67,7 +68,13 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
   );
 
   const handleChangeValue = useCallback(
-    ({ values, id }) => handleChange({ newValues: values, id: String(id) }),
+    ({
+      values,
+      id,
+    }: {
+      values: { value?: string; nonResidentialRoomConsumption?: string };
+      id: string;
+    }) => handleChange({ newValues: values, id: String(id) }),
     [handleChange]
   );
 

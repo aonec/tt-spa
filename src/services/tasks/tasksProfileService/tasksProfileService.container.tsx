@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter, TaskListResponse } from '../../api/types';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { TaskGroupingFilter, TaskListResponse } from '../../../api/types';
 import {
   ExportTasksListModalContainer,
   exportTasksListService,

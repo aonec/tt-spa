@@ -1,4 +1,3 @@
-import { deleteManagingFirmUser } from '01/_api/staff';
 import { combine, guard, sample } from 'effector';
 import {
   $userIdToDelete,
@@ -8,6 +7,7 @@ import {
   deleteStaffFx,
   deleteStaffModalCancelButtonClicked,
 } from '.';
+import { deleteManagingFirmUser } from '../../../../_api/staff';
 import { $staffList } from '../../displayStaff/models';
 
 deleteStaffFx.use(deleteManagingFirmUser);

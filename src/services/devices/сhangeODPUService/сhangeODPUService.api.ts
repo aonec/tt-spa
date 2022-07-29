@@ -1,8 +1,6 @@
-import {
-  ElectricHousingMeteringDeviceResponse,
-  SwitchElectricHousingDeviceRequest,
-} from '../../api/types';
-import { axios } from '../../api/axios';
+import { axios } from "../../../api/axios";
+import { ElectricHousingMeteringDeviceResponse, SwitchElectricHousingDeviceRequest } from "../../../api/types";
+
 
 export const fetchHousingMeteringDevice = (
   deviceId: number

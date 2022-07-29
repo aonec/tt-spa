@@ -1,10 +1,8 @@
-import {
-  ManagingFirmUserCreateRequest,
-  ManagingFirmUserResponse,
-} from './../../.../../api/types';
+
 import { createForm } from 'effector-forms';
 import { createStore, createEvent, createEffect } from 'effector';
 import { AnyFieldsConfigs, FormConfig } from 'effector-forms/dist/types';
+import { ManagingFirmUserCreateRequest, ManagingFirmUserResponse } from '../../../../../api/types';
 
 export const $isAddStaffModalVisible = createStore(false);
 export const $isAddStaffFailed = createStore(false);

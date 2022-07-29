@@ -1,4 +1,4 @@
-import { UpdateApartmentActRequest } from '../../api/types';
+import { UpdateApartmentActRequest } from "../../../api/types";
 
 export type EditActFormPayload = Omit<UpdateApartmentActRequest, 'apartmentId'>;
 

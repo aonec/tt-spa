@@ -1,12 +1,14 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
-import { Form } from 'antd';
-import { useForm } from 'effector-forms/dist';
-import React, { FC } from 'react';
-import { FormWrap } from './components';
-import { InspectorAddressesResetModalProps } from './types';
-import { Select } from '01/shared/ui/Select';
+import { Form } from "antd";
+import { useForm } from "effector-forms/dist";
+import React, { FC } from "react";
+import { ModalTT } from "../../../../../../shared/ui/ModalTT";
+import { Select } from "../../../../../../shared/ui/Select";
+import { FormWrap } from "./components";
+import { InspectorAddressesResetModalProps } from "./types";
 
-export const InspectorAddressesResetModal: FC<InspectorAddressesResetModalProps> = ({
+export const InspectorAddressesResetModal: FC<
+  InspectorAddressesResetModalProps
+> = ({
   isOpen,
   handleClose,
   handleResetAddress,

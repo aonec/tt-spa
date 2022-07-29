@@ -1,6 +1,5 @@
 import { currentUserService } from './../currentUserService/currentUserService.model';
-import { UserRolesGate } from './../../01/features/userRoles/displayUserRoles/models/index';
-import { $userRoles } from '01/features/userRoles/displayUserRoles/models';
+import { $userRoles, UserRolesGate } from './../../01/features/userRoles/displayUserRoles/models/index';
 
 export const menuService = {
   outputs: {

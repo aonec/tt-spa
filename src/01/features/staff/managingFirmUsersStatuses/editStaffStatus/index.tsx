@@ -1,9 +1,4 @@
-import {
-  Footer,
-  StyledModal,
-  Header,
-} from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
+
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -17,16 +12,18 @@ import {
   editStaffStatusForm,
   editStaffStatusFx,
 } from './models';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { Form, Select as AntdSelect, DatePicker as AntdDatePicker } from 'antd';
 import styled from 'styled-components';
 import { StaffStatus } from '../../displayStaff/models/components/StaffStatus';
 import { useForm } from 'effector-forms';
-import { EOrganizationUserWorkingStatusType } from '../../api/types';
 import moment from 'moment';
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import { Loader } from '01/_components/Loader';
-import { ErrorAlert } from '01/_components/Alert';
+import { Loader } from '../../../../components';
+import { ErrorAlert } from '../../../../_components/Alert';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { ErrorMessage } from '../../../contractors/addContractors';
+import { EOrganizationUserWorkingStatusType } from '../../../../../api/types';
+import { ButtonTT } from '../../../../tt-components';
+import { Footer, Header, StyledModal } from '../../../../shared/ui/Modal/Modal';
 
 const Select = styled(AntdSelect)`
   .ant-select-selector {

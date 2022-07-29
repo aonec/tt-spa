@@ -1,11 +1,12 @@
-import { Loader } from '01/components';
-import { Skeleton } from 'antd';
-import React from 'react';
-import { Flex } from '../Layout/Flex';
+import { Skeleton } from "antd";
+import React, { ReactNode } from "react";
+import { Loader } from "../../../components";
+import { Flex } from "../Layout/Flex";
 
 interface Props {
   loading: boolean;
   skeleton?: boolean;
+  children?: ReactNode;
 }
 
 export const PendingLoader: React.FC<Props> = ({
@@ -19,7 +20,7 @@ export const PendingLoader: React.FC<Props> = ({
         skeleton ? (
           <Skeleton active />
         ) : (
-          <Flex style={{ justifyContent: 'center', marginTop: 25 }}>
+          <Flex style={{ justifyContent: "center", marginTop: 25 }}>
             <Loader size={32} show />
           </Flex>
         )

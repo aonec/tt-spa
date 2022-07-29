@@ -1,8 +1,5 @@
-import {
-  EActResourceType,
-  EActType,
-  EActTypeStringDictionaryItem,
-} from '../../api/types';
+import { EActResourceType, EActType, EActTypeStringDictionaryItem } from "../../../../../api/types";
+
 
 export type CreateApartmentActFormProps = {
   formId: string;

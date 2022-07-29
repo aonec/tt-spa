@@ -1,7 +1,7 @@
-import { ApartmentActTypesGate } from '01/features/actsJournal/displayActTypes/models';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { ApartmentActTypesGate } from '../../../01/features/actsJournal/displayActTypes/models';
 import {
   CreateApartmentActModalContainer,
   createApartmentActService,

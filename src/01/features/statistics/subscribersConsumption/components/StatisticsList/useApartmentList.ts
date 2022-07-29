@@ -1,10 +1,10 @@
-import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
-import { subscribersConsumptionFilterForm } from './../../models/index';
-import { $consumptionStatistics } from '../../models';
-import { useStore } from 'effector-react';
-import { useForm } from 'effector-forms/dist';
-import _ from 'lodash';
-import moment from 'moment';
+import { subscribersConsumptionFilterForm } from "./../../models/index";
+import { $consumptionStatistics } from "../../models";
+import { useStore } from "effector-react";
+import { useForm } from "effector-forms/dist";
+import _ from "lodash";
+import moment from "moment";
+import { SubscriberStatisticsСonsumptionResponse } from "../../../../../../api/types";
 
 type IterateArrayCallback<T> = ((apartment: T) => boolean)[];
 
@@ -12,18 +12,20 @@ export function useApartmentList() {
   const apartmentList = useStore($consumptionStatistics);
   const { fields } = useForm(subscribersConsumptionFilterForm);
 
-  const sortCallbacks: IterateArrayCallback<SubscriberStatisticsСonsumptionResponse> = [];
+  const sortCallbacks: IterateArrayCallback<SubscriberStatisticsСonsumptionResponse> =
+    [];
 
-  const filterCallbacks: IterateArrayCallback<SubscriberStatisticsСonsumptionResponse> = [];
+  const filterCallbacks: IterateArrayCallback<SubscriberStatisticsСonsumptionResponse> =
+    [];
 
   if (
     fields.coldOpen.value &&
-    typeof fields.cold.value.from === 'number' &&
-    typeof fields.cold.value.to === 'number'
+    typeof fields.cold.value.from === "number" &&
+    typeof fields.cold.value.to === "number"
   ) {
     filterCallbacks.push((apartment) =>
       Boolean(
-        typeof apartment.coldWaterSupplyСonsumption === 'number' &&
+        typeof apartment.coldWaterSupplyСonsumption === "number" &&
           apartment.coldWaterSupplyСonsumption >=
             Number(fields.cold.value.from) &&
           apartment.coldWaterSupplyСonsumption <= Number(fields.cold.value.to)
@@ -33,12 +35,12 @@ export function useApartmentList() {
 
   if (
     fields.heatOpen.value &&
-    typeof fields.heat.value.from === 'number' &&
-    typeof fields.heat.value.to === 'number'
+    typeof fields.heat.value.from === "number" &&
+    typeof fields.heat.value.to === "number"
   ) {
     filterCallbacks.push((apartment) =>
       Boolean(
-        typeof apartment.hotWaterSupplyСonsumption === 'number' &&
+        typeof apartment.hotWaterSupplyСonsumption === "number" &&
           apartment.hotWaterSupplyСonsumption >=
             Number(fields.heat.value.from) &&
           apartment.hotWaterSupplyСonsumption <= Number(fields.heat.value.to)
@@ -48,12 +50,12 @@ export function useApartmentList() {
 
   if (
     fields.electricityOpen.value &&
-    typeof fields.electricity.value.from === 'number' &&
-    typeof fields.electricity.value.to === 'number'
+    typeof fields.electricity.value.from === "number" &&
+    typeof fields.electricity.value.to === "number"
   ) {
     filterCallbacks.push((apartment) =>
       Boolean(
-        typeof apartment.electricitySupplyСonsumption === 'number' &&
+        typeof apartment.electricitySupplyСonsumption === "number" &&
           apartment.electricitySupplyСonsumption >=
             Number(fields.electricity.value.from) &&
           apartment.electricitySupplyСonsumption <=
@@ -75,18 +77,18 @@ export function useApartmentList() {
         checkDate.isSameOrAfter(
           moment(fields.individualDeviceCheckPeriod.value.from)
         ) ||
-        checkDate.format('DD-MM-YYYY') ===
+        checkDate.format("DD-MM-YYYY") ===
           moment(fields.individualDeviceCheckPeriod.value.from)?.format(
-            'DD-MM-YYYY'
+            "DD-MM-YYYY"
           );
 
       const isBeforeThanTo =
         checkDate.isSameOrBefore(
           moment(fields.individualDeviceCheckPeriod.value.to)
         ) ||
-        checkDate.format('DD-MM-YYYY') ===
+        checkDate.format("DD-MM-YYYY") ===
           moment(fields.individualDeviceCheckPeriod.value.to)?.format(
-            'DD-MM-YYYY'
+            "DD-MM-YYYY"
           );
 
       return isAfterThanFrom && isBeforeThanTo;
@@ -99,7 +101,7 @@ export function useApartmentList() {
 
       if (!checkDate.isValid()) return false;
 
-      return moment().diff(checkDate, 'months') <= 3;
+      return moment().diff(checkDate, "months") <= 3;
     });
   }
 

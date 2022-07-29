@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { GetHousingMeteringDeviceReadingsResponse } from '../../api/types';
+import { GetHousingMeteringDeviceReadingsResponse } from '../../../../api/types';
 import { fetchOldReadings } from './changeODPUReadings.api';
 import { prepareData } from './changeODPUReadings.utils';
 import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';

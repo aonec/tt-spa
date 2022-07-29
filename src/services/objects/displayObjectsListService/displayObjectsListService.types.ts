@@ -1,11 +1,6 @@
-import {
-  EHouseCategory,
-  EHousingStockOrderRule,
-  ELivingHouseType,
-  ENonResidentialHouseType,
-  EOrderByRule,
-} from '../../api/types';
-import { AddressSearchValues } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { EHouseCategory, EHousingStockOrderRule, ELivingHouseType, ENonResidentialHouseType, EOrderByRule } from "../../../api/types";
+import { AddressSearchValues } from "../../addressSearchService/view/AddressSearch/AddressSearch.types";
+
 
 export type GetHousingStocksRequestPayload = {
   OrderRule?: EHousingStockOrderRule;

@@ -1,32 +1,28 @@
-import axios from '../../api/axios';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import {
-  $existingStreets,
-  ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import {
-  StyledAutocomplete,
-  FilterButton,
-  SelectSC,
-} from '01/shared/ui/Fields';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
-import { HousingStockListResponsePagedList } from '../../api/types';
-import React from 'react';
+import { useForm } from "effector-forms/dist";
+import { useStore } from "effector-react";
+import React from "react";
 import {
   $isExpandedSearchOpen,
   openExpandedSearch,
   setSelectedHousingStockId,
   subscribersConsumptionFindForm,
-} from '../../models';
-import { ExpandedSearch } from '../ExpandedSearch';
+} from "../../models";
+import { ExpandedSearch } from "../ExpandedSearch";
+import { HousingStockListResponsePagedList } from "../../../../../../api/types";
+import { Grid } from "../../../../../shared/ui/Layout/Grid";
+import { axios } from "../../../../../../api/axios";
+import {
+  $existingCities,
+  ExistingCitiesGate,
+} from "../../../../housingStocks/displayHousingStockCities/models";
+import {
+  $existingStreets,
+  ExistingStreetsGate,
+} from "../../../../housingStocks/displayHousingStockStreets/model";
+import { FilterButton, SelectSC, StyledAutocomplete } from "../../../../../shared/ui/Fields";
+import { fromEnter } from "../../../../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter";
+import { useAutocomplete } from "../../../../../_pages/MetersPage/hooks/useFilter";
+import { useOnEnterSwitch } from "../../../../readings/accountingNodesReadings/components/Filter";
 
 export const Search: React.FC = () => {
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
@@ -58,7 +54,7 @@ export const Search: React.FC = () => {
 
     try {
       const res: HousingStockListResponsePagedList = await axios.get(
-        'HousingStocks',
+        "HousingStocks",
         {
           params: {
             City: city,
@@ -116,8 +112,8 @@ export const Search: React.FC = () => {
           }}
           options={options}
           onClick={() => {
-            fields.street.onChange('');
-            fields.house.onChange('');
+            fields.street.onChange("");
+            fields.house.onChange("");
           }}
         />
         <StyledAutocomplete
@@ -126,7 +122,7 @@ export const Search: React.FC = () => {
           value={fields.house.value}
           onChange={fields.house.onChange}
           ref={homeNumberRef}
-          onClick={() => fields.house.onChange('')}
+          onClick={() => fields.house.onChange("")}
           onKeyDown={(e) => {
             fromEnter(onSendHandler)(e);
             keyDownEnterGuardedHandler(2)(e);

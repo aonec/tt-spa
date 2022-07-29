@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
-import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
+import { FormModal } from '../../../ui-kit/Modals/FormModal/FormModal';
 import { exportTasksListService } from './exportTasksListService.model';
 import { ExportTasksListForm } from './view/ExportTasksListForm';
 

@@ -7,11 +7,9 @@ import {
 } from 'effector';
 
 import { createGate } from 'effector-react';
-import {
-  NodeServiceZoneListResponse,
-  NodeServiceZoneResponse,
-} from '../../.../../api/types';
+
 import _ from 'lodash';
+import { NodeServiceZoneListResponse, NodeServiceZoneResponse } from '../../../../../api/types';
 
 export const PageGate = createGate();
 

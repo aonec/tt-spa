@@ -13,7 +13,7 @@ import {
   EditManagingFirmUserGate,
   $isEditingManagingFirmUserInfoRequestFailed,
 } from './index';
-import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from '../../api/types';
+import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from '../../../../../../api/types';
 
 const prepareFormData = (user: ManagingFirmUserResponse | null) => ({
   email: user?.email,

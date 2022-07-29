@@ -1,6 +1,6 @@
-import { getTask } from '01/_api/tasks';
 import { forward, guard } from 'effector';
 import { $task, fetchTaskFx, refetchTask, TaskGate } from '.';
+import { getTask } from '../../../../_api/tasks';
 
 fetchTaskFx.use(getTask);
 

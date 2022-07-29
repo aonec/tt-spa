@@ -1,7 +1,7 @@
-import { SelectSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
+import { SelectSC } from '../../../../../../../shared/ui/Fields';
 import { Address, Wrap } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
 

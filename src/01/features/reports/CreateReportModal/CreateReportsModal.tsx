@@ -1,5 +1,5 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import React, { FC } from 'react';
+import { ModalTT } from '../../../shared/ui/ModalTT';
 import { CreateReportFormContainer } from './CreateReportForm/CreateReportFormContainer';
 
 interface Props {

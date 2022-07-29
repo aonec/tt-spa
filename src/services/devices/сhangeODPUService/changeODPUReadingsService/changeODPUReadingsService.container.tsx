@@ -1,13 +1,14 @@
-import { useStore } from 'effector-react';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { ChangeODPUReadingsService } from './changeODPUReadings.model';
-import { Wrapper } from './changeODPUReadings.styled';
-import { prepareReadingsToFormik } from './changeODPUReadings.utils';
+import { useStore } from "effector-react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { SwitchHousingDeviceReadingsCreateRequest } from "../../../../api/types";
+import { ChangeODPUReadingsService } from "./changeODPUReadings.model";
+import { Wrapper } from "./changeODPUReadings.styled";
+import { prepareReadingsToFormik } from "./changeODPUReadings.utils";
 import {
   ChangeODPUReadingsProps,
   PreparedHousingMeteringDeviceReadings,
-} from './changeODPUReadingsService.types';
-import { ChangeODPUReadingsInputs } from './view/ChangeODPUReadingsInputs';
+} from "./changeODPUReadingsService.types";
+import { ChangeODPUReadingsInputs } from "./view/ChangeODPUReadingsInputs";
 
 const { gates, outputs } = ChangeODPUReadingsService;
 
@@ -54,11 +55,13 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   }, [oldDeviceReadings]);
 
   const handleChangeOldDeviceReadings = useCallback(
-    ({ readings }) => setOldDeviceReadings(readings),
+    ({ readings }: { readings: PreparedHousingMeteringDeviceReadings[] }) =>
+      setOldDeviceReadings(readings),
     [setOldDeviceReadings]
   );
   const handleChangeNewDeviceReadings = useCallback(
-    ({ readings }) => setNewDeviceReadings(readings),
+    ({ readings }: { readings: PreparedHousingMeteringDeviceReadings[] }) =>
+      setNewDeviceReadings(readings),
     [setNewDeviceReadings]
   );
 
@@ -76,8 +79,8 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
           title="Новый прибор"
           deviceInfo={{
             resource,
-            serialNumber: 'Серийный номер',
-            model: 'Модель',
+            serialNumber: "Серийный номер",
+            model: "Модель",
           }}
           oldReadings={newDeviceReadings}
           onChange={handleChangeNewDeviceReadings}

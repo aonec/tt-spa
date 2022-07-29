@@ -1,5 +1,5 @@
-import { axios } from '../../api/axios';
-import { ApartmentActResponse, DocumentResponse } from '../../api/types';
+import { axios } from "../../../api/axios";
+import { ApartmentActResponse, DocumentResponse } from "../../../api/types";
 
 export const getapartmentActsList = async (
   apartmentId: number

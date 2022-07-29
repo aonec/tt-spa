@@ -16,22 +16,20 @@ import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceReadingsCreateRequest,
 } from '../../api/types';
-import {
-  getDateByReadingMonthSlider,
-  getPreviousReadingsMonth,
-} from '01/shared/lib/readings/getPreviousReadingsMonth';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Wide } from '01/shared/ui/FilesUpload';
-import styled from 'styled-components';
+
 import { message, Tooltip } from 'antd';
-import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
-import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
-import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import { useEvent, useStore } from 'effector-react';
+import { getDateByReadingMonthSlider, getPreviousReadingsMonth } from '../shared/lib/readings/getPreviousReadingsMonth';
+import { Wide } from '../shared/ui/FilesUpload';
+import styled from 'styled-components';
+import { Flex } from '../shared/ui/Layout/Flex';
+import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from '../../services/meters/managementFirmConsumptionRatesService';
+import { getArrayByCountRange } from '../_pages/MetersPage/components/utils';
+import { getIndividualDeviceRateNumByName } from '../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { openConfirmReadingModal } from '../features/readings/readingsInput/confirmInputReadingModal/models';
+import { RequestStatusShared } from '../features/readings/displayReadingHistory/hooks/useReadingValues';
+import { ConsumptionRatesDictionary } from '../../services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import { refetchIndividualDevices } from '../features/individualDevices/displayIndividualDevices/models';
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 

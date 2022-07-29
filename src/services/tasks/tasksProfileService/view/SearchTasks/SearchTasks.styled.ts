@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import {
-  StyledContainerThreeItems,
-  StyledForm,
-} from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+
 import { Select } from 'antd';
+import { StyledContainerThreeItems, StyledForm } from '../../../../devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 
 export const Wrapper = styled.div`
   display: grid;

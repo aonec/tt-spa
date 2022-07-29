@@ -8,7 +8,7 @@ import {
   editStaffStatusFx,
 } from './index';
 import { $editStaffStatusUserId } from '.';
-import { postManagingFirmUserStatus } from '01/_api/editManagingFirmUserStatus';
+import { postManagingFirmUserStatus } from '../../../../../_api/editManagingFirmUserStatus';
 
 $editStaffStatusUserId
   .on(editStaffStatusButtonClicked, (_, user) => user.id)

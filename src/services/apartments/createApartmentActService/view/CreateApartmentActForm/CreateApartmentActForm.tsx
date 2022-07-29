@@ -1,12 +1,7 @@
-import { FilesUpload } from '01/shared/ui/FilesUpload';
-import { Select } from '01/shared/ui/Select';
-import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EActResourceType, EActType } from '../../api/types';
 import React, { FC, SyntheticEvent, useState } from 'react';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import {
   ErrorMessage,
   FieldsWrapper,
@@ -18,7 +13,11 @@ import {
 } from './CreateApartmentActForm.types';
 import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
-import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { DatePickerTT, InputTT } from '../../../../../01/tt-components';
+import { Document, DocumentsUploadContainer } from '../../../../../ui-kit/DocumentsService';
+import { ResourceInfo } from '../../../../../ui-kit/shared_components/ResourceInfo';
+import { EActResourceType, EActType } from '../../../../../api/types';
+import { Select } from '../../../../../01/shared/ui/Select';
 
 
 export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({

@@ -1,6 +1,6 @@
-import { RangePickerSC } from '01/tt-components';
 import FormItem from 'antd/lib/form/FormItem';
 import React, { FC } from 'react';
+import { RangePickerSC } from '../../../../../../tt-components';
 import { Wrapper } from './RangeDatePicker.styled';
 import { RangeDatePickerProps } from './RangeDatePicker.types';
 

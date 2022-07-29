@@ -1,28 +1,28 @@
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { ReactComponent as FileIcon } from './file.svg';
-import { ReactComponent as UserIcon } from './user.svg';
-import moment from 'moment';
-import { Flex } from '../Layout/Flex';
-import { MenuButtonTT } from '01/tt-components';
-import { FileData } from '01/hooks/useFilesUpload';
-import { DocumentResponse } from '../../api/types';
-import { ReactComponent as DropIcon } from './drop.svg';
-import confirm from 'antd/lib/modal/confirm';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { ReactComponent as FileIcon } from "./file.svg";
+import { ReactComponent as UserIcon } from "./user.svg";
+import moment from "moment";
+import { Flex } from "../Layout/Flex";
+import { ReactComponent as DropIcon } from "./drop.svg";
+import confirm from "antd/lib/modal/confirm";
+import { FileData } from "../../../hooks/useFilesUpload";
+import { MenuButtonTT } from "../../../tt-components";
+import { DocumentResponse } from "../../../../api/types";
+import { getTimeStringByUTC } from "../../../../utils/getTimeStringByUTC";
 
 interface Props {
   files?: FileData[];
   removeFile?: (id: number, documentId?: number) => void;
   initialFiles?: DocumentResponse[];
-  controlType?: 'CONTROL' | 'DELETE' | 'NONE';
+  controlType?: "CONTROL" | "DELETE" | "NONE";
 }
 
 export const FilesList: React.FC<Props> = ({
   files,
   removeFile,
   initialFiles,
-  controlType = 'CONTROL',
+  controlType = "CONTROL",
 }) => {
   const initialFilesData: FileData[] = useMemo(
     () =>
@@ -30,7 +30,7 @@ export const FilesList: React.FC<Props> = ({
         (file): FileData => ({
           id: file.id,
           fileResponse: file,
-          status: 'done',
+          status: "done",
         })
       ) || [],
     [initialFiles]
@@ -44,14 +44,14 @@ export const FilesList: React.FC<Props> = ({
     <>
       <Wide>
         <Flex>
-          <FileIcon style={{ margin: '5px 10px 0 0' }} />
+          <FileIcon style={{ margin: "5px 10px 0 0" }} />
           <FileName>{file.name}</FileName>
         </Flex>
         <FileType>{file.type}</FileType>
       </Wide>
       <Wide>
         <Flex>
-          <UserIcon style={{ margin: '4px 10px 0 0' }} />
+          <UserIcon style={{ margin: "4px 10px 0 0" }} />
           {file.author}
         </Flex>
         <FileCreatedDate>
@@ -80,26 +80,26 @@ export const FilesList: React.FC<Props> = ({
     status,
     onRemove,
   }: FileData) => {
-    const loading = status === 'pending';
+    const loading = status === "pending";
 
     const confirmDeletion = () =>
       confirm({
-        title: 'Вы действительно хотите удалить этот файл?',
+        title: "Вы действительно хотите удалить этот файл?",
         onOk: () => removeFile && removeFile(id, file?.id),
-        cancelText: 'Отмена',
-        okText: 'Да',
+        cancelText: "Отмена",
+        okText: "Да",
         maskClosable: true,
       });
 
     const menuButtonArr = [
       {
-        title: 'удалить',
+        title: "удалить",
         cb: () => {
           removeFile && removeFile(id, file?.id);
           onRemove && onRemove();
         },
         show: true,
-        color: 'red',
+        color: "red",
         clickable: true,
       },
     ];
@@ -134,8 +134,7 @@ export const FilesList: React.FC<Props> = ({
   return <FilesWrap>{filesToRender.map(renderFile)}</FilesWrap>;
 };
 
-const getFormattedDate = (date: string) =>
-  getTimeStringByUTC(date);
+const getFormattedDate = (date: string) => getTimeStringByUTC(date);
 
 const ControlPanelWrap = styled.div`
   width: 33px;

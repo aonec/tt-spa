@@ -1,6 +1,6 @@
-import { getNextStages } from '01/_api/tasks';
 import { forward } from 'effector';
 import { $nextStages, fetchNextStagesFx, NextStagesGate } from '.';
+import { getNextStages } from '../../../../_api/tasks';
 
 fetchNextStagesFx.use(getNextStages);
 

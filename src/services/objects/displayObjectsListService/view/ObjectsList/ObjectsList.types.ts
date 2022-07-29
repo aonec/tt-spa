@@ -1,4 +1,4 @@
-import { HousingStockListResponse } from '../../api/types';
+import { HousingStockListResponse } from "../../../../../api/types";
 
 export type ObjectsListProps = {
   isLoading: boolean;

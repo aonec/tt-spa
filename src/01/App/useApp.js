@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { AppContext } from '../context';
 
-import { AppContext } from '01/context';
 
 export function useApp() {
   const { replace } = useHistory();

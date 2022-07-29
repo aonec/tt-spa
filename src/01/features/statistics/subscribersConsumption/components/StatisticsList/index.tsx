@@ -1,15 +1,15 @@
-import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 import { fetchConsumptionStatistics } from '../../models';
 import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
 import moment from 'moment';
-import { round } from '01/hooks/useReadings';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import _ from 'lodash';
 import { useApartmentList } from './useApartmentList';
 import { useHistory } from 'react-router';
+import { round } from '../../../../../hooks/useReadings';
+import { PendingLoader } from '../../../../../shared/ui/PendingLoader';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
 
 export const StatisticsList: React.FC = () => {
   const { apartmentList } = useApartmentList();

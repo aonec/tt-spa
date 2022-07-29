@@ -1,10 +1,10 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import React, { FC, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
-import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
+import { PageHeader } from '../../../../../01/shared/ui/PageHeader';
+import { ApartmentsListContainer } from '../../../displayApartmentsListService';
+import { ObjectsListContainer } from '../../../displayObjectsListService';
 import { SearchType } from '../../objectsProfileService.types';
 import {
   Wrapper,

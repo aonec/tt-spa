@@ -1,8 +1,8 @@
-import DevicesByAddress from '01/_pages/Devices/components/DevicesByAddress/DevicesByAddress';
-import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { Pagination, Skeleton } from 'antd';
 import { Empty } from 'antd';
 import React, { FC } from 'react';
+import DevicesByAddress from '../../../../../01/_pages/Devices/components/DevicesByAddress/DevicesByAddress';
+import { groupDevicesByObjects } from '../../../../../01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { DevicesListProps } from './DevicesList.types';
 
 export const DevicesList: FC<DevicesListProps> = ({

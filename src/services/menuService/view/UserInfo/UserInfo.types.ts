@@ -1,4 +1,4 @@
-import { ManagingFirmUserResponse } from '../../api/types';
+import { ManagingFirmUserResponse } from "../../../../api/types";
 
 export type UserInfoProps = {
   currentUser: ManagingFirmUserResponse | null;

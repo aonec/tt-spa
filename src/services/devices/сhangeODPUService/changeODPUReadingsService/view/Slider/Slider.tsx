@@ -1,5 +1,5 @@
-import Arrow from '01/_components/Arrow/Arrow';
 import React, { FC, useCallback, useState } from 'react';
+import Arrow from '../../../../../../01/_components/Arrow/Arrow';
 import { CustomInput } from '../CustomInput';
 import { ArrowContainer, TextWrapper, Wrapper } from './Slider.styled';
 import { SliderProps } from './Slider.types';

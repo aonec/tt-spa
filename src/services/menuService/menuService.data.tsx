@@ -1,14 +1,6 @@
 import { ESecuredIdentityRoleName } from '../../api/types';
-import {
-  CompanyProfileIcon,
-  DeviceIcon,
-  DocumentIcon,
-  ObjectsIcon,
-  ReportsIcon,
-  SettingsIcon,
-  StatisticIcon,
-  TasksIcon,
-} from 'ui-kit/icons';
+import { CompanyProfileIcon, DeviceIcon, DocumentIcon, ObjectsIcon, ReportsIcon, SettingsIcon, StatisticIcon, TasksIcon } from '../../ui-kit/icons';
+
 import { MenuFiltrationConfig, MenuItem, MenuType } from './menuService.types';
 
 export const menuItems: MenuItem[] = [

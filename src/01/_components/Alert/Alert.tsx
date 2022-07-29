@@ -1,9 +1,10 @@
-import { Alert } from 'antd';
-import React from 'react';
+import { Alert } from "antd";
+import React, { ReactNode } from "react";
 
 interface Props {
   show: boolean;
   message?: string | null;
+  children?: ReactNode;
 }
 
 export const ErrorAlert: React.FC<Props> = ({ show, message, children }) =>
@@ -11,7 +12,7 @@ export const ErrorAlert: React.FC<Props> = ({ show, message, children }) =>
     <Alert
       message="Ошибка"
       description={`${message}${
-        message && '.'
+        message && "."
       } Пожалуйста, обновите страницу или повторите попытку позже.`}
       type="error"
       showIcon

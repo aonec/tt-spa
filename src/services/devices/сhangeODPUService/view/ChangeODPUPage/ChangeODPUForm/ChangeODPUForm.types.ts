@@ -1,10 +1,5 @@
-import {
-  EClosingReason,
-  ElectricHousingMeteringDeviceResponse,
-  EYearQuarter,
-  SwitchElectricHousingDeviceRequest,
-  SwitchHousingDeviceReadingsCreateRequest,
-} from '../../api/types';
+import { EClosingReason, ElectricHousingMeteringDeviceResponse, EYearQuarter, SwitchElectricHousingDeviceRequest, SwitchHousingDeviceReadingsCreateRequest } from "../../../../../../api/types";
+
 
 export type ChangeODPUFormProps = {
   oldDevice: ElectricHousingMeteringDeviceResponse;

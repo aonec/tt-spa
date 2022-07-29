@@ -4,8 +4,8 @@ import {
   EActResourceType,
   EActType,
   EActTypeStringDictionaryItem,
-} from '../../api/types';
-import { ActsFilter } from '../apartmentActsListService.types';
+} from "../../../../api/types";
+import { ActsFilter } from "../apartmentActsListService.types";
 
 export type ApartmentActsListProps = {
   acts: ApartmentActResponse[];

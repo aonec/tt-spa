@@ -1,6 +1,6 @@
-import { ButtonTT } from '01/tt-components';
 import React, { FC } from 'react';
 import { ChevronUp, XLg } from 'react-bootstrap-icons';
+import { ButtonTT } from '../../../tt-components';
 import { ReactComponent as FilerIcon } from './assets/filter.svg';
 import {
   ExtendedSearchButton,

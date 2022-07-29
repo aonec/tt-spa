@@ -1,6 +1,6 @@
-import { EOrganizationUserWorkingStatusType } from '../../api/types';
 import React from 'react';
 import styled from 'styled-components';
+import { EOrganizationUserWorkingStatusType } from '../../../../../../../api/types';
 
 interface Props {
   status: EOrganizationUserWorkingStatusType | null;

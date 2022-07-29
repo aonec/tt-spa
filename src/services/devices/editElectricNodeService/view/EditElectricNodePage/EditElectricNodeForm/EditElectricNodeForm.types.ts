@@ -1,4 +1,4 @@
-import { ElectricHousingMeteringDeviceResponse } from '../../api/types';
+import { ElectricHousingMeteringDeviceResponse } from '../../../../../../api/types';
 import { UpdateElectricHousingMeteringDevice } from '../EditElectricNodePage.types';
 
 export type EditElectricNodeFormProps = {

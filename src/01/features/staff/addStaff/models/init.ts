@@ -1,5 +1,5 @@
-import { addStaff } from '01/_api/staff';
 import { forward } from 'effector';
+import { addStaff } from '../../../../_api/staff';
 import {
   refetchStaff,
 } from '../../displayStaff/models';

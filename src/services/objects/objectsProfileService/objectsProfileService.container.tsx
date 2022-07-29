@@ -1,8 +1,8 @@
-import GroupReport from '01/features/groupReport';
-import { setGroupStatus } from '01/features/groupReport/models/groupReportReducer';
-import { useAppDispatch } from '01/Redux/store';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import GroupReport from '../../../01/features/groupReport';
+import { setGroupStatus } from '../../../01/features/groupReport/models/groupReportReducer';
+import { useAppDispatch } from '../../../01/Redux/store';
 import { SearchType } from './objectsProfileService.types';
 import { ObjectsProfile } from './view/ObjectsProfile';
 

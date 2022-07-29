@@ -1,12 +1,8 @@
-import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import {
-  ApartmentActResponse,
-  DocumentResponse,
-  EActResourceType,
-  EActType,
-} from '../../api/types';
+import { $actTypes } from '../../../01/features/actsJournal/displayActTypes/models';
+import { ApartmentActResponse, DocumentResponse, EActResourceType, EActType } from '../../../api/types';
+
 import {
   getapartmentActsList,
   saveFileRequest,

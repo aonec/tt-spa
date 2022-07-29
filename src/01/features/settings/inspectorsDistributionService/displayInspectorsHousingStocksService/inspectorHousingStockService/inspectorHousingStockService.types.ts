@@ -1,7 +1,5 @@
-import {
-  InspectorOnHousingStockResponse,
-  UpdateInspectorOnHousingStockRequest,
-} from '../../api/types';
+import { InspectorOnHousingStockResponse, UpdateInspectorOnHousingStockRequest } from "../../../../../../api/types";
+
 
 export type HousingStockItemContainerProps = {
   housingStock: InspectorOnHousingStockResponse;

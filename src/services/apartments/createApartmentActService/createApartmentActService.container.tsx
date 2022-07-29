@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
+import { FormModal } from '../../../ui-kit/Modals/FormModal/FormModal';
 import { createApartmentActService } from './createApartmentActService.model';
 import { CreateApartmentActForm } from './view/CreateApartmentActForm';
 

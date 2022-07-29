@@ -1,12 +1,8 @@
-import React, { ReactNode } from 'react';
-import {
-  Footer,
-  Header,
-  ModalText,
-  StyledModal,
-} from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
-import { Loader } from '01/components';
+import React, { ReactNode } from "react";
+
+import { ButtonTT } from "../../../tt-components";
+import { Loader } from "../../../components";
+import { Footer, Header, ModalText, StyledModal } from "../Modal/Modal";
 
 interface Props {
   width?: number;
@@ -22,7 +18,8 @@ interface Props {
   footer?: ReactNode;
   customCancelButton?(): void;
   disabled?: boolean;
-  saveButtonType?: 'blue' | 'red';
+  saveButtonType?: "blue" | "red";
+  children?: ReactNode;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -41,10 +38,10 @@ export const ModalTT: React.FC<Props> = (props) => {
     customCancelButton,
     disabled,
     saveButtonType,
-    cancelBtnText = 'Отмена',
+    cancelBtnText = "Отмена",
   } = props;
 
-  const text = saveBtnText || 'Сохранить';
+  const text = saveBtnText || "Сохранить";
 
   return (
     <StyledModal
@@ -58,7 +55,7 @@ export const ModalTT: React.FC<Props> = (props) => {
         footer || (
           <Footer>
             <ButtonTT
-              color={'white'}
+              color={"white"}
               key="back"
               onClick={customCancelButton || onCancel}
             >
@@ -66,7 +63,7 @@ export const ModalTT: React.FC<Props> = (props) => {
             </ButtonTT>
             {customSubmit || (
               <ButtonTT
-                color={saveButtonType || 'blue'}
+                color={saveButtonType || "blue"}
                 key="submit"
                 type="submit"
                 onClick={onSubmit}

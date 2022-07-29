@@ -15,9 +15,9 @@ import {
   StyledExpirationDate,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { Icon } from '01/components';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
-import { FormItem } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { FormItem } from '../../../../tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { Icon } from '../../../../../01/components';
+import { InputSC, SelectSC } from '../../../../../01/shared/ui/Fields';
 
 const { Option } = Select;
 

@@ -1,6 +1,6 @@
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Empty, Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
+import { TypeAddressToStart } from '../../../../../shared/ui/TypeToStart';
 import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem/HousingStockItem';
 import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
 import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';

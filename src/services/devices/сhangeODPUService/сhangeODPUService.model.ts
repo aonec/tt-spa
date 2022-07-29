@@ -2,14 +2,12 @@ import { message } from 'antd';
 import { EffectFailDataAxiosError } from './../../../types/index';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import {
-  ElectricHousingMeteringDeviceResponse,
-  SwitchElectricHousingDeviceRequest,
-} from '../../api/types';
+
 import {
   fetchHousingMeteringDevice,
   postSwitchHousingMeteringDevice,
 } from './сhangeODPUService.api';
+import { ElectricHousingMeteringDeviceResponse, SwitchElectricHousingDeviceRequest } from '../../../api/types';
 
 const domain = createDomain('changeODPUService');
 

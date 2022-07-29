@@ -1,6 +1,6 @@
-import { EOrganizationUserWorkingStatusTypeStringDictionaryItem } from '../../api/types';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
+import { EOrganizationUserWorkingStatusTypeStringDictionaryItem } from '../../../../../../api/types';
 
 export const $staffStatuses = createStore<
   EOrganizationUserWorkingStatusTypeStringDictionaryItem[] | null

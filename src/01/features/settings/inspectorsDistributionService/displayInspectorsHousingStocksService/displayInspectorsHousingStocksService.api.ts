@@ -1,6 +1,6 @@
-import { axios } from '../../api/axios';
+import { axios } from '../../../../../api/axios';
+import { InspectorOnHousingStockResponse } from '../../../../../api/types';
 import { GetInspectorsHousingStocksRequestParams } from './types';
-import { InspectorOnHousingStockResponse } from '../../api/types';
 
 export const getInspectorsHousingStocks = (
   params: GetInspectorsHousingStocksRequestParams

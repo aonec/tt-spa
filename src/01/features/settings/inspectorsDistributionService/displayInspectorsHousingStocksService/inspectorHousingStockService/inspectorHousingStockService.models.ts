@@ -1,6 +1,6 @@
-import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
 import { createDomain } from 'effector';
-import { HousingStockResponse } from '../../api/types';
+import { HousingStockResponse } from '../../../../../../api/types';
+import { displayInspectorsService } from '../../../../Inspectors/displayInspectors/displayInspectorsService.models';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';
 import { patchHousingStockInspectorInfo } from './inspectorHousingStockService.api';
 import {

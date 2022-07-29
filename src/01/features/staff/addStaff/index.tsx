@@ -1,30 +1,17 @@
-import {
-  $competencesCatalog,
-  $isFetchingCompetencesFailed,
-  CompetencesGate,
-  fetchCompetencesFx,
-} from '01/features/competences/fetchCompetences/models';
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import {
-  $isFetchingUserRolesFailed,
-  $userRoles,
-  fetchUserRolesFx,
-  UserRolesGate,
-} from '01/features/userRoles/displayUserRoles/models';
-import {
-  Footer,
-  Header,
-  ModalText,
-  StyledModal,
-} from '01/shared/ui/Modal/Modal';
-import { ButtonTT, InputTT, MultiSelectTT } from '01/tt-components';
-import { ErrorAlert } from '01/_components/Alert';
-import { Loader } from '01/_components/Loader';
+
+
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
+import { Footer, Header, ModalText, StyledModal } from '../../../shared/ui/Modal/Modal';
+import { ButtonTT, InputTT, MultiSelectTT } from '../../../tt-components';
+import { ErrorAlert } from '../../../_components/Alert';
+import { Loader } from '../../../_components/Loader';
+import { $competencesCatalog, $isFetchingCompetencesFailed, CompetencesGate, fetchCompetencesFx } from '../../competences/fetchCompetences/models';
+import { ErrorMessage } from '../../contractors/addContractors';
+import { $isFetchingUserRolesFailed, $userRoles, fetchUserRolesFx, UserRolesGate } from '../../userRoles/displayUserRoles/models';
 import {
   $isAddStaffFailed,
   $isAddStaffModalVisible,

@@ -1,8 +1,8 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { showDownloadDeviceReportButtonClicked } from '../../../01/features/devicesReport/models';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
-import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 const { outputs, inputs } = displayDevicesService;
 
 export const DevicesProfileContainer = () => {

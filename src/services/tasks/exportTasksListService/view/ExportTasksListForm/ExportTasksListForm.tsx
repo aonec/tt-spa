@@ -1,12 +1,12 @@
-import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import React, { FC, useCallback, useMemo } from 'react';
 import { ExportTasksListFormProps } from './ExportTasksListForm.types';
 import * as yup from 'yup';
 import { SelectValue } from 'antd/lib/select';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { ExportTasksListRequestPayload } from '../../exportTasksListService.types';
+import { Select } from '../../../../../01/shared/ui/Select';
+import { ErrorMessage } from '../../../../../01/shared/ui/ErrorMessage';
 
 export const ExportTasksListForm: FC<ExportTasksListFormProps> = ({
   formId,

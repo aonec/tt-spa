@@ -1,16 +1,16 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { InputSC } from '01/shared/ui/Fields';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from '../../api/types';
 import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { SelectSC, Wrapper } from './SearchTasks.styled';
 import { SearchTasksProps } from './SearchTasks.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { useParams } from 'react-router-dom';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { fromEnter } from '../../../../../01/shared/ui/DatePickerNative';
+import { InputSC } from '../../../../../01/shared/ui/Fields';
+import { ExtendedSearch } from '../../../../../01/shared/ui/ExtendedSearch';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from '../../../../../api/types';
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,

@@ -1,15 +1,3 @@
-import { Loader } from '01/components';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { ButtonTT } from '01/tt-components';
-import IsActive from '01/tt-components/IsActive';
-import { translateMountPlace } from '01/utils/translateMountPlace';
-import { DateLine } from '01/_components/DateLine/DateLine';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Form, message } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
@@ -31,9 +19,21 @@ import {
   CorrectionReadingsGate,
   completeStage,
 } from './models';
-import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
-import { getReadingValuesArray } from '01/features/readings/displayReadingHistory/utils';
-import { IndividualDeviceReadingsItemHistoryResponse } from '../../api/types';
+import { getArrayByCountRange } from '../../../_pages/MetersPage/components/utils';
+import { Loader } from '../../../components';
+import { DateLine } from '../../../_components/DateLine/DateLine';
+import { DeviceDataString } from '../../individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { Flex } from '../../../shared/ui/Layout/Flex';
+import { Grid } from '../../../shared/ui/Layout/Grid';
+import { IndividualDeviceReadingsItemHistoryResponse } from '../../../../api/types';
+import { getReadingValuesArray } from '../../readings/displayReadingHistory/utils';
+import { getIndividualDeviceRateNumByName } from '../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { ReadingsHistoryButton } from '../../../../ui-kit/shared_components/reading_history_button';
+import IsActive from '../../../tt-components/IsActive';
+import { translateMountPlace } from '../../../utils/translateMountPlace';
+import { ButtonTT } from '../../../tt-components';
+import { Space, SpaceLine } from '../../../shared/ui/Layout/Space/Space';
+import { PendingLoader } from '../../../shared/ui/PendingLoader';
 
 export const CorrectionReadingsPanel = () => {
   const task = useStore($task);

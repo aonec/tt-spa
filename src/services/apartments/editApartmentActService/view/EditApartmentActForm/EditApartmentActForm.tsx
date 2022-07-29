@@ -1,18 +1,17 @@
-import { FilesUpload } from '01/shared/ui/FilesUpload';
-import { Select } from '01/shared/ui/Select';
-import { DatePickerTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EActResourceType, EActType } from '../../api/types';
 import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { actResourceTypes } from 'services/apartments/createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.types';
 import { EditActFormPayload } from '../../editApartmentActService.types';
 import { ErrorMessage, FieldsWrapper, SelectSC } from './EditApartmentActForm.styled';
 import { EditApartmentActFormProps } from './EditApartmentActForm.types';
 import * as yup from 'yup';
 import moment from 'moment';
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
-import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
+import { ResourceInfo } from '../../../../../ui-kit/shared_components/ResourceInfo';
+import { DatePickerTT, InputTT } from '../../../../../01/tt-components';
+import { Select } from '../../../../../01/shared/ui/Select';
+import { EActResourceType, EActType } from '../../../../../api/types';
+import { Document, DocumentsUploadContainer } from '../../../../../ui-kit/DocumentsService';
+import { actResourceTypes } from '../../../createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.types';
 
 export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   actTypes,

@@ -1,11 +1,7 @@
-import {
-  AddOrganizationUserWorkingStatusRequest,
-  EOrganizationUserWorkingStatusType,
-  ManagingFirmUserResponse,
-  OrganizationUserWorkingStatusResponseSuccessApiResponse,
-} from '../../api/types';
+
 import { createForm } from 'effector-forms';
 import { createEffect, createStore, createEvent } from 'effector';
+import { AddOrganizationUserWorkingStatusRequest, EOrganizationUserWorkingStatusType, ManagingFirmUserResponse, OrganizationUserWorkingStatusResponseSuccessApiResponse } from '../../../../../../api/types';
 
 export const $editStaffStatusUserId = createStore<number | null>(null);
 export const $isEditStaffStatusRequestFailed = createStore(false);

@@ -12,10 +12,10 @@ import {
   fetchCompetencesFx,
 } from './../../../../competences/fetchCompetences/models/index';
 import { createGate } from 'effector-react';
-import { staffFormConfig } from '01/features/staff/addStaff/models';
 import { createEvent, createEffect, createStore, combine } from 'effector';
 import { createForm } from 'effector-forms';
-import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from '../../api/types';
+import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from '../../../../../../api/types';
+import { staffFormConfig } from '../../../addStaff/models';
 
 export const editManagingUserInfoForm = createForm(staffFormConfig);
 

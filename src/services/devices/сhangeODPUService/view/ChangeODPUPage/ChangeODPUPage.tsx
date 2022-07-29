@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { AddressWrapper, InforWrapper, Wrapper } from './ChangeODPUPage.styled';
 import { ChangeODPUPageProps } from './ChangeODPUPage.types';
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { ODPUInfoString } from './ODPUInfoString';
 import { ChangeODPUForm } from './ChangeODPUForm';
 import { Skeleton } from 'antd';
+import { getHousingStockAddress } from '../../../../../utils/getHousingStockAddress';
+import { GoBack } from '../../../../../ui-kit/shared_components/GoBack';
+import { PageHeader } from '../../../../../01/shared/ui/PageHeader';
 
 export const ChangeODPUPage: FC<ChangeODPUPageProps> = ({
   oldDevice,

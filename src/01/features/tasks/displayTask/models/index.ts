@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { TaskResponse } from '../../api/types';
+import { TaskResponse } from '../../../../../api/types';
 
 export const $task = createStore<TaskResponse | null>(null);
 

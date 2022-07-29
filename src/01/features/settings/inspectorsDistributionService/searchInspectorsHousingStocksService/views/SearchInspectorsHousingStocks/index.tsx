@@ -1,19 +1,21 @@
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { Form, Select } from "antd";
+import React, { FC } from "react";
+import { ExtendedSearch } from "../../../../../../shared/ui/ExtendedSearch";
 import {
-  StyledAutocomplete,
   InputSC,
   SelectSC,
-} from '01/shared/ui/Fields';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import { Form, Select } from 'antd';
-import React, { FC } from 'react';
-import { ExtendedSearchWrap, Wrap } from './components';
-import { SearchInspectorsHousingStocksProps } from './types';
+  StyledAutocomplete,
+} from "../../../../../../shared/ui/Fields";
+import { Grid } from "../../../../../../shared/ui/Layout/Grid";
+import { useAutocomplete } from "../../../../../../_pages/MetersPage/hooks/useFilter";
+import { fromEnter } from "../../../../../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter";
+import { useOnEnterSwitch } from "../../../../../readings/accountingNodesReadings/components/Filter";
+import { ExtendedSearchWrap, Wrap } from "./components";
+import { SearchInspectorsHousingStocksProps } from "./types";
 
-export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProps> = ({
+export const SearchInspectorsHousingStocks: FC<
+  SearchInspectorsHousingStocksProps
+> = ({
   form,
   cities,
   existingStreets,
@@ -47,7 +49,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
   function clearValuesOnFocus(index: number) {
     const subFieldsArray = fieldsArray.slice(index, fieldsArray.length);
 
-    subFieldsArray.forEach((field) => field.onChange(''));
+    subFieldsArray.forEach((field) => field.onChange(""));
   }
 
   return (
@@ -107,7 +109,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
             </ExtendedSearchWrap>
           }
         >
-          <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
+          <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: "100%" }}>
             <SelectSC
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(0)(e);
@@ -133,7 +135,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               onKeyDown={(e) => {
                 fromEnter(() =>
                   form.fields.Street.onChange(
-                    form.fields.Street.value ? streetMatch : ''
+                    form.fields.Street.value ? streetMatch : ""
                   )
                 )(e);
                 keyDownEnterGuardedHandler(1)(e);

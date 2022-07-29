@@ -1,6 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
-import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from '../../api/types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import React, { FC, useCallback, useEffect } from "react";
 import {
   BaseInfoWrapper,
   ButtonsWrapper,
@@ -10,28 +8,36 @@ import {
   DeviceResourceOptionWrapper,
   FormSC,
   SealInfoWrapper,
-} from './ChangeODPUForm.styled';
-import { ChangeODPUFormProps } from './ChangeODPUForm.types';
+} from "./ChangeODPUForm.styled";
+import {
+  ChangeODPUFormProps,
+  SwitchElectricHousingDeviceRequestFormPayload,
+} from "./ChangeODPUForm.types";
 import {
   checkIsDateNotFuture,
   getDatePickerValue,
-} from './ChangeODPUForm.utils';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { useFormik } from 'formik';
-import { FormItem } from 'ui-kit/FormItem';
-import { Select } from 'ui-kit/Select';
-import { Input } from 'ui-kit/Input';
-import { DatePicker } from 'ui-kit/DatePicker';
+} from "./ChangeODPUForm.utils";
+import { useFormik } from "formik";
 import {
   closingReasonDictionary,
   initialValues,
   ODPUPhaseDictionary,
   switchDeviceValidationSchema,
   yearQuarterDictionary,
-} from './ChangeODPUForm.constants';
-import { ButtonTT } from '01/tt-components';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { ChangeODPUReadingsContainer } from 'services/devices/сhangeODPUService/changeODPUReadingsService';
+} from "./ChangeODPUForm.constants";
+import { ResourceIconLookup } from "../../../../../../ui-kit/shared_components/ResourceIconLookup";
+import {
+  EResourceType,
+  SwitchHousingDeviceReadingsCreateRequest,
+} from "../../../../../../api/types";
+import { FormItem } from "../../../../../../ui-kit/FormItem";
+import { Select } from "../../../../../../ui-kit/Select";
+import { DatePicker } from "../../../../../../ui-kit/DatePicker";
+import { DatePickerNative } from "../../../../../../01/shared/ui/DatePickerNative";
+import { Input } from "../../../../../../ui-kit/Input";
+import { ButtonTT } from "../../../../../../01/tt-components";
+import { ErrorMessage } from "../../../../../../01/shared/ui/ErrorMessage";
+import { ChangeODPUReadingsContainer } from "../../../changeODPUReadingsService";
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
   oldDevice,
@@ -71,14 +77,14 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
 
   const handleNewReadingsChange = useCallback(
     (newDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
-      setFieldValue('newDeviceReadings', newDeviceReadings);
+      setFieldValue("newDeviceReadings", newDeviceReadings);
     },
     [setFieldValue]
   );
 
   const handleOldReadingsChange = useCallback(
     (oldDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
-      setFieldValue('oldDeviceReadings', oldDeviceReadings);
+      setFieldValue("oldDeviceReadings", oldDeviceReadings);
     },
     [setFieldValue]
   );
@@ -140,7 +146,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
             <DatePicker
               value={getDatePickerValue(values.manufactureYear)}
               onChange={(_, dateString) =>
-                setFieldValue('manufactureYear', dateString)
+                setFieldValue("manufactureYear", dateString)
               }
               disabledDate={checkIsDateNotFuture}
               picker="year"
@@ -152,7 +158,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           <FormItem label="Дата установки прибора">
             <DatePickerNative
               value={values.openingDate}
-              onChange={(value) => setFieldValue('openingDate', value)}
+              onChange={(value) => setFieldValue("openingDate", value)}
               placeholder="Введите дату"
             />
             <ErrorMessage>{errors.openingDate}</ErrorMessage>
@@ -188,7 +194,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           <DatePicker
             value={getDatePickerValue(values.stateVerificationYear)}
             onChange={(_, dateString) =>
-              setFieldValue('stateVerificationYear', dateString)
+              setFieldValue("stateVerificationYear", dateString)
             }
             picker="year"
             placeholder="Введите год посл. поверки"
@@ -198,7 +204,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           <DatePicker
             value={getDatePickerValue(values.nextStateVerificationYear)}
             onChange={(_, dateString) =>
-              setFieldValue('nextStateVerificationYear', dateString)
+              setFieldValue("nextStateVerificationYear", dateString)
             }
             picker="year"
             placeholder="Введите год след. поверки"
@@ -208,7 +214,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           <Select
             value={values.stateVerificationQuarter || void 0}
             onChange={(value) =>
-              setFieldValue('stateVerificationQuarter', value)
+              setFieldValue("stateVerificationQuarter", value)
             }
             placeholder="Выберите"
           >
@@ -234,7 +240,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
             <Select
               value={values.oldDeviceClosingReason || void 0}
               onChange={(value) =>
-                setFieldValue('oldDeviceClosingReason', value)
+                setFieldValue("oldDeviceClosingReason", value)
               }
               placeholder="Выберите причину замены"
             >
@@ -268,15 +274,15 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
             value={values.sealInstallationDate}
-            onChange={(value) => setFieldValue('sealInstallationDate', value)}
+            onChange={(value) => setFieldValue("sealInstallationDate", value)}
             placeholder="Выберите дату"
           />
         </FormItem>
       </SealInfoWrapper>
       <ButtonsWrapper>
         <ButtonTT color="blue" type="submit" disabled={isLoading}>
-          {isLoading && 'Загрузка...'}
-          {!isLoading && 'Сохранить'}
+          {isLoading && "Загрузка..."}
+          {!isLoading && "Сохранить"}
         </ButtonTT>
       </ButtonsWrapper>
     </FormSC>

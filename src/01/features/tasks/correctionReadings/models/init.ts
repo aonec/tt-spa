@@ -1,10 +1,10 @@
-import { pushStages } from '01/_api/tasks';
 import { combine, forward, sample } from 'effector';
 import {
   completeStage,
   correctionReadingsForm,
   CorrectionReadingsGate,
 } from '.';
+import { pushStages } from '../../../../_api/tasks';
 import { $nextStages } from '../../displayNextStages/models';
 import { $task, refetchTask } from '../../displayTask/models';
 import { pushStageFx } from '../../pushingStage/models';

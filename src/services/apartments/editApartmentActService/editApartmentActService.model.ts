@@ -1,14 +1,14 @@
-import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
-import { createDomain, forward, sample } from 'effector';
-import { ApartmentActResponse } from '../../api/types';
-import { apartmentActsListService } from '../apartmentActsListService';
-import { updateApartmentAct } from './editApartmentActService.api';
+import { createDomain, forward, sample } from "effector";
+import { $actTypes } from "../../../01/features/actsJournal/displayActTypes/models";
+import { ApartmentActResponse } from "../../../api/types";
+import { apartmentActsListService } from "../apartmentActsListService";
+import { updateApartmentAct } from "./editApartmentActService.api";
 import {
   EditActFormPayload,
   EditActRequestPayload,
-} from './editApartmentActService.types';
+} from "./editApartmentActService.types";
 
-const domain = createDomain('editApartmentActService');
+const domain = createDomain("editApartmentActService");
 
 const openModal = domain.createEvent<ApartmentActResponse>();
 const closeModal = domain.createEvent();

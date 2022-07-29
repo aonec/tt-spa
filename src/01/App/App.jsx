@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "@reshadow/macro";
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
-import "01/css/index.scss";
-import "01/css/styles.css";
+import "../css/index.scss";
+import "../css/styles.scss";
 import { app } from "01/styles/app";
-import { Logotip } from "01/components";
 import moment from "moment";
 import { Provider } from "react-redux";
 import "moment/locale/ru";
@@ -39,23 +38,24 @@ import { store } from "../Redux/store";
 import { DevicesFromSearch } from "../_pages/Devices";
 import "../features/init";
 import { ApartmentsRouteGroup } from "./routeGroups/ApartmentsRouteGroup";
-import { StatisticsPage } from "01/features/statistics";
-import { ApartmentActs } from "01/features/actsJournal/displayActsJournal";
 import styledC from "styled-components";
-import { Space } from "01/shared/ui/Layout/Space/Space";
-import { ReportsPageContainer } from "01/features/reports";
-import { NodeArchivePageContainer } from "01/features/nodes/nodeArchiveService";
 import { SettingsPageContainer } from "../features/settings/SettingsPageContainer";
 import { ObjectsProfileContainer } from "services/objects/objectsProfileService";
 import { DevicesProfileContainer } from "services/devices/devicesProfileService";
-import { MenuContainer } from "services/menuService";
-import { EditManagingFirmUserPage } from "01/features/staff/managingFirmUser/editManagingFirmUser";
 import {
   TasksProfileContainer,
   tasksProfileService,
 } from "services/tasks/tasksProfileService";
-import { ChangeODPUContainer } from "services/devices/сhangeODPUService";
 import { EditElectricNodeContainer } from "services/devices/editElectricNodeService";
+import { StatisticsPage } from "../features/statistics";
+import { EditManagingFirmUserPage } from "../features/staff/managingFirmUser/editManagingFirmUser";
+import { Space } from "../shared/ui/Layout/Space/Space";
+import { ReportsPageContainer } from "../features/reports";
+import { Logotip } from "../components";
+import { NodeArchivePageContainer } from "../features/nodes/nodeArchiveService";
+import { ChangeODPUContainer } from "../../services/devices/сhangeODPUService";
+import { ApartmentActs } from "../features/actsJournal/displayActsJournal";
+import { MenuContainer } from "../../services/menuService";
 
 moment.locale("ru");
 

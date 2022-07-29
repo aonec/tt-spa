@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { ConfigProvider, Input, Select } from 'antd';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import {
   StyledRangePicker,
@@ -12,12 +11,10 @@ import {
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import {
-  FormItem,
-  SelectSC,
-  StyledFormThreeRows,
-} from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
-import { InputSC } from '01/shared/ui/Fields';
+
+import { InputSC } from '../../../../../01/shared/ui/Fields';
+import { CalculatorsListRequestPayload } from '../../../../../01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { FormItem, SelectSC, StyledFormThreeRows } from '../../../../tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 
 const { Option } = Select;
 

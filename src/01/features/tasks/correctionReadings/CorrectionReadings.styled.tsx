@@ -1,7 +1,8 @@
-import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { EResourceType } from '../../api/types';
-import React, { FC } from 'react';
-import styled from 'styled-components';
+import React, { FC } from "react";
+import styled from "styled-components";
+import { ReactNode } from "react";
+import { EResourceType } from "../../../../api/types";
+import { getResourceColor } from "../../individualDevices/switchIndividualDevice/components/DeviceDataString";
 
 export const Wrap = styled.div`
   padding: 15px;
@@ -16,6 +17,7 @@ export const Header = styled.div`
 export interface InfoBlockData {
   title: string;
   color?: string;
+  children: ReactNode;
 }
 
 export const InfoBlockTitle = styled.div`

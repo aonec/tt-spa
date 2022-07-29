@@ -1,11 +1,11 @@
 import { createGate } from 'effector-react';
 import { createDomain, forward, guard, sample } from 'effector';
-import { HousingStockListResponsePagedList } from '../../api/types';
 import { getHosuingStocks } from './displayObjectsListService.api';
 import {
   GetHousingStocksRequestPayload,
   SearchHousingStocksPayload,
 } from './displayObjectsListService.types';
+import { HousingStockListResponsePagedList } from '../../../api/types';
 
 const domain = createDomain('displayObjectsListService');
 

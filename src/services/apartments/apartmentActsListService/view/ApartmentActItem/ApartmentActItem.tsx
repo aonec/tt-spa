@@ -1,7 +1,5 @@
-import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import moment from 'moment';
 import React, { FC, useMemo } from 'react';
-import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from 'ui-kit/icons';
 import {
   ActNumber,
   DateWrapper,
@@ -16,7 +14,9 @@ import {
   NoDocumentText,
 } from './ApartmentActItem.styled';
 import { ApartmentActItemProps } from './ApartmentActItem.types';
-import { DocumentResponse } from '../../api/types';
+import { DocumentIcon, PencilIcon, TrashIcon, UploadIcon } from '../../../../../ui-kit/icons';
+import { ResourceInfo } from '../../../../../ui-kit/shared_components/ResourceInfo';
+import { DocumentResponse } from '../../../../../api/types';
 
 export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   act,

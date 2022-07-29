@@ -1,4 +1,4 @@
-import { CalculatorListResponse } from '../../api/types';
+import { CalculatorListResponse } from "../../../../../api/types";
 
 export type DevicesListProps = {
   calculators: CalculatorListResponse[];

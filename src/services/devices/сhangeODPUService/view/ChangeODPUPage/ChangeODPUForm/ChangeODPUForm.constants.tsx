@@ -1,6 +1,6 @@
-import { EClosingReason, EPhaseNumberType, EYearQuarter } from '../../api/types';
 import { SwitchElectricHousingDeviceRequestFormPayload } from './ChangeODPUForm.types';
 import * as yup from 'yup';
+import { EClosingReason, EPhaseNumberType, EYearQuarter } from '../../../../../../api/types';
 
 export const initialValues: SwitchElectricHousingDeviceRequestFormPayload = {
   model: '',

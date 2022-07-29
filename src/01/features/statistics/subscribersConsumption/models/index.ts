@@ -1,7 +1,7 @@
-import { createGate } from 'effector-react';
-import { createEffect, createEvent, createStore } from 'effector';
-import { createForm } from 'effector-forms';
-import { SubscriberStatisticsСonsumptionResponse } from '../../api/types';
+import { createGate } from "effector-react";
+import { createEffect, createEvent, createStore } from "effector";
+import { createForm } from "effector-forms";
+import { SubscriberStatisticsСonsumptionResponse } from "../../../../../api/types";
 
 export const $selectedHousingsStockId = createStore<number | null>(null);
 
@@ -37,9 +37,9 @@ const resourceRangeInitValue = {
 
 export const subscribersConsumptionFindForm = createForm({
   fields: {
-    city: { init: '' },
-    street: { init: '' },
-    house: { init: '' },
+    city: { init: "" },
+    street: { init: "" },
+    house: { init: "" },
   },
 });
 

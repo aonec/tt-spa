@@ -1,21 +1,22 @@
-import { NumberRange } from '01/shared/ui/Fields/NumberRange';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Checkbox } from 'antd';
-import { useForm } from 'effector-forms/dist';
-import React from 'react';
-import { ChevronUp, X } from 'react-bootstrap-icons';
-import styled from 'styled-components';
+import { Checkbox } from "antd";
+import { useForm } from "effector-forms/dist";
+import React from "react";
+import { ChevronUp, X } from "react-bootstrap-icons";
+import styled from "styled-components";
 import {
   closeExpandedSearch,
-  fetchConsumptionStatistics,
   subscribersConsumptionFilterForm,
-} from '../../models';
-import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
-import { ButtonTT } from '01/tt-components';
-import moment from 'moment';
-import { useParams } from 'react-router';
+} from "../../models";
+import moment from "moment";
+import { Space } from "../../../../../shared/ui/Layout/Space/Space";
+import { Flex } from "../../../../../shared/ui/Layout/Flex";
+import { Grid } from "../../../../../shared/ui/Layout/Grid";
+import { ButtonTT } from "../../../../../tt-components";
+import { NumberRange } from "../../../../../shared/ui/Fields/NumberRange";
+import {
+  StyledDatePicker,
+  StyledRangePicker,
+} from "../../../../../shared/ui/Fields";
 
 export const ExpandedSearch = () => {
   const { fields, reset } = useForm(subscribersConsumptionFilterForm);
@@ -25,7 +26,7 @@ export const ExpandedSearch = () => {
       <div style={{ padding: 10 }}>
         <Flex>
           <SquareButton onClick={() => closeExpandedSearch()}>
-            <ChevronUp style={{ color: 'white' }} />
+            <ChevronUp style={{ color: "white" }} />
           </SquareButton>
           <Space />
           <CancelButton onClick={() => void reset()}>
@@ -36,7 +37,7 @@ export const ExpandedSearch = () => {
         </Flex>
         <Space />
         <div style={{ maxWidth: 550 }}>
-          <Grid temp="0.4fr 1fr" gap="15px" style={{ alignItems: 'center' }}>
+          <Grid temp="0.4fr 1fr" gap="15px" style={{ alignItems: "center" }}>
             <SearchPointTitle>Ресурс</SearchPointTitle>
             <SearchPointTitle>Диапазон значений</SearchPointTitle>
 
@@ -127,7 +128,7 @@ export const ExpandedSearch = () => {
             picker="month"
             format="MMMM YYYY"
             disabledDate={(date) => {
-              const diff = moment(date).diff(moment(), 'months');
+              const diff = moment(date).diff(moment(), "months");
 
               return diff >= 1;
             }}

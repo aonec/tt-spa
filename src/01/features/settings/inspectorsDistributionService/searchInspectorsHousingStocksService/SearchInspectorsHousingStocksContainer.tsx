@@ -1,14 +1,12 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
-import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
-import { displayHousingStockFiltersService } from '01/features/housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
+import { $existingStreets, ExistingStreetsGate } from '../../../housingStocks/displayHousingStockStreets/model';
+import { $existingCities, ExistingCitiesGate } from '../../../housingStocks/displayHousingStockCities/models';
+import { displayHousingStockFiltersService } from '../../../housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
+import { displayInspectorsService } from '../../../Inspectors/displayInspectors/displayInspectorsService.models';
 
 export const SearchInspectorsHousingStocksContainer = () => {
   const form = useForm(searchInspectorsHousingStockService.forms.searchForm);

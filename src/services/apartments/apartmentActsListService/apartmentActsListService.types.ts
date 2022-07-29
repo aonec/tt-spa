@@ -1,4 +1,4 @@
-import { EActResourceType, EActType } from '../../api/types';
+import { EActResourceType, EActType } from "../../../api/types";
 
 export type ActsFilter = {
   actTypes:  EActType[];

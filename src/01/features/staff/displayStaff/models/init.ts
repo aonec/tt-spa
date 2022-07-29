@@ -1,4 +1,3 @@
-import { fetchStaff } from '01/_api/staff';
 import { forward, guard } from 'effector';
 import {
   $isFetchingStaffFailed,
@@ -7,6 +6,7 @@ import {
   refetchStaff,
   StaffGate,
 } from '.';
+import { fetchStaff } from '../../../../_api/staff';
 
 $staffList.on(fetchStaffFx.doneData, (_, staffList) => staffList);
 

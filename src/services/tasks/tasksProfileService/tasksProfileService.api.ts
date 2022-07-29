@@ -1,5 +1,5 @@
-import { axios } from '../../api/axios';
-import { TasksPagedList } from '../../api/types';
+import { axios } from '../../../api/axios';
+import { TasksPagedList } from '../../../api/types';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
 
 export const getTasks = (

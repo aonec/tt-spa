@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from '../../shared/ui/PageHeader';
 
 interface Props {
   onCreateReport(): void;

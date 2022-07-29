@@ -1,12 +1,12 @@
-import { AddPersonalNumberPage } from '01/features/homeowner/addPersonalNumber';
-import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
-import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
-import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
-import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
-import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
-import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import React from 'react';
 import { Route, Switch } from 'react-router';
+import { AddPersonalNumberPage } from '../../features/homeowner/addPersonalNumber';
+import { EditHomeownerPersonalNumberPage } from '../../features/homeowner/editPersonalNumber';
+import { SplitPersonalNumber } from '../../features/homeowner/splitPersonalNumber';
+import { SwitchPersonalNumberPage } from '../../features/homeowner/switchPersonalNumber';
+import { AddIndividualDevice } from '../../features/individualDevices/addIndividualDevice';
+import { SwitchIndividualDevice } from '../../features/individualDevices/switchIndividualDevice';
+import { ReadingHistoryPage } from '../../features/readings/displayReadingHistory';
 
 export const ApartmentsRouteGroup = () => (
   <Switch>

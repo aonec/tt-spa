@@ -1,4 +1,4 @@
-import { SubMenuItem } from "services/menuService/menuService.types";
+import { SubMenuItem } from "../../../../menuService.types";
 
 export type SubMenuProps = {
   subMenuItems: SubMenuItem[];

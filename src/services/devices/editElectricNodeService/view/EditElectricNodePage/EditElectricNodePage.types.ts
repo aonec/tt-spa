@@ -1,4 +1,4 @@
-import { ElectricHousingMeteringDeviceResponse, EYearQuarter } from '../../api/types';
+import { ElectricHousingMeteringDeviceResponse, EYearQuarter } from "../../../../../api/types";
 
 export type EditElectricNodePageProps = {
   device: ElectricHousingMeteringDeviceResponse | null;

@@ -1,5 +1,5 @@
-import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { forward, sample, guard } from 'effector';
+import { fetchExistingCities } from '../../../housingStocks/displayHousingStockCities/models';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
 

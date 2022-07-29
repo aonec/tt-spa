@@ -1,4 +1,4 @@
-import { GuidStringDictionaryItem, InspectorResponse } from '../../api/types';
+import { GuidStringDictionaryItem, InspectorResponse } from "../../../../../../../api/types";
 
 export type SearchInspectorsHousingStocksProps = {
   form: any;

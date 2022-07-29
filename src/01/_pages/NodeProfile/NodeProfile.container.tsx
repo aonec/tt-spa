@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { TabsItemInterface } from '../../tt-components/interfaces';
-import { nodeService } from '01/features/nodes/displayNode/models';
 import { useStore } from 'effector-react';
 import { Content } from './NodeProfile';
+import { nodeService } from '../../features/nodes/displayNode/models';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
