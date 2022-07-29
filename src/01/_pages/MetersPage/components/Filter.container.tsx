@@ -66,6 +66,9 @@ export const FilterContainer = () => {
   );
 
   const initialSearchValues = useMemo(() => {
+    if (!id) {
+      return null;
+    }
     const address = apartment?.housingStock?.address?.mainAddress;
     return {
       city: address?.city || '',
@@ -81,6 +84,7 @@ export const FilterContainer = () => {
         <AddressSearchContainer
           fields={searchfields}
           handleSubmit={syncSearchState}
+          initialValues={initialSearchValues}
         />
         <SearchInput
           placeholder="Л/с или ФИО"

@@ -15,7 +15,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   initialValues,
 }) => {
   const { outputs } = addressSearchService;
-
   const {
     values,
     handleSubmit,
@@ -29,21 +28,18 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       corpus: '',
       apartment: '',
     },
+    enableReinitialize: true,
     onSubmit,
   });
-
-  useEffect(() => {
-    if (initialValues) setValues(initialValues);
-  }, [initialValues]);
 
   const cities = useStore(outputs.cities);
   const streets = useStore(outputs.streets);
 
   useEffect(() => {
-    if (!cities?.length || values.city) return;
+    if (!cities?.length || initialValues?.city) return;
 
     setFieldValue('city', last(cities));
-  }, [cities]);
+  }, [cities, initialValues]);
 
   return (
     <>
