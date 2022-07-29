@@ -21,6 +21,7 @@ const objectListComponentsLookup: { [key: string]: FC } = {
 
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleExportGroupReport,
+  handleOpenCreateResourceDisconnectionModal,
   searchType,
 }) => {
   const menuButtons = useMemo(
@@ -29,8 +30,12 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
       },
+      {
+        title: 'Создать оключение ресурса на объекте',
+        onClick: handleOpenCreateResourceDisconnectionModal,
+      },
     ],
-    [handleExportGroupReport]
+    [handleExportGroupReport, handleOpenCreateResourceDisconnectionModal]
   );
 
   const objectsProfileComponent = useMemo(() => {

@@ -1,14 +1,16 @@
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
 
-export const prepareAddressesForTreeSelect = (items: StreetWithHousingStockNumbersResponse[]) =>
+export const prepareAddressesForTreeSelect = (
+  items: StreetWithHousingStockNumbersResponse[]
+) =>
   items.map(({ street, addresses }) => ({
     title: street!,
     key: street!,
     value: street!,
-    children: addresses?.map((address) => ({
-      title: `${street}, ${address.housingStockNumber}`,
-      value: address.housingStockId,
-      key: address.housingStockId,
-    })) || [],
+    children:
+      addresses?.map((address) => ({
+        title: `${street}, ${address.housingStockNumber}`,
+        value: address.housingStockId,
+        key: address.housingStockId,
+      })) || [],
   }));
-

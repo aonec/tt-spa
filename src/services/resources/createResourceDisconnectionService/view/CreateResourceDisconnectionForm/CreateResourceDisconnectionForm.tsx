@@ -1,9 +1,10 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
+import { TreeNode } from 'antd/lib/tree-select';
 import { useFormik } from 'formik';
 import _ from 'lodash/fp';
 import { EResourceDisconnectingType, EResourceType } from 'myApi';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -52,17 +53,35 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     validationSchema: createResourceDisconnectionValidationSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (formValues) =>
+    onSubmit: (formValues) => {
+      const preparedHousingStockIds = formValues.housingStockIds.filter((elem) => elem !== -1);
       handleSubmit({
         resource: formValues.resource!,
         disconnectingType: formValues.disconnectingType!,
         startDate: getDate(formValues.startDate, formValues.startHour),
         endDate: getDate(formValues.endDate, formValues.endHour),
-        housingStockIds: formValues.housingStockIds,
-        heatingStationId: formValues.heatingStationId,
+        housingStockIds: preparedHousingStockIds,
+        heatingStationId: formValues.heatingStationId || null,
         sender: formValues.sender,
-      }),
+      });
+    },
   });
+
+  const allHousingStocks = useMemo(
+    () =>
+      treeData.reduce((acc, street) => {
+        const housingStocks = street?.children?.map(
+          (address) => address.value
+        ) || [Number(street.value)];
+        if (housingStocks) {
+          return [...acc, ...housingStocks];
+        }
+        return acc;
+      }, [] as number[]),
+    [treeData]
+  );
+  const isAllPrevious = useRef<boolean>(false);
+  const isAll = values.housingStockIds.includes(-1);
 
   const heatingStationPlaceholderText = selectedCity
     ? 'Выберите ЦТП'
@@ -81,19 +100,22 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="Тип ресурса">
           <Select
             placeholder="Выберите тип ресурса"
-            value={values.resource || undefined}
+            value={values.resource!}
             onChange={(value) =>
               setFieldValue('resource', value as EResourceType)
             }
           >
-            {resourceTypes?.map(({ key, value }) => (
-              <Select.Option key={key!} value={key!}>
-                <ResourceOptionWrapper>
-                  <ResourceIconLookup resource={key as EResourceType} />
-                  <span className="device-resource-name">{value}</span>
-                </ResourceOptionWrapper>
-              </Select.Option>
-            ))}
+            {resourceTypes?.map(({ key, value }) => {
+              const isDisabled = !key;
+              return (
+                <Select.Option key={key!} value={key!} disabled={isDisabled}>
+                  <ResourceOptionWrapper>
+                    <ResourceIconLookup resource={key as EResourceType} />
+                    <span className="device-resource-name">{value}</span>
+                  </ResourceOptionWrapper>
+                </Select.Option>
+              );
+            })}
           </Select>
           <ErrorMessage>{errors.resource}</ErrorMessage>
         </FormItem>
@@ -122,6 +144,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="ЦТП">
           <HeatingStationInputSC
             allowClear
+            disabled={!selectedCity}
             placeholder={heatingStationPlaceholderText}
             onChange={(stationId) => {
               handleSelectHeatingStation(String(stationId || ''));
@@ -138,19 +161,42 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="Адрес">
           <TreeSelectSC
             showSearch
+            showArrow
+            disabled={!selectedCity}
             value={values.housingStockIds}
             treeCheckable
             maxTagCount={0}
-            maxTagPlaceholder={(values) => (
-              <TagPlaceholder>
-                Выбрано {values.length} адреса(-ов)
-              </TagPlaceholder>
-            )}
-            treeData={treeData}
+            maxTagPlaceholder={(values) => {
+              const text = isAll
+                ? 'Выбраны все адреса'
+                : `Выбрано ${values.length} адреса(-ов)`;
+              return <TagPlaceholder>{text}</TagPlaceholder>;
+            }}
+            treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
             showCheckedStrategy="SHOW_CHILD"
-            onChange={(selectedAddresses) =>
-              setFieldValue('housingStockIds', selectedAddresses)
-            }
+            onChange={(selectedAddresses) => {
+              const selectedAddressesArray = [selectedAddresses].flat();
+              const isAllSelected = selectedAddressesArray.includes(-1);
+
+              if (isAllSelected && !isAllPrevious.current) {
+                isAllPrevious.current = true;
+                return setFieldValue('housingStockIds', [
+                  ...allHousingStocks,
+                  -1,
+                ]);
+              }
+
+              if (!isAllSelected && isAllPrevious.current) {
+                isAllPrevious.current = false;
+                return setFieldValue('housingStockIds', []);
+              }
+              isAllPrevious.current = false;
+
+              setFieldValue(
+                'housingStockIds',
+                selectedAddressesArray.filter((elem) => elem !== -1)
+              );
+            }}
             placeholder={addressPlaceholderText}
           />
           <ErrorMessage>{errors.housingStockIds}</ErrorMessage>
@@ -158,14 +204,18 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="Класс отключения">
           <Select
             onChange={(type) => setFieldValue('disconnectingType', type)}
-            value={values.disconnectingType || undefined}
+            value={values.disconnectingType!}
             placeholder="Выберите класс отключения"
           >
-            {disconnectingTypes.map(({ key, value }) => (
-              <Select.Option key={key!} value={key!}>
-                {value}
-              </Select.Option>
-            ))}
+            {disconnectingTypes.map(({ key, value }) => {
+              const isDisabled = !key;
+
+              return (
+                <Select.Option key={key!} value={key!} disabled={isDisabled}>
+                  {value}
+                </Select.Option>
+              );
+            })}
           </Select>
           <ErrorMessage>{errors.disconnectingType}</ErrorMessage>
         </FormItem>

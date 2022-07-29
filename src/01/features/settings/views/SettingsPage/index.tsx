@@ -6,20 +6,17 @@ import { InspectorsDistributionPage } from '../../inspectorsDistributionService/
 import { SettingsPageProps } from './types';
 import { InspectorAddressesResetModalContainer } from '../../inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
 import { inspectorAddressesResetService } from '../../inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
-import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 
 const { TabPane } = Tabs;
 
 export const SettingsPage: FC<SettingsPageProps> = ({
   handleReassingInspector,
-  handleOpenCreateResourceDisconnectionModal,
 }) => {
   const { section } = useParams<{ section: string }>();
   const history = useHistory();
   return (
     <>
       <InspectorAddressesResetModalContainer />
-      <CreateResourceDisconnectionContainer />
       <PageHeader
         title="Настройки"
         contextMenu={{
@@ -31,10 +28,6 @@ export const SettingsPage: FC<SettingsPageProps> = ({
             {
               title: 'Переназначить сотрудника',
               onClick: handleReassingInspector,
-            },
-            {
-              title: 'Создать отключение ресурса',
-              onClick: handleOpenCreateResourceDisconnectionModal,
             },
           ],
         }}

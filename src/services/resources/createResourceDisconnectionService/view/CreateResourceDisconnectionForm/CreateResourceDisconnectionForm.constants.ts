@@ -15,8 +15,8 @@ export const formInitialValues = {
 };
 
 export const createResourceDisconnectionValidationSchema = yup.object().shape({
-  resource: yup.string().nullable(),
-  disconnectingType: yup.string().nullable(),
+  resource: yup.string().required('Это поле обязательно').nullable(),
+  disconnectingType: yup.string().required('Это поле обязательно').nullable(),
   sender: yup.string().required('Это поле обязательно'),
   housingStockIds: yup.array().required('Это поле обязательно'),
   startDate: yup.string().required('Это поле обязательно'),

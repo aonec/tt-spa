@@ -57,6 +57,12 @@ export const TreeSelectSC = styled(TreeSelect)`
   .ant-select-selection-placeholder {
     padding-left: 10px;
   }
+  .ant-select-arrow {
+    margin-right: 16px;
+  }
+  .anticon-search {
+    color: #189ee9;
+  }
 `;
 
 export const TagPlaceholder = styled.div`

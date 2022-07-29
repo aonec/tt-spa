@@ -1,4 +1,3 @@
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, forward } from 'effector';
 import _ from 'lodash/fp';
 import {
