@@ -24,12 +24,12 @@ export const getHousingManagements = async (): Promise<
   const res = await axios.get<any, HousingStockFilterResponse>(
     '/HousingStocks/filters'
   );
-  return res?.houseManagements || null;
+  return res?.houseManagements;
 };
 
 export const getPerpetratorIds = async (): Promise<
   perpetratorItemsProps[] | null
 > => {
   const res = await axios.get<any, perpetratorProps>('ManagingFirmUsers');
-  return res?.items || null;
+  return res?.items;
 };

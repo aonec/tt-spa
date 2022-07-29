@@ -45,10 +45,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
   );
 
   useEffect(() => {
-    if (values.EngineeringElement !== 'IndividualDevice') {
       setFieldValue('TaskType', null);
       setFieldValue('ApartmentNumber', null);
-    }
   }, [values.EngineeringElement]);
 
   const taskCategories: taskCategotiesProps = {
@@ -79,9 +77,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               values?.EngineeringElement as keyof taskCategotiesProps
             ]
           ).includes(el?.key);
-        } else {
-          return taskCategories.All.includes(el?.key);
         }
+        return taskCategories.All.includes(el?.key);
       }
     );
   }, [values?.EngineeringElement]);
