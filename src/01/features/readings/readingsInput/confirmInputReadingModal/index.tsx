@@ -1,5 +1,3 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -9,8 +7,10 @@ import {
   executeConfirmReadingCallback,
 } from './models';
 import { ExclamationCircle } from 'react-bootstrap-icons';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import styled from 'styled-components';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { ModalTT } from '../../../../shared/ui/ModalTT';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
 
 export const ConfirmReadingValueModal: React.FC = () => {
   const visible = useStore($isConfirmReadingInputModalOpen);

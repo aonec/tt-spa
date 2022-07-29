@@ -1,19 +1,19 @@
-import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
+import { useStore } from "effector-react";
+import React from "react";
+import styled from "styled-components";
+import { getPreviousReadingsMonth } from "../../../../../shared/lib/readings/getPreviousReadingsMonth";
+import { Flex } from "../../../../../shared/ui/Layout/Flex";
+import { Grid } from "../../../../../shared/ui/Layout/Grid";
+import { PendingLoader } from "../../../../../shared/ui/PendingLoader";
+import Arrow from "../../../../../_components/Arrow/Arrow";
+import { useSliderIndex } from "../../../../individualDevices/switchIndividualDevice/components/ReadingsInput";
 import {
-  fetchNodes,
   $electricNodes,
-} from '01/features/nodes/displayNodes/models';
-import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
-import Arrow from '01/_components/Arrow/Arrow';
-import { useStore } from 'effector-react';
-import React from 'react';
-import styled from 'styled-components';
-import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
-import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
-import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
+  fetchNodes,
+} from "../../../../nodes/displayNodes/models";
+import { MeteringDeviceReadingsLine } from "../MeteringDeviceReadingsLine";
+import { MeteringDeviceReadingsSumPanel } from "../MeteringDeviceReadingsSumPanel";
+import { meteringDeviceReadingsService } from "./meteringDevicesListService.model";
 
 const { inputs, outputs, gates } = meteringDeviceReadingsService;
 
@@ -26,7 +26,7 @@ export const MeteringDevicesList = () => {
   const { sliderIndex, up, down, canDown, canUp } = useSliderIndex();
 
   const header = (
-    <Header temp={gridTemp} gap="15px" style={{ userSelect: 'none' }}>
+    <Header temp={gridTemp} gap="15px" style={{ userSelect: "none" }}>
       <HeaderTitleElem>Прибор</HeaderTitleElem>
       <HeaderTitleElem>Коэф. трансф.</HeaderTitleElem>
       <HeaderTitleElem>
@@ -35,14 +35,14 @@ export const MeteringDevicesList = () => {
           <div>{getPreviousReadingsMonth(sliderIndex)}</div>
           <ArrowContainer
             onClick={down}
-            style={{ transform: 'rotate(180deg)' }}
+            style={{ transform: "rotate(180deg)" }}
           >
             {canDown && <Arrow />}
           </ArrowContainer>
         </MonthSlider>
       </HeaderTitleElem>
       <HeaderTitleElem>
-        <MonthSlider style={{ justifyContent: 'center' }}>
+        <MonthSlider style={{ justifyContent: "center" }}>
           <div>{getPreviousReadingsMonth(-1)}</div>
         </MonthSlider>
       </HeaderTitleElem>
@@ -63,7 +63,7 @@ export const MeteringDevicesList = () => {
             key={index}
           />
         ))}
-        <MeteringDeviceReadingsSumPanel sum={sum}/>
+        <MeteringDeviceReadingsSumPanel sum={sum} />
         <MeteringDevicesListIsOpen />
       </>
     );
@@ -76,7 +76,7 @@ export const MeteringDevicesList = () => {
   return (
     <PendingLoader loading={pendingNodes}>
       {isNullElectricNodes && null}
-      {isEmptyElectricNodes && 'Нет приборов'}
+      {isEmptyElectricNodes && "Нет приборов"}
       {isShowPage && renderPage()}
     </PendingLoader>
   );
@@ -91,7 +91,7 @@ const MonthSlider = styled(Flex)`
   font-weight: bold;
 `;
 
-export const gridTemp = '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 70px';
+export const gridTemp = "0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 70px";
 
 const HeaderTitleElem = styled.div`
   font-size: 12px;

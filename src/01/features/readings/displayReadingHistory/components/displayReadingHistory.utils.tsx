@@ -1,18 +1,13 @@
 import React from 'react';
 import { CorrectReadingValuesValidationResult } from '../../../../hooks/useReadings';
-import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import {
-  EResourceType,
-  IndividualDeviceReadingsHistoryResponse,
-  IndividualDeviceReadingsItemHistoryResponse,
-  IndividualDeviceReadingsYearHistoryResponse,
-  IndividualDeviceResponse,
-} from '../../api/types';
+
 import moment from 'moment';
-import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
 import _ from 'lodash/fp';
 import { round } from 'lodash';
+import { EResourceType, IndividualDeviceReadingsHistoryResponse, IndividualDeviceReadingsItemHistoryResponse, IndividualDeviceResponse } from '../../../../../api/types';
+import { getMeasurementUnit } from '../../../../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import { ConsumptionRatesDictionary } from '../../../../../services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');

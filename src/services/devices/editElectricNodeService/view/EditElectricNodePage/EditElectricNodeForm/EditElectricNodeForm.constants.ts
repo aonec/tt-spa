@@ -1,4 +1,4 @@
-import { EPhaseNumberType, EYearQuarter } from '../../api/types';
+import { EPhaseNumberType, EYearQuarter } from "../../../../../../api/types";
 
 export const ElectricNodePhaseDictionary = [
   { key: EPhaseNumberType.SinglePhase, value: 'Однофазный счетчик' },

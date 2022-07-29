@@ -1,8 +1,6 @@
-import {
-  IndividualDeviceReadingsCreateListResponse,
-  IndividualDeviceReadingsCreateRequest,
-} from './../../.../../api/types';
+
 import { createEffect, createEvent } from 'effector';
+import { IndividualDeviceReadingsCreateListResponse, IndividualDeviceReadingsCreateRequest } from '../../../../../api/types';
 
 export const readingFieldButtonClicked = createEvent<IndividualDeviceReadingsCreateRequest>();
 

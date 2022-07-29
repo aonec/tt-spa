@@ -1,7 +1,7 @@
 import { Button, Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import { CalculatorIntoHousingStockResponse, PipeNodeResponse } from '../../api/types';
 import React, { FC } from 'react';
+import { CalculatorIntoHousingStockResponse, PipeNodeResponse } from '../../../../../../../api/types';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';

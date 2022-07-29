@@ -1,14 +1,14 @@
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import React, { FC, ReactElement } from "react";
+import { useOnEnterSwitch } from "../../../../01/features/readings/accountingNodesReadings/components/Filter";
+import { fromEnter } from "../../../../01/shared/ui/DatePickerNative";
 import {
-  StyledAutocomplete,
   InputSC,
   SelectSC,
-} from '01/shared/ui/Fields';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import React, { FC, ReactElement } from 'react';
-import { Wrapper } from './AddressSearch.styled';
-import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
+  StyledAutocomplete,
+} from "../../../../01/shared/ui/Fields";
+import { useAutocomplete } from "../../../../01/_pages/MetersPage/hooks/useFilter";
+import { Wrapper } from "./AddressSearch.styled";
+import { AddressSearchProps, SearchFieldType } from "./AddressSearch.types";
 
 export const AddressSearch: FC<AddressSearchProps> = ({
   streets,
@@ -18,10 +18,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   handleChange,
   fields,
 }) => {
-  const {
-    keyDownEnterGuardedHandler,
-    refs,
-  } = useOnEnterSwitch(5);
+  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(5);
 
   const { match: streetMatch, options } = useAutocomplete(
     values.street,
@@ -31,7 +28,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   function clearFields(index: number) {
     const clearingFieldsTypes = fields.slice(index, fields.length);
 
-    clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ''));
+    clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ""));
   }
 
   const citySearch = (index: number) => (

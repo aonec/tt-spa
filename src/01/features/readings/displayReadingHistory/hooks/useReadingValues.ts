@@ -4,16 +4,14 @@ import {
   refetchReadingHistory,
 } from './../models/index';
 import { createReading } from './../../../../_api/readings';
-import {
-  IndividualDeviceReadingsHistoryResponse,
-  IndividualDeviceReadingsCreateRequest,
-} from './../../.../../api/types';
+
 import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
-import axios from '../../api/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
+import { IndividualDeviceReadingsCreateRequest, IndividualDeviceReadingsHistoryResponse } from '../../../../../api/types';
+import { axios } from '../../../../../api/axios';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 

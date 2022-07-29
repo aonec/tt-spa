@@ -1,6 +1,6 @@
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
+import { TypeAddressToStart } from '../../../../../01/shared/ui/TypeToStart';
 import { ApartmentItem } from './ApartmentItem';
 import { ApartmentsListProps } from './ApartmentsList.types';
 

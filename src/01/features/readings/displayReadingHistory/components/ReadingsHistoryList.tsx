@@ -1,12 +1,4 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { useEvent, useStore } from 'effector-react';
-import moment from 'moment';
-import {
-  IndividualDeviceReadingsItemHistoryResponse,
-  IndividualDeviceReadingsMonthHistoryResponse,
-  IndividualDeviceReadingsYearHistoryResponse,
-  IndividualDeviceReadingsCreateRequest,
-} from '../../api/types';
 import React from 'react';
 import { useOpenedYears } from '../hooks/useOpenedYears';
 import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
@@ -18,11 +10,8 @@ import {
   getReadingValuesArray,
   getReadingValuesObject,
 } from '../utils';
-import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 import {
   confirmReading,
@@ -42,18 +31,13 @@ import {
   Year,
 } from './displayReadingHistory.styled';
 import { RenderReading } from './displayReadingHistory.types';
-import {
-  CorrectReadingValuesValidationResult,
-  round,
-} from '01/hooks/useReadings';
-import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import {
-  managementFirmConsumptionRatesService,
-  useManagingFirmConsumptionRates,
-} from 'services/meters/managementFirmConsumptionRatesService';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+
+import { $individualDevice } from '../../../individualDevices/displayIndividualDevice/models';
+import { IndividualDeviceReadingsCreateRequest, IndividualDeviceReadingsItemHistoryResponse, IndividualDeviceReadingsMonthHistoryResponse, IndividualDeviceReadingsYearHistoryResponse } from '../../../../../api/types';
+import { getTimeStringByUTC } from '../../../../../utils/getTimeStringByUTC';
+import { managementFirmConsumptionRatesService, useManagingFirmConsumptionRates } from '../../../../../services/meters/managementFirmConsumptionRatesService';
+import { getArrayByCountRange } from '../../../../_pages/MetersPage/components/utils';
+import { getIndividualDeviceRateNumByName } from '../../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 interface Props {
   isModal?: boolean;

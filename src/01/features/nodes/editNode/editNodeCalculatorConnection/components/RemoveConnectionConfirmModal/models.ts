@@ -1,7 +1,7 @@
-import axios from '../../api/axios';
 import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
-import { UpdatePipeNodeRequest } from '../../api/types';
+import { axios } from '../../../../../../../api/axios';
+import { UpdatePipeNodeRequest } from '../../../../../../../api/types';
 import {
   outputs as nodeOutputs,
   inputs as nodeInputs,

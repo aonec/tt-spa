@@ -1,5 +1,5 @@
-import { ExitIcon } from 'ui-kit/icons';
 import styled from 'styled-components';
+import { ExitIcon } from '../../../../../ui-kit/icons';
 
 export const Wrapper = styled.div`
   display: flex;

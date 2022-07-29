@@ -1,12 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import {
-  EExpiresCheckingDateAt,
-  EHouseCategory,
-  ENodeCommercialAccountStatus,
-  EOrderByRule,
-  EResourceType,
-  NodesPagedList,
-} from '../../api/types';
+import { EExpiresCheckingDateAt, EHouseCategory, ENodeCommercialAccountStatus, EOrderByRule, EResourceType, NodesPagedList } from '../../../../../api/types';
+
 
 interface RequestPayload {
   CalculatorId?: number | null;

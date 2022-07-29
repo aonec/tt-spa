@@ -1,6 +1,6 @@
-import { UserIcon } from 'ui-kit/icons';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserIcon } from '../../../../ui-kit/icons';
 
 export const UserInfoWrapper = styled.div`
   padding: 5px 6px 15px;

@@ -1,7 +1,7 @@
 import { getConsuptionRates } from './managementFirmConsumptionRatesService.api';
 import { MangingFirmsConsumptionRatesDictionary } from './managementFirmConsumptionRatesService.types';
-import { EResourceTypeConsumptionRateResponseDictionaryItem } from '../../api/types';
 import { createDomain, guard, sample } from 'effector';
+import { EResourceTypeConsumptionRateResponseDictionaryItem } from '../../../api/types';
 
 const domain = createDomain('managementFirmConsumptionRatesService');
 

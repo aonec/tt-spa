@@ -1,8 +1,8 @@
-import { EResourceType } from '../../api/types';
 import {
   ConsumptionRateResponse,
+  EResourceType,
   EResourceTypeConsumptionRateResponseDictionaryItem,
-} from '../../api/types';
+} from "../../../api/types";
 
 export type MangingFirmsConsumptionRatesDictionary = {
   [managementFirmId: number]:

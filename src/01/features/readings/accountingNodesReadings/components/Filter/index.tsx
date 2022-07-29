@@ -1,21 +1,17 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
 import { accountingNodesFilterForm } from '../../models';
-import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { useRef } from 'react';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import {
-  $existingStreets,
-  ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
+
 import { useStore } from 'effector-react';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
+import { $existingStreets, ExistingStreetsGate } from '../../../../housingStocks/displayHousingStockStreets/model';
+import { $existingCities, ExistingCitiesGate } from '../../../../housingStocks/displayHousingStockCities/models';
+import { fromEnter } from '../../../../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { getArrayByCountRange } from '../../../../../_pages/MetersPage/components/utils';
+import { useAutocomplete } from '../../../../../_pages/MetersPage/hooks/useFilter';
+import { SelectSC, StyledAutocomplete } from '../../../../../shared/ui/Fields';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
+
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);

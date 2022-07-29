@@ -1,6 +1,5 @@
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useStore } from 'effector-react';
-import React from 'react';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
 import { ConfirmReadingValueModal } from '../readingsInput/confirmInputReadingModal';
 import { AccountingNodesFilter } from './components/Filter';
 import { MeteringDevicesList } from './components/MeteringDevicesList';

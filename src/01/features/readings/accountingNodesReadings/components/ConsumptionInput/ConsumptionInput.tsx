@@ -1,9 +1,9 @@
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { updateHousingMeteringDeviceReading } from '01/_api/meteringDeviceReadings';
 import moment from 'moment';
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { updateHousingMeteringDeviceReading } from '../../../../../_api/meteringDeviceReadings';
+import { fromEnter } from '../../../../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { RequestStatusShared } from '../../../displayReadingHistory/hooks/useReadingValues';
 import { StyledMeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 

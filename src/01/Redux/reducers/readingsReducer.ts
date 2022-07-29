@@ -1,8 +1,8 @@
-import { ReadingsStateType } from '01/_api/houses_readings_page';
-import { IndividualDeviceType } from '../../../types';
-import { ActionTypes } from '../ducks/readings/actionCreators';
-import { ReadingsActionsType } from '../ducks/readings/contracts/actionTypes';
-import { IndividualDeviceListItemResponse } from '.../../api/types';
+import { IndividualDeviceListItemResponse } from "../../../api/types";
+import { IndividualDeviceType } from "../../../types";
+import { ReadingsStateType } from "../../_api/houses_readings_page";
+import { ActionTypes } from "../ducks/readings/actionCreators";
+import { ReadingsActionsType } from "../ducks/readings/contracts/actionTypes";
 
 export type DisabledStateType = {
   deviceId: number;

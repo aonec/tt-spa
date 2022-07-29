@@ -40,13 +40,6 @@ import "../features/init";
 import { ApartmentsRouteGroup } from "./routeGroups/ApartmentsRouteGroup";
 import styledC from "styled-components";
 import { SettingsPageContainer } from "../features/settings/SettingsPageContainer";
-import { ObjectsProfileContainer } from "services/objects/objectsProfileService";
-import { DevicesProfileContainer } from "services/devices/devicesProfileService";
-import {
-  TasksProfileContainer,
-  tasksProfileService,
-} from "services/tasks/tasksProfileService";
-import { EditElectricNodeContainer } from "services/devices/editElectricNodeService";
 import { StatisticsPage } from "../features/statistics";
 import { EditManagingFirmUserPage } from "../features/staff/managingFirmUser/editManagingFirmUser";
 import { Space } from "../shared/ui/Layout/Space/Space";
@@ -56,6 +49,10 @@ import { NodeArchivePageContainer } from "../features/nodes/nodeArchiveService";
 import { ChangeODPUContainer } from "../../services/devices/сhangeODPUService";
 import { ApartmentActs } from "../features/actsJournal/displayActsJournal";
 import { MenuContainer } from "../../services/menuService";
+import { DevicesProfileContainer } from "../../services/devices/devicesProfileService";
+import { ObjectsProfileContainer } from "../../services/objects/objectsProfileService";
+import { EditElectricNodeContainer } from "../../services/devices/editElectricNodeService";
+import { TasksProfileContainer, tasksProfileService } from "../../services/tasks/tasksProfileService";
 
 moment.locale("ru");
 

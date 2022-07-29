@@ -1,8 +1,8 @@
-import { getMeteringDeviceReadings } from '01/_api/meteringDeviceReadings';
 import { useEvent } from 'effector-react';
 import moment from 'moment';
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from '../../api/types';
 import { useState, useEffect } from 'react';
+import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from '../../../../../../api/types';
+import { getMeteringDeviceReadings } from '../../../../../_api/meteringDeviceReadings';
 import { meteringDeviceReadingsService } from '../MeteringDevicesList/meteringDevicesListService.model';
 
 export interface MeteringDeviceReading

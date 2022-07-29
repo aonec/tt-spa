@@ -1,16 +1,13 @@
-import { $apartment } from '01/features/apartments/displayApartment/models';
-import { HousingStockAddress } from '01/features/individualDevices/addIndividualDevice/components/HousingStockAddress';
-import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
-import { IsActiveBool } from '01/tt-components/IsActive';
-import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { GoBack } from '../../../../../ui-kit/shared_components/GoBack';
+import { getApartmentFromFullAddress } from '../../../../../utils/getApartmentFromFullAddress';
+import { Spaces } from '../../../../shared/ui/Layout/Space/Space';
+import { IsActiveBool } from '../../../../tt-components/IsActive';
+import { HeaderWrap, Title } from '../../../../_components/Headers';
+import { $individualDevice } from '../../../individualDevices/displayIndividualDevice/models';
+import { DeviceDataString } from '../../../individualDevices/switchIndividualDevice/components/DeviceDataString';
 
 interface Props {
   isModal?: boolean;

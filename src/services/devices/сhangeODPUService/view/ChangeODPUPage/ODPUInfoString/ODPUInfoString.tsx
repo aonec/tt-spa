@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
+import { ResourceIconLookup } from '../../../../../../ui-kit/shared_components/ResourceIconLookup';
 import {
   DeviceInfoWrapper,
   ModelWrapper,
   SerialNumberWrapper,
 } from './ODPUInfoString.styled';
 import { ODPUInfoStringProps } from './ODPUInfoString.types';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 export const ODPUInfoString: FC<ODPUInfoStringProps> = ({ device }) => {
   const { resource, serialNumber, model } = device;

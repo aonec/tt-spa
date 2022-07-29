@@ -1,8 +1,8 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Input } from 'antd';
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { getArrayByCountRange } from '../../../../_pages/MetersPage/components/utils';
 import { RequestStatusShared } from '../hooks/useReadingValues';
 
 interface Props {

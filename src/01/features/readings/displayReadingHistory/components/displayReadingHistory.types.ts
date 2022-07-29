@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { IndividualDeviceReadingsItemHistoryResponse } from '../../api/types';
+import { IndividualDeviceReadingsItemHistoryResponse } from '../../../../../api/types';
 
 export type RenderReading = {
   reading?: IndividualDeviceReadingsItemHistoryResponse;
