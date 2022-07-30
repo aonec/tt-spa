@@ -1,7 +1,7 @@
-import { FileData } from '01/hooks/useFilesUpload';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { useForm } from 'effector-forms/dist';
 import React from 'react';
+import { FileData } from '../../../../../hooks/useFilesUpload';
+import { FilesUpload } from '../../../../../shared/ui/FilesUpload';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 

@@ -1,4 +1,4 @@
-import { NodeSetRegisteredRequest, NodeSetNotRegisteredRequest } from '../../api/types';
+import { NodeSetNotRegisteredRequest, NodeSetRegisteredRequest } from "../../../../../api/types";
 
 export type Error = {
   response: {

@@ -8,7 +8,6 @@ import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import Nodes from './components/Nodes';
-import { CalculatorResponse, TaskListResponse } from '.../../api/types';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import RelatedDevices from './components/RelatedDevices';
@@ -18,6 +17,7 @@ import { CalculatorProfileContext } from './CalculatorProfileContext';
 import ModalCheckDevice from '../../_modals/ModalCheckDevice';
 import Events from '../../tt-components/Events';
 import Grid from '../../_components/Grid';
+import { CalculatorResponse, TaskListResponse } from '../../../api/types';
 
 export const CalculatorProfile = () => {
   const { push } = useHistory();

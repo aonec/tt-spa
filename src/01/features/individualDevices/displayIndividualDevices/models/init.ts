@@ -1,8 +1,4 @@
-import {
-  fetchHousingStockFx,
-  HousingStockGate,
-} from '01/features/housingStocks/displayHousingStock/models';
-import { getIndividualDevices } from '01/_api/individualDevices';
+
 import { combine, forward, guard, sample } from 'effector';
 import {
   $individualDevices,
@@ -21,6 +17,8 @@ import {
   resetIndividualDevices,
   showClosedDevices,
 } from '.';
+import { getIndividualDevices } from '../../../../_api/individualDevices';
+import { fetchHousingStockFx, HousingStockGate } from '../../../housingStocks/displayHousingStock/models';
 import { toArray } from '../../addIndividualDevice/components/CheckFormValuesModal';
 
 fetchIndividualDevicesFx.use(getIndividualDevices);

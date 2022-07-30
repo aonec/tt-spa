@@ -1,15 +1,5 @@
-import {
-  CreateIndividualDeviceRequest,
-  EIndividualDeviceRateType,
-  EResourceType,
-} from './../../.../../api/types';
-import { FileData } from '01/hooks/useFilesUpload';
-import {
-  CreateCreateIndividualDeviceWithMagnetSealRequest,
-  createIndividualDevice,
-} from '01/_api/individualDevices';
+
 import { forward, sample } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from '../../api/types';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -25,6 +15,9 @@ import {
   resetCreationRequestStatus,
 } from './index';
 import moment from 'moment';
+import { createIndividualDevice } from '../../../../_api/individualDevices';
+import { BaseIndividualDeviceReadingsCreateRequest, CreateIndividualDeviceRequest } from '../../../../../api/types';
+import { FileData } from '../../../../hooks/useFilesUpload';
 
 createIndividualDeviceFx.use(createIndividualDevice);
 

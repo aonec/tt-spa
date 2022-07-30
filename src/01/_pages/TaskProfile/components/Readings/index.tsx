@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useStore } from 'effector-react';
-import { $task } from '01/features/tasks/displayTask/models';
-import { IndividualDeviceListItemResponse } from '../../api/types';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { getReadingMonth } from './Readings.utils';
 import { MonthWrapper } from './Readings.styled';
+import { IndividualDeviceListItemResponse } from '../../../../../api/types';
+import { getIndividualDeviceRateNumByName } from '../../../MetersPage/components/MeterDevices/ApartmentReadings';
+import { getArrayByCountRange } from '../../../MetersPage/components/utils';
+import { ReadingInputStyled } from '../../../../features/tasks/correctionReadings/CorrectionReadings.styled';
+import { getReadingMonth } from './Readings.utils';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { $task } from '../../../../features/tasks/displayTask/models';
+import { SpaceLine } from '../../../../shared/ui/Layout/Space/Space';
+import DeviceInfo from '../../../MetersPage/components/MeterDevices/components/DeviceInfo';
 
 type Props = {
   getData: (data: any) => void;

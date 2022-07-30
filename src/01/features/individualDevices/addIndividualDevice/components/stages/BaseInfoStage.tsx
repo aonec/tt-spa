@@ -1,11 +1,4 @@
-import {
-  $individualDeviceMountPlaces,
-  IndividualDeviceMountPlacesGate,
-} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { InputTT } from '01/tt-components';
-import { allResources } from '01/tt-components/localBases';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+
 import { AutoComplete, Form, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -16,20 +9,21 @@ import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EIndividualDeviceRateType, EResourceType } from '../../api/types';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import {
-  $individualDevicesNames,
-  IndividualDevicecModelsGate,
-} from '01/features/individualDevices/displayIndividualDevicesNames/models';
+
 import { getBitDepthAndScaleFactor } from '../../utils';
-import {
-  $contractors,
-  ContractorsGate,
-} from '01/features/contractors/displayContractors/models';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { $individualDeviceMountPlaces, IndividualDeviceMountPlacesGate } from '../../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { $individualDevicesNames, IndividualDevicecModelsGate } from '../../../displayIndividualDevicesNames/models';
+import { DatePickerNative } from '../../../../../shared/ui/DatePickerNative';
+import { getIndividualDeviceRateNumByName } from '../../../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { InputTT } from '../../../../../tt-components';
+import { $contractors, ContractorsGate } from '../../../../contractors/displayContractors/models';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { StockIconTT } from '../../../../../_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { allResources } from '../../../../../tt-components/localBases';
+import { StyledSelect } from '../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { EIndividualDeviceRateType, EResourceType } from '../../../../../../api/types';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,8 +1,8 @@
-import { FileData, useFilesUpload } from '01/hooks/useFilesUpload';
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import { FilesList } from '01/shared/ui/FilesList';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { FileData, useFilesUpload } from '../../../hooks/useFilesUpload';
+import { DragAndDrop } from '../DragAndDrop';
+import { FilesList } from '../FilesList';
 
 interface Props {
   onChange?(files: FileData[]): void;

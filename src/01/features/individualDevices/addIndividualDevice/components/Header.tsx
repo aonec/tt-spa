@@ -1,7 +1,7 @@
-import { HeaderWrap, Title } from '01/_components/Headers';
 import React from 'react';
 import styled from 'styled-components';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from '../../../../../ui-kit/shared_components/GoBack';
+import { HeaderWrap, Title } from '../../../../_components/Headers';
 import { HousingStockAddress } from './HousingStockAddress';
 
 export const CreateIndividualDeviceFormHeader: React.FC = () => (

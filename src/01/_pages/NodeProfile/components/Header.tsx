@@ -5,13 +5,13 @@ import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { PipeNodeResponse } from '../.../../api/types';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
-import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { Tooltip } from 'antd';
-import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
-import { fullAddressesString } from 'utils/additionalAddressesString';
+import { PipeNodeResponse } from '../../../../api/types';
+import { fullAddressesString } from '../../../../utils/additionalAddressesString';
+import { nodeCommercialRegistrationService } from '../../../features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
+import { AdditionalAddress } from '../../CalculatorProfile/components/Header.styled';
 
 interface HeaderInterface {
   node: PipeNodeResponse;

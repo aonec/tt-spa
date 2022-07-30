@@ -1,13 +1,13 @@
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import { FilesList } from '01/shared/ui/FilesList';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { ModalTT } from '01/shared/ui/ModalTT';
-import { DatePickerTT, InputTT } from '01/tt-components';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form } from 'antd';
 import moment from 'moment';
 import React, { FC, SyntheticEvent } from 'react';
+import { FilesList } from '../../../../shared/ui/FilesList';
+import { FilesUpload } from '../../../../shared/ui/FilesUpload';
+import { Grid } from '../../../../shared/ui/Layout/Grid';
+import { ModalTT } from '../../../../shared/ui/ModalTT';
+import { DatePickerTT, InputTT } from '../../../../tt-components';
+import { StyledSelect } from '../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { ErrorMessage } from '../../../contractors/addContractors';
 import { EditNodeCheckPayload } from './models';
 import { CheckingActDocumentType } from './utils';
 

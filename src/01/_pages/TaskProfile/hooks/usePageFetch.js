@@ -5,7 +5,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import { getTask, moveStage } from '01/_api/task_profile_page';
 import { getCalculator } from '../../../_api/device_page';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { getApartmentAddressString } from '../../../../utils/getApartmentAddress';
 
 export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams();

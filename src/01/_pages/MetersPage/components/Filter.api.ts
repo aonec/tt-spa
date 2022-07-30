@@ -1,8 +1,6 @@
-import {
-  ApartmentListResponse,
-  ApartmentListResponsePagedList,
-} from './../.../../api/types';
-import { axios } from '../../api/axios';
+
+import { axios } from '../../../../api/axios';
+import { ApartmentListResponse, ApartmentListResponsePagedList } from '../../../../api/types';
 import { GetApartmentRequestPayload } from './Filter.types';
 
 export const getApartment = async ({

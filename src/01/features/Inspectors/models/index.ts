@@ -1,6 +1,6 @@
-import { InspectorResponse } from './../.../../api/types';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
+import { InspectorResponse } from '../../../../api/types';
 
 export const $inspector = createStore<InspectorResponse | null>(null);
 

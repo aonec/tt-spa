@@ -1,18 +1,18 @@
 import React from 'react';
 import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
-import { EIndividualDeviceRateType, EResourceType } from '../../api/types';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import styled from 'styled-components';
-import { Spaces } from '01/shared/ui/Layout/Space/Space';
+import { EIndividualDeviceRateType, EResourceType } from '../../../../../api/types';
+import { Spaces } from '../../../../shared/ui/Layout/Space/Space';
+import { StockIconTT } from '../../../../_pages/Devices/components/DeviceBlock/DeviceBlock';
+import DeviceIcons from '../../../../_components/DeviceIcons';
 
 export interface DataStringDevice {
   resource: EResourceType | null;
   model: string | null;
   serialNumber: string | null;
   measurableUnitString?: string | null;
-  rateType?: EIndividualDeviceRateType;
+  rateType?: EIndividualDeviceRateType ;
 }
 
 interface Props {

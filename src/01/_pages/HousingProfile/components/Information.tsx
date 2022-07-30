@@ -1,17 +1,17 @@
 import React from 'react';
-import { convertDateDots } from '01/_api/utils/convertDate';
-import { ListWrap, ListItem } from '01/_components/List';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
   magistrals,
 } from '../../../tt-components/localBases';
-import { PipeHousingMeteringDeviceResponse } from '../.../../api/types';
 import { Subtitle } from '../../../_components/Headers';
-import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { Tooltip } from 'antd';
-import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { additionalAddressesString } from '../../../../utils/additionalAddressesString';
+import { ListItem, ListWrap } from '../../../_components/List';
+import { getHousingStockAddress } from '../../../../utils/getHousingStockAddress';
+import { AdditionalAddressDescription } from '../../CalculatorProfile/components/Header.styled';
+import { convertDateDots } from '../../../_api/utils/convertDate';
+import { PipeHousingMeteringDeviceResponse } from '../../../../api/types';
 
 interface InformationInterface {
   device: PipeHousingMeteringDeviceResponse;

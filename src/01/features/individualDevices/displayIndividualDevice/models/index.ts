@@ -1,6 +1,6 @@
-import { IndividualDeviceResponse } from '../../api/types';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
+import { IndividualDeviceResponse } from '../../../../../api/types';
 
 export const $individualDevice = createStore<IndividualDeviceResponse | null>(
   null

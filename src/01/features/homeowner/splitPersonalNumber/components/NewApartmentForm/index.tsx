@@ -1,15 +1,15 @@
-import { PersonalNumberEditForm } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberEditForm';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import React from 'react';
 import { Wrap } from '../TransferDevices';
 import { Form } from 'antd';
-import { InputTT } from '01/tt-components';
 import { useStore } from 'effector-react';
-import { $apartment } from '01/features/apartments/displayApartment/models';
 import { newApartmentPersonalNumberForm } from '../../models';
 import { useForm } from 'effector-forms/dist';
-import { ErrorMessage } from '01/features/contractors/addContractors';
+import { $apartment } from '../../../../apartments/displayApartment/models';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
+import { InputTT } from '../../../../../tt-components';
+import { ErrorMessage } from '../../../../contractors/addContractors';
+import { SpaceLine } from '../../../../../shared/ui/Layout/Space/Space';
+import { PersonalNumberEditForm } from '../../../editPersonalNumber/components/PersonalNumberEditForm';
 
 export const NewApartmentForm = () => {
   const apartment = useStore($apartment);

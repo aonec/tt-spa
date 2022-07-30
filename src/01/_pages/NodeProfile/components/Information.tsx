@@ -3,14 +3,12 @@ import moment from 'moment';
 import { ListWrap, ListItem } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { nodeStatusList } from '../../../tt-components/localBases';
-import {
-  CalculatorIntoNodeResponse,
-  PipeNodeResponse,
-} from '../.../../api/types';
+
 import { Tooltip } from 'antd';
-import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
-import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../api/types';
+import { additionalAddressesString } from '../../../../utils/additionalAddressesString';
+import { getHousingStockAddress } from '../../../../utils/getHousingStockAddress';
+import { AdditionalAddressDescription } from '../../CalculatorProfile/components/Header.styled';
 
 interface HeaderInterface {
   node: PipeNodeResponse;

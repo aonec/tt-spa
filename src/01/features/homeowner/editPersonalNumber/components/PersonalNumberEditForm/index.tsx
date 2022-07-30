@@ -1,11 +1,6 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { Form, Switch } from 'antd';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { InputTT } from '01/tt-components';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Trash } from 'react-bootstrap-icons';
 import { useForm } from 'effector-forms/dist';
 import {
@@ -13,9 +8,13 @@ import {
   personalNumberEditForm,
   PersonalNumberFormGate,
 } from '../../models';
-import { ChangeEvent } from 'react-router/node_modules/@types/react';
 import { useHistory, useParams } from 'react-router';
-import { ErrorMessage } from '01/features/contractors/addContractors';
+import { DatePickerNative } from '../../../../../shared/ui/DatePickerNative';
+import { ErrorMessage } from '../../../../contractors/addContractors';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
+import { InputTT } from '../../../../../tt-components';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 
 interface Props {
   type?: 'switch' | 'edit' | 'split';

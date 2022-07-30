@@ -1,12 +1,12 @@
 import React from 'react';
 import { FC } from 'react';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { CheckHistoryDocument } from './CheckHistoryDocument';
 import styled from 'styled-components';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { NodeCheckResponse } from '../../api/types';
 import { EditNodeCheckPayload } from '../../checkNode/models';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+import { PendingLoader } from '../../../../../shared/ui/PendingLoader';
+import { NodeCheckResponse } from '../../../../../../api/types';
 
 interface Props {
   documents: NodeCheckResponse[] | null;
@@ -29,7 +29,7 @@ export const NodeChecks: FC<Props> = (props) => {
 
   return (
     <Wrap>
-      <PendingLoader loading={pending}>
+      <PendingLoader  loading={pending}>
         <Header temp={checkHistoryTemp}>
           <div>Дата</div>
           <div>Тип</div>

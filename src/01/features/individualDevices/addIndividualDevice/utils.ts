@@ -1,4 +1,4 @@
-import { ApartmentResponse, EResourceType } from './../.../../api/types';
+import { ApartmentResponse, EResourceType } from "../../../../api/types";
 
 export function getAddress(apartment: ApartmentResponse | null) {
   if (!apartment) return;

@@ -1,13 +1,12 @@
-import { FilesUpload } from '01/shared/ui/FilesUpload';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { DatePickerTT } from '01/tt-components';
-import { EDocumentType } from '../../api/types';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { NodeSetRegisteredRequest } from '../../api/types';
 import React, { FC, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { EDocumentType, NodeSetRegisteredRequest } from '../../../../../../../api/types';
+import { FilesUpload } from '../../../../../../shared/ui/FilesUpload';
+import { Grid } from '../../../../../../shared/ui/Layout/Grid';
+import { DatePickerTT } from '../../../../../../tt-components';
 import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCommercialAccountingForm.types';
 
 export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercialAccountingFormProps> = ({

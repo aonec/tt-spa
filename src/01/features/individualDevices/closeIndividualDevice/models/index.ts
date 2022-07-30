@@ -1,11 +1,9 @@
-import {
-  EClosingReason,
-  IndividualDeviceListItemResponse,
-} from './../../.../../api/types';
+
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
+import { EClosingReason, IndividualDeviceListItemResponse } from '../../../../../api/types';
+import { CloseIndividualDeviceRequestBody } from '../../../../_api/individualDevices';
 
 export const $closingIndividualDevice = createStore<IndividualDeviceListItemResponse | null>(
   null

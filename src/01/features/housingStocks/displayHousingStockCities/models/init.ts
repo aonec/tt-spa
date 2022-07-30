@@ -6,7 +6,7 @@ import {
   setSelectedCity,
 } from './index';
 import { forward } from 'effector';
-import { getExistingCities } from '01/_api/housingStocks';
+import { getExistingCities } from '../../../../_api/housingStocks';
 
 fetchExistingCities.use(getExistingCities);
 

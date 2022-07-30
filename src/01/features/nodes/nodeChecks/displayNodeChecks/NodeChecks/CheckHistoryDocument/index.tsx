@@ -1,5 +1,3 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import confirm from 'antd/lib/modal/confirm';
 import moment from 'moment';
 import React from 'react';
@@ -8,8 +6,10 @@ import { checkHistoryTemp, ListItem } from '../NodeChecks';
 import { getCheckingActDocument, getOnSaveFile } from '../utils';
 import { ReactComponent as DocumentIcon } from '../assets/documentIcon.svg';
 import { ReactComponent as DownloadIcon } from '../assets/downloadIcon.svg';
-import { NodeCheckResponse } from '../../api/types';
 import styled from 'styled-components';
+import { Flex } from '../../../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../../../shared/ui/Layout/Space/Space';
+import { NodeCheckResponse } from '../../../../../../../api/types';
 
 interface Props {
   document: NodeCheckResponse;

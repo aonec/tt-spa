@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Title } from './Title';
 import { Text } from './Text';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getHousingStockAddress } from '../../../../utils/getHousingStockAddress';
 
 export const Header = ({ apartment }) => {
   return (

@@ -4,7 +4,7 @@ import {
   $individualDevice,
 } from './index';
 import { forward, guard } from 'effector';
-import { getIndividualDevice } from '01/_api/individualDevices';
+import { getIndividualDevice } from '../../../../_api/individualDevices';
 
 fetchIndividualDeviceFx.use(getIndividualDevice);
 

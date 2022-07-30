@@ -2,20 +2,15 @@ import { useState } from 'react';
 import React from 'react';
 import styled from 'styled-components';
 import { DataStringDevice, DeviceDataString } from './DeviceDataString';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import {
-  IndividualDeviceReadingsResponse,
-  SwitchIndividualDeviceReadingsCreateRequest,
-} from '../../.../../api/types';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import {
-  getPreviousReadingsMonth,
-  getDateByReadingMonthSlider,
-} from '01/shared/lib/readings/getPreviousReadingsMonth';
+
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
+import { getArrayByCountRange } from '../../../../_pages/MetersPage/components/utils';
+import { getIndividualDeviceRateNumByName } from '../../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { getDateByReadingMonthSlider, getPreviousReadingsMonth } from '../../../../shared/lib/readings/getPreviousReadingsMonth';
+import { IndividualDeviceReadingsResponse, SwitchIndividualDeviceReadingsCreateRequest } from '../../../../../api/types';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];

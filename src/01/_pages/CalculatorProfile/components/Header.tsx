@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
-import { CalculatorResponse } from '../.../../api/types';
 import { Loader } from '../../../components';
 import {
   DEFAULT_BUILDING,
@@ -11,7 +10,8 @@ import {
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { Tooltip } from 'antd';
 import { AdditionalAddress } from './Header.styled';
-import { fullAddressesString } from 'utils/additionalAddressesString';
+import { fullAddressesString } from '../../../../utils/additionalAddressesString';
+import { CalculatorResponse } from '../../../../api/types';
 
 interface HeaderInterface {
   device: CalculatorResponse | null;

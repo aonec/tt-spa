@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalTT } from '01/shared/ui/ModalTT';
-import { IndividualDeviceListItemResponse } from '../../api/types';
+import { IndividualDeviceListItemResponse } from '../../../../../../api/types';
+import { ModalTT } from '../../../../../shared/ui/ModalTT';
 
 type Props = {
   visible: boolean;

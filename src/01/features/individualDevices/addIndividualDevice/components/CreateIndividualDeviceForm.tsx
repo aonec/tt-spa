@@ -1,12 +1,12 @@
-import { RightAlign } from '01/shared/ui/Layout/RightAlign';
-import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
-import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { RightAlign } from '../../../../shared/ui/Layout/RightAlign';
+import { Space, Spaces } from '../../../../shared/ui/Layout/Space/Space';
+import { ButtonTT } from '../../../../tt-components';
 import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,

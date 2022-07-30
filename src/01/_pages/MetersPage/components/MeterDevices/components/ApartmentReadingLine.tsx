@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { useReadings } from '../../../../../hooks/useReadings';
-import { message, Tooltip } from 'antd';
-import DeviceInfo from './DeviceInfo';
+import React, { useState } from "react";
+import { useReadings } from "../../../../../hooks/useReadings";
+import { message, Tooltip } from "antd";
+import DeviceInfo from "./DeviceInfo";
+
+import { useHistory, useParams } from "react-router-dom";
+import confirm from "antd/lib/modal/confirm";
+import { useEvent, useStore } from "effector-react";
+
+import { FullDeviceLine } from "./apartment_reading_line.styled";
+import { ActionButton } from "./action_button/action_button";
+import { $userRoleTypes } from "../../../../../features/managementFirmUsers/displayCurrentUser/models";
+import { deleteIndividualDeviceService } from "../../../../../features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models";
 import {
-  IndividualDeviceListItemResponse,
   ESecuredIdentityRoleName,
-} from '../../api/types';
-import { ButtonTT, MenuButtonTT } from '01/tt-components';
-import { useHistory, useParams } from 'react-router-dom';
-import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
+  IndividualDeviceListItemResponse,
+} from "../../../../../../api/types";
+import { closingIndividualDeviceButtonClicked } from "../../../../../features/individualDevices/closeIndividualDevice/models";
+import { HistoryIcon, StarIcon } from "../../../../../../ui-kit/icons";
+import { ButtonTT, MenuButtonTT } from "../../../../../tt-components";
+import { Space } from "../../../../../shared/ui/Layout/Space/Space";
+import { reopenIndividualDevice } from "../../../../../_api/individualDevices";
+import { openReadingsHistoryModal } from "../../../../../features/readings/displayReadingHistory/models";
+import { Flex } from "../../../../../shared/ui/Layout/Flex";
+import { refetchIndividualDevices } from "../../../../../features/individualDevices/displayIndividualDevices/models";
 import {
   Footer as ModalFooter,
   Header as ModalHeader,
   StyledModal as StyledAntdModal,
-} from '01/shared/ui/Modal/Modal';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import confirm from 'antd/lib/modal/confirm';
-import { reopenIndividualDevice } from '01/_api/individualDevices';
-import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
-import { useEvent, useStore } from 'effector-react';
-import { $userRoleTypes } from '01/features/managementFirmUsers/displayCurrentUser/models';
-import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
-
-import { FullDeviceLine } from './apartment_reading_line.styled';
-import { HistoryIcon, StarIcon } from 'ui-kit/icons';
-import { ActionButton } from './action_button/action_button';
-
+} from "../../../../../shared/ui/Modal/Modal";
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
@@ -67,17 +67,17 @@ const ApartmentReadingLine = ({
 
   const menuButtonArr = [
     {
-      title: 'Редактировать',
+      title: "Редактировать",
       show: true,
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
     },
     {
-      title: 'Замена или поверка прибора',
+      title: "Замена или поверка прибора",
       show: true,
       cb: () => setIsModalOpen(true),
     },
     {
-      title: 'Открыть прибор',
+      title: "Открыть прибор",
       show: closed,
       cb: () =>
         confirm({
@@ -86,27 +86,27 @@ const ApartmentReadingLine = ({
             try {
               await reopenIndividualDevice(device.id);
 
-              message.success('Прибор успешно переоткрыт');
+              message.success("Прибор успешно переоткрыт");
 
               refetchIndividualDevices();
             } catch (error) {
-              message.error('Не удалось открыть прибор');
+              message.error("Не удалось открыть прибор");
             }
           },
-          okText: 'Да',
-          cancelText: 'Отмена',
+          okText: "Да",
+          cancelText: "Отмена",
         }),
     },
     {
-      title: 'Закрытие прибора',
+      title: "Закрытие прибора",
       show: !closed,
-      color: 'red',
+      color: "red",
       cb: () => closingIndividualDeviceButtonClicked(device),
     },
     {
-      title: 'Удалить прибор',
+      title: "Удалить прибор",
       show: isSeniorOperator,
-      color: 'red',
+      color: "red",
       cb: () => onDeleteIndividualDevice(device),
     },
   ];
@@ -124,10 +124,10 @@ const ApartmentReadingLine = ({
         {previousReadings}
         {currentReadings}
 
-        <Flex style={{ justifyContent: 'flex-end', width: '100%' }}>
+        <Flex style={{ justifyContent: "flex-end", width: "100%" }}>
           <Tooltip title="Переоткрытие прибора">
             <StarIcon
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() =>
                 history.push(
                   `/apartment/${id}/individualDevice/${device.id}/reopen`
@@ -138,7 +138,7 @@ const ApartmentReadingLine = ({
           <Space w={8} />
           <Tooltip title="История показаний">
             <HistoryIcon
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={
                 () => openReadingsHistoryModal(device.id)
                 // history.push(
@@ -155,7 +155,7 @@ const ApartmentReadingLine = ({
   );
 };
 
-type SwitchType = 'switch' | 'check';
+type SwitchType = "switch" | "check";
 
 const SelectSwitchDeiveTypeModal = ({
   show,
@@ -170,10 +170,8 @@ const SelectSwitchDeiveTypeModal = ({
 
   const { id } = useParams<{ id: string }>();
 
-  const [
-    selectedSwitchType,
-    setSelectedSwitchType,
-  ] = useState<SwitchType | null>(null);
+  const [selectedSwitchType, setSelectedSwitchType] =
+    useState<SwitchType | null>(null);
 
   const next = (to: SwitchType) => () =>
     history.push(`/apartment/${id}/individualDevice/${deviceId}/${to}`);
@@ -193,7 +191,7 @@ const SelectSwitchDeiveTypeModal = ({
       title={<ModalHeader>Выберите действие</ModalHeader>}
       footer={
         <ModalFooter>
-          <ButtonTT color={'white'} key="back" onClick={close}>
+          <ButtonTT color={"white"} key="back" onClick={close}>
             Отмена
           </ButtonTT>
           <ButtonTT
@@ -209,13 +207,13 @@ const SelectSwitchDeiveTypeModal = ({
     >
       <Flex>
         <ActionButton
-          onClick={setSwitchType('switch')}
-          active={isSwitchActive('switch')}
+          onClick={setSwitchType("switch")}
+          active={isSwitchActive("switch")}
           type="switch"
         />
         <ActionButton
-          onClick={setSwitchType('check')}
-          active={isSwitchActive('check')}
+          onClick={setSwitchType("check")}
+          active={isSwitchActive("check")}
           type="check"
         />
       </Flex>

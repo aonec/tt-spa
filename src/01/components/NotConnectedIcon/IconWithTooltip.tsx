@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Tooltip } from 'antd';
+import React, { ReactNode } from "react";
+import styled from "styled-components";
+import { Tooltip } from "antd";
 
 const OpacityContainer = styled.span`
   svg {
@@ -17,6 +17,7 @@ const OpacityContainer = styled.span`
 
 interface IconWithTooltipProps {
   title: string;
+  children?: ReactNode;
 }
 
 export const IconWithTooltip: React.FC<IconWithTooltipProps> = ({

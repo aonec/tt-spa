@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import axios from '../../api/axios';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getHousingStockAddress } from '../../utils/getHousingStockAddress';
 import { createTimeline, createTimer, createDevice } from './utils';
 
 const URL = 'HousingStocks';

@@ -1,16 +1,13 @@
-import {
-  $inspector,
-  fetchInspectorFx,
-  InspectorGate,
-} from '01/features/Inspectors/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { HousingStockResponse } from '../../../.../../api/types';
+import { HousingStockResponse } from '../../../../../../api/types';
+import { getHousingStockAddress } from '../../../../../../utils/getHousingStockAddress';
+import { $inspector, fetchInspectorFx, InspectorGate } from '../../../../../features/Inspectors/models';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   const inspector = useStore($inspector);

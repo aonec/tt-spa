@@ -1,7 +1,7 @@
 import { $housingStock, HousingStockGate } from './index';
 import { guard, sample, combine } from 'effector';
-import { getHousingStock } from '01/_api/housingStocks';
 import { fetchHousingStockFx } from '.';
+import { getHousingStock } from '../../../../_api/housingStocks';
 
 $housingStock.on(
   fetchHousingStockFx.doneData,

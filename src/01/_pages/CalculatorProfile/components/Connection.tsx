@@ -3,7 +3,7 @@ import { ListWrap, ListItem, Title } from '../../../_components/List';
 import styles from '../calculator.module.css';
 import { IconWithTooltip } from '../../../components/NotConnectedIcon/IconWithTooltip';
 import Icon from '../../../tt-components/Icon';
-import { CalculatorResponse } from '../.../../api/types';
+import { CalculatorResponse } from '../../../../api/types';
 
 interface ConnectionInterface {
   device: CalculatorResponse | null;

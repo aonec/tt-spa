@@ -1,5 +1,5 @@
-import { TabsItemInterface } from "01/tt-components/interfaces";
-import { PipeNodeResponse } from "../../api/types";
+import { PipeNodeResponse } from "../../../api/types";
+import { TabsItemInterface } from "../../tt-components/interfaces";
 
 export type ContentProps = {
     tabItems: TabsItemInterface[];

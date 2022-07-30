@@ -1,15 +1,9 @@
 import { createGate } from 'effector-react';
-import {
-  EResourceType,
-  MeteringDeviceResponse,
-  EIndividualDeviceRateType,
-  SwitchIndividualDeviceReadingsCreateRequest,
-  EClosingReason,
-  SwitchIndividualDeviceRequest,
-} from './../../.../../api/types';
+
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { FileData } from '01/hooks/useFilesUpload';
+import { EClosingReason, EIndividualDeviceRateType, EResourceType, MeteringDeviceResponse, SwitchIndividualDeviceReadingsCreateRequest, SwitchIndividualDeviceRequest } from '../../../../../api/types';
+import { FileData } from '../../../../hooks/useFilesUpload';
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
   null

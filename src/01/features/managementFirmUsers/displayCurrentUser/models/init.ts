@@ -2,9 +2,9 @@ import {
   $currentManagingFirmUser,
   CurrentManagingFirmUserGate,
   fetchCurrentManagingFirmUser,
-} from './index';
-import { forward, guard } from 'effector';
-import { getCurrentManagingFirmUser } from '01/_api/managingFirmUser';
+} from "./index";
+import { forward, guard } from "effector";
+import { getCurrentManagingFirmUser } from "../../../../_api/managingFirmUser";
 
 fetchCurrentManagingFirmUser.use(getCurrentManagingFirmUser);
 

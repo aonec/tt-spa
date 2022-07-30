@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { InputSC } from '01/shared/ui/Fields';
+import { InputSC } from '../../../shared/ui/Fields';
 
 export const Wrapper = styled.div`
   padding-right: 18px;

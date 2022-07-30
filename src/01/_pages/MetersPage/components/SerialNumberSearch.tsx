@@ -1,25 +1,25 @@
-import axios from '../../api/axios';
-import { Loader } from '01/components';
-import ActiveLine from '01/components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { translateMountPlace } from '01/utils/translateMountPlace';
-import { DateLine } from '01/_components/DateLine/DateLine';
 import { CancelTokenSource } from 'axios';
-import { IndividualDeviceListItemResponse } from '../../api/types';
 import React from 'react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { axios } from '../../../../api/axios';
+import { IndividualDeviceListItemResponse } from '../../../../api/types';
+import { Loader } from '../../../components';
+import ActiveLine from '../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
+import { DeviceDataString } from '../../../features/individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { StyledAutocomplete } from '../../../shared/ui/Fields';
+import { Flex } from '../../../shared/ui/Layout/Flex';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
+import { translateMountPlace } from '../../../utils/translateMountPlace';
+import { DateLine } from '../../../_components/DateLine/DateLine';
 
 interface Props {
   setSearchContext: (context: 1 | 2) => void;
 }
 
 export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
-  const [serialNumber, setSerialNumber] = useState('');
+  const [serialNumber, setSerialNumber] = useState<string>('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
   const [loading, setLoading] = useState(false);
   const [

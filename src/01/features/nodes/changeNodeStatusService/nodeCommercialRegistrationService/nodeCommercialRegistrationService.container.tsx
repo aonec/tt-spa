@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
-import { ENodeCommercialAccountStatus, EResourceType } from '../../api/types';
 import React from 'react';
-import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
+import { ENodeCommercialAccountStatus, EResourceType } from '../../../../../api/types';
+import { FormModal } from '../../../../../ui-kit/Modals/FormModal/FormModal';
 import { nodeCommercialRegistrationService } from './nodeCommercialRegistrationService.models';
 import { RegisterNodeOnCommercialAccountingForm } from './view/RegisterNodeOnCommercialAccountingForm';
 

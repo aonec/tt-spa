@@ -1,7 +1,7 @@
-import { GetIndividualDeviceRequestParams } from '01/_api/individualDevices';
 import { combine, createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { IndividualDeviceListItemResponse } from '../../api/types';
+import { IndividualDeviceListItemResponse } from '../../../../../api/types';
+import { GetIndividualDeviceRequestParams } from '../../../../_api/individualDevices';
 
 export const $isShownClosedDevices = createStore(false);
 

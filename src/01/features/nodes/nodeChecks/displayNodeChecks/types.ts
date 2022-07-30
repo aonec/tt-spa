@@ -1,4 +1,4 @@
-import { EOrderByRule } from '../../api/types';
+import { EOrderByRule } from "../../../../../api/types";
 
 export interface GetNodeChecksRequest {
   PageNumber?: number;

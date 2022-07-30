@@ -1,6 +1,6 @@
-import { getInspector } from '01/_api/inspectors';
 import { forward } from 'effector';
 import { $inspector, fetchInspectorFx, InspectorGate } from '.';
+import { getInspector } from '../../../_api/inspectors';
 
 fetchInspectorFx.use(getInspector);
 

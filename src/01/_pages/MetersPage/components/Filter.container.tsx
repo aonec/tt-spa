@@ -2,19 +2,17 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { Radio } from 'antd';
 import { useState } from 'react';
 import { SerialNumberSearch } from './SerialNumberSearch';
-import { AddressSearchContainer } from 'services/addressSearchService';
-import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchInput, SearchWrapper, Wrapper } from './Filters.styled';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFilters } from './Filter.hook';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import {
-  $apartment,
-  fetchApartmentFx,
-} from '01/features/apartments/displayApartment/models';
+
 import { useStore } from 'effector-react';
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
+import { SearchFieldType } from '../../../../services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { $apartment, fetchApartmentFx } from '../../../features/apartments/displayApartment/models';
+import { AddressSearchContainer } from '../../../../services/addressSearchService';
+import { TypeAddressToStart } from '../../../shared/ui/TypeToStart';
+import { fromEnter } from '../../../shared/ui/DatePickerNative';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
 
 const searchfields = [
   SearchFieldType.City,

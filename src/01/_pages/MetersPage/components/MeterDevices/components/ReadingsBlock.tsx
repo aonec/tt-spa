@@ -2,14 +2,11 @@ import React, { MutableRefObject, useEffect } from 'react';
 
 import { Input, Tooltip } from 'antd';
 import styled from 'styled-components';
-import { useSwitchOnInputs } from '01/hooks/useSwitchInputsOnEnter';
-import { EIndividualDeviceReadingsSource } from '../../api/types';
-import {
-  getSourceIcon,
-  getSourceName,
-} from '01/features/readings/displayReadingHistory/components/SourceIcon';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { useSwitchOnInputs } from '../../../../../hooks/useSwitchInputsOnEnter';
+import { EIndividualDeviceReadingsSource } from '../../../../../../api/types';
+import { getSourceIcon, getSourceName } from '../../../../../features/readings/displayReadingHistory/components/SourceIcon';
+import { RequestStatusShared } from '../../../../../features/readings/displayReadingHistory/hooks/useReadingValues';
 
 const ReadingLineStyled = styled.div`
   position: relative;

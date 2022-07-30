@@ -5,21 +5,17 @@ import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
-import { EIndividualDeviceRateType } from '../../.../../api/types';
-import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { useStore } from 'effector-react';
-import {
-  $individualDevices,
-  $isShownClosedDevices,
-  IndividualDevicesGate,
-} from '01/features/individualDevices/displayIndividualDevices/models';
 import { useParams } from 'react-router';
-import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
-import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
+import { $individualDevices, $isShownClosedDevices, IndividualDevicesGate } from '../../../../features/individualDevices/displayIndividualDevices/models';
+import { EIndividualDeviceRateType } from '../../../../../api/types';
+import { ReadingsHistoryModal } from '../../../../features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { CloseIndividualDeviceModal } from '../../../../features/individualDevices/closeIndividualDevice';
+import { ConfirmReadingValueModal } from '../../../../features/readings/readingsInput/confirmInputReadingModal';
+import { DeleteIndividualDeviceModalContainer } from '../../../../features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { getPreviousReadingsMonth } from '../../../../shared/lib/readings/getPreviousReadingsMonth';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType

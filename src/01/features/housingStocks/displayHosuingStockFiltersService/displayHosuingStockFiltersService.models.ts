@@ -1,7 +1,7 @@
 import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
 import _ from 'lodash';
-import { GuidStringDictionaryItem, HousingStockFilterResponse } from '../../api/types';
+import { HousingStockFilterResponse } from '../../../../api/types';
 import { getHosuingStockFilters } from './displayHosuingStockFiltersService.api';
 
 const displayHosuingStockFiltersServiceDomain = createDomain(

@@ -1,14 +1,6 @@
-import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { FileData } from '01/hooks/useFilesUpload';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
-import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, IndividualDeviceMountPlaceListResponse } from '../../api/types';
 import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import {
@@ -20,12 +12,20 @@ import {
   readingValueValidate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { Loader } from '01/components';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { $contractors } from '01/features/contractors/displayContractors/models';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
+import { $individualDeviceMountPlaces } from '../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { $contractors } from '../../../contractors/displayContractors/models';
+import DeviceIcons from '../../../../_components/DeviceIcons';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { StockIconTT } from '../../../../_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { FileData } from '../../../../hooks/useFilesUpload';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { ButtonTT } from '../../../../tt-components';
+import { allResources } from '../../../../tt-components/localBases';
+import { EResourceType, IndividualDeviceMountPlaceListResponse } from '../../../../../api/types';
+import { Loader } from '../../../../components';
+import { Footer, Header, StyledModal } from '../../../../shared/ui/Modal/Modal';
 
 interface ILine {
   name: string;

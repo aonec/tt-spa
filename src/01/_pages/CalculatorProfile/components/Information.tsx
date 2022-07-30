@@ -1,17 +1,16 @@
 import React from 'react';
-import { ListWrap, ListItem } from '01/_components/List';
 import { Subtitle } from '../../../_components/Headers';
 import moment from 'moment';
-import { CalculatorResponse } from '../.../../api/types';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
 import { AdditionalAddressDescription } from './Header.styled';
-import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { additionalAddressesString } from '../../../../utils/additionalAddressesString';
+import { getHousingStockAddress } from '../../../../utils/getHousingStockAddress';
+import { CalculatorResponse } from '../../../../api/types';
+import { ListItem, ListWrap } from '../../../_components/List';
 interface InformationInterface {
   device: CalculatorResponse | null;
 }

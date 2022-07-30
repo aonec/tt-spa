@@ -1,10 +1,10 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { GoBack } from '../../../../../ui-kit/shared_components/GoBack';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { HeaderWrap, Title } from '../../../../_components/Headers';
 import { SwitchIndividualDeviceGate } from '../models';
 import { DeviceDataString } from './DeviceDataString';
 import { HousingStockAddress } from './HousingStockAddress';

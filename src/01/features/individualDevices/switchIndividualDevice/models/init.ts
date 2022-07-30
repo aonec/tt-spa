@@ -7,7 +7,6 @@ import {
   $individualDeviceMountPlaces,
   fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
-import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine } from 'effector';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
@@ -26,16 +25,13 @@ import {
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
-import {
-  EIndividualDeviceRateType,
-  IndividualDeviceReadingsResponse,
-  SwitchIndividualDeviceReadingsCreateRequest,
-  SwitchIndividualDeviceRequest,
-} from '../../api/types';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+
 import moment from 'moment';
 import { getReadingValuesArray } from '../components/ReadingsInput';
+import { EIndividualDeviceRateType, IndividualDeviceReadingsResponse, SwitchIndividualDeviceReadingsCreateRequest, SwitchIndividualDeviceRequest } from '../../../../../api/types';
+import { FileData } from '../../../../hooks/useFilesUpload';
+import { getIndividualDeviceRateNumByName } from '../../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { getArrayByCountRange } from '../../../../_pages/MetersPage/components/utils';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 

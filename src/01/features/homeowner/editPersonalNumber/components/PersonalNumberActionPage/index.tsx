@@ -1,28 +1,25 @@
-import { Loader } from '01/components';
-import {
-  $apartment,
-  ApartmentGate,
-} from '01/features/apartments/displayApartment/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ButtonTT } from '01/tt-components';
-import { Title } from '01/_components/Headers';
-import { useStore } from 'effector-react';
-import { ApartmentResponse, HousingStockListResponse } from '../../api/types';
-import React from 'react';
-import { useHistory, useParams } from 'react-router';
-import styled from 'styled-components';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { useStore } from "effector-react";
+import React, { ReactNode } from "react";
+import { useHistory, useParams } from "react-router";
+import styled from "styled-components";
+import { Flex } from "../../../../../shared/ui/Layout/Flex";
+import { ButtonTT } from "../../../../../tt-components";
+import { Space } from "../../../../../shared/ui/Layout/Space/Space";
+import { Loader } from "../../../../../components";
+import { Title } from "../../../../../_components/Headers";
+import { GoBack } from "../../../../../../ui-kit/shared_components/GoBack";
+import { getApartmentAddressString } from "../../../../../../utils/getApartmentAddress";
+import { $apartment, ApartmentGate } from "../../../../apartments/displayApartment/models";
 
 interface Props {
   title: string;
   onSaveHandler?(): void;
   onCancelHandler?(): void;
   loading?: boolean;
-  type?: 'split';
+  type?: "split";
   saveButtonText?: string;
   cancelButtonText?: string;
+  children: ReactNode;
 }
 
 export const PersonaNumberActionPage: React.FC<Props> = ({
@@ -37,7 +34,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
 }) => {
   const apartment = useStore($apartment);
 
-  const isSplit = type === 'split';
+  const isSplit = type === "split";
 
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -52,13 +49,13 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
       {address}
       <Space />
       {children}
-      <Flex style={{ justifyContent: 'flex-end' }}>
+      <Flex style={{ justifyContent: "flex-end" }}>
         <ButtonTT
-          color={'white'}
+          color={"white"}
           key="back"
           onClick={onCancelHandler || history.goBack}
         >
-          {cancelButtonText || 'Отмена'}
+          {cancelButtonText || "Отмена"}
         </ButtonTT>
         <Space />
         <ButtonTT
@@ -70,9 +67,9 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           {loading ? (
             <Loader show />
           ) : isSplit ? (
-            saveButtonText || 'Далее'
+            saveButtonText || "Далее"
           ) : (
-            'Сохранить изменения'
+            "Сохранить изменения"
           )}
         </ButtonTT>
       </Flex>

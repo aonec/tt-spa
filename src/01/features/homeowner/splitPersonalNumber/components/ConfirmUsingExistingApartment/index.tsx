@@ -1,18 +1,18 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ModalTT } from '01/shared/ui/ModalTT';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { getApartment } from '01/_api/apartments';
-import { getIndividualDevices } from '01/_api/individualDevices';
-import { PersonalNumber } from '01/_pages/MetersPage/components/ApartmentInfo';
 import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
-import { ApartmentResponse, IndividualDeviceListItemResponse } from '../../api/types';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { ApartmentResponse, IndividualDeviceListItemResponse } from '../../../../../../api/types';
+import { getApartmentAddressString } from '../../../../../../utils/getApartmentAddress';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+import { ModalTT } from '../../../../../shared/ui/ModalTT';
+import { PendingLoader } from '../../../../../shared/ui/PendingLoader';
+import { getApartment } from '../../../../../_api/apartments';
+import { getIndividualDevices } from '../../../../../_api/individualDevices';
+import { PersonalNumber } from '../../../../../_pages/MetersPage/components/ApartmentInfo';
 import {
   $checkedExistingApartmentId,
   $isConfirmExistingApartmentModalOpen,
