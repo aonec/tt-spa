@@ -8,8 +8,8 @@ import { $switchRequestStatus } from '.';
 import { combine, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { $homeowner } from '../../displayHomeowner/models';
-import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
+import { $apartment } from '../../../apartments/displayApartment/models';
 
 switchPersonalNumberFx.use(replaceHomeownerAccount);
 

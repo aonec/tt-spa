@@ -1,9 +1,9 @@
-import { Footer, Header, ModalText } from '01/shared/ui/Modal/Modal';
-import { ButtonTT, StyledModal } from '01/tt-components';
-import { Loader } from '01/_components/Loader';
 import { Alert } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
+import { Header, Footer, ModalText } from '../../../shared/ui/Modal/Modal';
+import { ButtonTT, StyledModal } from '../../../tt-components';
+import { Loader } from '../../../_components/Loader';
 import {
   $deletedСonctractorName,
   $isDeleteContractorModalVisible,

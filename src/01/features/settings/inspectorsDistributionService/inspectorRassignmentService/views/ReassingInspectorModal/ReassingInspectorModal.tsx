@@ -1,11 +1,11 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import React, { FC } from 'react';
 import { ReassingInspectorModalProps } from './ReassingInspectorModal.types';
 import { FormWrap, ModalDescription } from './ReassingInspectorModal.styled';
 import { useForm } from 'effector-forms/dist';
 import { Form } from 'antd';
-import { Select } from '01/shared/ui/Select';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Select } from '../../../../../../shared/ui/Select';
+import { ModalTT } from '../../../../../../shared/ui/ModalTT';
+import { ErrorMessage } from '../../../../../../shared/ui/ErrorMessage';
 
 export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
   isOpen,

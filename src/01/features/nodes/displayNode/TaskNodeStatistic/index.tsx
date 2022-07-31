@@ -1,11 +1,11 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { IconTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { ChevronRight } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { IconTT } from '../../../../tt-components';
 import { inputs, outputs } from '../models';
 
 export const TaskNodeStatistic: FC<{ id: number }> = ({ id }) => {

@@ -1,5 +1,3 @@
-import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
@@ -15,6 +13,8 @@ import {
 } from './models';
 import { message, Steps } from 'antd';
 import styled from 'styled-components';
+import { StyledSelect } from '../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { SpaceLine } from '../../../shared/ui/Layout/Space/Space';
 
 export const SwitchPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();

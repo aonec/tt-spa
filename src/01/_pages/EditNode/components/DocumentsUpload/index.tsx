@@ -1,11 +1,12 @@
-import { FileData, useFilesUpload } from '01/hooks/useFilesUpload';
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import { FilesList } from '01/shared/ui/FilesList';
-import { Wide } from '01/shared/ui/FilesUpload';
-import { StyledModal, Header, Footer } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
+
 import { Button } from 'antd';
 import React, { useState } from 'react';
+import { FileData, useFilesUpload } from '../../../../hooks/useFilesUpload';
+import { DragAndDrop } from '../../../../shared/ui/DragAndDrop';
+import { FilesList } from '../../../../shared/ui/FilesList';
+import { Wide } from '../../../../shared/ui/FilesUpload';
+import { StyledModal, Header, Footer } from '../../../../shared/ui/Modal/Modal';
+import { ButtonTT } from '../../../../tt-components';
 
 interface Props {
   onAddHandler(file: FileData): void;

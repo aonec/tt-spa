@@ -1,4 +1,3 @@
-import { deleteContractor } from '01/_api/contractors';
 import { combine, guard, sample } from 'effector';
 import {
   $contractorIdToDelete,
@@ -9,6 +8,7 @@ import {
   deleteContractorConfirmButtonClicked,
   $deletedСonctractorName,
 } from '.';
+import { deleteContractor } from '../../../../_api/contractors';
 import { $contractors } from '../../displayContractors/models';
 
 const contractorDeleted = sample({

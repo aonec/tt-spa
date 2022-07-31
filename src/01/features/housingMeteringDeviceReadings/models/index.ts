@@ -1,10 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import {
-  GetHousingMeteringDeviceReadingsResponse,
-  HousingMeteringDeviceReadingsResponse,
-  EResourceType,
-} from '../.../../api/types';
+
 import { createGate } from 'effector-react';
+import { EResourceType, GetHousingMeteringDeviceReadingsResponse, HousingMeteringDeviceReadingsResponse } from '../../../../api/types';
 import { prepareReadings } from '../lib/groupReadingsByDates';
 
 export const $readings = createStore<GetHousingMeteringDeviceReadingsResponse>({

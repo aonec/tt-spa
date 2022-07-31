@@ -1,11 +1,4 @@
-import { Loader } from '01/components';
-import { AddressIdSearch } from '01/features/addressIdSearch';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { ButtonTT } from '01/tt-components';
+import { DatePickerNative } from '../../../../shared/ui/DatePickerNative';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -24,6 +17,13 @@ import {
   createApartmentActFx,
 } from '../models';
 import { gridTemp } from './TableHeader';
+import { useOnEnterSwitch } from '../../../readings/accountingNodesReadings/components/Filter';
+import { InputSC, SelectSC } from '../../../../shared/ui/Fields';
+import { AddressIdSearch } from '../../../addressIdSearch';
+import { ButtonTT } from '../../../../tt-components';
+import { Space, SpaceLine } from '../../../../shared/ui/Layout/Space/Space';
+import { Loader } from '../../../../components';
+import { Grid } from '../../../../shared/ui/Layout/Grid';
 
 export const AddNewActForm = () => {
   const { fields, submit } = useForm(createActForm);

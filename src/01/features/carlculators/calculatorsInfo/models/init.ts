@@ -1,10 +1,10 @@
-import { getCalculatorInfos } from '01/_api/calculatorsInfo';
 import { forward } from 'effector';
 import {
   $calculatorTypes,
   CalculatorInfosGate,
   fetchCalculatorTypesFx,
 } from '.';
+import { getCalculatorInfos } from '../../../../_api/calculatorsInfo';
 
 fetchCalculatorTypesFx.use(getCalculatorInfos);
 

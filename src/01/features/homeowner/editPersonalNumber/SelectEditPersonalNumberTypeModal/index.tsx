@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import {
   $isSelectEditPersonalNumberTypeModalOpen,
@@ -7,12 +6,13 @@ import {
 } from '../models';
 import styled from 'styled-components';
 import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from '../icons';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { $apartment } from '01/features/apartments/displayApartment/models';
 import { ReactComponent as MainIcon } from './icons/main.svg';
 import { useHistory, useParams } from 'react-router';
+import { $apartment } from '../../../apartments/displayApartment/models';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { StyledSelect } from '../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { ModalTT } from '../../../../shared/ui/ModalTT';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
 
 export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const isOpen = useStore($isSelectEditPersonalNumberTypeModalOpen);

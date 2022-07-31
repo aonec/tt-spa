@@ -1,7 +1,5 @@
-import { Grid } from '01/shared/ui/Layout/Grid';
 import React from 'react';
 import styled from 'styled-components';
-import { FilterButton } from './filterButton/FilterButton';
 import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
 import { Checkbox } from 'antd';
@@ -11,13 +9,10 @@ import { useForm } from 'effector-forms/dist';
 import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
 import { ReactComponent as SortIconTop } from './filterButton/assets/sortArrowsTop.svg';
 import { ReactComponent as SortIconBottom } from './filterButton/assets/sortArrowsBottom.svg';
-import {
-  EActResourceType,
-  EActResourceTypeStringDictionaryItem,
-  EActType,
-  EOrderByRule,
-} from '../../api/types';
-import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
+import { EActResourceType, EActType, EOrderByRule } from '../../../../../api/types';
+import { FilterExtendedSearch } from '../../../../../ui-kit/shared_components/FilterExtendedSearch';
+import { Grid } from '../../../../shared/ui/Layout/Grid';
+
 
 export const TableHeader = () => {
   const columnTitles = [

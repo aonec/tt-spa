@@ -1,26 +1,26 @@
+import { Select } from "antd";
+import { useStore } from "effector-react";
+import React, { useRef } from "react";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import {
+  InputSC,
+  SelectSC,
+  StyledAutocomplete,
+} from "../../../../../shared/ui/Fields";
+import { Flex } from "../../../../../shared/ui/Layout/Flex";
+import { useAutocomplete } from "../../../../../_pages/MetersPage/hooks/useFilter";
 import {
   $existingCities,
   ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
+} from "../../../displayHousingStockCities/models";
 import {
   $existingStreets,
   ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
-import {
-  StyledAutocomplete,
-  InputSC,
-  SelectSC,
-} from '01/shared/ui/Fields';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import { Select } from 'antd';
-import { useStore } from 'effector-react';
-import React, { useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMetersPages';
-import { fetchHousingStocksFx } from '../../models';
-import { useFilter, filterValuesInit } from './useFilter.hook';
+} from "../../../displayHousingStockStreets/model";
+import { useRedirectBetweenMetersPages } from "../../hooks/useRedirectsBetweenMetersPages";
+import { fetchHousingStocksFx } from "../../models";
+import { useFilter, filterValuesInit } from "./useFilter.hook";
 
 export const HousingStockFilter = () => {
   const { filterFields, setValue, setFilterFields } = useFilter();
@@ -32,18 +32,18 @@ export const HousingStockFilter = () => {
   const refs: any[] = [useRef(), useRef(), useRef()];
 
   const onKeyDownHandler = (e: any, index: number) => {
-    if (e.key !== 'Enter') return;
+    if (e.key !== "Enter") return;
 
     const isLastInput = refs.length - 1 === index;
 
     if (
       isLastInput &&
       !(
-        history.location.pathname === '/meters/houses' ||
-        history.location.pathname === '/meters/houses/'
+        history.location.pathname === "/meters/houses" ||
+        history.location.pathname === "/meters/houses/"
       )
     ) {
-      const node: any = document.getElementsByClassName('ant-input')[1];
+      const node: any = document.getElementsByClassName("ant-input")[1];
 
       node?.focus();
 
@@ -62,9 +62,9 @@ export const HousingStockFilter = () => {
   const onChangeHandler = (e: any) => setValue(e.target.name, e.target.value);
 
   const onFocus = (e: any) => {
-    setValue(e.target.name, '');
+    setValue(e.target.name, "");
 
-    if (e.target.name === 'Street')
+    if (e.target.name === "Street")
       setFilterFields((prev) => ({ ...filterValuesInit, City: prev.City }));
   };
 
@@ -84,7 +84,7 @@ export const HousingStockFilter = () => {
       <SelectSC
         placeholder="Город"
         value={filterFields.City || undefined}
-        onChange={(value: any) => setValue('City', value)}
+        onChange={(value: any) => setValue("City", value)}
         ref={refs[0]}
         onKeyDown={(e) => onKeyDownHandler(e, 0)}
       >
@@ -95,15 +95,15 @@ export const HousingStockFilter = () => {
       <StyledAutocomplete
         options={options}
         placeholder="Название улицы"
-        onChange={(value) => setValue('Street', value)}
+        onChange={(value) => setValue("Street", value)}
         value={filterFields.Street}
         onKeyDown={(e) => {
-          fromEnter(() => setValue('Street', streetMatch))(e);
+          fromEnter(() => setValue("Street", streetMatch))(e);
           onKeyDownHandler(e, 1);
         }}
         onClick={() => {
-          setValue('Street', '');
-          setValue('HousingStockNumber', '');
+          setValue("Street", "");
+          setValue("HousingStockNumber", "");
         }}
         ref={refs[1]}
         onFocus={onFocus}
@@ -134,6 +134,6 @@ const FieldsWrap = styled(Flex)`
 
 export function fromEnter(callback: () => void) {
   return (e?: any) => {
-    if (e?.key === 'Enter') callback();
+    if (e?.key === "Enter") callback();
   };
 }

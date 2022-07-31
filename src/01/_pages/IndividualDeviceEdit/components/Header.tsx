@@ -1,15 +1,15 @@
-import React from 'react';
-import { IndividualDeviceResponse } from '../.../../api/types';
-import { HeaderWrap } from '../../../tt-components';
-import IsActive from '../../../tt-components/IsActive';
-import { Loader } from '01/_components/Loader';
-import { Title, Subtitle } from '01/_components/Headers';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import React from "react";
+import { HeaderWrap } from "../../../tt-components";
+import IsActive from "../../../tt-components/IsActive";
+import { GoBack } from "../../../../ui-kit/shared_components/GoBack";
+import { Flex } from "../../../shared/ui/Layout/Flex";
+import { getApartmentFromFullAddress } from "../../../../utils/getApartmentFromFullAddress";
+import { Loader } from "../../../_components/Loader";
+import { StockIconTT } from "../../Devices/components/DeviceBlock/DeviceBlock";
+import DeviceIcons from "../../../_components/DeviceIcons";
+import { Subtitle, Title } from "../../../_components/Headers";
+import { Space } from "../../../shared/ui/Layout/Space/Space";
+import { IndividualDeviceResponse } from "../../../../api/types";
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -30,7 +30,7 @@ export const Header = ({ device }: HeaderInterface) => {
         <div>
           <Title>
             <Flex>
-              <div style={{ transform: 'translateY(-2px)' }}>
+              <div style={{ transform: "translateY(-2px)" }}>
                 <StockIconTT
                   icon={DeviceIcons[resource]?.icon}
                   size="24"
@@ -41,7 +41,7 @@ export const Header = ({ device }: HeaderInterface) => {
               <div>{`${model} (${serialNumber}). Редактирование`}</div>
             </Flex>
           </Title>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex" }}>
             <Subtitle to={`/objects/${id}/apartments/${apartmentId}`}>
               {getApartmentFromFullAddress(address, true)}
             </Subtitle>

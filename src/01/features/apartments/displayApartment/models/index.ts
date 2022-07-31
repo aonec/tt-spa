@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
-import { ApartmentResponse } from './../../.../../api/types';
 import { createStore, createEffect, createEvent } from 'effector';
+import { ApartmentResponse } from '../../../../../api/types';
 
 export const $apartment = createStore<ApartmentResponse | null>(null);
 

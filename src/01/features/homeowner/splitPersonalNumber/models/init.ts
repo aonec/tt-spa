@@ -16,11 +16,11 @@ import {
   nextSplitPersonalNumberPage,
 } from '.';
 import { combine, forward, guard, sample } from 'effector';
-import { splitHomeownerAccount } from '01/_api/homeowners';
 import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
-import { $apartment } from '01/features/apartments/displayApartment/models';
-import { doesApartmentExist } from '01/_api/housingStocks';
+import { splitHomeownerAccount } from '../../../../_api/homeowners';
+import { doesApartmentExist } from '../../../../_api/housingStocks';
+import { $apartment } from '../../../apartments/displayApartment/models';
 
 splitPersonalNumberFx.use(splitHomeownerAccount);
 checkApartmentExistingFx.use(doesApartmentExist);

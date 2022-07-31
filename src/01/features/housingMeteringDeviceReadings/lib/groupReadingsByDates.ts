@@ -1,7 +1,5 @@
-import {
-  GetHousingMeteringDeviceReadingsResponse,
-  HousingMeteringDeviceReadingsResponse,
-} from '../.../../api/types';
+import { GetHousingMeteringDeviceReadingsResponse, HousingMeteringDeviceReadingsResponse } from "../../../../api/types";
+
 
 const groupReadingsByDates = (
   readings: GetHousingMeteringDeviceReadingsResponse

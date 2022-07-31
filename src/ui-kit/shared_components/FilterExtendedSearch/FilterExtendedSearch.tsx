@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { FilterButton } from '../../../01/features/actsJournal/displayActsJournal/components/filterButton/FilterButton';
+import { FilterButton } from '../../../01/features/actsJournal/displayActsJournal/components/filterButton/FIlterButton';
 import { CheckboxSC } from './FilterExtendedSearch.styled';
 import {
   FilterExtendedSearchProps,

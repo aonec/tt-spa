@@ -1,7 +1,7 @@
-import { FormHeader } from '01/features/individualDevices/switchIndividualDevice/components/Header';
 import { Steps } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
+import { FormHeader } from '../../../../individualDevices/switchIndividualDevice/components/Header';
 import {
   $splitPersonalNumberStageNumber,
   setSplitPersonalNumberStage,

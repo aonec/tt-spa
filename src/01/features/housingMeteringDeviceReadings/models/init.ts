@@ -18,9 +18,9 @@ import {
   postReading,
 } from '../../../_api/housing_metering_device_readings';
 import { forward, guard, sample } from 'effector';
-import { GetHousingMeteringDeviceReadingsResponse } from '../.../../api/types';
 import moment from 'moment';
-import { formatDate } from '01/utils/dates';
+import { GetHousingMeteringDeviceReadingsResponse } from '../../../../api/types';
+import { formatDate } from '../../../utils/dates';
 
 requestReadingsFx.use(requestReadings);
 

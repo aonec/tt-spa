@@ -1,7 +1,7 @@
 import { EOrderByRule } from '../../api/types';
 import axios from '../../api/axios';
 import { EMeteringDeviceType } from '../../api/types';
-import { formQueryString } from '01/utils/formQueryString';
+import { formQueryString } from '../utils/formQueryString';
 
 export interface GetMeteringDevicesModelsRequest {
   Type?: EMeteringDeviceType;

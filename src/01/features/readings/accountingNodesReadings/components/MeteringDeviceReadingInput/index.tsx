@@ -1,14 +1,14 @@
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import moment from 'moment';
-import { EResourceType } from '../../api/types';
 import React from 'react';
 import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { EResourceType } from '../../../../../../api/types';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import DeviceIcons from '../../../../../_components/DeviceIcons';
+import { getColorByRequestStatus } from '../../../../../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import { fromEnter } from '../../../../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { RequestStatusShared } from '../../../displayReadingHistory/hooks/useReadingValues';
+import { openConfirmReadingModal } from '../../../readingsInput/confirmInputReadingModal/models';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 import { useUploadingReadings } from './useUploadingReadings';
 

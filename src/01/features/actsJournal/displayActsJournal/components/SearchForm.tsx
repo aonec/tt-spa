@@ -1,21 +1,16 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
-import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import {
-  $existingStreets,
-  ExistingStreetsGate,
-} from '01/features/housingStocks/displayHousingStockStreets/model';
+
 import { useStore } from 'effector-react';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { clearFilters, searchForm } from '../models';
-import { ButtonTT } from '01/tt-components';
+import { useOnEnterSwitch } from '../../../readings/accountingNodesReadings/components/Filter';
+import { $existingCities, ExistingCitiesGate } from '../../../housingStocks/displayHousingStockCities/models';
+import { $existingStreets, ExistingStreetsGate } from '../../../housingStocks/displayHousingStockStreets/model';
+import { Grid } from '../../../../shared/ui/Layout/Grid';
+import { SelectSC, StyledAutocomplete } from '../../../../shared/ui/Fields';
+import { fromEnter } from '../../../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { useAutocomplete } from '../../../../_pages/MetersPage/hooks/useFilter';
+import { ButtonTT } from '../../../../tt-components';
 
 export const SearchForm = () => {
   const { fields, submit } = useForm(searchForm);

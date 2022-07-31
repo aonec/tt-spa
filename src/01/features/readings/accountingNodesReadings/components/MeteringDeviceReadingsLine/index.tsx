@@ -1,22 +1,22 @@
-import { Icon } from '01/shared/ui/Icon';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ElectricNodeResponse } from '../../api/types';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
-import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
 import {
   HistoryIconSC,
   ContextMenuWrapper,
 } from './MeteringDeviceReadingsLine.styled';
 import { useHistory } from 'react-router-dom';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { round } from '../../../../../hooks/useReadings';
+import { ElectricNodeResponse } from '../../../../../../api/types';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { Icon } from '../../../../../shared/ui/Icon';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+import { ContextMenuButton } from '../../../../../shared/ui/ContextMenuButton';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
 
 interface Props {
   sliderIndex: number;

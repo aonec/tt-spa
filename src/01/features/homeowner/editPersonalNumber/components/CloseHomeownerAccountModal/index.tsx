@@ -1,6 +1,3 @@
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -12,10 +9,13 @@ import {
   resetCloseHomeownerRequestStatus,
 } from '../../models';
 import { Form, message } from 'antd';
-import { $homeowner } from '01/features/homeowner/displayHomeowner/models';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
 import { useForm } from 'effector-forms/dist';
+import { $homeowner } from '../../../displayHomeowner/models';
+import { ModalTT } from '../../../../../shared/ui/ModalTT';
+import { Grid } from '../../../../../shared/ui/Layout/Grid';
+import { DatePickerNative } from '../../../../../shared/ui/DatePickerNative';
 
 export const CloseHomeownerAccountModal = () => {
   const visible = useStore($isVisibleCloseHomeonwerAccountModal);

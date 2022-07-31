@@ -1,6 +1,6 @@
-import { HousingStockListResponse } from './../../.../../api/types';
 import { createStore, createEffect, createEvent } from 'effector';
-import { GetHousingStockParams } from '01/_api/housingStocks';
+import { HousingStockListResponse } from '../../../../../api/types';
+import { GetHousingStockParams } from '../../../../_api/housingStocks';
 
 export const $housingStocks = createStore<HousingStockListResponse[] | null>(
   null

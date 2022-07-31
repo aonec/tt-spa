@@ -1,12 +1,11 @@
-import { createGate } from 'effector-react';
-import {
-  CalculatorIntoHousingStockResponse,
-} from '../.../../api/types';
-import { createDomain, forward, sample } from 'effector';
-import { createCalcuatorService } from '../../nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
-import { getCalculatorsList } from './calculatorsIntoHousingStockService.api';
+import { createGate } from "effector-react";
 
-const domain = createDomain('calculatorsIntoHousingStockService');
+import { createDomain, forward, sample } from "effector";
+import { createCalcuatorService } from "../../nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models";
+import { getCalculatorsList } from "./calculatorsIntoHousingStockService.api";
+import { CalculatorIntoHousingStockResponse } from "../../../../api/types";
+
+const domain = createDomain("calculatorsIntoHousingStockService");
 
 const $calculators = domain.createStore<
   CalculatorIntoHousingStockResponse[] | null

@@ -1,11 +1,8 @@
-import { Icon } from '01/shared/ui/Icon';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Grid } from '../../../../shared/ui/Layout/Grid';
+import { PendingLoader } from '../../../../shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { ApartmentActResponse, EActResourceType } from '../../api/types';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';
@@ -24,8 +21,10 @@ import { DocDate } from './AddNewActForm';
 import { gridTemp } from './TableHeader';
 import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { Space, SpaceLine } from '../../../../shared/ui/Layout/Space/Space';
+import { getApartmentFromFullAddress } from '../../../../../utils/getApartmentFromFullAddress';
+import { ResourceIconLookup } from '../../../../../ui-kit/shared_components/ResourceIconLookup';
+import { ApartmentActResponse } from '../../../../../api/types';
 
 const pageSize = 20;
 

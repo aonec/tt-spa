@@ -1,7 +1,7 @@
 import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
 import { createGate } from 'effector-react';
-import { IndividualDeviceWithExpiredCheckingDateResponse } from './../../.../../api/types';
 import { createEffect, createStore } from 'effector';
+import { IndividualDeviceWithExpiredCheckingDateResponse } from '../../../../../api/types';
 
 export const $problemDevices = createStore<
   IndividualDeviceWithExpiredCheckingDateResponse[] | null

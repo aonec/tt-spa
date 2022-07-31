@@ -1,6 +1,3 @@
-import { IndividualDevicesGate } from '01/features/individualDevices/displayIndividualDevices/models';
-import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -24,6 +21,9 @@ import {
   transferDevicesForm,
 } from './models';
 import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExistingApartment';
+import { StyledSelect } from '../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { IndividualDevicesGate } from '../../individualDevices/displayIndividualDevices/models';
+import { Space, SpaceLine } from '../../../shared/ui/Layout/Space/Space';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{

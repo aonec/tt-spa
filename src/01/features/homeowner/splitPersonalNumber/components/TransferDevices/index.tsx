@@ -1,16 +1,16 @@
-import ActiveLine from '01/components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
-import { $individualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { translateMountPlace } from '01/utils/translateMountPlace';
-import { DateLine } from '01/_components/DateLine/DateLine';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import { IndividualDeviceListItemResponse } from '../../api/types';
 import React from 'react';
 import styled from 'styled-components';
+import { IndividualDeviceListItemResponse } from '../../../../../../api/types';
+import ActiveLine from '../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+import { translateMountPlace } from '../../../../../utils/translateMountPlace';
+import { DateLine } from '../../../../../_components/DateLine/DateLine';
+import { $individualDevices } from '../../../../individualDevices/displayIndividualDevices/models';
+import { DeviceDataString } from '../../../../individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { transferDevicesForm } from '../../models';
 
 export const TransferDevices = () => {

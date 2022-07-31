@@ -1,15 +1,10 @@
-import {
-  EActType,
-  EActResourceType,
-  EOrderByRule,
-  AddApartmentActRequest,
-  ApartmentActResponsePagedList,
-} from './../../.../../api/types';
+
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import moment from 'moment';
 import { createGate } from 'effector-react';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import moment from 'moment';
+import { AddApartmentActRequest, ApartmentActResponsePagedList, EActResourceType, EActType, EOrderByRule } from '../../../../../api/types';
+import { $existingCities } from '../../../housingStocks/displayHousingStockCities/models';
 
 export type MayBe<T> = null | T;
 

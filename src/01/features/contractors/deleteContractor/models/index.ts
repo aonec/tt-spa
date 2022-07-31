@@ -1,5 +1,5 @@
-import { ContractorResponse } from './../../.../../api/types';
 import { createEvent, createStore, createEffect } from 'effector';
+import { ContractorResponse } from '../../../../../api/types';
 
 export const $contractorIdToDelete = createStore<number | null>(null);
 export const $isDeleteContractorModalVisible = $contractorIdToDelete.map(

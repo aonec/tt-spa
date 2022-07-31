@@ -8,17 +8,13 @@ import {
   cancelAddingContractorsButtonClicked,
   postContractorsFx,
 } from './models';
-import {
-  Footer,
-  Header,
-  ModalText,
-  StyledModal,
-} from '01/shared/ui/Modal/Modal';
-import { ButtonTT, InputTT } from '01/tt-components';
+
 import { Alert, Form } from 'antd';
-import { Loader } from '01/_components/Loader';
 import styled from 'styled-components';
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
+import { Footer, Header, ModalText, StyledModal } from '../../../shared/ui/Modal/Modal';
+import { ButtonTT, InputTT } from '../../../tt-components';
+import { usePhoneMask } from '../../staff/addStaff/utils';
+import { Loader } from '../../../_components/Loader';
 
 export const ErrorMessage = styled.div`
   margin: 5px 0 5px;

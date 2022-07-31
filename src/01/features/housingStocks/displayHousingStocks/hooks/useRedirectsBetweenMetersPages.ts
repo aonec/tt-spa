@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import { useStore } from 'effector-react';
 import { useEffect } from 'react';
 import { $housingStocks } from '../models';
-import { toArray } from '01/features/individualDevices/addIndividualDevice/components/CheckFormValuesModal';
+import { toArray } from '../../../individualDevices/addIndividualDevice/components/CheckFormValuesModal';
 
 export function useRedirectBetweenMetersPages(values: {
   [key: string]: string;

@@ -1,14 +1,7 @@
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import { Alert } from '01/shared/ui/Alert/Alert';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
-import { Spaces, Space } from '01/shared/ui/Layout/Space/Space';
-import { ModalTT } from '01/shared/ui/ModalTT';
-import { DatePickerTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EApartmentStatus } from '../../api/types';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
@@ -23,6 +16,13 @@ import {
   pauseApartmentModalCancelButtonClicked,
   pauseApartmentStatusFx,
 } from './models';
+import { ErrorMessage } from '../../contractors/addContractors';
+import { ModalTT } from '../../../shared/ui/ModalTT';
+import { Space, Spaces } from '../../../shared/ui/Layout/Space/Space';
+import { Alert } from '../../../shared/ui/Alert/Alert';
+import { FilesUpload } from '../../../shared/ui/FilesUpload';
+import { DatePickerTT } from '../../../tt-components';
+import { EApartmentStatus } from '../../../../api/types';
 
 export const PauseApartmentModal = () => {
   const visible = useStore($isPauseApartmentModalVisible);

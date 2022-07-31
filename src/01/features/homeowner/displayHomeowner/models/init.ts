@@ -6,7 +6,7 @@ import {
 } from './index';
 import { $homeowner } from '.';
 import { sample } from 'effector';
-import { getHomeownerAccount } from '01/_api/homeowners';
+import { getHomeownerAccount } from '../../../../_api/homeowners';
 
 fetchHomeownerFx.use(getHomeownerAccount);
 

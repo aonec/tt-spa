@@ -1,11 +1,8 @@
-import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
-import {
-  createOrUpdateLast,
-  deleteMeteringDeviceReading,
-} from '01/_api/meteringDeviceReadings';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
+import { createOrUpdateLast, deleteMeteringDeviceReading } from '../../../../../_api/meteringDeviceReadings';
+import { RequestStatusShared } from '../../../displayReadingHistory/hooks/useReadingValues';
+import { openConfirmReadingModal } from '../../../readingsInput/confirmInputReadingModal/models';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 
 interface Params {

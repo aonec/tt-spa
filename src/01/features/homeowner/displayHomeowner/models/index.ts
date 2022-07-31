@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
 import { createEffect, createStore, createEvent } from 'effector';
-import { HomeownerAccountResponse } from '../../api/types';
+import { HomeownerAccountResponse } from '../../../../../api/types';
 
 export const $homeowner = createStore<HomeownerAccountResponse | null>(null);
 
