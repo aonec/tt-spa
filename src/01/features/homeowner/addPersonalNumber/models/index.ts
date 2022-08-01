@@ -1,6 +1,6 @@
 import { RequestStatusShared } from './../../../readings/displayReadingHistory/hooks/useReadingValues';
 import { createEffect, createEvent, createStore } from 'effector';
-import { HomeownerAccountCreateServiceModel } from '../../api/types';
+import { HomeownerAccountCreateServiceModel } from '../../../../../api/types';
 
 export const addPersonalNumberFx = createEffect<
   HomeownerAccountCreateServiceModel,

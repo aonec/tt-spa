@@ -1,12 +1,12 @@
-import React from 'react';
-import styled, { use } from '@reshadow/macro';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import React from "react";
+import styled, { use } from "@reshadow/macro";
+import { Link, useHistory, useParams } from "react-router-dom";
 
-import { Loader } from '01/components/Loader';
-import { information } from '01/r_comp';
-import { useStore } from 'effector-react';
-import { $task, TaskGate } from '01/features/tasks/displayTask/models';
-import styledComponent from 'styled-components';
+import { useStore } from "effector-react";
+import styledComponent from "styled-components";
+import { Loader } from "../../../components";
+import { $task, TaskGate } from "../../../features/tasks/displayTask/models";
+import { information } from "../../../r_comp";
 
 export const Information = ({
   list = [],
@@ -19,8 +19,8 @@ export const Information = ({
   const task = useStore($task);
 
   const isHousingDeviceMalfunction =
-    task?.type === 'HousingDeviceMalfunction' ||
-    task?.type === 'HousingDeviceMalfunctionNonCommercial';
+    task?.type === "HousingDeviceMalfunction" ||
+    task?.type === "HousingDeviceMalfunctionNonCommercial";
 
   const params = useParams();
 
@@ -46,7 +46,7 @@ export const Information = ({
                   style={{
                     color:
                       isHousingDeviceMalfunction && index === 0
-                        ? 'red'
+                        ? "red"
                         : void 0,
                   }}
                 >

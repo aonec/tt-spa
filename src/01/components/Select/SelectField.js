@@ -2,8 +2,8 @@
 
 import React from 'react';
 import styled, { css, use } from '@reshadow/macro';
+import { Icon } from '../Icon';
 
-import { Icon } from '01/components/Icon';
 
 export const SelectField = ({
   styles,

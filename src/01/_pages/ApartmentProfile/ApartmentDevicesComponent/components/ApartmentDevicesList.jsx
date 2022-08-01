@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { ApartmentDeviceItem } from './ApartmentDeviceItem';
-import { ApartmentDevicesContext } from '../ApartmentDevices';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
-import { useParams } from 'react-router';
+import { useContext } from "react";
+import { ApartmentDeviceItem } from "./ApartmentDeviceItem";
+import { ApartmentDevicesContext } from "../ApartmentDevices";
+import { useParams } from "react-router";
+import { ReadingsHistoryModal } from "../../../../features/readings/displayReadingHistory/ReadingsHistoryModal";
 
 export function ApartmentDevicesList({ sliderIndex, showClosed }) {
   const devices = useContext(ApartmentDevicesContext);

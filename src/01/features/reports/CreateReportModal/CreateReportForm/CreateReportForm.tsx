@@ -1,9 +1,9 @@
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Select } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import { SelectValue } from 'antd/lib/select';
 import React, { FC, useCallback } from 'react';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { StyledSelect } from '../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { ReportFormInputsContainer } from '../ReportFormInputs';
 import { ReportType, reportTypeTitleNames } from '../types';
 

@@ -1,29 +1,26 @@
-import { Route, useParams, useLocation, useRouteMatch } from 'react-router-dom';
-import 'antd/dist/antd.css';
-import React, { useState, useEffect } from 'react';
-import { Grid } from '01/_components';
-import {
-  getInfo,
-  getObjectOfDevice,
-  getODPUTasks,
-  getRelatedDevices,
-  getTypeODPU,
-  getCalculatorResources,
-  getCalculator,
-  getPagination,
-} from '01/_api/device_page';
-import { Header } from './components/Header';
-import { Tabs } from './components/Tabs';
-import { TabsNotCalculator } from './components/TabsNotCalculator';
-import { Information } from './components/Information';
-import { InformationNotCalculator } from './components/InformationNotCalculator';
-import { Events } from './components/Events';
-import { Connection } from './components/Connection';
-import { ModalODPU } from './components/Modals/Modal';
+import { Route, useParams, useLocation, useRouteMatch } from "react-router-dom";
+import "antd/dist/antd.css";
+import React, { useState, useEffect } from "react";
 
-import { RelatedDevices } from './components/RelatedDevices';
-import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
-import { HeaderNotCalculator } from './components/HeaderNotCalculator';
+import { Header } from "./components/Header";
+import { Tabs } from "./components/Tabs";
+import { TabsNotCalculator } from "./components/TabsNotCalculator";
+import { Information } from "./components/Information";
+import { InformationNotCalculator } from "./components/InformationNotCalculator";
+import { Events } from "./components/Events";
+import { Connection } from "./components/Connection";
+import { ModalODPU } from "./components/Modals/Modal";
+
+import { RelatedDevices } from "./components/RelatedDevices";
+import { RelatedDevicesNotCalculator } from "./components/RelatedDevicesNotCalculator";
+import { HeaderNotCalculator } from "./components/HeaderNotCalculator";
+import Grid from "../../_components/Grid";
+import {
+  getCalculator,
+  getCalculatorResources,
+  getInfo,
+  getODPUTasks,
+} from "../../_api/device_page";
 
 export const DeviceContext = React.createContext();
 
@@ -52,24 +49,24 @@ export const DeviceProfile = () => {
     typeODPU: false,
   });
   const errorsTemplate = {
-    device: 'Произошла ошибка запроса устройства',
-    building: 'Произошла ошибка при загрузке данных по зданию',
-    tasks: 'Произошла ошибка при загрузке данных по задачам',
-    related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
-    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
-    calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
+    device: "Произошла ошибка запроса устройства",
+    building: "Произошла ошибка при загрузке данных по зданию",
+    tasks: "Произошла ошибка при загрузке данных по задачам",
+    related: "Произошла ошибка при загрузке данных по подключенным устройствам",
+    typeODPU: "Произошла ошибка при загрузке данных по типу устройства",
+    calculator: "Произошла ошибка при загрузке ресурсов вычислителя",
   };
 
   const { pathname } = useLocation();
 
   const { deviceId, objid } = params;
 
-  if (pathname.includes('calculator')) {
-    typeODPU = 'Calculator';
+  if (pathname.includes("calculator")) {
+    typeODPU = "Calculator";
     path = `/calculators/${deviceId}/`;
-  } else if (pathname.includes('housingMeteringDevices')) {
+  } else if (pathname.includes("housingMeteringDevices")) {
     path = `/housingMeteringDevices/${deviceId}/`;
-    typeODPU = 'PipeHousingMeteringDevice';
+    typeODPU = "PipeHousingMeteringDevice";
   }
 
   useEffect(() => {
@@ -102,7 +99,7 @@ export const DeviceProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (typeODPU === 'Calculator') {
+    if (typeODPU === "Calculator") {
       getCalculatorResources(deviceId).then((response) => {
         setHubs(response);
       });
@@ -112,9 +109,9 @@ export const DeviceProfile = () => {
     }
   }, [typeODPU]);
 
-  if (isLoading || typeODPU === undefined) return 'ЗАГРУЗКА...';
+  if (isLoading || typeODPU === undefined) return "ЗАГРУЗКА...";
 
-  if (typeODPU === 'Calculator') {
+  if (typeODPU === "Calculator") {
     return (
       <DeviceContext.Provider
         value={{
@@ -153,7 +150,7 @@ export const DeviceProfile = () => {
     );
   }
 
-  if (isLoading || !typeODPU) return 'ЗАГРУЗКА...';
+  if (isLoading || !typeODPU) return "ЗАГРУЗКА...";
   return (
     <DeviceContext.Provider
       value={{

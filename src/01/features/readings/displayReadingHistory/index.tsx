@@ -1,10 +1,10 @@
 import React from 'react';
-import { IndividualDeviceGate } from '01/features/individualDevices/displayIndividualDevice/models';
 import { useParams } from 'react-router-dom';
 import { ReadingHistoryHeader } from './components/Header';
 import { ReadingsHistoryList } from './components/ReadingsHistoryList';
 import { $isReadingsHstoryModalOpen, ReadingHistoryGate } from './models';
 import { useStore } from 'effector-react';
+import { IndividualDeviceGate } from '../../individualDevices/displayIndividualDevice/models';
 
 interface Props {
   deviceId?: number;

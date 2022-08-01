@@ -3,9 +3,7 @@
 import React from 'react';
 import styled, { use } from '@reshadow/macro';
 import { useHistory } from 'react-router-dom';
-
-import { Loader } from '01/components/Loader';
-import { information } from '01/r_comp';
+import { information } from '../../../r_comp';
 
 export const Information = ({ list = [], loading = true, ...props }) => {
   const { push } = useHistory();

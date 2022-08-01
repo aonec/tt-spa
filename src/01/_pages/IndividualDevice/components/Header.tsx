@@ -1,13 +1,13 @@
-import React from 'react';
-import { IconTT, HeaderWrap } from '../../../tt-components';
-import IsActive from '../../../tt-components/IsActive';
-import { useHistory } from 'react-router-dom';
-import getAccessesList from '../../../_api/utils/getAccessesList';
-import MenuButtonTT from '../../../tt-components/MenuButtonTT';
-import { IndividualDeviceResponse } from '../../../../api/types';
-import { Loader } from '../../../_components/Loader';
-import { GoBack } from '../../../../ui-kit/shared_components/GoBack';
-import { Subtitle, Title } from '../../../_components/Headers';
+import React from "react";
+import { IconTT, HeaderWrap } from "../../../tt-components";
+import IsActive from "../../../tt-components/IsActive";
+import { useHistory } from "react-router-dom";
+import getAccessesList from "../../../_api/utils/getAccessesList";
+import MenuButtonTT from "../../../tt-components/MenuButtonTT";
+import { IndividualDeviceResponse } from "../../../../api/types";
+import { Loader } from "../../../_components/Loader";
+import { GoBack } from "../../../../ui-kit/shared_components/GoBack";
+import { Subtitle, Title } from "../../../_components/Headers";
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -29,40 +29,40 @@ export const Header = ({ device }: HeaderInterface) => {
   const menuButtonArr = device
     ? [
         {
-          title: 'Редактировать',
+          title: "Редактировать",
           cb: () => push(`/individualDevices/${device.id}/edit`),
-          show: show('IndividualDeviceUpdate'),
-          color: 'default',
+          show: show("IndividualDeviceUpdate"),
+          color: "default",
         },
         {
-          title: 'Открыть историю показаний',
+          title: "Открыть историю показаний",
           cb: () => {
-            alert('Открыть историю показаний');
+            alert("Открыть историю показаний");
           },
-          show: show('IndividualDeviceUpdate'),
-          color: 'default',
+          show: show("IndividualDeviceUpdate"),
+          color: "default",
         },
         {
-          title: 'Поверить прибор',
+          title: "Поверить прибор",
           cb: () => {
-            alert('Поверить прибор');
+            alert("Поверить прибор");
           },
-          show: show('IndividualDeviceUpdate'),
-          color: 'default',
+          show: show("IndividualDeviceUpdate"),
+          color: "default",
         },
         {
-          title: 'Закрыть прибор',
+          title: "Закрыть прибор",
           cb: () => {
-            alert('Закрыть прибор');
+            alert("Закрыть прибор");
           },
-          show: show('IndividualDeviceUpdate'),
-          color: 'red',
+          show: show("IndividualDeviceUpdate"),
+          color: "red",
         },
       ]
     : null;
 
   return (
-    <Loader show={loading} size="32">
+    <Loader show={loading} size={32}>
       <GoBack path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
       <HeaderWrap>
         <div>
@@ -74,7 +74,7 @@ export const Header = ({ device }: HeaderInterface) => {
             />
             {`${model} (${serialNumber})`}
           </Title>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex" }}>
             <Subtitle
               to={`/objects/${id}/apartments/${apartmentId}`}
             >{`${city}, ${street}, д. ${housingStockNumber}, кв. ${apartmentNumber}`}</Subtitle>

@@ -6,7 +6,7 @@ import { StyledFooter, StyledModalBody } from '../Modal';
 import { DatePickerTT } from '../DatePicker';
 import Header from '../Header';
 import ButtonTT from '../ButtonTT';
-import { CloseDeviceRequest } from '.../../api/types';
+import { CloseDeviceRequest } from '../../../api/types';
 
 const ModalCalculatorDeregisterForm = ({
   handleCancel,

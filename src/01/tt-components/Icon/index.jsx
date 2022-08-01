@@ -1,15 +1,15 @@
-import React from 'react';
-import icons from '../../assets/icons.json';
-import { darkIcons } from '01/_components/Icon/Icon';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
+import React from "react";
+import icons from "../../assets/icons.json";
+import { Space } from "../../shared/ui/Layout/Space/Space";
+import { Flex } from "../../shared/ui/Layout/Flex";
+import { darkIcons } from "../../_components/Icon/Icon";
 
-export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
+export const Icon = ({ size = 16, icon = "", dark = false, ...props }) => {
   const DarkIcon = darkIcons[icon];
 
-  if (DarkIcon && dark && icon !== 'Heat') {
+  if (DarkIcon && dark && icon !== "Heat") {
     return (
-      <Flex style={{ transform: 'translateY(2px)' }}>
+      <Flex style={{ transform: "translateY(2px)" }}>
         <Space>
           <DarkIcon width={size} height={size} />
         </Space>
@@ -18,7 +18,7 @@ export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
   }
 
   return (
-    <Flex style={{ transform: 'translateY(2px)', marginRight: -7 }}>
+    <Flex style={{ transform: "translateY(2px)", marginRight: -7 }}>
       <Space>
         <svg
           viewBox="0 0 16 16"

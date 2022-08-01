@@ -3,9 +3,9 @@
 import React from 'react';
 import styled, { css } from '@reshadow/macro';
 import { Link as LinkRow } from 'react-router-dom';
+import { Timer } from '../Timer';
+import { Timeline } from '../Timeline';
 
-import { Timeline } from '01/components/Timeline';
-import { Timer } from '01/components/Timer';
 
 const style = css`
   item {

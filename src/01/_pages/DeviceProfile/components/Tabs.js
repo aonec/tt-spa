@@ -1,22 +1,21 @@
 /* eslint-disable */
 
-import React from 'react';
-import styled from '@reshadow/macro';
-import { NavLink, useRouteMatch } from 'react-router-dom';
-
-import { tabs } from '01/r_comp';
+import React from "react";
+import styled from "@reshadow/macro";
+import { NavLink, useRouteMatch } from "react-router-dom";
+import { tabs } from "../../../r_comp";
 
 const tabItems = [
-  ['Общая информация', ''],
-  ['Настройки соединения', 'connection'],
-  ['Подключенные приборы', 'related'],
-  ['Документы', 'documents'],
+  ["Общая информация", ""],
+  ["Настройки соединения", "connection"],
+  ["Подключенные приборы", "related"],
+  ["Документы", "documents"],
 ];
 
 export const Tabs = React.memo(() => {
   const { url } =
-    useRouteMatch('/*/*/devices/(\\d+)/') ||
-    useRouteMatch('/calculators/(\\d+)');
+    useRouteMatch("/*/*/devices/(\\d+)/") ||
+    useRouteMatch("/calculators/(\\d+)");
   return styled(tabs)(
     <tabs>
       {tabItems.map((t) => (

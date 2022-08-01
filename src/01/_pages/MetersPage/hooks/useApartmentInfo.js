@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { getApartmentAddressString } from "../../../../utils/getApartmentAddress";
+
 
 export const useApartmentInfo = (apartInfo, homeownerIndex) => {
   const { homeownerAccounts = [], comment } = apartInfo || {};

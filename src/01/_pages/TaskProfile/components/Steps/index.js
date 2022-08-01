@@ -1,13 +1,13 @@
 /* eslint-disable */
 
-import React from 'react';
-import styled, { css } from '@reshadow/macro';
-import { Route, Switch, useRouteMatch, Link } from 'react-router-dom';
+import React from "react";
+import styled, { css } from "@reshadow/macro";
+import { Route, Switch, useRouteMatch, Link } from "react-router-dom";
 
-import * as s from '01/r_comp';
-import { UploadButton } from '01/components/Upload';
-import { Pig } from './Pig';
-import { Tabs } from './Tabs';
+import { Pig } from "./Pig";
+import { Tabs } from "./Tabs";
+import { UploadButton } from "../../../../components/Upload";
+import * as s from "../../../../r_comp";
 
 const styles = css`
   steps {

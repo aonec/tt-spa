@@ -2,7 +2,8 @@
 
 import React from 'react';
 import styled, { css } from '@reshadow/macro';
-import { Loader, Icon } from '01/components';
+import { Icon } from '../Icon';
+import { Loader } from '../Loader';
 
 const styles = css`
   upload {

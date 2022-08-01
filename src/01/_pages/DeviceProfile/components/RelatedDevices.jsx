@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Loader } from '01/components';
-import { Icon } from '01/_components/Icon';
-import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
+import { Icon } from '../../../_components/Icon';
+import DeviceIcons from '../../../_components/DeviceIcons';
+import { Loader } from '../../../components';
 
 export const Template = styled.div``;
 

@@ -13,7 +13,7 @@ import { GoBack } from '../../../ui-kit/shared_components/GoBack';
 import { PipeHousingMeteringDeviceResponse } from '../../../api/types';
 
 const EditODPU = () => {
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{deviceId:string}>();
   const [currentTabKey, setTab] = useState('1');
   const [existDevice, setExistDevice] = useState();
   const [alert, setAlert] = useState(false);
@@ -24,7 +24,7 @@ const EditODPU = () => {
   } = useAsync<PipeHousingMeteringDeviceResponse>();
 
   useEffect(() => {
-    run(getHousingMeteringDevice(deviceId));
+    run(getHousingMeteringDevice(Number(deviceId)));
   }, [deviceId]);
 
   const context = { device, currentTabKey, setTab };

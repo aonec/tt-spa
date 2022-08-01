@@ -1,14 +1,14 @@
 /* eslint-disable */
 
-import React, { useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import styled from "styled-components";
 
-import { menu as style } from '01/styles/menu';
-import { Icon } from '01/components/Icon';
-import { useMenu } from './useMenu';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
+import { menu as style } from "../../styles/menu";
+import { useMenu } from "./useMenu";
+import { Space } from "../../shared/ui/Layout/Space/Space";
+import { Flex } from "../../shared/ui/Layout/Flex";
+import { Icon } from "../Icon";
 
 export const Menu = () => {
   const { menuList, user } = useMenu();
@@ -22,14 +22,14 @@ export const Menu = () => {
       <MenuList>
         <User>
           <MenuItem
-            style={{ paddingTop: 5, paddingBottom: 5, height: 'auto' }}
+            style={{ paddingTop: 5, paddingBottom: 5, height: "auto" }}
             onClick={() => history.push(user.to)}
             activeElem={isActive(user.to)}
           >
             <div>
               <Flex>
                 {user.icon && (
-                  <Icon size={16} icon={user.icon} fill={'#00a3e7'} />
+                  <Icon size={16} icon={user.icon} fill={"#00a3e7"} />
                 )}
                 <Space w={10} />
                 <span>{user.name}</span>
@@ -40,7 +40,7 @@ export const Menu = () => {
                     fontSize: 12,
                     fontWeight: 400,
                     opacity: 0.6,
-                    color: 'black',
+                    color: "black",
                     marginLeft: 27,
                     marginTop: 2,
                   }}
@@ -54,14 +54,14 @@ export const Menu = () => {
 
         {menuList.map(({ name, to, icon, company }) => (
           <MenuItem onClick={() => history.push(to)} activeElem={isActive(to)}>
-            {icon && <Icon size={16} icon={icon} fill={'#00a3e7'} />}
+            {icon && <Icon size={16} icon={icon} fill={"#00a3e7"} />}
             <Space w={10} />
             <span>{name}</span>
           </MenuItem>
         ))}
       </MenuList>
-      <ExitLink key={'10'} to={'/login/'} activeClassName={style.active}>
-        <ExitIcon icon={'exitIcon'} />
+      <ExitLink key={"10"} to={"/login/"} activeClassName={style.active}>
+        <ExitIcon icon={"exitIcon"} />
         <span>Выход из системы</span>
       </ExitLink>
     </div>
@@ -71,8 +71,8 @@ export const Menu = () => {
 };
 
 export const ExitButton = () => (
-  <ExitLink key={'10'} to={'/login/'} activeClassName={style.active}>
-    <ExitIcon icon={'exitIcon'} />
+  <ExitLink key={"10"} to={"/login/"} activeClassName={style.active}>
+    <ExitIcon icon={"exitIcon"} />
     <span>Выйти</span>
   </ExitLink>
 );
@@ -90,7 +90,7 @@ const MenuItem = styled.div`
   ${({ activeElem }) => {
     return activeElem
       ? `border-left: 4px solid #00a3e7; padding: 0 0 0 11px; background: #00a3e714;`
-      : '';
+      : "";
   }}
 
   &:hover {

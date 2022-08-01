@@ -1,14 +1,11 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { Stage } from './types';
 import { createForm } from 'effector-forms';
-import {
-  CreateCalculatorRequest,
-  MeteringDeviceResponse,
-} from '../../../../../.../../api/types';
 import axios from 'axios';
 import { nodeService } from '../../../../../displayNode/models';
 import { addNodeCalculatorService } from '../models';
 import { message } from 'antd';
+import { CreateCalculatorRequest, MeteringDeviceResponse } from '../../../../../../../../api/types';
 
 const createCalcuatorDomain = createDomain();
 

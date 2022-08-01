@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
+import { useStore } from "effector-react";
+import { Checkbox } from "antd";
 import {
   $individualDevices,
   $isShownClosedDevices,
   hideClosedDevices,
   showClosedDevices,
-} from '01/features/individualDevices/displayIndividualDevices/models';
-import { useStore } from 'effector-react';
-import { Checkbox } from 'antd';
+} from "../../../features/individualDevices/displayIndividualDevices/models";
 
 const ClosedDevices = () => {
   const showClosed = useStore($isShownClosedDevices);

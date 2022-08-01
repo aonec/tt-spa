@@ -3,8 +3,8 @@
 import React from 'react';
 import styled, { use, css } from '@reshadow/macro';
 
-import { Icon } from '01/components/Icon';
-import { Loader } from '01/components';
+import { Icon } from '../Icon';
+import { Loader } from '../Loader';
 
 export const SelectList = ({
   styles,

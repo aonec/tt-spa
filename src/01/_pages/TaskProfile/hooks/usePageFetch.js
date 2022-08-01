@@ -1,11 +1,11 @@
 /* eslint-disable */
 
-import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import React from "react";
+import { useParams, useHistory } from "react-router-dom";
 
-import { getTask, moveStage } from '01/_api/task_profile_page';
-import { getCalculator } from '../../../_api/device_page';
-import { getApartmentAddressString } from '../../../../utils/getApartmentAddress';
+import { getCalculator } from "../../../_api/device_page";
+import { getApartmentAddressString } from "../../../../utils/getApartmentAddress";
+import { getTask, moveStage } from "../../../_api/task_profile_page";
 
 export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams();
@@ -16,12 +16,12 @@ export const usePageFetch = (state, dispatch) => {
       const address = getApartmentAddressString(task.apartment, true);
 
       if (!task?.node) {
-        dispatch({ type: 'success', data: {...task, address} });
+        dispatch({ type: "success", data: { ...task, address } });
         return;
       }
       const calculator = await getCalculator(task.node.calculatorId);
       dispatch({
-        type: 'success',
+        type: "success",
         data: { ...task, calculator, stages: task.stages, address },
       });
     };
@@ -38,10 +38,10 @@ export const usePageFetch = (state, dispatch) => {
 
   React.useEffect(() => {
     const { stageData = null, isReplace = false } = state;
-    if (isReplace) replace('/tasks/');
+    if (isReplace) replace("/tasks/");
     if (stageData) {
       moveStage(id, stageData.move, stageData.data).then((data) => {
-        dispatch({ type: 'success', data });
+        dispatch({ type: "success", data });
       });
     }
   }, [state]);

@@ -1,52 +1,52 @@
 /* eslint-disable */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { UserInfo } from './UserInfo';
-import { Icon, Loader } from '01/components';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { ButtonTT, MenuButtonTT } from '01/tt-components';
-import styled from 'styled-components';
+import { UserInfo } from "./UserInfo";
+import { Link, useHistory, useParams } from "react-router-dom";
+import styled from "styled-components";
 
-import { ReactComponent as EditIcon } from './icons/Edit.svg';
-import TextArea from 'antd/lib/input/TextArea';
-import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
-import axios from '../../api/axios';
-import { formQueryString } from '01/utils/formQueryString';
-import {
-  $apartment,
-  ApartmentGate,
-  fetchApartmentFx,
-} from '01/features/apartments/displayApartment/models';
-import {
-  cancelPauseApartmentButtonClicked,
-  pauseApartmentButtonClicked,
-} from '01/features/apartments/pauseApartment/models';
-import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
-import { Alert } from '01/shared/ui/Alert/Alert';
-import { useStore } from 'effector-react';
-import moment from 'moment';
-import confirm from 'antd/lib/modal/confirm';
-import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
-import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
-import { useApartmentInfo } from '../../hooks/useApartmentInfo';
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
-import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
-import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
-import {
-  $currentPersonalNumberIndex,
-  setCurrentPersonalNumberIndex,
-} from '01/features/homeowner/displayHomeowner/models';
+import { ReactComponent as EditIcon } from "./icons/Edit.svg";
+import TextArea from "antd/lib/input/TextArea";
+import { useStore } from "effector-react";
+import moment from "moment";
+import confirm from "antd/lib/modal/confirm";
+import { useApartmentInfo } from "../../hooks/useApartmentInfo";
 import {
   AlertLink,
   ApartmentAlertWrapper,
   ArrowRight,
   HomeownerAccountChangeDate,
   Wrapper,
-} from './ApartmentInfo.styled';
-import { checkIsHomeownerAccountRecentlyModified } from './utils';
-import { Skeleton } from 'antd';
+} from "./ApartmentInfo.styled";
+import { checkIsHomeownerAccountRecentlyModified } from "./utils";
+import { Skeleton } from "antd";
+import {
+  $apartment,
+  ApartmentGate,
+  fetchApartmentFx,
+} from "../../../../features/apartments/displayApartment/models";
+import {
+  cancelPauseApartmentButtonClicked,
+  pauseApartmentButtonClicked,
+} from "../../../../features/apartments/pauseApartment/models";
+import { formQueryString } from "../../../../utils/formQueryString";
+import { $currentManagingFirmUser } from "../../../../features/managementFirmUsers/displayCurrentUser/models";
+import { Flex } from "../../../../shared/ui/Layout/Flex";
+import { Loader, Icon } from "../../../../components";
+import { MenuButtonTT, ButtonTT } from "../../../../tt-components";
+import { Space, Spaces } from "../../../../shared/ui/Layout/Space/Space";
+import { Alert } from "../../../../shared/ui/Alert/Alert";
+import { axios } from "../../../../../api/axios";
+import { GetIssueCertificateModal } from "../../../../features/apartments/printIssueCertificate";
+import { PauseApartmentModal } from "../../../../features/apartments/pauseApartment";
+import { getIssueCertificateButtonClicked } from "../../../../features/apartments/printIssueCertificate/models";
+import { SelectEditPersonalNumberTypeModal } from "../../../../features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal";
+import { openEditPersonalNumberTypeModal } from "../../../../features/homeowner/editPersonalNumber/models";
+import {
+  $currentPersonalNumberIndex,
+  setCurrentPersonalNumberIndex,
+} from "../../../../features/homeowner/displayHomeowner/models";
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -62,10 +62,11 @@ export const ApartmentInfo = () => {
     setCurrentPersonalNumberIndex(0);
   }, [homeownerAccounts]);
 
-  const { userInfo = [], title, comment } = useApartmentInfo(
-    apartment,
-    currentPersonalNumberIndex
-  );
+  const {
+    userInfo = [],
+    title,
+    comment,
+  } = useApartmentInfo(apartment, currentPersonalNumberIndex);
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const currentHomeowner =
@@ -76,14 +77,14 @@ export const ApartmentInfo = () => {
   const user = useStore($currentManagingFirmUser);
 
   const isSeniorOperator = user?.roles?.find(
-    ({ key }) => key === 'ManagingFirmSeniorOperator'
+    ({ key }) => key === "ManagingFirmSeniorOperator"
   );
 
   const cancelPauseApartment = () =>
     confirm({
-      title: 'Вы действительно хотите снять эту квартиру с паузы?',
-      okText: 'Снять с паузы',
-      cancelText: 'Отмена',
+      title: "Вы действительно хотите снять эту квартиру с паузы?",
+      okText: "Снять с паузы",
+      cancelText: "Отмена",
       onOk: async () => {
         cancelPauseApartmentButtonClicked();
 
@@ -91,39 +92,40 @@ export const ApartmentInfo = () => {
       },
     });
 
-  const isPaused = apartment?.status === 'Pause';
+  const isPaused = apartment?.status === "Pause";
 
   const apartmentTaskId = apartment?.activeTaskIds[0];
 
   const isApartmentTaskExist = Boolean(apartmentTaskId);
 
-  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
-    checkIsHomeownerAccountRecentlyModified
-  );
+  const recentlyModifiedApartmentPersonalAccounts =
+    apartment?.homeownerAccounts.filter(
+      checkIsHomeownerAccountRecentlyModified
+    );
 
   const menuButtonArray = [
     {
-      title: 'Поставить на паузу',
+      title: "Поставить на паузу",
       show: !isPaused,
       cb: pauseApartmentButtonClicked,
     },
     {
-      title: 'Снять с паузы',
+      title: "Снять с паузы",
       show: isPaused,
       cb: cancelPauseApartment,
     },
     {
-      title: 'Изменить лицевой счет',
+      title: "Изменить лицевой счет",
       cb: () => openEditPersonalNumberTypeModal(),
       show: isSeniorOperator,
     },
     {
-      title: 'Добавить новый прибор',
+      title: "Добавить новый прибор",
       show: true,
       cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
     },
     {
-      title: 'Выдать справку',
+      title: "Выдать справку",
       show: true,
       cb: () => getIssueCertificateButtonClicked(),
     },
@@ -134,13 +136,13 @@ export const ApartmentInfo = () => {
       <Alert type="stop" color="FC525B">
         <AlertContent>
           <div>
-            Квартира на паузе до{' '}
-            {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
+            Квартира на паузе до{" "}
+            {moment(apartment.stoppedTo).format("DD.MM.YYYY")}
           </div>
           <AlertLink
             onClick={cancelPauseApartment}
             className="ant-btn-link"
-            style={{ color: '#FC525B' }}
+            style={{ color: "#FC525B" }}
           >
             Снять с паузы
           </AlertLink>
@@ -158,7 +160,7 @@ export const ApartmentInfo = () => {
             показания появится после закрытия задачи.
           </div>
           <Link to={`/tasks/${apartmentTaskId}`}>
-            <AlertLink className="ant-btn-link" style={{ color: '#FC525B' }}>
+            <AlertLink className="ant-btn-link" style={{ color: "#FC525B" }}>
               Перейти к задаче
               <ArrowRight />
             </AlertLink>
@@ -168,24 +170,23 @@ export const ApartmentInfo = () => {
     </ApartmentAlertWrapper>
   );
 
-  const apartmentHomeownerAcconutChangeAlerts = recentlyModifiedApartmentPersonalAccounts?.map(
-    (homeownerAccount) => (
+  const apartmentHomeownerAcconutChangeAlerts =
+    recentlyModifiedApartmentPersonalAccounts?.map((homeownerAccount) => (
       <ApartmentAlertWrapper key={homeownerAccount.id}>
         <Alert type="info">
           <AlertContent>
             <div>
-              Добавлен новый номер лицевого счёта квартиры{' '}
+              Добавлен новый номер лицевого счёта квартиры{" "}
               {homeownerAccount.personalAccountNumber} ({homeownerAccount.name})
             </div>
             <HomeownerAccountChangeDate>
-              Дата изменения:{' '}
-              {moment(homeownerAccount.openAtFact).format('DD.MM.YYYY')}
+              Дата изменения:{" "}
+              {moment(homeownerAccount.openAtFact).format("DD.MM.YYYY")}
             </HomeownerAccountChangeDate>
           </AlertContent>
         </Alert>
       </ApartmentAlertWrapper>
-    )
-  );
+    ));
 
   const houseManagementRender = houseManagement && (
     <div style={{ fontSize: 12, fontWeight: 500 }}>
@@ -196,13 +197,13 @@ export const ApartmentInfo = () => {
   );
 
   const toggle = (
-    <div onClick={() => setShow((p) => !p)} style={{ cursor: 'pointer' }}>
+    <div onClick={() => setShow((p) => !p)} style={{ cursor: "pointer" }}>
       {show ? (
         <>
           <Icon
             icon="off"
             color="var(--main-100)"
-            style={{ marginRight: 8, position: 'relative', top: 1 }}
+            style={{ marginRight: 8, position: "relative", top: 1 }}
           />
           <span>Скрыть подробную информацию</span>
         </>
@@ -211,7 +212,7 @@ export const ApartmentInfo = () => {
           <Icon
             icon="on"
             color="var(--main-100)"
-            style={{ marginRight: 8, position: 'relative', top: 1 }}
+            style={{ marginRight: 8, position: "relative", top: 1 }}
           />
           <span>Показать подробную информацию</span>
         </>
@@ -244,7 +245,7 @@ export const ApartmentInfo = () => {
       <PauseApartmentModal />
       <GetIssueCertificateModal />
       <SelectEditPersonalNumberTypeModal />
-      <Flex style={{ justifyContent: 'space-between', marginBottom: -12 }}>
+      <Flex style={{ justifyContent: "space-between", marginBottom: -12 }}>
         <Flex>
           <ApartmentTitle>{title}</ApartmentTitle>
           <Space />
@@ -336,7 +337,7 @@ const CommentTitle = styled.div`
   opacity: 0.6;
   margin-bottom: -10px;
   &:after {
-    content: ':';
+    content: ":";
   }
 `;
 const CommentWrap = styled.div`
@@ -347,7 +348,7 @@ const CommentText = styled.div`
 `;
 
 const ApartmentComment = ({ comment: commentInitial }) => {
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
@@ -376,9 +377,9 @@ const ApartmentComment = ({ comment: commentInitial }) => {
 
   return (
     <CommentModuleWrap>
-      <Flex style={{ justifyContent: 'space-between' }}>
+      <Flex style={{ justifyContent: "space-between" }}>
         <CommentTitle>Комментарий</CommentTitle>
-        <div style={{ cursor: 'pointer' }}>
+        <div style={{ cursor: "pointer" }}>
           <EditIcon onClick={() => setIsEditMode(true)} />
         </div>
       </Flex>
@@ -390,7 +391,7 @@ const ApartmentComment = ({ comment: commentInitial }) => {
               onChange={(e) => setComment(e.target.value)}
             />
             <Space />
-            <Flex style={{ justifyContent: 'space-between' }}>
+            <Flex style={{ justifyContent: "space-between" }}>
               <div></div>
               <Flex>
                 <ButtonTT onClick={onCancelHandler} color="white" size="small">
@@ -403,13 +404,13 @@ const ApartmentComment = ({ comment: commentInitial }) => {
                   size="small"
                   onClick={onSaveHandler}
                 >
-                  {loading ? <Loader show /> : 'Сохранить'}
+                  {loading ? <Loader show /> : "Сохранить"}
                 </ButtonTT>
               </Flex>
             </Flex>
           </div>
         ) : (
-          <CommentText>{comment || 'Нет комментария'}</CommentText>
+          <CommentText>{comment || "Нет комментария"}</CommentText>
         )}
       </CommentWrap>
     </CommentModuleWrap>

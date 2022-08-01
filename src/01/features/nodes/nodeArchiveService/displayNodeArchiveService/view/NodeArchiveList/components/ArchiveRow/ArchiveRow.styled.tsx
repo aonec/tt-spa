@@ -1,5 +1,5 @@
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import styled from 'styled-components';
+import { getArrayByCountRange } from '../../../../../../../../_pages/MetersPage/components/utils';
 import { columnWidth } from '../../NodeArchiveList.styled';
 
 export const Row = styled.div<{ columnsCount: number }>`

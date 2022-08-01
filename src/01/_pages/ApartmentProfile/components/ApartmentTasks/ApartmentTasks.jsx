@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Icon } from '01/components/Icon';
 import { Button } from '../Button';
 import { convertDate } from '../../../../_api/utils/convertDate';
+import { Icon } from '../../../../components/Icon';
 
 export const ApartmentTasks = styled.div`
   padding: 0 16px;

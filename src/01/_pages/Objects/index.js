@@ -4,7 +4,6 @@ import React, { useReducer, useState } from 'react';
 import styled, { css } from '@reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
-import axios from '../../api/axios';
 import { Loader, Icon } from '../../components';
 import ObjectsSearchForm from './ObjectsSearchForm/ObjectsSearchForm';
 import { objectsSearchReducer } from '../../Redux/reducers/objectsSearchReducer';
@@ -12,6 +11,7 @@ import { formQueryString } from '../../utils/formQueryString';
 import { useDebounce } from '../../hooks/useDebounce';
 import { sortObjects } from '../../utils/sortObjects';
 import Header from './ObjectsSearchForm/components/Header';
+import { axios } from '../../../api/axios';
 
 const styles = css`
   obj_item {

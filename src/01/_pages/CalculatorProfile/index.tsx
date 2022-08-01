@@ -21,7 +21,7 @@ import { CalculatorResponse, TaskListResponse } from '../../../api/types';
 
 export const CalculatorProfile = () => {
   const { push } = useHistory();
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{deviceId: string}>();
   const path = `/calculators/${deviceId}`;
   const { data: device, status, run } = useAsync<CalculatorResponse>();
 
@@ -32,11 +32,11 @@ export const CalculatorProfile = () => {
   const [check, setCheck] = useState(false);
 
   useEffect(() => {
-    run(getCalculator(deviceId));
+    run(getCalculator(Number(deviceId)));
   }, [deviceId]);
 
   useEffect(() => {
-    getCalculatorTasks(deviceId).then((res: any) => {
+    getCalculatorTasks(Number(deviceId)).then((res: any) => {
       setTasks(res);
     });
   }, []);

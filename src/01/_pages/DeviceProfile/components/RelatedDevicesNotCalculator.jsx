@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
-import { Loader } from '01/components';
-import { Icon } from '01/_components/Icon';
-import DeviceIcons from '01/_components/DeviceIcons';
 import { getInfo } from '../../../_api/device_page';
+import { Icon } from '../../../_components/Icon';
+import DeviceIcons from '../../../_components/DeviceIcons';
+import { Loader } from '../../../components';
+import convertDate from '../../../_api/utils/convertDate';
 
 export const Template = styled.div``;
 

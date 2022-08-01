@@ -1,35 +1,35 @@
 /* eslint-disable */
 
-import axios from '../../api/axios';
-import React from 'react';
-import { useHistory } from 'react-router';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { useStore } from 'effector-react';
+import React from "react";
+import { useHistory } from "react-router";
+import { useStore } from "effector-react";
+import { useEffect } from "react";
+import stringSimilarity from "string-similarity";
+import { $existingStreets } from "../../../features/housingStocks/displayHousingStockStreets/model";
+import { $existingCities } from "../../../features/housingStocks/displayHousingStockCities/models";
+import { resetIndividualDevices } from "../../../features/individualDevices/displayIndividualDevices/models";
 import {
   $apartment,
   resetApartment,
-} from '01/features/apartments/displayApartment/models';
-import { useEffect } from 'react';
-import stringSimilarity from 'string-similarity';
-import { resetIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+} from "../../../features/apartments/displayApartment/models";
+import { axios } from "../../../../api/axios";
 
 const initialState = {
-  city: '',
-  street: '',
-  house: '',
-  corpus: '',
-  apart: '',
-  question: '',
+  city: "",
+  street: "",
+  house: "",
+  corpus: "",
+  apart: "",
+  question: "",
 };
 
 function filterReducer(state, action) {
   const { payload, type } = action;
   switch (type) {
-    case 'change':
+    case "change":
       return { ...state, ...payload };
 
-    case 'reset':
+    case "reset":
       return { ...initialState, city: state.city || initialState.sity };
 
     default:
@@ -38,22 +38,22 @@ function filterReducer(state, action) {
 }
 
 export function useAutocomplete(street, streets) {
-  if (street?.toUpperCase() === 'ЛЕ') {
-    street = 'лес';
+  if (street?.toUpperCase() === "ЛЕ") {
+    street = "лес";
   }
 
   const matches =
-    typeof street === 'string' && Array.isArray(streets)
+    typeof street === "string" && Array.isArray(streets)
       ? stringSimilarity.findBestMatch(
           street,
-          typeof streets[0] === 'string' ? streets : ['']
+          typeof streets[0] === "string" ? streets : [""]
         )
       : null;
 
   const matchesArray =
     matches?.ratings
       .filter((value) => {
-        const wordsInStreetName = value.target.toUpperCase().split(' ');
+        const wordsInStreetName = value.target.toUpperCase().split(" ");
 
         return wordsInStreetName.reduce(
           (acc, elem) => acc || elem.startsWith(street.toUpperCase()),
@@ -74,7 +74,6 @@ export function useAutocomplete(street, streets) {
   };
 }
 
-
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
   const { apart, street, house, city } = state;
@@ -85,7 +84,7 @@ export const useFilter = () => {
   useEffect(() => {
     if (apartment && apartment.housingStock)
       dispatch({
-        type: 'change',
+        type: "change",
         payload: {
           street: apartment.housingStock.street,
           house: apartment.housingStock.number,
@@ -98,16 +97,16 @@ export const useFilter = () => {
   }, [apartment]);
 
   const onChange = (value, name) => {
-    dispatch({ type: 'change', payload: { [name]: value } });
+    dispatch({ type: "change", payload: { [name]: value } });
   };
 
   const onApartmentKeyHandler = async (e, isQuestion = false) => {
-    if (e.key !== 'Enter') return;
+    if (e.key !== "Enter") return;
 
     if (!isQuestion && [street, house, apart].some((value) => !value)) return;
 
     try {
-      const res = await axios.get('Apartments', {
+      const res = await axios.get("Apartments", {
         params: {
           City: city,
           Street: street,
@@ -128,7 +127,7 @@ export const useFilter = () => {
         resetIndividualDevices();
         history.push(`/meters/apartments/`);
         setTimeout(() => {
-          dispatch({ type: 'reset' });
+          dispatch({ type: "reset" });
         }, 1000);
       }
     } catch (error) {}
@@ -137,22 +136,19 @@ export const useFilter = () => {
   const streets = useStore($existingStreets);
 
   const enterKeyDownHandler = (callback) => (e) => {
-    if (e.key !== 'Enter') return;
+    if (e.key !== "Enter") return;
 
     callback();
   };
 
-  const { options, bestMatch } = useAutocomplete(
-    state.street,
-    streets
-  );
+  const { options, bestMatch } = useAutocomplete(state.street, streets);
 
   const cities = useStore($existingCities);
 
   useEffect(() => {
     if (cities) {
       dispatch({
-        type: 'change',
+        type: "change",
         payload: { city: cities[cities.length - 1] },
       });
     }
@@ -163,42 +159,42 @@ export const useFilter = () => {
     filter: apart,
     inputs: [
       {
-        name: 'city',
-        placeholder: 'Город',
+        name: "city",
+        placeholder: "Город",
         options: (cities || []).map((value) => ({ value })),
       },
       {
-        name: 'street',
-        placeholder: 'Улица',
+        name: "street",
+        placeholder: "Улица",
         onKeyDown: enterKeyDownHandler(
           () =>
             bestMatch &&
-            dispatch({ type: 'change', payload: { street: bestMatch } })
+            dispatch({ type: "change", payload: { street: bestMatch } })
         ),
         options: options,
       },
       {
-        name: 'house',
-        placeholder: 'Дом',
+        name: "house",
+        placeholder: "Дом",
       },
       {
-        name: 'apart',
-        placeholder: 'Кв.',
+        name: "apart",
+        placeholder: "Кв.",
         onKeyDown: onApartmentKeyHandler,
         onFocus: () =>
           dispatch({
-            type: 'change',
-            payload: { ['question']: '' },
+            type: "change",
+            payload: { ["question"]: "" },
           }),
         onChange: () =>
           dispatch({
-            type: 'change',
-            payload: { ['question']: '' },
+            type: "change",
+            payload: { ["question"]: "" },
           }),
       },
       {
-        name: 'question',
-        placeholder: 'Л/С или ФИО',
+        name: "question",
+        placeholder: "Л/С или ФИО",
         onKeyDown: (e) => e.target.value && onApartmentKeyHandler(e, true),
       },
     ].map((elem) => ({
@@ -213,8 +209,8 @@ export const useFilter = () => {
         elem.onFocus && elem.onFocus();
 
         dispatch({
-          type: name === 'street' ? 'reset' : 'change',
-          payload: { [name]: '' },
+          type: name === "street" ? "reset" : "change",
+          payload: { [name]: "" },
         });
       },
     })),

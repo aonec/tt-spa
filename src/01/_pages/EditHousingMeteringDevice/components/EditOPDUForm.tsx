@@ -32,8 +32,8 @@ import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from '../../../tt-components/validationSchemas';
-import { axios } from '../../api/axios';
-import { resourceParser } from 'utils/ResourceParser';
+import { axios } from '../../../../api/axios';
+import { resourceParser } from '../../../../utils/ResourceParser';
 
 interface FormEditODPUInterface {
   currentTabKey: string;

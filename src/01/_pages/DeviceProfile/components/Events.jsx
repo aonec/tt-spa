@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
-import _ from 'lodash';
-import { Loader, Icon } from '01/components';
-import { convertDate } from '01/_api/utils/convertDate';
-import { Button } from '01/_components/Button';
-import { DeviceContext } from '../DeviceProfile';
+import React, { useState, useEffect, useContext } from "react";
+import styled from "styled-components";
+import _ from "lodash";
+import { DeviceContext } from "../DeviceProfile";
+import Button from "../../../_components/Button";
+import { Loader, Icon } from "../../../components";
+import convertDate from "../../../_api/utils/convertDate";
 
 const Template = styled.div``;
 
@@ -53,10 +53,10 @@ const TasksTitle = styled.h2`
   padding-bottom: 14px;
 `;
 
-export const Events = ({ title = '' }) => {
+export const Events = ({ title = "" }) => {
   const { tasks, loadings } = useContext(DeviceContext);
   // const loadingTasks = _.get(loadings, 'device', true);
-  const loading = _.get(loadings, 'device', true);
+  const loading = _.get(loadings, "device", true);
 
   const Tasks = (tasks || []).map((task, index) => {
     const { currentStage, perpetrator, id } = task;
@@ -65,13 +65,13 @@ export const Events = ({ title = '' }) => {
         <StageName>{currentStage.name}</StageName>
         <TaskName>{`Причина: ${task.name}`}</TaskName>
         <TaskRow>
-          <Icon icon="timer" style={{ marginRight: '8px' }} />
+          <Icon icon="timer" style={{ marginRight: "8px" }} />
           {`${convertDate(currentStage.startingTime)} - ${convertDate(
             currentStage.expectedCompletionTime
           )}`}
         </TaskRow>
         <TaskRow>
-          <Icon icon="username2" style={{ marginRight: '8px' }} />
+          <Icon icon="username2" style={{ marginRight: "8px" }} />
           {perpetrator.name}
         </TaskRow>
       </Task>

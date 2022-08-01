@@ -10,10 +10,10 @@ import ModalAddStaff from './components/Modals/ModalAddStaff';
 import ModalAddContractor from './components/Modals/ModalAddContractor';
 import { Loader } from '../../_components/Loader';
 import CompanyInfo from './components/CompanyInfo';
-import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
-import { AddContractorsFormModal } from '01/features/contractors/addContractors';
-import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
 import { getCurrentManagingFirm } from './apiSettings';
+import { addContractorsButtonMenuClicked } from '../../features/contractors/addContractors/models';
+import { addStaffButtonClicked } from '../../features/staff/addStaff/models';
+import { AddContractorsFormModal } from '../../features/contractors/addContractors';
 
 export const SettingsContext = createContext();
 export const Settings = () => {

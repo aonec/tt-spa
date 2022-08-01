@@ -1,5 +1,5 @@
-import { IndividualDeviceListItemResponse } from '../.../../api/types';
 import { useState } from 'react';
+import { IndividualDeviceListItemResponse } from '../../../../api/types';
 import { IndividualDeviceType } from '../../../../types';
 
 const limit = 6;

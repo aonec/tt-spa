@@ -9,12 +9,12 @@ import {
   requestReadingsFx,
   ResourceGate,
 } from '../models';
-import { EResourceType } from '../.../../api/types';
 import { Alert } from 'antd';
 import { HousingMeteringReadingsHeader } from './HousingMeteringReadingsHeader';
 import { YearReading } from './YearReading';
 import { prepareReadings, YearReadingsType } from '../lib/groupReadingsByDates';
 import _ from 'lodash';
+import { EResourceType } from '../../../../api/types';
 
 const HousingMeteringDeviceReadings = ({
   nodeId,

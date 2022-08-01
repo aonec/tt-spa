@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { getTasks } from '../../_api/tasks_page';
 
-import { getTasks } from '01/_api/tasks_page';
 
 function reducer(state, action) {
   const { type, data } = action;

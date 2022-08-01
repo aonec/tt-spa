@@ -4,18 +4,27 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
-import styled, { css, use } from '@reshadow/macro';
-import { Perpetrator, Contractors, NextStage } from '01/components/Select';
-import { Loader } from '01/components';
-import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-import * as s from '01/r_comp';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import AddDate from '../../../../components/Select/selects/AddDate';
-import StyledTextArea from '../../../../tt-components/TextArea';
-import { Readings } from '../Readings';
-import { SetNextStageDeadlineContainer } from '../SetNextStageDeadlineService';
-import { CloseDevicesContainer } from '../CloseDeviceService';
+import React, { useState } from "react";
+import styled, { css, use } from "@reshadow/macro";
+
+import AddDate from "../../../../components/Select/selects/AddDate";
+import StyledTextArea from "../../../../tt-components/TextArea";
+import { Readings } from "../Readings";
+import { SetNextStageDeadlineContainer } from "../SetNextStageDeadlineService";
+import { CloseDevicesContainer } from "../CloseDeviceService";
+import { Flex } from "../../../../shared/ui/Layout/Flex";
+import { Loader } from "../../../../components";
+import {
+  Perpetrator,
+  Contractors,
+  NextStage,
+} from "../../../../components/Select";
+import {
+  useUpload,
+  UploadButton,
+  UploadList,
+} from "../../../../components/Upload";
+import * as s from "../../../../r_comp";
 
 const styles = css`
   panel {
@@ -26,21 +35,21 @@ const styles = css`
     box-shadow: var(--shadow);
     &[|styleSwitch] {
       grid-template-columns: 1fr auto;
-      grid-template-areas: 'ns push';
+      grid-template-areas: "ns push";
     }
     &[|styleAddPerpetratorAndEmailNotify] {
       grid-template-columns: repeat(6, 1fr);
       grid-template-areas:
-        'p p p c c c'
-        'ta ta ta ta ta ta'
-        'ub ub ul ul push push';
+        "p p p c c c"
+        "ta ta ta ta ta ta"
+        "ub ub ul ul push push";
     }
     &[|styleSwitchAndAddPerpetrator] {
-      grid-template-areas: 'p ns push';
+      grid-template-areas: "p ns push";
       grid-template-columns: 1fr 1fr auto;
     }
     &[|styleAddDocuments] {
-      grid-template-areas: 'ub ul push';
+      grid-template-areas: "ub ul push";
       grid-template-columns: auto 1fr auto;
     }
     &[|styleCompletion] {
@@ -49,8 +58,8 @@ const styles = css`
     &[|styleSwitchAndAddDocuments] {
       grid-template-columns: repeat(5, 1fr);
       grid-template-areas:
-        'ns ns ns ns ns'
-        'ub ul ul ul push';
+        "ns ns ns ns ns"
+        "ub ul ul ul push";
     }
     &[|styleReadings] {
       display: block !important;
@@ -58,17 +67,17 @@ const styles = css`
     &[|styleAddPerpetratorAndSetNextStageDeadline] {
       padding-top: 45px;
       position: relative;
-      grid-template-areas: 'p ad push';
+      grid-template-areas: "p ad push";
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
     &[|styleAddPerpetratorAndAddDocumentsAndAddEmailNotify] {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-template-areas:
-        'p p c c'
-        'ta ta ta ta'
-        'ub ub ub ub'
-        'ul ul . push';
+        "p p c c"
+        "ta ta ta ta"
+        "ub ub ub ub"
+        "ul ul . push";
     }
   }
 
@@ -123,11 +132,11 @@ export const Panel = ({
   state = {},
   pushProps = {},
   isObserver = false,
-  perpName = '',
+  perpName = "",
   dispatch = () => {},
   stages = {},
 }) => {
-  const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
+  const upload = useUpload((data) => dispatch({ type: "add_data", data }));
   const [message, setMessage] = useState();
   if (hiddenPanel) return null;
   const {
@@ -143,10 +152,10 @@ export const Panel = ({
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const addReadingsDone =
-    stages.items[2]?.name === 'Ввод показаний' && Completion;
+    stages.items[2]?.name === "Ввод показаний" && Completion;
 
   const taskPerpetrator = state.perpetrator;
-  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const currentUser = JSON.parse(localStorage.getItem("user"));
   const isPerpetrator = currentUser?.id === taskPerpetrator?.id;
 
   if (isObserver && AddDocuments && Switch) {
@@ -154,11 +163,11 @@ export const Panel = ({
       styles,
       s.input
     )(
-      <panel style={{ display: 'flex' }}>
-        <input_frame data-disabled data-big style={{ width: '50%' }}>
+      <panel style={{ display: "flex" }}>
+        <input_frame data-disabled data-big style={{ width: "50%" }}>
           <input disabled value={perpName} />
         </input_frame>
-        <input_frame data-disabled data-big style={{ width: '50%' }}>
+        <input_frame data-disabled data-big style={{ width: "50%" }}>
           <input disabled value={deadline} />
         </input_frame>
       </panel>
@@ -188,22 +197,22 @@ export const Panel = ({
       {SetNextStageDeadline && <SetNextStageDeadlineContainer />}
 
       {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
+        <Perpetrator getData={(data) => dispatch({ type: "add_data", data })} />
       )}
 
       {Switch && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+        <NextStage getData={(data) => dispatch({ type: "add_data", data })} />
       )}
 
       {SetNextStageDeadline && (
-        <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
+        <AddDate getData={(data) => dispatch({ type: "add_data", data })} />
       )}
 
       {EmailNotify && (
         <>
           <Contractors
             getData={(data) =>
-              dispatch({ type: 'add_email_contractors', data })
+              dispatch({ type: "add_email_contractors", data })
             }
           />
           <StyledTextArea
@@ -213,7 +222,7 @@ export const Panel = ({
             onChange={(e) => {
               setMessage(e.target.value);
               dispatch({
-                type: 'add_email_message',
+                type: "add_email_message",
                 data: { message: e.target.value },
               });
             }}
@@ -231,16 +240,16 @@ export const Panel = ({
       )}
 
       {SetNextStageDeadline && Completion && (
-        <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
+        <AddDate getData={(data) => dispatch({ type: "add_data", data })} />
       )}
 
       {UploadReadings && (
-        <Readings getData={(data) => dispatch({ type: 'add_data', data })} />
+        <Readings getData={(data) => dispatch({ type: "add_data", data })} />
       )}
 
       {CloseIndividualDevices && (
         <CloseDevicesContainer
-          setData={(data) => dispatch({ type: 'add_data', data })}
+          setData={(data) => dispatch({ type: "add_data", data })}
         />
       )}
 

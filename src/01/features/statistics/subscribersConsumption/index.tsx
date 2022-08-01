@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useStore } from '../../../../../node_modules/effector-react';
 import { Search } from './components/Search';
 import { StatisticsList } from './components/StatisticsList';
 import {
@@ -10,6 +9,7 @@ import {
 } from './models';
 import { useForm } from 'effector-forms';
 import { Space } from '../../../shared/ui/Layout/Space/Space';
+import { useStore } from 'effector-react';
 
 export const SubscribersConsumption = () => {
   const id = useStore($selectedHousingsStockId);

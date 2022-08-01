@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-import { Loader } from '01/components';
+import login from "../../assets/svg/login.svg";
+import logo from "../../assets/svg/logo.svg";
 
-import axios from '../../api/axios';
-import login from '01/assets/svg/login.svg';
-import logo from '01/assets/svg/logo.svg';
-import { Label, Button, Input, Icon, ButtonTT } from '01/tt-components';
-import { Title } from '../../tt-components/Title';
-import styled from 'styled-components';
-import { message } from 'antd';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { DevSettingsModal } from '01/features/developmentSettings';
-import { openDevSettingsModal } from '01/features/developmentSettings/models';
-import { useIsDev } from '01/hooks/useDev';
+import styled from "styled-components";
+import { message } from "antd";
+import { useIsDev } from "../../hooks/useDev";
+import { Space } from "../../shared/ui/Layout/Space/Space";
+import { Loader } from "../../components";
+import {
+  ButtonTT,
+  Label,
+  Button,
+  Input,
+  Icon,
+  Title,
+} from "../../tt-components";
+import { DevSettingsModal } from "../../features/developmentSettings";
+import { openDevSettingsModal } from "../../features/developmentSettings/models";
+import { axios } from "../../../api/axios";
 
 export const Main = styled.div`
   height: 100vh;
@@ -55,8 +61,8 @@ export const LoginTopHeader = styled.div`
 `;
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
@@ -64,17 +70,17 @@ export const Login = () => {
   async function FormSubmitHadler() {
     setLoading(true);
     try {
-      await axios.post('auth/login', { email, password });
-      const res = await axios.get('ManagingFirmUsers/current');
+      await axios.post("auth/login", { email, password });
+      const res = await axios.get("ManagingFirmUsers/current");
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       replace(
-        res.roles.some((elem) => elem.type === 'ManagingFirmOperator')
-          ? '/meters'
-          : '/tasks/'
+        res.roles.some((elem) => elem.type === "ManagingFirmOperator")
+          ? "/meters"
+          : "/tasks/"
       );
     } catch (error) {
       console.log(error);
-      message.error('Корректно введите логин и пароль');
+      message.error("Корректно введите логин и пароль");
     } finally {
       setLoading(false);
     }
@@ -82,7 +88,6 @@ export const Login = () => {
 
   const isDev = useIsDev();
 
-  
   return (
     <Main>
       <LoginLeft>
@@ -119,14 +124,14 @@ export const Login = () => {
                 name="password"
                 placeholder="Введите пароль"
                 readOnly={loading}
-                type={showPass ? 'text' : 'password'}
+                type={showPass ? "text" : "password"}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
               />
               <Icon
-                icon={showPass ? 'off' : 'on'}
+                icon={showPass ? "off" : "on"}
                 onClick={() => {
                   setShowPass(!showPass);
                 }}
@@ -153,7 +158,7 @@ export const Login = () => {
               onClick={openDevSettingsModal}
               small
               color="white"
-              style={{ color: 'white' }}
+              style={{ color: "white" }}
             >
               Development settings
             </ButtonTT>

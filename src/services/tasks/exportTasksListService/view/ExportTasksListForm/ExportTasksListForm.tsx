@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { ExportTasksListFormProps } from './ExportTasksListForm.types';
 import * as yup from 'yup';
 import { SelectValue } from 'antd/lib/select';
@@ -51,7 +51,7 @@ export const ExportTasksListForm: FC<ExportTasksListFormProps> = ({
       <Form.Item label="Тип задачи">
         <Select
           placeholder="Выберите тип задачи"
-          onChange={setSelectValue}
+          onChange={(value) => void setSelectValue(value as string)}
           value={selectedTaskType}
         >
           {taskTypeOptions}

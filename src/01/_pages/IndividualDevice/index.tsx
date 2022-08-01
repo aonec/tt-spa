@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Route, useHistory, useParams } from 'react-router-dom';
-import { Header } from './components/Header';
-import { Information } from './components/Information';
-import { Loader } from '../../components';
-import { Title } from '../../tt-components/Title';
-import { useAsync } from '../../hooks/useAsync';
-import ModalDeregister from '../../tt-components/ModalDeregister';
-import Events from '../../tt-components/Events';
-import { TabsItemInterface } from '../../tt-components/interfaces';
-import Tabs from '../../tt-components/Tabs';
+import React, { useEffect, useState } from "react";
+import { Route, useHistory, useParams } from "react-router-dom";
+import { Header } from "./components/Header";
+import { Information } from "./components/Information";
+import { Loader } from "../../components";
+import { Title } from "../../tt-components/Title";
+import { useAsync } from "../../hooks/useAsync";
+import ModalDeregister from "../../tt-components/ModalDeregister";
+import Events from "../../tt-components/Events";
+import { TabsItemInterface } from "../../tt-components/interfaces";
+import Tabs from "../../tt-components/Tabs";
 import {
   getIndividualDevice,
   getIndividualDeviceTasks,
-} from '../../_api/apiRequests';
-import { IndividualDeviceResponse, TaskListResponse } from '../../../api/types';
-import Grid from '../../_components/Grid';
+} from "../../_api/apiRequests";
+import { IndividualDeviceResponse, TaskListResponse } from "../../../api/types";
+import Grid from "../../_components/Grid";
 
 export const IndividualDevice = () => {
   const { push } = useHistory();
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{ deviceId: string }>();
   const path = `/individualDevices/${deviceId}`;
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
 
   const [deregister, setDeregister] = useState(false);
-  const { data: tasks, status: tasksStatus, run: tasksRun } = useAsync<
-    TaskListResponse[] | null
-  >();
+  const {
+    data: tasks,
+    status: tasksStatus,
+    run: tasksRun,
+  } = useAsync<TaskListResponse[] | null>();
 
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));
@@ -33,20 +35,20 @@ export const IndividualDevice = () => {
   }, [deviceId]);
 
   if (!device || !tasks) {
-    return <Loader size={'32'} show />;
+    return <Loader size={"32"} show />;
   }
 
   const tabItems: Array<TabsItemInterface> = [
     {
-      title: 'Общая информация',
-      key: '',
+      title: "Общая информация",
+      key: "",
       cb: () => {
         push(`${path}`);
       },
     },
     {
-      title: 'Документы',
-      key: 'documents',
+      title: "Документы",
+      key: "documents",
       cb: () => {
         push(`${path}/documents`);
       },
@@ -55,16 +57,16 @@ export const IndividualDevice = () => {
 
   return (
     <>
-      {status === 'error' ? (
-        <div style={{ background: 'red' }}>ОШИБКА</div>
+      {status === "error" ? (
+        <div style={{ background: "red" }}>ОШИБКА</div>
       ) : null}
-      {status === 'pending' || status === 'idle' ? (
-        <Loader size={'32'} show />
+      {status === "pending" || status === "idle" ? (
+        <Loader size={"32"} show />
       ) : null}
-      {status === 'resolved' ? (
+      {status === "resolved" ? (
         <>
           <Header device={device} />
-          <Tabs tabItems={tabItems} tabsType={'route'} />
+          <Tabs tabItems={tabItems} tabsType={"route"} />
           <Grid>
             <Route path={path} exact>
               <Information device={device} />

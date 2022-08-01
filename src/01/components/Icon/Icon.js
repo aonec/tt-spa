@@ -1,16 +1,16 @@
 /* eslint-disable */
 
-import React from 'react';
-import styled from '@reshadow/macro';
-import t from 'prop-types';
+import React from "react";
+import styled from "@reshadow/macro";
+import t from "prop-types";
 
-import icons from '01/assets/icons.json';
+import icons from "../../assets/icons.json";
 
-export const Icon = ({ size = 16, icon = '', ...props }) =>
+export const Icon = ({ size = 16, icon = "", ...props }) =>
   styled()`
     svg {
-      width: ${size + 'px'};
-      height: ${size + 'px'};
+      width: ${size + "px"};
+      height: ${size + "px"};
     }
   `(
     <svg viewBox="0 0 16 16" fill="currentColor" {...props}>

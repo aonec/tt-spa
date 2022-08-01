@@ -1,9 +1,10 @@
 /* eslint-disable */
 
-import React from 'react';
-import styled, { css } from '@reshadow/macro';
-import { useHistory } from 'react-router-dom';
-import { Loader, Icon } from '01/components';
+import React from "react";
+import styled, { css } from "@reshadow/macro";
+import { useHistory } from "react-router-dom";
+import { Icon, Loader } from "../../../components";
+
 const styles = css`
   e_list,
   e_item {
@@ -45,7 +46,7 @@ const styles = css`
   }
 `;
 
-export const Events = ({ title = '', loading = true, items = [] }) => {
+export const Events = ({ title = "", loading = true, items = [] }) => {
   const { push } = useHistory();
   return styled(styles)(
     <section>
@@ -57,7 +58,7 @@ export const Events = ({ title = '', loading = true, items = [] }) => {
             return null;
           }
           return (
-            <e_item key={id} onClick={() => push('/tasks/' + id)}>
+            <e_item key={id} onClick={() => push("/tasks/" + id)}>
               <e_title as="h4">{currentStage.name}</e_title>
               <e_name>{name}</e_name>
               <timer>

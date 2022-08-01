@@ -8,8 +8,8 @@ import { nodeStatusList } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
 import { groupNodesByCalculator } from './utis/groupNodesByCalculator';
 import { CalculatorWrapper } from '../CalculatorWrapper';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
+import { Flex } from '../../../shared/ui/Layout/Flex';
 
 function statusIcon(closingDate) {
   return !closingDate ? 'green' : 'red';

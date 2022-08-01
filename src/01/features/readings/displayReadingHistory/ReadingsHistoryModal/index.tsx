@@ -1,7 +1,7 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
 import { ReadingHistoryPage } from '..';
+import { ModalTT } from '../../../../shared/ui/ModalTT';
 import {
   $isReadingsHstoryModalOpen,
   $readingsHistoryModalDeviceId,

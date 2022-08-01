@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import moment from 'moment';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import _ from 'lodash';
-import { Form, Switch } from 'antd';
+import React, { useContext, useEffect, useState } from "react";
+import moment from "moment";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import _ from "lodash";
+import { Form, Switch } from "antd";
 import {
   ConnectionTakesTime,
   Title,
@@ -13,31 +13,30 @@ import {
   SelectTT,
   StyledModalBody,
   StyledFooter,
-} from '../../../../../tt-components';
-import { items } from '../../../../../tt-components/localBases';
-import TabsComponent from './addCalculatorTabs';
-import { addCalculator } from './apiAddCalculator';
-import { returnNullIfEmptyString } from '../../../../../utils/returnNullIfEmptyString';
-import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
+} from "../../../../../tt-components";
+import { items } from "../../../../../tt-components/localBases";
+import TabsComponent from "./addCalculatorTabs";
+import { addCalculator } from "./apiAddCalculator";
+import { returnNullIfEmptyString } from "../../../../../utils/returnNullIfEmptyString";
+import { handleTabsBeforeFormSubmit } from "../../../../../utils/handleTabsBeforeFormSubmit";
 import {
   defaultValidationSchema,
   emptyConnectionValidationSchema,
-} from './validationSchemas';
-import { isEmptyString } from '../../../../../utils/isEmptyString';
-import { AddCalculatorContext } from './index';
-import { useStore } from 'effector-react';
+} from "./validationSchemas";
+import { isEmptyString } from "../../../../../utils/isEmptyString";
+import { AddCalculatorContext } from "./index";
+import { useStore } from "effector-react";
 import {
   $calculatorTypesSelectItems,
   CalculatorInfosGate,
-} from '01/features/carlculators/calculatorsInfo/models';
+} from "../../../../../features/carlculators/calculatorsInfo/models";
 
 const AddCalculatorForm = (props) => {
   const { housingStockId, handleCancel, setAddCalculator } = props;
-  const [currentTabKey, setTab] = useState('1');
+  const [currentTabKey, setTab] = useState("1");
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  const { setAlertVisible, setExistCalculator } = useContext(
-    AddCalculatorContext
-  );
+  const { setAlertVisible, setExistCalculator } =
+    useContext(AddCalculatorContext);
 
   const calculatorTypesSelectItems = useStore($calculatorTypesSelectItems);
 
@@ -52,13 +51,13 @@ const AddCalculatorForm = (props) => {
     setFieldError,
   } = useFormik({
     initialValues: {
-      serialNumber: '',
+      serialNumber: "",
       lastCheckingDate: moment().toISOString(true),
-      futureCheckingDate: moment().add(4, 'years').toISOString(true),
+      futureCheckingDate: moment().add(4, "years").toISOString(true),
       lastCommercialAccountingDate: moment().toISOString(true),
       futureCommercialAccountingDate: moment().toISOString(true),
       documentsIds: [],
-      ipV4: '',
+      ipV4: "",
       deviceAddress: null,
       port: null,
       housingStockId: Number(housingStockId),
@@ -115,9 +114,9 @@ const AddCalculatorForm = (props) => {
   useEffect(() => {
     if (values.isConnected === false) {
       if (isEmptyConnection() === true) {
-        setFieldError('ipV4');
-        setFieldError('port');
-        setFieldError('deviceAddress');
+        setFieldError("ipV4");
+        setFieldError("port");
+        setFieldError("deviceAddress");
         setValidationSchema(emptyConnectionValidationSchema);
       }
       if (isEmptyConnection() === false) {
@@ -127,16 +126,16 @@ const AddCalculatorForm = (props) => {
   }, [values.deviceAddress, values.ipV4, values.port]);
 
   function onSwitchChange(checked) {
-    setFieldValue('isConnected', checked);
+    setFieldValue("isConnected", checked);
     if (checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
     if (checked === false) {
       if (isEmptyConnection() === true) {
         setValidationSchema(emptyConnectionValidationSchema);
-        setFieldError('ipV4');
-        setFieldError('port');
-        setFieldError('deviceAddress');
+        setFieldError("ipV4");
+        setFieldError("port");
+        setFieldError("deviceAddress");
       }
       if (isEmptyConnection() === false) {
         setValidationSchema(defaultValidationSchema);
@@ -146,12 +145,12 @@ const AddCalculatorForm = (props) => {
 
   const tabErrors = [
     {
-      key: '1',
-      value: ['serialNumber', 'infoId'],
+      key: "1",
+      value: ["serialNumber", "infoId"],
     },
     {
-      key: '2',
-      value: ['ipV4', 'port', 'deviceAddress'],
+      key: "2",
+      value: ["ipV4", "port", "deviceAddress"],
     },
   ];
 
@@ -204,14 +203,14 @@ const AddCalculatorForm = (props) => {
           <div
             hidden={Number(currentTabKey) !== 1}
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
             }}
           >
             <Form.Item
               label="Серийный номер устройства"
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
             >
               <InputTT
                 name="serialNumber"
@@ -223,43 +222,43 @@ const AddCalculatorForm = (props) => {
               <Alert name="serialNumber" />
             </Form.Item>
 
-            <Form.Item label="Тип вычислителя" style={{ width: '100%' }}>
+            <Form.Item label="Тип вычислителя" style={{ width: "100%" }}>
               <SelectTT
                 name="infoId"
                 placeholder="Выберите тип устройства"
                 options={calculatorTypesSelectItems}
                 value={values.infoId}
                 onChange={(event) => {
-                  setFieldValue('infoId', Number(event));
+                  setFieldValue("infoId", Number(event));
                 }}
               />
             </Form.Item>
 
-            <Form.Item label="Дата поверки" style={{ width: '49%' }}>
+            <Form.Item label="Дата поверки" style={{ width: "49%" }}>
               <DatePickerTT
                 format="DD.MM.YYYY"
                 name="lastCheckingDate"
                 placeholder="Укажите дату"
                 allowClear={false}
                 onChange={(date) => {
-                  setFieldValue('lastCheckingDate', date.toISOString(true));
+                  setFieldValue("lastCheckingDate", date.toISOString(true));
                   setFieldValue(
-                    'futureCheckingDate',
-                    moment(date).add(4, 'years')
+                    "futureCheckingDate",
+                    moment(date).add(4, "years")
                   );
                 }}
                 value={moment(values.lastCheckingDate)}
               />
             </Form.Item>
 
-            <Form.Item label="Дата следующей поверки" style={{ width: '49%' }}>
+            <Form.Item label="Дата следующей поверки" style={{ width: "49%" }}>
               <DatePickerTT
                 format="DD.MM.YYYY"
                 name="futureCheckingDate"
                 placeholder="Укажите дату"
                 allowClear={false}
                 onChange={(date) => {
-                  setFieldValue('futureCheckingDate', date.toISOString(true));
+                  setFieldValue("futureCheckingDate", date.toISOString(true));
                 }}
                 value={moment(values.futureCheckingDate)}
               />
@@ -267,7 +266,7 @@ const AddCalculatorForm = (props) => {
 
             <Form.Item
               label="Дата начала Акта действия допуска"
-              style={{ width: '49%' }}
+              style={{ width: "49%" }}
             >
               <DatePickerTT
                 format="DD.MM.YYYY"
@@ -276,7 +275,7 @@ const AddCalculatorForm = (props) => {
                 allowClear={false}
                 onChange={(date) => {
                   setFieldValue(
-                    'lastCommercialAccountingDate',
+                    "lastCommercialAccountingDate",
                     date.toISOString(true)
                   );
                 }}
@@ -286,7 +285,7 @@ const AddCalculatorForm = (props) => {
 
             <Form.Item
               label="Дата окончания Акта действия допуска"
-              style={{ width: '49%' }}
+              style={{ width: "49%" }}
             >
               <DatePickerTT
                 format="DD.MM.YYYY"
@@ -295,7 +294,7 @@ const AddCalculatorForm = (props) => {
                 allowClear={false}
                 onChange={(date) => {
                   setFieldValue(
-                    'futureCommercialAccountingDate',
+                    "futureCommercialAccountingDate",
                     date.toISOString(true)
                   );
                 }}
@@ -307,36 +306,36 @@ const AddCalculatorForm = (props) => {
           <div
             hidden={Number(currentTabKey) !== 2}
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
             }}
           >
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
               }}
             >
               <Switch
-                style={{ width: '48px' }}
+                style={{ width: "48px" }}
                 onChange={onSwitchChange}
                 checked={values.isConnected}
               />
               <span
                 style={{
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                  marginLeft: '16px',
-                  color: 'rgba(39, 47, 90, 0.9)',
+                  fontSize: "16px",
+                  lineHeight: "32px",
+                  marginLeft: "16px",
+                  color: "rgba(39, 47, 90, 0.9)",
                 }}
               >
                 Опрашивать вычислитель
               </span>
             </div>
 
-            <Form.Item label="IP адрес вычислителя" style={{ width: '49%' }}>
+            <Form.Item label="IP адрес вычислителя" style={{ width: "49%" }}>
               <InputTT
                 name="ipV4"
                 type="text"
@@ -344,14 +343,14 @@ const AddCalculatorForm = (props) => {
                 onBlur={handleBlur}
                 placeholder="Введите IP адрес вычислителя"
                 onChange={(event) => {
-                  setFieldValue('ipV4', event.target.value);
+                  setFieldValue("ipV4", event.target.value);
                 }}
               />
               {/*{isEmptyConnection() && !checked ? null : <Alert name="ipV4" />}*/}
               <Alert name="ipV4" />
             </Form.Item>
 
-            <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
+            <Form.Item label="Порт вычислителя" style={{ width: "49%" }}>
               <InputTT
                 name="port"
                 type="number"
@@ -364,7 +363,7 @@ const AddCalculatorForm = (props) => {
               <Alert name="port" />
             </Form.Item>
 
-            <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
+            <Form.Item label="Адрес вычислителя" style={{ width: "100%" }}>
               <InputTT
                 name="deviceAddress"
                 type="number"
@@ -384,9 +383,9 @@ const AddCalculatorForm = (props) => {
           <div
             hidden={Number(currentTabKey) !== 3}
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
             }}
           >
             <Title color="black">Компонент Документы в разработке</Title>
@@ -397,7 +396,7 @@ const AddCalculatorForm = (props) => {
             color="blue"
             onClick={handleNext}
             type="button"
-            hidden={currentTabKey === '3'}
+            hidden={currentTabKey === "3"}
             big
           >
             Далее
@@ -406,7 +405,7 @@ const AddCalculatorForm = (props) => {
           <ButtonTT
             color="blue"
             type="submit"
-            hidden={currentTabKey !== '3'}
+            hidden={currentTabKey !== "3"}
             big
           >
             Добавить
@@ -415,7 +414,7 @@ const AddCalculatorForm = (props) => {
             color="white"
             type="button"
             onClick={handleCancel}
-            style={{ marginLeft: '16px' }}
+            style={{ marginLeft: "16px" }}
           >
             Отмена
           </ButtonTT>

@@ -3,17 +3,17 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Icon } from '01/components/Icon';
 import { Button, Title } from '.';
 import { ListItem, ListItemDescription, ListItemValue } from './ListItem';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { CheckLg, Pen, XLg } from 'react-bootstrap-icons';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { InputSC } from '01/shared/ui/Fields';
-import axios from '../../api/axios';
 import { message } from 'antd';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { Flex } from '../../../shared/ui/Layout/Flex';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
+import { InputSC } from '../../../shared/ui/Fields';
+import { Icon } from '../../../components';
+import { axios } from '../../../../api/axios';
 
 export const Certificate = (props) => {
   const { certificate } = props;

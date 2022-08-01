@@ -3,8 +3,8 @@
 import React from 'react';
 import styled from '@reshadow/macro';
 import { NavLink, useLocation, useRouteMatch } from 'react-router-dom';
+import { tabs } from '../../../../r_comp';
 
-import { tabs } from '01/r_comp';
 
 const tabItems = [
   'Шаг 1. Общие данные',

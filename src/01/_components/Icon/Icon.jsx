@@ -1,12 +1,12 @@
-import React from 'react';
-import styledReshadow from '@reshadow/macro';
-import icons from '01/assets/icons.json';
-import styled from 'styled-components';
-import { ReactComponent as WaterIcon } from './icons/water.svg';
-import { ReactComponent as HeatIcon } from './icons/heat.svg';
-import { ReactComponent as ElectroIcon } from './icons/electro.svg';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
+import React from "react";
+import styledReshadow from "@reshadow/macro";
+import icons from "../../assets/icons.json";
+import styled from "styled-components";
+import { ReactComponent as WaterIcon } from "./icons/water.svg";
+import { ReactComponent as HeatIcon } from "./icons/heat.svg";
+import { ReactComponent as ElectroIcon } from "./icons/electro.svg";
+import { Flex } from "../../shared/ui/Layout/Flex";
+import { Space } from "../../shared/ui/Layout/Space/Space";
 
 export const darkIcons = {
   water: WaterIcon,
@@ -14,7 +14,7 @@ export const darkIcons = {
   electro: ElectroIcon,
 };
 
-export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
+export const Icon = ({ size = 16, icon = "", dark = false, ...props }) => {
   const DarkIcon = darkIcons[icon];
 
   if (DarkIcon && dark) {
@@ -24,7 +24,7 @@ export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
     `;
 
     return (
-      <Flex style={{ transform: 'translateY(2px)' }}>
+      <Flex style={{ transform: "translateY(2px)" }}>
         <Space>
           <Icon />
         </Space>

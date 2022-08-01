@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled, { css, use } from '@reshadow/macro';
-import { Icon, Loader } from '01/components';
+import { Loader, Icon } from '../../../components';
 
 const styles = css`
   documnet {

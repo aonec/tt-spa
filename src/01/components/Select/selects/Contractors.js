@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import axios from '../../api/axios';
+import { axios } from '../../../../api/axios';
 
 import { Select } from '../Select';
 

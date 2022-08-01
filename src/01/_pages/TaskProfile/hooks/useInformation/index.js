@@ -1,9 +1,7 @@
 /* eslint-disable */
 
-import { information } from '01/r_comp';
-import moment from 'moment';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
-import { useInfoHeader } from './useInfoHeder';
+import { getTimeStringByUTC } from "../../../../../utils/getTimeStringByUTC";
+
 
 const taskInfo = [
   ['Причина задачи', 'creationReason'],

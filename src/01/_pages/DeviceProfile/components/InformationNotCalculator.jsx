@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
-import { convertDateDots } from '01/_api/utils/convertDate';
-import { Loader } from '01/components';
-import { ListWrap, ListItem, Title } from '01/_components/List';
-import _ from 'lodash';
-import { DeviceContext } from '../DeviceProfile';
-import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
+import React, { useContext } from "react";
+import _ from "lodash";
+import { DeviceContext } from "../DeviceProfile";
+import { DEFAULT_BUILDING, DEFAULT_DEVICE } from "./Templates";
+import { convertDateDots } from "../../../_api/utils/convertDate";
+import { Loader } from "../../../components";
+import { ListWrap, ListItem, Title } from "../../../_components/List";
 
 export const InformationNotCalculator = (loading = true) => {
   const { device, building, loadings, error } = useContext(DeviceContext);
 
-  const loadingDevice = _.get(loadings, 'device', true);
-  const loadingBuilding = _.get(loadings, 'building', true);
+  const loadingDevice = _.get(loadings, "device", true);
+  const loadingBuilding = _.get(loadings, "building", true);
 
   loading = loadingDevice || loadingBuilding;
 
@@ -19,7 +19,7 @@ export const InformationNotCalculator = (loading = true) => {
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } =
     device || DEFAULT_DEVICE;
 
-  const errorOfComponent = _.get(error, 'resource', null);
+  const errorOfComponent = _.get(error, "resource", null);
   if (errorOfComponent) {
     return (
       <ListWrap>
@@ -34,9 +34,9 @@ export const InformationNotCalculator = (loading = true) => {
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <span style={{ fontWeight: '500' }}>
+          <span style={{ fontWeight: "500" }}>
             {`${city}, ${street}, ${housingStockNumber} ${
-              corpus ? `, к.${corpus}` : ''
+              corpus ? `, к.${corpus}` : ""
             }`}
           </span>
         </ListItem>

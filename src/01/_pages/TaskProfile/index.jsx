@@ -1,58 +1,58 @@
-import React from 'react';
-import styled from '@reshadow/macro';
-import * as s from '01/r_comp';
-import styledC from 'styled-components';
-import { Link } from 'react-router-dom';
-import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
-import { useStore } from 'effector-react';
-import { $task } from '01/features/tasks/displayTask/models';
-import { TasksProfileContext } from './context';
-import { usePageFetch } from './hooks/usePageFetch';
-import { usePanel } from './hooks/usePanel';
-import { useStages } from './hooks/useStages';
-import { useDocuments } from './hooks/useDocuments';
-import { useInformation } from './hooks/useInformation';
-import { useInformationDevice } from './hooks/useInformationDevice';
+import React from "react";
+import styled from "@reshadow/macro";
+import styledC from "styled-components";
+import { Link } from "react-router-dom";
+import { useStore } from "effector-react";
+import { TasksProfileContext } from "./context";
+import { usePageFetch } from "./hooks/usePageFetch";
+import { usePanel } from "./hooks/usePanel";
+import { useStages } from "./hooks/useStages";
+import { useDocuments } from "./hooks/useDocuments";
+import { useInformation } from "./hooks/useInformation";
+import { useInformationDevice } from "./hooks/useInformationDevice";
 
-import { Header } from './components/Header';
-import { Panel } from './components/Panel';
-import { Steps } from './components/Steps';
-import { Stages } from './components/Stages';
-import { Documents } from './components/Documents';
-import { Information } from './components/Information';
-import { InformationDevice } from './components/InformationDevice';
-import TaskComments from './components/Comments/TaskComments';
-import NodeInformation from '../NodeProfile/components/Information';
-import { Icon as IconTT } from '../../tt-components/Icon';
-import DeviceIcons from '../../_components/DeviceIcons';
-import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
-import { getNodeIdFromTask } from './utlis';
-import { IndividualDevicesList } from './components/IndividualDevicesList';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { Header } from "./components/Header";
+import { Panel } from "./components/Panel";
+import { Steps } from "./components/Steps";
+import { Stages } from "./components/Stages";
+import { Documents } from "./components/Documents";
+import { Information } from "./components/Information";
+import { InformationDevice } from "./components/InformationDevice";
+import TaskComments from "./components/Comments/TaskComments";
+import NodeInformation from "../NodeProfile/components/Information";
+import { Icon as IconTT } from "../../tt-components/Icon";
+import DeviceIcons from "../../_components/DeviceIcons";
+import { TaskNodeStatistic } from "../../features/nodes/displayNode/TaskNodeStatistic";
+import { getNodeIdFromTask } from "./utlis";
+import { IndividualDevicesList } from "./components/IndividualDevicesList";
+import * as s from "../../r_comp";
+import { $task } from "../../features/tasks/displayTask/models";
+import { GoBack } from "../../../ui-kit/shared_components/GoBack";
+import { ReadingsHistoryModal } from "../../features/readings/displayReadingHistory/ReadingsHistoryModal";
+import { CorrectionReadingsPanel } from "../../features/tasks/correctionReadings";
 
 function reducer(state, action) {
   const { type, data } = action;
   switch (type) {
-    case 'success':
+    case "success":
       return { ...state, ...data, stageData: null };
     // после того, как завершение этапа закончилось
-    case 'revert_stage':
+    case "revert_stage":
       return {
         ...state,
-        stageData: { data, move: 'revert' },
+        stageData: { data, move: "revert" },
         panelLoading: true,
       };
     // вернуть этап
-    case 'push_stage':
+    case "push_stage":
       return {
         ...state,
-        stageData: { data, move: 'push' },
+        stageData: { data, move: "push" },
         panelLoading: true,
       };
     // после нажатия на "Завершить этап"
     default:
-      console.error('task id', type);
+      console.error("task id", type);
       return state;
   }
 }
@@ -78,7 +78,7 @@ export const TaskProfile = () => {
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   const isIndividualDeviceReadingCheckType =
-    state.type === 'IndividualDeviceReadingsCheck';
+    state.type === "IndividualDeviceReadingsCheck";
 
   const nodeId = state && getNodeIdFromTask(state);
 
@@ -127,10 +127,10 @@ export const TaskProfile = () => {
               </NodeLink>
 
               <div style={{ marginLeft: 32, marginTop: 8 }}>
-                <span style={{ color: 'var(--main-100)' }}>
+                <span style={{ color: "var(--main-100)" }}>
                   {calculator.model}
-                </span>{' '}
-                <span style={{ color: 'var(--main-60)' }}>
+                </span>{" "}
+                <span style={{ color: "var(--main-60)" }}>
                   ({calculator.serialNumber})
                 </span>
               </div>

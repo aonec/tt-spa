@@ -7,7 +7,7 @@ import { addHomeowner } from './../../../../_api/homeowners';
 import { addPersonalNumberFx } from '.';
 import { combine, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
-import { $apartment } from '01/features/apartments/displayApartment/models';
+import { $apartment } from '../../../apartments/displayApartment/models';
 
 addPersonalNumberFx.use(addHomeowner);
 

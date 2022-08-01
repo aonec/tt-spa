@@ -1,12 +1,17 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
-import _ from 'lodash';
-import $ from 'jquery';
-import { Icon, Loader, HeaderWrap, Title, Subtitle } from '01/_components';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { Menu, EditButton } from './EditButton';
-import { DeviceContext } from '../DeviceProfile';
-import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
+import _ from "lodash";
+import { Menu, EditButton } from "./EditButton";
+import { DeviceContext } from "../DeviceProfile";
+import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from "./Templates";
+import {
+  Subtitle,
+  Icon,
+  Loader,
+  HeaderWrap,
+  Title,
+} from "../../../_components";
+import DeviceIcons from "../../../_components/DeviceIcons";
 
 export const Template = styled.div``;
 
@@ -33,17 +38,10 @@ export const ListItem = styled.li`
 `;
 
 export const Header = () => {
-  const {
-    device,
-    building,
-    loadings,
-    errors,
-    error,
-    typeODPU,
-    calcModel,
-  } = useContext(DeviceContext);
-  const loadingDevice = _.get(loadings, 'device', true);
-  const loadingBuilding = _.get(loadings, 'building', true);
+  const { device, building, loadings, errors, error, typeODPU, calcModel } =
+    useContext(DeviceContext);
+  const loadingDevice = _.get(loadings, "device", true);
+  const loadingBuilding = _.get(loadings, "building", true);
 
   const loading = loadingDevice || loadingBuilding;
 
@@ -54,9 +52,9 @@ export const Header = () => {
 
   const buttonHandler = () => {};
 
-  const MenuOPDU = typeODPU === 'Calculator' ? <Menu /> : null;
+  const MenuOPDU = typeODPU === "Calculator" ? <Menu /> : null;
 
-  const errorOfComponent = _.get(error, 'resource', null);
+  const errorOfComponent = _.get(error, "resource", null);
 
   if (errorOfComponent) {
     return (
@@ -70,8 +68,8 @@ export const Header = () => {
   return (
     <HeaderWrap
       style={{
-        display: 'flex',
-        justifyContent: 'space-between',
+        display: "flex",
+        justifyContent: "space-between",
       }}
     >
       <Loader show={loading} size="32">
@@ -81,16 +79,16 @@ export const Header = () => {
               icon={icon}
               color={color}
               size="24"
-              style={{ marginRight: '8px' }}
+              style={{ marginRight: "8px" }}
             />
-            {`${calcModel || 'Вычислитель'} (${serialNumber})`}
+            {`${calcModel || "Вычислитель"} (${serialNumber})`}
           </Title>
 
           <Subtitle>{`${city}, ${street}, ${housingStockNumber}${
-            corpus ? `, к.${corpus}` : ''
+            corpus ? `, к.${corpus}` : ""
           }`}</Subtitle>
         </div>
-        <div style={{ position: 'relative' }}>{MenuOPDU}</div>
+        <div style={{ position: "relative" }}>{MenuOPDU}</div>
       </Loader>
     </HeaderWrap>
   );

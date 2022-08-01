@@ -1,12 +1,12 @@
 /* eslint-disable */
 
 import React from 'react';
-import axios from '../../api/axios';
 
 import { Select } from '../Select';
 import { useStore } from 'effector-react';
-import { $task } from '01/features/tasks/displayTask/models';
 import _ from 'lodash';
+import { $task } from '../../../features/tasks/displayTask/models';
+import { axios } from '../../../../api/axios';
 
 export const Perpetrator = ({ getData = () => {}, ...props }) => {
   const [data, setData] = React.useState({ loading: null });

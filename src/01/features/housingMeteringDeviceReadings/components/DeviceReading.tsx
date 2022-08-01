@@ -1,4 +1,3 @@
-import { HousingMeteringDeviceReadingsResponse } from '../.../../api/types';
 import { useStore } from 'effector-react';
 import {
   $chosenInputId,
@@ -13,6 +12,7 @@ import { Spin } from 'antd';
 import InputTT from '../../../tt-components/InputTT';
 import { LoadingOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { HousingMeteringDeviceReadingsResponse } from '../../../../api/types';
 
 export const DeviceReading = ({
   deviceElem,

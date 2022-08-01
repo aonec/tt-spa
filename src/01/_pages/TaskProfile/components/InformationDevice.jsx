@@ -2,8 +2,8 @@ import React from 'react';
 import styled, { use, css } from '@reshadow/macro';
 import { useHistory } from 'react-router-dom';
 
-import { Icon } from '01/components';
-import { information } from '01/r_comp';
+import { Icon } from '../../../components';
+import { information } from '../../../r_comp';
 
 const style = css`
   device_title {

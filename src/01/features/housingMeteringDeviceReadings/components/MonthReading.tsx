@@ -3,15 +3,12 @@
 import { MonthReadingsType } from '../lib/groupReadingsByDates';
 import { useStore } from 'effector-react';
 import { $isColdWaterSupply, $readings } from '../models';
-import {
-  EMagistralType,
-  HousingMeteringDeviceReadingsResponse,
-} from '../.../../api/types';
+
 import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
-import React from 'react';
 import styled from 'styled-components';
 import { DeviceReading } from './DeviceReading';
 import _ from 'lodash';
+import { EMagistralType, HousingMeteringDeviceReadingsResponse } from '../../../../api/types';
 
 export const MonthReading = ({
   monthElement,

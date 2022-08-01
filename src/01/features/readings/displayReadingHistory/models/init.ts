@@ -1,4 +1,3 @@
-import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { getReadingsHistory } from './../../../../_api/readings';
 import {
   ReadingHistoryGate,
@@ -10,7 +9,8 @@ import {
   closeReadingsHistoryModal,
 } from './index';
 import { forward, sample } from 'effector';
-import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
+import { fetchIndividualDeviceFx } from '../../../individualDevices/displayIndividualDevice/models';
+import { refetchIndividualDevices } from '../../../individualDevices/displayIndividualDevices/models';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 

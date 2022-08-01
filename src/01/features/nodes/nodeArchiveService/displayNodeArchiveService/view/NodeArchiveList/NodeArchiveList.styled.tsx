@@ -1,5 +1,5 @@
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import styled, { keyframes } from 'styled-components';
+import { getArrayByCountRange } from '../../../../../../_pages/MetersPage/components/utils';
 
 export const columnWidth = `120px`;
 

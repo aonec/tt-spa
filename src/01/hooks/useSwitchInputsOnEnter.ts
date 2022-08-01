@@ -1,6 +1,6 @@
-import { $isCancelSwitchInput } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { useStore } from 'effector-react';
 import { useEffect } from 'react';
+import { $isCancelSwitchInput } from '../features/readings/readingsInput/confirmInputReadingModal/models';
 
 export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
   const isCancelSwitch = useStore($isCancelSwitchInput);

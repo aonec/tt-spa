@@ -2,8 +2,8 @@
 
 import React from 'react';
 import styled, { css, use } from '@reshadow/macro';
-
-import { Icon, Loader } from '01/components';
+import { Icon } from '../Icon';
+import { Loader } from '../Loader';
 
 const styles = css`
   upload_list {

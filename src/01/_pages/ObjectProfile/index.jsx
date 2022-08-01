@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@reshadow/macro';
 import { Route, useParams, useHistory } from 'react-router-dom';
-import { grid } from '01/r_comp';
+
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
-import { GoBack } from 'ui-kit/shared_components/GoBack/GoBack';
 import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
+import { grid } from '../../r_comp';
+import { GoBack } from '../../../ui-kit/shared_components/GoBack';
+
 
 export const ObjectContext = React.createContext();
 

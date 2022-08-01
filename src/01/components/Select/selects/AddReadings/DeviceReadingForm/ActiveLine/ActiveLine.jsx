@@ -1,6 +1,6 @@
-import React from 'react';
-import { Badge } from 'antd';
-import { closingReasons } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage';
+import React from "react";
+import { Badge } from "antd";
+import { closingReasons } from "../../../../../../features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage";
 
 const ActiveLine = ({ isActive, closingReason }) => {
   return (
@@ -8,7 +8,7 @@ const ActiveLine = ({ isActive, closingReason }) => {
       style={{
         marginLeft: 4,
         marginRight: 16,
-        color: 'rgba(39, 47, 90, 0.8)',
+        color: "rgba(39, 47, 90, 0.8)",
       }}
     >
       {isActive ? (
@@ -19,7 +19,7 @@ const ActiveLine = ({ isActive, closingReason }) => {
           text={`Закрыт${
             closingReasons && closingReasons[closingReason]
               ? ` (${closingReasons[closingReason]})`
-              : ''
+              : ""
           }`}
         />
       )}

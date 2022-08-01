@@ -1,13 +1,13 @@
 import React from 'react';
 import styled, { css, use } from '@reshadow/macro';
-import { Icon } from '01/components';
 import styledComp from 'styled-components';
 import { Icon as IconTT } from '../../../tt-components/Icon';
 
-import { time_line } from '01/r_comp';
 import { useHistory } from 'react-router-dom';
 import DeviceIcons from '../../../_components/DeviceIcons';
-import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { time_line } from '../../../r_comp';
+import { getApartmentFromFullAddress } from '../../../../utils/getApartmentFromFullAddress';
+import { Icon } from '../../../components';
 
 const styles = css`
   task_item {

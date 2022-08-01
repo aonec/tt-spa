@@ -260,8 +260,6 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         onChangeNewReadings={handleNewReadingsChange}
         onChangeOldReadings={handleOldReadingsChange}
       />
-      <ErrorMessage>{errors.newDeviceReadings}</ErrorMessage>
-
       <SealInfoWrapper>
         <FormItem label="Номер пломбы">
           <Input

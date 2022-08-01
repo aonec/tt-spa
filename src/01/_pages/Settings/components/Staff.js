@@ -1,23 +1,24 @@
 /* eslint-disable */
 
-import React from 'react';
-import classes from '../Settings.module.scss';
-import { AddStaffModal } from '01/features/staff/addStaff';
+import React from "react";
+import classes from "../Settings.module.scss";
+import { useStore } from "effector-react";
+
+import { useHistory } from "react-router-dom";
+import { AddStaffModal } from "../../../features/staff/addStaff";
 import {
   $staffList,
   fetchStaffFx,
   StaffGate,
-} from '01/features/staff/displayStaff/models';
-import { useStore } from 'effector-react';
-import { Loader } from '01/_components/Loader';
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
-import { MenuButtonTT } from '01/tt-components';
-import { deleteStaffButtonClicked } from '01/features/staff/deleteStaff/models';
-import { DeleteStaffModal } from '01/features/staff/deleteStaff';
-import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
-import { editStaffStatusButtonClicked } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus/models';
-import { EditStaffStatusModal } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus';
-import { useHistory } from 'react-router-dom';
+} from "../../../features/staff/displayStaff/models";
+import { Loader } from "../../../_components/Loader";
+import { MenuButtonTT } from "../../../tt-components";
+import { EditStaffStatusModal } from "../../../features/staff/managingFirmUsersStatuses/editStaffStatus";
+import { editStaffStatusButtonClicked } from "../../../features/staff/managingFirmUsersStatuses/editStaffStatus/models";
+import { StaffStatus } from "../../../features/staff/displayStaff/models/components/StaffStatus";
+import { DeleteStaffModal } from "../../../features/staff/deleteStaff";
+import { deleteStaffButtonClicked } from "../../../features/staff/deleteStaff/models";
+import { usePhoneMask } from "../../../features/staff/addStaff/utils";
 
 const Staff = () => {
   const users = useStore($staffList);
@@ -33,36 +34,37 @@ const Staff = () => {
         <div className={classes.name}>{name}</div>
         <StaffStatus status={status?.type} />
         <div className={classes.cellphone}>
-          {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
+          {cellphone ? phoneMask.maskValue(cellphone) : "Телефон не указан"}
         </div>
         <MenuButtonTT
           menuButtonArr={[
             {
-              title: 'Открыть профиль сотрудника',
+              title: "Открыть профиль сотрудника",
               cb: () => {},
               show: true,
-              color: 'default',
+              color: "default",
               clickable: true,
             },
             {
-              title: 'Изменить статус',
+              title: "Изменить статус",
               cb: () => editStaffStatusButtonClicked(item),
               show: true,
-              color: 'default',
+              color: "default",
               clickable: true,
             },
             {
-              title: 'Редактировать информацию о сотруднике',
-              cb: () => history.push(`/companyProfile/editManagingFirmUser/${id}`),
+              title: "Редактировать информацию о сотруднике",
+              cb: () =>
+                history.push(`/companyProfile/editManagingFirmUser/${id}`),
               show: true,
-              color: 'default',
+              color: "default",
               clickable: true,
             },
             {
-              title: 'Удалить сотрудника',
+              title: "Удалить сотрудника",
               cb: () => deleteStaffButtonClicked(id),
               show: true,
-              color: 'red',
+              color: "red",
               clickable: true,
             },
           ]}

@@ -1,13 +1,13 @@
 /* eslint-disable */
 
-import React from 'react';
-import styled, { css } from '@reshadow/macro';
+import React from "react";
+import styled, { css } from "@reshadow/macro";
 
-import { Loader } from '01/components';
-import * as s from '01/r_comp';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Icon } from '01/shared/ui/Icon';
+import { Space } from "../../../shared/ui/Layout/Space/Space";
+import { Flex } from "../../../shared/ui/Layout/Flex";
+import { Icon } from "../../../shared/ui/Icon";
+import * as s from "../../../r_comp";
+import { Loader } from "../../../components";
 
 const styles = css`
   h {
@@ -35,7 +35,7 @@ const styles = css`
     & span {
       position: relative;
       &::after {
-        content: 'Время на задачу';
+        content: "Время на задачу";
         position: absolute;
         width: max-content;
         left: 0;
@@ -54,7 +54,7 @@ const styles = css`
         color: var(--error);
         opacity: 1;
         &::before {
-          content: '-';
+          content: "-";
         }
       }
     }
@@ -71,7 +71,7 @@ const styles = css`
 `;
 
 export const Header = React.memo(
-  ({ title = '', name = '', timeline = null, timer = null, state }) =>
+  ({ title = "", name = "", timeline = null, timer = null, state }) =>
     styled(
       styles,
       s.time_line
@@ -79,11 +79,11 @@ export const Header = React.memo(
       <h>
         <Loader show={!title} size="48" />
         <Flex>
-          {state?.type === 'IndividualDeviceCheck' && (
+          {state?.type === "IndividualDeviceCheck" && (
             <>
               <Icon
                 name={state?.individualDevice?.resource}
-                style={{ transform: 'scale(1.4)' }}
+                style={{ transform: "scale(1.4)" }}
               />
               <Space w={10} />
             </>

@@ -5,12 +5,11 @@ import { Route } from 'react-router-dom';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
-import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
-import { AccountingNodesReadings } from '01/features/readings/accountingNodesReadings';
-import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { FilterContainer } from './components/Filter.container';
-import { MeteringDeviceReadingsSumPanel } from '01/features/readings/accountingNodesReadings/components/MeteringDeviceReadingsSumPanel';
+import { HousingStockFilter } from '../../features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { AccountingNodesReadings } from '../../features/readings/accountingNodesReadings';
+import { CurrentManagingFirmUserGate } from '../../features/managementFirmUsers/displayCurrentUser/models';
 
 export const MetersPage = () => {
   return (

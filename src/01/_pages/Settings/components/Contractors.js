@@ -1,21 +1,21 @@
 /* eslint-disable */
 
-import React from 'react';
-import classes from '../Settings.module.scss';
+import React from "react";
+import classes from "../Settings.module.scss";
+import { useStore } from "effector-react";
+import { Alert } from "antd";
+import { Loader } from "../../../_components/Loader";
 import {
   $contractors,
   $isFetchingContractorsFailed,
   ContractorsGate,
   getContractorsFx,
-} from '01/features/contractors/displayContractors/models';
-import { useStore } from 'effector-react';
-import { Alert } from 'antd';
-import { Loader } from '01/_components/Loader';
-import { CenterContainer } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import { MenuButtonTT } from '01/tt-components';
-import { deleteContractorButtonClicked } from '01/features/contractors/deleteContractor/models';
-import { DeleteContractorModal } from '01/features/contractors/deleteContractor';
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
+} from "../../../features/contractors/displayContractors/models";
+import { CenterContainer } from "../../MetersPage/components/MeterDevices/ApartmentReadings";
+import { deleteContractorButtonClicked } from "../../../features/contractors/deleteContractor/models";
+import { DeleteContractorModal } from "../../../features/contractors/deleteContractor";
+import { MenuButtonTT } from "../../../tt-components";
+import { usePhoneMask } from "../../../features/staff/addStaff/utils";
 
 const Contractors = () => {
   const contractors = useStore($contractors);
@@ -36,7 +36,7 @@ const Contractors = () => {
     ) : null;
 
   const phoneNumber = (cellphone) =>
-    cellphone ? mask.maskValue(String(cellphone)) : 'Телефон не указан';
+    cellphone ? mask.maskValue(String(cellphone)) : "Телефон не указан";
 
   const contractorsList = contractors?.map((contractor) => {
     const { name, email, cellphone, id } = contractor;
@@ -46,20 +46,20 @@ const Contractors = () => {
         <div className={classes.phoneNumber}>{phoneNumber(cellphone)}</div>
         <div className={classes.email}>{email}</div>
         <MenuButtonTT
-          size={'small'}
+          size={"small"}
           menuButtonArr={[
             {
-              title: 'Редактировать информацию о контрагенте',
+              title: "Редактировать информацию о контрагенте",
               cb: () => {},
               show: true,
-              color: 'default',
+              color: "default",
               clickable: true,
             },
             {
-              title: 'Удалить контрагента',
+              title: "Удалить контрагента",
               cb: () => deleteContractorButtonClicked({ id, name }),
               show: true,
-              color: 'red',
+              color: "red",
               clickable: true,
             },
           ]}

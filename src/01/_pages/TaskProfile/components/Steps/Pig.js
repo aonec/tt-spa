@@ -2,8 +2,8 @@
 
 import React from 'react';
 import styled from '@reshadow/macro';
-import { Icon } from '01/components';
 import t from 'prop-types';
+import { Icon } from '../../../../components';
 
 export const Pig = ({ label = '', text = '' }) =>
   styled()`

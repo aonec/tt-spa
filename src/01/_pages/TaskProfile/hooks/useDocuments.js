@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { deleteDoc } from '01/_api/task_profile_page';
+import { deleteDoc } from '../../../_api/task_profile_page';
 
 export const useDocuments = ({ documents = null }, pageDispatch) => {
   const { 0: taskId } = useParams();

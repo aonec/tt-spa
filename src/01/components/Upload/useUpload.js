@@ -1,8 +1,8 @@
 /* eslint-disable */
 
 import React from 'react';
-import { uploadFile } from '01/_api/upload';
 import { deleteDoc } from '../../_api/task_profile_page';
+import { uploadFile } from '../../_api/upload';
 
 const DELETE_FILE = 'DELETE_FILE';
 

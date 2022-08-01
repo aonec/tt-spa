@@ -1,10 +1,9 @@
 /* eslint-disable */
 
-import React from 'react';
-import styled, { css, use } from '@reshadow/macro';
-
-import { formatTime, date } from '01/servises/date';
-import { Icon } from '01/components/Icon';
+import React from "react";
+import styled, { css, use } from "@reshadow/macro";
+import { formatTime, date } from "../servises/date";
+import { Icon } from "./Icon";
 
 export const Timer = ({
   styles,
@@ -28,7 +27,7 @@ export const Timer = ({
     `(
       <time {...props}>
         <Icon icon="ok" />
-        Выполненно за: <span>{final.str}</span>({diff.fail ? '-' : '+'}
+        Выполненно за: <span>{final.str}</span>({diff.fail ? "-" : "+"}
         {diff.str})
       </time>
     );
@@ -63,7 +62,7 @@ Timer.defaultProps = {
       &[|fail] {
         color: var(--error);
         &::before {
-          content: '-';
+          content: "-";
         }
       }
     }

@@ -2,8 +2,6 @@
 
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Icon } from '01/components/Icon';
-import { Loader } from '01/components';
 import {
   Button,
   Circle,
@@ -12,7 +10,8 @@ import {
   Time,
   UserName,
 } from './StyledStages';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Icon, Loader } from '../../../../components';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
 
 export const Stages = ({
   items = [],

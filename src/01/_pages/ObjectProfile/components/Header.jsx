@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from '@reshadow/macro';
-import { Loader } from '01/components/Loader';
 import { HeaderWrap } from '../../../_components/Headers';
 import ModalCalculator from './Modals/AddCalculator';
 import ModalAddDevice from './Modals/AddDevice';
@@ -8,6 +7,7 @@ import ModalCommonReport from './Modals/CommonReport';
 import { MenuButtonTT } from '../../../tt-components';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
+import { Loader } from '../../../components';
 
 const styles = css`
   h {

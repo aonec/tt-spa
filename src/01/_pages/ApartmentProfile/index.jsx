@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
 import styled from '@reshadow/macro';
 import styledComponents from 'styled-components';
-import { grid } from '01/r_comp';
-import { Loader } from '01/components/Loader';
 import {
   getApartment,
   getTasks,
@@ -19,9 +17,11 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 import { useAsync } from '../../hooks/useAsync';
 
-import { ApartmentGate } from '01/features/apartments/displayApartment/models';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
+import { GoBack } from '../../../ui-kit/shared_components/GoBack';
+import { ApartmentActsListContainer } from '../../../services/apartments/apartmentActsListService';
+import { Loader } from '../../components';
+import { grid } from '../../r_comp';
+import { ApartmentGate } from '../../features/apartments/displayApartment/models';
 
 const ApartmentProfile = () => {
   const params = useParams();

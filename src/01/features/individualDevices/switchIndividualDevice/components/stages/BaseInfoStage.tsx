@@ -1,34 +1,45 @@
-
-import { AutoComplete, Form, Select } from 'antd';
-import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
-import moment from 'moment';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { AutoComplete, Form, Select } from "antd";
+import { useForm } from "effector-forms/dist";
+import { useStore } from "effector-react";
+import moment from "moment";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import {
   addIndividualDeviceForm,
   SwitchIndividualDeviceGate,
-} from '../../models';
-import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { ReadingsInput } from '../ReadingsInput';
+} from "../../models";
+import { FormHeader } from "../Header";
+import DeviceIcons from "../../../../../_components/DeviceIcons";
+import { ReadingsInput } from "../ReadingsInput";
 import {
   $individualDevice,
   fetchIndividualDeviceFx,
-} from '../../../displayIndividualDevice/models';
-import { EClosingReason, EIndividualDeviceRateType, EResourceType } from '../../../../../../api/types';
-import { $individualDeviceMountPlaces, IndividualDeviceMountPlacesGate } from '../../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { $individualDevicesNames, IndividualDevicecModelsGate } from '../../../displayIndividualDevicesNames/models';
-import { StyledSelect } from '../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { InputTT } from '../../../../../tt-components';
-import { Flex } from '../../../../../shared/ui/Layout/Flex';
-import { Space, SpaceLine } from '../../../../../shared/ui/Layout/Space/Space';
-import { $contractors, ContractorsGate } from '../../../../contractors/displayContractors/models';
-import { Loader } from '../../../../../components';
-import { DatePickerNative } from '../../../../../shared/ui/DatePickerNative';
-import { StockIconTT } from '../../../../../_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { allResources } from '../../../../../tt-components/localBases';
+} from "../../../displayIndividualDevice/models";
+import {
+  EClosingReason,
+  EIndividualDeviceRateType,
+  EResourceType,
+} from "../../../../../../api/types";
+import {
+  $individualDeviceMountPlaces,
+  IndividualDeviceMountPlacesGate,
+} from "../../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models";
+import {
+  $individualDevicesNames,
+  IndividualDevicecModelsGate,
+} from "../../../displayIndividualDevicesNames/models";
+import { StyledSelect } from "../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm";
+import { InputTT } from "../../../../../tt-components";
+import { Flex } from "../../../../../shared/ui/Layout/Flex";
+import { Space, SpaceLine } from "../../../../../shared/ui/Layout/Space/Space";
+import {
+  $contractors,
+  ContractorsGate,
+} from "../../../../contractors/displayContractors/models";
+import { Loader } from "../../../../../components";
+import { DatePickerNative } from "../../../../../shared/ui/DatePickerNative";
+import { StockIconTT } from "../../../../../_pages/Devices/components/DeviceBlock/DeviceBlock";
+import { allResources } from "../../../../../tt-components/localBases";
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,9 +52,9 @@ export const BaseInfoStage = () => {
   const type = useStore(
     SwitchIndividualDeviceGate.state.map(({ type }) => type)
   );
-  const isCheck = type === 'check';
-  const isReopen = type === 'reopen';
-  const isSwitch = type === 'switch';
+  const isCheck = type === "check";
+  const isReopen = type === "reopen";
+  const isSwitch = type === "switch";
 
   const pending = useStore(fetchIndividualDeviceFx.pending);
 
@@ -75,7 +86,7 @@ export const BaseInfoStage = () => {
               value?.year() +
               (fields.resource.value === EResourceType.Electricity ? 16 : 6);
 
-            nextCheckingDate.set('year', nextYear);
+            nextCheckingDate.set("year", nextYear);
 
             fields.futureCheckingDate.onChange(
               nextCheckingDate.toISOString(true)
@@ -85,7 +96,7 @@ export const BaseInfoStage = () => {
         />
         <ErrorMessage>
           {fields.lastCheckingDate.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -97,7 +108,7 @@ export const BaseInfoStage = () => {
         />
         <ErrorMessage>
           {fields.futureCheckingDate.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -165,7 +176,7 @@ export const BaseInfoStage = () => {
         </StyledSelect>
         <ErrorMessage>
           {fields.resource.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -183,7 +194,7 @@ export const BaseInfoStage = () => {
         </StyledSelect>
         <ErrorMessage>
           {fields.mountPlaceId.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -199,7 +210,7 @@ export const BaseInfoStage = () => {
         />
         <ErrorMessage>
           {fields.serialNumber.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -215,7 +226,7 @@ export const BaseInfoStage = () => {
         />
         <ErrorMessage>
           {fields.model.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -232,7 +243,7 @@ export const BaseInfoStage = () => {
           />
           <ErrorMessage>
             {fields.bitDepth.errorText({
-              required: 'Это поле обязательное',
+              required: "Это поле обязательное",
             })}
           </ErrorMessage>
         </FormItem>
@@ -248,7 +259,7 @@ export const BaseInfoStage = () => {
           />
           <ErrorMessage>
             {fields.scaleFactor.errorText({
-              required: 'Это поле обязательное',
+              required: "Это поле обязательное",
             })}
           </ErrorMessage>
         </FormItem>
@@ -263,7 +274,7 @@ export const BaseInfoStage = () => {
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
-            required: 'Это поле обязательное',
+            required: "Это поле обязательное",
           })}
         </ErrorMessage>
       </FormItem>
@@ -321,16 +332,16 @@ export const BaseInfoStage = () => {
   );
 
   const readingInputs = device && (
-    <div style={{ margin: '10px 0' }}>
+    <div style={{ margin: "10px 0" }}>
       <ReadingsInput
         title={
           isSwitch
-            ? 'Заменяемый прибор'
+            ? "Заменяемый прибор"
             : isCheck
-            ? 'Прибор до поверки'
+            ? "Прибор до поверки"
             : isReopen
-            ? 'Прибор до переоткрытия'
-            : ''
+            ? "Прибор до переоткрытия"
+            : ""
         }
         readings={fields.oldDeviceReadings.value}
         onChange={fields.oldDeviceReadings.onChange}
@@ -340,12 +351,12 @@ export const BaseInfoStage = () => {
       <ReadingsInput
         title={
           isSwitch
-            ? 'Новый прибор'
+            ? "Новый прибор"
             : isCheck
-            ? 'Прибор после поверки'
+            ? "Прибор после поверки"
             : isReopen
-            ? 'Прибор после переоткрытия'
-            : ''
+            ? "Прибор после переоткрытия"
+            : ""
         }
         readings={fields.newDeviceReadings.value}
         onChange={fields.newDeviceReadings.onChange}
@@ -359,7 +370,7 @@ export const BaseInfoStage = () => {
       />
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({
-          required: 'Заполните хотя бы одно показание',
+          required: "Заполните хотя бы одно показание",
         })}
       </ErrorMessage>
     </div>
@@ -391,10 +402,10 @@ export const BaseInfoStage = () => {
 };
 
 export const closingReasons = {
-  [EClosingReason.Manually]: 'Плановая замена',
-  [EClosingReason.DeviceBroken]: 'Поломка',
-  [EClosingReason.CertificateIssued]: 'Выдана справка',
-  [EClosingReason.ByLetter]: 'Письмо из УК',
+  [EClosingReason.Manually]: "Плановая замена",
+  [EClosingReason.DeviceBroken]: "Поломка",
+  [EClosingReason.CertificateIssued]: "Выдана справка",
+  [EClosingReason.ByLetter]: "Письмо из УК",
 };
 
 const ErrorMessage = styled.div`

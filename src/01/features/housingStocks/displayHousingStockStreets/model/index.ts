@@ -1,6 +1,6 @@
-import { GetExistingSteetRequestParams } from '01/_api/existingStreets';
 import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
+import { GetExistingSteetRequestParams } from '../../../../_api/existingStreets';
 
 export const $existingStreets = createStore<string[]>([]);
 
