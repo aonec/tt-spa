@@ -5,15 +5,33 @@ import { Select } from 'ui-kit/Select';
 export const BaseInfoWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 15px;
+  grid-column-gap: 15px;
+  .ant-select-focused {
+    .tag-placeholder {
+      color: #bfbfbf;
+    }
+  }
+  .ant-select-selection-item {
+    color: #272f5ae5;
+  }
+  .ant-input {
+    color: #272f5ae5;
+  }
+  .ant-picker-input {
+    input {
+      color: #272f5ae5;
+    }
+  }
 `;
 
 export const ResourceOptionWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  .device-resource-name {
-    margin-left: 10px;
+  .device-resource-icon {
+    svg {
+      margin-right: 10px;
+    }
   }
 `;
 
@@ -60,9 +78,6 @@ export const TreeSelectSC = styled(TreeSelect)`
   .ant-select-arrow {
     margin-right: 16px;
   }
-  .anticon-search {
-    color: #189ee9;
-  }
 `;
 
 export const TagPlaceholder = styled.div`
@@ -70,4 +85,6 @@ export const TagPlaceholder = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
+
+  transition: 0.3s;
 `;

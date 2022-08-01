@@ -1,9 +1,8 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
-import { TreeNode } from 'antd/lib/tree-select';
 import { useFormik } from 'formik';
-import _ from 'lodash/fp';
-import { EResourceDisconnectingType, EResourceType } from 'myApi';
+import _, { __ } from 'lodash/fp';
+import { EResourceType } from 'myApi';
 import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
@@ -54,7 +53,9 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (formValues) => {
-      const preparedHousingStockIds = formValues.housingStockIds.filter((elem) => elem !== -1);
+      const preparedHousingStockIds = formValues.housingStockIds.filter(
+        (elem) => elem !== -1
+      );
       handleSubmit({
         resource: formValues.resource!,
         disconnectingType: formValues.disconnectingType!,
@@ -80,7 +81,8 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
       }, [] as number[]),
     [treeData]
   );
-  const isAllPrevious = useRef<boolean>(false);
+
+  const isAllPrevious = useRef(false);
   const isAll = values.housingStockIds.includes(-1);
 
   const heatingStationPlaceholderText = selectedCity
@@ -110,8 +112,10 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
               return (
                 <Select.Option key={key!} value={key!} disabled={isDisabled}>
                   <ResourceOptionWrapper>
-                    <ResourceIconLookup resource={key as EResourceType} />
-                    <span className="device-resource-name">{value}</span>
+                    <div className="device-resource-icon">
+                      <ResourceIconLookup resource={key as EResourceType} />
+                    </div>
+                    {value}
                   </ResourceOptionWrapper>
                 </Select.Option>
               );
@@ -170,13 +174,26 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
               const text = isAll
                 ? 'Выбраны все адреса'
                 : `Выбрано ${values.length} адреса(-ов)`;
-              return <TagPlaceholder>{text}</TagPlaceholder>;
+              return (
+                <TagPlaceholder className="tag-placeholder">
+                  {text}
+                </TagPlaceholder>
+              );
             }}
             treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
             showCheckedStrategy="SHOW_CHILD"
             onChange={(selectedAddresses) => {
               const selectedAddressesArray = [selectedAddresses].flat();
-              const isAllSelected = selectedAddressesArray.includes(-1);
+
+              const allHousingStocksVariantClicked = selectedAddressesArray.includes(
+                -1
+              );
+              const allHousingStocksChosen =
+                selectedAddressesArray.length === allHousingStocks.length &&
+                !isAllPrevious.current;
+
+              const isAllSelected =
+                allHousingStocksVariantClicked || allHousingStocksChosen;
 
               if (isAllSelected && !isAllPrevious.current) {
                 isAllPrevious.current = true;
