@@ -37,7 +37,7 @@ export type GetTasksListRequestPayload = {
 };
 
 export function getEngineeringElement(type: ETaskEngineeringElement) {
-  const types: { [Kye in ETaskEngineeringElement]: string } = {
+  const types: { [key in ETaskEngineeringElement]: string } = {
     [ETaskEngineeringElement.Node]: 'Общедомовой узел учета',
     [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
     [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
