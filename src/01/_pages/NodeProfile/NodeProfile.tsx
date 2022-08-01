@@ -11,10 +11,10 @@ import Information from './components/Information';
 import { NodeConnection } from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
 import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
-import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
-import { SidePanel } from '01/shared/ui/SidePanel';
-import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { ContentProps } from './NodeProfile.types';
+import { RegisterNodeOnCommercialAccountingModalContainer } from '../../features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
+import { NodeChecksContainer } from '../../features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
+import { SidePanel } from '../../shared/ui/SidePanel';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({ tabItems, node, loading, nodeId, path }) => {

@@ -11,12 +11,12 @@ import {
 } from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
 import { useDispatch } from 'react-redux';
-import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
-import { IndividualDeviceListItemResponse } from '../../../.../../api/types';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
-import { HistoryIcon } from "ui-kit/icons";
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { HistoryIcon } from '../../../../../../ui-kit/icons';
+import { openReadingsHistoryModal } from '../../../../../features/readings/displayReadingHistory/models';
+import { IndividualDeviceListItemResponse } from '../../../../../../api/types';
+import { setInputUnfocused } from '../../../../../Redux/ducks/readings/actionCreators';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
   ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {

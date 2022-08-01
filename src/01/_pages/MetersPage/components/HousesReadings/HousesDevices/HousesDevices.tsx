@@ -5,29 +5,21 @@ import { HouseReadingsHeader } from '../HouseReadingsHeader/HouseReadingsHeader'
 import HouseBanner from './HouseBanner';
 import { getIndividualDeviceRateNumByName } from '../../MeterDevices/ApartmentReadings';
 import { useStore } from 'effector-react';
-import {
-  $isAllDevicesDone,
-  $pagedIndividualDevices,
-  fetchNextPageOfIndividualDevices,
-  fetchNextPageOfIndividualDevicesFx,
-  PagedIndividualDevicesGate,
-} from '01/features/individualDevices/displayIndividualDevices/models';
-import {
-  $housingStock,
-  HousingStockGate,
-} from '01/features/housingStocks/displayHousingStock/models';
-import { EResourceType, IndividualDeviceListItemResponse } from '../../api/types';
-import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
+
 import { useEffect } from 'react';
-import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
-import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
-import { Loader } from '01/_components/Loader';
-import { CancelSwitchInputGate } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { useRef } from 'react';
-import { ButtonTT } from '01/tt-components';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { TopButton } from './TopButton/TopButton';
+import { $isAllDevicesDone, $pagedIndividualDevices, fetchNextPageOfIndividualDevices, fetchNextPageOfIndividualDevicesFx, PagedIndividualDevicesGate } from '../../../../../features/individualDevices/displayIndividualDevices/models';
+import { $housingStock, HousingStockGate } from '../../../../../features/housingStocks/displayHousingStock/models';
+import { useMonthSlider } from '../../../../../shared/lib/readings/useMonthSlider';
+import { EResourceType, IndividualDeviceListItemResponse } from '../../../../../../api/types';
+import { CancelSwitchInputGate } from '../../../../../features/readings/readingsInput/confirmInputReadingModal/models';
+import { ReadingsHistoryModal } from '../../../../../features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { ConfirmReadingValueModal } from '../../../../../features/readings/readingsInput/confirmInputReadingModal';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
+import { Loader } from '../../../../../_components/Loader';
+import { ButtonTT } from '../../../../../tt-components';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 
 type ParamsType = {
   id: string;

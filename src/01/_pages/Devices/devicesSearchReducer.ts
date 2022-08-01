@@ -1,10 +1,7 @@
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { Action } from 'redux';
-import {
-  ECalculatorOrderRule,
-  EExpiresCheckingDateAt,
-  EOrderByRule,
-} from '.../../api/types';
+import { ECalculatorOrderRule, EExpiresCheckingDateAt, EOrderByRule } from '../../../api/types';
+import { CalculatorsListRequestPayload } from '../../features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+
 
 enum DevicesSearchActions {
   SET_EXPIRATION_DATE = 'SET_EXPIRATION_DATE',

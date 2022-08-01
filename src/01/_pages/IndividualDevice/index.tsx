@@ -5,7 +5,6 @@ import { Information } from './components/Information';
 import { Loader } from '../../components';
 import { Title } from '../../tt-components/Title';
 import { useAsync } from '../../hooks/useAsync';
-import { IndividualDeviceResponse, TaskListResponse } from '.../../api/types';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import Events from '../../tt-components/Events';
 import { TabsItemInterface } from '../../tt-components/interfaces';
@@ -14,7 +13,8 @@ import {
   getIndividualDevice,
   getIndividualDeviceTasks,
 } from '../../_api/apiRequests';
-import { Grid } from '01/_components/Grid';
+import { IndividualDeviceResponse, TaskListResponse } from '../../../api/types';
+import Grid from '../../_components/Grid';
 
 export const IndividualDevice = () => {
   const { push } = useHistory();

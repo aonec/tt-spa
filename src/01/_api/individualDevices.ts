@@ -1,5 +1,4 @@
 import axios from '../../api/axios';
-import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import _ from 'lodash';
 import {
   CreateIndividualDeviceRequest,
@@ -9,6 +8,7 @@ import {
   EOrderByRule,
   IndividualDeviceListItemResponsePagedList,
 } from '../../api/types';
+import { MagnetSeal } from '../_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 
 export interface CloseIndividualDeviceRequestBody {
   deviceId: number;

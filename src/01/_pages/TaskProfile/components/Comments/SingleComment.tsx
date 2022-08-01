@@ -1,9 +1,9 @@
 import React from 'react';
-import { TaskCommentResponse } from '../../.../../api/types';
 import { Icon } from '../../../../tt-components/Icon';
 import styled from 'styled-components';
 import moment from 'moment';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import { getTimeStringByUTC } from '../../../../../utils/getTimeStringByUTC';
+import { TaskCommentResponse } from '../../../../../api/types';
 
 const SingleComment = ({ comment }: { comment: TaskCommentResponse }) => {
   return (

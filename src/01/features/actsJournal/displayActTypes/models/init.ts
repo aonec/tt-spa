@@ -1,6 +1,6 @@
-import { getApartmentActTypes } from '01/_api/apartmentActs';
 import { guard } from 'effector';
 import { $actTypes, ApartmentActTypesGate, fetchActTypesFx } from '.';
+import { getApartmentActTypes } from '../../../../_api/apartmentActs';
 
 fetchActTypesFx.use(getApartmentActTypes);
 

@@ -2,15 +2,15 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { PipeHousingMeteringDeviceResponse } from '../.../../api/types';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
-import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
 import { Tooltip } from 'antd';
-import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
-import { fullAddressesString } from 'utils/additionalAddressesString';
+import { HeaderWrap, Subtitle, Title } from '../../../_components/Headers';
+import { fullAddressesString } from '../../../../utils/additionalAddressesString';
+import { PipeHousingMeteringDeviceResponse } from '../../../../api/types';
+import { AdditionalAddress } from '../../CalculatorProfile/components/Header.styled';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;

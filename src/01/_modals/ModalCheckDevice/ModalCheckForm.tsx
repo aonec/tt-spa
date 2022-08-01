@@ -4,11 +4,8 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { checkDevice } from './apiCheckDevice';
-import {
-  CalculatorResponse,
-  CheckDeviceRequest,
-  PipeHousingMeteringDeviceResponse,
-} from '.../../api/types';
+
+
 import { StyledModalBody, StyledFormPage } from '../../tt-components/Modal';
 import {
   DatePickerTT,
@@ -21,6 +18,7 @@ import HeaderTT from '../../tt-components/HeaderTT';
 import { yupDate, yupDeviceId } from '../../tt-components/yupTemplates';
 import { AlertInterface } from '../../tt-components/interfaces';
 import _ from 'lodash';
+import { CalculatorResponse, CheckDeviceRequest, PipeHousingMeteringDeviceResponse } from '../../../api/types';
 
 interface ModalCheckFormInterface {
   handleCancel: any;

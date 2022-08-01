@@ -1,12 +1,12 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { PipeNodeResponse } from '.../../api/types';
 import IconTT from '../IconTT';
 import { Link } from 'react-router-dom';
 import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';
 import { magistrals } from '../localBases';
+import { PipeNodeResponse } from '../../../api/types';
 
 interface NodesInterface {
   node: PipeNodeResponse;

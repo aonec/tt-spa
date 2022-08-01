@@ -1,9 +1,9 @@
-import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import moment from 'moment';
 import React, { FC, useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
-import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
-import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { IndividualDeviceInfo } from '../../../../../../ui-kit/shared_components/IndividualDeviceInfo';
+import { ReadingsHistoryButton } from '../../../../../../ui-kit/shared_components/reading_history_button';
+import { actResourceNamesLookup } from '../../../../../../ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import {
   ChevronWrapper,
   DeviceInfoItem,

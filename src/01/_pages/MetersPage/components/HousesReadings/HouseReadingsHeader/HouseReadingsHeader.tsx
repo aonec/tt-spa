@@ -1,7 +1,7 @@
-import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import React from 'react';
 import styled from 'styled-components';
+import { getPreviousReadingsMonth } from '../../../../../shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '../../../../../shared/ui/Layout/Flex';
 
 const Container = styled.div`
   display: grid;

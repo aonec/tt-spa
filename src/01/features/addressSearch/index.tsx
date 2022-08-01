@@ -1,18 +1,18 @@
-import { Loader } from '01/components';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { combine } from 'effector';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
+import { Loader } from '../../components';
+import { Grid } from '../../shared/ui/Layout/Grid';
+import { useAutocomplete } from '../../_pages/MetersPage/hooks/useFilter';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
   $existingStreets,
   fetchExistingStreets,
 } from '../housingStocks/displayHousingStockStreets/model';
+import { useOnEnterSwitch } from '../readings/accountingNodesReadings/components/Filter';
 import { ReactComponent as SearchIcon } from './assets/searchIcon.svg';
 import {
   $existingApartmentNumbers,

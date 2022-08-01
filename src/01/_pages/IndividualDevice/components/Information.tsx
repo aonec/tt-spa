@@ -1,10 +1,10 @@
 import React from 'react';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
 import { translateResource } from '../../../utils/translateResource';
-import { IndividualDeviceResponse } from '../.../../api/types';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Loader } from '../../../_components/Loader';
+import { IndividualDeviceResponse } from '../../../../api/types';
 
 interface InformationInterface {
   device: IndividualDeviceResponse;

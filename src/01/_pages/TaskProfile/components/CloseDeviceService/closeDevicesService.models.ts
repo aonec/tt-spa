@@ -1,4 +1,4 @@
-import { $task } from "01/features/tasks/displayTask/models";
+import { $task } from "../../../../features/tasks/displayTask/models";
 
 const $individualDevices = $task.map((task) => task?.individualDevices || [])
 

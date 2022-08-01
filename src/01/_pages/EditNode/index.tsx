@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import EditNodeForm from './components/EditNodeForm';
 import { useAsync } from '../../hooks/useAsync';
-import { CalculatorResponse, PipeNodeResponse } from '.../../api/types';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
@@ -12,7 +11,8 @@ import ModalAddDevice from './components/Modals/ModalAddDevice';
 import { EditNodeContext } from './Context';
 import { getCalculator, getNode } from '../../_api/apiRequests';
 import { PageGate } from '../../features/serviceZones/selectServiceZones/models';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { CalculatorResponse, PipeNodeResponse } from '../../../api/types';
+import { GoBack } from '../../../ui-kit/shared_components/GoBack';
 
 export const EditNode = () => {
   const { nodeId: nodeIdString } = useParams<{ nodeId: string }>();

@@ -1,4 +1,4 @@
-import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
+import { GetProblemDevicesRequestPayload, setApartmentStatus } from './../../../../_api/apartments';
 import {
   ApartmentGate,
   refetchApartment,
@@ -10,11 +10,10 @@ import {
   pauseApartmentStatusFx,
 } from './index';
 import { $isPauseApartmentModalVisible, pauseApartmentButtonClicked } from '.';
-import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
-import { EApartmentStatus } from '../../api/types';
-import { FileData } from '01/hooks/useFilesUpload';
 import moment from 'moment';
+import { EApartmentStatus } from '../../../../../api/types';
+import { FileData } from '../../../../hooks/useFilesUpload';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 

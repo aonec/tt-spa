@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
-import { IndividualDeviceReadingsHistoryResponse } from './../../.../../api/types';
 import { createStore, createEffect, createEvent } from 'effector';
+import { IndividualDeviceReadingsHistoryResponse } from '../../../../../api/types';
 
 export const $readingHistory = createStore<IndividualDeviceReadingsHistoryResponse | null>(
   null

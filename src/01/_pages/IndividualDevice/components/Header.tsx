@@ -1,13 +1,13 @@
 import React from 'react';
-import { IndividualDeviceResponse } from '../.../../api/types';
 import { IconTT, HeaderWrap } from '../../../tt-components';
 import IsActive from '../../../tt-components/IsActive';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import MenuButtonTT from '../../../tt-components/MenuButtonTT';
-import { Loader } from '01/_components/Loader';
-import { Title, Subtitle } from '01/_components/Headers';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { IndividualDeviceResponse } from '../../../../api/types';
+import { Loader } from '../../../_components/Loader';
+import { GoBack } from '../../../../ui-kit/shared_components/GoBack';
+import { Subtitle, Title } from '../../../_components/Headers';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;

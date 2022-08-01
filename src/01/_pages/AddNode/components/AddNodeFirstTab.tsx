@@ -20,8 +20,8 @@ import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import { isEmpty } from '../../../_api/utils/isEmptyErrors';
 import * as Yup from 'yup';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { SelectValue } from 'antd/lib/select';
+import { StyledSelect } from '../../IndividualDeviceEdit/components/IndividualDeviceEditForm';
 
 const AddNodeFirstTab = () => {
   const {

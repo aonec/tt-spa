@@ -1,4 +1,4 @@
-import { getExistingApartmentNumbers } from './../../../_api/housingStocks';
+import { getExistingApartmentNumbers, getExistingHousingStockNumbers } from './../../../_api/housingStocks';
 import {
   fetchExistingHousingStockNumbers,
   loadExistingHousingStockNumbers,
@@ -8,7 +8,6 @@ import {
   loadExistingApartmentNumbers,
 } from './index';
 import { $existingHousingStockNumbers } from '.';
-import { getExistingHousingStockNumbers } from '01/_api/housingStocks';
 import { combine, sample } from 'effector';
 import { searchForm } from '../../actsJournal/displayActsJournal/models/index';
 

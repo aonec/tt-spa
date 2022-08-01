@@ -1,6 +1,6 @@
-import { getExistingStreets } from '01/_api/existingStreets';
 import { forward } from 'effector';
 import { $existingStreets, ExistingStreetsGate, fetchExistingStreets } from '.';
+import { getExistingStreets } from '../../../../_api/existingStreets';
 
 fetchExistingStreets.use(getExistingStreets);
 

@@ -1,9 +1,9 @@
-import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
+import { getPreviousReadingsMonth } from '../../../../shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
 interface HeaderInterface {
   slider: React.ReactElement;
   showClosed: boolean;

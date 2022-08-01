@@ -25,10 +25,7 @@ import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
-import {
-  CreatePipeHousingMeteringDeviceRequest,
-  PipeNodeResponse,
-} from '../../../.../../api/types';
+
 import {
   TabErrorsInterface,
   TabsItemInterface,
@@ -44,6 +41,7 @@ import {
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import { addHousingMeteringDevice } from './apiModalAddDevice';
 import Warning from '../../../../../tt-components/Warning';
+import { CreatePipeHousingMeteringDeviceRequest, PipeNodeResponse } from '../../../../../../api/types';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;

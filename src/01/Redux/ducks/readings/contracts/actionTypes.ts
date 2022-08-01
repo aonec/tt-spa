@@ -1,4 +1,4 @@
-import { DevicesType } from '01/Redux/reducers/readingsReducer';
+import { DevicesType } from "../../../reducers/readingsReducer";
 
 export enum ReadingsActionsType {
   SET_DEVICES = 'readings/SET_DEVICES',

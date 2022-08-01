@@ -14,15 +14,12 @@ import { Divider, Form, Radio } from 'antd';
 import { StyledRadio } from '../../../../../tt-components/Radio';
 import moment from 'moment';
 import { ObjectContext } from '../../../index';
-import {
-  CalculatorListResponse,
-  HousingStockResponse,
-  CalculatorListResponsePagedList,
-} from '../../../.../../api/types';
+
 import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
 import Title from '../../../../../tt-components/Title';
-import axios from '../../api/axios';
+import { CalculatorListResponse, CalculatorListResponsePagedList, HousingStockResponse } from '../../../../../../api/types';
+import { axios } from '../../../../../../api/axios';
 
 interface ObjectContextInterface {
   object: HousingStockResponse;

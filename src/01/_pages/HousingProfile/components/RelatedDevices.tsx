@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '01/_components/Icon';
 
 import { NavLink } from 'react-router-dom';
 import { IconTT } from '../../../tt-components';
 import moment from 'moment';
+import { Icon } from '../../../_components/Icon';
 
 interface RelatedDevicesInterface {
   device: any;

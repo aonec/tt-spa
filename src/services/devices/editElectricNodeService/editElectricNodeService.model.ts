@@ -1,6 +1,6 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ElectricHousingMeteringDeviceResponse } from '../../api/types';
+import { ElectricHousingMeteringDeviceResponse } from '../../../api/types';
 import {
   fetchElectricNode,
   updateElectricHousingMeteringDevice,

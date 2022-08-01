@@ -1,5 +1,5 @@
 import axios from '../../../../../../api/axios';
-import { CreatePipeHousingMeteringDeviceRequest } from '../../../.../../api/types';
+import { CreatePipeHousingMeteringDeviceRequest } from '../../../../../../api/types';
 
 export async function addHousingMeteringDevice(
   form: CreatePipeHousingMeteringDeviceRequest

@@ -1,6 +1,6 @@
 import { createStore, createEffect } from 'effector';
 import { createGate } from 'effector-react';
-import { ManagementFirmCompetenceResponse } from './../../.../../api/types';
+import { ManagementFirmCompetenceResponse } from '../../../../../api/types';
 
 export const $competencesCatalog = createStore<
   ManagementFirmCompetenceResponse[] | null

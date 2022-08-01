@@ -2,9 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { PipeNodeResponse } from '.../../api/types';
 import IconTT from '../IconTT';
-import { Flex } from '01/shared/ui/Layout/Flex';
+import { PipeNodeResponse } from '../../../api/types';
+import { Flex } from '../../shared/ui/Layout/Flex';
 
 interface ConnectionInterface {
   node: PipeNodeResponse;

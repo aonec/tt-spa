@@ -2,17 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import ReadingsBlock from '../../../MetersPage/components/MeterDevices/components/ReadingsBlock';
 import ApartmentDevice from './ApartmentDevice';
-import {
-  EIndividualDeviceRateType,
-  IndividualDeviceListItemResponse,
-  IndividualDeviceReadingsResponse,
-} from '../../.../../api/types';
+
 import IsActive from '../../../../tt-components/IsActive';
 import moment from 'moment';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { ReadingsHistoryButton } from "ui-kit/shared_components/reading_history_button";
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { EIndividualDeviceRateType, IndividualDeviceListItemResponse, IndividualDeviceReadingsResponse } from '../../../../../api/types';
+import { getResourceColor } from '../../../../features/individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { getIndividualDeviceRateNumByName } from '../../../MetersPage/components/MeterDevices/ApartmentReadings';
+import { ReadingsHistoryButton } from '../../../../../ui-kit/shared_components/reading_history_button';
 
 export function ApartmentDeviceItem({
   device,

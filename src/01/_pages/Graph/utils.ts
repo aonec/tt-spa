@@ -1,11 +1,11 @@
 import { format } from 'date-fns';
+import { EResourceType } from '../../../api/types';
 import {
   ArchiveEntryInterface,
   GraphDataInterface,
   ReportType,
 } from './components/GraphView';
 import { GraphParamsType } from './Graph';
-import { EResourceType } from '.../../api/types';
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);

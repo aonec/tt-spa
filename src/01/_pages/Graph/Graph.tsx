@@ -10,9 +10,9 @@ import {
 import { useAsync } from '../../hooks/useAsync';
 import { getGraphParams } from './utils';
 import styled from 'styled-components';
-import { EResourceType } from '.../../api/types';
 import { NoConnection } from '../CalculatorProfile/components/Connection';
 import { setDataToStore } from '../../features/graph/graphView/models';
+import { EResourceType } from '../../../api/types';
 
 interface GraphProps {
   nodeId: number;

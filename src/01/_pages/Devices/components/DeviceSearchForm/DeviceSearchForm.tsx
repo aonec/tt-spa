@@ -16,7 +16,7 @@ import {
 } from '../../devicesSearchReducer';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { EExpiresCheckingDateAt } from '../../.../../api/types';
+import { EExpiresCheckingDateAt } from '../../../../../api/types';
 
 const { Option } = Select;
 

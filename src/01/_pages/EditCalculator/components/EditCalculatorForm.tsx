@@ -20,7 +20,6 @@ import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import isEmptyString from '../../../utils/isEmptyString';
-import { CalculatorResponse, UpdateCalculatorRequest } from '../.../../api/types';
 import {
   DEFAULT_CALCULATOR,
   ItemInterface,
@@ -33,7 +32,8 @@ import {
   calculatorValidationSchema,
 } from '../../../tt-components/validationSchemas';
 import { useStore } from 'effector-react';
-import { $calculatorTypesSelectItems, CalculatorInfosGate } from '01/features/carlculators/calculatorsInfo/models';
+import { $calculatorTypesSelectItems, CalculatorInfosGate } from '../../../features/carlculators/calculatorsInfo/models';
+import { CalculatorResponse, UpdateCalculatorRequest } from '../../../../api/types';
 
 interface EditCalculatorFormInterface {
   calculator: CalculatorResponse;

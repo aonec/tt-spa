@@ -1,5 +1,5 @@
 import axios from '../../../api/axios';
-import { CheckDeviceRequest } from '.../../api/types';
+import { CheckDeviceRequest } from '../../../api/types';
 
 export async function checkDevice(form: CheckDeviceRequest) {
   try {

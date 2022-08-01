@@ -20,27 +20,21 @@ import {
   StyledFormPage,
   styles,
 } from '../../../tt-components';
-import {
-  EResourceType,
-  IndividualDeviceResponse,
-  UpdateIndividualDeviceRequest,
-} from '../.../../api/types';
+
 import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
 import { putIndividualDevice } from '../../../_api/apiRequests';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import {
-  $individualDeviceMountPlaces,
-  IndividualDeviceMountPlacesGate,
-} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
-import { Loader } from '01/components';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-
+import { $individualDeviceMountPlaces, IndividualDeviceMountPlacesGate } from '../../../features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import DeviceIcons from '../../../_components/DeviceIcons';
+import { Flex } from '../../../shared/ui/Layout/Flex';
+import { StockIconTT } from '../../Devices/components/DeviceBlock/DeviceBlock';
+import { EResourceType, IndividualDeviceResponse, UpdateIndividualDeviceRequest } from '../../../../api/types';
+import { Loader } from '../../../components';
+import { DatePickerNative } from '../../../shared/ui/DatePickerNative';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
 interface FormEditODPUInterface {
   currentTabKey: string;
   device: IndividualDeviceResponse;

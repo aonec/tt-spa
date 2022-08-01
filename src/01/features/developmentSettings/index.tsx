@@ -1,5 +1,3 @@
-import { InputSC } from '01/shared/ui/Fields';
-import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -9,6 +7,8 @@ import {
 } from './models';
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
+import { ModalTT } from '../../shared/ui/ModalTT';
+import { InputSC } from '../../shared/ui/Fields';
 
 export const DevSettingsModal = () => {
   const visible = useStore($isDevSettingsModalOpen);

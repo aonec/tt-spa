@@ -7,8 +7,8 @@ import {
 } from '.';
 import { forward, merge } from 'effector';
 import { $contractors } from '../../displayContractors/models';
-import { postContractors } from '01/_api/contractors';
 import _ from 'lodash';
+import { postContractors } from '../../../../_api/contractors';
 
 $isAddContractorsModalVisible.on(
   merge([

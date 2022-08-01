@@ -31,8 +31,8 @@ import {
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import Title from '../../../../tt-components/Title';
-import { axios } from '../../api/axios';
-import { resourceParser } from 'utils/ResourceParser';
+import { axios } from '../../../../../api/axios';
+import { resourceParser } from '../../../../../utils/ResourceParser';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;

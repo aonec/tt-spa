@@ -16,9 +16,9 @@ import {
   StyledModalBody,
 } from '../../../../../tt-components';
 import { getReport } from './apiCalculatorReport';
-import { CalculatorResponse } from '../../../.../../api/types';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
-import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { Space, SpaceLine } from '../../../../../shared/ui/Layout/Space/Space';
+import { CalculatorResponse } from '../../../../../../api/types';
 
 interface ModalCalculatorReportFormInterface {
   device: CalculatorResponse;

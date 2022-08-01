@@ -1,8 +1,8 @@
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { Checkbox } from 'antd';
-import { IndividualDeviceListItemResponse } from '../../api/types';
 import React, { FC } from 'react';
+import { IndividualDeviceListItemResponse } from '../../../../../../../api/types';
+import { DatePickerNative } from '../../../../../../shared/ui/DatePickerNative';
+import DeviceInfo from '../../../../../MetersPage/components/MeterDevices/components/DeviceInfo';
 import {
   DatePickerWrapper,
   DeviceInfoStrokeWrap,

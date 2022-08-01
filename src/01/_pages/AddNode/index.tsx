@@ -5,11 +5,11 @@ import { Loader } from '../../components';
 import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from './AddNodeContext';
 import { TabsItemInterface } from '../../tt-components/interfaces';
-import { HousingStockResponse } from '.../../api/types';
 import {
   getHousingStock,
   getHousingStockCalculators,
 } from '../../_api/apiRequests';
+import { HousingStockResponse } from '../../../api/types';
 
 export const AddNode = () => {
   const { housingStockId: housingStockIdStr } = useParams<{

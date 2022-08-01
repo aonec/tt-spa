@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 import React from 'react';
-import { Icon } from '01/components';
-import { convertDate } from '01/_api/utils/convertDate';
-import { Button } from '01/_components/Button';
-import { TaskListResponse } from '.../../api/types';
+import { Icon } from '../../components';
+import convertDate from '../../_api/utils/convertDate';
+import Button from '../../_components/Button';
+import { TaskListResponse } from '../../../api/types';
 
 export interface EventsInterface {
   title: string;

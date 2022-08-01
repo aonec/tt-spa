@@ -5,17 +5,15 @@ import { Header } from './components/Header';
 import { Information } from './components/Information';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
-import {
-  PipeHousingMeteringDeviceResponse,
-  TaskListResponse,
-} from '.../../api/types';
+
 import { useAsync } from '../../hooks/useAsync';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import ModalCheckDevice from '../../_modals/ModalCheckDevice';
 import Events from '../../tt-components/Events';
-import { Grid } from '01/_components/Grid';
+import Grid from '../../_components/Grid';
+import { PipeHousingMeteringDeviceResponse, TaskListResponse } from '../../../api/types';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();

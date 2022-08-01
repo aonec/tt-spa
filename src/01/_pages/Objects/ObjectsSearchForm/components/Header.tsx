@@ -2,10 +2,10 @@ import React from 'react';
 import getAccessesList from '../../../../_api/utils/getAccessesList';
 import { MenuButtonTT } from '../../../../tt-components';
 import styled from 'styled-components';
-import { Title, HeaderWrap } from '01/_components/Headers';
 import GroupReport from '../../../../features/groupReport';
 import { setGroupStatus } from '../../../../features/groupReport/models/groupReportReducer';
 import { useAppDispatch } from '../../../../Redux/store';
+import { HeaderWrap, Title } from '../../../../_components/Headers';
 
 export const Header = () => {
   const access = getAccessesList();

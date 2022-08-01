@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
 import { getCalculator } from './components/apiEditCalculator';
-import { CalculatorResponse } from '.../../api/types';
 import { useAsync } from '../../hooks/useAsync';
 import EditCalculatorForm from './components/EditCalculatorForm';
 import { Loader } from '../../components';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { CalculatorResponse } from '../../../api/types';
+import { GoBack } from '../../../ui-kit/shared_components/GoBack';
 
 export const EditCalculator = () => {
   const { deviceId } = useParams();

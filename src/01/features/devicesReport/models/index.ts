@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from '../../carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 export const $devicesSearchState = createStore<Partial<CalculatorsListRequestPayload> | null>(
   null

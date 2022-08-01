@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { PipeNodeResponse } from '../../../../api/types';
 import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorResponse, PipeNodeResponse } from '../.../../api/types';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {

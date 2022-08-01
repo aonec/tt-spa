@@ -1,4 +1,4 @@
-import { IndividualDeviceOnTaskResponse } from '../../api/types';
+import { IndividualDeviceOnTaskResponse } from "../../../../../../../api/types";
 
 export type CloseDevicesProps = {
   handleDeviceCheboxClicked: (id: number) => void;

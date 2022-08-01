@@ -1,6 +1,5 @@
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { SetApartmentStatusRequest } from './../../../../_api/apartments.types';
-import { IndividualDeviceWithExpiredCheckingDateListResponse } from './../../.../../api/types';
 import { createForm } from 'effector-forms';
 import {
   createStore,
@@ -9,6 +8,7 @@ import {
   fromObservable,
 } from 'effector';
 import moment from 'moment';
+import { IndividualDeviceWithExpiredCheckingDateListResponse } from '../../../../../api/types';
 
 export const $isPauseApartmentModalVisible = createStore(false);
 

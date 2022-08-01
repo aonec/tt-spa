@@ -1,10 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import ModalCheckForm from './ModalCheckForm';
-import {
-  CalculatorResponse,
-  PipeHousingMeteringDeviceResponse,
-} from '.../../api/types';
+
 import { StyledModal } from '../../tt-components/Modal';
+import { CalculatorResponse, PipeHousingMeteringDeviceResponse } from '../../../api/types';
 
 interface ModalCheckFormInterface {
   visible: boolean;

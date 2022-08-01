@@ -1,5 +1,5 @@
 import { $nodes, fetchNodes, resetNodes } from '.';
-import { getNodes } from '01/_api/nodes';
+import { getNodes } from '../../../../_api/nodes';
 
 fetchNodes.use(getNodes);
 

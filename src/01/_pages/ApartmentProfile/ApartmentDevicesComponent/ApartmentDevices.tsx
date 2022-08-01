@@ -1,13 +1,11 @@
 import React from 'react';
 import { Header } from './components/Header';
 import { ApartmentDevicesList } from './components/ApartmentDevicesList';
-import {
-  IndividualDeviceListItemResponse,
-  IndividualDeviceListItemResponsePagedList,
-} from '../.../../api/types';
+
 import MonthSlider from '../../../shared/ui/devices/MonthSlider';
 import { useState } from 'react';
-import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
+import { IndividualDeviceListItemResponse, IndividualDeviceListItemResponsePagedList } from '../../../../api/types';
+import { useSliderIndex } from '../../../features/individualDevices/switchIndividualDevice/components/ReadingsInput';
 export const ApartmentDevicesContext = React.createContext<
   IndividualDeviceListItemResponse[] | null
 >(null);

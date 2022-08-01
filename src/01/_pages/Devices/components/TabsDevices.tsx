@@ -14,14 +14,12 @@ import DevicesByAddress from './DevicesByAddress/DevicesByAddress';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { groupDevicesByObjects } from './utils/groupDevicesByObjects';
 import styled from 'styled-components';
-import {
-  CalculatorListResponsePagedList,
-  EExpiresCheckingDateAt,
-} from '../.../../api/types';
+
 import { RootState } from '../../../Redux/store';
 import { DevicePageType } from '../../../Redux/rootReducer';
 import { searchStateChanged } from '../../../features/devicesReport/models';
 import { DevicesReportModal } from '../../../features/devicesReport';
+import { CalculatorListResponsePagedList, EExpiresCheckingDateAt } from '../../../../api/types';
 
 const { TabPane } = Tabs;
 

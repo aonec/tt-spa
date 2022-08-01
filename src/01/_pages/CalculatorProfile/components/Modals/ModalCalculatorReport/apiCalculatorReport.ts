@@ -1,5 +1,6 @@
 // import axios from '../../../../../axios';
-import axiosWithHeaders from '../../api/axiosWithHeaders';
+
+import axiosWithHeaders from "../../../../../../api/axiosWithHeaders";
 
 export async function getReport(link: string) {
   try {

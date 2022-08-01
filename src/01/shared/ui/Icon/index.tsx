@@ -1,6 +1,6 @@
 import React from 'react';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import DeviceIcons from '../../../_components/DeviceIcons';
+import { StockIconTT } from '../../../_pages/Devices/components/DeviceBlock/DeviceBlock';
 
 interface Props {
   name: string;

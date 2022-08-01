@@ -14,7 +14,6 @@ import {
   setGroupStatus,
 } from '../../models/groupReportReducer';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
-import axios from '../../api/axios';
 import { sendGroupReport } from '../../../../_api/group_report';
 import { Loader } from '../../../../components/Loader';
 

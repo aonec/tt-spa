@@ -1,6 +1,6 @@
 import React from 'react';
+import { PipeHousingMeteringDeviceResponse } from '../../../../api/types';
 import { IconTT } from '../../../tt-components';
-import { PipeHousingMeteringDeviceResponse } from '../.../../api/types';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,

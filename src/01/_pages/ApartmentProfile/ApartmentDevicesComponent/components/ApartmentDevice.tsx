@@ -1,12 +1,12 @@
 import React from 'react';
-import DeviceIcons from '01/_components/DeviceIcons';
-import { DateLine } from '01/_components/DateLine/DateLine';
-import { translateMountPlace } from '01/utils/translateMountPlace';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../_components/Icon';
-import { IndividualDeviceListItemResponse } from '../../.../../api/types';
 import moment from 'moment';
+import { IndividualDeviceListItemResponse } from '../../../../../api/types';
+import DeviceIcons from '../../../../_components/DeviceIcons';
+import { translateMountPlace } from '../../../../utils/translateMountPlace';
+import { DateLine } from '../../../../_components/DateLine/DateLine';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;

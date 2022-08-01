@@ -1,5 +1,3 @@
-import { searchForm } from '01/features/actsJournal/displayActsJournal/models';
-import { findApartmentId } from '01/_api/apartments';
 import { combine, sample } from 'effector';
 import {
   $apartmentSearchId,
@@ -8,6 +6,8 @@ import {
   fetchApartmentSearchIdFx,
   onExitAddressSearchForm,
 } from '.';
+import { findApartmentId } from '../../../_api/apartments';
+import { searchForm } from '../../actsJournal/displayActsJournal/models';
 
 fetchApartmentSearchIdFx.use(findApartmentId);
 

@@ -1,6 +1,6 @@
 import { closeDevSettingsModal, devSettingsForm } from './index';
 import { $isDevSettingsModalOpen, openDevSettingsModal } from '.';
-import axios from '../../api/axios';
+import { axios } from '../../../../api/axios';
 
 $isDevSettingsModalOpen
   .on(openDevSettingsModal, () => true)

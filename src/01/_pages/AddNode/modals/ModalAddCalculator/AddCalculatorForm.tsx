@@ -27,15 +27,15 @@ import {
   AlertInterface,
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
-import { CreateCalculatorRequest } from '../../.../../api/types';
 import {
   calculatorNoConnectionValidationSchema,
   calculatorValidationSchema,
 } from '../../../../tt-components/validationSchemas';
 import { addCalculator } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
-import { $calculatorTypesSelectItems, CalculatorInfosGate } from '01/features/carlculators/calculatorsInfo/models';
 import { useStore } from 'effector-react';
+import { $calculatorTypesSelectItems, CalculatorInfosGate } from '../../../../features/carlculators/calculatorsInfo/models';
+import { CreateCalculatorRequest } from '../../../../../api/types';
 
 const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);

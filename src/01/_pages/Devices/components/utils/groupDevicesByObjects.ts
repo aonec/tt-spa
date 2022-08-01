@@ -1,8 +1,6 @@
 import { groupBy } from 'lodash';
-import {
-  CalculatorListResponse,
-  HousingStockAddressResponse,
-} from '../../.../../api/types';
+import { CalculatorListResponse, HousingStockAddressResponse } from '../../../../../api/types';
+
 
 export const groupDevicesByObjects = (
   devices: CalculatorListResponse[]

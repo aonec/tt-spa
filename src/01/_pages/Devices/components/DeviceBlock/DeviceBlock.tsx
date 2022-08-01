@@ -5,9 +5,9 @@ import { Icon } from '../../../../tt-components/Icon';
 import { IconWithTooltip } from '../../../../components/NotConnectedIcon/IconWithTooltip';
 import { Dates } from './Dates';
 import Node from './Node/Node';
-import { CalculatorListResponse } from '../../.../../api/types';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
+import { CalculatorListResponse } from '../../../../../api/types';
 
 const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
   const { isConnected } = calculator;

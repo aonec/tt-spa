@@ -1,6 +1,6 @@
-import axios from '../../api/axios';
 import { createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { axios } from '../../../../api/axios';
 
 export const $isDevSettingsModalOpen = createStore(false);
 

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { PipeNodeResponse } from '../../../../../../api/types';
 import { StyledModal } from '../../../../../tt-components/Modal';
 import ModalAddDeviceForm from './ModalAddDeviceForm';
-import { CalculatorResponse, PipeNodeResponse } from '../../../.../../api/types';
 
 interface ModalAddDeviceInterface {
   visible: boolean;

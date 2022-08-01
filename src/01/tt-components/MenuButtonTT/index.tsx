@@ -3,7 +3,7 @@ import { Menu, Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
-import { Loader } from '01/components';
+import { Loader } from '../../components';
 
 const StyledMenuButton = styled(Button).attrs((props) => ({
   form: props.form,

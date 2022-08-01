@@ -10,7 +10,7 @@ import {
 } from './index';
 import { guard, merge } from 'effector';
 import { downloadDevicesReport } from '../../../_api/devicesReport';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from '../../carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 downloadDevicesReportFx.use(downloadDevicesReport);
 

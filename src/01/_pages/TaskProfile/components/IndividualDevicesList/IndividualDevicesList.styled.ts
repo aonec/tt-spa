@@ -1,5 +1,5 @@
-import { DeviceIcon } from 'ui-kit/icons';
 import styled from 'styled-components';
+import { DeviceIcon } from '../../../../../ui-kit/icons';
 
 export const Wrapper = styled.div`
   margin-top: 15px;

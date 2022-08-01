@@ -12,11 +12,7 @@ import {
   StyledFormPage,
 } from '../../../tt-components';
 import { nodeStatusList, resources } from '../../../tt-components/localBases';
-import {
-  DocumentResponse,
-  PipeNodeResponse,
-  UpdatePipeNodeRequest,
-} from '../.../../api/types';
+
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';
@@ -33,12 +29,13 @@ import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
 import { DocumentsUpload } from './DocumentsUpload';
-import { FilesList } from '01/shared/ui/FilesList';
-import { FileData } from '01/hooks/useFilesUpload';
-import { postNodeDocuments } from '01/_api/editNode';
-import { deleteDoc } from '01/_api/task_profile_page';
 import _ from 'lodash';
-import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
+import { DocumentResponse, PipeNodeResponse, UpdatePipeNodeRequest } from '../../../../api/types';
+import { FileData } from '../../../hooks/useFilesUpload';
+import { postNodeDocuments } from '../../../_api/editNode';
+import { deleteDoc } from '../../../_api/task_profile_page';
+import { FilesList } from '../../../shared/ui/FilesList';
+import { EditNodeCalculatorConnectionContainer } from '../../../features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;

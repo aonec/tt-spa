@@ -1,4 +1,4 @@
-import { ApartmentActResponse, EActTypeStringDictionaryItem } from '../../api/types';
+import { ApartmentActResponse, EActTypeStringDictionaryItem } from "../../../../../api/types";
 
 export type EditApartmentActFormProps = {
   formId: string;

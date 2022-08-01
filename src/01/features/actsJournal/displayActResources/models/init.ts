@@ -1,6 +1,6 @@
-import { getActResources } from '01/_api/apartmentActs';
 import { guard } from 'effector';
 import { $actResources, ActResourcesGate, fetchResourcesFx } from '.';
+import { getActResources } from '../../../../_api/apartmentActs';
 
 fetchResourcesFx.use(getActResources);
 

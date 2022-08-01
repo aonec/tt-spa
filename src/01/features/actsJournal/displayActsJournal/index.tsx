@@ -1,6 +1,6 @@
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { Space } from '../../../shared/ui/Layout/Space/Space';
 import { AddNewActForm } from './components/AddNewActForm';
 import { ApartmentActsList } from './components/ApartmentActsList';
 import { SearchForm } from './components/SearchForm';

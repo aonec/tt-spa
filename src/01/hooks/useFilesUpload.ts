@@ -1,6 +1,6 @@
-import { uploadFile } from '01/_api/upload';
 import { useEffect, useState } from 'react';
 import { DocumentResponse } from '../../api/types';
+import { uploadFile } from '../_api/upload';
 
 export interface FileData {
   id: number;

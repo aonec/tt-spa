@@ -1,15 +1,13 @@
 import React from 'react';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import {
-  EIndividualDeviceReadingsSource,
-  OrganizationUserShortResponse,
-} from '../../api/types';
+
 import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
 import { ReactComponent as ErcIcon } from '../icons/erc.svg';
 import { ReactComponent as GosUslugiIcon } from '../icons/gosuslugi.svg';
 import { ReactComponent as BankIcon } from '../icons/bank.svg';
 import { ReactComponent as ArchiveIcon } from '../icons/archive.svg';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { EIndividualDeviceReadingsSource, OrganizationUserShortResponse } from '../../../../../api/types';
+import { Flex } from '../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../shared/ui/Layout/Space/Space';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
   ({

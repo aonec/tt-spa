@@ -10,8 +10,8 @@ import {
 import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import Icon from '../../../../../tt-components/Icon';
-import { PipeNodeIntoCalculatorResponse } from '../../../.../../api/types';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+import { PipeNodeIntoCalculatorResponse } from '../../../../../../api/types';
 
 const Node: React.FC<Props> = ({ node }) => {
   const housingDevices = node.communicationPipes?.map((pipe) => {

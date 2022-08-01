@@ -3,12 +3,12 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Loader } from '../../components';
 import { useAsync } from '../../hooks/useAsync';
-import { IndividualDeviceResponse } from '.../../api/types';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { getIndividualDevice } from '../../_api/apiRequests';
 import IndividualDeviceEditForm from './components/IndividualDeviceEditForm';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
+import { IndividualDeviceResponse } from '../../../api/types';
 
 export const IndividualDeviceEdit = () => {
   const { push } = useHistory();

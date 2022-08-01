@@ -10,19 +10,17 @@ import {
   refetchApartmentActs,
   setActJournalPageNumber,
 } from './index';
-import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
 import { combine, forward, sample } from 'effector';
 import {
   clearCreationActFormValues,
   fetchApartmentActsFx,
   searchForm,
 } from '.';
-import {
-  addressSearchForm,
-} from '01/features/addressIdSearch/models';
+
 import moment from 'moment';
-import { $apartmentSearchId } from '01/features/addressIdSearch/models';
+import { addApartmentActs, getApartmentActs } from '../../../../_api/apartmentActs';
+import { fetchExistingCities } from '../../../housingStocks/displayHousingStockCities/models';
+import { $apartmentSearchId, addressSearchForm } from '../../../addressIdSearch/models';
 
 fetchApartmentActsFx.use(getApartmentActs);
 

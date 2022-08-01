@@ -1,11 +1,9 @@
 import { createGate } from 'effector-react';
 import { RequestStatusShared } from './../../../readings/displayReadingHistory/hooks/useReadingValues';
-import {
-  HomeownerAccountCloseRequest,
-  HomeownerAccountUpdateRequest,
-} from './../../.../../api/types';
+
 import { createStore, createEvent, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { HomeownerAccountCloseRequest, HomeownerAccountUpdateRequest } from '../../../../../api/types';
 
 export const $isSelectEditPersonalNumberTypeModalOpen = createStore(false);
 

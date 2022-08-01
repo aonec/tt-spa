@@ -1,7 +1,7 @@
 import { createGate } from 'effector-react';
 import { MayBe } from './../../displayActsJournal/models/index';
-import { EActTypeStringDictionaryItem } from './../../.../../api/types';
 import { createStore, createEffect } from 'effector';
+import { EActTypeStringDictionaryItem } from '../../../../../api/types';
 
 export const $actTypes = createStore<MayBe<EActTypeStringDictionaryItem[]>>(
   null

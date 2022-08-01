@@ -19,12 +19,7 @@ import { Divider, Form, Radio } from 'antd';
 
 import moment, { Moment } from 'moment';
 import { getReports } from '../../../../_pages/Objects/apiObjects';
-import {
-  EEmailSubscriptionType,
-  GroupReportFormResponse,
-  ENodeCommercialAccountStatus,
-  EResourceType,
-} from '../../.../../api/types';
+
 import { useAsync } from '../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport, reportQuery } from './apiGroupReport';
@@ -33,6 +28,7 @@ import { setGroupStatus, setForm } from '../../models/groupReportReducer';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { sendGroupReport } from '../../../../_api/group_report';
 import { Loader } from '../../../../components/Loader';
+import { EEmailSubscriptionType, ENodeCommercialAccountStatus, EResourceType, GroupReportFormResponse } from '../../../../../api/types';
 
 export interface GroupReportValuesInterface {
   houseManagementId?: string;
