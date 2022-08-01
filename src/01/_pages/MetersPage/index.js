@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { AccountingNodesReadings } from '01/features/readings/accountingNodesReadings';
 import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { FilterContainer } from './components/Filter.container';
-import { MeteringDeviceReadingsSumPanel } from '01/features/readings/accountingNodesReadings/components/MeteringDeviceReadingsSumPanel';
+import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 export const MetersPage = () => {
   return (
@@ -22,7 +22,7 @@ export const MetersPage = () => {
 
       <Route path="/meters/apartments/:id">
         <ApartmentInfo />
-        <ApartmentReadings />
+        <ApartmentIndividualDevicesMetersContainer />
       </Route>
 
       <Route path="/meters/houses">
