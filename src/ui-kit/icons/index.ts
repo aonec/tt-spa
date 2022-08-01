@@ -33,6 +33,7 @@ import { ReactComponent as MapIcon } from './svg/map.svg';
 import { ReactComponent as NumberIcon } from './svg/number.svg';
 import { ReactComponent as CalendarIcon } from './svg/calendar.svg';
 import { ReactComponent as CalculatorIcon } from './svg/calculator.svg';
+import { ReactComponent as ChevronIcon } from './svg/chevron.svg';
 
 export {
   RedTimerIcon,
@@ -70,4 +71,5 @@ export {
   DateIcon,
   DownloadIcon,
   ExitIcon,
+  ChevronIcon,
 };
