@@ -1,17 +1,17 @@
 import React, { memo } from 'react';
-import styled from "styled-components";
-import {CheckIcon, SwitchIcon} from "../../../../../../../ui-kit/icons";
-import {Space} from "../../../../../../shared/ui/Layout/Space/Space";
+import styled from 'styled-components';
+import { CheckIcon, SwitchIcon } from '../../../../../../../ui-kit/icons';
+import { Space } from '../../../../../../shared/ui/Layout/Space/Space';
 
 type WrapperProps = {
-  active?: boolean
-}
+  active?: boolean;
+};
 
 type ActionButtonProps = {
-  active?: boolean
-  type: 'switch' | 'check'
-  onClick: () => void
-}
+  active?: boolean;
+  type: 'switch' | 'check';
+  onClick: () => void;
+};
 
 const Wrapper = styled.div<WrapperProps>`
   display: flex;
@@ -34,34 +34,29 @@ const Wrapper = styled.div<WrapperProps>`
   &:hover {
     border-color: #189ee9;
   }
-  
-  border: ${props => `1px solid ${props.active ? '#189ee9' : '#dcdee4'}`};
-  box-shadow: ${props => props.active ? '0 4px 8px 0 #189ee955' : 'none'};
+
+  border: ${(props) => `1px solid ${props.active ? '#189ee9' : '#dcdee4'}`};
+  box-shadow: ${(props) => (props.active ? '0 4px 8px 0 #189ee955' : 'none')};
 `;
 
 const IconLookup = {
   switch: <SwitchIcon />,
-  check: <CheckIcon />
-}
+  check: <CheckIcon />,
+};
 
 const TextLookup = {
   switch: 'Замена прибора',
-  check: 'Проверка прибора'
-}
+  check: 'Поверка прибора',
+};
 
-
-export const ActionButton = memo(({ active = false, onClick, type }: ActionButtonProps) => {
-  return (
-    <Wrapper onClick={onClick} active={active}>
-      {IconLookup[type]}
-      <Space />
-      {TextLookup[type]}
-    </Wrapper>
-  );
-},)
-
-
-
-
-
-
+export const ActionButton = memo(
+  ({ active = false, onClick, type }: ActionButtonProps) => {
+    return (
+      <Wrapper onClick={onClick} active={active}>
+        {IconLookup[type]}
+        <Space />
+        {TextLookup[type]}
+      </Wrapper>
+    );
+  }
+);
