@@ -36,3 +36,9 @@ export type CreateResourceDisconnectionFormTypes = {
   endDate: string;
   endHour: string;
 };
+
+export type TreeSelectLabelValueType = {
+  key?: string | number;
+  value?: string | number;
+  label?: React.ReactNode;
+};
