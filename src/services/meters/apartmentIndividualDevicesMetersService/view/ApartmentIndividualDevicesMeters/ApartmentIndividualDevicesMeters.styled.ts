@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
+export const deviceMeterLineGridTemplate = '1.45fr 0.6fr 0.6fr 0.3fr';
 
 export const Header = styled.div`
   min-width: 950px;
   display: grid;
   align-items: center;
-  grid-template-columns: 0.65fr 0.8fr 0.6fr 0.6fr 0.6fr;
+  grid-template-columns: ${deviceMeterLineGridTemplate};
   grid-gap: 15px;
 
   background: rgba(39, 47, 90, 0.04);
@@ -23,6 +23,15 @@ export const Header = styled.div`
 
   .current-reading {
     text-align: center;
+  }
+
+  .header-block {
+    display: flex;
+    align-items: center;
+  }
+
+  .device-show-closed-devices-checkbox {
+    margin-left: 15px;
   }
 `;
 
@@ -42,7 +51,7 @@ export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  
+
   ${({ isDisabled }) => !isDisabled && 'cursor: pointer;'}
 
   svg {
@@ -52,7 +61,7 @@ export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
 
     &:hover {
       opacity: ${({ isDisabled }) => (isDisabled ? 0.7 : 1)};
-      
+
       fill: ${({ isDisabled }) =>
         isDisabled ? 'var(--main-32)' : 'var(--primary-100)'};
     }

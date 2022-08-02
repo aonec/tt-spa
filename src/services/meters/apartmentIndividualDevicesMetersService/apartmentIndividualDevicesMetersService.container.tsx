@@ -1,3 +1,7 @@
+import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
+import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -26,6 +30,10 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
   return (
     <>
       <IndividualDevicesGate ApartmentId={Number(id)} />
+      <ReadingsHistoryModal />
+      <CloseIndividualDeviceModal />
+      <ConfirmReadingValueModal />
+      <DeleteIndividualDeviceModalContainer />
       <ApartmentIndividualDevicesMeters
         individualDevicesList={individualDevicesList}
         isLoading={isLoading}

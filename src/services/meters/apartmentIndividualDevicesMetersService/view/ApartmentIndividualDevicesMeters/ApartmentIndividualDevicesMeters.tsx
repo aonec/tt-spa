@@ -1,5 +1,6 @@
 import { Checkbox, Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
+import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
 import { ChevronIcon } from 'ui-kit/icons';
 import { previousReadingIndexLimit } from '../../apartmentIndividualDevicesMetersService.constants';
 import { getReadingsMonthByShift } from '../../apartmentIndividualDevicesMetersService.utils';
@@ -7,7 +8,6 @@ import {
   ArrowContainer,
   Header,
   MonthSliderWrapper,
-  Wrapper,
 } from './ApartmentIndividualDevicesMeters.styled';
 import { ApartmentIndividualDevicesMetersProps } from './ApartmentIndividualDevicesMeters.types';
 
@@ -36,16 +36,19 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   const isCanDown = useMemo(() => sliderIndex > 0, [sliderIndex]);
 
   return (
-    <Wrapper>
+    <div>
       <Header>
-        <div className="device-info">Информация о приборе</div>
-        <Checkbox
-          checked={isShowClosedDevices}
-          onChange={(e) => setIsShowClosedDevices(e.target.checked)}
-          disabled={!closedDevicesCount}
-        >
-          Показать закрытые {closedDevicesCountString}
-        </Checkbox>
+        <div className="header-block">
+          <div className="device-info">Информация о приборе</div>
+          <Checkbox
+            checked={isShowClosedDevices}
+            onChange={(e) => setIsShowClosedDevices(e.target.checked)}
+            disabled={!closedDevicesCount}
+            className="device-show-closed-devices-checkbox"
+          >
+            Показать закрытые {closedDevicesCountString}
+          </Checkbox>
+        </div>
         <MonthSliderWrapper>
           <ArrowContainer onClick={upSliderIndex} isDisabled={!isCanUp}>
             <ChevronIcon />
@@ -59,11 +62,9 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
       </Header>
       {isLoading && <Skeleton active />}
       {!isLoading &&
-        individualDevicesList.map(({ id, model, serialNumber }) => (
-          <div key={id}>
-            {serialNumber} {model}
-          </div>
+        individualDevicesList.map((device) => (
+          <IndividualDeviceMetersInputContainer device={device} />
         ))}
-    </Wrapper>
+    </div>
   );
 };
