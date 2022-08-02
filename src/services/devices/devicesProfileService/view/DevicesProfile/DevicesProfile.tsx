@@ -14,6 +14,7 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
+
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
   fetchcalc: (
@@ -24,7 +25,7 @@ interface DeviceProfileProps {
   close: (payload: void) => void;
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
   searchState: CalculatorsListRequestPayload | null;
-  clearSearchPayload: (payload: void) => void
+  clearSearchPayload: (payload: void) => void;
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   fetchcalc,
@@ -32,8 +33,9 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   close,
   open,
   searchState,
-  clearSearchPayload
+  clearSearchPayload,
 }) => {
+
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -53,16 +55,21 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     initialValues: {
       'Filter.DiameterRange.From': searchState?.['Filter.DiameterRange.From'],
       'Filter.DiameterRange.To': searchState?.['Filter.DiameterRange.To'],
-      'Filter.ExpiresCheckingDateAt': searchState?.['Filter.ExpiresCheckingDateAt'],
+      'Filter.ExpiresCheckingDateAt':
+        searchState?.['Filter.ExpiresCheckingDateAt'],
       'Filter.Resource': searchState?.['Filter.Resource'],
       'Filter.Model': searchState?.['Filter.Model'],
-      'Filter.CommercialDateRange.From': searchState?.['Filter.CommercialDateRange.From'],
-      'Filter.CommercialDateRange.To': searchState?.['Filter.CommercialDateRange.To'],
+      'Filter.CommercialDateRange.From':
+        searchState?.['Filter.CommercialDateRange.From'],
+      'Filter.CommercialDateRange.To':
+        searchState?.['Filter.CommercialDateRange.To'],
       'Filter.Address.City': searchState?.['Filter.Address.City'],
       'Filter.Address.Street': searchState?.['Filter.Address.Street'],
-      'Filter.Address.HousingStockNumber': searchState?.['Filter.Address.HousingStockNumber'],
+      'Filter.Address.HousingStockNumber':
+        searchState?.['Filter.Address.HousingStockNumber'],
       'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
-      'Filter.Address.HouseCategory': searchState?.['Filter.Address.HouseCategory'],
+      'Filter.Address.HouseCategory':
+        searchState?.['Filter.Address.HouseCategory'],
       'Filter.HousingStockId': searchState?.['Filter.HousingStockId'],
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
       Question: searchState?.Question,
@@ -102,8 +109,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             isOpen={isOpen}
             handleClose={() => {
               close();
-              clearSearchPayload()
-              resetForm()
+              clearSearchPayload();
+              resetForm();
             }}
             handleOpen={() => open()}
             handleApply={() => {
@@ -111,8 +118,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
               searchStateChanged(values);
             }}
             handleClear={() => {
-              resetForm()
-              clearSearchPayload()
+              resetForm();
+              clearSearchPayload();
             }}
             extendedSearchContent={
               <ExtendedSearchForm

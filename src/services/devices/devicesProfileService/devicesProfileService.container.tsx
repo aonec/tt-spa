@@ -3,9 +3,11 @@ import React from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
-const { outputs, inputs } = displayDevicesService;
+const { outputs, inputs, gates } = displayDevicesService;
 
 export const DevicesProfileContainer = () => {
+  const CalculatorsGate = gates.CalculatorsGate;
+
   const isOpen = useStore(outputs.$isExtendedSearchOpen);
   const searchState = useStore(outputs.$searchPayload);
 
@@ -15,16 +17,19 @@ export const DevicesProfileContainer = () => {
   const open = useEvent(inputs.extendedSearchOpened);
 
   return (
-    <DevicesProfile
-      showDownloadDeviceReportButtonClicked={
-        showDownloadDeviceReportButtonClicked
-      }
-      fetchcalc={fetchcalc}
-      isOpen={isOpen}
-      close={close}
-      open={open}
-      searchState={searchState}
-      clearSearchPayload={clearSearchPayload}
-    />
+    <>
+      <CalculatorsGate />
+      <DevicesProfile
+        showDownloadDeviceReportButtonClicked={
+          showDownloadDeviceReportButtonClicked
+        }
+        fetchcalc={fetchcalc}
+        isOpen={isOpen}
+        close={close}
+        open={open}
+        searchState={searchState}
+        clearSearchPayload={clearSearchPayload}
+      />
+    </>
   );
 };
