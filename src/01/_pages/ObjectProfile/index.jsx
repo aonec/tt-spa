@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'reshadow/macro';
-import { Route, useParams, useHistory } from 'react-router-dom';
+import { Route, useParams, useHistory, Link } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
@@ -13,6 +13,8 @@ import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
+import { Alert } from '01/shared/ui/Alert/Alert';
+import { AlertContent, AlertWrapper } from './ObjectProfile.styled';
 
 export const ObjectContext = React.createContext();
 
@@ -109,27 +111,39 @@ export const ObjectProfile = () => {
           object={object}
         />
         <Tabs tabItems={tabItems} tabsType={'route'} />
+
         <grid>
-          <Route path="/objects/(\\d+)" exact>
-            <div>
-              <Information {...info} />
-              <MapObject object={object} />
-            </div>
-          </Route>
+          <div>
+            <AlertWrapper>
+              <Alert type="blueStop">
+                <AlertContent>
+                  <div>На объекте плановое отключение</div>
+                  <Link>Подробнее</Link>
+                </AlertContent>
+              </Alert>
+            </AlertWrapper>
 
-          <Route path="/objects/(\\d+)/apartments" exact>
-            <Apartments
-              path="/objects/(\\d+)/apartments"
-              onClick={(id) =>
-                push(`/objects/${housingStockId}/apartments/${id}`)
-              }
-              {...state?.apartments}
-            />
-          </Route>
+            <Route path="/objects/(\\d+)" exact>
+              <div>
+                <Information {...info} />
+                <MapObject object={object} />
+              </div>
+            </Route>
 
-          <Route path="/objects/(\\d+)/devices" exact>
-            <Devices nodes={nodes} />
-          </Route>
+            <Route path="/objects/(\\d+)/apartments" exact>
+              <Apartments
+                path="/objects/(\\d+)/apartments"
+                onClick={(id) =>
+                  push(`/objects/${housingStockId}/apartments/${id}`)
+                }
+                {...state?.apartments}
+              />
+            </Route>
+
+            <Route path="/objects/(\\d+)/devices" exact>
+              <Devices nodes={nodes} />
+            </Route>
+          </div>
 
           <Events title="События с объектом" {...events} />
         </grid>

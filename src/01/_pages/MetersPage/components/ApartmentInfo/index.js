@@ -136,7 +136,7 @@ export const ApartmentInfo = () => {
 
   const pausedAlert = isPaused && (
     <ApartmentAlertWrapper>
-      <Alert type="stop" color="FC525B">
+      <Alert type="redStop" color="FC525B">
         <AlertContent>
           <div>
             Квартира на паузе до{' '}

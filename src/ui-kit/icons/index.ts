@@ -3,7 +3,8 @@ import { ReactComponent as CheckIcon } from './svg/check.svg';
 import { ReactComponent as HistoryIcon } from './svg/history.svg';
 import { ReactComponent as SwitchIcon } from './svg/switch.svg';
 import { ReactComponent as InfoIcon } from './svg/info.svg';
-import { ReactComponent as StopIcon } from './svg/stop.svg';
+import { ReactComponent as RedStopIcon } from './svg/redStop.svg';
+import { ReactComponent as BlueStopIcon } from './svg/blueStop.svg';
 import { ReactComponent as WarningIcon } from './svg/warning.svg';
 import { ReactComponent as ColdWaterSupplyIcon } from './svg/coldWaterSupply.svg';
 import { ReactComponent as HotWaterSupplyIcon } from './svg/hotWaterSupply.svg';
@@ -35,6 +36,7 @@ import { ReactComponent as CalendarIcon } from './svg/calendar.svg';
 import { ReactComponent as CalculatorIcon } from './svg/calculator.svg';
 
 export {
+  BlueStopIcon,
   RedTimerIcon,
   CalculatorIcon,
   CalendarIcon,
@@ -47,7 +49,7 @@ export {
   HistoryIcon,
   SwitchIcon,
   InfoIcon,
-  StopIcon,
+  RedStopIcon,
   WarningIcon,
   ColdWaterSupplyIcon,
   HotWaterSupplyIcon,
