@@ -1,7 +1,7 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
+import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
@@ -24,6 +24,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   clearFilters,
   changeFiltersByGroupType,
   housingManagments,
+  perpetrators,
+  streets,
+  cities
+
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -66,6 +70,9 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         clearFilters={clearFilters}
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
+        perpetrators={perpetrators}
+        streets={streets}
+        cities={cities}
       />
       <div>{!isLoading && tasksList}</div>
       {isLoading && <Skeleton active />}
