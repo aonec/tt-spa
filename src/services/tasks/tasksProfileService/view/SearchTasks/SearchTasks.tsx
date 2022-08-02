@@ -1,16 +1,19 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { InputSC } from '01/shared/ui/Fields';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
-import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SearchTasksProps } from './SearchTasks.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
-import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { useParams } from 'react-router-dom';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { InputSC } from '01/shared/ui/Fields';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { SelectSC, Wrapper } from './SearchTasks.styled';
+import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { SearchTasksProps } from './SearchTasks.types';
+import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
@@ -20,8 +23,12 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   closeExtendedSearch,
   clearFilters,
   changeFiltersByGroupType,
-  housingManagments
+  housingManagments,
+  perpetrators,
+  streets,
+  cities,
 }) => {
+
   const {
     values,
     handleSubmit,
@@ -31,19 +38,32 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
       TaskId: currentFilter?.TaskId,
-      TargetType: undefined,
+      TargetType: currentFilter?.TargetType,
       GroupType: currentFilter?.GroupType,
       HouseManagementId: currentFilter?.HouseManagementId,
-      DeviceId: undefined,
-      HousingStockId: undefined,
-      ApartmentId: undefined,
-      HasChanged: undefined,
-      PipeNodeId: undefined,
-      ClosingStatuses: undefined,
-      ApplicationCompetenceId: undefined,
-      PageNumber: undefined,
-      PageSize: undefined,
-      OrderBy: undefined,
+      DeviceId: currentFilter?.DeviceId,
+      HousingStockId: currentFilter?.HousingStockId,
+      ApartmentId: currentFilter?.ApartmentId,
+      HasChanged: currentFilter?.HasChanged,
+      PipeNodeId: currentFilter?.PipeNodeId,
+      ClosingStatuses: currentFilter?.ClosingStatuses,
+      ApplicationCompetenceId: currentFilter?.ApplicationCompetenceId,
+      TimeStatus: currentFilter?.TimeStatus,
+      PerpetratorId: currentFilter?.PerpetratorId,
+      Resource: currentFilter?.Resource,
+      EngineeringElement: currentFilter?.EngineeringElement,
+      City: currentFilter?.City
+        ? currentFilter?.City
+        : cities?.length === 1
+        ? cities[0]
+        : currentFilter?.City,
+      Street: currentFilter?.Street,
+      HousingStockNumber: currentFilter?.HousingStockNumber,
+      Corpus: currentFilter?.Corpus,
+      ApartmentNumber: currentFilter?.ApartmentNumber,
+      PageNumber: currentFilter?.PageNumber,
+      PageSize: currentFilter?.PageSize,
+      OrderBy: currentFilter?.OrderBy,
     },
     enableReinitialize: true,
     onSubmit,
@@ -113,11 +133,16 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               taskTypes={taskTypes}
               values={values}
               housingManagments={housingManagments}
+              perpetrators={perpetrators}
+              streets={streets}
+              cities={cities}
             />
           )}
         </>
       }
     >
+      <ExistingStreetsGate />
+      <ExistingCitiesGate />
       <Wrapper>
         <InputSC
           placeholder="Номер задачи"

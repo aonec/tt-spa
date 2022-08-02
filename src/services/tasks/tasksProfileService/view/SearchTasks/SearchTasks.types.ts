@@ -5,6 +5,7 @@ import {
   GuidStringDictionaryItem,
   TaskGroupingFilter,
 } from 'myApi';
+import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
 export type SearchTasksProps = {
@@ -17,6 +18,9 @@ export type SearchTasksProps = {
   clearFilters: () => void;
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
+  perpetrators: perpetratorItemsProps[] | null;
+  streets: string[];
+  cities: string[] | null;
 };
 
 export type SearchTasksForm = {
@@ -34,5 +38,15 @@ export type ExtendedSearchTypes = {
     shouldValidate?: boolean | undefined
   ) => Promise<void> | Promise<FormikErrors<GetTasksListRequestPayload>>;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
-  housingManagments?: GuidStringDictionaryItem[] | null
+  housingManagments?: GuidStringDictionaryItem[] | null;
+  perpetrators?: perpetratorItemsProps[] | null;
+  streets?: string[]
+  cities?: string[] | null
+};
+
+export type taskCategotiesProps = {
+  Node: Partial<EManagingFirmTaskFilterType>[];
+  All: Partial<EManagingFirmTaskFilterType>[];
+  IndividualDevice: Partial<EManagingFirmTaskFilterType>[];
+  HouseNetwork: Partial<EManagingFirmTaskFilterType>[];
 };

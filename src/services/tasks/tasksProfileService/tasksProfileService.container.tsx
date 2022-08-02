@@ -1,15 +1,21 @@
-import { useEvent, useStore } from 'effector-react';
-import { TaskGroupingFilter } from 'myApi';
 import React, { useEffect, useMemo, useRef } from 'react';
+import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
-import { exportTasksListService } from '../exportTasksListService';
+import { TaskGroupingFilter } from 'myApi';
+import {
+  exportTasksListService,
+} from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
 import { prepareData } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { $existingCities, ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 
 const { inputs, outputs } = tasksProfileService;
+const { outputs: adresses } = addressSearchService;
+
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -17,9 +23,12 @@ export const TasksProfileContainer = () => {
 
   const taskTypes = useStore(outputs.$taskTypes);
   const housingManagments = useStore(outputs.$housingManagments);
+  const perpetrators = useStore(outputs.$perpetratorIdStore);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
+  const streets = useStore(adresses.streets)
+  const cities = useStore($existingCities);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.exportTasksList
@@ -58,6 +67,7 @@ export const TasksProfileContainer = () => {
   return (
     <>
       <TaskTypesGate />
+      <ExistingCitiesGate />
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
         grouptype={grouptype}
@@ -74,6 +84,9 @@ export const TasksProfileContainer = () => {
         clearFilters={() => clearFilters()}
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
+        perpetrators={perpetrators}
+        streets={streets}
+        cities={cities}
       />
     </>
   );
