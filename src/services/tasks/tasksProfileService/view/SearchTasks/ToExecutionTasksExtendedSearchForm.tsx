@@ -74,16 +74,16 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     }
   }, [values.EngineeringElement]);
 
+  const iSValueExists =  values?.EngineeringElement ? Object.values(
+    taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
+  ) : []
+
   const FilteredTaskTypes = useMemo(() => {
     return taskTypes?.filter(
       (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
-        if (!el.key) return taskTypes;
-        if (values?.EngineeringElement) {
-          return Object.values(
-            taskCategories[
-              values?.EngineeringElement as keyof taskCategotiesProps
-            ]
-          ).includes(el?.key);
+        if (!el.key) return el;
+        if (iSValueExists.length) {
+          return iSValueExists.includes(el?.key);
         }
         return taskCategories.All.includes(el?.key);
       }
