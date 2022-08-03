@@ -53,16 +53,25 @@ export function useAutocomplete(street, streets) {
   const matchesArray =
     matches?.ratings
       .filter((value) => {
-        const wordsInStreetName = value.target.toUpperCase().split(' ');
+        const formatedSearchString = street.toUpperCase();
+        const formatedStreetString = value.target.toUpperCase();
+
+        const wordsInStreetName = formatedStreetString.split(' ');
+
+        const isRequestStringSimilarToStreet = formatedStreetString.includes(
+          formatedSearchString
+        );
 
         return wordsInStreetName.reduce(
-          (acc, elem) => acc || elem.startsWith(street.toUpperCase()),
+          (acc, elem) =>
+            acc ||
+            isRequestStringSimilarToStreet ||
+            elem.startsWith(formatedSearchString),
           false
         );
       })
       .sort((a, b) => b.rating - a.rating)
       .map(({ target }) => ({ value: target })) || [];
-
   const match = matchesArray[0]?.value;
 
   const options = matchesArray?.length && street ? [matchesArray[0]] : [];
@@ -73,7 +82,6 @@ export function useAutocomplete(street, streets) {
     bestMatch: options[0]?.value,
   };
 }
-
 
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
@@ -142,10 +150,7 @@ export const useFilter = () => {
     callback();
   };
 
-  const { options, bestMatch } = useAutocomplete(
-    state.street,
-    streets
-  );
+  const { options, bestMatch } = useAutocomplete(state.street, streets);
 
   const cities = useStore($existingCities);
 
