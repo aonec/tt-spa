@@ -42,18 +42,8 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   disconnectingTypes,
   resourceTypes,
 }) => {
-  const {
-    values,
-    submitForm,
-    setFieldValue,
-    handleChange,
-    errors,
-  } = useFormik<CreateResourceDisconnectionFormTypes>({
-    initialValues: formInitialValues,
-    validationSchema: createResourceDisconnectionValidationSchema,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: (formValues) => {
+  const handleSubmitFormik = useCallback(
+    (formValues: CreateResourceDisconnectionFormTypes) => {
       const preparedHousingStockIds = formValues.housingStockIds.filter(
         (elem) => elem !== -1
       );
@@ -72,6 +62,21 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         });
       }
     },
+    [handleSubmit]
+  );
+
+  const {
+    values,
+    submitForm,
+    setFieldValue,
+    handleChange,
+    errors,
+  } = useFormik<CreateResourceDisconnectionFormTypes>({
+    initialValues: formInitialValues,
+    validationSchema: createResourceDisconnectionValidationSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: handleSubmitFormik,
   });
 
   const allHousingStocks = useMemo(

@@ -5,6 +5,7 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { prepareAddressesForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
+import { ExistingStreetWithHousingStocks } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -31,11 +32,20 @@ export const CreateResourceDisconnectionContainer = () => {
 
   const preparedAddressesFromHeatingStation = useMemo(
     () =>
-      addressesFromHeatingStation?.map((elem) => ({
-        title: getHousingStockAddress(elem)!,
-        value: elem.id,
-        key: elem.id,
-      })),
+      addressesFromHeatingStation?.reduce((acc, elem) => {
+        const title = getHousingStockAddress(elem);
+        if (title) {
+          return [
+            ...acc,
+            {
+              title,
+              value: elem.id,
+              key: elem.id,
+            },
+          ];
+        }
+        return acc;
+      }, [] as ExistingStreetWithHousingStocks[]),
     [addressesFromHeatingStation]
   );
   const preparedExistingHousingStocks = useMemo(
