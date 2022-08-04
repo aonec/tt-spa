@@ -52,12 +52,10 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     const isUniq = _.uniq(allDevicesResource).length === 1;
     const iconType = isUniq ? device.resource : EActResourceType.All;
 
-    return (
-      <>
-        {iconType && <ResourceIconLookup resource={iconType} />}
-        {!iconType && <CalculatorIcon />}
-      </>
-    );
+    if (iconType) {
+      return <ResourceIconLookup resource={iconType} />;
+    }
+    return <CalculatorIcon />;
   }, [device]);
 
   return (
