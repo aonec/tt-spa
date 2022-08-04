@@ -107,8 +107,6 @@ const IndividualDeviceEditForm = ({
     onSubmit: async () => {
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.toISOString(true),
-        futureCheckingDate: values.futureCheckingDate?.toISOString(true),
         resource: values.resource,
         model: values.model,
         rateType: values.rateType,
@@ -269,28 +267,15 @@ const IndividualDeviceEditForm = ({
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative
               value={values.lastCheckingDate?.toISOString(true) || null}
-              onChange={(date) => {
-                setFieldValue('lastCheckingDate', moment(date));
-                setFieldValue(
-                  'futureCheckingDate',
-                  moment(date).add(
-                    values.resource === EResourceType.Electricity ? 16 : 6,
-                    'years'
-                  )
-                );
-              }}
+              disabled
             />
-            <Alert name="lastCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Дата Следующей поверки" style={styles.w100}>
             <DatePickerNative
               value={values.futureCheckingDate?.toISOString(true) || null}
-              onChange={(date) => {
-                setFieldValue('futureCheckingDate', moment(date));
-              }}
+              disabled
             />
-            <Alert name="futureCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Пломба" style={styles.w100}>
