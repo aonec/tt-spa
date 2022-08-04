@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import { EActResourceType, EResourceType } from 'myApi';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
@@ -33,6 +35,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     showExecutor,
     perpetrator,
     device,
+    devices,
     id,
     formatedCreationTime,
     address,
@@ -42,12 +45,17 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const taskName = currentStage ? currentStage.name : name;
   const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
   const DeviceIcon = useMemo(() => {
-    return device && (
-      <>
-        {device.resource && <ResourceIconLookup resource={device.resource} />}
-        {!device.resource && <CalculatorIcon />}
-      </>
-    );
+    if (!devices || !device) {
+      return null;
+    }
+    const allDevicesResource = devices.map((device) => device.resource);
+    const isUniq = _.uniq(allDevicesResource).length === 1;
+    const iconType = isUniq ? device.resource : EActResourceType.All;
+
+    if (iconType) {
+      return <ResourceIconLookup resource={iconType} />;
+    }
+    return <CalculatorIcon />;
   }, [device]);
 
   return (
