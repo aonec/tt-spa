@@ -57,11 +57,11 @@ export function useAutocomplete(street, streets) {
 
       const wordsInStreetName = formatedStreetString.split(' ');
 
-      return wordsInStreetName.reduce(
-        (acc, elem) => acc || elem.startsWith(formatedSearchString),
-        false
+      return wordsInStreetName.some((elem) =>
+        elem.startsWith(formatedSearchString)
       );
     }) || [];
+
   const matchesArrayFilteredByFullString =
     matches?.ratings.filter((value) => {
       const formatedSearchString = street.toUpperCase();
