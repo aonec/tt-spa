@@ -88,7 +88,7 @@ export const TasksProfileContainer = () => {
         perpetrators={perpetrators}
         streets={streets}
         cities={cities}
-        isSpectator={isSpectator}
+        isNotSpectator={!isSpectator}
       />
     </>
   );

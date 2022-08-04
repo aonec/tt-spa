@@ -27,7 +27,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   perpetrators,
   streets,
   cities,
-  isSpectator,
+  isNotSpectator,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -55,34 +55,30 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           ],
         }}
       />
-      {isLoading && <Skeleton active />}
 
-      {!isLoading && (
-        <>
-          <TabsSC activeKey={grouptype} onChange={history.push}>
-            {!isSpectator && (
-              <TabPane tab={executingTabText} key="Executing"></TabPane>
-            )}
-            <TabPane tab={observingTabText} key="Observing"></TabPane>
-            <TabPane tab="Архив" key="Archived"></TabPane>
-          </TabsSC>
-          <SearchTasks
-            onSubmit={handleSearch}
-            taskTypes={taskTypes}
-            currentFilter={initialValues}
-            isExtendedSearchOpen={isExtendedSearchOpen}
-            closeExtendedSearch={closeExtendedSearch}
-            openExtendedSearch={openExtendedSearch}
-            clearFilters={clearFilters}
-            changeFiltersByGroupType={changeFiltersByGroupType}
-            housingManagments={housingManagments}
-            perpetrators={perpetrators}
-            streets={streets}
-            cities={cities}
-          />
-        </>
-      )}
+      <TabsSC activeKey={grouptype} onChange={history.push}>
+        {!isLoading && isNotSpectator && (
+          <TabPane tab={executingTabText} key="Executing"></TabPane>
+        )}
+        <TabPane tab={observingTabText} key="Observing"></TabPane>
+        <TabPane tab="Архив" key="Archived"></TabPane>
+      </TabsSC>
+      <SearchTasks
+        onSubmit={handleSearch}
+        taskTypes={taskTypes}
+        currentFilter={initialValues}
+        isExtendedSearchOpen={isExtendedSearchOpen}
+        closeExtendedSearch={closeExtendedSearch}
+        openExtendedSearch={openExtendedSearch}
+        clearFilters={clearFilters}
+        changeFiltersByGroupType={changeFiltersByGroupType}
+        housingManagments={housingManagments}
+        perpetrators={perpetrators}
+        streets={streets}
+        cities={cities}
+      />
       <div>{!isLoading && tasksList}</div>
+      {isLoading && <Skeleton active />}
       {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC
           defaultCurrent={1}
