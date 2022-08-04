@@ -50,31 +50,40 @@ export function useAutocomplete(street, streets) {
         )
       : null;
 
-  const matchesArray =
-    matches?.ratings
-      .filter((value) => {
-        const formatedSearchString = street.toUpperCase();
-        const formatedStreetString = value.target.toUpperCase();
+  const matchesArrayFilteredByWords =
+    matches?.ratings.filter((value) => {
+      const formatedSearchString = street.toUpperCase();
+      const formatedStreetString = value.target.toUpperCase();
 
-        const wordsInStreetName = formatedStreetString.split(' ');
+      const wordsInStreetName = formatedStreetString.split(' ');
 
-        const isRequestStringSimilarToStreet = formatedStreetString.includes(
-          formatedSearchString
-        );
+      return wordsInStreetName.reduce(
+        (acc, elem) => acc || elem.startsWith(formatedSearchString),
+        false
+      );
+    }) || [];
+  const matchesArrayFilteredByFullString =
+    matches?.ratings.filter((value) => {
+      const formatedSearchString = street.toUpperCase();
+      const formatedStreetString = value.target.toUpperCase();
 
-        return wordsInStreetName.reduce(
-          (acc, elem) =>
-            acc ||
-            isRequestStringSimilarToStreet ||
-            elem.startsWith(formatedSearchString),
-          false
-        );
-      })
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ target }) => ({ value: target })) || [];
-  const match = matchesArray[0]?.value;
+      const isRequestStringSimilarToStreet = formatedStreetString.includes(
+        formatedSearchString
+      );
 
-  const options = matchesArray?.length && street ? [matchesArray[0]] : [];
+      return isRequestStringSimilarToStreet;
+    }) || [];
+  const matchesArray = matchesArrayFilteredByWords.length
+    ? matchesArrayFilteredByWords
+    : matchesArrayFilteredByFullString;
+
+  const preparedMatchesArray = matchesArray
+    .sort((a, b) => b.rating - a.rating)
+    .map(({ target }) => ({ value: target }));
+  const match = preparedMatchesArray[0]?.value;
+
+  const options =
+    preparedMatchesArray?.length && street ? [preparedMatchesArray[0]] : [];
 
   return {
     match,
