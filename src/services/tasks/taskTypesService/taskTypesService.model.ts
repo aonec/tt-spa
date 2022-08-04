@@ -4,7 +4,15 @@ import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
 } from 'myApi';
-import { getHousingManagements, getTaskTypes } from './taskTypesService.api';
+import {
+  getHousingManagements,
+  getPerpetratorIds,
+  getTaskTypes,
+} from './taskTypesService.api';
+import {
+  perpetratorItemsProps,
+  perpetratorProps,
+} from './taskTypesService.types';
 
 export const $taskTypes = createStore<
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null
@@ -13,6 +21,10 @@ export const $taskTypes = createStore<
 export const $housingManagments = createStore<
   GuidStringDictionaryItem[] | null
 >(null);
+
+export const $perpetratorIdStore = createStore<perpetratorItemsProps[] | null>(
+  null
+);
 
 const fetchTaskTypesFx = createEffect<
   void,
@@ -24,15 +36,23 @@ const fetchHousingManagments = createEffect<
   GuidStringDictionaryItem[] | null
 >(getHousingManagements);
 
+const fetchPerpetratorIds = createEffect<void, perpetratorItemsProps[] | null>(
+  getPerpetratorIds
+);
+
 export const TaskTypesGate = createGate();
 
 forward({
   from: TaskTypesGate.open,
-  to: [fetchTaskTypesFx, fetchHousingManagments],
+  to: [fetchTaskTypesFx, fetchHousingManagments, fetchPerpetratorIds],
 });
 
 $taskTypes.on(fetchTaskTypesFx.doneData, (_, types) => types);
 $housingManagments.on(
   fetchHousingManagments.doneData,
   (_, managments) => managments
+);
+$perpetratorIdStore.on(
+  fetchPerpetratorIds.doneData,
+  (_, perpetrators) => perpetrators
 );

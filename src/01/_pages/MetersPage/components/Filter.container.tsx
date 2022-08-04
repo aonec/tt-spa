@@ -39,11 +39,13 @@ export const FilterContainer = () => {
   const pendingApartment = useStore(fetchApartmentFx.pending);
 
   useEffect(() => {
-    if (!apartment?.homeownerAccounts?.length) return;
+    if (!apartment?.homeownerAccounts?.length) {
+      return setQuestion('');
+    }
 
     const homeownerName = apartment?.homeownerAccounts[0]?.name;
 
-    if (homeownerName) {
+    if (homeownerName && id) {
       setQuestion(homeownerName);
     }
   }, [apartment]);
@@ -64,6 +66,9 @@ export const FilterContainer = () => {
   );
 
   const initialSearchValues = useMemo(() => {
+    if (!id) {
+      return null;
+    }
     const address = apartment?.housingStock?.address?.mainAddress;
     return {
       city: address?.city || '',
@@ -79,6 +84,7 @@ export const FilterContainer = () => {
         <AddressSearchContainer
           fields={searchfields}
           handleSubmit={syncSearchState}
+          initialValues={initialSearchValues}
         />
         <SearchInput
           placeholder="Л/с или ФИО"

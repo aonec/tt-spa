@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ConfigProvider, Input, Select } from 'antd';
+import { ConfigProvider, Select } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import {

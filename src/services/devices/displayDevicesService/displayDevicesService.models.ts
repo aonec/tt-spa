@@ -1,7 +1,8 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { getCalculatorsList } from './displayDevicesService.api';
-import { CalculatorListResponse, CalculatorListResponsePagedList } from 'myApi';
+import { CalculatorListResponsePagedList } from 'myApi';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { createGate } from 'effector-react';
 
 const domain = createDomain('displayDevicesService');
 
@@ -38,6 +39,13 @@ const $pageNumber = $calculatorsPagedData.map((state) => state?.pageNumber);
 const $pageSize = $calculatorsPagedData.map((state) => state?.pageSize);
 
 const setPageNumber = domain.createEvent<number>();
+
+export const CalculatorsGate = createGate<CalculatorsListRequestPayload>()
+
+forward({
+  from: CalculatorsGate.open,
+  to: fetchCalculators,
+});
 
 $searchPayload
   .on(fetchCalculators, (_, payload) => payload)
@@ -79,4 +87,7 @@ export const displayDevicesService = {
     $pageSize,
     $searchPayload,
   },
+  gates: {
+    CalculatorsGate
+  }
 };
