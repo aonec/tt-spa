@@ -28,7 +28,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   streets,
   cities,
 }) => {
-
   const {
     values,
     handleSubmit,

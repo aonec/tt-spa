@@ -26,8 +26,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   housingManagments,
   perpetrators,
   streets,
-  cities
-
+  cities,
+  isSpectator,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -55,27 +55,34 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           ],
         }}
       />
-      <TabsSC activeKey={grouptype} onChange={history.push}>
-        <TabPane tab={executingTabText} key="Executing"></TabPane>
-        <TabPane tab={observingTabText} key="Observing"></TabPane>
-        <TabPane tab="Архив" key="Archived"></TabPane>
-      </TabsSC>
-      <SearchTasks
-        onSubmit={handleSearch}
-        taskTypes={taskTypes}
-        currentFilter={initialValues}
-        isExtendedSearchOpen={isExtendedSearchOpen}
-        closeExtendedSearch={closeExtendedSearch}
-        openExtendedSearch={openExtendedSearch}
-        clearFilters={clearFilters}
-        changeFiltersByGroupType={changeFiltersByGroupType}
-        housingManagments={housingManagments}
-        perpetrators={perpetrators}
-        streets={streets}
-        cities={cities}
-      />
-      <div>{!isLoading && tasksList}</div>
       {isLoading && <Skeleton active />}
+
+      {!isLoading && (
+        <>
+          <TabsSC activeKey={grouptype} onChange={history.push}>
+            {!isSpectator && (
+              <TabPane tab={executingTabText} key="Executing"></TabPane>
+            )}
+            <TabPane tab={observingTabText} key="Observing"></TabPane>
+            <TabPane tab="Архив" key="Archived"></TabPane>
+          </TabsSC>
+          <SearchTasks
+            onSubmit={handleSearch}
+            taskTypes={taskTypes}
+            currentFilter={initialValues}
+            isExtendedSearchOpen={isExtendedSearchOpen}
+            closeExtendedSearch={closeExtendedSearch}
+            openExtendedSearch={openExtendedSearch}
+            clearFilters={clearFilters}
+            changeFiltersByGroupType={changeFiltersByGroupType}
+            housingManagments={housingManagments}
+            perpetrators={perpetrators}
+            streets={streets}
+            cities={cities}
+          />
+        </>
+      )}
+      <div>{!isLoading && tasksList}</div>
       {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC
           defaultCurrent={1}
