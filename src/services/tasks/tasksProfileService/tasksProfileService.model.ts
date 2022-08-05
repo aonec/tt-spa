@@ -44,9 +44,11 @@ const $isLoading = searchTasksFx.pending;
 const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
-  const isSpectator = rolesKeys.includes(
-    ESecuredIdentityRoleName.ManagingFirmSpectator
-  );
+  const isSpectator =
+    rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
+    rolesKeys.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+    );
 
   return isSpectator;
 });
