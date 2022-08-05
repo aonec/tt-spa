@@ -67,8 +67,7 @@ const Internal = () => {
   const isSpectator = useStore(tasksProfileService.outputs.$isSpectator);
   const initialTasksPath = isSpectator
     ? '/tasks/list/Observing'
-    : '/tasks/list/Archived';
-  console.log(initialTasksPath);
+    : '/tasks/list/Executing';
 
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
@@ -113,6 +112,11 @@ const Internal = () => {
                 <Route
                   path="/tasks/list/:grouptype"
                   component={TasksProfileContainer}
+                  exact
+                />
+                <Redirect
+                  from="/tasks/list/Executing"
+                  to={initialTasksPath}
                   exact
                 />
               </Route>
