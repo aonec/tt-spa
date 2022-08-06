@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { IndividualDeviceMetersInputContainerProps } from './individualDeviceMetersInputService.types';
-import { IndividualDeviceMetersInput } from './view/IndividualDeviceMetersInput';
+import { IndividualDeviceMetersInputLine } from './view/IndividualDeviceMetersInputLine';
 
 export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInputContainerProps> = ({
   device,
 }) => {
-  return <IndividualDeviceMetersInput device={device} />;
+  return <IndividualDeviceMetersInputLine device={device} />;
 };

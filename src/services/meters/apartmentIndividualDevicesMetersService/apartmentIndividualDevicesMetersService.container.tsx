@@ -29,7 +29,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
 
   return (
     <>
-      <IndividualDevicesGate ApartmentId={Number(id)} />
+      {id && <IndividualDevicesGate ApartmentId={Number(id)} />}
       <ReadingsHistoryModal />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />

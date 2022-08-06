@@ -54,16 +54,14 @@ export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
 
   ${({ isDisabled }) => !isDisabled && 'cursor: pointer;'}
 
-  svg {
-    opacity: 0.7;
-    fill: ${({ isDisabled }) =>
-      isDisabled ? 'var(--main-32)' : 'var(--main-100)'};
+  svg path {
+    opacity: ${({ isDisabled }) => (isDisabled ? 0.4 : 1)};
+  }
 
-    &:hover {
-      opacity: ${({ isDisabled }) => (isDisabled ? 0.7 : 1)};
-
-      fill: ${({ isDisabled }) =>
-        isDisabled ? 'var(--main-32)' : 'var(--primary-100)'};
+  &:hover {
+    svg path {
+      transition: 0.2s;
+      ${({ isDisabled }) => (isDisabled ? '' : 'fill: #189EE9 !important;')}
     }
   }
 `;

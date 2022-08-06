@@ -1,5 +1,5 @@
 import { IndividualDeviceListItemResponse } from 'myApi';
 
-export type IndividualDeviceMetersInputProps = {
+export type IndividualDeviceMetersInputLineProps = {
   device: IndividualDeviceListItemResponse;
 };
