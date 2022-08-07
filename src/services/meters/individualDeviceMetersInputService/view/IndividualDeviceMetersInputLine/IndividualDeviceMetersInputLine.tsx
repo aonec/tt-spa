@@ -1,7 +1,7 @@
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { Tooltip } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import {
@@ -9,17 +9,36 @@ import {
   Wrapper,
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
+import { getPreparedReadingsDictionary } from './individualDeviceMetersInputLine.utils';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
+  sliderIndex,
 }) => {
+  const { previousReading, currentReading } = useMemo(() => {
+    const preparedReadingsData = getPreparedReadingsDictionary(
+      device.readings || []
+    );
+
+    const previousReading = preparedReadingsData[sliderIndex];
+    const currentReading = preparedReadingsData[-1];
+
+    return { previousReading, currentReading };
+  }, [device.readings, sliderIndex]);
+
   return (
     <Wrapper>
       <DeviceInfo device={device} />
-      <MetersInputsBlock rateType={device.rateType} />
       <MetersInputsBlock
+        reading={previousReading}
+        rateType={device.rateType}
+        sliderIndex={sliderIndex}
+      />
+      <MetersInputsBlock
+        reading={currentReading}
         rateType={device.rateType}
         resource={device.resource}
+        sliderIndex={sliderIndex}
       />
       <DeviceOptionsWrapper>
         <StarIcon style={{ cursor: 'pointer' }} className="device-option" />

@@ -63,7 +63,10 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
       {isLoading && <Skeleton active />}
       {!isLoading &&
         individualDevicesList.map((device) => (
-          <IndividualDeviceMetersInputContainer device={device} />
+          <IndividualDeviceMetersInputContainer
+            sliderIndex={sliderIndex}
+            device={device}
+          />
         ))}
     </div>
   );

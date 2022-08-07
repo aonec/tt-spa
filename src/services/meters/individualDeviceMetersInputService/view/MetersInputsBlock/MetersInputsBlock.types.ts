@@ -10,4 +10,5 @@ export type MetersInputsBlockProps = {
   status?: 'done' | 'error' | 'loading';
   rateType: EIndividualDeviceRateType;
   reading?: IndividualDeviceReadingsResponse;
+  sliderIndex?: number;
 };

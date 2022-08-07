@@ -4,6 +4,12 @@ import { IndividualDeviceMetersInputLine } from './view/IndividualDeviceMetersIn
 
 export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInputContainerProps> = ({
   device,
+  sliderIndex,
 }) => {
-  return <IndividualDeviceMetersInputLine device={device} />;
+  return (
+    <IndividualDeviceMetersInputLine
+      sliderIndex={sliderIndex}
+      device={device}
+    />
+  );
 };
