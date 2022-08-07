@@ -9,23 +9,14 @@ import {
   Wrapper,
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
-import { getPreparedReadingsDictionary } from './individualDeviceMetersInputLine.utils';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
   sliderIndex,
+  openReadingsHistoryModal,
+  previousReading,
+  currentReading,
 }) => {
-  const { previousReading, currentReading } = useMemo(() => {
-    const preparedReadingsData = getPreparedReadingsDictionary(
-      device.readings || []
-    );
-
-    const previousReading = preparedReadingsData[sliderIndex];
-    const currentReading = preparedReadingsData[-1];
-
-    return { previousReading, currentReading };
-  }, [device.readings, sliderIndex]);
-
   return (
     <Wrapper>
       <DeviceInfo device={device} />
@@ -43,7 +34,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       <DeviceOptionsWrapper>
         <StarIcon style={{ cursor: 'pointer' }} className="device-option" />
         <Tooltip title="История показаний" className="device-option">
-          <HistoryIcon style={{ cursor: 'pointer' }} />
+          <HistoryIcon onClick={openReadingsHistoryModal} style={{ cursor: 'pointer' }} />
         </Tooltip>
         <div className="device-option">
           <ContextMenuButton menuButtons={[]} size="small" />

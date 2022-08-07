@@ -1,3 +1,4 @@
+import { openReadingsHistoryModal } from './../../../01/features/readings/displayReadingHistory/models/index';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -88,6 +89,7 @@ export const apartmentIndividualDevicesMetersService = {
     setIsShowClosedDevices,
     upSliderIndex,
     downSliderIndex,
+    openReadingsHistoryModal,
   },
   outputs: {
     $individualDevicesList,

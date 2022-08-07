@@ -26,6 +26,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
   const setIsShowClosedDevices = useEvent(inputs.setIsShowClosedDevices);
   const upSliderIndex = useEvent(inputs.upSliderIndex);
   const downSliderIndex = useEvent(inputs.downSliderIndex);
+  const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
 
   return (
     <>
@@ -43,6 +44,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
         sliderIndex={sliderIndex}
         upSliderIndex={() => upSliderIndex()}
         downSliderIndex={() => downSliderIndex()}
+        openReadingsHistoryModal={openReadingsHistoryModal}
       />
     </>
   );

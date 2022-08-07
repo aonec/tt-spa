@@ -20,14 +20,16 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   sliderIndex,
   upSliderIndex,
   downSliderIndex,
+  openReadingsHistoryModal,
 }) => {
   const closedDevicesCountString = closedDevicesCount
     ? `(${closedDevicesCount})`
     : '';
 
-  const prevReadingMonth = useMemo(() => getReadingsMonthByShift(sliderIndex), [
-    sliderIndex,
-  ]);
+  const prevReadingMonth = useMemo(
+    (): string => getReadingsMonthByShift(sliderIndex),
+    [sliderIndex]
+  );
   const currentReadingMonth = useMemo(() => getReadingsMonthByShift(-1), []);
 
   const isCanUp = useMemo(() => sliderIndex < previousReadingIndexLimit, [
@@ -66,6 +68,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
           <IndividualDeviceMetersInputContainer
             sliderIndex={sliderIndex}
             device={device}
+            openReadingsHistoryModal={openReadingsHistoryModal}
           />
         ))}
     </div>

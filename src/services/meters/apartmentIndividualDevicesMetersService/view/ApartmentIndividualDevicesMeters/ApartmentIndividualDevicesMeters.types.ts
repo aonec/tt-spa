@@ -9,4 +9,5 @@ export type ApartmentIndividualDevicesMetersProps = {
   sliderIndex: number;
   upSliderIndex: () => void;
   downSliderIndex: () => void;
+  openReadingsHistoryModal: (deviceId: number) => void;
 };
