@@ -64,10 +64,11 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
       </Header>
       {isLoading && <Skeleton active />}
       {!isLoading &&
-        individualDevicesList.map((device) => (
+        individualDevicesList.map((device, index) => (
           <IndividualDeviceMetersInputContainer
             sliderIndex={sliderIndex}
             device={device}
+            deviceIndex={index}
             openReadingsHistoryModal={openReadingsHistoryModal}
           />
         ))}

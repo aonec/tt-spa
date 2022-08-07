@@ -4,4 +4,5 @@ export type IndividualDeviceMetersInputContainerProps = {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
   openReadingsHistoryModal: (deviceId: number) => void;
+  deviceIndex: number;
 };

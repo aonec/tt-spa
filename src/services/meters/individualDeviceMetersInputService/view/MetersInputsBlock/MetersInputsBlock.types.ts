@@ -6,9 +6,11 @@ import {
 
 export type MetersInputsBlockProps = {
   resource?: EResourceType;
-  disabled?: boolean;
   status?: 'done' | 'error' | 'loading';
   rateType: EIndividualDeviceRateType;
   reading?: IndividualDeviceReadingsResponse;
   sliderIndex?: number;
+  isPrevious?: boolean;
+  isDisabled?: boolean;
+  inputIndex: number;
 };

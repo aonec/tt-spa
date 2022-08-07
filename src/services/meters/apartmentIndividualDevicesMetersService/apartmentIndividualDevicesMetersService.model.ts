@@ -97,6 +97,7 @@ export const apartmentIndividualDevicesMetersService = {
     $isShowClosedIndividualDevices,
     $closedDevicesCount,
     $sliderIndex,
+    $individualDevicesPagedData,
   },
   gates: { IndividualDevicesGate },
 };

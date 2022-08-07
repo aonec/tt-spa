@@ -9,4 +9,5 @@ export type IndividualDeviceMetersInputLineProps = {
   openReadingsHistoryModal: () => void;
   currentReading: IndividualDeviceReadingsResponse | undefined;
   previousReading: IndividualDeviceReadingsResponse | undefined;
+  inputIndex: number;
 };
