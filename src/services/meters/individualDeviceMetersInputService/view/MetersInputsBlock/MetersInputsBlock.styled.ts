@@ -28,6 +28,8 @@ export const Wrapper = styled.div<{ resource?: EResourceType }>`
 `;
 
 export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
   border-bottom: 1px solid #00002222;
 
   &:last-child {
@@ -45,4 +47,9 @@ export const ReadingDate = styled.div`
   margin: 10px 0 5px;
   text-align: right;
   color: rgba(39, 47, 90, 0.5);
+`;
+
+export const SourceIconWrapper = styled.div`
+  cursor: pointer;
+  margin: 2px 10px 0 5px;
 `;

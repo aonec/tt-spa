@@ -1,5 +1,17 @@
+import {
+  getSourceIcon,
+  getSourceName,
+} from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-import React, { FC, useMemo } from 'react';
+import { Tooltip } from 'antd';
+import React, {
+  ChangeEvent,
+  FC,
+  FocusEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { useSwitchInputOnEnter } from './MetersInputBlock.hook';
@@ -7,10 +19,17 @@ import {
   Input,
   InputWrapper,
   ReadingDate,
+  SourceIconWrapper,
   Wrapper,
 } from './MetersInputsBlock.styled';
-import { MetersInputsBlockProps } from './MetersInputsBlock.types';
-import { getRateNum } from './MetersInputsBlock.utils';
+import {
+  BufferedReadingValues,
+  MetersInputsBlockProps,
+} from './MetersInputsBlock.types';
+import {
+  getBufferedValuesFromReading,
+  getRateNum,
+} from './MetersInputsBlock.utils';
 
 export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   resource,
@@ -21,11 +40,31 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   isDisabled,
   inputIndex,
 }) => {
+  const [
+    bufferedReadingValues,
+    setBufferedReadingValues,
+  ] = React.useState<BufferedReadingValues>(
+    getBufferedValuesFromReading(reading)
+  );
+
+  useEffect(() => {
+    setBufferedReadingValues(getBufferedValuesFromReading(reading));
+  }, [reading, sliderIndex]);
+
   const rateNum = useMemo(() => getRateNum(rateType), [rateType]);
 
-  const dataString = isPrevious ? 'previuos' : 'current';
+  const dataString = useMemo(() => (isPrevious ? 'previuos' : 'current'), [
+    isPrevious,
+  ]);
 
   const nextInput = useSwitchInputOnEnter(dataString, isPrevious);
+
+  const handleReadingInputFocus = useCallback(
+    (e?: FocusEvent<HTMLInputElement>) => {
+      e?.target?.select();
+    },
+    []
+  );
 
   const inputDataAttr = useMemo(() => {
     if (isDisabled) return {};
@@ -33,26 +72,58 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     return { 'data-reading-input': dataString };
   }, [isDisabled, isPrevious]);
 
+  const handleReadingInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setBufferedReadingValues((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [setBufferedReadingValues]
+  );
+
+  const { sourceIcon, sourceName } = useMemo(() => {
+    const source = reading?.source;
+    const username = reading?.user?.name;
+
+    if (!source) return {};
+
+    return {
+      sourceIcon: getSourceIcon(source),
+      sourceName: getSourceName(source, username),
+    };
+  }, [reading, sliderIndex]);
+
   const inputsArray = useMemo(
     () =>
       getFilledArray(rateNum, (index) => {
-        const valueKey = `value${index + 1}` as keyof typeof reading;
+        const valueKey = `value${
+          index + 1
+        }` as keyof typeof bufferedReadingValues;
 
-        const readingValue = reading?.[valueKey] || '';
+        const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
           <InputWrapper>
             <Input
               onKeyDown={fromEnter(() => nextInput(inputIndex + index))}
               value={readingValue}
+              name={`value${index + 1}`}
               placeholder={`T${index + 1}`}
               key={index}
+              onFocus={handleReadingInputFocus}
+              onChange={handleReadingInputChange}
               {...inputDataAttr}
             />
+            {sourceIcon && (
+              <Tooltip title={sourceName}>
+                <SourceIconWrapper>{sourceIcon}</SourceIconWrapper>
+              </Tooltip>
+            )}
           </InputWrapper>
         );
       }),
-    [reading, rateNum, sliderIndex]
+    [bufferedReadingValues, rateNum, sliderIndex]
   );
   const readingDate = useMemo(() => {
     const readingDate = reading?.uploadTime;

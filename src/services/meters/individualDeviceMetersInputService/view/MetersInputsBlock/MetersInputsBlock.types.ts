@@ -14,3 +14,9 @@ export type MetersInputsBlockProps = {
   isDisabled?: boolean;
   inputIndex: number;
 };
+
+export type BufferedReadingValues = {
+  value1: string;
+  value2: string;
+  value3: string;
+};
