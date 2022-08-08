@@ -12,6 +12,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useState,
 } from 'react';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
@@ -30,6 +31,7 @@ import {
 } from './MetersInputsBlock.styled';
 import {
   BufferedReadingValues,
+  MetersInputBlockStatus,
   MetersInputsBlockProps,
 } from './MetersInputsBlock.types';
 import {
@@ -48,12 +50,12 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   inputIndex,
   handleUploadReading,
 }) => {
+  const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
+
   const [
     bufferedReadingValues,
     setBufferedReadingValues,
-  ] = React.useState<BufferedReadingValues>(
-    getBufferedValuesFromReading(reading)
-  );
+  ] = useState<BufferedReadingValues>(getBufferedValuesFromReading(reading));
 
   useEffect(() => {
     setBufferedReadingValues(getBufferedValuesFromReading(reading));
@@ -122,7 +124,9 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         readingDate: moment().toISOString(true),
       };
 
-      handleUploadReading(readingPayload, isPrevious).then(next);
+      handleUploadReading(readingPayload, isPrevious)
+        .then(next)
+        .catch(() => setStatus(MetersInputBlockStatus.Failed));
     },
     [nextInput, handleUploadReading]
   );
@@ -137,6 +141,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         return (
           <InputWrapper>
             <Input
+              status={status}
               disabled={isDisabled}
               onKeyDown={fromEnter(() => handleEnterInput(index))}
               value={readingValue}
@@ -155,7 +160,15 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
           </InputWrapper>
         );
       }),
-    [bufferedReadingValues, rateNum, sliderIndex]
+    [
+      bufferedReadingValues,
+      rateNum,
+      sliderIndex,
+      isDisabled,
+      inputIndex,
+      inputDataAttr,
+      status,
+    ]
   );
   const readingDate = useMemo(() => {
     const readingDate = reading?.uploadTime;

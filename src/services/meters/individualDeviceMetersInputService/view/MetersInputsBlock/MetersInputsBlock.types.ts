@@ -22,3 +22,9 @@ export type BufferedReadingValues = {
   value2: string;
   value3: string;
 };
+
+export enum MetersInputBlockStatus {
+  Loading = 'Loading',
+  Done = 'Done',
+  Failed = 'Failed',
+}

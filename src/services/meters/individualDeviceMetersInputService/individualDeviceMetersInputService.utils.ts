@@ -208,3 +208,7 @@ export function getReadingLite(
 export function getReadingValueKey(index: number) {
   return `value${index + 1}` as keyof ReadingLite;
 }
+
+export function getMeasurementUnit(resource: any) {
+  return resource === 'Electricity' ? 'кВтч' : 'м³';
+}

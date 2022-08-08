@@ -1,4 +1,5 @@
-import { useStore } from 'effector-react';
+import { message } from 'antd';
+import { useEvent, useStore } from 'effector-react';
 import {
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsResponse,
@@ -6,19 +7,21 @@ import {
 import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
+  CompareReadingsStatus,
   IndividualDeviceMetersInputContainerProps,
   MeterInputUploadReadingPayload,
   UploadReading,
 } from './individualDeviceMetersInputService.types';
 import {
   getInputIndex,
+  getMeasurementUnit,
   getPreparedReadingsDictionary,
   validateReadings,
 } from './individualDeviceMetersInputService.utils';
 import { IndividualDeviceMetersInputLine } from './view/IndividualDeviceMetersInputLine';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 
-const { outputs } = individualDeviceMetersInputService;
+const { outputs, inputs } = individualDeviceMetersInputService;
 
 export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInputContainerProps> = ({
   deviceIndex,
@@ -28,6 +31,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   managementFirmConsumptionRates,
 }) => {
   const devices = useStore(outputs.$devices);
+
+  const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
 
   const {
     previousReading,
@@ -56,7 +61,11 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     devices,
   ]);
 
-  const deviceRateNum = getRateNum(device.rateType);
+  const deviceRateNum = useMemo(() => getRateNum(device.rateType), [
+    device.rateType,
+  ]);
+
+  const unit = getMeasurementUnit(device.resource);
 
   const consumptionRate = useMemo(() => {
     if (!managementFirmConsumptionRates) return null;
@@ -77,7 +86,49 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
         preparedReadingsData
       );
 
-      if (result) throw result;
+      if (!result) {
+        return;
+      }
+
+      if (result.compareStatus === CompareReadingsStatus.LeftGreater) {
+        openConfirmReadingModal({
+          title: (
+            <>
+              Введенное показание по прибору <b>{device.serialNumber}</b> (
+              {device.model}) меньше предыдущего на T{result.valueIndex + 1}:{' '}
+              <b>
+                {result.compareDiff} {unit}
+              </b>
+            </>
+          ),
+          onSubmit: () => void 0,
+        });
+      }
+
+      if (result.limitsConsumptionDiff) {
+        openConfirmReadingModal({
+          title: (
+            <>
+              Расход {result.limitsConsumptionDiff}
+              {unit} по T{result.valueIndex}, больше чем лимит {result.limit}
+              {unit}
+            </>
+          ),
+          onSubmit: () => void 0,
+        });
+      }
+
+      if (result.compareStatus === CompareReadingsStatus.RightLess) {
+        const text = `Введенное показание по прибору ${device.serialNumber} (${
+          device.model
+        }) больше следующего на T${result.valueIndex + 1}: ${
+          result.compareDiff
+        } ${unit}`;
+
+        message.error(text);
+      }
+
+      throw result;
     },
     [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
   );
