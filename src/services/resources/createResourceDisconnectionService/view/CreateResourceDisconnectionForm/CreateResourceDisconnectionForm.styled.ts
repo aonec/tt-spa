@@ -48,13 +48,6 @@ export const SelectSC = styled(Select)`
   }
 `;
 
-export const HeatingStationInputSC = styled(Select)`
-  .anticon-close-circle {
-    transform: translateY(-9px) translateX(-16px);
-    background-color: white;
-  }
-`;
-
 export const TreeSelectSC = styled(TreeSelect)`
   height: 48px;
 

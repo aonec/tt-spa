@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
@@ -26,8 +26,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   housingManagments,
   perpetrators,
   streets,
-  cities
-
+  cities,
+  isSpectator,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -55,8 +55,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           ],
         }}
       />
+
       <TabsSC activeKey={grouptype} onChange={history.push}>
-        <TabPane tab={executingTabText} key="Executing"></TabPane>
+        {!isSpectator && (
+          <TabPane tab={executingTabText} key="Executing"></TabPane>
+        )}
         <TabPane tab={observingTabText} key="Observing"></TabPane>
         <TabPane tab="Архив" key="Archived"></TabPane>
       </TabsSC>

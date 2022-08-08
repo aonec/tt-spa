@@ -17,7 +17,6 @@ import {
 } from './CreateResourceDisconnectionForm.constants';
 import {
   BaseInfoWrapper,
-  HeatingStationInputSC,
   ResourceOptionWrapper,
   TagPlaceholder,
   TimeWrapper,
@@ -152,8 +151,11 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   const heatingStationPlaceholderText = selectedCity
     ? 'Выберите ЦТП'
     : 'Выберите город';
-  const addressPlaceholderText = selectedCity
+  const addressPlaceholderTextWhenCHSSelected = values.heatingStationId
     ? 'Выберите адрес из списка'
+    : 'Выберите ЦТП';
+  const addressPlaceholderTextWhenCitySelected = selectedCity
+    ? addressPlaceholderTextWhenCHSSelected
     : 'Выберите город';
 
   useEffect(() => {
@@ -211,7 +213,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           </Select>
         </FormItem>
         <FormItem label="ЦТП">
-          <HeatingStationInputSC
+          <Select
             allowClear
             disabled={!selectedCity}
             placeholder={heatingStationPlaceholderText}
@@ -225,13 +227,13 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
                 {station.name}
               </Select.Option>
             )) || null}
-          </HeatingStationInputSC>
+          </Select>
         </FormItem>
         <FormItem label="Адрес">
           <TreeSelectSC
             showSearch
             showArrow
-            disabled={!selectedCity}
+            disabled={!selectedCity || !values.heatingStationId}
             value={values.housingStockIds}
             treeCheckable
             maxTagCount={0}
@@ -241,7 +243,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
             treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
             showCheckedStrategy="SHOW_CHILD"
             onChange={(values) => handleChangeHousingStocks(values)}
-            placeholder={addressPlaceholderText}
+            placeholder={addressPlaceholderTextWhenCitySelected}
           />
           <ErrorMessage>{errors.housingStockIds}</ErrorMessage>
         </FormItem>
