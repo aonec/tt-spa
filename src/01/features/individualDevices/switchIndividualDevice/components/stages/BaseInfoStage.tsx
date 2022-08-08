@@ -39,11 +39,14 @@ import {
   fetchIndividualDeviceFx,
 } from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
+import { useCustomSwitchOnInputs } from '01/hooks/useCustomInputOnEnterChange';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
+
+  const { onKeyDown } = useCustomSwitchOnInputs();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
   const modelNames = useStore($individualDevicesNames);
@@ -68,6 +71,7 @@ export const BaseInfoStage = () => {
   };
 
   const modelNameDebounced = fields.model.value;
+
 
   const bottomDateFields = (
     <FormWrap>
@@ -94,6 +98,14 @@ export const BaseInfoStage = () => {
             );
           }}
           value={fields.lastCheckingDate.value}
+          onKeyDown={
+            isSwitch
+              ? (e: any) => onKeyDown(e, 5)
+              : isCheck
+              ? (e: any) => onKeyDown(e, 0)
+              : null
+          }
+          {...(!isReopen && { 'data-reading-input': 'current' })}
         />
         <ErrorMessage>
           {fields.lastCheckingDate.errorText({
@@ -106,6 +118,14 @@ export const BaseInfoStage = () => {
           disabled={isReopen}
           onChange={fields.futureCheckingDate.onChange}
           value={fields.futureCheckingDate.value}
+          onKeyDown={
+            isSwitch
+              ? (e: any) => onKeyDown(e, 6)
+              : isCheck
+              ? (e: any) => onKeyDown(e, 1)
+              : null
+          }
+          {...(!isReopen && { 'data-reading-input': 'current' })}
         />
         <ErrorMessage>
           {fields.futureCheckingDate.errorText({
@@ -122,6 +142,8 @@ export const BaseInfoStage = () => {
         placeholder="Выберите тариф прибора"
         value={fields.rateType.value}
         onChange={(value) => value && fields.rateType.onChange(value as any)}
+        onKeyDown={(e: any) => onKeyDown(e, 3)}
+        {...{ 'data-reading-input': 'current' }}
       >
         <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
           Одна зона
@@ -142,6 +164,8 @@ export const BaseInfoStage = () => {
         placeholder="Выберите причину замены"
         value={fields.oldDeviceClosingReason.value || undefined}
         onChange={fields.oldDeviceClosingReason.onChange as any}
+        onKeyDown={(e: any) => onKeyDown(e, 4)}
+        {...{ 'data-reading-input': 'current' }}
       >
         {Object.entries(closingReasons).map(([key, elem]) => (
           <Select.Option value={key} key={key}>
@@ -208,6 +232,8 @@ export const BaseInfoStage = () => {
           onChange={onChange}
           name="serialNumber"
           value={fields.serialNumber.value}
+          onKeyDown={(e: any) => onKeyDown(e, 0)}
+          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
         />
         <ErrorMessage>
           {fields.serialNumber.errorText({
@@ -224,6 +250,8 @@ export const BaseInfoStage = () => {
           placeholder="Введите модель прибора"
           onChange={fields.model.onChange}
           options={modelNames?.map((elem) => ({ value: elem })) || []}
+          onKeyDown={(e: any) => onKeyDown(e, 1)}
+          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
         />
         <ErrorMessage>
           {fields.model.errorText({
@@ -272,6 +300,8 @@ export const BaseInfoStage = () => {
           value={fields.lastCommercialAccountingDate.value}
           onChange={fields.lastCommercialAccountingDate.onChange}
           placeholder="Введите дату"
+          onKeyDown={(e: any) => onKeyDown(e, 2)}
+          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
@@ -300,6 +330,10 @@ export const BaseInfoStage = () => {
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
               name="magneticSealTypeName"
+              onKeyDown={(e: any) => onKeyDown(e, 11)}
+              {...(!(isCheck || isReopen) && {
+                'data-reading-input': 'current',
+              })}
             />
           </Flex>
         </FormItem>
@@ -310,6 +344,8 @@ export const BaseInfoStage = () => {
             value={fields.magneticSealInstallationDate.value}
             onChange={fields.magneticSealInstallationDate.onChange}
             placeholder="Введите дату"
+            onKeyDown={(e: any) => onKeyDown(e, 12)}
+            {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
           />
         </FormItem>
       </FormWrap>
@@ -321,6 +357,8 @@ export const BaseInfoStage = () => {
           }
           value={fields.contractorId.value || void 0}
           placeholder="Выберите монтажную организацию"
+          onKeyDown={(e: any) => onKeyDown(e, 13)}
+          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
         >
           {contractors?.map((elem) => (
             <StyledSelect.Option value={elem.id} key={elem.id}>
@@ -347,6 +385,14 @@ export const BaseInfoStage = () => {
         readings={fields.oldDeviceReadings.value}
         onChange={fields.oldDeviceReadings.onChange}
         device={device}
+        onKeyDowns={
+          isSwitch
+            ? [(e: React.SyntheticEvent) => onKeyDown(e, 7), (e: React.SyntheticEvent) => onKeyDown(e, 8)]
+            : isCheck
+            ? [(e: React.SyntheticEvent) => onKeyDown(e, 2), (e: React.SyntheticEvent) => onKeyDown(e, 3)]
+            : [(e: React.SyntheticEvent) => onKeyDown(e, 0), (e: React.SyntheticEvent) => onKeyDown(e, 1)]
+        }
+        {...{ 'data-reading-input': 'current' }}
       />
       <Space />
       <ReadingsInput
@@ -368,6 +414,14 @@ export const BaseInfoStage = () => {
           measurableUnitString: device?.measurableUnitString,
           rateType: fields.rateType.value,
         }}
+        onKeyDowns={
+          isSwitch
+            ? [(e: React.SyntheticEvent) => onKeyDown(e, 9), (e: React.SyntheticEvent) => onKeyDown(e, 10)]
+            : isCheck
+            ? [(e: React.SyntheticEvent) => onKeyDown(e, 4), (e: React.SyntheticEvent) => onKeyDown(e, 5)]
+            : [(e: React.SyntheticEvent) => onKeyDown(e, 2), (e: React.SyntheticEvent) => onKeyDown(e, 3)]
+        }
+        {...{ 'data-reading-input': 'current' }}
       />
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({

@@ -2,7 +2,7 @@ import { RequestStatusShared } from '01/features/readings/displayReadingHistory/
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
-import React, { useRef } from 'react';
+import React, { SyntheticEvent, useRef } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   consumption?: boolean;
   style?: React.CSSProperties;
   clearValue?: boolean;
+  onKeyDowns?: (e: SyntheticEvent<Element, Event>) => void;
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
@@ -28,6 +29,8 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     consumption,
     style,
     clearValue,
+    onKeyDowns,
+    ...rest
   } = props;
 
   const wrapRef = useRef<any>();
@@ -50,7 +53,8 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   const renderField = (
     elem: string | null,
     index: number,
-    isOnlyOne?: boolean
+    isOnlyOne?: boolean,
+    onKeyDown?: (e: SyntheticEvent<Element, Event>) => void
   ) => {
     const value = (clearValue ? elem : Number(elem?.split(' ')[0])) || '';
     const suffix = globalSuffix || elem?.split(' ')[1];
@@ -79,6 +83,8 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
           suffix={suffix}
           prefix={<Prefix>{prefix}</Prefix>}
           onChange={(e) => onChangeHandeler(e, index + 1)}
+          onKeyDown={onKeyDown}
+          {...rest}
         />
       </EditableFieldWrap>
     );
@@ -104,7 +110,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
           <div>{renderField(values[2], 2, true)}</div>
         </>
       ) : (
-        values.map((elem, index) => renderField(elem, index, false))
+        values.map((elem, index) => renderField(elem, index, false, onKeyDowns))
       )}
     </FieldsWrap>
   );

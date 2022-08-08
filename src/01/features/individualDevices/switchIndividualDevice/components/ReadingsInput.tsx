@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import React from 'react';
 import styled from 'styled-components';
 import { DataStringDevice, DeviceDataString } from './DeviceDataString';
@@ -24,6 +24,7 @@ interface Props {
   ) => void;
   title: string;
   device: DataStringDevice;
+  onKeyDowns?: ((e: SyntheticEvent<Element, Event>) => void)[]
 }
 
 export const ReadingsInput: React.FC<Props> = ({
@@ -31,6 +32,8 @@ export const ReadingsInput: React.FC<Props> = ({
   device,
   readings,
   onChange,
+  onKeyDowns,
+  ...rest
 }) => {
   const { sliderIndex, up, down, canUp, canDown } = useSliderIndex();
 
@@ -120,6 +123,7 @@ export const ReadingsInput: React.FC<Props> = ({
           values={previousReading?.value || defaultValues}
           editable
           suffix={device.measurableUnitString}
+          onKeyDowns={onKeyDowns && onKeyDowns[0]}
           onChange={(value, index) => {
             onChangeHandler({
               value,
@@ -129,6 +133,7 @@ export const ReadingsInput: React.FC<Props> = ({
               isPrevious: true,
             });
           }}
+          {...rest}
         />
 
         <RenderReadingFields
@@ -137,6 +142,7 @@ export const ReadingsInput: React.FC<Props> = ({
           values={currentReading?.value || defaultValues}
           editable
           suffix={device.measurableUnitString}
+          onKeyDowns={onKeyDowns && onKeyDowns[1]}
           onChange={(value, index) => {
             onChangeHandler({
               value,
@@ -146,6 +152,7 @@ export const ReadingsInput: React.FC<Props> = ({
               isPrevious: false,
             });
           }}
+          {...rest}
         />
       </ReadingsWrap>
     </Wrap>

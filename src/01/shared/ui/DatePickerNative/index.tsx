@@ -10,6 +10,7 @@ interface Props {
   id?: string;
   searchStyle?: boolean;
   fullSize?: boolean;
+  onKeyDown?: any
 }
 
 export const DatePickerNative: React.FC<Props> = ({
@@ -20,6 +21,8 @@ export const DatePickerNative: React.FC<Props> = ({
   id,
   searchStyle,
   fullSize,
+  onKeyDown,
+  ...rest
 }) => {
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString(true);
@@ -44,7 +47,7 @@ export const DatePickerNative: React.FC<Props> = ({
       searchStyle={searchStyle}
       id={id}
       disabled={disabled}
-      onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
+      onKeyDown={onKeyDown || fromEnter((e) => isCurrentValueValid && e.target.blur())}
       onBlur={onChangeGlobal}
       value={innerValue}
       onChange={(e: { target: { value: string } }) => {
@@ -52,6 +55,7 @@ export const DatePickerNative: React.FC<Props> = ({
       }}
       placeholder={placeholder}
       type="date"
+      {...rest}
     />
   );
 };
