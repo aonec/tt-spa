@@ -8,6 +8,8 @@ import {
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
 import { previousReadingIndexLimit } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
+import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
+import { $apartment } from '01/features/apartments/displayApartment/models';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
 
@@ -90,6 +92,9 @@ export const apartmentIndividualDevicesMetersService = {
     upSliderIndex,
     downSliderIndex,
     openReadingsHistoryModal,
+    loadConsumptionRates:
+      managementFirmConsumptionRatesService.inputs
+        .loadManagemenFirmConsumptionRates,
   },
   outputs: {
     $individualDevicesList,
@@ -98,6 +103,9 @@ export const apartmentIndividualDevicesMetersService = {
     $closedDevicesCount,
     $sliderIndex,
     $individualDevicesPagedData,
+    $consumptionRates:
+      managementFirmConsumptionRatesService.outputs.$consumptionRates,
+    $apartment,
   },
   gates: { IndividualDevicesGate },
 };

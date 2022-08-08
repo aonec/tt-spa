@@ -5,6 +5,7 @@ import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/con
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 
@@ -22,11 +23,20 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
   const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
   const closedDevicesCount = useStore(outputs.$closedDevicesCount);
   const sliderIndex = useStore(outputs.$sliderIndex);
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const apartment = useStore(outputs.$apartment);
 
   const setIsShowClosedDevices = useEvent(inputs.setIsShowClosedDevices);
   const upSliderIndex = useEvent(inputs.upSliderIndex);
   const downSliderIndex = useEvent(inputs.downSliderIndex);
   const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
+  const loadConsumptionRates = useEvent(inputs.loadConsumptionRates);
+
+  useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    apartment?.housingStock?.managingFirmId
+  );
 
   return (
     <>

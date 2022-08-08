@@ -57,7 +57,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     isPrevious,
   ]);
 
-  const nextInput = useSwitchInputOnEnter(dataString, isPrevious);
+  const nextInput = useSwitchInputOnEnter(dataString, !isPrevious);
 
   const handleReadingInputFocus = useCallback(
     (e?: FocusEvent<HTMLInputElement>) => {
