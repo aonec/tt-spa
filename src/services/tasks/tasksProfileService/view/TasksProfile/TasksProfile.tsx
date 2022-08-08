@@ -27,7 +27,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   perpetrators,
   streets,
   cities,
-  isNotSpectator,
+  isSpectator,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -57,7 +57,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       />
 
       <TabsSC activeKey={grouptype} onChange={history.push}>
-        {isNotSpectator && (
+        {!isSpectator && (
           <TabPane tab={executingTabText} key="Executing"></TabPane>
         )}
         <TabPane tab={observingTabText} key="Observing"></TabPane>

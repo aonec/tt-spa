@@ -28,5 +28,5 @@ export type TasksProfileProps = {
   perpetrators: perpetratorItemsProps[] | null;
   streets: string[];
   cities: string[] | null;
-  isNotSpectator: boolean;
+  isSpectator: boolean;
 };
