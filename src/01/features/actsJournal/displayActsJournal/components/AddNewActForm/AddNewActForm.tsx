@@ -9,24 +9,52 @@ import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
+import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { ChangeEvent, useRef } from 'react';
+import { EActResourceType, EActType } from 'myApi';
+import React, { ChangeEvent, FC, useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   $actResources,
   ActResourcesGate,
-} from '../../displayActResources/models';
-import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
+} from '../../../displayActResources/models';
 import {
-  clearCreationActFormValues,
-  createActForm,
-  createApartmentActFx,
-} from '../models';
-import { gridTemp } from './TableHeader';
+  $actTypes,
+  ApartmentActTypesGate,
+} from '../../../displayActTypes/models';
+import { createApartmentActFx } from '../../models';
+import { gridTemp } from '../TableHeader';
+import { AddNewActFormProps, AddNewActFormT } from './AddNewActForm.types';
 
-export const AddNewActForm = () => {
-  const { fields, submit } = useForm(createActForm);
+export const AddNewActForm: FC<AddNewActFormProps> = ({
+  addNewAct,
+  selectAct,
+  selectResource,
+  selectedActType,
+  selectedResourceType,
+  clearForm,
+}) => {
+  const {
+    values,
+    submitForm,
+    setFieldValue,
+    resetForm,
+  } = useFormik<AddNewActFormT>({
+    initialValues: {
+      actJobDate: '',
+      registryNumber: '',
+    },
+    onSubmit: (formValues) => {
+      const actType = selectedActType;
+      const actResourceType = selectedResourceType;
+
+      if (actType && actResourceType) {
+        console.log('Success');
+        addNewAct({ ...formValues, actType, actResourceType });
+      }
+    },
+  });
 
   const {
     keyDownEnterGuardedHandler,
@@ -42,9 +70,10 @@ export const AddNewActForm = () => {
 
   useEffect(
     () =>
-      createApartmentActFx.done.watch(() =>
-        message.success('Акт успешно добавлен')
-      ).unsubscribe,
+      createApartmentActFx.done.watch(() => {
+        message.success('Акт успешно добавлен');
+        resetForm();
+      }).unsubscribe,
     []
   );
 
@@ -63,15 +92,17 @@ export const AddNewActForm = () => {
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
         <InputSC
-          value={fields.registryNumber.value || ''}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => fields.registryNumber.onChange(e.target.value)}
+          value={values.registryNumber || undefined}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setFieldValue('registryNumber', e.target.value)
+          }
           placeholder="Введите"
           ref={registryNumberRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
         />
         <SelectSC
-          value={fields.actType.value as any}
-          onChange={fields.actType.onChange as any}
+          value={selectedActType || undefined}
+          onChange={(actType) => selectAct(actType as EActType)}
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={keyDownEnterGuardedHandler(1)}
@@ -83,8 +114,10 @@ export const AddNewActForm = () => {
           ))}
         </SelectSC>
         <SelectSC
-          value={fields.actResourceType.value as any}
-          onChange={fields.actResourceType.onChange as any}
+          value={selectedResourceType || undefined}
+          onChange={(resourceType) =>
+            selectResource(resourceType as EActResourceType)
+          }
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
@@ -104,14 +137,21 @@ export const AddNewActForm = () => {
         <DatePickerNative
           fullSize
           searchStyle
-          value={fields.actJobDate.value as any}
-          onChange={fields.actJobDate.onChange as any}
+          value={values.actJobDate}
+          onChange={(date) => setFieldValue('actJobDate', date)}
           placeholder="Дата"
           id="act-journal-date-picker"
         />
       </Wrap>
       <ButtonWrap>
-        <ButtonTT color="white" small onClick={clearCreationActFormValues}>
+        <ButtonTT
+          color="white"
+          small
+          onClick={() => {
+            clearForm();
+            resetForm();
+          }}
+        >
           Сбросить
         </ButtonTT>
         <Space />
@@ -120,7 +160,7 @@ export const AddNewActForm = () => {
           disabled={pendingRequest}
           color="blue"
           small
-          onClick={submit}
+          onClick={submitForm}
         >
           {pendingRequest ? (
             <div style={{ transform: 'translate(-8px, 2px)' }}>

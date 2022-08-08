@@ -33,6 +33,13 @@ export const $actJournalPageNumber = createStore(1);
 
 export const setActJournalPageNumber = createEvent<number>();
 
+export type CreateApartmentActPayload = {
+  actType: EActType;
+  actResourceType: EActResourceType;
+  registryNumber: string;
+  actJobDate: string;
+};
+
 export interface ApartmentActPaginationParameters {
   City?: string | null;
   Street?: string | null;
@@ -80,20 +87,8 @@ export const searchForm = createForm({
   },
 });
 
-export const createActForm = createForm({
-  fields: {
-    actType: { init: ff<EActType>() },
-    actResourceType: { init: ff<EActResourceType>() },
-    actDateTime: { init: ff<string>() },
-    registryNumber: {
-      init: ff<string>(),
-    },
-    actJobDate: { init: ff<moment.Moment>() },
-  },
-});
 
-export const clearCreationActFormValues = createEvent();
-
+export const createApartmentAct = createEvent<CreateApartmentActPayload>();
 export const createApartmentActFx = createEffect<
   AddApartmentActRequest,
   void
@@ -102,6 +97,19 @@ export const createApartmentActFx = createEffect<
 export const refetchApartmentActs = createEvent();
 
 export const clearCreationActForms = createEvent();
+
+export const $selectedActType = createStore<EActType | null>(null);
+export const $selectedResourceType = createStore<EActResourceType | null>(null);
+
+export const selectActType = createEvent<EActType>();
+export const selectResourceType = createEvent<EActResourceType>();
+
+$selectedActType
+  .on(selectActType, (_, actType) => actType)
+  .reset(clearCreationActForms);
+$selectedResourceType
+  .on(selectResourceType, (_, resourceType) => resourceType)
+  .reset(clearCreationActForms);
 
 export const expandedFilterForm = createForm({
   fields: {
