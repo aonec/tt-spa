@@ -7,12 +7,11 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
-import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EActResourceType, EActType } from 'myApi';
-import React, { ChangeEvent, FC, useRef } from 'react';
+import React, { ChangeEvent, FC, useCallback, useMemo, useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import {
@@ -84,6 +83,23 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
     []
   );
 
+  const handleEnterOnRegistryNumberInput = useMemo(() => {
+    if (selectedResourceType && selectedActType) {
+      return keyDownEnterGuardedHandler(2);
+    }
+    if (selectedActType) {
+      return keyDownEnterGuardedHandler(1);
+    }
+    return keyDownEnterGuardedHandler(0);
+  }, [keyDownEnterGuardedHandler, selectedActType, selectedResourceType]);
+
+  const handleEnterOnActTypeSelect = useMemo(() => {
+    if (selectedResourceType) {
+      return keyDownEnterGuardedHandler(2);
+    }
+    return keyDownEnterGuardedHandler(1);
+  }, [keyDownEnterGuardedHandler, selectedResourceType]);
+
   return (
     <>
       <ApartmentActTypesGate />
@@ -97,14 +113,14 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           }
           placeholder="Введите"
           ref={registryNumberRef}
-          onKeyDown={keyDownEnterGuardedHandler(0)}
+          onKeyDown={handleEnterOnRegistryNumberInput}
         />
         <SelectSC
           value={selectedActType || undefined}
           onChange={(actType) => selectAct(actType as EActType)}
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
-          onKeyDown={keyDownEnterGuardedHandler(1)}
+          onKeyDown={handleEnterOnActTypeSelect}
         >
           {actTypes?.map((type) => (
             <SelectSC.Option key={type.key} value={type.key!}>
