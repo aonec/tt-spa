@@ -1,13 +1,16 @@
 import {
   IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsResponse,
 } from 'myApi';
+import { ConsumptionRatesDictionary } from '../managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export type IndividualDeviceMetersInputContainerProps = {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
   openReadingsHistoryModal: (deviceId: number) => void;
   deviceIndex: number;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
 };
 
 export type PreparedReadingsData = {
@@ -31,3 +34,13 @@ export enum CompareReadingsStatus {
   RightLess = 'RightLess',
   Ok = 'Ok',
 }
+
+export type MeterInputUploadReadingPayload = Omit<
+  IndividualDeviceReadingsCreateRequest,
+  'deviceId'
+>;
+
+export type UploadReading = (
+  readingPayload: MeterInputUploadReadingPayload,
+  isPrevious?: boolean
+) => Promise<void>;

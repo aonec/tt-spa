@@ -21,6 +21,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   upSliderIndex,
   downSliderIndex,
   openReadingsHistoryModal,
+  managementFirmConsumptionRates,
 }) => {
   const closedDevicesCountString = closedDevicesCount
     ? `(${closedDevicesCount})`
@@ -70,6 +71,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
             device={device}
             deviceIndex={index}
             openReadingsHistoryModal={openReadingsHistoryModal}
+            managementFirmConsumptionRates={managementFirmConsumptionRates}
           />
         ))}
     </div>

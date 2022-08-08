@@ -67,9 +67,10 @@ $individualDevicesPagedData.on(
   (_, data) => data
 );
 
-forward({
-  from: IndividualDevicesGate.state,
-  to: fetchIndividualDevicesFx,
+guard({
+  clock: IndividualDevicesGate.state,
+  filter: (params) => Boolean(params.ApartmentId),
+  target: fetchIndividualDevicesFx,
 });
 
 $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);

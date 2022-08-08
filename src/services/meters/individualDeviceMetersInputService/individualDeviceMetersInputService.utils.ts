@@ -3,6 +3,7 @@ import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsCreateRequest,
+  ConsumptionRateResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import {
@@ -10,11 +11,13 @@ import {
   CompareReadingsResult,
   PreparedReadingsData,
   ReadingLite,
+  MeterInputUploadReadingPayload,
 } from './individualDeviceMetersInputService.types';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
-import { MangingFirmsConsumptionRatesDictionary } from '../managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
+import { BufferedReadingValues } from './view/MetersInputsBlock/MetersInputsBlock.types';
+import { round } from 'lodash';
 
 export function getPreparedReadingsDictionary(
   readings: IndividualDeviceReadingsResponse[]
@@ -54,42 +57,52 @@ export const getInputIndex = (
 
 export function validateReadings(
   meterIndex: number,
-  createMeterPayload: IndividualDeviceReadingsCreateRequest,
+  createMeterPayload: MeterInputUploadReadingPayload,
   rateNum: number,
-  consumptionRates: MangingFirmsConsumptionRatesDictionary,
+  consumptionRate: ConsumptionRateResponse | null,
   readings: PreparedReadingsData
 ) {
-  const nextReading = getExistingReading(readings, meterIndex, 'next');
   const previousReading = getExistingReading(readings, meterIndex, 'prev');
-
-  if (!nextReading || !previousReading) return null;
+  const nextReading = getExistingReading(readings, meterIndex, 'next');
 
   const uploadingReadingLite = getReadingLite(createMeterPayload, rateNum);
-  const nextReadingLite = getReadingLite(previousReading, rateNum);
-  const previousReadingLite = getReadingLite(nextReading, rateNum);
 
-  const prevReadingCompareResult = compareReadings(
+  const previousReadingLite =
+    previousReading && getReadingLite(previousReading, rateNum);
+
+  const nextReadingLite = nextReading && getReadingLite(nextReading, rateNum);
+
+  const readingsCompareResult = compareReadings(
+    rateNum,
+    uploadingReadingLite,
     previousReadingLite,
-    uploadingReadingLite,
-    rateNum,
-    'prev'
+    nextReadingLite
   );
 
-  const nextReadingCompareResult = compareReadings(
+  if (readingsCompareResult) return readingsCompareResult;
+
+  const checkReadingLimitsResult = checkReadingLimits(
     uploadingReadingLite,
-    nextReadingLite,
-    rateNum,
-    'next'
+    consumptionRate
   );
 
-  return { prevReadingCompareResult, nextReadingCompareResult };
+  return null;
 }
+
+function checkReadingLimits(
+  reading: ReadingLite,
+  consumptionRate: ConsumptionRateResponse | null
+) {}
 
 function getExistingReading(
   readings: PreparedReadingsData,
   index: number,
   type: 'next' | 'prev'
 ) {
+  const nextIndex = () => (type === 'next' ? index-- : index++);
+
+  nextIndex();
+
   while (
     (type === 'next' && index >= nextReadingIndexLimit) ||
     (type === 'prev' && index <= previousReadingIndexLimit)
@@ -98,22 +111,23 @@ function getExistingReading(
 
     if (reading) return readings[index];
 
-    type === 'next' ? index-- : index++;
+    nextIndex();
   }
 }
 
 function compareReadings(
-  reading1: ReadingLite,
-  reading2: ReadingLite,
   rateNum: number,
-  type: 'next' | 'prev'
+  uploadingReading: ReadingLite,
+  prevReading?: ReadingLite,
+  nextReading?: ReadingLite
 ): CompareReadingsResult | undefined {
   const preparedReadingsCompareArray = getFilledArray(rateNum, (index) => {
     const valueKey = getReadingValueKey(index);
 
     return {
-      value1: reading1[valueKey],
-      value2: reading2[valueKey],
+      uploadingValue: uploadingReading[valueKey] || 0,
+      prevValue: prevReading?.[valueKey] || 0,
+      nextValue: nextReading?.[valueKey] || Infinity,
     };
   });
 
@@ -124,21 +138,19 @@ function compareReadings(
         result: CompareReadingsStatus.Ok,
       };
 
-      const isBothValueExist = checkIsBothValuesExist(elem);
-
-      if (!isBothValueExist) return acc;
-
-      if (type === 'next' && elem.value1! > elem.value2!) {
+      if (elem.prevValue > elem.uploadingValue) {
         result.result = CompareReadingsStatus.LeftGreater;
+        result.diff = elem.prevValue - elem.uploadingValue;
       }
 
-      if (type === 'prev' && elem.value1! < elem.value2!) {
+      if (elem.uploadingValue > elem.nextValue) {
         result.result = CompareReadingsStatus.RightLess;
+        result.diff = elem.uploadingValue - elem.nextValue;
       }
 
       if (result.result === CompareReadingsStatus.Ok) return acc;
 
-      return [...acc, { ...result, diff: elem.value2! - elem.value1! }];
+      return [...acc, { ...result, diff: round(result.diff || 0, 3) }];
     },
     [] as CompareReadingsResult[]
   );
@@ -146,17 +158,11 @@ function compareReadings(
   return compareResult[0];
 }
 
-function checkIsBothValuesExist(values: {
-  value1: number | null;
-  value2: number | null;
-}): values is { value1: number; value2: number } {
-  return Boolean(values.value1 && values.value2);
-}
-
-function getReadingLite(
+export function getReadingLite(
   reading:
     | IndividualDeviceReadingsResponse
-    | IndividualDeviceReadingsCreateRequest,
+    | MeterInputUploadReadingPayload
+    | BufferedReadingValues,
   rateNum: number
 ): ReadingLite {
   return getFilledArray(rateNum, (index) => {
@@ -171,6 +177,6 @@ function getReadingLite(
   );
 }
 
-function getReadingValueKey(index: number) {
+export function getReadingValueKey(index: number) {
   return `value${index + 1}` as keyof ReadingLite;
 }

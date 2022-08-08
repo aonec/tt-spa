@@ -4,6 +4,7 @@ import {
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { Tooltip } from 'antd';
+import moment from 'moment';
 import React, {
   ChangeEvent,
   FC,
@@ -14,6 +15,11 @@ import React, {
 } from 'react';
 import { getFilledArray } from 'utils/getFilledArray';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import { MeterInputUploadReadingPayload } from '../../individualDeviceMetersInputService.types';
+import {
+  getReadingLite,
+  getReadingValueKey,
+} from '../../individualDeviceMetersInputService.utils';
 import { useSwitchInputOnEnter } from './MetersInputBlock.hook';
 import {
   Input,
@@ -39,6 +45,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   isPrevious,
   isDisabled,
   inputIndex,
+  handleUploadReading,
 }) => {
   const [
     bufferedReadingValues,
@@ -94,21 +101,38 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     };
   }, [reading, sliderIndex]);
 
+  const handleEnterInput = useCallback(
+    (index: number) => {
+      const next = () => nextInput(inputIndex + index);
+
+      if (index + 1 < rateNum) return next();
+
+      const readingValues = getReadingLite(bufferedReadingValues, rateNum);
+
+      const readingPayload: MeterInputUploadReadingPayload = {
+        ...readingValues,
+        readingDate: moment().toISOString(true),
+      };
+
+      handleUploadReading(readingPayload, isPrevious).then(next);
+    },
+    [nextInput, handleUploadReading]
+  );
+
   const inputsArray = useMemo(
     () =>
       getFilledArray(rateNum, (index) => {
-        const valueKey = `value${
-          index + 1
-        }` as keyof typeof bufferedReadingValues;
+        const valueKey = getReadingValueKey(index);
 
         const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
           <InputWrapper>
             <Input
-              onKeyDown={fromEnter(() => nextInput(inputIndex + index))}
+              disabled={isDisabled}
+              onKeyDown={fromEnter(() => handleEnterInput(index))}
               value={readingValue}
-              name={`value${index + 1}`}
+              name={valueKey}
               placeholder={`T${index + 1}`}
               key={index}
               onFocus={handleReadingInputFocus}

@@ -23,7 +23,7 @@ export const Wrapper = styled.div<{ resource?: EResourceType }>`
   }
 
   &:focus-within {
-    box-shadow: 0 4px 8px rgba(0, 0, 25, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 25, 0.2);
   }
 `;
 

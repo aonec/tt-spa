@@ -5,7 +5,11 @@ import {
 } from 'myApi';
 import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
-import { IndividualDeviceMetersInputContainerProps } from './individualDeviceMetersInputService.types';
+import {
+  IndividualDeviceMetersInputContainerProps,
+  MeterInputUploadReadingPayload,
+  UploadReading,
+} from './individualDeviceMetersInputService.types';
 import {
   getInputIndex,
   getPreparedReadingsDictionary,
@@ -21,11 +25,15 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   device,
   sliderIndex,
   openReadingsHistoryModal: openReadingsHistoryModalById,
+  managementFirmConsumptionRates,
 }) => {
   const devices = useStore(outputs.$devices);
-  const consumptionRates = useStore(outputs.$consumptionRates);
 
-  const { previousReading, currentReading, preparedReadingsData } = useMemo(() => {
+  const {
+    previousReading,
+    currentReading,
+    preparedReadingsData,
+  } = useMemo(() => {
     const preparedReadingsData = getPreparedReadingsDictionary(
       device.readings || []
     );
@@ -50,20 +58,30 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
 
   const deviceRateNum = getRateNum(device.rateType);
 
-  const handleUploadReading = useCallback(
-    (
-      readingPayload: IndividualDeviceReadingsCreateRequest,
+  const consumptionRate = useMemo(() => {
+    if (!managementFirmConsumptionRates) return null;
+
+    return managementFirmConsumptionRates[device.resource];
+  }, [managementFirmConsumptionRates, device]);
+
+  const handleUploadReading: UploadReading = useCallback(
+    async (
+      readingPayload: MeterInputUploadReadingPayload,
       isPrevious?: boolean
     ) => {
       const result = validateReadings(
-        isPrevious ? -1 : sliderIndex,
+        isPrevious ? sliderIndex : -1,
         readingPayload,
         deviceRateNum,
-        consumptionRates,
-        preparedReadingsData,
+        consumptionRate,
+        preparedReadingsData
       );
+
+      console.log(result);
+
+      if (result) throw result;
     },
-    [consumptionRates]
+    [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
   );
 
   return (
@@ -74,6 +92,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       device={device}
       previousReading={previousReading}
       currentReading={currentReading}
+      handleUploadReading={handleUploadReading}
     />
   );
 };

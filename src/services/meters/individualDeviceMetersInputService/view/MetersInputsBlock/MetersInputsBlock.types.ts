@@ -3,6 +3,7 @@ import {
   EResourceType,
   IndividualDeviceReadingsResponse,
 } from 'myApi';
+import { UploadReading } from '../../individualDeviceMetersInputService.types';
 
 export type MetersInputsBlockProps = {
   resource?: EResourceType;
@@ -13,6 +14,7 @@ export type MetersInputsBlockProps = {
   isPrevious?: boolean;
   isDisabled?: boolean;
   inputIndex: number;
+  handleUploadReading: UploadReading;
 };
 
 export type BufferedReadingValues = {

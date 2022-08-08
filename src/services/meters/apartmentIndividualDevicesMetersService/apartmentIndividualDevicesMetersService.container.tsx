@@ -32,7 +32,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
   const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
   const loadConsumptionRates = useEvent(inputs.loadConsumptionRates);
 
-  useManagingFirmConsumptionRates(
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
     apartment?.housingStock?.managingFirmId
@@ -55,6 +55,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
         upSliderIndex={() => upSliderIndex()}
         downSliderIndex={() => downSliderIndex()}
         openReadingsHistoryModal={openReadingsHistoryModal}
+        managementFirmConsumptionRates={managementFirmConsumptionRates}
       />
     </>
   );
