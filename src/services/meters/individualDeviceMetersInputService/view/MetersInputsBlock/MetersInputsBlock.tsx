@@ -34,6 +34,7 @@ import {
 } from './MetersInputsBlock.types';
 import {
   getBufferedValuesFromReading,
+  getBufferedValuesValueKey,
   getRateNum,
 } from './MetersInputsBlock.utils';
 
@@ -105,7 +106,14 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     (index: number) => {
       const next = () => nextInput(inputIndex + index);
 
-      if (index + 1 < rateNum) return next();
+      const initialReadingValues = getBufferedValuesFromReading(reading);
+
+      const isValuesChanged = Object.values(bufferedReadingValues).some(
+        (value, index) =>
+          value !== initialReadingValues[getBufferedValuesValueKey(index)]
+      );
+
+      if (index + 1 < rateNum || !isValuesChanged) return next();
 
       const readingValues = getReadingLite(bufferedReadingValues, rateNum);
 

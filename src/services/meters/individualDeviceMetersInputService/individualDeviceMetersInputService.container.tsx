@@ -71,13 +71,11 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     ) => {
       const result = validateReadings(
         isPrevious ? sliderIndex : -1,
-        readingPayload,
         deviceRateNum,
+        readingPayload,
         consumptionRate,
         preparedReadingsData
       );
-
-      console.log(result);
 
       if (result) throw result;
     },

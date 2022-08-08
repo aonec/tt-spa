@@ -18,3 +18,7 @@ export function getBufferedValuesFromReading(
     value3: value3 || '',
   };
 }
+
+export function getBufferedValuesValueKey(index: number) {
+  return `value${index + 1}` as keyof BufferedReadingValues;
+}

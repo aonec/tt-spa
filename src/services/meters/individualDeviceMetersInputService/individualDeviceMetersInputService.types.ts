@@ -23,16 +23,17 @@ export type ReadingLite = {
   value3: number | null;
 };
 
-export type CompareReadingsResult = {
+export type ValidationReadingsResult = {
   valueIndex: number;
-  diff?: number;
-  result: CompareReadingsStatus;
+  compareDiff?: number;
+  compareStatus?: CompareReadingsStatus;
+  limitsConsumptionDiff?: number;
+  limit?: number;
 };
 
 export enum CompareReadingsStatus {
   LeftGreater = 'LeftGreater',
   RightLess = 'RightLess',
-  Ok = 'Ok',
 }
 
 export type MeterInputUploadReadingPayload = Omit<

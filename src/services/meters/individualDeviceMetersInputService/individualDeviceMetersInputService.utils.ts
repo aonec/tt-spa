@@ -2,13 +2,12 @@ import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceListItemResponse,
-  IndividualDeviceReadingsCreateRequest,
   ConsumptionRateResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import {
   CompareReadingsStatus,
-  CompareReadingsResult,
+  ValidationReadingsResult,
   PreparedReadingsData,
   ReadingLite,
   MeterInputUploadReadingPayload,
@@ -17,7 +16,7 @@ import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { BufferedReadingValues } from './view/MetersInputsBlock/MetersInputsBlock.types';
-import { round } from 'lodash';
+import { round } from 'utils/round';
 
 export function getPreparedReadingsDictionary(
   readings: IndividualDeviceReadingsResponse[]
@@ -57,8 +56,8 @@ export const getInputIndex = (
 
 export function validateReadings(
   meterIndex: number,
-  createMeterPayload: MeterInputUploadReadingPayload,
   rateNum: number,
+  createMeterPayload: MeterInputUploadReadingPayload,
   consumptionRate: ConsumptionRateResponse | null,
   readings: PreparedReadingsData
 ) {
@@ -81,18 +80,20 @@ export function validateReadings(
 
   if (readingsCompareResult) return readingsCompareResult;
 
-  const checkReadingLimitsResult = checkReadingLimits(
-    uploadingReadingLite,
-    consumptionRate
-  );
+  const checkReadingLimitsResult =
+    consumptionRate &&
+    previousReadingLite &&
+    checkReadingLimits(
+      previousReadingLite,
+      uploadingReadingLite,
+      consumptionRate,
+      rateNum
+    );
+
+  if (checkReadingLimitsResult) return checkReadingLimitsResult;
 
   return null;
 }
-
-function checkReadingLimits(
-  reading: ReadingLite,
-  consumptionRate: ConsumptionRateResponse | null
-) {}
 
 function getExistingReading(
   readings: PreparedReadingsData,
@@ -115,12 +116,40 @@ function getExistingReading(
   }
 }
 
+function checkReadingLimits(
+  prevReading: ReadingLite,
+  nextReading: ReadingLite,
+  consumptionRate: ConsumptionRateResponse,
+  rateNum: number
+): ValidationReadingsResult | undefined {
+  return getFilledArray(rateNum, (index) => ({
+    nextReading: nextReading[getReadingValueKey(index)] || 0,
+    prevReading: prevReading[getReadingValueKey(index)] || 0,
+  })).reduce((acc, { prevReading, nextReading }, index) => {
+    if (
+      nextReading - prevReading >
+      (consumptionRate.maximumConsumptionRate || 0)
+    ) {
+      return [
+        ...acc,
+        {
+          valueIndex: index,
+          limitsConsumptionDiff: nextReading - prevReading,
+          limit: consumptionRate.maximumConsumptionRate || 0,
+        },
+      ];
+    }
+
+    return acc;
+  }, [] as ValidationReadingsResult[])[0];
+}
+
 function compareReadings(
   rateNum: number,
   uploadingReading: ReadingLite,
   prevReading?: ReadingLite,
   nextReading?: ReadingLite
-): CompareReadingsResult | undefined {
+): ValidationReadingsResult | undefined {
   const preparedReadingsCompareArray = getFilledArray(rateNum, (index) => {
     const valueKey = getReadingValueKey(index);
 
@@ -133,26 +162,25 @@ function compareReadings(
 
   const compareResult = preparedReadingsCompareArray.reduce(
     (acc, elem, index) => {
-      const result: CompareReadingsResult = {
+      const result: ValidationReadingsResult = {
         valueIndex: index,
-        result: CompareReadingsStatus.Ok,
       };
 
       if (elem.prevValue > elem.uploadingValue) {
-        result.result = CompareReadingsStatus.LeftGreater;
-        result.diff = elem.prevValue - elem.uploadingValue;
+        result.compareStatus = CompareReadingsStatus.LeftGreater;
+        result.compareDiff = elem.prevValue - elem.uploadingValue;
       }
 
       if (elem.uploadingValue > elem.nextValue) {
-        result.result = CompareReadingsStatus.RightLess;
-        result.diff = elem.uploadingValue - elem.nextValue;
+        result.compareStatus = CompareReadingsStatus.RightLess;
+        result.compareDiff = elem.uploadingValue - elem.nextValue;
       }
 
-      if (result.result === CompareReadingsStatus.Ok) return acc;
+      if (!result.compareStatus) return acc;
 
-      return [...acc, { ...result, diff: round(result.diff || 0, 3) }];
+      return [...acc, { ...result, diff: round(result.compareDiff || 0, 3) }];
     },
-    [] as CompareReadingsResult[]
+    [] as ValidationReadingsResult[]
   );
 
   return compareResult[0];
