@@ -50,29 +50,29 @@ export function useAutocomplete(street, streets) {
         )
       : null;
 
-  const matchesArrayFilteredByWords =
-    matches?.ratings.filter((value) => {
-      const formatedSearchString = street.toUpperCase();
-      const formatedStreetString = value.target.toUpperCase();
+  const matchesRating = matches?.ratings || [];
 
-      const wordsInStreetName = formatedStreetString.split(' ');
+  const matchesArrayFilteredByWords = matchesRating.filter((value) => {
+    const formatedSearchString = street.toUpperCase();
+    const formatedStreetString = value.target.toUpperCase();
 
-      return wordsInStreetName.some((elem) =>
-        elem.startsWith(formatedSearchString)
-      );
-    }) || [];
+    const wordsInStreetName = formatedStreetString.split(' ');
 
-  const matchesArrayFilteredByFullString =
-    matches?.ratings.filter((value) => {
-      const formatedSearchString = street.toUpperCase();
-      const formatedStreetString = value.target.toUpperCase();
+    return wordsInStreetName.some((elem) =>
+      elem.startsWith(formatedSearchString)
+    );
+  });
 
-      const isRequestStringSimilarToStreet = formatedStreetString.includes(
-        formatedSearchString
-      );
+  const matchesArrayFilteredByFullString = matchesRating.filter((value) => {
+    const formatedSearchString = street.toUpperCase();
+    const formatedStreetString = value.target.toUpperCase();
 
-      return isRequestStringSimilarToStreet;
-    }) || [];
+    const isRequestStringSimilarToStreet = formatedStreetString.includes(
+      formatedSearchString
+    );
+
+    return isRequestStringSimilarToStreet;
+  });
   const matchesArray = matchesArrayFilteredByWords.length
     ? matchesArrayFilteredByWords
     : matchesArrayFilteredByFullString;
