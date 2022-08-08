@@ -19,6 +19,7 @@ import { objectProfileService } from './objectProfileService.model';
 import { useStore } from 'effector-react';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import moment from 'moment';
+import { EResourceDisconnectingType } from 'myApi';
 
 export const ObjectContext = React.createContext();
 
@@ -56,12 +57,19 @@ export const ObjectProfile = () => {
         const resourceName = actResourceNamesLookup[disconnection.resource];
         const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
 
+        const disconnectionType = disconnection.disconnectingType.description;
+        const disconnectionTypeText =
+          disconnection.disconnectingType.value ===
+          EResourceDisconnectingType.Repair
+            ? disconnectionType
+            : `${disconnectionType} отключение`.toLowerCase();
+
         return (
           <AlertWrapper>
             <Alert type="blueStop">
               <AlertContent>
                 <div>
-                  На объекте плановое отключение {resourceName} до {entDate}
+                  На объекте {disconnectionTypeText} {resourceName} до {entDate}
                 </div>
                 <Link
                 // to={`disconnectionsList/${disconnection.id}`}
