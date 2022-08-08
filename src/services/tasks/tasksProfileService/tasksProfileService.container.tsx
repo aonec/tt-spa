@@ -2,20 +2,20 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { TaskGroupingFilter } from 'myApi';
-import {
-  exportTasksListService,
-} from '../exportTasksListService';
+import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
 import { prepareData } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-import { $existingCities, ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+import {
+  $existingCities,
+  ExistingCitiesGate,
+} from '01/features/housingStocks/displayHousingStockCities/models';
 
 const { inputs, outputs } = tasksProfileService;
 const { outputs: adresses } = addressSearchService;
-
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -27,7 +27,8 @@ export const TasksProfileContainer = () => {
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
-  const streets = useStore(adresses.streets)
+  const isSpectator = useStore(outputs.$isSpectator);
+  const streets = useStore(adresses.streets);
   const cities = useStore($existingCities);
 
   const handleExportTasksList = useEvent(
@@ -87,6 +88,7 @@ export const TasksProfileContainer = () => {
         perpetrators={perpetrators}
         streets={streets}
         cities={cities}
+        isSpectator={isSpectator}
       />
     </>
   );
