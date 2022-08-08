@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'reshadow/macro';
 import { Route, useParams, useHistory, Link } from 'react-router-dom';
 import { grid } from '01/r_comp';
@@ -14,9 +14,16 @@ import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
 import { Alert } from '01/shared/ui/Alert/Alert';
-import { AlertContent, AlertWrapper } from './ObjectProfile.styled';
+import { AlertContent, AlertWrapper } from './objectProfileService.styled';
+import { objectProfileService } from './objectProfileService.model';
+import { useStore } from 'effector-react';
+import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
+import moment from 'moment';
 
 export const ObjectContext = React.createContext();
+
+const { gates, outputs } = objectProfileService;
+const { ObjectProfileIdGate } = gates;
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -40,6 +47,34 @@ export const ObjectProfile = () => {
   const [nodes, setNodes] = useState();
   const [object, setObject] = useState();
   const [loading, setLoading] = useState(false);
+
+  const disconnections = useStore(outputs.$resourceDisconnections);
+
+  const disconnectionsAlert = useMemo(
+    () =>
+      disconnections.map((disconnection) => {
+        const resourceName = actResourceNamesLookup[disconnection.resource];
+        const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
+
+        return (
+          <AlertWrapper>
+            <Alert type="blueStop">
+              <AlertContent>
+                <div>
+                  На объекте плановое отключение {resourceName} до {entDate}
+                </div>
+                <Link
+                // to={`disconnectionsList/${disconnection.id}`}
+                >
+                  Подробнее
+                </Link>
+              </AlertContent>
+            </Alert>
+          </AlertWrapper>
+        );
+      }),
+    [disconnections]
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -102,6 +137,7 @@ export const ObjectProfile = () => {
 
   return styled(grid)(
     <>
+      <ObjectProfileIdGate objectId={Number(housingStockId)} />
       <ObjectContext.Provider value={context}>
         <GoBack />
         <Header
@@ -114,16 +150,8 @@ export const ObjectProfile = () => {
 
         <grid>
           <div>
-            <AlertWrapper>
-              <Alert type="blueStop">
-                <AlertContent>
-                  <div>На объекте плановое отключение</div>
-                  <Link>Подробнее</Link>
-                </AlertContent>
-              </Alert>
-            </AlertWrapper>
-
             <Route path="/objects/(\\d+)" exact>
+              {disconnectionsAlert}
               <div>
                 <Information {...info} />
                 <MapObject object={object} />
