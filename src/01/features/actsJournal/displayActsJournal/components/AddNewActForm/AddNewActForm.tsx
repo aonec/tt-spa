@@ -50,7 +50,6 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       const actResourceType = selectedResourceType;
 
       if (actType && actResourceType) {
-        console.log('Success');
         addNewAct({ ...formValues, actType, actResourceType });
       }
     },
