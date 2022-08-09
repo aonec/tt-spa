@@ -103,6 +103,7 @@ export function useOnEnterSwitch(amount: number, difference?: number) {
     0,
     (amount -= difference !== undefined ? difference : 0)
   );
+
   
   function onEnterHandler(index: number) {
     try {
