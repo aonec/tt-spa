@@ -95,17 +95,23 @@ export const AccountingNodesFilter = () => {
   );
 };
 
-export function useOnEnterSwitch(amount: number) {
+export function useOnEnterSwitch(amount: number, difference?: number) {
   const refs = getArrayByCountRange(amount, useRef) as any[];
 
   const lastRef = refs[refs.length - 1];
-
+  const refWithoutDisabled = refs.slice(
+    0,
+    (amount -= difference !== undefined ? difference : 0)
+  );
+  
   function onEnterHandler(index: number) {
     try {
       if (refs[index]?.current) refs[index]?.current?.blur();
     } catch (error) {}
 
-    if (index === amount - 1) lastRef?.current?.blur();
+    if (index === amount - 1) {
+      if (lastRef?.current?.blur) lastRef?.current?.blur();
+    }
 
     if (refs[index + 1]?.current?.focus) {
       refs[index + 1]?.current?.focus();
@@ -115,5 +121,10 @@ export function useOnEnterSwitch(amount: number) {
   const keyDownEnterGuardedHandler = (index: number) =>
     fromEnter(() => onEnterHandler(index));
 
-  return { keyDownEnterGuardedHandler, refs };
+  return {
+    keyDownEnterGuardedHandler,
+    refs,
+    onEnterHandler,
+    refWithoutDisabled,
+  };
 }
