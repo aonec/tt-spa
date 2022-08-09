@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { combine, createDomain, forward } from 'effector';
 import _ from 'lodash/fp';
 import {
@@ -7,6 +8,7 @@ import {
   StreetWithHousingStockNumbersResponsePagedList,
   StreetWithHousingStockNumbersResponse,
 } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
   fetchCreateResourceDisconnection,
@@ -64,7 +66,8 @@ const getExistingHosuingStocksFx = domain.createEffect<
 const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingCreateRequest,
-  void
+  void,
+  EffectFailDataAxiosError
 >(fetchCreateResourceDisconnection);
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
@@ -105,6 +108,10 @@ forward({
   from: closeModal,
   to: clearStore,
 });
+
+createResourceDisconnectionFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
 
 export const createResourceDisconnectionService = {
   inputs: {

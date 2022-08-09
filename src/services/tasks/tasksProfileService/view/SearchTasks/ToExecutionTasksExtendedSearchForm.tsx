@@ -21,9 +21,9 @@ import {
   EStageTimeStatus,
 } from 'myApi';
 import {
-  getEngineeringElement,
-  getResource,
-  getTimeStatuses,
+  EngineeringElementLookUp,
+  ResourceLookUp,
+  TimeStatusesLookUp,
 } from '../../tasksProfileService.types';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
@@ -72,34 +72,36 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
   };
 
+  const TaskCategory =
+    taskCategories[
+      (values?.EngineeringElement as keyof taskCategotiesProps) || 'All'
+    ];
+
   useEffect(() => {
+    setFieldValue('ApartmentNumber', null);
     if (!values?.TaskType) return;
-    if (
-      !taskCategories[
-        (values?.EngineeringElement as keyof taskCategotiesProps) || 'All'
-      ].includes(values?.TaskType)
-    ) {
+    if (!TaskCategory.includes(values?.TaskType)) {
       setFieldValue('TaskType', null);
-      setFieldValue('ApartmentNumber', null);
     }
   }, [values.EngineeringElement]);
-  const iSValueExists = values?.EngineeringElement
+
+  const isValueExists = values?.EngineeringElement
+
     ? Object.values(
         taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
       )
     : [];
 
   const FilteredTaskTypes = useMemo(() => {
-    return taskTypes?.filter(
+    if (!taskTypes) return [];
+    if (isValueExists.length === 0) return taskTypes;
+    return taskTypes.filter(
       (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
-        if (!el.key) return el;
-        if (iSValueExists.length) {
-          return iSValueExists.includes(el?.key);
-        }
-        return taskCategories.All.includes(el?.key);
+        if (!el.key) return true;
+        return isValueExists.includes(el.key);
       }
     );
-  }, [values?.EngineeringElement]);
+  }, [values?.EngineeringElement, taskTypes]);
 
   return (
     <StyledForm id="searchForm">
@@ -202,7 +204,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             {Object.keys(ETaskEngineeringElement).map((el) => {
               return (
                 <Option value={el}>
-                  {getEngineeringElement(el as ETaskEngineeringElement)}
+                  {EngineeringElementLookUp[el as ETaskEngineeringElement]}
                 </Option>
               );
             })}
@@ -226,7 +228,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             <Option value={''}>Все</Option>
             {Object.keys(EResourceType).map((el) => {
               return (
-                <Option value={el}>{getResource(el as EResourceType)}</Option>
+                <Option value={el}>
+                  {ResourceLookUp[el as EResourceType]}
+                </Option>
               );
             })}
           </SelectSC>
@@ -278,7 +282,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             {Object.keys(EStageTimeStatus).map((el) => {
               return (
                 <Option value={el}>
-                  {getTimeStatuses(el as EStageTimeStatus)}
+                  {TimeStatusesLookUp[el as EStageTimeStatus]}
                 </Option>
               );
             })}
