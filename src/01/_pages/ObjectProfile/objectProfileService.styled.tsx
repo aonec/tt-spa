@@ -1,3 +1,4 @@
+import { MenuButtonTT } from '01/tt-components';
 import styled from 'styled-components';
 
 export const AlertWrapper = styled.div`
@@ -10,3 +11,4 @@ export const AlertContent = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
+

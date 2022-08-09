@@ -20,6 +20,7 @@ import { useStore } from 'effector-react';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import moment from 'moment';
 import { EResourceDisconnectingType } from 'myApi';
+import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
 
 export const ObjectContext = React.createContext();
 
@@ -71,11 +72,7 @@ export const ObjectProfile = () => {
                 <div>
                   На объекте {disconnectionTypeText} {resourceName} до {entDate}
                 </div>
-                <Link
-                // to={`disconnectionsList/${disconnection.id}`}
-                >
-                  Подробнее
-                </Link>
+                <InvisibleContextMenuButton />
               </AlertContent>
             </Alert>
           </AlertWrapper>
