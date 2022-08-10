@@ -59,18 +59,14 @@ export const ObjectProfile = () => {
         const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
 
         const disconnectionType = disconnection.disconnectingType.description;
-        const disconnectionTypeText =
-          disconnection.disconnectingType.value ===
-          EResourceDisconnectingType.Repair
-            ? disconnectionType
-            : `${disconnectionType} отключение`.toLowerCase();
 
         return (
           <AlertWrapper>
             <Alert type="blueStop">
               <AlertContent>
                 <div>
-                  На объекте {disconnectionTypeText} {resourceName} до {entDate}
+                  На объекте отключение ресурса {resourceName}, тип: {disconnectionType},
+                  до {entDate}
                 </div>
                 <InvisibleContextMenuButton />
               </AlertContent>
