@@ -4,7 +4,7 @@ import {
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsResponse,
 } from 'myApi';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -31,8 +31,18 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   managementFirmConsumptionRates,
 }) => {
   const devices = useStore(outputs.$devices);
+  const uploadingMetersDevicesStatuses = useStore(
+    outputs.$uploadingMetersStatuses
+  );
+
+  const uploadingMetersStatuses = useMemo(
+    () => uploadingMetersDevicesStatuses[device.id] || {},
+    [device.id, uploadingMetersDevicesStatuses]
+  );
 
   const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
+
+  const uploadMeter = useEvent(inputs.uploadMeter);
 
   const {
     previousReading,
@@ -76,6 +86,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const handleUploadReading: UploadReading = useCallback(
     async (
       readingPayload: MeterInputUploadReadingPayload,
+      next: () => void,
       isPrevious?: boolean
     ) => {
       const result = validateReadings(
@@ -86,8 +97,15 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
         preparedReadingsData
       );
 
+      const sendMeter = () =>
+        uploadMeter({
+          meter: { ...readingPayload, deviceId: device.id },
+          sliderIndex: readingPayload.sliderIndex,
+          meterId: readingPayload.meterId,
+        });
+
       if (!result) {
-        return;
+        return void sendMeter();
       }
 
       if (result.compareStatus === CompareReadingsStatus.LeftGreater) {
@@ -101,7 +119,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
               </b>
             </>
           ),
-          onSubmit: () => void 0,
+          onSubmit: sendMeter,
         });
       }
 
@@ -114,7 +132,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
               {unit}
             </>
           ),
-          onSubmit: () => void 0,
+          onSubmit: sendMeter,
         });
       }
 
@@ -142,6 +160,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       previousReading={previousReading}
       currentReading={currentReading}
       handleUploadReading={handleUploadReading}
+      uploadingMetersStatuses={uploadingMetersStatuses}
     />
   );
 };

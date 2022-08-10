@@ -18,6 +18,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   currentReading,
   inputIndex,
   handleUploadReading,
+  uploadingMetersStatuses,
 }) => {
   const isDeviceClosed = useMemo(() => {
     return Boolean(device.closingDate);
@@ -34,6 +35,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         isPrevious
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
+        status={uploadingMetersStatuses[sliderIndex]}
       />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
@@ -43,6 +45,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         sliderIndex={-1}
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
+        status={uploadingMetersStatuses[-1]}
       />
       <DeviceOptionsWrapper>
         <StarIcon style={{ cursor: 'pointer' }} className="device-option" />

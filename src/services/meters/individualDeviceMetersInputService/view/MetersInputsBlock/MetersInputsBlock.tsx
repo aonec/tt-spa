@@ -37,6 +37,7 @@ import {
 import {
   getBufferedValuesFromReading,
   getBufferedValuesValueKey,
+  getDateByReadingMonthSlider,
   getRateNum,
 } from './MetersInputsBlock.utils';
 
@@ -48,9 +49,14 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   isPrevious,
   isDisabled,
   inputIndex,
+  status: uploadingStatus,
   handleUploadReading,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
+
+  useEffect(() => uploadingStatus && setStatus(uploadingStatus), [
+    uploadingStatus,
+  ]);
 
   const [
     bufferedReadingValues,
@@ -121,10 +127,12 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       const readingPayload: MeterInputUploadReadingPayload = {
         ...readingValues,
-        readingDate: moment().toISOString(true),
+        readingDate: getDateByReadingMonthSlider(sliderIndex),
+        sliderIndex,
+        meterId: reading?.id,
       };
 
-      handleUploadReading(readingPayload, isPrevious)
+      handleUploadReading(readingPayload, next, isPrevious)
         .then(next)
         .catch(() => setStatus(MetersInputBlockStatus.Failed));
     },

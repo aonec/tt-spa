@@ -4,6 +4,7 @@ import {
   IndividualDeviceReadingsResponse,
 } from 'myApi';
 import { ConsumptionRatesDictionary } from '../managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
+import { MetersInputBlockStatus } from './view/MetersInputsBlock/MetersInputsBlock.types';
 
 export type IndividualDeviceMetersInputContainerProps = {
   device: IndividualDeviceListItemResponse;
@@ -39,9 +40,16 @@ export enum CompareReadingsStatus {
 export type MeterInputUploadReadingPayload = Omit<
   IndividualDeviceReadingsCreateRequest,
   'deviceId'
->;
+> & { sliderIndex: number; meterId?: number };
 
 export type UploadReading = (
   readingPayload: MeterInputUploadReadingPayload,
+  next: () => void,
   isPrevious?: boolean
 ) => Promise<void>;
+
+export type UploadMeterPayload = {
+  meter: IndividualDeviceReadingsCreateRequest;
+  sliderIndex: number;
+  meterId?: number;
+};
