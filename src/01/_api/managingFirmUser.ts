@@ -6,4 +6,4 @@ export const getManagingFirmUser = (
 ): Promise<ManagingFirmUserResponse> => axios.get(`ManagingFirmUsers/${id}`);
 
 export const getCurrentManagingFirmUser = (): Promise<ManagingFirmUserResponse> =>
-  axios.get('ManagingFirmUsers/current');
+  axios.get('OrganizationUsers/current');
