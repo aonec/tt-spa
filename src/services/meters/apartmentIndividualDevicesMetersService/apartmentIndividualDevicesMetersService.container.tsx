@@ -1,10 +1,10 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useEvent, useStore } from 'effector-react';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
-import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
