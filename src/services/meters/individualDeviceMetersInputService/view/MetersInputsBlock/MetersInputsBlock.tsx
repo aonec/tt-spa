@@ -82,6 +82,8 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     []
   );
 
+  const setFailed = useCallback(() => setStatus(MetersInputBlockStatus.Failed), [])
+
   const inputDataAttr = useMemo(() => {
     if (isDisabled) return {};
 
@@ -132,7 +134,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         meterId: reading?.id,
       };
 
-      handleUploadReading(readingPayload, next, isPrevious)
+      handleUploadReading(readingPayload, isPrevious, setFailed)
         .then(next)
         .catch(() => setStatus(MetersInputBlockStatus.Failed));
     },

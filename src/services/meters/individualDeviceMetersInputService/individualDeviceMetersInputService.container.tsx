@@ -86,8 +86,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const handleUploadReading: UploadReading = useCallback(
     async (
       readingPayload: MeterInputUploadReadingPayload,
-      next: () => void,
-      isPrevious?: boolean
+      isPrevious?: boolean,
+      setFailed?: () => void
     ) => {
       const result = validateReadings(
         isPrevious ? sliderIndex : -1,
@@ -109,7 +109,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       }
 
       if (result.compareStatus === CompareReadingsStatus.LeftGreater) {
-        openConfirmReadingModal({
+        return void openConfirmReadingModal({
           title: (
             <>
               Введенное показание по прибору <b>{device.serialNumber}</b> (
@@ -120,11 +120,12 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
             </>
           ),
           onSubmit: sendMeter,
+          onCancel: setFailed,
         });
       }
 
       if (result.limitsConsumptionDiff) {
-        openConfirmReadingModal({
+        return void openConfirmReadingModal({
           title: (
             <>
               Расход {result.limitsConsumptionDiff}
@@ -133,6 +134,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
             </>
           ),
           onSubmit: sendMeter,
+          onCancel: setFailed,
         });
       }
 
