@@ -15,6 +15,7 @@ export type MetersInputsBlockProps = {
   isDisabled?: boolean;
   inputIndex: number;
   handleUploadReading: UploadReading;
+  tooltip?: string;
 };
 
 export type BufferedReadingValues = {

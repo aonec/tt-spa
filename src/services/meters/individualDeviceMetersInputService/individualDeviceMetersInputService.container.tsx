@@ -1,11 +1,8 @@
 import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
-import {
-  IndividualDeviceReadingsCreateRequest,
-  IndividualDeviceReadingsResponse,
-} from 'myApi';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import { IndividualDeviceReadingsResponse } from 'myApi';
+import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -15,6 +12,7 @@ import {
   ValidationReadingsResultType,
 } from './individualDeviceMetersInputService.types';
 import {
+  getExistingReading,
   getInputIndex,
   getMeasurementUnit,
   getPreparedReadingsDictionary,
@@ -47,6 +45,14 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const uploadMeter = useEvent(inputs.uploadMeter);
 
   const deleteMeter = useEvent(inputs.deleteMeter);
+
+  const previousReadingByCurrentSliderIndex = useMemo(
+    () =>
+      device.readings &&
+      getExistingReading(device.readings, sliderIndex, 'prev'),
+    [device.readings, sliderIndex]
+  );
+
 
   const {
     previousReading,
@@ -203,6 +209,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       currentReading={currentReading}
       handleUploadReading={handleUploadReading}
       uploadingMetersStatuses={uploadingMetersStatuses}
+      previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
     />
   );
 };

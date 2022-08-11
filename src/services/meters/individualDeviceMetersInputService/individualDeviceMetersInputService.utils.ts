@@ -108,7 +108,7 @@ function checkIsAllValuesEmpty(reading: ReadingLite, rateNum: number) {
   ).every((value) => value === null);
 }
 
-function getExistingReading(
+export function getExistingReading(
   readings: PreparedReadingsData,
   index: number,
   type: 'next' | 'prev'

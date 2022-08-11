@@ -3,12 +3,15 @@ import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/
 import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
+import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
+import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
 import {
   DeviceOptionsWrapper,
   Wrapper,
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
+import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
@@ -19,10 +22,22 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   inputIndex,
   handleUploadReading,
   uploadingMetersStatuses,
+  previousReadingByCurrentSliderIndex,
 }) => {
   const isDeviceClosed = useMemo(() => {
     return Boolean(device.closingDate);
   }, [device]);
+
+  const previousReadingTooltipTitle = useMemo(
+    () =>
+      previousReadingByCurrentSliderIndex &&
+      getPreviousMeterTooltipTitle(
+        previousReadingByCurrentSliderIndex,
+        getRateNum(device.rateType),
+        getMeasurementUnit(device.resource)
+      ),
+    [previousReadingByCurrentSliderIndex, device]
+  );
 
   return (
     <Wrapper>
@@ -36,6 +51,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
         status={uploadingMetersStatuses[sliderIndex]}
+        tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
       />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
@@ -46,6 +62,12 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
         status={uploadingMetersStatuses[-1]}
+        tooltip={
+          (!previousReading &&
+            !currentReading &&
+            previousReadingTooltipTitle) ||
+          ''
+        }
       />
       <DeviceOptionsWrapper>
         <StarIcon style={{ cursor: 'pointer' }} className="device-option" />

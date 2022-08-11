@@ -16,4 +16,8 @@ export type IndividualDeviceMetersInputLineProps = {
   uploadingMetersStatuses: {
     [sliderIndex: number]: MetersInputBlockStatus;
   };
+  previousReadingByCurrentSliderIndex:
+    | IndividualDeviceReadingsResponse
+    | null
+    | undefined;
 };

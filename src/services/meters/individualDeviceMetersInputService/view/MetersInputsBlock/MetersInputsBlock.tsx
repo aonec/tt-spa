@@ -4,7 +4,6 @@ import {
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { Tooltip } from 'antd';
-import moment from 'moment';
 import React, {
   ChangeEvent,
   FC,
@@ -51,6 +50,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   inputIndex,
   status: uploadingStatus,
   handleUploadReading,
+  tooltip,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
 
@@ -82,7 +82,10 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     []
   );
 
-  const setFailed = useCallback(() => setStatus(MetersInputBlockStatus.Failed), [])
+  const setFailed = useCallback(
+    () => setStatus(MetersInputBlockStatus.Failed),
+    []
+  );
 
   const inputDataAttr = useMemo(() => {
     if (isDisabled) return {};
@@ -190,11 +193,13 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   }, [reading, sliderIndex]);
 
   return (
-    <div>
-      <Wrapper className="meters-wrapper" resource={resource}>
-        {inputsArray}
-      </Wrapper>
-      <ReadingDate>{readingDate || 'Нет показаний'}</ReadingDate>
-    </div>
+    <Tooltip title={tooltip}>
+      <div>
+        <Wrapper className="meters-wrapper" resource={resource}>
+          {inputsArray}
+        </Wrapper>
+        <ReadingDate>{readingDate || 'Нет показаний'}</ReadingDate>
+      </div>
+    </Tooltip>
   );
 };
