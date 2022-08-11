@@ -6,7 +6,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select } from 'antd';
+import { AutoComplete, Form, message, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -53,6 +53,11 @@ export const BaseInfoStage = () => {
   const type = useStore(
     SwitchIndividualDeviceGate.state.map(({ type }) => type)
   );
+
+  const error = (error: string) => {
+    message.error(`${error} не может быть раньше текущей`);
+  };
+
   const isCheck = type === 'check';
   const isReopen = type === 'reopen';
   const isSwitch = type === 'switch';
@@ -92,6 +97,9 @@ export const BaseInfoStage = () => {
             fields.futureCheckingDate.onChange(
               nextCheckingDate.toISOString(true)
             );
+            moment(moment.utc(incomingValue).format()).isAfter(
+              moment.utc(moment.utc()).format()
+            ) && error('Дата последней поверки прибора');
           }}
           value={fields.lastCheckingDate.value}
         />
@@ -270,7 +278,12 @@ export const BaseInfoStage = () => {
         <DatePickerNative
           disabled={isCheck || isReopen}
           value={fields.lastCommercialAccountingDate.value}
-          onChange={fields.lastCommercialAccountingDate.onChange}
+          onChange={(value) => {
+            fields.lastCommercialAccountingDate.onChange(value);
+            moment(moment.utc(value).format()).isAfter(
+              moment.utc(moment.utc()).format()
+            ) && error('Дата ввода в эксплуатацию');
+          }}
           placeholder="Введите дату"
         />
         <ErrorMessage>
@@ -308,7 +321,12 @@ export const BaseInfoStage = () => {
           <DatePickerNative
             disabled={isCheck || isReopen}
             value={fields.magneticSealInstallationDate.value}
-            onChange={fields.magneticSealInstallationDate.onChange}
+            onChange={(value) => {
+              fields.magneticSealInstallationDate.onChange(value)
+              moment(moment.utc(value).format()).isAfter(
+                moment.utc(moment.utc()).format()
+              ) && error('Дата установки пломбы');
+            }}
             placeholder="Введите дату"
           />
         </FormItem>
