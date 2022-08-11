@@ -43,13 +43,8 @@ export function getPreparedReadingsDictionary(
 export const getInputIndex = (
   deviceIndex: number,
   devices: IndividualDeviceListItemResponse[],
-  filterClosed?: boolean
 ) => {
-  const devicesList = filterClosed
-    ? devices
-    : devices.filter((device) => device.closingDate === null);
-
-  return devicesList
+  return devices
     .slice(0, deviceIndex)
     .filter((elem) => elem.closingDate === null)
     .reduce((acc, elem) => acc + getRateNum(elem.rateType), 0);
