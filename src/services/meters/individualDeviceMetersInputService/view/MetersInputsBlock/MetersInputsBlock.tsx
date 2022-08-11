@@ -54,9 +54,9 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
 
-  useEffect(() => uploadingStatus && setStatus(uploadingStatus), [
-    uploadingStatus,
-  ]);
+  useEffect(() => {
+    setStatus(uploadingStatus || null);
+  }, [uploadingStatus, sliderIndex]);
 
   const [
     bufferedReadingValues,
