@@ -25,12 +25,20 @@ export type ReadingLite = {
 };
 
 export type ValidationReadingsResult = {
-  valueIndex: number;
+  type: ValidationReadingsResultType;
+  valueIndex?: number;
   compareDiff?: number;
   compareStatus?: CompareReadingsStatus;
   limitsConsumptionDiff?: number;
   limit?: number;
 };
+
+export enum ValidationReadingsResultType {
+  CompareProblem = 'CompareProblem',
+  LimitsExcess = 'LimitsExcess',
+  EmptyValues = 'EmptyValues',
+  Success = 'Success',
+}
 
 export enum CompareReadingsStatus {
   LeftGreater = 'LeftGreater',
@@ -45,11 +53,17 @@ export type MeterInputUploadReadingPayload = Omit<
 export type UploadReading = (
   readingPayload: MeterInputUploadReadingPayload,
   isPrevious?: boolean,
-  setFailed?: () => void,
+  setFailed?: () => void
 ) => Promise<void>;
 
 export type UploadMeterPayload = {
   meter: IndividualDeviceReadingsCreateRequest;
   sliderIndex: number;
   meterId?: number;
+};
+
+export type DeleteMeterPayload = {
+  deviceId: number;
+  meterId: number;
+  readingDate: string;
 };

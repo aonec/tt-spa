@@ -11,6 +11,7 @@ import {
   PreparedReadingsData,
   ReadingLite,
   MeterInputUploadReadingPayload,
+  ValidationReadingsResultType,
 } from './individualDeviceMetersInputService.types';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
@@ -60,11 +61,16 @@ export function validateReadings(
   createMeterPayload: MeterInputUploadReadingPayload,
   consumptionRate: ConsumptionRateResponse | null,
   readings: PreparedReadingsData
-) {
+): ValidationReadingsResult {
   const previousReading = getExistingReading(readings, meterIndex, 'prev');
   const nextReading = getExistingReading(readings, meterIndex, 'next');
 
   const uploadingReadingLite = getReadingLite(createMeterPayload, rateNum);
+
+  const isAllValuesEmpty = checkIsAllValuesEmpty(uploadingReadingLite, rateNum);
+
+  if (isAllValuesEmpty)
+    return { type: ValidationReadingsResultType.EmptyValues };
 
   const previousReadingLite =
     previousReading && getReadingLite(previousReading, rateNum);
@@ -92,7 +98,14 @@ export function validateReadings(
 
   if (checkReadingLimitsResult) return checkReadingLimitsResult;
 
-  return null;
+  return { type: ValidationReadingsResultType.Success };
+}
+
+function checkIsAllValuesEmpty(reading: ReadingLite, rateNum: number) {
+  return getFilledArray(
+    rateNum,
+    (index) => reading[getReadingValueKey(index)]
+  ).every((value) => value === null);
 }
 
 function getExistingReading(
@@ -134,8 +147,9 @@ function checkReadingLimits(
         ...acc,
         {
           valueIndex: index,
-          limitsConsumptionDiff: nextReading - prevReading,
+          limitsConsumptionDiff: round(nextReading - prevReading, 3),
           limit: consumptionRate.maximumConsumptionRate || 0,
+          type: ValidationReadingsResultType.LimitsExcess,
         },
       ];
     }
@@ -164,6 +178,7 @@ function compareReadings(
     (acc, elem, index) => {
       const result: ValidationReadingsResult = {
         valueIndex: index,
+        type: ValidationReadingsResultType.CompareProblem,
       };
 
       if (elem.prevValue > elem.uploadingValue) {
@@ -198,7 +213,7 @@ export function getReadingLite(
 
     const value = reading[valueKey];
 
-    return value ? Number(value) : null;
+    return value || value === 0 ? Number(value) : null;
   }).reduce(
     (acc, elem, index) => ({ ...acc, [getReadingValueKey(index)]: elem }),
     {} as ReadingLite
