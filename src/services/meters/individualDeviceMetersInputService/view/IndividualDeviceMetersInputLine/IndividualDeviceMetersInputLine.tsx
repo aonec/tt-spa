@@ -23,6 +23,7 @@ import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersIn
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
 import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
 import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
@@ -60,49 +61,59 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
     [managementFirmUser]
   );
 
-  const menuButtonArr: ContextMenuElement[] = [
-    {
-      title: 'Редактировать',
-      onClick: () => history.push(`/individualDevices/${device.id}/edit`),
-    },
-    {
-      title: 'Замена или поверка прибора',
-      onClick: () => setIsModalOpen(true),
-    },
-    {
-      title: 'Открыть прибор',
-      hidden: !isDeviceClosed,
-      onClick: () =>
-        confirm({
-          title: `Вы действительно хотите открыть прибор ${device.model} (${device.serialNumber})?`,
-          onOk: async () => {
-            try {
-              await reopenIndividualDevice(device.id);
+  const menuButtonArr: ContextMenuElement[] = useMemo(
+    () => [
+      {
+        title: 'Редактировать',
+        onClick: () => history.push(`/individualDevices/${device.id}/edit`),
+      },
+      {
+        title: 'Замена или поверка прибора',
+        onClick: () => setIsModalOpen(true),
+      },
+      {
+        title: 'Открыть прибор',
+        hidden: !isDeviceClosed,
+        onClick: () =>
+          confirm({
+            title: `Вы действительно хотите открыть прибор ${device.model} (${device.serialNumber})?`,
+            onOk: async () => {
+              try {
+                await reopenIndividualDevice(device.id);
 
-              message.success('Прибор успешно переоткрыт');
+                message.success('Прибор успешно переоткрыт');
 
-              refetchIndividualDevices();
-            } catch (error) {
-              message.error('Не удалось открыть прибор');
-            }
-          },
-          okText: 'Да',
-          cancelText: 'Отмена',
-        }),
-    },
-    {
-      title: 'Закрытие прибора',
-      hidden: isDeviceClosed,
-      color: Color.red,
-      onClick: () => closingIndividualDeviceButtonClicked(device),
-    },
-    {
-      title: 'Удалить прибор',
-      hidden: !isSeniorOperator,
-      color: Color.red,
-      onClick: () => onDeleteIndividualDevice(device),
-    },
-  ];
+                apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices();
+              } catch (error) {
+                message.error('Не удалось открыть прибор');
+              }
+            },
+            okText: 'Да',
+            cancelText: 'Отмена',
+          }),
+      },
+      {
+        title: 'Закрытие прибора',
+        hidden: isDeviceClosed,
+        color: Color.red,
+        onClick: () => closingIndividualDeviceButtonClicked(device),
+      },
+      {
+        title: 'Удалить прибор',
+        hidden: !isSeniorOperator,
+        color: Color.red,
+        onClick: () => onDeleteIndividualDevice(device),
+      },
+    ],
+    [
+      device,
+      isSeniorOperator,
+      history,
+      onDeleteIndividualDevice,
+      isDeviceClosed,
+      managementFirmUser,
+    ]
+  );
 
   const previousReadingTooltipTitle = useMemo(
     () =>
