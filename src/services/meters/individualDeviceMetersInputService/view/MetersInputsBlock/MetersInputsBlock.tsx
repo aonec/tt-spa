@@ -149,6 +149,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         return (
           <InputWrapper>
             <Input
+              type="number"
               status={status}
               disabled={isDisabled}
               onKeyDown={fromEnter(() => handleEnterInput(index))}
