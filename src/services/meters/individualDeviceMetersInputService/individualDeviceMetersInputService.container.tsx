@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceReadingsResponse } from 'myApi';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -49,10 +49,9 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const previousReadingByCurrentSliderIndex = useMemo(
     () =>
       device.readings &&
-      getExistingReading(device.readings, sliderIndex, 'prev'),
+      getExistingReading(device.readings, sliderIndex - 1, 'prev'),
     [device.readings, sliderIndex]
   );
-
 
   const {
     previousReading,
