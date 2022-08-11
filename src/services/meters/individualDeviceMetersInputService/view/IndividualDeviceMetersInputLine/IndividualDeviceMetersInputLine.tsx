@@ -1,10 +1,7 @@
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import {
-  $currentManagingFirmUser,
-  $userRoleTypes,
-} from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
@@ -12,7 +9,7 @@ import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
 import { useEvent, useStore } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
@@ -25,6 +22,7 @@ import {
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
 import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
+import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
@@ -39,6 +37,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 }) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDeleteIndividualDevice = useEvent(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
@@ -68,7 +67,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
     },
     {
       title: 'Замена или поверка прибора',
-      onClick: () => {},
+      onClick: () => setIsModalOpen(true),
     },
     {
       title: 'Открыть прибор',
@@ -118,6 +117,11 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   return (
     <Wrapper>
+      <SelectSwitchDeviceTypeModal
+        show={isModalOpen}
+        close={() => setIsModalOpen(false)}
+        deviceId={device.id}
+      />
       <DeviceInfo device={device} />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
