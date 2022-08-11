@@ -4,6 +4,8 @@ import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
 import axios from '../axios';
+import { message, Tooltip } from 'antd';
+import styled from 'styled-components';
 
 import ReadingsBlock, {
   getMeasurementUnit,
@@ -23,18 +25,18 @@ import {
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
-import styled from 'styled-components';
-import { message, Tooltip } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean
+  closed?: boolean,
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -67,10 +69,15 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
-        const dateFormat = "YYYY-MM"
+        const dateFormat = 'YYYY-MM';
 
-        const currentMonthDate = moment(moment().format(dateFormat), dateFormat)
-        const readingMonthDate = moment(moment(elem.readingDateTime).format(dateFormat))
+        const currentMonthDate = moment(
+          moment().format(dateFormat),
+          dateFormat
+        );
+        const readingMonthDate = moment(
+          moment(elem.readingDateTime).format(dateFormat)
+        );
 
         if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
 
@@ -162,7 +169,7 @@ export const useReadings = (
       title: `Вы точно хотите удалить показание за ${readingDate.toLowerCase()} на приборе ${
         device.model
       } (${device.serialNumber})?`,
-      callback: () => void request(),
+      onSubmit: () => void request(),
     });
   }
 
@@ -189,13 +196,6 @@ export const useReadings = (
   };
 
   const sendPreviousReading = async (requestPayload: any) => {
-    const values = getReadingValuesArray(
-      requestPayload,
-      getIndividualDeviceRateNumByName(device.rateType)
-    );
-
-    // if (!values.every(Boolean)) return;
-
     setReadingsState((prev: any) => ({
       ...prev,
       previousReadings: {
@@ -291,7 +291,8 @@ export const useReadings = (
       readingsState?.previousReadings[sliderIndex]?.values || [],
       getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
         ?.values || [],
-      index
+      index,
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -331,7 +332,7 @@ export const useReadings = (
               </b>
             </>
           ),
-          callback: () => void sendPreviousReading(requestPayload),
+          onSubmit: () => void sendPreviousReading(requestPayload),
         });
         return;
       }
@@ -345,7 +346,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        callback: () => void sendPreviousReading(requestPayload),
+        onSubmit: () => void sendPreviousReading(requestPayload),
       });
     }
 
@@ -419,7 +420,8 @@ export const useReadings = (
       readingsState.currentReadingsArray,
       getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
         ?.values || [],
-      index
+      index,
+      managementFirmConsumptionRates
     );
 
     if (validated) {
@@ -446,7 +448,7 @@ export const useReadings = (
               </b>
             </>
           ),
-          callback: () => void sendCurrentReadings(),
+          onSubmit: () => void sendCurrentReadings(),
         });
         return;
       }
@@ -460,7 +462,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        callback: () => void sendCurrentReadings(),
+        onSubmit: () => void sendCurrentReadings(),
       });
     }
 
@@ -838,16 +840,6 @@ const getPreviousReadingTooltipString = (
   return `Последнее показание: ${valuesString} (${month})`;
 };
 
-const limits = {
-  [EResourceType.ColdWaterSupply]: 25,
-  [EResourceType.HotWaterSupply]: 15,
-  [EResourceType.Electricity]: 1000,
-};
-
-export const getResourceUpLimit = (resource: EResourceType) => {
-  return (limits as any)[resource] || Infinity;
-};
-
 export interface CorrectReadingValuesValidationResult {
   validated: boolean;
   valuesValidationResults?: {
@@ -866,12 +858,14 @@ const isCorrectReadingValues = (
   rateType: EIndividualDeviceRateType,
   nextReadings: number[],
   previousReadings: number[],
-  currentIndex: number
+  currentIndex: number,
+  limits: ConsumptionRatesDictionary | null
 ): CorrectReadingValuesValidationResult => {
   if (!previousReadings.length) return { validated: true };
 
   const rateNum = getIndividualDeviceRateNumByName(rateType);
-  const limit = getResourceUpLimit(resource);
+  const limit =
+    (limits && limits[resource]?.maximumConsumptionRate) || Infinity;
 
   const res = nextReadings.reduce(
     (acc, elem, index) => {

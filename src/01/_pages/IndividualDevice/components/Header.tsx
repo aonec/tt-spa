@@ -8,6 +8,7 @@ import MenuButtonTT from '../../../tt-components/MenuButtonTT';
 import { Loader } from '01/_components/Loader';
 import { Title, Subtitle } from '01/_components/Headers';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -63,7 +64,7 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <GoBack path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
+      <GoBack />
       <HeaderWrap>
         <div>
           <Title>
@@ -75,9 +76,9 @@ export const Header = ({ device }: HeaderInterface) => {
             {`${model} (${serialNumber})`}
           </Title>
           <div style={{ display: 'flex' }}>
-            <Subtitle
-              to={`/objects/${id}/apartments/${apartmentId}`}
-            >{`${city}, ${street}, д. ${housingStockNumber}, кв. ${apartmentNumber}`}</Subtitle>
+            <Subtitle to={`/objects/${id}/apartments/${apartmentId}`}>
+              {getApartmentFromFullAddress(address, true)}
+            </Subtitle>
             <IsActive closingDate={closingDate} />
           </div>
         </div>

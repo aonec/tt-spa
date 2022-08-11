@@ -31,7 +31,7 @@ export async function getTask(id) {
         ...currentStage,
         actions: createPanel(currentStage),
         userOperatingStatus,
-        perpName: currentStage?.perpetrator.name,
+        perpName: currentStage?.perpetrator?.name,
       },
       stages: {
         items: stages.map((...rest) =>

@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import moment from 'moment';
+import moment, { Moment, unitOfTime } from 'moment';
 import { reportsInputs } from '../models';
-import { getReportTypeTitleName, ReportType } from './types';
+import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
 
 const createReportDomain = createDomain('CreateReport');
@@ -24,27 +24,27 @@ export const form = createForm({
         },
       ],
     },
-    monthPeriod: {
+    period: {
       init: null as moment.Moment | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
+    },
+    rangePeriod: {
+      init: [null, null] as RangePeriod,
     },
   },
 });
 
-const createOperatorsReportFx = createReportDomain.createEffect<
+const createReportFx = createReportDomain.createEffect<
   {
-    From?: string | null;
-    To?: string | null;
+    type: ReportType;
+    date: {
+      From?: string | null;
+      To?: string | null;
+    };
   },
   void
->(async (params) => {
-  const res: any = await axios.get('Reports/OperatorsWorkingReport', {
-    params,
+>(async ({ date, type }) => {
+  const res: any = await axios.get(`Reports/${type}`, {
+    params: date,
     responseType: 'blob',
   });
 
@@ -53,12 +53,12 @@ const createOperatorsReportFx = createReportDomain.createEffect<
   downloadURI(
     url,
     `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
-      params.To
+      date.To
     ).format('MMMM_YYYY')}`
   );
 });
 
-$isModalOpen.reset(createOperatorsReportFx.doneData);
+$isModalOpen.reset(createReportFx.doneData);
 
 const createReport = createReportDomain.createEvent();
 
@@ -66,24 +66,29 @@ forward({
   from: form.formValidated,
   to: createReport,
 });
-
+const workingReports = [
+  ReportType.HouseManagementsReport,
+  ReportType.OperatorsWorkingReport,
+  ReportType.InspectorsWorkingReport,
+];
 sample({
+  source: form.$values,
   clock: createReport,
-  fn: () => {
-    const type = form.fields.type.$value.getState();
-    const monthPeriod = form.fields.monthPeriod.$value.getState();
-
-    switch (type) {
-      case ReportType.OperatorsWorkingReport:
-        const startOfMonth = moment(monthPeriod).startOf('month').toISOString();
-        const endOfMonth = moment(monthPeriod).endOf('month').toISOString();
-
-        return { From: startOfMonth, To: endOfMonth };
-      default:
-        return { From: null, To: null };
+  fn: ({ type, period, rangePeriod }) => {
+    if (workingReports.includes(type!)) {
+      const startOfPeriod = moment(period).startOf('month').toISOString();
+      const endOfPeriod = moment(period).endOf('month').toISOString();
+      return { type: type!, date: { From: startOfPeriod, To: endOfPeriod } };
     }
+    return {
+      type: type!,
+      date: {
+        From: rangePeriod![0]?.startOf('day')?.toISOString(),
+        To: rangePeriod![1]?.endOf('day')?.toISOString(),
+      },
+    };
   },
-  target: createOperatorsReportFx,
+  target: createReportFx,
 });
 
 createReport.watch(() => {});
@@ -97,7 +102,7 @@ forward({
   to: openModalButtonClicked,
 });
 
-const $loading = combine(createOperatorsReportFx.pending, (...pendings) =>
+const $loading = combine(createReportFx.pending, (...pendings) =>
   pendings.some(Boolean)
 );
 

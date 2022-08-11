@@ -1,9 +1,9 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { TasksList } from '01/_pages/Tasks/components/TasksList';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Skeleton } from 'antd';
-import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { SearchTasks } from '../SearchTasks';
+import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 const { TabPane } = TabsSC;
@@ -18,6 +18,16 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   changePageNumber,
   pagedTasks,
   isLoading,
+  isExtendedSearchOpen,
+  closeExtendedSearch,
+  openExtendedSearch,
+  clearFilters,
+  changeFiltersByGroupType,
+  housingManagments,
+  perpetrators,
+  streets,
+  cities,
+  isSpectator,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -30,7 +40,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     ? `Наблюдаемые (${observingTasksCount})`
     : 'Наблюдаемые';
 
-  const tasksList = useMemo(() => <TasksList items={tasks} />, [tasks]);
+  const tasksList = useMemo(() => <TasksList tasks={tasks} />, [tasks]);
 
   return (
     <Wrapper>
@@ -45,8 +55,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           ],
         }}
       />
+
       <TabsSC activeKey={grouptype} onChange={history.push}>
-        <TabPane tab={executingTabText} key="Executing"></TabPane>
+        {!isSpectator && (
+          <TabPane tab={executingTabText} key="Executing"></TabPane>
+        )}
         <TabPane tab={observingTabText} key="Observing"></TabPane>
         <TabPane tab="Архив" key="Archived"></TabPane>
       </TabsSC>
@@ -54,8 +67,17 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         onSubmit={handleSearch}
         taskTypes={taskTypes}
         currentFilter={initialValues}
+        isExtendedSearchOpen={isExtendedSearchOpen}
+        closeExtendedSearch={closeExtendedSearch}
+        openExtendedSearch={openExtendedSearch}
+        clearFilters={clearFilters}
+        changeFiltersByGroupType={changeFiltersByGroupType}
+        housingManagments={housingManagments}
+        perpetrators={perpetrators}
+        streets={streets}
+        cities={cities}
       />
-      {!isLoading && tasksList}
+      <div>{!isLoading && tasksList}</div>
       {isLoading && <Skeleton active />}
       {!isLoading && Boolean(tasks?.length) && (
         <PaginationSC

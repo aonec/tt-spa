@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'reshadow/macro';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
@@ -31,7 +31,6 @@ import {
   EditNode,
   AddNode,
   IndividualDeviceEdit,
-  Tasks,
 } from '../_pages';
 import { useApp } from './useApp';
 import EditODPU from '../_pages/EditHousingMeteringDevice';
@@ -51,13 +50,26 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import { TasksProfileContainer } from 'services/tasks/tasksProfileService';
+import {
+  TasksProfileContainer,
+  tasksProfileService,
+} from 'services/tasks/tasksProfileService';
+import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
+import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { useStore } from 'effector-react';
 
 moment.locale('ru');
 
 const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
 
+  const isSpectator = useStore(tasksProfileService.outputs.$isSpectator);
+  const initialTasksPath = isSpectator
+    ? '/tasks/list/Observing'
+    : '/tasks/list/Executing';
+
+  const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -80,26 +92,50 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/Executing'
+                    : initialTasksPath
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/Executing" exact />
+              <Redirect from="/tasks" to={initialTasksPath} exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
               </Route>
 
-              <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
-              <Route
-                path="/tasks/:grouptype/"
-                component={TasksProfileContainer}
-              />
+              <Route path="/tasks">
+                <TasksIsOpen />
+                <Route
+                  path="/tasks/profile/(\\d+)"
+                  component={TaskProfile}
+                  exact
+                />
+                <Route
+                  path="/tasks/list/:grouptype"
+                  component={TasksProfileContainer}
+                  exact
+                />
+                <Redirect
+                  from="/tasks/list/Executing"
+                  to={initialTasksPath}
+                  exact
+                />
+              </Route>
 
               <Route
                 path="/devices/"
                 component={DevicesProfileContainer}
                 exact
+              />
+
+              <Route
+                path="/changeODPU/:oldDeviceId"
+                component={ChangeODPUContainer}
+                exact
+              />
+
+              <Route
+                path="/electricNode/:deviceId/edit"
+                component={EditElectricNodeContainer}
               />
 
               <Route
@@ -151,9 +187,7 @@ const Internal = () => {
               />
 
               <Route
-                path={[
-                  '/housingMeteringDevices/:deviceId/(related|documents)?',
-                ]}
+                path={['/housingMeteringDevices/:deviceId/']}
                 component={HousingProfile}
                 exact
               />
@@ -183,12 +217,12 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|checksHistory)?"
+                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|actsJournal)?"
                 component={ApartmentProfile}
                 exact
               />
               <Route
-                path="/individualDevices/:deviceId/(readings|documents|changes)?"
+                path="/individualDevices/:deviceId"
                 component={IndividualDevice}
                 exact
               />

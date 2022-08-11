@@ -1,26 +1,74 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { InputSC } from '01/shared/ui/Fields';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import { EManagingFirmTaskFilterType } from 'myApi';
-import React, { ChangeEvent, FC, useCallback } from 'react';
-import { SelectSC, Wrapper } from './SearchTasks.styled';
-import { SearchTasksForm, SearchTasksProps } from './SearchTasks.types';
+import { useParams } from 'react-router-dom';
+import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { InputSC } from '01/shared/ui/Fields';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
+import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
+import { SelectSC, Wrapper } from './SearchTasks.styled';
+import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { SearchTasksProps } from './SearchTasks.types';
+import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
   taskTypes,
   currentFilter,
+  isExtendedSearchOpen,
+  openExtendedSearch,
+  closeExtendedSearch,
+  clearFilters,
+  changeFiltersByGroupType,
+  housingManagments,
+  perpetrators,
+  streets,
+  cities,
 }) => {
-  const { values, handleSubmit, setFieldValue } = useFormik<SearchTasksForm>({
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    resetForm,
+  } = useFormik<GetTasksListRequestPayload>({
     initialValues: {
       TaskType: currentFilter?.TaskType || null,
-      TaskId: currentFilter?.TaskId || '',
+      TaskId: currentFilter?.TaskId,
+      TargetType: currentFilter?.TargetType,
+      GroupType: currentFilter?.GroupType,
+      HouseManagementId: currentFilter?.HouseManagementId,
+      DeviceId: currentFilter?.DeviceId,
+      HousingStockId: currentFilter?.HousingStockId,
+      ApartmentId: currentFilter?.ApartmentId,
+      HasChanged: currentFilter?.HasChanged,
+      PipeNodeId: currentFilter?.PipeNodeId,
+      ClosingStatuses: currentFilter?.ClosingStatuses,
+      ApplicationCompetenceId: currentFilter?.ApplicationCompetenceId,
+      TimeStatus: currentFilter?.TimeStatus,
+      PerpetratorId: currentFilter?.PerpetratorId,
+      Resource: currentFilter?.Resource,
+      EngineeringElement: currentFilter?.EngineeringElement,
+      City: currentFilter?.City
+        ? currentFilter?.City
+        : cities?.length === 1
+        ? cities[0]
+        : currentFilter?.City,
+      Street: currentFilter?.Street,
+      HousingStockNumber: currentFilter?.HousingStockNumber,
+      Corpus: currentFilter?.Corpus,
+      ApartmentNumber: currentFilter?.ApartmentNumber,
+      PageNumber: currentFilter?.PageNumber,
+      PageSize: currentFilter?.PageSize,
+      OrderBy: currentFilter?.OrderBy,
     },
     enableReinitialize: true,
     onSubmit,
   });
+
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | undefined>(undefined);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,16 +88,60 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     setFieldValue('TaskId', '');
   }, [setFieldValue]);
 
+  const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
+
+  const clearAllFilters = () => {
+    clearFilters();
+    resetForm();
+    changeFiltersByGroupType(grouptype);
+  };
+
+  useEffect(() => {
+    if (lastGroupTypeRef.current === currentFilter?.GroupType) {
+      return;
+    }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive =
+      currentFilter?.GroupType === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      clearInput();
+    }
+
+    lastGroupTypeRef.current = currentFilter?.GroupType;
+  }, [currentFilter?.GroupType, lastGroupTypeRef]);
+  const isArchived = currentFilter?.GroupType === 'Archived';
   return (
     <ExtendedSearch
-      isOpen={false}
-      handleApply={() => {}}
-      handleClear={() => {}}
-      handleClose={() => {}}
-      handleOpen={() => {}}
-      extendedSearchContent={<></>}
-      disabled
+      isOpen={isExtendedSearchOpen}
+      handleApply={handleSubmit}
+      handleClear={clearAllFilters}
+      handleClose={closeExtendedSearch}
+      handleOpen={openExtendedSearch}
+      extendedSearchContent={
+        <>
+          {isArchived && (
+            <ArchiveTasksExtendedSearchForm
+              setFieldValue={setFieldValue}
+              taskTypes={taskTypes}
+              values={values}
+            />
+          )}
+          {!isArchived && (
+            <ToExecutionTasksExtendedSearchForm
+              setFieldValue={setFieldValue}
+              taskTypes={taskTypes}
+              values={values}
+              housingManagments={housingManagments}
+              perpetrators={perpetrators}
+              streets={streets}
+              cities={cities}
+            />
+          )}
+        </>
+      }
     >
+      <ExistingStreetsGate />
+      <ExistingCitiesGate />
       <Wrapper>
         <InputSC
           placeholder="Номер задачи"

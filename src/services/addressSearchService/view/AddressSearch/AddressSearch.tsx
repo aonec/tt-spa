@@ -1,10 +1,6 @@
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-import {
-  StyledAutocomplete,
-  InputSC,
-  SelectSC,
-} from '01/shared/ui/Fields';
+import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
 import { Wrapper } from './AddressSearch.styled';
@@ -18,10 +14,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   handleChange,
   fields,
 }) => {
-  const {
-    keyDownEnterGuardedHandler,
-    refs,
-  } = useOnEnterSwitch(5);
+  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(5);
 
   const { match: streetMatch, options } = useAutocomplete(
     values.street,
@@ -51,6 +44,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const streetSearch = (index: number) => (
+    
     <StyledAutocomplete
       placeholder="Улица"
       ref={refs[index]}
@@ -106,7 +100,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const apartmentSearch = (index: number) => (
     <InputSC
-      placeholder="Квартира"
+      placeholder="Квартирa"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
       ref={refs[index]}

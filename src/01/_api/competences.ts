@@ -1,13 +1,14 @@
 import axios from '01/axios';
 import {
   ManagementFirmCompetenceResponse,
+  ManagementFirmCompetencesListResponse,
 } from './../../myApi';
 
 export const getCompetencesCatalog = async (): Promise<
   ManagementFirmCompetenceResponse[] | null
 > => {
-  const res: {
-    items: ManagementFirmCompetenceResponse[] | null;
-  } = await axios.get('ManagementFirmCompetences');
-  return res?.items;
+  const res: ManagementFirmCompetencesListResponse = await axios.get(
+    'OrganizationCompetences'
+  );
+  return res.competences;
 };

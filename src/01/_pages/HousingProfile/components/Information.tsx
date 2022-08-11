@@ -8,6 +8,10 @@ import {
 } from '../../../tt-components/localBases';
 import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import { Subtitle } from '../../../_components/Headers';
+import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { Tooltip } from 'antd';
+import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 interface InformationInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -19,8 +23,7 @@ export const Information = ({ device }: InformationInterface) => {
   }
 
   const { address } = device || {};
-  const { city, street, number, corpus, id } =
-    address || DEFAULT_BUILDING;
+  const { id } = address || DEFAULT_BUILDING;
   const {
     futureCommercialAccountingDate,
     lastCommercialAccountingDate,
@@ -38,14 +41,19 @@ export const Information = ({ device }: InformationInterface) => {
     ? direction.label
     : 'Направление магистрали не указано';
 
+  const additionalAdress = additionalAddressesString(address);
+
   return (
     <ListWrap>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          {`${city}, ${street}, ${number} ${
-            corpus ? `, к.${corpus}` : ''
-          }`}
+          {getHousingStockAddress(address, true)}
+          <Tooltip title={additionalAdress}>
+            <AdditionalAddressDescription>
+              {additionalAdress}
+            </AdditionalAddressDescription>
+          </Tooltip>
         </Subtitle>
       </ListItem>
 

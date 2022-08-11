@@ -3,7 +3,7 @@ import { ApartmentActResponse, DocumentResponse } from 'myApi';
 
 export const getapartmentActsList = async (
   apartmentId: number
-): Promise<ApartmentActResponse[] | null> =>
+): Promise<ApartmentActResponse[]> =>
   axios.get(`Apartments/${apartmentId}/Acts`);
 
 export const saveFileRequest = async (document: DocumentResponse) => {

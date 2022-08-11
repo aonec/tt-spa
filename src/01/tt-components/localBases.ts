@@ -284,16 +284,6 @@ export const nodeStatusList = [
     label: 'Не на коммерческом учете',
     icon: 'block',
   },
-  {
-    value: 'OnReview',
-    label: 'На утверждении',
-    icon: 'timer',
-  },
-  {
-    value: 'Prepared',
-    label: 'Подготовлен к сдаче',
-    icon: 'next',
-  },
 ];
 
 export const entryNumberList = [

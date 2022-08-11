@@ -1,9 +1,9 @@
 import {
-  AddManagingFirmUserWorkingStatusRequest,
-  EManagingFirmUserWorkingStatusType,
+  AddOrganizationUserWorkingStatusRequest,
+  EOrganizationUserWorkingStatusType,
   ManagingFirmUserResponse,
-  ManagingFirmUserWorkingStatusResponseSuccessApiResponse,
-} from './../../../../../../myApi';
+  OrganizationUserWorkingStatusResponseSuccessApiResponse,
+} from 'myApi';
 import { createForm } from 'effector-forms';
 import { createEffect, createStore, createEvent } from 'effector';
 
@@ -18,7 +18,7 @@ const isNotNull = (value: any) => value !== null;
 export const editStaffStatusForm = createForm({
   fields: {
     type: {
-      init: null as EManagingFirmUserWorkingStatusType | null,
+      init: null as EOrganizationUserWorkingStatusType | null,
       rules: [
         {
           name: 'required',
@@ -52,6 +52,6 @@ export const editStaffStatusCancelButtonClicked = createEvent();
 export const editStaffStatusConfirmButtonClicked = createEvent();
 
 export const editStaffStatusFx = createEffect<
-  AddManagingFirmUserWorkingStatusRequest,
-  ManagingFirmUserWorkingStatusResponseSuccessApiResponse
+  AddOrganizationUserWorkingStatusRequest,
+  OrganizationUserWorkingStatusResponseSuccessApiResponse
 >();

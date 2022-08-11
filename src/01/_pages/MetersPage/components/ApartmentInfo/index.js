@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { UserInfo } from './UserInfo';
 import { Icon, Loader } from '01/components';
@@ -47,6 +47,7 @@ import {
 } from './ApartmentInfo.styled';
 import { checkIsHomeownerAccountRecentlyModified } from './utils';
 import { Skeleton } from 'antd';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -75,8 +76,12 @@ export const ApartmentInfo = () => {
 
   const user = useStore($currentManagingFirmUser);
 
-  const isSeniorOperator = user?.roles?.find(
-    ({ key }) => key === 'ManagingFirmSeniorOperator'
+  const isSeniorOperator = useMemo(
+    () =>
+      user?.roles?.find(
+        ({ key }) => key === ESecuredIdentityRoleName.SeniorOperator
+      ),
+    [user]
   );
 
   const cancelPauseApartment = () =>
@@ -157,7 +162,7 @@ export const ApartmentInfo = () => {
             По данной квартире есть незакрытая задача. Возможность вводить
             показания появится после закрытия задачи.
           </div>
-          <Link to={`/tasks/${apartmentTaskId}`}>
+          <Link to={`/tasks/profile/${apartmentTaskId}`}>
             <AlertLink className="ant-btn-link" style={{ color: '#FC525B' }}>
               Перейти к задаче
               <ArrowRight />

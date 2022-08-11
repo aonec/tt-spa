@@ -1,7 +1,8 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { getCalculatorsList } from './displayDevicesService.api';
-import { CalculatorListResponse, CalculatorListResponsePagedList } from 'myApi';
+import { CalculatorListResponsePagedList } from 'myApi';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { createGate } from 'effector-react';
 
 const domain = createDomain('displayDevicesService');
 
@@ -27,6 +28,8 @@ const $searchPayload = domain.createStore<CalculatorsListRequestPayload | null>(
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
 
+const clearSearchPayload = domain.createEvent();
+
 $calculatorsPagedData
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
   .reset(fetchCalculatorsFx.failData);
@@ -37,12 +40,20 @@ const $pageSize = $calculatorsPagedData.map((state) => state?.pageSize);
 
 const setPageNumber = domain.createEvent<number>();
 
+export const CalculatorsGate = createGate<CalculatorsListRequestPayload>()
+
+forward({
+  from: CalculatorsGate.open,
+  to: fetchCalculators,
+});
+
 $searchPayload
   .on(fetchCalculators, (_, payload) => payload)
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
     PageNumber: pageNumber,
-  }));
+  }))
+  .reset(clearSearchPayload);
 
 sample({
   clock: guard({
@@ -65,6 +76,7 @@ export const displayDevicesService = {
     extendedSearchOpened,
     extendedSearchClosed,
     setPageNumber,
+    clearSearchPayload,
   },
   outputs: {
     $total,
@@ -73,5 +85,9 @@ export const displayDevicesService = {
     $isExtendedSearchOpen,
     $pageNumber,
     $pageSize,
+    $searchPayload,
   },
+  gates: {
+    CalculatorsGate
+  }
 };

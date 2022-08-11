@@ -1,17 +1,23 @@
 import React, { FC } from 'react';
-import { ConfigProvider, Form, Input, Select, Slider } from 'antd';
+import { ConfigProvider, Select } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import {
-  StyledForm,
   StyledRangePicker,
   StyledContainerThreeItems,
   StyledContainerFourItems,
   StyledSlider,
+  LabelCS,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
+import {
+  FormItem,
+  SelectSC,
+  StyledFormThreeRows,
+} from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { InputSC } from '01/shared/ui/Fields';
 
 const { Option } = Select;
 
@@ -26,11 +32,13 @@ export const ExtendedSearchForm: FC<{
   type RangeValue = [Moment | null, Moment | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
+
   return (
-    <StyledForm id="searchForm" initialValues={{ remember: true }}>
+    <StyledFormThreeRows id="searchForm" initialValues={{ remember: true }}>
       <StyledContainerFourItems>
-        <Form.Item name="city" label="Город">
-          <Input
+        <FormItem>
+          <LabelCS>Город: </LabelCS>
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
             }
@@ -38,10 +46,11 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.City']}
             placeholder="Город"
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="street" label="Улица">
-          <Input
+        <FormItem>
+          <LabelCS>Улица: </LabelCS>
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
             }
@@ -49,10 +58,11 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.Street']}
             placeholder="Улица"
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="house" label="Дом">
-          <Input
+        <FormItem>
+          <LabelCS>Дом: </LabelCS>
+          <InputSC
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
@@ -63,10 +73,11 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.HousingStockNumber']}
             placeholder="Дом"
           />
-        </Form.Item>
+        </FormItem>
 
-        <Form.Item name="corpus" label="Корпус">
-          <Input
+        <FormItem>
+          <LabelCS>Корпус: </LabelCS>
+          <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
@@ -74,11 +85,12 @@ export const ExtendedSearchForm: FC<{
             value={values['Filter.Address.Corpus']}
             placeholder="Корпус"
           />
-        </Form.Item>
+        </FormItem>
       </StyledContainerFourItems>
       <StyledContainerThreeItems>
-        <Form.Item name="Resource" label="Тип ресурса">
-          <Select
+        <FormItem>
+          <LabelCS>Тип ресурса: </LabelCS>
+          <SelectSC
             id="Resource"
             value={values['Filter.Resource']}
             placeholder="Все ресурсы"
@@ -89,11 +101,12 @@ export const ExtendedSearchForm: FC<{
             <Option value="HotWaterSupply">Горячая вода</Option>
             <Option value="ColdWaterSupply">Холодная вода</Option>
             <Option value="Electricity">Электричество</Option>
-          </Select>
-        </Form.Item>
+          </SelectSC>
+        </FormItem>
 
-        <Form.Item name="NodeStatus" label="Статус Узла">
-          <Select
+        <FormItem>
+          <LabelCS>Статус Узла: </LabelCS>
+          <SelectSC
             id="NodeStatus"
             placeholder="Любой статус"
             value={values['Filter.NodeStatus']}
@@ -104,10 +117,11 @@ export const ExtendedSearchForm: FC<{
             <Option value="Registered">Сдан на коммерческий учет</Option>
             <Option value="OnReview">На утверждении</Option>
             <Option value="Prepared">Подговлен к сдаче</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="lastCheckingDate" label="Истекает дата поверки">
-          <Select
+          </SelectSC>
+        </FormItem>
+        <FormItem>
+          <LabelCS>Истекает дата поверки: </LabelCS>
+          <SelectSC
             id="expirationDate"
             placeholder="Все"
             value={values['Filter.ExpiresCheckingDateAt']}
@@ -119,11 +133,12 @@ export const ExtendedSearchForm: FC<{
             <Option value="NextMonth">Ближайший месяц</Option>
             <Option value="NextTwoMonth">В следующие два месяца</Option>
             <Option value="Past">Истекла</Option>
-          </Select>
-        </Form.Item>
+          </SelectSC>
+        </FormItem>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
-        <Form.Item name="deviceDiameter" label="Диаметр прибора, мм">
+        <FormItem>
+          <LabelCS>Диаметр прибора, мм: </LabelCS>
           <StyledSlider
             getTooltipPopupContainer={(triggerNode) =>
               triggerNode.parentNode as HTMLElement
@@ -145,8 +160,9 @@ export const ExtendedSearchForm: FC<{
               setFieldValue("['Filter.DiameterRange.To']", value[1]);
             }}
           />
-        </Form.Item>
-        <Form.Item label="Период действия акта допуска">
+        </FormItem>
+        <FormItem>
+          <LabelCS>Период действия акта допуска: </LabelCS>
           <ConfigProvider>
             <StyledRangePicker
               value={[
@@ -174,9 +190,10 @@ export const ExtendedSearchForm: FC<{
               format={dateFormat}
             />
           </ConfigProvider>
-        </Form.Item>
-        <Form.Item name="OrderBy" label="Сортировать по">
-          <Select
+        </FormItem>
+        <FormItem>
+          <LabelCS>Сортировать по: </LabelCS>
+          <SelectSC
             id="sortBy"
             placeholder="Улица"
             value={values.OrderBy}
@@ -184,9 +201,9 @@ export const ExtendedSearchForm: FC<{
           >
             <Option value="Descending">Улице (уб.)</Option>
             <Option value="Ascending">Улице (возр.)</Option>
-          </Select>
-        </Form.Item>
+          </SelectSC>
+        </FormItem>
       </StyledContainerThreeItems>
-    </StyledForm>
+    </StyledFormThreeRows>
   );
 };

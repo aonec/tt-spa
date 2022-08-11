@@ -9,6 +9,7 @@ import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { HousingStockResponse } from '../../../../../../myApi';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
@@ -19,7 +20,7 @@ const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
     <>
       {house.inspectorId && <InspectorGate id={house.inspectorId} />}
       <Title>
-        {house.street}, {house.number}
+        {getHousingStockAddress(house)}
       </Title>
       <Wrap>
         <Flex>

@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import { AddNodeContext } from '../AddNodeContext';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 export const Header = () => {
   const { housingStock } = useContext(AddNodeContext);
-  const { id, city, street, number, corpus } = housingStock;
+  const { id } = housingStock;
 
   return (
     <HeaderWrap
@@ -19,7 +20,7 @@ export const Header = () => {
         <div>
           <Title>Добавление нового узла</Title>
           <Subtitle to={`/objects/${id}`}>
-            {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
+            {getHousingStockAddress(housingStock, true)}
           </Subtitle>
         </div>
       </div>

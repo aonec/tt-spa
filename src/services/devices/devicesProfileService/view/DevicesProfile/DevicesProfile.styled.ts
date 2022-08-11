@@ -1,6 +1,5 @@
-import { Slider, Form } from 'antd';
+import { Slider, Form, DatePicker } from 'antd';
 import styled from 'styled-components';
-import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 
 export const Wrapper = styled.div`
@@ -16,8 +15,8 @@ export const StyledSlider = styled(Slider)`
 
 export const StyledContainerFourItems = styled.div`
   display: grid;
-  grid-template-columns: 4fr 4fr 1.93fr 1.93fr;
-  gap: 16px;
+  grid-template-columns: 4fr 4fr 1.9fr 1.9fr;
+  gap: 15px;
 `;
 
 export const StyledContainerThreeItems = styled.div`
@@ -26,14 +25,19 @@ export const StyledContainerThreeItems = styled.div`
   gap: 16px;
 `;
 
-export const StyledRangePicker = styled(RangePicker)`
+export const StyledRangePicker = styled(RangePicker)<{ isShadow?: boolean }>`
   height: 32px;
   width: 100%;
+  box-shadow: ${({ isShadow = true }) =>
+    isShadow ? `0 4px 7px #02004b1f` : 'none'};
 `;
 
 export const StyledForm = styled(Form)`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-top: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
 `;
 
 export const HeaderWrapper = styled.div`
@@ -44,4 +48,9 @@ export const HeaderWrapper = styled.div`
 export const HeaderText = styled.h1`
   font-weight: 300;
   margin-bottom: 16;
+`;
+
+export const LabelCS = styled.label`
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;

@@ -35,8 +35,26 @@ export const staffFormConfig: FormConfig<AnyFieldsConfigs> = {
         },
       ],
     },
-    firstName: standartStringFieldInit,
-    lastName: standartStringFieldInit,
+    firstName: {
+      init: '',
+      rules: [
+        requiredValidation,
+        {
+          name: 'minLength',
+          validator: (value: string) => value.length >= 2,
+        },
+      ],
+    },
+    lastName: {
+      init: '',
+      rules: [
+        requiredValidation,
+        {
+          name: 'minLength',
+          validator: (value: string) => value.length >= 2,
+        },
+      ],
+    },
     middleName: standartStringFieldInit,
     cellphone: {
       init: '',

@@ -20,11 +20,12 @@ import {
   searchForm,
   setActJournalPageNumber,
 } from '../models';
-import { DocDate } from './AddNewActForm';
+import { DocDate } from './AddNewActForm/AddNewActForm';
 import { gridTemp } from './TableHeader';
 import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 
 const pageSize = 20;
 
@@ -53,11 +54,7 @@ export const ApartmentActsList = () => {
       (elem) => elem.key === act.actResourceType
     )?.value;
 
-    const actAddress =
-      act.apartment &&
-      `ул. ${act.apartment.street} ${
-        act.apartment.housingStockNumber + (act.apartment.corpus || '')
-      }, кв. ${act.apartment.apartmentNumber}`;
+    const actAddress = getApartmentFromFullAddress(act.apartment, false);
 
     return (
       <ActWrap temp={gridTemp} key={act.id} gap="15px">

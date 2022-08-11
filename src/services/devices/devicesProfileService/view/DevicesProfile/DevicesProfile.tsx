@@ -14,6 +14,7 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
+
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
   fetchcalc: (
@@ -23,13 +24,18 @@ interface DeviceProfileProps {
   open: (payload: void) => void;
   close: (payload: void) => void;
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
+  searchState: CalculatorsListRequestPayload | null;
+  clearSearchPayload: (payload: void) => void;
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   fetchcalc,
   isOpen,
   close,
   open,
+  searchState,
+  clearSearchPayload,
 }) => {
+
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -47,30 +53,36 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     resetForm,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
-      'Filter.DiameterRange.From': undefined,
-      'Filter.DiameterRange.To': undefined,
-      'Filter.ExpiresCheckingDateAt': undefined,
-      'Filter.Resource': undefined,
-      'Filter.Model': undefined,
-      'Filter.CommercialDateRange.From': undefined,
-      'Filter.CommercialDateRange.To': undefined,
-      'Filter.Address.City': undefined,
-      'Filter.Address.Street': undefined,
-      'Filter.Address.HousingStockNumber': undefined,
-      'Filter.Address.Corpus': undefined,
-      'Filter.Address.HouseCategory': undefined,
-      'Filter.HousingStockId': undefined,
-      'Filter.NodeStatus': undefined,
-      Question: undefined,
-      OrderRule: undefined,
-      IsConnected: undefined,
-      CountTasks: undefined,
-      IsClosed: undefined,
-      FileName: undefined,
-      PageNumber: undefined,
-      PageSize: undefined,
-      OrderBy: undefined,
+      'Filter.DiameterRange.From': searchState?.['Filter.DiameterRange.From'],
+      'Filter.DiameterRange.To': searchState?.['Filter.DiameterRange.To'],
+      'Filter.ExpiresCheckingDateAt':
+        searchState?.['Filter.ExpiresCheckingDateAt'],
+      'Filter.Resource': searchState?.['Filter.Resource'],
+      'Filter.Model': searchState?.['Filter.Model'],
+      'Filter.CommercialDateRange.From':
+        searchState?.['Filter.CommercialDateRange.From'],
+      'Filter.CommercialDateRange.To':
+        searchState?.['Filter.CommercialDateRange.To'],
+      'Filter.Address.City': searchState?.['Filter.Address.City'],
+      'Filter.Address.Street': searchState?.['Filter.Address.Street'],
+      'Filter.Address.HousingStockNumber':
+        searchState?.['Filter.Address.HousingStockNumber'],
+      'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
+      'Filter.Address.HouseCategory':
+        searchState?.['Filter.Address.HouseCategory'],
+      'Filter.HousingStockId': searchState?.['Filter.HousingStockId'],
+      'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
+      Question: searchState?.Question,
+      OrderRule: searchState?.OrderRule,
+      IsConnected: searchState?.IsConnected,
+      CountTasks: searchState?.CountTasks,
+      IsClosed: searchState?.IsClosed,
+      FileName: searchState?.FileName,
+      PageNumber: searchState?.PageNumber,
+      PageSize: searchState?.PageSize,
+      OrderBy: searchState?.OrderBy,
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
       fetchcalc(values);
       searchStateChanged(values);
@@ -89,18 +101,26 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         </Tabs>
         <SearchDevices
           isExtendedSearchOpen={isOpen}
-          fetchcalc={fetchcalc}
-          searchStateChanged={searchStateChanged}
+          submitForm={submitForm}
+          setFieldValue={setFieldValue}
+          values={values}
         >
           <ExtendedSearch
             isOpen={isOpen}
-            handleClose={() => close()}
+            handleClose={() => {
+              close();
+              clearSearchPayload();
+              resetForm();
+            }}
             handleOpen={() => open()}
             handleApply={() => {
               fetchcalc(values);
               searchStateChanged(values);
             }}
-            handleClear={() => resetForm()}
+            handleClear={() => {
+              resetForm();
+              clearSearchPayload();
+            }}
             extendedSearchContent={
               <ExtendedSearchForm
                 setFieldValue={setFieldValue}

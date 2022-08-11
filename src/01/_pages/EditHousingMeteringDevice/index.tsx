@@ -51,7 +51,7 @@ const EditODPU = () => {
 
   return (
     <EditOdpuContext.Provider value={context}>
-      <GoBack path={`/housingMeteringDevices/${deviceId}`} />
+      <GoBack />
       <Header device={device} />
       <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
       <FormEditODPU

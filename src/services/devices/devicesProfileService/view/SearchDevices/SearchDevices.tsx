@@ -1,7 +1,6 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import styles from './DeviceSearchForm.module.scss';
 import { Form, Select } from 'antd';
-import { useFormik } from 'formik';
 import _ from 'lodash';
 import {
   CustomGrid,
@@ -17,95 +16,48 @@ import {
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
+import { FormItem } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 
 const { Option } = Select;
 
 export const SearchDevices: FC<SearchDevicesProps> = ({
   children,
   isExtendedSearchOpen,
-  fetchcalc,
-  searchStateChanged,
+  submitForm,
+  setFieldValue,
+  values,
 }) => {
   const marks = {
     0: '0',
     255: '255',
   };
-  const {
-    handleSubmit: submitForm,
-    setFieldValue,
-    values,
-  } = useFormik<CalculatorsListRequestPayload>({
-    initialValues: {
-      'Filter.DiameterRange.From': undefined,
-      'Filter.DiameterRange.To': undefined,
-      'Filter.ExpiresCheckingDateAt': undefined,
-      'Filter.Resource': undefined,
-      'Filter.Model': undefined,
-      'Filter.CommercialDateRange.From': undefined,
-      'Filter.CommercialDateRange.To': undefined,
-      'Filter.Address.City': undefined,
-      'Filter.Address.Street': undefined,
-      'Filter.Address.HousingStockNumber': undefined,
-      'Filter.Address.Corpus': undefined,
-      'Filter.Address.HouseCategory': undefined,
-      'Filter.HousingStockId': undefined,
-      'Filter.NodeStatus': undefined,
-      Question: undefined,
-      OrderRule: undefined,
-      IsConnected: undefined,
-      CountTasks: undefined,
-      IsClosed: undefined,
-      FileName: undefined,
-      PageNumber: undefined,
-      PageSize: undefined,
-      OrderBy: undefined,
-    },
-    onSubmit: (values) => {
-      void fetchcalc(values);
-      searchStateChanged(values);
-    },
-  });
-
-  useEffect(() => {
-    fetchcalc(values);
-    searchStateChanged(values);
-  }, []);
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
-  
+
   return (
     <Wrapper>
       {!isExtendedSearchOpen ? (
         <StyledForm
           id="searchForm"
           initialValues={{ remember: true }}
-          onChange={submitForm}
+          onChange={() => submitForm()}
         >
           <StyledGrid isExtendedSearchOpen={isExtendedSearchOpen}>
             {children}
-            <Form.Item
-              name="search"
-              rules={[
-                {
-                  required: true,
-                  message: 'Введите серийный номер прибор',
-                },
-              ]}
-            >
+            <FormItem>
               <InputSC
                 onChange={(value) =>
                   setFieldValue('Question', value.target.value)
                 }
                 className={styles.input}
-                value={values.Question}
+                value={values?.Question}
                 placeholder="Введите серийный номер прибора"
                 prefix={<Icon icon="search" />}
               />
-            </Form.Item>
+            </FormItem>
 
-            <Form.Item name="OrderBy">
+            <FormItem>
               <FlexCenterRow>
                 <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
@@ -113,6 +65,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <SelectSC
                   style={{ width: '65%' }}
                   id="sortBy"
+                  value={values?.OrderBy}
                   placeholder="Дате проверки"
                   onChange={(value) => setFieldValue('OrderBy', value)}
                   onSelect={() => submitForm()}
@@ -121,11 +74,11 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="Ascending">Улице (возр.)</Option>
                 </SelectSC>
               </FlexCenterRow>
-            </Form.Item>
+            </FormItem>
           </StyledGrid>
 
           <Grid>
-            <Form.Item name="lastCheckingDate">
+            <FormItem>
               <StyledExpirationDate>
                 <StyledLabelSimple htmlFor="expirationDate">
                   Истекает дата поверки:{' '}
@@ -133,6 +86,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <SelectSC
                   id="expirationDate"
                   style={{ width: '65%' }}
+                  value={values['Filter.ExpiresCheckingDateAt']}
                   onChange={(value) =>
                     setFieldValue("['Filter.ExpiresCheckingDateAt']", value)
                   }
@@ -143,9 +97,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="Past">Истекла</Option>
                 </SelectSC>
               </StyledExpirationDate>
-            </Form.Item>
+            </FormItem>
 
-            <Form.Item name="deviceDiameter">
+            <FormItem>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <StyledLabel>Диаметр прибора, мм </StyledLabel>
 
@@ -156,6 +110,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   defaultValue={[0, 255]}
                   max={255}
                   range
+                  value={[
+                    values['Filter.DiameterRange.From']
+                      ? values['Filter.DiameterRange.From']
+                      : 0,
+                    values['Filter.DiameterRange.To']
+                      ? values['Filter.DiameterRange.To']
+                      : 255,
+                  ]}
                   marks={marks}
                   onChange={(value: [number, number]) => {
                     setFieldValue("['Filter.DiameterRange.From']", value[0]);
@@ -164,7 +126,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   }}
                 />
               </div>
-            </Form.Item>
+            </FormItem>
           </Grid>
         </StyledForm>
       ) : (

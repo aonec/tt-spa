@@ -2,28 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Title } from './Title';
 import { Text } from './Text';
-import { MenuButtonTT } from '../../../tt-components';
-import { openCheckApartmentModal } from '01/features/apartments/checkApartment/models';
+import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
-export const Header = ({ apartmentNumber, city, street, number }) => {
-
+export const Header = ({ apartment }) => {
   return (
     <HeaderWrap>
       <div className="apartment-header__wrap">
-        <Title size="32">Кв. №{apartmentNumber}</Title>
-        <Text>
-          {city}, {street}, {number}
-        </Text>
+        <Title size="32">Кв. №{apartment.apartmentNumber}</Title>
+        <Text>{getHousingStockAddress(apartment.housingStock, true)}</Text>
       </div>
-      <MenuButtonTT
-        menuButtonArr={[
-          {
-            title: 'Создать проверку',
-            show: true,
-            cb: openCheckApartmentModal,
-          },
-        ]}
-      />
     </HeaderWrap>
   );
 };

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,51 +10,72 @@ interface Props {
   id?: string;
   searchStyle?: boolean;
   fullSize?: boolean;
+  ref?:
+    | ((instance: HTMLInputElement | null) => void)
+    | RefObject<HTMLInputElement>
+    | null
+    | undefined;
+  onKeyDown?: (e: any) => any;
 }
 
-export const DatePickerNative: React.FC<Props> = ({
-  value: incomingValue,
-  placeholder,
-  onChange,
-  disabled,
-  id,
-  searchStyle,
-  fullSize,
-}) => {
-  const [innerValue, setInnerValue] = useState<any>();
-  const value = moment(incomingValue).toISOString(true);
-  const currentValueToMoment = moment(innerValue);
-  const isCurrentValueValid = currentValueToMoment.isValid();
+export const DatePickerNative: React.FC<Props> = React.forwardRef(
+  (
+    {
+      value: incomingValue,
+      placeholder,
+      onChange,
+      disabled,
+      id,
+      searchStyle,
+      fullSize,
+      onKeyDown,
+    },
+    ref
+  ) => {
+    const [innerValue, setInnerValue] = useState<any>();
+    const value = moment(incomingValue).toISOString(true);
+    const currentValueToMoment = moment(innerValue);
+    const isCurrentValueValid = currentValueToMoment.isValid();
 
-  const setInitialInnerValue = () => {
-    setInnerValue(value ? moment(value).format('YYYY-MM-DD') : undefined);
-  };
+    const setInitialInnerValue = () => {
+      setInnerValue(value ? moment(value).format('YYYY-MM-DD') : undefined);
+    };
 
-  function onChangeGlobal() {
-    if (innerValue) onChange && onChange(currentValueToMoment.toISOString());
+    function onChangeGlobal() {
+      if (innerValue) onChange && onChange(currentValueToMoment.toISOString());
 
-    if (isCurrentValueValid) setInitialInnerValue();
+      if (isCurrentValueValid) setInitialInnerValue();
+    }
+
+    useEffect(setInitialInnerValue, [value]);
+
+    return (
+      <InputSC
+        fullSize={fullSize}
+        searchStyle={searchStyle}
+        id={id}
+        disabled={disabled}
+        ref={ref}
+        onKeyDown={(e) => {
+          onKeyDown && onKeyDown(e);
+          fromEnter((e) => {
+            isCurrentValueValid && e.target.blur();
+          });
+          fromEnter((e) => {
+            isCurrentValueValid && e.target.blur();
+          });
+        }}
+        onBlur={onChangeGlobal}
+        value={innerValue || ''}
+        onChange={(e: { target: { value: string } }) => {
+          setInnerValue(e.target.value);
+        }}
+        placeholder={placeholder}
+        type="date"
+      />
+    );
   }
-
-  useEffect(setInitialInnerValue, [value]);
-
-  return (
-    <InputSC
-      fullSize={fullSize}
-      searchStyle={searchStyle}
-      id={id}
-      disabled={disabled}
-      onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
-      onBlur={onChangeGlobal}
-      value={innerValue}
-      onChange={(e: { target: { value: string } }) => {
-        setInnerValue(e.target.value);
-      }}
-      placeholder={placeholder}
-      type="date"
-    />
-  );
-};
+);
 
 const InputSC = styled.input<{
   searchStyle?: boolean;

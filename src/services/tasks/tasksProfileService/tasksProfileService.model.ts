@@ -1,7 +1,16 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { TaskGroupingFilter, TasksPagedList } from 'myApi';
-import { $taskTypes } from '../taskTypesService/taskTypesService.model';
+import {
+  ESecuredIdentityRoleName,
+  TaskGroupingFilter,
+  TasksPagedList,
+} from 'myApi';
+import { currentUserService } from 'services/currentUserService';
+import {
+  $taskTypes,
+  $housingManagments,
+  $perpetratorIdStore,
+} from '../taskTypesService/taskTypesService.model';
 import { getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
 import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
@@ -13,23 +22,44 @@ const $searchState = domain.createStore<GetTasksListRequestPayload>({
 });
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
+const $isExtendedSearchOpen = domain.createStore(false);
 
 const clearFilters = domain.createEvent();
+const extendedSearchOpened = domain.createEvent();
+const extendedSearchClosed = domain.createEvent();
 
 const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
 const changeGroupType = domain.createEvent<TaskGroupingFilter>();
 const changePageNumber = domain.createEvent<number>();
 
 const searchTasks = domain.createEvent<SearchTasksForm>();
+
 const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
+
 const $isLoading = searchTasksFx.pending;
+
+const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
+  const roles = user?.roles || [];
+  const rolesKeys = roles.map(({ key }) => key);
+  const isSpectator =
+    rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
+    rolesKeys.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+    );
+
+  return isSpectator;
+});
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
-const TasksProfileIsOpen = createGate();
+const TasksIsOpen = createGate();
+
+$isExtendedSearchOpen
+  .on(extendedSearchOpened, () => true)
+  .reset(extendedSearchClosed);
 
 $searchState
   .on(searchTasks, (oldFilters, filters) => ({
@@ -50,7 +80,7 @@ $searchState
   .reset(clearFilters);
 
 forward({
-  from: TasksProfileIsOpen.close,
+  from: TasksIsOpen.close,
   to: clearFilters,
 });
 
@@ -65,14 +95,21 @@ export const tasksProfileService = {
     changeFiltersByGroupType,
     changeGroupType,
     changePageNumber,
+    extendedSearchClosed,
+    extendedSearchOpened,
+    clearFilters,
   },
   outputs: {
     $taskTypes,
     $isLoading,
     $searchState,
     $tasksPagedData,
+    $isExtendedSearchOpen,
+    $housingManagments,
+    $perpetratorIdStore,
+    $isSpectator,
   },
   gates: {
-    TasksProfileIsOpen,
+    TasksIsOpen,
   },
 };

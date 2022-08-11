@@ -8,6 +8,9 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
+import { Tooltip } from 'antd';
+import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
+import { fullAddressesString } from 'utils/additionalAddressesString';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -29,7 +32,7 @@ export const Header = ({
   }
 
   const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
-  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
+  const { id } = address || DEFAULT_BUILDING;
 
   const menuButtonArr = [
     {
@@ -61,30 +64,34 @@ export const Header = ({
     },
   ];
 
+  const additionalAdress = fullAddressesString(address);
+
   return (
-    <HeaderWrap
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div>
-        <Title>
-          <IconTT
-            icon={resource?.toLowerCase()}
-            size="24"
-            style={{ marginRight: 8 }}
-          />
-          {`${model} (${serialNumber})`}
-        </Title>
+      <HeaderWrap
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div>
+          <Title>
+            <IconTT
+              icon={resource?.toLowerCase()}
+              size="24"
+              style={{ marginRight: 8 }}
+            />
+            {`${model} (${serialNumber})`}
+          </Title>
 
-        <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${number}${
-          corpus ? `, к.${corpus}` : ''
-        }`}</Subtitle>
-      </div>
+          <Subtitle to={`/objects/${id}`}>
+            <Tooltip title={additionalAdress}>
+              <AdditionalAddress>{additionalAdress}</AdditionalAddress>
+            </Tooltip>
+          </Subtitle>
+        </div>
 
-      <MenuButtonTT menuButtonArr={menuButtonArr} />
-    </HeaderWrap>
+        <MenuButtonTT menuButtonArr={menuButtonArr} />
+      </HeaderWrap>
   );
 };
 
