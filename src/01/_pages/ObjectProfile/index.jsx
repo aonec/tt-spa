@@ -15,7 +15,6 @@ import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
 import { apartmentsGroupService } from 'services/apartments/apartmentsGroupService';
 import { useEvent, useStore } from 'effector-react';
-import { ApartmentProfile } from '../ApartmentProfile';
 
 const { inputs, outputs } = apartmentsGroupService;
 
