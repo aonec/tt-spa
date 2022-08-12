@@ -1,10 +1,10 @@
+import { combine, createDomain, guard } from 'effector';
 import { openReadingsHistoryModal } from './../../../01/features/readings/displayReadingHistory/models/index';
-import { combine, createDomain, forward, guard } from 'effector';
-import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
 } from 'myApi';
+import { createGate } from 'effector-react';
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
 import { previousReadingIndexLimit } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
@@ -30,7 +30,7 @@ const $individualDevicesList = combine(
   $individualDevicesPagedData,
   $isShowClosedIndividualDevices
 ).map(([data, isShowClosed]) => {
-  const devices = data?.items;
+  const devices = data?.items || [];
 
   if (!devices) return [];
 

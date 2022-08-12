@@ -49,7 +49,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const previousReadingByCurrentSliderIndex = useMemo(
     () =>
       device.readings &&
-      getExistingReading(device.readings, sliderIndex - 1, 'prev'),
+      getExistingReading(device.readings, sliderIndex - 2, 'prev'),
     [device.readings, sliderIndex]
   );
 
