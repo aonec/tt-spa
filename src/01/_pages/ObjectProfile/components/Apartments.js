@@ -24,7 +24,7 @@ export const Apartments = React.memo(
         }
         apartment.scrollIntoView({
           behavior: 'smooth',
-          block: 'center',
+          block: 'start',
         });
       }
     }, [loading]);
