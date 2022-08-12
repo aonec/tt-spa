@@ -13,6 +13,11 @@ import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
+import { apartmentsGroupService } from 'services/apartments/apartmentsGroupService';
+import { useEvent, useStore } from 'effector-react';
+import { ApartmentProfile } from '../ApartmentProfile';
+
+const { inputs, outputs } = apartmentsGroupService;
 
 export const ObjectContext = React.createContext();
 
@@ -29,6 +34,7 @@ function reducer(state, action) {
 
 export const ObjectProfile = () => {
   const { housingStockId } = useParams();
+
   const path = `/objects/${housingStockId}`;
   const [state, dispatch] = React.useReducer(reducer, {});
 
@@ -38,6 +44,9 @@ export const ObjectProfile = () => {
   const [nodes, setNodes] = useState();
   const [object, setObject] = useState();
   const [loading, setLoading] = useState(false);
+
+  const apartmentId = useStore(outputs.apartmentId);
+  const setApartmentId = useEvent(inputs.setApartmentId);
 
   useEffect(() => {
     setLoading(true);
@@ -87,6 +96,7 @@ export const ObjectProfile = () => {
       key: 'apartments',
       cb: () => {
         push(`${path}/apartments`);
+        setApartmentId(null);
       },
     },
     {
@@ -124,6 +134,8 @@ export const ObjectProfile = () => {
                 push(`/objects/${housingStockId}/apartments/${id}`)
               }
               {...state?.apartments}
+              apartmentId={apartmentId}
+              setApartmentId={setApartmentId}
             />
           </Route>
 

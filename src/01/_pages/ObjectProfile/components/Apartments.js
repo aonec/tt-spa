@@ -1,14 +1,34 @@
 /* eslint-disable */
 
-import React from 'react';
-import { Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, useParams } from 'react-router-dom';
 import styled from 'reshadow/macro';
 
 import { Loader } from '01/components';
 import * as style from '_reshadow';
 
 export const Apartments = React.memo(
-  ({ items = [], loading = true, path = null, onClick = () => {} }) => {
+  ({
+    items = [],
+    loading = true,
+    path = null,
+    onClick = () => {},
+    apartmentId,
+    setApartmentId,
+  }) => {
+    useEffect(() => {
+      if (!loading && apartmentId) {
+        const apartment = document.getElementById(apartmentId);
+        if (!apartment) {
+          return setApartmentId(null);
+        }
+        apartment.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    }, [loading]);
+
     return styled(style.item)`
       item {
         grid-template-columns: 1fr 2fr 0.5fr 0.5fr;
@@ -22,7 +42,7 @@ export const Apartments = React.memo(
         margin: 0 auto;
       }
     `(
-      <Route path={path}>
+      <Route path={path} exact>
         <apartments>
           <h2>Список квартир</h2>
           <Loader show={loading} size="32" />
@@ -35,7 +55,14 @@ export const Apartments = React.memo(
               personalAccountNumber,
               square,
             }) => (
-              <item onClick={() => onClick(id)} key={id}>
+              <item
+                onClick={() => {
+                  onClick(id);
+                  setApartmentId(id);
+                }}
+                key={id}
+                id={id}
+              >
                 <h4>{`№ ${apartmentNumber}`}</h4>
                 <item_owner>{homeownerName}</item_owner>
                 <item_number>{personalAccountNumber}</item_number>
