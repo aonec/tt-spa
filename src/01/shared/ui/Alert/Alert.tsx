@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BlueStopIcon, InfoIcon, RedStopIcon, WarningIcon } from 'ui-kit/icons';
+import { InfoIcon, StopIcon, WarningIcon } from 'ui-kit/icons';
 import { Flex } from '../Layout/Flex';
 import { Space } from '../Layout/Space/Space';
+import { BlueStopIcon } from './Alert.styled';
 
 interface Props {
   type?: 'info' | 'redStop' | 'warning' | 'blueStop';
@@ -12,7 +13,7 @@ interface Props {
 export const Alert: React.FC<Props> = ({ children, type = 'info', color }) => {
   const icons = {
     info: InfoIcon,
-    redStop: RedStopIcon,
+    redStop: StopIcon,
     warning: WarningIcon,
     blueStop: BlueStopIcon
   };

@@ -17,10 +17,13 @@ export const InvisibleContextMenuButton: FC<InvisibleContextMenuButtonProps> = (
   const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
   const [isFocused, setIsFocused] = useState(false);
 
-  const menu = useMemo(
-    () => (
+  const menu = useMemo(() => {
+    if (!menuButtonsFiltered) {
+      return <></>;
+    }
+    return (
       <Menu>
-        {menuButtonsFiltered?.map((button) => {
+        {menuButtonsFiltered.map((button) => {
           const { title, onClick, color = Color.default } = button;
 
           return (
@@ -30,9 +33,8 @@ export const InvisibleContextMenuButton: FC<InvisibleContextMenuButtonProps> = (
           );
         })}
       </Menu>
-    ),
-    [menuButtonsFiltered]
-  );
+    );
+  }, [menuButtonsFiltered]);
 
   return (
     <Dropdown
