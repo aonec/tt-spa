@@ -114,11 +114,6 @@ const Internal = () => {
                   component={TasksProfileContainer}
                   exact
                 />
-                <Redirect
-                  from="/tasks/list/Executing"
-                  to={initialTasksPath}
-                  exact
-                />
               </Route>
 
               <Route
