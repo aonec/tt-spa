@@ -72,7 +72,9 @@ export const BaseInfoStage = () => {
 
   const modelNameDebounced = fields.model.value;
 
-
+  const usingDataAttributes = (status: boolean) => {
+    return status ? { 'data-reading-input': 'current' } : {};
+  };
   const bottomDateFields = (
     <FormWrap>
       <FormItem label="Дата последней поверки прибора">
@@ -105,7 +107,7 @@ export const BaseInfoStage = () => {
               ? (e: any) => onKeyDown(e, 0)
               : null
           }
-          {...(!isReopen && { 'data-reading-input': 'current' })}
+          {...usingDataAttributes(!isReopen)}
         />
         <ErrorMessage>
           {fields.lastCheckingDate.errorText({
@@ -125,7 +127,7 @@ export const BaseInfoStage = () => {
               ? (e: any) => onKeyDown(e, 1)
               : null
           }
-          {...(!isReopen && { 'data-reading-input': 'current' })}
+          {...usingDataAttributes(!isReopen)}
         />
         <ErrorMessage>
           {fields.futureCheckingDate.errorText({
@@ -143,7 +145,7 @@ export const BaseInfoStage = () => {
         value={fields.rateType.value}
         onChange={(value) => value && fields.rateType.onChange(value as any)}
         onKeyDown={(e: any) => onKeyDown(e, 3)}
-        {...{ 'data-reading-input': 'current' }}
+        {...usingDataAttributes(true)}
       >
         <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
           Одна зона
@@ -165,7 +167,7 @@ export const BaseInfoStage = () => {
         value={fields.oldDeviceClosingReason.value || undefined}
         onChange={fields.oldDeviceClosingReason.onChange as any}
         onKeyDown={(e: any) => onKeyDown(e, 4)}
-        {...{ 'data-reading-input': 'current' }}
+        {...usingDataAttributes(true)}
       >
         {Object.entries(closingReasons).map(([key, elem]) => (
           <Select.Option value={key} key={key}>
@@ -233,7 +235,7 @@ export const BaseInfoStage = () => {
           name="serialNumber"
           value={fields.serialNumber.value}
           onKeyDown={(e: any) => onKeyDown(e, 0)}
-          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
+          {...usingDataAttributes(!(isReopen || isCheck))}
         />
         <ErrorMessage>
           {fields.serialNumber.errorText({
@@ -251,7 +253,7 @@ export const BaseInfoStage = () => {
           onChange={fields.model.onChange}
           options={modelNames?.map((elem) => ({ value: elem })) || []}
           onKeyDown={(e: any) => onKeyDown(e, 1)}
-          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
+          {...usingDataAttributes(!(isReopen || isCheck))}
         />
         <ErrorMessage>
           {fields.model.errorText({
@@ -301,7 +303,7 @@ export const BaseInfoStage = () => {
           onChange={fields.lastCommercialAccountingDate.onChange}
           placeholder="Введите дату"
           onKeyDown={(e: any) => onKeyDown(e, 2)}
-          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
+          {...usingDataAttributes(!(isReopen || isCheck))}
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
@@ -331,9 +333,7 @@ export const BaseInfoStage = () => {
               onChange={onChange}
               name="magneticSealTypeName"
               onKeyDown={(e: any) => onKeyDown(e, 11)}
-              {...(!(isCheck || isReopen) && {
-                'data-reading-input': 'current',
-              })}
+              {...usingDataAttributes(!(isReopen || isCheck))}
             />
           </Flex>
         </FormItem>
@@ -345,7 +345,7 @@ export const BaseInfoStage = () => {
             onChange={fields.magneticSealInstallationDate.onChange}
             placeholder="Введите дату"
             onKeyDown={(e: any) => onKeyDown(e, 12)}
-            {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
+            {...usingDataAttributes(!(isCheck || isReopen))}
           />
         </FormItem>
       </FormWrap>
@@ -358,7 +358,7 @@ export const BaseInfoStage = () => {
           value={fields.contractorId.value || void 0}
           placeholder="Выберите монтажную организацию"
           onKeyDown={(e: any) => onKeyDown(e, 13)}
-          {...(!(isCheck || isReopen) && { 'data-reading-input': 'current' })}
+          {...usingDataAttributes(!(isCheck || isReopen))}
         >
           {contractors?.map((elem) => (
             <StyledSelect.Option value={elem.id} key={elem.id}>
@@ -387,12 +387,21 @@ export const BaseInfoStage = () => {
         device={device}
         onKeyDowns={
           isSwitch
-            ? [(e: React.SyntheticEvent) => onKeyDown(e, 7), (e: React.SyntheticEvent) => onKeyDown(e, 8)]
+            ? [
+                (e: React.SyntheticEvent) => onKeyDown(e, 7),
+                (e: React.SyntheticEvent) => onKeyDown(e, 8),
+              ]
             : isCheck
-            ? [(e: React.SyntheticEvent) => onKeyDown(e, 2), (e: React.SyntheticEvent) => onKeyDown(e, 3)]
-            : [(e: React.SyntheticEvent) => onKeyDown(e, 0), (e: React.SyntheticEvent) => onKeyDown(e, 1)]
+            ? [
+                (e: React.SyntheticEvent) => onKeyDown(e, 2),
+                (e: React.SyntheticEvent) => onKeyDown(e, 3),
+              ]
+            : [
+                (e: React.SyntheticEvent) => onKeyDown(e, 0),
+                (e: React.SyntheticEvent) => onKeyDown(e, 1),
+              ]
         }
-        {...{ 'data-reading-input': 'current' }}
+        {...usingDataAttributes(true)}
       />
       <Space />
       <ReadingsInput
@@ -416,12 +425,21 @@ export const BaseInfoStage = () => {
         }}
         onKeyDowns={
           isSwitch
-            ? [(e: React.SyntheticEvent) => onKeyDown(e, 9), (e: React.SyntheticEvent) => onKeyDown(e, 10)]
+            ? [
+                (e: React.SyntheticEvent) => onKeyDown(e, 9),
+                (e: React.SyntheticEvent) => onKeyDown(e, 10),
+              ]
             : isCheck
-            ? [(e: React.SyntheticEvent) => onKeyDown(e, 4), (e: React.SyntheticEvent) => onKeyDown(e, 5)]
-            : [(e: React.SyntheticEvent) => onKeyDown(e, 2), (e: React.SyntheticEvent) => onKeyDown(e, 3)]
+            ? [
+                (e: React.SyntheticEvent) => onKeyDown(e, 4),
+                (e: React.SyntheticEvent) => onKeyDown(e, 5),
+              ]
+            : [
+                (e: React.SyntheticEvent) => onKeyDown(e, 2),
+                (e: React.SyntheticEvent) => onKeyDown(e, 3),
+              ]
         }
-        {...{ 'data-reading-input': 'current' }}
+        {...usingDataAttributes(true)}
       />
       <ErrorMessage>
         {fields.newDeviceReadings.errorText({
