@@ -87,8 +87,9 @@ const ModalCalculatorReportForm = ({
     }),
     onSubmit: async () => {
       const { nodeId, detail, resource } = values;
-      const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
-      const end = `${values.end.format('YYYY-MM-DD')}`;
+      const begin = values.begin.toISOString();
+      const end = values.end.endOf('day').toISOString();
+      console.log(`${end}`);
       const shortLink = `Reports/${
         withNs ? `ReportWithNs` : 'Report'
       }?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
@@ -251,9 +252,9 @@ const ModalCalculatorReportForm = ({
             allowClear={false}
             value={[values.begin, values.end]}
             placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event: any) => {
-              setFieldValue('begin', event[0]);
-              setFieldValue('end', event[1]);
+            onChange={(event) => {
+              setFieldValue('begin', event?.[0]);
+              setFieldValue('end', event?.[1]);
             }}
             disabled={values.customPeriodDisabled}
           />
