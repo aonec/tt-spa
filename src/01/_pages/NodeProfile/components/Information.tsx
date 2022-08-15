@@ -48,10 +48,9 @@ const Information = ({ node, task = false }: HeaderInterface) => {
         <ListItem>
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
-            {getHousingStockAddress(address, true)}
             <Tooltip title={additionalAdress}>
               <AdditionalAddressDescription>
-                {additionalAdress}
+                {getHousingStockAddress(address, true)}
               </AdditionalAddressDescription>
             </Tooltip>
           </Subtitle>
