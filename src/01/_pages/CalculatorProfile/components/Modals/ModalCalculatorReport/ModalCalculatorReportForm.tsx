@@ -89,7 +89,7 @@ const ModalCalculatorReportForm = ({
       const { nodeId, detail, resource } = values;
       const begin = values.begin.toISOString();
       const end = values.end.endOf('day').toISOString();
-      console.log(`${end}`);
+      
       const shortLink = `Reports/${
         withNs ? `ReportWithNs` : 'Report'
       }?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
