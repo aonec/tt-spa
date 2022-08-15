@@ -32,7 +32,7 @@ const ModalCalculatorReportForm = ({
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
   const { model, serialNumber, address, nodes } = device;
-  const { number, street } = address || {};
+  const { number, street } = address?.address?.mainAddress || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 

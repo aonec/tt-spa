@@ -38,7 +38,9 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     setVisible(false);
   };
 
-  const { city, street, number } = object;
+  const street = object?.address?.mainAddress?.street;
+  const number = object?.address?.mainAddress?.number;
+
   const reportName = `Сводный_отчёт_${street}_${number}.xlsx`;
   const addressString = getHousingStockAddress(object, true);
 
