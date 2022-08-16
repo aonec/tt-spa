@@ -10,7 +10,7 @@ import {
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { Tooltip } from 'antd';
-import { AdditionalAddress } from './Header.styled';
+import { AdditionalAddress, MainAddressWrapper } from './Header.styled';
 import { fullAddressesString } from 'utils/additionalAddressesString';
 
 interface HeaderInterface {
@@ -83,7 +83,8 @@ export const Header = ({
       ]
     : null;
 
-    const additionalAdress = fullAddressesString(address);
+  const { additionalAddress, mainAddress } = fullAddressesString(address);
+  const fullAddress = `${mainAddress}, ${additionalAddress}`;
 
   return (
     <HeaderWrap
@@ -98,8 +99,11 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
         <Subtitle to={`/objects/${id}`}>
-        <Tooltip title={additionalAdress}>
-            <AdditionalAddress>{additionalAdress}</AdditionalAddress>
+          <Tooltip title={fullAddress}>
+            <AdditionalAddress>
+              <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>
+              {additionalAddress}
+            </AdditionalAddress>
           </Tooltip>
         </Subtitle>
       </div>
