@@ -2,8 +2,10 @@ import axiosHttpClient from 'axios';
 import { createEvent, createStore } from 'effector';
 
 const baseURL = process.env.REACT_APP_API_URL;
+console.log(process.env);
 
 axiosHttpClient.defaults.baseURL = baseURL;
+
 
 axiosHttpClient.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
