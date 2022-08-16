@@ -1,7 +1,7 @@
 import { getReport } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
 
-export function downloadReport(link: string) {
-  getReport(link).then((response: any) => {
+export function downloadReport(link: string, params: any) {
+  getReport(link, params).then((response: any) => {
     const fileNameWithJunk = response.headers['content-disposition'].split(';');
     const encodedFileName = fileNameWithJunk[2].split("'")[2];
     const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');

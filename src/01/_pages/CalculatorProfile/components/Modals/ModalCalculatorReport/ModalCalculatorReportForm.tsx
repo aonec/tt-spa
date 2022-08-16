@@ -16,9 +16,10 @@ import {
   StyledModalBody,
 } from '../../../../../tt-components';
 import { getReport } from './apiCalculatorReport';
-import { CalculatorResponse } from '../../../../../../myApi';
+import { CalculatorResponse, EReportType } from '../../../../../../myApi';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { ModalCalculatorReportFormT } from './ModalCalculatorReport.types';
 
 interface ModalCalculatorReportFormInterface {
   device: CalculatorResponse;
@@ -72,7 +73,13 @@ const ModalCalculatorReportForm = ({
 
   const resources = _.keys(filteredGroup);
 
-  const { handleSubmit, values, touched, errors, setFieldValue } = useFormik({
+  const {
+    handleSubmit,
+    values,
+    touched,
+    errors,
+    setFieldValue,
+  } = useFormik<ModalCalculatorReportFormT>({
     initialValues: {
       period: 'lastSevenDays',
       detail: 'daily',
@@ -87,14 +94,21 @@ const ModalCalculatorReportForm = ({
     }),
     onSubmit: async () => {
       const { nodeId, detail, resource } = values;
-      const begin = values.begin.toISOString();
-      const end = values.end.endOf('day').toISOString();
-      
-      const shortLink = `Reports/${
-        withNs ? `ReportWithNs` : 'Report'
-      }?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const begin = values.begin.toISOString(true);
+      const end = values.end.endOf('day').toISOString(true);
 
-      getReport(shortLink).then((response: any) => {
+      const shortLink = `Reports/${withNs ? `ReportWithNs` : 'Report'}`;
+      if (!nodeId) {
+        return null;
+      }
+      const params = {
+        NodeId: nodeId,
+        ReportType: detail as EReportType,
+        From: begin,
+        To: end,
+      };
+
+      getReport(shortLink, params).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
           ';'
         );
