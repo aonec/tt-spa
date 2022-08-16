@@ -47,6 +47,9 @@ export const ObjectProfile = () => {
   const apartmentId = useStore(outputs.apartmentId);
   const setApartmentId = useEvent(inputs.setApartmentId);
 
+  const isApartmentsLoading = state?.apartments?.loading;
+  const apartments = state?.apartments?.items || [];
+
   useEffect(() => {
     setLoading(true);
     Promise.all([
@@ -132,9 +135,10 @@ export const ObjectProfile = () => {
               onClick={(id) =>
                 push(`/objects/${housingStockId}/apartments/${id}`)
               }
-              {...state?.apartments}
               apartmentId={apartmentId}
               setApartmentId={setApartmentId}
+              loading={isApartmentsLoading}
+              items={apartments}
             />
           </Route>
 

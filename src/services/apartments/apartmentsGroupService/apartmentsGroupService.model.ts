@@ -2,10 +2,11 @@ import { createDomain } from 'effector';
 
 const domain = createDomain('apartmentsGroupService');
 
-const apartmentId = domain.createStore<number | null>(null);
 const setApartmentId = domain.createEvent<number | null>();
+const apartmentId = domain
+  .createStore<number | null>(null)
+  .on(setApartmentId, (_, id) => id);
 
-apartmentId.on(setApartmentId, (_, id) => id);
 
 export const apartmentsGroupService = {
   inputs: { setApartmentId },
