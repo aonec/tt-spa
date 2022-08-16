@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { StopIcon } from 'ui-kit/icons';
 
-export const BlueStopIcon = styled(StopIcon)`
+export const IconWrapper = styled.div<{ color?: string }>`
   path {
-    fill: #189ee9;
+    ${({ color }) => `fill: ${color};`}
   }
 `;

@@ -62,11 +62,11 @@ export const ObjectProfile = () => {
 
         return (
           <AlertWrapper>
-            <Alert type="blueStop">
+            <Alert type="stop" iconColor="#189ee9">
               <AlertContent>
                 <div>
-                  На объекте отключение ресурса {resourceName}, тип: {disconnectionType},
-                  до {entDate}
+                  На объекте отключение ресурса {resourceName}, тип:{' '}
+                  {disconnectionType}, до {entDate}
                 </div>
                 <InvisibleContextMenuButton />
               </AlertContent>
