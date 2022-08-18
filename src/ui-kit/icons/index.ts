@@ -31,9 +31,12 @@ import { ReactComponent as XIcon } from './svg/x.svg';
 import { ReactComponent as MapIcon } from './svg/map.svg';
 import { ReactComponent as NumberIcon } from './svg/number.svg';
 import { ReactComponent as CalendarIcon } from './svg/calendar.svg';
+import { ReactComponent as MoreIcon } from './svg/more.svg';
 import { ReactComponent as CalculatorIcon } from './svg/calculator.svg';
 
 export {
+  MoreIcon,
+  StopIcon,
   CalculatorIcon,
   CalendarIcon,
   NumberIcon,
@@ -45,7 +48,6 @@ export {
   HistoryIcon,
   SwitchIcon,
   InfoIcon,
-  StopIcon,
   WarningIcon,
   ColdWaterSupplyIcon,
   HotWaterSupplyIcon,
