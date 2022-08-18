@@ -101,7 +101,7 @@ export function useOnEnterSwitch(amount: number, difference?: number) {
   const lastRef = refs[refs.length - 1];
   const refWithoutDisabled = refs.slice(
     0,
-    (amount -= difference !== undefined ? difference : 0)
+    (amount -= difference || 0)
   );
 
   
