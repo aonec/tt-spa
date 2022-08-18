@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CalendarIcon, MapIcon, UserIcon } from 'ui-kit/icons';
+import { CalendarIcon, MapIcon, TimerIcon, UserIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
   min-width: 850px;
@@ -130,3 +130,9 @@ export const CalendarIconSC = styled(CalendarIcon)`
 export const UserIconSC = styled(UserIcon)`
   margin-left: 10px;
 `;
+
+export const RedTimerIcon = styled(TimerIcon)`
+  path {
+    fill: #FC525B;
+  }
+`

@@ -16,15 +16,14 @@ import Tabs from '../../tt-components/Tabs';
 import { Alert } from '01/shared/ui/Alert/Alert';
 import { AlertContent, AlertWrapper } from './objectProfileService.styled';
 import { objectProfileService } from './objectProfileService.model';
-import { useStore } from 'effector-react';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
 import moment from 'moment';
-import { EResourceDisconnectingType } from 'myApi';
 import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
+import { useEvent, useStore } from 'effector-react';
 
 export const ObjectContext = React.createContext();
 
-const { gates, outputs } = objectProfileService;
+const { gates, outputs, inputs } = objectProfileService;
 const { ObjectProfileIdGate } = gates;
 
 function reducer(state, action) {
@@ -40,6 +39,7 @@ function reducer(state, action) {
 
 export const ObjectProfile = () => {
   const { housingStockId } = useParams();
+
   const path = `/objects/${housingStockId}`;
   const [state, dispatch] = React.useReducer(reducer, {});
 
@@ -76,6 +76,11 @@ export const ObjectProfile = () => {
       }),
     [disconnections]
   );
+  const apartmentId = useStore(outputs.$apartmentId);
+  const setApartmentId = useEvent(inputs.setApartmentId);
+
+  const isApartmentsLoading = state?.apartments?.loading;
+  const apartments = state?.apartments?.items || [];
 
   useEffect(() => {
     setLoading(true);
@@ -125,6 +130,7 @@ export const ObjectProfile = () => {
       key: 'apartments',
       cb: () => {
         push(`${path}/apartments`);
+        setApartmentId(null);
       },
     },
     {
@@ -159,15 +165,18 @@ export const ObjectProfile = () => {
               </div>
             </Route>
 
-            <Route path="/objects/(\\d+)/apartments" exact>
-              <Apartments
-                path="/objects/(\\d+)/apartments"
-                onClick={(id) =>
-                  push(`/objects/${housingStockId}/apartments/${id}`)
-                }
-                {...state?.apartments}
-              />
-            </Route>
+          <Route path="/objects/(\\d+)/apartments" exact>
+            <Apartments
+              path="/objects/(\\d+)/apartments"
+              onClick={(id) =>
+                push(`/objects/${housingStockId}/apartments/${id}`)
+              }
+              apartmentId={apartmentId}
+              setApartmentId={setApartmentId}
+              loading={isApartmentsLoading}
+              items={apartments}
+            />
+          </Route>
 
             <Route path="/objects/(\\d+)/devices" exact>
               <Devices nodes={nodes} />

@@ -33,9 +33,11 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
       type: EReportType.Daily,
     },
     onSubmit: ({ from, to, type }) => {
+      const toDate = to?.endOf('day').toISOString(true);
+
       handleSubmit({
         from: from?.toISOString(true),
-        to: to?.toISOString(true),
+        to: toDate,
         type,
       });
     },
@@ -49,7 +51,13 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
           <RangePicker
             value={[values.from, values.to]}
             format="DD.MM.YYYY"
-            disabledDate={(date) => moment().diff(date, 'days') <= 0}
+            disabledDate={(date) => {
+              const currentDate = moment().startOf('day');
+              const pickerDate = date.startOf('day');
+              const diff = currentDate.diff(pickerDate, 'days');
+
+              return diff < 0;
+            }}
             onChange={(dateRange) => {
               setFieldValue('from', dateRange?.[0] || null);
               setFieldValue('to', dateRange?.[1] || null);
