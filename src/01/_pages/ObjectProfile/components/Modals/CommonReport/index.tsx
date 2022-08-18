@@ -66,9 +66,11 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
 
       const calculatorsString = ids?.join('&');
 
-      const link = `Reports/ConsolidatedReport?${calculatorsString}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+      const link = `Reports/ConsolidatedReport?${calculatorsString}`;
 
-      downloadReport(link);
+      const params = { ReportType: values.detailing, From: begin, To: end };
+
+      downloadReport(link, params);
     };
 
     const onFinishFailed = (errorInfo: any) => {};

@@ -1251,11 +1251,6 @@ export enum EExpiresCheckingDateAt {
   Past = "Past",
 }
 
-export enum EExportExecutingIndividualDeviceCheckTaskType {
-  IndividualDeviceCheck = "IndividualDeviceCheck",
-  IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
-}
-
 export enum EHouseCategory {
   Living = "Living",
   NonResidential = "NonResidential",
@@ -1504,6 +1499,12 @@ export enum EReportType {
 export enum EResourceDisconnectingOrderRule {
   StartDate = "StartDate",
   EndDate = "EndDate",
+}
+
+export enum EResourceDisconnectingStatus {
+  Future = "Future",
+  Active = "Active",
+  Past = "Past",
 }
 
 export enum EResourceDisconnectingType {
@@ -2672,6 +2673,7 @@ export interface ImportLogResponseSuccessApiResponse {
 export interface ImportResultResponse {
   isValid: boolean;
   importLogs: string[] | null;
+  importWarnings: string[] | null;
   importErrors: string[] | null;
 }
 
@@ -10390,6 +10392,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Resource?: EResourceType;
         DisconnectingType?: EResourceDisconnectingType;
         OrderRule?: EResourceDisconnectingOrderRule;
+        HousingStockId?: number;
+        Status?: EResourceDisconnectingStatus;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -11114,46 +11118,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Tasks/ExportLite`,
         method: "GET",
         query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksExportExecutingIndividualDeviceCheckTasksList
-     * @summary TasksExecute
-     * @request GET:/api/Tasks/ExportExecutingIndividualDeviceCheckTasks
-     * @secure
-     */
-    tasksExportExecutingIndividualDeviceCheckTasksList: (
-      query?: { taskType?: EExportExecutingIndividualDeviceCheckTaskType },
-      params: RequestParams = {},
-    ) =>
-      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTasks`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Фоновый рабочий</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksExportExecutingIndividualDeviceCheckTaskFiltersList
-     * @summary TasksRead
-     * @request GET:/api/Tasks/ExportExecutingIndividualDeviceCheckTaskFilters
-     * @secure
-     */
-    tasksExportExecutingIndividualDeviceCheckTaskFiltersList: (params: RequestParams = {}) =>
-      this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTaskFilters`,
-        method: "GET",
         secure: true,
         format: "json",
         ...params,

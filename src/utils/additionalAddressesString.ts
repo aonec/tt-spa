@@ -5,6 +5,7 @@ export const fullAddressesString = (
 ) => {
   const additionalAddresses = address?.address?.additionalAddresses || [];
 
+
   return additionalAddresses
     .map((elem, i) => {
       if (i === 0) {
@@ -18,8 +19,14 @@ export const fullAddressesString = (
       } else {
        return `${elem.street}, ${elem.number}`;
       }
+
     })
     .join('; ');
+
+  return {
+    mainAddress: mainAddressText,
+    additionalAddress: additionalAddressesText,
+  };
 };
 
 export const additionalAddressesString = (
@@ -35,6 +42,7 @@ export const additionalAddressesString = (
         }, ${elem?.street}, ${elem.number}${
           elem.corpus ? `, к.${elem.corpus}` : ''
         }`;
+
       } else {
         return `${elem.street}, ${elem.number}`;
       }

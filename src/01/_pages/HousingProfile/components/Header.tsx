@@ -9,8 +9,11 @@ import {
 } from '../../../tt-components/localBases';
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
 import { Tooltip } from 'antd';
-import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { fullAddressesString } from 'utils/additionalAddressesString';
+import {
+  AdditionalAddress,
+  MainAddressWrapper,
+} from '01/_pages/CalculatorProfile/components/Header.styled';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -64,34 +67,38 @@ export const Header = ({
     },
   ];
 
-  const additionalAdress = fullAddressesString(address);
+  const { additionalAddress, mainAddress } = fullAddressesString(address);
+  const fullAddress = `${mainAddress}, ${additionalAddress}`;
 
   return (
-      <HeaderWrap
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          <Title>
-            <IconTT
-              icon={resource?.toLowerCase()}
-              size="24"
-              style={{ marginRight: 8 }}
-            />
-            {`${model} (${serialNumber})`}
-          </Title>
+    <HeaderWrap
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <div>
+        <Title>
+          <IconTT
+            icon={resource?.toLowerCase()}
+            size="24"
+            style={{ marginRight: 8 }}
+          />
+          {`${model} (${serialNumber})`}
+        </Title>
 
-          <Subtitle to={`/objects/${id}`}>
-            <Tooltip title={additionalAdress}>
-              <AdditionalAddress>{additionalAdress}</AdditionalAddress>
-            </Tooltip>
-          </Subtitle>
-        </div>
+        <Subtitle to={`/objects/${id}`}>
+          <Tooltip title={fullAddress}>
+            <AdditionalAddress>
+              <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>
+              {additionalAddress}
+            </AdditionalAddress>
+          </Tooltip>
+        </Subtitle>
+      </div>
 
-        <MenuButtonTT menuButtonArr={menuButtonArr} />
-      </HeaderWrap>
+      <MenuButtonTT menuButtonArr={menuButtonArr} />
+    </HeaderWrap>
   );
 };
 
