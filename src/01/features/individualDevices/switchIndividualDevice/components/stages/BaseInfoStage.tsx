@@ -10,7 +10,7 @@ import { AutoComplete, Form, message, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -54,8 +54,22 @@ export const BaseInfoStage = () => {
     SwitchIndividualDeviceGate.state.map(({ type }) => type)
   );
 
-  const error = (error: string) => {
-    message.error(`${error} не может быть раньше текущей`);
+  type Error = {
+    [key: string]: string;
+  };
+  const errors: Error | void = useMemo(
+    () => ({
+      lastCheckingDate: 'Дата последней поверки прибора',
+      lastCommercialAccountingDate: 'Дата ввода в эксплуатацию',
+      magneticSealInstallationDate: 'Дата установки пломбы',
+    }),
+    []
+  );
+
+  const getDateError = (type: string) => {
+    message.error(
+      `${errors[type as keyof typeof errors]} не может быть раньше текущей`
+    );
   };
 
   const isCheck = type === 'check';
@@ -99,7 +113,7 @@ export const BaseInfoStage = () => {
             );
             moment(moment.utc(incomingValue).format()).isAfter(
               moment.utc(moment.utc()).format()
-            ) && error('Дата последней поверки прибора');
+            ) && getDateError('lastCheckingDate');
           }}
           value={fields.lastCheckingDate.value}
         />
@@ -282,7 +296,7 @@ export const BaseInfoStage = () => {
             fields.lastCommercialAccountingDate.onChange(value);
             moment(moment.utc(value).format()).isAfter(
               moment.utc(moment.utc()).format()
-            ) && error('Дата ввода в эксплуатацию');
+            ) && getDateError('lastCommercialAccountingDate');
           }}
           placeholder="Введите дату"
         />
@@ -322,10 +336,10 @@ export const BaseInfoStage = () => {
             disabled={isCheck || isReopen}
             value={fields.magneticSealInstallationDate.value}
             onChange={(value) => {
-              fields.magneticSealInstallationDate.onChange(value)
+              fields.magneticSealInstallationDate.onChange(value);
               moment(moment.utc(value).format()).isAfter(
                 moment.utc(moment.utc()).format()
-              ) && error('Дата установки пломбы');
+              ) && getDateError('magneticSealInstallationDate');
             }}
             placeholder="Введите дату"
           />
