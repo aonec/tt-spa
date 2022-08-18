@@ -4,6 +4,7 @@ import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
 } from 'myApi';
+import { apartmentsGroupService } from 'services/apartments/apartmentsGroupService';
 import { fetchResourceDisconnectionOnHousingStock } from './objectProfileService.api';
 
 const domain = createDomain('objectProfileService');
@@ -30,8 +31,12 @@ forward({
 });
 
 export const objectProfileService = {
+  inputs: {
+    setApartmentId: apartmentsGroupService.inputs.setApartmentId,
+  },
   outputs: {
     $resourceDisconnections,
+    $apartmentId: apartmentsGroupService.outputs.apartmentId,
   },
   gates: {
     ObjectProfileIdGate,
