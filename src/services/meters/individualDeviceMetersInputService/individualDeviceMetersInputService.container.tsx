@@ -49,7 +49,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const previousReadingByCurrentSliderIndex = useMemo(
     () =>
       device.readings &&
-      getExistingReading(device.readings, sliderIndex - 2, 'prev'),
+      getExistingReading(device.readings, sliderIndex, 'prev'),
     [device.readings, sliderIndex]
   );
 
@@ -93,107 +93,115 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   }, [managementFirmConsumptionRates, device]);
 
   const handleUploadReading: UploadReading = useCallback(
-    async (
-      readingPayload: MeterInputUploadReadingPayload,
-      isPrevious?: boolean,
-      setFailed?: () => void
-    ) => {
-      const result = validateReadings(
-        isPrevious ? sliderIndex : -1,
-        deviceRateNum,
-        readingPayload,
-        consumptionRate,
-        preparedReadingsData
-      );
+    (readingPayload: MeterInputUploadReadingPayload, isPrevious?: boolean) => {
+      return new Promise((resolve, rej) => {
+        const result = validateReadings(
+          isPrevious ? sliderIndex : -1,
+          deviceRateNum,
+          readingPayload,
+          consumptionRate,
+          preparedReadingsData
+        );
 
-      const sendMeter = () =>
-        uploadMeter({
-          meter: { ...readingPayload, deviceId: device.id },
-          sliderIndex: readingPayload.sliderIndex,
-          meterId: readingPayload.meterId,
-        });
+        const reject = () => {
+          rej(result);
+        };
 
-      if (result.type === ValidationReadingsResultType.Success) {
-        return void sendMeter();
-      }
+        const sendMeter = () => {
+          uploadMeter({
+            meter: { ...readingPayload, deviceId: device.id },
+            sliderIndex: readingPayload.sliderIndex,
+            meterId: readingPayload.meterId,
+          });
+          resolve();
+        };
 
-      if (result.type === ValidationReadingsResultType.EmptyValues) {
-        const meterId = readingPayload.meterId;
+        if (result.type === ValidationReadingsResultType.Success) {
+          return void sendMeter();
+        }
 
-        const readingMonth = moment(readingPayload.readingDate).format('MMMM');
+        if (result.type === ValidationReadingsResultType.EmptyValues) {
+          const meterId = readingPayload.meterId;
 
-        return void openConfirmReadingModal({
-          title: (
-            <>
-              Вы точно хотите удалить показание за <b>{readingMonth}</b> на
-              приборе <b>{device.serialNumber}</b> ({device.model})?
-            </>
-          ),
-          onSubmit: () =>
-            meterId &&
-            deleteMeter({
-              deviceId: device.id,
-              meterId: meterId,
-              readingDate: readingPayload.readingDate,
-            }),
-          onCancel: setFailed,
-        });
-      }
+          const readingMonth = moment(readingPayload.readingDate).format(
+            'MMMM'
+          );
 
-      if (
-        result.type === ValidationReadingsResultType.CompareProblem &&
-        result.compareStatus === CompareReadingsStatus.RightLess
-      ) {
-        const text = `Введенное показание по прибору ${device.serialNumber} (${
-          device.model
-        }) больше следующего на T${result.valueIndex! + 1}: ${
-          result.compareDiff
-        } ${unit}`;
+          openConfirmReadingModal({
+            title: (
+              <>
+                Вы точно хотите удалить показание за <b>{readingMonth}</b> на
+                приборе <b>{device.serialNumber}</b> ({device.model})?
+              </>
+            ),
+            onSubmit: () => {
+              meterId &&
+                deleteMeter({
+                  deviceId: device.id,
+                  meterId: meterId,
+                  readingDate: readingPayload.readingDate,
+                });
+              resolve();
+            },
+            onCancel: reject,
+          });
+        }
 
-        message.error(text);
+        if (
+          result.type === ValidationReadingsResultType.CompareProblem &&
+          result.compareStatus === CompareReadingsStatus.RightLess
+        ) {
+          const text = `Введенное показание по прибору ${
+            device.serialNumber
+          } (${device.model}) больше следующего на T${
+            result.valueIndex! + 1
+          }: ${result.compareDiff} ${unit}`;
 
-        throw result;
-      }
+          message.error(text);
 
-      if (
-        result.type === ValidationReadingsResultType.CompareProblem &&
-        result.compareStatus === CompareReadingsStatus.LeftGreater
-      ) {
-        return void openConfirmReadingModal({
-          title: (
-            <>
-              Введенное показание по прибору <b>{device.serialNumber}</b> (
-              {device.model}) меньше предыдущего на T{result.valueIndex! + 1}:{' '}
-              <b>
-                {result.compareDiff} {unit}
-              </b>
-            </>
-          ),
-          onSubmit: sendMeter,
-          onCancel: setFailed,
-        });
-      }
+          return reject();
+        }
 
-      if (result.type === ValidationReadingsResultType.LimitsExcess) {
-        return void openConfirmReadingModal({
-          title: (
-            <>
-              Расход{' '}
-              <b>
-                {result.limitsConsumptionDiff}
-                {unit}
-              </b>{' '}
-              по T{result.valueIndex! + 1} больше, чем лимит{' '}
-              <b>
-                {result.limit}
-                {unit}
-              </b>
-            </>
-          ),
-          onSubmit: sendMeter,
-          onCancel: setFailed,
-        });
-      }
+        if (
+          result.type === ValidationReadingsResultType.CompareProblem &&
+          result.compareStatus === CompareReadingsStatus.LeftGreater
+        ) {
+          return void openConfirmReadingModal({
+            title: (
+              <>
+                Введенное показание по прибору <b>{device.serialNumber}</b> (
+                {device.model}) меньше предыдущего на T{result.valueIndex! + 1}:{' '}
+                <b>
+                  {result.compareDiff} {unit}
+                </b>
+              </>
+            ),
+            onSubmit: sendMeter,
+            onCancel: reject,
+          });
+        }
+
+        if (result.type === ValidationReadingsResultType.LimitsExcess) {
+          return void openConfirmReadingModal({
+            title: (
+              <>
+                Расход{' '}
+                <b>
+                  {result.limitsConsumptionDiff}
+                  {unit}
+                </b>{' '}
+                по T{result.valueIndex! + 1} больше, чем лимит{' '}
+                <b>
+                  {result.limit}
+                  {unit}
+                </b>
+              </>
+            ),
+            onSubmit: sendMeter,
+            onCancel: reject,
+          });
+        }
+      });
     },
     [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
   );
