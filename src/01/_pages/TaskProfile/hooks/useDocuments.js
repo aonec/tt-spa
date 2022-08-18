@@ -19,7 +19,7 @@ export const useDocuments = ({ documents = null }, pageDispatch) => {
   React.useEffect(() => {
     const { deleteId } = state;
     if (deleteId) {
-      deleteDoc(taskId, deleteId).then((deleteId) => {
+      deleteDoc( deleteId).then((deleteId) => {
         dispatch({ type: 'success', deleteId });
       });
     }
