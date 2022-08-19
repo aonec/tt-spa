@@ -22,7 +22,7 @@ const $uploadingMetersStatuses = domain.createStore<{
   [deviceId: number]: {
     [sliderIndex: number]: MetersInputBlockStatus;
   };
-}>({}); 
+}>({});
 
 const uploadMeterFx = domain.createEffect<
   UploadMeterPayload,
@@ -142,6 +142,8 @@ export const individualDeviceMetersInputService = {
     openConfirmReadingModal,
     uploadMeter,
     deleteMeter,
+    uploadMeterFx,
+    deleteMeterFx,
   },
   outputs: {
     $uploadingMetersStatuses,

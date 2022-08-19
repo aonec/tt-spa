@@ -1,5 +1,5 @@
-import { deviceMeterLineGridTemplate } from 'services/meters/apartmentIndividualDevicesMetersService/view/ApartmentIndividualDevicesMeters/ApartmentIndividualDevicesMeters.styled';
 import styled from 'styled-components';
+import { deviceMeterLineGridTemplate } from 'services/meters/apartmentIndividualDevicesMetersService/view/ApartmentIndividualDevicesMeters/ApartmentIndividualDevicesMeters.styled';
 
 export const Wrapper = styled.div`
   padding: 10px 0 10px 10px;

@@ -67,6 +67,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
       {!isLoading &&
         individualDevicesList.map((device, index) => (
           <IndividualDeviceMetersInputContainer
+            devices={individualDevicesList}
             sliderIndex={sliderIndex}
             device={device}
             deviceIndex={index}

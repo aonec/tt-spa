@@ -64,6 +64,7 @@ function useUpPage() {
 
   return {
     fastUp() {
+      console.log('fastUp');
       window.scrollTo(0, 0);
     },
     slowUp: () => {

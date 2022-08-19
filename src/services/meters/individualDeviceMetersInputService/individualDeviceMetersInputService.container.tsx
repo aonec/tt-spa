@@ -3,6 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceReadingsResponse } from 'myApi';
 import React, { FC, useCallback, useMemo } from 'react';
+import { ApartmentIndividualDevicesMeters } from '../apartmentIndividualDevicesMetersService/view/ApartmentIndividualDevicesMeters';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -18,6 +19,7 @@ import {
   getPreparedReadingsDictionary,
   validateReadings,
 } from './individualDeviceMetersInputService.utils';
+import { ApartmentIndividualDeviceMetersInputLine } from './view/ApartmentIndividualDeviceMetersInputLine';
 import { IndividualDeviceMetersInputLine } from './view/IndividualDeviceMetersInputLine';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 
@@ -29,8 +31,9 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   sliderIndex,
   openReadingsHistoryModal: openReadingsHistoryModalById,
   managementFirmConsumptionRates,
+  isHousingStocksReadingInputs,
+  devices,
 }) => {
-  const devices = useStore(outputs.$devices);
   const uploadingMetersDevicesStatuses = useStore(
     outputs.$uploadingMetersStatuses
   );
@@ -206,8 +209,14 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
   );
 
+  const ReadingLineComponent = useMemo(() => {
+    return isHousingStocksReadingInputs
+      ? ApartmentIndividualDeviceMetersInputLine
+      : IndividualDeviceMetersInputLine;
+  }, [isHousingStocksReadingInputs]);
+
   return (
-    <IndividualDeviceMetersInputLine
+    <ReadingLineComponent
       inputIndex={inputIndex}
       openReadingsHistoryModal={openReadingsHistoryModal}
       sliderIndex={sliderIndex}

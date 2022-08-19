@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
 import { List } from 'react-virtualized';
-import { HouseReadingLine } from '../DeviceReadingLine/HouseReadingLine';
 import { HouseReadingsHeader } from '../HouseReadingsHeader/HouseReadingsHeader';
 import { EResourceType, IndividualDeviceListItemResponse } from 'myApi';
 import HouseBanner from './HouseBanner';
@@ -31,6 +30,7 @@ import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
+import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 
@@ -67,28 +67,16 @@ const HousesDevices: React.FC = () => {
     device: IndividualDeviceListItemResponse,
     index: number
   ) => (
-    <HouseReadingLine
-      disabled={pendingDevices}
-      sliderIndex={sliderIndex || 0}
-      numberOfPreviousReadingsInputs={devices
-        .slice(0, index)
-        .reduce(
-          (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
-          0
-        )}
-      key={device.id + 'f'}
+    <IndividualDeviceMetersInputContainer
+      devices={devices}
       device={device}
+      sliderIndex={sliderIndex || 0}
+      openReadingsHistoryModal={() => {}}
       managementFirmConsumptionRates={managementFirmConsumptionRates}
+      deviceIndex={index}
+      isHousingStocksReadingInputs
     />
   );
-
-  const renderDeviceRow = ({ key, index, style }: any) => {
-    return (
-      <div key={key} style={style}>
-        {renderDevice(devices[index]!, index)}
-      </div>
-    );
-  };
 
   const deviceElems = devices.map(renderDevice);
 
@@ -112,16 +100,6 @@ const HousesDevices: React.FC = () => {
     };
   }, []);
 
-  const getHeight = () => {
-    const getDeviceHeight = (_: any, index: number) => {
-      const num = getIndividualDeviceRateNumByName(devices[index]?.rateType);
-
-      return 100 + (num - 1) * 40;
-    };
-
-    return devices.map(getDeviceHeight).reduce((acc, elem) => acc + elem, 0);
-  };
-
   return (
     <div id="individual-devices-on-home-tabs" ref={elementRef as any}>
       <TopButton />
@@ -137,19 +115,7 @@ const HousesDevices: React.FC = () => {
       {!!deviceElems.length && (
         <HouseReadingsHeader sliderProps={sliderProps} />
       )}
-      <List
-        rowCount={devices.length}
-        rowHeight={({ index }) => {
-          const num = getIndividualDeviceRateNumByName(
-            devices[index]?.rateType
-          );
-
-          return 100 + (num - 1) * 40;
-        }}
-        rowRenderer={renderDeviceRow}
-        height={getHeight()}
-        width={956}
-      />
+      {devices?.map(renderDevice)}
       <Space />
       {!isAllDevicesDone && (
         <ButtonTT
