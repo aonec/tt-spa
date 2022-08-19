@@ -8,6 +8,7 @@ export const SettingsPageContainer = () => {
   const handleReassingInspector = useEvent(
     settingsService.inputs.reassingInspector
   );
+
   return (
     <>
       <ReassingInspectorModalContainer />

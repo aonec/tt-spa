@@ -100,7 +100,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const apartmentSearch = (index: number) => (
     <InputSC
-      placeholder="Квартира"
+      placeholder="Квартирa"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
       ref={refs[index]}

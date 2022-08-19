@@ -8,6 +8,8 @@ import * as s from '01/r_comp';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Icon } from '01/shared/ui/Icon';
+import _ from 'lodash';
+import { AllResourcesIcon } from 'ui-kit/icons';
 
 const styles = css`
   h {
@@ -71,8 +73,12 @@ const styles = css`
 `;
 
 export const Header = React.memo(
-  ({ title = '', name = '', timeline = null, timer = null, state }) =>
-    styled(
+  ({ title = '', name = '', timeline = null, timer = null, state }) => {
+    const devices = state?.individualDevices || [];
+    const allDevicesResource = devices.map((device) => device.resource);
+    const isUniq = _.uniq(allDevicesResource).length === 1;
+
+    return styled(
       styles,
       s.time_line
     )(
@@ -81,10 +87,14 @@ export const Header = React.memo(
         <Flex>
           {state?.type === 'IndividualDeviceCheck' && (
             <>
-              <Icon
-                name={state?.individualDevice?.resource}
-                style={{ transform: 'scale(1.4)' }}
-              />
+              {isUniq ? (
+                <Icon
+                  name={state?.individualDevice?.resource}
+                  style={{ transform: 'scale(1.4)' }}
+                />
+              ) : (
+                <AllResourcesIcon />
+              )}
               <Space w={10} />
             </>
           )}
@@ -113,5 +123,6 @@ export const Header = React.memo(
           </timer>
         )}
       </h>
-    )
+    );
+  }
 );
