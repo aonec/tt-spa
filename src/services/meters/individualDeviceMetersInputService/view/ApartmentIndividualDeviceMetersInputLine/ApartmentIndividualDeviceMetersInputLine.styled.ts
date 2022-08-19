@@ -28,4 +28,12 @@ export const DeviceInfoWrapper = styled.div`
   }
 `;
 
-export const ConsumptionWrapper = styled.div``;
+export const ConsumptionWrapper = styled.div`
+  transform: translateY(-8px);
+
+  .consumption-value {
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+`;

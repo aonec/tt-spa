@@ -4,6 +4,7 @@ import {
 } from '01/features/housingStocks/displayHousingStock/models';
 import { getIndividualDevices } from '01/_api/individualDevices';
 import { combine, forward, guard, sample } from 'effector';
+import { individualDeviceMetersInputService } from 'services/meters/individualDeviceMetersInputService';
 import {
   $individualDevices,
   $isAllDevicesDone,
@@ -91,3 +92,33 @@ $pagedIndividualDevices
     (prevElems, { items: nextElems }) => [...prevElems, ...nextElems]
   )
   .reset(HousingStockGate.state);
+
+$pagedIndividualDevices
+  .on(
+    individualDeviceMetersInputService.inputs.uploadMeterFx.done,
+    (state, { params, result }) => {
+      return state.map((device) => {
+        if (device.id !== params.meter.deviceId) return device;
+
+        const filteredReadings =
+          device.readings?.filter(({ id }) => params.meterId !== id) || [];
+
+        return {
+          ...device,
+          readings: [...filteredReadings, result],
+        };
+      });
+    }
+  )
+  .on(
+    individualDeviceMetersInputService.inputs.deleteMeterFx.done,
+    (state, { params: { deviceId, meterId } }) =>
+      state.map((device) => {
+        if (device.id !== deviceId) return device;
+
+        return {
+          ...device,
+          readings: device.readings?.filter(({ id }) => id !== meterId) || [],
+        };
+      })
+  );

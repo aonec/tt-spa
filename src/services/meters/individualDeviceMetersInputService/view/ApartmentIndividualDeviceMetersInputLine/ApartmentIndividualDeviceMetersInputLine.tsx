@@ -99,7 +99,9 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
       />
       <ConsumptionWrapper>
         {consumptionValues?.map((value, index) => (
-          <div key={index}>{value}</div>
+          <div className="consumption-value" key={index}>
+            {value}
+          </div>
         ))}
       </ConsumptionWrapper>
     </Wrapper>
