@@ -23,7 +23,7 @@ export const usePanel = (
       !panelLoading && pageDispatch({ type: 'push_stage', data: state });
     },
     disabled: panelLoading,
-      // isDisabled(state, panel.actions ?? {}) || panelLoading || isObserver,
+    // isDisabled(state, panel.actions ?? {}) || panelLoading || isObserver,
     loading: panelLoading,
   };
   return {

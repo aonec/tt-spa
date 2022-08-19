@@ -4,7 +4,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
@@ -226,7 +226,7 @@ export const Panel = ({
       {AddDocuments && !EmailNotify && (
         <>
           <UploadButton {...upload.button} />
-          <UploadList {...upload.list} />
+          <UploadList {...upload.list} clearList={upload.clear} />
         </>
       )}
 
