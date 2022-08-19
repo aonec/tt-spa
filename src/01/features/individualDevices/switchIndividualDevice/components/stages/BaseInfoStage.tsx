@@ -235,7 +235,7 @@ export const BaseInfoStage = () => {
       <Flex>
         <FormItem label="Разрядность">
           <InputTT
-            disabled
+            disabled={isCheck || isReopen}
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
@@ -251,7 +251,7 @@ export const BaseInfoStage = () => {
         <Space />
         <FormItem label="Множитель">
           <InputTT
-            disabled
+            disabled={isCheck || isReopen}
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
