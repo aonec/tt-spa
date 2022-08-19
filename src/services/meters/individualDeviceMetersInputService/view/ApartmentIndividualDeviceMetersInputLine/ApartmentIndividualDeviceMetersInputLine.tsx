@@ -1,5 +1,6 @@
 import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
+import { HistoryIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { getPreviousMeterTooltipTitle } from '../IndividualDeviceMetersInputLine/individualDeviceMetersInputLine.utils';
@@ -104,6 +105,13 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
           </div>
         ))}
       </ConsumptionWrapper>
+      <div></div>
+      <Tooltip title="История показаний" className="device-option">
+        <HistoryIcon
+          onClick={openReadingsHistoryModal}
+          style={{ cursor: 'pointer' }}
+        />
+      </Tooltip>
     </Wrapper>
   );
 };

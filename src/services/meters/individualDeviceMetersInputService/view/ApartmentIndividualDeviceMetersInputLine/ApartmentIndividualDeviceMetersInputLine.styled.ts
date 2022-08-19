@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const apartmentIndividualDeviceMetersInputLineGridTemplate = `35px 190px 160px 160px 100px 47px 30px`;
+export const apartmentIndividualDeviceMetersInputLineGridTemplate = `35px 190px 160px 160px 100px 180px 30px`;
 
 export const Wrapper = styled.div`
   padding: 10px 0 10px 10px;

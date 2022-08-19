@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
-import { List } from 'react-virtualized';
 import { HouseReadingsHeader } from '../HouseReadingsHeader/HouseReadingsHeader';
 import { EResourceType, IndividualDeviceListItemResponse } from 'myApi';
 import HouseBanner from './HouseBanner';
-import { getIndividualDeviceRateNumByName } from '../../MeterDevices/ApartmentReadings';
 import {
   $isAllDevicesDone,
   $pagedIndividualDevices,
@@ -31,6 +29,7 @@ import {
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
 import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
+import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 
@@ -63,6 +62,8 @@ const HousesDevices: React.FC = () => {
     house?.managingFirmId
   );
 
+  const handleOpenReadingsHistoryModal = useEvent(openReadingsHistoryModal);
+
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
     index: number
@@ -71,7 +72,7 @@ const HousesDevices: React.FC = () => {
       devices={devices}
       device={device}
       sliderIndex={sliderIndex || 0}
-      openReadingsHistoryModal={() => {}}
+      openReadingsHistoryModal={handleOpenReadingsHistoryModal}
       managementFirmConsumptionRates={managementFirmConsumptionRates}
       deviceIndex={index}
       isHousingStocksReadingInputs
