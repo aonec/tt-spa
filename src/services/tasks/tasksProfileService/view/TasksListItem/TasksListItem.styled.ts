@@ -11,10 +11,6 @@ export const TaskItemWrapper = styled.div`
   transition: 0.2s;
   cursor: pointer;
 
-  &:first-child {
-    margin-top: 0px;
-  }
-
   &:hover {
     border-color: #11043319;
     box-shadow: 0 4px 12px rgba(0, 0, 20, 0.16);
@@ -64,7 +60,7 @@ export const DeviceInfoWrapper = styled.div`
 export const InfoBlockWrapper = styled.div`
   display: flex;
   align-items: center;
-  
+
   svg:nth-child(1) {
     margin-left: 0px !important;
   }
@@ -133,6 +129,12 @@ export const UserIconSC = styled(UserIcon)`
 
 export const RedTimerIcon = styled(TimerIcon)`
   path {
-    fill: #FC525B;
+    fill: #fc525b;
   }
-`
+`;
+
+export const Wrapper = styled.div`
+  &:first-child {
+    margin-top: 0px;
+  }
+`;
