@@ -3,7 +3,6 @@ import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceReadingsResponse } from 'myApi';
 import React, { FC, useCallback, useMemo } from 'react';
-import { ApartmentIndividualDevicesMeters } from '../apartmentIndividualDevicesMetersService/view/ApartmentIndividualDevicesMeters';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
