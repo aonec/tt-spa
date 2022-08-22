@@ -295,27 +295,27 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Flex>
             <InputTT
-              disabled={isCheck || isReopen}
+              disabled={isCheck }
               placeholder="Номер пломбы"
-              value={fields.magneticSealTypeName.value}
+              value={fields.sealNumber.value}
               onChange={onChange}
-              name="magneticSealTypeName"
+              name="sealNumber"
             />
           </Flex>
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            disabled={isCheck || isReopen}
-            value={fields.magneticSealInstallationDate.value}
-            onChange={fields.magneticSealInstallationDate.onChange}
+            disabled={isCheck }
+            value={fields.sealInstallationDate.value}
+            onChange={fields.sealInstallationDate.onChange}
             placeholder="Введите дату"
           />
         </FormItem>
       </FormWrap>
       <FormItem label="Монтажная организация">
         <StyledSelect
-          disabled={isCheck || isReopen}
+          disabled={isCheck }
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }

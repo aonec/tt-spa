@@ -205,8 +205,8 @@ sample({
             getIndividualDeviceRateNumByName(values.rateType)
           )
       ),
-      sealInstallationDate: values.magneticSealInstallationDate,
-      sealNumber: values.magneticSealTypeName,
+      sealInstallationDate: values.sealInstallationDate,
+      sealNumber: values.sealNumber,
       oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
     })
   ),
