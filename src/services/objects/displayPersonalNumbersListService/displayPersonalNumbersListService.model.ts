@@ -1,15 +1,23 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentListResponse, ApartmentListResponsePagedList } from 'myApi';
+import { ApartmentListResponsePagedList } from 'myApi';
 import { GetApartmentsListRequestPayload } from '../displayApartmentsListService/displayApartmentsListService.types';
 import { getApartments } from './displayPersonalNumbersListService.api';
 
 const domain = createDomain('displayPersonalNumbersListService');
 
-const $apartments = domain.createStore<ApartmentListResponse[]>([]);
-const clearApartments = domain.createEvent();
+const $apartmentsListPage = domain.createStore<ApartmentListResponsePagedList | null>(
+  null
+);
+const $apartments = $apartmentsListPage.map(
+  (apartmentsResponse) => apartmentsResponse?.items || []
+);
+const $filters = domain.createStore<GetApartmentsListRequestPayload | null>(
+  null
+);
 
+const setPageNumber = domain.createEvent<number>();
 const searchPersonalNumbers = domain.createEvent<GetApartmentsListRequestPayload>();
 const getApartmentsListByPersonalNumber = domain.createEffect<
   GetApartmentsListRequestPayload,
@@ -18,33 +26,51 @@ const getApartmentsListByPersonalNumber = domain.createEffect<
 
 const $isLoading = getApartmentsListByPersonalNumber.pending;
 
+const clearStores = domain.createEvent();
+
 const SearchPersonalNumberGate = createGate();
 
-$apartments
+$apartmentsListPage
   .on(
     getApartmentsListByPersonalNumber.doneData,
-    (_, apartmentsResponse) => apartmentsResponse.items || []
+    (_, apartmentsResponse) => apartmentsResponse || []
   )
-  .reset(clearApartments);
+  .reset(clearStores);
 
-forward({
-  from: searchPersonalNumbers,
-  to: getApartmentsListByPersonalNumber,
+$filters
+  .on(searchPersonalNumbers, (_, formFilter) => ({
+    ...formFilter,
+    PageNumber: 1,
+  }))
+  .on(setPageNumber, (oldFilters, PageNumber) => ({
+    ...oldFilters,
+    PageNumber,
+  }))
+  .reset(clearStores);
+
+sample({
+  clock: guard({
+    clock: $filters,
+    filter: Boolean,
+  }),
+  target: getApartmentsListByPersonalNumber,
 });
 
 forward({
   from: SearchPersonalNumberGate.close,
-  to: clearApartments,
+  to: clearStores,
 });
 
 export const displayPersonalNumbersListService = {
   inputs: {
     searchPersonalNumbers,
+    setPageNumber,
   },
   outputs: {
     $apartments,
     $cities: $existingCities,
     $isLoading,
+    $apartmentsListPage,
   },
   gates: {
     SearchPersonalNumberGate,

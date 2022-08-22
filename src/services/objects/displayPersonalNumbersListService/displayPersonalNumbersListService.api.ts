@@ -5,4 +5,4 @@ import { GetApartmentsListRequestPayload } from '../displayApartmentsListService
 export const getApartments = (
   params: GetApartmentsListRequestPayload
 ): Promise<ApartmentListResponsePagedList> =>
-  axios.get('Apartments', { params });
+  axios.get('Apartments', { params: { ...params, PageSize: 30 } });
