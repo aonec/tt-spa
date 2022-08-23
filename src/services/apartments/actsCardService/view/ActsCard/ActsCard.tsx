@@ -36,7 +36,7 @@ export const ActsCard: FC<ActsCardProps> = ({
         to={`/objects/${housingStockId}/apartments/${apartmentid}/actsJournal`}
       >
         <DocumentIconSC />
-        Показать все документы
+        Показать все акты
       </MoreDocumentsLink>
     </Wrapper>
   );

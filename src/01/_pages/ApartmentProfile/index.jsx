@@ -78,7 +78,6 @@ const ApartmentProfile = () => {
         <Route path="/objects/:id/apartments/:apartmentId" exact>
           <div>
             <Information
-              style={{ paddingTop: '32px' }}
               square={square}
               numberOfLiving={numberOfLiving}
               normativeNumberOfLiving={normativeNumberOfLiving}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ListItem, ListItemDescription, ListItemValue } from '../ListItem';
 import { Title } from '../Title';
+import { Wrapper } from './Information.styled';
 
 export const Information = (props) => {
   // Пустышка для mapProps
@@ -30,15 +31,15 @@ export const Information = (props) => {
   const list = descriptions.map((value, index) => (
     <ListItem key={index}>
       <ListItemDescription>{descriptions[index]}</ListItemDescription>
-      <ListItemValue>{mapProps[index] || "—"}</ListItemValue>
+      <ListItemValue>{mapProps[index] || '—'}</ListItemValue>
     </ListItem>
   ));
 
   return (
-    <div style={{ paddingTop: '32px' }}>
+    <Wrapper>
       <Title size="24">Информация</Title>
       {list}
-    </div>
+    </Wrapper>
   );
 };
 

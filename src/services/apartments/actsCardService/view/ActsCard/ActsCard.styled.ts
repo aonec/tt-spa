@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   padding: 14px 16px;
   box-shadow: 0 4px 4px rgba(0, 0, 20, 0.16);
   border-radius: 4px;
-  max-width: 300px;
+  width: 100%;
   min-width: 200px;
 `;
 

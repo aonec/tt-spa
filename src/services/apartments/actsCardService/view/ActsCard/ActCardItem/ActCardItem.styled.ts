@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   margin-top: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #dcdee4;
+  width: 100%;
 `;
 
 export const NumberWrapper = styled.div`
