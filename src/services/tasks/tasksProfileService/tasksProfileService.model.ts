@@ -1,7 +1,16 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { TaskGroupingFilter, TasksPagedList } from 'myApi';
-import { $taskTypes, $housingManagments } from '../taskTypesService/taskTypesService.model';
+import {
+  ESecuredIdentityRoleName,
+  TaskGroupingFilter,
+  TasksPagedList,
+} from 'myApi';
+import { currentUserService } from 'services/currentUserService';
+import {
+  $taskTypes,
+  $housingManagments,
+  $perpetratorIdStore,
+} from '../taskTypesService/taskTypesService.model';
 import { getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
 import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
@@ -31,6 +40,18 @@ const searchTasksFx = domain.createEffect<
 >(getTasks);
 
 const $isLoading = searchTasksFx.pending;
+
+const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
+  const roles = user?.roles || [];
+  const rolesKeys = roles.map(({ key }) => key);
+  const isSpectator =
+    rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
+    rolesKeys.includes(
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+    );
+
+  return isSpectator;
+});
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
@@ -76,7 +97,7 @@ export const tasksProfileService = {
     changePageNumber,
     extendedSearchClosed,
     extendedSearchOpened,
-    clearFilters
+    clearFilters,
   },
   outputs: {
     $taskTypes,
@@ -84,7 +105,9 @@ export const tasksProfileService = {
     $searchState,
     $tasksPagedData,
     $isExtendedSearchOpen,
-    $housingManagments
+    $housingManagments,
+    $perpetratorIdStore,
+    $isSpectator,
   },
   gates: {
     TasksIsOpen,

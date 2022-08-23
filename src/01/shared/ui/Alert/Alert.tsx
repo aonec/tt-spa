@@ -3,13 +3,20 @@ import styled from 'styled-components';
 import { InfoIcon, StopIcon, WarningIcon } from 'ui-kit/icons';
 import { Flex } from '../Layout/Flex';
 import { Space } from '../Layout/Space/Space';
+import { IconWrapper } from './Alert.styled';
 
 interface Props {
   type?: 'info' | 'stop' | 'warning';
   color?: string;
+  iconColor?: string;
 }
 
-export const Alert: React.FC<Props> = ({ children, type = 'info', color }) => {
+export const Alert: React.FC<Props> = ({
+  children,
+  type = 'info',
+  color,
+  iconColor,
+}) => {
   const icons = {
     info: InfoIcon,
     stop: StopIcon,
@@ -20,7 +27,9 @@ export const Alert: React.FC<Props> = ({ children, type = 'info', color }) => {
 
   return (
     <AlertWrap color={color}>
-      <Icon />
+      <IconWrapper color={iconColor}>
+        <Icon />
+      </IconWrapper>
       <Space />
       <Wide>{children}</Wide>
     </AlertWrap>

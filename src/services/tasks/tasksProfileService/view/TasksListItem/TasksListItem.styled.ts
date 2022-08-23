@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CalendarIcon, MapIcon, UserIcon } from 'ui-kit/icons';
+import { CalendarIcon, MapIcon, TimerIcon, UserIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
   min-width: 850px;
@@ -10,10 +10,6 @@ export const TaskItemWrapper = styled.div`
   color: #272f5a;
   transition: 0.2s;
   cursor: pointer;
-
-  &:first-child {
-    margin-top: 0px;
-  }
 
   &:hover {
     border-color: #11043319;
@@ -64,7 +60,7 @@ export const DeviceInfoWrapper = styled.div`
 export const InfoBlockWrapper = styled.div`
   display: flex;
   align-items: center;
-  
+
   svg:nth-child(1) {
     margin-left: 0px !important;
   }
@@ -129,4 +125,16 @@ export const CalendarIconSC = styled(CalendarIcon)`
 
 export const UserIconSC = styled(UserIcon)`
   margin-left: 10px;
+`;
+
+export const RedTimerIcon = styled(TimerIcon)`
+  path {
+    fill: #fc525b;
+  }
+`;
+
+export const Wrapper = styled.div`
+  &:first-child {
+    margin-top: 0px;
+  }
 `;
