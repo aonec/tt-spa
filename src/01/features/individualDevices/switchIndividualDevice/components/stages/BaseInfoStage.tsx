@@ -295,7 +295,7 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Flex>
             <InputTT
-              disabled={isCheck }
+              disabled={isCheck}
               placeholder="Номер пломбы"
               value={fields.sealNumber.value}
               onChange={onChange}
@@ -306,7 +306,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            disabled={isCheck }
+            disabled={isCheck}
             value={fields.sealInstallationDate.value}
             onChange={fields.sealInstallationDate.onChange}
             placeholder="Введите дату"
@@ -315,7 +315,7 @@ export const BaseInfoStage = () => {
       </FormWrap>
       <FormItem label="Монтажная организация">
         <StyledSelect
-          disabled={isCheck }
+          disabled={isCheck}
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }
