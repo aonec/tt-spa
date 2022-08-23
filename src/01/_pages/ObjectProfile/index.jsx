@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'reshadow/macro';
-import { Route, useParams, useHistory } from 'react-router-dom';
+import { Route, useParams, useHistory, Link } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
@@ -13,8 +13,18 @@ import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
+import { Alert } from '01/shared/ui/Alert/Alert';
+import { AlertContent, AlertWrapper } from './objectProfileService.styled';
+import { objectProfileService } from './objectProfileService.model';
+import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
+import moment from 'moment';
+import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
+import { useEvent, useStore } from 'effector-react';
 
 export const ObjectContext = React.createContext();
+
+const { gates, outputs, inputs } = objectProfileService;
+const { ObjectProfileIdGate } = gates;
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -29,6 +39,7 @@ function reducer(state, action) {
 
 export const ObjectProfile = () => {
   const { housingStockId } = useParams();
+
   const path = `/objects/${housingStockId}`;
   const [state, dispatch] = React.useReducer(reducer, {});
 
@@ -38,6 +49,38 @@ export const ObjectProfile = () => {
   const [nodes, setNodes] = useState();
   const [object, setObject] = useState();
   const [loading, setLoading] = useState(false);
+
+  const disconnections = useStore(outputs.$resourceDisconnections);
+
+  const disconnectionsAlert = useMemo(
+    () =>
+      disconnections.map((disconnection) => {
+        const resourceName = actResourceNamesLookup[disconnection.resource];
+        const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
+
+        const disconnectionType = disconnection.disconnectingType.description;
+
+        return (
+          <AlertWrapper>
+            <Alert type="stop" iconColor="#189ee9">
+              <AlertContent>
+                <div>
+                  На объекте отключение ресурса {resourceName}, тип:{' '}
+                  {disconnectionType}, до {entDate}
+                </div>
+                <InvisibleContextMenuButton />
+              </AlertContent>
+            </Alert>
+          </AlertWrapper>
+        );
+      }),
+    [disconnections]
+  );
+  const apartmentId = useStore(outputs.$apartmentId);
+  const setApartmentId = useEvent(inputs.setApartmentId);
+
+  const isApartmentsLoading = state?.apartments?.loading;
+  const apartments = state?.apartments?.items || [];
 
   useEffect(() => {
     setLoading(true);
@@ -87,6 +130,7 @@ export const ObjectProfile = () => {
       key: 'apartments',
       cb: () => {
         push(`${path}/apartments`);
+        setApartmentId(null);
       },
     },
     {
@@ -100,6 +144,7 @@ export const ObjectProfile = () => {
 
   return styled(grid)(
     <>
+      <ObjectProfileIdGate objectId={Number(housingStockId)} />
       <ObjectContext.Provider value={context}>
         <GoBack />
         <Header
@@ -109,13 +154,16 @@ export const ObjectProfile = () => {
           object={object}
         />
         <Tabs tabItems={tabItems} tabsType={'route'} />
+
         <grid>
-          <Route path="/objects/(\\d+)" exact>
-            <div>
-              <Information {...info} />
-              <MapObject object={object} />
-            </div>
-          </Route>
+          <div>
+            <Route path="/objects/(\\d+)" exact>
+              {disconnectionsAlert}
+              <div>
+                <Information {...info} />
+                <MapObject object={object} />
+              </div>
+            </Route>
 
           <Route path="/objects/(\\d+)/apartments" exact>
             <Apartments
@@ -123,13 +171,17 @@ export const ObjectProfile = () => {
               onClick={(id) =>
                 push(`/objects/${housingStockId}/apartments/${id}`)
               }
-              {...state?.apartments}
+              apartmentId={apartmentId}
+              setApartmentId={setApartmentId}
+              loading={isApartmentsLoading}
+              items={apartments}
             />
           </Route>
 
-          <Route path="/objects/(\\d+)/devices" exact>
-            <Devices nodes={nodes} />
-          </Route>
+            <Route path="/objects/(\\d+)/devices" exact>
+              <Devices nodes={nodes} />
+            </Route>
+          </div>
 
           <Events title="События с объектом" {...events} />
         </grid>

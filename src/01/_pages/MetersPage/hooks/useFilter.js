@@ -50,22 +50,40 @@ export function useAutocomplete(street, streets) {
         )
       : null;
 
-  const matchesArray =
-    matches?.ratings
-      .filter((value) => {
-        const wordsInStreetName = value.target.toUpperCase().split(' ');
+  const matchesRating = matches?.ratings || [];
 
-        return wordsInStreetName.reduce(
-          (acc, elem) => acc || elem.startsWith(street.toUpperCase()),
-          false
-        );
-      })
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ target }) => ({ value: target })) || [];
+  const matchesArrayFilteredByWords = matchesRating.filter((value) => {
+    const formatedSearchString = street.toUpperCase();
+    const formatedStreetString = value.target.toUpperCase();
 
-  const match = matchesArray[0]?.value;
+    const wordsInStreetName = formatedStreetString.split(' ');
 
-  const options = matchesArray?.length && street ? [matchesArray[0]] : [];
+    return wordsInStreetName.some((elem) =>
+      elem.startsWith(formatedSearchString)
+    );
+  });
+
+  const matchesArrayFilteredByFullString = matchesRating.filter((value) => {
+    const formatedSearchString = street.toUpperCase();
+    const formatedStreetString = value.target.toUpperCase();
+
+    const isRequestStringSimilarToStreet = formatedStreetString.includes(
+      formatedSearchString
+    );
+
+    return isRequestStringSimilarToStreet;
+  });
+  const matchesArray = matchesArrayFilteredByWords.length
+    ? matchesArrayFilteredByWords
+    : matchesArrayFilteredByFullString;
+
+  const preparedMatchesArray = matchesArray
+    .sort((a, b) => b.rating - a.rating)
+    .map(({ target }) => ({ value: target }));
+  const match = preparedMatchesArray[0]?.value;
+
+  const options =
+    preparedMatchesArray?.length && street ? [preparedMatchesArray[0]] : [];
 
   return {
     match,
@@ -73,7 +91,6 @@ export function useAutocomplete(street, streets) {
     bestMatch: options[0]?.value,
   };
 }
-
 
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
@@ -142,10 +159,7 @@ export const useFilter = () => {
     callback();
   };
 
-  const { options, bestMatch } = useAutocomplete(
-    state.street,
-    streets
-  );
+  const { options, bestMatch } = useAutocomplete(state.street, streets);
 
   const cities = useStore($existingCities);
 
