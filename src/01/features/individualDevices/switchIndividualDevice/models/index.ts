@@ -93,10 +93,10 @@ export const addIndividualDeviceForm = createForm({
       init: null as EResourceType | null,
       rules: [{ name: 'required', validator: Boolean }],
     },
-    magneticSealInstallationDate: {
+    sealInstallationDate: {
       init: null as null | string,
     },
-    magneticSealTypeName: {
+    sealNumber: {
       init: null as null | string,
     },
     contractorId: {
