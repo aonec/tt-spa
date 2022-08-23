@@ -13,8 +13,6 @@ import { Tabs } from './components/Tabs';
 import Owners from './components/Owners';
 import { Header, Tags, Information } from './components';
 
-import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
-
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 import { useAsync } from '../../hooks/useAsync';
@@ -22,6 +20,8 @@ import { useAsync } from '../../hooks/useAsync';
 import { ApartmentGate } from '01/features/apartments/displayApartment/models';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
+import { ActsCardContainer } from 'services/apartments/actsCardService';
+import { CardsWrapper } from './ApartmentProfile.styled';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -51,9 +51,6 @@ const ApartmentProfile = () => {
   grid-template-columns: 8fr 4fr;
   padding-bottom: 40px;
 `;
-  // Получили список задач
-  const tasksList = tasks.items;
-
   // Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
   const {
     apartmentNumber,
@@ -88,10 +85,9 @@ const ApartmentProfile = () => {
             />
             <Owners homeownerAccounts={homeownerAccounts} />
           </div>
-
-          <div>
-            <Tasks tasksList={tasksList} />
-          </div>
+          <CardsWrapper>
+            <ActsCardContainer />
+          </CardsWrapper>
         </Wrapper>
       </Route>
     </>
