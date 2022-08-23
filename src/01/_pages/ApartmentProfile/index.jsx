@@ -26,6 +26,7 @@ import { CardsWrapper } from './ApartmentProfile.styled';
 const ApartmentProfile = () => {
   const params = useParams();
   const apartmentId = params[1];
+  const housingStockId = params[0];
 
   const { data, status, run } = useAsync();
 
@@ -47,8 +48,7 @@ const ApartmentProfile = () => {
   if (status === 'loading') return <Loader show size="32" />;
 
   const Wrapper = styledComponents.div`
-  display: grid;
-  grid-template-columns: 8fr 4fr;
+  display: flex;
   padding-bottom: 40px;
 `;
   // Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
@@ -67,15 +67,15 @@ const ApartmentProfile = () => {
       <Header apartment={apartment} />
 
       <Tabs />
-      <Route path="/*/:apartmentId/testimony" exact>
-        <ApartmentDevices devices={devices} />
-      </Route>
+      <Wrapper>
+        <Route path="/*/:apartmentId/testimony" exact>
+          <ApartmentDevices devices={devices} />
+        </Route>
 
-      <Route path="/*/:apartmentId/actsJournal" exact>
-        <ApartmentActsListContainer />
-      </Route>
-      <Route path="/objects/:id/apartments/:apartmentId" exact>
-        <Wrapper>
+        <Route path="/*/:apartmentId/actsJournal" exact>
+          <ApartmentActsListContainer />
+        </Route>
+        <Route path="/objects/:id/apartments/:apartmentId" exact>
           <div>
             <Information
               style={{ paddingTop: '32px' }}
@@ -85,11 +85,14 @@ const ApartmentProfile = () => {
             />
             <Owners homeownerAccounts={homeownerAccounts} />
           </div>
-          <CardsWrapper>
-            <ActsCardContainer />
-          </CardsWrapper>
-        </Wrapper>
-      </Route>
+        </Route>
+        <CardsWrapper>
+          <ActsCardContainer
+            apartmentId={apartmentId}
+            housingStockId={housingStockId}
+          />
+        </CardsWrapper>
+      </Wrapper>
     </>
   );
 };

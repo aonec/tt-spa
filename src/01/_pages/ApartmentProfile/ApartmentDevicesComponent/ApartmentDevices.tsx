@@ -28,9 +28,11 @@ export const ApartmentDevices = ({
   return (
     <ApartmentDevicesContext.Provider value={items}>
       {
-        <>
+        <div>
           <Header
-            devicesCount={items.filter((elem) => elem.closingDate).length as any}
+            devicesCount={
+              items.filter((elem) => elem.closingDate).length as any
+            }
             showClosed={showClosed}
             setShowClosed={setShowClosed as any}
             slider={
@@ -49,7 +51,7 @@ export const ApartmentDevices = ({
             sliderIndex={sliderIndex}
             showClosed={showClosed}
           />
-        </>
+        </div>
       }
     </ApartmentDevicesContext.Provider>
   );

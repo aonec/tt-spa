@@ -4,6 +4,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
+import { MonthWrapper } from './Header.styled';
 interface HeaderInterface {
   slider: React.ReactElement;
   showClosed: boolean;
@@ -35,15 +36,15 @@ export function Header({
       </Flex>
       <div>Статус</div>
       {slider}
-      <div style={{ paddingLeft: '90px' }}>{getPreviousReadingsMonth(-1)}</div>
+      <MonthWrapper>{getPreviousReadingsMonth(-1)}</MonthWrapper>
     </HeaderWrap>
   );
 }
 
 const HeaderWrap = styled.div`
   display: grid;
-  grid-template-columns: 380px 110px 190px 170px 2.2fr;
-  grid-gap: 15px;
+  grid-template-columns: 375px 100px 145px 145px 2.2fr;
+  grid-gap: 10px;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
   align-items: center;

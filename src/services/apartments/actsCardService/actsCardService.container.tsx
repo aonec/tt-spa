@@ -1,15 +1,17 @@
 import { ApartmentActTypesGate } from '01/features/actsJournal/displayActTypes/models';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { FC } from 'react';
+import { ActsCardContainerProps } from './actsCardContainer.types';
 import { actsCardService } from './actsCardService.model';
 import { ActsCard } from './view/ActsCard';
 
 const { gates, inputs, outputs } = actsCardService;
 const { ActsCardGate } = gates;
 
-export const ActsCardContainer = () => {
-  const { id, apartmentId } = useParams<{ id: string; apartmentId: string }>();
+export const ActsCardContainer: FC<ActsCardContainerProps> = ({
+  apartmentId,
+  housingStockId,
+}) => {
   const acts = useStore(outputs.$acts);
   const actTypes = useStore(outputs.$actTypes);
 
@@ -24,7 +26,7 @@ export const ActsCardContainer = () => {
         actTypes={actTypes || []}
         handleSaveFile={handleSaveFile}
         apartmentid={apartmentId}
-        housingStockId={id}
+        housingStockId={housingStockId}
       />
     </>
   );

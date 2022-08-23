@@ -9,6 +9,10 @@ export const Wrapper = styled.div`
 export const NumberWrapper = styled.div`
   color: #272f5ab2;
   font-size: 12px;
+
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const ActWrapper = styled.div`
