@@ -10,6 +10,7 @@ export const NumberWrapper = styled.div`
   color: #272f5ab2;
   font-size: 12px;
 
+  overflow-y: hidden;
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -19,7 +20,9 @@ export const ActWrapper = styled.div`
   color: #272f5a;
   font-size: 14px;
   font-weight: 400;
+  margin-top: 4px;
 
+  overflow-y: hidden;
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -29,6 +32,7 @@ export const BottomInfoWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 4px;
 `;
 
 export const LinkWrapper = styled.div`

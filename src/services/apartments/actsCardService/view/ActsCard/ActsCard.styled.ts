@@ -24,6 +24,7 @@ export const MoreDocumentsLink = styled(Link)`
   align-items: center;
 
   overflow-x: hidden;
+  overflow-y: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
