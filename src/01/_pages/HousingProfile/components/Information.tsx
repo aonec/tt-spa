@@ -48,10 +48,9 @@ export const Information = ({ device }: InformationInterface) => {
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          {getHousingStockAddress(address, true)}
           <Tooltip title={additionalAdress}>
             <AdditionalAddressDescription>
-              {additionalAdress}
+              {getHousingStockAddress(address, true)}
             </AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>

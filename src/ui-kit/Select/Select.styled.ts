@@ -19,6 +19,15 @@ export const Select = styled(AntSelect)`
     padding: 0 28px !important;
   }
 
+  .ant-select-clear {
+    padding: 0px 28px !important;
+    height: 30%;
+    line-height: 10px !important;
+    .anticon {
+      line-height: 10px !important;
+    }
+  }
+
   .ant-select-item {
     margin: 0 !important;
     padding: 0 !important;

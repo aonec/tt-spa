@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { InputSC } from '01/shared/ui/Fields';
-import { ExtendedSearchTypes } from './SearchTasks.types';
+import { InputSC, StyledAutocomplete } from '01/shared/ui/Fields';
+import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
 import { StyledForm } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
   FormItem,
@@ -13,8 +13,20 @@ import {
   StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
 } from './SearchTasks.styled';
-import { axios } from '01/axios';
-import { GuidStringDictionaryItem, HousingStockFilterResponse } from 'myApi';
+import {
+  EManagingFirmTaskFilterType,
+  EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  EResourceType,
+  ETaskEngineeringElement,
+  EStageTimeStatus,
+} from 'myApi';
+import {
+  EngineeringElementLookUp,
+  ResourceLookUp,
+  TimeStatusesLookUp,
+} from '../../tasksProfileService.types';
+import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 
 const { Option } = Select;
 
@@ -22,33 +34,93 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
   setFieldValue,
   values,
   taskTypes,
-  housingManagments
+  housingManagments,
+  perpetrators,
+  streets,
+  cities,
 }) => {
+  const { match: streetMatch, options } = useAutocomplete(
+    values.Street,
+    streets
+  );
+
+  const taskCategories: taskCategotiesProps = {
+    All: Object.keys(
+      EManagingFirmTaskFilterType
+    ) as Partial<EManagingFirmTaskFilterType>[],
+    Node: [
+      EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
+      EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
+      EManagingFirmTaskFilterType.CalculatorLackOfConnection,
+      EManagingFirmTaskFilterType.MeasurementErrorAny,
+    ],
+    IndividualDevice: [
+      EManagingFirmTaskFilterType.IndividualDeviceCheck,
+      EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck,
+      EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings,
+    ],
+    HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
+  };
+
+  const TaskCategory =
+    taskCategories[
+      (values?.EngineeringElement as keyof taskCategotiesProps) || 'All'
+    ];
+
+  useEffect(() => {
+    setFieldValue('ApartmentNumber', null);
+    if (!values?.TaskType) return;
+    if (!TaskCategory.includes(values?.TaskType)) {
+      setFieldValue('TaskType', null);
+    }
+  }, [values.EngineeringElement]);
+
+  const isValueExists = values?.EngineeringElement
+    ? Object.values(
+        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
+      )
+    : [];
+
+  const FilteredTaskTypes = useMemo(() => {
+    if (!taskTypes) return [];
+    if (isValueExists.length === 0) return taskTypes;
+    return taskTypes.filter(
+      (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
+        if (!el.key) return true;
+        return isValueExists.includes(el.key);
+      }
+    );
+  }, [values?.EngineeringElement, taskTypes]);
 
   return (
     <StyledForm id="searchForm">
       <StyledContainerAdressSection>
         <FormItem>
-          <label>Город: </label>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.City']", value.target.value)
-            }
-            value=""
+          <label>Город:</label>
+          <SelectSC
             placeholder="Город"
-            disabled
-          />
+            value={values.City}
+            onChange={(value) => setFieldValue('City', value)}
+          >
+            {cities &&
+              cities.map((el) => {
+                return <Option value={el}>{el}</Option>;
+              })}
+          </SelectSC>
         </FormItem>
 
         <FormItem>
           <label>Улица: </label>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.Street']", value.target.value)
-            }
-            value=""
+          <StyledAutocomplete
             placeholder="Улица"
-            disabled
+            value={values.Street}
+            onChange={(value) => setFieldValue('Street', value.toString())}
+            onKeyDown={(e) => {
+              fromEnter(() => {
+                if (values.Street) setFieldValue('Street', streetMatch);
+              })(e);
+            }}
+            options={options}
           />
         </FormItem>
 
@@ -56,26 +128,19 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
           <label>Дом: </label>
           <InputSC
             onChange={(value) =>
-              setFieldValue(
-                "['Filter.Address.HousingStockNumber']",
-                value.target.value
-              )
+              setFieldValue('HousingStockNumber', value.target.value)
             }
-            value=""
+            value={values.HousingStockNumber}
             placeholder="Дом"
-            disabled
           />
         </FormItem>
 
         <FormItem>
           <label>Корпус: </label>
           <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.Corpus']", value.target.value)
-            }
-            value=""
+            onChange={(value) => setFieldValue('Corpus', value.target.value)}
+            value={values.Corpus}
             placeholder="Корпус"
-            disabled
           />
         </FormItem>
         <FormItem>
@@ -83,44 +148,57 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             <label>Кв: </label>
             <Tooltip
               placement="topRight"
-              title={`Поиск по квартире будет доступен только при выборе типов задач "Проверка ИПУ" и "Отсутствие показаний ИПУ"`}
+              title={`Поиск по квартире будет доступен только при выборе элемента инженерной сети "Индивидуальный прибор учета"`}
             >
               <QuestionCircleOutlined width={14} height={14} />
             </Tooltip>
           </StyledTooltiContainer>
           <InputSC
             onChange={(value) =>
-              setFieldValue("['Filter.Address.Corpus']", value.target.value)
+              setFieldValue('ApartmentNumber', value.target.value)
             }
-            value=""
+            value={values.ApartmentNumber}
             placeholder="Квартира"
-            disabled
+            disabled={values.EngineeringElement !== 'IndividualDevice'}
           />
         </FormItem>
       </StyledContainerAdressSection>
       <StyledContainerThreeItemsMainTypes>
         <FormItem>
           <label>Элемент инженерной сети: </label>
-          <InputSC
-            disabled
+          <SelectSC
             placeholder="Элемент"
-            value=""
-            onChange={(value: ChangeEvent<HTMLInputElement>) =>
-              setFieldValue('TaskId', value.target.value)
-            }
-            name="TaskId"
-          />
+            value={values.EngineeringElement}
+            onChange={(value) => setFieldValue('EngineeringElement', value)}
+          >
+            <Option value={''}>Все</Option>
+            {Object.keys(ETaskEngineeringElement).map((el) => {
+              return (
+                <Option value={el}>
+                  {EngineeringElementLookUp[el as ETaskEngineeringElement]}
+                </Option>
+              );
+            })}
+          </SelectSC>
         </FormItem>
         <FormItem>
           <label>Тип ресурса: </label>
           <SelectSC
-            disabled
             placeholder="Тип ресурса"
-            value={''}
+            value={values.Resource}
             onChange={(value) => {
-              setFieldValue('', value);
+              setFieldValue('Resource', value);
             }}
-          ></SelectSC>
+          >
+            <Option value={''}>Все</Option>
+            {Object.keys(EResourceType).map((el) => {
+              return (
+                <Option value={el}>
+                  {ResourceLookUp[el as EResourceType]}
+                </Option>
+              );
+            })}
+          </SelectSC>
         </FormItem>
         <FormItem>
           <label>Домоуправление: </label>
@@ -133,6 +211,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             }}
             style={{ textOverflow: 'ellipsis', maxWidth: '300' }}
           >
+            <Option value={''}>Все</Option>
             {housingManagments &&
               housingManagments.map(({ value, key }) => (
                 <Option key={key!} value={key!}>
@@ -146,13 +225,21 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Статус: </label>
           <SelectSC
-            disabled
             placeholder="Статус"
-            value={''}
+            value={values.TimeStatus}
             onChange={(value) => {
-              setFieldValue('', value);
+              setFieldValue('TimeStatus', value);
             }}
-          ></SelectSC>
+          >
+            <Option value={''}>Все</Option>
+            {Object.keys(EStageTimeStatus).map((el) => {
+              return (
+                <Option value={el}>
+                  {TimeStatusesLookUp[el as EStageTimeStatus]}
+                </Option>
+              );
+            })}
+          </SelectSC>
         </FormItem>
         <FormItem>
           <label>Тип задачи: </label>
@@ -164,8 +251,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('TaskType', value);
             }}
           >
-            {taskTypes &&
-              taskTypes.map(({ value, key }) => (
+            {FilteredTaskTypes &&
+              FilteredTaskTypes.map(({ value, key }) => (
                 <Option key={key!} value={key!}>
                   {value}
                 </Option>
@@ -175,13 +262,20 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Исполнитель: </label>
           <SelectSC
-            disabled
             placeholder="Исполнитель"
-            value={''}
+            value={values.PerpetratorId}
             onChange={(value) => {
-              setFieldValue('', value);
+              setFieldValue('PerpetratorId', value);
             }}
-          ></SelectSC>
+          >
+            <Option value={''}>Все</Option>
+            {perpetrators &&
+              perpetrators.map(({ id, name }) => (
+                <Option key={id} value={id}>
+                  {name}
+                </Option>
+              ))}
+          </SelectSC>
         </FormItem>
       </StyledContainerThreeItemsMainTypes>
     </StyledForm>

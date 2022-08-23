@@ -20,7 +20,7 @@ import {
   searchForm,
   setActJournalPageNumber,
 } from '../models';
-import { DocDate } from './AddNewActForm';
+import { DocDate } from './AddNewActForm/AddNewActForm';
 import { gridTemp } from './TableHeader';
 import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';

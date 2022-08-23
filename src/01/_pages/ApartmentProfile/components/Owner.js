@@ -343,7 +343,7 @@ function useEditOwnerCellphone(initialCellphone, id) {
     setLoading(true);
 
     try {
-      await axios.put(`Homeowners/${id}`, { cellphone });
+      await axios.put(`HomeownerAccounts/${id}`, { phoneNumber: cellphone });
 
       setIsEditMode(false);
       setPrevCellphone(cellphone);
