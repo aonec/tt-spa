@@ -2,14 +2,11 @@ import { axios } from '01/axios';
 import { ApartmentActResponsePagedList, DocumentResponse } from 'myApi';
 
 export const fetchPreviousActs = (
-  apartmentId: number
+  ApartmentId: number
 ): Promise<ApartmentActResponsePagedList> =>
   axios.get('ApartmentActs', {
     params: {
-      City: 'Нижнекамск',
-      Street: 'Химиков',
-      HousingStockNumber: '20',
-      ApartmentNumber: '10',
+      ApartmentId,
       ActJobDateOrderBy: 'Descending',
       PageSize: 2,
     },
