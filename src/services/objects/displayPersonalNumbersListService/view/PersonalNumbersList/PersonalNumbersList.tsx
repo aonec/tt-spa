@@ -15,10 +15,9 @@ export const PersonalNumbersList: FC<PersonalNumbersListProps> = ({
     [apartments]
   );
 
-  return (
-    <>
-      {isLoading && <Skeleton active />}
-      {!isLoading && apartmentsList}
-    </>
-  );
+  if (isLoading) {
+    return <Skeleton active />;
+  }
+
+  return <>{apartmentsList}</>;
 };
