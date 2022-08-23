@@ -13,9 +13,11 @@ import {
   $existingCities,
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
+import queryString from 'query-string';
 
-const { inputs, outputs } = tasksProfileService;
+const { inputs, outputs, gates } = tasksProfileService;
 const { outputs: adresses } = addressSearchService;
+const { ApartmentIdGate } = gates;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
@@ -28,6 +30,7 @@ export const TasksProfileContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
   const isSpectator = useStore(outputs.$isSpectator);
+  const apartment = useStore(outputs.$apartment);
   const streets = useStore(adresses.streets);
   const cities = useStore($existingCities);
 
@@ -42,20 +45,24 @@ export const TasksProfileContainer = () => {
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
   const clearFilters = useEvent(inputs.clearFilters);
 
+  const { apartmentId } = queryString.parse(window.location.search);
+
   useEffect(() => {
     closeExtendedSearch();
+    const isApartmentIdExist = Boolean(apartmentId);
 
-    if (lastGroupTypeRef.current === grouptype) {
-      return;
+    if (!isApartmentIdExist) {
+      if (lastGroupTypeRef.current === grouptype) {
+        return;
+      }
+      const isFromArchive = lastGroupTypeRef.current === 'Archived';
+      const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
+      if (isFromArchive || isToArchive) {
+        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+      } else {
+        changeGroupType(grouptype);
+      }
     }
-    const isFromArchive = lastGroupTypeRef.current === 'Archived';
-    const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
-    if (isFromArchive || isToArchive) {
-      changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-    } else {
-      changeGroupType(grouptype);
-    }
-
     lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 
@@ -67,6 +74,7 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
+      {apartmentId && <ApartmentIdGate apartmentId={apartmentId as string} />}
       <TaskTypesGate />
       <ExistingCitiesGate />
       <TasksProfile

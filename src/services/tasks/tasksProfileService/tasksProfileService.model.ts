@@ -1,7 +1,9 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  ApartmentResponse,
   ESecuredIdentityRoleName,
+  ETaskEngineeringElement,
   TaskGroupingFilter,
   TasksPagedList,
 } from 'myApi';
@@ -11,11 +13,13 @@ import {
   $housingManagments,
   $perpetratorIdStore,
 } from '../taskTypesService/taskTypesService.model';
-import { getTasks } from './tasksProfileService.api';
+import { fetchApartment, getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
 import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
 
 const domain = createDomain('tasksProfileService');
+
+const $apartment = domain.createStore<ApartmentResponse | null>(null);
 
 const $searchState = domain.createStore<GetTasksListRequestPayload>({
   GroupType: TaskGroupingFilter.Executing,
@@ -39,6 +43,12 @@ const searchTasksFx = domain.createEffect<
   TasksPagedList
 >(getTasks);
 
+const getApartmentFx = domain.createEffect<string, ApartmentResponse>(
+  fetchApartment
+);
+
+$apartment.on(getApartmentFx.doneData, (_, apartment) => apartment);
+
 const $isLoading = searchTasksFx.pending;
 
 const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
@@ -53,9 +63,10 @@ const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   return isSpectator;
 });
 
-$tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
-
 const TasksIsOpen = createGate();
+const ApartmentIdGate = createGate<{ apartmentId: string }>();
+
+$tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
 $isExtendedSearchOpen
   .on(extendedSearchOpened, () => true)
@@ -77,6 +88,25 @@ $searchState
     PageNumber: 1,
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
+  .on($apartment, (searchFilter, apartment) => {
+    const housingStock = apartment?.housingStock?.address?.mainAddress;
+    const City = housingStock?.city || '';
+    const Street = housingStock?.street || '';
+    const Corpus = housingStock?.corpus || '';
+    const HousingStockNumber = housingStock?.number || '';
+
+    const ApartmentNumber = apartment?.apartmentNumber || '';
+
+    return {
+      ...searchFilter,
+      City,
+      Street,
+      Corpus,
+      HousingStockNumber,
+      ApartmentNumber,
+      EngineeringElement: ETaskEngineeringElement.IndividualDevice,
+    };
+  })
   .reset(clearFilters);
 
 forward({
@@ -87,6 +117,11 @@ forward({
 forward({
   from: $searchState,
   to: searchTasksFx,
+});
+
+forward({
+  from: ApartmentIdGate.state.map(({ apartmentId }) => apartmentId),
+  to: getApartmentFx,
 });
 
 export const tasksProfileService = {
@@ -108,8 +143,10 @@ export const tasksProfileService = {
     $housingManagments,
     $perpetratorIdStore,
     $isSpectator,
+    $apartment,
   },
   gates: {
     TasksIsOpen,
+    ApartmentIdGate,
   },
 };

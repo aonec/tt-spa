@@ -40,8 +40,8 @@ export type ExtendedSearchTypes = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;
   perpetrators?: perpetratorItemsProps[] | null;
-  streets?: string[]
-  cities?: string[] | null
+  streets?: string[];
+  cities?: string[] | null;
 };
 
 export type taskCategotiesProps = {
