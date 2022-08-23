@@ -21,7 +21,7 @@ import { ApartmentGate } from '01/features/apartments/displayApartment/models';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
-import { CardsWrapper } from './ApartmentProfile.styled';
+import { CardsWrapper, InformationWrapper } from './ApartmentProfile.styled';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -76,14 +76,14 @@ const ApartmentProfile = () => {
           <ApartmentActsListContainer />
         </Route>
         <Route path="/objects/:id/apartments/:apartmentId" exact>
-          <div>
+          <InformationWrapper>
             <Information
               square={square}
               numberOfLiving={numberOfLiving}
               normativeNumberOfLiving={normativeNumberOfLiving}
             />
             <Owners homeownerAccounts={homeownerAccounts} />
-          </div>
+          </InformationWrapper>
         </Route>
         <CardsWrapper>
           <ActsCardContainer

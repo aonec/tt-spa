@@ -1,7 +1,6 @@
 import React from 'react';
 import { ListItem, ListItemDescription, ListItemValue } from '../ListItem';
 import { Title } from '../Title';
-import { Wrapper } from './Information.styled';
 
 export const Information = (props) => {
   // Пустышка для mapProps
@@ -36,10 +35,10 @@ export const Information = (props) => {
   ));
 
   return (
-    <Wrapper>
+    <div>
       <Title size="24">Информация</Title>
       {list}
-    </Wrapper>
+    </div>
   );
 };
 
