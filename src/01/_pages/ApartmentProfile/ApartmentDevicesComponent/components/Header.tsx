@@ -44,6 +44,7 @@ export function Header({
 const HeaderWrap = styled.div`
   display: grid;
   grid-template-columns: 375px 100px 145px 145px 2.2fr;
+  max-width: 870px;
   grid-gap: 10px;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
