@@ -42,9 +42,7 @@ const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
   const hasActTypes = filters.actTypes?.length;
   const hasActResources = filters.resources?.length;
 
-  let filteredActs = acts;
-
-  filteredActs.sort((first, second) =>
+  let filteredActs = acts.sort((first, second) =>
     moment(second.actJobDate).diff(moment(first.actJobDate))
   );
 
