@@ -44,5 +44,3 @@ export const actsCardService = {
   },
   gates: { ActsCardGate },
 };
-
-getPreviousActs(123);
