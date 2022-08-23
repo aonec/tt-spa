@@ -114,7 +114,6 @@ const IndividualDeviceEditForm = ({
         serialNumber: values.serialNumber,
         resource: values.resource,
         model: values.model,
-        rateType: values.rateType,
         bitDepth: values.bitDepth,
         scaleFactor: values.scaleFactor,
         sealNumber: values.sealNumber,
