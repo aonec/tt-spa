@@ -247,6 +247,9 @@ export interface ApartmentListResponse {
 
   /** @format float */
   square: number | null;
+
+  /** @format int32 */
+  numberOfTasks: number;
   comment: string | null;
   housingStock: HousingStockListResponse | null;
 }
@@ -1776,16 +1779,6 @@ export interface ErrorResponse {
   requestId: string | null;
 }
 
-export interface ExportResultServiceModel {
-  error?: string[] | null;
-  warning?: string[] | null;
-  info?: string[] | null;
-}
-
-export interface ExportResultServiceModelSuccessApiResponse {
-  successResponse: ExportResultServiceModel | null;
-}
-
 export interface FileContentResultSuccessApiResponse {
   /** @format binary */
   successResponse: File | null;
@@ -2677,6 +2670,18 @@ export interface ImportResultResponse {
   importErrors: string[] | null;
 }
 
+export interface ImportResultServiceModel {
+  importLogs?: string[] | null;
+  importWarnings?: string[] | null;
+  importErrors?: string[] | null;
+  isValid?: boolean;
+  wasSaved?: boolean;
+}
+
+export interface ImportResultServiceModelSuccessApiResponse {
+  successResponse: ImportResultServiceModel | null;
+}
+
 export interface IndividualDeviceIntoHomeownerCertificateResponse {
   resourceDescription: string | null;
   mountPlaceDescription: string | null;
@@ -2889,6 +2894,9 @@ export interface IndividualDeviceReadingsItemHistoryResponse {
   readingDateTime: string;
 
   /** @format date-time */
+  actualReadingDate: string;
+
+  /** @format date-time */
   uploadTime: string;
   source: EIndividualDeviceReadingsSource;
   user: OrganizationUserShortResponse | null;
@@ -2925,6 +2933,9 @@ export interface IndividualDeviceReadingsResponse {
 
   /** @format date-time */
   readingDateTime: string;
+
+  /** @format date-time */
+  actualReadingDate: string;
 
   /** @format date-time */
   uploadTime: string;
@@ -4412,6 +4423,8 @@ export interface SubscriberStatisticsСonsumptionResponse {
 
   /** @format int32 */
   apartmentId: number;
+  homeownerAccountFullName: string | null;
+  homeownerAccountPhoneNumber: string | null;
 }
 
 export interface SubscriberStatisticsСonsumptionResponseListSuccessApiResponse {
@@ -4952,17 +4965,17 @@ export interface UpdateCalculatorRequest {
 
   /** @format double */
   scaleFactor?: number | null;
+  isConnected?: boolean;
+
+  /** @format int32 */
+  infoId?: number | null;
+  connection?: MeteringDeviceConnection | null;
 
   /** @format date-time */
   lastCheckingDate?: string | null;
 
   /** @format date-time */
   futureCheckingDate?: string | null;
-  isConnected?: boolean;
-
-  /** @format int32 */
-  infoId?: number | null;
-  connection?: MeteringDeviceConnection | null;
 }
 
 export interface UpdateElectricHousingMeteringDeviceRequest {
@@ -4977,15 +4990,15 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
 
   /** @format double */
   scaleFactor?: number | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
 
   /** @format date-time */
   lastCheckingDate?: string | null;
 
   /** @format date-time */
   futureCheckingDate?: string | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
 
   /** @format date-time */
   installationDate?: string | null;
@@ -5045,18 +5058,11 @@ export interface UpdateIndividualDeviceRequest {
 
   /** @format double */
   scaleFactor?: number | null;
-
-  /** @format date-time */
-  lastCheckingDate?: string | null;
-
-  /** @format date-time */
-  futureCheckingDate?: string | null;
   model?: string | null;
 
   /** @format int32 */
   mountPlaceId?: number | null;
   resource?: EResourceType | null;
-  rateType?: EIndividualDeviceRateType | null;
   isPolling?: boolean | null;
 
   /** @format int32 */
@@ -5093,15 +5099,15 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
 
   /** @format double */
   scaleFactor?: number | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
 
   /** @format date-time */
   lastCheckingDate?: string | null;
 
   /** @format date-time */
   futureCheckingDate?: string | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   pipe?: CreatePipeConnectionRequest | null;
 
   /** @format int32 */
@@ -7916,43 +7922,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
      *
      * @tags Imports
-     * @name ImportsIndividualDevicesCreate
-     * @summary IndividualDeviceReadingsCreate
-     * @request POST:/api/Imports/IndividualDevices
-     * @secure
-     */
-    importsIndividualDevicesCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Imports/IndividualDevices`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
-     *
-     * @tags Imports
      * @name ImportsReadingsFromErcMultipleCreate
      * @summary IndividualDeviceReadingsCreate
      * @request POST:/api/Imports/ReadingsFromErcMultiple
      * @secure
      */
     importsReadingsFromErcMultipleCreate: (
-      data: { files: File[]; isForced?: boolean; isSphere?: boolean },
+      data: {
+        files: File[];
+        isCreateAndCloseDevice?: boolean;
+        isIgnoreErrors?: boolean;
+        isSphere?: boolean;
+        isSave?: boolean;
+      },
       params: RequestParams = {},
     ) =>
       this.request<ImportLogResponseArraySuccessApiResponse, ErrorApiResponse>({
@@ -7982,44 +7964,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Length?: number;
         Name?: string;
         FileName?: string;
-        isForced?: boolean;
+        isCreateAndCloseDevice?: boolean;
+        isIgnoreErrors?: boolean;
         isSphere?: boolean;
+        isSave?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Imports/ReadingsFromErc`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
-     *
-     * @tags Imports
-     * @name ImportsReadingsFromErcNewCreate
-     * @summary IndividualDeviceReadingsCreate
-     * @request POST:/api/Imports/ReadingsFromErcNew
-     * @secure
-     */
-    importsReadingsFromErcNewCreate: (
-      data: {
-        ContentType?: string;
-        ContentDisposition?: string;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string;
-        FileName?: string;
-        isForced?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Imports/ReadingsFromErcNew`,
         method: "POST",
         body: data,
         secure: true,
@@ -8049,7 +8002,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { save?: boolean; createApartment?: boolean; dateOfImport?: string },
       params: RequestParams = {},
     ) =>
-      this.request<ExportResultServiceModelSuccessApiResponse, ErrorApiResponse>({
+      this.request<ImportResultServiceModelSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Imports/PersonalAccountNumbers`,
         method: "POST",
         query: query,
