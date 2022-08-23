@@ -18,6 +18,7 @@ import {
 
 import { getReport } from './apiCalculatorReport';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
+import { EReportType } from 'myApi';
 
 const { TabPane } = Tabs;
 
@@ -150,9 +151,16 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
       const end = `${values.end.format('YYYY-MM-DD')}`;
 
-      const shortLink = `Reports/Report?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Reports/Report`;
 
-      getReport(shortLink).then((response: any) => {
+      const params = {
+        NodeId: nodeId,
+        ReportType: detail as EReportType,
+        From: begin,
+        To: end,
+      };
+
+      getReport(shortLink, params).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
           ';'
         );

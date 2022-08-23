@@ -1,3 +1,3 @@
 export type SettingsPageProps = {
-    handleReassingInspector: () => void
-}
+  handleReassingInspector: () => void;
+};

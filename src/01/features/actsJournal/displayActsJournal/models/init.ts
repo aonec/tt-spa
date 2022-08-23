@@ -1,10 +1,12 @@
 import {
   $actJournalPageNumber,
   $apartmentActsPaged,
+  $selectedActType,
+  $selectedResourceType,
   ActJournalGate,
   clearCreationActForms,
   clearFilters,
-  createActForm,
+  createApartmentAct,
   createApartmentActFx,
   expandedFilterForm,
   refetchApartmentActs,
@@ -12,15 +14,12 @@ import {
 } from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
-import { combine, forward, sample } from 'effector';
+import { combine, forward, guard, sample } from 'effector';
 import {
-  clearCreationActFormValues,
   fetchApartmentActsFx,
   searchForm,
 } from '.';
-import {
-  addressSearchForm,
-} from '01/features/addressIdSearch/models';
+import { addressSearchForm } from '01/features/addressIdSearch/models';
 import moment from 'moment';
 import { $apartmentSearchId } from '01/features/addressIdSearch/models';
 
@@ -79,23 +78,18 @@ forward({
   to: searchForm.fields.city.set,
 });
 
-forward({
-  from: clearCreationActFormValues,
-  to: [createActForm.reset, addressSearchForm.reset],
-});
-
 sample({
-  clock: createActForm.formValidated,
-  source: combine(
-    createActForm.$values,
-    $apartmentSearchId,
-    (values, apartmentId) => ({
-      ...values,
-      apartmentId,
-      actJobDate: moment(values.actJobDate).format('YYYY-MM-DD'),
-    })
-  ),
-  target: createApartmentActFx as any,
+  source: guard({
+    source: $apartmentSearchId,
+    filter: Boolean,
+  }),
+  clock: createApartmentAct,
+  fn: (apartmentId, formValues) => ({
+    ...formValues,
+    apartmentId,
+    actJobDate: moment(formValues.actJobDate).format('YYYY-MM-DD'),
+  }),
+  target: createApartmentActFx,
 });
 
 forward({
@@ -105,5 +99,10 @@ forward({
 
 forward({
   from: clearCreationActForms,
-  to: [createActForm.reset, addressSearchForm.reset],
+  to: addressSearchForm.reset,
+});
+
+forward({
+  from: createApartmentActFx.done,
+  to: addressSearchForm.reset,
 });

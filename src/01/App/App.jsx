@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'reshadow/macro';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
@@ -56,11 +56,19 @@ import {
 } from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { useStore } from 'effector-react';
 
 moment.locale('ru');
 
 const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+
+  const isSpectator = useStore(tasksProfileService.outputs.$isSpectator);
+  const initialTasksPath = isSpectator
+    ? '/tasks/list/Observing'
+    : '/tasks/list/Executing';
+
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
@@ -84,11 +92,11 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : '/tasks/list/Executing'
+                    : initialTasksPath
                 }
                 exact
               />
-              <Redirect from="/tasks" to="/tasks/list/Executing" exact />
+              <Redirect from="/tasks" to={initialTasksPath} exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
