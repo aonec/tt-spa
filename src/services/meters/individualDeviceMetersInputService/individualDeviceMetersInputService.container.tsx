@@ -48,12 +48,13 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
 
   const deleteMeter = useEvent(inputs.deleteMeter);
 
-  const previousReadingByCurrentSliderIndex = useMemo(
-    () =>
-      device.readings &&
-      getExistingReading(device.readings, sliderIndex, 'prev'),
-    [device.readings, sliderIndex]
-  );
+  const previousReadingByCurrentSliderIndex = useMemo(() => {
+    if (!device.readings) return;
+
+    const preparedReadings = getPreparedReadingsDictionary(device.readings);
+
+    return getExistingReading(preparedReadings, sliderIndex, 'prev');
+  }, [device.readings, sliderIndex]);
 
   const {
     previousReading,
