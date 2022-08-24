@@ -51,18 +51,22 @@ export const TasksProfileContainer = () => {
     closeExtendedSearch();
     const isApartmentIdExist = Boolean(apartmentId);
 
-    if (!isApartmentIdExist) {
-      if (lastGroupTypeRef.current === grouptype) {
-        return;
-      }
-      const isFromArchive = lastGroupTypeRef.current === 'Archived';
-      const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
-      if (isFromArchive || isToArchive) {
-        changeFiltersByGroupType(grouptype as TaskGroupingFilter);
-      } else {
-        changeGroupType(grouptype);
-      }
+    if (isApartmentIdExist) {
+      lastGroupTypeRef.current = grouptype;
+      return;
     }
+
+    if (lastGroupTypeRef.current === grouptype) {
+      return;
+    }
+    const isFromArchive = lastGroupTypeRef.current === 'Archived';
+    const isToArchive = grouptype === 'Archived' && lastGroupTypeRef.current;
+    if (isFromArchive || isToArchive) {
+      changeFiltersByGroupType(grouptype as TaskGroupingFilter);
+    } else {
+      changeGroupType(grouptype);
+    }
+
     lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 

@@ -15,6 +15,7 @@ import {
 } from '../taskTypesService/taskTypesService.model';
 import { fetchApartment, getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
+import { getApartmentAddressObject } from './tasksProfileService.utils';
 import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
 
 const domain = createDomain('tasksProfileService');
@@ -89,21 +90,11 @@ $searchState
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
   .on($apartment, (searchFilter, apartment) => {
-    const housingStock = apartment?.housingStock?.address?.mainAddress;
-    const City = housingStock?.city || '';
-    const Street = housingStock?.street || '';
-    const Corpus = housingStock?.corpus || '';
-    const HousingStockNumber = housingStock?.number || '';
-
-    const ApartmentNumber = apartment?.apartmentNumber || '';
+    const apartmentAddress = getApartmentAddressObject(apartment);
 
     return {
       ...searchFilter,
-      City,
-      Street,
-      Corpus,
-      HousingStockNumber,
-      ApartmentNumber,
+      ...apartmentAddress,
       EngineeringElement: ETaskEngineeringElement.IndividualDevice,
     };
   })
