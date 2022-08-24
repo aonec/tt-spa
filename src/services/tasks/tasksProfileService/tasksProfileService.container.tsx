@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
-import { TaskGroupingFilter } from 'myApi';
+import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
 import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
-import { prepareData } from './tasksProfileService.utils';
+import {
+  getApartmentAddressObject,
+  prepareData,
+} from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -44,6 +47,7 @@ export const TasksProfileContainer = () => {
   const closeExtendedSearch = useEvent(inputs.extendedSearchClosed);
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
   const clearFilters = useEvent(inputs.clearFilters);
+  const clearApartment = useEvent(inputs.clearApartment);
 
   const { apartmentId } = queryString.parse(window.location.search);
 
@@ -53,8 +57,10 @@ export const TasksProfileContainer = () => {
 
     if (isApartmentIdExist) {
       lastGroupTypeRef.current = grouptype;
+
       return;
     }
+    clearApartment();
 
     if (lastGroupTypeRef.current === grouptype) {
       return;
@@ -69,6 +75,17 @@ export const TasksProfileContainer = () => {
 
     lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
+
+  useEffect(() => {
+    if (apartment) {
+      const apartmentAddress = getApartmentAddressObject(apartment);
+      handleSearch({
+        ...apartmentAddress,
+        GroupType: grouptype,
+        EngineeringElement: ETaskEngineeringElement.IndividualDevice,
+      });
+    }
+  }, [apartment]);
 
   const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
