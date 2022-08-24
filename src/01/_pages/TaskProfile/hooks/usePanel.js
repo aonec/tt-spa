@@ -11,7 +11,6 @@ export const usePanel = (
 ) => {
   const [state, dispatch] = React.useReducer(dataReducer, {});
   const isObserver = panel.userOperatingStatus === 'Observer';
-
   React.useEffect(() => {
     if (!panelLoading && !state.readings) dispatch({ type: 'reset' });
   }, [panelLoading]);

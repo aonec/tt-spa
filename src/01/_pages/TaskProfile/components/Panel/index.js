@@ -70,6 +70,10 @@ const styles = css`
         'ub ub ub ub'
         'ul ul . push';
     }
+    &[|PerpetratorStyleOnly] {
+      grid-template-columns: 1fr auto;
+      grid-template-areas: 'p push';
+    }
   }
 
   Perpetrator {
@@ -168,6 +172,7 @@ export const Panel = ({
   if (!isPerpetrator) {
     return null;
   }
+
   return styled(styles)(
     <panel
       {...use({
@@ -183,6 +188,11 @@ export const Panel = ({
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline:
           AddPerpetrator && SetNextStageDeadline,
+        PerpetratorStyleOnly:
+          AddPerpetrator &&
+          !AddDocuments &&
+          !EmailNotify &&
+          !SetNextStageDeadline,
       })}
     >
       {SetNextStageDeadline && <SetNextStageDeadlineContainer />}
