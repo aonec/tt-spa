@@ -66,9 +66,10 @@ export const ExpandedSearch = () => {
 
             <Checkbox
               checked={fields.electricityOpen.value}
-              onChange={(e) =>
-                fields.electricityOpen.onChange(e.target.checked)
-              }
+              onChange={(e) => {
+                console.log(fields);
+                fields.electricityOpen.onChange(e.target.checked);
+              }}
             >
               Электричество
             </Checkbox>

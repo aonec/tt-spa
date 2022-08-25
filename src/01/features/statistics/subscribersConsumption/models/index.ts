@@ -3,6 +3,14 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 
+export type StatsisticsPayload = {
+  HousingStockId: number;
+  MonthOfLastTransmission?: string | null;
+  HotWaterSupply?: boolean | null;
+  ColdWaterSupply?: boolean | null;
+  Electricity?: boolean | null;
+};
+
 export const $selectedHousingsStockId = createStore<number | null>(null);
 
 export const $consumptionStatistics = createStore<
@@ -10,25 +18,14 @@ export const $consumptionStatistics = createStore<
 >(null);
 
 export const fetchConsumptionStatistics = createEffect<
-  {
-    HousingStockId: number;
-    MonthOfLastTransmission?: string | null;
-    HotWaterSupply?: boolean | null;
-    ColdWaterSupply?: boolean | null;
-    Electricity?: boolean | null;
-  },
+  StatsisticsPayload,
   SubscriberStatisticsСonsumptionResponse[]
 >();
 
-export const ConsumptionStatisticsGate = createGate<{
-  HousingStockId: number;
-  MonthOfLastTransmission?: string | null;
-  HotWaterSupply?: boolean | null;
-  ColdWaterSupply?: boolean | null;
-  Electricity?: boolean | null;
-}>();
+export const ConsumptionStatisticsGate = createGate<StatsisticsPayload>();
 
 export const setSelectedHousingStockId = createEvent<number | null>();
+export const manualyGetStatisticData = createEvent<void>();
 
 const resourceRangeInitValue = {
   from: null as number | null,

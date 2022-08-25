@@ -1,6 +1,7 @@
-import { $existingCities, fetchExistingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
+import { message } from 'antd';
+import { combine, forward, guard, sample } from 'effector';
+import { $existingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
 import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
-import { forward, sample } from 'effector';
 import {
   openExpandedSearch,
   closeExpandedSearch,
@@ -11,8 +12,12 @@ import {
   $selectedHousingsStockId,
   setSelectedHousingStockId,
   subscribersConsumptionFindForm,
+  manualyGetStatisticData,
+  subscribersConsumptionFilterForm,
 } from './index';
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { exportStatisticsService } from './ExportStatisticsService/ExportStatistics.model';
+
+const { inputs } = exportStatisticsService;
 
 fetchConsumptionStatistics.use(getConsumptionStatistics);
 
@@ -23,6 +28,31 @@ $isExpandedSearchOpen
 forward({
   from: ConsumptionStatisticsGate.state.map((values) => values),
   to: fetchConsumptionStatistics as any,
+});
+
+sample({
+  source: guard({
+    source: combine(
+      ConsumptionStatisticsGate.state.map((values) => values),
+      subscribersConsumptionFilterForm.$values
+    ),
+    clock: manualyGetStatisticData,
+    filter: ([gateData]) => {
+      if (!gateData.hasOwnProperty('HousingStockId'))
+        message.error('Выберите адрес');
+      return gateData.hasOwnProperty('HousingStockId');
+    },
+  }),
+  fn: ([gateData, formValues]) => {
+    return {
+      HousingStockId: gateData.HousingStockId,
+      MonthOfLastTransmission: gateData.MonthOfLastTransmission,
+      HotWaterSupply: formValues.heatOpen,
+      ColdWaterSupply: formValues.coldOpen,
+      Electricity: formValues.electricityOpen,
+    };
+  },
+  target: inputs.exportStatisticsFx,
 });
 
 $consumptionStatistics.on(
