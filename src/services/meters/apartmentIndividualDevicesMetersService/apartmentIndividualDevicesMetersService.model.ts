@@ -6,7 +6,7 @@ import {
   IndividualDeviceListItemResponsePagedList,
 } from 'myApi';
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
-import { previousReadingIndexLimit } from './apartmentIndividualDevicesMetersService.constants';
+import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
@@ -74,7 +74,7 @@ $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
 
 $sliderIndex
   .on(upSliderIndex, (index) => {
-    if (index === previousReadingIndexLimit) return index;
+    if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
     return ++index;
   })

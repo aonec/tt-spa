@@ -1,6 +1,8 @@
-import { IndividualDeviceListItemResponse } from 'myApi';
 import moment from 'moment';
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import {
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsResponse,
+} from 'myApi';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 
 export function getPreparedReadingsDictionary(
@@ -33,8 +35,10 @@ export const getInputIndex = (
     ? devices
     : devices.filter((device) => device.closingDate === null);
 
-  return devicesList
+  const inputIndex = devicesList
     .slice(0, deviceIndex)
     .filter((elem) => elem.closingDate === null)
     .reduce((acc, elem) => acc + getRateNum(elem.rateType), 0);
+
+  return inputIndex;
 };
