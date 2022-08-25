@@ -58,6 +58,7 @@ import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { useStore } from 'effector-react';
+import { TaskProfileContainer } from 'services/tasks/taskProfileService';
 
 moment.locale('ru');
 
@@ -107,6 +108,11 @@ const Internal = () => {
                 <Route
                   path="/tasks/profile/(\\d+)"
                   component={TaskProfile}
+                  exact
+                />
+                <Route
+                  path="/tasks/test-profile/:taskId"
+                  component={TaskProfileContainer}
                   exact
                 />
                 <Route

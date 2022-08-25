@@ -1,4 +1,4 @@
-import { ETaskClosingStatus, TaskListResponse } from 'myApi';
+import { TaskListResponse } from 'myApi';
 
 export type TasksListItemProps = {
   task: TaskType;
@@ -29,4 +29,3 @@ export type Timer = {
   executionTime?: string;
   isFailed?: boolean;
 };
-

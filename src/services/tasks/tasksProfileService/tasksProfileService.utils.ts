@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { EStageTimeStatus, TaskListResponse } from 'myApi';
+import { EStageTimeStatus, ETaskClosingStatus, TaskListResponse, TaskResponse } from 'myApi';
+import { Timer } from './view/TasksListItem/TasksListItem.types';
 
 export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
@@ -10,12 +11,8 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     showExecutor: grouptype === 'Observing',
   }));
 
-const createTimeline = (task: TaskListResponse) => {
-  const {
-    closingTime,
-    expectedCompletionTime,
-    currentStage,
-  } = task;
+export const createTimeline = (task: TaskListResponse | TaskResponse) => {
+  const { closingTime, expectedCompletionTime, currentStage } = task;
 
   if (closingTime) return null;
 
@@ -36,7 +33,7 @@ const createTimeline = (task: TaskListResponse) => {
   };
 };
 
-const createTimer = (task: TaskListResponse) => {
+export const createTimer = (task: TaskListResponse | TaskResponse) => {
   const {
     closingTime,
     currentStage,
@@ -95,7 +92,7 @@ const createTimer = (task: TaskListResponse) => {
     stage: null,
     diffTime: `(+${diffTimeStr})`,
     executionTime,
-    icon: closingStatus,
+    icon: ETaskClosingStatus.Properly,
     statusDescription: 'Выполнено за:',
   };
 };
