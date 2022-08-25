@@ -3,9 +3,12 @@ import { tasksProfileService } from 'services/tasks/tasksProfileService';
 
 const domain = createDomain('tasksCardService');
 
+const $isAdministrator = tasksProfileService.outputs.$isAdministrator.map(
+  (isAdministrator) => isAdministrator
+);
+
 export const tasksCardService = {
-  inputs: {},
   outputs: {
-    $isAdministrator: tasksProfileService.outputs.$isAdministrator,
+    $isAdministrator,
   },
 };

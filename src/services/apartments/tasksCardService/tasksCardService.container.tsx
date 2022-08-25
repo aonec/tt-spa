@@ -13,12 +13,10 @@ export const TasksCardContainer: FC<TasksCardContainerProps> = ({
   const isAdministrator = useStore(outputs.$isAdministrator);
 
   return (
-    <>
-      <TasksCard
-        apartmentId={apartmentId}
-        tasksNumber={tasksNumber}
-        isAdministrator={isAdministrator}
-      />
-    </>
+    <TasksCard
+      apartmentId={apartmentId}
+      tasksNumber={tasksNumber}
+      isAdministrator={isAdministrator}
+    />
   );
 };

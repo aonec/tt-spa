@@ -50,6 +50,9 @@ export const TasksProfileContainer = () => {
   const clearApartment = useEvent(inputs.clearApartment);
 
   const { apartmentId } = queryString.parse(window.location.search);
+  const preparedApartmentId = Array.isArray(apartmentId)
+    ? apartmentId[0]
+    : apartmentId;
 
   useEffect(() => {
     closeExtendedSearch();
@@ -95,7 +98,9 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      {apartmentId && <ApartmentIdGate apartmentId={apartmentId as string} />}
+      {preparedApartmentId && (
+        <ApartmentIdGate apartmentId={preparedApartmentId} />
+      )}
       <TaskTypesGate />
       <ExistingCitiesGate />
       <TasksProfile
