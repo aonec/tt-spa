@@ -88,7 +88,6 @@ const IndividualDeviceEditForm = ({
     serialNumber,
     lastCheckingDate: toMoment(lastCheckingDate),
     futureCheckingDate: futureCheckingDate ? moment(futureCheckingDate) : null,
-    rateType,
     apartmentId: address?.apartmentId,
     mountPlaceId: deviceMountPlace?.id,
     bitDepth: bitDepth,
