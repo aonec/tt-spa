@@ -1,7 +1,6 @@
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { nodeService } from '../../displayNode/models';
 import { CheckNodeModalContainer } from '../checkNode/CheckNodeModalContainer';
 import { checkNodeService } from '../checkNode/models';
 import { nodeChecksService } from './models';

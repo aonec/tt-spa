@@ -1,7 +1,6 @@
 import { axios } from '01/axios';
 import { ElectricHousingMeteringDeviceResponse } from 'myApi';
 import { EditElectricNodePayload } from './editElectricNodeService.types';
-import { UpdateElectricHousingMeteringDevice } from './view/EditElectricNodePage/EditElectricNodePage.types';
 
 export const fetchElectricNode = (
   nodeId: number

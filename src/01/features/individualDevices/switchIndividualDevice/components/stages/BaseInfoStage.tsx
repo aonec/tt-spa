@@ -162,7 +162,7 @@ export const BaseInfoStage = () => {
           value={fields.resource.value || undefined}
         >
           {allResources.map((elem) => (
-            <Select.Option value={elem.value}>
+            <Select.Option value={elem.value} key={elem.value}>
               <Flex>
                 <StockIconTT
                   icon={DeviceIcons[elem.value]?.icon}
@@ -190,7 +190,9 @@ export const BaseInfoStage = () => {
           onChange={(value: any) => fields.mountPlaceId.onChange(value)}
         >
           {mountPlaces?.map((elem) => (
-            <Select.Option value={elem.id}>{elem.description}</Select.Option>
+            <Select.Option value={elem.id} key={elem.id}>
+              {elem.description}
+            </Select.Option>
           ))}
         </StyledSelect>
         <ErrorMessage>

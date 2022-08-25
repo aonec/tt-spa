@@ -24,8 +24,7 @@ export const Header = ({ device }: HeaderInterface) => {
   const loading = !device;
   const { address, model, serialNumber, resource, closingDate } = device;
 
-  const { city, street, housingStockNumber, apartmentNumber, id, apartmentId } =
-    address || {};
+  const { id, apartmentId } = address || {};
 
   const menuButtonArr = device
     ? [

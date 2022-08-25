@@ -259,6 +259,7 @@ export const ApartmentInfo = () => {
                 <PersonalNumber
                   onClick={() => setCurrentPersonalNumberIndex(index)}
                   isCurrent={currentHomeowner?.id === homeowner.id}
+                  key={homeowner.id}
                 >
                   {homeowner?.personalAccountNumber}
                 </PersonalNumber>

@@ -245,7 +245,7 @@ const IndividualDeviceEditForm = ({
               }}
             >
               {mountPlaces?.map((elem) => (
-                <Select.Option value={elem.id}>
+                <Select.Option value={elem.id} key={elem.id}>
                   {elem.description}
                 </Select.Option>
               ))}

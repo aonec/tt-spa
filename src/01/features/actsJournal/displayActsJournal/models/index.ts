@@ -7,7 +7,6 @@ import {
 } from './../../../../../myApi';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import moment from 'moment';
 import { createGate } from 'effector-react';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 
