@@ -88,7 +88,6 @@ const IndividualDeviceEditForm = ({
     serialNumber,
     lastCheckingDate: toMoment(lastCheckingDate),
     futureCheckingDate: futureCheckingDate ? moment(futureCheckingDate) : null,
-    rateType,
     apartmentId: address?.apartmentId,
     mountPlaceId: deviceMountPlace?.id,
     bitDepth: bitDepth,
@@ -245,7 +244,7 @@ const IndividualDeviceEditForm = ({
               }}
             >
               {mountPlaces?.map((elem) => (
-                <Select.Option value={elem.id}>
+                <Select.Option value={elem.id} key={elem.id}>
                   {elem.description}
                 </Select.Option>
               ))}

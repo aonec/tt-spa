@@ -162,7 +162,7 @@ export const BaseInfoStage = () => {
           value={fields.resource.value || undefined}
         >
           {allResources.map((elem) => (
-            <Select.Option value={elem.value}>
+            <Select.Option value={elem.value} key={elem.value}>
               <Flex>
                 <StockIconTT
                   icon={DeviceIcons[elem.value]?.icon}
@@ -190,7 +190,9 @@ export const BaseInfoStage = () => {
           onChange={(value: any) => fields.mountPlaceId.onChange(value)}
         >
           {mountPlaces?.map((elem) => (
-            <Select.Option value={elem.id}>{elem.description}</Select.Option>
+            <Select.Option value={elem.id} key={elem.id}>
+              {elem.description}
+            </Select.Option>
           ))}
         </StyledSelect>
         <ErrorMessage>
@@ -379,8 +381,12 @@ export const BaseInfoStage = () => {
 
   const form = (
     <>
-      {baseInfo}
-      <SpaceLine />
+      {!isCheck && (
+        <>
+          {baseInfo}
+          <SpaceLine />
+        </>
+      )}
       {bottomDateFields}
       <SpaceLine />
       {readingInputs}
@@ -395,7 +401,7 @@ export const BaseInfoStage = () => {
       <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
-      <FormHeader>Общие данные о приборе</FormHeader>
+      {!isCheck && <FormHeader>Общие данные о приборе</FormHeader>}
 
       {pending ? <Loader show size={32} /> : form}
     </Wrap>

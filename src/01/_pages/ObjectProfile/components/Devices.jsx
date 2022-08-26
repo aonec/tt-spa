@@ -107,16 +107,6 @@ export const Devices = ({ nodes }) => {
 
   // Нет Устройств Узла
   const NoNodeDevice = ({ device, closingDate }) => {
-    // const {
-    //     model,
-    //     serialNumber,
-    //     closingdate,
-    //     hub,
-    //     resource,
-    //     id,
-    //     housingStockId,
-    // } = device;
-
     return (
       <NodeDeviceWrap key={0}>
         {/*<NavLink to={`/housingMeteringDevices/${id}`}>*/}
@@ -135,13 +125,7 @@ export const Devices = ({ nodes }) => {
   // Узел с его устройствами
   const NodesWithDevices = ({ nodes, closingDate }) =>
     nodes.map((node, index) => {
-      const {
-        id: nodeId,
-        serviceZone,
-        nodeStatus,
-        communicationPipes,
-        number,
-      } = node;
+      const { id: nodeId, communicationPipes } = node;
 
       const devicesOnNode = _.flatten(
         communicationPipes.map((communicationPipe) =>
@@ -171,7 +155,7 @@ export const Devices = ({ nodes }) => {
 
     if (nodes) {
       const res = calculators.map((calculator) => {
-        const { id, model, serialNumber, closingDate, nodes } = calculator;
+        const { closingDate, nodes } = calculator;
         return (
           <div key={calculator.id}>
             <CalculatorItem calculator={calculator} />
