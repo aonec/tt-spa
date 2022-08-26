@@ -381,8 +381,12 @@ export const BaseInfoStage = () => {
 
   const form = (
     <>
-      {baseInfo}
-      <SpaceLine />
+      {!isCheck && (
+        <>
+          {baseInfo}
+          <SpaceLine />
+        </>
+      )}
       {bottomDateFields}
       <SpaceLine />
       {readingInputs}
@@ -397,7 +401,7 @@ export const BaseInfoStage = () => {
       <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
-      <FormHeader>Общие данные о приборе</FormHeader>
+      {!isCheck && <FormHeader>Общие данные о приборе</FormHeader>}
 
       {pending ? <Loader show size={32} /> : form}
     </Wrap>
