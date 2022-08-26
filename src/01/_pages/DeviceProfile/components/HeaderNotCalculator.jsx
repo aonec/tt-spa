@@ -5,7 +5,7 @@ import { Icon, Loader, HeaderWrap, Title, Subtitle } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Menu } from './EditButtonODPU';
 import { DeviceContext } from '../DeviceProfile';
-import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
+import { DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 export const Template = styled.div``;
@@ -33,15 +33,7 @@ export const ListItem = styled.li`
 `;
 
 export const HeaderNotCalculator = () => {
-  const {
-    device,
-    building,
-    loadings,
-    errors,
-    error,
-    typeODPU,
-    calcModel,
-  } = useContext(DeviceContext);
+  const { device, building, loadings, error } = useContext(DeviceContext);
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);

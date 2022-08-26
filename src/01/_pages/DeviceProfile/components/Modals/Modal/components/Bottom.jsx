@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Radio, DatePicker, Form } from 'antd';
+import { Radio, Form } from 'antd';
 import { ReportContext } from '../index';
 import { RangePickerTT } from '../../../../../../tt-components/RangePicker';
 

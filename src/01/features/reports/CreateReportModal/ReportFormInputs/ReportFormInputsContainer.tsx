@@ -1,5 +1,5 @@
 import { useForm } from 'effector-forms/dist';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { form } from '../models';
 import { ReportType } from '../types';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
@@ -20,7 +20,7 @@ export const ReportFormInputsContainer = () => {
         reportTypes: [
           ReportType.HouseManagementsReport,
           ReportType.OperatorsWorkingReport,
-          ReportType.InspectorsWorkingReport
+          ReportType.InspectorsWorkingReport,
         ],
         element: (
           <PeriodDatePicker

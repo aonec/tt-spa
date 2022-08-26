@@ -33,7 +33,7 @@ export const MenuItemComponent: FC<MenuItemComponentProps> = ({ menuItem }) => {
           <MenuItemTitle>{title}</MenuItemTitle>
         </MenuItemWrapper>
         {isSubMenuItemsExist && (
-          <Chevron isOpen={isOpen} onClick={toggleChevron} />
+          <Chevron open={isOpen} onClick={toggleChevron} />
         )}
       </Wrapper>
       {isShowSubMenu && <SubMenu subMenuItems={menuItem.sub!} />}

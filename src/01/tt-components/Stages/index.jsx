@@ -8,9 +8,8 @@ const { Step } = Steps;
 export const Stages = (props) => {
   const { currentTabKey, stepsArr } = useContext(AddNodeContext);
 
-  const statuses = ['wait', 'process', 'finish', 'error'];
-  const stepsList = stepsArr.map((step, index) => {
-    const { title, description, status } = step;
+  const stepsList = stepsArr.map((step) => {
+    const { title, status } = step;
     return <Step title={title} status={status} description="" key={title} />;
   });
 
