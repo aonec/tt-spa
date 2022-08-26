@@ -1,28 +1,41 @@
-import { openReadingsHistoryModal } from './../../../01/features/readings/displayReadingHistory/models/index';
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
 } from 'myApi';
+import { openReadingsHistoryModal } from './../../../01/features/readings/displayReadingHistory/models/index';
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
 import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
 
+const upSliderIndex = domain.createEvent();
+const downSliderIndex = domain.createEvent();
+
+const setIsShowClosedDevices = domain.createEvent<boolean>();
+
 const $individualDevicesPagedData = domain.createStore<IndividualDeviceListItemResponsePagedList | null>(
   null
 );
 
-const $isShowClosedIndividualDevices = domain.createStore(false);
+const $isShowClosedIndividualDevices = domain
+  .createStore(false)
+  .on(setIsShowClosedDevices, (_, value) => value);
 
-const setIsShowClosedDevices = domain.createEvent<boolean>();
+const $sliderIndex = domain
+  .createStore(0)
+  .on(upSliderIndex, (index) => {
+    if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
-const $sliderIndex = domain.createStore(0);
+    return ++index;
+  })
+  .on(downSliderIndex, (index) => {
+    if (index === 0) return index;
 
-const upSliderIndex = domain.createEvent();
-const downSliderIndex = domain.createEvent();
+    return --index;
+  });
 
 const $individualDevicesList = combine(
   $individualDevicesPagedData,
@@ -69,20 +82,6 @@ forward({
   from: IndividualDevicesGate.state,
   to: fetchIndividualDevicesFx,
 });
-
-$isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
-
-$sliderIndex
-  .on(upSliderIndex, (index) => {
-    if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
-
-    return ++index;
-  })
-  .on(downSliderIndex, (index) => {
-    if (index === 0) return index;
-
-    return --index;
-  });
 
 export const apartmentIndividualDevicesMetersService = {
   inputs: {
