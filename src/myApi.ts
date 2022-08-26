@@ -1573,6 +1573,29 @@ export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiRespo
   successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
+export enum EStageActionType {
+  AddDocuments = "AddDocuments",
+  AddPerpetrator = "AddPerpetrator",
+  EmailNotify = "EmailNotify",
+  UploadReadings = "UploadReadings",
+  CheckDevice = "CheckDevice",
+  SwitchDevices = "SwitchDevices",
+  SetNextStageDeadline = "SetNextStageDeadline",
+  Completion = "Completion",
+  Switch = "Switch",
+  ChangeApartmentCoefficient = "ChangeApartmentCoefficient",
+  AddEmailTemplate = "AddEmailTemplate",
+  AddPhotos = "AddPhotos",
+  AddConsumableMaterials = "AddConsumableMaterials",
+  Returnable = "Returnable",
+  AddComment = "AddComment",
+  AddApartmentCheck = "AddApartmentCheck",
+  FixReading = "FixReading",
+  CompletionOrSwitch = "CompletionOrSwitch",
+  ClearManuallyAttachedParticipants = "ClearManuallyAttachedParticipants",
+  CloseIndividualDevices = "CloseIndividualDevices",
+}
+
 export enum EStageTimeStatus {
   Normal = "Normal",
   RunningOut = "RunningOut",
@@ -4234,6 +4257,17 @@ export interface ResourceDisconnectingTypeResponse {
   description: string | null;
 }
 
+export interface ResourceDisconnectingUpdateRequest {
+  disconnectingType: EResourceDisconnectingType;
+  housingStockIds: number[];
+
+  /** @format date-time */
+  startDate: string;
+
+  /** @format date-time */
+  endDate: string;
+}
+
 export interface SetMagneticSealRequest {
   /** @format date-time */
   magneticSealInstallationDate?: string | null;
@@ -4309,8 +4343,8 @@ export interface StageResponse {
   name: string | null;
   perpetrator: OrganizationUserShortResponse | null;
   status: string | null;
-  actions: string[] | null;
-  additionalActions: string[] | null;
+  actions: EStageActionType[] | null;
+  additionalActions: EStageActionType[] | null;
   allowedDocumentTypes: string[] | null;
 
   /** @format date-time */
@@ -5289,6 +5323,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Street?: string;
         HousingStockNumber?: string;
         Corpus?: string;
+        ApartmentId?: number;
         ApartmentNumber?: string;
         ActTypes?: EActType[];
         ActResourceTypes?: EActResourceType[];
@@ -10396,6 +10431,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/ResourceDisconnecting/${id}`,
         method: "GET",
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingCreate2
+     * @summary ResourceDisconnectingUpdate
+     * @request POST:/api/ResourceDisconnecting/{id}
+     * @originalName resourceDisconnectingCreate
+     * @duplicate
+     * @secure
+     */
+    resourceDisconnectingCreate2: (id: string, data: ResourceDisconnectingUpdateRequest, params: RequestParams = {}) =>
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

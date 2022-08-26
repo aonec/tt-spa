@@ -5,6 +5,7 @@ import {
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 
@@ -26,14 +27,17 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
       <GoBack />
       {isLoading && <Skeleton active />}
       {!isLoading && name && (
-        <TaskProfileHeader
-          name={name}
-          devices={individualDevices || []}
-          timeline={timeline}
-          nodeDevice={device}
-          timer={timer}
-          taskName={taskName || ''}
-        />
+        <>
+          <TaskProfileHeader
+            name={name}
+            devices={individualDevices || []}
+            timeline={timeline}
+            nodeDevice={device}
+            timer={timer}
+            taskName={taskName || ''}
+          />
+          <TaskBaseInfo task={task} />
+        </>
       )}
     </div>
   );
