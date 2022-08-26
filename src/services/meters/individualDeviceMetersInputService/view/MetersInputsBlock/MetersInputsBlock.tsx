@@ -64,11 +64,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     []
   );
 
-  const inputDataAttr = useMemo(() => {
-    if (isDisabled) return {};
-
-    return { 'data-reading-input': dataString };
-  }, [isDisabled, dataString]);
+  const inputDataAttr = isDisabled ? {} : { 'data-reading-input': dataString };
 
   const handleReadingInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
