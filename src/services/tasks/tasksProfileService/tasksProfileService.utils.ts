@@ -1,6 +1,12 @@
 import moment from 'moment';
-import { EStageTimeStatus, ETaskClosingStatus, TaskListResponse, TaskResponse } from 'myApi';
-import { Timer } from './view/TasksListItem/TasksListItem.types';
+import {
+  EStageTimeStatus,
+  ETaskClosingStatus,
+  TaskListResponse,
+  TaskResponse,
+} from 'myApi';
+import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+
 
 export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
@@ -64,6 +70,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
       stage: null,
       icon: closingStatus,
       statusDescription: 'Закрыта автоматически',
+      closingStatus: TimerClosingStatus.ClosedAutomatically,
     };
   }
 
@@ -84,11 +91,12 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
       diffTime: diffTimeStr,
       icon: 'redTimer',
       statusDescription: 'Просрочена на',
-      isFailed: true,
+      closingStatus: TimerClosingStatus.Overdue,
     };
   }
 
   return {
+    closingStatus: TimerClosingStatus.Done,
     stage: null,
     diffTime: `(+${diffTimeStr})`,
     executionTime,

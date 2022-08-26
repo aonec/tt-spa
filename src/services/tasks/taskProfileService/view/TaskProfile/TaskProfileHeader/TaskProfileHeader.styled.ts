@@ -43,12 +43,11 @@ export const DeviceIconWrapper = styled.div`
   transform: scale(1.2);
 `;
 
-export const Line = styled.div<{ isFailed: boolean }>`
+export const Line = styled.div<{ color?: string }>`
   position: relative;
   flex-grow: 1;
   height: 4px;
-  background: ${({ isFailed }) =>
-    isFailed ? 'var(--error)' : 'var(--success)'};
+  background: ${({ color }) => color};
   border-radius: 4px;
 
   margin-right: 4px;

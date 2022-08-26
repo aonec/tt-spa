@@ -9,7 +9,7 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 
 export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
-  const { closingStatus, individualDevices, name: taskName } = task;
+  const { closingStatus, individualDevices, device, name: taskName } = task;
 
   const timeline = createTimeline(task);
   const timer = createTimer(task);
@@ -30,6 +30,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
           name={name}
           devices={individualDevices || []}
           timeline={timeline}
+          nodeDevice={device}
           timer={timer}
           taskName={taskName || ''}
         />

@@ -20,23 +20,27 @@ import { TaskProfileHeaderProps } from './TaskProfileHeader.types';
 export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   name,
   devices,
+  nodeDevice,
   timeline,
   timer,
   taskName,
 }) => {
   const DeviceIcon = useMemo(() => {
-    if (!devices) {
+    if (!devices.length && !nodeDevice) {
       return null;
     }
+    const existingResource =
+      devices[0]?.resource || nodeDevice?.resource || null;
+
     const allDevicesResource = devices.map((device) => device.resource);
-    const isUniq = _.uniq(allDevicesResource).length === 1;
-    const iconType = isUniq ? devices[0].resource : EActResourceType.All;
+    const isNotUniq = _.uniq(allDevicesResource).length > 1;
+    const iconType = isNotUniq ? EActResourceType.All : existingResource;
 
     if (iconType) {
       return <ResourceIconLookup resource={iconType} />;
     }
     return <CalculatorIcon />;
-  }, [devices]);
+  }, [devices, nodeDevice]);
 
   return (
     <Wrapper>
@@ -55,7 +59,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
         </TimelineRowWrapper>
       )}
       <TimerRowWrapper>
-        {!timeline && <Line isFailed={timer.isFailed || false} />}
+        {!timeline && <Line color={timer.closingStatus} />}
         <Timer timer={timer} />
       </TimerRowWrapper>
     </Wrapper>

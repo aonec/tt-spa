@@ -1,4 +1,6 @@
 import { TaskListResponse } from 'myApi';
+import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
+import { Timer } from 'ui-kit/shared_components/Timer/Timer.types';
 
 export type TasksListItemProps = {
   task: TaskType;
@@ -9,23 +11,4 @@ export type TaskType = TaskListResponse & {
   timer: Timer;
   showExecutor: boolean;
   formatedCreationTime: string;
-};
-
-export type Timeline = {
-  deadlineDate: string;
-  remainingTime: string;
-  timelineStyle: {
-    color: string;
-    width: string;
-  };
-  isFailed?: boolean;
-};
-
-export type Timer = {
-  stage: Omit<Timeline, 'timelineStyle'> | null;
-  icon: string;
-  statusDescription: string;
-  diffTime?: string;
-  executionTime?: string;
-  isFailed?: boolean;
 };
