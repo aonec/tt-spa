@@ -11,7 +11,7 @@ import {
 } from './apiApartmentProfile';
 import { Tabs } from './components/Tabs';
 import Owners from './components/Owners';
-import { Header, Tags, Information } from './components';
+import { Header, Information } from './components';
 
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
@@ -43,7 +43,7 @@ const ApartmentProfile = () => {
   }, []);
 
   if (!data) return null;
-  const [apartment, tasks, devices] = data;
+  const [apartment, devices] = data;
 
   if (status === 'error') return 'ОШИБКА ЗАГРУЗКИ';
   if (status === 'loading') return <Loader show size="32" />;

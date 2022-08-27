@@ -32,8 +32,7 @@ export const MenuItemTitle = styled.div`
   font-weight: 500;
 `;
 
-export const Chevron = styled(ChevronDown)<{ isOpen: boolean }>`
-  transform: translateY(9px)
-    ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : '')};
+export const Chevron = styled(ChevronDown)<{ open: boolean }>`
+  transform: translateY(9px) ${({ open }) => (open ? 'rotate(180deg)' : '')};
   cursor: pointer;
 `;

@@ -108,7 +108,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     }
 
     lastGroupTypeRef.current = currentFilter?.GroupType;
-  }, [currentFilter?.GroupType, lastGroupTypeRef]);
+  }, [currentFilter?.GroupType, lastGroupTypeRef, clearInput]);
   const isArchived = currentFilter?.GroupType === 'Archived';
   return (
     <ExtendedSearch

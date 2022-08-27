@@ -24,7 +24,7 @@ export function FilterExtendedSearch<T>({
   );
   const handleClearFilter = useCallback(() => handleUpdate([]), [handleUpdate]);
 
-    useEffect(() => handleClearFilter, []);
+  useEffect(() => handleClearFilter, []);
   return (
     <FilterButton
       onClear={handleClearFilter}
@@ -33,8 +33,9 @@ export function FilterExtendedSearch<T>({
       {allowedFilters &&
         allowedFilters.map((filterField) => {
           const checked = selectedFilters?.includes(filterField.key!);
+
           return (
-            <div>
+            <div key={filterField.value}>
               <CheckboxSC
                 checked={checked}
                 onClick={() => handleFilterClick({ filterField, checked })}
