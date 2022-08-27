@@ -33,8 +33,12 @@ import { ReactComponent as NumberIcon } from './svg/number.svg';
 import { ReactComponent as CalendarIcon } from './svg/calendar.svg';
 import { ReactComponent as MoreIcon } from './svg/more.svg';
 import { ReactComponent as CalculatorIcon } from './svg/calculator.svg';
+import { ReactComponent as ChoiceIcon } from './svg/choice.svg';
+import { ReactComponent as FinishIcon } from './svg/finish.svg';
 
 export {
+  FinishIcon,
+  ChoiceIcon,
   MoreIcon,
   StopIcon,
   CalculatorIcon,

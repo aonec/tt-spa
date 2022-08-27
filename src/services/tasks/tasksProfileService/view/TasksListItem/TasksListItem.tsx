@@ -56,7 +56,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
 
   return (
     <Wrapper>
-      <Link to={`/tasks/profile/${id}`}>
+      <Link to={`/tasks/test-profile/${id}`}>
         <TaskItemWrapper>
           <NameRowWrapper>
             <TaskNameWrapper className="task-item-title">

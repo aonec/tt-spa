@@ -1596,10 +1596,22 @@ export enum EStageActionType {
   CloseIndividualDevices = "CloseIndividualDevices",
 }
 
+export enum EStageStatus {
+  Waiting = "Waiting",
+  InProgress = "InProgress",
+  Done = "Done",
+}
+
 export enum EStageTimeStatus {
   Normal = "Normal",
   RunningOut = "RunningOut",
   Expired = "Expired",
+}
+
+export enum EStageType {
+  Common = "Common",
+  Switch = "Switch",
+  Final = "Final",
 }
 
 export enum ETaskApplicationStatus {
@@ -4289,8 +4301,8 @@ export interface StageListResponse {
   name: string | null;
   hint: string | null;
   perpetrator: OrganizationUserShortResponse | null;
-  status: string | null;
-  type: string | null;
+  status: EStageStatus;
+  type: EStageType;
 
   /** @format date-time */
   closingTime: string | null;
@@ -4342,7 +4354,7 @@ export interface StageResponse {
   number: number;
   name: string | null;
   perpetrator: OrganizationUserShortResponse | null;
-  status: string | null;
+  status: EStageStatus;
   actions: EStageActionType[] | null;
   additionalActions: EStageActionType[] | null;
   allowedDocumentTypes: string[] | null;
