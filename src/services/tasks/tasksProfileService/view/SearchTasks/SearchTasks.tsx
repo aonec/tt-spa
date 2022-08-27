@@ -13,6 +13,7 @@ import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+import { initialValues } from 'services/devices/сhangeODPUService/view/ChangeODPUPage/ChangeODPUForm/ChangeODPUForm.constants';
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
@@ -42,7 +43,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       HouseManagementId: currentFilter?.HouseManagementId,
       DeviceId: currentFilter?.DeviceId,
       HousingStockId: currentFilter?.HousingStockId,
-      ApartmentId: currentFilter?.ApartmentId,
       HasChanged: currentFilter?.HasChanged,
       PipeNodeId: currentFilter?.PipeNodeId,
       ClosingStatuses: currentFilter?.ClosingStatuses,

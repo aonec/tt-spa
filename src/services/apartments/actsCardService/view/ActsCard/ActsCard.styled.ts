@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   border-radius: 4px;
   width: 100%;
   min-width: 200px;
+  margin-top: 16px;
 `;
 
 export const TitleWrapper = styled.div`
