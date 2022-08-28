@@ -1,3 +1,4 @@
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -15,6 +16,7 @@ export const TaskProfileContainer = () => {
 
   return (
     <>
+      <ReadingsHistoryModal readonly />
       <TaskIdGate taskId={Number(taskId)} />
       {task && <TaskProfile task={task} isLoading={isLoading} />}
     </>

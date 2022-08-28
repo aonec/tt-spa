@@ -1,10 +1,14 @@
-import React, { FC } from 'react';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import React, { FC, useState } from 'react';
+import { IndividualDeviceInfo } from 'ui-kit/shared_components/IndividualDeviceInfo';
+import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { DeviceInfo } from '../DeviceInfo';
 import {
-  DeviceModelText,
-  DeviceSerialNumberText,
+  ArrowSC,
+  ChevronWrapper,
+  DeviceTitleWrapper,
   GroupWrapper,
   LinkSC,
+  ReadingsHistoryButtonWrapper,
   Wrapper,
 } from './DevicesListItem.styled';
 import { DevicesListItemProps } from './DevicesListItem.types';
@@ -14,22 +18,33 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
   apartmentId,
   housingStockId,
 }) => {
-  const { resource, serialNumber, model, id } = device;
+  const { id } = device;
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <Wrapper>
-      <GroupWrapper>
-        <ResourceIconLookup resource={resource} />
-        <DeviceSerialNumberText>{serialNumber}</DeviceSerialNumberText>
-        <DeviceModelText>({model})</DeviceModelText>
-      </GroupWrapper>
-      <GroupWrapper>
-        <LinkSC
-          to={`/objects/${housingStockId}/apartments/${apartmentId}/testimony`}
-        >
-          Перейти в профиль
-        </LinkSC>
-      </GroupWrapper>
-    </Wrapper>
+      <Wrapper>
+        <DeviceTitleWrapper>
+        <GroupWrapper>
+          <IndividualDeviceInfo device={device} />
+        </GroupWrapper>
+        <GroupWrapper>
+          <LinkSC
+            to={`/objects/${housingStockId}/apartments/${apartmentId}/testimony`}
+          >
+            Перейти в профиль
+          </LinkSC>
+          <ReadingsHistoryButtonWrapper>
+            <ReadingsHistoryButton deviceId={id} />
+          </ReadingsHistoryButtonWrapper>
+
+          <ChevronWrapper onClick={toggle} open={isOpen}>
+            <ArrowSC />
+          </ChevronWrapper>
+        </GroupWrapper>
+        </DeviceTitleWrapper>
+        {isOpen && <DeviceInfo device={device} />}
+      </Wrapper>
   );
 };
