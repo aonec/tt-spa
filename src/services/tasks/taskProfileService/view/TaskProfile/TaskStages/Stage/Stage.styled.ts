@@ -32,6 +32,7 @@ export const Circle = styled.div<{
 
 export const StageNameWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const StageInfoWrapper = styled.div<{ isActive: boolean }>`
@@ -39,6 +40,7 @@ export const StageInfoWrapper = styled.div<{ isActive: boolean }>`
   color: ${({ isActive }) => (isActive ? '#272F5ACC' : '#272F5A99')};
   font-weight: ${({ isActive }) => (isActive ? '500' : '400')};
 
+  flex-grow:3;
   margin-left: 16px;
 `;
 
@@ -59,9 +61,14 @@ export const StageLine = styled.div`
 `;
 
 export const StageLineWrapper = styled.div`
-  min-height: 30px;
+  min-height: 12px;
   flex-grow: 3;
 
   display: flex;
   justify-content: center;
 `;
+
+export const StagePanelWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+` 

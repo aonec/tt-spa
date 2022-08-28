@@ -14,6 +14,7 @@ import {
   StageLine,
   StageLineWrapper,
   StageNameWrapper,
+  StagePanelWrapper,
   Wrapper,
 } from './Stage.styled';
 import { StageProps } from './Stage.types';
@@ -57,7 +58,7 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
 
   return (
     <Wrapper>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <StagePanelWrapper>
         <Circle
           iconColor={iconColor}
           border={circleColor.border}
@@ -70,13 +71,14 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
             <StageLine />
           </StageLineWrapper>
         )}
-      </div>
+      </StagePanelWrapper>
 
       <StageInfoWrapper isActive={isActive || false}>
         <StageNameWrapper>{name}</StageNameWrapper>
         {!isActive && perpetrator && (
           <PerpetratorWrapper>
-            {perpetrator.name} <div>{preparedClosingTime}</div>
+            <div>{perpetrator.name}</div>
+            <div>{preparedClosingTime}</div>
           </PerpetratorWrapper>
         )}
       </StageInfoWrapper>
