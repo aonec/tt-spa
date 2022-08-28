@@ -47,8 +47,8 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     const { setFieldsValue, getFieldValue } = form;
     const [isDisabled, setIsDisabled] = useState(true);
     const onFinish = async (values: any) => {
-      const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
-      const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+      const begin = moment(getFieldValue('dates')[0]).startOf('day').toISOString();
+      const end = moment(getFieldValue('dates')[1]).endOf('day').toISOString();
 
       const calculatorsResponse: CalculatorListResponsePagedList = await axios.get(
         'Calculators',
