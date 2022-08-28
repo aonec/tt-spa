@@ -43,7 +43,9 @@ const ApartmentProfile = () => {
   }, []);
 
   if (!data) return null;
-  const [apartment, devices] = data;
+
+  const apartment = data[0];
+  const devices = data[2];
 
   if (status === 'error') return 'ОШИБКА ЗАГРУЗКИ';
   if (status === 'loading') return <Loader show size="32" />;
