@@ -6,6 +6,7 @@ import {
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
+import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
@@ -20,7 +21,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
     name: taskName,
     stages,
     apartment,
-    housingStockId
+    housingStockId,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -59,6 +60,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
                   housingStockId={housingStockId}
                 />
               )}
+              {device && <TaskDeviceInfo device={device}/>}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>

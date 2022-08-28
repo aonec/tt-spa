@@ -1,16 +1,15 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const TaskBaseInfoWrapper = styled.div`
+export const Wrapper = styled.div`
   margin-top: 32px;
   width: 100%;
 `;
 
-export const InfoWrapper = styled.div`
-  margin-top: 16px;
-`;
+export const TitleWrapper = styled(Link)`
+  display: flex;
+  align-items: center;
 
-export const TitleWrapper = styled.div`
   font-size: 24px;
   font-weight: 400;
   color: #272f5a;
@@ -28,7 +27,13 @@ export const RowWrapper = styled.div`
   border-bottom: 1px solid var(--frame);
 `;
 
-export const LinkSC = styled(Link)`
-  font-weight: 500;
-  color: #272f5a;
+export const SerialNumber = styled.div`
+  margin-left: 10px;
+  font-size: 16px;
+`;
+
+export const Model = styled.div`
+  margin-left: 10px;
+  font-size: 16px;
+  color: #272f5a88;
 `;

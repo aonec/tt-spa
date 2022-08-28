@@ -15,9 +15,9 @@ export const DeviceInfo: FC<DeviceInfoProps> = ({ device }) => {
     futureCheckingDate,
   } = device;
   const resourceText = ResourceLookUp[resource];
-  const openingDateText = getPreparedDate(openingDate) || '';
-  const lastCheckingDateText = getPreparedDate(lastCheckingDate) || '';
-  const futureCheckingDateText = getPreparedDate(futureCheckingDate) || '';
+  const openingDateText = getPreparedDate(openingDate) || '-';
+  const lastCheckingDateText = getPreparedDate(lastCheckingDate) || '-';
+  const futureCheckingDateText = getPreparedDate(futureCheckingDate) || '-';
 
   return (
     <Wrapper>
