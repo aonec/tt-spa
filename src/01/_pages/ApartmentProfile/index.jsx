@@ -30,7 +30,6 @@ const ApartmentProfile = () => {
   const housingStockId = params[0];
 
   const { data, status, run } = useAsync();
-  console.log(data);
 
   useEffect(() => {
     const request = () =>
