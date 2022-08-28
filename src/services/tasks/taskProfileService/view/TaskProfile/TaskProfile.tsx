@@ -6,7 +6,8 @@ import {
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
-import { TaskInfoWrapper } from './TaskProfile.styled';
+import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
+import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
@@ -18,7 +19,11 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
     device,
     name: taskName,
     stages,
+    apartment,
+    housingStockId
   } = task;
+
+  const apartmemtId = apartment?.id || 0;
 
   const timeline = createTimeline(task);
   const timer = createTimer(task);
@@ -44,10 +49,19 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
             timer={timer}
             taskName={taskName || ''}
           />
-          <TaskInfoWrapper>
-            <TaskBaseInfo task={task} />
+          <TaskWrapper>
+            <TaskInfoWrapper>
+              <TaskBaseInfo task={task} />
+              {individualDevices && (
+                <TaskIndividualDevicesList
+                  devices={individualDevices}
+                  apartmentId={apartmemtId}
+                  housingStockId={housingStockId}
+                />
+              )}
+            </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
-          </TaskInfoWrapper>
+          </TaskWrapper>
         </>
       )}
     </div>
