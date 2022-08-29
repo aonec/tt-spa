@@ -1,7 +1,7 @@
 import { EStageStatus } from 'myApi';
 
 export const StageIconColorLookup: { [key in EStageStatus]: string } = {
-  Done: 'var(--primary-100)',
+  Done: '#189ee9',
   InProgress: '#ffffff',
   Waiting: '#272F5AE5',
 };
@@ -10,12 +10,12 @@ export const StageCircleColorLookup: {
   [key in EStageStatus]: { border: string; background: string };
 } = {
   Done: {
-    border: 'var(--primary-100)',
+    border: '#189ee9',
     background: '#ffffff',
   },
   InProgress: {
-    border: 'var(--primary-100)',
-    background: 'var(--primary-100)',
+    border: '#189ee9',
+    background: '#189ee9',
   },
   Waiting: {
     border: '#F3F5F6',
