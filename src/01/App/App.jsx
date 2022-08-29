@@ -283,6 +283,7 @@ export function App() {
 }
 
 const LeftBlock = styledC.div`
+  z-index: 2;
   padding-top: 20px; 
   width: 208px;
   background: #F3F5F6;
