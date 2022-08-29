@@ -5,6 +5,7 @@ import {
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
@@ -38,6 +39,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
     return task.name;
   }, [task]);
 
+  const taskActions = task.currentStage?.actions || [];
+
   return (
     <div>
       <GoBack />
@@ -52,6 +55,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
             timer={timer}
             taskName={taskName || ''}
           />
+          <TaskActionsPanel handlePushStage={() => {}} actions={taskActions} />
           <TaskWrapper>
             <TaskInfoWrapper>
               <TaskBaseInfo task={task} />
@@ -63,7 +67,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode}/>}
+              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>
