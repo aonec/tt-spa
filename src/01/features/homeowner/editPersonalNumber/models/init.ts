@@ -18,7 +18,6 @@ import {
   closeHomeownerAccountFx,
   $closeHomeownerRequestStatus,
   resetCloseHomeownerRequestStatus,
-  closeHomeownerAccountButtonClicked,
   closeHomeownerAccountForm,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';

@@ -24,6 +24,11 @@ function uploadReducer(state, action) {
         ...state,
         fileList: fileList.filter((file) => file.id !== action.fileId),
       };
+    case 'clear':
+      return {
+        file: null,
+        fileList: [],
+      };
     default:
       console.error('upload', type);
       return state;
@@ -59,7 +64,9 @@ export const useUpload = (callback = () => {}) => {
       loading: state.loading,
     },
     list: { items: state.fileList, del: deleteFile },
+    clear: () => dispatch({ type: 'clear' })
   };
+ 
 };
 
 export const useCustomUpload = () => {};

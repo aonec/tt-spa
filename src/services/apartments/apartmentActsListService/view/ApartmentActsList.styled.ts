@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  width: 920px;
+  width: 860px;
 `;
 
 export const ListHeader = styled.div`
@@ -32,5 +32,5 @@ export const ColumnTitle = styled.div`
 `;
 
 export const ExtendedSearchWrapper = styled.div`
-  margin-left: 20px; 
-`
+  margin-left: 20px;
+`;

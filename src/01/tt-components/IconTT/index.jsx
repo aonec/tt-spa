@@ -3,7 +3,7 @@ import React from 'react';
 import icons from './icons.json';
 
 export const IconTT = (props) => {
-  const { icon = 'device', size = 16, stroke, hover, style } = props;
+  const { icon = 'device', size = 16} = props;
 
   return (
     <svg

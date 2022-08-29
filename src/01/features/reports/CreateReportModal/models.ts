@@ -43,8 +43,11 @@ const createReportFx = createReportDomain.createEffect<
   },
   void
 >(async ({ date, type }) => {
-  const res: any = await axios.get(`Reports/${type}`, {
-    params: date,
+  const res: string = await axios.get(`Reports/${type}`, {
+    params: {
+      From: date.From && moment(date.From).startOf('day').toISOString(),
+      To: date.To && moment(date.To).endOf('day').toISOString(),
+    },
     responseType: 'blob',
   });
 
@@ -90,8 +93,6 @@ sample({
   },
   target: createReportFx,
 });
-
-createReport.watch(() => {});
 
 $isModalOpen
   .on(openModalButtonClicked, () => true)
