@@ -6,6 +6,7 @@ import {
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
+import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
@@ -24,6 +25,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
     apartment,
     housingStockId,
     pipeNode,
+    comments,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -54,6 +56,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
           />
           <TaskWrapper>
             <TaskInfoWrapper>
+              <TaskComments comments={comments || []}/>
               <TaskBaseInfo task={task} />
               {individualDevices && (
                 <TaskIndividualDevicesList
@@ -63,7 +66,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode}/>}
+              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>
