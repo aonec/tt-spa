@@ -1,5 +1,25 @@
 import moment from 'moment';
-import { EStageTimeStatus, TaskListResponse } from 'myApi';
+import { ApartmentResponse, EStageTimeStatus, TaskListResponse } from 'myApi';
+
+export const getApartmentAddressObject = (
+  apartment: ApartmentResponse | null
+) => {
+  const housingStock = apartment?.housingStock?.address?.mainAddress;
+  const City = housingStock?.city || '';
+  const Street = housingStock?.street || '';
+  const Corpus = housingStock?.corpus || '';
+  const HousingStockNumber = housingStock?.number || '';
+
+  const ApartmentNumber = apartment?.apartmentNumber || '';
+
+  return {
+    City,
+    Street,
+    Corpus,
+    HousingStockNumber,
+    ApartmentNumber,
+  };
+};
 
 export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
@@ -11,11 +31,7 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   }));
 
 const createTimeline = (task: TaskListResponse) => {
-  const {
-    closingTime,
-    expectedCompletionTime,
-    currentStage,
-  } = task;
+  const { closingTime, expectedCompletionTime, currentStage } = task;
 
   if (closingTime) return null;
 

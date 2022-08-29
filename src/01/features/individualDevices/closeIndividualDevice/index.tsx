@@ -82,14 +82,15 @@ export const CloseIndividualDeviceModal = () => {
           <DatePickerTT
             style={{ borderRadius: '4px', width: '100%' }}
             value={
-              fields.closingDate.value
-                ? moment(fields.closingDate.value)
-                : null
+              fields.closingDate.value ? moment(fields.closingDate.value) : null
             }
             onChange={(value) =>
               value && fields.closingDate.onChange(value?.toISOString(true))
             }
             format="DD.MM.YYYY"
+            disabledDate={(current) => {
+              return current && current > moment().endOf('day');
+            }}
           />
           <ErrorMessage>
             {fields.closingDate.errorText({

@@ -3,7 +3,7 @@ import { Checkbox, Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import _, { setWith } from 'lodash';
+import _ from 'lodash';
 
 import {
   ButtonTT,
@@ -93,7 +93,7 @@ const ModalCalculatorReportForm = ({
       nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
-      const { nodeId, detail, resource } = values;
+      const { nodeId, detail } = values;
       const begin = values.begin.toISOString(true);
       const end = values.end.endOf('day').toISOString(true);
 
