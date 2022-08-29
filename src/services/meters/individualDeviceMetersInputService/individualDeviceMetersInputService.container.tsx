@@ -66,10 +66,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     [openReadingsHistoryModalById]
   );
 
-  const inputIndex = useMemo(() => getInputIndex(deviceIndex, devices), [
-    deviceIndex,
-    devices,
-  ]);
+  const inputIndex = getInputIndex(deviceIndex, devices);
 
   const deviceRateNum = useMemo(() => getRateNum(device.rateType), [
     device.rateType,

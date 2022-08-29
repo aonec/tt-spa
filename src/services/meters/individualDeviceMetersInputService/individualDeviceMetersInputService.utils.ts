@@ -1,3 +1,7 @@
+import {
+  PREVIOUS_READING_INDEX_LIMIT,
+  NEXT_READING_INDEX_LIMIT,
+} from './../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
@@ -13,8 +17,6 @@ import {
   MeterInputUploadReadingPayload,
 } from './individualDeviceMetersInputService.types';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
-import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
-import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { BufferedReadingValues } from './view/MetersInputsBlock/MetersInputsBlock.types';
 import { round } from 'utils/round';
 
@@ -48,10 +50,12 @@ export const getInputIndex = (
     ? devices
     : devices.filter((device) => device.closingDate === null);
 
-  return devicesList
+  const inputIndex = devicesList
     .slice(0, deviceIndex)
     .filter((elem) => elem.closingDate === null)
     .reduce((acc, elem) => acc + getRateNum(elem.rateType), 0);
+
+  return inputIndex;
 };
 
 export function validateReadings(
@@ -105,8 +109,8 @@ function getExistingReading(
   nextIndex();
 
   while (
-    (type === 'next' && index >= nextReadingIndexLimit) ||
-    (type === 'prev' && index <= previousReadingIndexLimit)
+    (type === 'next' && index >= NEXT_READING_INDEX_LIMIT) ||
+    (type === 'prev' && index <= PREVIOUS_READING_INDEX_LIMIT)
   ) {
     const reading = readings[index];
 

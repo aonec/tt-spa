@@ -5,6 +5,7 @@ import React, { FC, useMemo } from 'react';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import {
+  DeviceOption,
   DeviceOptionsWrapper,
   Wrapper,
 } from './IndividualDeviceMetersInputLine.styled';
@@ -48,16 +49,20 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         status={uploadingMetersStatuses[-1]}
       />
       <DeviceOptionsWrapper>
-        <StarIcon style={{ cursor: 'pointer' }} className="device-option" />
-        <Tooltip title="История показаний" className="device-option">
-          <HistoryIcon
-            onClick={openReadingsHistoryModal}
-            style={{ cursor: 'pointer' }}
-          />
-        </Tooltip>
-        <div className="device-option">
+        <DeviceOption>
+          <StarIcon style={{ cursor: 'pointer' }} />
+        </DeviceOption>
+        <DeviceOption>
+          <Tooltip title="История показаний">
+            <HistoryIcon
+              onClick={openReadingsHistoryModal}
+              style={{ cursor: 'pointer' }}
+            />
+          </Tooltip>
+        </DeviceOption>
+        <DeviceOption>
           <ContextMenuButton menuButtons={[]} size="small" />
-        </div>
+        </DeviceOption>
       </DeviceOptionsWrapper>
     </Wrapper>
   );
