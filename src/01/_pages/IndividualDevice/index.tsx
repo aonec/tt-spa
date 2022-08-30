@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Loader } from '../../components';
@@ -19,7 +19,6 @@ const { TabPane } = TabsSC;
 
 export const IndividualDevice = () => {
   const { deviceId } = useParams();
-  const path = `/individualDevices/${deviceId}`;
   const [grouptype, setGrouptype] = useState<IndividualDeviceGrouptype>(
     IndividualDeviceGrouptype.info
   );

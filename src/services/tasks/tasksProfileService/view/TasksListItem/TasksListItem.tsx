@@ -23,6 +23,7 @@ import {
   TimerRowWrapper,
   TimeWrapper,
   UserIconSC,
+  Wrapper,
 } from './TasksListItem.styled';
 import { TasksListItemProps } from './TasksListItem.types';
 
@@ -65,73 +66,77 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   }, [device]);
 
   return (
-    <Link to={`/tasks/profile/${id}`}>
-      <TaskItemWrapper>
-        <NameRowWrapper>
-          <TaskNameWrapper className="task-item-title">
-            {taskName}
-          </TaskNameWrapper>
-          <span>{currentStage && name}</span>
-        </NameRowWrapper>
-        {timeline && (
-          <TimeLineWrapper>
-            <TimeLine>
-              <Line
-                width={timeline.timelineStyle.width}
-                background={timeline.timelineStyle.color}
-              />
-            </TimeLine>
-            <TimeWrapper fail={timeline.isFailed}>
-              {timeline.remainingTime}
-            </TimeWrapper>
-            <TimeWrapper>{timeline.deadlineDate}</TimeWrapper>
-          </TimeLineWrapper>
-        )}
-        <TimerRowWrapper>
-          <div>
-            {Icon && <Icon />}
-            <TimeWrapper className="status" fail={timer?.isFailed}>
-              {timer.statusDescription}
-            </TimeWrapper>
-            {!timer?.isFailed && (
-              <TimeWrapper fail={timer.stage?.isFailed}>
-                {timer.stage?.remainingTime || timer?.executionTime}
+    <Wrapper>
+      <Link to={`/tasks/profile/${id}`}>
+        <TaskItemWrapper>
+          <NameRowWrapper>
+            <TaskNameWrapper className="task-item-title">
+              {taskName}
+            </TaskNameWrapper>
+            <span>{currentStage && name}</span>
+          </NameRowWrapper>
+          {timeline && (
+            <TimeLineWrapper>
+              <TimeLine>
+                <Line
+                  width={timeline.timelineStyle.width}
+                  background={timeline.timelineStyle.color}
+                />
+              </TimeLine>
+              <TimeWrapper fail={timeline.isFailed}>
+                {timeline.remainingTime}
               </TimeWrapper>
-            )}
-            <TimeWrapper fail={timer?.isFailed}>
-              {timer.stage?.deadlineDate || timer?.diffTime}
-            </TimeWrapper>
-          </div>
-          {showExecutor && (
-            <>
-              <UserIconSC />
-              <TextWrapper>{perpetrator?.name}</TextWrapper>
-            </>
+              <TimeWrapper>{timeline.deadlineDate}</TimeWrapper>
+            </TimeLineWrapper>
           )}
-        </TimerRowWrapper>
-        <InfoWrapper>
-          <InfoBlockWrapper>
-            {device && (
-              <DeviceInfoWrapper>
-                {DeviceIcon}
-                <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
-                <TextWrapper>{device.model}</TextWrapper>
-              </DeviceInfoWrapper>
+          <TimerRowWrapper>
+            <div>
+              {Icon && <Icon />}
+              <TimeWrapper className="status" fail={timer?.isFailed}>
+                {timer.statusDescription}
+              </TimeWrapper>
+              {!timer?.isFailed && (
+                <TimeWrapper fail={timer.stage?.isFailed}>
+                  {timer.stage?.remainingTime || timer?.executionTime}
+                </TimeWrapper>
+              )}
+              <TimeWrapper fail={timer?.isFailed}>
+                {timer.stage?.deadlineDate || timer?.diffTime}
+              </TimeWrapper>
+            </div>
+            {showExecutor && (
+              <>
+                <UserIconSC />
+                <TextWrapper>{perpetrator?.name}</TextWrapper>
+              </>
             )}
+          </TimerRowWrapper>
+          <InfoWrapper>
+            <InfoBlockWrapper>
+              {device && (
+                <DeviceInfoWrapper>
+                  {DeviceIcon}
+                  <SerialNumberWrapper>
+                    {device.serialNumber}
+                  </SerialNumberWrapper>
+                  <TextWrapper>{device.model}</TextWrapper>
+                </DeviceInfoWrapper>
+              )}
 
-            <MapIconSC />
-            <TextWrapper>
-              {getApartmentFromFullAddress(address, true)}
-            </TextWrapper>
-          </InfoBlockWrapper>
-          <div>
-            <NumberIcon />
-            <TextWrapper>{id}</TextWrapper>
-            <CalendarIconSC />
-            <TextWrapper>{formatedCreationTime}</TextWrapper>
-          </div>
-        </InfoWrapper>
-      </TaskItemWrapper>
-    </Link>
+              <MapIconSC />
+              <TextWrapper>
+                {getApartmentFromFullAddress(address, true)}
+              </TextWrapper>
+            </InfoBlockWrapper>
+            <div>
+              <NumberIcon />
+              <TextWrapper>{id}</TextWrapper>
+              <CalendarIconSC />
+              <TextWrapper>{formatedCreationTime}</TextWrapper>
+            </div>
+          </InfoWrapper>
+        </TaskItemWrapper>
+      </Link>
+    </Wrapper>
   );
 };

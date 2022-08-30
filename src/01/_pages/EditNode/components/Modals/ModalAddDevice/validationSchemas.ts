@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { string } from 'yup';
 
 const yupSerialNumber = Yup.string()
   .min(3, 'Серийный номер должен быть длиннее трех символов')

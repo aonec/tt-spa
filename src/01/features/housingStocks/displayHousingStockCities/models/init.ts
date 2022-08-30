@@ -5,20 +5,24 @@ import {
   fetchExistingCities,
   setSelectedCity,
 } from './index';
-import { forward } from 'effector';
+import { forward, guard, sample } from 'effector';
 import { getExistingCities } from '01/_api/housingStocks';
 
 fetchExistingCities.use(getExistingCities);
 
 $existingCities.on(fetchExistingCities.doneData, (_, cities) => cities);
 
-forward({
-  from: ExistingCitiesGate.open,
-  to: fetchExistingCities,
-});
-
 $selectedCity
   .on(setSelectedCity, (_, city) => city)
   .on(fetchExistingCities.doneData, (_, cities) =>
     cities ? cities[cities.length - 1] : _
   );
+
+sample({
+  clock: guard({
+    source: $existingCities,
+    clock: ExistingCitiesGate.open,
+    filter: (source) => !source,
+  }),
+  target: fetchExistingCities,
+});

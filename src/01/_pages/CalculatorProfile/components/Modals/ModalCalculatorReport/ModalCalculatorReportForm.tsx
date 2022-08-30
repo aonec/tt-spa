@@ -3,7 +3,7 @@ import { Checkbox, Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import _, { setWith } from 'lodash';
+import _ from 'lodash';
 
 import {
   ButtonTT,
