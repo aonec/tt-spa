@@ -4,7 +4,7 @@ import axios from '../../axios';
 
 export async function getCurrentManagingFirm() {
   try {
-    const res = await axios.get('ManagingFirms/current');
+    const res = await axios.get('Organizations/current');
     return res;
   } catch (error) {
     throw {
@@ -16,7 +16,7 @@ export async function getCurrentManagingFirm() {
 
 export async function getManagingFirmUsers() {
   try {
-    const res = await axios.get('ManagingFirmUsers');
+    const res = await axios.get('OrganizationUsers');
     return res;
   } catch (error) {
     throw {
@@ -41,7 +41,7 @@ export async function getContractors() {
 export async function putCurrentManagingFirm(id = 0, form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
-    const res = await axios.put(`ManagingFirms/${id}`, form);
+    const res = await axios.put(`Organizations/${id}`, form);
     alert('Компания успешно изменена!');
     return res;
   } catch (error) {
@@ -65,7 +65,7 @@ export async function postContractor(form = {}) {
 export async function postStaff(form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
-    const res = await axios.post('ManagingFirmUsers', form);
+    const res = await axios.post('OrganizationUsers', form);
     alert('Сотрудник успешно создан!');
     return res;
   } catch (error) {

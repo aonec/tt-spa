@@ -1,5 +1,6 @@
 import moment from 'moment';
 import {
+  ApartmentResponse,
   EStageTimeStatus,
   ETaskClosingStatus,
   TaskListResponse,
@@ -7,6 +8,25 @@ import {
 } from 'myApi';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 
+export const getApartmentAddressObject = (
+  apartment: ApartmentResponse | null
+) => {
+  const housingStock = apartment?.housingStock?.address?.mainAddress;
+  const City = housingStock?.city || '';
+  const Street = housingStock?.street || '';
+  const Corpus = housingStock?.corpus || '';
+  const HousingStockNumber = housingStock?.number || '';
+
+  const ApartmentNumber = apartment?.apartmentNumber || '';
+
+  return {
+    City,
+    Street,
+    Corpus,
+    HousingStockNumber,
+    ApartmentNumber,
+  };
+};
 
 export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
   tasks.map((item) => ({
