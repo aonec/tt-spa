@@ -3,7 +3,7 @@ import { ManagingFirmUserResponse } from 'myApi';
 
 export const getManagingFirmUser = (
   id: number
-): Promise<ManagingFirmUserResponse> => axios.get(`ManagingFirmUsers/${id}`);
+): Promise<ManagingFirmUserResponse> => axios.get(`OrganizationUsers/${id}`);
 
 export const getCurrentManagingFirmUser = (): Promise<ManagingFirmUserResponse> =>
-  axios.get('ManagingFirmUsers/current');
+  axios.get('OrganizationUsers/current');

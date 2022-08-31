@@ -37,7 +37,7 @@ const ModalCalculatorReportForm = ({
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
   const { model, serialNumber, address, nodes } = device;
-  const { number, street } = address || {};
+  const { number, street } = address?.address?.mainAddress || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
@@ -97,7 +97,7 @@ const ModalCalculatorReportForm = ({
       nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
-      const { nodeId, detail } = values;
+      const { nodeId, detail, resource } = values;
       const begin = values.begin.toISOString(true);
       const end = values.end.endOf('day').toISOString(true);
 

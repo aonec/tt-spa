@@ -15,7 +15,7 @@ export const Perpetrator = ({ getData = () => {}, ...props }) => {
   React.useEffect(() => {
     data.loading &&
       axios
-        .get('ManagingFirmUsers', {
+        .get('OrganizationUsers', {
           params: {
             RoleNames: _.last(task.stages).requiredUserRoles.join(','),
           },
