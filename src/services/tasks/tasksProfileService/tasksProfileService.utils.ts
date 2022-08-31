@@ -1,5 +1,13 @@
 import moment from 'moment';
-import { ApartmentResponse, EStageTimeStatus, TaskListResponse } from 'myApi';
+import {
+  ApartmentResponse,
+  EStageTimeStatus,
+  ETaskClosingStatus,
+  TaskListResponse,
+  TaskResponse,
+} from 'myApi';
+import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+
 
 export const getApartmentAddressObject = (
   apartment: ApartmentResponse | null
@@ -30,7 +38,7 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     showExecutor: grouptype === 'Observing',
   }));
 
-const createTimeline = (task: TaskListResponse) => {
+export const createTimeline = (task: TaskListResponse | TaskResponse) => {
   const { closingTime, expectedCompletionTime, currentStage } = task;
 
   if (closingTime) return null;
@@ -52,7 +60,7 @@ const createTimeline = (task: TaskListResponse) => {
   };
 };
 
-const createTimer = (task: TaskListResponse) => {
+export const createTimer = (task: TaskListResponse | TaskResponse) => {
   const {
     closingTime,
     currentStage,
@@ -83,6 +91,7 @@ const createTimer = (task: TaskListResponse) => {
       stage: null,
       icon: closingStatus,
       statusDescription: 'Закрыта автоматически',
+      closingStatus: TimerClosingStatus.ClosedAutomatically,
     };
   }
 
@@ -103,15 +112,16 @@ const createTimer = (task: TaskListResponse) => {
       diffTime: diffTimeStr,
       icon: 'redTimer',
       statusDescription: 'Просрочена на',
-      isFailed: true,
+      closingStatus: TimerClosingStatus.Overdue,
     };
   }
 
   return {
+    closingStatus: TimerClosingStatus.Done,
     stage: null,
     diffTime: `(+${diffTimeStr})`,
     executionTime,
-    icon: closingStatus,
+    icon: ETaskClosingStatus.Properly,
     statusDescription: 'Выполнено за:',
   };
 };
