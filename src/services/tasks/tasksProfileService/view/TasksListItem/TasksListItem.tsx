@@ -42,16 +42,15 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const taskName = currentStage ? currentStage.name : name;
   const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
 
-  const device = devices ? devices[0] : null
-
+  const device = devices ? devices[0] : null;
 
   const DeviceIcon = useMemo(() => {
     if (!devices) {
       return null;
     }
 
-    const device = devices[0]
-    
+    const device = devices[0];
+
     const allDevicesResource = devices.map((device) => device.resource);
     const isUniq = _.uniq(allDevicesResource).length === 1;
     const iconType = isUniq ? device.resource : EActResourceType.All;
