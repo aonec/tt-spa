@@ -8,7 +8,6 @@ import {
 } from 'myApi';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 
-
 export const getApartmentAddressObject = (
   apartment: ApartmentResponse | null
 ) => {
