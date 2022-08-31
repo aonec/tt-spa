@@ -15,7 +15,14 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 
-export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
+export const TaskProfile: FC<TaskProfileProps> = ({
+  task,
+  isLoading,
+  handleAddComment,
+  isPerpetrator,
+  handleSetComment,
+  commentText,
+}) => {
   const {
     closingStatus,
     individualDevices,
@@ -56,7 +63,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
           />
           <TaskWrapper>
             <TaskInfoWrapper>
-              <TaskComments comments={comments || []}/>
+              <TaskComments
+                comments={comments || []}
+                handleAddComment={handleAddComment}
+                isPerpetrator={isPerpetrator}
+                handleSetComment={handleSetComment}
+                commentText={commentText}
+              />
               <TaskBaseInfo task={task} />
               {individualDevices && (
                 <TaskIndividualDevicesList

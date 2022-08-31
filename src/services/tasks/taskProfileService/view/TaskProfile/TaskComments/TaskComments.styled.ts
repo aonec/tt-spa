@@ -34,6 +34,13 @@ export const CommentInputWrapper = styled.div`
 
 export const InputSC = styled(Input)`
   margin-left: 16px;
+  margin-right: 0px !important;
   overflow-x: hidden;
   word-wrap: normal;
+`;
+
+export const ButtonWrapper = styled.div`
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
 `;
