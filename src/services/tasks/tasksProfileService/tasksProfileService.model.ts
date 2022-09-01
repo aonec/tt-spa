@@ -1,6 +1,7 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  ApartmentResponse,
   ESecuredIdentityRoleName,
   TaskGroupingFilter,
   TasksPagedList,
@@ -11,15 +12,14 @@ import {
   $housingManagments,
   $perpetratorIdStore,
 } from '../taskTypesService/taskTypesService.model';
-import { getTasks } from './tasksProfileService.api';
+import { fetchApartment, getTasks } from './tasksProfileService.api';
 import { GetTasksListRequestPayload } from './tasksProfileService.types';
-import { SearchTasksForm } from './view/SearchTasks/SearchTasks.types';
 
 const domain = createDomain('tasksProfileService');
 
-const $searchState = domain.createStore<GetTasksListRequestPayload>({
-  GroupType: TaskGroupingFilter.Executing,
-});
+const $apartment = domain.createStore<ApartmentResponse | null>(null);
+
+const $searchState = domain.createStore<GetTasksListRequestPayload>({});
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 const $isExtendedSearchOpen = domain.createStore(false);
@@ -32,12 +32,21 @@ const changeFiltersByGroupType = domain.createEvent<TaskGroupingFilter>();
 const changeGroupType = domain.createEvent<TaskGroupingFilter>();
 const changePageNumber = domain.createEvent<number>();
 
-const searchTasks = domain.createEvent<SearchTasksForm>();
+const searchTasks = domain.createEvent<GetTasksListRequestPayload>();
 
 const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
+
+const clearApartment = domain.createEvent();
+const getApartmentFx = domain.createEffect<string, ApartmentResponse>(
+  fetchApartment
+);
+
+$apartment
+  .on(getApartmentFx.doneData, (_, apartment) => apartment)
+  .reset(clearApartment);
 
 const $isLoading = searchTasksFx.pending;
 
@@ -53,9 +62,20 @@ const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   return isSpectator;
 });
 
-$tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
+const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
+  const roles = user?.roles || [];
+  const rolesKeys = roles.map(({ key }) => key);
+  const isAdministrator = rolesKeys.includes(
+    ESecuredIdentityRoleName.Administrator
+  );
+
+  return isAdministrator;
+});
 
 const TasksIsOpen = createGate();
+const ApartmentIdGate = createGate<{ apartmentId: string }>();
+
+$tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
 $isExtendedSearchOpen
   .on(extendedSearchOpened, () => true)
@@ -89,6 +109,11 @@ forward({
   to: searchTasksFx,
 });
 
+forward({
+  from: ApartmentIdGate.state.map(({ apartmentId }) => apartmentId),
+  to: getApartmentFx,
+});
+
 export const tasksProfileService = {
   inputs: {
     searchTasks,
@@ -98,6 +123,7 @@ export const tasksProfileService = {
     extendedSearchClosed,
     extendedSearchOpened,
     clearFilters,
+    clearApartment,
   },
   outputs: {
     $taskTypes,
@@ -108,8 +134,11 @@ export const tasksProfileService = {
     $housingManagments,
     $perpetratorIdStore,
     $isSpectator,
+    $isAdministrator,
+    $apartment,
   },
   gates: {
     TasksIsOpen,
+    ApartmentIdGate,
   },
 };

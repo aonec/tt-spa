@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { createEffect, createEvent, createStore } from 'effector';
+import { createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
 
 interface Payload {

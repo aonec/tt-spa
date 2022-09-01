@@ -7,7 +7,6 @@ import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import moment from 'moment';
 import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import _ from 'lodash';
 import { useApartmentList } from './useApartmentList';
 import { useHistory } from 'react-router';
 

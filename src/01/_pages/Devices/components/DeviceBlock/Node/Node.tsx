@@ -80,10 +80,6 @@ export const MeteringDeviceWrapper = styled.div`
   justify-content: center;
 `;
 
-const NodeIcon = styled(Icon)`
-  margin-right: 8px;
-`;
-
 const TitleWrapper = styled.div`
   margin-left: 24px;
   display: flex;

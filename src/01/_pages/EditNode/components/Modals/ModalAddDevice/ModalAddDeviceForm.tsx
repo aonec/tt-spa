@@ -102,7 +102,6 @@ const ModalAddDeviceForm = ({
     number,
     resource,
     communicationPipes,
-    address,
     calculatorId,
   } = node || DEFAULT_NODE;
 

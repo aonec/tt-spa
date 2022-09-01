@@ -38,12 +38,14 @@ export const TableHeader = () => {
 
   return (
     <Wrap temp={gridTemp} gap="15px">
-      {columnTitles.map(({ text, extended }) => (
-        <Title>
-          <div>{text}</div>
-          <div>{extended}</div>
-        </Title>
-      ))}
+      {columnTitles.map(({ text, extended }) => {
+        return (
+          <Title key={text}>
+            <div>{text}</div>
+            <div>{extended}</div>
+          </Title>
+        );
+      })}
     </Wrap>
   );
 };
