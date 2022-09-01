@@ -1,9 +1,9 @@
 import axiosHttpClient from 'axios';
 import { createEvent, createStore } from 'effector';
 
-const devUrl = 'https://management.staging.transparent-technology.ru/api/'
+const devUrl = 'https://management.transparent-technology.ru/api/'
 
-const baseURL = process.env.REACT_APP_API_URL || devUrl;
+const baseURL = devUrl;
 
 axiosHttpClient.defaults.baseURL = baseURL;
 
