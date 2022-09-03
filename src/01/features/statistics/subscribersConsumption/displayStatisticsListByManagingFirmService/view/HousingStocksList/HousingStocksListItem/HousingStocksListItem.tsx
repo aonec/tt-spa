@@ -2,7 +2,7 @@ import Arrow from '01/_components/Arrow/Arrow';
 import { Skeleton } from 'antd';
 import React, { FC, useMemo, useState } from 'react';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { SubscribersStaticsByManagingFirm } from '../SubscribersStaticsByManagingFirm';
+import { SubscribersStaticsByManagingFirm } from '../SubscribersStatisticsByManagingFirm';
 import {
   AddressWrapper,
   AppartmentNumberText,

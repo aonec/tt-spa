@@ -2,9 +2,9 @@ import React, { FC, useMemo } from 'react';
 import {
   ColumnNameWrapper,
   HeaderWrapper,
-} from './SubscribersStaticsByManagingFirm.styled';
-import { SubscribersStaticsByManagingFirmProps } from './SubscribersStaticsByManagingFirm.types';
-import { SubscribersStaticsByManagingFirmItem } from './SubscribersStaticsItem';
+} from './SubscribersStatisticsByManagingFirm.styled';
+import { SubscribersStaticsByManagingFirmProps } from './SubscribersStatisticsByManagingFirm.types';
+import { SubscribersStaticsByManagingFirmItem } from './SubscribersStatisticsItem';
 
 export const SubscribersStaticsByManagingFirm: FC<SubscribersStaticsByManagingFirmProps> = ({
   apartmentsStatistic,
