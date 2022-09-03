@@ -4,7 +4,7 @@ import {
   HeaderWrapper,
 } from './SubscribersStaticsByManagingFirm.styled';
 import { SubscribersStaticsByManagingFirmProps } from './SubscribersStaticsByManagingFirm.types';
-import { SubscribersStaticsByManagingFirmItem } from './SubscribersStaticsByManagingFirmItem';
+import { SubscribersStaticsByManagingFirmItem } from './SubscribersStaticsItem';
 
 export const SubscribersStaticsByManagingFirm: FC<SubscribersStaticsByManagingFirmProps> = ({
   apartmentsStatistic,

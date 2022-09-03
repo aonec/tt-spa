@@ -1,1 +1,1 @@
-export { SubscribersStaticsByManagingFirmItem } from './SubscribersStaticsByManagingFirmItem'
+export { SubscribersStaticsByManagingFirmItem } from './SubscribersStaticsItem'

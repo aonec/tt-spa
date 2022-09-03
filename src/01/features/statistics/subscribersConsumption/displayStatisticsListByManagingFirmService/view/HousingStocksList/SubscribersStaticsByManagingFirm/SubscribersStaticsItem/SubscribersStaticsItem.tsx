@@ -8,9 +8,9 @@ import {
   HomeownerNameWrapper,
   HomeownerNumberWrapper,
   Wrapper,
-} from './SubscribersStaticsByManagingFirmItem.styled';
-import { SubscribersStaticsByManagingFirmItemProps } from './SubscribersStaticsByManagingFirmItem.types';
-import { prepareSupplyConsumption } from './SubscribersStaticsByManagingFirmItem.utils';
+} from './SubscribersStaticsItem.styled';
+import { SubscribersStaticsByManagingFirmItemProps } from './SubscribersStaticsItem.types';
+import { prepareSupplyConsumption } from './SubscribersStaticsItem.utils';
 
 export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagingFirmItemProps> = ({
   statistic,
