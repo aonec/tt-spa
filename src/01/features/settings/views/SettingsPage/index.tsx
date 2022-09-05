@@ -6,6 +6,7 @@ import { InspectorsDistributionPage } from '../../inspectorsDistributionService/
 import { SettingsPageProps } from './types';
 import { InspectorAddressesResetModalContainer } from '../../inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
 import { inspectorAddressesResetService } from '../../inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
+import { ResourceDisablingScheduleContainer } from '../../resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 
 const { TabPane } = Tabs;
 
@@ -36,6 +37,9 @@ export const SettingsPage: FC<SettingsPageProps> = ({
         <TabPane tab="Распредление контролеров" key="controllers"></TabPane>
         <TabPane tab="Распредление инспекторов" key="inspectors">
           <InspectorsDistributionPage />
+        </TabPane>
+        <TabPane tab="График отключения ресурсов" key="disabledResources">
+          <ResourceDisablingScheduleContainer/>
         </TabPane>
       </Tabs>
     </>
