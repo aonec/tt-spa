@@ -296,7 +296,7 @@ const IndividualDeviceEditForm = ({
               checked={values.isPolling}
               onChange={(value) => setFieldValue('isPolling', value)}
             />
-            <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+            <TextWrapper>Прибор диспетчеризируется</TextWrapper>
           </SwitchWrapper>
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
