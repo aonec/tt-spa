@@ -6,7 +6,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select } from 'antd';
+import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -30,6 +30,7 @@ import {
 } from '01/features/contractors/displayContractors/models';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -92,7 +93,9 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString(true));
+            fields.futureCheckingDate.onChange(
+              nextCheckingDate.toISOString(true)
+            );
           }}
           value={fields.lastCheckingDate.value}
         />
@@ -373,6 +376,14 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
+
+      <SwitchWrapper>
+        <Switch
+          checked={fields.isPolling.value}
+          onChange={fields.isPolling.onChange}
+        />
+        <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+      </SwitchWrapper>
 
       <FormWrap>{bottomDateFields}</FormWrap>
 
