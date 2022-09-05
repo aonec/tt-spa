@@ -90,6 +90,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const unit = getMeasurementUnit(device.resource);
 
   const consumptionRate = useMemo(() => {
+    console.log(managementFirmConsumptionRates, device)
+
     if (!managementFirmConsumptionRates) return null;
 
     return managementFirmConsumptionRates[device.resource];

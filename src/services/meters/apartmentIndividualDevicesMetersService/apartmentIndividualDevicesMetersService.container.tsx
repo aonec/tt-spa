@@ -32,6 +32,8 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
   const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
   const loadConsumptionRates = useEvent(inputs.loadConsumptionRates);
 
+  console.log(apartment)
+
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
