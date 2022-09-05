@@ -16,6 +16,7 @@ import { HousingStocksListItemProps } from './HousingStocksListItem.types';
 export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   housingStock,
   selectHousingStock,
+  statisticIsLoading,
 }) => {
   const { numberOfApartments, apartmentsStatistic, id } = housingStock;
 
@@ -30,7 +31,9 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     [apartmentsStatistic]
   );
 
-  const isStatisticExist = apartmentsStatistic.length !== 0;
+  const isApartmentsExist = apartmentsStatistic.length !== 0;
+  const isStatisticExist = isApartmentsExist || !statisticIsLoading;
+
   const address = getHousingStockAddress(housingStock);
 
   return (

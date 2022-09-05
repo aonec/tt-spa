@@ -3,4 +3,5 @@ import { HousingStockWithApartmentStatistic } from '../../../displayStatisticsLi
 export type HousingStocksListItemProps = {
   housingStock: HousingStockWithApartmentStatistic;
   selectHousingStock: (id: number) => void;
+  statisticIsLoading: boolean;
 };

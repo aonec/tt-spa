@@ -5,6 +5,7 @@ import { HousingStocksListItem } from './HousingStocksListItem';
 export const HousingStocksList: FC<HousingStocksListProps> = ({
   housingStocks,
   selectHousingStock,
+  statisticIsLoading
 }) => {
   const list = useMemo(
     () =>
@@ -13,6 +14,7 @@ export const HousingStocksList: FC<HousingStocksListProps> = ({
           housingStock={housingStock}
           key={housingStock.id}
           selectHousingStock={selectHousingStock}
+          statisticIsLoading={statisticIsLoading}
         />
       )),
     [housingStocks]

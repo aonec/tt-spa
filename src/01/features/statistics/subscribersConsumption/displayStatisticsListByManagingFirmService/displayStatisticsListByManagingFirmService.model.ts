@@ -34,6 +34,7 @@ const $selectedManagingFirm = domain
   .on(selectManagingFirm, (_, managingFirm) => managingFirm);
 
 const selectHousingStock = domain.createEvent<number>();
+
 const getStatisticFx = domain.createEffect<
   number,
   SubscriberStatisticsСonsumptionResponse[]
@@ -69,6 +70,7 @@ const $housingStocks = domain
 const StatiscticsPageGate = createGate();
 
 const $housingStocksIsLoading = getHousingStocksFx.pending;
+const $statisticIsLoading = getStatisticFx.pending;
 
 sample({
   clock: guard({
@@ -121,6 +123,7 @@ export const displayStatisticsListByManagingFirmService = {
     $selectedManagingFirm,
     $housingStocks,
     $housingStocksIsLoading,
+    $statisticIsLoading,
   },
   gates: {
     StatiscticsPageGate,
