@@ -28,7 +28,6 @@ export function useManagingFirmConsumptionRates(
   }, [consumptionRates, managementFirmId]);
 
   useEffect(() => {
-    console.log(managementFirmId)
     if (managementFirmId) loadConsumptionRates(managementFirmId);
   }, [managementFirmId]);
 
