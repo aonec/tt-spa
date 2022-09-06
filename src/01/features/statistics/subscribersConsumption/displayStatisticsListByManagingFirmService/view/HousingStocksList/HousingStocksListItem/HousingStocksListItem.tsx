@@ -32,7 +32,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   );
 
   const isApartmentsExist = apartmentsStatistic.length !== 0;
-  const isStatisticExist = isApartmentsExist || !statisticIsLoading;
+  const isStatisticExist = isApartmentsExist;
 
   const address = getHousingStockAddress(housingStock);
 

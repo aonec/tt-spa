@@ -20,14 +20,14 @@ export function useFilterStatisticsList(
     if (hasColdWaterFilter) {
       const coldwaterFilter = fields.cold.value;
       apartmentsStatistic = apartmentsStatistic.filter((apartment) => {
-        const coldWaterSupplyСonsumption = apartment.coldWaterSupplyСonsumption;
-        if (!coldWaterSupplyСonsumption) {
+        const coldWaterSupplyConsumption = apartment.coldWaterSupplyConsumption;
+        if (!coldWaterSupplyConsumption) {
           return false;
         }
         if (coldwaterFilter.from && coldwaterFilter.to) {
           return (
-            coldWaterSupplyСonsumption >= coldwaterFilter.from &&
-            coldWaterSupplyСonsumption <= coldwaterFilter.to
+            coldWaterSupplyConsumption >= coldwaterFilter.from &&
+            coldWaterSupplyConsumption <= coldwaterFilter.to
           );
         }
         return true;
@@ -37,14 +37,14 @@ export function useFilterStatisticsList(
     if (hasHeatFilter) {
       const heatFilter = fields.heat.value;
       apartmentsStatistic = apartmentsStatistic.filter((apartment) => {
-        const hotWaterSupplyСonsumption = apartment.hotWaterSupplyСonsumption;
-        if (!hotWaterSupplyСonsumption) {
+        const hotWaterSupplyConsumption = apartment.hotWaterSupplyConsumption;
+        if (!hotWaterSupplyConsumption) {
           return false;
         }
         if (heatFilter.from && heatFilter.to) {
           return (
-            hotWaterSupplyСonsumption >= heatFilter.from &&
-            hotWaterSupplyСonsumption <= heatFilter.to
+            hotWaterSupplyConsumption >= heatFilter.from &&
+            hotWaterSupplyConsumption <= heatFilter.to
           );
         }
         return true;
@@ -54,15 +54,15 @@ export function useFilterStatisticsList(
     if (hasElectricityFilter) {
       const electricityFilter = fields.electricity.value;
       apartmentsStatistic = apartmentsStatistic.filter((apartment) => {
-        const electricitySupplyСonsumption =
-          apartment.electricitySupplyСonsumption;
-        if (!electricitySupplyСonsumption) {
+        const electricitySupplyConsumption =
+          apartment.electricitySupplyConsumption;
+        if (!electricitySupplyConsumption) {
           return false;
         }
         if (electricityFilter.from && electricityFilter.to) {
           return (
-            electricitySupplyСonsumption >= electricityFilter.from &&
-            electricitySupplyСonsumption <= electricityFilter.to
+            electricitySupplyConsumption >= electricityFilter.from &&
+            electricitySupplyConsumption <= electricityFilter.to
           );
         }
         return true;

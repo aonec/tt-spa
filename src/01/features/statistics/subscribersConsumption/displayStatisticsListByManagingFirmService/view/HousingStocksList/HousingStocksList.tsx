@@ -17,7 +17,7 @@ export const HousingStocksList: FC<HousingStocksListProps> = ({
           statisticIsLoading={statisticIsLoading}
         />
       )),
-    [housingStocks]
+    [housingStocks, statisticIsLoading]
   );
 
   return <div>{list}</div>;

@@ -17,9 +17,9 @@ export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagi
 }) => {
   const {
     apartmentNumber,
-    coldWaterSupplyСonsumption,
-    hotWaterSupplyСonsumption,
-    electricitySupplyСonsumption,
+    coldWaterSupplyConsumption,
+    hotWaterSupplyConsumption,
+    electricitySupplyConsumption,
     dateLastCheck,
     dateLastTransmissionOfReading,
     homeownerAccountFullName,
@@ -35,13 +35,13 @@ export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagi
     ? getTimeStringByUTC(dateLastTransmissionOfReading, 'DD.MM.YYYY')
     : '-';
   const preparedColdWaterSupplyСonsumption = prepareSupplyConsumption(
-    coldWaterSupplyСonsumption
+    coldWaterSupplyConsumption
   );
   const preparedHotWaterSupplyСonsumption = prepareSupplyConsumption(
-    hotWaterSupplyСonsumption
+    hotWaterSupplyConsumption
   );
   const preparedElectricitySupplyСonsumption = prepareSupplyConsumption(
-    electricitySupplyСonsumption
+    electricitySupplyConsumption
   );
 
   return (
