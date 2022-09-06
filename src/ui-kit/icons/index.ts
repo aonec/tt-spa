@@ -35,6 +35,7 @@ import { ReactComponent as MoreIcon } from './svg/more.svg';
 import { ReactComponent as CalculatorIcon } from './svg/calculator.svg';
 import { ReactComponent as ChoiceIcon } from './svg/choice.svg';
 import { ReactComponent as FinishIcon } from './svg/finish.svg';
+import { ReactComponent as ChevronIcon } from './svg/chevron.svg';
 
 export {
   FinishIcon,
@@ -74,4 +75,5 @@ export {
   DateIcon,
   DownloadIcon,
   ExitIcon,
+  ChevronIcon,
 };

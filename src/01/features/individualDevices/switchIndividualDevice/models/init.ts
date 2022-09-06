@@ -208,6 +208,7 @@ sample({
       sealInstallationDate: values.sealInstallationDate,
       sealNumber: values.sealNumber,
       oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
+      isPolling: values.isPolling
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,
