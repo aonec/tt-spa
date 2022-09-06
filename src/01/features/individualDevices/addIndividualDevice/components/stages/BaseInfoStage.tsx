@@ -382,7 +382,7 @@ export const BaseInfoStage = () => {
           checked={fields.isPolling.value}
           onChange={fields.isPolling.onChange}
         />
-        <TextWrapper>Прибор диспетчеризуется</TextWrapper>
+        <TextWrapper>Дистанционное снятие показаний</TextWrapper>
       </SwitchWrapper>
 
       <FormWrap>{bottomDateFields}</FormWrap>
