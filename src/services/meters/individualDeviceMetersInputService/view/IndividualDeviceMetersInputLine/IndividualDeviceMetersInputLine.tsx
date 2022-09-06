@@ -45,9 +45,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   const managementFirmUser = useStore($currentManagingFirmUser);
 
-  const isDeviceClosed = useMemo(() => {
-    return Boolean(device.closingDate);
-  }, [device]);
+  const isDeviceClosed = Boolean(device.closingDate)
 
   const isSeniorOperator = useMemo(
     () =>
@@ -126,7 +124,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   );
 
   return (
-    <Wrapper>
+    <Wrapper isDeviceClosed={isDeviceClosed}>
       <SelectSwitchDeviceTypeModal
         show={isModalOpen}
         close={() => setIsModalOpen(false)}
