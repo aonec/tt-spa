@@ -1,23 +1,37 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useState } from 'react';
 import { ButtonTT } from '01/tt-components';
-import { PushStageButtonWrapper, Wrapper } from './TaskActionsPanel.styled';
-import { TaskActionsPanelProps } from './TaskActionsPanel.types';
-import { taskActionsComponents } from './TaskActionsPanel.constants';
+import {
+  HalfSizeActionsWrapper,
+  PushStageButtonWrapper,
+  Wrapper,
+} from './TaskActionsPanel.styled';
+import {
+  TaskActionsComponent,
+  TaskActionsPanelProps,
+} from './TaskActionsPanel.types';
+import { useTaskPanelActions } from './TaskActionsPanel.hook';
+import { StagePushRequest } from 'myApi';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
-  const filteredTasksActionsComponents = useMemo(() => {
-    return taskActionsComponents.filter(({ actionType }) =>
-      actions.includes(actionType)
-    );
-  }, [actions]);
+  const [pushStagePayload, setPushStagePayload] = useState<StagePushRequest>(
+    {}
+  );
+
+  const { halfSizeActions } = useTaskPanelActions(actions);
+
+  const renderTaskAction = ({ Component }: TaskActionsComponent) => (
+    <Component handleChange={setPushStagePayload} />
+  );
 
   return (
     <Wrapper>
-      {filteredTasksActionsComponents.map(({ Component }) => (
-        <Component />
-      ))}
+      <HalfSizeActionsWrapper>
+        {halfSizeActions.map(renderTaskAction)}
+      </HalfSizeActionsWrapper>
       <PushStageButtonWrapper>
-        <ButtonTT color="blue">Завершить этап</ButtonTT>
+        <ButtonTT color="blue" onClick={() => console.log(pushStagePayload)}>
+          Завершить этап
+        </ButtonTT>
       </PushStageButtonWrapper>
     </Wrapper>
   );

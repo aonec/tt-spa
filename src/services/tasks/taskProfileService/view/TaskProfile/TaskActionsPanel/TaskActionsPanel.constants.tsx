@@ -7,9 +7,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.AddPerpetrator,
     Component: AddPerpetratorContainer,
+    size: 'half',
   },
   {
     actionType: EStageActionType.EmailNotify,
     Component: EmailNotifyContainer,
+    size: 'half',
   },
 ];

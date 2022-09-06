@@ -8,7 +8,13 @@ export const Wrapper = styled.div`
 `;
 
 export const PushStageButtonWrapper = styled.div`
-  margin-top: 15px;
+  margin-top: 5px;
   display: flex;
   justify-content: flex-end;
+`;
+
+export const HalfSizeActionsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 15px;
 `;
