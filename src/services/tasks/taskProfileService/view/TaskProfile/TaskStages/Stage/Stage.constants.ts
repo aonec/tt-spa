@@ -9,15 +9,15 @@ export const StageIconColorLookup: { [key in EStageStatus]: string } = {
 export const StageCircleColorLookup: {
   [key in EStageStatus]: { border: string; background: string };
 } = {
-  Done: {
+  [EStageStatus.Done]: {
     border: '#189ee9',
     background: '#ffffff',
   },
-  InProgress: {
+  [EStageStatus.InProgress]: {
     border: '#189ee9',
     background: '#189ee9',
   },
-  Waiting: {
+  [EStageStatus.Waiting]: {
     border: '#F3F5F6',
     background: '#F3F5F6',
   },
