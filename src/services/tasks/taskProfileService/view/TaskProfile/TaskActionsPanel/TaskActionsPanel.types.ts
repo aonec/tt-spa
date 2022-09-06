@@ -8,5 +8,5 @@ export type TaskActionsPanelProps = {
 
 export type TaskActionsComponent = {
   actionType: EStageActionType;
-  component: FC<{ handleChange: (payload: StagePushRequest) => void }>;
+  Component: FC<{ handleChange?: (payload: StagePushRequest) => void }>;
 };
