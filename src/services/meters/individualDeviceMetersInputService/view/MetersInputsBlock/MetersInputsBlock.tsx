@@ -120,8 +120,10 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
       const readingValues = getReadingLite(bufferedReadingValues, rateNum);
 
       const readingPayload: MeterInputUploadReadingPayload = {
-        ...readingValues,
-        readingDate: getDateByReadingMonthSlider(sliderIndex),
+        meter: {
+          ...readingValues,
+          readingDate: getDateByReadingMonthSlider(sliderIndex),
+        },
         sliderIndex,
         meterId: reading?.id,
       };

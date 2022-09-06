@@ -21,9 +21,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   handleUploadReading,
   uploadingMetersStatuses,
 }) => {
-  const isDeviceClosed = useMemo(() => {
-    return Boolean(device.closingDate);
-  }, [device]);
+  const isDeviceClosed = Boolean(device.closingDate);
 
   return (
     <Wrapper>

@@ -7,6 +7,7 @@ import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceListItemResponse,
   ConsumptionRateResponse,
+  IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import {
@@ -68,7 +69,10 @@ export function validateReadings(
   const previousReading = getExistingReading(readings, meterIndex, 'prev');
   const nextReading = getExistingReading(readings, meterIndex, 'next');
 
-  const uploadingReadingLite = getReadingLite(createMeterPayload, rateNum);
+  const uploadingReadingLite = getReadingLite(
+    createMeterPayload.meter,
+    rateNum
+  );
 
   const previousReadingLite =
     previousReading && getReadingLite(previousReading, rateNum);
@@ -104,7 +108,7 @@ function getExistingReading(
   index: number,
   type: 'next' | 'prev'
 ) {
-  const nextIndex = () => (type === 'next' ? index-- : index++);
+  const nextIndex = () => (type === 'next' ? index - 1 : index + 1);
 
   nextIndex();
 
@@ -193,8 +197,8 @@ function compareReadings(
 export function getReadingLite(
   reading:
     | IndividualDeviceReadingsResponse
-    | MeterInputUploadReadingPayload
-    | BufferedReadingValues,
+    | BufferedReadingValues
+    | Omit<IndividualDeviceReadingsCreateRequest, 'deviceId'>,
   rateNum: number
 ): ReadingLite {
   return getFilledArray(rateNum, (index) => {

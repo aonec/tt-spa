@@ -96,7 +96,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
 
       const sendMeter = () =>
         uploadMeter({
-          meter: { ...readingPayload, deviceId: device.id },
+          meter: { ...readingPayload.meter, deviceId: device.id },
           sliderIndex: readingPayload.sliderIndex,
           meterId: readingPayload.meterId,
         });
