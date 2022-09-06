@@ -1,21 +1,20 @@
-import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import React from 'react';
 import styled from 'styled-components';
+import React from 'react';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { apartmentIndividualDeviceMetersInputLineGridTemplate } from 'services/meters/individualDeviceMetersInputService/view/ApartmentIndividualDeviceMetersInputLine/ApartmentIndividualDeviceMetersInputLine.styled';
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns:
-    15px
-    100px 6px 130px 160px 160px 47px minmax(100px, 135px)
-    minmax(0, 80px);
+  grid-template-columns: ${apartmentIndividualDeviceMetersInputLineGridTemplate};
 
-  column-gap: 16px;
+  grid-gap: 15px;
   color: var(--main-90);
   background-color: var(--main-4);
   border-bottom: 1px solid var(--frame);
   align-items: center;
-  padding: 16px;
+  padding-left: 10px;
+  height: 60px;
 
   font-size: 12px;
 `;
@@ -46,8 +45,6 @@ export const HouseReadingsHeader: React.FC<{ sliderProps: any }> = ({
   return (
     <Container>
       <div>№ кв.</div>
-      <div>ФИО собственника</div>
-      <div></div>
       <div>Прибор</div>
       {readigsSlider}
       <Flex style={{ justifyContent: 'center' }}>

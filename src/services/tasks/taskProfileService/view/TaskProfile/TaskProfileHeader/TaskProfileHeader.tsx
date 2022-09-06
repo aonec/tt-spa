@@ -5,6 +5,8 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { TimeLine } from 'ui-kit/shared_components/TimeLine';
 import { Timer } from 'ui-kit/shared_components/Timer';
+import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+import { LineColors } from './TaskProfileHeader.constants';
 import {
   DeviceIconWrapper,
   HeaderWrapper,
@@ -25,6 +27,8 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   timer,
   taskName,
 }) => {
+  const lineColor = timer.closingStatus && LineColors[timer.closingStatus];
+
   const DeviceIcon = useMemo(() => {
     if (!devices.length && !nodeDevice) {
       return null;
@@ -59,7 +63,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
         </TimelineRowWrapper>
       )}
       <TimerRowWrapper>
-        {!timeline && <Line color={timer.closingStatus} />}
+        {!timeline && <Line color={lineColor} />}
         <Timer timer={timer} />
       </TimerRowWrapper>
     </Wrapper>

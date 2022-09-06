@@ -1,6 +1,6 @@
 import {
-  ManagingFirmUserCreateRequest,
-  ManagingFirmUserResponse,
+  OrganizationUserCreateRequest,
+  OrganizationUserResponse,
 } from './../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { createStore, createEvent, createEffect } from 'effector';
@@ -85,6 +85,6 @@ export const staffFormConfig: FormConfig<AnyFieldsConfigs> = {
 export const addStaffForm = createForm(staffFormConfig);
 
 export const addStaffFx = createEffect<
-  ManagingFirmUserCreateRequest,
-  ManagingFirmUserResponse
+  OrganizationUserCreateRequest,
+  OrganizationUserResponse
 >();
