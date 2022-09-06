@@ -7,6 +7,7 @@ import {
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
+import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
@@ -15,7 +16,14 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 
-export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
+export const TaskProfile: FC<TaskProfileProps> = ({
+  task,
+  isLoading,
+  handleAddComment,
+  isPerpetrator,
+  handleSetComment,
+  commentText,
+}) => {
   const {
     closingStatus,
     individualDevices,
@@ -25,6 +33,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
     apartment,
     housingStockId,
     pipeNode,
+    comments,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -58,6 +67,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
           <TaskActionsPanel handlePushStage={() => {}} actions={taskActions} />
           <TaskWrapper>
             <TaskInfoWrapper>
+              <TaskComments
+                comments={comments || []}
+                handleAddComment={handleAddComment}
+                isPerpetrator={isPerpetrator}
+                handleSetComment={handleSetComment}
+                commentText={commentText}
+              />
               <TaskBaseInfo task={task} />
               {individualDevices && (
                 <TaskIndividualDevicesList
