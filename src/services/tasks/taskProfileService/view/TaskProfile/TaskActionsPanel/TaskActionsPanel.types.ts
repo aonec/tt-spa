@@ -9,7 +9,9 @@ export type TaskActionsPanelProps = {
 export type TaskPanelInputSizeType = 'half' | 'full';
 
 export type ActionComponentProps = {
-  handleChange: (payload: StagePushRequest) => void;
+  handleChange: (
+    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest)
+  ) => void;
 };
 
 export type TaskActionsComponent = {
