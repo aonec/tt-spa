@@ -75,7 +75,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
 
   const openReadingsHistoryModal = useCallback(
     () => openReadingsHistoryModalById(device.id),
-    [openReadingsHistoryModalById]
+    [openReadingsHistoryModalById, device.id]
   );
 
   const inputIndex = useMemo(() => getInputIndex(deviceIndex, devices), [
