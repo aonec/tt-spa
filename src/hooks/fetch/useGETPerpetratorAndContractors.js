@@ -8,7 +8,7 @@ export const useGETPerpetratorsAndContractors = () => {
   const [data, setData] = useState({});
   useEffect(() => {
     axios
-      .all([request('ManagingFirmUsers'), request('Contractors')])
+      .all([request('OrganizationUsers'), request('Contractors')])
       .then(
         axios.spread((p, c) =>
           setData({ perpetrators: p.items, contractors: c.items })

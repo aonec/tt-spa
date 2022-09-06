@@ -15,7 +15,7 @@ export const usePanel = ({ data }, dispatch) => {
 
   // selects
   const perpetrator = useSelectFetch(
-    { url: 'ManagingFirmUsers', params: { permissions: 'TasksExecute' } },
+    { url: 'OrganizationUsers', params: { permissions: 'TasksExecute' } },
     {
       ...createProps('Исполнитель', 'Выберите исполнителя'),
       getSelectData: (id) => setNextPerpetratorId(id[0]),
