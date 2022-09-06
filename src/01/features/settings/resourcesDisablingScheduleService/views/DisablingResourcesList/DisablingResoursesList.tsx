@@ -4,12 +4,16 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { Divider, Skeleton, Space } from 'antd';
 import moment from 'moment';
-import { ResourceDisconnectingResponse } from 'myApi';
+import {
+  ResourceDisconnectingResponse,
+  ResourceDisconnectingResponsePagedList,
+} from 'myApi';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { PaginationSC } from 'services/objects/displayPersonalNumbersListService/displayPersonalNumberListSevice.styled';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
+import { Color } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
 import {
-  DisablingResourceWrapper,
   StyledFontLarge,
   StyledTextElement,
   TimeElement,
@@ -28,10 +32,16 @@ const layout2 = {
 };
 
 export const DisablingResourcesList: React.FC<{
-  resources: ResourceDisconnectingResponse[] | null;
+  resources: ResourceDisconnectingResponsePagedList | null;
   loading: boolean;
-}> = ({ resources, loading }) => {
+  setPage: (payload: number) => void;
+}> = ({ resources, loading, setPage }) => {
+  const temporaryOnClick = () => {
+    return void 0;
+  };
+  console.log(resources);
   const history = useHistory();
+
   const renderApartment = ({
     id,
     resource,
@@ -48,7 +58,7 @@ export const DisablingResourcesList: React.FC<{
     return (
       <ApartmentWrap
         {...layout2}
-        onClick={() => history.push(`/disabled/${id}`)}
+        onClick={() => history.push(`disabledResources/${id}`)}
         key={id}
       >
         <Space align="center">
@@ -73,7 +83,7 @@ export const DisablingResourcesList: React.FC<{
 
         <Space align="center">
           <StyledTextElement>
-            { housingStocks && housingStocks?.length || 'Не указан'}{' '}
+            {(housingStocks && housingStocks?.length) || 'Не указан'}{' '}
           </StyledTextElement>
         </Space>
         <Space align="center">
@@ -88,11 +98,31 @@ export const DisablingResourcesList: React.FC<{
           <StyledTextElement>{sender}</StyledTextElement>
         </Space>
         <Space align="end" direction="vertical">
-          <ContextMenuButton size="small" />
+          <div onClick={(e: React.SyntheticEvent) => e.stopPropagation()}>
+            <ContextMenuButton
+              menuButtons={[
+                {
+                  title: 'Редактировать отключение',
+                  onClick: temporaryOnClick,
+                },
+                {
+                  title: 'Завершить отключение',
+                  onClick: temporaryOnClick,
+                },
+                {
+                  title: 'Удалить отключение',
+                  onClick: temporaryOnClick,
+                  color: 'red' as Color,
+                },
+              ]}
+              size="small"
+            />
+          </div>
         </Space>
       </ApartmentWrap>
     );
   };
+  const items = resources?.items || [];
 
   return (
     <>
@@ -113,7 +143,19 @@ export const DisablingResourcesList: React.FC<{
       {loading ? (
         <Skeleton active />
       ) : (
-        <div>{resources?.map(renderApartment)}</div>
+        <>
+          <div>{items.map(renderApartment)}</div>
+          <Space style={{ margin: '10px' }}>
+            <PaginationSC
+              // defaultCurrent={1}
+              onChange={setPage}
+              pageSize={resources?.pageSize || 5}
+              total={resources?.totalItems}
+              current={resources?.pageNumber}
+              showSizeChanger={false}
+            />
+          </Space>
+        </>
       )}
     </>
   );

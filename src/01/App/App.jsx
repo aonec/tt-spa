@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'reshadow/macro';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
@@ -56,8 +56,8 @@ import {
 } from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { ESecuredIdentityRoleName } from 'myApi';
 import { useStore } from 'effector-react';
+import { DisablingResourceItem } from '01/features/settings/resourcesDisablingScheduleService/views/DisablingResourceItem/DisablingResourceItem';
 
 moment.locale('ru');
 
@@ -244,6 +244,11 @@ const Internal = () => {
               <Route
                 path="/settings/:section"
                 component={SettingsPageContainer}
+                exact
+              />
+              <Route
+                path="/settings/disabledResources/:id"
+                component={DisablingResourceItem}
                 exact
               />
 

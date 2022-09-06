@@ -26,7 +26,7 @@ export const Wrap = styled(Grid)`
   height: 49px;
 `;
 
-export const DisablingResourceWrapper = styled.div`
+export const DisablingResourceWrapperContainer = styled.div`
   max-width: 960px;
 `;
 

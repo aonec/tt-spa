@@ -1,8 +1,13 @@
-import { useGate, useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { resourceDisablingScheduleServiceService } from './ResourceDisablingScheduleService.model';
-import { DisablingResourceWrapper } from './views/DisablingResoucesList.styles';
-import { DisablingResourcesList } from './views/DisablingResoursesList';
+import { DisablingResourceWrapperContainer } from './views/DisablingResourcesList/DisablingResoucesList.styles';
+import { DisablingResourcesList } from './views/DisablingResourcesList/DisablingResoursesList';
+import { DisablingResourcesSearch } from './views/DisablingResourcesSearchHeader/DisablingResourcesSearchHeader';
+import {
+  $existingCities,
+  ExistingCitiesGate,
+} from '01/features/housingStocks/displayHousingStockCities/models';
 
 export const ResourceDisablingScheduleContainer = () => {
   const DisablingResouresGate =
@@ -13,11 +18,19 @@ export const ResourceDisablingScheduleContainer = () => {
   const loading = useStore(
     resourceDisablingScheduleServiceService.outputs.$loading
   );
+  const applyFilters = useEvent(
+    resourceDisablingScheduleServiceService.inputs.applyFilters
+  );
+  const setPage = useEvent(resourceDisablingScheduleServiceService.inputs.setPage)
+
+  const cities = useStore($existingCities);
 
   return (
-    <DisablingResourceWrapper>
-      <DisablingResouresGate />
-      <DisablingResourcesList resources={resources} loading={loading} />
-    </DisablingResourceWrapper>
+    <DisablingResourceWrapperContainer>
+      <ExistingCitiesGate />
+      <DisablingResouresGate PageSize={20}/>
+      <DisablingResourcesSearch applyFilters={applyFilters} cities={cities}/>
+      <DisablingResourcesList resources={resources} loading={loading} setPage={setPage}/>
+    </DisablingResourceWrapperContainer>
   );
 };

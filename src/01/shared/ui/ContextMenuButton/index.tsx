@@ -28,7 +28,6 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
         const { title, onClick, color } = button;
 
         const currentColor = getButtonColor(color);
-
         return (
           <MenuItem key={title + color} onClick={onClick} color={currentColor}>
             {title}
@@ -71,6 +70,6 @@ enum Color {
 
 function getButtonColor(color?: Color) {
   if (!color) return Color.default;
-
+  
   return (Color as any)[color] || Color.default;
 }
