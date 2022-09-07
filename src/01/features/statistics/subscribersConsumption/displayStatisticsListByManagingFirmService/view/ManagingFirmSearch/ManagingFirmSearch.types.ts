@@ -1,4 +1,5 @@
-import { GuidStringDictionaryItem, HousingStockListResponse } from 'myApi';
+import { GuidStringDictionaryItem } from 'myApi';
+import { SubscriberStatisticsFilter } from '../../displayStatisticsListByManagingFirmService.types';
 
 export type ManagingFirmSearchProps = {
   cities: string[];
@@ -7,6 +8,11 @@ export type ManagingFirmSearchProps = {
   managingFirms: GuidStringDictionaryItem[];
   selectManagingFirm: (managingFirm: string) => void;
   selectedManagingFirm: string;
-  isOpenExpandedSearch: boolean;
-  handleOpenExpandedSearch: () => void;
+  setFilter: (filter: SubscriberStatisticsForm) => void;
+  filter: SubscriberStatisticsForm | null;
 };
+
+export type SubscriberStatisticsForm = Omit<
+  SubscriberStatisticsFilter,
+  'HousingStockId'
+> & { ExcludeApartments: boolean };

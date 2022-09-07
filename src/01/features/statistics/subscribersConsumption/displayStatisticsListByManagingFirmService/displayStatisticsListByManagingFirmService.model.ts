@@ -1,5 +1,5 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   GuidStringDictionaryItem,
@@ -11,7 +11,11 @@ import {
   fetchManagingFirm,
   fetchSubscribersStatistic,
 } from './displayStatisticsListByManagingFirmService.api';
-import { HousingStockWithApartmentStatistic } from './displayStatisticsListByManagingFirmService.types';
+import {
+  HousingStockWithApartmentStatistic,
+  SubscriberStatisticsFilter,
+} from './displayStatisticsListByManagingFirmService.types';
+import { SubscriberStatisticsForm } from './view/ManagingFirmSearch/ManagingFirmSearch.types';
 
 const domain = createDomain('displayStatisticsListByManagingFirmService');
 
@@ -33,10 +37,18 @@ const $selectedManagingFirm = domain
   .createStore<string>('')
   .on(selectManagingFirm, (_, managingFirm) => managingFirm);
 
+const setSubscriberStatisticsFilter = domain.createEvent<SubscriberStatisticsForm>();
+const $subscriberStatisticsFilter = domain
+  .createStore<SubscriberStatisticsForm | null>(null)
+  .on(setSubscriberStatisticsFilter, (_, filter) => filter);
+
 const selectHousingStock = domain.createEvent<number>();
+const $selectedHousingStock = domain
+  .createStore<number>(0)
+  .on(selectHousingStock, (_, housingStock) => housingStock);
 
 const getStatisticFx = domain.createEffect<
-  number,
+  SubscriberStatisticsFilter,
   SubscriberStatisticsСonsumptionResponse[]
 >(fetchSubscribersStatistic);
 
@@ -58,9 +70,12 @@ const $housingStocks = domain
   })
   .on(
     getStatisticFx.done,
-    (housingStocks, { params: housingStockId, result: apartmentsStatistic }) =>
+    (
+      housingStocks,
+      { params: { HousingStockId }, result: apartmentsStatistic }
+    ) =>
       housingStocks.map((housingStock) => {
-        if (housingStock.id !== housingStockId) {
+        if (housingStock.id !== HousingStockId) {
           return housingStock;
         }
         return { ...housingStock, apartmentsStatistic };
@@ -87,26 +102,21 @@ forward({
 });
 
 sample({
-  source: selectHousingStock,
-  clock: guard({
-    source: $housingStocks,
-    clock: selectHousingStock,
-    filter: (housingStocks, selectedId) => {
-      const selectedHousingStock = housingStocks.find(
-        (housingStock) => housingStock.id === selectedId
-      );
-      if (!selectedHousingStock) {
-        return false;
-      }
-      const isStatisticExist =
-        selectedHousingStock.apartmentsStatistic.length !== 0;
-      if (!isStatisticExist) {
-        return true;
-      }
-      return false;
-    },
+  source: guard({
+    clock: $selectedHousingStock,
+    filter: Boolean,
   }),
-  fn: (id) => id,
+  clock: combine(
+    $selectedHousingStock,
+    $subscriberStatisticsFilter,
+    (HousingStockId, filter) => {
+      if (!filter) {
+        return { HousingStockId };
+      }
+      return { ...filter, HousingStockId };
+    }
+  ),
+  fn: (_, filter) => filter,
   target: getStatisticFx,
 });
 
@@ -115,6 +125,7 @@ export const displayStatisticsListByManagingFirmService = {
     selectCity,
     selectManagingFirm,
     selectHousingStock,
+    setSubscriberStatisticsFilter,
   },
   outputs: {
     $managingFirms,
@@ -124,6 +135,7 @@ export const displayStatisticsListByManagingFirmService = {
     $housingStocks,
     $housingStocksIsLoading,
     $statisticIsLoading,
+    $subscriberStatisticsFilter,
   },
   gates: {
     StatiscticsPageGate,
