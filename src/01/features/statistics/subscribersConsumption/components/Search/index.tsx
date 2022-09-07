@@ -9,6 +9,7 @@ import {
   ExistingStreetsGate,
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
+import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import {
   StyledAutocomplete,
   FilterButton,
@@ -17,22 +18,60 @@ import {
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
+import { useFormik } from 'formik';
+import moment from 'moment';
 import { HousingStockListResponsePagedList } from 'myApi';
-import React from 'react';
+import React, { useState } from 'react';
+import { SubscriberStatisticsForm } from '../../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import {
-  $isExpandedSearchOpen,
-  openExpandedSearch,
   setSelectedHousingStockId,
   subscribersConsumptionFindForm,
+  subscribersConsumptionService,
 } from '../../models';
-import { ExpandedSearch } from '../ExpandedSearch';
+import { SubscribersConsumptionExtendedSearch } from '../SubscribersConsumptionExtendedSearch';
 import { Wrapper } from './Search.styled';
 
+const { inputs, outputs } = subscribersConsumptionService;
+
 export const Search: React.FC = () => {
+  const [isExtendedSearchOpen, setIsExtendedSearchOpen] = useState(false);
+  const openExtendedSearchOpen = () => setIsExtendedSearchOpen(true);
+  const closeExtendedSearchOpen = () => setIsExtendedSearchOpen(false);
+
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
 
-  const isOpenExpandedSearch = useStore($isExpandedSearchOpen);
+  const filter = useStore(outputs.$subscriberStatisticsFilter);
+
+  const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
+
+  const isExcluded =
+    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3 || false;
+
+  const {
+    values,
+    setFieldValue,
+    resetForm,
+    submitForm,
+  } = useFormik<SubscriberStatisticsForm>({
+    initialValues: {
+      ColdWaterSupply: filter?.ColdWaterSupply,
+      Electricity: filter?.Electricity,
+      HotWaterSupply: filter?.HotWaterSupply,
+      ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
+      ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
+      ElectricitySupplyConsumptionFrom:
+        filter?.ElectricitySupplyConsumptionFrom,
+      ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
+      HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
+      HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+      ExcludeApartments: isExcluded,
+    },
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      setFilter(values);
+    },
+  });
 
   const {
     keyDownEnterGuardedHandler,
@@ -84,64 +123,69 @@ export const Search: React.FC = () => {
   const cities = useStore($existingCities);
 
   const baseSearch = (
-    <>
-      <ExistingCitiesGate />
-      <ExistingStreetsGate City={fields.city.value} />
-      <Grid temp="32px 0.5fr 1fr 0.2fr" gap="15px">
-        <div onClick={() => void openExpandedSearch()}>
-          <FilterButton />
-        </div>
-        <SelectSC
-          onBlur={onFindHandler}
-          placeholder="Город"
-          ref={cityRef}
-          onKeyDown={keyDownEnterGuardedHandler(0)}
-          onChange={fields.city.onChange as any}
-          value={fields.city.value}
-        >
-          {cities?.map((elem, index) => (
-            <SelectSC.Option key={index} value={elem}>
-              {elem}
-            </SelectSC.Option>
-          ))}
-        </SelectSC>
-        <StyledAutocomplete
-          onBlur={onFindHandler}
-          placeholder="Улица"
-          ref={streetRef}
-          value={fields.street.value}
-          onChange={fields.street.onChange}
-          onKeyDown={(e) => {
-            fromEnter(() => fields.street.onChange(streetMatch))(e);
-            keyDownEnterGuardedHandler(1)(e);
-          }}
-          options={options}
-          onClick={() => {
-            fields.street.onChange('');
-            fields.house.onChange('');
-          }}
+    <ExtendedSearch
+      isOpen={isExtendedSearchOpen}
+      handleOpen={openExtendedSearchOpen}
+      handleClose={closeExtendedSearchOpen}
+      handleApply={submitForm}
+      handleClear={resetForm}
+      extendedSearchContent={
+        <SubscribersConsumptionExtendedSearch
+          values={values}
+          setFieldValue={setFieldValue}
         />
-        <StyledAutocomplete
-          onBlur={onFindHandler}
-          placeholder="Дом"
-          value={fields.house.value}
-          onChange={fields.house.onChange}
-          ref={homeNumberRef}
-          onClick={() => fields.house.onChange('')}
-          onKeyDown={(e) => {
-            fromEnter(onSendHandler)(e);
-            keyDownEnterGuardedHandler(2)(e);
-          }}
-        />
-      </Grid>
-    </>
+      }
+    >
+      <>
+        <ExistingCitiesGate />
+        <ExistingStreetsGate City={fields.city.value} />
+        <Grid temp="0.5fr 1fr 0.2fr" gap="15px">
+          <SelectSC
+            onBlur={onFindHandler}
+            placeholder="Город"
+            ref={cityRef}
+            onKeyDown={keyDownEnterGuardedHandler(0)}
+            onChange={fields.city.onChange as any}
+            value={fields.city.value}
+          >
+            {cities?.map((elem, index) => (
+              <SelectSC.Option key={index} value={elem}>
+                {elem}
+              </SelectSC.Option>
+            ))}
+          </SelectSC>
+          <StyledAutocomplete
+            onBlur={onFindHandler}
+            placeholder="Улица"
+            ref={streetRef}
+            value={fields.street.value}
+            onChange={fields.street.onChange}
+            onKeyDown={(e) => {
+              fromEnter(() => fields.street.onChange(streetMatch))(e);
+              keyDownEnterGuardedHandler(1)(e);
+            }}
+            options={options}
+            onClick={() => {
+              fields.street.onChange('');
+              fields.house.onChange('');
+            }}
+          />
+          <StyledAutocomplete
+            onBlur={onFindHandler}
+            placeholder="Дом"
+            value={fields.house.value}
+            onChange={fields.house.onChange}
+            ref={homeNumberRef}
+            onClick={() => fields.house.onChange('')}
+            onKeyDown={(e) => {
+              fromEnter(onSendHandler)(e);
+              keyDownEnterGuardedHandler(2)(e);
+            }}
+          />
+        </Grid>
+      </>
+    </ExtendedSearch>
   );
 
-  const expandedSearch = <ExpandedSearch />;
-
-  return (
-    <Wrapper>
-      {isOpenExpandedSearch ? expandedSearch : baseSearch}
-    </Wrapper>
-  );
+  return <Wrapper>{baseSearch}</Wrapper>;
 };
