@@ -2,6 +2,10 @@ import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStoc
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import {
+  ExportSubscribersConsumptionContainer,
+  exportSubscribersConsumptionService,
+} from '../exportSubscribersConsumptionService';
 import { displayStatisticsListByManagingFirmService } from './displayStatisticsListByManagingFirmService.model';
 import { HousingStocksList } from './view/HousingStocksList';
 import { ManagingFirmSearch } from './view/ManagingFirmSearch';
@@ -17,15 +21,20 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
   const housingStocks = useStore(outputs.$housingStocks);
   const housingStocksIsLoading = useStore(outputs.$housingStocksIsLoading);
   const statisticIsLoading = useStore(outputs.$statisticIsLoading);
+  const selectedHousingStock = useStore(outputs.$selectedHousingStock);
   const filter = useStore(outputs.$subscriberStatisticsFilter);
 
   const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
   const selectCity = useEvent(inputs.selectCity);
   const selectManagingFirm = useEvent(inputs.selectManagingFirm);
   const selectHousingStock = useEvent(inputs.selectHousingStock);
+  const handleOpenModal = useEvent(
+    exportSubscribersConsumptionService.inputs.openModal
+  );
 
   return (
     <>
+      <ExportSubscribersConsumptionContainer />
       <ExistingCitiesGate />
       <StatiscticsPageGate />
       <ManagingFirmSearch
@@ -44,6 +53,8 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
           housingStocks={housingStocks}
           selectHousingStock={selectHousingStock}
           statisticIsLoading={statisticIsLoading}
+          handleOpenModal={handleOpenModal}
+          selectedHousingStock={selectedHousingStock}
         />
       )}
     </>

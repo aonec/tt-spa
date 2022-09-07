@@ -1,14 +1,16 @@
 import Arrow from '01/_components/Arrow/Arrow';
-import { Skeleton } from 'antd';
-import React, { FC, useMemo, useState } from 'react';
+import { Skeleton, Tooltip } from 'antd';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { DownloadIcon } from 'ui-kit/icons';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { SubscribersStaticsByManagingFirm } from '../SubscribersStatisticsByManagingFirm';
 import {
   AddressWrapper,
   AppartmentNumberText,
   ArrowWrapper,
+  DownloadIconSC,
+  DownloadIconWrapper,
   GroupWrapper,
-  InfoWrapper,
   Wrapper,
 } from './HousingStocksListItem.styled';
 import { HousingStocksListItemProps } from './HousingStocksListItem.types';
@@ -17,11 +19,14 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   housingStock,
   selectHousingStock,
   statisticIsLoading,
+  handleOpenModal,
+  selectedHousingStock,
 }) => {
   const { numberOfApartments, apartmentsStatistic, id } = housingStock;
 
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
+
   const apartmentsStatisticComponent = useMemo(
     () => (
       <SubscribersStaticsByManagingFirm
@@ -31,13 +36,22 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     [apartmentsStatistic]
   );
 
-  const isApartmentsExist = apartmentsStatistic.length !== 0;
-  const isStatisticExist = isApartmentsExist;
+  const openModal = useCallback(() => handleOpenModal(id), [
+    handleOpenModal,
+    id,
+  ]);
 
   const address = getHousingStockAddress(housingStock);
+  const isCurrentHousingStockSelected = selectedHousingStock === id;
+
+  useEffect(() => {
+    if (!isCurrentHousingStockSelected) {
+      setIsActive(false);
+    }
+  }, [isCurrentHousingStockSelected]);
 
   return (
-    <InfoWrapper>
+    <div>
       <Wrapper>
         <GroupWrapper
           onClick={() => {
@@ -55,10 +69,20 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
           <AppartmentNumberText>
             Количество квартир: {numberOfApartments}
           </AppartmentNumberText>
+          <Tooltip title="Выгрузить список квартир">
+            <DownloadIconWrapper onClick={openModal}>
+              <DownloadIconSC />
+            </DownloadIconWrapper>
+          </Tooltip>
         </GroupWrapper>
       </Wrapper>
-      {isActive && isStatisticExist && apartmentsStatisticComponent}
-      {isActive && !isStatisticExist && <Skeleton active />}
-    </InfoWrapper>
+      {isActive &&
+        isCurrentHousingStockSelected &&
+        !statisticIsLoading &&
+        apartmentsStatisticComponent}
+      {isActive && isCurrentHousingStockSelected && statisticIsLoading && (
+        <Skeleton active />
+      )}
+    </div>
   );
 };

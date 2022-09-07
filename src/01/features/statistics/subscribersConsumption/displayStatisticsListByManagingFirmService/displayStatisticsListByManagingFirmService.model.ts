@@ -128,6 +128,7 @@ export const displayStatisticsListByManagingFirmService = {
     $cities: $existingCities,
     $selectedCity,
     $selectedManagingFirm,
+    $selectedHousingStock,
     $housingStocks,
     $housingStocksIsLoading,
     $statisticIsLoading,

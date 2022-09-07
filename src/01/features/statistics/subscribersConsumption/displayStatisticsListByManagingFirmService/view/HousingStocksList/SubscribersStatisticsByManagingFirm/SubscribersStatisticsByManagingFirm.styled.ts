@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.div`
+  z-index: 1;
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 2fr 2.5fr 2.5fr 3.5fr;
 
@@ -16,4 +18,3 @@ export const ColumnNameWrapper = styled.div`
   font-size: 12px;
   padding: 16px 24px 16px 16px;
 `;
-
