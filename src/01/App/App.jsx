@@ -69,6 +69,7 @@ const Internal = () => {
     ? '/tasks/list/Observing'
     : '/tasks/list/Executing';
 
+    
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
