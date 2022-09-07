@@ -40,7 +40,7 @@ export const StageInfoWrapper = styled.div<{ isActive: boolean }>`
   color: ${({ isActive }) => (isActive ? '#272F5ACC' : '#272F5A99')};
   font-weight: ${({ isActive }) => (isActive ? '500' : '400')};
 
-  flex-grow:3;
+  flex-grow: 3;
   margin-left: 16px;
 `;
 
@@ -53,9 +53,10 @@ export const PerpetratorWrapper = styled.div`
   font-size: 12px;
 `;
 
-export const StageLine = styled.div`
+export const StageLine = styled.div<{ isActive: boolean }>`
   margin-top: 8px;
-  background-color: var(--primary-100);
+  background-color: ${({ isActive }) =>
+    isActive ? 'var(--primary-100)' : '#DCDEE4'};
   width: 1px;
   height: 100%;
 `;
@@ -69,6 +70,6 @@ export const StageLineWrapper = styled.div`
 `;
 
 export const StagePanelWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-` 
+  display: flex;
+  flex-direction: column;
+`;
