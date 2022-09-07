@@ -15,13 +15,19 @@ export const ExportSubscribersConsumptionContainer = () => {
   const setFileName = useEvent(inputs.setFileName);
   const handleExportStatistic = useEvent(inputs.exportStatistic);
 
+  const isButtonDisabled = !Boolean(fileName.length);
+  const buttonText = isButtonDisabled
+    ? 'Введите название файла'
+    : 'Выгрузить список';
+
   return (
     <ModalTT
       visible={isOpen}
       title="Выгрузить список квартир"
-      onCancel={closeModal}
-      saveBtnText="Выгрузить список"
-      onSubmit={handleExportStatistic}
+      onCancel={() => closeModal()}
+      saveBtnText={buttonText}
+      onSubmit={() => handleExportStatistic()}
+      disabled={isButtonDisabled}
     >
       <TextWrapper>Название списка</TextWrapper>
       <InputSC
