@@ -21,11 +21,11 @@ import { declOfNum } from './DisablingResourcesList.utils';
 
 const layout = {
   temp:
-    '3.2fr 0.01fr 1.4fr 0.01fr 0.8fr 0.01fr 0.5fr 0.01fr 1.1fr 0.01fr 1.3fr 0.1fr 0.2fr',
+    '3.1fr 0.01fr 1.4fr 0.01fr 0.8fr 0.01fr 0.5fr 0.01fr 1.1fr 0.01fr 1.3fr 0.1fr 0.2fr',
   gap: '10px',
 };
 const layout2 = {
-  temp: '2.8fr 1.7fr 1.1fr 0.8fr 1.6fr 1.3fr 0.4fr',
+  temp: '3fr 1.7fr 1.1fr 0.8fr 1.6fr 1.3fr 0.4fr',
   gap: '17px',
 };
 
