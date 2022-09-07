@@ -14,7 +14,11 @@ import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 
-export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
+export const TaskProfile: FC<TaskProfileProps> = ({
+  task,
+  isLoading,
+  relatedPipeNode,
+}) => {
   const {
     closingStatus,
     individualDevices,
@@ -63,7 +67,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode}/>}
+              {relatedPipeNode && <TaskPipeNodeInfo pipeNode={relatedPipeNode} />}
+              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>
