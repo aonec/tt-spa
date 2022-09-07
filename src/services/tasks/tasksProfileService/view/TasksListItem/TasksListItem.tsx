@@ -1,25 +1,24 @@
 import _ from 'lodash';
-import { EActResourceType, EResourceType } from 'myApi';
+import { EActResourceType } from 'myApi';
 import React, { FC, useMemo } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { TimeLine } from 'ui-kit/shared_components/TimeLine';
+import { Timer } from 'ui-kit/shared_components/Timer';
+import { IconLookup } from 'ui-kit/shared_components/Timer/Timer.constants';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { IconLookup } from './TasksListItem.constants';
 import {
   CalendarIconSC,
   DeviceInfoWrapper,
   InfoBlockWrapper,
   InfoWrapper,
-  Line,
   MapIconSC,
   NameRowWrapper,
   SerialNumberWrapper,
   TaskItemWrapper,
   TaskNameWrapper,
   TextWrapper,
-  TimeLine,
-  TimeLineWrapper,
   TimerRowWrapper,
   TimeWrapper,
   UserIconSC,
@@ -43,15 +42,15 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
   const taskName = currentStage ? currentStage.name : name;
   const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
 
-  const device = devices ? devices[0] : null
+  const device = devices ? devices[0] : null;
 
   const DeviceIcon = useMemo(() => {
     if (!devices) {
       return null;
     }
 
-    const device = devices[0]
-    
+    const device = devices[0];
+
     const allDevicesResource = devices.map((device) => device.resource);
     const isUniq = _.uniq(allDevicesResource).length === 1;
     const iconType = isUniq ? device.resource : EActResourceType.All;
@@ -72,35 +71,9 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
             </TaskNameWrapper>
             <span>{currentStage && name}</span>
           </NameRowWrapper>
-          {timeline && (
-            <TimeLineWrapper>
-              <TimeLine>
-                <Line
-                  width={timeline.timelineStyle.width}
-                  background={timeline.timelineStyle.color}
-                />
-              </TimeLine>
-              <TimeWrapper fail={timeline.isFailed}>
-                {timeline.remainingTime}
-              </TimeWrapper>
-              <TimeWrapper>{timeline.deadlineDate}</TimeWrapper>
-            </TimeLineWrapper>
-          )}
+          {timeline && <TimeLine timeline={timeline} />}
           <TimerRowWrapper>
-            <div>
-              {Icon && <Icon />}
-              <TimeWrapper className="status" fail={timer?.isFailed}>
-                {timer.statusDescription}
-              </TimeWrapper>
-              {!timer?.isFailed && (
-                <TimeWrapper fail={timer.stage?.isFailed}>
-                  {timer.stage?.remainingTime || timer?.executionTime}
-                </TimeWrapper>
-              )}
-              <TimeWrapper fail={timer?.isFailed}>
-                {timer.stage?.deadlineDate || timer?.diffTime}
-              </TimeWrapper>
-            </div>
+            <Timer timer={timer} />
             {showExecutor && (
               <>
                 <UserIconSC />

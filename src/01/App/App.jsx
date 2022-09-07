@@ -57,6 +57,7 @@ import {
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { useStore } from 'effector-react';
+import { TaskProfileContainer } from 'services/tasks/taskProfileService';
 import { DisablingResourceItem } from '01/features/settings/resourcesDisablingScheduleService/views/DisablingResourceItem/DisablingResourceItem';
 
 moment.locale('ru');
@@ -107,6 +108,11 @@ const Internal = () => {
                 <Route
                   path="/tasks/profile/(\\d+)"
                   component={TaskProfile}
+                  exact
+                />
+                <Route
+                  path="/tasks/test-profile/:taskId"
+                  component={TaskProfileContainer}
                   exact
                 />
                 <Route
@@ -283,6 +289,7 @@ export function App() {
 }
 
 const LeftBlock = styledC.div`
+  z-index: 2;
   padding-top: 20px; 
   width: 208px;
   background: #F3F5F6;
