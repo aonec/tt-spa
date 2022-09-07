@@ -246,11 +246,6 @@ const Internal = () => {
                 component={SettingsPageContainer}
                 exact
               />
-              <Route
-                path="/settings/disabledResources/:id"
-                component={DisablingResourceItem}
-                exact
-              />
 
               <Redirect
                 from="/statistics/"

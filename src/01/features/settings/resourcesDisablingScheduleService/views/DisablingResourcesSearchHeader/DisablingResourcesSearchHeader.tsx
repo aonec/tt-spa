@@ -1,14 +1,14 @@
+import React from 'react';
+import { Select } from 'antd';
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
 import { SelectSC } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { EResourceDisconnectingType, EResourceType } from 'myApi';
 import {
   FormItem,
   StyledDisablingResourcesSearchHeader,
 } from './DisablingResourcesSearchHeader.styled';
 import { DisablingResourcesProps } from '../../ResourceDisablingScheduleContainer.types';
 import { DisablingResourcesSearchProps } from './DisablingResourcesSearchHeader.types';
-import { Select } from 'antd';
-import { EResourceDisconnectingType, EResourceType } from 'myApi';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { ClassLookUp } from './DisablingResourcesSearchHeader.utils';
 

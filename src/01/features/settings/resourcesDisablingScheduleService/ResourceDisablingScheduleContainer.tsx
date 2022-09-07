@@ -1,5 +1,5 @@
-import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { useEvent, useStore } from 'effector-react';
 import { resourceDisablingScheduleServiceService } from './ResourceDisablingScheduleService.model';
 import { DisablingResourceWrapperContainer } from './views/DisablingResourcesList/DisablingResoucesList.styles';
 import { DisablingResourcesList } from './views/DisablingResourcesList/DisablingResoursesList';
@@ -8,6 +8,7 @@ import {
   $existingCities,
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
+import { ResourceDisablingScheduleModal } from './ResourcesDisablingScheduleServiceModal/ResourceDisablingScheduleModal';
 
 export const ResourceDisablingScheduleContainer = () => {
   const DisablingResouresGate =
@@ -18,19 +19,37 @@ export const ResourceDisablingScheduleContainer = () => {
   const loading = useStore(
     resourceDisablingScheduleServiceService.outputs.$loading
   );
+  const cities = useStore($existingCities);
+
   const applyFilters = useEvent(
     resourceDisablingScheduleServiceService.inputs.applyFilters
   );
-  const setPage = useEvent(resourceDisablingScheduleServiceService.inputs.setPage)
+  const setPage = useEvent(
+    resourceDisablingScheduleServiceService.inputs.setPage
+  );
+  const isModalOpen = useStore(
+    resourceDisablingScheduleServiceService.outputs.$isAddressesModalOpen
+  );
+  const openModal = useEvent(
+    resourceDisablingScheduleServiceService.inputs.openAddressesModal
+  );
 
-  const cities = useStore($existingCities);
 
   return (
     <DisablingResourceWrapperContainer>
       <ExistingCitiesGate />
-      <DisablingResouresGate PageSize={20}/>
-      <DisablingResourcesSearch applyFilters={applyFilters} cities={cities}/>
-      <DisablingResourcesList resources={resources} loading={loading} setPage={setPage}/>
+      <DisablingResouresGate />
+      <ResourceDisablingScheduleModal
+        isModalOpen={isModalOpen}
+        openModal={() => openModal()}
+      />
+      <DisablingResourcesSearch applyFilters={applyFilters} cities={cities} />
+      <DisablingResourcesList
+        resources={resources}
+        loading={loading}
+        setPage={setPage}
+        openModal={() => openModal()}
+      />
     </DisablingResourceWrapperContainer>
   );
 };

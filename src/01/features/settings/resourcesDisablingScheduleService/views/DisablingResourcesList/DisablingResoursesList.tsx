@@ -1,46 +1,43 @@
+import React from 'react';
+import moment from 'moment';
+import { Divider, Popover, Skeleton, Space } from 'antd';
+import { ResourceDisconnectingResponse } from 'myApi';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { Divider, Skeleton, Space } from 'antd';
-import moment from 'moment';
-import {
-  ResourceDisconnectingResponse,
-  ResourceDisconnectingResponsePagedList,
-} from 'myApi';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { PaginationSC } from 'services/objects/displayPersonalNumbersListService/displayPersonalNumberListSevice.styled';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { Color } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
 import {
   StyledFontLarge,
+  StyledLinkTypeElement,
   StyledTextElement,
   TimeElement,
   Wrap,
 } from './DisablingResoucesList.styles';
 import { ApartmentWrap } from './DisablingResoucesList.styles';
+import { DisablingListProps } from './DisablingResourcesList.types';
+import { declOfNum } from './DisablingResourcesList.utils';
 
 const layout = {
   temp:
-    '3.2fr 0.01fr 1.3fr 0.01fr 1fr 0.01fr 0.6fr 0.01fr 1fr 0.01fr 1fr 0.1fr 0.3fr',
+    '3.2fr 0.01fr 1.4fr 0.01fr 0.8fr 0.01fr 0.5fr 0.01fr 1.1fr 0.01fr 1.3fr 0.1fr 0.2fr',
   gap: '10px',
 };
 const layout2 = {
-  temp: '2.8fr 1.7fr 1.2fr 0.8fr 1.6fr 1.2fr 0.4fr',
-  gap: '20px',
+  temp: '2.8fr 1.7fr 1.1fr 0.8fr 1.6fr 1.3fr 0.4fr',
+  gap: '17px',
 };
 
-export const DisablingResourcesList: React.FC<{
-  resources: ResourceDisconnectingResponsePagedList | null;
-  loading: boolean;
-  setPage: (payload: number) => void;
-}> = ({ resources, loading, setPage }) => {
+export const DisablingResourcesList: React.FC<DisablingListProps> = ({
+  resources,
+  loading,
+  setPage,
+  openModal,
+}) => {
   const temporaryOnClick = () => {
     return void 0;
   };
-  console.log(resources);
-  const history = useHistory();
 
   const renderApartment = ({
     id,
@@ -50,17 +47,12 @@ export const DisablingResourcesList: React.FC<{
     endDate,
     sender,
     heatingStation,
-    managementFirmId,
     housingStocks,
   }: ResourceDisconnectingResponse) => {
     const { icon, color } = DeviceIcons[resource] || {};
 
     return (
-      <ApartmentWrap
-        {...layout2}
-        onClick={() => history.push(`disabledResources/${id}`)}
-        key={id}
-      >
+      <ApartmentWrap {...layout2} key={id}>
         <Space align="center">
           <TimeElement>
             <StyledFontLarge>
@@ -82,9 +74,17 @@ export const DisablingResourcesList: React.FC<{
         </Space>
 
         <Space align="center">
-          <StyledTextElement>
-            {(housingStocks && housingStocks?.length) || 'Не указан'}{' '}
-          </StyledTextElement>
+          <StyledLinkTypeElement onClick={openModal}>
+            <p>
+              {(housingStocks &&
+                declOfNum(housingStocks?.length, [
+                  'адрес',
+                  'адреса',
+                  'адресов',
+                ])) ||
+                'Не указан'}{' '}
+            </p>
+          </StyledLinkTypeElement>
         </Space>
         <Space align="center">
           <StyledTextElement>{heatingStation?.name || 'Нет'}</StyledTextElement>
@@ -94,9 +94,13 @@ export const DisablingResourcesList: React.FC<{
             {disconnectingType?.description}
           </StyledTextElement>
         </Space>
-        <Space align="center">
-          <StyledTextElement>{sender}</StyledTextElement>
-        </Space>
+        <Popover content={sender}>
+          <Space align="center">
+            <StyledTextElement>
+              <p>{sender}</p>
+            </StyledTextElement>
+          </Space>
+        </Popover>
         <Space align="end" direction="vertical">
           <div onClick={(e: React.SyntheticEvent) => e.stopPropagation()}>
             <ContextMenuButton
@@ -147,7 +151,6 @@ export const DisablingResourcesList: React.FC<{
           <div>{items.map(renderApartment)}</div>
           <Space style={{ margin: '10px' }}>
             <PaginationSC
-              // defaultCurrent={1}
               onChange={setPage}
               pageSize={resources?.pageSize || 5}
               total={resources?.totalItems}

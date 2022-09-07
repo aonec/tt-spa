@@ -1,10 +1,7 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { sample } from 'lodash';
-import {
-  ResourceDisconnectingResponse,
-  ResourceDisconnectingResponsePagedList,
-} from 'myApi';
+
+import { ResourceDisconnectingResponsePagedList } from 'myApi';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
 
@@ -16,17 +13,21 @@ const $disablingResources = resourceDisablingScheduleServiceDomain.createStore<R
   null
 );
 const $filters = resourceDisablingScheduleServiceDomain.createStore<DisablingResourcesProps>(
-  { PageSize: 20 }
+  { PageSize: 15 }
+);
+const $isAddressesModalOpen = resourceDisablingScheduleServiceDomain.createStore<boolean>(
+  false
 );
 
-const resourceDisablingGate = createGate<DisablingResourcesProps | null>();
+const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
 const resourceDisablingEvent = resourceDisablingScheduleServiceDomain.createEvent();
 const applyFilters = resourceDisablingScheduleServiceDomain.createEvent<DisablingResourcesProps>();
 const setPage = resourceDisablingScheduleServiceDomain.createEvent<number>();
+const openAddressesModal = resourceDisablingScheduleServiceDomain.createEvent();
 
 const resourceDisablingEventFx = resourceDisablingScheduleServiceDomain.createEffect<
-  DisablingResourcesProps | unknown,
+  DisablingResourcesProps,
   ResourceDisconnectingResponsePagedList
 >(fetchDisablingResources);
 
@@ -40,17 +41,14 @@ $filters
     pageNumber: page,
   }));
 
-forward({
-  from: [resourceDisablingGate.open, $filters],
-  to: resourceDisablingEventFx,
-});
+$isAddressesModalOpen.on(openAddressesModal, (state) => !state);
 
-//Почему так не работает ?
-// sample({
-//   source: $filters,
-//   clock: [resourceDisablingGate.open, $filters],
-//   target: resourceDisablingEventFx,
-// });
+sample({
+  source: $filters,
+  clock: [resourceDisablingGate.open, $filters],
+  fn: (filters) => filters,
+  target: resourceDisablingEventFx,
+});
 
 $disablingResources.on(
   resourceDisablingEventFx.doneData,
@@ -65,10 +63,13 @@ export const resourceDisablingScheduleServiceService = {
     applyFilters,
     resourceDisablingEventFx,
     setPage,
+    openAddressesModal,
   },
   outputs: {
     $disablingResources,
     $loading,
+    $filters,
+    $isAddressesModalOpen,
   },
   gates: {
     resourceDisablingGate,

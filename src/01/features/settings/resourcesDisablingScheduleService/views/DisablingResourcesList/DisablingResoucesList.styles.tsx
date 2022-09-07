@@ -4,12 +4,10 @@ import styled from 'styled-components';
 export const ApartmentWrap = styled(Grid)`
   padding: 10px 20px;
   border-bottom: 1px solid #f3f5f6;
-  cursor: pointer;
   transition: 0.2s;
 
   &:hover {
-    color: #3241e6;
-    background-color: #3948f113;
+    background-color: #F3FAFE;
   }
 
   &:last-child {
@@ -36,7 +34,29 @@ export const TimeElement = styled.div`
 `;
 
 export const StyledTextElement = styled.span`
-  text-overflow: ellipsis;
+  p {
+    margin-bottom: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 110px;
+    text-overflow: ellipsis;
+  }
+`;
+
+export const StyledLinkTypeElement = styled(StyledTextElement)`
+  display: inline-block;
+  padding-bottom: 1px;
+  cursor: pointer;
+
+  p {
+    margin-bottom: 0px;
+    line-height: 15px;
+    border-bottom: 1px solid black;
+    &:hover {
+      color: #189EE9;
+      border-bottom: 1px solid #189EE9;
+    }
+  }
 `;
 
 export const StyledFontLarge = styled.span`
