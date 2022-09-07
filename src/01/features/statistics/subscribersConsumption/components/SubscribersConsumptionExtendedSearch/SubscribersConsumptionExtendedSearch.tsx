@@ -2,7 +2,7 @@ import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { NumberRange } from '01/shared/ui/Fields/NumberRange';
 import { Checkbox } from 'antd';
 import moment from 'moment';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
   DatesWrapper,
   ExcludeApartmentsWrapper,
@@ -31,6 +31,20 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
     DateLastCheckFrom,
     DateLastCheckTo,
   } = values;
+
+  const handleChangeDateRange = useCallback(
+    (dates: [string, string]) => {
+      const dateLastCheckFromValue = dates[0];
+      const dateLastCheckTo = dates[1];
+
+      setFieldValue(
+        'DateLastCheckFrom',
+        moment(dateLastCheckFromValue).toISOString()
+      );
+      setFieldValue('DateLastCheckTo', moment(dateLastCheckTo).toISOString());
+    },
+    [setFieldValue]
+  );
 
   useEffect(() => {
     if (ExcludeApartments) {
@@ -129,19 +143,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
               : undefined
           }
           format="DD.MM.YYYY"
-          onChange={(_, dates) => {
-            const dateLastCheckFromValue = dates[0];
-            const dateLastCheckTo = dates[1];
-
-            setFieldValue(
-              'DateLastCheckFrom',
-              moment(dateLastCheckFromValue).toISOString()
-            );
-            setFieldValue(
-              'DateLastCheckTo',
-              moment(dateLastCheckTo).toISOString()
-            );
-          }}
+          onChange={(_, dates) => handleChangeDateRange(dates)}
         />
 
         <StyledDatePicker

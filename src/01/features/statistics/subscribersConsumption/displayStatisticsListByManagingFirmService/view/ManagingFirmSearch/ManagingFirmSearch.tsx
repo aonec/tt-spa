@@ -27,7 +27,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   const close = () => setIsOpen(false);
 
   const isExcluded =
-    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3 || false;
+    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
 
   const {
     values,
