@@ -154,7 +154,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
           }}
           value={
             MonthOfLastTransmission
-              ? moment(MonthOfLastTransmission)
+              ? moment(MonthOfLastTransmission).startOf('month')
               : undefined
           }
           picker="month"

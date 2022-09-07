@@ -102,10 +102,6 @@ forward({
 });
 
 sample({
-  source: guard({
-    clock: $selectedHousingStock,
-    filter: Boolean,
-  }),
   clock: combine(
     $selectedHousingStock,
     $subscriberStatisticsFilter,
@@ -116,7 +112,7 @@ sample({
       return { ...filter, HousingStockId };
     }
   ),
-  fn: (_, filter) => filter,
+  fn: (filter) => filter,
   target: getStatisticFx,
 });
 
