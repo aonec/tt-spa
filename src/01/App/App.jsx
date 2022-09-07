@@ -57,7 +57,6 @@ import {
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { useStore } from 'effector-react';
-import { DisablingResourceItem } from '01/features/settings/resourcesDisablingScheduleService/views/DisablingResourceItem/DisablingResourceItem';
 
 moment.locale('ru');
 
