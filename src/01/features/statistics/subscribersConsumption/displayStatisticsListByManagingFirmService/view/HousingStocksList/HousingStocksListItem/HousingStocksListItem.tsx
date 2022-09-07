@@ -2,6 +2,7 @@ import Arrow from '01/_components/Arrow/Arrow';
 import { Skeleton } from 'antd';
 import React, { FC, useMemo, useState } from 'react';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { SubscribersStaticsByManagingFirm } from '../SubscribersStatisticsByManagingFirm';
 import {
   AddressWrapper,
   AppartmentNumberText,
@@ -20,7 +21,14 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
 
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
-
+  const apartmentsStatisticComponent = useMemo(
+    () => (
+      <SubscribersStaticsByManagingFirm
+        apartmentsStatistic={apartmentsStatistic}
+      />
+    ),
+    [apartmentsStatistic]
+  );
 
   const isStatisticExist = apartmentsStatistic.length !== 0;
   const address = getHousingStockAddress(housingStock);
@@ -46,6 +54,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
           </AppartmentNumberText>
         </GroupWrapper>
       </Wrapper>
+      {isActive && isStatisticExist && apartmentsStatisticComponent}
       {isActive && !isStatisticExist && <Skeleton active />}
     </InfoWrapper>
   );
