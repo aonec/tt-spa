@@ -576,6 +576,16 @@ export interface CheckDeviceRequest {
   futureCheckingDate: string;
 }
 
+export interface CheckIndividualDeviceRequest {
+  /** @format date-time */
+  currentCheckingDate: string;
+
+  /** @format date-time */
+  futureCheckingDate: string;
+  readingsBeforeCheck?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+  readingsAfterCheck?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+}
+
 export interface CloseCurrentTransformerRequest {
   /** @format date-time */
   closingDate: string;
@@ -8237,6 +8247,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     individualDevicesSwitchCreate: (data: SwitchIndividualDeviceRequest, params: RequestParams = {}) =>
       this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/switch`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesCheckCreate
+     * @summary IndividualDeviceUpdate
+     * @request POST:/api/IndividualDevices/{deviceId}/check
+     * @secure
+     */
+    individualDevicesCheckCreate: (deviceId: number, data: CheckIndividualDeviceRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDevices/${deviceId}/check`,
         method: "POST",
         body: data,
         secure: true,
