@@ -55,7 +55,6 @@ const ClosingDate = styled.div`
 const DeviceColumn = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 120px;
 `;
 
 const DeviceLink = styled(Link)`

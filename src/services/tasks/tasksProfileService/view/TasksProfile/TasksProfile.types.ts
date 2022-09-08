@@ -6,14 +6,13 @@ import {
 } from 'myApi';
 import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
-import { SearchTasksForm } from '../SearchTasks/SearchTasks.types';
 import { TaskType } from '../TasksListItem/TasksListItem.types';
 
 export type TasksProfileProps = {
   handleExportTasksList: () => void;
   grouptype: string;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
-  handleSearch: (formFilter: SearchTasksForm) => void;
+  handleSearch: (formFilter: GetTasksListRequestPayload) => void;
   changePageNumber: (PageNumber: number) => void;
   tasks: TaskType[];
   initialValues: GetTasksListRequestPayload;

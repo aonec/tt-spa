@@ -57,7 +57,9 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
   const iconColor = StageIconColorLookup[status];
   const circleColor = StageCircleColorLookup[status];
 
-  const isActive = status === EStageStatus.InProgress;
+  const inProgress = status === EStageStatus.InProgress;
+  const isDone = status === EStageStatus.Done;
+  const lineIsActive = isDone || inProgress;
 
   return (
     <Wrapper>
@@ -71,14 +73,14 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
         </Circle>
         {!isLast && (
           <StageLineWrapper>
-            <StageLine />
+            <StageLine isActive={lineIsActive}/>
           </StageLineWrapper>
         )}
       </StagePanelWrapper>
 
-      <StageInfoWrapper isActive={isActive || false}>
+      <StageInfoWrapper isActive={inProgress}>
         <StageNameWrapper>{name}</StageNameWrapper>
-        {!isActive && perpetrator && (
+        {!inProgress && perpetrator && (
           <PerpetratorWrapper>
             <div>{perpetrator.name}</div>
             <div>{preparedClosingTime}</div>

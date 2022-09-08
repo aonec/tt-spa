@@ -14,7 +14,7 @@ export type Timer = {
 };
 
 export enum TimerClosingStatus {
-  Overdue = 'var(--error)',
-  ClosedAutomatically = 'var(--bg)',
-  Done = 'var(--success)',
+  Overdue = 'Overdue',
+  ClosedAutomatically = 'ClosedAutomatically',
+  Done = 'Done',
 }
