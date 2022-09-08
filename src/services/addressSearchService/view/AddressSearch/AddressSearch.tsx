@@ -44,7 +44,6 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const streetSearch = (index: number) => (
-    
     <StyledAutocomplete
       placeholder="Улица"
       ref={refs[index]}
@@ -122,9 +121,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     [SearchFieldType.Apartment]: apartmentSearch,
   };
 
-  const searchFields = fields.map((fieldType, index) =>
-    fieldsLookup[fieldType](index)
-  );
+  const searchFields = fields.map((fieldType, index) => (
+    <React.Fragment key={fieldType}>
+      {fieldsLookup[fieldType](index)}
+    </React.Fragment>
+  ));
 
   return <Wrapper fields={fields}>{searchFields}</Wrapper>;
 };

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 
 import { Icon, Loader } from '01/components';
@@ -40,7 +40,16 @@ const styles = css`
   }
 `;
 
-export const UploadList = ({ items = [], del = () => {}, ...props }) => {
+export const UploadList = ({
+  items = [],
+  del = () => {},
+  clearList = () => {},
+  ...props
+}) => {
+  useEffect(() => {
+    clearList();
+  }, []);
+
   return styled(styles)(
     <upload_list {...props}>
       {items.map(({ url, name, id, deleted = false }) => (

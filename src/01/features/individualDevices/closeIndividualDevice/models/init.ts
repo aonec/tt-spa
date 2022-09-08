@@ -9,6 +9,7 @@ import {
 } from './index';
 import { $closingIndividualDevice } from '.';
 import { refetchIndividualDevices } from '../../displayIndividualDevices/models';
+import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 closeIndividualDeviceFx.use(closeIndividualDevice);
 
@@ -29,7 +30,10 @@ forward({
 
 forward({
   from: closeIndividualDeviceFx.doneData,
-  to: refetchIndividualDevices,
+  to: [
+    refetchIndividualDevices,
+    apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
+  ],
 });
 
 sample({

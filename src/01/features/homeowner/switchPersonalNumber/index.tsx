@@ -44,7 +44,7 @@ export const SwitchPersonalNumberPage = () => {
       <PersonaNumberActionPage
         onSaveHandler={switchPersonalNumber}
         loading={pendingSwitch}
-        title="Разделение лицевого счета"
+        title="Замена лицевого счета"
       >
         <StyledSelect
           disabled

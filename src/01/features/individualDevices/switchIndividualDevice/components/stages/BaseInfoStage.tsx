@@ -6,7 +6,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select } from 'antd';
+import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -41,6 +41,7 @@ import {
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
+import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -162,7 +163,7 @@ export const BaseInfoStage = () => {
           value={fields.resource.value || undefined}
         >
           {allResources.map((elem) => (
-            <Select.Option value={elem.value}>
+            <Select.Option value={elem.value} key={elem.value}>
               <Flex>
                 <StockIconTT
                   icon={DeviceIcons[elem.value]?.icon}
@@ -190,7 +191,9 @@ export const BaseInfoStage = () => {
           onChange={(value: any) => fields.mountPlaceId.onChange(value)}
         >
           {mountPlaces?.map((elem) => (
-            <Select.Option value={elem.id}>{elem.description}</Select.Option>
+            <Select.Option value={elem.id} key={elem.id}>
+              {elem.description}
+            </Select.Option>
           ))}
         </StyledSelect>
         <ErrorMessage>
@@ -235,7 +238,7 @@ export const BaseInfoStage = () => {
       <Flex>
         <FormItem label="Разрядность">
           <InputTT
-            disabled
+            disabled={isCheck || isReopen}
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
@@ -251,7 +254,7 @@ export const BaseInfoStage = () => {
         <Space />
         <FormItem label="Множитель">
           <InputTT
-            disabled
+            disabled={isCheck || isReopen}
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
@@ -284,6 +287,14 @@ export const BaseInfoStage = () => {
         <>
           {rateTypeSelector}
           {selectSwitchReason}
+
+          <SwitchWrapper>
+            <Switch
+              checked={fields.isPolling.value}
+              onChange={fields.isPolling.onChange}
+            />
+            <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+          </SwitchWrapper>
         </>
       )}
     </FormWrap>
@@ -295,27 +306,27 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Flex>
             <InputTT
-              disabled={isCheck || isReopen}
+              disabled={isCheck}
               placeholder="Номер пломбы"
-              value={fields.magneticSealTypeName.value}
+              value={fields.sealNumber.value}
               onChange={onChange}
-              name="magneticSealTypeName"
+              name="sealNumber"
             />
           </Flex>
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
-            disabled={isCheck || isReopen}
-            value={fields.magneticSealInstallationDate.value}
-            onChange={fields.magneticSealInstallationDate.onChange}
+            disabled={isCheck}
+            value={fields.sealInstallationDate.value}
+            onChange={fields.sealInstallationDate.onChange}
             placeholder="Введите дату"
           />
         </FormItem>
       </FormWrap>
       <FormItem label="Монтажная организация">
         <StyledSelect
-          disabled={isCheck || isReopen}
+          disabled={isCheck}
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }
@@ -379,8 +390,12 @@ export const BaseInfoStage = () => {
 
   const form = (
     <>
-      {baseInfo}
-      <SpaceLine />
+      {!isCheck && (
+        <>
+          {baseInfo}
+          <SpaceLine />
+        </>
+      )}
       {bottomDateFields}
       <SpaceLine />
       {readingInputs}
@@ -395,7 +410,7 @@ export const BaseInfoStage = () => {
       <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
-      <FormHeader>Общие данные о приборе</FormHeader>
+      {!isCheck && <FormHeader>Общие данные о приборе</FormHeader>}
 
       {pending ? <Loader show size={32} /> : form}
     </Wrap>

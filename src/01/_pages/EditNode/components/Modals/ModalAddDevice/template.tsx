@@ -3,13 +3,12 @@ import {
   Form,
   Input,
   InputNumber,
-  Checkbox,
   Select,
   DatePicker,
 } from 'formik-antd';
 import { Formik } from 'formik';
-import { ButtonTT, InputTT } from '../../../../../tt-components';
-import styled, { css } from 'styled-components';
+import { ButtonTT } from '../../../../../tt-components';
+import styled from 'styled-components';
 import * as Yup from 'yup';
 
 export const Example = () => {

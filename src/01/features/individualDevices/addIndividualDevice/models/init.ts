@@ -1,13 +1,6 @@
-import {
-  CreateIndividualDeviceRequest,
-  EIndividualDeviceRateType,
-  EResourceType,
-} from './../../../../../myApi';
+import { CreateIndividualDeviceRequest } from './../../../../../myApi';
 import { FileData } from '01/hooks/useFilesUpload';
-import {
-  CreateCreateIndividualDeviceWithMagnetSealRequest,
-  createIndividualDevice,
-} from '01/_api/individualDevices';
+import { createIndividualDevice } from '01/_api/individualDevices';
 import { forward, sample } from 'effector';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
@@ -70,6 +63,7 @@ sample({
       rateType: values.rateType,
       resource: values.resource!,
       model: values.model,
+      isPolling: values.isPolling,
       documentsIds: toArray<FileData>(values.documentsIds, false)
         .filter((elem) => elem?.fileResponse)
         .map((elem) => elem.fileResponse?.id!),

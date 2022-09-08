@@ -38,7 +38,9 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     setVisible(false);
   };
 
-  const { city, street, number } = object;
+  const street = object?.address?.mainAddress?.street;
+  const number = object?.address?.mainAddress?.number;
+  
   const reportName = `Сводный_отчёт_${street}_${number}.xlsx`;
   const addressString = getHousingStockAddress(object, true);
 
@@ -47,8 +49,8 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     const { setFieldsValue, getFieldValue } = form;
     const [isDisabled, setIsDisabled] = useState(true);
     const onFinish = async (values: any) => {
-      const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
-      const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+      const begin = moment(getFieldValue('dates')[0]).startOf('day').toISOString();
+      const end = moment(getFieldValue('dates')[1]).endOf('day').toISOString();
 
       const calculatorsResponse: CalculatorListResponsePagedList = await axios.get(
         'Calculators',
@@ -64,9 +66,11 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
 
       const calculatorsString = ids?.join('&');
 
-      const link = `Reports/ConsolidatedReport?${calculatorsString}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+      const link = `Reports/ConsolidatedReport?${calculatorsString}`;
 
-      downloadReport(link);
+      const params = { ReportType: values.detailing, From: begin, To: end };
+
+      downloadReport(link, params);
     };
 
     const onFinishFailed = (errorInfo: any) => {};

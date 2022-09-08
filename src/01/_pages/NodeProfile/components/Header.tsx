@@ -10,8 +10,11 @@ import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { Tooltip } from 'antd';
-import { AdditionalAddress } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { fullAddressesString } from 'utils/additionalAddressesString';
+import {
+  AdditionalAddress,
+  MainAddressWrapper,
+} from '01/_pages/CalculatorProfile/components/Header.styled';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -33,8 +36,7 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId  } =
-    address || {};
+  const { id: objectId } = address || {};
 
   const { value } = nodeStatus || {};
   const menuButtonArr: MenuButtonInterface[] = [
@@ -76,7 +78,8 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
       {getNodeStatus}
     </div>
   );
-  const additionalAdress = fullAddressesString(address);
+  const { additionalAddress, mainAddress } = fullAddressesString(address);
+  const fullAddress = `${mainAddress}, ${additionalAddress}`;
 
   return (
     <HeaderWrap
@@ -97,9 +100,12 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
 
         <SubtitleWrap>
           <Subtitle to={`/objects/${objectId}`}>
-          <Tooltip title={additionalAdress}>
-            <AdditionalAddress>{additionalAdress}</AdditionalAddress>
-          </Tooltip>
+            <Tooltip title={fullAddress}>
+              <AdditionalAddress>
+                <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>
+                {additionalAddress}
+              </AdditionalAddress>
+            </Tooltip>
           </Subtitle>
           <NodeStatus />
         </SubtitleWrap>

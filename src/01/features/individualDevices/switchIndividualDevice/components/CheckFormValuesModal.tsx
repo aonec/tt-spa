@@ -86,6 +86,7 @@ export const CheckFormValuesModal = () => {
       name: 'Дата ввода в эксплуатацию',
       value: getDate(fields.lastCommercialAccountingDate.value),
     },
+    { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
     {
       name: 'Дата последней поверки прибора',
       value: getDate(fields.lastCheckingDate.value),
@@ -96,11 +97,11 @@ export const CheckFormValuesModal = () => {
     },
     {
       name: 'Пломба',
-      value: fields.magneticSealTypeName.value,
+      value: fields.sealNumber.value,
     },
     {
       name: 'Дата установки пломбы',
-      value: getDate(fields.magneticSealInstallationDate.value),
+      value: getDate(fields.sealInstallationDate.value),
     },
     {
       name: 'Монтажная организация',

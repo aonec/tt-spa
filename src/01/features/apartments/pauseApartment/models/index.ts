@@ -6,7 +6,6 @@ import {
   createStore,
   createEffect,
   createEvent,
-  fromObservable,
 } from 'effector';
 import moment from 'moment';
 

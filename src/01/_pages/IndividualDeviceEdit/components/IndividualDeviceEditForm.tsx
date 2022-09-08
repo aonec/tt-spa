@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { Form, message, Select } from 'antd';
+import { Form, message, Select, Switch } from 'antd';
 import moment from 'moment';
 import { resources } from '../../../tt-components/localBases';
 import {
@@ -41,6 +41,7 @@ import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBloc
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
+import { SwitchWrapper, TextWrapper } from './IndividualDeviceEditForm.styled';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -80,15 +81,16 @@ const IndividualDeviceEditForm = ({
     scaleFactor,
     sealInstallationDate,
     deviceMountPlace,
+    isPolling,
   } = device;
 
   const initialValues = {
     resource,
     model,
+    isPolling,
     serialNumber,
     lastCheckingDate: toMoment(lastCheckingDate),
     futureCheckingDate: futureCheckingDate ? moment(futureCheckingDate) : null,
-    rateType,
     apartmentId: address?.apartmentId,
     mountPlaceId: deviceMountPlace?.id,
     bitDepth: bitDepth,
@@ -114,7 +116,6 @@ const IndividualDeviceEditForm = ({
         serialNumber: values.serialNumber,
         resource: values.resource,
         model: values.model,
-        rateType: values.rateType,
         bitDepth: values.bitDepth,
         scaleFactor: values.scaleFactor,
         sealNumber: values.sealNumber,
@@ -123,6 +124,7 @@ const IndividualDeviceEditForm = ({
           'DD.MM.YYYY'
         ).toISOString(true),
         mountPlaceId: values.mountPlaceId,
+        isPolling: values.isPolling,
       };
 
       setLoading(true);
@@ -246,7 +248,7 @@ const IndividualDeviceEditForm = ({
               }}
             >
               {mountPlaces?.map((elem) => (
-                <Select.Option value={elem.id}>
+                <Select.Option value={elem.id} key={elem.id}>
                   {elem.description}
                 </Select.Option>
               ))}
@@ -289,7 +291,13 @@ const IndividualDeviceEditForm = ({
             </Form.Item>
           </Flex>
 
-          <div></div>
+          <SwitchWrapper>
+            <Switch
+              checked={values.isPolling}
+              onChange={(value) => setFieldValue('isPolling', value)}
+            />
+            <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+          </SwitchWrapper>
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative
@@ -348,7 +356,7 @@ const IndividualDeviceEditForm = ({
           <Header>Компонент в разработке</Header>
         </StyledFormPage>
 
-        <StyledFooter>
+        <StyledFooter right>
           <ButtonTT
             color="blue"
             type="button"
