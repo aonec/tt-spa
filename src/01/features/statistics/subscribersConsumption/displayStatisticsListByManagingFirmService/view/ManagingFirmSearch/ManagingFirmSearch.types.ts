@@ -15,4 +15,8 @@ export type ManagingFirmSearchProps = {
 export type SubscriberStatisticsForm = Omit<
   SubscriberStatisticsFilter,
   'HousingStockId'
-> & { ExcludeApartments: boolean };
+>;
+
+export type SubscriberStatisticsFormik = SubscriberStatisticsForm & {
+  ExcludeApartments: boolean;
+};

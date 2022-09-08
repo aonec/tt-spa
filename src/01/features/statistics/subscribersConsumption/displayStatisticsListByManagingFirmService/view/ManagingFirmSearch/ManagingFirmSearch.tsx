@@ -12,6 +12,7 @@ import {
 import {
   ManagingFirmSearchProps,
   SubscriberStatisticsForm,
+  SubscriberStatisticsFormik,
 } from './ManagingFirmSearch.types';
 
 export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
@@ -34,7 +35,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
     setFieldValue,
     resetForm,
     submitForm,
-  } = useFormik<SubscriberStatisticsForm>({
+  } = useFormik<SubscriberStatisticsFormik>({
     initialValues: {
       ColdWaterSupply: filter?.ColdWaterSupply || false,
       Electricity: filter?.Electricity || false,

@@ -112,7 +112,53 @@ sample({
       return { ...filter, HousingStockId };
     }
   ),
-  fn: (filter) => filter,
+  fn: (filter) => {
+    const {
+      ColdWaterSupply,
+      Electricity,
+      HotWaterSupply,
+      ColdWaterSupplyConsumptionFrom,
+      ColdWaterSupplyConsumptionTo,
+      ElectricitySupplyConsumptionFrom,
+      ElectricitySupplyConsumptionTo,
+      HotWaterSupplyConsumptionFrom,
+      HotWaterSupplyConsumptionTo,
+      DateLastCheckFrom,
+      DateLastCheckTo,
+      MonthOfLastTransmission,
+      HousingStockId,
+    } = filter;
+
+    let payload: SubscriberStatisticsFilter = {
+      HousingStockId,
+      DateLastCheckFrom,
+      DateLastCheckTo,
+      MonthOfLastTransmission,
+    };
+
+    if (ColdWaterSupply) {
+      payload = {
+        ...payload,
+        ColdWaterSupplyConsumptionFrom,
+        ColdWaterSupplyConsumptionTo,
+      };
+    }
+    if (Electricity) {
+      payload = {
+        ...payload,
+        ElectricitySupplyConsumptionFrom,
+        ElectricitySupplyConsumptionTo,
+      };
+    }
+    if (HotWaterSupply) {
+      payload = {
+        ...payload,
+        HotWaterSupplyConsumptionFrom,
+        HotWaterSupplyConsumptionTo,
+      };
+    }
+    return payload;
+  },
   target: getStatisticFx,
 });
 
