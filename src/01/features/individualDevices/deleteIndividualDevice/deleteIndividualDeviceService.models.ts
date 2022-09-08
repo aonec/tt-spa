@@ -1,5 +1,6 @@
-import { createDomain } from 'effector';
+import { createDomain, forward } from 'effector';
 import { IndividualDeviceListItemResponse } from 'myApi';
+import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
 const deleteIndividualDeviceDomain = createDomain(
@@ -21,6 +22,11 @@ const deleteIndividualDeviceFx = deleteIndividualDeviceDomain.createEffect<
   number,
   void
 >(deleteDevice);
+
+forward({
+  from: deleteIndividualDeviceFx.doneData,
+  to: apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
+});
 
 export const deleteIndividualDeviceService = {
   inputs: {
