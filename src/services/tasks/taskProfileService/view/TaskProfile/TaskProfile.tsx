@@ -16,7 +16,6 @@ import { TaskStages } from './TaskStages';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
-  isLoading,
   relatedPipeNode,
 }) => {
   const {
@@ -45,8 +44,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   return (
     <div>
       <GoBack />
-      {isLoading && <Skeleton active />}
-      {!isLoading && name && (
+      {name && (
         <>
           <TaskProfileHeader
             name={name}
@@ -67,7 +65,9 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
-              {relatedPipeNode && <TaskPipeNodeInfo pipeNode={relatedPipeNode} />}
+              {relatedPipeNode && (
+                <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
+              )}
               {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
