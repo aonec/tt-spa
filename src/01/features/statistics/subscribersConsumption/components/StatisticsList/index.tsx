@@ -9,11 +9,13 @@ import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useApartmentList } from './useApartmentList';
 import { useHistory } from 'react-router';
+import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 
 export const StatisticsList: React.FC = () => {
   const { apartmentList } = useApartmentList();
   const pending = useStore(fetchConsumptionStatistics.pending);
   const history = useHistory();
+  const isApartmentsExist = apartmentList.length !== 0;
 
   const renderApartment = ({
     apartmentNumber,
@@ -23,7 +25,7 @@ export const StatisticsList: React.FC = () => {
     dateLastCheck,
     dateLastTransmissionOfReading,
     housingStockId,
-    apartmentId
+    apartmentId,
   }: SubscriberStatisticsСonsumptionResponse) => (
     <ApartmentWrap
       {...layout}
@@ -42,14 +44,17 @@ export const StatisticsList: React.FC = () => {
 
   return (
     <div>
-      <Wrap {...layout}>
-        <div>Номер квартиры</div>
-        <div>ХВС</div>
-        <div>ГВС</div>
-        <div>Электричество</div>
-        <div>Дата последней передачи показаний</div>
-        <div>Дата последней проверки</div>
-      </Wrap>
+      {isApartmentsExist && (
+        <Wrap {...layout}>
+          <div>Номер квартиры</div>
+          <div>ХВС</div>
+          <div>ГВС</div>
+          <div>Электричество</div>
+          <div>Дата последней передачи показаний</div>
+          <div>Дата последней проверки</div>
+        </Wrap>
+      )}
+      {!pending && !isApartmentsExist && <TypeAddressToStart />}
       <PendingLoader loading={pending}>
         <div>{apartmentList?.map(renderApartment)}</div>
       </PendingLoader>

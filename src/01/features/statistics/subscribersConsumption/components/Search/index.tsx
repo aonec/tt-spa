@@ -27,6 +27,7 @@ import {
   subscribersConsumptionFindForm,
 } from '../../models';
 import { ExpandedSearch } from '../ExpandedSearch';
+import { Wrapper } from './Search.styled';
 
 export const Search: React.FC = () => {
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
@@ -139,8 +140,8 @@ export const Search: React.FC = () => {
   const expandedSearch = <ExpandedSearch />;
 
   return (
-    <div style={{ paddingLeft: 12 }}>
+    <Wrapper>
       {isOpenExpandedSearch ? expandedSearch : baseSearch}
-    </div>
+    </Wrapper>
   );
 };
