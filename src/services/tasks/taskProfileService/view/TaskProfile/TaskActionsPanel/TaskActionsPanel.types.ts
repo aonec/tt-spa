@@ -6,22 +6,33 @@ export type TaskActionsPanelProps = {
   handlePushStage: (payload: StagePushRequest) => void;
 };
 
-export type TaskPanelInputSizeType = 'half' | 'full';
+export enum TaskPanelInputPositionType {
+  Middle = 'Middle',
+  Full = 'Full',
+  Bottom = 'Bottom',
+}
 
-export type TaskPanelActionComponentAdditionalType =
-  | 'mail-text'
-  | 'contractor-select';
+export type TaskPanelComponentsGroupsName =
+  | 'halfSizeActions'
+  | 'fullSizeActions'
+  | 'bottomActions';
+
+export enum TaskPanelComponentAdditionalType {
+  MailText = 'MailText',
+  ContractorSelect = 'ContractorSelect',
+  EmailTemplate = 'EmailTemplate',
+}
 
 export type ActionComponentProps = {
   handleChange: (
     payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest)
   ) => void;
-  type?: TaskPanelActionComponentAdditionalType;
+  type?: TaskPanelComponentAdditionalType;
 };
 
 export type TaskActionsComponent = {
   actionType: EStageActionType;
   Component: FC<ActionComponentProps>;
-  size: TaskPanelInputSizeType;
-  type?: TaskPanelActionComponentAdditionalType;
+  position: TaskPanelInputPositionType;
+  type?: TaskPanelComponentAdditionalType;
 };

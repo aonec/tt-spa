@@ -12,6 +12,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   max = Infinity,
   documents,
   onChange,
+  lable,
 }) => {
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
@@ -28,6 +29,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           accept={accept}
           fileHandler={(files) => handleFile(files[0])}
           uniqId={uniqId}
+          text={lable}
           style={{ marginBottom: 15 }}
         />
       )}

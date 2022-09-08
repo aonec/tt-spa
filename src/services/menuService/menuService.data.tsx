@@ -90,9 +90,7 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.ActsJournal]: [ESecuredIdentityRoleName.Operator],
   [MenuType.Reports]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.Settings]: [ESecuredIdentityRoleName.SeniorOperator],
-  [MenuType.CompanyProfile]: [
-    ESecuredIdentityRoleName.Administrator,
-  ],
+  [MenuType.CompanyProfile]: [ESecuredIdentityRoleName.Administrator],
 };
 
 export const hidden: MenuFiltrationConfig = {

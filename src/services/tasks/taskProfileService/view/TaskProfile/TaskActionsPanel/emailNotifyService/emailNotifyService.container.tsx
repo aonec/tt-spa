@@ -2,7 +2,7 @@ import { useStore } from 'effector-react';
 import React, { FC, ReactElement, useCallback } from 'react';
 import {
   ActionComponentProps,
-  TaskPanelActionComponentAdditionalType,
+  TaskPanelComponentAdditionalType,
 } from '../TaskActionsPanel.types';
 import { emailNotifyService } from './emailNotifyService.model';
 import { EmailNotifySelect } from './view/EmailNotifySelect';
@@ -43,15 +43,17 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
   );
 
   const components: {
-    [key in TaskPanelActionComponentAdditionalType]: ReactElement;
+    [key: string]: ReactElement;
   } = {
-    'contractor-select': (
+    [TaskPanelComponentAdditionalType.ContractorSelect]: (
       <EmailNotifySelect
         handleContractorChange={handleContractorChange}
         contractors={contractors}
       />
     ),
-    'mail-text': <EmailTextInput handleMessageChange={handleMessageChange} />,
+    [TaskPanelComponentAdditionalType.MailText]: (
+      <EmailTextInput handleMessageChange={handleMessageChange} />
+    ),
   };
 
   return <>{type && components[type]}</>;

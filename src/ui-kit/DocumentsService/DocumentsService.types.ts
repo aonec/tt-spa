@@ -8,4 +8,5 @@ export type DocumentsUploadContainerProps = {
   uniqId: string;
   max?: number;
   type?: EDocumentType;
+  lable?: string;
 };

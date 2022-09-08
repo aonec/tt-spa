@@ -4,6 +4,8 @@ import {
   HalfSizeActionsWrapper,
   PushStageButtonWrapper,
   Wrapper,
+  BottomContentWrapper,
+  BottomActionWrapper,
 } from './TaskActionsPanel.styled';
 import {
   TaskActionsComponent,
@@ -23,10 +25,14 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
     if (typeof dispatch === 'function')
       return void setPushStagePayload(dispatch);
 
-      setPushStagePayload(prev => ({ ...prev, ...dispatch }))
+    setPushStagePayload((prev) => ({ ...prev, ...dispatch }));
   };
 
-  const { halfSizeActions, fullSizeActions } = useTaskPanelActions(actions);
+  const {
+    halfSizeActions,
+    fullSizeActions,
+    bottomActions,
+  } = useTaskPanelActions(actions);
 
   const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
     <Component handleChange={handleStagePayloadChanged} type={type} />
@@ -38,11 +44,16 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
         {halfSizeActions.map(renderTaskAction)}
       </HalfSizeActionsWrapper>
       {fullSizeActions.map(renderTaskAction)}
-      <PushStageButtonWrapper>
-        <ButtonTT color="blue" onClick={() => console.log(pushStagePayload)}>
-          Завершить этап
-        </ButtonTT>
-      </PushStageButtonWrapper>
+      <BottomContentWrapper>
+        <BottomActionWrapper>
+          {bottomActions.map(renderTaskAction)}
+        </BottomActionWrapper>
+        <PushStageButtonWrapper>
+          <ButtonTT color="blue" onClick={() => console.log(pushStagePayload)}>
+            Завершить этап
+          </ButtonTT>
+        </PushStageButtonWrapper>
+      </BottomContentWrapper>
     </Wrapper>
   );
 };
