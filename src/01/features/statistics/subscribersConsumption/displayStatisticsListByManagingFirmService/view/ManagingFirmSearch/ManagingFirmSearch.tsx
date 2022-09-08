@@ -46,6 +46,8 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
       ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
       HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
       HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+      DateLastCheckFrom: filter?.DateLastCheckFrom,
+      DateLastCheckTo: filter?.DateLastCheckTo,
       ExcludeApartments: isExcluded,
     },
     enableReinitialize: true,
