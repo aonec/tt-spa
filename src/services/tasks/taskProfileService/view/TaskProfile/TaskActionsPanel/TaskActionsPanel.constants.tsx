@@ -13,5 +13,12 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.EmailNotify,
     Component: EmailNotifyContainer,
     size: 'half',
+    type: 'contractor-select',
+  },
+  {
+    actionType: EStageActionType.EmailNotify,
+    Component: EmailNotifyContainer,
+    size: 'full',
+    type: 'mail-text',
   },
 ];

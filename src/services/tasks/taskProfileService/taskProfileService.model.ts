@@ -1,11 +1,13 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { TaskCommentResponse, TaskResponse } from 'myApi';
+import { StagePushRequest, TaskCommentResponse, TaskResponse } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
 import { fetchAddComment, fetchTask } from './taskProfileService.api';
 import { AddCommentRequest } from './taskProfileService.types';
 
 const domain = createDomain('taskProfileService');
+
+const handlePushStage = domain.createEvent<StagePushRequest>();
 
 const setComment = domain.createEvent<string>();
 const $commentText = domain
@@ -72,6 +74,7 @@ export const taskProfileService = {
   inputs: {
     addComment,
     setComment,
+    handlePushStage,
   },
   outputs: {
     $task,

@@ -17,10 +17,10 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
     {}
   );
 
-  const { halfSizeActions } = useTaskPanelActions(actions);
+  const { halfSizeActions, fullSizeActions } = useTaskPanelActions(actions);
 
-  const renderTaskAction = ({ Component }: TaskActionsComponent) => (
-    <Component handleChange={setPushStagePayload} />
+  const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
+    <Component handleChange={setPushStagePayload} type={type} />
   );
 
   return (
@@ -28,6 +28,7 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
       <HalfSizeActionsWrapper>
         {halfSizeActions.map(renderTaskAction)}
       </HalfSizeActionsWrapper>
+      {fullSizeActions.map(renderTaskAction)}
       <PushStageButtonWrapper>
         <ButtonTT color="blue" onClick={() => console.log(pushStagePayload)}>
           Завершить этап
