@@ -4220,6 +4220,7 @@ export interface StagePushRequest {
 export interface StageResponse {
   /** @format int32 */
   id: number;
+  potentialNextStageIds: number[] | null;
 
   /** @format int32 */
   number: number;
@@ -4321,13 +4322,13 @@ export interface SubscriberStatisticsСonsumptionResponse {
   apartmentNumber: string | null;
 
   /** @format double */
-  coldWaterSupplyСonsumption: number | null;
+  coldWaterSupplyConsumption: number | null;
 
   /** @format double */
-  hotWaterSupplyСonsumption: number | null;
+  hotWaterSupplyConsumption: number | null;
 
   /** @format double */
-  electricitySupplyСonsumption: number | null;
+  electricitySupplyConsumption: number | null;
 
   /** @format date-time */
   dateLastTransmissionOfReading: string;
@@ -5283,6 +5284,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "DELETE",
         secure: true,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Наблюдатель УК</li>
+     *
+     * @tags ApartmentActs
+     * @name ApartmentActsDeleteDocumentCreate
+     * @summary ApartmentActEdit
+     * @request POST:/api/ApartmentActs/{actId}/DeleteDocument
+     * @secure
+     */
+    apartmentActsDeleteDocumentCreate: (actId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/ApartmentActs/${actId}/DeleteDocument`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -10176,6 +10194,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HotWaterSupply?: boolean;
         ColdWaterSupply?: boolean;
         Electricity?: boolean;
+        DateLastCheckFrom?: string;
+        DateLastCheckTo?: string;
+        HotWaterSupplyConsumptionFrom?: number;
+        HotWaterSupplyConsumptionTo?: number;
+        ColdWaterSupplyConsumptionFrom?: number;
+        ColdWaterSupplyConsumptionTo?: number;
+        ElectricitySupplyConsumptionFrom?: number;
+        ElectricitySupplyConsumptionTo?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -10204,6 +10230,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HotWaterSupply?: boolean;
         ColdWaterSupply?: boolean;
         Electricity?: boolean;
+        DateLastCheckFrom?: string;
+        DateLastCheckTo?: string;
+        HotWaterSupplyConsumptionFrom?: number;
+        HotWaterSupplyConsumptionTo?: number;
+        ColdWaterSupplyConsumptionFrom?: number;
+        ColdWaterSupplyConsumptionTo?: number;
+        ElectricitySupplyConsumptionFrom?: number;
+        ElectricitySupplyConsumptionTo?: number;
       },
       params: RequestParams = {},
     ) =>

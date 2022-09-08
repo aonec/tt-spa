@@ -2,7 +2,12 @@ import { SelectValue } from 'antd/lib/select';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
+import { emailNotifyService } from '../../emailNotifyService.model';
 import { EmailNotifySelectProps } from './EmailNotifySelect.types';
+
+const { gates } = emailNotifyService;
+
+const { ContractorsGate } = gates;
 
 export const EmailNotifySelect: FC<EmailNotifySelectProps> = ({
   contractors,
@@ -19,18 +24,21 @@ export const EmailNotifySelect: FC<EmailNotifySelectProps> = ({
   }, []);
 
   return (
-    <FormItem label="Получатели пригласительного письма">
-      <Select
-        placeholder="Выберите получателей"
-        mode="multiple"
-        onChange={handleChange}
-      >
-        {contractors.map((contractor) => (
-          <Select.Option key={contractor.id} value={contractor.id}>
-            {contractor.name}
-          </Select.Option>
-        ))}
-      </Select>
-    </FormItem>
+    <>
+      <ContractorsGate />
+      <FormItem label="Получатели пригласительного письма">
+        <Select
+          placeholder="Выберите получателей"
+          mode="multiple"
+          onChange={handleChange}
+        >
+          {contractors.map((contractor) => (
+            <Select.Option key={contractor.id} value={contractor.id}>
+              {contractor.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </FormItem>
+    </>
   );
 };

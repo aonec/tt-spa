@@ -1,4 +1,3 @@
-import TextArea from 'antd/lib/input/TextArea';
 import React, {
   ChangeEvent,
   FC,
@@ -7,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
+import { TextAreaSC } from './EmailTextInput.styled';
 import { EmailTextInputProps } from './EmailTextInput.types';
 
 export const EmailTextInput: FC<EmailTextInputProps> = ({
@@ -25,7 +25,7 @@ export const EmailTextInput: FC<EmailTextInputProps> = ({
 
   return (
     <FormItem label="Отправка пригласительного письма">
-      <TextArea value={text || ''} onChange={handleChange} />
+      <TextAreaSC value={text || ''} onChange={handleChange} />
     </FormItem>
   );
 };

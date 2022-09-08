@@ -8,9 +8,7 @@ import { emailNotifyService } from './emailNotifyService.model';
 import { EmailNotifySelect } from './view/EmailNotifySelect';
 import { EmailTextInput } from './view/EmailTextInput';
 
-const { outputs, gates } = emailNotifyService;
-
-const { ContractorsGate } = gates;
+const { outputs } = emailNotifyService;
 
 export const EmailNotifyContainer: FC<ActionComponentProps> = ({
   handleChange,
@@ -20,8 +18,6 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
 
   const handleContractorChange = useCallback(
     (contractorIds: number[]) => {
-      if (!contractorIds.length) return;
-
       handleChange((prev) => ({
         ...prev,
         emailNotify: {
@@ -58,10 +54,5 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
     'mail-text': <EmailTextInput handleMessageChange={handleMessageChange} />,
   };
 
-  return (
-    <>
-      <ContractorsGate />
-      {type && components[type]}
-    </>
-  );
+  return <>{type && components[type]}</>;
 };

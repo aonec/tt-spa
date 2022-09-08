@@ -1,15 +1,16 @@
-import { createDomain, forward, guard } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   OrganizationUserListResponse,
   OrganizationUserListResponsePagedList,
 } from 'myApi';
+import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getOrganizationUsers } from './addPerpetratorService.api';
 
 const domain = createDomain('addPerpetratorService');
 
 const fetchOrganizationUsersFx = domain.createEffect<
-  void,
+  string[] | undefined,
   OrganizationUserListResponsePagedList
 >(getOrganizationUsers);
 
@@ -20,10 +21,28 @@ const $organizationUsers = domain
   .on(fetchOrganizationUsersFx.doneData, (_, data) => data.items)
   .reset(OrganizationUsersGate.close);
 
-guard({
-  source: $organizationUsers,
-  clock: OrganizationUsersGate.open,
-  filter: (users) => !users,
+sample({
+  source: taskProfileService.outputs.$task,
+  clock: guard({
+    source: combine($organizationUsers, taskProfileService.outputs.$task),
+    clock: OrganizationUsersGate.open,
+    filter: ([users, task]) => !users && Boolean(task),
+  }),
+  fn: (task) => {
+    if (!task) return;
+
+    const potentialNextStageId = task.currentStage?.potentialNextStageIds?.[0];
+
+    if (!potentialNextStageId) return;
+
+    const nextStage = task.stages?.find(
+      (elem) => elem.id === potentialNextStageId
+    );
+
+    if (!nextStage) return;
+
+    return nextStage.requiredUserRoles;
+  },
   target: fetchOrganizationUsersFx,
 });
 

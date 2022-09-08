@@ -17,13 +17,13 @@ export const StatisticsList: React.FC = () => {
 
   const renderApartment = ({
     apartmentNumber,
-    coldWaterSupplyСonsumption,
-    hotWaterSupplyСonsumption,
-    electricitySupplyСonsumption,
+    coldWaterSupplyConsumption,
+    hotWaterSupplyConsumption,
+    electricitySupplyConsumption,
     dateLastCheck,
     dateLastTransmissionOfReading,
     housingStockId,
-    apartmentId
+    apartmentId,
   }: SubscriberStatisticsСonsumptionResponse) => (
     <ApartmentWrap
       {...layout}
@@ -32,9 +32,9 @@ export const StatisticsList: React.FC = () => {
       }
     >
       <div>{apartmentNumber}</div>
-      <div>{formatValue(round(coldWaterSupplyСonsumption!, 3))}</div>
-      <div>{formatValue(round(hotWaterSupplyСonsumption!, 3))}</div>
-      <div>{formatValue(round(electricitySupplyСonsumption!, 3))}</div>
+      <div>{formatValue(round(coldWaterSupplyConsumption!, 3))}</div>
+      <div>{formatValue(round(hotWaterSupplyConsumption!, 3))}</div>
+      <div>{formatValue(round(electricitySupplyConsumption!, 3))}</div>
       <div>{moment(dateLastTransmissionOfReading).format('DD.MM.YYYY')}</div>
       <div>{dateLastCheck && moment(dateLastCheck).format('DD.MM.YYYY')}</div>
     </ApartmentWrap>

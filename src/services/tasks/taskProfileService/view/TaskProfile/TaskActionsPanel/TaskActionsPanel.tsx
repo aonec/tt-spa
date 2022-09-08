@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, SetStateAction, useState } from 'react';
 import { ButtonTT } from '01/tt-components';
 import {
   HalfSizeActionsWrapper,
@@ -17,10 +17,19 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
     {}
   );
 
+  const handleStagePayloadChanged = (
+    dispatch: SetStateAction<StagePushRequest>
+  ) => {
+    if (typeof dispatch === 'function')
+      return void setPushStagePayload(dispatch);
+
+      setPushStagePayload(prev => ({ ...prev, ...dispatch }))
+  };
+
   const { halfSizeActions, fullSizeActions } = useTaskPanelActions(actions);
 
   const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
-    <Component handleChange={setPushStagePayload} type={type} />
+    <Component handleChange={handleStagePayloadChanged} type={type} />
   );
 
   return (
