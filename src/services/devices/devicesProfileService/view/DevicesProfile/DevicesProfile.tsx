@@ -35,7 +35,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   searchState,
   clearSearchPayload,
 }) => {
-
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -70,7 +69,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
       'Filter.Address.HouseCategory':
         searchState?.['Filter.Address.HouseCategory'],
-      'Filter.HousingStockId': searchState?.['Filter.HousingStockId'],
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
       Question: searchState?.Question,
       OrderRule: searchState?.OrderRule,
