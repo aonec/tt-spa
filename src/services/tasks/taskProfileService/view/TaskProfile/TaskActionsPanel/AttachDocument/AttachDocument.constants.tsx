@@ -1,6 +1,8 @@
-import { TaskPanelComponentAdditionalType } from "../TaskActionsPanel.types";
+import { TaskPanelComponentAdditionalType } from '../TaskActionsPanel.types';
 
-export const documentComponentDataDictionary = {
+export const documentComponentDataDictionary: {
+  [key: string]: { lable: string; maxDocuments: number };
+} = {
   [TaskPanelComponentAdditionalType.EmailTemplate]: {
     lable: 'Загрузить письмо из шаблона',
     maxDocuments: 1,

@@ -9,4 +9,5 @@ export type DocumentsUploadContainerProps = {
   max?: number;
   type?: EDocumentType;
   lable?: string;
+  componentType?: 'dragAndDrop' | 'line';
 };

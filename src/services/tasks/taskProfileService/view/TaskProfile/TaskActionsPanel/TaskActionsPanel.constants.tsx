@@ -31,7 +31,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.AddEmailTemplate,
     Component: AttachDocument,
     position: TaskPanelInputPositionType.Bottom,
-    type: TaskPanelComponentAdditionalType.MailText,
+    type: TaskPanelComponentAdditionalType.EmailTemplate,
   },
 ];
 
