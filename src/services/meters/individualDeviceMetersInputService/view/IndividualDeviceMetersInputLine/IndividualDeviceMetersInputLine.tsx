@@ -1,7 +1,7 @@
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { Tooltip } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import {
@@ -18,23 +18,33 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   previousReading,
   currentReading,
   inputIndex,
+  handleUploadReading,
+  uploadingMetersStatuses,
 }) => {
+  const isDeviceClosed = Boolean(device.closingDate);
+
   return (
     <Wrapper>
       <DeviceInfo device={device} />
       <MetersInputsBlock
+        handleUploadReading={handleUploadReading}
         reading={previousReading}
         rateType={device.rateType}
         sliderIndex={sliderIndex}
         isPrevious
         inputIndex={inputIndex}
+        isDisabled={isDeviceClosed}
+        status={uploadingMetersStatuses[sliderIndex]}
       />
       <MetersInputsBlock
+        handleUploadReading={handleUploadReading}
         reading={currentReading}
         rateType={device.rateType}
         resource={device.resource}
-        sliderIndex={sliderIndex}
+        sliderIndex={-1}
         inputIndex={inputIndex}
+        isDisabled={isDeviceClosed}
+        status={uploadingMetersStatuses[-1]}
       />
       <DeviceOptionsWrapper>
         <DeviceOption>

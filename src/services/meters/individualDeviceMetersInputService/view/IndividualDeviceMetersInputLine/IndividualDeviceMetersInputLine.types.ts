@@ -2,6 +2,8 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from 'myApi';
+import { UploadReading } from '../../individualDeviceMetersInputService.types';
+import { MetersInputBlockStatus } from '../MetersInputsBlock/MetersInputsBlock.types';
 
 export type IndividualDeviceMetersInputLineProps = {
   device: IndividualDeviceListItemResponse;
@@ -10,4 +12,8 @@ export type IndividualDeviceMetersInputLineProps = {
   currentReading: IndividualDeviceReadingsResponse | undefined;
   previousReading: IndividualDeviceReadingsResponse | undefined;
   inputIndex: number;
+  handleUploadReading: UploadReading;
+  uploadingMetersStatuses: {
+    [sliderIndex: number]: MetersInputBlockStatus;
+  };
 };

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 export const useSwitchInputOnEnter = (
   name: string,
-  focusOnFirst: boolean = true
+  focusOnFirst: boolean
 ) => {
   const next = (index: number) => {
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(

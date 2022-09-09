@@ -1,4 +1,5 @@
 import { IndividualDeviceListItemResponse } from 'myApi';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 
 export type ApartmentIndividualDevicesMetersProps = {
   individualDevicesList: IndividualDeviceListItemResponse[];
@@ -10,4 +11,5 @@ export type ApartmentIndividualDevicesMetersProps = {
   upSliderIndex: () => void;
   downSliderIndex: () => void;
   openReadingsHistoryModal: (deviceId: number) => void;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
 };

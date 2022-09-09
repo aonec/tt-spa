@@ -3,16 +3,18 @@ import {
   EResourceType,
   IndividualDeviceReadingsResponse,
 } from 'myApi';
+import { UploadReading } from '../../individualDeviceMetersInputService.types';
 
 export type MetersInputsBlockProps = {
   resource?: EResourceType;
-  status?: 'done' | 'error' | 'loading';
+  status?: MetersInputBlockStatus;
   rateType: EIndividualDeviceRateType;
   reading?: IndividualDeviceReadingsResponse;
-  sliderIndex?: number;
+  sliderIndex: number;
   isPrevious?: boolean;
   isDisabled?: boolean;
   inputIndex: number;
+  handleUploadReading: UploadReading;
 };
 
 export type BufferedReadingValues = {
@@ -20,3 +22,9 @@ export type BufferedReadingValues = {
   value2: string;
   value3: string;
 };
+
+export enum MetersInputBlockStatus {
+  Loading = 'Loading',
+  Done = 'Done',
+  Failed = 'Failed',
+}

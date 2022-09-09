@@ -1,4 +1,4 @@
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
   IndividualDeviceListItemResponse,
@@ -8,6 +8,8 @@ import { openReadingsHistoryModal } from './../../../01/features/readings/displa
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
 import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
+import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
+import { $apartment } from '01/features/apartments/displayApartment/models';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
 
@@ -78,9 +80,10 @@ $individualDevicesPagedData.on(
   (_, data) => data
 );
 
-forward({
-  from: IndividualDevicesGate.state,
-  to: fetchIndividualDevicesFx,
+guard({
+  clock: IndividualDevicesGate.state,
+  filter: (params) => Boolean(params.ApartmentId),
+  target: fetchIndividualDevicesFx,
 });
 
 export const apartmentIndividualDevicesMetersService = {
@@ -89,6 +92,9 @@ export const apartmentIndividualDevicesMetersService = {
     upSliderIndex,
     downSliderIndex,
     openReadingsHistoryModal,
+    loadConsumptionRates:
+      managementFirmConsumptionRatesService.inputs
+        .loadManagemenFirmConsumptionRates,
   },
   outputs: {
     $individualDevicesList,
@@ -97,6 +103,9 @@ export const apartmentIndividualDevicesMetersService = {
     $closedDevicesCount,
     $sliderIndex,
     $individualDevicesPagedData,
+    $consumptionRates:
+      managementFirmConsumptionRatesService.outputs.$consumptionRates,
+    $apartment,
   },
   gates: { IndividualDevicesGate },
 };

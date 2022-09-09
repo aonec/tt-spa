@@ -7,6 +7,7 @@ import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
+import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 
 const {
   inputs,
@@ -22,11 +23,20 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
   const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
   const closedDevicesCount = useStore(outputs.$closedDevicesCount);
   const sliderIndex = useStore(outputs.$sliderIndex);
+  const consumptionRates = useStore(outputs.$consumptionRates);
+  const apartment = useStore(outputs.$apartment);
 
   const setIsShowClosedDevices = useEvent(inputs.setIsShowClosedDevices);
   const upSliderIndex = useEvent(inputs.upSliderIndex);
   const downSliderIndex = useEvent(inputs.downSliderIndex);
   const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
+  const loadConsumptionRates = useEvent(inputs.loadConsumptionRates);
+
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    apartment?.housingStock?.managingFirmId
+  );
 
   return (
     <>
@@ -45,6 +55,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
         upSliderIndex={() => upSliderIndex()}
         downSliderIndex={() => downSliderIndex()}
         openReadingsHistoryModal={openReadingsHistoryModal}
+        managementFirmConsumptionRates={managementFirmConsumptionRates}
       />
     </>
   );
