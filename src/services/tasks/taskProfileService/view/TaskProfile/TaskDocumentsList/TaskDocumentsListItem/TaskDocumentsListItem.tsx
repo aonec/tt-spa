@@ -1,10 +1,16 @@
 import React, { FC, useCallback } from 'react';
-import { CalendarIcon, DocumentIcon, TrashIcon, UserIcon } from 'ui-kit/icons';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
-import { AuthorWrapper } from '../../TaskComments/Comment/Comment.styled';
 import {
+  CalendarIcon,
+  DocumentIcon,
+  PersonIcon,
+  TrashIcon,
+} from 'ui-kit/icons';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import {
+  AuthorWrapper,
   DateWrapper,
   FileNameWrapper,
+  GroupWrapper,
   InfoWrapper,
   TrashIconWrapper,
   Wrapper,
@@ -30,14 +36,20 @@ export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
   return (
     <Wrapper>
       <InfoWrapper onClick={handleDownloadFile}>
-        <DocumentIcon />
-        <FileNameWrapper>{name}</FileNameWrapper>
-        <AuthorWrapper>{author}</AuthorWrapper>
-        <div>
+        <GroupWrapper>
+          <DocumentIcon />
+          <FileNameWrapper>{name}</FileNameWrapper>
+        </GroupWrapper>
+        <GroupWrapper>
+          <PersonIcon />
+          <AuthorWrapper>{author}</AuthorWrapper>
+        </GroupWrapper>
+        <GroupWrapper>
           <CalendarIcon />
           <DateWrapper>{preparedUploadingTime}</DateWrapper>
-        </div>
+        </GroupWrapper>
       </InfoWrapper>
+
       <TrashIconWrapper>
         <TrashIcon />
       </TrashIconWrapper>

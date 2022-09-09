@@ -16,8 +16,10 @@ export const Wrapper = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: 2.7fr 2fr 1fr;
+  grid-column-gap: 8px;
   cursor: pointer;
   flex-grow: 1;
 `;
@@ -27,9 +29,12 @@ export const FileNameWrapper = styled.div`
   color: #272f5a;
   font-weight: 500;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const TrashIconWrapper = styled.div`
+  margin-left: 16px;
   &:hover {
     path {
       fill: #fc525b;
@@ -37,9 +42,10 @@ export const TrashIconWrapper = styled.div`
   }
 `;
 
-export const AuthowWrapper = styled.div`
+export const AuthorWrapper = styled.div`
   margin-left: 8px;
-  color: #272f5a;
+  color: #272f5ab2;
+
   font-size: 14px;
 `;
 
@@ -47,4 +53,9 @@ export const DateWrapper = styled.div`
   margin-left: 8px;
   color: #272f5a;
   font-size: 14px;
+`;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
