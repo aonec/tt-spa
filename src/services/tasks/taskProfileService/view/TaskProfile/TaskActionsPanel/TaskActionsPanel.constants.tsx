@@ -33,6 +33,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     position: TaskPanelInputPositionType.Bottom,
     type: TaskPanelComponentAdditionalType.EmailTemplate,
   },
+  {
+    actionType: EStageActionType.AddDocuments,
+    Component: AttachDocument,
+    position: TaskPanelInputPositionType.Bottom,
+  },
 ];
 
 export const actionComponentPositionNamesDictionary: {

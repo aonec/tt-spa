@@ -1,7 +1,11 @@
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import React, { FC } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
-import { DocumentsUploadContainerProps } from './DocumentsService.types';
+import {
+  DocumentsUploadComponentType,
+  DocumentsUploadContainerProps,
+} from './DocumentsService.types';
+import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
 
 const accept =
@@ -13,7 +17,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   documents,
   onChange,
   lable,
-  componentType = 'dragAndDrop',
+  componentType = DocumentsUploadComponentType.DragAndDrop,
 }) => {
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
@@ -22,7 +26,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
 
   const isMaxDocuments = documents.length >= max;
 
-  return componentType === 'dragAndDrop' ? (
+  return componentType === DocumentsUploadComponentType.DragAndDrop ? (
     <div>
       {!isMaxDocuments && (
         <DragAndDrop
@@ -37,10 +41,17 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
       <DocumentsList
         isLoading={isLoading}
         removeDocument={removeDocument}
-        documnets={documents}
+        documents={documents}
       />
     </div>
   ) : (
-    <div></div>
+    <DocumentsLineUpload
+      fileHandler={(files) => handleFile(files[0])}
+      isLoading={isLoading}
+      removeDocument={removeDocument}
+      documents={documents}
+      accept={accept}
+      uniqId={uniqId}
+    />
   );
 };

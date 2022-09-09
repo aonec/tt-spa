@@ -1,5 +1,4 @@
 import React, { FC, SetStateAction, useState } from 'react';
-import { ButtonTT } from '01/tt-components';
 import {
   HalfSizeActionsWrapper,
   PushStageButtonWrapper,
@@ -13,6 +12,7 @@ import {
 } from './TaskActionsPanel.types';
 import { useTaskPanelActions } from './TaskActionsPanel.hook';
 import { StagePushRequest } from 'myApi';
+import { Button } from 'ui-kit/Button';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
   const [pushStagePayload, setPushStagePayload] = useState<StagePushRequest>(
@@ -49,9 +49,9 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
           {bottomActions.map(renderTaskAction)}
         </BottomActionWrapper>
         <PushStageButtonWrapper>
-          <ButtonTT color="blue" onClick={() => console.log(pushStagePayload)}>
+          <Button onClick={() => console.log(pushStagePayload)}>
             Завершить этап
-          </ButtonTT>
+          </Button>
         </PushStageButtonWrapper>
       </BottomContentWrapper>
     </Wrapper>

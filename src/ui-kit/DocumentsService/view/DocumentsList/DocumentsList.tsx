@@ -5,13 +5,13 @@ import { Wrapper } from './DocumentsList.styled';
 import { DocumentsListProps } from './DocumentsList.types';
 
 export const DocumentsList: FC<DocumentsListProps> = ({
-  documnets,
+  documents,
   removeDocument,
   isLoading,
 }) => {
   return (
     <Wrapper>
-      {documnets.map((document) => (
+      {documents.map((document) => (
         <DocumentItem
           document={document}
           key={document.id}
