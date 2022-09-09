@@ -8,6 +8,7 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
+import { TaskDocumentsList } from './TaskDocumentsList';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
 import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
@@ -33,6 +34,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     housingStockId,
     pipeNode,
     comments,
+    documents
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -63,6 +65,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           />
           <TaskWrapper>
             <TaskInfoWrapper>
+              <TaskDocumentsList documents={documents || []}/>
               <TaskComments
                 comments={comments || []}
                 handleAddComment={handleAddComment}
