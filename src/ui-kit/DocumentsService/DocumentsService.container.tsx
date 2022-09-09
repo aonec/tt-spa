@@ -13,6 +13,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   documents,
   onChange,
 }) => {
+  
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
     onChange
