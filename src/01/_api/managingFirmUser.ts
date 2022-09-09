@@ -1,9 +1,9 @@
 import axios from '01/axios';
-import { ManagingFirmUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'myApi';
 
 export const getManagingFirmUser = (
   id: number
-): Promise<ManagingFirmUserResponse> => axios.get(`ManagingFirmUsers/${id}`);
+): Promise<OrganizationUserResponse> => axios.get(`ManagingFirmUsers/${id}`);
 
-export const getCurrentManagingFirmUser = (): Promise<ManagingFirmUserResponse> =>
+export const getCurrentManagingFirmUser = (): Promise<OrganizationUserResponse> =>
   axios.get('ManagingFirmUsers/current');

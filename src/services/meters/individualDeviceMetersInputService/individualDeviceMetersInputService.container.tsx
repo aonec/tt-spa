@@ -117,7 +117,9 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       if (result.type === ValidationReadingsResultType.EmptyValues) {
         const meterId = readingPayload.meterId;
 
-        const readingMonth = moment(readingPayload.readingDate).format('MMMM');
+        const readingMonth = moment(readingPayload.meter.readingDate).format(
+          'MMMM'
+        );
 
         return void openConfirmReadingModal({
           title: (
@@ -131,7 +133,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
             deleteMeter({
               deviceId: device.id,
               meterId: meterId,
-              readingDate: readingPayload.readingDate,
+              readingDate: readingPayload.meter.readingDate,
             }),
           onCancel: setFailed,
         });
