@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceReadingsResponse } from 'myApi';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -90,7 +90,6 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const unit = getMeasurementUnit(device.resource);
 
   const consumptionRate = useMemo(() => {
-
     if (!managementFirmConsumptionRates) return null;
 
     return managementFirmConsumptionRates[device.resource];
@@ -215,6 +214,14 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       ? ApartmentIndividualDeviceMetersInputLine
       : IndividualDeviceMetersInputLine;
   }, [isHousingStocksReadingInputs]);
+
+  useEffect(() => {
+    console.log({
+      previousReading,
+      currentReading,
+      deviceId: device.serialNumber,
+    });
+  }, [previousReading, currentReading]);
 
   return (
     <ReadingLineComponent
