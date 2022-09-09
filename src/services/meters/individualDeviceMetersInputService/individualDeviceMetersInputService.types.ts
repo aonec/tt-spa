@@ -45,10 +45,11 @@ export enum CompareReadingsStatus {
   RightLess = 'RightLess',
 }
 
-export type MeterInputUploadReadingPayload = Omit<
-  IndividualDeviceReadingsCreateRequest,
-  'deviceId'
-> & { sliderIndex: number; meterId?: number };
+export type MeterInputUploadReadingPayload = {
+  meter: Omit<IndividualDeviceReadingsCreateRequest, 'deviceId'>;
+  sliderIndex: number;
+  meterId?: number;
+};
 
 export type UploadReading = (
   readingPayload: MeterInputUploadReadingPayload,

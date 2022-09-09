@@ -1,6 +1,5 @@
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
-import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
@@ -46,9 +45,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   const managementFirmUser = useStore($currentManagingFirmUser);
 
-  const isDeviceClosed = useMemo(() => {
-    return Boolean(device.closingDate);
-  }, [device]);
+  const isDeviceClosed = Boolean(device.closingDate);
 
   const isSeniorOperator = useMemo(
     () =>

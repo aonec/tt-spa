@@ -5,9 +5,9 @@ import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeI
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
-import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
+import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 
 const {
   inputs,

@@ -1,5 +1,5 @@
-import { deviceMeterLineGridTemplate } from 'services/meters/apartmentIndividualDevicesMetersService/view/ApartmentIndividualDevicesMeters/ApartmentIndividualDevicesMeters.styled';
 import styled from 'styled-components';
+import { deviceMeterLineGridTemplate } from 'services/meters/apartmentIndividualDevicesMetersService/view/ApartmentIndividualDevicesMeters/ApartmentIndividualDevicesMeters.styled';
 
 export const Wrapper = styled.div`
   padding: 10px 0 10px 10px;
@@ -13,8 +13,8 @@ export const Wrapper = styled.div`
 export const DeviceOptionsWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  .device-option {
-    margin-left: 15px;
-  }
+export const DeviceOption = styled.div`
+  margin-left: 15px;
 `;

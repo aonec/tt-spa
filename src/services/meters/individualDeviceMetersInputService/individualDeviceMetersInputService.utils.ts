@@ -1,8 +1,13 @@
+import {
+  PREVIOUS_READING_INDEX_LIMIT,
+  NEXT_READING_INDEX_LIMIT,
+} from './../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
   IndividualDeviceListItemResponse,
   ConsumptionRateResponse,
+  IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import {
@@ -14,8 +19,6 @@ import {
   ValidationReadingsResultType,
 } from './individualDeviceMetersInputService.types';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
-import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
-import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { BufferedReadingValues } from './view/MetersInputsBlock/MetersInputsBlock.types';
 import { round } from 'utils/round';
 
@@ -43,11 +46,18 @@ export function getPreparedReadingsDictionary(
 export const getInputIndex = (
   deviceIndex: number,
   devices: IndividualDeviceListItemResponse[],
+  filterClosed?: boolean
 ) => {
-  return devices
+  const devicesList = filterClosed
+    ? devices
+    : devices.filter((device) => device.closingDate === null);
+
+  const inputIndex = devicesList
     .slice(0, deviceIndex)
     .filter((elem) => elem.closingDate === null)
     .reduce((acc, elem) => acc + getRateNum(elem.rateType), 0);
+
+  return inputIndex;
 };
 
 export function validateReadings(
@@ -60,7 +70,10 @@ export function validateReadings(
   const previousReading = getExistingReading(readings, meterIndex, 'prev');
   const nextReading = getExistingReading(readings, meterIndex, 'next');
 
-  const uploadingReadingLite = getReadingLite(createMeterPayload, rateNum);
+  const uploadingReadingLite = getReadingLite(
+    createMeterPayload.meter,
+    rateNum
+  );
 
   const isAllValuesEmpty = checkIsAllValuesEmpty(uploadingReadingLite, rateNum);
 
@@ -108,13 +121,13 @@ export function getExistingReading(
   index: number,
   type: 'next' | 'prev'
 ) {
-  const nextIndex = () => (type === 'next' ? index-- : index++);
+  const nextIndex = () => (type === 'next' ? index - 1 : index + 1);
 
   nextIndex();
 
   while (
-    (type === 'next' && index >= nextReadingIndexLimit) ||
-    (type === 'prev' && index <= previousReadingIndexLimit)
+    (type === 'next' && index >= NEXT_READING_INDEX_LIMIT) ||
+    (type === 'prev' && index <= PREVIOUS_READING_INDEX_LIMIT)
   ) {
     const reading = readings[index];
 
@@ -199,8 +212,8 @@ function compareReadings(
 export function getReadingLite(
   reading:
     | IndividualDeviceReadingsResponse
-    | MeterInputUploadReadingPayload
-    | BufferedReadingValues,
+    | BufferedReadingValues
+    | Omit<IndividualDeviceReadingsCreateRequest, 'deviceId'>,
   rateNum: number
 ): ReadingLite {
   return getFilledArray(rateNum, (index) => {

@@ -1,4 +1,6 @@
+import { Checkbox } from 'antd';
 import styled from 'styled-components';
+import { ChevronIcon } from 'ui-kit/icons';
 
 export const deviceMeterLineGridTemplate = '1.45fr 0.6fr 0.6fr 0.3fr';
 
@@ -16,23 +18,23 @@ export const Header = styled.div`
   font-weight: 400;
   line-height: 16px;
   user-select: none;
+`;
 
-  .device-info {
-    font-weight: 600;
-  }
+export const DeviceInfo = styled.div`
+  font-weight: 600;
+`;
 
-  .current-reading {
-    text-align: center;
-  }
+export const CurrentReading = styled.div`
+  text-align: center;
+`;
 
-  .header-block {
-    display: flex;
-    align-items: center;
-  }
+export const HeaderBlock = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-  .device-show-closed-devices-checkbox {
-    margin-left: 15px;
-  }
+export const DeviceShowClosedDevicesCheckbox = styled(Checkbox)`
+  margin-left: 15px;
 `;
 
 export const MonthSliderWrapper = styled.div`
@@ -40,10 +42,10 @@ export const MonthSliderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
 
-  .right-chevron {
-    transform: rotate(180deg);
-  }
+export const RightChevron = styled(ChevronIcon)`
+  transform: rotate(180deg);
 `;
 
 export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
