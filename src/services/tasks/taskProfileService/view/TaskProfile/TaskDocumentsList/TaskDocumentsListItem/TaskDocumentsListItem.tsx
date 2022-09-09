@@ -19,8 +19,9 @@ import { TaskDocumentsListItemProps } from './TaskDocumentsListItem.types';
 
 export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
   document,
+  handleDeleteDocument,
 }) => {
-  const { author, uploadingTime, name, url } = document;
+  const { author, uploadingTime, name, url, id } = document;
 
   const handleDownloadFile = useCallback(() => {
     if (url && name) {
@@ -33,12 +34,17 @@ export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
     'DD.MM.YYYY, HH:mm:ss'
   );
 
+  const deleteDocument = useCallback(() => handleDeleteDocument(id), [
+    handleDeleteDocument,
+    id,
+  ]);
+
   return (
     <Wrapper>
       <InfoWrapper onClick={handleDownloadFile}>
         <GroupWrapper>
           <DocumentIcon />
-          <FileNameWrapper>{name}</FileNameWrapper>
+          <FileNameWrapper className="fileName">{name}</FileNameWrapper>
         </GroupWrapper>
         <GroupWrapper>
           <PersonIcon />
@@ -50,7 +56,7 @@ export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
         </GroupWrapper>
       </InfoWrapper>
 
-      <TrashIconWrapper>
+      <TrashIconWrapper onClick={deleteDocument}>
         <TrashIcon />
       </TrashIconWrapper>
     </Wrapper>

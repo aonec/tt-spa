@@ -10,3 +10,5 @@ export const fetchAddComment = ({
   comment,
 }: AddCommentRequest): Promise<TaskCommentResponse> =>
   axios.post(`Tasks/${taskId}/Comments`, { comment });
+
+export const fetchDeleteDocument = (id: number): Promise<void> => axios.delete(`Documents/${id}`);

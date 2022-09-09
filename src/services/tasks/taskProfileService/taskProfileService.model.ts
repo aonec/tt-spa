@@ -2,7 +2,11 @@ import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { TaskCommentResponse, TaskResponse } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
-import { fetchAddComment, fetchTask } from './taskProfileService.api';
+import {
+  fetchAddComment,
+  fetchDeleteDocument,
+  fetchTask,
+} from './taskProfileService.api';
 import { AddCommentRequest } from './taskProfileService.types';
 
 const domain = createDomain('taskProfileService');
@@ -17,6 +21,9 @@ const addCommentFx = domain.createEffect<
   AddCommentRequest,
   TaskCommentResponse
 >(fetchAddComment);
+
+const deleteDocument = domain.createEvent<number>();
+const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 
 const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
 const $task = domain
@@ -66,12 +73,18 @@ sample({
   target: addCommentFx,
 });
 
+forward({
+  from: deleteDocument,
+  to: deleteDocumentFx,
+});
+
 addCommentFx.doneData.watch(() => setComment(''));
 
 export const taskProfileService = {
   inputs: {
     addComment,
     setComment,
+    deleteDocument,
   },
   outputs: {
     $task,

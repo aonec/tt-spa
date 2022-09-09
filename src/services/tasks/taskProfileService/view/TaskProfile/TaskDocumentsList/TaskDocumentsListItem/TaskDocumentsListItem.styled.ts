@@ -18,10 +18,16 @@ export const Wrapper = styled.div`
 export const InfoWrapper = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 2.7fr 2fr 1fr;
+  grid-template-columns: 2.7fr 1.5fr 1fr;
   grid-column-gap: 8px;
   cursor: pointer;
   flex-grow: 1;
+
+  &:hover {
+    .fileName {
+      color: #189ee9;
+    }
+  }
 `;
 
 export const FileNameWrapper = styled.div`
@@ -31,6 +37,8 @@ export const FileNameWrapper = styled.div`
   font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 350px;
 `;
 
 export const TrashIconWrapper = styled.div`

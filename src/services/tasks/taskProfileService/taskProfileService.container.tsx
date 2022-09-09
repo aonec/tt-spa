@@ -18,6 +18,7 @@ export const TaskProfileContainer = () => {
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
+  const handleDeleteDocument = useEvent(inputs.deleteDocument);
 
   return (
     <>
@@ -25,6 +26,7 @@ export const TaskProfileContainer = () => {
       <TaskIdGate taskId={Number(taskId)} />
       {task && (
         <TaskProfile
+        handleDeleteDocument={handleDeleteDocument}
           task={task}
           isLoading={isLoading}
           isPerpetrator={isPerpetrator}

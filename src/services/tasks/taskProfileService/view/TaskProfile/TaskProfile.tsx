@@ -23,6 +23,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   isPerpetrator,
   handleSetComment,
   commentText,
+  handleDeleteDocument,
 }) => {
   const {
     closingStatus,
@@ -34,7 +35,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     housingStockId,
     pipeNode,
     comments,
-    documents
+    documents,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -65,7 +66,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           />
           <TaskWrapper>
             <TaskInfoWrapper>
-              <TaskDocumentsList documents={documents || []}/>
+              <TaskDocumentsList
+                documents={documents || []}
+                handleDeleteDocument={handleDeleteDocument}
+              />
               <TaskComments
                 comments={comments || []}
                 handleAddComment={handleAddComment}

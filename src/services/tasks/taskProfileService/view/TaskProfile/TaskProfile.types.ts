@@ -7,4 +7,5 @@ export type TaskProfileProps = {
   handleAddComment: () => void;
   handleSetComment: (comment: string) => void;
   commentText: string;
+  handleDeleteDocument: (is: number) => void;
 };
