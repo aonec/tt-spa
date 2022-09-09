@@ -215,14 +215,6 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       : IndividualDeviceMetersInputLine;
   }, [isHousingStocksReadingInputs]);
 
-  useEffect(() => {
-    console.log({
-      previousReading,
-      currentReading,
-      deviceId: device.serialNumber,
-    });
-  }, [previousReading, currentReading]);
-
   return (
     <ReadingLineComponent
       inputIndex={inputIndex}
