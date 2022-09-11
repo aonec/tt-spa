@@ -30,7 +30,7 @@ export async function addCalculator(form: CreateCalculatorRequest) {
 
 export async function getObjectCalculators(id: number) {
   try {
-    const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
+    const res = await axios.get(`HousingStocks/${id}/Calculators`);
     return res;
   } catch (error) {
     throw {
@@ -140,7 +140,7 @@ export async function getHousingStock(housingStockId: number) {
 export async function getHousingStockCalculators(id: number) {
   try {
     const res: CalculatorListResponsePagedList = await axios.get(
-      `Calculators?Filter.HousingStockId=${id}`
+      `HousingStocks/${id}/Calculators`
     );
     const { items } = res;
     return items;
