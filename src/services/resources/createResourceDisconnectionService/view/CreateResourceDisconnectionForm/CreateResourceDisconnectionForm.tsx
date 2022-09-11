@@ -158,9 +158,31 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     ? addressPlaceholderTextWhenCHSSelected
     : 'Выберите город';
 
+  const preparedEndHours = hours.filter((hour) => {
+    const startHourNumber = Number(values.startHour.split(':')[0]);
+    const endHourNumber = Number(hour.split(':')[0]);
+
+    return endHourNumber >= startHourNumber;
+  });
+
   useEffect(() => {
     setFieldValue('housingStockIds', []);
   }, [treeData]);
+
+  useEffect(() => {
+    if (!values.startDate) {
+      setFieldValue('endDate', '');
+    }
+  }, [values.startDate]);
+
+  useEffect(() => {
+    const startHourNumber = Number(values.startHour.split(':')[0]);
+    const endHourNumber = Number(values.endHour.split(':')[0]);
+
+    if (endHourNumber <= startHourNumber) {
+      setFieldValue('endHour', values.startHour);
+    }
+  }, [values.startHour]);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -292,17 +314,29 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="Дата и время включения ресурса">
           <TimeWrapper>
             <DatePicker
+              disabled={!values.startDate}
               value={getDatePickerValue(values.endDate, 'DD.MM.YYYY')}
               format="DD.MM.YYYY"
               placeholder="Дата"
               onChange={(_, stringDate) => setFieldValue('endDate', stringDate)}
+              disabledDate={(endDate) => {
+                const startDate = getDatePickerValue(
+                  values.startDate,
+                  'DD.MM.YYYY'
+                );
+                if (!startDate) {
+                  return true;
+                }
+                return endDate.startOf('day').diff(startDate, 'day') < 0;
+              }}
             />
             <Select
+              disabled={!values.startDate}
               value={values.endHour}
               placeholder="Час"
               onChange={(hour) => setFieldValue('endHour', hour)}
             >
-              {hours.map((hour) => (
+              {preparedEndHours.map((hour) => (
                 <Select.Option key={hour} value={hour}>
                   {hour}
                 </Select.Option>
