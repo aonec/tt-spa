@@ -15,6 +15,7 @@ import {
   HousingStockWithApartmentStatistic,
   SubscriberStatisticsFilter,
 } from './displayStatisticsListByManagingFirmService.types';
+import { prepareFilterBeforeSenging } from './displayStatisticsListByManagingFirmService.utils';
 import { SubscriberStatisticsForm } from './view/ManagingFirmSearch/ManagingFirmSearch.types';
 
 const domain = createDomain('displayStatisticsListByManagingFirmService');
@@ -112,53 +113,7 @@ sample({
       return { ...filter, HousingStockId };
     }
   ),
-  fn: (filter) => {
-    const {
-      ColdWaterSupply,
-      Electricity,
-      HotWaterSupply,
-      ColdWaterSupplyConsumptionFrom,
-      ColdWaterSupplyConsumptionTo,
-      ElectricitySupplyConsumptionFrom,
-      ElectricitySupplyConsumptionTo,
-      HotWaterSupplyConsumptionFrom,
-      HotWaterSupplyConsumptionTo,
-      DateLastCheckFrom,
-      DateLastCheckTo,
-      MonthOfLastTransmission,
-      HousingStockId,
-    } = filter;
-
-    let payload: SubscriberStatisticsFilter = {
-      HousingStockId,
-      DateLastCheckFrom,
-      DateLastCheckTo,
-      MonthOfLastTransmission,
-    };
-
-    if (ColdWaterSupply) {
-      payload = {
-        ...payload,
-        ColdWaterSupplyConsumptionFrom,
-        ColdWaterSupplyConsumptionTo,
-      };
-    }
-    if (Electricity) {
-      payload = {
-        ...payload,
-        ElectricitySupplyConsumptionFrom,
-        ElectricitySupplyConsumptionTo,
-      };
-    }
-    if (HotWaterSupply) {
-      payload = {
-        ...payload,
-        HotWaterSupplyConsumptionFrom,
-        HotWaterSupplyConsumptionTo,
-      };
-    }
-    return payload;
-  },
+  fn:(filter)=> prepareFilterBeforeSenging(filter),
   target: getStatisticFx,
 });
 
