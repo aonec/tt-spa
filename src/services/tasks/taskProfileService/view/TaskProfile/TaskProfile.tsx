@@ -9,7 +9,7 @@ import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
-import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
+import { TaskWrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
@@ -55,7 +55,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             taskName={taskName || ''}
           />
           <TaskWrapper>
-            <TaskInfoWrapper>
+            <div>
               <TaskBaseInfo task={task} />
               {individualDevices && (
                 <TaskIndividualDevicesList
@@ -69,7 +69,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
               )}
               {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
-            </TaskInfoWrapper>
+            </div>
             <TaskStages stages={stages || []} />
           </TaskWrapper>
         </>
