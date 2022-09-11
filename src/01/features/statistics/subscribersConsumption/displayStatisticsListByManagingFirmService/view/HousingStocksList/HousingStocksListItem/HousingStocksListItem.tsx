@@ -27,15 +27,6 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
 
-  const apartmentsStatisticComponent = useMemo(
-    () => (
-      <SubscribersStaticsByManagingFirm
-        apartmentsStatistic={apartmentsStatistic}
-      />
-    ),
-    [apartmentsStatistic]
-  );
-
   const openModal = useCallback(() => handleOpenModal(id), [
     handleOpenModal,
     id,
@@ -43,6 +34,28 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
 
   const address = getHousingStockAddress(housingStock);
   const isCurrentHousingStockSelected = selectedHousingStock === id;
+
+  const apartmentsStatisticComponent = useMemo(() => {
+    const isOpen = isActive && isCurrentHousingStockSelected;
+    if (!isOpen) {
+      return null;
+    }
+    if (statisticIsLoading) {
+      return <Skeleton active />;
+    }
+    if (!statisticIsLoading) {
+      return (
+        <SubscribersStaticsByManagingFirm
+          apartmentsStatistic={apartmentsStatistic}
+        />
+      );
+    }
+  }, [
+    apartmentsStatistic,
+    isCurrentHousingStockSelected,
+    isActive,
+    statisticIsLoading,
+  ]);
 
   useEffect(() => {
     if (!isCurrentHousingStockSelected) {
@@ -76,13 +89,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
           </Tooltip>
         </GroupWrapper>
       </Wrapper>
-      {isActive &&
-        isCurrentHousingStockSelected &&
-        !statisticIsLoading &&
-        apartmentsStatisticComponent}
-      {isActive && isCurrentHousingStockSelected && statisticIsLoading && (
-        <Skeleton active />
-      )}
+      {apartmentsStatisticComponent}
     </div>
   );
 };

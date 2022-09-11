@@ -8,7 +8,6 @@ import {
   ExcludeApartmentsWrapper,
   ResourceWrapper,
   TitleText,
-  Wrapper,
 } from './SubscribersConsumptionExtendedSearch.styled';
 import { SubscribersConsumptionExtendedSearchProps } from './SubscribersConsumptionExtendedSearch.types';
 import { prepareConsumptionForInput } from './SubscribersConsumptionExtendedSearch.utils';
@@ -62,7 +61,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
   }, [ExcludeApartments]);
 
   return (
-    <Wrapper>
+    <div>
       <ResourceWrapper>
         <TitleText>Ресурс</TitleText>
         <TitleText>Диапазон значений</TitleText>
@@ -178,6 +177,6 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
           Исключить квартиры, где проверка проводилась менее 3 месяцев назад
         </Checkbox>
       </ExcludeApartmentsWrapper>
-    </Wrapper>
+    </div>
   );
 };

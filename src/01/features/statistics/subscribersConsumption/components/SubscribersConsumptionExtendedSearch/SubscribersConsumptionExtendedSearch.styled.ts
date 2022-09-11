@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const ResourceWrapper = styled.div`
   display: grid;
   grid-template-columns: 0.4fr 1fr;
