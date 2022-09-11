@@ -165,6 +165,17 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     return endHourNumber >= startHourNumber;
   });
 
+  const handleDisableDate = useCallback(
+    (endDate: moment.Moment) => {
+      const startDate = getDatePickerValue(values.startDate, 'DD.MM.YYYY');
+      if (!startDate) {
+        return true;
+      }
+      return endDate.startOf('day').diff(startDate, 'day') < 0;
+    },
+    [values.startDate]
+  );
+
   useEffect(() => {
     setFieldValue('housingStockIds', []);
   }, [treeData]);
@@ -319,16 +330,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
               format="DD.MM.YYYY"
               placeholder="Дата"
               onChange={(_, stringDate) => setFieldValue('endDate', stringDate)}
-              disabledDate={(endDate) => {
-                const startDate = getDatePickerValue(
-                  values.startDate,
-                  'DD.MM.YYYY'
-                );
-                if (!startDate) {
-                  return true;
-                }
-                return endDate.startOf('day').diff(startDate, 'day') < 0;
-              }}
+              disabledDate={handleDisableDate}
             />
             <Select
               disabled={!values.startDate}
