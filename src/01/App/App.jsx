@@ -252,6 +252,11 @@ const Internal = () => {
                 component={SettingsPageContainer}
                 exact
               />
+              <Route
+                path="/adminSettings/:section"
+                component={SettingsPageContainer}
+                exact
+              />
 
               <Redirect
                 from="/statistics/"

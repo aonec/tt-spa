@@ -13,7 +13,7 @@ const $disablingResources = resourceDisablingScheduleServiceDomain.createStore<R
   null
 );
 const $filters = resourceDisablingScheduleServiceDomain.createStore<DisablingResourcesProps>(
-  { PageSize: 15 }
+  { PageSize: 12 }
 );
 const $isAddressesModalOpen = resourceDisablingScheduleServiceDomain.createStore<boolean>(
   false
@@ -32,13 +32,16 @@ const resourceDisablingEventFx = resourceDisablingScheduleServiceDomain.createEf
 >(fetchDisablingResources);
 
 $filters
-  .on(applyFilters, (_, filters) => ({
-    ...filters,
-    pageNumber: 1,
-  }))
+  .on(applyFilters, (oldFilters, filters) => {
+    return {
+      ...oldFilters,
+      ...filters,
+      PageNumber: 1,
+    };
+  })
   .on(setPage, (filters, page) => ({
     ...filters,
-    pageNumber: page,
+    PageNumber: page,
   }));
 
 $isAddressesModalOpen.on(openAddressesModal, (state) => !state);

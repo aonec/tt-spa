@@ -12,6 +12,7 @@ export enum MenuType {
   Meters = 'Meters',
   MetersApartments = 'MetersApartments',
   Settings = 'Settings',
+  SettingsAdministrator = 'SettingsAdministrator',
   Log = 'Log',
 }
 

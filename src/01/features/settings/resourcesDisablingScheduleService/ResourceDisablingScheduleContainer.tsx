@@ -10,30 +10,20 @@ import {
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { ResourceDisablingScheduleModal } from './ResourcesDisablingScheduleServiceModal/ResourceDisablingScheduleModal';
 
+const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
+
 export const ResourceDisablingScheduleContainer = () => {
-  const DisablingResouresGate =
-    resourceDisablingScheduleServiceService.gates.resourceDisablingGate;
-  const resources = useStore(
-    resourceDisablingScheduleServiceService.outputs.$disablingResources
-  );
-  const loading = useStore(
-    resourceDisablingScheduleServiceService.outputs.$loading
-  );
+  const DisablingResouresGate = gates.resourceDisablingGate;
+
+  const resources = useStore(outputs.$disablingResources);
+  const loading = useStore(outputs.$loading);
   const cities = useStore($existingCities);
+  const filters = useStore(outputs.$filters);
 
-  const applyFilters = useEvent(
-    resourceDisablingScheduleServiceService.inputs.applyFilters
-  );
-  const setPage = useEvent(
-    resourceDisablingScheduleServiceService.inputs.setPage
-  );
-  const isModalOpen = useStore(
-    resourceDisablingScheduleServiceService.outputs.$isAddressesModalOpen
-  );
-  const openModal = useEvent(
-    resourceDisablingScheduleServiceService.inputs.openAddressesModal
-  );
-
+  const applyFilters = useEvent(inputs.applyFilters);
+  const setPage = useEvent(inputs.setPage);
+  const isModalOpen = useStore(outputs.$isAddressesModalOpen);
+  const openModal = useEvent(inputs.openAddressesModal);
 
   return (
     <DisablingResourceWrapperContainer>
@@ -43,7 +33,7 @@ export const ResourceDisablingScheduleContainer = () => {
         isModalOpen={isModalOpen}
         openModal={() => openModal()}
       />
-      <DisablingResourcesSearch applyFilters={applyFilters} cities={cities} />
+      <DisablingResourcesSearch filters={filters} applyFilters={applyFilters} cities={cities} />
       <DisablingResourcesList
         resources={resources}
         loading={loading}

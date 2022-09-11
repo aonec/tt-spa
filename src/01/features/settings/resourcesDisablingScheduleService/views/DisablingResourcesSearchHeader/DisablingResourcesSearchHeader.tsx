@@ -17,6 +17,7 @@ const { Option } = Select;
 export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> = ({
   applyFilters,
   cities,
+  filters,
 }) => {
   const city = cities && cities?.length === 1 ? cities[0] : undefined;
 
@@ -24,18 +25,17 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
     values,
     handleSubmit,
     setFieldValue,
-    resetForm,
   } = useFormik<DisablingResourcesProps>({
     initialValues: {
-      City: city,
-      Resource: undefined,
-      DisconnectingType: undefined,
-      OrderRule: undefined,
-      HousingStockId: undefined,
-      Status: undefined,
-      PageNumber: undefined,
-      PageSize: undefined,
-      OrderBy: undefined,
+      City: filters?.City || city,
+      Resource: filters?.Resource,
+      DisconnectingType: filters?.DisconnectingType,
+      OrderRule: filters?.OrderRule,
+      HousingStockId: filters?.HousingStockId,
+      Status: filters?.Status,
+      PageNumber: filters?.PageNumber,
+      PageSize: filters?.PageSize,
+      OrderBy: filters?.OrderBy,
     },
     enableReinitialize: true,
     onSubmit: applyFilters,
@@ -68,7 +68,6 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
             setFieldValue('Resource', value);
             handleSubmit();
           }}
-          //   onSelect={() => applyFilters(values)}
         >
           <Option value={''}>{'Все типы ресурсов'}</Option>
           {Object.keys(EResourceType).map((el) => {
@@ -88,7 +87,6 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
             setFieldValue('DisconnectingType', value);
             handleSubmit();
           }}
-          //   onSelect={() => applyFilters(values)}
         >
           <Option value={''}>{'Все классы отключения'}</Option>
           {Object.keys(EResourceDisconnectingType).map((el) => {
