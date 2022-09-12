@@ -24,10 +24,10 @@ export const TaskDeviceInfo: FC<TaskDeviceInfoProps> = ({ device }) => {
     diameter,
   } = device;
 
-  const openingDateText = getPreparedDate(openingDate) || '-';
-  const closingDateText = getPreparedDate(closingDate) || '-';
-  const lastCheckingDateText = getPreparedDate(lastCheckingDate) || '-';
-  const futureCheckingDateText = getPreparedDate(futureCheckingDate) || '-';
+  const openingDateText = getPreparedDate(openingDate);
+  const closingDateText = getPreparedDate(closingDate);
+  const lastCheckingDateText = getPreparedDate(lastCheckingDate);
+  const futureCheckingDateText = getPreparedDate(futureCheckingDate);
 
   const icon = resource ? (
     <ResourceIconLookup resource={resource} />
