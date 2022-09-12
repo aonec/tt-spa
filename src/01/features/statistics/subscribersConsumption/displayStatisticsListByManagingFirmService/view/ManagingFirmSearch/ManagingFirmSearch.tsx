@@ -12,6 +12,7 @@ import {
 import {
   ManagingFirmSearchProps,
   SubscriberStatisticsForm,
+  SubscriberStatisticsFormik,
 } from './ManagingFirmSearch.types';
 
 export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
@@ -27,14 +28,14 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   const close = () => setIsOpen(false);
 
   const isExcluded =
-    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3 || false;
+    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
 
   const {
     values,
     setFieldValue,
     resetForm,
     submitForm,
-  } = useFormik<SubscriberStatisticsForm>({
+  } = useFormik<SubscriberStatisticsFormik>({
     initialValues: {
       ColdWaterSupply: filter?.ColdWaterSupply || false,
       Electricity: filter?.Electricity || false,
@@ -46,6 +47,8 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
       ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
       HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
       HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+      DateLastCheckFrom: filter?.DateLastCheckFrom,
+      DateLastCheckTo: filter?.DateLastCheckTo,
       ExcludeApartments: isExcluded,
     },
     enableReinitialize: true,

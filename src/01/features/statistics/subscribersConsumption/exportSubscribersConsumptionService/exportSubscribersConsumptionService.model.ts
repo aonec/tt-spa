@@ -1,5 +1,6 @@
 import { combine, createDomain, sample } from 'effector';
 import { displayStatisticsListByManagingFirmService } from '../displayStatisticsListByManagingFirmService';
+import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.utils';
 import { downloadSubscribersConsumption } from './exportSubscribersConsumptionService.api';
 import { ExportSubscribersConsumptionPayload } from './exportSubscribersConsumptionService.types';
 
@@ -38,7 +39,11 @@ sample({
       if (!filter) {
         return { fileName, params: { HousingStockId } };
       }
-      return { fileName, params: { ...filter, HousingStockId } };
+      const preparedFilter = prepareFilterBeforeSenging({
+        ...filter,
+        HousingStockId,
+      });
+      return { fileName, params: { ...preparedFilter } };
     }
   ),
   clock: exportStatistic,

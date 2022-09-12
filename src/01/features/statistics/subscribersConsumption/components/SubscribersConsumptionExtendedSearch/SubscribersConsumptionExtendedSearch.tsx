@@ -2,15 +2,15 @@ import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { NumberRange } from '01/shared/ui/Fields/NumberRange';
 import { Checkbox } from 'antd';
 import moment from 'moment';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
   DatesWrapper,
   ExcludeApartmentsWrapper,
   ResourceWrapper,
   TitleText,
-  Wrapper,
 } from './SubscribersConsumptionExtendedSearch.styled';
 import { SubscribersConsumptionExtendedSearchProps } from './SubscribersConsumptionExtendedSearch.types';
+import { prepareConsumptionForInput } from './SubscribersConsumptionExtendedSearch.utils';
 
 export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExtendedSearchProps> = ({
   values,
@@ -32,6 +32,20 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
     DateLastCheckTo,
   } = values;
 
+  const handleChangeDateRange = useCallback(
+    (dates: [string, string]) => {
+      const dateLastCheckFromValue = dates[0];
+      const dateLastCheckTo = dates[1];
+
+      setFieldValue(
+        'DateLastCheckFrom',
+        moment(dateLastCheckFromValue).toISOString()
+      );
+      setFieldValue('DateLastCheckTo', moment(dateLastCheckTo).toISOString());
+    },
+    [setFieldValue]
+  );
+
   useEffect(() => {
     if (ExcludeApartments) {
       setFieldValue(
@@ -47,7 +61,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
   }, [ExcludeApartments]);
 
   return (
-    <Wrapper>
+    <div>
       <ResourceWrapper>
         <TitleText>Ресурс</TitleText>
         <TitleText>Диапазон значений</TitleText>
@@ -63,8 +77,8 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
         <NumberRange
           disabled={!ColdWaterSupply}
           value={{
-            from: ColdWaterSupplyConsumptionFrom || null,
-            to: ColdWaterSupplyConsumptionTo || null,
+            from: prepareConsumptionForInput(ColdWaterSupplyConsumptionFrom),
+            to: prepareConsumptionForInput(ColdWaterSupplyConsumptionTo),
           }}
           onChange={({ from, to }) => {
             setFieldValue('ColdWaterSupplyConsumptionFrom', from);
@@ -83,8 +97,8 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
         <NumberRange
           disabled={!HotWaterSupply}
           value={{
-            from: HotWaterSupplyConsumptionFrom || null,
-            to: HotWaterSupplyConsumptionTo || null,
+            from: prepareConsumptionForInput(HotWaterSupplyConsumptionFrom),
+            to: prepareConsumptionForInput(HotWaterSupplyConsumptionTo),
           }}
           onChange={({ from, to }) => {
             setFieldValue('HotWaterSupplyConsumptionFrom', from);
@@ -103,8 +117,8 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
         <NumberRange
           disabled={!Electricity}
           value={{
-            from: ElectricitySupplyConsumptionFrom || null,
-            to: ElectricitySupplyConsumptionTo || null,
+            from: prepareConsumptionForInput(ElectricitySupplyConsumptionFrom),
+            to: prepareConsumptionForInput(ElectricitySupplyConsumptionTo),
           }}
           onChange={({ from, to }) => {
             setFieldValue('ElectricitySupplyConsumptionFrom', from);
@@ -129,19 +143,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
               : undefined
           }
           format="DD.MM.YYYY"
-          onChange={(_, dates) => {
-            const dateLastCheckFromValue = dates[0];
-            const dateLastCheckTo = dates[1];
-
-            setFieldValue(
-              'DateLastCheckFrom',
-              moment(dateLastCheckFromValue).toISOString()
-            );
-            setFieldValue(
-              'DateLastCheckTo',
-              moment(dateLastCheckTo).toISOString()
-            );
-          }}
+          onChange={(_, dates) => handleChangeDateRange(dates)}
         />
 
         <StyledDatePicker
@@ -175,6 +177,6 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
           Исключить квартиры, где проверка проводилась менее 3 месяцев назад
         </Checkbox>
       </ExcludeApartmentsWrapper>
-    </Wrapper>
+    </div>
   );
 };

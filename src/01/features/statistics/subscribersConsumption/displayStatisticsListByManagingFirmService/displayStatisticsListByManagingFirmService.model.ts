@@ -15,6 +15,7 @@ import {
   HousingStockWithApartmentStatistic,
   SubscriberStatisticsFilter,
 } from './displayStatisticsListByManagingFirmService.types';
+import { prepareFilterBeforeSenging } from './displayStatisticsListByManagingFirmService.utils';
 import { SubscriberStatisticsForm } from './view/ManagingFirmSearch/ManagingFirmSearch.types';
 
 const domain = createDomain('displayStatisticsListByManagingFirmService');
@@ -112,7 +113,7 @@ sample({
       return { ...filter, HousingStockId };
     }
   ),
-  fn: (filter) => filter,
+  fn:(filter)=> prepareFilterBeforeSenging(filter),
   target: getStatisticFx,
 });
 

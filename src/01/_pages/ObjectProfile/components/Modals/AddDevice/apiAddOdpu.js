@@ -4,7 +4,7 @@ import axios from '../../../../../axios';
 
 export async function getObjectCalculators(id = '') {
   try {
-    const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
+    const res = await axios.get(`HousingStocks/${id}/Calculators`);
     return res;
   } catch (error) {
     throw {

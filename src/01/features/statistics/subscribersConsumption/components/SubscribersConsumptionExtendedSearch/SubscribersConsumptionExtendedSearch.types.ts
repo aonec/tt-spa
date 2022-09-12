@@ -1,7 +1,7 @@
-import { SubscriberStatisticsForm } from '../../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
+import { SubscriberStatisticsFormik } from '../../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 
 export type SubscribersConsumptionExtendedSearchProps = {
-  values: SubscriberStatisticsForm;
+  values: SubscriberStatisticsFormik;
   setFieldValue: (
     name: string,
     value?: number | null | boolean | string
