@@ -1,4 +1,5 @@
 import axios from '01/axios';
+import { CheckIndividualDevicePayload } from '01/features/individualDevices/switchIndividualDevice/switchIndividualDevice.types';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import _ from 'lodash';
 import {
@@ -55,15 +56,21 @@ export const switchIndividualDevice = async (
   return res;
 };
 
-export const checkIndividualDevice = async (
-  requestPayload: any
-): Promise<MeteringDeviceResponse> => {
-  const res: MeteringDeviceResponse = await axios.post(
-    'IndividualDevices/check',
-    requestPayload
-  );
+export const checkIndividualDevice = (
+  requestPayload: CheckIndividualDevicePayload
+): Promise<void> => {
+  const {
+    deviceId,
+    currentCheckingDate,
+    futureCheckingDate,
+    readingsAfterCheck,
+  } = requestPayload;
 
-  return res;
+  return axios.post(`IndividualDevices/${deviceId}/check`, {
+    currentCheckingDate,
+    futureCheckingDate,
+    readingsAfterCheck,
+  });
 };
 
 export const getIndividualDevice = async (

@@ -8,7 +8,7 @@ import {
   fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
-import { forward, sample, combine } from 'effector';
+import { forward, sample, combine, guard } from 'effector';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -23,6 +23,8 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
   SwitchIndividualDeviceGate,
+  $typeOfIndividualDeviceForm,
+  checkIndividualDeviceFx,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
@@ -30,7 +32,6 @@ import {
   EIndividualDeviceRateType,
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
-  SwitchIndividualDeviceRequest,
 } from 'myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
@@ -41,7 +42,8 @@ createIndividualDeviceFx.use(switchIndividualDevice);
 
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
-  .reset(createIndividualDeviceFx.doneData);
+  .reset(createIndividualDeviceFx.doneData)
+  .reset(checkIndividualDeviceFx.doneData);
 
 sample({
   source: $creationDeviceStage.map((): 0 | 1 => 1),
@@ -51,15 +53,20 @@ sample({
 
 $isCheckCreationDeviceFormDataModalOpen
   .on(checkBeforSavingButtonClicked, () => true)
-  .reset([cancelCheckingButtonClicked, createIndividualDeviceFx.doneData]);
+  .reset([
+    cancelCheckingButtonClicked,
+    createIndividualDeviceFx.doneData,
+    checkIndividualDeviceFx.doneData,
+  ]);
 
 forward({
-  from: createIndividualDeviceFx.doneData,
+  from: [createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData],
   to: addIndividualDeviceForm.reset,
 });
 
 $isCreateIndividualDeviceSuccess
   .on(createIndividualDeviceFx.doneData, () => true)
+  .on(checkIndividualDeviceFx.doneData, () => true)
   .reset(resetCreationRequestStatus);
 
 forward({
@@ -129,7 +136,7 @@ sample({
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 
-const clearEmptyValueFields = (
+export const clearEmptyValueFields = (
   reading: SwitchIndividualDeviceReadingsCreateRequest,
   rateNum: number
 ): SwitchIndividualDeviceReadingsCreateRequest => {
@@ -160,57 +167,62 @@ const mapArray = <T>(array: T[], ...callbacks: ((elem: T) => T)[]) => {
   return res;
 };
 
-sample({
+guard({
   source: combine(
     addIndividualDeviceForm.$values,
     $individualDevice,
-    (values, device) => ({ values, device })
-  ).map(
-    ({ values, device }): SwitchIndividualDeviceRequest => ({
-      deviceId: device?.id!,
-      serialNumber: values.serialNumber,
-      lastCheckingDate: moment(values.lastCheckingDate)
-        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
-      futureCheckingDate: moment(values.futureCheckingDate)
-        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
-      bitDepth: Number(values.bitDepth),
-      scaleFactor: Number(values.scaleFactor),
-      rateType: values.rateType,
-      model: values.model,
-      documentsIds: toArray<FileData>(values.documentsIds, false)
-        .filter((elem) => elem?.fileResponse)
-        .map((elem) => elem.fileResponse?.id!),
-      contractorId: values.contractorId,
-      oldDeviceReadings: mapArray(
-        getChangedReadings(
-          device?.readings!,
-          values.oldDeviceReadings,
-          device?.rateType!
+    $typeOfIndividualDeviceForm,
+    (values, device, type) => {
+      if (type === 'check') {
+        return null;
+      }
+      return {
+        deviceId: device?.id!,
+        serialNumber: values.serialNumber,
+        lastCheckingDate: moment(values.lastCheckingDate)
+          .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+          .toISOString(true),
+        futureCheckingDate: moment(values.futureCheckingDate)
+          .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+          .toISOString(true),
+        bitDepth: Number(values.bitDepth),
+        scaleFactor: Number(values.scaleFactor),
+        rateType: values.rateType,
+        model: values.model,
+        documentsIds: toArray<FileData>(values.documentsIds, false)
+          .filter((elem) => elem?.fileResponse)
+          .map((elem) => elem.fileResponse?.id!),
+        contractorId: values.contractorId,
+        oldDeviceReadings: mapArray(
+          getChangedReadings(
+            device?.readings!,
+            values.oldDeviceReadings,
+            device?.rateType!
+          ),
+          upMonthInReading,
+          (elem) =>
+            clearEmptyValueFields(
+              elem,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            )
         ),
-        upMonthInReading,
-        (elem) =>
-          clearEmptyValueFields(
-            elem,
-            getIndividualDeviceRateNumByName(device?.rateType!)
-          )
-      ),
-      newDeviceReadings: mapArray(
-        values.newDeviceReadings,
-        upMonthInReading,
-        (elem) =>
-          clearEmptyValueFields(
-            elem,
-            getIndividualDeviceRateNumByName(values.rateType)
-          )
-      ),
-      sealInstallationDate: values.sealInstallationDate,
-      sealNumber: values.sealNumber,
-      oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
-      isPolling: values.isPolling
-    })
+        newDeviceReadings: mapArray(
+          values.newDeviceReadings,
+          upMonthInReading,
+          (elem) =>
+            clearEmptyValueFields(
+              elem,
+              getIndividualDeviceRateNumByName(values.rateType)
+            )
+        ),
+        sealInstallationDate: values.sealInstallationDate,
+        sealNumber: values.sealNumber,
+        oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
+        isPolling: values.isPolling,
+      };
+    }
   ),
+  filter: Boolean,
   clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
 });
@@ -220,7 +232,7 @@ forward({
   to: checkBeforSavingButtonClicked,
 });
 
-function getChangedReadings(
+export function getChangedReadings(
   prevReadings: IndividualDeviceReadingsResponse[],
   currentReadings: (SwitchIndividualDeviceReadingsCreateRequest & {
     id?: number;
@@ -257,13 +269,15 @@ function getChangedReadings(
   return res;
 }
 
-const compareArrays = <T>(array1: T[], array2: T[]) =>
+export const compareArrays = <T>(array1: T[], array2: T[]) =>
   array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
 
-const getSerialNumberAfterString = (type: 'switch' | 'check' | 'reopen') => {
+export const getSerialNumberAfterString = (
+  type: 'switch' | 'check' | 'reopen'
+) => {
   return {
     switch: '',
-    check: '*П1',
+    check: '',
     reopen: '*',
   }[type];
 };
