@@ -10,8 +10,6 @@ import {
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
-import { SwitchIndividualDevicePayload } from '../switchIndividualDevice.types';
-import { checkIndividualDevice } from '01/_api/individualDevices';
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
   null
@@ -123,8 +121,6 @@ export const createIndividualDeviceFx = createEffect<
   SwitchIndividualDeviceRequest,
   MeteringDeviceResponse
 >();
-
-const CheckIndividualDeviceFx = createEffect<SwitchIndividualDevicePayload, void>(checkIndividualDevice)
 
 export const SwitchIndividualDeviceGate = createGate<{
   type: 'reopen' | 'check' | 'switch';
