@@ -43,7 +43,7 @@ export const StyledFontLarge = styled.span`
 
 export const Wrap = styled.div`
   display: grid;
-  grid-template-columns: 3.2fr 0.01fr 1.4fr 0.01fr 0.8fr 0.01fr 0.5fr 0.01fr 1.1fr 0.01fr 1.3fr 0.1fr 0.2fr;
+  grid-template-columns: 3.1fr 0.01fr 1.4fr 0.01fr 0.8fr 0.01fr 0.5fr 0.01fr 1.1fr 0.01fr 1.3fr 0.1fr 0.2fr;
   gap: 10px;
   align-items: center;
   background-color: #f3f5f6;
