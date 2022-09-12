@@ -208,7 +208,7 @@ sample({
       sealInstallationDate: values.sealInstallationDate,
       sealNumber: values.sealNumber,
       oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
-      isPolling: values.isPolling
+      isPolling: values.isPolling,
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,
@@ -263,7 +263,7 @@ const compareArrays = <T>(array1: T[], array2: T[]) =>
 const getSerialNumberAfterString = (type: 'switch' | 'check' | 'reopen') => {
   return {
     switch: '',
-    check: '*П1',
+    check: '',
     reopen: '*',
   }[type];
 };

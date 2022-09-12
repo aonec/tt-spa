@@ -46,7 +46,7 @@ export const Search: React.FC = () => {
   const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
 
   const isExcluded =
-    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3 || false;
+    moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
 
   const {
     values,

@@ -1,4 +1,5 @@
 import axios from '01/axios';
+import { CheckIndividualDevicePayload } from '01/features/individualDevices/switchIndividualDevice/switchIndividualDevice.types';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import _ from 'lodash';
 import {
@@ -8,6 +9,7 @@ import {
   MeteringDeviceResponse,
   EOrderByRule,
   IndividualDeviceListItemResponsePagedList,
+  CheckIndividualDeviceRequest,
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
@@ -56,14 +58,19 @@ export const switchIndividualDevice = async (
 };
 
 export const checkIndividualDevice = async (
-  requestPayload: any
-): Promise<MeteringDeviceResponse> => {
-  const res: MeteringDeviceResponse = await axios.post(
-    'IndividualDevices/check',
-    requestPayload
-  );
-
-  return res;
+  requestPayload: CheckIndividualDevicePayload
+): Promise<void> => {
+  const {
+    deviceId,
+    currentCheckingDate,
+    futureCheckingDate,
+    readingsAfterCheck,
+  } = requestPayload;
+  axios.post(`IndividualDevices/${deviceId}/check`, {
+    currentCheckingDate,
+    futureCheckingDate,
+    readingsAfterCheck,
+  });
 };
 
 export const getIndividualDevice = async (
