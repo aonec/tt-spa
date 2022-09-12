@@ -5,6 +5,7 @@ import {
   HousingStockListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
+import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFirmService.types';
 
 export const fetchManagingFirm = async (): Promise<
   GuidStringDictionaryItem[]
@@ -21,6 +22,6 @@ export const fetchHousingStocksByManagingFirm = (
   axios.get('HousingStocks', { params: { HouseManagementId } });
 
 export const fetchSubscribersStatistic = (
-  HousingStockId: number
+  filter: SubscriberStatisticsFilter
 ): Promise<SubscriberStatisticsСonsumptionResponse[]> =>
-  axios.get('SubscriberStatistics', { params: { HousingStockId } });
+  axios.get('SubscriberStatistics', { params: { ...filter } });

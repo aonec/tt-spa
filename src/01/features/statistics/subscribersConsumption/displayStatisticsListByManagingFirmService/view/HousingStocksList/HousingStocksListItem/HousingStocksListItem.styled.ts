@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DownloadIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -10,6 +11,8 @@ export const Wrapper = styled.div`
   padding: 16px;
   margin-top: 4px;
   box-shadow: 0px 6px 6px rgba(78, 93, 146, 0.16);
+  position: relative;
+  z-index: 2;
   &:first-child {
     margin-top: 0px;
   }
@@ -43,4 +46,15 @@ export const AppartmentNumberText = styled.div`
   font-size: 16px;
 `;
 
-export const InfoWrapper = styled.div``;
+export const DownloadIconWrapper = styled.div`
+  margin-left: 16px;
+`;
+
+export const DownloadIconSC = styled(DownloadIcon)`
+  transition: 0.2s;
+  :hover {
+    path {
+      fill: #189ee9;
+    }
+  }
+`;
