@@ -11,6 +11,7 @@ import { createForm } from 'effector-forms/dist';
 import { SubscriberStatisticsFilter } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.types';
 import { SubscriberStatisticsForm } from '../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
+import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.utils';
 
 export const $selectedHousingsStockId = createStore<number>(0);
 
@@ -48,7 +49,11 @@ sample({
       if (!filter) {
         return { HousingStockId };
       }
-      return { ...filter, HousingStockId };
+      const preparedData = prepareFilterBeforeSenging({
+        ...filter,
+        HousingStockId,
+      });
+      return { ...preparedData };
     }
   ),
   target: fetchConsumptionStatistics,
