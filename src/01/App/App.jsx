@@ -260,11 +260,16 @@ const Internal = () => {
 
               <Redirect
                 from="/statistics/"
-                to="/statistics/subscribersConsumption"
+                to="/statistics/subscribersConsumption/houses"
+                exact
+              />
+              <Redirect
+                from="/statistics/subscribersConsumption"
+                to="/statistics/subscribersConsumption/houses"
                 exact
               />
 
-              <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
+              <Route path="/statistics/:grouptype/:searchType?">
                 <StatisticsPage />
               </Route>
 
