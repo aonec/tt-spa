@@ -12,7 +12,6 @@ import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/c
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import {
   StyledAutocomplete,
-  FilterButton,
   SelectSC,
 } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -23,7 +22,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import { HousingStockListResponsePagedList } from 'myApi';
 import React, { useState } from 'react';
-import { SubscriberStatisticsForm } from '../../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
+import { SubscriberStatisticsFormik } from '../../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import {
   setSelectedHousingStockId,
   subscribersConsumptionFindForm,
@@ -53,7 +52,7 @@ export const Search: React.FC = () => {
     setFieldValue,
     resetForm,
     submitForm,
-  } = useFormik<SubscriberStatisticsForm>({
+  } = useFormik<SubscriberStatisticsFormik>({
     initialValues: {
       ColdWaterSupply: filter?.ColdWaterSupply,
       Electricity: filter?.Electricity,
