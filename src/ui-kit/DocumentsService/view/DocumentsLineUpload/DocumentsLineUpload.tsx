@@ -1,6 +1,6 @@
-import { ButtonTT } from '01/tt-components';
 import React, { FC, useCallback } from 'react';
 import { Button } from 'ui-kit/Button';
+import { DocumentsListWrapper, Wrapper } from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
@@ -9,6 +9,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   uniqId,
   lable = 'Загрузить файл',
   isLoading,
+  documents,
 }) => {
   const id = `file-input-${uniqId}`;
 
@@ -29,7 +30,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   );
 
   return (
-    <div>
+    <Wrapper>
       <input
         id={id}
         type="file"
@@ -38,12 +39,19 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
         value=""
         placeholder="Загрузить файл"
         onChange={handleChange}
-        // style={{ display: 'none' }}
+        style={{ display: 'none' }}
         accept={accept}
       />
-      <label htmlFor={id} style={{ margin: 0, width: '100%' }}>
-        <Button type="white">{lable}</Button>
+      <label htmlFor={id} style={{ margin: 0, width: 'min-content' }}>
+        <Button disabled={isLoading} type="white">
+          {lable}
+        </Button>
       </label>
-    </div>
+      <DocumentsListWrapper>
+        {documents.map((elem) => (
+          <div>{elem.name}</div>
+        ))}
+      </DocumentsListWrapper>
+    </Wrapper>
   );
 };

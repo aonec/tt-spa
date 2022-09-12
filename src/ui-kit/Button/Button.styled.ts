@@ -28,12 +28,16 @@ const buttonBorderColorsDictionary: { [key in ButtonStyleType]: string } = {
 export const Wrapper = styled.div<{ type: ButtonStyleType }>`
   background-color: ${({ type }) => buttonBackgroundColorsDictionary[type]};
   color: ${({ type }) => buttonFontColorsDictionary[type]};
-  cursor: pointer;
-  padding: 8px 20px;
+  cursor: pointer; 
+  padding: 0 20px;
   border-radius: 4px;
   font-size: 16px;
   font-weight: 600;
   width: min-content;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   white-space: nowrap;
   transition: 0.25s;
   border: 1px solid ${({ type }) => buttonBorderColorsDictionary[type]};
