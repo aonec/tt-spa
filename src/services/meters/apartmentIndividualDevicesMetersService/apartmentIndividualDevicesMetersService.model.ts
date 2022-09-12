@@ -26,14 +26,14 @@ const $sliderIndex = domain.createStore(0);
 const upSliderIndex = domain.createEvent();
 const downSliderIndex = domain.createEvent();
 
-const $individualDevicesList = combine(
-  $individualDevicesPagedData,
+const $individualDevicesList = $individualDevicesPagedData.map(
+  (data) => data?.items || []
+);
+
+const $filteredIndividualDevicesList = combine(
+  $individualDevicesList,
   $isShowClosedIndividualDevices
-).map(([data, isShowClosed]) => {
-  const devices = data?.items;
-
-  if (!devices) return [];
-
+).map(([devices, isShowClosed]) => {
   if (isShowClosed) {
     return devices;
   }
@@ -103,6 +103,7 @@ export const apartmentIndividualDevicesMetersService = {
   },
   outputs: {
     $individualDevicesList,
+    $filteredIndividualDevicesList,
     $isLoading,
     $isShowClosedIndividualDevices,
     $closedDevicesCount,
