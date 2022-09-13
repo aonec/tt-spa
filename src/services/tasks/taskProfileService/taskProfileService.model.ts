@@ -29,9 +29,6 @@ const addCommentFx = domain.createEffect<
   TaskCommentResponse
 >(fetchAddComment);
 
-const deleteDocument = domain.createEvent<number>();
-const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
-
 const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
 const $task = domain
   .createStore<TaskResponse | null>(null)
@@ -61,6 +58,14 @@ const $isPerpetrator = combine(
     return isPerpetrator;
   }
 );
+
+const deleteDocument = domain.createEvent<number>();
+const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
+const $documents = $task
+  .map((task) => task?.documents || [])
+  .on(deleteDocumentFx.done, (documents, { params: documentId }) =>
+    documents.filter((document) => document.id !== documentId)
+  );
 
 const $isLoading = getTasksFx.pending;
 
@@ -105,6 +110,7 @@ export const taskProfileService = {
     $isPerpetrator,
     $commentText,
     $pipeNode,
+    $documents,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };

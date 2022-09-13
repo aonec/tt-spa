@@ -1,4 +1,4 @@
-import { PipeNodeResponse, TaskResponse } from 'myApi';
+import { DocumentResponse, PipeNodeResponse, TaskResponse } from 'myApi';
 
 export type TaskProfileProps = {
   task: TaskResponse;
@@ -8,4 +8,5 @@ export type TaskProfileProps = {
   commentText: string;
   handleDeleteDocument: (is: number) => void;
   relatedPipeNode: PipeNodeResponse | null;
+  documents: DocumentResponse[];
 };
