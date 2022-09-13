@@ -109,6 +109,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             handleOpen={() => open()}
             handleApply={() => {
               submitForm();
+              searchStateChanged(values);
             }}
             handleClear={() => {
               resetForm();
