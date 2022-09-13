@@ -64,6 +64,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             taskName={taskName || ''}
           />
           <TaskWrapper>
+            <div>
               <TaskDocumentsList
                 documents={documents || []}
                 handleDeleteDocument={handleDeleteDocument}
@@ -75,7 +76,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 handleSetComment={handleSetComment}
                 commentText={commentText}
               />
-            <div>
               <TaskBaseInfo task={task} />
               {individualDevices && (
                 <TaskIndividualDevicesList
