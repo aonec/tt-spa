@@ -44,5 +44,4 @@ export const CommentWrapper = styled.div`
 export const CommentText = styled.div`
   color: #272f5ae5;
   font-size: 14px;
-  max-width: 800px;
 `;

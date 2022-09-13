@@ -11,7 +11,7 @@ import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskDocumentsList } from './TaskDocumentsList';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
-import { TaskWrapper } from './TaskProfile.styled';
+import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
@@ -64,7 +64,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             taskName={taskName || ''}
           />
           <TaskWrapper>
-            <div>
+            <TaskInfoWrapper>
               <TaskDocumentsList
                 documents={documents || []}
                 handleDeleteDocument={handleDeleteDocument}
@@ -90,7 +90,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
               )}
               {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
-            </div>
+            </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>
         </>
