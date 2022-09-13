@@ -3,4 +3,7 @@ import { HousingStockWithApartmentStatistic } from '../../displayStatisticsListB
 export type HousingStocksListProps = {
   housingStocks: HousingStockWithApartmentStatistic[];
   selectHousingStock: (id: number) => void;
+  statisticIsLoading: boolean;
+  handleOpenModal: (housingstock: number) => void;
+  selectedHousingStock: number;
 };
