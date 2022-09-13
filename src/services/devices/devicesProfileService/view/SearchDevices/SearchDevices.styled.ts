@@ -6,17 +6,10 @@ export const Wrapper = styled.div`
   box-shadow: unset;
 `;
 
-export const StyledGrid = styled.div<{ isExtendedSearchOpen: boolean }>`
+export const StyledGrid = styled.div`
   display: grid;
-  grid-template-columns: ${({ isExtendedSearchOpen }) =>
-    isExtendedSearchOpen ? '1fr' : '30px 8fr 3.5fr'};
+  grid-template-columns: 8fr 3.5fr;
   gap: 15px;
-`;
-
-export const CustomGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 5px;
 `;
 
 export const SCSlider = styled(Slider)`

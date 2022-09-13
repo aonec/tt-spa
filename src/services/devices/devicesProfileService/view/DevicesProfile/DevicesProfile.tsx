@@ -17,9 +17,7 @@ import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
 
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
-  fetchcalc: (
-    payload: CalculatorsListRequestPayload
-  ) => CalculatorsListRequestPayload;
+  setFilter: (payload: CalculatorsListRequestPayload) => void;
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
@@ -28,7 +26,7 @@ interface DeviceProfileProps {
   clearSearchPayload: (payload: void) => void;
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
-  fetchcalc,
+  setFilter,
   isOpen,
   close,
   open,
@@ -82,7 +80,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      fetchcalc(values);
+      setFilter(values);
       searchStateChanged(values);
     },
   });
@@ -97,36 +95,32 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         <Tabs defaultActiveKey="1">
           <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
         </Tabs>
-        <SearchDevices
-          isExtendedSearchOpen={isOpen}
-          submitForm={submitForm}
-          setFieldValue={setFieldValue}
-          values={values}
+
+        <ExtendedSearch
+          isOpen={isOpen}
+          handleClose={() => {
+            close();
+            clearSearchPayload();
+            resetForm();
+          }}
+          handleOpen={() => open()}
+          handleApply={() => {
+            submitForm();
+          }}
+          handleClear={() => {
+            resetForm();
+            clearSearchPayload();
+          }}
+          extendedSearchContent={
+            <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
+          }
         >
-          <ExtendedSearch
-            isOpen={isOpen}
-            handleClose={() => {
-              close();
-              clearSearchPayload();
-              resetForm();
-            }}
-            handleOpen={() => open()}
-            handleApply={() => {
-              fetchcalc(values);
-              searchStateChanged(values);
-            }}
-            handleClear={() => {
-              resetForm();
-              clearSearchPayload();
-            }}
-            extendedSearchContent={
-              <ExtendedSearchForm
-                setFieldValue={setFieldValue}
-                values={values}
-              />
-            }
+          <SearchDevices
+            submitForm={submitForm}
+            setFieldValue={setFieldValue}
+            values={values}
           />
-        </SearchDevices>
+        </ExtendedSearch>
         <DevicesListContainer />
         <DevicesReportModal />
       </Wrapper>
