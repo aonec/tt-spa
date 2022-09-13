@@ -18,6 +18,7 @@ import {
   CalculatorListResponse,
   HousingStockResponse,
   CalculatorListResponsePagedList,
+  CalculatorIntoHousingStockResponse,
 } from '../../../../../../myApi';
 import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
@@ -54,14 +55,11 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
         .toISOString();
       const end = moment(getFieldValue('dates')[1]).endOf('day').toISOString();
 
-      const calculatorsResponse: CalculatorListResponsePagedList = await axios.get(
-        'Calculators',
-        {
-          params: { 'Filter.HousingStockId': object.id },
-        }
+      const calculatorsResponse: CalculatorIntoHousingStockResponse[] = await axios.get(
+        `HousingStocks/${object.id}/Calculators`
       );
 
-      const ids = calculatorsResponse?.items?.map((calculator, index) => {
+      const ids = calculatorsResponse.map((calculator, index) => {
         const { id } = calculator;
         return `calculatorsId=${id}`;
       });

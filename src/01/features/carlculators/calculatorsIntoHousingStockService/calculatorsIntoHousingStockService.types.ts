@@ -20,7 +20,6 @@ export interface CalculatorsListRequestPayload {
   'Filter.Address.HousingStockNumber'?: string;
   'Filter.Address.Corpus'?: string;
   'Filter.Address.HouseCategory'?: EHouseCategory;
-  'Filter.HousingStockId'?: number;
   'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
   Question?: string;
   OrderRule?: ECalculatorOrderRule;

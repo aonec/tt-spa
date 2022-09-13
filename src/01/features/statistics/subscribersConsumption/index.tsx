@@ -1,19 +1,58 @@
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import React from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { useStore } from '../../../../../node_modules/effector-react';
+import { useEvent, useStore } from '../../../../../node_modules/effector-react';
 import { Search } from './components/Search';
 import { StatisticsList } from './components/StatisticsList';
 import {
   $selectedHousingsStockId,
+  closeExpandedSearch,
   ConsumptionStatisticsGate,
   subscribersConsumptionFilterForm,
 } from './models';
 import { useForm } from 'effector-forms';
+import { Link, useParams } from 'react-router-dom';
+import { Radio } from 'antd';
+import { SubscribersConsumptionSearchType } from './subscribersConsumption.types';
+import { DisplayStatisticsListByManagingFirmContainer } from './displayStatisticsListByManagingFirmService';
+
+const subscribersConsumptionListComponentsLookup: {
+  [key: string]: ReactNode;
+} = {
+  [SubscribersConsumptionSearchType.Houses]: (
+    <>
+      <Search />
+      <Space />
+      <StatisticsList />
+    </>
+  ),
+  [SubscribersConsumptionSearchType.ManagingFirm]: (
+    <DisplayStatisticsListByManagingFirmContainer />
+  ),
+};
 
 export const SubscribersConsumption = () => {
+  const { searchType } = useParams<{ searchType: string }>();
+
   const id = useStore($selectedHousingsStockId);
-  const { fields } = useForm(subscribersConsumptionFilterForm);
+  const { fields, reset } = useForm(subscribersConsumptionFilterForm);
+  const closeExtendedSearch = useEvent(closeExpandedSearch);
+
+  useEffect(() => {
+    reset();
+    closeExtendedSearch();
+  }, [searchType]);
+
+  const subscribersConsumptionComponent = useMemo(() => {
+    if (!searchType) return null;
+
+    const Component = subscribersConsumptionListComponentsLookup[searchType];
+
+    if (!Component) return null;
+
+    return Component;
+  }, [searchType]);
+
   return (
     <Wrap>
       {id && (
@@ -25,9 +64,24 @@ export const SubscribersConsumption = () => {
           HotWaterSupply={true}
         />
       )}
-      <Search />
-      <Space />
-      <StatisticsList />
+
+      <Radio.Group value={searchType}>
+        <Link
+          to={`/statistics/subscribersConsumption/${SubscribersConsumptionSearchType.Houses}`}
+        >
+          <Radio value={SubscribersConsumptionSearchType.Houses}>
+            Поиск по адресу
+          </Radio>
+        </Link>
+        <Link
+          to={`/statistics/subscribersConsumption/${SubscribersConsumptionSearchType.ManagingFirm}`}
+        >
+          <Radio value={SubscribersConsumptionSearchType.ManagingFirm}>
+            Поиск по домоуправлениям
+          </Radio>
+        </Link>
+      </Radio.Group>
+      {subscribersConsumptionComponent}
     </Wrap>
   );
 };
