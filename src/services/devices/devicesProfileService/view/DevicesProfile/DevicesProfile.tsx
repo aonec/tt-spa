@@ -95,32 +95,33 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         <Tabs defaultActiveKey="1">
           <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
         </Tabs>
-
-        <ExtendedSearch
-          isOpen={isOpen}
-          handleClose={() => {
-            close();
-            clearSearchPayload();
-            resetForm();
-          }}
-          handleOpen={() => open()}
-          handleApply={() => {
-            submitForm();
-          }}
-          handleClear={() => {
-            resetForm();
-            clearSearchPayload();
-          }}
-          extendedSearchContent={
-            <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
-          }
+        <SearchDevices
+          isExtendedSearchOpen={isOpen}
+          submitForm={submitForm}
+          setFieldValue={setFieldValue}
+          values={values}
         >
-          <SearchDevices
-            submitForm={submitForm}
-            setFieldValue={setFieldValue}
-            values={values}
+          <ExtendedSearch
+            isOpen={isOpen}
+            handleClose={() => {
+              close();
+            }}
+            handleOpen={() => open()}
+            handleApply={() => {
+              submitForm();
+            }}
+            handleClear={() => {
+              resetForm();
+              clearSearchPayload();
+            }}
+            extendedSearchContent={
+              <ExtendedSearchForm
+                setFieldValue={setFieldValue}
+                values={values}
+              />
+            }
           />
-        </ExtendedSearch>
+        </SearchDevices>
         <DevicesListContainer />
         <DevicesReportModal />
       </Wrapper>

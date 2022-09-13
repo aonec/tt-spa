@@ -43,7 +43,7 @@ const setPageNumber = domain.createEvent<number>();
 export const CalculatorsGate = createGate();
 
 sample({
-  source:$searchPayload,
+  source: $searchPayload,
   clock: CalculatorsGate.open,
   target: fetchCalculatorsFx,
 });
@@ -63,6 +63,11 @@ sample({
   }),
   fn: (payload) => ({ ...payload, pageSize: 10 }),
   target: fetchCalculatorsFx,
+});
+
+forward({
+  from: CalculatorsGate.close,
+  to: clearSearchPayload,
 });
 
 const $isExtendedSearchOpen = domain.createStore(false);
