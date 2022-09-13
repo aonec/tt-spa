@@ -4,12 +4,7 @@ import styled from 'styled-components';
 import { useEvent, useStore } from '../../../../../node_modules/effector-react';
 import { Search } from './components/Search';
 import { StatisticsList } from './components/StatisticsList';
-import {
-  $selectedHousingsStockId,
-  closeExpandedSearch,
-  ConsumptionStatisticsGate,
-  subscribersConsumptionFilterForm,
-} from './models';
+import { $selectedHousingsStockId } from './models';
 import { useForm } from 'effector-forms';
 import { Link, useParams } from 'react-router-dom';
 import { Radio } from 'antd';
@@ -34,15 +29,6 @@ const subscribersConsumptionListComponentsLookup: {
 export const SubscribersConsumption = () => {
   const { searchType } = useParams<{ searchType: string }>();
 
-  const id = useStore($selectedHousingsStockId);
-  const { fields, reset } = useForm(subscribersConsumptionFilterForm);
-  const closeExtendedSearch = useEvent(closeExpandedSearch);
-
-  useEffect(() => {
-    reset();
-    closeExtendedSearch();
-  }, [searchType]);
-
   const subscribersConsumptionComponent = useMemo(() => {
     if (!searchType) return null;
 
@@ -55,16 +41,6 @@ export const SubscribersConsumption = () => {
 
   return (
     <Wrap>
-      {id && (
-        <ConsumptionStatisticsGate
-          HousingStockId={id}
-          MonthOfLastTransmission={fields.lastReadingMonth.value || undefined}
-          Electricity={true}
-          ColdWaterSupply={true}
-          HotWaterSupply={true}
-        />
-      )}
-
       <Radio.Group value={searchType}>
         <Link
           to={`/statistics/subscribersConsumption/${SubscribersConsumptionSearchType.Houses}`}
