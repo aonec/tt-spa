@@ -1,10 +1,11 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { TaskCommentResponse, TaskResponse } from 'myApi';
+import { TaskCommentResponse, TaskResponse, PipeNodeResponse } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
 import {
   fetchAddComment,
   fetchDeleteDocument,
+  fetchNode,
   fetchTask,
 } from './taskProfileService.api';
 import { AddCommentRequest } from './taskProfileService.types';
@@ -15,6 +16,12 @@ const setComment = domain.createEvent<string>();
 const $commentText = domain
   .createStore<string>('')
   .on(setComment, (_, newComment) => newComment);
+
+const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
+
+const $pipeNode = domain
+  .createStore<PipeNodeResponse | null>(null)
+  .on(getNodeFx.doneData, (_, pipeNode) => pipeNode);
 
 const addComment = domain.createEvent();
 const addCommentFx = domain.createEffect<
@@ -58,6 +65,7 @@ const $isPerpetrator = combine(
 const $isLoading = getTasksFx.pending;
 
 const TaskIdGate = createGate<{ taskId: number }>();
+const RelatedNodeIdGate = createGate<{ nodeId: number }>();
 
 forward({
   from: TaskIdGate.open.map(({ taskId }) => taskId),
@@ -78,6 +86,11 @@ forward({
   to: deleteDocumentFx,
 });
 
+forward({
+  from: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId),
+  to: getNodeFx,
+});
+
 addCommentFx.doneData.watch(() => setComment(''));
 
 export const taskProfileService = {
@@ -91,6 +104,7 @@ export const taskProfileService = {
     $isLoading,
     $isPerpetrator,
     $commentText,
+    $pipeNode,
   },
-  gates: { TaskIdGate },
+  gates: { TaskIdGate, RelatedNodeIdGate },
 };
