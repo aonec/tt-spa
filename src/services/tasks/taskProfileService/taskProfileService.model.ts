@@ -1,8 +1,13 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { StagePushRequest, TaskCommentResponse, TaskResponse } from 'myApi';
+import { StagePushRequest, TaskCommentResponse, TaskResponse, PipeNodeResponse } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
-import { fetchAddComment, fetchTask } from './taskProfileService.api';
+import {
+  fetchAddComment,
+  fetchDeleteDocument,
+  fetchNode,
+  fetchTask,
+} from './taskProfileService.api';
 import { AddCommentRequest } from './taskProfileService.types';
 
 const domain = createDomain('taskProfileService');
@@ -14,11 +19,20 @@ const $commentText = domain
   .createStore<string>('')
   .on(setComment, (_, newComment) => newComment);
 
+const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
+
+const $pipeNode = domain
+  .createStore<PipeNodeResponse | null>(null)
+  .on(getNodeFx.doneData, (_, pipeNode) => pipeNode);
+
 const addComment = domain.createEvent();
 const addCommentFx = domain.createEffect<
   AddCommentRequest,
   TaskCommentResponse
 >(fetchAddComment);
+
+const deleteDocument = domain.createEvent<number>();
+const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 
 const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
 const $task = domain
@@ -53,6 +67,7 @@ const $isPerpetrator = combine(
 const $isLoading = getTasksFx.pending;
 
 const TaskIdGate = createGate<{ taskId: number }>();
+const RelatedNodeIdGate = createGate<{ nodeId: number }>();
 
 forward({
   from: TaskIdGate.open.map(({ taskId }) => taskId),
@@ -68,6 +83,16 @@ sample({
   target: addCommentFx,
 });
 
+forward({
+  from: deleteDocument,
+  to: deleteDocumentFx,
+});
+
+forward({
+  from: RelatedNodeIdGate.state.map(({ nodeId }) => nodeId),
+  to: getNodeFx,
+});
+
 addCommentFx.doneData.watch(() => setComment(''));
 
 export const taskProfileService = {
@@ -75,12 +100,14 @@ export const taskProfileService = {
     addComment,
     setComment,
     handlePushStage,
+    deleteDocument,
   },
   outputs: {
     $task,
     $isLoading,
     $isPerpetrator,
     $commentText,
+    $pipeNode,
   },
-  gates: { TaskIdGate },
+  gates: { TaskIdGate, RelatedNodeIdGate },
 };

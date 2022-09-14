@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
-import { RowWrapper, Wrapper } from './DeviceInfo.styled';
+import { RowWrapper } from './DeviceInfo.styled';
 import { DeviceInfoProps } from './DeviceInfo.types';
 import { getPreparedDate } from './DeviceInfo.utils';
 
@@ -15,12 +15,12 @@ export const DeviceInfo: FC<DeviceInfoProps> = ({ device }) => {
     futureCheckingDate,
   } = device;
   const resourceText = ResourceLookUp[resource];
-  const openingDateText = getPreparedDate(openingDate) || '-';
-  const lastCheckingDateText = getPreparedDate(lastCheckingDate) || '-';
-  const futureCheckingDateText = getPreparedDate(futureCheckingDate) || '-';
+  const openingDateText = getPreparedDate(openingDate);
+  const lastCheckingDateText = getPreparedDate(lastCheckingDate);
+  const futureCheckingDateText = getPreparedDate(futureCheckingDate);
 
   return (
-    <Wrapper>
+    <div>
       <RowWrapper>
         <div>Тип ресурса</div>
         <div>{resourceText}</div>
@@ -52,6 +52,6 @@ export const DeviceInfo: FC<DeviceInfoProps> = ({ device }) => {
         <div>Дата следующей поверки</div>
         <div>{futureCheckingDateText}</div>
       </RowWrapper>
-    </Wrapper>
+    </div>
   );
 };

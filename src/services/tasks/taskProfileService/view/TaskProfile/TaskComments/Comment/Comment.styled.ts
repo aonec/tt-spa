@@ -4,10 +4,11 @@ export const Wrapper = styled.div`
   margin-top: 16px;
   display: flex;
   align-items: center;
+  max-width: 100%;
 `;
 
 export const IconWrapper = styled.div`
-  width: 32px ;
+  width: 32px;
   height: 32px;
   border-radius: 50%;
   border: 1px solid;
@@ -41,7 +42,6 @@ export const CommentWrapper = styled.div`
 `;
 
 export const CommentText = styled.div`
-color: #272F5AE5;
-font-size: 14px;
-
-`
+  color: #272f5ae5;
+  font-size: 14px;
+`;

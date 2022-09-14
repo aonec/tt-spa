@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export const getPreparedDate = (date: string | null) => {
   if (!date) {
-    return null;
+    return '-';
   }
 
   return moment(date).format('DD.MM.YYYY');

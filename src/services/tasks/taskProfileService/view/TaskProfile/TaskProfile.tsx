@@ -9,6 +9,7 @@ import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
+import { TaskDocumentsList } from './TaskDocumentsList';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
 import { TaskInfoWrapper, TaskWrapper, Wrapper } from './TaskProfile.styled';
@@ -18,11 +19,12 @@ import { TaskStages } from './TaskStages';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
-  isLoading,
   handleAddComment,
   isPerpetrator,
   handleSetComment,
   commentText,
+  handleDeleteDocument,
+  relatedPipeNode,
 }) => {
   const {
     closingStatus,
@@ -34,6 +36,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     housingStockId,
     pipeNode,
     comments,
+    documents,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -53,8 +56,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   return (
     <Wrapper>
       <GoBack />
-      {isLoading && <Skeleton active />}
-      {!isLoading && name && (
+      {name && (
         <>
           <TaskProfileHeader
             name={name}
@@ -67,6 +69,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           <TaskActionsPanel handlePushStage={() => {}} actions={taskActions} />
           <TaskWrapper>
             <TaskInfoWrapper>
+              <TaskDocumentsList
+                documents={documents || []}
+                handleDeleteDocument={handleDeleteDocument}
+              />
               <TaskComments
                 comments={comments || []}
                 handleAddComment={handleAddComment}
@@ -83,6 +89,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
+              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
+              {relatedPipeNode && (
+                <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
+              )}
               {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />

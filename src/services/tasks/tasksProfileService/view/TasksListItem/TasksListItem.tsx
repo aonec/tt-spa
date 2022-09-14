@@ -51,9 +51,9 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
 
     const device = devices[0];
 
-    const allDevicesResource = devices.map((device) => device.resource);
+    const allDevicesResource = devices.map((device) => device?.resource);
     const isUniq = _.uniq(allDevicesResource).length === 1;
-    const iconType = isUniq ? device.resource : EActResourceType.All;
+    const iconType = isUniq ? device?.resource : EActResourceType.All;
 
     if (iconType) {
       return <ResourceIconLookup resource={iconType} />;
