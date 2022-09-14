@@ -5,28 +5,24 @@ import { ResourceDisconnectingResponsePagedList } from 'myApi';
 import { DisablingResourcesProps } from './ResourceDisablingScheduleContainer.types';
 import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api';
 
-const resourceDisablingScheduleServiceDomain = createDomain(
-  'ResourceDisablingScheduleService'
-);
+const domain = createDomain('ResourceDisablingScheduleService');
 
-const $disablingResources = resourceDisablingScheduleServiceDomain.createStore<ResourceDisconnectingResponsePagedList | null>(
+const $disablingResources = domain.createStore<ResourceDisconnectingResponsePagedList | null>(
   null
 );
-const $filters = resourceDisablingScheduleServiceDomain.createStore<DisablingResourcesProps>(
-  { PageSize: 12 }
-);
-const $isAddressesModalOpen = resourceDisablingScheduleServiceDomain.createStore<boolean>(
-  false
-);
+const $filters = domain.createStore<DisablingResourcesProps>({ PageSize: 12 });
+const $isAddressesModalOpen = domain.createStore<boolean>(false);
 
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
-const resourceDisablingEvent = resourceDisablingScheduleServiceDomain.createEvent();
-const applyFilters = resourceDisablingScheduleServiceDomain.createEvent<DisablingResourcesProps>();
-const setPage = resourceDisablingScheduleServiceDomain.createEvent<number>();
-const openAddressesModal = resourceDisablingScheduleServiceDomain.createEvent();
+const resourceDisablingEvent = domain.createEvent();
+const applyFilters = domain.createEvent<DisablingResourcesProps>();
+const setPage = domain.createEvent<number>();
 
-const resourceDisablingEventFx = resourceDisablingScheduleServiceDomain.createEffect<
+const openAddressesModal = domain.createEvent();
+const closeAddressesModal = domain.createEvent();
+
+const resourceDisablingEventFx = domain.createEffect<
   DisablingResourcesProps,
   ResourceDisconnectingResponsePagedList
 >(fetchDisablingResources);
@@ -44,7 +40,9 @@ $filters
     PageNumber: page,
   }));
 
-$isAddressesModalOpen.on(openAddressesModal, (state) => !state);
+$isAddressesModalOpen
+  .on(openAddressesModal, () => true)
+  .on(closeAddressesModal, () => false);
 
 sample({
   source: $filters,
@@ -67,6 +65,7 @@ export const resourceDisablingScheduleServiceService = {
     resourceDisablingEventFx,
     setPage,
     openAddressesModal,
+    closeAddressesModal,
   },
   outputs: {
     $disablingResources,

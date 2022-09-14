@@ -1,4 +1,3 @@
-import { Grid } from '01/shared/ui/Layout/Grid';
 import styled from 'styled-components';
 
 export const DisablingResourceWrapperContainer = styled.div`
@@ -8,31 +7,28 @@ export const DisablingResourceWrapperContainer = styled.div`
 export const TimeElement = styled.div`
   display: flex;
   flex-direction: row;
+  color: #272f5a;
 `;
 
-export const StyledTextElement = styled.span`
-  p {
-    margin-bottom: 1px;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 110px;
-    text-overflow: ellipsis;
-  }
+export const StyledTextElement = styled.div`
+  display: flex;
+  align-items: center;
+  color: #272f5a;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+export const SenderWrapper = styled(StyledTextElement)`
+  max-width: 110px;
 `;
 
 export const StyledLinkTypeElement = styled(StyledTextElement)`
-  display: inline-block;
-  padding-bottom: 1px;
+  text-decoration: underline;
   cursor: pointer;
-
-  p {
-    margin-bottom: 0px;
-    line-height: 15px;
-    border-bottom: 1px solid black;
-    &:hover {
-      color: #189EE9;
-      border-bottom: 1px solid #189EE9;
-    }
+  &:hover {
+    color: #189ee9;
   }
 `;
 
@@ -43,7 +39,7 @@ export const StyledFontLarge = styled.span`
 
 export const Wrap = styled.div`
   display: grid;
-  grid-template-columns: 3.1fr 0.01fr 1.4fr 0.01fr 0.8fr 0.01fr 0.5fr 0.01fr 1.1fr 0.01fr 1.3fr 0.1fr 0.2fr;
+  grid-template-columns: 2.5fr 1fr 0.8fr 0.8fr 1.2fr 1.5fr;
   gap: 10px;
   align-items: center;
   background-color: #f3f5f6;
@@ -51,4 +47,18 @@ export const Wrap = styled.div`
   font-size: 12px;
   padding: 10px 20px;
   height: 49px;
+`;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const PaginationWrapper = styled.div`
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  padding: 15px 0px;
 `;

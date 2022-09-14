@@ -1,7 +1,10 @@
-import React from 'react';
-import { Divider, Skeleton, Space } from 'antd';
-import { PaginationSC } from 'services/objects/displayPersonalNumbersListService/displayPersonalNumberListSevice.styled';
-import { Wrap } from './DisablingResoucesList.styles';
+import React, { useMemo } from 'react';
+import { Divider, Pagination, Skeleton, Space } from 'antd';
+import {
+  GroupWrapper,
+  PaginationWrapper,
+  Wrap,
+} from './DisablingResoucesList.styles';
 import { DisablingListProps } from './DisablingResourcesList.types';
 import { RenderApartment } from './DisablingResourceItem/DisablingResourceItem';
 
@@ -13,43 +16,64 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
 }) => {
   const items = resources?.items || [];
 
+  const list = useMemo(() => {
+    if (loading) {
+      return <Skeleton active />;
+    }
+    return (
+      <>
+        <div>
+          {items.map((resourceDisconnection) => {
+            return (
+              <RenderApartment
+                {...resourceDisconnection}
+                openModal={openModal}
+                key={resourceDisconnection.id}
+              />
+            );
+          })}
+        </div>
+        <PaginationWrapper>
+          <Pagination
+            onChange={setPage}
+            pageSize={resources?.pageSize || 5}
+            total={resources?.totalItems}
+            current={resources?.pageNumber}
+            showSizeChanger={false}
+          />
+        </PaginationWrapper>
+      </>
+    );
+  }, [loading, setPage, openModal, resources]);
+
   return (
     <>
       <Wrap>
-        <div>Период отключения</div>
-        <Divider type="vertical" />
-        <div>Ресурс</div>
-        <Divider type="vertical" />
-        <div>Адреса</div>
-        <Divider type="vertical" />
-        <div>ЦТП</div>
-        <Divider type="vertical" />
-        <div>Класс</div>
-        <Divider type="vertical" />
-        <div>Отправитель</div>
-        <Divider type="vertical" />
+        <GroupWrapper>
+          <div>Период отключения</div>
+          <Divider type="vertical" />
+        </GroupWrapper>
+        <GroupWrapper>
+          <div>Ресурс</div>
+          <Divider type="vertical" />
+        </GroupWrapper>
+        <GroupWrapper>
+          <div>Адреса</div>
+          <Divider type="vertical" />
+        </GroupWrapper>
+        <GroupWrapper>
+          <div>ЦТП</div>
+          <Divider type="vertical" />
+        </GroupWrapper>
+        <GroupWrapper>
+          <div>Класс</div>
+          <Divider type="vertical" />
+        </GroupWrapper>
+        <GroupWrapper>
+          <div>Отправитель</div>
+        </GroupWrapper>
       </Wrap>
-      {loading ? (
-        <Skeleton active />
-      ) : (
-        <>
-          <div>
-            {items.map((el) => {
-              return <RenderApartment {...el} openModal={openModal} />;
-            })}
-          </div>
-
-          <Space style={{ margin: '10px' }}>
-            <PaginationSC
-              onChange={setPage}
-              pageSize={resources?.pageSize || 5}
-              total={resources?.totalItems}
-              current={resources?.pageNumber}
-              showSizeChanger={false}
-            />
-          </Space>
-        </>
-      )}
+      {list}
     </>
   );
 };

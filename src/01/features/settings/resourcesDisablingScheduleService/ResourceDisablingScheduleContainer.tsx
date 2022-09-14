@@ -24,6 +24,7 @@ export const ResourceDisablingScheduleContainer = () => {
   const setPage = useEvent(inputs.setPage);
   const isModalOpen = useStore(outputs.$isAddressesModalOpen);
   const openModal = useEvent(inputs.openAddressesModal);
+  const closeModal = useEvent(inputs.closeAddressesModal);
 
   return (
     <DisablingResourceWrapperContainer>
@@ -32,8 +33,13 @@ export const ResourceDisablingScheduleContainer = () => {
       <ResourceDisablingScheduleModal
         isModalOpen={isModalOpen}
         openModal={() => openModal()}
+        closeModal={() => closeModal()}
       />
-      <DisablingResourcesSearch filters={filters} applyFilters={applyFilters} cities={cities} />
+      <DisablingResourcesSearch
+        filters={filters}
+        applyFilters={applyFilters}
+        cities={cities || []}
+      />
       <DisablingResourcesList
         resources={resources}
         loading={loading}
