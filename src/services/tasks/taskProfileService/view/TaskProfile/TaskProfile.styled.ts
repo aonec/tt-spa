@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const TaskInfoWrapper = styled.div`
+export const TaskWrapper = styled.div`
   display: flex;
   width: 100%;
 `;
