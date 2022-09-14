@@ -52,6 +52,8 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
       documents={documents}
       accept={accept}
       uniqId={uniqId}
+      lable={lable}
+      isMaxDocuments={isMaxDocuments}
     />
   );
 };

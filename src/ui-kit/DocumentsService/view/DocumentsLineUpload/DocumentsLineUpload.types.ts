@@ -8,4 +8,5 @@ export type DocumentsLineUploadProps = {
   accept: string;
   uniqId: string;
   lable?: string;
+  isMaxDocuments: boolean;
 };
