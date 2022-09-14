@@ -25,10 +25,12 @@ const buttonBorderColorsDictionary: { [key in ButtonStyleType]: string } = {
   white: '#dcdee4',
 };
 
-export const Wrapper = styled.div<{ type: ButtonStyleType }>`
+export const Wrapper = styled.div<{
+  type: ButtonStyleType;
+  disabled?: boolean;
+}>`
   background-color: ${({ type }) => buttonBackgroundColorsDictionary[type]};
   color: ${({ type }) => buttonFontColorsDictionary[type]};
-  cursor: pointer; 
   padding: 0 20px;
   border-radius: 4px;
   font-size: 16px;
@@ -43,13 +45,20 @@ export const Wrapper = styled.div<{ type: ButtonStyleType }>`
   border: 1px solid ${({ type }) => buttonBorderColorsDictionary[type]};
   user-select: none;
 
-  &:hover {
+  &:not(.tt-button-disabled):hover {
     transform: translate(-4px, -4px);
     box-shadow: 4px 4px 0 ${({ type }) => buttonShadowColorsDictionary[type]};
   }
 
-  &:active {
+  &:not(.tt-button-disabled):active {
     transform: translate(-2px, -2px);
     box-shadow: 2px 2px 0 ${({ type }) => buttonShadowColorsDictionary[type]};
+  }
+
+  cursor: pointer;
+
+  &.tt-button-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;

@@ -8,6 +8,10 @@ export const Button: FC<ButtonProps> = (props) => {
       {...props}
       type={props.type || 'default'}
       onClick={props.disabled ? undefined : props.onClick}
+      className={[
+        props.className,
+        ...(props.disabled ? ['tt-button-disabled'] : []),
+      ].join(' ')}
     >
       {props.children}
     </Wrapper>

@@ -1,6 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import { Button } from 'ui-kit/Button';
-import { DocumentsListWrapper, Wrapper } from './DocumentsLineUpload.styled';
+import {
+  DocumentsListElement,
+  DocumentsListWrapper,
+  Wrapper,
+} from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
@@ -31,17 +35,19 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
 
   return (
     <Wrapper>
-      <input
-        id={id}
-        type="file"
-        name="file"
-        multiple={false}
-        value=""
-        placeholder="Загрузить файл"
-        onChange={handleChange}
-        style={{ display: 'none' }}
-        accept={accept}
-      />
+      {!isLoading && (
+        <input
+          id={id}
+          type="file"
+          name="file"
+          multiple={false}
+          value=""
+          placeholder="Загрузить файл"
+          onChange={handleChange}
+          style={{ display: 'none' }}
+          accept={accept}
+        />
+      )}
       <label htmlFor={id} style={{ margin: 0, width: 'min-content' }}>
         <Button disabled={isLoading} type="white">
           {lable}
@@ -49,7 +55,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
       </label>
       <DocumentsListWrapper>
         {documents.map((elem) => (
-          <div>{elem.name}</div>
+          <DocumentsListElement>{elem.name}</DocumentsListElement>
         ))}
       </DocumentsListWrapper>
     </Wrapper>
