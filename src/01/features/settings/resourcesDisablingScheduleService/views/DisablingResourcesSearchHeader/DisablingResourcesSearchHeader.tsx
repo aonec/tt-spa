@@ -11,7 +11,7 @@ import { DisablingResourcesProps } from '../../ResourceDisablingScheduleContaine
 import { DisablingResourcesSearchProps } from './DisablingResourcesSearchHeader.types';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { ClassLookUp } from './DisablingResourcesSearchHeader.utils';
-import _ from 'lodash/fp';
+import _ from 'lodash';
 
 const { Option } = Select;
 
@@ -20,7 +20,7 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
   cities,
   filters,
 }) => {
-  const city = cities[0];
+  const city: string | undefined = _.get(cities, ['0'], undefined);
 
   const {
     values,

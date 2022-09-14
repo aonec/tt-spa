@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { PageHeader } from '../../../../shared/ui/PageHeader';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { Tabs } from 'antd';
@@ -17,6 +17,24 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
+
+  const settingsComponent = useMemo(() => {
+    if (adminSettings) {
+      return (
+        <TabPane tab="График отключения ресурсов" key="disabledResources">
+          <ResourceDisablingScheduleContainer />
+        </TabPane>
+      );
+    }
+    return (
+      <>
+        <TabPane tab="Распредление контролеров" key="controllers"></TabPane>
+        <TabPane tab="Распредление инспекторов" key="inspectors">
+          <InspectorsDistributionPage />
+        </TabPane>
+      </>
+    );
+  }, [adminSettings]);
 
   return (
     <>
@@ -37,18 +55,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({
         }}
       />
       <Tabs activeKey={section} onChange={history.push}>
-        {!adminSettings ? (
-          <>
-            <TabPane tab="Распредление контролеров" key="controllers"></TabPane>
-            <TabPane tab="Распредление инспекторов" key="inspectors">
-              <InspectorsDistributionPage />
-            </TabPane>
-          </>
-        ) : (
-          <TabPane tab="График отключения ресурсов" key="disabledResources">
-            <ResourceDisablingScheduleContainer />
-          </TabPane>
-        )}
+        {settingsComponent}
       </Tabs>
     </>
   );

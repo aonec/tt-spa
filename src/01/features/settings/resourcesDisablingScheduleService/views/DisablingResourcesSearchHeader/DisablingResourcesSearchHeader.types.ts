@@ -2,6 +2,6 @@ import { DisablingResourcesProps } from '../../ResourceDisablingScheduleContaine
 
 export type DisablingResourcesSearchProps = {
   applyFilters: (payload: DisablingResourcesProps) => void;
-  cities: string[];
+  cities: string[] | null;
   filters: DisablingResourcesProps;
 };

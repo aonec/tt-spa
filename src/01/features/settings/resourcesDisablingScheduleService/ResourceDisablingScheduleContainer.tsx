@@ -38,7 +38,7 @@ export const ResourceDisablingScheduleContainer = () => {
       <DisablingResourcesSearch
         filters={filters}
         applyFilters={applyFilters}
-        cities={cities || []}
+        cities={cities}
       />
       <DisablingResourcesList
         resources={resources}

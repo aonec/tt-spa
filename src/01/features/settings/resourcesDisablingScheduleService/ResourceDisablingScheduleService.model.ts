@@ -10,8 +10,6 @@ const domain = createDomain('ResourceDisablingScheduleService');
 const $disablingResources = domain.createStore<ResourceDisconnectingResponsePagedList | null>(
   null
 );
-const $filters = domain.createStore<DisablingResourcesProps>({ PageSize: 12 });
-const $isAddressesModalOpen = domain.createStore<boolean>(false);
 
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
@@ -27,7 +25,8 @@ const resourceDisablingEventFx = domain.createEffect<
   ResourceDisconnectingResponsePagedList
 >(fetchDisablingResources);
 
-$filters
+const $filters = domain
+  .createStore<DisablingResourcesProps>({ PageSize: 12 })
   .on(applyFilters, (oldFilters, filters) => {
     return {
       ...oldFilters,
@@ -40,7 +39,8 @@ $filters
     PageNumber: page,
   }));
 
-$isAddressesModalOpen
+const $isAddressesModalOpen = domain
+  .createStore<boolean>(false)
   .on(openAddressesModal, () => true)
   .on(closeAddressesModal, () => false);
 
