@@ -44,6 +44,7 @@ export const Wrapper = styled.div<{
   transition: 0.25s;
   border: 1px solid ${({ type }) => buttonBorderColorsDictionary[type]};
   user-select: none;
+  white-space: nowrap;
 
   &:not(.tt-button-disabled):hover {
     transform: translate(-4px, -4px);
@@ -61,4 +62,8 @@ export const Wrapper = styled.div<{
     opacity: 0.6;
     cursor: not-allowed;
   }
+`;
+
+export const IconWrapper = styled.div`
+  margin-left: 10px;
 `;

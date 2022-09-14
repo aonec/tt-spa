@@ -8,6 +8,7 @@ import {
 import { AddPerpetratorContainer } from './addPerpetratorService';
 import { EmailNotifyContainer } from './emailNotifyService';
 import { AttachDocument } from './AttachDocument';
+import { SwitchStageSelectContainer } from './switchStageSelectService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -37,6 +38,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.AddDocuments,
     Component: AttachDocument,
     position: TaskPanelInputPositionType.Bottom,
+  },
+  {
+    actionType: EStageActionType.Switch,
+    Component: SwitchStageSelectContainer,
+    position: TaskPanelInputPositionType.Middle,
   },
 ];
 

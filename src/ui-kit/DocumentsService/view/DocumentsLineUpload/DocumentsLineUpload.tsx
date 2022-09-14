@@ -11,6 +11,7 @@ import {
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 import { saveAs } from 'file-saver';
 import { DocumentResponse } from 'myApi';
+import { UploadIcon } from 'ui-kit/icons';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,
@@ -63,7 +64,11 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
         />
       )}
       <label htmlFor={id} style={{ margin: 0, width: 'min-content' }}>
-        <Button disabled={isLoading || isMaxDocuments} type="white">
+        <Button
+          disabled={isLoading || isMaxDocuments}
+          type="white"
+          icon={<UploadIcon />}
+        >
           {lable}
         </Button>
       </label>
