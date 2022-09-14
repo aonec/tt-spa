@@ -2,26 +2,29 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
-import { fetchConsumptionStatistics } from '../../models';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import moment from 'moment';
 import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { useApartmentList } from './useApartmentList';
 import { useHistory } from 'react-router';
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
+import {
+  $consumptionStatistics,
+  subscribersConsumptionService,
+} from '../../models';
 
 export const StatisticsList: React.FC = () => {
-  const { apartmentList } = useApartmentList();
-  const pending = useStore(fetchConsumptionStatistics.pending);
+  const apartmentList = useStore($consumptionStatistics);
+
+  const pending = useStore(subscribersConsumptionService.outputs.$isLoading);
   const history = useHistory();
   const isApartmentsExist = apartmentList.length !== 0;
 
   const renderApartment = ({
     apartmentNumber,
-    coldWaterSupplyСonsumption,
-    hotWaterSupplyСonsumption,
-    electricitySupplyСonsumption,
+    coldWaterSupplyConsumption,
+    hotWaterSupplyConsumption,
+    electricitySupplyConsumption,
     dateLastCheck,
     dateLastTransmissionOfReading,
     housingStockId,
@@ -34,9 +37,9 @@ export const StatisticsList: React.FC = () => {
       }
     >
       <div>{apartmentNumber}</div>
-      <div>{formatValue(round(coldWaterSupplyСonsumption!, 3))}</div>
-      <div>{formatValue(round(hotWaterSupplyСonsumption!, 3))}</div>
-      <div>{formatValue(round(electricitySupplyСonsumption!, 3))}</div>
+      <div>{formatValue(round(coldWaterSupplyConsumption!, 3))}</div>
+      <div>{formatValue(round(hotWaterSupplyConsumption!, 3))}</div>
+      <div>{formatValue(round(electricitySupplyConsumption!, 3))}</div>
       <div>{moment(dateLastTransmissionOfReading).format('DD.MM.YYYY')}</div>
       <div>{dateLastCheck && moment(dateLastCheck).format('DD.MM.YYYY')}</div>
     </ApartmentWrap>
