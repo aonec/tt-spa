@@ -10,7 +10,7 @@ import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -69,6 +69,19 @@ export const BaseInfoStage = () => {
   };
 
   const modelNameDebounced = fields.model.value;
+
+  const titleOfInput = useMemo(() => {
+    if (isSwitch) {
+      return 'Заменяемый прибор';
+    }
+    if (isCheck) {
+      return 'Прибор до поверки';
+    }
+    if (isReopen) {
+      return 'Прибор до переоткрытия';
+    }
+    return '';
+  }, [isSwitch, isCheck, isReopen]);
 
   const bottomDateFields = (
     <FormWrap>
@@ -348,15 +361,7 @@ export const BaseInfoStage = () => {
       {!isCheck && (
         <>
           <ReadingsInput
-            title={
-              isSwitch
-                ? 'Заменяемый прибор'
-                : isCheck
-                ? 'Прибор до поверки'
-                : isReopen
-                ? 'Прибор до переоткрытия'
-                : ''
-            }
+            title={titleOfInput}
             readings={fields.oldDeviceReadings.value}
             onChange={fields.oldDeviceReadings.onChange}
             device={device}
