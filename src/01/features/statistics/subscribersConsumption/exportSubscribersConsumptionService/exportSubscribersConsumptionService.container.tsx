@@ -25,7 +25,6 @@ export const ExportSubscribersConsumptionContainer: FC<ExportSubscribersConsumpt
     : 'Выгрузить список';
 
   useEffect(() => {
-    console.log('set');
     setFilter(filter);
   }, [filter]);
 
