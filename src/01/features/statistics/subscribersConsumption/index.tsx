@@ -1,11 +1,8 @@
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import React, { ReactNode, useEffect, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import styled from 'styled-components';
-import { useEvent, useStore } from '../../../../../node_modules/effector-react';
 import { Search } from './components/Search';
 import { StatisticsList } from './components/StatisticsList';
-import { $selectedHousingsStockId } from './models';
-import { useForm } from 'effector-forms';
 import { Link, useParams } from 'react-router-dom';
 import { Radio } from 'antd';
 import { SubscribersConsumptionSearchType } from './subscribersConsumption.types';

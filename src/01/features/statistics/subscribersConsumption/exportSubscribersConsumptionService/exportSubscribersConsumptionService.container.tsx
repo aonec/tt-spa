@@ -1,24 +1,33 @@
 import { InputSC } from '01/shared/ui/Fields';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import { exportSubscribersConsumptionService } from './exportSubscribersConsumptionService.model';
 import { TextWrapper } from './exportSubscribersConsumptionService.styled';
+import { ExportSubscribersConsumptionContainerProps } from './exportSubscribersConsumptionService.types';
 
 const { inputs, outputs } = exportSubscribersConsumptionService;
 
-export const ExportSubscribersConsumptionContainer = () => {
+export const ExportSubscribersConsumptionContainer: FC<ExportSubscribersConsumptionContainerProps> = ({
+  filter,
+}) => {
   const isOpen = useStore(outputs.$isModalOpen);
   const fileName = useStore(outputs.$fileName);
 
   const closeModal = useEvent(inputs.closeModal);
   const setFileName = useEvent(inputs.setFileName);
   const handleExportStatistic = useEvent(inputs.exportStatistic);
+  const setFilter = useEvent(inputs.setSubscriberStatisticsFilter);
 
   const isButtonDisabled = !Boolean(fileName.length);
   const buttonText = isButtonDisabled
     ? 'Введите название файла'
     : 'Выгрузить список';
+
+  useEffect(() => {
+    console.log('set');
+    setFilter(filter);
+  }, [filter]);
 
   return (
     <ModalTT

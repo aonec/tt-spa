@@ -6,4 +6,5 @@ export type HousingStocksListItemProps = {
   statisticIsLoading: boolean;
   handleOpenModal: (housingStock: number) => void;
   selectedHousingStock: number;
+  setFileName: (address: string) => void;
 };
