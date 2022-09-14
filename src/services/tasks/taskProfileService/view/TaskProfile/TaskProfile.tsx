@@ -11,7 +11,7 @@ import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
-import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
+import { TaskInfoWrapper, TaskWrapper, Wrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
@@ -51,7 +51,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   const taskActions = task.currentStage?.actions || [];
 
   return (
-    <div>
+    <Wrapper>
       <GoBack />
       {isLoading && <Skeleton active />}
       {!isLoading && name && (
@@ -89,6 +89,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           </TaskWrapper>
         </>
       )}
-    </div>
+    </Wrapper>
   );
 };

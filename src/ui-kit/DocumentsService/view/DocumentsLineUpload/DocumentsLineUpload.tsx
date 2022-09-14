@@ -55,7 +55,9 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
       </label>
       <DocumentsListWrapper>
         {documents.map((elem) => (
-          <DocumentsListElement>{elem.name}</DocumentsListElement>
+          <DocumentsListElement title={elem.name || ''}>
+            {elem.name}
+          </DocumentsListElement>
         ))}
       </DocumentsListWrapper>
     </Wrapper>
