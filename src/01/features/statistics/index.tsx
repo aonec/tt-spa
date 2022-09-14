@@ -30,24 +30,32 @@ export const StatisticsPage = () => {
     exportSubscribersConsumptionService.inputs.setFileName
   );
 
-  const menuButtons =
-    searchType === SubscribersConsumptionSearchType.Houses
-      ? [
-          {
-            hidden: !Boolean(selectedHousingStockId),
-            title: 'Выгрузить список квартир',
-            onClick: () => {
-              const { house, street } = fields;
-              handleOpenExportStatisticModal(selectedHousingStockId);
-              if (house && street) {
-                setFileName(`${street.value}_${house.value}`);
-              } else {
-                setFileName('');
-              }
-            },
+  const menuButtons = useMemo(() => {
+    if (searchType === SubscribersConsumptionSearchType.Houses) {
+      return [
+        {
+          hidden: !Boolean(selectedHousingStockId),
+          title: 'Выгрузить список квартир',
+          onClick: () => {
+            const { house, street } = fields;
+            handleOpenExportStatisticModal(selectedHousingStockId);
+            if (house && street) {
+              setFileName(`${street.value}_${house.value}`);
+            } else {
+              setFileName('');
+            }
           },
-        ]
-      : undefined;
+        },
+      ];
+    }
+    return;
+  }, [
+    selectedHousingStockId,
+    fields,
+    handleOpenExportStatisticModal,
+    setFileName,
+    searchType,
+  ]);
 
   return (
     <div>
