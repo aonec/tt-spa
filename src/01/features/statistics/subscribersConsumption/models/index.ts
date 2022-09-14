@@ -1,36 +1,39 @@
-import { createGate } from 'effector-react';
-import { createEffect, createEvent, createStore } from 'effector';
-import { createForm } from 'effector-forms';
+import {
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  sample,
+} from 'effector';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import { createForm } from 'effector-forms/dist';
+import { SubscriberStatisticsForm } from '../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
+import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
+import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.utils';
 
-export type StatsisticsPayload = {
-  HousingStockId: number;
-  MonthOfLastTransmission?: string | null;
-  HotWaterSupply?: boolean | null;
-  ColdWaterSupply?: boolean | null;
-  Electricity?: boolean | null;
-};
-
-export const $selectedHousingsStockId = createStore<number | null>(null);
+export const $selectedHousingsStockId = createStore<number>(0);
 
 export const $consumptionStatistics = createStore<
   SubscriberStatisticsСonsumptionResponse[] | null
 >(null);
 
 export const fetchConsumptionStatistics = createEffect<
-  StatsisticsPayload,
+  {
+    HousingStockId: number;
+    MonthOfLastTransmission?: string | null;
+    HotWaterSupply?: boolean | null;
+    ColdWaterSupply?: boolean | null;
+    Electricity?: boolean | null;
+  },
   SubscriberStatisticsСonsumptionResponse[]
 >();
-
-export const ConsumptionStatisticsGate = createGate<StatsisticsPayload>();
-
-export const setSelectedHousingStockId = createEvent<number | null>();
-export const manualyGetStatisticData = createEvent<void>();
 
 const resourceRangeInitValue = {
   from: null as number | null,
   to: null as number | null,
 };
+
+export const setSelectedHousingStockId = createEvent<number>();
 
 export const subscribersConsumptionFindForm = createForm({
   fields: {
@@ -40,38 +43,37 @@ export const subscribersConsumptionFindForm = createForm({
   },
 });
 
-export const subscribersConsumptionFilterForm = createForm({
-  fields: {
-    coldOpen: {
-      init: false,
-    },
-    heatOpen: { init: false },
-    electricityOpen: { init: false },
-    cold: {
-      init: resourceRangeInitValue,
-    },
-    heat: {
-      init: resourceRangeInitValue,
-    },
-    electricity: {
-      init: resourceRangeInitValue,
-    },
-    individualDeviceCheckPeriod: {
-      init: {
-        from: null as string | null,
-        to: null as string | null,
-      },
-    },
-    lastReadingMonth: {
-      init: null as string | null,
-    },
-    excludeApartments: {
-      init: false,
-    },
-  },
+const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
+const $subscriberStatisticsFilter = createStore<SubscriberStatisticsForm | null>(
+  null
+).on(setSubscriberStatisticsFilter, (_, filter) => filter);
+
+const $isLoading = fetchConsumptionStatistics.pending;
+
+sample({
+  clock: combine(
+    $selectedHousingsStockId,
+    $subscriberStatisticsFilter,
+    (HousingStockId, filter) => {
+      if (!filter) {
+        return { HousingStockId };
+      }
+      const preparedData = prepareFilterBeforeSenging({
+        ...filter,
+        HousingStockId,
+      });
+      return { ...preparedData };
+    }
+  ),
+  target: fetchConsumptionStatistics,
 });
 
-export const $isExpandedSearchOpen = createStore(false);
-
-export const openExpandedSearch = createEvent();
-export const closeExpandedSearch = createEvent();
+export const subscribersConsumptionService = {
+  inputs: {
+    setSubscriberStatisticsFilter,
+  },
+  outputs: {
+    $subscriberStatisticsFilter,
+    $isLoading,
+  },
+};

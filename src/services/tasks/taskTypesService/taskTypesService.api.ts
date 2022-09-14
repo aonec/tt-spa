@@ -30,6 +30,6 @@ export const getHousingManagements = async (): Promise<
 export const getPerpetratorIds = async (): Promise<
   perpetratorItemsProps[] | null
 > => {
-  const res = await axios.get<any, perpetratorProps>('ManagingFirmUsers');
+  const res = await axios.get<any, perpetratorProps>('OrganizationUsers');
   return res?.items;
 };

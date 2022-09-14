@@ -9,12 +9,14 @@ const ActiveLine = ({ isActive, closingReason }) => {
         marginLeft: 4,
         marginRight: 16,
         color: 'rgba(39, 47, 90, 0.8)',
+        witeSpace: 'nowrap',
       }}
     >
       {isActive ? (
         <Badge status="success" text="Активен" />
       ) : (
         <Badge
+          style={{ witeSpace: 'nowrap' }}
           status="error"
           text={`Закрыт${
             closingReasons && closingReasons[closingReason]

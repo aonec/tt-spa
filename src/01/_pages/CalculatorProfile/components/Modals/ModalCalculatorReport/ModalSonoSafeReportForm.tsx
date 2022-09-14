@@ -23,7 +23,7 @@ import { EReportType } from 'myApi';
 const { TabPane } = Tabs;
 
 const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
-  const { id, model, serialNumber, address, hubs, nodes } = device;
+  const { model, serialNumber, address, hubs, nodes } = device;
   const nodeId = nodes[0].id;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
@@ -215,7 +215,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
   // Список Вкладок/Ресурсов
   const TabsList =
     resources ||
-    [].map((value, index) => {
+    [].map((value) => {
       const res = translate(value);
       return <TabPane tab={res} key={value} />;
     });

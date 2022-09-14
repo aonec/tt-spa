@@ -5,7 +5,6 @@ import {
   EResourceType,
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsItemHistoryResponse,
-  IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceResponse,
 } from 'myApi';
 import moment from 'moment';

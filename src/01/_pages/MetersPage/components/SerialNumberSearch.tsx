@@ -63,6 +63,7 @@ export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
     <NavLink
       to={`/meters/apartments/${device.apartmentId}`}
       onClick={() => setSearchContext(1)}
+      key={device.id}
     >
       <Device key={index}>
         <Flex>

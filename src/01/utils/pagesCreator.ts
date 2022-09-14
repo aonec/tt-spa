@@ -5,12 +5,12 @@ export function createPages(totalPages: number, currentPage: number): number[] {
     if (currentPage > 5) {
       for (let i = currentPage - 4; i <= currentPage + 5; i++) {
         pages.push(i);
-        if (i == totalPages) break;
+        if (i === totalPages) break;
       }
     } else {
       for (let i = 1; i <= 10; i++) {
         pages.push(i);
-        if (i == totalPages) break;
+        if (i === totalPages) break;
       }
     }
   } else {

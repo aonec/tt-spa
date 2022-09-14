@@ -40,7 +40,7 @@ export default ({
         activeKey={activeKey}
       >
         {tabItems.map((tab) => {
-          const { title, key, cb } = tab;
+          const { title, key } = tab;
           return <TabPane tab={title} key={key} />;
         })}
       </Tabs>

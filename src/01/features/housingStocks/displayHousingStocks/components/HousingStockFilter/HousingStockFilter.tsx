@@ -6,11 +6,7 @@ import {
   $existingStreets,
   ExistingStreetsGate,
 } from '01/features/housingStocks/displayHousingStockStreets/model';
-import {
-  StyledAutocomplete,
-  InputSC,
-  SelectSC,
-} from '01/shared/ui/Fields';
+import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Select } from 'antd';
@@ -89,7 +85,9 @@ export const HousingStockFilter = () => {
         onKeyDown={(e) => onKeyDownHandler(e, 0)}
       >
         {cities?.map((city) => (
-          <Select.Option value={city}>{city}</Select.Option>
+          <Select.Option value={city} key={city}>
+            {city}
+          </Select.Option>
         ))}
       </SelectSC>
       <StyledAutocomplete

@@ -1,5 +1,4 @@
 import React from 'react';
-import { AxiosResponse } from 'axios';
 
 function useSafeDispatch<Action>(dispatch: React.Dispatch<Action>) {
   const mounted = React.useRef(false);

@@ -9,7 +9,7 @@ import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypes
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
 export type SearchTasksProps = {
-  onSubmit: (formFilter: SearchTasksForm) => void;
+  onSubmit: (formFilter: GetTasksListRequestPayload) => void;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   currentFilter: GetTasksListRequestPayload | null;
   isExtendedSearchOpen: boolean;
@@ -21,11 +21,6 @@ export type SearchTasksProps = {
   perpetrators: perpetratorItemsProps[] | null;
   streets: string[];
   cities: string[] | null;
-};
-
-export type SearchTasksForm = {
-  TaskType?: EManagingFirmTaskFilterType | null;
-  TaskId?: string;
 };
 
 export const TasksFilterTypeDictionary = {};
@@ -40,8 +35,8 @@ export type ExtendedSearchTypes = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;
   perpetrators?: perpetratorItemsProps[] | null;
-  streets?: string[]
-  cities?: string[] | null
+  streets?: string[];
+  cities?: string[] | null;
 };
 
 export type taskCategotiesProps = {

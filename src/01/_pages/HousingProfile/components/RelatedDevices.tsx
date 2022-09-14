@@ -87,8 +87,6 @@ const State = styled.div`
   color: rgba(39, 47, 90, 0.8);
 `;
 
-const Title = styled.h2``;
-
 const ListWrap = styled.div`
   display: grid;
   height: min-content;

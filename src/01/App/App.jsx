@@ -58,6 +58,7 @@ import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { useStore } from 'effector-react';
+import { TaskProfileContainer } from 'services/tasks/taskProfileService';
 
 moment.locale('ru');
 
@@ -107,6 +108,11 @@ const Internal = () => {
                 <Route
                   path="/tasks/profile/(\\d+)"
                   component={TaskProfile}
+                  exact
+                />
+                <Route
+                  path="/tasks/test-profile/:taskId"
+                  component={TaskProfileContainer}
                   exact
                 />
                 <Route
@@ -249,11 +255,16 @@ const Internal = () => {
 
               <Redirect
                 from="/statistics/"
-                to="/statistics/subscribersConsumption"
+                to="/statistics/subscribersConsumption/houses"
+                exact
+              />
+              <Redirect
+                from="/statistics/subscribersConsumption"
+                to="/statistics/subscribersConsumption/houses"
                 exact
               />
 
-              <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
+              <Route path="/statistics/:grouptype/:searchType?">
                 <StatisticsPage />
               </Route>
 
@@ -283,6 +294,7 @@ export function App() {
 }
 
 const LeftBlock = styledC.div`
+  z-index: 2;
   padding-top: 20px; 
   width: 208px;
   background: #F3F5F6;

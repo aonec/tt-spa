@@ -4,7 +4,7 @@ import { Loader } from '01/components';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
-import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
+import { DEFAULT_DEVICE } from './Templates';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 export const Information = (loading = true) => {

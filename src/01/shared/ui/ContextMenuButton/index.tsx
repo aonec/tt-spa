@@ -8,7 +8,7 @@ export interface ContextMenuElement {
   title: string;
   onClick(): void;
   hidden?: boolean;
-  color?: Color;
+  color?: string;
 }
 
 export interface ContextMenuButtonProps {
@@ -27,10 +27,8 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
       {menuButtonsFiltered?.map((button) => {
         const { title, onClick, color } = button;
 
-        const currentColor = getButtonColor(color);
-
         return (
-          <MenuItem key={title + color} onClick={onClick} color={currentColor}>
+          <MenuItem key={title + color} onClick={onClick} color={color}>
             {title}
           </MenuItem>
         );
@@ -57,20 +55,18 @@ const StyledMenuButton = styled(Button)`
   border-radius: 4px;
 `;
 
-const MenuItem = styled(Menu.Item)`
+const MenuItem = styled(Menu.Item)<{ color?: string }>`
   min-width: 408px;
-  color: ${(props) => props.color || 'var(--primary)'} !important;
+  color: ${({ color }) => color || Color.default} !important;
+
+  &:hover {
+    color: white !important;
+  }
 `;
 
-enum Color {
-  default = 'rgba(39, 47, 90, 0.9)',
-  disabled = 'rgba(39, 47, 90, 0.32)',
-  black = 'rgba(39, 47, 90, 0.9)',
-  red = '#FC525B',
-}
-
-function getButtonColor(color?: Color) {
-  if (!color) return Color.default;
-
-  return (Color as any)[color] || Color.default;
-}
+export const Color = {
+  default: 'rgba(39, 47, 90, 0.9)',
+  disabled: 'rgba(39, 47, 90, 0.32)',
+  black: 'rgba(39, 47, 90, 0.9)',
+  red: '#FC525B',
+};

@@ -8,7 +8,7 @@ export const Menu: FC<MenuProps> = ({ menuItems }) => {
     <div>
       <div>
         {menuItems.map((menuItem) => (
-          <MenuItemComponent menuItem={menuItem} />
+          <MenuItemComponent menuItem={menuItem} key={menuItem.path} />
         ))}
       </div>
       <ExitButton />

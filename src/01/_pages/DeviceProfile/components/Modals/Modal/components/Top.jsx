@@ -8,7 +8,6 @@ export const Uzel = () => {
   const {
     street,
     housingStockNumber,
-    SelectReport,
     type,
     selectOptions,
     handleSomeChange,

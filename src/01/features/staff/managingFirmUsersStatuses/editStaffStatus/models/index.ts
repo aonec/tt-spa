@@ -1,7 +1,7 @@
 import {
   AddOrganizationUserWorkingStatusRequest,
   EOrganizationUserWorkingStatusType,
-  ManagingFirmUserResponse,
+  OrganizationUserResponse,
   OrganizationUserWorkingStatusResponseSuccessApiResponse,
 } from 'myApi';
 import { createForm } from 'effector-forms';
@@ -47,7 +47,7 @@ export const editStaffStatusForm = createForm({
   },
 });
 
-export const editStaffStatusButtonClicked = createEvent<ManagingFirmUserResponse>();
+export const editStaffStatusButtonClicked = createEvent<OrganizationUserResponse>();
 export const editStaffStatusCancelButtonClicked = createEvent();
 export const editStaffStatusConfirmButtonClicked = createEvent();
 

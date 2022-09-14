@@ -16,7 +16,7 @@ export async function getContractor(id = '') {
 
 export async function getManagingFirmUsers(id = '') {
   try {
-    const res = await axios.get(`ManagingFirmUsers/${id}`);
+    const res = await axios.get(`OrganizationUsers/${id}`);
     return res;
   } catch (error) {
     throw {
@@ -28,7 +28,7 @@ export async function getManagingFirmUsers(id = '') {
 
 export async function getManagingFirmUsersCurrent() {
   try {
-    const res = await axios.get('ManagingFirmUsers/current');
+    const res = await axios.get('OrganizationUsers/current');
     return res;
   } catch (error) {
     throw {
@@ -41,7 +41,7 @@ export async function getManagingFirmUsersCurrent() {
 export async function putManagingFirmUsersCurrent(id = null, form = {}) {
   alert('Сохранение изменений');
   try {
-    const res = await axios.put(`ManagingFirmUsers/${id}`, form);
+    const res = await axios.put(`OrganizationUsers/${id}`, form);
     alert('Изменения Текущего Пользователя сохранились');
     return res;
   } catch (error) {

@@ -68,7 +68,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     ];
 
   useEffect(() => {
-    setFieldValue('ApartmentNumber', null);
+    if (!values.ApartmentNumber) {
+      setFieldValue('ApartmentNumber', null);
+    }
     if (!values?.TaskType) return;
     if (!TaskCategory.includes(values?.TaskType)) {
       setFieldValue('TaskType', null);

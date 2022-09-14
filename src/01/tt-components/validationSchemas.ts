@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { ipv4RegExp } from './localBases';
-import { yupDate } from './yupTemplates';
 
 export const editNodeValidationSchema = Yup.object({
   resource: Yup.string().required('Укажите тип ресура'),

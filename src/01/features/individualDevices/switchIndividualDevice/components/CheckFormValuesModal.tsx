@@ -86,6 +86,7 @@ export const CheckFormValuesModal = () => {
       name: 'Дата ввода в эксплуатацию',
       value: getDate(fields.lastCommercialAccountingDate.value),
     },
+    { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
     {
       name: 'Дата последней поверки прибора',
       value: getDate(fields.lastCheckingDate.value),

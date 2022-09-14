@@ -1,6 +1,6 @@
 import { ETaskClosingStatus } from 'myApi';
 import { OkIcon, TimerIcon, XIcon } from 'ui-kit/icons';
-import { RedTimerIcon } from './TasksListItem.styled';
+import { RedTimerIcon } from '../../../services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.styled';
 
 export const IconLookup = [
   { icon: ETaskClosingStatus.Properly, element: OkIcon },

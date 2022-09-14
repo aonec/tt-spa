@@ -1,8 +1,7 @@
 import { accountingNodesFilterForm, getAccountingNodesDevices } from './index';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { fetchNodes } from '01/features/nodes/displayNodes/models';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import _ from 'lodash';
 
 sample({
   source: accountingNodesFilterForm.$values.map((elem) => ({

@@ -61,11 +61,4 @@ export const Information = ({
   );
 };
 
-const StatisticLink = styledComponent(Link)`
-  color: #FC525B;
-  &:hover {
-    color: #FC525B;
-  }
-`;
-
 export default Information;

@@ -65,7 +65,10 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const renderSelectItem = (selectItem: SelectItem) => {
     const { title, icon: Icon } = selectItem;
     return (
-      <StyledSelectItem onClick={() => setSelectedType(selectItem)}>
+      <StyledSelectItem
+        onClick={() => setSelectedType(selectItem)}
+        key={selectItem.title}
+      >
         <Icon />
         <Space />
         <StyledSelectItemTitle>{title}</StyledSelectItemTitle>
@@ -94,7 +97,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
       onChange={setHomeownerId as any}
     >
       {apartment?.homeownerAccounts?.map((elem) => (
-        <StyledSelect.Option value={elem.id!}>
+        <StyledSelect.Option value={elem.id!} key={elem.id}>
           {selectedHomeowner?.isMainPersonalAccountNumber && <MainIcon />}
           {elem.personalAccountNumber} ({elem?.name?.replaceAll('unknown', '')})
         </StyledSelect.Option>

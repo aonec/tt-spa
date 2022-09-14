@@ -16,7 +16,7 @@ export const useLogin = () => {
       (async function () {
         try {
           await axios.post('auth/login', { email, password });
-          await axios.get('ManagingFirmUsers/current');
+          await axios.get('OrganizationUsers/current');
 
           replace(
             roles.includes('ManagingFirmOperator') ? '/meters' : '/tasks/'

@@ -1,8 +1,6 @@
 import { Tabs } from 'antd';
 import React from 'react';
-import { useState } from 'react';
-import { useHistory } from 'react-router';
-import { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router';
 import { SubscribersConsumption } from './subscribersConsumption';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { manualyGetStatisticData } from './subscribersConsumption/models';
@@ -11,19 +9,9 @@ import { useEvent } from 'effector-react';
 const { TabPane } = Tabs;
 
 export const StatisticsPage = () => {
-  const [tab, setTab] = useState<
-    'subscribersConsumption' | 'tasks' | 'resourceConsumption'
-  >('subscribersConsumption');
   const history = useHistory();
   const fetchConsumption = useEvent(manualyGetStatisticData);
-
-  useEffect(() => history.push(tab), [tab]);
-
-  const currentTabFromLocation = (history.location.pathname.split(
-    '/'
-  ) as any)[2];
-
-  useEffect(() => setTab(currentTabFromLocation), []);
+  const { grouptype } = useParams<{ grouptype: string }>();
 
   return (
     <div>
@@ -38,7 +26,10 @@ export const StatisticsPage = () => {
           ],
         }}
       />
-      <Tabs activeKey={tab} onChange={(value: any) => setTab(value)}>
+      <Tabs
+        activeKey={grouptype}
+        onChange={(value) => history.push(`/statistics/${value}`)}
+      >
         <TabPane
           style={{ overflow: 'none' }}
           tab="Учет абонентского потребления"

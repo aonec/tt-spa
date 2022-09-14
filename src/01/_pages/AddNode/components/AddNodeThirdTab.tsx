@@ -18,32 +18,19 @@ const AddNodeThirdTab = () => {
   const {
     handleCancel,
     currentTabKey,
-    setTab,
-    handleChangeTab,
-    handleNext,
-    addCalculator,
-    setAddCalculator,
-    addOdpu,
     setAddOdpu,
     communicationPipes,
     node,
     setAddNode,
     setNode,
-    addNode,
   } = useContext(AddNodeContext);
 
-  const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
   const {
     handleSubmit,
-    handleChange,
     values,
-    touched,
-    errors,
-    handleBlur,
     setFieldValue,
-    setValues,
   } = useFormik({
     initialValues: {
       communicationPipes: [],

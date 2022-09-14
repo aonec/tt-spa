@@ -25,7 +25,7 @@ export const MenuContainer = () => {
       hidden,
       userRoles.map((elem) => elem.key!)
     );
-  }, [userRoles, menuItems, privates, hidden]);
+  }, [userRoles]);
 
   return (
     <>
