@@ -17,9 +17,7 @@ import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
 
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
-  fetchcalc: (
-    payload: CalculatorsListRequestPayload
-  ) => CalculatorsListRequestPayload;
+  setFilter: (payload: CalculatorsListRequestPayload) => void;
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
@@ -28,7 +26,7 @@ interface DeviceProfileProps {
   clearSearchPayload: (payload: void) => void;
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
-  fetchcalc,
+  setFilter,
   isOpen,
   close,
   open,
@@ -82,7 +80,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      fetchcalc(values);
+      setFilter(values);
       searchStateChanged(values);
     },
   });
@@ -107,12 +105,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             isOpen={isOpen}
             handleClose={() => {
               close();
-              clearSearchPayload();
-              resetForm();
             }}
             handleOpen={() => open()}
             handleApply={() => {
-              fetchcalc(values);
+              submitForm();
               searchStateChanged(values);
             }}
             handleClear={() => {
