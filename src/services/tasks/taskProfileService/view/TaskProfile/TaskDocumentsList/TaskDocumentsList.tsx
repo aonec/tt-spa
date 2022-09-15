@@ -6,16 +6,12 @@ export const TaskDocumentsList: FC<TaskDocumentsListProps> = ({
   documents,
   handleDeleteDocument,
 }) => {
-  const list = useMemo(
-    () =>
-      documents.map((document) => (
-        <TaskDocumentsListItem
-          document={document}
-          handleDeleteDocument={handleDeleteDocument}
-        />
-      )),
-    [documents]
-  );
+  const list = documents.map((document) => (
+    <TaskDocumentsListItem
+      document={document}
+      handleDeleteDocument={handleDeleteDocument}
+    />
+  ));
 
   return <>{list}</>;
 };

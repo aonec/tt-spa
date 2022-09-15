@@ -1,0 +1,13 @@
+import React, { FC, useMemo } from 'react';
+import { Comment } from '../Comment';
+import { Wrapper } from './TaskCommentsList.styled';
+import { TaskCommentsListProps } from './TaskCommentsList.types';
+
+export const TaskCommentsList: FC<TaskCommentsListProps> = ({ comments }) => {
+  const commentsList = useMemo(
+    () =>
+      comments.map((comment) => <Comment key={comment.id} comment={comment} />),
+    [comments]
+  );
+  return <Wrapper>{commentsList}</Wrapper>;
+};

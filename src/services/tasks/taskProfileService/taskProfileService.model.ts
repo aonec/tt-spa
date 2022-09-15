@@ -13,9 +13,11 @@ import { AddCommentRequest } from './taskProfileService.types';
 const domain = createDomain('taskProfileService');
 
 const setComment = domain.createEvent<string>();
+const clearComment = domain.createEvent();
 const $commentText = domain
   .createStore<string>('')
-  .on(setComment, (_, newComment) => newComment);
+  .on(setComment, (_, newComment) => newComment)
+  .reset(clearComment);
 
 const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
 
@@ -96,7 +98,10 @@ forward({
   to: getNodeFx,
 });
 
-addCommentFx.doneData.watch(() => setComment(''));
+forward({
+  from: addCommentFx.doneData,
+  to: clearComment,
+});
 
 export const taskProfileService = {
   inputs: {
