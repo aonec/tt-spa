@@ -1,8 +1,8 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
-import { ManagingFirmUserListResponse } from 'myApi';
+import { OrganizationUserListResponse } from 'myApi';
 
-export const $staffList = createStore<ManagingFirmUserListResponse[] | null>(
+export const $staffList = createStore<OrganizationUserListResponse[] | null>(
   null
 );
 
@@ -12,7 +12,7 @@ export const refetchStaff = createEvent();
 
 export const fetchStaffFx = createEffect<
   void,
-  ManagingFirmUserListResponse[] | null
+  OrganizationUserListResponse[] | null
 >();
 
 export const StaffGate = createGate();

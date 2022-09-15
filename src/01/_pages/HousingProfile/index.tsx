@@ -20,11 +20,9 @@ const { TabPane } = TabsSC;
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
-  const path = `/housingMeteringDevices/${deviceId}`;
 
   const {
     data: device,
-    status,
     run,
   } = useAsync<PipeHousingMeteringDeviceResponse>();
 

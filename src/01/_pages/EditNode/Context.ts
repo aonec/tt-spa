@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
-import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
+import { PipeNodeResponse } from '../../../myApi';
 
 export interface EditNodeContextInterface {
   some?: string;

@@ -1,6 +1,6 @@
-import { ManagingFirmUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'myApi';
 
 export type UserInfoProps = {
-  currentUser: ManagingFirmUserResponse | null;
+  currentUser: OrganizationUserResponse | null;
   isLoading: boolean;
 };

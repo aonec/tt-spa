@@ -8,10 +8,9 @@ import {
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
-import { AdditionalAddressDescription } from './Header.styled';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { AdditionalAddressDescription } from './Header.styled';
 interface InformationInterface {
   device: CalculatorResponse | null;
 }
@@ -27,10 +26,9 @@ export const Information = ({ device }: InformationInterface) => {
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          {address && getHousingStockAddress(address, true)}
           <Tooltip title={additionalAdress}>
             <AdditionalAddressDescription>
-              {additionalAdress}
+              {address && getHousingStockAddress(address, true)}
             </AdditionalAddressDescription>
           </Tooltip>
         </Subtitle>

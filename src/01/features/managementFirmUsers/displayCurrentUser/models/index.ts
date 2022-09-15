@@ -1,8 +1,8 @@
 import { createGate } from 'effector-react';
 import { createStore, createEffect } from 'effector';
-import { ManagingFirmUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'myApi';
 
-export const $currentManagingFirmUser = createStore<ManagingFirmUserResponse | null>(
+export const $currentManagingFirmUser = createStore<OrganizationUserResponse | null>(
   null
 );
 
@@ -12,7 +12,7 @@ export const $userRoleTypes = $currentManagingFirmUser.map((user) =>
 
 export const fetchCurrentManagingFirmUser = createEffect<
   void,
-  ManagingFirmUserResponse
+  OrganizationUserResponse
 >();
 
 export const CurrentManagingFirmUserGate = createGate();

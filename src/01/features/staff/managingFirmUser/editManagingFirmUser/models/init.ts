@@ -13,9 +13,9 @@ import {
   EditManagingFirmUserGate,
   $isEditingManagingFirmUserInfoRequestFailed,
 } from './index';
-import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from 'myApi';
+import { OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
 
-const prepareFormData = (user: ManagingFirmUserResponse | null) => ({
+const prepareFormData = (user: OrganizationUserResponse | null) => ({
   email: user?.email,
   firstName: user?.firstName,
   lastName: user?.lastName,
@@ -60,7 +60,7 @@ sample({
   source: combine(
     editManagingUserInfoForm.$values,
     $managingFirmUser.map((user) => user?.id),
-    (values: ManagingFirmUserUpdateRequest, id) => ({ ...values, id })
+    (values: OrganizationUserUpdateRequest, id) => ({ ...values, id })
   ),
   clock: editManagingUserInfoForm.formValidated,
   target: editManagingUserInfoFx as any,

@@ -3,7 +3,7 @@ import { Checkbox, Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import _, { setWith } from 'lodash';
+import _ from 'lodash';
 
 import {
   ButtonTT,
@@ -16,9 +16,14 @@ import {
   StyledModalBody,
 } from '../../../../../tt-components';
 import { getReport } from './apiCalculatorReport';
-import { CalculatorResponse } from '../../../../../../myApi';
+import {
+  CalculatorResponse,
+  EReportFormat,
+  EReportType,
+} from '../../../../../../myApi';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { ModalCalculatorReportFormT } from './ModalCalculatorReport.types';
 
 interface ModalCalculatorReportFormInterface {
   device: CalculatorResponse;
@@ -32,7 +37,7 @@ const ModalCalculatorReportForm = ({
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
   const { model, serialNumber, address, nodes } = device;
-  const { number, street } = address || {};
+  const { number, street } = address?.address?.mainAddress || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
@@ -72,7 +77,13 @@ const ModalCalculatorReportForm = ({
 
   const resources = _.keys(filteredGroup);
 
-  const { handleSubmit, values, touched, errors, setFieldValue } = useFormik({
+  const {
+    handleSubmit,
+    values,
+    touched,
+    errors,
+    setFieldValue,
+  } = useFormik<ModalCalculatorReportFormT>({
     initialValues: {
       period: 'lastSevenDays',
       detail: 'daily',
@@ -87,13 +98,22 @@ const ModalCalculatorReportForm = ({
     }),
     onSubmit: async () => {
       const { nodeId, detail, resource } = values;
-      const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
-      const end = `${values.end.format('YYYY-MM-DD')}`;
-      const shortLink = `Reports/${
-        withNs ? `ReportWithNs` : 'Report'
-      }?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const begin = values.begin.toISOString(true);
+      const end = values.end.endOf('day').toISOString(true);
 
-      getReport(shortLink).then((response: any) => {
+      const shortLink = `Reports/Report`;
+      if (!nodeId) {
+        return null;
+      }
+      const params = {
+        NodeId: nodeId,
+        ReportType: detail as EReportType,
+        From: begin,
+        To: end,
+        ReportFormat: withNs ? EReportFormat.Rso : EReportFormat.Consumption,
+      };
+
+      getReport(shortLink, params).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
           ';'
         );
@@ -251,9 +271,9 @@ const ModalCalculatorReportForm = ({
             allowClear={false}
             value={[values.begin, values.end]}
             placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event: any) => {
-              setFieldValue('begin', event[0]);
-              setFieldValue('end', event[1]);
+            onChange={(event) => {
+              setFieldValue('begin', event?.[0]);
+              setFieldValue('end', event?.[1]);
             }}
             disabled={values.customPeriodDisabled}
           />

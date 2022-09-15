@@ -5,6 +5,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
+import { DisplayPersonalNumbersListContainer } from 'services/objects/displayPersonalNumbersListService';
 import { SearchType } from '../../objectsProfileService.types';
 import {
   Wrapper,
@@ -16,11 +17,12 @@ import { ObjectsProfileProps } from './ObjectsProfile.types';
 const objectListComponentsLookup: { [key: string]: FC } = {
   [SearchType.Houses]: ObjectsListContainer,
   [SearchType.Apartments]: ApartmentsListContainer,
-  [SearchType.PersonaNumbers]: () => <></>,
+  [SearchType.PersonaNumbers]: DisplayPersonalNumbersListContainer,
 };
 
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleExportGroupReport,
+  handleOpenCreateResourceDisconnectionModal,
   searchType,
 }) => {
   const menuButtons = useMemo(
@@ -29,8 +31,12 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
       },
+      {
+        title: 'Создать оключение ресурса на объекте',
+        onClick: handleOpenCreateResourceDisconnectionModal,
+      },
     ],
-    [handleExportGroupReport]
+    [handleExportGroupReport, handleOpenCreateResourceDisconnectionModal]
   );
 
   const objectsProfileComponent = useMemo(() => {
@@ -59,6 +65,9 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
             </Link>
             <Link to={`/objects/${SearchType.Apartments}`}>
               <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
+            </Link>
+            <Link to={`/objects/${SearchType.PersonaNumbers}`}>
+              <Radio value={SearchType.PersonaNumbers}>Поиск по лицевому счету</Radio>
             </Link>
           </Radio.Group>
         </SearchTypesWrapper>

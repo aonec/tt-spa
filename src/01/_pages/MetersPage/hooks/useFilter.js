@@ -50,31 +50,40 @@ export function useAutocomplete(street, streets) {
         )
       : null;
 
-  const matchesArray =
-    matches?.ratings
-      .filter((value) => {
-        const formatedSearchString = street.toUpperCase();
-        const formatedStreetString = value.target.toUpperCase();
+  const matchesRating = matches?.ratings || [];
 
-        const wordsInStreetName = formatedStreetString.split(' ');
+  const matchesArrayFilteredByWords = matchesRating.filter((value) => {
+    const formatedSearchString = street.toUpperCase();
+    const formatedStreetString = value.target.toUpperCase();
 
-        const isRequestStringSimilarToStreet = formatedStreetString.includes(
-          formatedSearchString
-        );
+    const wordsInStreetName = formatedStreetString.split(' ');
 
-        return wordsInStreetName.reduce(
-          (acc, elem) =>
-            acc ||
-            isRequestStringSimilarToStreet ||
-            elem.startsWith(formatedSearchString),
-          false
-        );
-      })
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ target }) => ({ value: target })) || [];
-  const match = matchesArray[0]?.value;
+    return wordsInStreetName.some((elem) =>
+      elem.startsWith(formatedSearchString)
+    );
+  });
 
-  const options = matchesArray?.length && street ? [matchesArray[0]] : [];
+  const matchesArrayFilteredByFullString = matchesRating.filter((value) => {
+    const formatedSearchString = street.toUpperCase();
+    const formatedStreetString = value.target.toUpperCase();
+
+    const isRequestStringSimilarToStreet = formatedStreetString.includes(
+      formatedSearchString
+    );
+
+    return isRequestStringSimilarToStreet;
+  });
+  const matchesArray = matchesArrayFilteredByWords.length
+    ? matchesArrayFilteredByWords
+    : matchesArrayFilteredByFullString;
+
+  const preparedMatchesArray = matchesArray
+    .sort((a, b) => b.rating - a.rating)
+    .map(({ target }) => ({ value: target }));
+  const match = preparedMatchesArray[0]?.value;
+
+  const options =
+    preparedMatchesArray?.length && street ? [preparedMatchesArray[0]] : [];
 
   return {
     match,

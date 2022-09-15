@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CalendarIcon, MapIcon, UserIcon } from 'ui-kit/icons';
+import { CalendarIcon, MapIcon, TimerIcon, UserIcon } from 'ui-kit/icons';
 
 export const TaskItemWrapper = styled.div`
   min-width: 850px;
@@ -10,10 +10,6 @@ export const TaskItemWrapper = styled.div`
   color: #272f5a;
   transition: 0.2s;
   cursor: pointer;
-
-  &:first-child {
-    margin-top: 0px;
-  }
 
   &:hover {
     border-color: #11043319;
@@ -46,10 +42,6 @@ export const TimerRowWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 8px;
-
-  .status {
-    margin-left: 8px;
-  }
 `;
 
 export const DeviceInfoWrapper = styled.div`
@@ -64,7 +56,7 @@ export const DeviceInfoWrapper = styled.div`
 export const InfoBlockWrapper = styled.div`
   display: flex;
   align-items: center;
-  
+
   svg:nth-child(1) {
     margin-left: 0px !important;
   }
@@ -75,34 +67,6 @@ export const TaskNameWrapper = styled.div`
   font-size: 16px;
   color: #272f5a;
   white-space: nowrap;
-`;
-
-export const TimeLine = styled.div`
-  position: relative;
-  flex-grow: 1;
-  height: 4px;
-  background: var(--bg);
-  border-radius: 4px;
-`;
-
-export const Line = styled.div<{
-  background: string;
-  width: string;
-}>`
-  position: absolute;
-  border-radius: inherit;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: ${({ background }) => background};
-  width: ${({ width }) => width};
-`;
-
-export const TimeLineWrapper = styled.div`
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 export const TimeWrapper = styled.span<{ fail?: boolean }>`
@@ -129,4 +93,16 @@ export const CalendarIconSC = styled(CalendarIcon)`
 
 export const UserIconSC = styled(UserIcon)`
   margin-left: 10px;
+`;
+
+export const RedTimerIcon = styled(TimerIcon)`
+  path {
+    fill: #fc525b;
+  }
+`;
+
+export const Wrapper = styled.div`
+  &:first-child {
+    margin-top: 0px;
+  }
 `;

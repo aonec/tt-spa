@@ -14,7 +14,6 @@ export const SettingsPage: FC<SettingsPageProps> = ({
 }) => {
   const { section } = useParams<{ section: string }>();
   const history = useHistory();
-
   return (
     <>
       <InspectorAddressesResetModalContainer />

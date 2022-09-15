@@ -11,22 +11,24 @@ import {
 } from '01/_api/objects_page';
 
 export const useFetchPage = (state, dispatch) => {
-  const { replace } = useHistory();
   const { url, path, isExact, params } = useRouteMatch('/:page/:id');
   const pageApart = useRouteMatch(path + '/apartments');
   const pageDevice = useRouteMatch(path + '/devices');
 
+  const { isExact: isPageDeviceExact, url: pageDeviceUrl } = pageDevice || {};
+  const { isExact: isPageApartmentExact } = pageApart || {};
+  const { info, events, devices, apartments } = state;
+
   React.useEffect(() => {
-    const { id, info, events, devices } = state;
     if (isExact && !info) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
     }
-    if (pageDevice?.isExact && !state.devices) {
-      getDevices(pageDevice.url).then((data) =>
+    if (isPageDeviceExact && !devices) {
+      getDevices(pageDeviceUrl).then((data) =>
         dispatch({ type: 'success', data })
       );
     }
-    if (pageApart?.isExact && !state.apartments && params.id) {
+    if (isPageApartmentExact && !apartments && params.id) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
       getApartments({ housingStockId: params.id }).then((data) =>
         dispatch({ type: 'success', data })
@@ -36,5 +38,14 @@ export const useFetchPage = (state, dispatch) => {
     if ((info || devices) && !events) {
       getEvents(params.id).then((data) => dispatch({ type: 'success', data }));
     }
-  }, [isExact, url, state, pageDevice, pageApart, replace]);
+  }, [
+    isExact,
+    url,
+    info,
+    events,
+    apartments,
+    devices,
+    isPageDeviceExact,
+    isPageApartmentExact,
+  ]);
 };

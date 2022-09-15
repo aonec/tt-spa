@@ -36,33 +36,23 @@ export type GetTasksListRequestPayload = {
   OrderBy?: EOrderByRule;
 };
 
-export function getEngineeringElement(type: ETaskEngineeringElement) {
-  const types: { [key in ETaskEngineeringElement]: string } = {
-    [ETaskEngineeringElement.Node]: 'Общедомовой узел учета',
-    [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
-    [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
-  };
+export const EngineeringElementLookUp: {
+  [key in ETaskEngineeringElement]: string;
+} = {
+  [ETaskEngineeringElement.Node]: 'Общедомовой узел учета',
+  [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
+  [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
+};
 
-  return types[type];
-}
+export const TimeStatusesLookUp: { [key in EStageTimeStatus]: string } = {
+  [EStageTimeStatus.Normal]: 'Нормально',
+  [EStageTimeStatus.RunningOut]: 'Истекает',
+  [EStageTimeStatus.Expired]: 'Просроченно',
+};
 
-export function getTimeStatuses(type: EStageTimeStatus) {
-  const types: { [key in EStageTimeStatus]: string } = {
-    [EStageTimeStatus.Normal]: 'Нормально',
-    [EStageTimeStatus.RunningOut]: 'Истекает',
-    [EStageTimeStatus.Expired]: 'Просроченно',
-  };
-
-  return types[type];
-}
-
-export function getResource(type: EResourceType) {
-  const types: { [key in EResourceType]: string } = {
-    [EResourceType.ColdWaterSupply]: 'Холодная вода',
-    [EResourceType.HotWaterSupply]: 'Горячая вода',
-    [EResourceType.Heat]: 'Тепло',
-    [EResourceType.Electricity]: 'Электричество',
-  };
-
-  return types[type];
-}
+export const ResourceLookUp: { [key in EResourceType]: string } = {
+  [EResourceType.ColdWaterSupply]: 'Холодная вода',
+  [EResourceType.HotWaterSupply]: 'Горячая вода',
+  [EResourceType.Heat]: 'Тепло',
+  [EResourceType.Electricity]: 'Электричество',
+};

@@ -7,7 +7,7 @@ export const SubMenu: FC<SubMenuProps> = ({ subMenuItems }) => {
   return (
     <Wrapper>
       {subMenuItems.map((elem) => (
-        <SubMenuItem subMenuItem={elem} />
+        <SubMenuItem subMenuItem={elem} key={elem.path} />
       ))}
     </Wrapper>
   );

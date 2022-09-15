@@ -17,9 +17,7 @@ import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
 
 const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
-  fetchcalc: (
-    payload: CalculatorsListRequestPayload
-  ) => CalculatorsListRequestPayload;
+  setFilter: (payload: CalculatorsListRequestPayload) => void;
   isOpen: boolean;
   open: (payload: void) => void;
   close: (payload: void) => void;
@@ -28,14 +26,13 @@ interface DeviceProfileProps {
   clearSearchPayload: (payload: void) => void;
 }
 export const DevicesProfile: FC<DeviceProfileProps> = ({
-  fetchcalc,
+  setFilter,
   isOpen,
   close,
   open,
   searchState,
   clearSearchPayload,
 }) => {
-
   const menuButtonArr = [
     {
       title: 'Выгрузить список приборов',
@@ -70,7 +67,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       'Filter.Address.Corpus': searchState?.['Filter.Address.Corpus'],
       'Filter.Address.HouseCategory':
         searchState?.['Filter.Address.HouseCategory'],
-      'Filter.HousingStockId': searchState?.['Filter.HousingStockId'],
       'Filter.NodeStatus': searchState?.['Filter.NodeStatus'],
       Question: searchState?.Question,
       OrderRule: searchState?.OrderRule,
@@ -84,7 +80,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      fetchcalc(values);
+      setFilter(values);
       searchStateChanged(values);
     },
   });
@@ -109,12 +105,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             isOpen={isOpen}
             handleClose={() => {
               close();
-              clearSearchPayload();
-              resetForm();
             }}
             handleOpen={() => open()}
             handleApply={() => {
-              fetchcalc(values);
+              submitForm();
               searchStateChanged(values);
             }}
             handleClear={() => {

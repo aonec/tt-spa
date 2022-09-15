@@ -12,7 +12,7 @@ import moment from 'moment';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { ReadingsHistoryButton } from "ui-kit/shared_components/reading_history_button";
+import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
 
 export function ApartmentDeviceItem({
   device,
@@ -145,7 +145,7 @@ const DeviceReadingsContainer = styled.div`
   margin: 0 auto;
   border-radius: 4px;
   border: 1px solid ${(props) => (props.color ? props.color : 'var(--main-90)')};
-  max-width: 200px;
+  max-width: 150px;
   padding: 8px 8px 8px 12px;
 
   border-left-width: 4px;
@@ -165,8 +165,8 @@ const DeviceReadingsContainer = styled.div`
 
 const DeviceItem = styled.div`
   display: inline-grid;
-  grid-template-columns: 375px 110px 200px 200px 2.2fr;
-  grid-gap: 15px;
+  grid-template-columns: 375px 100px 145px 145px 2.2fr;
+  grid-gap: 10px;
   padding: 0 16px 16px;
   border-bottom: 1px solid #dcdee4;
   align-items: center;

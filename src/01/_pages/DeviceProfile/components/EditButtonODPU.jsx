@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import {
-  useHistory,
-  useRouteMatch,
   useParams,
   NavLink,
   useLocation,
 } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
 import { setModalDeregisterVisible } from '../../../Redux/actions/actions';

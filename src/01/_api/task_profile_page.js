@@ -86,7 +86,7 @@ export async function deleteDoc(docId) {
     docId = '';
   }
   try {
-    const res = await axios.delete(`documents/${docId}`);
+    const res = await axios.delete(`Documents/${docId}`);
     const { url = '' } = res;
     const responseId = Number(url.match(/(\d*)$/)[0]);
     return responseId;

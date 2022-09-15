@@ -26,16 +26,22 @@ import { ReactComponent as DateIcon } from './svg/date.svg';
 import { ReactComponent as DownloadIcon } from './svg/download.svg';
 import { ReactComponent as ExitIcon } from './svg/exit.svg';
 import { ReactComponent as TimerIcon } from './svg/timer.svg';
-import { ReactComponent as RedTimerIcon } from './svg/redTimer.svg';
 import { ReactComponent as OkIcon } from './svg/ok.svg';
 import { ReactComponent as XIcon } from './svg/x.svg';
 import { ReactComponent as MapIcon } from './svg/map.svg';
 import { ReactComponent as NumberIcon } from './svg/number.svg';
 import { ReactComponent as CalendarIcon } from './svg/calendar.svg';
+import { ReactComponent as MoreIcon } from './svg/more.svg';
 import { ReactComponent as CalculatorIcon } from './svg/calculator.svg';
+import { ReactComponent as ChoiceIcon } from './svg/choice.svg';
+import { ReactComponent as FinishIcon } from './svg/finish.svg';
+import { ReactComponent as ChevronIcon } from './svg/chevron.svg';
 
 export {
-  RedTimerIcon,
+  FinishIcon,
+  ChoiceIcon,
+  MoreIcon,
+  StopIcon,
   CalculatorIcon,
   CalendarIcon,
   NumberIcon,
@@ -47,7 +53,6 @@ export {
   HistoryIcon,
   SwitchIcon,
   InfoIcon,
-  StopIcon,
   WarningIcon,
   ColdWaterSupplyIcon,
   HotWaterSupplyIcon,
@@ -70,4 +75,5 @@ export {
   DateIcon,
   DownloadIcon,
   ExitIcon,
+  ChevronIcon,
 };

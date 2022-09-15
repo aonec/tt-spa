@@ -1,5 +1,4 @@
 import { ReadingsStateType } from '01/_api/houses_readings_page';
-import { IndividualDeviceType } from '../../../types';
 import { ActionTypes } from '../ducks/readings/actionCreators';
 import { ReadingsActionsType } from '../ducks/readings/contracts/actionTypes';
 import { IndividualDeviceListItemResponse } from '../../../myApi';

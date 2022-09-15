@@ -6,7 +6,6 @@ import {
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useStore } from 'effector-react';
-import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';

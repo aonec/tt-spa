@@ -1,6 +1,7 @@
 import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
+import moment from 'moment';
 import {
   ApartmentActResponse,
   DocumentResponse,
@@ -41,7 +42,9 @@ const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
   const hasActTypes = filters.actTypes?.length;
   const hasActResources = filters.resources?.length;
 
-  let filteredActs = acts;
+  let filteredActs = acts.sort((first, second) =>
+    moment(second.actJobDate).diff(moment(first.actJobDate))
+  );
 
   if (hasActTypes) {
     filteredActs = filteredActs.filter((act) =>

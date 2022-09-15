@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { Form, message, Select } from 'antd';
+import { Form, message, Select, Switch } from 'antd';
 import moment from 'moment';
 import { resources } from '../../../tt-components/localBases';
 import {
@@ -40,6 +40,8 @@ import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
+import { SwitchWrapper, TextWrapper } from './IndividualDeviceEditForm.styled';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -61,6 +63,8 @@ const IndividualDeviceEditForm = ({
 }: FormEditODPUInterface) => {
   const [loading, setLoading] = useState(false);
 
+  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(9);
+
   const history = useHistory();
 
   const {
@@ -77,21 +81,24 @@ const IndividualDeviceEditForm = ({
     scaleFactor,
     sealInstallationDate,
     deviceMountPlace,
+    isPolling,
   } = device;
 
   const initialValues = {
     resource,
     model,
+    isPolling,
     serialNumber,
     lastCheckingDate: toMoment(lastCheckingDate),
     futureCheckingDate: futureCheckingDate ? moment(futureCheckingDate) : null,
-    rateType,
     apartmentId: address?.apartmentId,
     mountPlaceId: deviceMountPlace?.id,
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
     sealNumber: device.sealNumber,
-    sealInstallationDate: moment(sealInstallationDate).format('DD.MM.YYYY'),
+    sealInstallationDate: sealInstallationDate
+      ? moment(sealInstallationDate)
+      : null,
   };
 
   const {
@@ -107,11 +114,8 @@ const IndividualDeviceEditForm = ({
     onSubmit: async () => {
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.toISOString(true),
-        futureCheckingDate: values.futureCheckingDate?.toISOString(true),
         resource: values.resource,
         model: values.model,
-        rateType: values.rateType,
         bitDepth: values.bitDepth,
         scaleFactor: values.scaleFactor,
         sealNumber: values.sealNumber,
@@ -120,6 +124,7 @@ const IndividualDeviceEditForm = ({
           'DD.MM.YYYY'
         ).toISOString(true),
         mountPlaceId: values.mountPlaceId,
+        isPolling: values.isPolling,
       };
 
       setLoading(true);
@@ -167,7 +172,9 @@ const IndividualDeviceEditForm = ({
         <IndividualDeviceMountPlacesGate apartmentId={address?.apartmentId} />
       )}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
         style={{ paddingBottom: 40, maxWidth: 480 }}
       >
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
@@ -200,11 +207,15 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Модель прибора" style={styles.w100}>
             <InputTT
+              ref={refs[0]}
               name="model"
               placeholder="Укажите модель..."
               type="text"
               onChange={handleChange}
               value={values.model}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(0)(e);
+              }}
               onBlur={handleBlur}
             />
             <Alert name="model" />
@@ -218,6 +229,10 @@ const IndividualDeviceEditForm = ({
               onChange={handleChange}
               value={values.serialNumber}
               onBlur={handleBlur}
+              ref={refs[1]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(1)(e);
+              }}
             />
             <Alert name="serialNumber" />
           </Form.Item>
@@ -227,9 +242,13 @@ const IndividualDeviceEditForm = ({
               value={values.mountPlaceId || undefined}
               onChange={(value) => setFieldValue('mountPlaceId', value)}
               placeholder="Укажите место"
+              ref={refs[2]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(2)(e);
+              }}
             >
               {mountPlaces?.map((elem) => (
-                <Select.Option value={elem.id}>
+                <Select.Option value={elem.id} key={elem.id}>
                   {elem.description}
                 </Select.Option>
               ))}
@@ -249,6 +268,10 @@ const IndividualDeviceEditForm = ({
                 value={values.bitDepth || void 0}
                 step="1"
                 onBlur={handleBlur}
+                ref={refs[3]}
+                onKeyDown={(e) => {
+                  keyDownEnterGuardedHandler(3)(e);
+                }}
               />
             </Form.Item>
             <Form.Item label="Множитель" style={styles.w100}>
@@ -260,42 +283,51 @@ const IndividualDeviceEditForm = ({
                 value={values.scaleFactor || void 0}
                 step="1"
                 onBlur={handleBlur}
+                ref={refs[4]}
+                onKeyDown={(e) => {
+                  keyDownEnterGuardedHandler(4)(e);
+                }}
               />
             </Form.Item>
           </Flex>
 
-          <div></div>
+          <SwitchWrapper>
+            <Switch
+              checked={values.isPolling}
+              onChange={(value) => setFieldValue('isPolling', value)}
+            />
+            <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+          </SwitchWrapper>
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative
-              value={values.lastCheckingDate?.toISOString(true) || null}
-              onChange={(date) => {
-                setFieldValue('lastCheckingDate', moment(date));
-                setFieldValue(
-                  'futureCheckingDate',
-                  moment(date).add(
-                    values.resource === EResourceType.Electricity ? 16 : 6,
-                    'years'
-                  )
-                );
+              ref={refs[5]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(5)(e);
               }}
+              value={values.lastCheckingDate?.toISOString(true) || null}
+              disabled
             />
-            <Alert name="lastCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Дата Следующей поверки" style={styles.w100}>
             <DatePickerNative
-              value={values.futureCheckingDate?.toISOString(true) || null}
-              onChange={(date) => {
-                setFieldValue('futureCheckingDate', moment(date));
+              ref={refs[6]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(6)(e);
               }}
+              value={values.futureCheckingDate?.toISOString(true) || null}
+              disabled
             />
-            <Alert name="futureCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Пломба" style={styles.w100}>
             <Flex>
               <InputTT
+                ref={refs[7]}
+                onKeyDown={(e) => {
+                  keyDownEnterGuardedHandler(7)(e);
+                }}
                 placeholder="Номер пломбы"
                 value={values.sealNumber}
                 onChange={(value: any) =>
@@ -306,25 +338,17 @@ const IndividualDeviceEditForm = ({
           </Form.Item>
 
           <Form.Item label="Дата установки пломбы" style={styles.w100}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              placeholder="Укажите дату..."
-              onChange={(value) => {
-                value &&
-                  setFieldValue(
-                    'sealInstallationDate',
-                    value.format('DD.MM.YYYY')
-                  );
+            <DatePickerNative
+              ref={refs[8]}
+              onKeyDown={(e) => {
+                keyDownEnterGuardedHandler(8)(e);
               }}
-              value={
-                values.sealInstallationDate &&
-                moment(values.sealInstallationDate, 'DD.MM.YYYY').isValid()
-                  ? moment(values.sealInstallationDate, 'DD.MM.YYYY')
-                  : undefined
-              }
-              name="futureCheckingDate"
+              value={values.sealInstallationDate?.toISOString(true) || null}
+              onChange={(date) => {
+                setFieldValue('sealInstallationDate', moment(date));
+              }}
             />
-            <Alert name="futureCheckingDate" />
+            <Alert name="sealInstallationDate" />
           </Form.Item>
         </StyledFormPage>
 
@@ -332,14 +356,20 @@ const IndividualDeviceEditForm = ({
           <Header>Компонент в разработке</Header>
         </StyledFormPage>
 
-        <StyledFooter form>
-          <ButtonTT color="blue" type={'submit'} disabled={loading}>
+        <StyledFooter right>
+          <ButtonTT
+            color="blue"
+            type="button"
+            disabled={loading}
+            onClick={handleSubmit}
+          >
             {loading ? <Loader show /> : 'Сохранить'}
           </ButtonTT>
 
           <ButtonTT
             style={{ marginLeft: 16 }}
             color="white"
+            type="button"
             onClick={(e: BaseSyntheticEvent) => {
               e.stopPropagation();
               e.preventDefault();

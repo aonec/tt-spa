@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
@@ -6,6 +6,7 @@ import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
+import { TaskGroupingFilter } from 'myApi';
 const { TabPane } = TabsSC;
 
 export const TasksProfile: FC<TasksProfileProps> = ({
@@ -26,8 +27,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   housingManagments,
   perpetrators,
   streets,
-  cities
-
+  cities,
+  isSpectator,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -42,6 +43,12 @@ export const TasksProfile: FC<TasksProfileProps> = ({
 
   const tasksList = useMemo(() => <TasksList tasks={tasks} />, [tasks]);
 
+  useEffect(() => {
+    if (isSpectator && grouptype === TaskGroupingFilter.Executing) {
+      history.push('/tasks/list/Observing');
+    }
+  });
+
   return (
     <Wrapper>
       <PageHeader
@@ -55,8 +62,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           ],
         }}
       />
+
       <TabsSC activeKey={grouptype} onChange={history.push}>
-        <TabPane tab={executingTabText} key="Executing"></TabPane>
+        {!isSpectator && (
+          <TabPane tab={executingTabText} key="Executing"></TabPane>
+        )}
         <TabPane tab={observingTabText} key="Observing"></TabPane>
         <TabPane tab="Архив" key="Archived"></TabPane>
       </TabsSC>

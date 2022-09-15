@@ -54,7 +54,7 @@ const ApartmentReadingLine = ({
     sliderIndex,
     managementFirmConsumptionRates,
     numberOfPreviousReadingsInputs,
-    closed,
+    closed
   );
 
   const userRoletypes = useStore($userRoleTypes);
@@ -117,7 +117,7 @@ const ApartmentReadingLine = ({
 
   return (
     <>
-      <SelectSwitchDeiveTypeModal
+      <SelectSwitchDeviceTypeModal
         show={isModalOpen}
         close={() => setIsModalOpen(false)}
         deviceId={device.id}
@@ -143,12 +143,7 @@ const ApartmentReadingLine = ({
           <Tooltip title="История показаний">
             <HistoryIcon
               style={{ cursor: 'pointer' }}
-              onClick={
-                () => openReadingsHistoryModal(device.id)
-                // history.push(
-                //   `/apartment/${id}/individualDevice/${device.id}/readingHistory`
-                // )
-              }
+              onClick={() => openReadingsHistoryModal(device.id)}
             />
           </Tooltip>
           <Space />
@@ -161,7 +156,7 @@ const ApartmentReadingLine = ({
 
 type SwitchType = 'switch' | 'check';
 
-const SelectSwitchDeiveTypeModal = ({
+export const SelectSwitchDeviceTypeModal = ({
   show,
   close,
   deviceId,

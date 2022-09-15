@@ -8,6 +8,7 @@ import {
 import MonthSlider from '../../../shared/ui/devices/MonthSlider';
 import { useState } from 'react';
 import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
+import { Wrapper } from './ApartmentDevices.styled';
 export const ApartmentDevicesContext = React.createContext<
   IndividualDeviceListItemResponse[] | null
 >(null);
@@ -28,9 +29,11 @@ export const ApartmentDevices = ({
   return (
     <ApartmentDevicesContext.Provider value={items}>
       {
-        <>
+        <Wrapper>
           <Header
-            devicesCount={items.filter((elem) => elem.closingDate).length as any}
+            devicesCount={
+              items.filter((elem) => elem.closingDate).length as any
+            }
             showClosed={showClosed}
             setShowClosed={setShowClosed as any}
             slider={
@@ -49,7 +52,7 @@ export const ApartmentDevices = ({
             sliderIndex={sliderIndex}
             showClosed={showClosed}
           />
-        </>
+        </Wrapper>
       }
     </ApartmentDevicesContext.Provider>
   );

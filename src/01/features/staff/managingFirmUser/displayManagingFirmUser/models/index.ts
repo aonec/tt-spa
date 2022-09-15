@@ -1,15 +1,15 @@
 import { createGate } from 'effector-react';
 import { createStore, createEffect } from 'effector';
-import { ManagingFirmUserResponse } from 'myApi';
+import { OrganizationUserResponse } from 'myApi';
 
-export const $managingFirmUser = createStore<ManagingFirmUserResponse | null>(
+export const $managingFirmUser = createStore<OrganizationUserResponse | null>(
   null
 );
 export const $isFetchingManagingFirmUserFailed = createStore(false);
 
 export const fetchManagingFirmUserFx = createEffect<
   number,
-  ManagingFirmUserResponse | null
+  OrganizationUserResponse | null
 >();
 
 export const ManagingFirmUserGate = createGate<{ id: number }>();
