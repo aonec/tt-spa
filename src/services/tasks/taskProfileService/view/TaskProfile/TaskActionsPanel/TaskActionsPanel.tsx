@@ -1,32 +1,40 @@
-import React, { FC, SetStateAction, useState } from 'react';
+import React, { FC, SetStateAction, useCallback, useState } from 'react';
 import {
   HalfSizeActionsWrapper,
   PushStageButtonWrapper,
   Wrapper,
   BottomContentWrapper,
   BottomActionWrapper,
+  TaskActionInfoElementWrapper,
 } from './TaskActionsPanel.styled';
 import {
   TaskActionsComponent,
   TaskActionsPanelProps,
 } from './TaskActionsPanel.types';
-import { useTaskPanelActions } from './TaskActionsPanel.hook';
+import {
+  useTaskPanelActions,
+  useTaskPanelInfoActions,
+} from './TaskActionsPanel.hook';
 import { StagePushRequest } from 'myApi';
 import { Button } from 'ui-kit/Button';
 
-export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
+export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
+  actions,
+  taskType,
+}) => {
   const [pushStagePayload, setPushStagePayload] = useState<StagePushRequest>(
     {}
   );
 
-  const handleStagePayloadChanged = (
-    dispatch: SetStateAction<StagePushRequest>
-  ) => {
-    if (typeof dispatch === 'function')
-      return void setPushStagePayload(dispatch);
+  const handleStagePayloadChanged = useCallback(
+    (dispatch: SetStateAction<StagePushRequest>) => {
+      if (typeof dispatch === 'function')
+        return void setPushStagePayload(dispatch);
 
-    setPushStagePayload((prev) => ({ ...prev, ...dispatch }));
-  };
+      setPushStagePayload((prev) => ({ ...prev, ...dispatch }));
+    },
+    [setPushStagePayload]
+  );
 
   const {
     halfSizeActions,
@@ -38,9 +46,16 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({ actions }) => {
     <Component handleChange={handleStagePayloadChanged} type={type} />
   );
 
+  const actionInfoComponents = useTaskPanelInfoActions(taskType);
+
   return (
     <Wrapper>
-      <HalfSizeActionsWrapper>
+      {actionInfoComponents.map(({ Component }) => (
+        <TaskActionInfoElementWrapper>
+          <Component />
+        </TaskActionInfoElementWrapper>
+      ))}
+      <HalfSizeActionsWrapper isOneElement={halfSizeActions.length === 1}>
         {halfSizeActions.map(renderTaskAction)}
       </HalfSizeActionsWrapper>
       {fullSizeActions.map(renderTaskAction)}

@@ -4,11 +4,14 @@ import {
   TaskPanelComponentsGroupsName,
   TaskPanelComponentAdditionalType,
   TaskPanelInputPositionType,
+  TaskActionPanelInfoComponent,
 } from './TaskActionsPanel.types';
 import { AddPerpetratorContainer } from './addPerpetratorService';
 import { EmailNotifyContainer } from './emailNotifyService';
 import { AttachDocument } from './AttachDocument';
 import { SwitchStageSelectContainer } from './switchStageSelectService';
+import { SetNextStageDeadlineDatepicker } from './SetNextStageDeadlineDatepicker';
+import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService/setNextStageDeadlineService.container';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -43,6 +46,18 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.Switch,
     Component: SwitchStageSelectContainer,
     position: TaskPanelInputPositionType.Middle,
+  },
+  {
+    actionType: EStageActionType.SetNextStageDeadline,
+    Component: SetNextStageDeadlineDatepicker,
+    position: TaskPanelInputPositionType.Middle,
+  },
+];
+
+export const taskActionInfoComppnents: TaskActionPanelInfoComponent[] = [
+  {
+    taskType: 'IndividualDeviceCheck',
+    Component: IndividualDeviceCheckInfoContainer,
   },
 ];
 

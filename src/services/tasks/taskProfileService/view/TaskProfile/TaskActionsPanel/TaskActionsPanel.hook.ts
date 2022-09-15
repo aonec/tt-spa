@@ -6,6 +6,7 @@ import { EStageActionType } from 'myApi';
 import { useMemo } from 'react';
 import {
   actionComponentPositionNamesDictionary,
+  taskActionInfoComppnents,
   taskActionsComponents as allTaskActionsComponents,
 } from './TaskActionsPanel.constants';
 
@@ -34,4 +35,8 @@ export function useTaskPanelActions(actions: EStageActionType[]) {
   }, [tasksActionsComponents]);
 
   return componentsGroups;
+}
+
+export function useTaskPanelInfoActions(taskType: string) {
+  return taskActionInfoComppnents.filter((elem) => elem.taskType === taskType);
 }

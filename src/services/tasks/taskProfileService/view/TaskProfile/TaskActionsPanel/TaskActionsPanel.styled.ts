@@ -13,9 +13,10 @@ export const PushStageButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export const HalfSizeActionsWrapper = styled.div`
+export const HalfSizeActionsWrapper = styled.div<{ isOneElement?: boolean }>`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: ${({ isOneElement }) =>
+    isOneElement ? '1fr' : '1fr 1fr'};
   grid-column-gap: 15px;
 `;
 
@@ -27,4 +28,8 @@ export const BottomContentWrapper = styled.div`
 
 export const BottomActionWrapper = styled.div`
   width: calc(100% - 185px);
+`;
+
+export const TaskActionInfoElementWrapper = styled.div`
+  margin-bottom: 15px;
 `;

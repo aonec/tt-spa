@@ -66,7 +66,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             timer={timer}
             taskName={taskName || ''}
           />
-          <TaskActionsPanel handlePushStage={() => {}} actions={taskActions} />
+          {task.type && (
+            <TaskActionsPanel
+              handlePushStage={() => {}}
+              taskType={task.type}
+              actions={taskActions}
+            />
+          )}
           <TaskWrapper>
             <TaskInfoWrapper>
               <TaskDocumentsList
