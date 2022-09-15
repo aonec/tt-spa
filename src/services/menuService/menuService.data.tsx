@@ -83,6 +83,12 @@ export const menuItems: MenuItem[] = [
     icon: SettingsIcon,
     type: MenuType.Settings,
   },
+  {
+    title: 'Настройки',
+    path: '/adminSettings/disabledResources',
+    icon: SettingsIcon,
+    type: MenuType.SettingsAdministrator,
+  },
 ];
 
 export const privates: MenuFiltrationConfig = {
@@ -90,9 +96,8 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.ActsJournal]: [ESecuredIdentityRoleName.Operator],
   [MenuType.Reports]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.Settings]: [ESecuredIdentityRoleName.SeniorOperator],
-  [MenuType.CompanyProfile]: [
-    ESecuredIdentityRoleName.Administrator,
-  ],
+  [MenuType.CompanyProfile]: [ESecuredIdentityRoleName.Administrator],
+  [MenuType.SettingsAdministrator]: [ESecuredIdentityRoleName.Administrator],
 };
 
 export const hidden: MenuFiltrationConfig = {
