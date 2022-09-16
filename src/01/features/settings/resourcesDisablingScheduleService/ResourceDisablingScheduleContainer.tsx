@@ -9,6 +9,10 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { ResourceDisablingScheduleModal } from './ResourcesDisablingScheduleServiceModal/ResourceDisablingScheduleModal';
+import {
+  CompleteResourceDisconnectionContainer,
+  completeResourceDisconnectionService,
+} from 'services/resources/completeResourceDisconnectionService';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 
@@ -19,17 +23,22 @@ export const ResourceDisablingScheduleContainer = () => {
   const loading = useStore(outputs.$loading);
   const cities = useStore($existingCities);
   const filters = useStore(outputs.$filters);
+  const isModalOpen = useStore(outputs.$isAddressesModalOpen);
 
   const applyFilters = useEvent(inputs.applyFilters);
   const setPage = useEvent(inputs.setPage);
-  const isModalOpen = useStore(outputs.$isAddressesModalOpen);
   const openModal = useEvent(inputs.openAddressesModal);
   const closeModal = useEvent(inputs.closeAddressesModal);
+  const openCompleteDisconnectionModal = useEvent(
+    completeResourceDisconnectionService.inputs.openModal
+  );
 
   return (
     <DisablingResourceWrapperContainer>
       <ExistingCitiesGate />
       <DisablingResouresGate />
+      <CompleteResourceDisconnectionContainer />
+
       <ResourceDisablingScheduleModal
         isModalOpen={isModalOpen}
         openModal={() => openModal()}
@@ -45,6 +54,7 @@ export const ResourceDisablingScheduleContainer = () => {
         loading={loading}
         setPage={setPage}
         openModal={() => openModal()}
+        handleOpenCompleteDisconnectionModal={openCompleteDisconnectionModal}
       />
     </DisablingResourceWrapperContainer>
   );

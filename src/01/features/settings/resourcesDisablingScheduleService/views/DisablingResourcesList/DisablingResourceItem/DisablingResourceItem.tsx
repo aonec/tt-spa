@@ -23,6 +23,7 @@ import { RenderApartmentProps } from './DisablingResourceItem.types';
 export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
   disconnection,
   openModal,
+  handleOpenCompleteDisconnectionModal,
 }) => {
   const {
     disconnectingType,
@@ -32,6 +33,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
     resource,
     sender,
     startDate,
+    id,
   } = disconnection;
 
   const temporaryOnClick = () => {
@@ -89,7 +91,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
               },
               {
                 title: 'Завершить отключение',
-                onClick: temporaryOnClick,
+                onClick: () => handleOpenCompleteDisconnectionModal(id),
               },
               {
                 title: 'Удалить отключение',

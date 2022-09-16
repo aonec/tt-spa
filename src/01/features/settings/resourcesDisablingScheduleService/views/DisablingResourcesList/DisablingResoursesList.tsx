@@ -13,6 +13,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
   loading,
   setPage,
   openModal,
+  handleOpenCompleteDisconnectionModal
 }) => {
   const items = resources?.items || [];
 
@@ -29,6 +30,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
                 disconnection={resourceDisconnection}
                 openModal={openModal}
                 key={resourceDisconnection.id}
+                handleOpenCompleteDisconnectionModal={handleOpenCompleteDisconnectionModal}
               />
             );
           })}

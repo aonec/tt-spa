@@ -67,6 +67,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           housingStockIds: preparedHousingStockIds,
           heatingStationId: formValues.heatingStationId || null,
           sender: formValues.sender,
+          documentId: formValues.documentId,
         });
       }
     },
@@ -196,6 +197,10 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
       setFieldValue('endDate', '');
     }
   }, [values.startDate]);
+
+  useEffect(() => {
+    console.log(values.documentId);
+  }, [values.documentId]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {

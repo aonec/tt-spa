@@ -5,4 +5,5 @@ export type DisablingListProps = {
   loading: boolean;
   setPage: (payload: number) => void;
   openModal: () => void;
+  handleOpenCompleteDisconnectionModal: (id: string) => void;
 };
