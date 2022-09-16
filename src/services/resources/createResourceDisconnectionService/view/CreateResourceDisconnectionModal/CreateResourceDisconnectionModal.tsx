@@ -15,6 +15,7 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   treeData,
   disconnectingTypes,
   resourceTypes,
+  isInterHeatingSeason,
 }) => {
   return (
     <FormModal
@@ -34,6 +35,7 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
           handleSelectHeatingStation={handleSelectHeatingStation}
           disconnectingTypes={disconnectingTypes}
           resourceTypes={resourceTypes}
+          isInterHeatingSeason={isInterHeatingSeason}
         />
       }
       formId="createResourceDisconnection"

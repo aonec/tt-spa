@@ -20,6 +20,7 @@ export type CreateResourceDisconnectionModalProps = {
   ) => void;
   handleSelectCity: (city: string) => void;
   handleSelectHeatingStation: (id: string) => void;
+  isInterHeatingSeason: boolean;
 };
 
 export type ExistingStreetWithHousingStocks = {

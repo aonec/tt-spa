@@ -22,6 +22,7 @@ export const CreateResourceDisconnectionContainer = () => {
     outputs.$addressesFromHeatingStation
   );
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
+  const isInterHeatingSeason = useStore(outputs.$isInterHeatingSeason)
 
   const handleCloseModal = useEvent(inputs.closeModal);
   const handleCreateResourceDisconnection = useEvent(
@@ -72,6 +73,7 @@ export const CreateResourceDisconnectionContainer = () => {
         handleCreateResourceDisconnection={handleCreateResourceDisconnection}
         handleSelectCity={handleSelectCity}
         handleSelectHeatingStation={handleSelectHeatingStation}
+        isInterHeatingSeason={isInterHeatingSeason}
       />
     </>
   );

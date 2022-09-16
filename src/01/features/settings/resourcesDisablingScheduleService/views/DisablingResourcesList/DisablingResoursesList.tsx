@@ -6,7 +6,7 @@ import {
   Wrap,
 } from './DisablingResoucesList.styles';
 import { DisablingListProps } from './DisablingResourcesList.types';
-import { RenderApartment } from './DisablingResourceItem/DisablingResourceItem';
+import { DisablingResourceItem } from './DisablingResourceItem/DisablingResourceItem';
 
 export const DisablingResourcesList: React.FC<DisablingListProps> = ({
   resources,
@@ -25,8 +25,8 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
         <div>
           {items.map((resourceDisconnection) => {
             return (
-              <RenderApartment
-                {...resourceDisconnection}
+              <DisablingResourceItem
+                disconnection={resourceDisconnection}
                 openModal={openModal}
                 key={resourceDisconnection.id}
               />

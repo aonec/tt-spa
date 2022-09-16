@@ -7,6 +7,7 @@ import {
   HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
 } from 'myApi';
+import { Document } from 'ui-kit/DocumentsService';
 import { ExistingStreetWithHousingStocks } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
@@ -20,6 +21,7 @@ export type CreateResourceDisconnectionFormProps = {
   handleSubmit: (payload: ResourceDisconnectingCreateRequest) => void;
   handleSelectCity: (city: string) => void;
   handleSelectHeatingStation: (id: string) => void;
+  isInterHeatingSeason: boolean;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
@@ -35,6 +37,8 @@ export type CreateResourceDisconnectionFormTypes = {
 
   endDate: string;
   endHour: string;
+
+  documentId: null | number;
 };
 
 export type TreeSelectLabelValueType = {

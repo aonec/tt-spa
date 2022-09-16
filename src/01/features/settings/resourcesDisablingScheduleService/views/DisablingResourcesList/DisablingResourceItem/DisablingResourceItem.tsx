@@ -10,34 +10,30 @@ import {
   StyledGridTableBody,
   ResourceTextWrapper,
   SenderColumn,
-} from './DisablingResourceItem.styles';
-import {
-  SenderWrapper,
-  StyledFontLarge,
   StyledLinkTypeElement,
   StyledTextElement,
-  TimeElement,
-} from '../DisablingResoucesList.styles';
+  SenderWrapper,
+} from './DisablingResourceItem.styles';
+import { StyledFontLarge, TimeElement } from '../DisablingResoucesList.styles';
 import { declOfNum } from '../DisablingResourcesList.utils';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceDisconnectingClassLookUp } from '../../DisablingResourcesSearchHeader/DisablingResourcesSearchHeader.utils';
+import { RenderApartmentProps } from './DisablingResourceItem.types';
 
-interface Props {
-  openModal: () => void;
-}
-
-type TypeUnion = ResourceDisconnectingResponse & Props;
-
-export const RenderApartment: React.FC<TypeUnion> = ({
-  id,
-  resource,
-  disconnectingType,
-  startDate,
-  endDate,
-  sender,
-  heatingStation,
-  housingStocks,
+export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
+  disconnection,
   openModal,
 }) => {
+  const {
+    disconnectingType,
+    endDate,
+    heatingStation,
+    housingStocks,
+    resource,
+    sender,
+    startDate,
+  } = disconnection;
+
   const temporaryOnClick = () => {
     return void 0;
   };
@@ -51,13 +47,17 @@ export const RenderApartment: React.FC<TypeUnion> = ({
           </StyledFontLarge>
           <span>{moment(startDate).format('hh:mm')}</span>
         </TimeElement>
-        -
-        <TimeElement>
-          <StyledFontLarge>
-            {moment(endDate).format('DD.MM.YYYY')}
-          </StyledFontLarge>
-          <span>{moment(endDate).format('hh:mm')}</span>
-        </TimeElement>
+        {endDate && (
+          <>
+            -
+            <TimeElement>
+              <StyledFontLarge>
+                {moment(endDate).format('DD.MM.YYYY')}
+              </StyledFontLarge>
+              <span>{moment(endDate).format('hh:mm')}</span>
+            </TimeElement>
+          </>
+        )}
       </GroupWrapper>
 
       <GroupWrapper>
@@ -72,7 +72,9 @@ export const RenderApartment: React.FC<TypeUnion> = ({
       </StyledLinkTypeElement>
 
       <StyledTextElement>{heatingStation?.name || 'Нет'}</StyledTextElement>
-      <StyledTextElement>{disconnectingType?.description}</StyledTextElement>
+      <StyledTextElement>
+        {ResourceDisconnectingClassLookUp[disconnectingType?.value!]}
+      </StyledTextElement>
 
       <SenderColumn>
         <Popover content={sender}>

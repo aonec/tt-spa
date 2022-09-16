@@ -37,3 +37,24 @@ export const SenderColumn = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+export const StyledTextElement = styled.div`
+  display: flex;
+  align-items: center;
+  color: #272f5a;
+`;
+
+export const SenderWrapper = styled(StyledTextElement)`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 110px;
+`;
+
+export const StyledLinkTypeElement = styled(StyledTextElement)`
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    color: #189ee9;
+  }
+`;

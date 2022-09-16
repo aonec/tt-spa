@@ -7,6 +7,7 @@ import {
   HeatingStationResponsePagedList,
   StreetWithHousingStockNumbersResponsePagedList,
   StreetWithHousingStockNumbersResponse,
+  EResourceDisconnectingType,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
@@ -23,14 +24,38 @@ const $isModalOpen = domain.createStore(false);
 const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore('');
 
+const setIsInterHeatingSeason = domain.createEvent();
+const $isInterHeatingSeason = domain
+  .createStore(true)
+  .on(
+    setIsInterHeatingSeason,
+    (_, isInterHeatingSeason) => isInterHeatingSeason
+  );
+
 const $cities = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.cities || []
 );
 const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.resourceTypes || []
 );
-const $disconnectingTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
-  (store) => store?.disconnectingTypes || []
+const $disconnectingTypes = combine(
+  $isInterHeatingSeason,
+  resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters,
+  (isInterHeatingSeason, filter) => {
+    const types = filter?.disconnectingTypes;
+
+    if (!types) {
+      return [];
+    }
+    if (isInterHeatingSeason) {
+      return types.filter(
+        (type) => type.key === EResourceDisconnectingType.InterHeatingSeason
+      );
+    }
+    return types.filter(
+      (type) => type.key !== EResourceDisconnectingType.InterHeatingSeason
+    );
+  }
 );
 
 const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
@@ -120,6 +145,7 @@ export const createResourceDisconnectionService = {
     createResourceDisconnection,
     selectCity,
     selectHeatingStation,
+    setIsInterHeatingSeason,
   },
   outputs: {
     $isModalOpen,
@@ -130,5 +156,6 @@ export const createResourceDisconnectionService = {
     $cities,
     $resourceTypes,
     $disconnectingTypes,
+    $isInterHeatingSeason,
   },
 };
