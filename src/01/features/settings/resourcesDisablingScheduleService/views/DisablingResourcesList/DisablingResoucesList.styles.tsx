@@ -6,10 +6,10 @@ export const DisablingResourceWrapperContainer = styled.div`
 
 export const TimeElement = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: row;
   color: #272f5a;
 `;
-
 
 export const StyledFontLarge = styled.span`
   font-weight: 500;

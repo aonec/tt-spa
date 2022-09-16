@@ -24,6 +24,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
   disconnection,
   openModal,
   handleOpenCompleteDisconnectionModal,
+  handleOpenDeleteDisconnectionModal,
 }) => {
   const {
     disconnectingType,
@@ -35,10 +36,6 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
     startDate,
     id,
   } = disconnection;
-
-  const temporaryOnClick = () => {
-    return void 0;
-  };
 
   return (
     <StyledGridTableBody>
@@ -87,7 +84,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
             menuButtons={[
               {
                 title: 'Редактировать отключение',
-                onClick: temporaryOnClick,
+                onClick: () => void 0,
               },
               {
                 title: 'Завершить отключение',
@@ -95,7 +92,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
               },
               {
                 title: 'Удалить отключение',
-                onClick: temporaryOnClick,
+                onClick: () => handleOpenDeleteDisconnectionModal(id),
                 color: 'red' as Color,
               },
             ]}

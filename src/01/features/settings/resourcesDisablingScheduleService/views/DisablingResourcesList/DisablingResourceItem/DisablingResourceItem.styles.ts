@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledGridTableBody = styled.div`
   display: grid;
   grid-template-columns: 2.5fr 1fr 0.8fr 0.8fr 1.2fr 1.5fr;
-  width: 960px;
+  width:100%;
   gap: 16px;
   padding: 10px 20px;
   border-bottom: 1px solid #f3f5f6;
