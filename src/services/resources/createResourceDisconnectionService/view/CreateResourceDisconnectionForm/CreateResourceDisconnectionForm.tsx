@@ -15,7 +15,6 @@ import React, {
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
-import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
@@ -26,6 +25,7 @@ import {
 } from './CreateResourceDisconnectionForm.constants';
 import {
   BaseInfoWrapper,
+  InputSC,
   ResourceOptionWrapper,
   TagPlaceholder,
   TimeWrapper,
@@ -441,7 +441,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         </FormItem>
       </BaseInfoWrapper>
       <FormItem label="Отправитель отключения">
-        <Input
+        <InputSC
           placeholder="Введите название организации"
           value={values.sender}
           name="sender"
