@@ -72,3 +72,5 @@ export const editResourceDisconnectionService = {
     $isDisconectionLoading,
   },
 };
+
+$editedResourceDisconnectionId.watch(console.log);

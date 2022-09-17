@@ -4,6 +4,8 @@ import { useAppDispatch } from '01/Redux/store';
 import { useEvent } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import {
   CreateResourceDisconnectionContainer,
   createResourceDisconnectionService,
@@ -18,8 +20,8 @@ export const ObjectsProfileContainer = () => {
 
   const dispatch = useAppDispatch();
   const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
-  const handleOpenCreateResourceDisconnectionModal = useEvent(
-    createResourceDisconnectionService.inputs.openModal
+  const handleOpenChooseResourceDisconnectionModal = useEvent(
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal
   );
 
   useEffect(() => {
@@ -30,13 +32,14 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
+      <ChooseTypeOfResourceDisconnectionModalContainer />
       <CreateResourceDisconnectionContainer />
       <GroupReport />
       <ObjectsProfile
         searchType={searchType}
         handleExportGroupReport={handleExportGroupReport}
-        handleOpenCreateResourceDisconnectionModal={() =>
-          handleOpenCreateResourceDisconnectionModal()
+        handleOpenChooseResourceDisconnectionModal={() =>
+          handleOpenChooseResourceDisconnectionModal()
         }
       />
     </>

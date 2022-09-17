@@ -10,6 +10,7 @@ import {
   EResourceDisconnectingType,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
+import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
@@ -25,22 +26,6 @@ const $isModalOpen = domain.createStore(false);
 const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore('');
 
-const setIsInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = editResourceDisconnectionService.outputs.$resourceDisconnection
-  .map((disconnection) => {
-    if (!disconnection) {
-      return false;
-    }
-    const isInterHeatingSeason =
-      disconnection.disconnectingType?.value ===
-      EResourceDisconnectingType.InterHeatingSeason;
-    return isInterHeatingSeason;
-  })
-  .on(
-    setIsInterHeatingSeason,
-    (_, isInterHeatingSeason) => isInterHeatingSeason
-  );
-
 const $cities = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.cities || []
 );
@@ -48,7 +33,7 @@ const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisc
   (store) => store?.resourceTypes || []
 );
 const $disconnectingTypes = combine(
-  $isInterHeatingSeason,
+  chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
   resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters,
   (isInterHeatingSeason, filter) => {
     const types = filter?.disconnectingTypes;
@@ -159,7 +144,6 @@ export const createResourceDisconnectionService = {
     createResourceDisconnection,
     selectCity,
     selectHeatingStation,
-    setIsInterHeatingSeason,
   },
   outputs: {
     $isModalOpen,
@@ -170,6 +154,5 @@ export const createResourceDisconnectionService = {
     $cities,
     $resourceTypes,
     $disconnectingTypes,
-    $isInterHeatingSeason,
   },
 };

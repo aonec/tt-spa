@@ -9,6 +9,8 @@ import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnec
 import { ExistingStreetWithHousingStocks } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
+import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
+import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -25,7 +27,9 @@ export const CreateResourceDisconnectionContainer = () => {
     outputs.$addressesFromHeatingStation
   );
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
-  const isInterHeatingSeason = useStore(outputs.$isInterHeatingSeason);
+  const isInterHeatingSeason = useStore(
+    chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason
+  );
   const isEdit = useStore(editResourceDisconnectionService.outputs.$isEdit);
   const resourceDisconnection = useStore(
     editResourceDisconnectionService.outputs.$resourceDisconnection

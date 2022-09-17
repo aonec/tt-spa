@@ -1,0 +1,48 @@
+import { createDomain, forward } from 'effector';
+import { EResourceDisconnectingType } from 'myApi';
+import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
+
+const domain = createDomain('chooseTypeOfResourceDisconnectionModalService');
+
+const openModal = domain.createEvent();
+const closeModal = domain.createEvent();
+const submitModal = domain.createEvent();
+
+const $isModalOpen = domain
+  .createStore(false)
+  .on(openModal, () => true)
+  .reset(closeModal);
+
+const setInterHeatingSeason = domain.createEvent();
+const clearInterHeatingSeason = domain.createEvent();
+const $isInterHeatingSeason = editResourceDisconnectionService.outputs.$resourceDisconnection
+  .map((disconnection) => {
+    if (!disconnection) {
+      return false;
+    }
+    const isInterHeatingSeason =
+      disconnection.disconnectingType?.value ===
+      EResourceDisconnectingType.InterHeatingSeason;
+    return isInterHeatingSeason;
+  })
+  .on(setInterHeatingSeason, () => true)
+  .reset(clearInterHeatingSeason);
+
+forward({
+  from: submitModal,
+  to: closeModal,
+});
+
+export const chooseTypeOfResourceDisconnectionModalService = {
+  inputs: {
+    setInterHeatingSeason,
+    openModal,
+    closeModal,
+    clearInterHeatingSeason,
+    submitModal,
+  },
+  outputs: {
+    $isModalOpen,
+    $isInterHeatingSeason,
+  },
+};
