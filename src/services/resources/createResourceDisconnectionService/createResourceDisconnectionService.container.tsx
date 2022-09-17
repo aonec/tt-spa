@@ -2,10 +2,13 @@ import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import { prepareAddressesForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 import { ExistingStreetWithHousingStocks } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+
+import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -22,9 +25,19 @@ export const CreateResourceDisconnectionContainer = () => {
     outputs.$addressesFromHeatingStation
   );
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
-  const isInterHeatingSeason = useStore(outputs.$isInterHeatingSeason)
+  const isInterHeatingSeason = useStore(outputs.$isInterHeatingSeason);
+  const isEdit = useStore(editResourceDisconnectionService.outputs.$isEdit);
+  const resourceDisconnection = useStore(
+    editResourceDisconnectionService.outputs.$resourceDisconnection
+  );
+  const isDisconnectionLoading = useStore(
+    editResourceDisconnectionService.outputs.$isDisconectionLoading
+  );
 
   const handleCloseModal = useEvent(inputs.closeModal);
+  const handleEditResourceDisconnection = useEvent(
+    editResourceDisconnectionService.inputs.editResourceDisconnection
+  );
   const handleCreateResourceDisconnection = useEvent(
     inputs.createResourceDisconnection
   );
@@ -74,6 +87,10 @@ export const CreateResourceDisconnectionContainer = () => {
         handleSelectCity={handleSelectCity}
         handleSelectHeatingStation={handleSelectHeatingStation}
         isInterHeatingSeason={isInterHeatingSeason}
+        isEdit={isEdit}
+        isDisconnectionLoading={isDisconnectionLoading}
+        resourceDisconnection={resourceDisconnection}
+        handleEditResourceDisconnection={handleEditResourceDisconnection}
       />
     </>
   );

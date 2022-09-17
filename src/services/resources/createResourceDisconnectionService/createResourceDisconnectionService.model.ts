@@ -10,6 +10,7 @@ import {
   EResourceDisconnectingType,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
+import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
   fetchCreateResourceDisconnection,
@@ -26,7 +27,7 @@ const $selectedHeatingStation = domain.createStore('');
 
 const setIsInterHeatingSeason = domain.createEvent();
 const $isInterHeatingSeason = domain
-  .createStore(true)
+  .createStore(false)
   .on(
     setIsInterHeatingSeason,
     (_, isInterHeatingSeason) => isInterHeatingSeason
@@ -108,6 +109,11 @@ $existingHousingStocks.on(
   getExistingHosuingStocksFx.doneData,
   (_, housingStocks) => housingStocks.items || []
 );
+
+forward({
+  from: editResourceDisconnectionService.inputs.openEditModal,
+  to: openModal,
+});
 
 forward({
   from: $selectedCity,

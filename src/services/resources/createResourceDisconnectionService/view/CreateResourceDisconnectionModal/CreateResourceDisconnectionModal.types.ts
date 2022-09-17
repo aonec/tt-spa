@@ -2,8 +2,9 @@ import {
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceTypeNullableStringDictionaryItem,
   HeatingStationResponse,
-  HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
+  ResourceDisconnectingResponse,
+  ResourceDisconnectingUpdateRequest,
 } from 'myApi';
 
 export type CreateResourceDisconnectionModalProps = {
@@ -21,6 +22,12 @@ export type CreateResourceDisconnectionModalProps = {
   handleSelectCity: (city: string) => void;
   handleSelectHeatingStation: (id: string) => void;
   isInterHeatingSeason: boolean;
+  isEdit: boolean;
+  isDisconnectionLoading: boolean;
+  resourceDisconnection: ResourceDisconnectingResponse | null;
+  handleEditResourceDisconnection: (
+    payload: ResourceDisconnectingUpdateRequest
+  ) => void;
 };
 
 export type ExistingStreetWithHousingStocks = {

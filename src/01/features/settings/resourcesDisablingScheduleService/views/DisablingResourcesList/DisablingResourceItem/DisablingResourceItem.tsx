@@ -1,14 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 import { Popover } from 'antd';
-import { ResourceDisconnectingResponse } from 'myApi';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { Color } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
 import {
   GroupWrapper,
   StyledGridTableBody,
-  ResourceTextWrapper,
   SenderColumn,
   StyledLinkTypeElement,
   StyledTextElement,
@@ -16,15 +13,16 @@ import {
 } from './DisablingResourceItem.styles';
 import { StyledFontLarge, TimeElement } from '../DisablingResoucesList.styles';
 import { declOfNum } from '../DisablingResourcesList.utils';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { ResourceDisconnectingClassLookUp } from '../../DisablingResourcesSearchHeader/DisablingResourcesSearchHeader.utils';
 import { RenderApartmentProps } from './DisablingResourceItem.types';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 
 export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
   disconnection,
   openModal,
   handleOpenCompleteDisconnectionModal,
   handleOpenDeleteDisconnectionModal,
+  handleOpenEditDisconnectionModal,
 }) => {
   const {
     disconnectingType,
@@ -60,8 +58,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
       </GroupWrapper>
 
       <GroupWrapper>
-        <ResourceIconLookup resource={resource} />
-        <ResourceTextWrapper>{ResourceLookUp[resource]}</ResourceTextWrapper>
+        <ResourceInfo resource={resource} />
       </GroupWrapper>
 
       <StyledLinkTypeElement onClick={openModal}>
@@ -84,7 +81,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
             menuButtons={[
               {
                 title: 'Редактировать отключение',
-                onClick: () => void 0,
+                onClick: () => handleOpenEditDisconnectionModal(id),
               },
               {
                 title: 'Завершить отключение',

@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { CreateResourceDisconnectionForm } from '../CreateResourceDisconnectionForm';
@@ -16,6 +17,10 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   disconnectingTypes,
   resourceTypes,
   isInterHeatingSeason,
+  isDisconnectionLoading,
+  isEdit,
+  resourceDisconnection,
+  handleEditResourceDisconnection,
 }) => {
   return (
     <FormModal
@@ -24,19 +29,29 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
       title="Создать отключение ресурса"
       submitBtnText="Создать отключение"
       form={
-        <CreateResourceDisconnectionForm
-          handleSubmit={handleCreateResourceDisconnection}
-          formId="createResourceDisconnection"
-          heatingStations={heatingStations}
-          cities={cities}
-          treeData={treeData}
-          selectedCity={selectedCity}
-          handleSelectCity={handleSelectCity}
-          handleSelectHeatingStation={handleSelectHeatingStation}
-          disconnectingTypes={disconnectingTypes}
-          resourceTypes={resourceTypes}
-          isInterHeatingSeason={isInterHeatingSeason}
-        />
+        <>
+          {isDisconnectionLoading && <Skeleton active />}
+          {!isDisconnectionLoading && (
+            <CreateResourceDisconnectionForm
+              handleCreateResourceDisconnection={
+                handleCreateResourceDisconnection
+              }
+              formId="createResourceDisconnection"
+              heatingStations={heatingStations}
+              cities={cities}
+              treeData={treeData}
+              selectedCity={selectedCity}
+              handleSelectCity={handleSelectCity}
+              handleSelectHeatingStation={handleSelectHeatingStation}
+              disconnectingTypes={disconnectingTypes}
+              resourceTypes={resourceTypes}
+              isInterHeatingSeason={isInterHeatingSeason}
+              resourceDisconnection={resourceDisconnection}
+              isEdit={isEdit}
+              handleEditResourceDisconnection={handleEditResourceDisconnection}
+            />
+          )}
+        </>
       }
       formId="createResourceDisconnection"
     />

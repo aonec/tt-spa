@@ -5,4 +5,5 @@ export type RenderApartmentProps = {
   disconnection: ResourceDisconnectingResponse;
   handleOpenCompleteDisconnectionModal: (id: string) => void;
   handleOpenDeleteDisconnectionModal: (id: string) => void;
+  handleOpenEditDisconnectionModal: (id: string) => void;
 };

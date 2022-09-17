@@ -17,6 +17,8 @@ import {
   DeleteResourceDisconnectionContainer,
   deleteResourceDisconnectionService,
 } from 'services/resources/deleteResourceDisconnectionService';
+import { editResourceDisconnectionService } from 'services/resources/editResourceDisconnectionService';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 
@@ -39,6 +41,9 @@ export const ResourceDisablingScheduleContainer = () => {
   const openDeleteDisconnectionModal = useEvent(
     deleteResourceDisconnectionService.inputs.openModal
   );
+  const openEditDisconnectionModal = useEvent(
+    editResourceDisconnectionService.inputs.openEditModal
+  );
 
   return (
     <DisablingResourceWrapperContainer>
@@ -46,6 +51,7 @@ export const ResourceDisablingScheduleContainer = () => {
       <DisablingResouresGate />
       <CompleteResourceDisconnectionContainer />
       <DeleteResourceDisconnectionContainer />
+      <CreateResourceDisconnectionContainer />
 
       <ResourceDisablingScheduleModal
         isModalOpen={isModalOpen}
@@ -64,6 +70,7 @@ export const ResourceDisablingScheduleContainer = () => {
         openModal={() => openModal()}
         handleOpenCompleteDisconnectionModal={openCompleteDisconnectionModal}
         handleOpenDeleteDisconnectionModal={openDeleteDisconnectionModal}
+        handleOpenEditDisconnectionModal={openEditDisconnectionModal}
       />
     </DisablingResourceWrapperContainer>
   );

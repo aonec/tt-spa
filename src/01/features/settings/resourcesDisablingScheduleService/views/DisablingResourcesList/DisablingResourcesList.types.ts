@@ -7,4 +7,5 @@ export type DisablingListProps = {
   openModal: () => void;
   handleOpenCompleteDisconnectionModal: (id: string) => void;
   handleOpenDeleteDisconnectionModal: (id: string) => void;
+  handleOpenEditDisconnectionModal: (id: string) => void;
 };

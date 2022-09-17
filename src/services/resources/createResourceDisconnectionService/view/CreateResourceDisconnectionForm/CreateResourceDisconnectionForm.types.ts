@@ -6,8 +6,9 @@ import {
   HeatingStationResponse,
   HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
+  ResourceDisconnectingResponse,
+  ResourceDisconnectingUpdateRequest,
 } from 'myApi';
-import { Document } from 'ui-kit/DocumentsService';
 import { ExistingStreetWithHousingStocks } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
@@ -18,10 +19,15 @@ export type CreateResourceDisconnectionFormProps = {
   treeData: ExistingStreetWithHousingStocks[];
   selectedCity: string;
   formId: string;
-  handleSubmit: (payload: ResourceDisconnectingCreateRequest) => void;
+  handleCreateResourceDisconnection: (payload: ResourceDisconnectingCreateRequest) => void;
   handleSelectCity: (city: string) => void;
   handleSelectHeatingStation: (id: string) => void;
   isInterHeatingSeason: boolean;
+  isEdit: boolean;
+  resourceDisconnection: ResourceDisconnectingResponse | null;
+  handleEditResourceDisconnection: (
+    payload: ResourceDisconnectingUpdateRequest
+  ) => void;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
