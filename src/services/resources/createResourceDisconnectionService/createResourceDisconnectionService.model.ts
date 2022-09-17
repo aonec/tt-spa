@@ -26,8 +26,16 @@ const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore('');
 
 const setIsInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = domain
-  .createStore(false)
+const $isInterHeatingSeason = editResourceDisconnectionService.outputs.$resourceDisconnection
+  .map((disconnection) => {
+    if (!disconnection) {
+      return false;
+    }
+    const isInterHeatingSeason =
+      disconnection.disconnectingType?.value ===
+      EResourceDisconnectingType.InterHeatingSeason;
+    return isInterHeatingSeason;
+  })
   .on(
     setIsInterHeatingSeason,
     (_, isInterHeatingSeason) => isInterHeatingSeason
