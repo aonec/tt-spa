@@ -135,7 +135,7 @@ export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
   SwitchIndividualDeviceRequest,
-  MeteringDeviceResponse
+  void
 >();
 
 export const checkIndividualDeviceFx = createEffect<
