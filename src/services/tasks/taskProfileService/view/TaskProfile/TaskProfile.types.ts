@@ -8,4 +8,5 @@ export type TaskProfileProps = {
   commentText: string;
   handleDeleteDocument: (is: number) => void;
   relatedPipeNode: PipeNodeResponse | null;
+  isViewerExecutor: boolean;
 };

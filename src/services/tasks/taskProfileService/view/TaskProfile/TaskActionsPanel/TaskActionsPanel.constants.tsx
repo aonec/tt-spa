@@ -1,4 +1,4 @@
-import { EStageActionType } from 'myApi';
+import { EManagingFirmTaskType, EStageActionType } from 'myApi';
 import {
   TaskActionsComponent,
   TaskPanelComponentsGroupsName,
@@ -56,7 +56,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
 
 export const taskActionInfoComppnents: TaskActionPanelInfoComponent[] = [
   {
-    taskType: 'IndividualDeviceCheck',
+    taskType: EManagingFirmTaskType.IndividualDeviceCheck,
     Component: IndividualDeviceCheckInfoContainer,
   },
 ];

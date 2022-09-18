@@ -1,6 +1,11 @@
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { StagePushRequest, TaskCommentResponse, TaskResponse, PipeNodeResponse } from 'myApi';
+import {
+  StagePushRequest,
+  TaskCommentResponse,
+  TaskResponse,
+  PipeNodeResponse,
+} from 'myApi';
 import { currentUserService } from 'services/currentUserService';
 import {
   fetchAddComment,
@@ -108,6 +113,7 @@ export const taskProfileService = {
     $isPerpetrator,
     $commentText,
     $pipeNode,
+    $currentUser: currentUserService.outputs.$currentUser,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };

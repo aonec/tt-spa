@@ -25,6 +25,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   commentText,
   handleDeleteDocument,
   relatedPipeNode,
+  isViewerExecutor,
 }) => {
   const {
     closingStatus,
@@ -66,7 +67,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             timer={timer}
             taskName={taskName || ''}
           />
-          {task.type && (
+          {task.type && isViewerExecutor && (
             <TaskActionsPanel
               handlePushStage={() => {}}
               taskType={task.type}

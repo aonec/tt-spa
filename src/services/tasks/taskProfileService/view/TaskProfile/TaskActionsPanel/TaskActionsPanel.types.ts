@@ -1,4 +1,8 @@
-import { EStageActionType, StagePushRequest, TaskResponse } from 'myApi';
+import {
+  EStageActionType,
+  StagePushRequest,
+  EManagingFirmTaskType,
+} from 'myApi';
 import { FC } from 'react';
 
 export type TaskActionsPanelProps = {
@@ -40,6 +44,6 @@ export type TaskActionsComponent = {
 };
 
 export type TaskActionPanelInfoComponent = {
-  taskType: string;
+  taskType: EManagingFirmTaskType;
   Component: FC;
 };

@@ -17,6 +17,7 @@ export const TaskProfileContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const isPerpetrator = useStore(outputs.$isPerpetrator);
   const commentText = useStore(outputs.$commentText);
+  const currentUser = useStore(outputs.$currentUser);
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
@@ -26,6 +27,9 @@ export const TaskProfileContainer = () => {
   const nodeId = device?.nodeId;
 
   const relatedPipeNode = nodeId ? pipeNode : null;
+
+  const isViewerExecutor =
+    Boolean(currentUser?.id) && currentUser?.id === task?.perpetrator?.id;
 
   return (
     <>
@@ -44,6 +48,7 @@ export const TaskProfileContainer = () => {
           handleSetComment={setComment}
           commentText={commentText}
           relatedPipeNode={relatedPipeNode}
+          isViewerExecutor={isViewerExecutor}
         />
       )}
     </>

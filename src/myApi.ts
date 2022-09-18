@@ -1526,6 +1526,7 @@ export enum EResourceDisconnectingType {
   Emergency = "Emergency",
   Preventive = "Preventive",
   Repair = "Repair",
+  InterHeatingSeason = "InterHeatingSeason",
 }
 
 export interface EResourceDisconnectingTypeNullableStringDictionaryItem {
@@ -2217,6 +2218,10 @@ export interface HouseManagementResponse {
   name: string | null;
   phone: string | null;
   comment: string | null;
+}
+
+export interface HouseManagementResponseListSuccessApiResponse {
+  successResponse: HouseManagementResponse[] | null;
 }
 
 export interface HouseManagementResponseSuccessApiResponse {
@@ -4072,7 +4077,10 @@ export interface ResourceDisconnectingCreateRequest {
   startDate: string;
 
   /** @format date-time */
-  endDate: string;
+  endDate?: string | null;
+
+  /** @format int32 */
+  documentId?: number | null;
 }
 
 export interface ResourceDisconnectingFilterResponse {
@@ -4095,13 +4103,14 @@ export interface ResourceDisconnectingResponse {
   startDate: string;
 
   /** @format date-time */
-  endDate: string;
+  endDate: string | null;
   sender: string | null;
   heatingStation: HeatingStationShortResponse | null;
 
   /** @format int32 */
   managementFirmId: number;
   housingStocks: HousingStockShortResponse[] | null;
+  document: DocumentResponse | null;
 }
 
 export interface ResourceDisconnectingResponsePagedList {
@@ -4762,7 +4771,7 @@ export interface TaskResponse {
   /** @format int32 */
   id: number;
   name: string | null;
-  type: string | null;
+  type: EManagingFirmTaskType;
   creationReason: string | null;
   address: string | null;
 
@@ -7099,6 +7108,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HouseManagements
+     * @name HouseManagementsList
+     * @summary HousingStocksRead
+     * @request GET:/api/HouseManagements
+     * @secure
+     */
+    houseManagementsList: (query?: { City?: string }, params: RequestParams = {}) =>
+      this.request<HouseManagementResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HouseManagements`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags HousingMeteringDeviceReadings
@@ -7957,11 +7985,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Imports/ImportOrganization
      * @secure
      */
-    importsImportOrganizationCreate: (params: RequestParams = {}) =>
+    importsImportOrganizationCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/api/Imports/ImportOrganization`,
         method: "POST",
+        body: data,
         secure: true,
+        type: ContentType.FormData,
         ...params,
       }),
 
@@ -10161,6 +10201,75 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingDelete
+     * @summary ResourceDisconnectingDelete
+     * @request DELETE:/api/ResourceDisconnecting/{id}
+     * @secure
+     */
+    resourceDisconnectingDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingAddDocumentCreate
+     * @summary ResourceDisconnectingUpdate
+     * @request POST:/api/ResourceDisconnecting/{id}/AddDocument
+     * @secure
+     */
+    resourceDisconnectingAddDocumentCreate: (id: string, query?: { documentId?: number }, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}/AddDocument`,
+        method: "POST",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingDeleteDocumentCreate
+     * @summary ResourceDisconnectingUpdate
+     * @request POST:/api/ResourceDisconnecting/{id}/DeleteDocument
+     * @secure
+     */
+    resourceDisconnectingDeleteDocumentCreate: (id: string, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}/DeleteDocument`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingCompleteCreate
+     * @summary ResourceDisconnectingUpdate
+     * @request POST:/api/ResourceDisconnecting/{id}/Complete
+     * @secure
+     */
+    resourceDisconnectingCompleteCreate: (id: string, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}/Complete`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags ResourceDisconnecting
@@ -10191,9 +10300,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query: {
         HousingStockId: number;
         MonthOfLastTransmission?: string;
-        HotWaterSupply?: boolean;
-        ColdWaterSupply?: boolean;
-        Electricity?: boolean;
         DateLastCheckFrom?: string;
         DateLastCheckTo?: string;
         HotWaterSupplyConsumptionFrom?: number;
@@ -10227,9 +10333,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query: {
         HousingStockId: number;
         MonthOfLastTransmission?: string;
-        HotWaterSupply?: boolean;
-        ColdWaterSupply?: boolean;
-        Electricity?: boolean;
         DateLastCheckFrom?: string;
         DateLastCheckTo?: string;
         HotWaterSupplyConsumptionFrom?: number;
