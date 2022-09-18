@@ -26,7 +26,7 @@ export type ReadingLite = {
 
 export type ValidationReadingsResult = {
   type: ValidationReadingsResultType;
-  valueIndex?: number;
+  valueIndex: number;
   compareDiff?: number;
   compareStatus?: CompareReadingsStatus;
   limitsConsumptionDiff?: number;

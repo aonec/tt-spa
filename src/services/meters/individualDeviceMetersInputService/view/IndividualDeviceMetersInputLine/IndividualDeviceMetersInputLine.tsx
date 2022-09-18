@@ -47,16 +47,9 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   const isDeviceClosed = Boolean(device.closingDate);
 
-  const isSeniorOperator = useMemo(
-    () =>
-      Boolean(managementFirmUser?.roles) &&
-      Boolean(
-        managementFirmUser?.roles?.find(
-          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator
-        )
-      ),
-    [managementFirmUser]
-  );
+  const isSeniorOperator = (managementFirmUser?.roles || [])
+    .map((elem) => elem.key)
+    .includes(ESecuredIdentityRoleName.SeniorOperator);
 
   const menuButtonArr: ContextMenuElement[] = useMemo(
     () => [
@@ -92,13 +85,13 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       {
         title: 'Закрытие прибора',
         hidden: isDeviceClosed,
-        color: Color.red,
+        color: Color.danger,
         onClick: () => closingIndividualDeviceButtonClicked(device),
       },
       {
         title: 'Удалить прибор',
         hidden: !isSeniorOperator,
-        color: Color.red,
+        color: Color.danger,
         onClick: () => onDeleteIndividualDevice(device),
       },
     ],

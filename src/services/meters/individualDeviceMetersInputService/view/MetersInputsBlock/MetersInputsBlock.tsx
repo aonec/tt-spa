@@ -73,17 +73,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
   const nextInput = useSwitchInputOnEnter(dataString, !isPrevious);
 
-  const handleReadingInputFocus = useCallback(
-    (e?: FocusEvent<HTMLInputElement>) => {
-      e?.target?.select();
-    },
-    []
-  );
+  const handleReadingInputFocus = (e?: FocusEvent<HTMLInputElement>) => {
+    e?.target?.select();
+  };
 
-  const setFailed = useCallback(
-    () => setStatus(MetersInputBlockStatus.Failed),
-    []
-  );
+  const setFailed = () => setStatus(MetersInputBlockStatus.Failed);
 
   const inputDataAttr = isDisabled ? {} : { 'data-reading-input': dataString };
 

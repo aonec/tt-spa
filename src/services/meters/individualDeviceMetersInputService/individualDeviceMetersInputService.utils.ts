@@ -61,14 +61,14 @@ export const getInputIndex = (
 };
 
 export function validateReadings(
-  meterIndex: number,
+  valueIndex: number,
   rateNum: number,
   createMeterPayload: MeterInputUploadReadingPayload,
   consumptionRate: ConsumptionRateResponse | null,
   readings: PreparedReadingsData
 ): ValidationReadingsResult {
-  const previousReading = getExistingReading(readings, meterIndex, 'prev');
-  const nextReading = getExistingReading(readings, meterIndex, 'next');
+  const previousReading = getExistingReading(readings, valueIndex, 'prev');
+  const nextReading = getExistingReading(readings, valueIndex, 'next');
 
   const uploadingReadingLite = getReadingLite(
     createMeterPayload.meter,
@@ -78,7 +78,10 @@ export function validateReadings(
   const isAllValuesEmpty = checkIsAllValuesEmpty(uploadingReadingLite, rateNum);
 
   if (isAllValuesEmpty)
-    return { type: ValidationReadingsResultType.EmptyValues };
+    return {
+      type: ValidationReadingsResultType.EmptyValues,
+      valueIndex,
+    };
 
   const previousReadingLite =
     previousReading && getReadingLite(previousReading, rateNum);
@@ -106,7 +109,7 @@ export function validateReadings(
 
   if (checkReadingLimitsResult) return checkReadingLimitsResult;
 
-  return { type: ValidationReadingsResultType.Success };
+  return { type: ValidationReadingsResultType.Success, valueIndex };
 }
 
 function checkIsAllValuesEmpty(reading: ReadingLite, rateNum: number) {

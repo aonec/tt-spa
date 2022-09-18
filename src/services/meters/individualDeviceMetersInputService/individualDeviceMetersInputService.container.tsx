@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceReadingsResponse } from 'myApi';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -111,7 +111,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
         });
 
       if (result.type === ValidationReadingsResultType.Success) {
-        return void sendMeter();
+        sendMeter();
+        return;
       }
 
       if (result.type === ValidationReadingsResultType.EmptyValues) {
@@ -121,7 +122,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
           'MMMM'
         );
 
-        return void openConfirmReadingModal({
+        openConfirmReadingModal({
           title: (
             <>
               Вы точно хотите удалить показание за <b>{readingMonth}</b> на
@@ -137,6 +138,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
             }),
           onCancel: setFailed,
         });
+
+        return;
       }
 
       if (
@@ -158,11 +161,11 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
         result.type === ValidationReadingsResultType.CompareProblem &&
         result.compareStatus === CompareReadingsStatus.LeftGreater
       ) {
-        return void openConfirmReadingModal({
+        openConfirmReadingModal({
           title: (
             <>
               Введенное показание по прибору <b>{device.serialNumber}</b> (
-              {device.model}) меньше предыдущего на T{result.valueIndex! + 1}:{' '}
+              {device.model}) меньше предыдущего на T{result.valueIndex + 1}:{' '}
               <b>
                 {result.compareDiff} {unit}
               </b>
@@ -171,10 +174,12 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
           onSubmit: sendMeter,
           onCancel: setFailed,
         });
+
+        return;
       }
 
       if (result.type === ValidationReadingsResultType.LimitsExcess) {
-        return void openConfirmReadingModal({
+        openConfirmReadingModal({
           title: (
             <>
               Расход{' '}
@@ -182,7 +187,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
                 {result.limitsConsumptionDiff}
                 {unit}
               </b>{' '}
-              по T{result.valueIndex! + 1} больше, чем лимит{' '}
+              по T{result.valueIndex + 1} больше, чем лимит{' '}
               <b>
                 {result.limit}
                 {unit}
@@ -192,6 +197,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
           onSubmit: sendMeter,
           onCancel: setFailed,
         });
+
+        return;
       }
     },
     [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
