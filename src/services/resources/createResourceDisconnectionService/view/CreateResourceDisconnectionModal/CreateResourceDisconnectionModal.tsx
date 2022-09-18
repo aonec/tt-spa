@@ -22,12 +22,15 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   resourceDisconnection,
   handleEditResourceDisconnection,
 }) => {
+  const buttonPlaceholder = isEdit
+    ? 'Сохранить изменения'
+    : 'Создать отключение';
   return (
     <FormModal
       visible={isOpen}
       onCancel={handleClose}
       title="Создать отключение ресурса"
-      submitBtnText="Создать отключение"
+      submitBtnText={buttonPlaceholder}
       form={
         <>
           {isDisconnectionLoading && <Skeleton active />}

@@ -42,7 +42,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
           <StyledFontLarge>
             {moment(startDate).format('DD.MM.YYYY')}
           </StyledFontLarge>
-          <span>{moment(startDate).format('hh:mm')}</span>
+          <span>{moment(startDate).format('HH:mm')}</span>
         </TimeElement>
         {endDate && (
           <>
@@ -51,7 +51,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
               <StyledFontLarge>
                 {moment(endDate).format('DD.MM.YYYY')}
               </StyledFontLarge>
-              <span>{moment(endDate).format('hh:mm')}</span>
+              <span>{moment(endDate).format('HH:mm')}</span>
             </TimeElement>
           </>
         )}
@@ -85,11 +85,19 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
               },
               {
                 title: 'Завершить отключение',
-                onClick: () => handleOpenCompleteDisconnectionModal(id),
+                onClick: () =>
+                  handleOpenCompleteDisconnectionModal({
+                    id,
+                    endDate: endDate || '',
+                  }),
               },
               {
                 title: 'Удалить отключение',
-                onClick: () => handleOpenDeleteDisconnectionModal(id),
+                onClick: () =>
+                  handleOpenDeleteDisconnectionModal({
+                    id,
+                    endDate: endDate || '',
+                  }),
                 color: 'red' as Color,
               },
             ]}

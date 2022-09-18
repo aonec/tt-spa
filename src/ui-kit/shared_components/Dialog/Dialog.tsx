@@ -1,7 +1,7 @@
 import { Loader } from '01/components';
 import { ButtonTT } from '01/tt-components';
 import React, { FC } from 'react';
-import { StyledDialog, TitleText } from './Dialog.styled';
+import { DialogText, StyledDialog, TitleText } from './Dialog.styled';
 import { BtnType, DialogProps } from './Dialog.types';
 
 export const Dialog: FC<DialogProps> = ({
@@ -13,12 +13,18 @@ export const Dialog: FC<DialogProps> = ({
   onSubmit,
   isOpen,
   type,
+  description,
 }) => {
   const btnText = submitText || 'Подтвердить';
 
   return (
     <StyledDialog
-      title={<TitleText>{title}</TitleText>}
+      title={
+        <>
+          <TitleText>{title}</TitleText>
+          <DialogText>{description}</DialogText>
+        </>
+      }
       visible={isOpen}
       onOk={onSubmit}
       onCancel={onCancel}
