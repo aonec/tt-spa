@@ -42,7 +42,7 @@ createIndividualDeviceFx.use(switchIndividualDevice);
 
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
-  .reset([createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData])
+  .reset([createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData]);
 
 sample({
   source: $creationDeviceStage.map((): 0 | 1 => 1),
@@ -64,8 +64,10 @@ forward({
 });
 
 $isCreateIndividualDeviceSuccess
-  .on(createIndividualDeviceFx.doneData, () => true)
-  .on(checkIndividualDeviceFx.doneData, () => true)
+  .on(
+    [checkIndividualDeviceFx.doneData, createIndividualDeviceFx.doneData],
+    () => true
+  )
   .reset(resetCreationRequestStatus);
 
 forward({
