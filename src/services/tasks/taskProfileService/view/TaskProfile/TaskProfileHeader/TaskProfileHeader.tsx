@@ -36,7 +36,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
     const existingResource =
       devices[0]?.resource || nodeDevice?.resource || null;
 
-    const allDevicesResource = devices.map((device) => device.resource);
+    const allDevicesResource = devices.map((device) => device?.resource);
     const isNotUniq = _.uniq(allDevicesResource).length > 1;
     const iconType = isNotUniq ? EActResourceType.All : existingResource;
 

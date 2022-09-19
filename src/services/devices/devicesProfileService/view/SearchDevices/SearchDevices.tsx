@@ -3,7 +3,6 @@ import styles from './DeviceSearchForm.module.scss';
 import { Form, Select } from 'antd';
 import _ from 'lodash';
 import {
-  CustomGrid,
   FlexCenterRow,
   StyledForm,
   StyledGrid,
@@ -13,6 +12,7 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
+  CustomGrid,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
