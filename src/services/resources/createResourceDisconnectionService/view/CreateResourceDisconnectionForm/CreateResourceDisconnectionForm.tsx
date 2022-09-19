@@ -98,8 +98,9 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
       const disconnectingType = formValues.disconnectingType;
       if (resource && disconnectingType) {
         if (isEdit) {
-          console.log(documents[0].id);
-          if (documentInit[0]?.id !== documents[0].id) {
+          const document = documents[0];
+          const isIdDifferent = documentInit[0]?.id !== document.id;
+          if (document && isIdDifferent) {
             handleUpdateDocument(documents[0].id);
           }
 
