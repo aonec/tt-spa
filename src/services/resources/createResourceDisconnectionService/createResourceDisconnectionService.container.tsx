@@ -50,9 +50,6 @@ export const CreateResourceDisconnectionContainer = () => {
   const handleUpdateDocument = useEvent(
     editResourceDisconnectionService.inputs.updateDocument
   );
-  const handleDeleteDocument = useEvent(
-    editResourceDisconnectionService.inputs.deleteDocument
-  );
 
   const preparedAddressesFromHeatingStation = useMemo(
     () =>
@@ -102,7 +99,6 @@ export const CreateResourceDisconnectionContainer = () => {
         resourceDisconnection={resourceDisconnection}
         handleEditResourceDisconnection={handleEditResourceDisconnection}
         handleUpdateDocument={handleUpdateDocument}
-        handleDeleteDocument={()=>handleDeleteDocument}
       />
     </>
   );

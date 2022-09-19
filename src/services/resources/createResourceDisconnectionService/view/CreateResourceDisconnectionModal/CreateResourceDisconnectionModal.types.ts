@@ -29,7 +29,6 @@ export type CreateResourceDisconnectionModalProps = {
     payload: ResourceDisconnectingUpdateRequest
   ) => void;
   handleUpdateDocument: (id: number) => void;
-  handleDeleteDocument: () => void;
 };
 
 export type ExistingStreetWithHousingStocks = {

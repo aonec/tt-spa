@@ -28,7 +28,6 @@ export type CreateResourceDisconnectionFormProps = {
     payload: ResourceDisconnectingUpdateRequest
   ) => void;
   handleUpdateDocument: (id: number) => void;
-  handleDeleteDocument: () => void;
 };
 
 export type CreateResourceDisconnectionFormTypes = {

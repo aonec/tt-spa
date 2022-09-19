@@ -53,7 +53,6 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   resourceDisconnection,
   isEdit,
   handleEditResourceDisconnection,
-  handleDeleteDocument,
   handleUpdateDocument,
 }) => {
   const documentInit = resourceDisconnection?.document
@@ -97,12 +96,10 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
       );
       const resource = formValues.resource;
       const disconnectingType = formValues.disconnectingType;
-
       if (resource && disconnectingType) {
         if (isEdit) {
-          if (documents.length === 0 && resourceDisconnection?.document) {
-            handleDeleteDocument();
-          } else if (documentInit[0].id !== documents[0].id) {
+          console.log(documents[0].id);
+          if (documentInit[0]?.id !== documents[0].id) {
             handleUpdateDocument(documents[0].id);
           }
 
@@ -126,7 +123,12 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         });
       }
     },
-    [handleCreateResourceDisconnection, handleEditResourceDisconnection, isEdit]
+    [
+      documents,
+      handleCreateResourceDisconnection,
+      handleEditResourceDisconnection,
+      isEdit,
+    ]
   );
 
   const {
