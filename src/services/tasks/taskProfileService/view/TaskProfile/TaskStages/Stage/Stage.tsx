@@ -3,6 +3,7 @@ import { EStageStatus, EStageType } from 'myApi';
 import React, { FC, useMemo } from 'react';
 import { MapIconSC } from 'services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.styled';
 import { ChoiceIcon, FinishIcon, OkIcon } from 'ui-kit/icons';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
   StageCircleColorLookup,
   StageIconColorLookup,
@@ -22,7 +23,9 @@ import { StageProps } from './Stage.types';
 export const Stage: FC<StageProps> = ({ stage, isLast }) => {
   const { number, status, type, name, closingTime, perpetrator } = stage;
 
-  const preparedClosingTime = moment(closingTime).format('DD.MM.YYYY HH:MM');
+  const preparedClosingTime = closingTime
+    ? getTimeStringByUTC(closingTime)
+    : '-';
 
   const icon = useMemo(() => {
     const inProgress = status === EStageStatus.InProgress;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
-  width: 100%;
+  width: 350px;
   margin-top: 16px;
 `;
 
