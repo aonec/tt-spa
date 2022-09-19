@@ -1,7 +1,6 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import _, { __ } from 'lodash/fp';
 import moment from 'moment';
 import { EResourceDisconnectingType, EResourceType } from 'myApi';
 import React, {
@@ -100,6 +99,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         if (isEdit) {
           const document = documents[0];
           const isIdDifferent = documentInit[0]?.id !== document.id;
+
           if (document && isIdDifferent) {
             handleUpdateDocument(documents[0].id);
           }
@@ -461,7 +461,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         <FormItem label="Приказ или акт об отключении ресурса">
           <DocumentsUploadContainer
             documents={documents}
-            uniqId="edit-apartment-act-form"
+            uniqId="add-document-to-resource-disconnection"
             onChange={(files) => {
               setDocuments(files);
               setFieldValue('documentId', files[0]?.id || null);

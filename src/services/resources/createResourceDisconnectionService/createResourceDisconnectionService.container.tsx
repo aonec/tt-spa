@@ -7,10 +7,10 @@ import { createResourceDisconnectionService } from './createResourceDisconnectio
 import { prepareAddressesForTreeSelect } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 import { ExistingStreetWithHousingStocks } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 
 import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
-import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
