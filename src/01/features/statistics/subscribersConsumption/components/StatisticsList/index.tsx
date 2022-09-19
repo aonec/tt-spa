@@ -12,6 +12,7 @@ import {
   $consumptionStatistics,
   subscribersConsumptionService,
 } from '../../models';
+import { ExportSubscribersConsumptionContainer } from '../../exportSubscribersConsumptionService';
 
 export const StatisticsList: React.FC = () => {
   const apartmentList = useStore($consumptionStatistics);
@@ -19,6 +20,10 @@ export const StatisticsList: React.FC = () => {
   const pending = useStore(subscribersConsumptionService.outputs.$isLoading);
   const history = useHistory();
   const isApartmentsExist = apartmentList.length !== 0;
+
+  const filter = useStore(
+    subscribersConsumptionService.outputs.$subscriberStatisticsFilter
+  );
 
   const renderApartment = ({
     apartmentNumber,
@@ -47,6 +52,7 @@ export const StatisticsList: React.FC = () => {
 
   return (
     <div>
+      <ExportSubscribersConsumptionContainer filter={filter} />
       {isApartmentsExist && (
         <Wrap {...layout}>
           <div>Номер квартиры</div>
