@@ -97,9 +97,9 @@ const ModalCalculatorReportForm = ({
       nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
-      const { nodeId, detail, resource } = values;
-      const begin = values.begin.toISOString();
-      const end = values.end.endOf('day').toISOString();
+      const { nodeId, detail } = values;
+      const begin = values.begin.startOf('day').format('YYYY-MM-DD HH:mm:ss');
+      const end = values.end.endOf('day').format('YYYY-MM-DD HH:mm:ss');
 
       const shortLink = `Reports/Report`;
       if (!nodeId) {
