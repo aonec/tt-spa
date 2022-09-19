@@ -4,15 +4,30 @@ import {
   ResourceDisconnectingUpdateRequest,
 } from 'myApi';
 import {
+  fetchDeleteResourceDisconnectingDocument,
   fetchEditResourceDisconnection,
   fetchResourceDisconnection,
+  fetchUpdateResourceDisconnectingDocument,
 } from './editResourceDisconnectionService.api';
-import { ResourceDisconnectingUpdatePayload } from './editResourceDisconnectionService.types';
+import {
+  ResourceDisconnectingUpdatePayload,
+  UpdateDocumentPayload,
+} from './editResourceDisconnectionService.types';
 
 const domain = createDomain('editResourceDisconnectionService');
 
 const openEditModal = domain.createEvent<string>();
 const clearDisconnectionId = domain.createEvent();
+
+const deleteDocument = domain.createEvent();
+const deleteDocumentFx = domain.createEffect<string, void>(
+  fetchDeleteResourceDisconnectingDocument
+);
+
+const updateDocument = domain.createEvent<number>();
+const updateDocumentFx = domain.createEffect<UpdateDocumentPayload, void>(
+  fetchUpdateResourceDisconnectingDocument
+);
 
 const editResourceDisconnection = domain.createEvent<ResourceDisconnectingUpdateRequest>();
 const editResourceDisconnectionFx = domain.createEffect<
@@ -58,6 +73,26 @@ sample({
   target: editResourceDisconnectionFx,
 });
 
+sample({
+  source: guard({
+    source: $resourceDisconnection,
+    filter: Boolean,
+  }),
+  clock: deleteDocument,
+  fn: (disconnection) => disconnection.id,
+  target: deleteDocumentFx,
+});
+
+sample({
+  source: guard({
+    source: $resourceDisconnection,
+    filter: Boolean,
+  }),
+  clock: updateDocument,
+  fn: (disconnection, documentId) => ({ id: disconnection.id, documentId }),
+  target: updateDocumentFx,
+});
+
 export const editResourceDisconnectionService = {
   inputs: {
     openEditModal,
@@ -65,6 +100,8 @@ export const editResourceDisconnectionService = {
     clearResourceDisconnection,
     editResourceDisconnectionFx,
     editResourceDisconnection,
+    updateDocument,
+    deleteDocument,
   },
   outputs: {
     $resourceDisconnection,

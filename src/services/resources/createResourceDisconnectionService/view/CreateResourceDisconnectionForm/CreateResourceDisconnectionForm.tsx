@@ -39,13 +39,13 @@ import {
 import { getDate } from './CreateresourceDisconnectionForm.utils';
 
 export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
-  formId,
-  handleCreateResourceDisconnection,
   cities,
-  selectedCity,
   handleSelectCity,
   heatingStations,
   handleSelectHeatingStation,
+  formId,
+  handleCreateResourceDisconnection,
+  selectedCity,
   treeData,
   disconnectingTypes,
   resourceTypes,
@@ -53,7 +53,15 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   resourceDisconnection,
   isEdit,
   handleEditResourceDisconnection,
+  handleDeleteDocument,
+  handleUpdateDocument,
 }) => {
+  const documentInit = resourceDisconnection?.document
+    ? [resourceDisconnection?.document]
+    : [];
+
+  const [documents, setDocuments] = useState<Document[]>(documentInit);
+
   const initialValues = useMemo(() => {
     if (!isEdit || !resourceDisconnection) {
       return formInitialValues;
@@ -66,18 +74,16 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     const housingStocks = resourceDisconnection?.housingStocks || [];
     const startDate = resourceDisconnection.startDate;
     const endDate = resourceDisconnection.endDate;
-
     handleSelectCity(housingStocks[0].address?.mainAddress?.city || '');
     handleSelectHeatingStation(heatingStationId || '');
-
     return {
       ...resourceDisconnection,
       documentId: resourceDisconnection.document?.id || null,
       housingStockIds: housingStocks.map((housingStock) => housingStock.id),
       startDate: moment(startDate).format('DD.MM.YYYY'),
       startHour: moment(startDate).format('HH:mm'),
-      endDate: moment(endDate).format('DD.MM.YYYY') || '',
-      endHour: moment(endDate).format('HH:mm') || '0:00',
+      endDate: endDate ? moment(endDate).format('DD.MM.YYYY') : '',
+      endHour: endDate ? moment(endDate).format('HH:mm') : '0:00',
       disconnectingType: disconnectingType?.value || null,
       sender: resourceDisconnection?.sender || '',
       heatingStationId,
@@ -94,6 +100,12 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
 
       if (resource && disconnectingType) {
         if (isEdit) {
+          if (documents.length === 0 && resourceDisconnection?.document) {
+            handleDeleteDocument();
+          } else if (documentInit[0].id !== documents[0].id) {
+            handleUpdateDocument(documents[0].id);
+          }
+
           return handleEditResourceDisconnection({
             disconnectingType,
             startDate: getDate(formValues.startDate, formValues.startHour),
@@ -131,6 +143,9 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     validateOnBlur: false,
     onSubmit: handleSubmitFormik,
   });
+
+  const isAllPrevious = useRef(false);
+  const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
 
   const allHousingStocks = useMemo(
     () =>
@@ -185,14 +200,6 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     },
     [allHousingStocks]
   );
-  const documentInit = resourceDisconnection?.document
-    ? [resourceDisconnection?.document]
-    : [];
-
-  const [documents, setDocuments] = useState<Document[]>(documentInit);
-
-  const isAllPrevious = useRef(false);
-  const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
 
   const housingStocksPlaceholderText = isAllHousingStocksSelected
     ? 'Выбраны все адреса'
@@ -206,7 +213,6 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     ),
     [housingStocksPlaceholderText]
   );
-
   const heatingStationPlaceholderText = selectedCity
     ? 'Выберите ЦТП'
     : 'Выберите город';
@@ -385,8 +391,6 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
           />
           <ErrorMessage>{errors.housingStockIds}</ErrorMessage>
         </FormItem>
-
-        <div />
 
         <FormItem label="Дата и время отключения ресурса">
           <TimeWrapper>

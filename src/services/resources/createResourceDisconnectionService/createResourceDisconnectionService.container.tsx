@@ -47,6 +47,12 @@ export const CreateResourceDisconnectionContainer = () => {
   );
   const handleSelectCity = useEvent(inputs.selectCity);
   const handleSelectHeatingStation = useEvent(inputs.selectHeatingStation);
+  const handleUpdateDocument = useEvent(
+    editResourceDisconnectionService.inputs.updateDocument
+  );
+  const handleDeleteDocument = useEvent(
+    editResourceDisconnectionService.inputs.deleteDocument
+  );
 
   const preparedAddressesFromHeatingStation = useMemo(
     () =>
@@ -95,6 +101,8 @@ export const CreateResourceDisconnectionContainer = () => {
         isDisconnectionLoading={isDisconnectionLoading}
         resourceDisconnection={resourceDisconnection}
         handleEditResourceDisconnection={handleEditResourceDisconnection}
+        handleUpdateDocument={handleUpdateDocument}
+        handleDeleteDocument={()=>handleDeleteDocument}
       />
     </>
   );

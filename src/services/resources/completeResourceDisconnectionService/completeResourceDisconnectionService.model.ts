@@ -1,5 +1,7 @@
 import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
+import { EffectFailDataAxiosError } from 'types';
 import { fetchCompleteResourceDisconnecting } from './completeResourceDisconnectionService.api';
 
 const domain = createDomain('completeResourceDisconnectionService');
@@ -20,9 +22,11 @@ const $endDate = domain
 const $isModalOpen = $resourceDisconnectionId.map(Boolean);
 
 const completeResourceDisconnection = domain.createEvent();
-const completeResourceDisconnectionFx = domain.createEffect<string, void>(
-  fetchCompleteResourceDisconnecting
-);
+const completeResourceDisconnectionFx = domain.createEffect<
+  string,
+  void,
+  EffectFailDataAxiosError
+>(fetchCompleteResourceDisconnecting);
 const $completeResourceDisconnectionIsLoading =
   completeResourceDisconnectionFx.pending;
 
@@ -43,6 +47,10 @@ forward({
       .refetchResourceDisconnections,
   ],
 });
+
+completeResourceDisconnectionFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
 
 export const completeResourceDisconnectionService = {
   inputs: {

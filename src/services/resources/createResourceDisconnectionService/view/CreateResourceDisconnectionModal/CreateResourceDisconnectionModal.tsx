@@ -21,6 +21,8 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   isEdit,
   resourceDisconnection,
   handleEditResourceDisconnection,
+  handleDeleteDocument,
+  handleUpdateDocument,
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'
@@ -52,6 +54,8 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
               resourceDisconnection={resourceDisconnection}
               isEdit={isEdit}
               handleEditResourceDisconnection={handleEditResourceDisconnection}
+              handleDeleteDocument={handleDeleteDocument}
+              handleUpdateDocument={handleUpdateDocument}
             />
           )}
         </>

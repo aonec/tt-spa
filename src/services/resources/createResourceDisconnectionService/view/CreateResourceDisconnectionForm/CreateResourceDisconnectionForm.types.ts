@@ -4,7 +4,6 @@ import {
   EResourceType,
   EResourceTypeNullableStringDictionaryItem,
   HeatingStationResponse,
-  HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
@@ -28,6 +27,8 @@ export type CreateResourceDisconnectionFormProps = {
   handleEditResourceDisconnection: (
     payload: ResourceDisconnectingUpdateRequest
   ) => void;
+  handleUpdateDocument: (id: number) => void;
+  handleDeleteDocument: () => void;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
