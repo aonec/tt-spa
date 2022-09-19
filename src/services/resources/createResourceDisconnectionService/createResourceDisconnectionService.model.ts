@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import _ from 'lodash/fp';
 import {
   HeatingStationResponse,
@@ -26,16 +26,8 @@ const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore('');
 
 const setIsInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = editResourceDisconnectionService.outputs.$resourceDisconnection
-  .map((disconnection) => {
-    if (!disconnection) {
-      return false;
-    }
-    const isInterHeatingSeason =
-      disconnection.disconnectingType?.value ===
-      EResourceDisconnectingType.InterHeatingSeason;
-    return isInterHeatingSeason;
-  })
+const $isInterHeatingSeason = domain
+  .createStore(false)
   .on(
     setIsInterHeatingSeason,
     (_, isInterHeatingSeason) => isInterHeatingSeason
@@ -117,6 +109,22 @@ $existingHousingStocks.on(
   getExistingHosuingStocksFx.doneData,
   (_, housingStocks) => housingStocks.items || []
 );
+
+sample({
+  clock: guard({
+    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
+    filter: Boolean,
+  }),
+  fn: (disconnection) => {
+    const disconnectingType = disconnection.disconnectingType;
+    const isInterHeatingSeason =
+      disconnectingType?.value ===
+      EResourceDisconnectingType.InterHeatingSeason;
+
+    return isInterHeatingSeason;
+  },
+  target: setIsInterHeatingSeason,
+});
 
 forward({
   from: editResourceDisconnectionService.inputs.openEditModal,
