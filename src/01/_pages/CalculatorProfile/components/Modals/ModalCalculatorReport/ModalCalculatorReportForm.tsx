@@ -98,8 +98,8 @@ const ModalCalculatorReportForm = ({
     }),
     onSubmit: async () => {
       const { nodeId, detail, resource } = values;
-      const begin = values.begin.toISOString(true);
-      const end = values.end.endOf('day').toISOString(true);
+      const begin = values.begin.toISOString();
+      const end = values.end.endOf('day').toISOString();
 
       const shortLink = `Reports/Report`;
       if (!nodeId) {
