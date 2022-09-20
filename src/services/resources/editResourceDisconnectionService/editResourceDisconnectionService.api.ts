@@ -19,8 +19,6 @@ export const fetchEditResourceDisconnection = ({
 export const fetchUpdateResourceDisconnectingDocument = (
   payload: UpdateDocumentPayload
 ): Promise<void> =>
-  axios.post(`ResourceDisconnecting/${payload.id}/AddDocument`, {
-    params: {
-      ...payload,
-    },
-  });
+  axios.post(
+    `ResourceDisconnecting/${payload.id}/AddDocument/${payload.documentId}`
+  );
