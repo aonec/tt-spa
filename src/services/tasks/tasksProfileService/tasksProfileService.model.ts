@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
@@ -104,9 +104,12 @@ forward({
   to: clearFilters,
 });
 
-forward({
-  from: $searchState,
-  to: searchTasksFx,
+sample({
+  clock: guard({
+    clock: $searchState,
+    filter: (filter) => Boolean(filter.GroupType),
+  }),
+  target: searchTasksFx,
 });
 
 forward({

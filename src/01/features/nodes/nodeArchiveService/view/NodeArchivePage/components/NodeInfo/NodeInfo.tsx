@@ -7,7 +7,6 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 
 export const NodeInfo: FC<NodeInfoProps> = ({ node, loading }) => {
   const address = node?.address && getHousingStockAddress(node.address, true);
-
   if (loading) {
     return <LoadingSkeleton />;
   }
@@ -20,7 +19,7 @@ export const NodeInfo: FC<NodeInfoProps> = ({ node, loading }) => {
     <Wrap>
       {address}
       <IconTT style={{ marginLeft: 10 }} icon={node.resource.toLowerCase()} />
-      <NodeName>Узел {node.entryNumber}</NodeName>
+      <NodeName>Узел {node.number}</NodeName>
     </Wrap>
   );
 };

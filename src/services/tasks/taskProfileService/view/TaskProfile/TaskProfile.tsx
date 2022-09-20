@@ -6,19 +6,30 @@ import {
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
-import { TaskInfoWrapper } from './TaskProfile.styled';
+import { TaskDeviceInfo } from './TaskDeviceInfo';
+import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
+import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
+import { TaskWrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 
-export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
+export const TaskProfile: FC<TaskProfileProps> = ({
+  task,
+  relatedPipeNode,
+}) => {
   const {
     closingStatus,
     individualDevices,
     device,
     name: taskName,
     stages,
+    apartment,
+    housingStockId,
+    pipeNode,
   } = task;
+
+  const apartmemtId = apartment?.id || 0;
 
   const timeline = createTimeline(task);
   const timer = createTimer(task);
@@ -33,8 +44,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
   return (
     <div>
       <GoBack />
-      {isLoading && <Skeleton active />}
-      {!isLoading && name && (
+      {name && (
         <>
           <TaskProfileHeader
             name={name}
@@ -44,10 +54,24 @@ export const TaskProfile: FC<TaskProfileProps> = ({ task, isLoading }) => {
             timer={timer}
             taskName={taskName || ''}
           />
-          <TaskInfoWrapper>
-            <TaskBaseInfo task={task} />
+          <TaskWrapper>
+            <div>
+              <TaskBaseInfo task={task} />
+              {individualDevices && (
+                <TaskIndividualDevicesList
+                  devices={individualDevices}
+                  apartmentId={apartmemtId}
+                  housingStockId={housingStockId}
+                />
+              )}
+              {device && <TaskDeviceInfo device={device} />}
+              {relatedPipeNode && (
+                <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
+              )}
+              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
+            </div>
             <TaskStages stages={stages || []} />
-          </TaskInfoWrapper>
+          </TaskWrapper>
         </>
       )}
     </div>
