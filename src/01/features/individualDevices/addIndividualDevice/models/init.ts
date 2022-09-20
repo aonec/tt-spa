@@ -51,11 +51,11 @@ sample({
     (values): CreateIndividualDeviceRequest => ({
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate)
-        .startOf('day')
-        .toISOString(true),
+        .utcOffset(0, true)
+        .toISOString(),
       futureCheckingDate: moment(values.futureCheckingDate)
-        .startOf('day')
-        .toISOString(true),
+        .utcOffset(0, true)
+        .toISOString(),
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
       apartmentId: values.apartmentId!,

@@ -81,7 +81,7 @@ export const BaseInfoStage = () => {
         <DatePickerNative
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
-            fields.lastCheckingDate.onChange(value.toISOString(true));
+            fields.lastCheckingDate.onChange(incomingValue);
 
             const nextCheckingDate = moment(value);
 
@@ -93,9 +93,7 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            fields.futureCheckingDate.onChange(
-              nextCheckingDate.toISOString(true)
-            );
+            fields.futureCheckingDate.onChange(nextCheckingDate.format());
           }}
           value={fields.lastCheckingDate.value}
         />

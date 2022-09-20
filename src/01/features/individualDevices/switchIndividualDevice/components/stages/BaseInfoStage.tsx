@@ -91,7 +91,9 @@ export const BaseInfoStage = () => {
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
-            fields.lastCheckingDate.onChange(value.toISOString(true));
+            fields.lastCheckingDate.onChange(
+              value.utcOffset(0, true).toISOString()
+            );
 
             const nextCheckingDate = moment(value);
 
@@ -104,7 +106,7 @@ export const BaseInfoStage = () => {
             nextCheckingDate.set('year', nextYear);
 
             fields.futureCheckingDate.onChange(
-              nextCheckingDate.toISOString(true)
+              nextCheckingDate.utcOffset(0, true).toISOString()
             );
           }}
           value={fields.lastCheckingDate.value}
