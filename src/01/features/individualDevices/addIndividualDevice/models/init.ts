@@ -52,10 +52,10 @@ sample({
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate)
         .startOf('day')
-        .toISOString(),
+        .toISOString(true),
       futureCheckingDate: moment(values.futureCheckingDate)
         .startOf('day')
-        .toISOString(),
+        .toISOString(true),
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
       apartmentId: values.apartmentId!,
