@@ -3,4 +3,5 @@ import { IndividualDeviceResponse } from 'myApi';
 
 export type IndividualDeviceInfoProps = {
   device: IndividualDeviceResponse | IndividualDeviceOnTaskResponse;
+  showCheckingDates?: boolean;
 };

@@ -12,6 +12,7 @@ import { AttachDocument } from './AttachDocument';
 import { SwitchStageSelectContainer } from './switchStageSelectService';
 import { SetNextStageDeadlineDatepicker } from './SetNextStageDeadlineDatepicker';
 import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService/setNextStageDeadlineService.container';
+import { CorrectionReadingsContainer } from './correctionReadingsService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -51,6 +52,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.SetNextStageDeadline,
     Component: SetNextStageDeadlineDatepicker,
     position: TaskPanelInputPositionType.Middle,
+  },
+  {
+    actionType: EStageActionType.FixReading,
+    Component: CorrectionReadingsContainer,
+    position: TaskPanelInputPositionType.Full,
   },
 ];
 
