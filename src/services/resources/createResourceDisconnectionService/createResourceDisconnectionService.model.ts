@@ -1,13 +1,13 @@
 import { message } from 'antd';
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, split } from 'effector';
 import _ from 'lodash/fp';
 import {
-  HeatingStationResponse,
   ResourceDisconnectingCreateRequest,
-  HeatingStationResponsePagedList,
   StreetWithHousingStockNumbersResponsePagedList,
   StreetWithHousingStockNumbersResponse,
   EResourceDisconnectingType,
+  HeatingStationWithStreetsResponse,
+  HouseManagementWithStreetsResponse,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -16,19 +16,13 @@ import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFil
 import {
   fetchCreateResourceDisconnection,
   fetchExistingHousingStocks,
-  fetchHeatingStations,
+  fetchExistingHousingStocksWithHeatingStation,
+  fetchExistingHousingStocksWithHouseManagement,
 } from './createResourceDisconnectionService.api';
+import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
 
-const $isModalOpen = domain.createStore(false);
-
-const $selectedCity = domain.createStore('');
-const $selectedHeatingStation = domain.createStore('');
-
-const $cities = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
-  (store) => store?.cities || []
-);
 const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.resourceTypes || []
 );
@@ -52,35 +46,61 @@ const $disconnectingTypes = combine(
   }
 );
 
-const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
-
-const $existingHousingStocks = domain.createStore<
-  StreetWithHousingStockNumbersResponse[]
->([]);
-
-const $addressesFromHeatingStation = combine(
-  $heatingStations,
-  $selectedHeatingStation,
-  (stations, selectedStation) =>
-    stations.find((station) => station.id === selectedStation)?.housingStocks ||
-    []
-);
-
 const openModal = domain.createEvent();
 const closeModal = domain.createEvent();
-const clearStore = domain.createEvent();
+const clearHousingStocks = domain.createEvent();
+const clearTypeOfAddress = domain.createEvent();
 
-const selectCity = domain.createEvent<string>();
-const selectHeatingStation = domain.createEvent<string>();
+const $isModalOpen = domain
+  .createStore(false)
+  .on(openModal, () => true)
+  .reset(closeModal);
 
-const getHeatingStationFx = domain.createEffect<
-  string,
-  HeatingStationResponsePagedList
->(fetchHeatingStations);
-const getExistingHosuingStocksFx = domain.createEffect<
-  string,
+const setTypeOfAddress = domain.createEvent<EAddressDetails>();
+const $typeOfAddress = domain
+  .createStore<EAddressDetails>(EAddressDetails.All)
+  .on(setTypeOfAddress, (_, type) => type)
+  .reset(clearTypeOfAddress);
+
+const getExistingHousingStocksFx = domain.createEffect<
+  void,
   StreetWithHousingStockNumbersResponsePagedList
 >(fetchExistingHousingStocks);
+
+const $existingHousingStocks = domain
+  .createStore<StreetWithHousingStockNumbersResponse[]>([])
+  .on(
+    getExistingHousingStocksFx.doneData,
+    (_, housingStocks) => housingStocks.items || []
+  )
+  .reset(clearHousingStocks);
+
+const getHeatingStationFx = domain.createEffect<
+  void,
+  HeatingStationWithStreetsResponse[]
+>(fetchExistingHousingStocksWithHeatingStation);
+
+const $housingStockWithHeatingStations = domain
+  .createStore<HeatingStationWithStreetsResponse[]>([])
+  .on(getHeatingStationFx.doneData, (_, housingStocks) => housingStocks)
+  .reset(clearHousingStocks);
+
+const getHouseManagementsFx = domain.createEffect<
+  void,
+  HouseManagementWithStreetsResponse[]
+>(fetchExistingHousingStocksWithHouseManagement);
+
+const $housingStockWithHouseManagements = domain
+  .createStore<HouseManagementWithStreetsResponse[]>([])
+  .on(getHouseManagementsFx.doneData, (_, housingStocks) => housingStocks)
+  .reset(clearHousingStocks);
+
+const $isHousingStocksLoading = combine(
+  getHouseManagementsFx.pending,
+  getHeatingStationFx.pending,
+  getExistingHousingStocksFx.pending,
+  (...isLoading) => isLoading.includes(true)
+);
 
 const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
@@ -89,33 +109,14 @@ const createResourceDisconnectionFx = domain.createEffect<
   EffectFailDataAxiosError
 >(fetchCreateResourceDisconnection);
 
-$isModalOpen.on(openModal, () => true).reset(closeModal);
-$selectedCity.on(selectCity, (_, city) => city);
-$selectedHeatingStation
-  .on(selectHeatingStation, (_, id) => id)
-  .reset(clearStore);
-$heatingStations.on(
-  getHeatingStationFx.doneData,
-  (_, stations) => stations.items || []
-);
-$existingHousingStocks.on(
-  getExistingHosuingStocksFx.doneData,
-  (_, housingStocks) => housingStocks.items || []
-);
+forward({
+  from: setTypeOfAddress,
+  to: clearHousingStocks,
+});
 
 forward({
   from: editResourceDisconnectionService.inputs.openEditModal,
   to: openModal,
-});
-
-forward({
-  from: $selectedCity,
-  to: getExistingHosuingStocksFx,
-});
-
-forward({
-  from: $selectedCity,
-  to: getHeatingStationFx,
 });
 
 forward({
@@ -130,7 +131,28 @@ forward({
 
 forward({
   from: closeModal,
-  to: clearStore,
+  to: [clearHousingStocks, clearTypeOfAddress],
+});
+
+forward({
+  from: openModal,
+  to: getExistingHousingStocksFx,
+});
+
+split({
+  source: $typeOfAddress,
+  match: {
+    [EAddressDetails.All]: (type) => type === EAddressDetails.All,
+    [EAddressDetails.HeatingStation]: (type) =>
+      type === EAddressDetails.HeatingStation,
+    [EAddressDetails.HouseManagements]: (type) =>
+      type === EAddressDetails.HouseManagements,
+  },
+  cases: {
+    [EAddressDetails.All]: getExistingHousingStocksFx,
+    [EAddressDetails.HeatingStation]: getHeatingStationFx,
+    [EAddressDetails.HouseManagements]: getHouseManagementsFx,
+  },
 });
 
 createResourceDisconnectionFx.failData.watch((error) =>
@@ -142,17 +164,16 @@ export const createResourceDisconnectionService = {
     openModal,
     closeModal,
     createResourceDisconnection,
-    selectCity,
-    selectHeatingStation,
+    setTypeOfAddress,
   },
   outputs: {
     $isModalOpen,
-    $selectedCity,
-    $heatingStations,
-    $addressesFromHeatingStation,
-    $existingHousingStocks,
-    $cities,
     $resourceTypes,
     $disconnectingTypes,
+    $existingHousingStocks,
+    $housingStockWithHeatingStations,
+    $housingStockWithHouseManagements,
+    $typeOfAddress,
+    $isHousingStocksLoading,
   },
 };

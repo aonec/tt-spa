@@ -8,11 +8,6 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   isOpen,
   handleClose,
   handleCreateResourceDisconnection,
-  cities,
-  selectedCity,
-  handleSelectCity,
-  heatingStations,
-  handleSelectHeatingStation,
   treeData,
   disconnectingTypes,
   resourceTypes,
@@ -22,6 +17,9 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   resourceDisconnection,
   handleEditResourceDisconnection,
   handleUpdateDocument,
+  setTypeOfAddress,
+  typeOfAddress,
+  isHousingStocksLoading
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'
@@ -45,12 +43,7 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
                 handleCreateResourceDisconnection
               }
               formId="createResourceDisconnection"
-              heatingStations={heatingStations}
-              cities={cities}
               treeData={treeData}
-              selectedCity={selectedCity}
-              handleSelectCity={handleSelectCity}
-              handleSelectHeatingStation={handleSelectHeatingStation}
               disconnectingTypes={disconnectingTypes}
               resourceTypes={resourceTypes}
               isInterHeatingSeason={isInterHeatingSeason}
@@ -58,6 +51,9 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
               isEdit={isEdit}
               handleEditResourceDisconnection={handleEditResourceDisconnection}
               handleUpdateDocument={handleUpdateDocument}
+              setTypeOfAddress={setTypeOfAddress}
+              typeOfAddress={typeOfAddress}
+              isHousingStocksLoading={isHousingStocksLoading}
             />
           )}
         </>

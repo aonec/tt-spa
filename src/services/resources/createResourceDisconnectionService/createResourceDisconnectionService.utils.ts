@@ -1,8 +1,13 @@
-import { StreetWithHousingStockNumbersResponse } from 'myApi';
-import { ExistingStreetWithHousingStocks } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import {
+  HeatingStationWithStreetsResponse,
+  HouseManagementWithStreetsResponse,
+  StreetWithHousingStockNumbersResponse,
+} from 'myApi';
+import { TreeSelectElement } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export const prepareAddressesForTreeSelect = (
-  items: StreetWithHousingStockNumbersResponse[]
+  items: StreetWithHousingStockNumbersResponse[],
+  parentId?: string
 ) =>
   items.reduce((acc, { street, addresses }) => {
     if (street) {
@@ -17,11 +22,25 @@ export const prepareAddressesForTreeSelect = (
         ...acc,
         {
           title: street,
-          key: street,
-          value: street,
+          key: `${street}${parentId}`,
+          value: `${street}${parentId}`,
           children,
         },
       ];
     }
     return acc;
-  }, [] as ExistingStreetWithHousingStocks[]);
+  }, [] as TreeSelectElement[]);
+
+export const prepareAddressesWithParentsForTreeSelect = (
+  items:
+    | HeatingStationWithStreetsResponse[]
+    | HouseManagementWithStreetsResponse[]
+) =>
+  items.reduce((acc, { id, name, streets }) => {
+    if (!streets || !name) {
+      return acc;
+    }
+    const children = prepareAddressesForTreeSelect(streets, id);
+
+    return [...acc, { title: name, value: id, key: id, children }];
+  }, [] as TreeSelectElement[]);
