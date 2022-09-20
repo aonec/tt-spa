@@ -1,8 +1,6 @@
 import { ButtonTT } from '01/tt-components';
-import { useFormik } from 'formik';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC } from 'react';
 import { UserIcon } from 'ui-kit/icons';
-import { Comment } from './Comment';
 import {
   ButtonWrapper,
   CommentInputWrapper,
@@ -12,6 +10,7 @@ import {
   Wrapper,
 } from './TaskComments.styled';
 import { TaskCommentsProps } from './TaskComments.types';
+import { TaskCommentsList } from './TaskCommentsList';
 
 export const TaskComments: FC<TaskCommentsProps> = ({
   comments,
@@ -20,12 +19,6 @@ export const TaskComments: FC<TaskCommentsProps> = ({
   isPerpetrator,
   commentText,
 }) => {
-  const commentsList = useMemo(
-    () =>
-      comments.map((comment) => <Comment key={comment.id} comment={comment} />),
-    [comments]
-  );
-
   const isCurrentCommentEmpty = commentText === '';
   const disabled = isCurrentCommentEmpty || !isPerpetrator;
 
@@ -54,7 +47,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({
           Добавить комментарий
         </ButtonTT>
       </ButtonWrapper>
-      {commentsList}
+      <TaskCommentsList comments={comments} />
     </Wrapper>
   );
 };

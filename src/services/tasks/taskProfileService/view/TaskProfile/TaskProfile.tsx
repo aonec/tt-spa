@@ -26,6 +26,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   handleDeleteDocument,
   relatedPipeNode,
   isViewerExecutor,
+  documents,
 }) => {
   const {
     closingStatus,
@@ -37,7 +38,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     housingStockId,
     pipeNode,
     comments,
-    documents,
   } = task;
 
   const apartmemtId = apartment?.id || 0;

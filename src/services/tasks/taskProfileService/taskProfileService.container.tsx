@@ -18,6 +18,7 @@ export const TaskProfileContainer = () => {
   const isPerpetrator = useStore(outputs.$isPerpetrator);
   const commentText = useStore(outputs.$commentText);
   const currentUser = useStore(outputs.$currentUser);
+  const documents = useStore(outputs.$documents);
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
@@ -49,6 +50,7 @@ export const TaskProfileContainer = () => {
           commentText={commentText}
           relatedPipeNode={relatedPipeNode}
           isViewerExecutor={isViewerExecutor}
+          documents={documents}
         />
       )}
     </>
