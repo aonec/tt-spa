@@ -15,9 +15,11 @@ const domain = createDomain('taskProfileService');
 const handlePushStage = domain.createEvent<StagePushRequest>();
 
 const setComment = domain.createEvent<string>();
+const clearComment = domain.createEvent();
 const $commentText = domain
   .createStore<string>('')
-  .on(setComment, (_, newComment) => newComment);
+  .on(setComment, (_, newComment) => newComment)
+  .reset(clearComment);
 
 const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
 
@@ -30,9 +32,6 @@ const addCommentFx = domain.createEffect<
   AddCommentRequest,
   TaskCommentResponse
 >(fetchAddComment);
-
-const deleteDocument = domain.createEvent<number>();
-const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 
 const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
 const $task = domain
@@ -64,6 +63,14 @@ const $isPerpetrator = combine(
   }
 );
 
+const deleteDocument = domain.createEvent<number>();
+const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
+const $documents = $task
+  .map((task) => task?.documents || [])
+  .on(deleteDocumentFx.done, (documents, { params: documentId }) =>
+    documents.filter((document) => document.id !== documentId)
+  );
+
 const $isLoading = getTasksFx.pending;
 
 const TaskIdGate = createGate<{ taskId: number }>();
@@ -93,7 +100,10 @@ forward({
   to: getNodeFx,
 });
 
-addCommentFx.doneData.watch(() => setComment(''));
+forward({
+  from: addCommentFx.doneData,
+  to: clearComment,
+});
 
 export const taskProfileService = {
   inputs: {
@@ -108,6 +118,7 @@ export const taskProfileService = {
     $isPerpetrator,
     $commentText,
     $pipeNode,
+    $documents,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { devUrl } from './axios';
 
-const devUrl = 'https://staging.transparent-technology.ru/api/'
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 let axiosWithHeaders = axios.create({

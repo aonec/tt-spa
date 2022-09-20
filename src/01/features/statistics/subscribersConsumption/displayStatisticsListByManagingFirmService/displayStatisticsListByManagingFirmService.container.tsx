@@ -31,10 +31,13 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
   const handleOpenModal = useEvent(
     exportSubscribersConsumptionService.inputs.openModal
   );
+  const setFileName = useEvent(
+    exportSubscribersConsumptionService.inputs.setFileName
+  );
 
   return (
     <>
-      <ExportSubscribersConsumptionContainer />
+      <ExportSubscribersConsumptionContainer filter={filter} />
       <ExistingCitiesGate />
       <StatiscticsPageGate />
       <ManagingFirmSearch
@@ -55,6 +58,7 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
           statisticIsLoading={statisticIsLoading}
           handleOpenModal={handleOpenModal}
           selectedHousingStock={selectedHousingStock}
+          setFileName={setFileName}
         />
       )}
     </>

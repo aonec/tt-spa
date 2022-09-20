@@ -1,6 +1,6 @@
 import { combine, createDomain, sample } from 'effector';
-import { displayStatisticsListByManagingFirmService } from '../displayStatisticsListByManagingFirmService';
 import { prepareFilterBeforeSenging } from '../displayStatisticsListByManagingFirmService/displayStatisticsListByManagingFirmService.utils';
+import { SubscriberStatisticsForm } from '../displayStatisticsListByManagingFirmService/view/ManagingFirmSearch/ManagingFirmSearch.types';
 import { downloadSubscribersConsumption } from './exportSubscribersConsumptionService.api';
 import { ExportSubscribersConsumptionPayload } from './exportSubscribersConsumptionService.types';
 
@@ -23,6 +23,11 @@ const $fileName = domain
   .createStore<string>('')
   .on(setFileName, (_, name) => name);
 
+const setSubscriberStatisticsFilter = domain.createEvent<SubscriberStatisticsForm | null>();
+const $subscriberStatisticsFilter = domain
+  .createStore<SubscriberStatisticsForm | null>(null)
+  .on(setSubscriberStatisticsFilter, (_, filter) => filter);
+
 const exportStatistic = domain.createEvent();
 const exportStatiscticFx = domain.createEffect<
   ExportSubscribersConsumptionPayload,
@@ -33,8 +38,7 @@ sample({
   source: combine(
     $fileName,
     $selectedHousingStock,
-    displayStatisticsListByManagingFirmService.outputs
-      .$subscriberStatisticsFilter,
+    $subscriberStatisticsFilter,
     (fileName, HousingStockId, filter) => {
       if (!filter) {
         return { fileName, params: { HousingStockId } };
@@ -56,6 +60,7 @@ export const exportSubscribersConsumptionService = {
     openModal,
     setFileName,
     exportStatistic,
+    setSubscriberStatisticsFilter,
   },
   outputs: {
     $isModalOpen,

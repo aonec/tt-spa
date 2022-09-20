@@ -113,7 +113,7 @@ sample({
       return { ...filter, HousingStockId };
     }
   ),
-  fn:(filter)=> prepareFilterBeforeSenging(filter),
+  fn: (filter) => prepareFilterBeforeSenging(filter),
   target: getStatisticFx,
 });
 
