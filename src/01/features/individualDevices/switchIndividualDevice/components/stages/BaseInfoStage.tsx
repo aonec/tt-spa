@@ -91,7 +91,7 @@ export const BaseInfoStage = () => {
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
-            fields.lastCheckingDate.onChange(incomingValue);
+            fields.lastCheckingDate.onChange(value.toISOString(true));
 
             const nextCheckingDate = moment(value);
 

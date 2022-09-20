@@ -31,6 +31,7 @@ import {
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -80,8 +81,7 @@ export const BaseInfoStage = () => {
         <DatePickerNative
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
-
-            fields.lastCheckingDate.onChange(incomingValue);
+            fields.lastCheckingDate.onChange(value.toISOString(true));
 
             const nextCheckingDate = moment(value);
 
