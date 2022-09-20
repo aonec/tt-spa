@@ -1,15 +1,28 @@
+import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
+import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
+import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { reopenIndividualDevice } from '01/_api/individualDevices';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
-import { Tooltip } from 'antd';
-import React, { FC, useMemo } from 'react';
+import { message, Tooltip } from 'antd';
+import confirm from 'antd/lib/modal/confirm';
+import { useEvent, useStore } from 'effector-react';
+import { ESecuredIdentityRoleName } from 'myApi';
+import React, { FC, useMemo, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
+import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
+import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
 import {
-  DeviceOption,
   DeviceOptionsWrapper,
   Wrapper,
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
+import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
+import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
+import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
@@ -20,11 +33,96 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   inputIndex,
   handleUploadReading,
   uploadingMetersStatuses,
+  previousReadingByCurrentSliderIndex,
 }) => {
+  const history = useHistory();
+  const { id } = useParams<{ id: string }>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onDeleteIndividualDevice = useEvent(
+    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
+  );
+
+  const managementFirmUser = useStore($currentManagingFirmUser);
+
   const isDeviceClosed = Boolean(device.closingDate);
+
+  const isSeniorOperator = (managementFirmUser?.roles || [])
+    .map((elem) => elem.key)
+    .includes(ESecuredIdentityRoleName.SeniorOperator);
+
+  const menuButtonArr: ContextMenuElement[] = useMemo(
+    () => [
+      {
+        title: 'Редактировать',
+        onClick: () => history.push(`/individualDevices/${device.id}/edit`),
+      },
+      {
+        title: 'Замена или поверка прибора',
+        onClick: () => setIsModalOpen(true),
+      },
+      {
+        title: 'Открыть прибор',
+        hidden: !isDeviceClosed,
+        onClick: () =>
+          confirm({
+            title: `Вы действительно хотите открыть прибор ${device.model} (${device.serialNumber})?`,
+            onOk: async () => {
+              try {
+                await reopenIndividualDevice(device.id);
+
+                message.success('Прибор успешно переоткрыт');
+
+                apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices();
+              } catch (error) {
+                message.error('Не удалось открыть прибор');
+              }
+            },
+            okText: 'Да',
+            cancelText: 'Отмена',
+          }),
+      },
+      {
+        title: 'Закрытие прибора',
+        hidden: isDeviceClosed,
+        color: Color.danger,
+        onClick: () => closingIndividualDeviceButtonClicked(device),
+      },
+      {
+        title: 'Удалить прибор',
+        hidden: !isSeniorOperator,
+        color: Color.danger,
+        onClick: () => onDeleteIndividualDevice(device),
+      },
+    ],
+    [
+      device,
+      isSeniorOperator,
+      history,
+      onDeleteIndividualDevice,
+      isDeviceClosed,
+      managementFirmUser,
+    ]
+  );
+
+  const previousReadingTooltipTitle = useMemo(
+    () =>
+      previousReadingByCurrentSliderIndex &&
+      getPreviousMeterTooltipTitle(
+        previousReadingByCurrentSliderIndex,
+        getRateNum(device.rateType),
+        getMeasurementUnit(device.resource)
+      ),
+    [previousReadingByCurrentSliderIndex, device]
+  );
 
   return (
     <Wrapper>
+      <SelectSwitchDeviceTypeModal
+        show={isModalOpen}
+        close={() => setIsModalOpen(false)}
+        deviceId={device.id}
+      />
       <DeviceInfo device={device} />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
@@ -35,6 +133,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
         status={uploadingMetersStatuses[sliderIndex]}
+        tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
       />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
@@ -45,22 +144,32 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
         status={uploadingMetersStatuses[-1]}
+        tooltip={
+          (!previousReading &&
+            !currentReading &&
+            previousReadingTooltipTitle) ||
+          ''
+        }
       />
       <DeviceOptionsWrapper>
-        <DeviceOption>
-          <StarIcon style={{ cursor: 'pointer' }} />
-        </DeviceOption>
-        <DeviceOption>
-          <Tooltip title="История показаний">
-            <HistoryIcon
-              onClick={openReadingsHistoryModal}
-              style={{ cursor: 'pointer' }}
-            />
-          </Tooltip>
-        </DeviceOption>
-        <DeviceOption>
-          <ContextMenuButton menuButtons={[]} size="small" />
-        </DeviceOption>
+        <StarIcon
+          onClick={() =>
+            history.push(
+              `/apartment/${id}/individualDevice/${device.id}/reopen`
+            )
+          }
+          style={{ cursor: 'pointer' }}
+          className="device-option"
+        />
+        <Tooltip title="История показаний" className="device-option">
+          <HistoryIcon
+            onClick={openReadingsHistoryModal}
+            style={{ cursor: 'pointer' }}
+          />
+        </Tooltip>
+        <div className="device-option">
+          <ContextMenuButton menuButtons={menuButtonArr} size="small" />
+        </div>
       </DeviceOptionsWrapper>
     </Wrapper>
   );

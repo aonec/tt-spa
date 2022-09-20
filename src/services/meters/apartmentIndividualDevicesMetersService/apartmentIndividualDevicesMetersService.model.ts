@@ -71,6 +71,8 @@ const fetchIndividualDevicesFx = domain.createEffect<
   IndividualDeviceListItemResponsePagedList
 >(getIndividualDevices);
 
+const refetchIndividualDevices = domain.createEvent();
+
 const $isLoading = fetchIndividualDevicesFx.pending;
 
 const IndividualDevicesGate = createGate<GetIndividualDevicesParams>();
@@ -81,13 +83,15 @@ $individualDevicesPagedData.on(
 );
 
 guard({
-  clock: IndividualDevicesGate.state,
+  clock: [IndividualDevicesGate.state, refetchIndividualDevices],
+  source: IndividualDevicesGate.state,
   filter: (params) => Boolean(params.ApartmentId),
   target: fetchIndividualDevicesFx,
 });
 
 export const apartmentIndividualDevicesMetersService = {
   inputs: {
+    refetchIndividualDevices,
     setIsShowClosedDevices,
     upSliderIndex,
     downSliderIndex,

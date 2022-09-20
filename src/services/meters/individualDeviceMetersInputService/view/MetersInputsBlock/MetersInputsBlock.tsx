@@ -4,7 +4,6 @@ import {
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { Tooltip } from 'antd';
-import moment from 'moment';
 import React, {
   ChangeEvent,
   FC,
@@ -51,12 +50,13 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   inputIndex,
   status: uploadingStatus,
   handleUploadReading,
+  tooltip,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
 
-  useEffect(() => uploadingStatus && setStatus(uploadingStatus), [
-    uploadingStatus,
-  ]);
+  useEffect(() => {
+    setStatus(uploadingStatus || null);
+  }, [uploadingStatus, sliderIndex]);
 
   const [
     bufferedReadingValues,
@@ -73,12 +73,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
   const nextInput = useSwitchInputOnEnter(dataString, !isPrevious);
 
-  const handleReadingInputFocus = useCallback(
-    (e?: FocusEvent<HTMLInputElement>) => {
-      e?.target?.select();
-    },
-    []
-  );
+  const handleReadingInputFocus = (e?: FocusEvent<HTMLInputElement>) => {
+    e?.target?.select();
+  };
+
+  const setFailed = () => setStatus(MetersInputBlockStatus.Failed);
 
   const inputDataAttr = isDisabled ? {} : { 'data-reading-input': dataString };
 
@@ -128,7 +127,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         meterId: reading?.id,
       };
 
-      handleUploadReading(readingPayload, next, isPrevious)
+      handleUploadReading(readingPayload, isPrevious, setFailed)
         .then(next)
         .catch(() => setStatus(MetersInputBlockStatus.Failed));
     },
@@ -184,11 +183,13 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   }, [reading, sliderIndex]);
 
   return (
-    <div>
-      <Wrapper className="meters-wrapper" resource={resource}>
-        {inputsArray}
-      </Wrapper>
-      <ReadingDate>{readingDate || 'Нет показаний'}</ReadingDate>
-    </div>
+    <Tooltip title={tooltip}>
+      <div>
+        <Wrapper className="meters-wrapper" resource={resource}>
+          {inputsArray}
+        </Wrapper>
+        <ReadingDate>{readingDate || 'Нет показаний'}</ReadingDate>
+      </div>
+    </Tooltip>
   );
 };

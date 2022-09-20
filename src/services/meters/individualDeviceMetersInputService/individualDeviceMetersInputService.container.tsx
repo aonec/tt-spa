@@ -1,18 +1,18 @@
 import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import {
-  IndividualDeviceReadingsCreateRequest,
-  IndividualDeviceReadingsResponse,
-} from 'myApi';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import moment from 'moment';
+import { IndividualDeviceReadingsResponse } from 'myApi';
+import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
   IndividualDeviceMetersInputContainerProps,
   MeterInputUploadReadingPayload,
   UploadReading,
+  ValidationReadingsResultType,
 } from './individualDeviceMetersInputService.types';
 import {
+  getExistingReading,
   getInputIndex,
   getMeasurementUnit,
   getPreparedReadingsDictionary,
@@ -43,6 +43,15 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
 
   const uploadMeter = useEvent(inputs.uploadMeter);
+
+  const deleteMeter = useEvent(inputs.deleteMeter);
+
+  const previousReadingByCurrentSliderIndex = useMemo(
+    () =>
+      device.readings &&
+      getExistingReading(device.readings, sliderIndex - 1, 'prev'),
+    [device.readings, sliderIndex]
+  );
 
   const {
     previousReading,
@@ -83,8 +92,8 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const handleUploadReading: UploadReading = useCallback(
     async (
       readingPayload: MeterInputUploadReadingPayload,
-      next: () => void,
-      isPrevious?: boolean
+      isPrevious?: boolean,
+      setFailed?: () => void
     ) => {
       const result = validateReadings(
         isPrevious ? sliderIndex : -1,
@@ -101,11 +110,57 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
           meterId: readingPayload.meterId,
         });
 
-      if (!result) {
-        return void sendMeter();
+      if (result.type === ValidationReadingsResultType.Success) {
+        sendMeter();
+        return;
       }
 
-      if (result.compareStatus === CompareReadingsStatus.LeftGreater) {
+      if (result.type === ValidationReadingsResultType.EmptyValues) {
+        const meterId = readingPayload.meterId;
+
+        const readingMonth = moment(readingPayload.meter.readingDate).format(
+          'MMMM'
+        );
+
+        openConfirmReadingModal({
+          title: (
+            <>
+              Вы точно хотите удалить показание за <b>{readingMonth}</b> на
+              приборе <b>{device.serialNumber}</b> ({device.model})?
+            </>
+          ),
+          onSubmit: () =>
+            meterId &&
+            deleteMeter({
+              deviceId: device.id,
+              meterId: meterId,
+              readingDate: readingPayload.meter.readingDate,
+            }),
+          onCancel: setFailed,
+        });
+
+        return;
+      }
+
+      if (
+        result.type === ValidationReadingsResultType.CompareProblem &&
+        result.compareStatus === CompareReadingsStatus.RightLess
+      ) {
+        const text = `Введенное показание по прибору ${device.serialNumber} (${
+          device.model
+        }) больше следующего на T${result.valueIndex! + 1}: ${
+          result.compareDiff
+        } ${unit}`;
+
+        message.error(text);
+
+        throw result;
+      }
+
+      if (
+        result.type === ValidationReadingsResultType.CompareProblem &&
+        result.compareStatus === CompareReadingsStatus.LeftGreater
+      ) {
         openConfirmReadingModal({
           title: (
             <>
@@ -117,33 +172,34 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
             </>
           ),
           onSubmit: sendMeter,
+          onCancel: setFailed,
         });
+
+        return;
       }
 
-      if (result.limitsConsumptionDiff) {
+      if (result.type === ValidationReadingsResultType.LimitsExcess) {
         openConfirmReadingModal({
           title: (
             <>
-              Расход {result.limitsConsumptionDiff}
-              {unit} по T{result.valueIndex}, больше чем лимит {result.limit}
-              {unit}
+              Расход{' '}
+              <b>
+                {result.limitsConsumptionDiff}
+                {unit}
+              </b>{' '}
+              по T{result.valueIndex + 1} больше, чем лимит{' '}
+              <b>
+                {result.limit}
+                {unit}
+              </b>
             </>
           ),
           onSubmit: sendMeter,
+          onCancel: setFailed,
         });
+
+        return;
       }
-
-      if (result.compareStatus === CompareReadingsStatus.RightLess) {
-        const text = `Введенное показание по прибору ${device.serialNumber} (${
-          device.model
-        }) больше следующего на T${result.valueIndex + 1}: ${
-          result.compareDiff
-        } ${unit}`;
-
-        message.error(text);
-      }
-
-      throw result;
     },
     [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
   );
@@ -158,6 +214,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       currentReading={currentReading}
       handleUploadReading={handleUploadReading}
       uploadingMetersStatuses={uploadingMetersStatuses}
+      previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
     />
   );
 };
