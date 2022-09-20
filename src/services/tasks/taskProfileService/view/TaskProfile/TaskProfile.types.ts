@@ -6,7 +6,7 @@ export type TaskProfileProps = {
   handleAddComment: () => void;
   handleSetComment: (comment: string) => void;
   commentText: string;
-  handleDeleteDocument: (is: number) => void;
+  handleDeleteDocument: (id: number) => void;
   relatedPipeNode: PipeNodeResponse | null;
   isViewerExecutor: boolean;
   documents: DocumentResponse[];
