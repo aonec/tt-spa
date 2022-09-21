@@ -21,8 +21,9 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   statisticIsLoading,
   handleOpenModal,
   selectedHousingStock,
+  setFileName,
 }) => {
-  const { numberOfApartments, apartmentsStatistic, id } = housingStock;
+  const { numberOfApartments, apartmentsStatistic, id, address } = housingStock;
 
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
@@ -32,7 +33,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     id,
   ]);
 
-  const address = getHousingStockAddress(housingStock);
+  const addressString = getHousingStockAddress(housingStock);
   const isCurrentHousingStockSelected = selectedHousingStock === id;
 
   const apartmentsStatisticComponent = useMemo(() => {
@@ -57,6 +58,18 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
     statisticIsLoading,
   ]);
 
+  const handleChooseHousingStock = useCallback(() => {
+    const mainAddress = address?.mainAddress;
+    const street = mainAddress?.street;
+    const number = mainAddress?.number;
+    if (street && number) {
+      setFileName(`${street}_${number}`);
+    } else {
+      setFileName('');
+    }
+    openModal();
+  }, [openModal, address]);
+
   useEffect(() => {
     if (!isCurrentHousingStockSelected) {
       setIsActive(false);
@@ -76,14 +89,14 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
           <ArrowWrapper isActive={isActive}>
             <Arrow />
           </ArrowWrapper>
-          <AddressWrapper isActive={isActive}>{address}</AddressWrapper>
+          <AddressWrapper isActive={isActive}>{addressString}</AddressWrapper>
         </GroupWrapper>
         <GroupWrapper>
           <AppartmentNumberText>
             Количество квартир: {numberOfApartments}
           </AppartmentNumberText>
           <Tooltip title="Выгрузить список квартир">
-            <DownloadIconWrapper onClick={openModal}>
+            <DownloadIconWrapper onClick={handleChooseHousingStock}>
               <DownloadIconSC />
             </DownloadIconWrapper>
           </Tooltip>
