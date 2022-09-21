@@ -191,8 +191,21 @@ guard({
             );
 
             if (!oldReadings) {
-              return acc;
+              return [
+                ...acc,
+                {
+                  readingDate: moment(readingDate)
+                    .add(1, 'month')
+                    .utcOffset(0, true)
+                    .toISOString(),
+                  value1: Number(value1),
+                  value2: Number(value2) || null,
+                  value3: Number(value3) || null,
+                  value4: Number(value4) || null,
+                },
+              ];
             }
+
             const {
               value1: oldValue1,
               value2: oldValue2,
@@ -201,14 +214,15 @@ guard({
             } = oldReadings;
 
             const isDifferent =
-              oldValue1 !== value1 ||
-              oldValue2 !== value2 ||
-              oldValue3 !== value3 ||
-              oldValue4 !== value4;
+              oldValue1 !== Number(value1) ||
+              oldValue2 !== Number(value2) ||
+              oldValue3 !== Number(value3) ||
+              oldValue4 !== Number(value4);
 
             if (!isDifferent) {
               return acc;
             }
+
             return [
               ...acc,
               {
