@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { getReadingValuesArray } from 'services/meters/individualDeviceMetersInputService/view/ApartmentIndividualDeviceMetersInputLine/ApartmentIndividualDeviceMetersInputLine.utils';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
 import { BufferedReadingValues } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
@@ -23,7 +23,10 @@ import {
 } from './CorrectionReadings.styled';
 import { CorrectionReadingsProps } from './CorrectionReadings.types';
 
-export const CorrectionReadings: FC<CorrectionReadingsProps> = ({ task }) => {
+export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
+  task,
+  handleReadingChange,
+}) => {
   const device = task.individualDevices?.[0];
 
   const fixedReading = device?.fixedReading;
@@ -34,6 +37,10 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({ task }) => {
   ] = useState<BufferedReadingValues>(
     getBufferedValuesFromReading(fixedReading || undefined)
   );
+
+  useEffect(() => {
+    if (bufferedReadingValues) handleReadingChange(bufferedReadingValues);
+  }, [bufferedReadingValues]);
 
   const problemReading = device?.invalidReading;
 

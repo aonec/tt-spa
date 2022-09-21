@@ -20,8 +20,9 @@ export const InfoBlockValue = styled.div`
   color: #000000dd;
   font-size: 16px;
   font-weight: 500;
-  line-height: 0;
+  min-height: 15px;
   margin-top: 10px;
+  line-height: 20px;
 `;
 
 export const InfoBlock: FC<{ title: string }> = ({ title, children }) => {
@@ -44,10 +45,6 @@ export const InvalidReadingValueWrapper = styled.div`
   margin-top: 10px;
   line-height: 0;
   height: 15px;
-
-  &:first-child {
-    margin-top: 0;
-  }
 `;
 
 export const InvalidReadingValueIndex = styled.span`
