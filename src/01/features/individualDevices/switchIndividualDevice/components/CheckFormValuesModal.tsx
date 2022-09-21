@@ -142,7 +142,7 @@ export const CheckFormValuesModal = () => {
         </>
       )}
       <ReadingsInput
-        title="Новый прибор"
+        title={isCheck ? 'Поверенный прибор' : 'Новый прибор'}
         readings={fields.newDeviceReadings.value}
         device={{
           resource: fields.resource.value!,
@@ -160,7 +160,7 @@ export const CheckFormValuesModal = () => {
       width={800}
       visible={isOpen}
       onCancel={onCancel}
-      title={<Header>Замена прибора</Header>}
+      title={<Header>{isCheck ? 'Поверка прибора' : 'Замена прибора'}</Header>}
       footer={
         <Footer>
           <ButtonTT color="white" key="back" onClick={onCancel}>
