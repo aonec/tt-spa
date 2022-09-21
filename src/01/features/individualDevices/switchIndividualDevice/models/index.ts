@@ -20,6 +20,7 @@ import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { createGate } from 'effector-react';
 import moment from 'moment';
+import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -191,19 +192,7 @@ guard({
             );
 
             if (!oldReadings) {
-              return [
-                ...acc,
-                {
-                  readingDate: moment(readingDate)
-                    .add(1, 'month')
-                    .utcOffset(0, true)
-                    .toISOString(),
-                  value1: Number(value1),
-                  value2: Number(value2) || null,
-                  value3: Number(value3) || null,
-                  value4: Number(value4) || null,
-                },
-              ];
+              return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
             }
 
             const {
@@ -223,19 +212,7 @@ guard({
               return acc;
             }
 
-            return [
-              ...acc,
-              {
-                readingDate: moment(readingDate)
-                  .add(1, 'month')
-                  .utcOffset(0, true)
-                  .toISOString(),
-                value1: Number(value1),
-                value2: Number(value2) || null,
-                value3: Number(value3) || null,
-                value4: Number(value4) || null,
-              },
-            ];
+            return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
           }, [] as SwitchIndividualDeviceReadingsCreateRequest[])
         : null;
 
