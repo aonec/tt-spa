@@ -18,6 +18,7 @@ import {
   confirmCreationNewDeviceButtonClicked,
   createIndividualDeviceFx,
   readingValueValidate,
+  SwitchIndividualDeviceGate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
@@ -51,6 +52,10 @@ export const CheckFormValuesModal = () => {
   const contractors = useStore($contractors);
 
   const device = useStore($individualDevice);
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+  );
+  const isCheck = type === 'check';
 
   const deviceIcon = DeviceIcons[fields.resource.value! || ''];
 
@@ -126,12 +131,16 @@ export const CheckFormValuesModal = () => {
 
   const readings = (
     <>
-      <ReadingsInput
-        title="Закрываемый прибор"
-        readings={fields.oldDeviceReadings.value}
-        device={device!}
-      />
-      <Space />
+      {!isCheck && (
+        <>
+          <ReadingsInput
+            title="Закрываемый прибор"
+            readings={fields.oldDeviceReadings.value}
+            device={device!}
+          />
+          <Space />
+        </>
+      )}
       <ReadingsInput
         title="Новый прибор"
         readings={fields.newDeviceReadings.value}

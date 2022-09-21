@@ -176,7 +176,10 @@ guard({
         ? newDeviceReadings.map((readings) => {
             const { readingDate, value1, value2, value3, value4 } = readings;
             return {
-              readingDate: moment(readingDate).add(1, 'month').toISOString(),
+              readingDate: moment(readingDate)
+                .add(1, 'month')
+                .utcOffset(0, true)
+                .toISOString(),
               value1: Number(value1),
               value2: Number(value2) || null,
               value3: Number(value3) || null,

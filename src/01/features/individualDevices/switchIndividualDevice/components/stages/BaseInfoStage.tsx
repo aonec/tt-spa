@@ -10,7 +10,7 @@ import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -83,6 +83,14 @@ export const BaseInfoStage = () => {
     return '';
   }, [isSwitch, isCheck, isReopen]);
 
+  useEffect(() => {
+    if (isCheck) {
+      const oldDeviceReadings = fields.oldDeviceReadings.value;
+
+      fields.newDeviceReadings.onChange(oldDeviceReadings);
+    }
+  }, [isCheck, fields.oldDeviceReadings.value]);
+
   const bottomDateFields = (
     <FormWrap>
       <FormItem label="Дата последней поверки прибора">
@@ -120,7 +128,11 @@ export const BaseInfoStage = () => {
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
           disabled={isReopen}
-          onChange={fields.futureCheckingDate.onChange}
+          onChange={(date) =>
+            fields.futureCheckingDate.onChange(
+              moment(date).utcOffset(0, true).toISOString()
+            )
+          }
           value={fields.futureCheckingDate.value}
         />
         <ErrorMessage>
