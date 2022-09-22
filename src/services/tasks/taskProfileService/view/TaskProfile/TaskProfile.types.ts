@@ -13,4 +13,6 @@ export type TaskProfileProps = {
   documents: DocumentResponse[];
   pushStage: (payload: PushStageRequestPayload) => void;
   isPushStageLoading: boolean;
+  handleRevertStage: () => void;
+  isRevertStageLoading: boolean;
 };

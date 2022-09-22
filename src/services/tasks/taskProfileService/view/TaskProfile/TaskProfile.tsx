@@ -29,6 +29,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   documents,
   isPushStageLoading,
   pushStage,
+  handleRevertStage,
+  isRevertStageLoading,
 }) => {
   const {
     closingStatus,
@@ -105,7 +107,11 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               )}
               {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
-            <TaskStages stages={stages || []} />
+            <TaskStages
+              handleRevertStage={handleRevertStage}
+              stages={stages || []}
+              isRevertStageLoading={isRevertStageLoading}
+            />
           </TaskWrapper>
         </>
       )}

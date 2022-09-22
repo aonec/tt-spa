@@ -73,3 +73,7 @@ export const StagePanelWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+export const RevertStageButtonWrapper = styled.div`
+  margin-top: 15px;
+`;

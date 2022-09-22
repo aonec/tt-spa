@@ -20,11 +20,13 @@ export const TaskProfileContainer = () => {
   const currentUser = useStore(outputs.$currentUser);
   const documents = useStore(outputs.$documents);
   const isPushStageLoading = useStore(outputs.$isPushStageLoading);
+  const isRevertStageLoading = useStore(outputs.$isRevertStageLoading);
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
   const handleDeleteDocument = useEvent(inputs.deleteDocument);
   const pushStage = useEvent(inputs.handlePushStage);
+  const handleRevertStage = useEvent(inputs.handleRevertStage);
 
   const device = task && task.device;
   const nodeId = device?.nodeId;
@@ -55,6 +57,8 @@ export const TaskProfileContainer = () => {
           documents={documents}
           pushStage={pushStage}
           isPushStageLoading={isPushStageLoading}
+          handleRevertStage={() => handleRevertStage()}
+          isRevertStageLoading={isRevertStageLoading}
         />
       )}
     </>

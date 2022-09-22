@@ -23,5 +23,8 @@ export const fetchNode = (nodeId: number): Promise<PipeNodeResponse> =>
 export const postPushStage = ({
   taskId,
   data,
-}: PushStageRequestPayload): Promise<void> =>
+}: PushStageRequestPayload): Promise<TaskResponse> =>
   axios.post(`Tasks/${taskId}/PushStage`, data);
+
+export const revertStage = (taskId: number): Promise<TaskResponse> =>
+  axios.post(`Tasks/${taskId}/RevertStage`, {});

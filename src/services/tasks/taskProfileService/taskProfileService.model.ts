@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   StagePushRequest,
@@ -15,6 +15,7 @@ import {
   fetchNode,
   fetchTask,
   postPushStage,
+  revertStage,
 } from './taskProfileService.api';
 import {
   AddCommentRequest,
@@ -32,11 +33,19 @@ const $commentText = domain
 
 const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
 
+const revertStageFx = domain.createEffect<
+  number,
+  TaskResponse,
+  EffectFailDataAxiosError
+>(revertStage);
+
 const pushStageFx = domain.createEffect<
   PushStageRequestPayload,
-  void,
+  TaskResponse,
   EffectFailDataAxiosError
 >(postPushStage);
+
+const handleRevertStage = domain.createEvent();
 
 const handlePushStage = domain.createEvent<PushStageRequestPayload>();
 
@@ -53,6 +62,7 @@ const addCommentFx = domain.createEffect<
 >(fetchAddComment);
 
 const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
+
 const $task = domain
   .createStore<TaskResponse | null>(null)
   .on(getTasksFx.doneData, (_, task) => task)
@@ -135,6 +145,13 @@ forward({
   to: pushStageFx,
 });
 
+guard({
+  source: $task.map((task) => task?.id),
+  clock: handleRevertStage,
+  filter: (id): id is number => Boolean(id),
+  target: revertStageFx,
+});
+
 const $isPushStageLoading = pushStageFx.pending;
 
 pushStageFx.failData.watch((error) =>
@@ -142,9 +159,11 @@ pushStageFx.failData.watch((error) =>
 );
 
 forward({
-  from: pushStageFx.doneData,
+  from: [pushStageFx.doneData, revertStageFx.doneData],
   to: refetchTask,
 });
+
+const $isRevertStageLoading = revertStageFx.pending;
 
 export const taskProfileService = {
   inputs: {
@@ -152,6 +171,7 @@ export const taskProfileService = {
     setComment,
     handlePushStage,
     deleteDocument,
+    handleRevertStage,
   },
   outputs: {
     $task,
@@ -162,6 +182,7 @@ export const taskProfileService = {
     $currentUser: currentUserService.outputs.$currentUser,
     $documents,
     $isPushStageLoading,
+    $isRevertStageLoading,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };

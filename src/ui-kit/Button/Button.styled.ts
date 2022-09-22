@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ButtonStyleType } from './Button.types';
+import { ButtonSizeType, ButtonStyleType } from './Button.types';
 
 const buttonBackgroundColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee9',
@@ -25,18 +25,38 @@ const buttonBorderColorsDictionary: { [key in ButtonStyleType]: string } = {
   white: '#dcdee4',
 };
 
+const buttonSizesDictionary: {
+  [key in ButtonSizeType]: {
+    height: number;
+    padding: number;
+    fontSize: number;
+  };
+} = {
+  middle: {
+    height: 42,
+    padding: 20,
+    fontSize: 16,
+  },
+  small: {
+    height: 30,
+    padding: 14,
+    fontSize: 13,
+  },
+};
+
 export const Wrapper = styled.div<{
   type: ButtonStyleType;
+  size: ButtonSizeType;
   disabled?: boolean;
 }>`
   background-color: ${({ type }) => buttonBackgroundColorsDictionary[type]};
   color: ${({ type }) => buttonFontColorsDictionary[type]};
-  padding: 0 20px;
+  padding: 0 ${({ size }) => buttonSizesDictionary[size].padding}px;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: ${({ size }) => buttonSizesDictionary[size].fontSize}px;
   font-weight: 600;
   width: min-content;
-  height: 42px;
+  height: ${({ size }) => buttonSizesDictionary[size].height}px;
   display: flex;
   justify-content: center;
   align-items: center;
