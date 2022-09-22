@@ -1,27 +1,16 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
-import logo from '01/assets/svg/logo.svg';
+import styled from 'styled-components';
+// import logo from '01/assets/svg/logo.svg';
+import logoLeroy from './Leroy_Merlin.png';
 
-export const Logotip = (props) =>
-  styled()`
-    logotip {
-      display: flex;
-      align-items: center;
-      padding: 8px;
-      font-size: 16px;
-      line-height: 2;
-    }
+export const Logotip = () => {
+  return <Logo alt="logo" src={logoLeroy} />;
+};
 
-    span {
-      font-weight: 500;
-      margin: 0 4px 0 8px;
-    }
-  `(
-    <logotip {...props}>
-      <img src={logo} alt="logotip" />
-      <span>TT</span>
-      Management
-    </logotip>
-  );
+const Logo = styled.img`
+  width: 120px;
+  height: auto;
+  margin-left: 40px;
+`;
