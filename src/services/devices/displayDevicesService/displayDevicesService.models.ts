@@ -23,6 +23,7 @@ const $loading = fetchCalculatorsFx.pending;
 
 const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
   PageNumber: 1,
+  PageSize: 10,
 });
 
 const extendedSearchOpened = domain.createEvent();
