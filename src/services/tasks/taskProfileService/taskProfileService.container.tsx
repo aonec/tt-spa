@@ -19,10 +19,12 @@ export const TaskProfileContainer = () => {
   const commentText = useStore(outputs.$commentText);
   const currentUser = useStore(outputs.$currentUser);
   const documents = useStore(outputs.$documents);
+  const isPushStageLoading = useStore(outputs.$isPushStageLoading);
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
   const handleDeleteDocument = useEvent(inputs.deleteDocument);
+  const pushStage = useEvent(inputs.handlePushStage);
 
   const device = task && task.device;
   const nodeId = device?.nodeId;
@@ -51,6 +53,8 @@ export const TaskProfileContainer = () => {
           relatedPipeNode={relatedPipeNode}
           isViewerExecutor={isViewerExecutor}
           documents={documents}
+          pushStage={pushStage}
+          isPushStageLoading={isPushStageLoading}
         />
       )}
     </>

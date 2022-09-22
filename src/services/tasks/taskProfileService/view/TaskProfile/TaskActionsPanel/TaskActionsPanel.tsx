@@ -17,11 +17,17 @@ import {
 } from './TaskActionsPanel.hook';
 import { StagePushRequest } from 'myApi';
 import { Button } from 'ui-kit/Button';
+import { Skeleton } from 'antd';
+import { useParams } from 'react-router-dom';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
   taskType,
+  handlePushStage,
+  isPushStageLoading,
 }) => {
+  const { taskId } = useParams<{ taskId: string }>();
+
   const [pushStagePayload, setPushStagePayload] = useState<StagePushRequest>(
     {}
   );
@@ -48,27 +54,37 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
 
   const actionInfoComponents = useTaskPanelInfoActions(taskType);
 
+  function pushStageButtonClicked() {
+    if (!taskId) return;
+    
+    handlePushStage({ taskId: Number(taskId), data: pushStagePayload });
+  }
+
   return (
     <Wrapper>
-      {actionInfoComponents.map(({ Component }) => (
-        <TaskActionInfoElementWrapper>
-          <Component />
-        </TaskActionInfoElementWrapper>
-      ))}
-      <HalfSizeActionsWrapper isOneElement={halfSizeActions.length === 1}>
-        {halfSizeActions.map(renderTaskAction)}
-      </HalfSizeActionsWrapper>
-      {fullSizeActions.map(renderTaskAction)}
-      <BottomContentWrapper>
-        <BottomActionWrapper>
-          {bottomActions.map(renderTaskAction)}
-        </BottomActionWrapper>
-        <PushStageButtonWrapper>
-          <Button onClick={() => console.log(pushStagePayload)}>
-            Завершить этап
-          </Button>
-        </PushStageButtonWrapper>
-      </BottomContentWrapper>
+      {isPushStageLoading ? (
+        <Skeleton active />
+      ) : (
+        <>
+          {actionInfoComponents.map(({ Component }) => (
+            <TaskActionInfoElementWrapper>
+              <Component />
+            </TaskActionInfoElementWrapper>
+          ))}
+          <HalfSizeActionsWrapper isOneElement={halfSizeActions.length === 1}>
+            {halfSizeActions.map(renderTaskAction)}
+          </HalfSizeActionsWrapper>
+          {fullSizeActions.map(renderTaskAction)}
+          <BottomContentWrapper>
+            <BottomActionWrapper>
+              {bottomActions.map(renderTaskAction)}
+            </BottomActionWrapper>
+            <PushStageButtonWrapper>
+              <Button onClick={pushStageButtonClicked}>Завершить этап</Button>
+            </PushStageButtonWrapper>
+          </BottomContentWrapper>
+        </>
+      )}
     </Wrapper>
   );
 };

@@ -4,11 +4,13 @@ import {
   EManagingFirmTaskType,
 } from 'myApi';
 import { FC } from 'react';
+import { PushStageRequestPayload } from 'services/tasks/taskProfileService/taskProfileService.types';
 
 export type TaskActionsPanelProps = {
   actions: EStageActionType[];
   taskType: string;
-  handlePushStage: (payload: StagePushRequest) => void;
+  handlePushStage: (payload: PushStageRequestPayload) => void;
+  isPushStageLoading: boolean;
 };
 
 export enum TaskPanelInputPositionType {

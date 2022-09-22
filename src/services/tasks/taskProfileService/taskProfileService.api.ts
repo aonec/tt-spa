@@ -1,5 +1,8 @@
 import { axios } from '01/axios';
-import { AddCommentRequest } from './taskProfileService.types';
+import {
+  AddCommentRequest,
+  PushStageRequestPayload,
+} from './taskProfileService.types';
 import { PipeNodeResponse, TaskResponse, TaskCommentResponse } from 'myApi';
 
 export const fetchTask = (taskId: number): Promise<TaskResponse> =>
@@ -16,3 +19,9 @@ export const fetchDeleteDocument = (id: number): Promise<void> =>
 
 export const fetchNode = (nodeId: number): Promise<PipeNodeResponse> =>
   axios.get(`PipeNodes/${nodeId}`);
+
+export const postPushStage = ({
+  taskId,
+  data,
+}: PushStageRequestPayload): Promise<void> =>
+  axios.post(`Tasks/${taskId}/PushStage`, data);

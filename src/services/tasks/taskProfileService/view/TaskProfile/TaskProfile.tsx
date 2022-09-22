@@ -27,6 +27,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   relatedPipeNode,
   isViewerExecutor,
   documents,
+  isPushStageLoading,
+  pushStage,
 }) => {
   const {
     closingStatus,
@@ -69,7 +71,8 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           />
           {task.type && isViewerExecutor && (
             <TaskActionsPanel
-              handlePushStage={() => {}}
+              handlePushStage={pushStage}
+              isPushStageLoading={isPushStageLoading}
               taskType={task.type}
               actions={taskActions}
             />

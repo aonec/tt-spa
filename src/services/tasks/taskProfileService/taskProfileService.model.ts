@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -7,17 +8,20 @@ import {
   PipeNodeResponse,
 } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
+import { EffectFailDataAxiosError } from 'types';
 import {
   fetchAddComment,
   fetchDeleteDocument,
   fetchNode,
   fetchTask,
+  postPushStage,
 } from './taskProfileService.api';
-import { AddCommentRequest } from './taskProfileService.types';
+import {
+  AddCommentRequest,
+  PushStageRequestPayload,
+} from './taskProfileService.types';
 
 const domain = createDomain('taskProfileService');
-
-const handlePushStage = domain.createEvent<StagePushRequest>();
 
 const setComment = domain.createEvent<string>();
 const clearComment = domain.createEvent();
@@ -27,6 +31,16 @@ const $commentText = domain
   .reset(clearComment);
 
 const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
+
+const pushStageFx = domain.createEffect<
+  PushStageRequestPayload,
+  void,
+  EffectFailDataAxiosError
+>(postPushStage);
+
+const handlePushStage = domain.createEvent<PushStageRequestPayload>();
+
+const refetchTask = domain.createEvent();
 
 const $pipeNode = domain
   .createStore<PipeNodeResponse | null>(null)
@@ -87,6 +101,12 @@ forward({
 });
 
 sample({
+  source: TaskIdGate.state.map(({ taskId }) => taskId),
+  clock: refetchTask,
+  target: getTasksFx,
+});
+
+sample({
   source: combine(TaskIdGate.state, $commentText, ({ taskId }, comment) => ({
     taskId,
     comment,
@@ -110,6 +130,22 @@ forward({
   to: clearComment,
 });
 
+forward({
+  from: handlePushStage,
+  to: pushStageFx,
+});
+
+const $isPushStageLoading = pushStageFx.pending;
+
+pushStageFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+forward({
+  from: pushStageFx.doneData,
+  to: refetchTask,
+});
+
 export const taskProfileService = {
   inputs: {
     addComment,
@@ -125,6 +161,7 @@ export const taskProfileService = {
     $pipeNode,
     $currentUser: currentUserService.outputs.$currentUser,
     $documents,
+    $isPushStageLoading,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };
