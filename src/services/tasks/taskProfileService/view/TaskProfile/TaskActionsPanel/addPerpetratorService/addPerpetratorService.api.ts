@@ -3,7 +3,7 @@ import { axios } from '01/axios';
 import { OrganizationUserListResponsePagedList } from 'myApi';
 
 export const getOrganizationUsers = (
-  RoleNames?: string[]
+  RoleNames: string[] | null
 ): Promise<OrganizationUserListResponsePagedList> =>
   axios.get('OrganizationUsers', {
     params: RoleNames && { RoleNames },

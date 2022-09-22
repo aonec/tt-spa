@@ -4,25 +4,25 @@ import { ButtonStyleType } from './Button.types';
 const buttonBackgroundColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee9',
   danger: '#ff4545',
-  white: '#ffffff',
+  ghost: '#ffffff',
 };
 
 const buttonShadowColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee940',
   danger: '#ff454540',
-  white: '#f1f1f1',
+  ghost: '#f1f1f1',
 };
 
 const buttonFontColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: 'white',
   danger: 'white',
-  white: '#191b35',
+  ghost: '#191b35',
 };
 
 const buttonBorderColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: 'none',
   danger: 'none',
-  white: '#dcdee4',
+  ghost: '#dcdee4',
 };
 
 export const Wrapper = styled.div<{

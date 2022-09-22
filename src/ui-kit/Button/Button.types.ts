@@ -6,4 +6,4 @@ export type ButtonProps = {
   icon?: ReactElement;
 } & HTMLAttributes<HTMLElement>;
 
-export type ButtonStyleType = 'default' | 'white' | 'danger';
+export type ButtonStyleType = 'default' | 'ghost' | 'danger';
