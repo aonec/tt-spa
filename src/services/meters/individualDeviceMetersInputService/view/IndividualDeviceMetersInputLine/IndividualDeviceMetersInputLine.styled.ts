@@ -13,8 +13,8 @@ export const Wrapper = styled.div`
 export const DeviceOptionsWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  .device-option {
-    margin-left: 15px;
-  }
+export const DeviceOption = styled.div`
+  margin-left: 15px;
 `;

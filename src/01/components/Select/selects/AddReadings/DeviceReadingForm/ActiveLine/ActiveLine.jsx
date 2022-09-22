@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Badge } from 'antd';
 import { closingReasons } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage';
 
 const ActiveLine = ({ isActive, closingReason }) => {
+  const badge = useMemo(() => {
+    if (isActive) return <Badge status="success" text="Активен" />;
+
+    const closingReasonText = `Закрыт${
+      closingReasons && closingReasons[closingReason]
+        ? ` (${closingReasons[closingReason]})`
+        : ''
+    }`;
+
+    return (
+      <Badge
+        style={{ witeSpace: 'nowrap' }}
+        status="error"
+        text={closingReasonText}
+      />
+    );
+  }, [isActive, closingReason]);
+
   return (
     <div
       style={{
@@ -12,19 +30,7 @@ const ActiveLine = ({ isActive, closingReason }) => {
         witeSpace: 'nowrap',
       }}
     >
-      {isActive ? (
-        <Badge status="success" text="Активен" />
-      ) : (
-        <Badge
-          style={{ witeSpace: 'nowrap' }}
-          status="error"
-          text={`Закрыт${
-            closingReasons && closingReasons[closingReason]
-              ? ` (${closingReasons[closingReason]})`
-              : ''
-          }`}
-        />
-      )}
+      {badge}
     </div>
   );
 };

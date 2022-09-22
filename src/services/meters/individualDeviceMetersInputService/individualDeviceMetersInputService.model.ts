@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.model';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
@@ -11,7 +11,10 @@ import {
   UploadMeterPayload,
 } from './individualDeviceMetersInputService.types';
 import { MetersInputBlockStatus } from './view/MetersInputsBlock/MetersInputsBlock.types';
-import { IndividualDeviceReadingsResponse } from 'myApi';
+import {
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsResponse,
+} from 'myApi';
 import { message } from 'antd';
 import moment from 'moment';
 import { EffectFailDataAxiosError } from 'types';
@@ -125,9 +128,12 @@ $devices
     })
   );
 
-deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
-  const device = $devices.getState().find((elem) => elem.id === deviceId);
+const handleDeviceMeterDeleted = domain.createEvent<{
+  device?: IndividualDeviceListItemResponse;
+  readingDate: string;
+}>();
 
+handleDeviceMeterDeleted.watch(({ device, readingDate }) => {
   if (!device) return;
 
   const readingMonth = moment(readingDate).format('MMMM');
@@ -135,6 +141,17 @@ deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
   message.info(
     `Показание за ${readingMonth} на приборе ${device.model} (${device.serialNumber}) было удалено`
   );
+});
+
+sample({
+  source: $devices,
+  clock: deleteMeterFx.done,
+  fn: (devices, { params: { deviceId, readingDate } }) => {
+    const device = devices.find((elem) => elem.id === deviceId);
+
+    return { device, readingDate };
+  },
+  target: handleDeviceMeterDeleted,
 });
 
 export const individualDeviceMetersInputService = {

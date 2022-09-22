@@ -57,7 +57,7 @@ const StyledMenuButton = styled(Button)`
 
 const MenuItem = styled(Menu.Item)<{ color?: string }>`
   min-width: 408px;
-  color: ${({ color }) => color || Color.default} !important;
+  color: ${({ color = Color.primary }) => color} !important;
 
   &:hover {
     color: white !important;
@@ -65,8 +65,6 @@ const MenuItem = styled(Menu.Item)<{ color?: string }>`
 `;
 
 export const Color = {
-  default: 'rgba(39, 47, 90, 0.9)',
-  disabled: 'rgba(39, 47, 90, 0.32)',
-  black: 'rgba(39, 47, 90, 0.9)',
-  red: '#FC525B',
+  primary: '#272f5ae6',
+  danger: '#FC525B',
 };

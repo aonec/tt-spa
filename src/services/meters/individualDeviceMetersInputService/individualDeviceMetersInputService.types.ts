@@ -27,7 +27,7 @@ export type ReadingLite = {
 
 export type ValidationReadingsResult = {
   type: ValidationReadingsResultType;
-  valueIndex?: number;
+  valueIndex: number;
   compareDiff?: number;
   compareStatus?: CompareReadingsStatus;
   limitsConsumptionDiff?: number;
@@ -46,10 +46,11 @@ export enum CompareReadingsStatus {
   RightLess = 'RightLess',
 }
 
-export type MeterInputUploadReadingPayload = Omit<
-  IndividualDeviceReadingsCreateRequest,
-  'deviceId'
-> & { sliderIndex: number; meterId?: number };
+export type MeterInputUploadReadingPayload = {
+  meter: Omit<IndividualDeviceReadingsCreateRequest, 'deviceId'>;
+  sliderIndex: number;
+  meterId?: number;
+};
 
 export type UploadReading = (
   readingPayload: MeterInputUploadReadingPayload,
