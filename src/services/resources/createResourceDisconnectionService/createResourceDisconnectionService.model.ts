@@ -1,3 +1,4 @@
+import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
 import { combine, createDomain, forward, split } from 'effector';
 import _ from 'lodash/fp';
@@ -154,6 +155,11 @@ split({
     [EAddressDetails.HouseManagements]: getHouseManagementsFx,
   },
 });
+
+forward({
+  from: createResourceDisconnectionFx.doneData,
+  to: resourceDisablingScheduleServiceService.inputs.refetchResourceDisconnections
+})
 
 createResourceDisconnectionFx.failData.watch((error) =>
   message.error(error.response.data.error.Text)
