@@ -1,6 +1,5 @@
 import { message } from 'antd';
 import {
-  CalculatorListResponsePagedList,
   CalculatorResponse,
   CreateCalculatorRequest,
   CreatePipeHousingMeteringDeviceRequest,
@@ -11,6 +10,7 @@ import {
   TasksPagedList,
   UpdateIndividualDeviceRequest,
   UpdatePipeNodeRequest,
+  CalculatorListResponse,
 } from '../../myApi';
 import axios from '../axios';
 
@@ -139,7 +139,7 @@ export async function getHousingStock(housingStockId: number) {
 
 export async function getHousingStockCalculators(id: number) {
   try {
-    const res: CalculatorListResponsePagedList = await axios.get(
+    const res: CalculatorListResponse[] | null = await axios.get(
       `HousingStocks/${id}/Calculators`
     );
     return res;
