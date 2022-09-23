@@ -20,6 +20,7 @@ import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { createGate } from 'effector-react';
 import moment from 'moment';
+import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -88,7 +89,9 @@ export const addIndividualDeviceForm = createForm({
       })[],
     },
     newDeviceReadings: {
-      init: [] as SwitchIndividualDeviceReadingsCreateRequest[],
+      init: [] as (SwitchIndividualDeviceReadingsCreateRequest & {
+        id?: number;
+      })[],
       rules: [
         {
           name: 'required',
@@ -161,6 +164,7 @@ guard({
         lastCheckingDate,
         futureCheckingDate,
         newDeviceReadings,
+        oldDeviceReadings,
       } = values;
 
       if (
@@ -173,16 +177,43 @@ guard({
       }
 
       const readingsAfterCheck = newDeviceReadings.length
-        ? newDeviceReadings.map((readings) => {
-            const { readingDate, value1, value2, value3, value4 } = readings;
-            return {
-              readingDate: moment(readingDate).add(1, 'month').toISOString(),
-              value1: Number(value1),
-              value2: Number(value2) || null,
-              value3: Number(value3) || null,
-              value4: Number(value4) || null,
-            };
-          })
+        ? newDeviceReadings.reduce((acc, readings) => {
+            const {
+              readingDate,
+              value1,
+              value2,
+              value3,
+              value4,
+              id,
+            } = readings;
+
+            const oldReadings = oldDeviceReadings.find(
+              (reading) => reading?.id === id
+            );
+
+            if (!oldReadings) {
+              return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
+            }
+
+            const {
+              value1: oldValue1,
+              value2: oldValue2,
+              value3: oldValue3,
+              value4: oldValue4,
+            } = oldReadings;
+
+            const isDifferent =
+              oldValue1 !== Number(value1) ||
+              oldValue2 !== Number(value2) ||
+              oldValue3 !== Number(value3) ||
+              oldValue4 !== Number(value4);
+
+            if (!isDifferent) {
+              return acc;
+            }
+
+            return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
+          }, [] as SwitchIndividualDeviceReadingsCreateRequest[])
         : null;
 
       return {

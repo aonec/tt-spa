@@ -181,11 +181,11 @@ guard({
         deviceId: device?.id!,
         serialNumber: values.serialNumber,
         lastCheckingDate: moment(values.lastCheckingDate)
-          .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+          .utcOffset(0, true)
           .toISOString(true),
         futureCheckingDate: moment(values.futureCheckingDate)
-          .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-          .toISOString(true),
+          .utcOffset(0, true)
+          .toISOString(),
         bitDepth: Number(values.bitDepth),
         scaleFactor: Number(values.scaleFactor),
         rateType: values.rateType,
