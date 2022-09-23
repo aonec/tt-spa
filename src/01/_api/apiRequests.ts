@@ -142,8 +142,7 @@ export async function getHousingStockCalculators(id: number) {
     const res: CalculatorListResponsePagedList = await axios.get(
       `HousingStocks/${id}/Calculators`
     );
-    const { items } = res;
-    return items;
+    return res;
   } catch (error) {
     throw {
       resource: 'calculators',
