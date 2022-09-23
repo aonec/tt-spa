@@ -172,7 +172,13 @@ export const CheckFormValuesModal = () => {
             disabled={pending}
             onClick={confirmCreationNewDeviceButtonClicked}
           >
-            {pending ? <Loader show /> : 'Заменить прибор'}
+            {pending ? (
+              <Loader show />
+            ) : isCheck ? (
+              'Поверить прибор'
+            ) : (
+              'Заменить прибор'
+            )}
           </ButtonTT>
         </Footer>
       }
