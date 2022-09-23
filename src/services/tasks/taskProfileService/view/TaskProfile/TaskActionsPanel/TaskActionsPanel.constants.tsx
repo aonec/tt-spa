@@ -14,8 +14,8 @@ import { SetNextStageDeadlineDatepicker } from './SetNextStageDeadlineDatepicker
 import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService/setNextStageDeadlineService.container';
 import { CorrectionReadingsContainer } from './correctionReadingsService';
 import { Comment } from './Comment';
-import { SwitchOrCompleteCheckbox } from './switchOrCompleteService/view/SwitchOrCompleteCheckbox';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
+import { InputReadings } from './InputReadings';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -64,6 +64,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.CompletionOrSwitch,
     Component: SwitchOrCompleteContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.UploadReadings,
+    Component: InputReadings,
     position: TaskPanelInputPositionType.Full,
   },
   {
