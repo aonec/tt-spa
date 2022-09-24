@@ -24,7 +24,7 @@ export const DisplayResourceDisconenctionAddressesServiceContainer = () => {
             <DisconnectionAddressesModalTitle disconnection={disconnection} />
           }
           visible={isModalOpen}
-          onCancel={closeModal}
+          onCancel={() => closeModal()}
           footer={<></>}
         >
           <AddressesList streets={streets} />
