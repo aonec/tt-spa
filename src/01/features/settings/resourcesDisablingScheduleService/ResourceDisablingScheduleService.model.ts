@@ -12,9 +12,6 @@ const resourceDisablingGate = createGate<DisablingResourcesProps>();
 const applyFilters = domain.createEvent<DisablingResourcesProps>();
 const setPage = domain.createEvent<number>();
 
-const openAddressesModal = domain.createEvent();
-const closeAddressesModal = domain.createEvent();
-
 const refetchResourceDisconnections = domain.createEvent();
 const getResourceDisconnectionsFx = domain.createEffect<
   DisablingResourcesProps,
@@ -38,11 +35,6 @@ const $filters = domain
     ...filters,
     PageNumber: page,
   }));
-
-const $isAddressesModalOpen = domain
-  .createStore<boolean>(false)
-  .on(openAddressesModal, () => true)
-  .on(closeAddressesModal, () => false);
 
 sample({
   source: $filters,
@@ -68,15 +60,12 @@ export const resourceDisablingScheduleServiceService = {
   inputs: {
     applyFilters,
     setPage,
-    openAddressesModal,
-    closeAddressesModal,
     refetchResourceDisconnections,
   },
   outputs: {
     $disablingResources,
     $loading,
     $filters,
-    $isAddressesModalOpen,
   },
   gates: {
     resourceDisablingGate,

@@ -1,7 +1,7 @@
 import { ResourceDisconnectingResponse } from 'myApi';
 
 export type RenderApartmentProps = {
-  openModal: () => void;
+  openModal: (disconnecion: ResourceDisconnectingResponse) => void;
   disconnection: ResourceDisconnectingResponse;
   handleOpenCompleteDisconnectionModal: (payload: {
     id: string;
