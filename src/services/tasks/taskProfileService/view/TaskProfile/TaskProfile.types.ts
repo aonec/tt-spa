@@ -1,8 +1,9 @@
+import { StagePushRequest } from './../../../../../myApi';
 import { DocumentResponse, PipeNodeResponse, TaskResponse } from 'myApi';
-import { PushStageRequestPayload } from '../../taskProfileService.types';
 
 export type TaskProfileProps = {
   task: TaskResponse;
+  isLoadingTask: boolean;
   isPerpetrator: boolean;
   handleAddComment: () => void;
   handleSetComment: (comment: string) => void;
@@ -11,7 +12,10 @@ export type TaskProfileProps = {
   relatedPipeNode: PipeNodeResponse | null;
   isViewerExecutor: boolean;
   documents: DocumentResponse[];
-  pushStage: (payload: PushStageRequestPayload) => void;
+  pushStage: () => void;
+  handleChangePushStagePayload: (
+    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest)
+  ) => void;
   isPushStageLoading: boolean;
   handleRevertStage: () => void;
   isRevertStageLoading: boolean;

@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useCallback, useState } from 'react';
+import React, { FC } from 'react';
 import {
   HalfSizeActionsWrapper,
   PushStageButtonWrapper,
@@ -15,33 +15,16 @@ import {
   useTaskPanelActions,
   useTaskPanelInfoActions,
 } from './TaskActionsPanel.hook';
-import { StagePushRequest } from 'myApi';
 import { Button } from 'ui-kit/Button';
 import { Skeleton } from 'antd';
-import { useParams } from 'react-router-dom';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
   taskType,
   handlePushStage,
-  isPushStageLoading,
+  isLoading,
+  handleChangePushStagePayload,
 }) => {
-  const { taskId } = useParams<{ taskId: string }>();
-
-  const [pushStagePayload, setPushStagePayload] = useState<StagePushRequest>(
-    {}
-  );
-
-  const handleStagePayloadChanged = useCallback(
-    (dispatch: SetStateAction<StagePushRequest>) => {
-      if (typeof dispatch === 'function')
-        return void setPushStagePayload(dispatch);
-
-      setPushStagePayload((prev) => ({ ...prev, ...dispatch }));
-    },
-    [setPushStagePayload]
-  );
-
   const {
     halfSizeActions,
     fullSizeActions,
@@ -49,20 +32,14 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   } = useTaskPanelActions(actions);
 
   const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
-    <Component handleChange={handleStagePayloadChanged} type={type} />
+    <Component handleChange={handleChangePushStagePayload} type={type} />
   );
 
   const actionInfoComponents = useTaskPanelInfoActions(taskType);
 
-  function pushStageButtonClicked() {
-    if (!taskId) return;
-    
-    handlePushStage({ taskId: Number(taskId), data: pushStagePayload });
-  }
-
   return (
     <Wrapper>
-      {isPushStageLoading ? (
+      {isLoading ? (
         <Skeleton active />
       ) : (
         <>
@@ -80,7 +57,7 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
               {bottomActions.map(renderTaskAction)}
             </BottomActionWrapper>
             <PushStageButtonWrapper>
-              <Button onClick={pushStageButtonClicked}>Завершить этап</Button>
+              <Button onClick={handlePushStage}>Завершить этап</Button>
             </PushStageButtonWrapper>
           </BottomContentWrapper>
         </>

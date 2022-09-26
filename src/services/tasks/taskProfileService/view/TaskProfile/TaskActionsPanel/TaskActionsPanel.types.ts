@@ -9,8 +9,11 @@ import { PushStageRequestPayload } from 'services/tasks/taskProfileService/taskP
 export type TaskActionsPanelProps = {
   actions: EStageActionType[];
   taskType: string;
-  handlePushStage: (payload: PushStageRequestPayload) => void;
-  isPushStageLoading: boolean;
+  handlePushStage: () => void;
+  isLoading: boolean;
+  handleChangePushStagePayload: (
+    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest)
+  ) => void;
 };
 
 export enum TaskPanelInputPositionType {

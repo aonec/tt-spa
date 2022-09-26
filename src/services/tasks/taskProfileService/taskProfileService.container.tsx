@@ -27,6 +27,9 @@ export const TaskProfileContainer = () => {
   const handleDeleteDocument = useEvent(inputs.deleteDocument);
   const pushStage = useEvent(inputs.handlePushStage);
   const handleRevertStage = useEvent(inputs.handleRevertStage);
+  const handleChangePushStagePayload = useEvent(
+    inputs.handleChangePushStagePayload
+  );
 
   const device = task && task.device;
   const nodeId = device?.nodeId;
@@ -42,12 +45,13 @@ export const TaskProfileContainer = () => {
       <ReadingsHistoryModal readonly />
       <TaskIdGate taskId={Number(taskId)} />
 
-      {isLoading && <Skeleton active />}
+      {isLoading && !task && <Skeleton active />}
 
-      {!isLoading && task && (
+      {task && (
         <TaskProfile
           handleDeleteDocument={handleDeleteDocument}
           task={task}
+          isLoadingTask={isLoading}
           isPerpetrator={isPerpetrator}
           handleAddComment={() => addComment()}
           handleSetComment={setComment}
@@ -55,10 +59,11 @@ export const TaskProfileContainer = () => {
           relatedPipeNode={relatedPipeNode}
           isViewerExecutor={isViewerExecutor}
           documents={documents}
-          pushStage={pushStage}
+          pushStage={() => pushStage()}
           isPushStageLoading={isPushStageLoading}
           handleRevertStage={() => handleRevertStage()}
           isRevertStageLoading={isRevertStageLoading}
+          handleChangePushStagePayload={handleChangePushStagePayload}
         />
       )}
     </>

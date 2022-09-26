@@ -19,6 +19,7 @@ import { TaskStages } from './TaskStages';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
+  isLoadingTask,
   handleAddComment,
   isPerpetrator,
   handleSetComment,
@@ -31,6 +32,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   pushStage,
   handleRevertStage,
   isRevertStageLoading,
+  handleChangePushStagePayload
 }) => {
   const {
     closingStatus,
@@ -74,9 +76,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           {task.type && isViewerExecutor && (
             <TaskActionsPanel
               handlePushStage={pushStage}
-              isPushStageLoading={isPushStageLoading}
+              isLoading={isPushStageLoading || isLoadingTask}
               taskType={task.type}
               actions={taskActions}
+              handleChangePushStagePayload={handleChangePushStagePayload}
             />
           )}
           <TaskWrapper>

@@ -1,5 +1,12 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import {
+  combine,
+  createDomain,
+  forward,
+  guard,
+  sample,
+  createEvent,
+} from 'effector';
 import { createGate } from 'effector-react';
 import {
   StagePushRequest,
@@ -24,12 +31,7 @@ import {
 
 const domain = createDomain('taskProfileService');
 
-const setComment = domain.createEvent<string>();
-const clearComment = domain.createEvent();
-const $commentText = domain
-  .createStore<string>('')
-  .on(setComment, (_, newComment) => newComment)
-  .reset(clearComment);
+const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
 
 const getNodeFx = domain.createEffect<number, PipeNodeResponse>(fetchNode);
 
@@ -45,11 +47,40 @@ const pushStageFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postPushStage);
 
+const deleteDocument = domain.createEvent<number>();
+const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
+
+const handleChangePushStagePayload = createEvent<
+  StagePushRequest | ((payload: StagePushRequest) => StagePushRequest)
+>();
+
 const handleRevertStage = domain.createEvent();
 
-const handlePushStage = domain.createEvent<PushStageRequestPayload>();
+const handlePushStage = domain.createEvent();
 
 const refetchTask = domain.createEvent();
+
+const setComment = domain.createEvent<string>();
+const clearComment = domain.createEvent();
+
+const TaskIdGate = createGate<{ taskId: number }>();
+const RelatedNodeIdGate = createGate<{ nodeId: number }>();
+
+const $commentText = domain
+  .createStore<string>('')
+  .on(setComment, (_, newComment) => newComment)
+  .reset(clearComment);
+
+const $pushStageRequestPayload = domain
+  .createStore<StagePushRequest>({})
+  .on(handleChangePushStagePayload, (prev, dispatch) => {
+    if (typeof dispatch === 'function') {
+      return { ...prev, ...dispatch(prev) };
+    }
+
+    return { ...prev, ...dispatch };
+  })
+  .reset(getTasksFx.doneData);
 
 const $pipeNode = domain
   .createStore<PipeNodeResponse | null>(null)
@@ -60,8 +91,6 @@ const addCommentFx = domain.createEffect<
   AddCommentRequest,
   TaskCommentResponse
 >(fetchAddComment);
-
-const getTasksFx = domain.createEffect<number, TaskResponse>(fetchTask);
 
 const $task = domain
   .createStore<TaskResponse | null>(null)
@@ -92,8 +121,6 @@ const $isPerpetrator = combine(
   }
 );
 
-const deleteDocument = domain.createEvent<number>();
-const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 const $documents = $task
   .map((task) => task?.documents || [])
   .on(deleteDocumentFx.done, (documents, { params: documentId }) =>
@@ -101,9 +128,6 @@ const $documents = $task
   );
 
 const $isLoading = getTasksFx.pending;
-
-const TaskIdGate = createGate<{ taskId: number }>();
-const RelatedNodeIdGate = createGate<{ nodeId: number }>();
 
 forward({
   from: TaskIdGate.open.map(({ taskId }) => taskId),
@@ -140,9 +164,15 @@ forward({
   to: clearComment,
 });
 
-forward({
-  from: handlePushStage,
-  to: pushStageFx,
+guard({
+  source: combine($pushStageRequestPayload, $task, (data, task) => ({
+    data,
+    taskId: task?.id,
+  })),
+  clock: handlePushStage,
+  filter: (payload): payload is PushStageRequestPayload =>
+    Boolean(payload.taskId),
+  target: pushStageFx,
 });
 
 guard({
@@ -172,6 +202,7 @@ export const taskProfileService = {
     handlePushStage,
     deleteDocument,
     handleRevertStage,
+    handleChangePushStagePayload,
   },
   outputs: {
     $task,
@@ -183,6 +214,7 @@ export const taskProfileService = {
     $documents,
     $isPushStageLoading,
     $isRevertStageLoading,
+    $pushStageRequestPayload,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };
