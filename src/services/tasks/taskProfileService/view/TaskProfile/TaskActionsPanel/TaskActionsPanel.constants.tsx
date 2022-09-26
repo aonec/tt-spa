@@ -90,6 +90,11 @@ export const taskActionInfoComppnents: TaskActionPanelInfoComponent[] = [
     action: EStageActionType.SetNextStageDeadline,
     Component: IndividualDeviceCheckInfoContainer,
   },
+  {
+    taskType: EManagingFirmTaskType.IndividualDeviceCheckNoReadings,
+    action: EStageActionType.SetNextStageDeadline,
+    Component: IndividualDeviceCheckInfoContainer,
+  },
 ];
 
 export const actionComponentPositionNamesDictionary: {
