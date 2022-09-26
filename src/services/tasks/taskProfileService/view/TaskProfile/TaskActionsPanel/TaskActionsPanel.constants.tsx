@@ -16,6 +16,7 @@ import { CorrectionReadingsContainer } from './correctionReadingsService';
 import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
+import { CloseDevicesContainer } from './CloseDeviceService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -69,6 +70,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.UploadReadings,
     Component: InputReadings,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.CloseIndividualDevices,
+    Component: CloseDevicesContainer,
     position: TaskPanelInputPositionType.Full,
   },
   {

@@ -80,7 +80,7 @@ const $pushStageRequestPayload = domain
 
     return { ...prev, ...dispatch };
   })
-  .reset(getTasksFx.doneData);
+  .reset(getTasksFx.doneData, pushStageFx.failData, revertStageFx.failData);
 
 const $pipeNode = domain
   .createStore<PipeNodeResponse | null>(null)
