@@ -2037,6 +2037,17 @@ export interface HeatingStationShortResponse {
   address: AddressResponse | null;
 }
 
+export interface HeatingStationWithStreetsResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  streets: StreetWithHousingStockNumbersResponse[] | null;
+}
+
+export interface HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse {
+  successResponse: HeatingStationWithStreetsResponse[] | null;
+}
+
 export interface HomeownerAccountCloseRequest {
   /** @format uuid */
   homeownerAccountId: string;
@@ -2226,6 +2237,17 @@ export interface HouseManagementResponseListSuccessApiResponse {
 
 export interface HouseManagementResponseSuccessApiResponse {
   successResponse: HouseManagementResponse | null;
+}
+
+export interface HouseManagementWithStreetsResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  streets: StreetWithHousingStockNumbersResponse[] | null;
+}
+
+export interface HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse {
+  successResponse: HouseManagementWithStreetsResponse[] | null;
 }
 
 export interface HousingMeteringDeviceAddCommentRequest {
@@ -4150,14 +4172,15 @@ export interface ResourceDisconnectingTypeResponse {
 }
 
 export interface ResourceDisconnectingUpdateRequest {
-  disconnectingType: EResourceDisconnectingType;
+  disconnectingType?: EResourceDisconnectingType | null;
   housingStockIds: number[];
 
   /** @format date-time */
   startDate: string;
 
   /** @format date-time */
-  endDate: string;
+  endDate?: string | null;
+  sender?: string | null;
 }
 
 export interface SetMagneticSealRequest {
@@ -7736,6 +7759,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement
+     * @secure
+     */
+    housingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList: (params: RequestParams = {}) =>
+      this.request<HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingStreetsWithHousingStockNumbersWithHeatingStationList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHeatingStation
+     * @secure
+     */
+    housingStocksExistingStreetsWithHousingStockNumbersWithHeatingStationList: (params: RequestParams = {}) =>
+      this.request<HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHeatingStation`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
@@ -10223,14 +10282,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingAddDocumentCreate
      * @summary ResourceDisconnectingUpdate
-     * @request POST:/api/ResourceDisconnecting/{id}/AddDocument
+     * @request POST:/api/ResourceDisconnecting/{id}/AddDocument/{documentId}
      * @secure
      */
-    resourceDisconnectingAddDocumentCreate: (id: string, query?: { documentId?: number }, params: RequestParams = {}) =>
+    resourceDisconnectingAddDocumentCreate: (id: string, documentId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/ResourceDisconnecting/${id}/AddDocument`,
+        path: `/api/ResourceDisconnecting/${id}/AddDocument/${documentId}`,
         method: "POST",
-        query: query,
         secure: true,
         ...params,
       }),

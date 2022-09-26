@@ -17,6 +17,8 @@ import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
 import { CloseDevicesContainer } from './CloseDeviceService';
+import { Component } from 'react';
+import { CompletionStageContainer } from './completionStageService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -76,6 +78,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     actionType: EStageActionType.CloseIndividualDevices,
     Component: CloseDevicesContainer,
     position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.Completion,
+    Component: CompletionStageContainer,
+    position: TaskPanelInputPositionType.Middle,
   },
   {
     actionType: EStageActionType.AddComment,
