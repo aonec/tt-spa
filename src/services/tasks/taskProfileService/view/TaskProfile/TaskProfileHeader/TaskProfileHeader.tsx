@@ -49,7 +49,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <DeviceIconWrapper>{DeviceIcon}</DeviceIconWrapper>
+        {DeviceIcon && <DeviceIconWrapper>{DeviceIcon}</DeviceIconWrapper>}
         <PageHeaderWrapper>{name}</PageHeaderWrapper>
       </HeaderWrapper>
       {timeline && (
