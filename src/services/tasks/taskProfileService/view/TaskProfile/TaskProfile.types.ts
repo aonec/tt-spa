@@ -6,7 +6,10 @@ export type TaskProfileProps = {
   handleAddComment: () => void;
   handleSetComment: (comment: string) => void;
   commentText: string;
-  handleDeleteDocument: (is: number) => void;
+  handleDeleteDocument: () => void;
   relatedPipeNode: PipeNodeResponse | null;
   documents: DocumentResponse[];
+  deleteDocumentModalIsOpen: boolean;
+  openDeleteDocumentModal: (id: number) => void;
+  closeDeleteDocumentModal: () => void;
 };

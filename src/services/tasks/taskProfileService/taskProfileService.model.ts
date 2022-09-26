@@ -1,4 +1,4 @@
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { TaskCommentResponse, TaskResponse, PipeNodeResponse } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
@@ -61,7 +61,16 @@ const $isPerpetrator = combine(
   }
 );
 
-const deleteDocument = domain.createEvent<number>();
+const openDeleteDocumentModal = domain.createEvent<number>();
+const closeDeleteDocumentModal = domain.createEvent();
+const $deletedDocumentId = domain
+  .createStore<number>(0)
+  .on(openDeleteDocumentModal, (_, id) => id)
+  .reset(closeDeleteDocumentModal);
+
+const $deleteDocumentModalIsOpen = $deletedDocumentId.map((id) => Boolean(id));
+
+const deleteDocument = domain.createEvent();
 const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 const $documents = $task
   .map((task) => task?.documents || [])
@@ -88,9 +97,18 @@ sample({
   target: addCommentFx,
 });
 
+sample({
+  source: guard({
+    source: $deletedDocumentId,
+    filter: Boolean,
+  }),
+  clock: deleteDocument,
+  target: deleteDocumentFx,
+});
+
 forward({
-  from: deleteDocument,
-  to: deleteDocumentFx,
+  from: deleteDocumentFx.doneData,
+  to: closeDeleteDocumentModal,
 });
 
 forward({
@@ -108,6 +126,8 @@ export const taskProfileService = {
     addComment,
     setComment,
     deleteDocument,
+    openDeleteDocumentModal,
+    closeDeleteDocumentModal,
   },
   outputs: {
     $task,
@@ -116,6 +136,7 @@ export const taskProfileService = {
     $commentText,
     $pipeNode,
     $documents,
+    $deleteDocumentModalIsOpen,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };

@@ -1,9 +1,9 @@
-import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import {
   createTimeline,
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
+import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';
@@ -25,6 +25,9 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   handleDeleteDocument,
   relatedPipeNode,
   documents,
+  closeDeleteDocumentModal,
+  deleteDocumentModalIsOpen,
+  openDeleteDocumentModal,
 }) => {
   const {
     closingStatus,
@@ -55,6 +58,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
       <GoBack />
       {name && (
         <>
+          <Dialog
+            isOpen={deleteDocumentModalIsOpen}
+            onCancel={closeDeleteDocumentModal}
+            onSubmit={handleDeleteDocument}
+            type="danger"
+            title="Вы уверены, что хотите удалить документ?"
+          />
           <TaskProfileHeader
             name={name}
             devices={individualDevices || []}
@@ -62,12 +72,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             nodeDevice={device}
             timer={timer}
             taskName={taskName || ''}
+            pipeNode={pipeNode}
           />
           <TaskWrapper>
             <TaskInfoWrapper>
               <TaskDocumentsList
                 documents={documents || []}
-                handleDeleteDocument={handleDeleteDocument}
+                openDeleteDocumentModal={openDeleteDocumentModal}
               />
               <TaskComments
                 comments={comments || []}
@@ -89,7 +100,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               {relatedPipeNode && (
                 <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
               )}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>

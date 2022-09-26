@@ -21,7 +21,7 @@ export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
   document,
   handleDeleteDocument,
 }) => {
-  const { author, uploadingTime, name, url, id } = document;
+  const { author, uploadingTime, name, url, id, canBeEdited } = document;
 
   const handleDownloadFile = useCallback(() => {
     if (url && name) {
@@ -56,9 +56,11 @@ export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
         </GroupWrapper>
       </InfoWrapper>
 
-      <TrashIconWrapper onClick={deleteDocument}>
-        <TrashIcon />
-      </TrashIconWrapper>
+      {canBeEdited && (
+        <TrashIconWrapper onClick={deleteDocument}>
+          <TrashIcon />
+        </TrashIconWrapper>
+      )}
     </Wrapper>
   );
 };
