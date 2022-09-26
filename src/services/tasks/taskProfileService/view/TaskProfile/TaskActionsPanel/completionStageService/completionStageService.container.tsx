@@ -12,6 +12,8 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
 }) => {
   const taskConfirmationTypes = useStore(outputs.$taskConfirmationTypes);
 
+  const taskType = useStore(outputs.$taskType);
+
   function handleChangeConfirmation(confirmationType: ETaskConfirmationType) {
     handleChange({ taskConfirmationType: confirmationType });
   }
@@ -20,6 +22,7 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
     <CompletionSelect
       taskConfirmationTypes={taskConfirmationTypes}
       handleChangeConfirmation={handleChangeConfirmation}
+      taskType={taskType}
     />
   );
 };

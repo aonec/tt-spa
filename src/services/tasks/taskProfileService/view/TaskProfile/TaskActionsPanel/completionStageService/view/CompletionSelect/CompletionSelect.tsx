@@ -3,13 +3,17 @@ import { CompletionSelectProps } from './CompletionSelect.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { ETaskConfirmationType } from 'myApi';
+import { completionLabelsDictionary } from './CompletionSelect.constants';
 
 export const CompletionSelect: FC<CompletionSelectProps> = ({
   taskConfirmationTypes,
   handleChangeConfirmation,
+  taskType,
 }) => {
+  const label = taskType && completionLabelsDictionary[taskType];
+
   return (
-    <FormItem label="Подтверждение порыва">
+    <FormItem label={label}>
       <Select
         placeholder="Выберите"
         onChange={(value) =>

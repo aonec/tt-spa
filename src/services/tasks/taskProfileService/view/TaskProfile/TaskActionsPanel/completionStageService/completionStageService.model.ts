@@ -5,5 +5,6 @@ export const completionStageService = {
     $taskConfirmationTypes: taskProfileService.outputs.$task.map(
       (task) => task?.taskConfirmationTypes
     ),
+    $taskType: taskProfileService.outputs.$task.map((task) => task?.type),
   },
 };
