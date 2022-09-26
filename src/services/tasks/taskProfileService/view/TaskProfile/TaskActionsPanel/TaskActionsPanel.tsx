@@ -35,7 +35,7 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
     <Component handleChange={handleChangePushStagePayload} type={type} />
   );
 
-  const actionInfoComponents = useTaskPanelInfoActions(taskType);
+  const actionInfoComponents = useTaskPanelInfoActions(taskType, actions);
 
   return (
     <Wrapper>

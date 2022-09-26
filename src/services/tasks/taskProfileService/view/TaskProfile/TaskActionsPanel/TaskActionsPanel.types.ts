@@ -1,14 +1,13 @@
+import { FC } from 'react';
 import {
   EStageActionType,
   StagePushRequest,
   EManagingFirmTaskType,
 } from 'myApi';
-import { FC } from 'react';
-import { PushStageRequestPayload } from 'services/tasks/taskProfileService/taskProfileService.types';
 
 export type TaskActionsPanelProps = {
   actions: EStageActionType[];
-  taskType: string;
+  taskType: EManagingFirmTaskType;
   handlePushStage: () => void;
   isLoading: boolean;
   handleChangePushStagePayload: (
@@ -45,10 +44,11 @@ export type TaskActionsComponent = {
   Component: FC<ActionComponentProps>;
   position: TaskPanelInputPositionType;
   type?: TaskPanelComponentAdditionalType;
-  taskType?: string;
+  taskType?: EManagingFirmTaskType;
 };
 
 export type TaskActionPanelInfoComponent = {
   taskType: EManagingFirmTaskType;
+  action: EStageActionType;
   Component: FC;
 };

@@ -87,6 +87,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
 export const taskActionInfoComppnents: TaskActionPanelInfoComponent[] = [
   {
     taskType: EManagingFirmTaskType.IndividualDeviceCheck,
+    action: EStageActionType.SetNextStageDeadline,
     Component: IndividualDeviceCheckInfoContainer,
   },
 ];

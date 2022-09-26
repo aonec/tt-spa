@@ -2,7 +2,7 @@ import {
   TaskActionsComponent,
   TaskPanelComponentsGroupsName,
 } from './TaskActionsPanel.types';
-import { EStageActionType } from 'myApi';
+import { EManagingFirmTaskType, EStageActionType } from 'myApi';
 import { useMemo } from 'react';
 import {
   actionComponentPositionNamesDictionary,
@@ -37,6 +37,11 @@ export function useTaskPanelActions(actions: EStageActionType[]) {
   return componentsGroups;
 }
 
-export function useTaskPanelInfoActions(taskType: string) {
-  return taskActionInfoComppnents.filter((elem) => elem.taskType === taskType);
+export function useTaskPanelInfoActions(
+  taskType: EManagingFirmTaskType,
+  actionTypes: EStageActionType[]
+) {
+  return taskActionInfoComppnents.filter(
+    (elem) => elem.taskType === taskType && actionTypes.includes(elem.action)
+  );
 }
