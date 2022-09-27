@@ -6,7 +6,7 @@ import { EManagingFirmTaskType, EStageActionType } from 'myApi';
 import { useMemo } from 'react';
 import {
   actionComponentPositionNamesDictionary,
-  taskActionInfoComppnents,
+  taskActionInfoComponents,
   taskActionsComponents as allTaskActionsComponents,
 } from './TaskActionsPanel.constants';
 
@@ -41,7 +41,7 @@ export function useTaskPanelInfoActions(
   taskType: EManagingFirmTaskType,
   actionTypes: EStageActionType[]
 ) {
-  return taskActionInfoComppnents.filter(
+  return taskActionInfoComponents.filter(
     (elem) => elem.taskType === taskType && actionTypes.includes(elem.action)
   );
 }

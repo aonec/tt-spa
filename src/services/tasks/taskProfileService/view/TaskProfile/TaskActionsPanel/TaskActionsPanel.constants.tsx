@@ -10,15 +10,14 @@ import { AddPerpetratorContainer } from './addPerpetratorService';
 import { EmailNotifyContainer } from './emailNotifyService';
 import { AttachDocument } from './AttachDocument';
 import { SwitchStageSelectContainer } from './switchStageSelectService';
-import { SetNextStageDeadlineDatepicker } from './SetNextStageDeadlineDatepicker';
-import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService/setNextStageDeadlineService.container';
 import { CorrectionReadingsContainer } from './correctionReadingsService';
 import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
 import { CloseDevicesContainer } from './CloseDeviceService';
-import { Component } from 'react';
 import { CompletionStageContainer } from './completionStageService';
+import { IndividualDeviceCheckInfoContainer } from './infoComponents/SetNextStageDeadlineService';
+import { SetNextStageDeadlineContainer } from './setNextStageDeadlineService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -56,7 +55,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
   {
     actionType: EStageActionType.SetNextStageDeadline,
-    Component: SetNextStageDeadlineDatepicker,
+    Component: SetNextStageDeadlineContainer,
     position: TaskPanelInputPositionType.Middle,
   },
   {
@@ -91,7 +90,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
 ];
 
-export const taskActionInfoComppnents: TaskActionPanelInfoComponent[] = [
+export const taskActionInfoComponents: TaskActionPanelInfoComponent[] = [
   {
     taskType: EManagingFirmTaskType.IndividualDeviceCheck,
     action: EStageActionType.SetNextStageDeadline,
