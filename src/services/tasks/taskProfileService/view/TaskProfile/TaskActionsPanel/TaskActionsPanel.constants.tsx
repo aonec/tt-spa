@@ -8,16 +8,16 @@ import {
 } from './TaskActionsPanel.types';
 import { AddPerpetratorContainer } from './addPerpetratorService';
 import { EmailNotifyContainer } from './emailNotifyService';
-import { AttachDocument } from './AttachDocument';
 import { SwitchStageSelectContainer } from './switchStageSelectService';
 import { CorrectionReadingsContainer } from './correctionReadingsService';
-import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
-import { CloseDevicesContainer } from './CloseDeviceService';
 import { CompletionStageContainer } from './completionStageService';
 import { IndividualDeviceCheckInfoContainer } from './infoComponents/SetNextStageDeadlineService';
 import { SetNextStageDeadlineContainer } from './setNextStageDeadlineService';
+import { CloseDevicesContainer } from './closeDeviceService';
+import { CommentContainer } from './commentService';
+import { AttachDocumentContainer } from './attachDocumentService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -39,13 +39,13 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
   {
     actionType: EStageActionType.AddEmailTemplate,
-    Component: AttachDocument,
+    Component: AttachDocumentContainer,
     position: TaskPanelInputPositionType.Bottom,
     type: TaskPanelComponentAdditionalType.EmailTemplate,
   },
   {
     actionType: EStageActionType.AddDocuments,
-    Component: AttachDocument,
+    Component: AttachDocumentContainer,
     position: TaskPanelInputPositionType.Bottom,
   },
   {
@@ -85,7 +85,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
   {
     actionType: EStageActionType.AddComment,
-    Component: Comment,
+    Component: CommentContainer,
     position: TaskPanelInputPositionType.Full,
   },
 ];
