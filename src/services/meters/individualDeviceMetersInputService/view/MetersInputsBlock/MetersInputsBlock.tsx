@@ -67,31 +67,19 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     setBufferedReadingValues(getBufferedValuesFromReading(reading));
   }, [reading, sliderIndex]);
 
-  const rateNum = useMemo(() => getRateNum(rateType), [rateType]);
+  const rateNum = getRateNum(rateType);
 
-  const dataString = useMemo(() => (isPrevious ? 'previuos' : 'current'), [
-    isPrevious,
-  ]);
+  const dataString = isPrevious ? 'previuos' : 'current';
 
   const nextInput = useSwitchInputOnEnter(dataString, !isPrevious && inputIndex === 0);
 
-  const handleReadingInputFocus = useCallback(
-    (e?: FocusEvent<HTMLInputElement>) => {
-      e?.target?.select();
-    },
-    []
-  );
+  const handleReadingInputFocus = (e?: FocusEvent<HTMLInputElement>) => {
+    e?.target?.select();
+  };
 
-  const setFailed = useCallback(
-    () => setStatus(MetersInputBlockStatus.Failed),
-    []
-  );
+  const setFailed = () => setStatus(MetersInputBlockStatus.Failed);
 
-  const inputDataAttr = useMemo(() => {
-    if (isDisabled) return {};
-
-    return { 'data-reading-input': dataString };
-  }, [isDisabled, isPrevious]);
+  const inputDataAttr = isDisabled ? {} : { 'data-reading-input': dataString };
 
   const handleReadingInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,15 +101,17 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
       sourceIcon: getSourceIcon(source),
       sourceName: getSourceName(source, username),
     };
-  }, [reading, sliderIndex]);
+  }, [reading]);
 
   const uploadReading = useCallback(
     async (next: () => void) => {
       const readingValues = getReadingLite(bufferedReadingValues, rateNum);
 
       const readingPayload: MeterInputUploadReadingPayload = {
-        ...readingValues,
-        readingDate: getDateByReadingMonthSlider(sliderIndex),
+        meter: {
+          ...readingValues,
+          readingDate: getDateByReadingMonthSlider(sliderIndex),
+        },
         sliderIndex,
         meterId: reading?.id,
       };

@@ -78,10 +78,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     [openReadingsHistoryModalById, device.id]
   );
 
-  const inputIndex = useMemo(() => getInputIndex(deviceIndex, devices), [
-    deviceIndex,
-    devices,
-  ]);
+  const inputIndex = getInputIndex(deviceIndex, devices);
 
   const deviceRateNum = useMemo(() => getRateNum(device.rateType), [
     device.rateType,
@@ -112,7 +109,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
 
         const sendMeter = () => {
           uploadMeter({
-            meter: { ...readingPayload, deviceId: device.id },
+            meter: { ...readingPayload.meter, deviceId: device.id },
             sliderIndex: readingPayload.sliderIndex,
             meterId: readingPayload.meterId,
           });
@@ -126,7 +123,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
         if (result.type === ValidationReadingsResultType.EmptyValues) {
           const meterId = readingPayload.meterId;
 
-          const readingMonth = moment(readingPayload.readingDate).format(
+          const readingMonth = moment(readingPayload.meter.readingDate).format(
             'MMMM'
           );
 
@@ -142,7 +139,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
                 deleteMeter({
                   deviceId: device.id,
                   meterId: meterId,
-                  readingDate: readingPayload.readingDate,
+                  readingDate: readingPayload.meter.readingDate,
                 });
               resolve();
             },
