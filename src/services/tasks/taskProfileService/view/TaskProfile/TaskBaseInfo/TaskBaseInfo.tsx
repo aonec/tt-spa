@@ -1,9 +1,11 @@
 import moment from 'moment';
 import React, { FC } from 'react';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
   InfoWrapper,
   LinkSC,
   RowWrapper,
+  TaskBaseInfoWrapper,
   TitleWrapper,
 } from './TaskBaseInfo.styled';
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
@@ -19,13 +21,19 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   } = task;
 
   const apartmentId = apartment?.id;
-  const housingStockId = apartment?.housingStock?.id;
+  const housingStockId = task.housingStockId;
   const apartmentComment = apartment?.comment || '';
 
-  const preparedCreationTime = moment(creationTime).format('DD.MM.YYYY HH:MM');
+  const linkPath = apartment
+    ? `/objects/${housingStockId}/apartments/${apartmentId}`
+    : `/objects/${housingStockId}`;
+
+  const preparedCreationTime = creationTime
+    ? getTimeStringByUTC(creationTime)
+    : '-';
 
   return (
-    <>
+    <TaskBaseInfoWrapper>
       <TitleWrapper>Информация о задаче</TitleWrapper>
       <InfoWrapper>
         <RowWrapper>
@@ -42,14 +50,14 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>
-          <LinkSC to={`/objects/${housingStockId}/apartments/${apartmentId}`}>
-            {address}
-          </LinkSC>
+          <LinkSC to={linkPath}>{address}</LinkSC>
         </RowWrapper>
-        <RowWrapper>
-          <div>Комментарии к квартире</div>
-          <div>{apartmentComment}</div>
-        </RowWrapper>
+        {apartment && (
+          <RowWrapper>
+            <div>Комментарии к квартире</div>
+            <div>{apartmentComment}</div>
+          </RowWrapper>
+        )}
         {perpetrator && (
           <RowWrapper>
             <div>Исполнитель</div>
@@ -57,6 +65,6 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
           </RowWrapper>
         )}
       </InfoWrapper>
-    </>
+    </TaskBaseInfoWrapper>
   );
 };

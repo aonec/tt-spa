@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'reshadow/macro';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
@@ -56,7 +56,6 @@ import {
 } from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { ESecuredIdentityRoleName } from 'myApi';
 import { useStore } from 'effector-react';
 import { TaskProfileContainer } from 'services/tasks/taskProfileService';
 
@@ -70,6 +69,7 @@ const Internal = () => {
     ? '/tasks/list/Observing'
     : '/tasks/list/Executing';
 
+    
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
@@ -252,14 +252,24 @@ const Internal = () => {
                 component={SettingsPageContainer}
                 exact
               />
-
-              <Redirect
-                from="/statistics/"
-                to="/statistics/subscribersConsumption"
+              <Route
+                path="/adminSettings/:section"
+                component={SettingsPageContainer}
                 exact
               />
 
-              <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
+              <Redirect
+                from="/statistics/"
+                to="/statistics/subscribersConsumption/houses"
+                exact
+              />
+              <Redirect
+                from="/statistics/subscribersConsumption"
+                to="/statistics/subscribersConsumption/houses"
+                exact
+              />
+
+              <Route path="/statistics/:grouptype/:searchType?">
                 <StatisticsPage />
               </Route>
 

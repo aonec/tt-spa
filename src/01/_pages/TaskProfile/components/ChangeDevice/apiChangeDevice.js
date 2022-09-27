@@ -52,7 +52,7 @@ export async function pushStage(id = '', form = {}) {
 
 export async function getCalculators(objid = 0) {
   try {
-    const res = await axios.get(`Calculators?Filter.HousingStockId=${objid}`);
+    const res = await axios.get(`HousingStocks/${objid}/Calculators`);
     return res;
   } catch (error) {
     throw {

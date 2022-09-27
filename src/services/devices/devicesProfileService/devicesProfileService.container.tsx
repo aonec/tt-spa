@@ -12,7 +12,7 @@ export const DevicesProfileContainer = () => {
   const searchState = useStore(outputs.$searchPayload);
 
   const clearSearchPayload = useEvent(inputs.clearSearchPayload);
-  const fetchcalc = useEvent(inputs.fetchCalculators);
+  const setDevicesProfileFilter = useEvent(inputs.setDevicesProfileFilter);
   const close = useEvent(inputs.extendedSearchClosed);
   const open = useEvent(inputs.extendedSearchOpened);
 
@@ -23,7 +23,7 @@ export const DevicesProfileContainer = () => {
         showDownloadDeviceReportButtonClicked={
           showDownloadDeviceReportButtonClicked
         }
-        fetchcalc={fetchcalc}
+        setFilter={setDevicesProfileFilter}
         isOpen={isOpen}
         close={close}
         open={open}
