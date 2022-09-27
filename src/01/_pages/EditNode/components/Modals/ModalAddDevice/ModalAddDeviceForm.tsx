@@ -255,22 +255,6 @@ const ModalAddDeviceForm = ({
                   />
                 </Form.Item>
 
-                {/*<Form.Item*/}
-                {/*  name="calculatorId"*/}
-                {/*  label="Вычислитель, к которому подключен прибор"*/}
-                {/*  style={styles.w49}*/}
-                {/*>*/}
-                {/*  <InputFormik name="calculatorId" disabled />*/}
-                {/*</Form.Item>*/}
-
-                {/*<Form.Item*/}
-                {/*  name="entryNumber"*/}
-                {/*  label="Номер ввода"*/}
-                {/*  style={styles.w100}*/}
-                {/*>*/}
-                {/*  <InputFormik name="entryNumber" disabled />*/}
-                {/*</Form.Item>*/}
-
                 <Form.Item name="number" label="Номер узла" style={styles.w49}>
                   <InputFormik name="number" disabled />
                 </Form.Item>
@@ -363,6 +347,11 @@ const ModalAddDeviceForm = ({
                     name="lastCheckingDate"
                     format="DD.MM.YYYY"
                     allowClear={false}
+                    onChange={(date) => {
+                      if (!date) return;
+
+                      setFieldValue('futureCheckingDate', date.add('year', 4));
+                    }}
                   />
                 </Form.Item>
 
