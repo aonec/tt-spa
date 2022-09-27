@@ -43,7 +43,12 @@ export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
       const res: {
         items: IndividualDeviceListItemResponse[];
       } = await axios.get('IndividualDevices', {
-        params: { serialNumber, pageNumber: 1, pageSize: 25 },
+        params: {
+          serialNumber,
+          pageNumber: 1,
+          pageSize: 25,
+          orderRule: 'serialNumber',
+        },
         cancelToken: newCancelToken?.token,
       });
 
