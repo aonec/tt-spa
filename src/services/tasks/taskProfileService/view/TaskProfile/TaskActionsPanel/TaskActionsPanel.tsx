@@ -11,12 +11,10 @@ import {
   TaskActionsComponent,
   TaskActionsPanelProps,
 } from './TaskActionsPanel.types';
-import {
-  useTaskPanelActions,
-  useTaskPanelInfoActions,
-} from './TaskActionsPanel.hook';
+import { useTaskPanelActions } from './TaskActionsPanel.hook';
 import { StagePushRequest } from 'myApi';
 import { Button } from 'ui-kit/Button';
+import { taskActionInfoComponents } from './TaskActionsPanel.constants';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
@@ -46,7 +44,9 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
     <Component handleChange={handleStagePayloadChanged} type={type} />
   );
 
-  const actionInfoComponents = useTaskPanelInfoActions(taskType);
+  const actionInfoComponents = taskActionInfoComponents.filter(
+    (elem) => elem.taskType === taskType
+  );
 
   return (
     <Wrapper>

@@ -54,7 +54,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
 ];
 
-export const taskActionInfoComppnents: TaskActionPanelInfoComponent[] = [
+export const taskActionInfoComponents: TaskActionPanelInfoComponent[] = [
   {
     taskType: 'IndividualDeviceCheck',
     Component: IndividualDeviceCheckInfoContainer,

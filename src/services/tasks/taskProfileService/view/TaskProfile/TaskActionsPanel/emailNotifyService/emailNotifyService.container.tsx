@@ -56,5 +56,11 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
     ),
   };
 
-  return <>{type && components[type]}</>;
+  if (!type) return null;
+
+  const component = components[type];
+
+  if (!component) return null;
+
+  return component;
 };
