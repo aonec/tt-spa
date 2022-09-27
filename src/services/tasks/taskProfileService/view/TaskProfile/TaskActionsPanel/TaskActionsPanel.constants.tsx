@@ -82,7 +82,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.Completion,
     Component: CompletionStageContainer,
-    position: TaskPanelInputPositionType.Middle,
+    position: TaskPanelInputPositionType.Full,
   },
   {
     actionType: EStageActionType.AddComment,
