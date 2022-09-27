@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { completionStageService } from './completionStageService.model';
 import { CompletionSelect } from './view/CompletionSelect';
+import { CompletionComment } from './view/CompletionComment';
 
 const { outputs } = completionStageService;
 
@@ -19,10 +20,13 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
   }
 
   return (
-    <CompletionSelect
-      taskConfirmationTypes={taskConfirmationTypes}
-      handleChangeConfirmation={handleChangeConfirmation}
-      taskType={taskType}
-    />
+    <>
+      <CompletionSelect
+        taskConfirmationTypes={taskConfirmationTypes}
+        handleChangeConfirmation={handleChangeConfirmation}
+        taskType={taskType}
+      />
+      <CompletionComment />
+    </>
   );
 };

@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
 export const TaskInfoWrapper = styled.div`
   width: 100%;
   flex-grow: 1;
+  margin-top: 23px;
 `;
 
 export const TaskWrapper = styled.div`
