@@ -13,7 +13,7 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
     <Wrapper to={`/objects/${mainAddress?.id}/apartments/${apartment.id}`}>
       <Address>{address}</Address>
       <div>{mainAddress?.city}</div>
-      <div>{apartment?.housingStock?.houseType}</div>
+      {/* <div>{apartment?.housingStock?.houseType}</div> */}
       <ContextMenuButton size="small" />
     </Wrapper>
   );
