@@ -16,6 +16,7 @@ import {
   Wrapper,
 } from './TaskDocumentsListItem.styled';
 import { TaskDocumentsListItemProps } from './TaskDocumentsListItem.types';
+import { saveAs } from "file-saver"
 
 export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
   document,

@@ -5,13 +5,14 @@ import {
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskDocumentsList } from './TaskDocumentsList';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
-import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
+import { TaskInfoWrapper, TaskWrapper, Wrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
@@ -53,8 +54,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     return task.name;
   }, [task]);
 
+  const taskActions = task.currentStage?.actions || [];
+
   return (
-    <div>
+    <Wrapper>
       <GoBack />
       {name && (
         <>
@@ -74,6 +77,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             taskName={taskName || ''}
             pipeNode={pipeNode}
           />
+          {task.type && (
+            <TaskActionsPanel
+              handlePushStage={() => {}}
+              taskType={task.type}
+              actions={taskActions}
+            />
+          )}
           <TaskWrapper>
             <TaskInfoWrapper>
               <TaskDocumentsList
@@ -105,6 +115,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           </TaskWrapper>
         </>
       )}
-    </div>
+    </Wrapper>
   );
 };
