@@ -166,7 +166,7 @@ const ListWrap = styled.div`
 
 const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 3fr 4fr;
+  grid-template-columns: 4fr 2fr 3fr 4fr 20px;
   grid-gap: 4px;
   grid-template-rows: 48px;
   align-items: center;
