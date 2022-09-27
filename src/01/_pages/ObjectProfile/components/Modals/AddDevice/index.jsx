@@ -17,8 +17,7 @@ const ModalAddDevice = () => {
       try {
         if (!objid) return;
         const objCalculators = await getObjectCalculators(objid);
-        const { items } = objCalculators;
-        const calcOnly = items.map((item) => ({
+        const calcOnly = objCalculators.map((item) => ({
           ...item,
           value: item.id,
           label: `${item.model} (${item.serialNumber})`,
