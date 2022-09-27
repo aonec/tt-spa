@@ -49,6 +49,17 @@ const $resourceDisconnection = domain
 
 const $isDisconectionLoading = getResourceDisconnectionFx.pending;
 
+const setEditResourceDisconnectionPayload = domain.createEvent<ResourceDisconnectingUpdatePayload>();
+const $editResourceDisconnectionPayload = domain
+  .createStore<ResourceDisconnectingUpdatePayload | null>(null)
+  .on(setEditResourceDisconnectionPayload, (_, data) => {
+    const { id } = data;
+    if (!id) {
+      return null;
+    }
+    return data;
+  });
+
 sample({
   clock: guard({
     clock: $editedResourceDisconnectionId,
@@ -58,12 +69,17 @@ sample({
 });
 
 sample({
-  source: guard({
-    source: $editedResourceDisconnectionId,
-    filter: Boolean,
-  }),
+  source: $editedResourceDisconnectionId,
   clock: editResourceDisconnection,
   fn: (id, payload) => ({ id, payload }),
+  target: setEditResourceDisconnectionPayload,
+});
+
+sample({
+  clock: guard({
+    clock: $editResourceDisconnectionPayload,
+    filter: Boolean,
+  }),
   target: editResourceDisconnectionFx,
 });
 

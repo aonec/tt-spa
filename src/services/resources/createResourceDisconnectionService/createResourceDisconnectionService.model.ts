@@ -1,6 +1,6 @@
 import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, createDomain, forward, split } from 'effector';
+import { combine, createDomain, forward, guard, sample, split } from 'effector';
 import _ from 'lodash/fp';
 import {
   ResourceDisconnectingCreateRequest,
@@ -23,6 +23,14 @@ import {
 import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
+
+const setIsInterHeatingSeason = domain.createEvent();
+const $isInterHeatingSeason = domain
+  .createStore(false)
+  .on(
+    setIsInterHeatingSeason,
+    (_, isInterHeatingSeason) => isInterHeatingSeason
+  );
 
 const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.resourceTypes || []
@@ -113,6 +121,22 @@ const createResourceDisconnectionFx = domain.createEffect<
 forward({
   from: setTypeOfAddress,
   to: clearHousingStocks,
+});
+
+sample({
+  clock: guard({
+    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
+    filter: Boolean,
+  }),
+  fn: (disconnection) => {
+    const disconnectingType = disconnection.disconnectingType;
+    const isInterHeatingSeason =
+      disconnectingType?.value ===
+      EResourceDisconnectingType.InterHeatingSeason;
+
+    return isInterHeatingSeason;
+  },
+  target: setIsInterHeatingSeason,
 });
 
 forward({

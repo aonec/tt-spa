@@ -1,22 +1,33 @@
-import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import {
   createTimeline,
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
+import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskBaseInfo } from './TaskBaseInfo';
+import { TaskComments } from './TaskComments';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
+import { TaskDocumentsList } from './TaskDocumentsList';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
 import { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
-import { TaskWrapper } from './TaskProfile.styled';
+import { TaskInfoWrapper, TaskWrapper } from './TaskProfile.styled';
 import { TaskProfileProps } from './TaskProfile.types';
 import { TaskProfileHeader } from './TaskProfileHeader';
 import { TaskStages } from './TaskStages';
 
 export const TaskProfile: FC<TaskProfileProps> = ({
   task,
+  handleAddComment,
+  isPerpetrator,
+  handleSetComment,
+  commentText,
+  handleDeleteDocument,
   relatedPipeNode,
+  documents,
+  closeDeleteDocumentModal,
+  deleteDocumentModalIsOpen,
+  openDeleteDocumentModal,
 }) => {
   const {
     closingStatus,
@@ -27,6 +38,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
     apartment,
     housingStockId,
     pipeNode,
+    comments,
   } = task;
 
   const apartmemtId = apartment?.id || 0;
@@ -46,6 +58,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
       <GoBack />
       {name && (
         <>
+          <Dialog
+            isOpen={deleteDocumentModalIsOpen}
+            onCancel={closeDeleteDocumentModal}
+            onSubmit={handleDeleteDocument}
+            type="danger"
+            title="Вы уверены, что хотите удалить документ?"
+          />
           <TaskProfileHeader
             name={name}
             devices={individualDevices || []}
@@ -53,9 +72,21 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             nodeDevice={device}
             timer={timer}
             taskName={taskName || ''}
+            pipeNode={pipeNode}
           />
           <TaskWrapper>
-            <div>
+            <TaskInfoWrapper>
+              <TaskDocumentsList
+                documents={documents || []}
+                openDeleteDocumentModal={openDeleteDocumentModal}
+              />
+              <TaskComments
+                comments={comments || []}
+                handleAddComment={handleAddComment}
+                isPerpetrator={isPerpetrator}
+                handleSetComment={handleSetComment}
+                commentText={commentText}
+              />
               <TaskBaseInfo task={task} />
               {individualDevices && (
                 <TaskIndividualDevicesList
@@ -65,11 +96,11 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 />
               )}
               {device && <TaskDeviceInfo device={device} />}
+              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
               {relatedPipeNode && (
                 <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
               )}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
-            </div>
+            </TaskInfoWrapper>
             <TaskStages stages={stages || []} />
           </TaskWrapper>
         </>

@@ -5,7 +5,6 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { TimeLine } from 'ui-kit/shared_components/TimeLine';
 import { Timer } from 'ui-kit/shared_components/Timer';
-import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 import { LineColors } from './TaskProfileHeader.constants';
 import {
   DeviceIconWrapper,
@@ -26,15 +25,19 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
   timeline,
   timer,
   taskName,
+  pipeNode,
 }) => {
   const lineColor = timer.closingStatus && LineColors[timer.closingStatus];
 
   const DeviceIcon = useMemo(() => {
-    if (!devices.length && !nodeDevice) {
+    if (!devices.length && !nodeDevice && !pipeNode) {
       return null;
     }
     const existingResource =
-      devices[0]?.resource || nodeDevice?.resource || null;
+      devices[0]?.resource ||
+      nodeDevice?.resource ||
+      pipeNode?.resource ||
+      null;
 
     const allDevicesResource = devices.map((device) => device?.resource);
     const isNotUniq = _.uniq(allDevicesResource).length > 1;
