@@ -43,6 +43,7 @@ export const FileNameWrapper = styled.div`
 
 export const TrashIconWrapper = styled.div`
   margin-left: 16px;
+  cursor: pointer;
   &:hover {
     path {
       fill: #fc525b;

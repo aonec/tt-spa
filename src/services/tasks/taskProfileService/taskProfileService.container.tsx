@@ -18,10 +18,15 @@ export const TaskProfileContainer = () => {
   const isPerpetrator = useStore(outputs.$isPerpetrator);
   const commentText = useStore(outputs.$commentText);
   const documents = useStore(outputs.$documents);
+  const deleteDocumentModalIsOpen = useStore(
+    outputs.$deleteDocumentModalIsOpen
+  );
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
   const handleDeleteDocument = useEvent(inputs.deleteDocument);
+  const openDeleteDocumentModal = useEvent(inputs.openDeleteDocumentModal);
+  const closeDeleteDocumentModal = useEvent(inputs.closeDeleteDocumentModal);
 
   const device = task && task.device;
   const nodeId = device?.nodeId;
@@ -38,7 +43,7 @@ export const TaskProfileContainer = () => {
 
       {!isLoading && task && (
         <TaskProfile
-          handleDeleteDocument={handleDeleteDocument}
+          handleDeleteDocument={() => handleDeleteDocument()}
           task={task}
           isPerpetrator={isPerpetrator}
           handleAddComment={() => addComment()}
@@ -46,6 +51,9 @@ export const TaskProfileContainer = () => {
           commentText={commentText}
           relatedPipeNode={relatedPipeNode}
           documents={documents}
+          deleteDocumentModalIsOpen={deleteDocumentModalIsOpen}
+          openDeleteDocumentModal={openDeleteDocumentModal}
+          closeDeleteDocumentModal={() => closeDeleteDocumentModal()}
         />
       )}
     </>
