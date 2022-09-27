@@ -1,5 +1,6 @@
 import { TreeSelect } from 'antd';
 import styled from 'styled-components';
+import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 
 export const BaseInfoWrapper = styled.div`
@@ -22,6 +23,10 @@ export const BaseInfoWrapper = styled.div`
       color: #272f5ae5;
     }
   }
+`;
+
+export const InputSC = styled(Input)`
+  color: #272f5ae5;
 `;
 
 export const ResourceOptionWrapper = styled.div`

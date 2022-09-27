@@ -7,23 +7,23 @@ import { fetchDisablingResources } from './ResourcesDisablingScheduleService.api
 
 const domain = createDomain('ResourceDisablingScheduleService');
 
-const $disablingResources = domain.createStore<ResourceDisconnectingResponsePagedList | null>(
-  null
-);
-
 const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
-const resourceDisablingEvent = domain.createEvent();
 const applyFilters = domain.createEvent<DisablingResourcesProps>();
 const setPage = domain.createEvent<number>();
 
 const openAddressesModal = domain.createEvent();
 const closeAddressesModal = domain.createEvent();
 
-const resourceDisablingEventFx = domain.createEffect<
+const refetchResourceDisconnections = domain.createEvent();
+const getResourceDisconnectionsFx = domain.createEffect<
   DisablingResourcesProps,
   ResourceDisconnectingResponsePagedList
 >(fetchDisablingResources);
+
+const $disablingResources = domain
+  .createStore<ResourceDisconnectingResponsePagedList | null>(null)
+  .on(getResourceDisconnectionsFx.doneData, (_, resources) => resources);
 
 const $filters = domain
   .createStore<DisablingResourcesProps>({ PageSize: 12 })
@@ -46,26 +46,20 @@ const $isAddressesModalOpen = domain
 
 sample({
   source: $filters,
-  clock: [resourceDisablingGate.open, $filters],
+  clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
   fn: (filters) => filters,
-  target: resourceDisablingEventFx,
+  target: getResourceDisconnectionsFx,
 });
 
-$disablingResources.on(
-  resourceDisablingEventFx.doneData,
-  (_, resources) => resources
-);
-
-const $loading = resourceDisablingEventFx.pending;
+const $loading = getResourceDisconnectionsFx.pending;
 
 export const resourceDisablingScheduleServiceService = {
   inputs: {
-    resourceDisablingEvent,
     applyFilters,
-    resourceDisablingEventFx,
     setPage,
     openAddressesModal,
     closeAddressesModal,
+    refetchResourceDisconnections,
   },
   outputs: {
     $disablingResources,
