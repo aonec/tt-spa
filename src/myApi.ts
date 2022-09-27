@@ -1295,6 +1295,7 @@ export enum EImportedEntityType {
 export enum EIndividualDeviceOrderRule {
   Resource = "Resource",
   ApartmentNumber = "ApartmentNumber",
+  SerialNumber = "SerialNumber",
 }
 
 export enum EIndividualDeviceRateType {
@@ -4246,7 +4247,7 @@ export interface StagePushRequest {
 
   /** @format date-time */
   apartmentCheckDate?: string | null;
-  taskConfirmationType?: string | null;
+  taskConfirmation?: TaskConfirmationRequestModel | null;
 }
 
 export interface StageResponse {
@@ -4711,6 +4712,17 @@ export interface TaskCommentResponseSuccessApiResponse {
   successResponse: TaskCommentResponse | null;
 }
 
+export interface TaskConfirmationRequestModel {
+  type?: string | null;
+  comment?: string | null;
+}
+
+export interface TaskConfirmationResponse {
+  confirmation: ETaskConfirmationType;
+  description: string | null;
+  comment: string | null;
+}
+
 export interface TaskCreateRequest {
   /** @format int32 */
   key?: number;
@@ -4723,12 +4735,6 @@ export interface TaskCreateResponse {
   /** @format int32 */
   id: number;
   type: EManagingFirmTaskType;
-
-  /** @format date-time */
-  triggerTime: string;
-
-  /** @format int32 */
-  triggersCount: number;
   isValidated: boolean;
 }
 
@@ -4780,7 +4786,6 @@ export interface TaskListResponse {
   isResponsible: boolean;
   hasChanged: boolean;
   needsValidation: boolean;
-  triggersInformation: TaskTriggersInformation | null;
   devices: MeteringDeviceSearchListResponse[] | null;
   pipeNode: PipeNodeResponse | null;
   applications: TaskApplicationForTaskResponse[] | null;
@@ -4824,22 +4829,12 @@ export interface TaskResponse {
   stages: StageListResponse[] | null;
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
-  taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
+  taskConfirmation: TaskConfirmationResponse | null;
+  allowableConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
 }
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
-}
-
-export interface TaskTriggersInformation {
-  /** @format date-time */
-  triggerTime?: string;
-
-  /** @format int32 */
-  previousTriggersCount?: number | null;
-
-  /** @format int32 */
-  currentTriggersCount?: number;
 }
 
 export interface TasksPagedList {
