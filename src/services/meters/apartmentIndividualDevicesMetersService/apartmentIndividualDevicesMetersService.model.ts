@@ -31,12 +31,12 @@ const $sliderIndex = domain
   .on(upSliderIndex, (index) => {
     if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
-    return ++index;
+    return index + 1;
   })
   .on(downSliderIndex, (index) => {
     if (index === 0) return index;
 
-    return --index;
+    return index - 1;
   });
 
 const $individualDevicesList = $individualDevicesPagedData.map(

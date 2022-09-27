@@ -6,11 +6,7 @@ const ActiveLine = ({ isActive, closingReason }) => {
   const badge = useMemo(() => {
     if (isActive) return <Badge status="success" text="Активен" />;
 
-    const closingReasonText = `Закрыт${
-      closingReasons && closingReasons[closingReason]
-        ? ` (${closingReasons[closingReason]})`
-        : ''
-    }`;
+    const closingReasonText = `Закрыт ${closingReasons?.[closingReason] || ''}`;
 
     return (
       <Badge
