@@ -62,7 +62,6 @@ const MenuItem = styled(Menu.Item)<{ color?: string }>`
   min-width: 408px;
   color: ${({ color = Color.primary }) => color} !important;
 
-
   &:hover {
     color: white !important;
   }
@@ -74,7 +73,7 @@ export const Color = {
 };
 
 function getButtonColor(color?: ColorType) {
-  if (!color) return Color.default;
-  
-  return (Color as any)[color] || Color.default;
+  if (!color) return Color.primary;
+
+  return (Color as any)[color] || Color.primary;
 }
