@@ -21,6 +21,9 @@ export const TaskProfileContainer = () => {
   const documents = useStore(outputs.$documents);
   const isPushStageLoading = useStore(outputs.$isPushStageLoading);
   const isRevertStageLoading = useStore(outputs.$isRevertStageLoading);
+  const deleteDocumentModalIsOpen = useStore(
+    outputs.$deleteDocumentModalIsOpen
+  );
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
@@ -30,6 +33,8 @@ export const TaskProfileContainer = () => {
   const handleChangePushStagePayload = useEvent(
     inputs.handleChangePushStagePayload
   );
+  const openDeleteDocumentModal = useEvent(inputs.openDeleteDocumentModal);
+  const closeDeleteDocumentModal = useEvent(inputs.closeDeleteDocumentModal);
 
   const device = task && task.device;
   const nodeId = device?.nodeId;
@@ -49,7 +54,7 @@ export const TaskProfileContainer = () => {
 
       {task && (
         <TaskProfile
-          handleDeleteDocument={handleDeleteDocument}
+          handleDeleteDocument={() => handleDeleteDocument()}
           task={task}
           isLoadingTask={isLoading}
           isPerpetrator={isPerpetrator}
@@ -64,6 +69,9 @@ export const TaskProfileContainer = () => {
           handleRevertStage={() => handleRevertStage()}
           isRevertStageLoading={isRevertStageLoading}
           handleChangePushStagePayload={handleChangePushStagePayload}
+          deleteDocumentModalIsOpen={deleteDocumentModalIsOpen}
+          openDeleteDocumentModal={openDeleteDocumentModal}
+          closeDeleteDocumentModal={() => closeDeleteDocumentModal()}
         />
       )}
     </>

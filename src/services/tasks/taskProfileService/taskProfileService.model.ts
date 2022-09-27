@@ -47,7 +47,7 @@ const pushStageFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postPushStage);
 
-const deleteDocument = domain.createEvent<number>();
+const deleteDocument = domain.createEvent();
 const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 
 const handleChangePushStagePayload = createEvent<
@@ -121,6 +121,15 @@ const $isPerpetrator = combine(
   }
 );
 
+const openDeleteDocumentModal = domain.createEvent<number>();
+const closeDeleteDocumentModal = domain.createEvent();
+const $deletedDocumentId = domain
+  .createStore<number>(0)
+  .on(openDeleteDocumentModal, (_, id) => id)
+  .reset(closeDeleteDocumentModal);
+
+const $deleteDocumentModalIsOpen = $deletedDocumentId.map((id) => Boolean(id));
+
 const $documents = $task
   .map((task) => task?.documents || [])
   .on(deleteDocumentFx.done, (documents, { params: documentId }) =>
@@ -149,9 +158,18 @@ sample({
   target: addCommentFx,
 });
 
+sample({
+  source: guard({
+    source: $deletedDocumentId,
+    filter: Boolean,
+  }),
+  clock: deleteDocument,
+  target: deleteDocumentFx,
+});
+
 forward({
-  from: deleteDocument,
-  to: deleteDocumentFx,
+  from: deleteDocumentFx.doneData,
+  to: closeDeleteDocumentModal,
 });
 
 forward({
@@ -203,6 +221,8 @@ export const taskProfileService = {
     deleteDocument,
     handleRevertStage,
     handleChangePushStagePayload,
+    openDeleteDocumentModal,
+    closeDeleteDocumentModal,
   },
   outputs: {
     $task,
@@ -215,6 +235,7 @@ export const taskProfileService = {
     $isPushStageLoading,
     $isRevertStageLoading,
     $pushStageRequestPayload,
+    $deleteDocumentModalIsOpen,
   },
   gates: { TaskIdGate, RelatedNodeIdGate },
 };
