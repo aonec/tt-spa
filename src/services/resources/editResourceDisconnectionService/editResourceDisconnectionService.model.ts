@@ -1,4 +1,4 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createDomain, guard, sample } from 'effector';
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,

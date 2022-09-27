@@ -24,14 +24,6 @@ import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
 
-const setIsInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = domain
-  .createStore(false)
-  .on(
-    setIsInterHeatingSeason,
-    (_, isInterHeatingSeason) => isInterHeatingSeason
-  );
-
 const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.resourceTypes || []
 );
@@ -123,22 +115,6 @@ forward({
   to: clearHousingStocks,
 });
 
-sample({
-  clock: guard({
-    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
-    filter: Boolean,
-  }),
-  fn: (disconnection) => {
-    const disconnectingType = disconnection.disconnectingType;
-    const isInterHeatingSeason =
-      disconnectingType?.value ===
-      EResourceDisconnectingType.InterHeatingSeason;
-
-    return isInterHeatingSeason;
-  },
-  target: setIsInterHeatingSeason,
-});
-
 forward({
   from: editResourceDisconnectionService.inputs.openEditModal,
   to: openModal,
@@ -182,8 +158,10 @@ split({
 
 forward({
   from: createResourceDisconnectionFx.doneData,
-  to: resourceDisablingScheduleServiceService.inputs.refetchResourceDisconnections
-})
+  to:
+    resourceDisablingScheduleServiceService.inputs
+      .refetchResourceDisconnections,
+});
 
 createResourceDisconnectionFx.failData.watch((error) =>
   message.error(error.response.data.error.Text)
