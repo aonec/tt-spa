@@ -128,11 +128,15 @@ const EditNodeForm = ({
 
     setPendingSave(true);
 
-    await Promise.all([
-      saveDocuments(),
-      deleteDocs(),
-      putNode(nodeId, nodeForm),
-    ]);
+    try {
+      await Promise.all([
+        saveDocuments(),
+        deleteDocs(),
+        putNode(nodeId, nodeForm),
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
 
     setPendingSave(false);
   };
@@ -250,8 +254,13 @@ const EditNodeForm = ({
                 format="DD.MM.YYYY"
                 placeholder="Укажите дату..."
                 allowClear={false}
-                onChange={(value)=>{
-                  setFieldsValue({"futureCommercialAccountingDate": moment(value).add(4, 'years')})
+                onChange={(value) => {
+                  setFieldsValue({
+                    futureCommercialAccountingDate: moment(value).add(
+                      4,
+                      'years'
+                    ),
+                  });
                 }}
               />
             </Form.Item>

@@ -171,6 +171,7 @@ export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
     message.success('Узел успешно изменен!');
     return res;
   } catch (error) {
+    message.error((error as any)?.response?.data?.error?.Text);
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',
