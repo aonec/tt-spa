@@ -42,9 +42,5 @@ export const MetersInputsBlockPure: FC<{
     [bufferedReadingValues, rateNum, isDisabled]
   );
 
-  return (
-    <Wrapper className="meters-wrapper" resource={resource}>
-      {inputsArray}
-    </Wrapper>
-  );
+  return <Wrapper resource={resource}>{inputsArray}</Wrapper>;
 };
