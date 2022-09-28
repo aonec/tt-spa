@@ -3,7 +3,7 @@ import { CompletionSelectProps } from './CompletionSelect.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { ETaskConfirmationType } from 'myApi';
-import { completionLabelsDictionary } from './CompletionSelect.constants';
+import { completionLabelsDictionary } from 'services/tasks/taskProfileService/taskProfileService.constants';
 
 export const CompletionSelect: FC<CompletionSelectProps> = ({
   taskConfirmationTypes,

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { completionLabelsDictionary } from 'services/tasks/taskProfileService/taskProfileService.constants';
 import {
   PanelInfoLable,
   PanelInfoText,
@@ -7,7 +8,6 @@ import {
   Wrapper,
 } from './TaskConfirmationPanel.styled';
 import { TaskConfirmationPanelProps } from './TaskConfirmationPanel.types';
-import { completionLabelsDictionary } from '../TaskActionsPanel/completionStageService/view/CompletionSelect/CompletionSelect.constants';
 
 export const TaskConfirmationPanel: FC<TaskConfirmationPanelProps> = ({
   taskConfirmation,
