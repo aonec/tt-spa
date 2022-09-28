@@ -1,8 +1,4 @@
-import {
-  HeatingStationWithStreetsResponse,
-  HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponse,
-} from 'myApi';
+import { StreetWithHousingStockNumbersResponse } from 'myApi';
 import { TreeSelectElement } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export const prepareAddressesForTreeSelect = (
@@ -29,18 +25,4 @@ export const prepareAddressesForTreeSelect = (
       ];
     }
     return acc;
-  }, [] as TreeSelectElement[]);
-
-export const prepareAddressesWithParentsForTreeSelect = (
-  items:
-    | HeatingStationWithStreetsResponse[]
-    | HouseManagementWithStreetsResponse[]
-) =>
-  items.reduce((acc, { id, name, streets }) => {
-    if (!streets || !name) {
-      return acc;
-    }
-    const children = prepareAddressesForTreeSelect(streets, id);
-
-    return [...acc, { title: name, value: id, key: id, children }];
   }, [] as TreeSelectElement[]);
