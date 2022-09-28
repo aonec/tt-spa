@@ -11,12 +11,12 @@ import { EmailNotifyContainer } from './emailNotifyService';
 import { AttachDocument } from './AttachDocument';
 import { SwitchStageSelectContainer } from './switchStageSelectService';
 import { SetNextStageDeadlineDatepicker } from './SetNextStageDeadlineDatepicker';
-import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService/setNextStageDeadlineService.container';
 import { CorrectionReadingsContainer } from './correctionReadingsService';
 import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
-import { CloseDevicesContainer } from './CloseDeviceService';
+import { CloseDevicesContainer } from './closeDeviceService';
+import { IndividualDeviceCheckInfoContainer } from './setNextStageDeadlineService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
