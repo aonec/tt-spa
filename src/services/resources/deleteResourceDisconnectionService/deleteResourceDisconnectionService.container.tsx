@@ -25,6 +25,10 @@ export const DeleteResourceDisconnectionContainer = () => {
       isLoading={isLoading}
       description={
         <>
+          {endDate &&
+            `Плановая дата завершения - ${moment(endDate).format('LL')} `}
+          Если вы подтверждаете удаление, то отключение ресурса закончится на
+          всех выбранных объектах автоматически после подтверждения.
         </>
       }
     />

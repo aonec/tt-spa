@@ -18,7 +18,6 @@ import {
   deleteResourceDisconnectionService,
 } from 'services/resources/deleteResourceDisconnectionService';
 import { editResourceDisconnectionService } from 'services/resources/editResourceDisconnectionService';
-import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 

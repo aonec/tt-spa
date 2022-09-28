@@ -1,6 +1,6 @@
 import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, guard, sample, split } from 'effector';
 import _ from 'lodash/fp';
 import {
   ResourceDisconnectingCreateRequest,
@@ -8,6 +8,7 @@ import {
   StreetWithHousingStockNumbersResponse,
   EResourceDisconnectingType,
   HeatingStationWithStreetsResponse,
+  HouseManagementWithStreetsResponse,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -75,6 +76,28 @@ const getHeatingStationFx = domain.createEffect<
   HeatingStationWithStreetsResponse[]
 >();
 
+const $housingStockWithHeatingStations = domain
+  .createStore<HeatingStationWithStreetsResponse[]>([])
+  .on(getHeatingStationFx.doneData, (_, housingStocks) => housingStocks)
+  .reset(clearHousingStocks);
+
+const getHouseManagementsFx = domain.createEffect<
+  void,
+  HouseManagementWithStreetsResponse[]
+>();
+
+const $housingStockWithHouseManagements = domain
+  .createStore<HouseManagementWithStreetsResponse[]>([])
+  .on(getHouseManagementsFx.doneData, (_, housingStocks) => housingStocks)
+  .reset(clearHousingStocks);
+
+const $isHousingStocksLoading = combine(
+  getHouseManagementsFx.pending,
+  getHeatingStationFx.pending,
+  getExistingHousingStocksFx.pending,
+  (...isLoading) => isLoading.includes(true)
+);
+
 const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingCreateRequest,
@@ -112,6 +135,21 @@ forward({
   to: getExistingHousingStocksFx,
 });
 
+split({
+  source: $typeOfAddress,
+  match: {
+    [EAddressDetails.All]: (type) => type === EAddressDetails.All,
+    [EAddressDetails.HeatingStation]: (type) =>
+      type === EAddressDetails.HeatingStation,
+    [EAddressDetails.HouseManagements]: (type) =>
+      type === EAddressDetails.HouseManagements,
+  },
+  cases: {
+    [EAddressDetails.All]: getExistingHousingStocksFx,
+    [EAddressDetails.HeatingStation]: getHeatingStationFx,
+    [EAddressDetails.HouseManagements]: getHouseManagementsFx,
+  },
+});
 
 forward({
   from: createResourceDisconnectionFx.doneData,
@@ -136,6 +174,9 @@ export const createResourceDisconnectionService = {
     $resourceTypes,
     $disconnectingTypes,
     $existingHousingStocks,
+    $housingStockWithHeatingStations,
+    $housingStockWithHouseManagements,
     $typeOfAddress,
+    $isHousingStocksLoading,
   },
 };
