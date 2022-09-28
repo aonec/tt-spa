@@ -15,8 +15,8 @@ import { CorrectionReadingsContainer } from './correctionReadingsService';
 import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
-import { CloseDevicesContainer } from './closeDeviceService';
-import { IndividualDeviceCheckInfoContainer } from './setNextStageDeadlineService';
+import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService';
+import { CloseDevicesContainer } from './CloseDeviceService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
