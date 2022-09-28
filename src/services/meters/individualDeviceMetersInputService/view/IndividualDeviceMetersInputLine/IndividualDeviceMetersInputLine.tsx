@@ -1,16 +1,16 @@
+import React, { FC, useMemo, useState } from 'react';
+import { useEvent, useStore } from 'effector-react';
+import { message, Tooltip } from 'antd';
+import confirm from 'antd/lib/modal/confirm';
+import { useHistory, useParams } from 'react-router-dom';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
-import { message, Tooltip } from 'antd';
-import confirm from 'antd/lib/modal/confirm';
-import { useEvent, useStore } from 'effector-react';
-import { ESecuredIdentityRoleName } from 'myApi';
-import React, { FC, useMemo, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
@@ -45,7 +45,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   const managementFirmUser = useStore($currentManagingFirmUser);
 
-  const isDeviceClosed = Boolean(device.closingDate);
+  const isDeviceClosed = Boolean(device.closingDate)
 
   const isSeniorOperator = (managementFirmUser?.roles || [])
     .map((elem) => elem.key)
@@ -117,7 +117,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   );
 
   return (
-    <Wrapper>
+    <Wrapper isDeviceClosed={isDeviceClosed}>
       <SelectSwitchDeviceTypeModal
         show={isModalOpen}
         close={() => setIsModalOpen(false)}

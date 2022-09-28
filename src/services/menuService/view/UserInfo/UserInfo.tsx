@@ -21,7 +21,7 @@ export const UserInfo: FC<UserInfoProps> = ({ isLoading, currentUser }) => {
         </Tooltip>
       </UserEmailWrapper>
       <UserManagingFirmName>
-        {currentUser?.managementFirm?.name}
+        {currentUser?.organization?.name}
       </UserManagingFirmName>
     </UserInfoWrapper>
   );

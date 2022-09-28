@@ -18,6 +18,7 @@ import {
   confirmCreationNewDeviceButtonClicked,
   createIndividualDeviceFx,
   readingValueValidate,
+  SwitchIndividualDeviceGate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
@@ -51,6 +52,10 @@ export const CheckFormValuesModal = () => {
   const contractors = useStore($contractors);
 
   const device = useStore($individualDevice);
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+  );
+  const isCheck = type === 'check';
 
   const deviceIcon = DeviceIcons[fields.resource.value! || ''];
 
@@ -86,6 +91,7 @@ export const CheckFormValuesModal = () => {
       name: 'Дата ввода в эксплуатацию',
       value: getDate(fields.lastCommercialAccountingDate.value),
     },
+    { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
     {
       name: 'Дата последней поверки прибора',
       value: getDate(fields.lastCheckingDate.value),
@@ -125,14 +131,18 @@ export const CheckFormValuesModal = () => {
 
   const readings = (
     <>
+      {!isCheck && (
+        <>
+          <ReadingsInput
+            title="Закрываемый прибор"
+            readings={fields.oldDeviceReadings.value}
+            device={device!}
+          />
+          <Space />
+        </>
+      )}
       <ReadingsInput
-        title="Закрываемый прибор"
-        readings={fields.oldDeviceReadings.value}
-        device={device!}
-      />
-      <Space />
-      <ReadingsInput
-        title="Новый прибор"
+        title={isCheck ? 'Поверенный прибор' : 'Новый прибор'}
         readings={fields.newDeviceReadings.value}
         device={{
           resource: fields.resource.value!,
@@ -150,7 +160,7 @@ export const CheckFormValuesModal = () => {
       width={800}
       visible={isOpen}
       onCancel={onCancel}
-      title={<Header>Замена прибора</Header>}
+      title={<Header>{isCheck ? 'Поверка прибора' : 'Замена прибора'}</Header>}
       footer={
         <Footer>
           <ButtonTT color="white" key="back" onClick={onCancel}>
@@ -162,7 +172,13 @@ export const CheckFormValuesModal = () => {
             disabled={pending}
             onClick={confirmCreationNewDeviceButtonClicked}
           >
-            {pending ? <Loader show /> : 'Заменить прибор'}
+            {pending ? (
+              <Loader show />
+            ) : isCheck ? (
+              'Поверить прибор'
+            ) : (
+              'Заменить прибор'
+            )}
           </ButtonTT>
         </Footer>
       }

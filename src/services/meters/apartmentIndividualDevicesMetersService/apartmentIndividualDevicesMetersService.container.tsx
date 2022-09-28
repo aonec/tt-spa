@@ -18,7 +18,9 @@ const {
 export const ApartmentIndividualDevicesMetersContainer = () => {
   const { id } = useParams<{ id: string }>();
 
-  const individualDevicesList = useStore(outputs.$individualDevicesList);
+  const individualDevicesList = useStore(
+    outputs.$filteredIndividualDevicesList
+  );
   const isLoading = useStore(outputs.$isLoading);
   const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
   const closedDevicesCount = useStore(outputs.$closedDevicesCount);

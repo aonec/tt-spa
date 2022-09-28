@@ -17,13 +17,14 @@ const fetchCalculatorsFx = domain.createEffect<
   CalculatorListResponsePagedList
 >(getCalculatorsList);
 
-const fetchCalculators = domain.createEvent<CalculatorsListRequestPayload>();
+const setDevicesProfileFilter = domain.createEvent<CalculatorsListRequestPayload>();
 
 const $loading = fetchCalculatorsFx.pending;
 
-const $searchPayload = domain.createStore<CalculatorsListRequestPayload | null>(
-  null
-);
+const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
+  PageNumber: 1,
+  PageSize: 10,
+});
 
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
@@ -40,15 +41,16 @@ const $pageSize = $calculatorsPagedData.map((state) => state?.pageSize);
 
 const setPageNumber = domain.createEvent<number>();
 
-export const CalculatorsGate = createGate<CalculatorsListRequestPayload>()
+export const CalculatorsGate = createGate();
 
-forward({
-  from: CalculatorsGate.open,
-  to: fetchCalculators,
+sample({
+  source: $searchPayload,
+  clock: CalculatorsGate.open,
+  target: fetchCalculatorsFx,
 });
 
 $searchPayload
-  .on(fetchCalculators, (_, payload) => payload)
+  .on(setDevicesProfileFilter, (_, filter) => filter)
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
     PageNumber: pageNumber,
@@ -64,6 +66,11 @@ sample({
   target: fetchCalculatorsFx,
 });
 
+forward({
+  from: CalculatorsGate.close,
+  to: clearSearchPayload,
+});
+
 const $isExtendedSearchOpen = domain.createStore(false);
 
 $isExtendedSearchOpen
@@ -72,7 +79,7 @@ $isExtendedSearchOpen
 
 export const displayDevicesService = {
   inputs: {
-    fetchCalculators,
+    setDevicesProfileFilter,
     extendedSearchOpened,
     extendedSearchClosed,
     setPageNumber,
@@ -88,6 +95,6 @@ export const displayDevicesService = {
     $searchPayload,
   },
   gates: {
-    CalculatorsGate
-  }
+    CalculatorsGate,
+  },
 };

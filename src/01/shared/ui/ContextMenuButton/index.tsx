@@ -3,6 +3,7 @@ import { Menu, Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { Color as ColorType } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
 
 export interface ContextMenuElement {
   title: string;
@@ -27,8 +28,10 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
       {menuButtonsFiltered?.map((button) => {
         const { title, onClick, color } = button;
 
+        const currentColor = getButtonColor(color as ColorType);
+
         return (
-          <MenuItem key={title + color} onClick={onClick} color={color}>
+          <MenuItem key={title + color} onClick={onClick} color={currentColor}>
             {title}
           </MenuItem>
         );
@@ -68,3 +71,9 @@ export const Color = {
   primary: '#272f5ae6',
   danger: '#FC525B',
 };
+
+function getButtonColor(color?: ColorType) {
+  if (!color) return Color.primary;
+
+  return (Color as any)[color] || Color.primary;
+}

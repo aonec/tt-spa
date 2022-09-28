@@ -31,22 +31,22 @@ const $sliderIndex = domain
   .on(upSliderIndex, (index) => {
     if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
-    return ++index;
+    return index + 1;
   })
   .on(downSliderIndex, (index) => {
     if (index === 0) return index;
 
-    return --index;
+    return index - 1;
   });
 
-const $individualDevicesList = combine(
-  $individualDevicesPagedData,
+const $individualDevicesList = $individualDevicesPagedData.map(
+  (data) => data?.items || []
+);
+
+const $filteredIndividualDevicesList = combine(
+  $individualDevicesList,
   $isShowClosedIndividualDevices
-).map(([data, isShowClosed]) => {
-  const devices = data?.items;
-
-  if (!devices) return [];
-
+).map(([devices, isShowClosed]) => {
   if (isShowClosed) {
     return devices;
   }
@@ -102,6 +102,7 @@ export const apartmentIndividualDevicesMetersService = {
   },
   outputs: {
     $individualDevicesList,
+    $filteredIndividualDevicesList,
     $isLoading,
     $isShowClosedIndividualDevices,
     $closedDevicesCount,

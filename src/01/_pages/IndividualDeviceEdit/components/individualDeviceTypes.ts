@@ -97,6 +97,7 @@ export type IndividualDeviceType = {
   lastCheckingDate: string | null;
   futureCheckingDate: string | null;
   closingDate: string | null;
+  isPolling: boolean;
 };
 
 export type DeviceContextType = {

@@ -1,10 +1,10 @@
-import { ManagingFirmUserResponse } from '../../../myApi';
+import { OrganizationUserResponse } from '../../../myApi';
 
 const initialState = {};
 
 interface SetUserInterface {
   type: 'SET_USER';
-  payload: ManagingFirmUserResponse;
+  payload: OrganizationUserResponse;
 }
 
 export const setUser = (value: any): SetUserInterface => ({
@@ -15,6 +15,6 @@ export const setUser = (value: any): SetUserInterface => ({
 export default function userReducer(
   state: any = initialState,
   action: SetUserInterface
-): ManagingFirmUserResponse {
+): OrganizationUserResponse {
   return { ...state, ...action.payload };
 }

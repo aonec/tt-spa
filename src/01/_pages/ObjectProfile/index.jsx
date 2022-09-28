@@ -134,7 +134,7 @@ export const ObjectProfile = () => {
       },
     },
     {
-      title: 'ОДПУ',
+      title: 'Системы учета ресурсов',
       key: 'devices',
       cb: () => {
         push(`${path}/devices`);
@@ -165,18 +165,18 @@ export const ObjectProfile = () => {
               </div>
             </Route>
 
-          <Route path="/objects/(\\d+)/apartments" exact>
-            <Apartments
-              path="/objects/(\\d+)/apartments"
-              onClick={(id) =>
-                push(`/objects/${housingStockId}/apartments/${id}`)
-              }
-              apartmentId={apartmentId}
-              setApartmentId={setApartmentId}
-              loading={isApartmentsLoading}
-              items={apartments}
-            />
-          </Route>
+            <Route path="/objects/(\\d+)/apartments" exact>
+              <Apartments
+                path="/objects/(\\d+)/apartments"
+                onClick={(id) =>
+                  push(`/objects/${housingStockId}/apartments/${id}`)
+                }
+                apartmentId={apartmentId}
+                setApartmentId={setApartmentId}
+                loading={isApartmentsLoading}
+                items={apartments}
+              />
+            </Route>
 
             <Route path="/objects/(\\d+)/devices" exact>
               <Devices nodes={nodes} />

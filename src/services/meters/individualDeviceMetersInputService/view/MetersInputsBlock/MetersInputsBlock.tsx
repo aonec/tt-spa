@@ -71,7 +71,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
   const dataString = isPrevious ? 'previuos' : 'current';
 
-  const nextInput = useSwitchInputOnEnter(dataString, !isPrevious);
+  const nextInput = useSwitchInputOnEnter(dataString, !isPrevious && inputIndex === 0);
 
   const handleReadingInputFocus = (e?: FocusEvent<HTMLInputElement>) => {
     e?.target?.select();
@@ -103,19 +103,8 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     };
   }, [reading]);
 
-  const handleEnterInput = useCallback(
-    (index: number) => {
-      const next = () => nextInput(inputIndex + index);
-
-      const initialReadingValues = getBufferedValuesFromReading(reading);
-
-      const isValuesChanged = Object.values(bufferedReadingValues).some(
-        (value, index) =>
-          value !== initialReadingValues[getBufferedValuesValueKey(index)]
-      );
-
-      if (index + 1 < rateNum || !isValuesChanged) return next();
-
+  const uploadReading = useCallback(
+    async (next: () => void) => {
       const readingValues = getReadingLite(bufferedReadingValues, rateNum);
 
       const readingPayload: MeterInputUploadReadingPayload = {
@@ -128,8 +117,30 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
       };
 
       handleUploadReading(readingPayload, isPrevious, setFailed)
-        .then(next)
+        .then(() => next())
         .catch(() => setStatus(MetersInputBlockStatus.Failed));
+    },
+    [bufferedReadingValues, rateNum, sliderIndex, handleUploadReading, reading]
+  );
+
+  const handleTriggerInput = useCallback(
+    (index: number) => {
+      const next = () => {
+        nextInput(inputIndex + index);
+      };
+
+      const initialReadingValues = getBufferedValuesFromReading(reading);
+
+      const isValuesChanged = Object.values(bufferedReadingValues).some(
+        (value, index) =>
+          value !== initialReadingValues[getBufferedValuesValueKey(index)]
+      );
+
+      const isLastIndex = rateNum === index + 1;
+
+      if (!isValuesChanged || !isLastIndex) return next();
+
+      uploadReading(next);
     },
     [nextInput, handleUploadReading]
   );
@@ -147,7 +158,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
               type="number"
               status={status}
               disabled={isDisabled}
-              onKeyDown={fromEnter(() => handleEnterInput(index))}
+              onKeyDown={fromEnter(() => handleTriggerInput(index))}
               value={readingValue}
               name={valueKey}
               placeholder={`T${index + 1}`}

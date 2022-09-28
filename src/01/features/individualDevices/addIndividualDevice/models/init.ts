@@ -1,10 +1,6 @@
-import {
-  CreateIndividualDeviceRequest,
-} from './../../../../../myApi';
+import { CreateIndividualDeviceRequest } from './../../../../../myApi';
 import { FileData } from '01/hooks/useFilesUpload';
-import {
-  createIndividualDevice,
-} from '01/_api/individualDevices';
+import { createIndividualDevice } from '01/_api/individualDevices';
 import { forward, sample } from 'effector';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
@@ -55,11 +51,11 @@ sample({
     (values): CreateIndividualDeviceRequest => ({
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate)
-        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
+        .utcOffset(0, true)
+        .toISOString(),
       futureCheckingDate: moment(values.futureCheckingDate)
-        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(true),
+        .utcOffset(0, true)
+        .toISOString(),
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
       apartmentId: values.apartmentId!,
@@ -67,6 +63,7 @@ sample({
       rateType: values.rateType,
       resource: values.resource!,
       model: values.model,
+      isPolling: values.isPolling,
       documentsIds: toArray<FileData>(values.documentsIds, false)
         .filter((elem) => elem?.fileResponse)
         .map((elem) => elem.fileResponse?.id!),

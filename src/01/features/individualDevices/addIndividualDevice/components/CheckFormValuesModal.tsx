@@ -84,6 +84,7 @@ export const CheckFormValuesModal = () => {
         deviceIcon?.color
       ),
     },
+    { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
     {
       name: 'Дата ввода в эксплуатацию',
       value: getDate(fields.lastCommercialAccountingDate.value),

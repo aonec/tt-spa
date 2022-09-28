@@ -4,14 +4,15 @@ import {
   IndividualDeviceReadingsResponse,
 } from 'myApi';
 import { ConsumptionRatesDictionary } from '../managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import { MetersInputBlockStatus } from './view/MetersInputsBlock/MetersInputsBlock.types';
 
 export type IndividualDeviceMetersInputContainerProps = {
   device: IndividualDeviceListItemResponse;
+  devices: IndividualDeviceListItemResponse[];
   sliderIndex: number;
   openReadingsHistoryModal: (deviceId: number) => void;
   deviceIndex: number;
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
+  isHousingStocksReadingInputs?: boolean;
 };
 
 export type PreparedReadingsData = {

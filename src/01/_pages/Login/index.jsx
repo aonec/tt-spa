@@ -65,7 +65,7 @@ export const Login = () => {
     setLoading(true);
     try {
       await axios.post('auth/login', { email, password });
-      const res = await axios.get('ManagingFirmUsers/current');
+      const res = await axios.get('OrganizationUsers/current');
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       replace(
         res.roles.some((elem) => elem.type === 'ManagingFirmOperator')

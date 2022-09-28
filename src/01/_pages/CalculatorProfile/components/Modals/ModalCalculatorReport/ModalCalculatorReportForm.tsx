@@ -16,7 +16,11 @@ import {
   StyledModalBody,
 } from '../../../../../tt-components';
 import { getReport } from './apiCalculatorReport';
-import { CalculatorResponse, EReportType } from '../../../../../../myApi';
+import {
+  CalculatorResponse,
+  EReportFormat,
+  EReportType,
+} from '../../../../../../myApi';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ModalCalculatorReportFormT } from './ModalCalculatorReport.types';
@@ -33,7 +37,7 @@ const ModalCalculatorReportForm = ({
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
   const { model, serialNumber, address, nodes } = device;
-  const { number, street } = address || {};
+  const { number, street } = address?.address?.mainAddress || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
@@ -94,10 +98,10 @@ const ModalCalculatorReportForm = ({
     }),
     onSubmit: async () => {
       const { nodeId, detail } = values;
-      const begin = values.begin.toISOString(true);
-      const end = values.end.endOf('day').toISOString(true);
+      const begin = values.begin.startOf('day').format('YYYY-MM-DD HH:mm:ss');
+      const end = values.end.endOf('day').format('YYYY-MM-DD HH:mm:ss');
 
-      const shortLink = `Reports/${withNs ? `ReportWithNs` : 'Report'}`;
+      const shortLink = `Reports/Report`;
       if (!nodeId) {
         return null;
       }
@@ -106,6 +110,7 @@ const ModalCalculatorReportForm = ({
         ReportType: detail as EReportType,
         From: begin,
         To: end,
+        ReportFormat: withNs ? EReportFormat.Rso : EReportFormat.Consumption,
       };
 
       getReport(shortLink, params).then((response: any) => {

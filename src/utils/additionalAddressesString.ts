@@ -33,11 +33,17 @@ export const additionalAddressesString = (
   return additionalAddresses
     .map((elem, i) => {
       if (i === 0) {
-        return `${address?.city}, ${`ул. ${address?.street}`}, ${
-          address?.number
-        }${address?.corpus ? `, к.${address?.corpus}` : ''}, ${elem?.street}, ${
-          elem.number
-        }${elem.corpus ? `, к.${elem.corpus}` : ''}`;
+        return `${address?.address?.mainAddress?.city} ${String.fromCharCode(
+          8226
+        )} ${`ул. ${address?.address?.mainAddress?.street}`}, ${
+          address?.address?.mainAddress?.number
+        }${
+          address?.address?.mainAddress?.corpus
+            ? `, к.${address?.address?.mainAddress?.corpus}`
+            : ''
+        }, ${elem?.street}, ${elem.number}${
+          elem.corpus ? `, к.${elem.corpus}` : ''
+        }`;
       } else {
         return `${elem.street}, ${elem.number}`;
       }

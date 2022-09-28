@@ -17,6 +17,7 @@ import {
 } from 'myApi';
 import { message } from 'antd';
 import moment from 'moment';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('individualDeviceMetersInputService');
 
@@ -28,7 +29,8 @@ const $uploadingMetersStatuses = domain.createStore<{
 
 const uploadMeterFx = domain.createEffect<
   UploadMeterPayload,
-  IndividualDeviceReadingsResponse
+  IndividualDeviceReadingsResponse,
+  EffectFailDataAxiosError
 >(({ meter }) => uploadReading(meter));
 
 const deleteMeterFx = domain.createEffect<DeleteMeterPayload, void>(
@@ -51,6 +53,10 @@ forward({
   from: deleteMeter,
   to: deleteMeterFx,
 });
+
+uploadMeterFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
 
 $uploadingMetersStatuses
   .on(uploadMeter, (state, { meter: { deviceId }, sliderIndex }) => ({
@@ -153,6 +159,8 @@ export const individualDeviceMetersInputService = {
     openConfirmReadingModal,
     uploadMeter,
     deleteMeter,
+    uploadMeterFx,
+    deleteMeterFx,
   },
   outputs: {
     $uploadingMetersStatuses,

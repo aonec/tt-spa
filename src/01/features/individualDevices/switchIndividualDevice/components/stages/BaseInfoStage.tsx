@@ -6,11 +6,11 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select } from 'antd';
+import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -41,6 +41,7 @@ import {
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
+import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,6 +70,27 @@ export const BaseInfoStage = () => {
 
   const modelNameDebounced = fields.model.value;
 
+  const titleOfInput = useMemo(() => {
+    if (isSwitch) {
+      return 'Заменяемый прибор';
+    }
+    if (isCheck) {
+      return 'Прибор до поверки';
+    }
+    if (isReopen) {
+      return 'Прибор до переоткрытия';
+    }
+    return '';
+  }, [isSwitch, isCheck, isReopen]);
+
+  useEffect(() => {
+    if (isCheck) {
+      const oldDeviceReadings = fields.oldDeviceReadings.value;
+
+      fields.newDeviceReadings.onChange(oldDeviceReadings);
+    }
+  }, [isCheck, fields.oldDeviceReadings.value]);
+
   const bottomDateFields = (
     <FormWrap>
       <FormItem label="Дата последней поверки прибора">
@@ -77,7 +99,9 @@ export const BaseInfoStage = () => {
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
-            fields.lastCheckingDate.onChange(incomingValue);
+            fields.lastCheckingDate.onChange(
+              value.utcOffset(0, true).toISOString()
+            );
 
             const nextCheckingDate = moment(value);
 
@@ -90,7 +114,7 @@ export const BaseInfoStage = () => {
             nextCheckingDate.set('year', nextYear);
 
             fields.futureCheckingDate.onChange(
-              nextCheckingDate.toISOString(true)
+              nextCheckingDate.utcOffset(0, true).toISOString()
             );
           }}
           value={fields.lastCheckingDate.value}
@@ -104,7 +128,11 @@ export const BaseInfoStage = () => {
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
           disabled={isReopen}
-          onChange={fields.futureCheckingDate.onChange}
+          onChange={(date) =>
+            fields.futureCheckingDate.onChange(
+              moment(date).utcOffset(0, true).toISOString()
+            )
+          }
           value={fields.futureCheckingDate.value}
         />
         <ErrorMessage>
@@ -286,6 +314,14 @@ export const BaseInfoStage = () => {
         <>
           {rateTypeSelector}
           {selectSwitchReason}
+
+          <SwitchWrapper>
+            <Switch
+              checked={fields.isPolling.value}
+              onChange={fields.isPolling.onChange}
+            />
+            <TextWrapper>Дистанционное снятие показаний</TextWrapper>
+          </SwitchWrapper>
         </>
       )}
     </FormWrap>
@@ -336,21 +372,17 @@ export const BaseInfoStage = () => {
 
   const readingInputs = device && (
     <div style={{ margin: '10px 0' }}>
-      <ReadingsInput
-        title={
-          isSwitch
-            ? 'Заменяемый прибор'
-            : isCheck
-            ? 'Прибор до поверки'
-            : isReopen
-            ? 'Прибор до переоткрытия'
-            : ''
-        }
-        readings={fields.oldDeviceReadings.value}
-        onChange={fields.oldDeviceReadings.onChange}
-        device={device}
-      />
-      <Space />
+      {!isCheck && (
+        <>
+          <ReadingsInput
+            title={titleOfInput}
+            readings={fields.oldDeviceReadings.value}
+            onChange={fields.oldDeviceReadings.onChange}
+            device={device}
+          />
+          <Space />
+        </>
+      )}
       <ReadingsInput
         title={
           isSwitch

@@ -8,4 +8,11 @@ export type DocumentsUploadContainerProps = {
   uniqId: string;
   max?: number;
   type?: EDocumentType;
+  lable?: string;
+  componentType?: DocumentsUploadComponentType;
 };
+
+export enum DocumentsUploadComponentType {
+  DragAndDrop = 'DragAndDrop',
+  Line = 'Line',
+}
