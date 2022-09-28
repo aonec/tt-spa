@@ -14,12 +14,7 @@ import { EffectFailDataAxiosError } from 'types';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
-import {
-  fetchCreateResourceDisconnection,
-  fetchExistingHousingStocks,
-  fetchExistingHousingStocksWithHeatingStation,
-  fetchExistingHousingStocksWithHouseManagement,
-} from './createResourceDisconnectionService.api';
+import { fetchCreateResourceDisconnection } from './createResourceDisconnectionService.api';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
@@ -66,7 +61,7 @@ const $typeOfAddress = domain
 const getExistingHousingStocksFx = domain.createEffect<
   void,
   StreetWithHousingStockNumbersResponsePagedList
->(fetchExistingHousingStocks);
+>();
 
 const $existingHousingStocks = domain
   .createStore<StreetWithHousingStockNumbersResponse[]>([])
@@ -79,7 +74,7 @@ const $existingHousingStocks = domain
 const getHeatingStationFx = domain.createEffect<
   void,
   HeatingStationWithStreetsResponse[]
->(fetchExistingHousingStocksWithHeatingStation);
+>();
 
 const $housingStockWithHeatingStations = domain
   .createStore<HeatingStationWithStreetsResponse[]>([])
@@ -89,7 +84,7 @@ const $housingStockWithHeatingStations = domain
 const getHouseManagementsFx = domain.createEffect<
   void,
   HouseManagementWithStreetsResponse[]
->(fetchExistingHousingStocksWithHouseManagement);
+>();
 
 const $housingStockWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])

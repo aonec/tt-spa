@@ -20,27 +20,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
 
-  const menuButtons = useMemo(() => {
-    if (adminSettings) {
-      return [
-        {
-          title: 'Создать отключение ресурса',
-          onClick:
-            chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
-        },
-      ];
-    }
-    return [
-      {
-        title: 'Сбросить все адреса',
-        onClick: inspectorAddressesResetService.inputs.openModal,
-      },
-      {
-        title: 'Переназначить сотрудника',
-        onClick: handleReassingInspector,
-      },
-    ];
-  }, [adminSettings]);
+  const menuButtons = useMemo(() => [], []);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {
