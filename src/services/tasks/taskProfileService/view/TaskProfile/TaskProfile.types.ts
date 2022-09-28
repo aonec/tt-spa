@@ -8,7 +8,7 @@ export type TaskProfileProps = {
   handleAddComment: () => void;
   handleSetComment: (comment: string) => void;
   commentText: string;
-  handleDeleteDocument: (id: number) => void;
+  handleDeleteDocument: () => void;
   relatedPipeNode: PipeNodeResponse | null;
   isViewerExecutor: boolean;
   documents: DocumentResponse[];
@@ -19,4 +19,7 @@ export type TaskProfileProps = {
   isPushStageLoading: boolean;
   handleRevertStage: () => void;
   isRevertStageLoading: boolean;
+  deleteDocumentModalIsOpen: boolean;
+  openDeleteDocumentModal: (id: number) => void;
+  closeDeleteDocumentModal: () => void;
 };

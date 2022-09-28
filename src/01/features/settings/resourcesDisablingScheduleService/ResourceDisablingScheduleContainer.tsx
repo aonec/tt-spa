@@ -9,6 +9,16 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { ResourceDisablingScheduleModal } from './ResourcesDisablingScheduleServiceModal/ResourceDisablingScheduleModal';
+import {
+  CompleteResourceDisconnectionContainer,
+  completeResourceDisconnectionService,
+} from 'services/resources/completeResourceDisconnectionService';
+import {
+  DeleteResourceDisconnectionContainer,
+  deleteResourceDisconnectionService,
+} from 'services/resources/deleteResourceDisconnectionService';
+import { editResourceDisconnectionService } from 'services/resources/editResourceDisconnectionService';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 
@@ -19,17 +29,30 @@ export const ResourceDisablingScheduleContainer = () => {
   const loading = useStore(outputs.$loading);
   const cities = useStore($existingCities);
   const filters = useStore(outputs.$filters);
+  const isModalOpen = useStore(outputs.$isAddressesModalOpen);
 
   const applyFilters = useEvent(inputs.applyFilters);
   const setPage = useEvent(inputs.setPage);
-  const isModalOpen = useStore(outputs.$isAddressesModalOpen);
   const openModal = useEvent(inputs.openAddressesModal);
   const closeModal = useEvent(inputs.closeAddressesModal);
+  const openCompleteDisconnectionModal = useEvent(
+    completeResourceDisconnectionService.inputs.openModal
+  );
+  const openDeleteDisconnectionModal = useEvent(
+    deleteResourceDisconnectionService.inputs.openModal
+  );
+  const openEditDisconnectionModal = useEvent(
+    editResourceDisconnectionService.inputs.openEditModal
+  );
 
   return (
     <DisablingResourceWrapperContainer>
       <ExistingCitiesGate />
       <DisablingResouresGate />
+      <CompleteResourceDisconnectionContainer />
+      <DeleteResourceDisconnectionContainer />
+      <CreateResourceDisconnectionContainer />
+
       <ResourceDisablingScheduleModal
         isModalOpen={isModalOpen}
         openModal={() => openModal()}
@@ -45,6 +68,9 @@ export const ResourceDisablingScheduleContainer = () => {
         loading={loading}
         setPage={setPage}
         openModal={() => openModal()}
+        handleOpenCompleteDisconnectionModal={openCompleteDisconnectionModal}
+        handleOpenDeleteDisconnectionModal={openDeleteDisconnectionModal}
+        handleOpenEditDisconnectionModal={openEditDisconnectionModal}
       />
     </DisablingResourceWrapperContainer>
   );

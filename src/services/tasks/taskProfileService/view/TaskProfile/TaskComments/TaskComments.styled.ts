@@ -4,6 +4,9 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   margin-top: 24px;
   width: 100%;
+  &:first-child {
+    margin-top: 0px;
+  }
 `;
 
 export const TitleWrapper = styled.div`

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import _ from 'lodash/fp';
 import {
   HeatingStationResponse,
@@ -7,8 +7,10 @@ import {
   HeatingStationResponsePagedList,
   StreetWithHousingStockNumbersResponsePagedList,
   StreetWithHousingStockNumbersResponse,
+  EResourceDisconnectingType,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
+import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
 import {
   fetchCreateResourceDisconnection,
@@ -23,14 +25,38 @@ const $isModalOpen = domain.createStore(false);
 const $selectedCity = domain.createStore('');
 const $selectedHeatingStation = domain.createStore('');
 
+const setIsInterHeatingSeason = domain.createEvent();
+const $isInterHeatingSeason = domain
+  .createStore(false)
+  .on(
+    setIsInterHeatingSeason,
+    (_, isInterHeatingSeason) => isInterHeatingSeason
+  );
+
 const $cities = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.cities || []
 );
 const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.resourceTypes || []
 );
-const $disconnectingTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
-  (store) => store?.disconnectingTypes || []
+const $disconnectingTypes = combine(
+  $isInterHeatingSeason,
+  resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters,
+  (isInterHeatingSeason, filter) => {
+    const types = filter?.disconnectingTypes;
+
+    if (!types) {
+      return [];
+    }
+    if (isInterHeatingSeason) {
+      return types.filter(
+        (type) => type.key === EResourceDisconnectingType.InterHeatingSeason
+      );
+    }
+    return types.filter(
+      (type) => type.key !== EResourceDisconnectingType.InterHeatingSeason
+    );
+  }
 );
 
 const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
@@ -84,6 +110,27 @@ $existingHousingStocks.on(
   (_, housingStocks) => housingStocks.items || []
 );
 
+sample({
+  clock: guard({
+    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
+    filter: Boolean,
+  }),
+  fn: (disconnection) => {
+    const disconnectingType = disconnection.disconnectingType;
+    const isInterHeatingSeason =
+      disconnectingType?.value ===
+      EResourceDisconnectingType.InterHeatingSeason;
+
+    return isInterHeatingSeason;
+  },
+  target: setIsInterHeatingSeason,
+});
+
+forward({
+  from: editResourceDisconnectionService.inputs.openEditModal,
+  to: openModal,
+});
+
 forward({
   from: $selectedCity,
   to: getExistingHosuingStocksFx,
@@ -120,6 +167,7 @@ export const createResourceDisconnectionService = {
     createResourceDisconnection,
     selectCity,
     selectHeatingStation,
+    setIsInterHeatingSeason,
   },
   outputs: {
     $isModalOpen,
@@ -130,5 +178,6 @@ export const createResourceDisconnectionService = {
     $cities,
     $resourceTypes,
     $disconnectingTypes,
+    $isInterHeatingSeason,
   },
 };

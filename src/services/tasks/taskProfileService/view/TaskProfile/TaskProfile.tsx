@@ -3,6 +3,7 @@ import {
   createTimeline,
   createTimer,
 } from 'services/tasks/tasksProfileService/tasksProfileService.utils';
+import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
@@ -31,7 +32,10 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   pushStage,
   handleRevertStage,
   isRevertStageLoading,
-  handleChangePushStagePayload
+  handleChangePushStagePayload,
+  closeDeleteDocumentModal,
+  deleteDocumentModalIsOpen,
+  openDeleteDocumentModal,
 }) => {
   const {
     closingStatus,
@@ -64,6 +68,13 @@ export const TaskProfile: FC<TaskProfileProps> = ({
       <GoBack />
       {name && (
         <>
+          <Dialog
+            isOpen={deleteDocumentModalIsOpen}
+            onCancel={closeDeleteDocumentModal}
+            onSubmit={() => handleDeleteDocument()}
+            type="danger"
+            title="Вы уверены, что хотите удалить документ?"
+          />
           <TaskProfileHeader
             name={name}
             devices={individualDevices || []}
@@ -71,6 +82,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             nodeDevice={device}
             timer={timer}
             taskName={taskName || ''}
+            pipeNode={pipeNode}
           />
           {task.type && isViewerExecutor && (
             <TaskActionsPanel
@@ -85,7 +97,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
             <TaskInfoWrapper>
               <TaskDocumentsList
                 documents={documents || []}
-                handleDeleteDocument={handleDeleteDocument}
+                openDeleteDocumentModal={openDeleteDocumentModal}
               />
               <TaskComments
                 comments={comments || []}
@@ -107,7 +119,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               {relatedPipeNode && (
                 <TaskPipeNodeInfo pipeNode={relatedPipeNode} />
               )}
-              {pipeNode && <TaskPipeNodeInfo pipeNode={pipeNode} />}
             </TaskInfoWrapper>
             <TaskStages
               handleRevertStage={handleRevertStage}
