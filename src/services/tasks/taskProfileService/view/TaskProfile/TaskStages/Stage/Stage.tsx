@@ -1,9 +1,7 @@
 import { useStore } from 'effector-react';
-import moment from 'moment';
 import { EStageStatus, EStageType } from 'myApi';
 import React, { FC, useMemo } from 'react';
 import { currentUserService } from 'services/currentUserService';
-import { MapIconSC } from 'services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.styled';
 import { Button } from 'ui-kit/Button';
 import { ChoiceIcon, FinishIcon, OkIcon } from 'ui-kit/icons';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';

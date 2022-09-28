@@ -4247,7 +4247,7 @@ export interface StagePushRequest {
 
   /** @format date-time */
   apartmentCheckDate?: string | null;
-  taskConfirmation?: TaskConfirmationRequestModel | null;
+  taskConfirmation?: TaskConfirmationRequest | null;
 }
 
 export interface StageResponse {
@@ -4712,13 +4712,13 @@ export interface TaskCommentResponseSuccessApiResponse {
   successResponse: TaskCommentResponse | null;
 }
 
-export interface TaskConfirmationRequestModel {
+export interface TaskConfirmationRequest {
   type?: string | null;
   comment?: string | null;
 }
 
 export interface TaskConfirmationResponse {
-  confirmation: ETaskConfirmationType;
+  type: ETaskConfirmationType;
   description: string | null;
   comment: string | null;
 }
