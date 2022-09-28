@@ -14,8 +14,8 @@ import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
 import { CompletionStageContainer } from './completionStageService';
 import { IndividualDeviceCheckInfoContainer } from './infoComponents/SetNextStageDeadlineService';
-import { SetNextStageDeadlineContainer } from './setNextStageDeadlineService';
-import { CloseDevicesContainer } from './closeDeviceService';
+import { SetNextStageDeadlineContainer } from './SetNextStageDeadlineService';
+import { CloseDevicesContainer } from './CloseDeviceService';
 import { CommentContainer } from './commentService';
 import { AttachDocumentContainer } from './attachDocumentService';
 

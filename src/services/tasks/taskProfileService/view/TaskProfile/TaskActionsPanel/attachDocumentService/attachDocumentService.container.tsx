@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
+import { documentComponentDataDictionary } from './attachDocumentService.constants';
 import { AttachDocument } from './view/AttachDocument';
-import { documentComponentDataDictionary } from './view/AttachDocument/AttachDocument.constants';
 
 export const AttachDocumentContainer: FC<ActionComponentProps> = ({
   handleChange,
