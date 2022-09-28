@@ -14,8 +14,8 @@ export const Wrapper = styled.div<{ isDeviceClosed: boolean }>`
 export const DeviceOptionsWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
 
-export const DeviceOption = styled.div`
-  margin-left: 15px;
+  .device-option {
+    margin-left: 15px;
+  }
 `;

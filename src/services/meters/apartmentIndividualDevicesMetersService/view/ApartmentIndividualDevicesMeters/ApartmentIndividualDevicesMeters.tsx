@@ -1,18 +1,13 @@
+import { Checkbox, Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
-import { Skeleton } from 'antd';
-import { ChevronIcon } from 'ui-kit/icons';
 import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
-import { PREVIOUS_READING_INDEX_LIMIT } from '../../apartmentIndividualDevicesMetersService.constants';
+import { ChevronIcon } from 'ui-kit/icons';
+import { previousReadingIndexLimit } from '../../apartmentIndividualDevicesMetersService.constants';
 import { getReadingsMonthByShift } from '../../apartmentIndividualDevicesMetersService.utils';
 import {
   ArrowContainer,
-  CurrentReading,
-  DeviceInfo,
-  DeviceShowClosedDevicesCheckbox,
   Header,
-  HeaderBlock,
   MonthSliderWrapper,
-  RightChevron,
 } from './ApartmentIndividualDevicesMeters.styled';
 import { ApartmentIndividualDevicesMetersProps } from './ApartmentIndividualDevicesMeters.types';
 
@@ -32,35 +27,41 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
     ? `(${closedDevicesCount})`
     : '';
 
-  const prevReadingMonth = getReadingsMonthByShift(sliderIndex);
-  const currentReadingMonth = getReadingsMonthByShift(-1);
+  const prevReadingMonth = useMemo(
+    (): string => getReadingsMonthByShift(sliderIndex),
+    [sliderIndex]
+  );
+  const currentReadingMonth = useMemo(() => getReadingsMonthByShift(-1), []);
 
-  const isCanUp = sliderIndex < PREVIOUS_READING_INDEX_LIMIT;
-  const isCanDown = sliderIndex > 0;
+  const isCanUp = useMemo(() => sliderIndex < previousReadingIndexLimit, [
+    sliderIndex,
+  ]);
+  const isCanDown = useMemo(() => sliderIndex > 0, [sliderIndex]);
 
   return (
     <div>
       <Header>
-        <HeaderBlock>
-          <DeviceInfo>Информация о приборе</DeviceInfo>
-          <DeviceShowClosedDevicesCheckbox
+        <div className="header-block">
+          <div className="device-info">Информация о приборе</div>
+          <Checkbox
             checked={isShowClosedDevices}
             onChange={(e) => setIsShowClosedDevices(e.target.checked)}
             disabled={!closedDevicesCount}
+            className="device-show-closed-devices-checkbox"
           >
             Показать закрытые {closedDevicesCountString}
-          </DeviceShowClosedDevicesCheckbox>
-        </HeaderBlock>
+          </Checkbox>
+        </div>
         <MonthSliderWrapper>
           <ArrowContainer onClick={upSliderIndex} isDisabled={!isCanUp}>
             <ChevronIcon />
           </ArrowContainer>
           <div>{prevReadingMonth}</div>
           <ArrowContainer onClick={downSliderIndex} isDisabled={!isCanDown}>
-            <RightChevron />
+            <ChevronIcon className="right-chevron" />
           </ArrowContainer>
         </MonthSliderWrapper>
-        <CurrentReading>{currentReadingMonth}</CurrentReading>
+        <div className="current-reading">{currentReadingMonth}</div>
       </Header>
       {isLoading && <Skeleton active />}
       {!isLoading &&
