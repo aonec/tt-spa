@@ -4,12 +4,8 @@ import { useAppDispatch } from '01/Redux/store';
 import { useEvent } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
-import {
-  CreateResourceDisconnectionContainer,
-  createResourceDisconnectionService,
-} from 'services/resources/createResourceDisconnectionService';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { SearchType } from './objectsProfileService.types';
 import { ObjectsProfile } from './view/ObjectsProfile';
 
@@ -32,7 +28,6 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
-      <ChooseTypeOfResourceDisconnectionModalContainer />
       <CreateResourceDisconnectionContainer />
       <GroupReport />
       <ObjectsProfile
