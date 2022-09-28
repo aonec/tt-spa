@@ -66,7 +66,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
       <label htmlFor={id} style={{ margin: 0, width: 'min-content' }}>
         <Button
           disabled={isLoading || isMaxDocuments}
-          type="white"
+          type="ghost"
           icon={<UploadIcon />}
         >
           {lable}
