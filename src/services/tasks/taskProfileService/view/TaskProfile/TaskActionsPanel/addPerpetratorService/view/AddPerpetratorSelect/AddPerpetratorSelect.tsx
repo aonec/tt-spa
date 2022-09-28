@@ -15,7 +15,9 @@ export const AddPerpetratorSelect: FC<AddPerpetratorSelectProps> = ({
   }, [perpetratorId]);
 
   const handleChange = useCallback(
-    (value: SelectValue) => setPerpetratorId((value as number | null) || null),
+    (value: SelectValue) => {
+      if (typeof value === 'number') setPerpetratorId(value);
+    },
     [setPerpetratorId]
   );
 

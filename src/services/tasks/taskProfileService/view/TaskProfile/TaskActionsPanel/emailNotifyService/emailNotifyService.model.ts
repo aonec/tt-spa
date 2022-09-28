@@ -24,9 +24,11 @@ guard({
   target: fetchContractorsFx,
 });
 
+const $contractorsList = $contractors.map((contractors) => contractors || []);
+
 export const emailNotifyService = {
   outputs: {
-    $contractors: $contractors.map((contractors) => contractors || []),
+    $contractors: $contractorsList,
   },
   gates: { ContractorsGate },
 };

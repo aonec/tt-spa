@@ -11,12 +11,10 @@ import {
   TaskActionsComponent,
   TaskActionsPanelProps,
 } from './TaskActionsPanel.types';
-import {
-  useTaskPanelActions,
-  useTaskPanelInfoActions,
-} from './TaskActionsPanel.hook';
-import { Button } from 'ui-kit/Button';
 import { Skeleton } from 'antd';
+import { useTaskPanelActions } from './TaskActionsPanel.hook';
+import { Button } from 'ui-kit/Button';
+import { taskActionInfoComponents } from './TaskActionsPanel.constants';
 
 export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   actions,
@@ -35,7 +33,9 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
     <Component handleChange={handleChangePushStagePayload} type={type} />
   );
 
-  const actionInfoComponents = useTaskPanelInfoActions(taskType, actions);
+  const actionInfoComponents = taskActionInfoComponents.filter(
+    (elem) => elem.taskType === taskType && actions.includes(elem.action)
+  );
 
   return (
     <Wrapper>

@@ -6,30 +6,9 @@ export const DisablingResourceWrapperContainer = styled.div`
 
 export const TimeElement = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: row;
   color: #272f5a;
-`;
-
-export const StyledTextElement = styled.div`
-  display: flex;
-  align-items: center;
-  color: #272f5a;
-
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-export const SenderWrapper = styled(StyledTextElement)`
-  max-width: 110px;
-`;
-
-export const StyledLinkTypeElement = styled(StyledTextElement)`
-  text-decoration: underline;
-  cursor: pointer;
-  &:hover {
-    color: #189ee9;
-  }
 `;
 
 export const StyledFontLarge = styled.span`

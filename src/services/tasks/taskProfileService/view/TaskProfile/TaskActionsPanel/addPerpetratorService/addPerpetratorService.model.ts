@@ -10,7 +10,7 @@ import { getOrganizationUsers } from './addPerpetratorService.api';
 const domain = createDomain('addPerpetratorService');
 
 const fetchOrganizationUsersFx = domain.createEffect<
-  string[] | undefined,
+  string[] | null,
   OrganizationUserListResponsePagedList
 >(getOrganizationUsers);
 
@@ -29,17 +29,17 @@ sample({
     filter: ([users, task]) => !users && Boolean(task),
   }),
   fn: (task) => {
-    if (!task) return;
+    if (!task) return null;
 
     const potentialNextStageId = task.currentStage?.potentialNextStageIds?.[0];
 
-    if (!potentialNextStageId) return;
+    if (!potentialNextStageId) return null;
 
     const nextStage = task.stages?.find(
       (elem) => elem.id === potentialNextStageId
     );
 
-    if (!nextStage) return;
+    if (!nextStage) return null;
 
     return nextStage.requiredUserRoles;
   },

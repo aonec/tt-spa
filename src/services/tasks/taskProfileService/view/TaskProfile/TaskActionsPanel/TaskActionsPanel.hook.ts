@@ -37,11 +37,3 @@ export function useTaskPanelActions(actions: EStageActionType[]) {
   return componentsGroups;
 }
 
-export function useTaskPanelInfoActions(
-  taskType: EManagingFirmTaskType,
-  actionTypes: EStageActionType[]
-) {
-  return taskActionInfoComponents.filter(
-    (elem) => elem.taskType === taskType && actionTypes.includes(elem.action)
-  );
-}

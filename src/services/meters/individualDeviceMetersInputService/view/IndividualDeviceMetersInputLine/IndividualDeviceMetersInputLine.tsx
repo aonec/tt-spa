@@ -92,13 +92,13 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       {
         title: 'Закрытие прибора',
         hidden: isDeviceClosed,
-        color: Color.red,
+        color: Color.danger,
         onClick: () => closingIndividualDeviceButtonClicked(device),
       },
       {
         title: 'Удалить прибор',
         hidden: !isSeniorOperator,
-        color: Color.red,
+        color: Color.danger,
         onClick: () => onDeleteIndividualDevice(device),
       },
     ],

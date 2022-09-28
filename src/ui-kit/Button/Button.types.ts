@@ -7,6 +7,6 @@ export type ButtonProps = {
   size?: ButtonSizeType;
 } & HTMLAttributes<HTMLElement>;
 
-export type ButtonStyleType = 'default' | 'white' | 'danger';
-
 export type ButtonSizeType = 'middle' | 'small';
+
+export type ButtonStyleType = 'default' | 'ghost' | 'danger';
