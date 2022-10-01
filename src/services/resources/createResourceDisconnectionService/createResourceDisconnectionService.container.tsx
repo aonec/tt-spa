@@ -3,6 +3,8 @@ import React, { useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
 import {
+  prepareAddressesForTreeSelect,
+  prepareAddressesWithParentsForTreeSelect,
 } from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -10,6 +12,7 @@ import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfRe
 import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
+import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -20,6 +23,14 @@ export const CreateResourceDisconnectionContainer = () => {
   const resourceTypes = useStore(outputs.$resourceTypes);
   const disconnectingTypes = useStore(outputs.$disconnectingTypes);
   const typeOfAddress = useStore(outputs.$typeOfAddress);
+  const existingHousingStocks = useStore(outputs.$existingHousingStocks);
+  const housingStockWithHeatingStations = useStore(
+    outputs.$housingStockWithHeatingStations
+  );
+  const housingStockWithHouseManagements = useStore(
+    outputs.$housingStockWithHouseManagements
+  );
+  const isHousingStocksLoading = useStore(outputs.$isHousingStocksLoading);
 
   const isInterHeatingSeason = useStore(
     chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason
@@ -44,7 +55,19 @@ export const CreateResourceDisconnectionContainer = () => {
     editResourceDisconnectionService.inputs.updateDocument
   );
 
-  const preparedExistingHousingStocks = useMemo(() => [], []);
+  const preparedExistingHousingStocks = useMemo(() => {
+    if (typeOfAddress === EAddressDetails.All) {
+      return prepareAddressesForTreeSelect(existingHousingStocks);
+    }
+    const housingStocks = housingStockWithHeatingStations.length
+      ? housingStockWithHeatingStations
+      : housingStockWithHouseManagements;
+    return prepareAddressesWithParentsForTreeSelect(housingStocks);
+  }, [
+    existingHousingStocks,
+    housingStockWithHeatingStations,
+    housingStockWithHouseManagements,
+  ]);
 
   return (
     <>
@@ -64,7 +87,7 @@ export const CreateResourceDisconnectionContainer = () => {
         isInterHeatingSeason={isInterHeatingSeason}
         isEdit={isEdit}
         isDisconnectionLoading={isDisconnectionLoading}
-        isHousingStocksLoading={false}
+        isHousingStocksLoading={isHousingStocksLoading}
       />
     </>
   );

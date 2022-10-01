@@ -9,6 +9,7 @@ import { inspectorAddressesResetService } from '../../inspectorsDistributionServ
 import { ResourceDisablingScheduleContainer } from '../../resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 
 const { TabPane } = Tabs;
 
@@ -20,7 +21,27 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
 
-  const menuButtons = useMemo(() => [], []);
+  const menuButtons = useMemo(() => {
+    if (adminSettings) {
+      return [
+        {
+          title: 'Создать отключение ресурса',
+          onClick:
+            chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+        },
+      ];
+    }
+    return [
+      {
+        title: 'Сбросить все адреса',
+        onClick: inspectorAddressesResetService.inputs.openModal,
+      },
+      {
+        title: 'Переназначить сотрудника',
+        onClick: handleReassingInspector,
+      },
+    ];
+  }, [adminSettings]);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {
@@ -44,6 +65,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({
     <>
       <InspectorAddressesResetModalContainer />
       <CreateResourceDisconnectionContainer />
+      <ChooseTypeOfResourceDisconnectionModalContainer/>
 
       <PageHeader
         title="Настройки"

@@ -4,6 +4,7 @@ import { useAppDispatch } from '01/Redux/store';
 import { useEvent } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { SearchType } from './objectsProfileService.types';
@@ -28,7 +29,9 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
+    
       <CreateResourceDisconnectionContainer />
+      <ChooseTypeOfResourceDisconnectionModalContainer/>
       <GroupReport />
       <ObjectsProfile
         searchType={searchType}

@@ -6,9 +6,11 @@ import {
 import {
   fetchEditResourceDisconnection,
   fetchResourceDisconnection,
+  fetchUpdateResourceDisconnectingDocument,
 } from './editResourceDisconnectionService.api';
 import {
   ResourceDisconnectingUpdatePayload,
+  UpdateDocumentPayload,
 } from './editResourceDisconnectionService.types';
 
 const domain = createDomain('editResourceDisconnectionService');
@@ -17,6 +19,9 @@ const openEditModal = domain.createEvent<string>();
 const clearDisconnectionId = domain.createEvent();
 
 const updateDocument = domain.createEvent<number>();
+const updateDocumentFx = domain.createEffect<UpdateDocumentPayload, void>(
+  fetchUpdateResourceDisconnectingDocument
+);
 
 const editResourceDisconnection = domain.createEvent<ResourceDisconnectingUpdateRequest>();
 const editResourceDisconnectionFx = domain.createEffect<
@@ -76,6 +81,16 @@ sample({
     filter: Boolean,
   }),
   target: editResourceDisconnectionFx,
+});
+
+sample({
+  source: guard({
+    source: $resourceDisconnection,
+    filter: Boolean,
+  }),
+  clock: updateDocument,
+  fn: (disconnection, documentId) => ({ id: disconnection.id, documentId }),
+  target: updateDocumentFx,
 });
 
 export const editResourceDisconnectionService = {
