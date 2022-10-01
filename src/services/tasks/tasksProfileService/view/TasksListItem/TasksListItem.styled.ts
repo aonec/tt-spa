@@ -4,7 +4,6 @@ import { CalendarIcon, MapIcon, TimerIcon, UserIcon } from 'ui-kit/icons';
 export const TaskItemWrapper = styled.div`
   min-width: 850px;
   padding: 10px;
-  margin-top: 12px;
   border-radius: 4px;
   border: 1px solid transparent;
   color: #272f5a;
@@ -102,6 +101,8 @@ export const RedTimerIcon = styled(TimerIcon)`
 `;
 
 export const Wrapper = styled.div`
+  margin-top: 15px;
+
   &:first-child {
     margin-top: 0px;
   }
