@@ -1,4 +1,4 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createDomain, guard, sample } from 'effector';
 import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
@@ -7,12 +7,16 @@ import {
   fetchEditResourceDisconnection,
   fetchResourceDisconnection,
 } from './editResourceDisconnectionService.api';
-import { ResourceDisconnectingUpdatePayload } from './editResourceDisconnectionService.types';
+import {
+  ResourceDisconnectingUpdatePayload,
+} from './editResourceDisconnectionService.types';
 
 const domain = createDomain('editResourceDisconnectionService');
 
 const openEditModal = domain.createEvent<string>();
 const clearDisconnectionId = domain.createEvent();
+
+const updateDocument = domain.createEvent<number>();
 
 const editResourceDisconnection = domain.createEvent<ResourceDisconnectingUpdateRequest>();
 const editResourceDisconnectionFx = domain.createEffect<
@@ -81,6 +85,7 @@ export const editResourceDisconnectionService = {
     clearResourceDisconnection,
     editResourceDisconnectionFx,
     editResourceDisconnection,
+    updateDocument,
   },
   outputs: {
     $resourceDisconnection,

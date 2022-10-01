@@ -1,6 +1,9 @@
 import { axios } from '01/axios';
 import { ResourceDisconnectingResponse } from 'myApi';
-import { ResourceDisconnectingUpdatePayload } from './editResourceDisconnectionService.types';
+import {
+  ResourceDisconnectingUpdatePayload,
+  UpdateDocumentPayload,
+} from './editResourceDisconnectionService.types';
 
 export const fetchResourceDisconnection = (
   id: string

@@ -7,6 +7,8 @@ import { SettingsPageProps } from './types';
 import { InspectorAddressesResetModalContainer } from '../../inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
 import { inspectorAddressesResetService } from '../../inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
 import { ResourceDisablingScheduleContainer } from '../../resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 
 const { TabPane } = Tabs;
 
@@ -17,6 +19,8 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const adminSettings = pathname.split('/')[1] === 'adminSettings';
+
+  const menuButtons = useMemo(() => [], []);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {
@@ -39,19 +43,12 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   return (
     <>
       <InspectorAddressesResetModalContainer />
+      <CreateResourceDisconnectionContainer />
+
       <PageHeader
         title="Настройки"
         contextMenu={{
-          menuButtons: [
-            {
-              title: 'Сбросить все адреса',
-              onClick: inspectorAddressesResetService.inputs.openModal,
-            },
-            {
-              title: 'Переназначить сотрудника',
-              onClick: handleReassingInspector,
-            },
-          ],
+          menuButtons,
         }}
       />
       <Tabs activeKey={section} onChange={history.push}>

@@ -1,8 +1,9 @@
 import { StreetWithHousingStockNumbersResponse } from 'myApi';
-import { ExistingStreetWithHousingStocks } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { TreeSelectElement } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export const prepareAddressesForTreeSelect = (
-  items: StreetWithHousingStockNumbersResponse[]
+  items: StreetWithHousingStockNumbersResponse[],
+  parentId?: string
 ) =>
   items.reduce((acc, { street, addresses }) => {
     if (street) {
@@ -17,11 +18,11 @@ export const prepareAddressesForTreeSelect = (
         ...acc,
         {
           title: street,
-          key: street,
-          value: street,
+          key: `${street}${parentId}`,
+          value: `${street}${parentId}`,
           children,
         },
       ];
     }
     return acc;
-  }, [] as ExistingStreetWithHousingStocks[]);
+  }, [] as TreeSelectElement[]);

@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 
 import { ResourceDisconnectingResponsePagedList } from 'myApi';
@@ -47,6 +47,17 @@ const $isAddressesModalOpen = domain
 sample({
   source: $filters,
   clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
+  fn: (filters) => filters,
+  target: getResourceDisconnectionsFx,
+});
+
+sample({
+  source: $filters,
+  clock: guard({
+    source: resourceDisablingGate.status,
+    clock: refetchResourceDisconnections,
+    filter: (isOpen) => isOpen,
+  }),
   fn: (filters) => filters,
   target: getResourceDisconnectionsFx,
 });

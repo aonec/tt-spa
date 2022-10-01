@@ -25,7 +25,15 @@ export const StyledDialog = styled(Modal)`
 `;
 
 export const TitleText = styled.div`
+  color: #272f5a;
   font-size: 32px;
   line-height: 1.5;
   font-weight: 300;
+`;
+
+export const DialogText = styled.div`
+  margin-top: 24px;
+  color: #272f5a;
+  font-weight: 400;
+  font-size: 14px;
 `;

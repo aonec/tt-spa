@@ -1,6 +1,8 @@
 import { axios } from '01/axios';
 import {
   HeatingStationResponsePagedList,
+  HeatingStationWithStreetsResponse,
+  HouseManagementWithStreetsResponse,
   ResourceDisconnectingCreateRequest,
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';

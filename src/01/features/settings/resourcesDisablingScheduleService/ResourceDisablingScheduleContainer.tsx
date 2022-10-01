@@ -51,7 +51,6 @@ export const ResourceDisablingScheduleContainer = () => {
       <DisablingResouresGate />
       <CompleteResourceDisconnectionContainer />
       <DeleteResourceDisconnectionContainer />
-      <CreateResourceDisconnectionContainer />
 
       <ResourceDisablingScheduleModal
         isModalOpen={isModalOpen}

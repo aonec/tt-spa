@@ -1,46 +1,28 @@
+import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward } from 'effector';
 import _ from 'lodash/fp';
 import {
-  HeatingStationResponse,
   ResourceDisconnectingCreateRequest,
-  HeatingStationResponsePagedList,
   StreetWithHousingStockNumbersResponsePagedList,
   StreetWithHousingStockNumbersResponse,
   EResourceDisconnectingType,
+  HeatingStationWithStreetsResponse,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
+import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { resourceDisconnectionFiltersService } from '../resourceDisconnectionFiltersService';
-import {
-  fetchCreateResourceDisconnection,
-  fetchExistingHousingStocks,
-  fetchHeatingStations,
-} from './createResourceDisconnectionService.api';
+import { fetchCreateResourceDisconnection } from './createResourceDisconnectionService.api';
+import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
 
-const $isModalOpen = domain.createStore(false);
-
-const $selectedCity = domain.createStore('');
-const $selectedHeatingStation = domain.createStore('');
-
-const setIsInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = domain
-  .createStore(false)
-  .on(
-    setIsInterHeatingSeason,
-    (_, isInterHeatingSeason) => isInterHeatingSeason
-  );
-
-const $cities = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
-  (store) => store?.cities || []
-);
 const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
   (store) => store?.resourceTypes || []
 );
 const $disconnectingTypes = combine(
-  $isInterHeatingSeason,
+  chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
   resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters,
   (isInterHeatingSeason, filter) => {
     const types = filter?.disconnectingTypes;
@@ -59,35 +41,39 @@ const $disconnectingTypes = combine(
   }
 );
 
-const $heatingStations = domain.createStore<HeatingStationResponse[]>([]);
-
-const $existingHousingStocks = domain.createStore<
-  StreetWithHousingStockNumbersResponse[]
->([]);
-
-const $addressesFromHeatingStation = combine(
-  $heatingStations,
-  $selectedHeatingStation,
-  (stations, selectedStation) =>
-    stations.find((station) => station.id === selectedStation)?.housingStocks ||
-    []
-);
-
 const openModal = domain.createEvent();
 const closeModal = domain.createEvent();
-const clearStore = domain.createEvent();
+const clearHousingStocks = domain.createEvent();
+const clearTypeOfAddress = domain.createEvent();
 
-const selectCity = domain.createEvent<string>();
-const selectHeatingStation = domain.createEvent<string>();
+const $isModalOpen = domain
+  .createStore(false)
+  .on(openModal, () => true)
+  .reset(closeModal);
+
+const setTypeOfAddress = domain.createEvent<EAddressDetails>();
+const $typeOfAddress = domain
+  .createStore<EAddressDetails>(EAddressDetails.All)
+  .on(setTypeOfAddress, (_, type) => type)
+  .reset(clearTypeOfAddress);
+
+const getExistingHousingStocksFx = domain.createEffect<
+  void,
+  StreetWithHousingStockNumbersResponsePagedList
+>();
+
+const $existingHousingStocks = domain
+  .createStore<StreetWithHousingStockNumbersResponse[]>([])
+  .on(
+    getExistingHousingStocksFx.doneData,
+    (_, housingStocks) => housingStocks.items || []
+  )
+  .reset(clearHousingStocks);
 
 const getHeatingStationFx = domain.createEffect<
-  string,
-  HeatingStationResponsePagedList
->(fetchHeatingStations);
-const getExistingHosuingStocksFx = domain.createEffect<
-  string,
-  StreetWithHousingStockNumbersResponsePagedList
->(fetchExistingHousingStocks);
+  void,
+  HeatingStationWithStreetsResponse[]
+>();
 
 const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
@@ -96,49 +82,14 @@ const createResourceDisconnectionFx = domain.createEffect<
   EffectFailDataAxiosError
 >(fetchCreateResourceDisconnection);
 
-$isModalOpen.on(openModal, () => true).reset(closeModal);
-$selectedCity.on(selectCity, (_, city) => city);
-$selectedHeatingStation
-  .on(selectHeatingStation, (_, id) => id)
-  .reset(clearStore);
-$heatingStations.on(
-  getHeatingStationFx.doneData,
-  (_, stations) => stations.items || []
-);
-$existingHousingStocks.on(
-  getExistingHosuingStocksFx.doneData,
-  (_, housingStocks) => housingStocks.items || []
-);
-
-sample({
-  clock: guard({
-    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
-    filter: Boolean,
-  }),
-  fn: (disconnection) => {
-    const disconnectingType = disconnection.disconnectingType;
-    const isInterHeatingSeason =
-      disconnectingType?.value ===
-      EResourceDisconnectingType.InterHeatingSeason;
-
-    return isInterHeatingSeason;
-  },
-  target: setIsInterHeatingSeason,
+forward({
+  from: setTypeOfAddress,
+  to: clearHousingStocks,
 });
 
 forward({
   from: editResourceDisconnectionService.inputs.openEditModal,
   to: openModal,
-});
-
-forward({
-  from: $selectedCity,
-  to: getExistingHosuingStocksFx,
-});
-
-forward({
-  from: $selectedCity,
-  to: getHeatingStationFx,
 });
 
 forward({
@@ -153,7 +104,20 @@ forward({
 
 forward({
   from: closeModal,
-  to: clearStore,
+  to: [clearHousingStocks, clearTypeOfAddress],
+});
+
+forward({
+  from: openModal,
+  to: getExistingHousingStocksFx,
+});
+
+
+forward({
+  from: createResourceDisconnectionFx.doneData,
+  to:
+    resourceDisablingScheduleServiceService.inputs
+      .refetchResourceDisconnections,
 });
 
 createResourceDisconnectionFx.failData.watch((error) =>
@@ -165,19 +129,13 @@ export const createResourceDisconnectionService = {
     openModal,
     closeModal,
     createResourceDisconnection,
-    selectCity,
-    selectHeatingStation,
-    setIsInterHeatingSeason,
+    setTypeOfAddress,
   },
   outputs: {
     $isModalOpen,
-    $selectedCity,
-    $heatingStations,
-    $addressesFromHeatingStation,
-    $existingHousingStocks,
-    $cities,
     $resourceTypes,
     $disconnectingTypes,
-    $isInterHeatingSeason,
+    $existingHousingStocks,
+    $typeOfAddress,
   },
 };

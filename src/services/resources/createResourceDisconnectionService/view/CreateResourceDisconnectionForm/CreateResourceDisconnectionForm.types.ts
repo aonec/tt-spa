@@ -3,31 +3,31 @@ import {
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceType,
   EResourceTypeNullableStringDictionaryItem,
-  HeatingStationResponse,
-  HousingStockShortResponse,
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
 } from 'myApi';
-import { ExistingStreetWithHousingStocks } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { EAddressDetails } from '../../createResourceDisconnectionService.types';
+import { TreeSelectElement } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
-  cities: string[];
   resourceTypes: EResourceTypeNullableStringDictionaryItem[];
   disconnectingTypes: EResourceDisconnectingTypeNullableStringDictionaryItem[];
-  heatingStations: HeatingStationResponse[];
-  treeData: ExistingStreetWithHousingStocks[];
-  selectedCity: string;
+  treeData: TreeSelectElement[];
   formId: string;
-  handleCreateResourceDisconnection: (payload: ResourceDisconnectingCreateRequest) => void;
-  handleSelectCity: (city: string) => void;
-  handleSelectHeatingStation: (id: string) => void;
+  handleCreateResourceDisconnection: (
+    payload: ResourceDisconnectingCreateRequest
+  ) => void;
   isInterHeatingSeason: boolean;
   isEdit: boolean;
   resourceDisconnection: ResourceDisconnectingResponse | null;
   handleEditResourceDisconnection: (
     payload: ResourceDisconnectingUpdateRequest
   ) => void;
+  handleUpdateDocument: (id: number) => void;
+  setTypeOfAddress: (type: EAddressDetails) => void;
+  typeOfAddress: EAddressDetails;
+  isHousingStocksLoading: boolean;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
@@ -52,3 +52,9 @@ export type TreeSelectLabelValueType = {
   value?: string | number;
   label?: React.ReactNode;
 };
+
+export const DetailsSelectLookup = [
+  { key: EAddressDetails.All, value: 'УК' },
+  { key: EAddressDetails.HouseManagements, value: 'Домоуправления' },
+  { key: EAddressDetails.HeatingStation, value: 'ЦТП' },
+];

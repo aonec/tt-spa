@@ -5,3 +5,8 @@ export type ResourceDisconnectingUpdatePayload = {
 } & {
   id: string;
 };
+
+export type UpdateDocumentPayload = {
+  id: string;
+  documentId: number;
+};
