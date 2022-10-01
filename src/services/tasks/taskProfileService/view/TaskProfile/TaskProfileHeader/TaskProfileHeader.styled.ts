@@ -11,7 +11,6 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const PageHeaderWrapper = styled.div`
-  margin-left: 12px;
   color: #272f5a;
   font-weight: 400;
   font-size: 32px;
@@ -43,6 +42,7 @@ export const DeviceIconWrapper = styled.div`
   display: flex;
   align-items: center;
   transform: scale(1.2);
+  margin-right: 12px;
 `;
 
 export const Line = styled.div<{ color?: string }>`
