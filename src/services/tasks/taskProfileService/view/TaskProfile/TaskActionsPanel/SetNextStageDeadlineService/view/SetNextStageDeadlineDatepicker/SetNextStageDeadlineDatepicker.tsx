@@ -5,12 +5,14 @@ import { FormItem } from 'ui-kit/FormItem';
 import { SetNextStageDeadlineDatepickerProps } from './SetNextStageDeadlineDatepicker.types';
 
 export const SetNextStageDeadlineDatepicker: FC<SetNextStageDeadlineDatepickerProps> = ({
-  handleChange,
+  handleDateChange,
 }) => {
   const [date, setDate] = useState<moment.Moment | null>(null);
 
   useEffect(() => {
-    handleChange({ nextStageDeadline: date?.format('YYYY-MM-DD') });
+    const formattedDate = date?.format('YYYY-MM-DD');
+
+    if (formattedDate) handleDateChange(formattedDate);
   }, [date]);
 
   return (

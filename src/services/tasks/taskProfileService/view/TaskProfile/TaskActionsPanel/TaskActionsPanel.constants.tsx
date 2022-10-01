@@ -8,15 +8,16 @@ import {
 } from './TaskActionsPanel.types';
 import { AddPerpetratorContainer } from './addPerpetratorService';
 import { EmailNotifyContainer } from './emailNotifyService';
-import { AttachDocument } from './AttachDocument';
 import { SwitchStageSelectContainer } from './switchStageSelectService';
-import { SetNextStageDeadlineDatepicker } from './SetNextStageDeadlineDatepicker';
 import { CorrectionReadingsContainer } from './correctionReadingsService';
-import { Comment } from './Comment';
 import { SwitchOrCompleteContainer } from './switchOrCompleteService';
 import { InputReadings } from './InputReadings';
-import { IndividualDeviceCheckInfoContainer } from './SetNextStageDeadlineService';
+import { CompletionStageContainer } from './completionStageService';
+import { IndividualDeviceCheckInfoContainer } from './infoComponents/SetNextStageDeadlineService';
+import { SetNextStageDeadlineContainer } from './SetNextStageDeadlineService';
 import { CloseDevicesContainer } from './CloseDeviceService';
+import { CommentContainer } from './commentService';
+import { AttachDocumentContainer } from './attachDocumentService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -38,13 +39,13 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
   {
     actionType: EStageActionType.AddEmailTemplate,
-    Component: AttachDocument,
+    Component: AttachDocumentContainer,
     position: TaskPanelInputPositionType.Bottom,
     type: TaskPanelComponentAdditionalType.EmailTemplate,
   },
   {
     actionType: EStageActionType.AddDocuments,
-    Component: AttachDocument,
+    Component: AttachDocumentContainer,
     position: TaskPanelInputPositionType.Bottom,
   },
   {
@@ -54,7 +55,7 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   },
   {
     actionType: EStageActionType.SetNextStageDeadline,
-    Component: SetNextStageDeadlineDatepicker,
+    Component: SetNextStageDeadlineContainer,
     position: TaskPanelInputPositionType.Middle,
   },
   {
@@ -78,8 +79,13 @@ export const taskActionsComponents: TaskActionsComponent[] = [
     position: TaskPanelInputPositionType.Full,
   },
   {
+    actionType: EStageActionType.Completion,
+    Component: CompletionStageContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
     actionType: EStageActionType.AddComment,
-    Component: Comment,
+    Component: CommentContainer,
     position: TaskPanelInputPositionType.Full,
   },
 ];

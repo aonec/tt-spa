@@ -47,9 +47,16 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   const isDeviceClosed = Boolean(device.closingDate)
 
-  const isSeniorOperator = (managementFirmUser?.roles || [])
-    .map((elem) => elem.key)
-    .includes(ESecuredIdentityRoleName.SeniorOperator);
+  const isSeniorOperator = useMemo(
+    () =>
+      Boolean(managementFirmUser?.roles) &&
+      Boolean(
+        managementFirmUser?.roles?.find(
+          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator
+        )
+      ),
+    [managementFirmUser]
+  );
 
   const menuButtonArr: ContextMenuElement[] = useMemo(
     () => [

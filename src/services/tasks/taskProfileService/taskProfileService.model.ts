@@ -98,7 +98,8 @@ const $task = domain
       ...task,
       comments: [...oldComments, newComment],
     };
-  });
+  })
+  .reset(TaskIdGate.close);
 
 const $isPerpetrator = combine(
   $task,

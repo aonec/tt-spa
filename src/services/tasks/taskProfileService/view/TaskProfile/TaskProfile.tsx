@@ -8,6 +8,7 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { TaskActionsPanel } from './TaskActionsPanel';
 import { TaskBaseInfo } from './TaskBaseInfo';
 import { TaskComments } from './TaskComments';
+import { TaskConfirmationPanel } from './TaskConfirmationPanel';
 import { TaskDeviceInfo } from './TaskDeviceInfo';
 import { TaskDocumentsList } from './TaskDocumentsList';
 import { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
@@ -95,6 +96,12 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           )}
           <TaskWrapper>
             <TaskInfoWrapper>
+              {task.taskConfirmation && (
+                <TaskConfirmationPanel
+                  taskConfirmation={task.taskConfirmation}
+                  taskType={task.type}
+                />
+              )}
               <TaskDocumentsList
                 documents={documents || []}
                 openDeleteDocumentModal={openDeleteDocumentModal}

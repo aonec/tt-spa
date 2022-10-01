@@ -4,7 +4,7 @@ import moment from 'moment';
 import { FC, useEffect, useState } from 'react';
 import { CloseDevicesContainerProps } from './closeDeviceService.types';
 import { closeDeviceService } from './closeDevicesService.models';
-import { CloseDevices } from './components/CloseDevices/CloseDevices';
+import { CloseDevices } from './view/CloseDevices';
 
 export const CloseDevicesContainer: FC<CloseDevicesContainerProps> = ({
   handleChange,

@@ -1,12 +1,13 @@
-import { useStore } from 'effector-react';
-import React from 'react';
-import { SetNextStageDeadline } from './components/SetNextStageDeadline';
-import { setNextStageDeadlineService } from './setNextStageDeadlineService.models';
+import React, { FC } from 'react';
+import { ActionComponentProps } from '../TaskActionsPanel.types';
+import { SetNextStageDeadlineDatepicker } from './view/SetNextStageDeadlineDatepicker';
 
-export const IndividualDeviceCheckInfoContainer = () => {
-  const deniedPermissionsCount = useStore(
-    setNextStageDeadlineService.outputs.$deniedPermissionsCount
-  );
+export const SetNextStageDeadlineContainer: FC<ActionComponentProps> = ({
+  handleChange,
+}) => {
+  function handleDateChange(nextStageDeadline: string) {
+    handleChange({ nextStageDeadline });
+  }
 
-  return <SetNextStageDeadline deniedPermissionsCount={deniedPermissionsCount} />;
+  return <SetNextStageDeadlineDatepicker handleDateChange={handleDateChange} />;
 };

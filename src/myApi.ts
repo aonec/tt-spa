@@ -1295,6 +1295,7 @@ export enum EImportedEntityType {
 export enum EIndividualDeviceOrderRule {
   Resource = "Resource",
   ApartmentNumber = "ApartmentNumber",
+  SerialNumber = "SerialNumber",
 }
 
 export enum EIndividualDeviceRateType {
@@ -2037,6 +2038,17 @@ export interface HeatingStationShortResponse {
   address: AddressResponse | null;
 }
 
+export interface HeatingStationWithStreetsResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  streets: StreetWithHousingStockNumbersResponse[] | null;
+}
+
+export interface HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse {
+  successResponse: HeatingStationWithStreetsResponse[] | null;
+}
+
 export interface HomeownerAccountCloseRequest {
   /** @format uuid */
   homeownerAccountId: string;
@@ -2226,6 +2238,17 @@ export interface HouseManagementResponseListSuccessApiResponse {
 
 export interface HouseManagementResponseSuccessApiResponse {
   successResponse: HouseManagementResponse | null;
+}
+
+export interface HouseManagementWithStreetsResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  streets: StreetWithHousingStockNumbersResponse[] | null;
+}
+
+export interface HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse {
+  successResponse: HouseManagementWithStreetsResponse[] | null;
 }
 
 export interface HousingMeteringDeviceAddCommentRequest {
@@ -4150,14 +4173,15 @@ export interface ResourceDisconnectingTypeResponse {
 }
 
 export interface ResourceDisconnectingUpdateRequest {
-  disconnectingType: EResourceDisconnectingType;
+  disconnectingType?: EResourceDisconnectingType | null;
   housingStockIds: number[];
 
   /** @format date-time */
   startDate: string;
 
   /** @format date-time */
-  endDate: string;
+  endDate?: string | null;
+  sender?: string | null;
 }
 
 export interface SetMagneticSealRequest {
@@ -4223,7 +4247,7 @@ export interface StagePushRequest {
 
   /** @format date-time */
   apartmentCheckDate?: string | null;
-  taskConfirmationType?: string | null;
+  taskConfirmation?: TaskConfirmationRequest | null;
 }
 
 export interface StageResponse {
@@ -4688,6 +4712,17 @@ export interface TaskCommentResponseSuccessApiResponse {
   successResponse: TaskCommentResponse | null;
 }
 
+export interface TaskConfirmationRequest {
+  type?: string | null;
+  comment?: string | null;
+}
+
+export interface TaskConfirmationResponse {
+  type: ETaskConfirmationType;
+  description: string | null;
+  comment: string | null;
+}
+
 export interface TaskCreateRequest {
   /** @format int32 */
   key?: number;
@@ -4700,12 +4735,6 @@ export interface TaskCreateResponse {
   /** @format int32 */
   id: number;
   type: EManagingFirmTaskType;
-
-  /** @format date-time */
-  triggerTime: string;
-
-  /** @format int32 */
-  triggersCount: number;
   isValidated: boolean;
 }
 
@@ -4757,7 +4786,6 @@ export interface TaskListResponse {
   isResponsible: boolean;
   hasChanged: boolean;
   needsValidation: boolean;
-  triggersInformation: TaskTriggersInformation | null;
   devices: MeteringDeviceSearchListResponse[] | null;
   pipeNode: PipeNodeResponse | null;
   applications: TaskApplicationForTaskResponse[] | null;
@@ -4801,22 +4829,12 @@ export interface TaskResponse {
   stages: StageListResponse[] | null;
   applications: TaskApplicationForTaskResponse[] | null;
   consumableMaterials: string | null;
-  taskConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
+  taskConfirmation: TaskConfirmationResponse | null;
+  allowableConfirmationTypes: ETaskConfirmationTypeStringDictionaryItem[] | null;
 }
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
-}
-
-export interface TaskTriggersInformation {
-  /** @format date-time */
-  triggerTime?: string;
-
-  /** @format int32 */
-  previousTriggersCount?: number | null;
-
-  /** @format int32 */
-  currentTriggersCount?: number;
 }
 
 export interface TasksPagedList {
@@ -7736,6 +7754,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement
+     * @secure
+     */
+    housingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList: (params: RequestParams = {}) =>
+      this.request<HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingStreetsWithHousingStockNumbersWithHeatingStationList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHeatingStation
+     * @secure
+     */
+    housingStocksExistingStreetsWithHousingStockNumbersWithHeatingStationList: (params: RequestParams = {}) =>
+      this.request<HeatingStationWithStreetsResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHeatingStation`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingStocks
@@ -10223,14 +10277,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingAddDocumentCreate
      * @summary ResourceDisconnectingUpdate
-     * @request POST:/api/ResourceDisconnecting/{id}/AddDocument
+     * @request POST:/api/ResourceDisconnecting/{id}/AddDocument/{documentId}
      * @secure
      */
-    resourceDisconnectingAddDocumentCreate: (id: string, query?: { documentId?: number }, params: RequestParams = {}) =>
+    resourceDisconnectingAddDocumentCreate: (id: string, documentId: number, params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/ResourceDisconnecting/${id}/AddDocument`,
+        path: `/api/ResourceDisconnecting/${id}/AddDocument/${documentId}`,
         method: "POST",
-        query: query,
         secure: true,
         ...params,
       }),
