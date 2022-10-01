@@ -12,6 +12,13 @@ import {
   $consumptionStatistics,
   subscribersConsumptionService,
 } from '../../models';
+import { ExportSubscribersConsumptionContainer } from '../../exportSubscribersConsumptionService';
+import { Tooltip } from 'antd';
+import {
+  HomeownerNameWrapper,
+  HomeownerNumberWrapper,
+} from './StatisticsList.styled';
+import { Link } from 'react-router-dom';
 
 export const StatisticsList: React.FC = () => {
   const apartmentList = useStore($consumptionStatistics);
@@ -19,6 +26,10 @@ export const StatisticsList: React.FC = () => {
   const pending = useStore(subscribersConsumptionService.outputs.$isLoading);
   const history = useHistory();
   const isApartmentsExist = apartmentList.length !== 0;
+
+  const filter = useStore(
+    subscribersConsumptionService.outputs.$subscriberStatisticsFilter
+  );
 
   const renderApartment = ({
     apartmentNumber,
@@ -29,32 +40,43 @@ export const StatisticsList: React.FC = () => {
     dateLastTransmissionOfReading,
     housingStockId,
     apartmentId,
+    homeownerAccountFullName,
+    homeownerAccountPhoneNumber,
   }: SubscriberStatisticsСonsumptionResponse) => (
-    <ApartmentWrap
-      {...layout}
-      onClick={() =>
-        history.push(`/objects/${housingStockId}/apartments/${apartmentId}`)
-      }
-    >
+    <ApartmentWrap to={`/objects/${housingStockId}/apartments/${apartmentId}`}>
       <div>{apartmentNumber}</div>
       <div>{formatValue(round(coldWaterSupplyConsumption!, 3))}</div>
       <div>{formatValue(round(hotWaterSupplyConsumption!, 3))}</div>
       <div>{formatValue(round(electricitySupplyConsumption!, 3))}</div>
       <div>{moment(dateLastTransmissionOfReading).format('DD.MM.YYYY')}</div>
       <div>{dateLastCheck && moment(dateLastCheck).format('DD.MM.YYYY')}</div>
+      <div style={{ overflow: 'hidden' }}>
+        <HomeownerNameWrapper>
+          <Tooltip title={homeownerAccountFullName}>
+            {homeownerAccountFullName}
+          </Tooltip>
+        </HomeownerNameWrapper>
+        <HomeownerNumberWrapper>
+          <Tooltip title={homeownerAccountPhoneNumber || '-'}>
+            {homeownerAccountPhoneNumber || '-'}
+          </Tooltip>
+        </HomeownerNumberWrapper>
+      </div>
     </ApartmentWrap>
   );
 
   return (
     <div>
+      <ExportSubscribersConsumptionContainer filter={filter} />
       {isApartmentsExist && (
-        <Wrap {...layout}>
-          <div>Номер квартиры</div>
+        <Wrap>
+          <div>№</div>
           <div>ХВС</div>
           <div>ГВС</div>
           <div>Электричество</div>
           <div>Дата последней передачи показаний</div>
           <div>Дата последней проверки</div>
+          <div>Абонент</div>
         </Wrap>
       )}
       {!pending && !isApartmentsExist && <TypeAddressToStart />}
@@ -68,12 +90,11 @@ export const StatisticsList: React.FC = () => {
 const formatValue = (value?: number) =>
   typeof value === 'number' ? value : '-';
 
-const layout = {
-  temp: '1fr 1fr 1fr 1fr 1fr 1fr',
-  gap: '15px',
-};
+const Wrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr 2.5fr 2.5fr 3.5fr;
+  grid-column-gap: 15px;
 
-const Wrap = styled(Grid)`
   align-items: center;
   background-color: #f3f5f6;
   color: rgba(39, 47, 90, 0.9);
@@ -81,11 +102,17 @@ const Wrap = styled(Grid)`
   padding: 10px 20px;
 `;
 
-const ApartmentWrap = styled(Grid)`
+const ApartmentWrap = styled(Link)`
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr 2.5fr 2.5fr 3.5fr;
+  grid-column-gap: 15px;
+
+  align-items: center;
   padding: 10px 20px;
   border-bottom: 1px solid #f3f5f6;
   cursor: pointer;
   transition: 0.2s;
+  color: #272f5a;
 
   &:hover {
     color: #3241e6;

@@ -16,3 +16,8 @@ export const Model = styled.div`
   font-size: 16px;
   color: #272f5a88;
 `;
+
+export const CheckingDates = styled.div`
+  margin-left: 10px;
+  font-weight: 600;
+`;

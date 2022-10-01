@@ -7,11 +7,9 @@ import { SettingsPageProps } from './types';
 import { InspectorAddressesResetModalContainer } from '../../inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
 import { inspectorAddressesResetService } from '../../inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
 import { ResourceDisablingScheduleContainer } from '../../resourcesDisablingScheduleService/ResourceDisablingScheduleContainer';
-import {
-  ChooseTypeOfResourceDisconnectionModalContainer,
-  chooseTypeOfResourceDisconnectionModalService,
-} from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 
 const { TabPane } = Tabs;
 
@@ -66,8 +64,8 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   return (
     <>
       <InspectorAddressesResetModalContainer />
-      <ChooseTypeOfResourceDisconnectionModalContainer />
       <CreateResourceDisconnectionContainer />
+      <ChooseTypeOfResourceDisconnectionModalContainer/>
 
       <PageHeader
         title="Настройки"

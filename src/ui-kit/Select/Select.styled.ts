@@ -4,6 +4,10 @@ import styled from 'styled-components';
 export const Select = styled(AntSelect)`
   height: 48px;
 
+  .ant-select-selection-item-content {
+    line-height: initial;
+  }
+
   * {
     font-size: 16px !important;
     line-height: 32px;

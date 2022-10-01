@@ -38,6 +38,7 @@ export const HomeownerNumberWrapper = styled.div`
   width: 100%;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   color: #272f5ab2;
 `;
 
@@ -45,6 +46,7 @@ export const HomeownerNameWrapper = styled.div`
   width: 100%;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const HomeownerInfoWrapper = styled.div`

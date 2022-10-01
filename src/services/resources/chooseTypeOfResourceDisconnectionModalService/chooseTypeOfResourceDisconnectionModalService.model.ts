@@ -36,9 +36,9 @@ forward({
 export const chooseTypeOfResourceDisconnectionModalService = {
   inputs: {
     setInterHeatingSeason,
+    clearInterHeatingSeason,
     openModal,
     closeModal,
-    clearInterHeatingSeason,
     submitModal,
   },
   outputs: {
