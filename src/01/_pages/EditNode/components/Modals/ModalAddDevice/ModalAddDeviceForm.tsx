@@ -16,7 +16,6 @@ import {
   DEFAULT_NODE,
   housingMeteringDeviceTypes,
   isConnectedOptions,
-  magistrals,
   nodeStatusList,
   resources,
 } from '../../../../../tt-components/localBases';
@@ -27,6 +26,7 @@ import {
 } from './validationSchemas';
 import {
   CreatePipeHousingMeteringDeviceRequest,
+  EMagistralTypeStringDictionaryItem,
   PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
@@ -49,12 +49,14 @@ interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  magistrals: EMagistralTypeStringDictionaryItem[];
 }
 
 const ModalAddDeviceForm = ({
   node,
   handleCancel,
   setVisible,
+  magistrals,
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
@@ -135,7 +137,7 @@ const ModalAddDeviceForm = ({
     calculatorId: calculatorId,
     entryNumber,
     pipeNumber: null,
-    magistral: magistrals[0].value,
+    magistral: magistrals[0].key,
     number,
     nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
@@ -391,7 +393,21 @@ const ModalAddDeviceForm = ({
                   label="Магистраль"
                   style={styles.w49}
                 >
-                  <SelectFormik name="magistral" options={magistrals} />
+                  <SelectFormik name="magistral">
+                    {magistrals.map((magistral) => {
+                      if (magistral.key) {
+                        return (
+                          <SelectFormik.Option
+                            value={magistral.key}
+                            key={magistral.key}
+                          >
+                            {magistral?.value}
+                          </SelectFormik.Option>
+                        );
+                      }
+                      return null;
+                    })}
+                  </SelectFormik>
                 </Form.Item>
               </StyledFormPage>
 
