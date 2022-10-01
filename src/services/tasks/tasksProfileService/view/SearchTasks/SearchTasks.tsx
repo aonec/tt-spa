@@ -140,7 +140,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         </>
       }
     >
-      <ExistingStreetsGate />
+      <ExistingStreetsGate City={values.City}/>
       <ExistingCitiesGate />
       <Wrapper>
         <InputSC
