@@ -10,7 +10,6 @@ import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfRe
 import '../editResourceDisconnectionService/editResourceDisconnectionService.relations';
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
-import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -21,7 +20,6 @@ export const CreateResourceDisconnectionContainer = () => {
   const resourceTypes = useStore(outputs.$resourceTypes);
   const disconnectingTypes = useStore(outputs.$disconnectingTypes);
   const typeOfAddress = useStore(outputs.$typeOfAddress);
-  const isHousingStocksLoading = useStore(outputs.$isHousingStocksLoading);
 
   const isInterHeatingSeason = useStore(
     chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason
@@ -66,7 +64,7 @@ export const CreateResourceDisconnectionContainer = () => {
         isInterHeatingSeason={isInterHeatingSeason}
         isEdit={isEdit}
         isDisconnectionLoading={isDisconnectionLoading}
-        isHousingStocksLoading={isHousingStocksLoading}
+        isHousingStocksLoading={false}
       />
     </>
   );
