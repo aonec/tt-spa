@@ -5,19 +5,23 @@ import { AddressesListProps } from './AddressesList.types';
 import { AddressesListItem } from './AddressesListItem';
 
 export const AddressesList: FC<AddressesListProps> = ({ streets }) => {
-  const list = streets.map((street) => (
-    <AddressesListItem
-      key={street[0]}
-      street={street[0]}
-      housingStocks={street[1]}
-    />
-  ));
+  const list = streets.map((street) => {
+    const [streetName, housingStocks] = street;
+    return (
+      <AddressesListItem
+        key={streetName}
+        street={streetName}
+        housingStocks={housingStocks}
+      />
+    );
+  });
 
   return (
     <>
       <Wrapper>
         <GroupWrapper>
-          <div> Улица</div> <Divider type="vertical" />
+          <div> Улица</div>
+          <Divider type="vertical" />
         </GroupWrapper>
         <GroupWrapper>
           <div>Номер домов</div>

@@ -25,7 +25,7 @@ export const DisplayResourceDisconenctionAddressesServiceContainer = () => {
           }
           visible={isModalOpen}
           onCancel={() => closeModal()}
-          footer={<></>}
+          footer={null}
         >
           <AddressesList streets={streets} />
         </ModalTT>

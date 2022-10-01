@@ -33,7 +33,6 @@ export const DisconnectionAddressesModalTitle: FC<DisconnectionAddressesModalTit
         </GroupWrapper>
         {endDate && (
           <>
-            {' '}
             -
             <GroupWrapper>
               <DateWrapper>{endDateString}</DateWrapper>
