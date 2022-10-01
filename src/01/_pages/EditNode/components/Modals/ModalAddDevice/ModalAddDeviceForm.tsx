@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Divider } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -141,6 +141,7 @@ const ModalAddDeviceForm = ({
     number,
     nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
+    isSensorAllowed: true,
   };
 
   const handleSubmit = (values: any) => {
@@ -194,6 +195,13 @@ const ModalAddDeviceForm = ({
             ? setFieldValue('coldWaterWarningHidden', false)
             : setFieldValue('coldWaterWarningHidden', true);
         };
+        const validateSensor = (housingMeteringDeviceType: string) => {
+          const isSensorNotAllowed =
+            values.resource === 'ColdWaterSupply' &&
+            housingMeteringDeviceType === 'TemperatureSensor';
+
+          setFieldValue('isSensorAllowed', !isSensorNotAllowed);
+        };
 
         return (
           <Form>
@@ -213,6 +221,14 @@ const ModalAddDeviceForm = ({
                   }
                   hidden={values.coldWaterWarningHidden}
                 />
+                <Warning
+                  style={styles.w100}
+                  title={
+                    'Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс.'
+                  }
+                  hidden={values.isSensorAllowed}
+                />
+
                 <Form.Item
                   name="resource"
                   label="Выберите тип ресурса"
@@ -237,6 +253,7 @@ const ModalAddDeviceForm = ({
                           );
                       value !== 'FlowMeter' && setFieldValue('diameter', null);
                       coldWaterValidation(value);
+                      validateSensor(value);
                     }}
                   />
                 </Form.Item>
