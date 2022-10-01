@@ -17,19 +17,17 @@ export const DisplayResourceDisconenctionAddressesServiceContainer = () => {
   const isModalOpen = Boolean(disconnection);
 
   return (
-    <>
-      {disconnection && (
-        <ModalTT
-          title={
-            <DisconnectionAddressesModalTitle disconnection={disconnection} />
-          }
-          visible={isModalOpen}
-          onCancel={() => closeModal()}
-          footer={null}
-        >
-          <AddressesList streets={streets} />
-        </ModalTT>
-      )}
-    </>
+    <ModalTT
+      title={
+        disconnection ? (
+          <DisconnectionAddressesModalTitle disconnection={disconnection} />
+        ) : null
+      }
+      visible={isModalOpen}
+      onCancel={() => closeModal()}
+      footer={null}
+    >
+      <AddressesList streets={streets} />
+    </ModalTT>
   );
 };
