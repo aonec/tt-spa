@@ -1,7 +1,7 @@
 import { ModalText } from '01/shared/ui/Modal/Modal';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { displayResourceDisconenctionAddressesServiceService } from './displayResourceDisconenctionAddressesServiceService.model';
 import { AddressesList } from './views/AddressesList';
 import { DisconnectionAddressesModalTitle } from './views/DisconnectionAddressesModalTitle';
@@ -16,13 +16,16 @@ export const DisplayResourceDisconenctionAddressesServiceContainer = () => {
 
   const isModalOpen = Boolean(disconnection);
 
+  const titleComponent = useMemo(() => {
+    if (!disconnection) {
+      return null;
+    }
+    return <DisconnectionAddressesModalTitle disconnection={disconnection} />;
+  }, [disconnection]);
+
   return (
     <ModalTT
-      title={
-        disconnection ? (
-          <DisconnectionAddressesModalTitle disconnection={disconnection} />
-        ) : null
-      }
+      title={titleComponent}
       visible={isModalOpen}
       onCancel={() => closeModal()}
       footer={null}
