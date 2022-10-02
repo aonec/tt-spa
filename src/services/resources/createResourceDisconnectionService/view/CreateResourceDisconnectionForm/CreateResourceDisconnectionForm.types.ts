@@ -58,3 +58,9 @@ export const DetailsSelectLookup = [
   { key: EAddressDetails.HouseManagements, value: 'Домоуправления' },
   { key: EAddressDetails.HeatingStation, value: 'ЦТП' },
 ];
+
+export type TreeSelectValue =  TreeSelectLabelValueType
+| TreeSelectLabelValueType[]
+| string
+| (string | number)[]
+| number;
