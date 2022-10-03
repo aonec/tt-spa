@@ -33,6 +33,7 @@ import {
 import Title from '../../../../tt-components/Title';
 import { axios } from '01/axios';
 import { resourceParser } from 'utils/ResourceParser';
+import { DatePickerSC } from './AddDeviceForm.styled';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;
@@ -280,20 +281,23 @@ const AddDeviceForm = (props: any) => {
           ) : null}
 
           <Form.Item label="Дата поверки" style={styles.w49}>
-            <DatePickerTT
+            <DatePickerSC
               format="DD.MM.YYYY"
               name="lastCheckingDate"
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', date);
-                setFieldValue('futureCheckingDate', moment(date).add(4, 'years'))
+                setFieldValue(
+                  'futureCheckingDate',
+                  moment(date).add(4, 'years')
+                );
               }}
               value={values.lastCheckingDate}
             />
           </Form.Item>
 
           <Form.Item label="Дата следующей поверки" style={styles.w49}>
-            <DatePickerTT
+            <DatePickerSC
               format="DD.MM.YYYY"
               name="futureCheckingDate"
               placeholder="Укажите дату..."

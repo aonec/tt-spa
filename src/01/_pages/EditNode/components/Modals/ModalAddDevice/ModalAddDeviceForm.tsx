@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Divider } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -16,7 +16,6 @@ import {
   DEFAULT_NODE,
   housingMeteringDeviceTypes,
   isConnectedOptions,
-  magistrals,
   nodeStatusList,
   resources,
 } from '../../../../../tt-components/localBases';
@@ -27,6 +26,7 @@ import {
 } from './validationSchemas';
 import {
   CreatePipeHousingMeteringDeviceRequest,
+  EMagistralTypeStringDictionaryItem,
   PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
@@ -49,6 +49,7 @@ interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  magistrals: EMagistralTypeStringDictionaryItem[];
   refetchNode: () => void;
 }
 
@@ -56,6 +57,7 @@ const ModalAddDeviceForm = ({
   node,
   handleCancel,
   setVisible,
+  magistrals,
   refetchNode,
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
@@ -137,10 +139,11 @@ const ModalAddDeviceForm = ({
     calculatorId: calculatorId,
     entryNumber,
     pipeNumber: null,
-    magistral: magistrals[0].value,
+    magistral: magistrals[0].key,
     number,
     nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
+    isSensorAllowed: true,
   };
 
   const handleSubmit = (values: any) => {
@@ -197,6 +200,13 @@ const ModalAddDeviceForm = ({
             ? setFieldValue('coldWaterWarningHidden', false)
             : setFieldValue('coldWaterWarningHidden', true);
         };
+        const validateSensor = (housingMeteringDeviceType: string) => {
+          const isSensorNotAllowed =
+            values.resource === 'ColdWaterSupply' &&
+            housingMeteringDeviceType === 'TemperatureSensor';
+
+          setFieldValue('isSensorAllowed', !isSensorNotAllowed);
+        };
 
         return (
           <Form>
@@ -216,6 +226,14 @@ const ModalAddDeviceForm = ({
                   }
                   hidden={values.coldWaterWarningHidden}
                 />
+                <Warning
+                  style={styles.w100}
+                  title={
+                    'Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс.'
+                  }
+                  hidden={values.isSensorAllowed}
+                />
+
                 <Form.Item
                   name="resource"
                   label="Выберите тип ресурса"
@@ -240,6 +258,7 @@ const ModalAddDeviceForm = ({
                           );
                       value !== 'FlowMeter' && setFieldValue('diameter', null);
                       coldWaterValidation(value);
+                      validateSensor(value);
                     }}
                   />
                 </Form.Item>
@@ -408,7 +427,21 @@ const ModalAddDeviceForm = ({
                   label="Магистраль"
                   style={styles.w49}
                 >
-                  <SelectFormik name="magistral" options={magistrals} />
+                  <SelectFormik name="magistral">
+                    {magistrals.map((magistral) => {
+                      if (magistral.key) {
+                        return (
+                          <SelectFormik.Option
+                            value={magistral.key}
+                            key={magistral.key}
+                          >
+                            {magistral?.value}
+                          </SelectFormik.Option>
+                        );
+                      }
+                      return null;
+                    })}
+                  </SelectFormik>
                 </Form.Item>
               </StyledFormPage>
 
