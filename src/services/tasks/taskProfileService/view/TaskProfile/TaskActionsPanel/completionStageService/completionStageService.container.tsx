@@ -31,6 +31,8 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
     }));
   }
 
+  if (!taskConfirmationTypes?.length) return null;
+
   return (
     <>
       <CompletionSelect
