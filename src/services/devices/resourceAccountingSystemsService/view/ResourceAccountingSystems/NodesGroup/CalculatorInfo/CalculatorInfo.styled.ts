@@ -13,7 +13,7 @@ export const CalculatorModel = styled.div`
   color: #272f5a;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow-x: hidden;
+  overflow: hidden;
   max-width: 150px;
 `;
 
@@ -24,7 +24,7 @@ export const CalculatorSerialNumber = styled.div`
   color: rgba(39, 47, 90, 0.7);
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow-x: hidden;
+  overflow: hidden;
 `;
 
 export const WarningIconSC = styled(WarningIcon)`
