@@ -12,7 +12,7 @@ forward({
 });
 
 forward({
-  from: editResourceDisconnectionService.inputs.editResourceDisconnectionFx,
+  from: editResourceDisconnectionService.inputs.editResourceDisconnectionFx.doneData,
   to: [
     createResourceDisconnectionService.inputs.closeModal,
     resourceDisablingScheduleServiceService.inputs

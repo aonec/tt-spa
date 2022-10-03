@@ -7,7 +7,7 @@ export const ExitButton: FC = () => {
 
   const handleExit = useCallback(() => {
     localStorage.clear();
-    history.push('/login');
+    window.location.replace('/login');
   }, []);
 
   return (

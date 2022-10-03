@@ -1,11 +1,21 @@
-import { ResourceDisconnectingResponsePagedList } from 'myApi';
+import {
+  HousingStockShortResponse,
+  ResourceDisconnectingResponse,
+  ResourceDisconnectingResponsePagedList,
+} from 'myApi';
 
 export type DisablingListProps = {
   resources: ResourceDisconnectingResponsePagedList | null;
   loading: boolean;
   setPage: (payload: number) => void;
-  openModal: () => void;
-  handleOpenCompleteDisconnectionModal: (id: string) => void;
-  handleOpenDeleteDisconnectionModal: (id: string) => void;
+  openModal: (disconnecion: ResourceDisconnectingResponse) => void;
+  handleOpenCompleteDisconnectionModal: (payload: {
+    id: string;
+    endDate: string;
+  }) => void;
+  handleOpenDeleteDisconnectionModal: (payload: {
+    id: string;
+    endDate: string;
+  }) => void;
   handleOpenEditDisconnectionModal: (id: string) => void;
 };

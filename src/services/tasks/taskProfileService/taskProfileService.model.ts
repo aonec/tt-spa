@@ -1,12 +1,5 @@
 import { message } from 'antd';
-import {
-  combine,
-  createDomain,
-  forward,
-  guard,
-  sample,
-  createEvent,
-} from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   StagePushRequest,
@@ -50,7 +43,7 @@ const pushStageFx = domain.createEffect<
 const deleteDocument = domain.createEvent();
 const deleteDocumentFx = domain.createEffect<number, void>(fetchDeleteDocument);
 
-const handleChangePushStagePayload = createEvent<
+const handleChangePushStagePayload = domain.createEvent<
   StagePushRequest | ((payload: StagePushRequest) => StagePushRequest)
 >();
 

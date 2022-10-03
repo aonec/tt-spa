@@ -11,6 +11,8 @@ interface ModalAddDeviceInterface {
   setVisible: Dispatch<SetStateAction<boolean>>;
   node: PipeNodeResponse;
   magistrals: EMagistralTypeStringDictionaryItem[];
+  // calculator: CalculatorResponse;
+  refetchNode: () => void;
 }
 
 const ModalAddDevice = ({
@@ -18,6 +20,7 @@ const ModalAddDevice = ({
   setVisible,
   node,
   magistrals,
+  refetchNode,
 }: ModalAddDeviceInterface) => {
   function handleCancel() {
     setVisible(false);
@@ -35,6 +38,7 @@ const ModalAddDevice = ({
         magistrals={magistrals}
         node={node}
         setVisible={setVisible}
+        refetchNode={refetchNode}
       />
     </StyledModal>
   );

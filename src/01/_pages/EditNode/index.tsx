@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
@@ -38,8 +38,10 @@ export const EditNode = () => {
   } = useAsync<CalculatorResponse>();
   const { data: node, status, run } = useAsync<PipeNodeResponse>();
 
+  const getNodeReq = useCallback(() => run(getNode(nodeId)), [nodeId]);
+
   useEffect(() => {
-    run(getNode(nodeId));
+    getNodeReq();
   }, [nodeId]);
 
   useEffect(() => {
@@ -113,6 +115,7 @@ export const EditNode = () => {
         setVisible={setVisibleAddDevice}
         magistrals={magistrals}
         node={node}
+        refetchNode={getNodeReq}
       />
     </EditNodeContext.Provider>
   );

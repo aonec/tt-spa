@@ -29,17 +29,6 @@ export const InputSC = styled(Input)`
   color: #272f5ae5;
 `;
 
-export const ResourceOptionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  .device-resource-icon {
-    svg {
-      margin-right: 10px;
-    }
-  }
-`;
-
 export const TimeWrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;

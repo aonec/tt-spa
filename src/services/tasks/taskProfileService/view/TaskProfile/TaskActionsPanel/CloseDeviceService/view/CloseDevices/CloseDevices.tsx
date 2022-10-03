@@ -46,11 +46,7 @@ export const CloseDevices: FC<CloseDevicesProps> = ({
             <DeviceInfoWrapper>
               <Checkbox checked={isSelected} onChange={handleCheckboxChanged} />
               <DeviceInfoStrokeWrap>
-                <DeviceInfo
-                  device={
-                    (device as unknown) as IndividualDeviceListItemResponse
-                  }
-                />
+                <DeviceInfo device={device} />
               </DeviceInfoStrokeWrap>
             </DeviceInfoWrapper>
             <DatePickerWrapper>
