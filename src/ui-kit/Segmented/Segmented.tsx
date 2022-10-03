@@ -1,7 +1,20 @@
 import React, { FC } from 'react';
-import { Wrapper } from './Segmented.styled';
+import { SegmentItem, SegmentTitle, Wrapper } from './Segmented.styled';
 import { SegmentedProps } from './Segmented.types';
 
-export const Segmented: FC<SegmentedProps> = ({}) => {
-  return <Wrapper></Wrapper>
+export const Segmented = <T extends string>({
+  items,
+  onChange,
+  active,
+}: SegmentedProps<T>) => {
+  return (
+    <Wrapper>
+      {items.map(({ title, icon, name }) => (
+        <SegmentItem onClick={() => onChange(name)} isActive={active === name}>
+          {icon}
+          <SegmentTitle>{title}</SegmentTitle>
+        </SegmentItem>
+      ))}
+    </Wrapper>
+  );
 };

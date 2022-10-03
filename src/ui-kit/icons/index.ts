@@ -37,6 +37,7 @@ import { ReactComponent as ChoiceIcon } from './svg/choice.svg';
 import { ReactComponent as FinishIcon } from './svg/finish.svg';
 import { ReactComponent as ChevronIcon } from './svg/chevron.svg';
 import { ReactComponent as PersonIcon } from './svg/person.svg';
+import { ReactComponent as PureResourceIcon } from './svg/pureResource.svg';
 
 export {
   FinishIcon,
@@ -78,4 +79,5 @@ export {
   ExitIcon,
   ChevronIcon,
   PersonIcon,
+  PureResourceIcon,
 };
