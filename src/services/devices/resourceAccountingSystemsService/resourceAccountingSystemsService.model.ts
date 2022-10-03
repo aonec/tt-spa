@@ -1,13 +1,14 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { NodeOnHousingStockResponse } from 'myApi';
+import { getNodes } from './resourceAccountingSystemsService.api';
 
 const domain = createDomain('resourceAccountingSystemsService');
 
 const fetchNodesFx = domain.createEffect<
   number,
   NodeOnHousingStockResponse[] | null
->();
+>(getNodes);
 
 const NodesGate = createGate<{ housingStockId: number }>();
 

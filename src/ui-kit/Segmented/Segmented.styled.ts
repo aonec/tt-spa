@@ -30,6 +30,8 @@ export const SegmentItem = styled.div<{ isActive?: boolean }>`
     border-color: #189ee9;
     color: #189ee9 !important;
 
+    box-shadow: 0 3px 7px #189ee945;
+
     path {
       fill: #189ee9;
     }
@@ -41,4 +43,5 @@ export const SegmentTitle = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
+  white-space: nowrap;
 `;
