@@ -1423,6 +1423,16 @@ export interface ENodeCommercialAccountStatusNullableStringDictionaryItem {
   value?: string | null;
 }
 
+export enum ENodeNetworkDeviceType {
+  Calculator = "Calculator",
+  Counter = "Counter",
+}
+
+export enum ENodeType {
+  PipeNode = "PipeNode",
+  ElectricNode = "ElectricNode",
+}
+
 export enum ENodeWorkingRangeSeason {
   HeatingSeason = "HeatingSeason",
   InterHeating = "InterHeating",
@@ -3528,6 +3538,32 @@ export interface NodeCheckResponsePagedListSuccessApiResponse {
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
+}
+
+export interface NodeNetworkDeviceResponse {
+  /** @format int32 */
+  id: number;
+  model: string | null;
+  serialNumber: string | null;
+  type: ENodeNetworkDeviceType;
+  hasActiveTasks: boolean;
+}
+
+export interface NodeOnHousingStockResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
+  status: ENodeCommercialAccountStatus;
+  resource: EResourceType;
+  type: ENodeType;
+  serviceZone: NodeServiceZoneResponse | null;
+  networkDevice: NodeNetworkDeviceResponse | null;
+}
+
+export interface NodeOnHousingStockResponseListSuccessApiResponse {
+  successResponse: NodeOnHousingStockResponse[] | null;
 }
 
 export interface NodeServiceZoneListResponse {
@@ -7505,6 +7541,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     housingStocksControllerDetail: (housingStockId: number, params: RequestParams = {}) =>
       this.request<OrganizationUserShortResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Controller`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksNodesDetail
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/{housingStockId}/Nodes
+     * @secure
+     */
+    housingStocksNodesDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<NodeOnHousingStockResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/Nodes`,
         method: "GET",
         secure: true,
         format: "json",
