@@ -15,6 +15,7 @@ import { EResourceType } from 'myApi';
 import { ResourceNamesDictionary } from './NodesGroup.constants';
 import { getSystemText } from './NodesGroup.utils';
 import { NodeItem } from './NodeItem';
+import { CalculatorInfo } from './CalculatorInfo';
 
 export const NodesGroup: FC<NodesGroupProps> = ({
   nodes,
@@ -35,7 +36,13 @@ export const NodesGroup: FC<NodesGroupProps> = ({
         </GroupTitle>
       </GroupInfoWrapper>
     ),
-    calculator: () => <div></div>,
+    calculator: () => {
+      const calculator = nodes[0]?.networkDevice;
+
+      if (!calculator) return <div>Нет вычислителя</div>;
+
+      return <CalculatorInfo calculator={calculator} />;
+    },
   };
 
   const GroupInfo = groupInfos[segmentName];

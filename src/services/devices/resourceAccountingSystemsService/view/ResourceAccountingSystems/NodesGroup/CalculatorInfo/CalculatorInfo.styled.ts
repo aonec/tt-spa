@@ -14,7 +14,7 @@ export const CalculatorModel = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: hidden;
-  max-width: 130px;
+  max-width: 150px;
 `;
 
 export const CalculatorSerialNumber = styled.div`

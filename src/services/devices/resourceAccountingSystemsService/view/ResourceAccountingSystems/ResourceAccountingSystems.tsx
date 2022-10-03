@@ -14,9 +14,11 @@ import {
 } from './ResourceAccountingSystems.types';
 import { NO_CALCULATOR_KEY } from './ResourceAccountingSystems.constants';
 import { NodesGroup } from './NodesGroup';
+import { Empty, Skeleton } from 'antd';
 
 export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
   nodes,
+  isLoading,
 }) => {
   const [
     segmentName,
@@ -56,18 +58,25 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
           onChange={setSegmentName}
         />
       </Header>
-      <NodesGroupsWrapper>
-        {nodesGroups.map(([key, nodes]) => {
-          return (
-            <NodesGroup
-              nodes={nodes}
-              key={key}
-              groupKey={key}
-              segmentName={segmentName}
-            />
-          );
-        })}
-      </NodesGroupsWrapper>
+      {isLoading && <Skeleton active />}
+      {!isLoading && (
+        <NodesGroupsWrapper>
+          {!nodesGroups.length && (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          )}
+          {nodesGroups.length &&
+            nodesGroups.map(([key, nodes]) => {
+              return (
+                <NodesGroup
+                  nodes={nodes}
+                  key={key}
+                  groupKey={key}
+                  segmentName={segmentName}
+                />
+              );
+            })}
+        </NodesGroupsWrapper>
+      )}
     </Wrapper>
   );
 };

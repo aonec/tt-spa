@@ -1,11 +1,15 @@
 import styled from 'styled-components';
+import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystems.types';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{
+  segmentName: ResourceAccountingSystemsSegment;
+}>`
   height: 60px;
   padding: 0 25px;
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: ${({ segmentName }) =>
+    segmentName === 'resource' ? '0.7fr 1fr 1fr' : '1fr 1fr'};
   align-items: center;
 
   border-top: 1px solid #e9e9e9;
@@ -42,4 +46,12 @@ export const NoCalculatorTextWrapper = styled.div`
 export const NodeStatusWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const NodeInfoWrapper = styled.div`
+  display: flex;
+`;
+
+export const NodeInfo = styled.div`
+  margin-left: 10px;
 `;
