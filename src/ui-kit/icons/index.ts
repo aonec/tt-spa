@@ -38,6 +38,10 @@ import { ReactComponent as FinishIcon } from './svg/finish.svg';
 import { ReactComponent as ChevronIcon } from './svg/chevron.svg';
 import { ReactComponent as PersonIcon } from './svg/person.svg';
 import { ReactComponent as PureResourceIcon } from './svg/pureResource.svg';
+import { ReactComponent as NotRegisteredIcon } from './svg/notRegistered.svg';
+import { ReactComponent as PreparedForDeliveryIcon } from './svg/preparedForDelivery.svg';
+import { ReactComponent as PendingApprovalIcon } from './svg/pendingApproval.svg';
+import { ReactComponent as RegisteredIcon } from './svg/registered.svg';
 
 export {
   FinishIcon,
@@ -80,4 +84,8 @@ export {
   ChevronIcon,
   PersonIcon,
   PureResourceIcon,
+  NotRegisteredIcon,
+  PreparedForDeliveryIcon,
+  PendingApprovalIcon,
+  RegisteredIcon,
 };

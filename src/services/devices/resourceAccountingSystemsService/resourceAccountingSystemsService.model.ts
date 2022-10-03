@@ -22,7 +22,9 @@ forward({
   to: fetchNodesFx,
 });
 
+const $isLoading = fetchNodesFx.pending;
+
 export const resourceAccountingSystemsService = {
-  outputs: { $nodes },
+  outputs: { $nodes, $isLoading },
   gates: { NodesGate },
 };

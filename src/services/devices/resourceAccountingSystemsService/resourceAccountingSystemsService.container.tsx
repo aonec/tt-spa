@@ -12,11 +12,12 @@ export const ResourceAccountingSystemsContainer = () => {
   const { id } = useParams<{ id: string }>();
 
   const nodes = useStore(outputs.$nodes);
+  const isLoading = useStore(outputs.$isLoading);
 
   return (
     <>
       {id && <NodesGate housingStockId={Number(id)} />}
-      <ResourceAccountingSystems nodes={nodes} />
+      <ResourceAccountingSystems nodes={nodes} isLoading={isLoading} />
     </>
   );
 };
