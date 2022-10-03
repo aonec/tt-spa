@@ -19,7 +19,7 @@ export const InfoWrapper = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 2.7fr 1.5fr 1fr;
-  grid-column-gap: 8px;
+  grid-column-gap: 15px;
   cursor: pointer;
   flex-grow: 1;
 
@@ -43,6 +43,7 @@ export const FileNameWrapper = styled.div`
 
 export const TrashIconWrapper = styled.div`
   margin-left: 16px;
+  cursor: pointer;
   &:hover {
     path {
       fill: #fc525b;
@@ -51,16 +52,18 @@ export const TrashIconWrapper = styled.div`
 `;
 
 export const AuthorWrapper = styled.div`
-  margin-left: 8px;
   color: #272f5ab2;
+  white-space: nowrap;
+  margin-left: 10px;
 
   font-size: 14px;
 `;
 
 export const DateWrapper = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
   color: #272f5a;
   font-size: 14px;
+  white-space: nowrap;
 `;
 
 export const GroupWrapper = styled.div`

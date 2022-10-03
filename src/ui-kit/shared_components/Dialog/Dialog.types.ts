@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type DialogProps = {
   isOpen: boolean;
   title: string;
@@ -7,6 +9,7 @@ export type DialogProps = {
   submitText?: string;
   cancelText?: string;
   isLoading?: boolean;
+  description?: ReactNode;
 };
 
 export enum BtnType {

@@ -10,7 +10,7 @@ import {
 import { DisablingResourcesProps } from '../../ResourceDisablingScheduleContainer.types';
 import { DisablingResourcesSearchProps } from './DisablingResourcesSearchHeader.types';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
-import { ClassLookUp } from './DisablingResourcesSearchHeader.utils';
+import { ResourceDisconnectingClassLookUp } from './DisablingResourcesSearchHeader.utils';
 import _ from 'lodash';
 
 const { Option } = Select;
@@ -93,7 +93,7 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
           {Object.keys(EResourceDisconnectingType).map((el) => {
             return (
               <Option value={el}>
-                {ClassLookUp[el as EResourceDisconnectingType]}{' '}
+                {ResourceDisconnectingClassLookUp[el as EResourceDisconnectingType]}{' '}
               </Option>
             );
           })}
@@ -105,7 +105,7 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
       <FormItem>
         <SelectSC
           value={values?.OrderBy}
-          placeholder="Дате проверки"
+          placeholder="Дате отключения"
           onChange={(value) => {
             setFieldValue('OrderBy', value);
             handleSubmit();

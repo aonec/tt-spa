@@ -69,7 +69,6 @@ const Internal = () => {
     ? '/tasks/list/Observing'
     : '/tasks/list/Executing';
 
-    
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
@@ -105,16 +104,13 @@ const Internal = () => {
 
               <Route path="/tasks">
                 <TasksIsOpen />
+
                 <Route
-                  path="/tasks/profile/(\\d+)"
-                  component={TaskProfile}
-                  exact
-                />
-                <Route
-                  path="/tasks/test-profile/:taskId"
+                  path="/tasks/profile/:taskId"
                   component={TaskProfileContainer}
                   exact
                 />
+                
                 <Route
                   path="/tasks/list/:grouptype"
                   component={TasksProfileContainer}

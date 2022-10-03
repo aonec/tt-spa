@@ -1,0 +1,1 @@
+export { AddressesListItem } from './AddressesListItem'

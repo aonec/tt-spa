@@ -1,46 +1,39 @@
 import React from 'react';
 import moment from 'moment';
 import { Popover } from 'antd';
-import { ResourceDisconnectingResponse } from 'myApi';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { Color } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
 import {
   GroupWrapper,
   StyledGridTableBody,
-  ResourceTextWrapper,
   SenderColumn,
-} from './DisablingResourceItem.styles';
-import {
-  SenderWrapper,
-  StyledFontLarge,
   StyledLinkTypeElement,
   StyledTextElement,
-  TimeElement,
-} from '../DisablingResoucesList.styles';
+  SenderWrapper,
+} from './DisablingResourceItem.styles';
+import { StyledFontLarge, TimeElement } from '../DisablingResoucesList.styles';
 import { declOfNum } from '../DisablingResourcesList.utils';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceDisconnectingClassLookUp } from '../../DisablingResourcesSearchHeader/DisablingResourcesSearchHeader.utils';
+import { RenderApartmentProps } from './DisablingResourceItem.types';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 
-interface Props {
-  openModal: () => void;
-}
-
-type TypeUnion = ResourceDisconnectingResponse & Props;
-
-export const RenderApartment: React.FC<TypeUnion> = ({
-  id,
-  resource,
-  disconnectingType,
-  startDate,
-  endDate,
-  sender,
-  heatingStation,
-  housingStocks,
+export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
+  disconnection,
   openModal,
+  handleOpenCompleteDisconnectionModal,
+  handleOpenDeleteDisconnectionModal,
+  handleOpenEditDisconnectionModal,
 }) => {
-  const temporaryOnClick = () => {
-    return void 0;
-  };
+  const {
+    disconnectingType,
+    endDate,
+    heatingStation,
+    housingStocks,
+    resource,
+    sender,
+    startDate,
+    id,
+  } = disconnection;
 
   return (
     <StyledGridTableBody>
@@ -49,30 +42,35 @@ export const RenderApartment: React.FC<TypeUnion> = ({
           <StyledFontLarge>
             {moment(startDate).format('DD.MM.YYYY')}
           </StyledFontLarge>
-          <span>{moment(startDate).format('hh:mm')}</span>
+          <span>{moment(startDate).format('HH:mm')}</span>
         </TimeElement>
-        -
-        <TimeElement>
-          <StyledFontLarge>
-            {moment(endDate).format('DD.MM.YYYY')}
-          </StyledFontLarge>
-          <span>{moment(endDate).format('hh:mm')}</span>
-        </TimeElement>
+        {endDate && (
+          <>
+            -
+            <TimeElement>
+              <StyledFontLarge>
+                {moment(endDate).format('DD.MM.YYYY')}
+              </StyledFontLarge>
+              <span>{moment(endDate).format('HH:mm')}</span>
+            </TimeElement>
+          </>
+        )}
       </GroupWrapper>
 
       <GroupWrapper>
-        <ResourceIconLookup resource={resource} />
-        <ResourceTextWrapper>{ResourceLookUp[resource]}</ResourceTextWrapper>
+        <ResourceInfo resource={resource} />
       </GroupWrapper>
 
-      <StyledLinkTypeElement onClick={openModal}>
+      <StyledLinkTypeElement onClick={() => openModal(disconnection)}>
         {(housingStocks &&
           declOfNum(housingStocks?.length, ['адрес', 'адреса', 'адресов'])) ||
           'Не указан'}{' '}
       </StyledLinkTypeElement>
 
       <StyledTextElement>{heatingStation?.name || 'Нет'}</StyledTextElement>
-      <StyledTextElement>{disconnectingType?.description}</StyledTextElement>
+      <StyledTextElement>
+        {ResourceDisconnectingClassLookUp[disconnectingType?.value!]}
+      </StyledTextElement>
 
       <SenderColumn>
         <Popover content={sender}>
@@ -83,15 +81,23 @@ export const RenderApartment: React.FC<TypeUnion> = ({
             menuButtons={[
               {
                 title: 'Редактировать отключение',
-                onClick: temporaryOnClick,
+                onClick: () => handleOpenEditDisconnectionModal(id),
               },
               {
                 title: 'Завершить отключение',
-                onClick: temporaryOnClick,
+                onClick: () =>
+                  handleOpenCompleteDisconnectionModal({
+                    id,
+                    endDate: endDate || '',
+                  }),
               },
               {
                 title: 'Удалить отключение',
-                onClick: temporaryOnClick,
+                onClick: () =>
+                  handleOpenDeleteDisconnectionModal({
+                    id,
+                    endDate: endDate || '',
+                  }),
                 color: 'red' as Color,
               },
             ]}

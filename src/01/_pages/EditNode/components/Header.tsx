@@ -19,7 +19,7 @@ export const Header = ({ node }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, number: housingStockNumber } = address?.address?.mainAddress || {};
+  const { housingStockId: objectId, number: housingStockNumber } = address?.address?.mainAddress || {};
 
   const getNodeStatus =
     nodeStatusList.find(

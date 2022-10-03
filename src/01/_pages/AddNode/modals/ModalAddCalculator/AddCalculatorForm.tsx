@@ -34,8 +34,12 @@ import {
 } from '../../../../tt-components/validationSchemas';
 import { addCalculator } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
-import { $calculatorTypesSelectItems, CalculatorInfosGate } from '01/features/carlculators/calculatorsInfo/models';
+import {
+  $calculatorTypesSelectItems,
+  CalculatorInfosGate,
+} from '01/features/carlculators/calculatorsInfo/models';
 import { useStore } from 'effector-react';
+import { DatePickerSC } from './AddCalculatorForm.styled';
 
 const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
@@ -235,7 +239,7 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
             </Form.Item>
 
             <Form.Item label="Дата поверки" style={styles.w49}>
-              <DatePickerTT
+              <DatePickerSC
                 format="DD.MM.YYYY"
                 name="lastCheckingDate"
                 allowClear={false}
@@ -251,7 +255,7 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
             </Form.Item>
 
             <Form.Item label="Дата следующей поверки" style={styles.w49}>
-              <DatePickerTT
+              <DatePickerSC
                 format="DD.MM.YYYY"
                 name="futureCheckingDate"
                 allowClear={false}
@@ -266,7 +270,7 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
               label="Дата начала Акта действия допуска"
               style={styles.w49}
             >
-              <DatePickerTT
+              <DatePickerSC
                 format="DD.MM.YYYY"
                 name="lastCommercialAccountingDate"
                 allowClear={false}
@@ -281,7 +285,7 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
               label="Дата окончания Акта действия допуска"
               style={styles.w49}
             >
-              <DatePickerTT
+              <DatePickerSC
                 format="DD.MM.YYYY"
                 name="futureCommercialAccountingDate"
                 allowClear={false}

@@ -17,16 +17,32 @@ export const TaskProfileContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const isPerpetrator = useStore(outputs.$isPerpetrator);
   const commentText = useStore(outputs.$commentText);
+  const currentUser = useStore(outputs.$currentUser);
   const documents = useStore(outputs.$documents);
+  const isPushStageLoading = useStore(outputs.$isPushStageLoading);
+  const isRevertStageLoading = useStore(outputs.$isRevertStageLoading);
+  const deleteDocumentModalIsOpen = useStore(
+    outputs.$deleteDocumentModalIsOpen
+  );
 
   const addComment = useEvent(inputs.addComment);
   const setComment = useEvent(inputs.setComment);
   const handleDeleteDocument = useEvent(inputs.deleteDocument);
+  const pushStage = useEvent(inputs.handlePushStage);
+  const handleRevertStage = useEvent(inputs.handleRevertStage);
+  const handleChangePushStagePayload = useEvent(
+    inputs.handleChangePushStagePayload
+  );
+  const openDeleteDocumentModal = useEvent(inputs.openDeleteDocumentModal);
+  const closeDeleteDocumentModal = useEvent(inputs.closeDeleteDocumentModal);
 
   const device = task && task.device;
   const nodeId = device?.nodeId;
 
   const relatedPipeNode = nodeId ? pipeNode : null;
+
+  const isViewerExecutor =
+    Boolean(currentUser?.id) && currentUser?.id === task?.perpetrator?.id;
 
   return (
     <>
@@ -34,18 +50,28 @@ export const TaskProfileContainer = () => {
       <ReadingsHistoryModal readonly />
       <TaskIdGate taskId={Number(taskId)} />
 
-      {isLoading && <Skeleton active />}
+      {isLoading && !task && <Skeleton active />}
 
-      {!isLoading && task && (
+      {task && (
         <TaskProfile
-          handleDeleteDocument={handleDeleteDocument}
+          handleDeleteDocument={() => handleDeleteDocument()}
           task={task}
+          isLoadingTask={isLoading}
           isPerpetrator={isPerpetrator}
           handleAddComment={() => addComment()}
           handleSetComment={setComment}
           commentText={commentText}
           relatedPipeNode={relatedPipeNode}
+          isViewerExecutor={isViewerExecutor}
           documents={documents}
+          pushStage={() => pushStage()}
+          isPushStageLoading={isPushStageLoading}
+          handleRevertStage={() => handleRevertStage()}
+          isRevertStageLoading={isRevertStageLoading}
+          handleChangePushStagePayload={handleChangePushStagePayload}
+          deleteDocumentModalIsOpen={deleteDocumentModalIsOpen}
+          openDeleteDocumentModal={openDeleteDocumentModal}
+          closeDeleteDocumentModal={() => closeDeleteDocumentModal()}
         />
       )}
     </>

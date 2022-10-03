@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import {
   Footer,
   Header,
@@ -46,6 +46,46 @@ export const ModalTT: React.FC<Props> = (props) => {
 
   const text = saveBtnText || 'Сохранить';
 
+  const footerComponent = useMemo(() => {
+    if (footer === null) {
+      return null;
+    }
+    if (!footer) {
+      return <Footer>
+        <ButtonTT
+          color={'white'}
+          key="back"
+          onClick={customCancelButton || onCancel}
+        >
+          {cancelBtnText}
+        </ButtonTT>
+        {customSubmit || (
+          <ButtonTT
+            color={saveButtonType || 'blue'}
+            key="submit"
+            type="submit"
+            onClick={onSubmit}
+            disabled={loading || disabled}
+          >
+            {loading ? <Loader show /> : text}
+          </ButtonTT>
+        )}
+      </Footer>;
+    }
+    return footer;
+  }, [
+    footer,
+    onSubmit,
+    loading,
+    text,
+    disabled,
+    saveButtonType,
+    customSubmit,
+    cancelBtnText,
+    customCancelButton,
+    onCancel,
+  ]);
+
   return (
     <StyledModal
       visible={visible}
@@ -54,30 +94,7 @@ export const ModalTT: React.FC<Props> = (props) => {
       title={<Header>{title}</Header>}
       centered={centered}
       destroyOnClose
-      footer={
-        footer || (
-          <Footer>
-            <ButtonTT
-              color={'white'}
-              key="back"
-              onClick={customCancelButton || onCancel}
-            >
-              {cancelBtnText}
-            </ButtonTT>
-            {customSubmit || (
-              <ButtonTT
-                color={saveButtonType || 'blue'}
-                key="submit"
-                type="submit"
-                onClick={onSubmit}
-                disabled={loading || disabled}
-              >
-                {loading ? <Loader show /> : text}
-              </ButtonTT>
-            )}
-          </Footer>
-        )
-      }
+      footer={footerComponent}
     >
       <ModalText>{children}</ModalText>
     </StyledModal>
