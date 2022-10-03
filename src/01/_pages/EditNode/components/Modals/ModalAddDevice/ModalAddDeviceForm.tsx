@@ -49,12 +49,14 @@ interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  refetchNode: () => void;
 }
 
 const ModalAddDeviceForm = ({
   node,
   handleCancel,
   setVisible,
+  refetchNode,
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
@@ -144,8 +146,12 @@ const ModalAddDeviceForm = ({
   const handleSubmit = (values: any) => {
     const form: CreatePipeHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
-      lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
-      futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
+      lastCheckingDate: moment(values.lastCheckingDate)
+        .utcOffset(0, true)
+        .toISOString(),
+      futureCheckingDate: moment(values.futureCheckingDate)
+        .utcOffset(0, true)
+        .toISOString(),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       model: values.model,
       diameter:
@@ -159,9 +165,8 @@ const ModalAddDeviceForm = ({
       },
     };
     addHousingMeteringDevice(form).then(() => {
-      setTimeout(() => {
-        setVisible(false);
-      }, 1000);
+      setVisible(false);
+      refetchNode();
     });
   };
 
@@ -363,6 +368,18 @@ const ModalAddDeviceForm = ({
                     name="lastCheckingDate"
                     format="DD.MM.YYYY"
                     allowClear={false}
+                    onChange={(_, dateStr) => {
+                      setFieldValue(
+                        'lastCheckingDate',
+                        moment(dateStr, 'DD.MM.YYYY').toISOString(true)
+                      );
+                      setFieldValue(
+                        'futureCheckingDate',
+                        moment(dateStr, 'DD.MM.YYYY')
+                          .add(3, 'years')
+                          .toISOString()
+                      );
+                    }}
                   />
                 </Form.Item>
 
