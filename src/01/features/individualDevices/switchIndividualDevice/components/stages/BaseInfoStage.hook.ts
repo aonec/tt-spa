@@ -11,9 +11,9 @@ export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
     if (!nextNode) {
       const firstNode = inputList[0];
 
-      handleFocus(firstNode);
+      return handleFocus(firstNode);
     }
-    handleFocus(nextNode);
+    return handleFocus(nextNode);
   };
 
   useEffect(() => {
@@ -26,11 +26,11 @@ export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
 };
 
 const handleFocus = (node: HTMLInputElement): void => {
-  const isInput = node?.tagName === 'INPUT';
+  const isInput = node.tagName === 'INPUT';
 
   if (!isInput) {
-    const inputList = node?.getElementsByTagName('input');
-    return inputList?.item(0)?.focus();
+    const inputList = node.getElementsByTagName('input');
+    return inputList.item(0)?.focus();
   }
-  return node?.focus();
+  return node.focus();
 };
