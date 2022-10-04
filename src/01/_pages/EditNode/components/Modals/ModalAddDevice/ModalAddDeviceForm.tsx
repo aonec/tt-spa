@@ -187,6 +187,8 @@ const ModalAddDeviceForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnBlur={false}
+      validateOnChange={false}
       onSubmit={(values) => handleSubmit(values)}
       render={({ values, errors, setFieldValue }) => {
         const coldWaterValidation = (housingMeteringDeviceType: string) => {
