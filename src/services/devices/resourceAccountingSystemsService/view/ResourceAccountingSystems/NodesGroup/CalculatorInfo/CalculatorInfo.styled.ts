@@ -4,6 +4,13 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  transition: 0.2s;
+
+  &:hover {
+    div {
+      color: #189ee9 !important;
+    }
+  }
 `;
 
 export const CalculatorModel = styled.div`

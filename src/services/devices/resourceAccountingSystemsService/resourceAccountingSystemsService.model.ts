@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { NodeOnHousingStockResponse } from 'myApi';
+import { EResourceType, NodeOnHousingStockResponse } from 'myApi';
 import { getNodes } from './resourceAccountingSystemsService.api';
 
 const domain = createDomain('resourceAccountingSystemsService');
@@ -14,7 +14,9 @@ const NodesGate = createGate<{ housingStockId: number }>();
 
 const $nodes = domain
   .createStore<NodeOnHousingStockResponse[] | null>(null)
-  .on(fetchNodesFx.doneData, (_, nodes) => nodes)
+  .on(fetchNodesFx.doneData, (_, nodes) =>
+    nodes?.filter((node) => node.resource !== EResourceType.Electricity)
+  )
   .reset(NodesGate.close);
 
 forward({

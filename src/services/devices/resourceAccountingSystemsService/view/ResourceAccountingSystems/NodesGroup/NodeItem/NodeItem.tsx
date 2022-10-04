@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
@@ -15,12 +16,12 @@ import { NodeStatus } from './NodeStatus';
 
 export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
   const nodeInfo = (
-    <>
+    <Link to={`/nodes/${node.id}`}>
       <NodeName>Узел {node.number}</NodeName>
       <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
         {node.serviceZone?.name || 'Зона не указана'}
       </NodeServiceZone>
-    </>
+    </Link>
   );
 
   return (
@@ -28,7 +29,10 @@ export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
       {segmentName === 'resource' && <div>{nodeInfo}</div>}
       {segmentName === 'calculator' && (
         <NodeInfoWrapper>
-          <ResourceIconLookup resource={node.resource} />
+          <ResourceIconLookup
+            style={{ transform: 'translateY(-8px)' }}
+            resource={node.resource}
+          />
           <NodeInfo>{nodeInfo}</NodeInfo>
         </NodeInfoWrapper>
       )}

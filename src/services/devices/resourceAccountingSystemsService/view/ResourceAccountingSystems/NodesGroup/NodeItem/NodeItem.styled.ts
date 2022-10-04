@@ -1,3 +1,5 @@
+import { EResourceType } from './../../../../../../../myApi';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import styled from 'styled-components';
 import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystems.types';
 
@@ -24,6 +26,11 @@ export const NodeName = styled.div`
   font-size: 16px;
   line-height: 18px;
   color: #272f5a;
+  transition: 0.2s;
+
+  &:hover {
+    color: #189ee9;
+  }
 `;
 
 export const NodeServiceZone = styled.div<{ isZoneExist: boolean }>`
@@ -50,6 +57,7 @@ export const NodeStatusWrapper = styled.div`
 
 export const NodeInfoWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const NodeInfo = styled.div`

@@ -49,7 +49,7 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
               name: 'resource',
             },
             {
-              title: 'По вычислителю',
+              title: 'По точке опроса',
               icon: <CalculatorIcon />,
               name: 'calculator',
             },
