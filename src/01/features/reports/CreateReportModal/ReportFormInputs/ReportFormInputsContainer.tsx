@@ -1,5 +1,10 @@
 import { useForm } from 'effector-forms/dist';
+import { EResourceType } from 'myApi';
 import React, { useMemo } from 'react';
+import { FormItem } from 'ui-kit/FormItem';
+import { Select } from 'ui-kit/Select';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import { form } from '../models';
 import { ReportType } from '../types';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
@@ -39,14 +44,30 @@ export const ReportFormInputsContainer = () => {
           />
         ),
       },
+      {
+        reportTypes: [ReportType.CheckingDatesReport],
+        element: (
+          <>
+            <FormItem label="Ресурс">
+              <Select mode="multiple">
+                {Object.values(EResourceType).map((resource) => (
+                  <Select.Option key={resource} value={resource}>
+                    <ResourceIconLookup resource={resource} />
+                    {resourceNamesLookup[resource]}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          </>
+        ),
+      },
     ],
     [rangePeriod, period, changePeriod]
   );
 
-  const formInputsElement =
-    type &&
+  const formInputsElement = (type &&
     formInputsLookup.find((formInputs) => formInputs.reportTypes.includes(type))
-      ?.element!;
+      ?.element) || <></>;
 
   return formInputsElement;
 };
