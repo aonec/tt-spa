@@ -2,19 +2,13 @@ import React, { FC, useMemo, useState } from 'react';
 import _ from 'lodash';
 import { CalculatorIcon, PureResourceIcon } from 'ui-kit/icons';
 import { Segmented } from 'ui-kit/Segmented';
-import {
-  Header,
-  NodesGroupsWrapper,
-  Title,
-  Wrapper,
-} from './ResourceAccountingSystems.styled';
+import { Header, Title, Wrapper } from './ResourceAccountingSystems.styled';
 import {
   ResourceAccountingSystemsProps,
   ResourceAccountingSystemsSegment,
 } from './ResourceAccountingSystems.types';
 import { NO_CALCULATOR_KEY } from './ResourceAccountingSystems.constants';
-import { NodesGroup } from './NodesGroup';
-import { Empty, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 
 export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
   nodes,
@@ -59,24 +53,6 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
         />
       </Header>
       {isLoading && <Skeleton active />}
-      {!isLoading && (
-        <NodesGroupsWrapper>
-          {!nodesGroups.length && (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          )}
-          {nodesGroups.length &&
-            nodesGroups.map(([key, nodes]) => {
-              return (
-                <NodesGroup
-                  nodes={nodes}
-                  key={key}
-                  groupKey={key}
-                  segmentName={segmentName}
-                />
-              );
-            })}
-        </NodesGroupsWrapper>
-      )}
     </Wrapper>
   );
 };
