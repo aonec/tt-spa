@@ -15,8 +15,6 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { EResourceType } from 'myApi';
 import { ResourceNamesDictionary } from './NodesGroup.constants';
 import { getSystemText } from './NodesGroup.utils';
-import { NodeItem } from './NodeItem';
-import { CalculatorInfo } from './CalculatorInfo';
 
 export const NodesGroup: FC<NodesGroupProps> = ({
   nodes,
@@ -44,11 +42,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
         return <NoCalculatorTitle>Нет вычислителя</NoCalculatorTitle>;
       }
 
-      return (
-        <GroupInfoWrapper>
-          <CalculatorInfo calculator={calculator} />
-        </GroupInfoWrapper>
-      );
+      return null;
     },
   };
 
@@ -71,13 +65,6 @@ export const NodesGroup: FC<NodesGroupProps> = ({
           </ChevronWrapper>
         </GroupInfoWrapper>
       </Header>
-      {isOpen && (
-        <div>
-          {nodes.map((node) => (
-            <NodeItem node={node} segmentName={segmentName} />
-          ))}
-        </div>
-      )}
     </Wrapper>
   );
 };
