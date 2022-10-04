@@ -7,6 +7,7 @@ import {
   GroupInfoWrapper,
   GroupTitle,
   Header,
+  NoCalculatorTitle,
   Wrapper,
 } from './NodesGroup.styled';
 import { NodesGroupProps } from './NodesGroup.types';
@@ -39,9 +40,15 @@ export const NodesGroup: FC<NodesGroupProps> = ({
     calculator: () => {
       const calculator = nodes[0]?.networkDevice;
 
-      if (!calculator) return <div>Нет вычислителя</div>;
+      if (!calculator) {
+        return <NoCalculatorTitle>Нет вычислителя</NoCalculatorTitle>;
+      }
 
-      return <CalculatorInfo calculator={calculator} />;
+      return (
+        <GroupInfoWrapper>
+          <CalculatorInfo calculator={calculator} />
+        </GroupInfoWrapper>
+      );
     },
   };
 

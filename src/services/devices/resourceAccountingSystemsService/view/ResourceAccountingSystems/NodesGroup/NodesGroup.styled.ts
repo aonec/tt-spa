@@ -24,10 +24,23 @@ export const Header = styled.div`
 export const GroupInfoWrapper = styled.div`
   display: flex;
   align-items: center;
+  font-weight: 400;
+
+  div {
+    font-size: 16px !important;
+    font-weight: 400;
+  }
 `;
 
 export const GroupTitle = styled.div`
   margin-left: 10px;
+  color: #272f5a;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 32px;
+`;
+
+export const NoCalculatorTitle = styled.div`
   color: #272f5a;
   font-weight: 400;
   font-size: 16px;
