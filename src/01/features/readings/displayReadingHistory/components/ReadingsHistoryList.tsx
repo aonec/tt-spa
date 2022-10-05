@@ -230,8 +230,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <SourceName sourceType={reading.source} user={reading.user} />
     );
 
-    const uploadTime = reading && (
-      <div>{getTimeStringByUTC(reading.uploadTime)}</div>
+    const entryDate = reading && (
+      <div>{getTimeStringByUTC(reading.entryDate)}</div>
     );
 
     const arrowButtonComponent =
@@ -244,7 +244,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         <div>{consumption}</div>
         <div>{averageConsumption}</div>
         <div>{source}</div>
-        <div>{uploadTime}</div>
+        <div>{entryDate}</div>
         {arrowButtonComponent}
       </WrapComponent>
     );

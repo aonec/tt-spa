@@ -36,7 +36,7 @@ export const useReadings = (
   sliderIndex = 0,
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean,
+  closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -109,7 +109,7 @@ export const useReadings = (
           : {
               values: previousReadingsArray,
               date: prevReadings.readingDateTime || null,
-              uploadTime: prevReadings.uploadTime,
+              entryDate: prevReadings.entryDate,
               source: prevReadings.source,
               user: prevReadings.user,
               id: prevReadings.id,
@@ -128,7 +128,7 @@ export const useReadings = (
         prevId: prevReadings.id,
         currId: currentReadings.id,
         resource: device.resource,
-        uploadTime: currentReadings.uploadTime,
+        entryDate: currentReadings.entryDate,
         source: currentReadings.source,
         user: currentReadings.user,
         currentReadingId: currentReadings.id,
@@ -188,6 +188,7 @@ export const useReadings = (
           };
         }, {}),
       readingDate: moment().toISOString(true),
+      entryDate: moment().toISOString(true),
       uploadTime: moment().toISOString(true),
       isForced: true,
     };
@@ -219,7 +220,7 @@ export const useReadings = (
           ...prev.previousReadings,
           [sliderIndex]: {
             ...prev.previousReadings[sliderIndex],
-            uploadTime: moment(res.uploadTime).toISOString(true),
+            entryDate: moment(res.entryDate).toISOString(true),
             source: res.source,
             user: res.user,
             id: res.id,
@@ -391,7 +392,7 @@ export const useReadings = (
 
         setReadingsState((prev: any) => ({
           ...prev,
-          uploadTime: moment(res.uploadDate).toISOString(true),
+          entryDate: moment(res.entryDate).toISOString(true),
           source: res.source,
           user: res.user,
           currentReadingId: res.id || prev.currentReadingId,
@@ -622,7 +623,7 @@ export const useReadings = (
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean,
-    uploadTime?: string
+    entryDate?: string
   ): OptionsInterface[] => [
     {
       value: () => (
@@ -647,7 +648,7 @@ export const useReadings = (
             }
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+            {(entryDate && moment(entryDate).format('DD.MM.YYYY')) ||
               'Нет показаний'}
           </ReadingUploadDate>
         </Wide>
@@ -694,7 +695,7 @@ export const useReadings = (
             }
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+            {(entryDate && moment(entryDate).format('DD.MM.YYYY')) ||
               'Нет показаний'}
           </ReadingUploadDate>
         </div>
@@ -740,7 +741,7 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+            {(entryDate && moment(entryDate).format('DD.MM.YYYY')) ||
               'Нет показаний'}
           </ReadingUploadDate>
         </div>
@@ -752,7 +753,7 @@ export const useReadings = (
   const previousResultReadings = options(
     previousDeviceReadings,
     false,
-    readingsState.previousReadings[sliderIndex]?.uploadTime
+    readingsState.previousReadings[sliderIndex]?.entryDate
   )
     .find((el) => el.isSuccess)!
     .value();
@@ -760,7 +761,7 @@ export const useReadings = (
   const currentReadings = options(
     currentDeviceReadings,
     true,
-    readingsState.uploadTime
+    readingsState.entryDate
   )
     .find((el) => el.isSuccess)!
     .value();
@@ -932,6 +933,7 @@ interface ReadingElem {
   values: number[];
   date: string | null;
   uploadTime?: string;
+  entryDate?: string;
   source?: EIndividualDeviceReadingsSource;
   user?: any;
   id: number;
@@ -951,6 +953,7 @@ export type ReadingsStateType = {
   currId: number;
   resource: string;
   uploadTime?: string;
+  entryDate?: string;
   source?: EIndividualDeviceReadingsSource;
   user?: any;
   status?: RequestStatusShared;
@@ -965,6 +968,7 @@ type ReadingType = {
   readingDate: string;
   uploadTime: string;
   isForced: boolean;
+  entryDate: string;
 };
 
 interface OptionsInterface {

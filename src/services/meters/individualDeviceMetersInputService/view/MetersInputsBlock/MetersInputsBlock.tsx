@@ -73,7 +73,10 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     isPrevious,
   ]);
 
-  const nextInput = useSwitchInputOnEnter(dataString, !isPrevious && inputIndex === 0);
+  const nextInput = useSwitchInputOnEnter(
+    dataString,
+    !isPrevious && inputIndex === 0
+  );
 
   const handleReadingInputFocus = useCallback(
     (e?: FocusEvent<HTMLInputElement>) => {
@@ -196,7 +199,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     ]
   );
   const readingDate = useMemo(() => {
-    const readingDate = reading?.uploadTime;
+    const readingDate = reading?.entryDate;
 
     if (!readingDate) return '';
 

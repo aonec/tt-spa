@@ -112,7 +112,7 @@ export function ApartmentDeviceItem({
           }}
         >
           {previousReading &&
-            moment(previousReading.uploadTime).format('DD.MM.YYYY')}
+            moment(previousReading.entryDate).format('DD.MM.YYYY')}
         </Flex>
       </div>
       <div style={{ marginTop: currentReading && '22px' }}>
@@ -129,7 +129,7 @@ export function ApartmentDeviceItem({
           }}
         >
           {currentReading &&
-            moment(currentReading.uploadTime).format('DD.MM.YYYY')}
+            moment(currentReading.entryDate).format('DD.MM.YYYY')}
         </Flex>
       </div>
       <div style={{ marginLeft: 15 }}>
