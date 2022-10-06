@@ -21,3 +21,8 @@ export const ArrowRight = styled(ChevronRight)`
 export const HomeownerAccountChangeDate = styled.div`
   color: #272f5ab2;
 `;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;

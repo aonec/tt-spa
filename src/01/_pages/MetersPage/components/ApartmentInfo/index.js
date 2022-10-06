@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 import React, { useEffect, useMemo, useState } from 'react';
-
-import { UserInfo } from './UserInfo';
 import { Icon, Loader } from '01/components';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -30,7 +28,6 @@ import moment from 'moment';
 import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
-import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
@@ -42,12 +39,15 @@ import {
   AlertLink,
   ApartmentAlertWrapper,
   ArrowRight,
+  GroupWrapper,
   HomeownerAccountChangeDate,
   Wrapper,
 } from './ApartmentInfo.styled';
 import { checkIsHomeownerAccountRecentlyModified } from './utils';
 import { Skeleton } from 'antd';
 import { ESecuredIdentityRoleName } from 'myApi';
+import { HomeownerInfo } from './HomeownerInfo';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -63,10 +63,8 @@ export const ApartmentInfo = () => {
     setCurrentPersonalNumberIndex(0);
   }, [homeownerAccounts]);
 
-  const { userInfo = [], title, comment } = useApartmentInfo(
-    apartment,
-    currentPersonalNumberIndex
-  );
+  const title = getApartmentAddressString(apartment);
+
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const currentHomeowner =
@@ -203,44 +201,49 @@ export const ApartmentInfo = () => {
   const toggle = (
     <div onClick={() => setShow((p) => !p)} style={{ cursor: 'pointer' }}>
       {show ? (
-        <>
+        <GroupWrapper>
           <Icon
             icon="off"
             color="var(--main-100)"
             style={{ marginRight: 8, position: 'relative', top: 1 }}
           />
           <span>Скрыть подробную информацию</span>
-        </>
+        </GroupWrapper>
       ) : (
-        <>
+        <GroupWrapper>
           <Icon
             icon="on"
             color="var(--main-100)"
             style={{ marginRight: 8, position: 'relative', top: 1 }}
           />
           <span>Показать подробную информацию</span>
-        </>
+        </GroupWrapper>
       )}
     </div>
   );
 
   const content = apartment && (
-    <Grid>
-      <div>
-        <Spaces spaceStyles={{ height: 10 }}>
-          <CommentTitle>Управляющая компания</CommentTitle>
-          {houseManagementRender}
-          {toggle}
-        </Spaces>
-        {show ? (
-          <>
-            <Space h={10} />
-            <UserInfo list={userInfo} />
-          </>
-        ) : null}
-      </div>
-      <ApartmentComment comment={comment} />
-    </Grid>
+    <>
+      <Grid>
+        <div>
+          <Spaces spaceStyles={{ height: 10 }}>
+            <CommentTitle>Управляющая компания</CommentTitle>
+            {houseManagementRender}
+            {toggle}
+          </Spaces>
+        </div>
+        <ApartmentComment comment={apartment.comment || ''} />
+      </Grid>
+      {show ? (
+        <>
+          <Space h={10} />
+          <HomeownerInfo
+            apartment={apartment}
+            currentPersonalNumberIndex={currentPersonalNumberIndex}
+          />
+        </>
+      ) : null}
+    </>
   );
 
   return (
@@ -316,10 +319,11 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
+  height: 100%;
 `;
 
 const ApartmentInfoWrap = styled.div`
-  padding: 10px 10px 10px 15px;
+  padding: 12px 16px 16px 16px;
   margin: 15px 0 0;
   background: rgba(24, 158, 233, 0.1);
   border-radius: 10px;
@@ -350,6 +354,7 @@ const CommentWrap = styled.div`
 `;
 const CommentText = styled.div`
   font-size: 16px;
+  word-break: break-all;
 `;
 
 const ApartmentComment = ({ comment: commentInitial }) => {
