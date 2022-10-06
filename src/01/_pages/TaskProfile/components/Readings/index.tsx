@@ -6,10 +6,10 @@ import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getReadingMonth } from './Readings.utils';
 import { MonthWrapper } from './Readings.styled';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 type Props = {
   getData: (data: any) => void;

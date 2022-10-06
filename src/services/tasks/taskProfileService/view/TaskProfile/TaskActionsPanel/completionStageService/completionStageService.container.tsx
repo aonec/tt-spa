@@ -5,6 +5,7 @@ import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { completionStageService } from './completionStageService.model';
 import { CompletionSelect } from './view/CompletionSelect';
 import { CompletionComment } from './view/CompletionComment';
+import { previousReadingIndexLimit } from 'services/meters/apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 
 const { outputs } = completionStageService;
 
@@ -25,10 +26,15 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
   }
 
   function handleChangeComment(comment: string) {
-    handleChange((prev) => ({
-      ...prev,
-      taskConfirmation: { ...prev.taskConfirmation, comment },
-    }));
+    handleChange((prev) => {
+      if (!prev.taskConfirmation) {
+        return {};
+      }
+      return {
+        ...prev,
+        taskConfirmation: { ...prev.taskConfirmation, comment },
+      };
+    });
   }
 
   if (!taskConfirmationTypes?.length) return null;

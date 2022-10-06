@@ -3,7 +3,7 @@ import Arrow from '../../../_components/Arrow/Arrow';
 import {
   ArrowContainer,
   CenterContainer,
-} from '../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+} from '../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings.styled';
 import { getPreviousReadingsMonth } from '../../lib/readings/getPreviousReadingsMonth';
 
 interface MonthSliderInterface {

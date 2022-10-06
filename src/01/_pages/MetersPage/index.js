@@ -3,7 +3,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { ApartmentInfo } from './components/ApartmentInfo';
-import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
