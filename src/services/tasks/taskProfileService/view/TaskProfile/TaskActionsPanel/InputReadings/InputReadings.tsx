@@ -5,12 +5,11 @@ import { IndividualDeviceOnTaskResponse } from 'myApi';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getReadingMonth } from './InputReadings.utils';
 import { MonthWrapper, ReadingInputSC } from './InputReadings.styled';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);

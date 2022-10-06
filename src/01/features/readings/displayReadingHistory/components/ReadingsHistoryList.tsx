@@ -19,7 +19,6 @@ import {
   getReadingValuesObject,
 } from '../utils';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
@@ -54,6 +53,7 @@ import {
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 interface Props {
   isModal?: boolean;

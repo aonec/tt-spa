@@ -9,10 +9,10 @@ import {
 } from '../../../../../myApi';
 import IsActive from '../../../../tt-components/IsActive';
 import moment from 'moment';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export function ApartmentDeviceItem({
   device,
