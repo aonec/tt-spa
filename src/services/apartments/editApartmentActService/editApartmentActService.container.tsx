@@ -7,15 +7,14 @@ import { EditApartmentActForm } from './view/EditApartmentActForm';
 const { inputs, outputs } = editApartmentActService;
 
 export const EditApartmentActModalContainer = () => {
-
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$editActIsLoading);
   const actTypes = useStore(outputs.$actTypes);
   const initialValues = useStore(outputs.$act);
 
   const handleClose = useEvent(inputs.closeModal);
-  
-  const handleDeleteAct = useEvent(inputs.deleteActDocument)
+
+  const handleDeleteAct = useEvent(inputs.deleteActDocument);
   const handleSubmit = useEvent(inputs.editAct);
   const formId = 'edit-apartment-document';
 
@@ -24,7 +23,7 @@ export const EditApartmentActModalContainer = () => {
       <EditApartmentActForm
         formId={formId}
         handleSubmit={handleSubmit}
-        handleDeleteAct={handleDeleteAct}
+        handleDeleteAct={() => handleDeleteAct()}
         actTypes={actTypes}
         initialValues={initialValues}
       />
