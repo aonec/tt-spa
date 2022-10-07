@@ -1,0 +1,1 @@
+export const NO_CALCULATOR_KEY = "NO_CALCULATOR"

@@ -124,7 +124,7 @@ const ModalAddDeviceForm = ({
     isConnected: isConnectedOptions[0].value,
     serialNumber: undefined,
     lastCheckingDate: moment().toISOString(true),
-    futureCheckingDate: moment().add(3, 'years').toISOString(true),
+    futureCheckingDate: moment().add(4, 'years').toISOString(true),
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate).toISOString(true)
       : moment().toISOString(true),
@@ -187,6 +187,8 @@ const ModalAddDeviceForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnBlur={false}
+      validateOnChange={false}
       onSubmit={(values) => handleSubmit(values)}
       render={({ values, errors, setFieldValue }) => {
         const coldWaterValidation = (housingMeteringDeviceType: string) => {
@@ -395,7 +397,7 @@ const ModalAddDeviceForm = ({
                       setFieldValue(
                         'futureCheckingDate',
                         moment(dateStr, 'DD.MM.YYYY')
-                          .add(3, 'years')
+                          .add(4, 'years')
                           .toISOString()
                       );
                     }}

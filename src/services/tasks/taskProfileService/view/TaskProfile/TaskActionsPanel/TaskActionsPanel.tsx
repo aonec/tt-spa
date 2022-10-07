@@ -39,9 +39,8 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
 
   return (
     <Wrapper>
-      {isLoading ? (
-        <Skeleton active />
-      ) : (
+      {isLoading && <Skeleton active />}
+      {!isLoading && (
         <>
           {actionInfoComponents.map(({ Component }) => (
             <TaskActionInfoElementWrapper>
