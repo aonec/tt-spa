@@ -27,6 +27,8 @@ import { toArray } from '../../addIndividualDevice/components/CheckFormValuesMod
 fetchIndividualDevicesFx.use(getIndividualDevices);
 fetchNextPageOfIndividualDevicesFx.use(getIndividualDevices);
 
+fetchIndividualDevicesFx.doneData.watch(() => console.log('success'));
+
 $individualDevices
   .on(fetchIndividualDevicesFx.doneData, (_, { items: devices }) => devices)
   .reset(resetIndividualDevices, IndividualDevicesGate.close);
@@ -38,9 +40,10 @@ guard({
   target: fetchIndividualDevicesFx,
 });
 
-sample({
+guard({
   source: IndividualDevicesGate.state.map((elem) => elem),
   clock: refetchIndividualDevices,
+  filter: (params)=> Object.values(params).length !== 0,
   target: fetchIndividualDevicesFx,
 });
 
