@@ -8,11 +8,6 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   isOpen,
   handleClose,
   handleCreateResourceDisconnection,
-  cities,
-  selectedCity,
-  handleSelectCity,
-  heatingStations,
-  handleSelectHeatingStation,
   treeData,
   disconnectingTypes,
   resourceTypes,
@@ -21,13 +16,24 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   isEdit,
   resourceDisconnection,
   handleEditResourceDisconnection,
+  handleUpdateDocument,
+  setTypeOfAddress,
+  typeOfAddress,
+  isHousingStocksLoading
 }) => {
+  const buttonPlaceholder = isEdit
+    ? 'Сохранить изменения'
+    : 'Создать отключение';
+  const modalTitle = isEdit
+    ? 'Редактировать отключение ресурса'
+    : 'Создать отключение ресурса';
+
   return (
     <FormModal
       visible={isOpen}
       onCancel={handleClose}
-      title="Создать отключение ресурса"
-      submitBtnText="Создать отключение"
+      title={modalTitle}
+      submitBtnText={buttonPlaceholder}
       form={
         <>
           {isDisconnectionLoading && <Skeleton active />}
@@ -37,18 +43,17 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
                 handleCreateResourceDisconnection
               }
               formId="createResourceDisconnection"
-              heatingStations={heatingStations}
-              cities={cities}
               treeData={treeData}
-              selectedCity={selectedCity}
-              handleSelectCity={handleSelectCity}
-              handleSelectHeatingStation={handleSelectHeatingStation}
               disconnectingTypes={disconnectingTypes}
               resourceTypes={resourceTypes}
               isInterHeatingSeason={isInterHeatingSeason}
               resourceDisconnection={resourceDisconnection}
               isEdit={isEdit}
               handleEditResourceDisconnection={handleEditResourceDisconnection}
+              handleUpdateDocument={handleUpdateDocument}
+              setTypeOfAddress={setTypeOfAddress}
+              typeOfAddress={typeOfAddress}
+              isHousingStocksLoading={isHousingStocksLoading}
             />
           )}
         </>

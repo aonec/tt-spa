@@ -1,26 +1,21 @@
 import {
   EResourceDisconnectingTypeNullableStringDictionaryItem,
   EResourceTypeNullableStringDictionaryItem,
-  HeatingStationResponse,
   ResourceDisconnectingCreateRequest,
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
 } from 'myApi';
+import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 
 export type CreateResourceDisconnectionModalProps = {
-  selectedCity: string;
-  cities: string[];
   resourceTypes: EResourceTypeNullableStringDictionaryItem[];
   disconnectingTypes: EResourceDisconnectingTypeNullableStringDictionaryItem[];
-  heatingStations: HeatingStationResponse[];
-  treeData: ExistingStreetWithHousingStocks[];
+  treeData: TreeSelectElement[];
   isOpen: boolean;
   handleClose: () => void;
   handleCreateResourceDisconnection: (
     payload: ResourceDisconnectingCreateRequest
   ) => void;
-  handleSelectCity: (city: string) => void;
-  handleSelectHeatingStation: (id: string) => void;
   isInterHeatingSeason: boolean;
   isEdit: boolean;
   isDisconnectionLoading: boolean;
@@ -28,11 +23,15 @@ export type CreateResourceDisconnectionModalProps = {
   handleEditResourceDisconnection: (
     payload: ResourceDisconnectingUpdateRequest
   ) => void;
+  handleUpdateDocument: (id: number) => void;
+  setTypeOfAddress: (type: EAddressDetails) => void;
+  typeOfAddress: EAddressDetails;
+  isHousingStocksLoading: boolean;
 };
 
-export type ExistingStreetWithHousingStocks = {
+export type TreeSelectElement = {
   title: string;
   key: string | number;
   value: string | number;
-  children?: { title: string; value: number; key: number }[];
+  children?: TreeSelectElement[];
 };

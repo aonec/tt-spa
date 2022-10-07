@@ -1,6 +1,9 @@
 import { axios } from '01/axios';
 import { ResourceDisconnectingResponse } from 'myApi';
-import { ResourceDisconnectingUpdatePayload } from './editResourceDisconnectionService.types';
+import {
+  ResourceDisconnectingUpdatePayload,
+  UpdateDocumentPayload,
+} from './editResourceDisconnectionService.types';
 
 export const fetchResourceDisconnection = (
   id: string
@@ -12,3 +15,10 @@ export const fetchEditResourceDisconnection = ({
   payload,
 }: ResourceDisconnectingUpdatePayload): Promise<void> =>
   axios.post(`ResourceDisconnecting/${id}`, payload);
+
+export const fetchUpdateResourceDisconnectingDocument = (
+  payload: UpdateDocumentPayload
+): Promise<void> =>
+  axios.post(
+    `ResourceDisconnecting/${payload.id}/AddDocument/${payload.documentId}`
+  );

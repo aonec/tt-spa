@@ -2,11 +2,10 @@ import {
   TaskActionsComponent,
   TaskPanelComponentsGroupsName,
 } from './TaskActionsPanel.types';
-import { EManagingFirmTaskType, EStageActionType } from 'myApi';
+import { EStageActionType } from 'myApi';
 import { useMemo } from 'react';
 import {
   actionComponentPositionNamesDictionary,
-  taskActionInfoComponents,
   taskActionsComponents as allTaskActionsComponents,
 } from './TaskActionsPanel.constants';
 
@@ -36,4 +35,3 @@ export function useTaskPanelActions(actions: EStageActionType[]) {
 
   return componentsGroups;
 }
-

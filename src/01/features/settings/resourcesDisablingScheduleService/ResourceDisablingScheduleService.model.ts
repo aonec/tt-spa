@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 
 import { ResourceDisconnectingResponsePagedList } from 'myApi';
@@ -11,9 +11,6 @@ const resourceDisablingGate = createGate<DisablingResourcesProps>();
 
 const applyFilters = domain.createEvent<DisablingResourcesProps>();
 const setPage = domain.createEvent<number>();
-
-const openAddressesModal = domain.createEvent();
-const closeAddressesModal = domain.createEvent();
 
 const refetchResourceDisconnections = domain.createEvent();
 const getResourceDisconnectionsFx = domain.createEffect<
@@ -39,14 +36,20 @@ const $filters = domain
     PageNumber: page,
   }));
 
-const $isAddressesModalOpen = domain
-  .createStore<boolean>(false)
-  .on(openAddressesModal, () => true)
-  .on(closeAddressesModal, () => false);
-
 sample({
   source: $filters,
   clock: [resourceDisablingGate.open, $filters, refetchResourceDisconnections],
+  fn: (filters) => filters,
+  target: getResourceDisconnectionsFx,
+});
+
+sample({
+  source: $filters,
+  clock: guard({
+    source: resourceDisablingGate.status,
+    clock: refetchResourceDisconnections,
+    filter: (isOpen) => isOpen,
+  }),
   fn: (filters) => filters,
   target: getResourceDisconnectionsFx,
 });
@@ -57,15 +60,12 @@ export const resourceDisablingScheduleServiceService = {
   inputs: {
     applyFilters,
     setPage,
-    openAddressesModal,
-    closeAddressesModal,
     refetchResourceDisconnections,
   },
   outputs: {
     $disablingResources,
     $loading,
     $filters,
-    $isAddressesModalOpen,
   },
   gates: {
     resourceDisablingGate,

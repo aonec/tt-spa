@@ -1,16 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { InputReadingsProps, Reading } from './InputReadings.types';
 import { useStore } from 'effector-react';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import { IndividualDeviceOnTaskResponse } from 'myApi';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getReadingMonth } from './InputReadings.utils';
-import { MonthWrapper } from './InputReadings.styled';
+import { MonthWrapper, ReadingInputSC } from './InputReadings.styled';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);
@@ -54,7 +53,7 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
 
   const onChangeReading = (
     index: number,
-    value: number,
+    value: string,
     valueIndex: number
   ) => {
     setReadings((prev) =>
@@ -62,8 +61,7 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
         i === index
           ? {
               ...elem,
-              [`value${valueIndex}`]:
-                (value as any) === '' ? '' : Number(value),
+              [`value${valueIndex}`]: value === '' ? '' : Number(value),
             }
           : elem
       )
@@ -74,7 +72,7 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
     <div>
       {task?.individualDevices?.map((device, index) => (
         <ReadingLine
-          device={device as any}
+          device={device}
           reading={readings[index]}
           onChangeReading={(value, valueIndex) =>
             onChangeReading(index, value, valueIndex)
@@ -90,16 +88,22 @@ const ReadingLine = ({
   reading,
   onChangeReading,
 }: {
-  device: IndividualDeviceListItemResponse;
+  device: IndividualDeviceOnTaskResponse;
   reading?: Reading;
-  onChangeReading: (value: number, valueIndex: number) => void;
+  onChangeReading: (value: string, valueIndex: number) => void;
 }) => {
   const rateNumber = getIndividualDeviceRateNumByName(device.rateType);
+
   const readingValues = reading
-    ? getArrayByCountRange(
-        rateNumber,
-        (count) => (reading as any)[`value${count}`]
-      )
+    ? getArrayByCountRange(rateNumber, (count) => {
+        const key = `value${count}` as
+          | 'value1'
+          | 'value2'
+          | 'value3'
+          | 'value4';
+
+        return reading[key];
+      })
     : [];
   return (
     <div>
@@ -111,15 +115,12 @@ const ReadingLine = ({
               <MonthWrapper>
                 {reading && getReadingMonth(reading.readingDate)}
               </MonthWrapper>
-              <ReadingInputStyled
+              <ReadingInputSC
                 index={index + 1}
-                onChange={(e) =>
-                  onChangeReading(e.target.value as any, index + 1)
-                }
-                value={value}
+                onChange={(e) => onChangeReading(e.target.value, index + 1)}
+                value={value || ''}
                 resource={device.resource}
                 type="number"
-                style={{ marginBottom: '15px', padding: '7px 12px' }}
                 placeholder={`T${index + 1}`}
               />
             </>

@@ -9,13 +9,13 @@ import {
   SwitchIndividualDeviceReadingsCreateRequest,
 } from '../../../../../myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
   getPreviousReadingsMonth,
   getDateByReadingMonthSlider,
 } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];

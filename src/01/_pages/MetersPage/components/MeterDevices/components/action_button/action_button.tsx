@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { CheckIcon, SwitchIcon } from '../../../../../../../ui-kit/icons';
 import { Space } from '../../../../../../shared/ui/Layout/Space/Space';
+import { HeatIconSC, TimerIconSC } from './action_button.styled';
 
 type WrapperProps = {
   active?: boolean;
@@ -9,7 +10,7 @@ type WrapperProps = {
 
 type ActionButtonProps = {
   active?: boolean;
-  type: 'switch' | 'check';
+  type: 'switch' | 'check' | 'interHeatingSeason' | 'temporaryDisconnection';
   onClick: () => void;
 };
 
@@ -42,11 +43,15 @@ const Wrapper = styled.div<WrapperProps>`
 const IconLookup = {
   switch: <SwitchIcon />,
   check: <CheckIcon />,
+  interHeatingSeason: <HeatIconSC />,
+  temporaryDisconnection: <TimerIconSC />,
 };
 
 const TextLookup = {
   switch: 'Замена прибора',
   check: 'Поверка прибора',
+  interHeatingSeason: 'Межотопительный сезон',
+  temporaryDisconnection: 'Временное отключение',
 };
 
 export const ActionButton = memo(

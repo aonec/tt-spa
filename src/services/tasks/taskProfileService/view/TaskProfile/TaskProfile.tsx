@@ -72,7 +72,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
           <Dialog
             isOpen={deleteDocumentModalIsOpen}
             onCancel={closeDeleteDocumentModal}
-            onSubmit={handleDeleteDocument}
+            onSubmit={() => handleDeleteDocument()}
             type="danger"
             title="Вы уверены, что хотите удалить документ?"
           />

@@ -105,7 +105,7 @@ export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> =
       <FormItem>
         <SelectSC
           value={values?.OrderBy}
-          placeholder="Дате проверки"
+          placeholder="Дате отключения"
           onChange={(value) => {
             setFieldValue('OrderBy', value);
             handleSubmit();

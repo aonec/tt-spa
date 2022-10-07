@@ -4,12 +4,17 @@ import { fetchDeleteResourceDisconnecting } from './deleteResourceDisconnectionS
 
 const domain = createDomain('deleteResourceDisconnectionService');
 
-const openModal = domain.createEvent<string>();
+const openModal = domain.createEvent<{ id: string; endDate: string }>();
 const closeModal = domain.createEvent();
 
 const $resourceDisconnectionId = domain
   .createStore<string>('')
-  .on(openModal, (_, id) => id)
+  .on(openModal, (_, payload) => payload.id)
+  .reset(closeModal);
+
+const $endDate = domain
+  .createStore('')
+  .on(openModal, (_, payload) => payload.endDate)
   .reset(closeModal);
 
 const $isModalOpen = $resourceDisconnectionId.map(Boolean);
@@ -48,5 +53,6 @@ export const deleteResourceDisconnectionService = {
   outputs: {
     $deleteResourceDisconnectionIsLoading,
     $isModalOpen,
+    $endDate,
   },
 };
