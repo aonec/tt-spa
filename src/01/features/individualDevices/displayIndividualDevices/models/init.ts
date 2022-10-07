@@ -27,8 +27,6 @@ import { toArray } from '../../addIndividualDevice/components/CheckFormValuesMod
 fetchIndividualDevicesFx.use(getIndividualDevices);
 fetchNextPageOfIndividualDevicesFx.use(getIndividualDevices);
 
-fetchIndividualDevicesFx.doneData.watch(() => console.log('success'));
-
 $individualDevices
   .on(fetchIndividualDevicesFx.doneData, (_, { items: devices }) => devices)
   .reset(resetIndividualDevices, IndividualDevicesGate.close);
