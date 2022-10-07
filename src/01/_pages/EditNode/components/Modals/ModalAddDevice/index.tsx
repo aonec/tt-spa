@@ -1,20 +1,26 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { StyledModal } from '../../../../../tt-components/Modal';
 import ModalAddDeviceForm from './ModalAddDeviceForm';
-import { CalculatorResponse, PipeNodeResponse } from '../../../../../../myApi';
+import {
+  EMagistralTypeStringDictionaryItem,
+  PipeNodeResponse,
+} from '../../../../../../myApi';
 
 interface ModalAddDeviceInterface {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
   node: PipeNodeResponse;
+  magistrals: EMagistralTypeStringDictionaryItem[];
   // calculator: CalculatorResponse;
+  refetchNode: () => void;
 }
 
 const ModalAddDevice = ({
   visible,
   setVisible,
-  // calculator,
   node,
+  magistrals,
+  refetchNode,
 }: ModalAddDeviceInterface) => {
   function handleCancel() {
     setVisible(false);
@@ -29,9 +35,10 @@ const ModalAddDevice = ({
     >
       <ModalAddDeviceForm
         handleCancel={handleCancel}
-        // calculator={calculator}
+        magistrals={magistrals}
         node={node}
         setVisible={setVisible}
+        refetchNode={refetchNode}
       />
     </StyledModal>
   );

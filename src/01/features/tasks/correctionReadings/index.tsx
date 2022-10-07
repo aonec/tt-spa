@@ -8,7 +8,6 @@ import { ButtonTT } from '01/tt-components';
 import IsActive from '01/tt-components/IsActive';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Form, message } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
@@ -34,6 +33,7 @@ import {
 import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
 import { getReadingValuesArray } from '01/features/readings/displayReadingHistory/utils';
 import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export const CorrectionReadingsPanel = () => {
   const task = useStore($task);

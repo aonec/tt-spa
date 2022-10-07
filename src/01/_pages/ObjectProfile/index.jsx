@@ -20,6 +20,7 @@ import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/Re
 import moment from 'moment';
 import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
 import { useEvent, useStore } from 'effector-react';
+import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 
 export const ObjectContext = React.createContext();
 
@@ -178,8 +179,8 @@ export const ObjectProfile = () => {
               />
             </Route>
 
-            <Route path="/objects/(\\d+)/devices" exact>
-              <Devices nodes={nodes} />
+            <Route path="/objects/:id/devices" exact>
+              <ResourceAccountingSystemsContainer />
             </Route>
           </div>
 

@@ -7,7 +7,7 @@ import {
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
