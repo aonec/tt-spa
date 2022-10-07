@@ -13,11 +13,9 @@ const fetchNodesFx = domain.createEffect<
 const NodesGate = createGate<{ housingStockId: number }>();
 
 const $nodes = domain
-  .createStore<NodeOnHousingStockResponse[]>([])
-  .on(
-    fetchNodesFx.doneData,
-    (_, nodes) =>
-      nodes?.filter((node) => node.resource !== EResourceType.Electricity) || []
+  .createStore<NodeOnHousingStockResponse[] | null>(null)
+  .on(fetchNodesFx.doneData, (_, nodes) =>
+    nodes?.filter((node) => node.resource !== EResourceType.Electricity)
   )
   .reset(NodesGate.close);
 
