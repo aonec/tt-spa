@@ -54,9 +54,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
 
   const GroupInfo = groupInfos[segmentName];
 
-  const nodesLength = nodes.length;
-
-  const systemText = getSystemText(nodesLength);
+  const systemText = getSystemText(nodes.length);
 
   return (
     <Wrapper>
@@ -64,7 +62,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
         <GroupInfo />
         <GroupInfoWrapper>
           <GroupAmountText>
-            {nodesLength} {systemText} учета
+            {nodes.length} {systemText} учета
           </GroupAmountText>
           <ChevronWrapper onClick={() => setIsOpen((isOpen) => !isOpen)}>
             <ChevronSC isOpen={isOpen} />
