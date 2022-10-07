@@ -40,7 +40,6 @@ export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
     if (segmentName === 'calculator')
       return (
         <>
-          (
           <NodeInfoWrapper>
             <ResourceIconLookup
               style={{ transform: 'translateY(-8px)' }}
@@ -48,7 +47,6 @@ export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
             />
             <NodeInfo>{nodeInfo}</NodeInfo>
           </NodeInfoWrapper>
-          )
         </>
       );
   }, [segmentName, node]);
