@@ -8,7 +8,8 @@ import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
 import { message } from 'antd';
-import queryString from "query-string"
+import queryString from 'query-string';
+import { ZippedReports } from './CreateReport.constants';
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -70,7 +71,8 @@ const createReportFx = createReportDomain.createEffect<
     url,
     `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
       date.To
-    ).format('MMMM_YYYY')}`
+    ).format('MMMM_YYYY')}`,
+    ZippedReports.includes(type)
   );
 });
 
