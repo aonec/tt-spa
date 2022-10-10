@@ -1,8 +1,6 @@
 import axios from '01/axios';
-import {
-  ReadingsInterface,
-  ReportType,
-} from '../_pages/Graph/components/GraphView';
+import { ReadingsInterface, ReportType } from '01/_pages/Graph/components/GraphView/GraphView.types';
+
 import moment, { Moment } from 'moment';
 
 delete axios.defaults.headers.common['Authorization'];
