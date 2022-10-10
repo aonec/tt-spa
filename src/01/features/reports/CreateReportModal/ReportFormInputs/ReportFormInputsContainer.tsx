@@ -2,13 +2,11 @@ import { useForm } from 'effector-forms/dist';
 import { EResourceType } from 'myApi';
 import React, { useMemo } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
-import { Select } from 'ui-kit/Select';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import { form } from '../models';
 import { ReportType } from '../types';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
 import { RangeDatePicker } from './view/RangeDatePicker';
+import { ResourceSelect } from './view/ResourceSelect';
 
 export const ReportFormInputsContainer = () => {
   const {
@@ -16,6 +14,7 @@ export const ReportFormInputsContainer = () => {
       type: { value: type },
       period: { value: period, onChange: changePeriod },
       rangePeriod: { value: rangePeriod, onChange: changeRangePeriod },
+      resources: { onChange: handleChangeResources },
     },
   } = useForm(form);
 
@@ -41,6 +40,7 @@ export const ReportFormInputsContainer = () => {
           <RangeDatePicker
             rangePeriod={rangePeriod}
             onChange={changeRangePeriod}
+            label="Период выхода поверки"
           />
         ),
       },
@@ -48,16 +48,11 @@ export const ReportFormInputsContainer = () => {
         reportTypes: [ReportType.CheckingDatesReport],
         element: (
           <>
-            <FormItem label="Ресурс">
-              <Select mode="multiple">
-                {Object.values(EResourceType).map((resource) => (
-                  <Select.Option key={resource} value={resource}>
-                    <ResourceIconLookup resource={resource} />
-                    {resourceNamesLookup[resource]}
-                  </Select.Option>
-                ))}
-              </Select>
-            </FormItem>
+            <ResourceSelect onChange={handleChangeResources} />
+            <RangeDatePicker
+              rangePeriod={rangePeriod}
+              onChange={changeRangePeriod}
+            />
           </>
         ),
       },
