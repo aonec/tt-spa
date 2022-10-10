@@ -1,11 +1,12 @@
 import { format } from 'date-fns';
+import { GraphParamsType } from './Graph';
+import { EResourceType } from '../../../myApi';
 import {
   ArchiveEntryInterface,
   GraphDataInterface,
   ReportType,
-} from './components/GraphView';
-import { GraphParamsType } from './Graph';
-import { EResourceType } from '../../../myApi';
+} from './components/GraphView/GraphView.types';
+import moment from 'moment';
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
@@ -36,13 +37,25 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
   return day % 5 === 0;
 };
 
+const sortArchiveArray = (archiveArr: ArchiveEntryInterface[]) => {
+  const sortedArchive = archiveArr.sort((first, second) => {
+    const firstDate = moment(first.timestamp);
+    const secondDate = moment(second.timestamp);
+    return firstDate.diff(secondDate);
+  });
+
+  return sortedArchive;
+};
+
 const formHourlyTicks = (
   archiveArr: ArchiveEntryInterface[]
 ): ArchiveEntryInterface[] => {
   if (archiveArr.length <= 24) return archiveArr;
+  const sortedArchive = sortArchiveArray(archiveArr);
+
   return [
-    ...archiveArr.filter((entry) => isHourMultiplySix(entry.timestamp)),
-    archiveArr[archiveArr.length - 1],
+    ...sortedArchive.filter((entry) => isHourMultiplySix(entry.timestamp)),
+    sortedArchive[sortedArchive.length - 1],
   ];
 };
 
@@ -50,25 +63,26 @@ const formDailyTicks = (
   archiveArr: ArchiveEntryInterface[]
 ): ArchiveEntryInterface[] => {
   if (archiveArr.length <= 14) return archiveArr;
+  const sortedArchive = sortArchiveArray(archiveArr);
 
-  const length = archiveArr.length;
-  const multipleFives = archiveArr.filter((entry) =>
+  const length = sortedArchive.length;
+  const multipleFives = sortedArchive.filter((entry) =>
     isDayMultiplyFive(entry.timestamp)
   );
   const delta1 =
     getDayFromTimeStamp(multipleFives[0].timestamp) -
-    getDayFromTimeStamp(archiveArr[0].timestamp);
+    getDayFromTimeStamp(sortedArchive[0].timestamp);
   const delta2 =
-    getDayFromTimeStamp(archiveArr[length - 1].timestamp) -
+    getDayFromTimeStamp(sortedArchive[length - 1].timestamp) -
     getDayFromTimeStamp(multipleFives[multipleFives.length - 1].timestamp);
   const sliceParam1 = delta1 < 2 ? 1 : 0;
   const sliceParam2 =
     delta2 < 2 ? multipleFives.length - 1 : multipleFives.length;
 
   return [
-    archiveArr[0],
+    sortedArchive[0],
     ...multipleFives.slice(sliceParam1, sliceParam2),
-    archiveArr[length - 1],
+    sortedArchive[length - 1],
   ];
 };
 

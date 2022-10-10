@@ -1,5 +1,4 @@
 import React from 'react';
-import { ResourceType } from './GraphView';
 import { getResourceColor } from '../../../utils/getResourceColor';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
@@ -7,6 +6,7 @@ import { $graphData } from '../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
 import { GraphParamsType } from '../Graph';
 import { renderForHeatAndDeltaMass } from '../utils/renderForHeatAndDeltaMass';
+import { ResourceType } from './GraphView/GraphView.types';
 
 interface Props {
   resource?: ResourceType;

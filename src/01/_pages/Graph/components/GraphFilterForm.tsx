@@ -22,8 +22,8 @@ import IconTT from '../../../tt-components/IconTT';
 import styled from 'styled-components';
 import { paramsTranslation } from '../utils';
 import ButtonTT from '../../../tt-components/ButtonTT';
-import { ReportType } from './GraphView';
 import useOutsideClick from '../../../hooks/useOutsideClick';
+import { ReportType } from './GraphView/GraphView.types';
 
 const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -146,6 +146,11 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                       name="dateRange"
                       format="DD MMMM YYYY"
                       style={{ marginRight: 16 }}
+                      disabledDate={(date) => {
+                        const currentDay = moment().startOf('day');
+                        const diff = currentDay.diff(date.startOf('day'));
+                        return diff < 0;
+                      }}
                       ranges={{
                         'Последние сутки': [
                           moment(),

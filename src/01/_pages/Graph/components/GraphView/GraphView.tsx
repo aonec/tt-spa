@@ -8,23 +8,32 @@ import {
   VictoryLabel,
 } from 'victory';
 import React from 'react';
-import styled from 'styled-components';
-import GraphTooltip from './GraphTooltip';
-import { CustomTooltip } from './CustomTooltip';
-import Gradient from './Gradient';
-import { getResourceColor } from '../../../utils/getResourceColor';
 import { minBy, maxBy, get } from 'lodash';
 import 'antd/es/date-picker/style/index';
-import { formGraphData, formTicks, getTickFormat } from '../utils';
-import { GraphParamsType } from '../Graph';
-import { RequestNodeReadingsFunctionInterface } from '../../../_api/node_readings_page';
-import { Alert } from 'antd';
-import FallbackGraph from './FallbackGraph.svg';
-import GraphLegend from './GraphLegend';
-import { TickComponent } from './TickComponent';
-import { renderForHeatAndDeltaMass } from '../utils/renderForHeatAndDeltaMass';
+import FallbackGraph from '../../assets/FallbackGraph.svg';
+import { GraphViewProps } from './GraphView.types';
+import { formGraphData, formTicks, getTickFormat } from '../../utils';
+import { renderForHeatAndDeltaMass } from '../../utils/renderForHeatAndDeltaMass';
+import Gradient from '../Gradient';
+import { TickComponent } from '../TickComponent';
+import { CustomTooltip } from '../CustomTooltip';
+import GraphLegend from '../GraphLegend';
+import {
+  GraphWrapper,
+  horizontalAxisStyle,
+  verticalAxisStyle,
+} from './GraphView.styled';
+import { getResourceColor } from '01/utils/getResourceColor';
+import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 
-const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
+const minDelta = 0.01;
+const width = 750;
+const height = 350;
+
+export const GraphView: React.FC<GraphViewProps> = ({
+  graphParam,
+  dataObject,
+}) => {
   const {
     data,
     searchQuery: { reportType },
@@ -34,25 +43,9 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
 
   const archiveEntries = get(data, 'archiveEntries', []);
 
-  const width = 750;
-  const height = 350;
-
-  if (archiveEntries.length === 0)
-    return (
-      <>
-        <Alert
-          message="Ошибка"
-          description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
-          type="error"
-          showIcon
-          closable
-          style={{ marginBottom: 24 }}
-        />
-        <div>
-          <img src={FallbackGraph} alt="546" />
-        </div>
-      </>
-    );
+  if (archiveEntries.length === 0) {
+    return <FallbackGraph />;
+  }
 
   const tickValues = formTicks(archiveEntries, reportType);
 
@@ -63,12 +56,13 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
   const minElement = minBy(graphData, (obj) => obj.value);
   const maxElement = maxBy(graphData, (obj) => obj.value);
 
-  const minValue = minElement!.value > 0 ? 0 : 1.5 * minElement!.value;
+  let minValue = minElement!.value > 0 ? 0 : 1.5 * minElement!.value;
   let maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value;
 
-  const minDelta = 0.01;
-
   if (maxValue === minValue && minValue === 0) maxValue += minDelta;
+  if (maxValue / 2 > Math.abs(minValue) && minValue < 0) {
+    minValue = -maxValue / 2;
+  }
 
   const tooltipStyle = {
     parent: { overflow: 'visible' },
@@ -77,20 +71,6 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
       stroke: getResourceColor(resource),
       strokeWidth: 2,
     },
-  };
-
-  const horizontalAxisStyle = {
-    axis: { stroke: 'var(--frame)' },
-    axisLabel: { strokeWidth: 0 },
-    grid: { stroke: 'none' },
-    tickLabels: { fill: 'var(--main-70)' },
-  };
-
-  const verticalAxisStyle = {
-    axis: { stroke: 'none' },
-    ticks: { stroke: 'none' },
-    tickLabels: { fill: 'var(--main-70)' },
-    grid: { stroke: 'var(--frame)', strokeDasharray: '0' },
   };
 
   const isAverageLineRendered = renderForHeatAndDeltaMass(resource, graphParam);
@@ -127,7 +107,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
           <VictoryArea
             name="graph"
             sortKey="time"
-            interpolation="natural"
+            interpolation="monotoneX"
             labelComponent={
               <CustomTooltip
                 flyoutStyle={{ fill: 'var(--main-100)' }}
@@ -169,56 +149,3 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     </>
   );
 };
-
-const GraphWrapper = styled.div`
-  svg {
-    overflow: visible !important;
-  }
-`;
-
-export interface ArchiveEntryInterface {
-  timestamp: string;
-  inputTemperature: number;
-  outputTemperature: number;
-  deltaTemperature: number;
-  inputVolume: number;
-  outputVolume: number;
-  deltaVolume: number;
-  inputMass: number;
-  outputMass: number;
-  deltaMass: number;
-  inputPressure: number;
-  outputPressure: number;
-  deltaPressure: number;
-  energy: number;
-  timeWork: number;
-}
-
-export type ResourceType =
-  | 'Heat'
-  | 'ColdWaterSupply'
-  | 'HotWaterSupply'
-  | 'Electricity';
-
-export interface ReadingsInterface {
-  reportType: ReportType;
-  resource: ResourceType;
-  systemPipeCount: number;
-  archiveEntries: ArchiveEntryInterface[];
-  averageDeltaMass: number;
-  deltaMassAccuracy: number;
-}
-
-export interface GraphDataInterface {
-  time: string;
-  value: number;
-}
-
-export type ReportType = 'hourly' | 'daily' | 'monthly';
-
-interface GraphViewProps {
-  graphParam: GraphParamsType;
-  dataObject: RequestNodeReadingsFunctionInterface;
-}
-
-export default GraphView;

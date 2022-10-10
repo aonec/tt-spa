@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import GraphView, { ReportType } from './components/GraphView';
 import GraphFilterForm from './components/GraphFilterForm';
 import moment from 'moment';
 import {
@@ -13,6 +12,8 @@ import styled from 'styled-components';
 import { EResourceType } from '../../../myApi';
 import { NoConnection } from '../CalculatorProfile/components/Connection';
 import { setDataToStore } from '../../features/graph/graphView/models';
+import { ReportType } from './components/GraphView/GraphView.types';
+import { GraphView } from './components/GraphView/GraphView';
 
 interface GraphProps {
   nodeId: number;
@@ -94,7 +95,7 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
       {status === 'error' ? (
         <>
           <div>
-            <img src={require('./components/FallbackGraph.svg')} alt="546" />
+            <img src={require('./assets/FallbackGraph.svg')} alt="546" />
           </div>
         </>
       ) : null}
