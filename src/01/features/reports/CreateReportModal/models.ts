@@ -8,6 +8,7 @@ import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
 import { message } from 'antd';
+import queryString from "query-string"
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -58,6 +59,9 @@ const createReportFx = createReportDomain.createEffect<
       resources,
     },
     responseType: 'blob',
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
+    },
   });
 
   const url = window.URL.createObjectURL(new Blob([res]));
