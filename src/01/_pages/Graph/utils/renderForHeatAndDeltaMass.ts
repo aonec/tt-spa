@@ -1,4 +1,4 @@
-import { ResourceType } from '../components/GraphView';
+import { ResourceType } from '../components/GraphView/GraphView.types';
 import { GraphParamsType } from '../Graph';
 
 export const renderForHeatAndDeltaMass = (
