@@ -50,6 +50,7 @@ export const ReportFormInputsContainer = () => {
           <>
             <ResourceSelect onChange={handleChangeResources} />
             <RangeDatePicker
+              label='Период выхода поверки'
               rangePeriod={rangePeriod}
               onChange={changeRangePeriod}
             />
