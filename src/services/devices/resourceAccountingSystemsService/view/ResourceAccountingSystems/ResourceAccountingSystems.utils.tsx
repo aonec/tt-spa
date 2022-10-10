@@ -16,20 +16,5 @@ export function getNodesGroups(
         ? node.resource
         : node.networkDevice?.id || NO_CALCULATOR_KEY
     )
-  ).map(([key, value]) => [
-    key,
-    value.sort((a, b) => {
-      const aPriorityScore = ResourcesPriorityDictionary[a.resource];
-      const bPriorityScore = ResourcesPriorityDictionary[b.resource];
-
-      if (aPriorityScore < bPriorityScore) {
-        return -1;
-      }
-      if (aPriorityScore > bPriorityScore) {
-        return 1;
-      }
-
-      return 0;
-    }),
-  ]);
+  );
 }
