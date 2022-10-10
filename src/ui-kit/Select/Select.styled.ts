@@ -8,6 +8,11 @@ export const Select = styled(AntSelect)`
     line-height: initial;
   }
 
+  .ant-select-selection-item {
+    background: rgba(24, 158, 233, 0.16);
+    border: none;
+  }
+
   * {
     font-size: 16px !important;
     line-height: 32px;
