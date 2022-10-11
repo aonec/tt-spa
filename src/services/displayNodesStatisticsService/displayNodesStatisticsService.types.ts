@@ -10,12 +10,7 @@ export type DisplayNodesStatisticsContainerProps = {
   pipeCount: number;
 };
 
-export type RequestNodeReadingsFunctionInterface = {
-  data: ReadingsInterface;
-  searchQuery: QueryInterface;
-};
-
-export type QueryInterface = ArchiveReadingsFilter & {
+export type FetchArchiveReadingsPayload = ArchiveReadingsFilter & {
   nodeId: number;
 };
 

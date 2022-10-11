@@ -44,10 +44,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
     () => getGraphParams(resource, pipeCount)[0]
   );
 
-  if (data) {
-    setDataToStore(data);
-  }
-
   return (
     <GraphContainer>
       {status === 'error' ? (
@@ -68,11 +64,7 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
         </>
       ) : null}
 
-      {status === 'resolved' && data && (
-        <GraphParent>
-          <GraphView graphParam={graphParam} dataObject={data} />
-        </GraphParent>
-      )}
+      {status === 'resolved' && data && <GraphParent></GraphParent>}
     </GraphContainer>
   );
 };

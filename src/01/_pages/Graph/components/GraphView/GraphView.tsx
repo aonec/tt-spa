@@ -32,13 +32,9 @@ const height = 350;
 
 export const GraphView: React.FC<GraphViewProps> = ({
   graphParam,
-  dataObject,
+  data,
+  reportType,
 }) => {
-  const {
-    data,
-    searchQuery: { reportType },
-  } = dataObject;
-
   const { resource, averageDeltaMass } = data;
 
   const archiveEntries = get(data, 'archiveEntries', []);
@@ -104,6 +100,17 @@ export const GraphView: React.FC<GraphViewProps> = ({
             style={horizontalAxisStyle}
           />
           <VictoryAxis dependentAxis style={verticalAxisStyle} />
+          <VictoryLine
+            samples={1}
+            labels={['0', ``]}
+            labelComponent={<VictoryLabel renderInPortal dx={-17} dy={7} />}
+            y={() => 0}
+            style={{
+              data: {
+                stroke: 'var(--frame)',
+              },
+            }}
+          />
           <VictoryArea
             name="graph"
             sortKey="time"
@@ -130,17 +137,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             x="time"
             y="value"
           />
-          <VictoryLine
-            samples={1}
-            labels={['0', ``]}
-            labelComponent={<VictoryLabel renderInPortal dx={-17} dy={7}/>}
-            y={() => 0}
-            style={{
-              data: {
-                stroke: 'var(--frame)',
-              },
-            }}
-          />
+
           {isAverageLineRendered ? (
             <VictoryLine
               samples={1}

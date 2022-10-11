@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ChevronRight } from 'react-bootstrap-icons';
-import { Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink } from 'react-router-dom';
 
 export const Wrap = styled.div`
   padding: 15px;
@@ -9,6 +9,7 @@ export const Wrap = styled.div`
   display: flex;
   justify-content: space-between;
   height: min-content;
+  width: 312px;
 `;
 
 export const Title = styled.div`

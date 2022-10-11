@@ -1,8 +1,6 @@
+import { ReadingsInterface } from '01/_pages/Graph/components/GraphView/GraphView.types';
 import { createEvent, createStore } from 'effector';
-import { RequestNodeReadingsFunctionInterface } from '../../../../_api/node_readings_page';
 
-export const setDataToStore = createEvent<RequestNodeReadingsFunctionInterface>();
+export const setDataToStore = createEvent<ReadingsInterface>();
 
-export const $graphData = createStore<RequestNodeReadingsFunctionInterface>(
-  {} as RequestNodeReadingsFunctionInterface
-);
+export const $graphData = createStore<ReadingsInterface | null>(null);

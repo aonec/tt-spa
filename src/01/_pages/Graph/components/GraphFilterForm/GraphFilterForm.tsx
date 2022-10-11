@@ -122,6 +122,10 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               <FormItem label="Тип отчета">
                 <div>
                   <Radio.Group
+                    value={values.reportType}
+                    onChange={(event) =>
+                      setFieldValue('reportType', event.target.value)
+                    }
                     options={[
                       {
                         label: 'Часовой',

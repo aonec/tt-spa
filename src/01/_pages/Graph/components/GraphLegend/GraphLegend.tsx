@@ -13,7 +13,10 @@ import {
 import { GraphLegendProps } from './GraphLegend.types';
 
 export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
-  const { data } = useStore($graphData);
+  const data = useStore($graphData);
+  if (!data) {
+    return null;
+  }
   const { averageDeltaMass, deltaMassAccuracy, resource } = data;
   const absoluteDelta = Number(
     Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)

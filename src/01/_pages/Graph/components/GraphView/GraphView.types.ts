@@ -43,5 +43,6 @@ export type ReportType = 'hourly' | 'daily' | 'monthly';
 
 export type GraphViewProps = {
   graphParam: GraphParamsType;
-  dataObject: RequestNodeReadingsFunctionInterface;
+  data: ReadingsInterface;
+  reportType: ReportType;
 };
