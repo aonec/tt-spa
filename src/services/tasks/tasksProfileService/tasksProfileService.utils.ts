@@ -7,6 +7,7 @@ import {
   TaskResponse,
 } from 'myApi';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getApartmentAddressObject = (
   apartment: ApartmentResponse | null
@@ -33,7 +34,8 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     ...item,
     timeline: createTimeline(item),
     timer: createTimer(item),
-    formatedCreationTime: new Date(item.creationTime!).toLocaleString(),
+    formatedCreationTime:
+      item.creationTime && getTimeStringByUTC(item.creationTime),
     showExecutor: grouptype === 'Observing',
   }));
 
