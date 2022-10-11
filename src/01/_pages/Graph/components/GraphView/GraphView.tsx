@@ -17,7 +17,6 @@ import { renderForHeatAndDeltaMass } from '../../utils/renderForHeatAndDeltaMass
 import Gradient from '../Gradient';
 import { TickComponent } from '../TickComponent';
 import { CustomTooltip } from '../CustomTooltip';
-import GraphLegend from '../GraphLegend';
 import {
   GraphWrapper,
   horizontalAxisStyle,
@@ -25,6 +24,7 @@ import {
 } from './GraphView.styled';
 import { getResourceColor } from '01/utils/getResourceColor';
 import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
+import { GraphLegend } from '../GraphLegend/GraphLegend';
 
 const minDelta = 0.01;
 const width = 750;
@@ -130,11 +130,20 @@ export const GraphView: React.FC<GraphViewProps> = ({
             x="time"
             y="value"
           />
+          <VictoryLine
+            samples={1}
+            labels={['0', ``]}
+            labelComponent={<VictoryLabel renderInPortal dx={-17} dy={7}/>}
+            y={() => 0}
+            style={{
+              data: {
+                stroke: 'var(--frame)',
+              },
+            }}
+          />
           {isAverageLineRendered ? (
             <VictoryLine
               samples={1}
-              labels={['', ``]}
-              labelComponent={<VictoryLabel renderInPortal dx={80} dy={-20} />}
               y={() => averageDeltaMass}
               style={{
                 data: {

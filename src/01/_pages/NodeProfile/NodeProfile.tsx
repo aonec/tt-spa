@@ -15,6 +15,7 @@ import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChe
 import { SidePanel } from '01/shared/ui/SidePanel';
 import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { ContentProps } from './NodeProfile.types';
+import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({ tabItems, node, loading, nodeId, path }) => {
@@ -44,11 +45,13 @@ export const Content: React.FC<ContentProps> = React.memo(
           </Route>
           <Route path={`${path}/stats`} exact>
             {isVisible ? (
-              <Graph
-                nodeId={Number(nodeId)}
-                resource={resource}
-                pipeCount={communicationPipes?.length || 0}
-              />
+              <>
+                <DisplayNodesStatisticsContainer
+                  nodeId={Number(nodeId)}
+                  resource={resource}
+                  pipeCount={communicationPipes?.length || 0}
+                />
+              </>
             ) : (
               <>
                 <Alert

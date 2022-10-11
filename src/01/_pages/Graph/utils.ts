@@ -37,7 +37,7 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
   return day % 5 === 0;
 };
 
-const sortArchiveArray = (archiveArr: ArchiveEntryInterface[]) => {
+export const sortArchiveArray = (archiveArr: ArchiveEntryInterface[]) => {
   const sortedArchive = archiveArr.sort((first, second) => {
     const firstDate = moment(first.timestamp);
     const secondDate = moment(second.timestamp);

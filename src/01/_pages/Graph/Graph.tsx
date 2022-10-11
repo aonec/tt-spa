@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import GraphFilterForm from './components/GraphFilterForm';
-import moment from 'moment';
 import {
   QueryInterface,
   requestNodeReadings,
@@ -12,7 +10,6 @@ import styled from 'styled-components';
 import { EResourceType } from '../../../myApi';
 import { NoConnection } from '../CalculatorProfile/components/Connection';
 import { setDataToStore } from '../../features/graph/graphView/models';
-import { ReportType } from './components/GraphView/GraphView.types';
 import { GraphView } from './components/GraphView/GraphView';
 
 interface GraphProps {
@@ -43,33 +40,9 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
     run,
   } = useAsync<RequestNodeReadingsFunctionInterface>();
 
-  const reportType = 'daily' as ReportType;
-
-  const from = moment()
-    .subtract(1, 'week')
-    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-
-  const to = moment().set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
-
-  const getInitialState = () => {
-    return {
-      nodeId,
-      reportType,
-      from,
-      to,
-    };
-  };
-
   const [graphParam, setGraphParam] = useState(
     () => getGraphParams(resource, pipeCount)[0]
   );
-  const [searchQuery, setSearchQuery] = useState<QueryInterface>(
-    getInitialState
-  );
-
-  useEffect(() => {
-    run(requestNodeReadings(searchQuery));
-  }, [searchQuery, run]);
 
   if (data) {
     setDataToStore(data);
@@ -84,11 +57,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
           }
         />
       ) : null}
-      <GraphFilterForm
-        paramsList={getGraphParams(resource, pipeCount)}
-        setGraphParam={setGraphParam}
-        setSearchQuery={setSearchQuery}
-      />
 
       {(status === 'pending' || status === 'idle') && <div>ЗАГРУЗКА...</div>}
 
