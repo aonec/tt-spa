@@ -1315,6 +1315,8 @@ export enum EIndividualDeviceReadingsSource {
   Duplicated = "Duplicated",
   Erc = "Erc",
   TtmFromErc = "TtmFromErc",
+  TelegramBot = "TelegramBot",
+  DeviceTelemetry = "DeviceTelemetry",
 }
 
 export enum ELivingHouseType {
@@ -1370,10 +1372,7 @@ export enum EManagingFirmTaskFilterType {
   CalculatorLackOfConnection = "CalculatorLackOfConnection",
   IndividualDeviceCheck = "IndividualDeviceCheck",
   PipeRupture = "PipeRupture",
-  CurrentApplication = "CurrentApplication",
-  EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
-  PlannedApplication = "PlannedApplication",
   MeasurementErrorAny = "MeasurementErrorAny",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
@@ -4777,13 +4776,18 @@ export interface TaskCreateRequest {
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
+
+  /** @format date-time */
+  activationTriggerDateTimeUtc?: string | null;
+
+  /** @format uuid */
+  activationTriggerGuid?: string | null;
 }
 
 export interface TaskCreateResponse {
   /** @format int32 */
   id: number;
   type: EManagingFirmTaskType;
-  isValidated: boolean;
 }
 
 export interface TaskCreateResponseSuccessApiResponse {
@@ -10065,7 +10069,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Reports/CheckingDatesReport
      * @secure
      */
-    reportsCheckingDatesReportList: (query?: { To?: string }, params: RequestParams = {}) =>
+    reportsCheckingDatesReportList: (
+      query?: { To?: string; From?: string; Resources?: EResourceType[] },
+      params: RequestParams = {},
+    ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/CheckingDatesReport`,
         method: "GET",

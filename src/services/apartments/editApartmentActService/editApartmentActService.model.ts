@@ -1,8 +1,11 @@
 import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
-import { createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { ApartmentActResponse } from 'myApi';
 import { apartmentActsListService } from '../apartmentActsListService';
-import { updateApartmentAct } from './editApartmentActService.api';
+import {
+  fetchDeleteActDocument,
+  updateApartmentAct,
+} from './editApartmentActService.api';
 import {
   EditActFormPayload,
   EditActRequestPayload,
@@ -19,21 +22,43 @@ const $isModalOpen = $act.map(Boolean);
 
 $isModalOpen.on(openModal, () => true).reset(closeModal);
 
+const deleteActDocument = domain.createEvent();
+const deleteActDocumentFx = domain.createEffect<number, void>(
+  fetchDeleteActDocument
+);
+
 const editAct = domain.createEvent<EditActFormPayload>();
 const editActFx = domain.createEffect<EditActRequestPayload, void>(
   updateApartmentAct
 );
-const $editActIsLoading = editActFx.pending;
+
+const $editActIsLoading = combine(
+  editActFx.pending,
+  deleteActDocumentFx.pending,
+  (...loading) => loading.includes(true)
+);
 
 forward({
-  from: editActFx.doneData,
+  from: [editActFx.doneData, deleteActDocumentFx.doneData],
   to: [apartmentActsListService.inputs.refetchApartmentActs, closeModal],
 });
 
 sample({
-  source: $act.map((data) => data?.id),
+  source: guard({
+    source: $act.map((data) => data?.id),
+    filter: Boolean,
+  }),
+  clock: deleteActDocument,
+  target: deleteActDocumentFx,
+});
+
+sample({
+  source: guard({
+    source: $act.map((data) => data?.id),
+    filter: Boolean,
+  }),
   clock: editAct,
-  fn: (actId, editActPayload) => ({ actId: actId!, act: editActPayload }),
+  fn: (actId, act) => ({ actId, act }),
   target: editActFx,
 });
 
@@ -42,6 +67,7 @@ export const editApartmentActService = {
     closeModal,
     openModal,
     editAct,
+    deleteActDocument,
   },
   outputs: {
     $isModalOpen,

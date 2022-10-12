@@ -1,0 +1,28 @@
+import { EResourceType } from 'myApi';
+import React, { FC, useEffect, useState } from 'react';
+import { FormItem } from 'ui-kit/FormItem';
+import { Select } from 'ui-kit/Select';
+import { resourceNamesLookup } from './ResourceSelect.constants';
+import { ResourceSelectProps } from './ResourceSelect.types';
+
+export const ResourceSelect: FC<ResourceSelectProps> = ({
+  onChange,
+}) => {
+  return (
+    <FormItem label="Ресурс">
+      <Select
+        onChange={(resources) => {
+          onChange(resources as EResourceType[]);
+        }}
+        placeholder="Выберите из списка"
+        mode="multiple"
+      >
+        {Object.entries(resourceNamesLookup).map(([key, value]) => (
+          <Select.Option key={key} value={key}>
+            {value}
+          </Select.Option>
+        ))}
+      </Select>
+    </FormItem>
+  );
+};
