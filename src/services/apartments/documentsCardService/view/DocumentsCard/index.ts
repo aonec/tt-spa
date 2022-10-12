@@ -1,0 +1,1 @@
+export { DocumentsCard } from './DocumentsCard'

@@ -24,6 +24,7 @@ import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { CardsWrapper, InformationWrapper } from './ApartmentProfile.styled';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentsDocumentListContainer } from 'services/apartments/apartmentsDocumentListService';
+import { DocumentsCardContainer } from 'services/apartments/documentsCardService';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -101,6 +102,10 @@ const ApartmentProfile = () => {
             tasksNumber={tasksNumber}
           />
           <ActsCardContainer
+            apartmentId={apartmentId}
+            housingStockId={housingStockId}
+          />
+          <DocumentsCardContainer
             apartmentId={apartmentId}
             housingStockId={housingStockId}
           />

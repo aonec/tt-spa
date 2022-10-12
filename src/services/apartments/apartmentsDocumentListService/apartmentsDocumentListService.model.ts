@@ -1,5 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
+import moment from 'moment';
 import { DocumentResponse } from 'myApi';
 import {
   fetchAparatmentsDocuments,
@@ -18,6 +19,12 @@ const $apartmentDocumentsList = domain
   .createStore<DocumentResponse[]>([])
   .on(getApartmentDocumentsFx.doneData, (_, documents) => documents);
 
+const $preparedDocumentsList = $apartmentDocumentsList.map((list) =>
+  list.sort((first, second) =>
+    moment(second.uploadingTime).diff(moment(first.uploadingTime))
+  )
+);
+
 const $isLoading = getApartmentDocumentsFx.pending;
 
 const ApartmentIdGate = createGate<{ apartmentId: number }>();
@@ -35,7 +42,7 @@ forward({
 export const apartmentsDocumentListService = {
   inputs: { saveFile },
   outputs: {
-    $apartmentDocumentsList,
+    $preparedDocumentsList,
     $isLoading,
   },
   gates: {
