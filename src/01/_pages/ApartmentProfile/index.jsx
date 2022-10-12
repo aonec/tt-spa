@@ -23,6 +23,7 @@ import { ApartmentActsListContainer } from 'services/apartments/apartmentActsLis
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { CardsWrapper, InformationWrapper } from './ApartmentProfile.styled';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
+import { ApartmentsDocumentListContainer } from 'services/apartments/apartmentsDocumentListService';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -80,6 +81,9 @@ const ApartmentProfile = () => {
 
         <Route path="/*/:apartmentId/actsJournal" exact>
           <ApartmentActsListContainer />
+        </Route>
+        <Route path="/*/:apartmentId/documents" exact>
+          <ApartmentsDocumentListContainer />
         </Route>
         <Route path="/objects/:id/apartments/:apartmentId" exact>
           <InformationWrapper>
