@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-enum RangeOptions {
+export enum RangeOptions {
   LastDay = 'Последние сутки',
   LastWeek = 'Последние 7 дней',
   ThisMonth = 'С начала месяца',
@@ -45,3 +45,14 @@ export const RangePickerExtraOptions = {
     moment().subtract(1, 'months').endOf('month'),
   ],
 };
+
+export const RadioOptions = [
+  {
+    label: 'Часовой',
+    value: 'hourly',
+  },
+  {
+    label: 'Суточный',
+    value: 'daily',
+  },
+];

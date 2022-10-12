@@ -8,8 +8,8 @@ import { paramsTranslation } from '../../utils';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import { ArchiveReadingsFilter } from 'services/displayNodesStatisticsService/displayNodesStatisticsService.types';
 import { FormItem } from 'ui-kit/FormItem';
-import { DatePicker } from 'ui-kit/DatePicker';
 import {
+  ClosedFilterWrapper,
   FormBody,
   FormFooter,
   GraphFilter,
@@ -17,6 +17,8 @@ import {
   RangeWrapper,
 } from './GraphFilterForm.styled';
 import { SelectSC } from '01/shared/ui/Fields';
+import { RadioOptions } from './GraphFilterForm.constants';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -55,24 +57,15 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   return (
     <GraphFilter>
       {!isActive ? (
-        <div
-          style={{
-            display: 'flex',
-            marginBottom: 10,
-            paddingLeft: 8,
-            paddingTop: 16,
-          }}
-        >
+        <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
-            <div style={{ marginRight: 16 }}>
-              <Button
-                onClick={() => setIsActive((state) => !state)}
-                icon={<IconTT icon="searchFilter" />}
-              />
-            </div>
+            <Button
+              onClick={() => setIsActive((state) => !state)}
+              icon={<IconTT icon="searchFilter" />}
+              style={{ marginRight: 16 }}
+            />
           </Tooltip>
           <SelectSC
-            style={{ width: '100%' }}
             placeholder="Autocomplete"
             value={currentGraphParam}
             showArrow={true}
@@ -81,7 +74,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               setGraphParam(selectedValue as GraphParamsType)
             }
           />
-        </div>
+        </ClosedFilterWrapper>
       ) : (
         <OpenedFilter>
           <Form>
@@ -126,16 +119,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                     onChange={(event) =>
                       setFieldValue('reportType', event.target.value)
                     }
-                    options={[
-                      {
-                        label: 'Часовой',
-                        value: 'hourly',
-                      },
-                      {
-                        label: 'Суточный',
-                        value: 'daily',
-                      },
-                    ]}
+                    options={RadioOptions}
                   />
                 </div>
               </FormItem>

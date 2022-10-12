@@ -63,3 +63,10 @@ export const RangeWrapper = styled.div`
     position: static !important;
   }
 `;
+
+export const ClosedFilterWrapper = styled.div`
+  display: flex;
+  margin-bottom: 10;
+  padding-left: 8;
+  padding-top: 16;
+`;
