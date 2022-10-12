@@ -8,6 +8,7 @@ import {
   ArrowContainer,
   Header,
   MonthSliderWrapper,
+  Wrapper,
 } from './ApartmentIndividualDevicesMeters.styled';
 import { ApartmentIndividualDevicesMetersProps } from './ApartmentIndividualDevicesMeters.types';
 
@@ -22,6 +23,8 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   downSliderIndex,
   openReadingsHistoryModal,
   managementFirmConsumptionRates,
+  maxWidth,
+  readonly,
 }) => {
   const closedDevicesCountString = closedDevicesCount
     ? `(${closedDevicesCount})`
@@ -39,7 +42,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   const isCanDown = useMemo(() => sliderIndex > 0, [sliderIndex]);
 
   return (
-    <div>
+    <Wrapper maxWidth={maxWidth}>
       <Header>
         <div className="header-block">
           <div className="device-info">Информация о приборе</div>
@@ -73,8 +76,9 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
             deviceIndex={index}
             openReadingsHistoryModal={openReadingsHistoryModal}
             managementFirmConsumptionRates={managementFirmConsumptionRates}
+            readonly={readonly}
           />
         ))}
-    </div>
+    </Wrapper>
   );
 };

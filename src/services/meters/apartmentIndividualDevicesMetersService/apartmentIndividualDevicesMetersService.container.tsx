@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
@@ -8,6 +8,7 @@ import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/con
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
+import { Params } from './apartmentIndividualDevicesMetersService.types';
 
 const {
   inputs,
@@ -15,8 +16,14 @@ const {
   gates: { IndividualDevicesGate },
 } = apartmentIndividualDevicesMetersService;
 
-export const ApartmentIndividualDevicesMetersContainer = () => {
-  const { id } = useParams<{ id: string }>();
+export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
+  apartmentId,
+  maxWidth,
+  readonly
+}) => {
+  const { id: apartmentIdFromParams } = useParams<{ id: string }>();
+
+  const id = apartmentId || apartmentIdFromParams;
 
   const individualDevicesList = useStore(
     outputs.$filteredIndividualDevicesList
@@ -58,6 +65,8 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
         downSliderIndex={() => downSliderIndex()}
         openReadingsHistoryModal={openReadingsHistoryModal}
         managementFirmConsumptionRates={managementFirmConsumptionRates}
+        maxWidth={maxWidth}
+        readonly={readonly}
       />
     </>
   );
