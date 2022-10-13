@@ -13,5 +13,5 @@ export type ApartmentIndividualDevicesMetersProps = {
   openReadingsHistoryModal: (deviceId: number) => void;
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   maxWidth?: number;
-  readonly?: boolean;
+  editable?: boolean;
 };

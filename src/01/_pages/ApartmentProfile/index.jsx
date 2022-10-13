@@ -82,7 +82,7 @@ const ApartmentProfile = () => {
           <ApartmentIndividualDevicesMetersContainer
             maxWidth={860}
             apartmentId={id}
-            readonly
+            editable={false}
           />
         </Route>
 

@@ -19,7 +19,7 @@ const {
 export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   apartmentId,
   maxWidth,
-  readonly
+  editable
 }) => {
   const { id: apartmentIdFromParams } = useParams<{ id: string }>();
 
@@ -66,7 +66,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
         openReadingsHistoryModal={openReadingsHistoryModal}
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         maxWidth={maxWidth}
-        readonly={readonly}
+        editable={editable}
       />
     </>
   );

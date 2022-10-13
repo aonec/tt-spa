@@ -34,7 +34,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   handleUploadReading,
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
-  readonly,
+  editable = true,
 }) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -139,7 +139,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         sliderIndex={sliderIndex}
         isPrevious
         inputIndex={inputIndex}
-        isDisabled={isDeviceClosed || readonly}
+        isDisabled={isDeviceClosed || !editable}
         status={uploadingMetersStatuses[sliderIndex]}
         tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
       />
@@ -150,7 +150,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         resource={device.resource}
         sliderIndex={-1}
         inputIndex={inputIndex}
-        isDisabled={isDeviceClosed || readonly}
+        isDisabled={isDeviceClosed || !editable}
         status={uploadingMetersStatuses[-1]}
         tooltip={
           (!previousReading &&
@@ -160,7 +160,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         }
       />
       <DeviceOptionsWrapper>
-        {!readonly && (
+        {editable && (
           <StarIcon
             onClick={() =>
               history.push(
@@ -177,7 +177,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
             style={{ cursor: 'pointer' }}
           />
         </Tooltip>
-        {!readonly && (
+        {editable && (
           <div className="device-option">
             <ContextMenuButton menuButtons={menuButtonArr} size="small" />
           </div>

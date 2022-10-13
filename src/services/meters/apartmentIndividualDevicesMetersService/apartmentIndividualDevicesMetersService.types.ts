@@ -3,7 +3,7 @@ import { EIndividualDeviceOrderRule, EOrderByRule, EResourceType } from 'myApi';
 export type Params = {
   apartmentId?: number;
   maxWidth?: number;
-  readonly?: boolean;
+  editable?: boolean;
 };
 
 export type GetIndividualDevicesParams = {

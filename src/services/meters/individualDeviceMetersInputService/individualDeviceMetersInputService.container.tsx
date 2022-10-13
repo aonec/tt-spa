@@ -32,7 +32,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   managementFirmConsumptionRates,
   isHousingStocksReadingInputs,
   devices,
-  readonly,
+  editable,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
     outputs.$uploadingMetersStatuses
@@ -227,7 +227,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       handleUploadReading={handleUploadReading}
       uploadingMetersStatuses={uploadingMetersStatuses}
       previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
-      readonly={readonly}
+      editable={editable}
     />
   );
 };

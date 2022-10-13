@@ -24,7 +24,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   openReadingsHistoryModal,
   managementFirmConsumptionRates,
   maxWidth,
-  readonly,
+  editable,
 }) => {
   const closedDevicesCountString = closedDevicesCount
     ? `(${closedDevicesCount})`
@@ -76,7 +76,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
             deviceIndex={index}
             openReadingsHistoryModal={openReadingsHistoryModal}
             managementFirmConsumptionRates={managementFirmConsumptionRates}
-            readonly={readonly}
+            editable={editable}
           />
         ))}
     </Wrapper>
