@@ -6,7 +6,6 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import styled from 'styled-components';
-
 import { ReactComponent as EditIcon } from './icons/Edit.svg';
 import TextArea from 'antd/lib/input/TextArea';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
@@ -36,8 +35,11 @@ import {
   setCurrentPersonalNumberIndex,
 } from '01/features/homeowner/displayHomeowner/models';
 import {
+  AlertContent,
   AlertLink,
   ApartmentAlertWrapper,
+  ApartmentInfoWrap,
+  ApartmentTitle,
   ArrowRight,
   GroupWrapper,
   HomeownerAccountChangeDate,
@@ -48,6 +50,7 @@ import { Skeleton } from 'antd';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { HomeownerInfo } from './HomeownerInfo';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -96,7 +99,15 @@ export const ApartmentInfo = () => {
 
   const isPaused = apartment?.status === 'Pause';
 
-  const replacedAccounts = apartment?.homeownerAccounts?.reduce(
+  const apartmentTaskId = apartment?.activeTaskIds[0];
+
+  const isApartmentTaskExist = Boolean(apartmentTaskId);
+
+  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
+    checkIsHomeownerAccountRecentlyModified
+  );
+
+  const recentlyReplacedAccounts = (apartment?.homeownerAccounts || []).reduce(
     (acc, account) => {
       if (
         !account.replacedByAccount ||
@@ -107,14 +118,6 @@ export const ApartmentInfo = () => {
       return [...acc, account];
     },
     []
-  );
-
-  const apartmentTaskId = apartment?.activeTaskIds[0];
-
-  const isApartmentTaskExist = Boolean(apartmentTaskId);
-
-  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
-    checkIsHomeownerAccountRecentlyModified
   );
 
   const menuButtonArray = [
@@ -145,22 +148,15 @@ export const ApartmentInfo = () => {
     },
   ];
 
-  const replacedAlert = useMemo(
+  const replacedAccountsAlert = useMemo(
     () =>
-      replacedAccounts.map((account) => (
-        <ApartmentAlertWrapper>
-          <Alert type="stop" color="FC525B">
-            <AlertContent>
-              <div>
-                Лицевой счет {account.personalAccountNumber} заменен на{' '}
-                {account.replacedByAccount.personalAccountNumber}
-                {moment(account.closedAt).format('DD.MM.YYYY')}
-              </div>
-            </AlertContent>
-          </Alert>
-        </ApartmentAlertWrapper>
+      recentlyReplacedAccounts.map((account) => (
+        <ReplacedAccountAlert
+          key={account.id}
+          recentlyReplacedAccount={account}
+        />
       )),
-    [replacedAccounts]
+    [recentlyReplacedAccounts]
   );
 
   const pausedAlert = isPaused && (
@@ -315,6 +311,7 @@ export const ApartmentInfo = () => {
           <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
           {apartment && pausedAlert}
           {isApartmentTaskExist && apartmentTaskAlert}
+          {replacedAccountsAlert}
           {apartmentHomeownerAcconutChangeAlerts}
         </>
       )}
@@ -351,24 +348,6 @@ const Grid = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
   height: 100%;
-`;
-
-const ApartmentInfoWrap = styled.div`
-  padding: 12px 16px 16px 16px;
-  margin: 15px 0 0;
-  background: rgba(24, 158, 233, 0.1);
-  border-radius: 10px;
-`;
-
-const ApartmentTitle = styled.div`
-  font-weight: 500;
-  font-size: 18px;
-`;
-
-const AlertContent = styled(Flex)`
-  justify-content: space-between;
-  width: 100%;
-  cursor: pointer;
 `;
 
 const CommentModuleWrap = styled.div``;
