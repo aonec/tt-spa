@@ -937,6 +937,8 @@ export interface CreateIndividualDeviceRequest {
   rateType: EIndividualDeviceRateType;
   startupReadings: BaseIndividualDeviceReadingsCreateRequest;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
+  connection?: MeteringDeviceConnection | null;
+  isConnected?: boolean;
   isPolling?: boolean;
 
   /** @format int32 */
@@ -1313,6 +1315,8 @@ export enum EIndividualDeviceReadingsSource {
   Duplicated = "Duplicated",
   Erc = "Erc",
   TtmFromErc = "TtmFromErc",
+  TelegramBot = "TelegramBot",
+  DeviceTelemetry = "DeviceTelemetry",
 }
 
 export enum ELivingHouseType {
@@ -1368,10 +1372,7 @@ export enum EManagingFirmTaskFilterType {
   CalculatorLackOfConnection = "CalculatorLackOfConnection",
   IndividualDeviceCheck = "IndividualDeviceCheck",
   PipeRupture = "PipeRupture",
-  CurrentApplication = "CurrentApplication",
-  EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
-  PlannedApplication = "PlannedApplication",
   MeasurementErrorAny = "MeasurementErrorAny",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
@@ -1421,6 +1422,16 @@ export enum ENodeCommercialAccountStatus {
 export interface ENodeCommercialAccountStatusNullableStringDictionaryItem {
   key?: ENodeCommercialAccountStatus | null;
   value?: string | null;
+}
+
+export enum ENodeNetworkDeviceType {
+  Calculator = "Calculator",
+  Counter = "Counter",
+}
+
+export enum ENodeType {
+  PipeNode = "PipeNode",
+  ElectricNode = "ElectricNode",
 }
 
 export enum ENodeWorkingRangeSeason {
@@ -2121,7 +2132,14 @@ export interface HomeownerAccountListResponse {
 
   /** @format date-time */
   openAtFact: string;
+
+  /** @format date-time */
+  closedAt: string | null;
+
+  /** @format date-time */
+  editedAt: string | null;
   isMainPersonalAccountNumber: boolean;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export enum HomeownerAccountOrderRule {
@@ -2155,8 +2173,12 @@ export interface HomeownerAccountResponse {
   /** @format date-time */
   closedAt: string | null;
 
+  /** @format date-time */
+  editedAt: string | null;
+
   /** @format double */
   ownershipArea: number;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export interface HomeownerAccountResponseICollectionSuccessApiResponse {
@@ -2961,6 +2983,9 @@ export interface IndividualDeviceReadingsItemHistoryResponse {
 
   /** @format date-time */
   uploadTime: string;
+
+  /** @format date-time */
+  entryDate: string;
   source: EIndividualDeviceReadingsSource;
   user: OrganizationUserShortResponse | null;
   isRemoved: boolean;
@@ -3002,6 +3027,9 @@ export interface IndividualDeviceReadingsResponse {
 
   /** @format date-time */
   uploadTime: string;
+
+  /** @format date-time */
+  entryDate: string;
   source: EIndividualDeviceReadingsSource;
   user: OrganizationUserShortResponse | null;
   isRemoved: boolean;
@@ -3070,6 +3098,8 @@ export interface IndividualDeviceResponse {
 
   /** @format int32 */
   contractorId: number | null;
+  connection: MeteringDeviceConnection | null;
+  isConnected: boolean;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -3455,6 +3485,7 @@ export interface MeteringDeviceResponse {
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   type: string | null;
+  typeName: string | null;
   resource: EResourceType | null;
 }
 
@@ -3528,6 +3559,32 @@ export interface NodeCheckResponsePagedListSuccessApiResponse {
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
+}
+
+export interface NodeNetworkDeviceResponse {
+  /** @format int32 */
+  id: number;
+  model: string | null;
+  serialNumber: string | null;
+  type: ENodeNetworkDeviceType;
+  hasActiveTasks: boolean;
+}
+
+export interface NodeOnHousingStockResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
+  status: ENodeCommercialAccountStatus;
+  resource: EResourceType;
+  type: ENodeType;
+  serviceZone: NodeServiceZoneResponse | null;
+  networkDevice: NodeNetworkDeviceResponse | null;
+}
+
+export interface NodeOnHousingStockResponseListSuccessApiResponse {
+  successResponse: NodeOnHousingStockResponse[] | null;
 }
 
 export interface NodeServiceZoneListResponse {
@@ -4062,6 +4119,18 @@ export interface RefreshTokenRequest {
   refreshToken: string;
 }
 
+export interface ReplacementAccount {
+  /** @format uuid */
+  id?: string;
+  personalAccountNumber?: string | null;
+
+  /** @format date-time */
+  openAt?: string;
+
+  /** @format date-time */
+  openAtFact?: string;
+}
+
 export interface ReportDataModel {
   columns?: ReportHeader[] | null;
   rows?: ReportEntry[] | null;
@@ -4566,6 +4635,8 @@ export interface SwitchIndividualDeviceRequest {
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
+  connection?: MeteringDeviceConnection | null;
+  isConnected?: boolean;
   documentsIds?: number[] | null;
   isPolling?: boolean;
 }
@@ -4713,7 +4784,7 @@ export interface TaskCommentResponseSuccessApiResponse {
 }
 
 export interface TaskConfirmationRequest {
-  type?: string | null;
+  type: string;
   comment?: string | null;
 }
 
@@ -4729,13 +4800,18 @@ export interface TaskCreateRequest {
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
+
+  /** @format date-time */
+  activationTriggerDateTimeUtc?: string | null;
+
+  /** @format uuid */
+  activationTriggerGuid?: string | null;
 }
 
 export interface TaskCreateResponse {
   /** @format int32 */
   id: number;
   type: EManagingFirmTaskType;
-  isValidated: boolean;
 }
 
 export interface TaskCreateResponseSuccessApiResponse {
@@ -5011,6 +5087,8 @@ export interface UpdateIndividualDeviceRequest {
 
   /** @format int32 */
   contractorId?: number | null;
+  connection?: MeteringDeviceConnection | null;
+  isConnected?: boolean;
 }
 
 export interface UpdateInspectorOnHousingStockRequest {
@@ -7512,6 +7590,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksNodesDetail
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/{housingStockId}/Nodes
+     * @secure
+     */
+    housingStocksNodesDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<NodeOnHousingStockResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/Nodes`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Старший оператор</li>
      *
      * @tags HousingStocks
@@ -9973,25 +10069,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
-     * @name ReportsIndividualMeteringDevicesReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/IndividualMeteringDevicesReport
-     * @secure
-     */
-    reportsIndividualMeteringDevicesReportList: (query?: { From?: string; To?: string }, params: RequestParams = {}) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/IndividualMeteringDevicesReport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li>
-     *
-     * @tags Reports
      * @name ReportsHouseManagementsReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/HouseManagementsReport
@@ -10016,7 +10093,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Reports/CheckingDatesReport
      * @secure
      */
-    reportsCheckingDatesReportList: (query?: { To?: string }, params: RequestParams = {}) =>
+    reportsCheckingDatesReportList: (
+      query?: { To?: string; From?: string; Resources?: EResourceType[] },
+      params: RequestParams = {},
+    ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/CheckingDatesReport`,
         method: "GET",

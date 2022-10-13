@@ -96,6 +96,19 @@ export const ApartmentInfo = () => {
 
   const isPaused = apartment?.status === 'Pause';
 
+  const replacedAccounts = apartment?.homeownerAccounts?.reduce(
+    (acc, account) => {
+      if (
+        !account.replacedByAccount ||
+        moment().diff(moment(account.closedAt), 'month') > 3
+      ) {
+        return acc;
+      }
+      return [...acc, account];
+    },
+    []
+  );
+
   const apartmentTaskId = apartment?.activeTaskIds[0];
 
   const isApartmentTaskExist = Boolean(apartmentTaskId);
@@ -131,6 +144,24 @@ export const ApartmentInfo = () => {
       cb: () => getIssueCertificateButtonClicked(),
     },
   ];
+
+  const replacedAlert = useMemo(
+    () =>
+      replacedAccounts.map((account) => (
+        <ApartmentAlertWrapper>
+          <Alert type="stop" color="FC525B">
+            <AlertContent>
+              <div>
+                Лицевой счет {account.personalAccountNumber} заменен на{' '}
+                {account.replacedByAccount.personalAccountNumber}
+                {moment(account.closedAt).format('DD.MM.YYYY')}
+              </div>
+            </AlertContent>
+          </Alert>
+        </ApartmentAlertWrapper>
+      )),
+    [replacedAccounts]
+  );
 
   const pausedAlert = isPaused && (
     <ApartmentAlertWrapper>
