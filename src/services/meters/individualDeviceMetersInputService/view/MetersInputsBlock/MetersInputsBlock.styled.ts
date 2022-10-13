@@ -9,7 +9,7 @@ const ResourceColorLookup = {
   [EResourceType.Electricity]: '#E2B104',
   [EResourceType.ColdWaterSupply]: '#79AFFF',
   [EResourceType.HotWaterSupply]: '#FF8C68',
-  [EResourceType.Heat]: null,
+  [EResourceType.Heat]: '#9254DE',
 };
 
 const InputStatusColors = {

@@ -3,7 +3,13 @@ import { InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import { EActResourceType, EActType } from 'myApi';
-import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
+import React, {
+  FC,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { actResourceTypes } from 'services/apartments/createApartmentActService/view/CreateApartmentActForm/CreateApartmentActForm.types';
 import { EditActFormPayload } from '../../editApartmentActService.types';
 import {
@@ -23,7 +29,21 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   formId,
   handleSubmit,
   initialValues,
+  handleDeleteAct,
 }) => {
+  const initialDocument = initialValues?.document;
+  const [documents, setDocuments] = useState<Document[]>([]);
+
+  const handleSubmitForm = useCallback(
+    (values: EditActFormPayload) => {
+      if (initialDocument && !documents[0]) {
+        handleDeleteAct();
+      }
+      handleSubmit(values);
+    },
+    [initialDocument, documents, handleSubmit, handleDeleteAct]
+  );
+
   const {
     values,
     setFieldValue,
@@ -45,11 +65,8 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
     }),
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: handleSubmit,
+    onSubmit: handleSubmitForm,
   });
-
-  const initialDocument = initialValues?.document;
-  const [documents, setDocuments] = useState<Document[]>([]);
 
   useEffect(() => {
     if (!initialDocument) return;

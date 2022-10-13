@@ -10,6 +10,7 @@ import { ReactComponent as GosUslugiIcon } from '../icons/gosuslugi.svg';
 import { ReactComponent as BankIcon } from '../icons/bank.svg';
 import { ReactComponent as ArchiveIcon } from '../icons/archive.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { TelegramIcon, DeviceIcon } from 'ui-kit/icons';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
   ({
@@ -21,6 +22,8 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.Erc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.Ttm]: <UserIcon />,
     [EIndividualDeviceReadingsSource.TtmFromErc]: <ErcIcon />,
+    [EIndividualDeviceReadingsSource.TelegramBot]: <TelegramIcon />,
+    [EIndividualDeviceReadingsSource.DeviceTelemetry]: <DeviceIcon />,
   }[sourceType]);
 
 export const getSourceName = (
@@ -36,6 +39,9 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.Erc]: 'ЕРЦ',
     [EIndividualDeviceReadingsSource.Ttm]: userName || 'TTM',
     [EIndividualDeviceReadingsSource.TtmFromErc]: 'ЕРЦ (TTM)',
+    [EIndividualDeviceReadingsSource.TelegramBot]: 'Показания из телеграм-бота',
+    [EIndividualDeviceReadingsSource.DeviceTelemetry]:
+      'Автоматические показания с счетчика',
   }[source];
 
   return name;

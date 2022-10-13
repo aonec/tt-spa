@@ -21,7 +21,7 @@ import {
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
 import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
-import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/SelectSwitchDeviceTypeModal';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({

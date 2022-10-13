@@ -18,7 +18,6 @@ import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
@@ -32,6 +31,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();

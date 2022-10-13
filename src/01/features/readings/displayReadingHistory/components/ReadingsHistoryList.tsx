@@ -19,7 +19,6 @@ import {
   getReadingValuesObject,
 } from '../utils';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
@@ -54,6 +53,7 @@ import {
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 interface Props {
   isModal?: boolean;
@@ -230,8 +230,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <SourceName sourceType={reading.source} user={reading.user} />
     );
 
-    const uploadTime = reading && (
-      <div>{getTimeStringByUTC(reading.uploadTime)}</div>
+    const entryDate = reading && (
+      <div>{getTimeStringByUTC(reading.entryDate)}</div>
     );
 
     const arrowButtonComponent =
@@ -244,7 +244,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         <div>{consumption}</div>
         <div>{averageConsumption}</div>
         <div>{source}</div>
-        <div>{uploadTime}</div>
+        <div>{entryDate}</div>
         {arrowButtonComponent}
       </WrapComponent>
     );

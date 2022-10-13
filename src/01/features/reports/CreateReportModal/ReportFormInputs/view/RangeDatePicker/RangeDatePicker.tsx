@@ -7,10 +7,10 @@ import { RangeDatePickerProps } from './RangeDatePicker.types';
 export const RangeDatePicker: FC<RangeDatePickerProps> = ({
   rangePeriod,
   onChange,
+  label,
 }) => {
-
   return (
-    <FormItem label="Период">
+    <FormItem label={label || 'Период'}>
       <Wrapper>
         <RangePickerSC
           value={rangePeriod}
