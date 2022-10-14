@@ -31,8 +31,8 @@ import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displa
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 import {
-  $currentPersonalNumberIndex,
-  setCurrentPersonalNumberIndex,
+  $currentPersonalNumberId,
+  setCurrentPersonalNumberId,
 } from '01/features/homeowner/displayHomeowner/models';
 import {
   AlertContent,
@@ -57,21 +57,29 @@ export const ApartmentInfo = () => {
   const history = useHistory();
   const { id } = useParams();
 
-  const currentPersonalNumberIndex = useStore($currentPersonalNumberIndex);
+  const currentPersonalNumberId = useStore($currentPersonalNumberId);
 
   const apartment = useStore($apartment);
-  const homeownerAccounts = apartment?.homeownerAccounts;
+  const homeownerAccounts = apartment?.homeownerAccounts || [];
+
+  const openedhomeownerAccounts = useMemo(
+    () => homeownerAccounts.filter((account) => !account.closedAt),
+    [homeownerAccounts]
+  );
 
   useEffect(() => {
-    setCurrentPersonalNumberIndex(0);
-  }, [homeownerAccounts]);
+    setCurrentPersonalNumberId(openedhomeownerAccounts[0]?.id);
+  }, [openedhomeownerAccounts]);
 
   const title = getApartmentAddressString(apartment);
 
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const currentHomeowner =
-    homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
+    openedhomeownerAccounts &&
+    openedhomeownerAccounts.find(
+      (account) => account.id === currentPersonalNumberId
+    );
 
   const pending = useStore(fetchApartmentFx.pending);
 
@@ -266,7 +274,7 @@ export const ApartmentInfo = () => {
           <Space h={10} />
           <HomeownerInfo
             apartment={apartment}
-            currentPersonalNumberIndex={currentPersonalNumberIndex}
+            currentPersonalNumberId={currentPersonalNumberId}
           />
         </>
       ) : null}
@@ -283,11 +291,11 @@ export const ApartmentInfo = () => {
         <Flex>
           <ApartmentTitle>{title}</ApartmentTitle>
           <Space />
-          {homeownerAccounts?.map(
-            (homeowner, index) =>
+          {openedhomeownerAccounts?.map(
+            (homeowner) =>
               homeowner?.personalAccountNumber && (
                 <PersonalNumber
-                  onClick={() => setCurrentPersonalNumberIndex(index)}
+                  onClick={() => setCurrentPersonalNumberId(homeowner.id)}
                   isCurrent={currentHomeowner?.id === homeowner.id}
                   key={homeowner.id}
                 >

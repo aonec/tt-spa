@@ -6,6 +6,7 @@ import {
   AccountNumberTitle,
   AccountNumberWrapper,
   DateWrapper,
+  EditDateWrapper,
   HomeownerInfoWrapper,
   InfoIconWrapper,
   PaymentCodeWrapper,
@@ -16,14 +17,24 @@ import { HomeownerInfoProps } from './HomeownerInfo.types';
 
 export const HomeownerInfo: FC<HomeownerInfoProps> = ({
   apartment,
-  currentPersonalNumberIndex,
+  currentPersonalNumberId,
 }) => {
   const { homeownerAccounts } = apartment;
   if (!homeownerAccounts) {
     return null;
   }
 
-  const homeowner = homeownerAccounts[currentPersonalNumberIndex];
+  const homeowner = homeownerAccounts.find(
+    (account) => account.id === currentPersonalNumberId
+  );
+  if (!homeowner) {
+    return null;
+  }
+
+  const previousHomeowner = homeownerAccounts.find(
+    (account) => account.replacedByAccount?.id === homeowner.id
+  );
+
   const {
     name,
     personalAccountNumber,
@@ -44,15 +55,27 @@ export const HomeownerInfo: FC<HomeownerInfoProps> = ({
       <AccountNumberWrapper>
         <AccountNumberTitle>
           <div className="title">Лицевой счет</div>
-          <InfoIconWrapper>
-            <Tooltip
-              color={'#272F5A'}
-              placement="topLeft"
-              title={`Основной лицевого счёта квартиры был изменен 1243455 (Константинопольский К.К.)`}
-            >
-              <InfoIcon />
-            </Tooltip>
-          </InfoIconWrapper>
+          {previousHomeowner && (
+            <InfoIconWrapper>
+              <Tooltip
+                color={'#272F5A'}
+                placement="topLeft"
+                title={
+                  <>
+                    Основной лицевой счёт был изменен{' '}
+                    {previousHomeowner.personalAccountNumber}
+                    <div>({previousHomeowner.name})</div>
+                    <EditDateWrapper>
+                      Дата изменения:{' '}
+                      {moment(previousHomeowner.closedAt).format('DD.MM.YYYY')}
+                    </EditDateWrapper>
+                  </>
+                }
+              >
+                <InfoIcon />
+              </Tooltip>
+            </InfoIconWrapper>
+          )}
         </AccountNumberTitle>
         <div className="account-number-info">
           {personalAccountNumber}{' '}

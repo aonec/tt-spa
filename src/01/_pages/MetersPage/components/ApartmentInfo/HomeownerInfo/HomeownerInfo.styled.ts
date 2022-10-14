@@ -11,6 +11,9 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const DateWrapper = styled.div`
+`
+
 export const HomeownerInfoWrapper = styled.div`
   color: #272f5a;
   font-weight: 500;
@@ -37,9 +40,11 @@ export const AccountNumberWrapper = styled.div`
   }
 `;
 
-export const DateWrapper = styled.div`
-  color: #272f5ae5;
-  font-weight: 400;
+export const EditDateWrapper = styled.div`
+  color: white;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 8px;
 `;
 
 export const PaymentCodeWrapper = styled.div`
