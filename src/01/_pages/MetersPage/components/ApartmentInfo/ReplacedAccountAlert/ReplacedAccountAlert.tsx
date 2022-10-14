@@ -6,6 +6,7 @@ import {
   AlertContent,
   AlertTextWrapper,
   ApartmentAlertWrapper,
+  HomeownerAccountChangeDate,
 } from './ReplacedAccountAlert.styled';
 import { ReplacedAccountAlertProps} from './ReplacedAccountAlert.types';
 
@@ -33,7 +34,9 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
               {recentlyReplacedAccount.replacedByAccount.personalAccountNumber}
             </AccountNumberWrapper>
           </AlertTextWrapper>
+          <HomeownerAccountChangeDate>
           Дата изменения: {closedDate}
+          </HomeownerAccountChangeDate>
         </AlertContent>
       </Alert>
     </ApartmentAlertWrapper>

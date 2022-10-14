@@ -17,6 +17,10 @@ export const AccountNumberWrapper = styled.div`
   margin: 0 4px;
 `;
 
+export const HomeownerAccountChangeDate = styled.div`
+  color: #272f5ab2;
+`;
+
 export const AlertTextWrapper = styled.div`
   display: flex;
   align-items: center;

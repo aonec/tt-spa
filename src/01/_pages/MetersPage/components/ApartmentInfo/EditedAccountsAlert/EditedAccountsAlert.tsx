@@ -6,6 +6,7 @@ import {
   AlertContent,
   AlertTextWrapper,
   ApartmentAlertWrapper,
+  HomeownerAccountChangeDate,
 } from './EditedAccountsAlert.styled';
 import { EditedAccountsAlertProps } from './EditedAccountsAlert.types';
 
@@ -22,7 +23,9 @@ export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
             Лицевой счёт квартиры был отредактирован{' '}
             <AccountNumberWrapper>{personalAccountNumber}</AccountNumberWrapper>{' '}
           </AlertTextWrapper>
-          Дата изменения: {preparedDate}
+          <HomeownerAccountChangeDate>
+            Дата изменения: {preparedDate}
+          </HomeownerAccountChangeDate>
         </AlertContent>
       </Alert>
     </ApartmentAlertWrapper>
