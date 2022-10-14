@@ -2132,7 +2132,14 @@ export interface HomeownerAccountListResponse {
 
   /** @format date-time */
   openAtFact: string;
+
+  /** @format date-time */
+  closedAt: string | null;
+
+  /** @format date-time */
+  editedAt: string | null;
   isMainPersonalAccountNumber: boolean;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export enum HomeownerAccountOrderRule {
@@ -2166,8 +2173,12 @@ export interface HomeownerAccountResponse {
   /** @format date-time */
   closedAt: string | null;
 
+  /** @format date-time */
+  editedAt: string | null;
+
   /** @format double */
   ownershipArea: number;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export interface HomeownerAccountResponseICollectionSuccessApiResponse {
@@ -3474,6 +3485,7 @@ export interface MeteringDeviceResponse {
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   type: string | null;
+  typeName: string | null;
   resource: EResourceType | null;
 }
 
@@ -4105,6 +4117,18 @@ export interface RefreshResponseSuccessApiResponse {
 export interface RefreshTokenRequest {
   token: string;
   refreshToken: string;
+}
+
+export interface ReplacementAccount {
+  /** @format uuid */
+  id?: string;
+  personalAccountNumber?: string | null;
+
+  /** @format date-time */
+  openAt?: string;
+
+  /** @format date-time */
+  openAtFact?: string;
 }
 
 export interface ReportDataModel {
