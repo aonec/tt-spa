@@ -12,7 +12,15 @@ export const Wrapper = styled.div`
 `;
 
 export const DateWrapper = styled.div`
-`
+  max-width: 140px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 4px;
+`;
 
 export const HomeownerInfoWrapper = styled.div`
   color: #272f5a;

@@ -79,7 +79,9 @@ export const HomeownerInfo: FC<HomeownerInfoProps> = ({
         </AccountNumberTitle>
         <div className="account-number-info">
           {personalAccountNumber}{' '}
-          <DateWrapper>(открыт с {preparedDate})</DateWrapper>
+          <DateWrapper>
+            (открыт с<Tooltip title={preparedDate}> {preparedDate} </Tooltip>)
+          </DateWrapper>
         </div>
       </AccountNumberWrapper>
 
