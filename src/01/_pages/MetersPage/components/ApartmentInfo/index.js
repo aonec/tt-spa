@@ -51,6 +51,7 @@ import { ESecuredIdentityRoleName } from 'myApi';
 import { HomeownerInfo } from './HomeownerInfo';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
+import { EditedAccountsAlert } from './EditedAccountsAlert';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -62,22 +63,22 @@ export const ApartmentInfo = () => {
   const apartment = useStore($apartment);
   const homeownerAccounts = apartment?.homeownerAccounts || [];
 
-  const openedhomeownerAccounts = useMemo(
+  const openedHomeownerAccounts = useMemo(
     () => homeownerAccounts.filter((account) => !account.closedAt),
     [homeownerAccounts]
   );
 
   useEffect(() => {
-    setCurrentPersonalNumberId(openedhomeownerAccounts[0]?.id);
-  }, [openedhomeownerAccounts]);
+    setCurrentPersonalNumberId(openedHomeownerAccounts[0]?.id);
+  }, [openedHomeownerAccounts]);
 
   const title = getApartmentAddressString(apartment);
 
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const currentHomeowner =
-    openedhomeownerAccounts &&
-    openedhomeownerAccounts.find(
+    openedHomeownerAccounts &&
+    openedHomeownerAccounts.find(
       (account) => account.id === currentPersonalNumberId
     );
 
@@ -111,21 +112,19 @@ export const ApartmentInfo = () => {
 
   const isApartmentTaskExist = Boolean(apartmentTaskId);
 
-  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
+  const recentlyModifiedApartmentPersonalAccounts = openedHomeownerAccounts.filter(
     checkIsHomeownerAccountRecentlyModified
   );
 
-  const recentlyReplacedAccounts = (apartment?.homeownerAccounts || []).reduce(
-    (acc, account) => {
-      if (
-        !account.replacedByAccount ||
-        moment().diff(moment(account.closedAt), 'month') > 3
-      ) {
-        return acc;
-      }
-      return [...acc, account];
-    },
-    []
+  const recentlyReplacedAccounts = (apartment?.homeownerAccounts || []).filter(
+    (account) =>
+      account.replacedByAccount &&
+      moment().diff(moment(account.closedAt), 'month') < 3
+  );
+
+  const recentlyEditedAccounts = openedHomeownerAccounts.filter(
+    (account) =>
+      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3
   );
 
   const menuButtonArray = [
@@ -155,6 +154,14 @@ export const ApartmentInfo = () => {
       cb: () => getIssueCertificateButtonClicked(),
     },
   ];
+
+  const editedAccountsAlert = useMemo(
+    () =>
+      recentlyEditedAccounts.map((account) => (
+        <EditedAccountsAlert key={account.id} recentlyEditedAccount={account} />
+      )),
+    [recentlyEditedAccounts]
+  );
 
   const replacedAccountsAlert = useMemo(
     () =>
@@ -291,7 +298,7 @@ export const ApartmentInfo = () => {
         <Flex>
           <ApartmentTitle>{title}</ApartmentTitle>
           <Space />
-          {openedhomeownerAccounts?.map(
+          {openedHomeownerAccounts?.map(
             (homeowner) =>
               homeowner?.personalAccountNumber && (
                 <PersonalNumber
@@ -316,11 +323,12 @@ export const ApartmentInfo = () => {
 
       {!pending && (
         <>
-          <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
           {apartment && pausedAlert}
           {isApartmentTaskExist && apartmentTaskAlert}
           {replacedAccountsAlert}
+          {editedAccountsAlert}
           {apartmentHomeownerAcconutChangeAlerts}
+          <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
         </>
       )}
     </Wrapper>
