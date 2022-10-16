@@ -202,7 +202,6 @@ guard({
       try {
         validation?.validateSync(payload);
       } catch (e) {
-        console.log(e, payload);
         message.error((e as { message: string }).message);
 
         return false;
