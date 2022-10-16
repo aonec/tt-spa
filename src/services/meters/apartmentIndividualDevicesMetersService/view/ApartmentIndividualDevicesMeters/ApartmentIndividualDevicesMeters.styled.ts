@@ -2,8 +2,12 @@ import styled from 'styled-components';
 
 export const deviceMeterLineGridTemplate = '1.45fr 0.6fr 0.6fr 0.3fr';
 
+export const Wrapper = styled.div<{ maxWidth?: number }>`
+  width: 100%;
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : 'none')};
+`;
+
 export const Header = styled.div`
-  min-width: 950px;
   display: grid;
   align-items: center;
   grid-template-columns: ${deviceMeterLineGridTemplate};

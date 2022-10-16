@@ -13,6 +13,7 @@ export type IndividualDeviceMetersInputContainerProps = {
   deviceIndex: number;
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   isHousingStocksReadingInputs?: boolean;
+  editable?: boolean;
 };
 
 export type PreparedReadingsData = {

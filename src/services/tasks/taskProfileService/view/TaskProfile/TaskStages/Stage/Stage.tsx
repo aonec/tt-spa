@@ -25,7 +25,7 @@ import { StageProps } from './Stage.types';
 export const Stage: FC<StageProps> = ({
   stage,
   isLast,
-  isFirst,
+  canRevertStage,
   handleRevertStage,
   isRevertStageLoading,
 }) => {
@@ -70,7 +70,7 @@ export const Stage: FC<StageProps> = ({
   const inProgress = status === EStageStatus.InProgress;
   const isPerpetrator = perpetrator?.id === currentUser?.id;
 
-  const isShowRevertStageButton = isPerpetrator && inProgress && !isFirst;
+  const isShowRevertStageButton = isPerpetrator && canRevertStage;
 
   const isDone = status === EStageStatus.Done;
   const lineIsActive = isDone || inProgress;
