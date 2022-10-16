@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { EResourceType } from 'myApi';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -16,12 +16,49 @@ import {
   DevicePipeInfoWrapper,
   DeviceCheckingDatesWrapper,
 } from './SwitchDeviceForm.styled';
-import { SwitchDeviceFormProps } from './SwitchDeviceForm.types';
+import {
+  SwitchDeviceFormProps,
+  SwitchDeviceFormValues,
+} from './SwitchDeviceForm.types';
 
 export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   device,
   devicePipe,
+  handleChangeSwitchDevicePayload,
 }) => {
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+  } = useFormik<SwitchDeviceFormValues>({
+    initialValues: {
+      lastCheckingDate: null,
+      futureCheckingDate: null,
+      openingDate: null,
+      model: '',
+      serialNumber: '',
+    },
+    onSubmit: () => {},
+  });
+
+  useEffect(() => {
+    handleChangeSwitchDevicePayload({
+      ...values,
+      lastCheckingDate: values.lastCheckingDate?.toISOString(),
+      futureCheckingDate: values.futureCheckingDate?.toISOString(),
+      openingDate: values.openingDate?.toISOString(),
+    });
+  }, [values]);
+
+  useEffect(() => {
+    if (!values.futureCheckingDate) return;
+
+    setFieldValue(
+      'futureCheckingDate',
+      values.lastCheckingDate?.add('year', 3)
+    );
+  }, [values.lastCheckingDate]);
+
   const magistral = devicePipe?.hubConnection?.hub?.magistral
     ? DevicePipeMagistralDictionary[devicePipe.hubConnection.hub.magistral]
     : '';
@@ -51,10 +88,20 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
           />
         </FormItem>
         <FormItem label="Серийный номер">
-          <Input placeholder="Введите номер прибора" />
+          <Input
+            name="serialNumber"
+            value={values.serialNumber}
+            onChange={handleChange}
+            placeholder="Введите номер прибора"
+          />
         </FormItem>
         <FormItem label="Модель прибора">
-          <Input placeholder="Введите название" />
+          <Input
+            name="model"
+            value={values.model}
+            onChange={handleChange}
+            placeholder="Введите название"
+          />
         </FormItem>
       </DeviceInfoWrapper>
       <DevicePipeInfoWrapper>
@@ -85,13 +132,25 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       </DevicePipeInfoWrapper>
       <DeviceCheckingDatesWrapper>
         <FormItem label="Дата поверки прибора">
-          <DatePicker />
+          <DatePicker
+            value={values.lastCheckingDate}
+            onChange={(date) => setFieldValue('lastCheckingDate', date)}
+            format="DD.MM.YYYY"
+          />
         </FormItem>
         <FormItem label="Дата следующей поверки прибора">
-          <DatePicker />
+          <DatePicker
+            value={values.futureCheckingDate}
+            onChange={(date) => setFieldValue('futureCheckingDate', date)}
+            format="DD.MM.YYYY"
+          />
         </FormItem>
         <FormItem label="Дата установки прибора">
-          <DatePicker />
+          <DatePicker
+            value={values.openingDate}
+            onChange={(date) => setFieldValue('openingDate', date)}
+            format="DD.MM.YYYY"
+          />
         </FormItem>
       </DeviceCheckingDatesWrapper>
     </Wrapper>
