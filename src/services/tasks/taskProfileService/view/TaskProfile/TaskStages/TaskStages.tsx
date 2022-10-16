@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { Stage } from './Stage';
 import { TitleWrapper, Wrapper } from './TaskStages.styled';
 import { TaskStagesProps } from './TaskStages.types';
+import { EStageStatus } from "../../../../../../myApi";
 
 export const TaskStages: FC<TaskStagesProps> = ({
   stages,
@@ -10,16 +11,20 @@ export const TaskStages: FC<TaskStagesProps> = ({
 }) => {
   const stagesView = useMemo(
     () =>
-      stages.map((stage, index) => (
-        <Stage
-          key={stage.id}
-          stage={stage}
-          isLast={stage.number === stages.length}
-          isFirst={index === 0}
-          handleRevertStage={handleRevertStage}
-          isRevertStageLoading={isRevertStageLoading}
-        />
-      )),
+      stages.map((stage, index) => {
+        const canRevertStage = stages[stage.number]?.status === EStageStatus.InProgress
+
+        return (
+          <Stage
+            key={stage.id}
+            stage={stage}
+            isLast={stage.number === stages.length}
+            canRevertStage={canRevertStage}
+            handleRevertStage={handleRevertStage}
+            isRevertStageLoading={isRevertStageLoading}
+          />
+        );
+      }),
     [stages]
   );
 
