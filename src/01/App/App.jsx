@@ -13,7 +13,6 @@ import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
   Login,
-  TaskProfile,
   ObjectProfile,
   MetersPage,
   ApartmentProfile,
@@ -50,26 +49,15 @@ import { ObjectsProfileContainer } from 'services/objects/objectsProfileService'
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import {
-  TasksProfileContainer,
-  tasksProfileService,
-} from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { useStore } from 'effector-react';
-import { TaskProfileContainer } from 'services/tasks/taskProfileService';
+import {TasksRouter} from "../../services/tasks/tasks.router";
 
 moment.locale('ru');
 
 const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
 
-  const isSpectator = useStore(tasksProfileService.outputs.$isSpectator);
-  const initialTasksPath = isSpectator
-    ? '/tasks/list/Observing'
-    : '/tasks/list/Executing';
-
-  const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -92,30 +80,13 @@ const Internal = () => {
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
-                    : initialTasksPath
+                    : '/tasks/'
                 }
                 exact
               />
-              <Redirect from="/tasks" to={initialTasksPath} exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
-              </Route>
-
-              <Route path="/tasks">
-                <TasksIsOpen />
-
-                <Route
-                  path="/tasks/profile/:taskId"
-                  component={TaskProfileContainer}
-                  exact
-                />
-                
-                <Route
-                  path="/tasks/list/:grouptype"
-                  component={TasksProfileContainer}
-                  exact
-                />
               </Route>
 
               <Route
@@ -146,6 +117,8 @@ const Internal = () => {
                 component={ObjectsProfileContainer}
                 exact
               />
+
+              <TasksRouter />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
 
