@@ -20,4 +20,5 @@ export type ApartmentIndividualDeviceMetersInputLineProps = {
     | IndividualDeviceReadingsResponse
     | null
     | undefined;
+  editable?: boolean;
 };
