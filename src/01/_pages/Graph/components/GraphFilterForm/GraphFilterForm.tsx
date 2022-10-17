@@ -26,11 +26,13 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   currentFilter,
 }) => {
   const [isActive, setIsActive] = useState(false);
+  const openModal = () => setIsActive(true);
+  const closeModal = () => setIsActive(false);
 
   const handleSubmit = useCallback(
     (filter: ArchiveReadingsFilter) => {
       setArchiveFilter(filter);
-      setIsActive((state) => !state);
+      closeModal();
     },
     [setArchiveFilter, setIsActive]
   );
@@ -52,7 +54,6 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
     value: param,
   }));
 
-  console.log(paramsList);
   useEffect(() => {
     if (paramsList[0]) {
       setGraphParam(paramsList[0]);
@@ -65,7 +66,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
         <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
             <Button
-              onClick={() => setIsActive((state) => !state)}
+              onClick={() => openModal()}
               icon={<IconTT icon="searchFilter" />}
               style={{ marginRight: 16 }}
             />
@@ -168,7 +169,12 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               </FormItem>
             </FormBody>
             <FormFooter>
-              <ButtonTT color="white" small style={{ marginRight: 16 }}>
+              <ButtonTT
+                color="white"
+                small
+                style={{ marginRight: 16 }}
+                onClick={() => closeModal()}
+              >
                 Отмена
               </ButtonTT>
               <ButtonTT

@@ -29,7 +29,7 @@ import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 import { GraphLegend } from '../GraphLegend/GraphLegend';
 
 const minDelta = 0.01;
-const width = 750;
+const width = 730;
 const height = 350;
 
 export const GraphView: React.FC<GraphViewProps> = ({
