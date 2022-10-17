@@ -116,13 +116,8 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                     }}
                     ranges={{
                       [RangeOptions.LastDay]: [
-                        moment(),
-                        moment().set({
-                          hour: 23,
-                          minute: 0,
-                          second: 0,
-                          millisecond: 0,
-                        }),
+                        moment().startOf('day'),
+                        moment().endOf('day'),
                       ],
                       [RangeOptions.LastWeek]: [
                         moment().subtract(1, 'week').set({
@@ -131,21 +126,11 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                           second: 0,
                           millisecond: 0,
                         }),
-                        moment().set({
-                          hour: 23,
-                          minute: 0,
-                          second: 0,
-                          millisecond: 0,
-                        }),
+                        moment().startOf('day'),
                       ],
                       [RangeOptions.ThisMonth]: [
                         moment().startOf('month'),
-                        moment().set({
-                          hour: 23,
-                          minute: 0,
-                          second: 0,
-                          millisecond: 0,
-                        }),
+                        moment().startOf('day'),
                       ],
                       [RangeOptions.LastMonth]: [
                         moment().startOf('month').subtract(1, 'months'),
