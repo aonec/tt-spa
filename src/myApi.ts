@@ -350,6 +350,28 @@ export interface ApartmentStatusSetRequest {
   documentIds?: number[] | null;
 }
 
+export interface ArchivesDataGroup {
+  header?: string | null;
+  data?: ArchivesDataGroupValue[] | null;
+}
+
+export interface ArchivesDataGroupValue {
+  /** @format date-time */
+  time?: string;
+
+  /** @format double */
+  value?: number;
+}
+
+export interface ArchivesDataModel {
+  reportType?: string | null;
+  resource?: string | null;
+
+  /** @format int32 */
+  systemPipeCount?: number;
+  data?: ArchivesDataGroup[] | null;
+}
+
 export interface BaseIndividualDeviceReadingsCreateRequest {
   /** @format date-time */
   readingDate?: string | null;
@@ -766,6 +788,7 @@ export interface CreateCalculatorRequest {
 
   /** @format int32 */
   infoId: number;
+  model?: string | null;
 }
 
 export interface CreateCommunicationPipeRequest {
@@ -2132,7 +2155,14 @@ export interface HomeownerAccountListResponse {
 
   /** @format date-time */
   openAtFact: string;
+
+  /** @format date-time */
+  closedAt: string | null;
+
+  /** @format date-time */
+  editedAt: string | null;
   isMainPersonalAccountNumber: boolean;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export enum HomeownerAccountOrderRule {
@@ -2166,8 +2196,12 @@ export interface HomeownerAccountResponse {
   /** @format date-time */
   closedAt: string | null;
 
+  /** @format date-time */
+  editedAt: string | null;
+
   /** @format double */
   ownershipArea: number;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export interface HomeownerAccountResponseICollectionSuccessApiResponse {
@@ -3474,6 +3508,7 @@ export interface MeteringDeviceResponse {
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   type: string | null;
+  typeName: string | null;
   resource: EResourceType | null;
 }
 
@@ -4105,6 +4140,18 @@ export interface RefreshResponseSuccessApiResponse {
 export interface RefreshTokenRequest {
   token: string;
   refreshToken: string;
+}
+
+export interface ReplacementAccount {
+  /** @format uuid */
+  id?: string;
+  personalAccountNumber?: string | null;
+
+  /** @format date-time */
+  openAt?: string;
+
+  /** @format date-time */
+  openAtFact?: string;
 }
 
 export interface ReportDataModel {
@@ -9022,6 +9069,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<NodeCheckResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
         method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesStatisticsDetail
+     * @summary ReportRead
+     * @request GET:/api/Nodes/{nodeId}/Statistics
+     * @secure
+     */
+    nodesStatisticsDetail: (
+      nodeId: number,
+      query?: { ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
+      params: RequestParams = {},
+    ) =>
+      this.request<ArchivesDataModel, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Statistics`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
