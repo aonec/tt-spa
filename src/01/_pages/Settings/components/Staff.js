@@ -26,11 +26,13 @@ const Staff = () => {
   const phoneMask = usePhoneMask();
 
   const res = users?.map((item, index) => {
-    const { id, name, cellphone, status } = item;
+    const { id, cellphone, status, firstName, lastName, middleName } = item;
 
     return (
       <li className={classes.staff} key={index}>
-        <div className={classes.name}>{name}</div>
+        <div className={classes.name}>
+          {firstName} {lastName} {middleName}
+        </div>
         <StaffStatus status={status?.type} />
         <div className={classes.cellphone}>
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
@@ -53,7 +55,8 @@ const Staff = () => {
             },
             {
               title: 'Редактировать информацию о сотруднике',
-              cb: () => history.push(`/companyProfile/editManagingFirmUser/${id}`),
+              cb: () =>
+                history.push(`/companyProfile/editManagingFirmUser/${id}`),
               show: true,
               color: 'default',
               clickable: true,
