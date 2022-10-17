@@ -30,9 +30,6 @@ export const useFetchPage = (state, dispatch) => {
     }
     if (isPageApartmentExact && !apartments && params.id) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
-      getApartments({ housingStockId: params.id }).then((data) =>
-        dispatch({ type: 'success', data })
-      );
     }
 
     if ((info || devices) && !events) {
