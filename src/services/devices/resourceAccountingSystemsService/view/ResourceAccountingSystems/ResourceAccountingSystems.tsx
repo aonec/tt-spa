@@ -1,5 +1,4 @@
 import React, { FC, useMemo, useState } from 'react';
-import _ from 'lodash';
 import { CalculatorIcon, PureResourceIcon } from 'ui-kit/icons';
 import { Segmented } from 'ui-kit/Segmented';
 import {
@@ -12,9 +11,9 @@ import {
   ResourceAccountingSystemsProps,
   ResourceAccountingSystemsSegment,
 } from './ResourceAccountingSystems.types';
-import { NO_CALCULATOR_KEY } from './ResourceAccountingSystems.constants';
 import { NodesGroup } from './NodesGroup';
 import { Empty, Skeleton } from 'antd';
+import { getNodesGroups } from './ResourceAccountingSystems.utils';
 
 export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
   nodes,
@@ -25,17 +24,10 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
     setSegmentName,
   ] = useState<ResourceAccountingSystemsSegment>('resource');
 
-  const nodesGroups = useMemo(
-    () =>
-      Object.entries(
-        _.groupBy(nodes, (node) =>
-          segmentName === 'resource'
-            ? node.resource
-            : node.networkDevice?.id || NO_CALCULATOR_KEY
-        )
-      ),
-    [nodes, segmentName]
-  );
+  const nodesGroups = useMemo(() => getNodesGroups(nodes || [], segmentName), [
+    nodes,
+    segmentName,
+  ]);
 
   return (
     <Wrapper>

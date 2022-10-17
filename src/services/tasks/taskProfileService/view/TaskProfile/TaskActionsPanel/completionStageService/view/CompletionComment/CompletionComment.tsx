@@ -11,6 +11,7 @@ import { CompletionCommentProps } from './CompletionComment.types';
 
 export const CompletionComment: FC<CompletionCommentProps> = ({
   handleChangeComment,
+  disabled,
 }) => {
   const [text, setText] = useState('');
 
@@ -28,6 +29,7 @@ export const CompletionComment: FC<CompletionCommentProps> = ({
   return (
     <FormItem label="Комментарий">
       <TextAreaSC
+        disabled={disabled}
         placeholder="Введите комментарий"
         value={text || ''}
         onChange={handleChange}

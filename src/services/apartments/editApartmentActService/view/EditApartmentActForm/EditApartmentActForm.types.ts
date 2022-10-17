@@ -5,4 +5,5 @@ export type EditApartmentActFormProps = {
   handleSubmit: (payload: any) => void;
   actTypes: EActTypeStringDictionaryItem[] | null;
   initialValues: ApartmentActResponse | null;
+  handleDeleteAct: () => void;
 };

@@ -42,6 +42,7 @@ import { ReactComponent as NotRegisteredIcon } from './svg/notRegistered.svg';
 import { ReactComponent as PreparedForDeliveryIcon } from './svg/preparedForDelivery.svg';
 import { ReactComponent as PendingApprovalIcon } from './svg/pendingApproval.svg';
 import { ReactComponent as RegisteredIcon } from './svg/registered.svg';
+import { ReactComponent as TelegramIcon } from './svg/telegram.svg';
 
 export {
   FinishIcon,
@@ -88,4 +89,5 @@ export {
   PreparedForDeliveryIcon,
   PendingApprovalIcon,
   RegisteredIcon,
+  TelegramIcon,
 };

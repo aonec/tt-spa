@@ -20,4 +20,5 @@ export type IndividualDeviceMetersInputLineProps = {
     | IndividualDeviceReadingsResponse
     | null
     | undefined;
+  editable?: boolean;
 };

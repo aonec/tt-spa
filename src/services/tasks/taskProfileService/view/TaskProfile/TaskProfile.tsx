@@ -114,7 +114,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
                 commentText={commentText}
               />
               <TaskBaseInfo task={task} />
-              {individualDevices && (
+              {individualDevices && individualDevices.length !== 0 && (
                 <TaskIndividualDevicesList
                   devices={individualDevices}
                   apartmentId={apartmemtId}

@@ -23,6 +23,7 @@ import { ApartmentActsListContainer } from 'services/apartments/apartmentActsLis
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { CardsWrapper, InformationWrapper } from './ApartmentProfile.styled';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
+import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -53,9 +54,12 @@ const ApartmentProfile = () => {
   const Wrapper = styledComponents.div`
   display: flex;
   padding-bottom: 40px;
-`;
+  max-width: 1300px;
+  min-width: 800px;
+  `;
   // Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
   const {
+    id,
     apartmentNumber,
     activeTaskIds,
     square,
@@ -75,7 +79,11 @@ const ApartmentProfile = () => {
       <Tabs />
       <Wrapper>
         <Route path="/*/:apartmentId/testimony" exact>
-          <ApartmentDevices devices={devices} />
+          <ApartmentIndividualDevicesMetersContainer
+            maxWidth={860}
+            apartmentId={id}
+            editable={false}
+          />
         </Route>
 
         <Route path="/*/:apartmentId/actsJournal" exact>

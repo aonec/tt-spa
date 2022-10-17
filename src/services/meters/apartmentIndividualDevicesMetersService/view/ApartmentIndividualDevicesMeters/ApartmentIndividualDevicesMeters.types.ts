@@ -12,4 +12,6 @@ export type ApartmentIndividualDevicesMetersProps = {
   downSliderIndex: () => void;
   openReadingsHistoryModal: (deviceId: number) => void;
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
+  maxWidth?: number;
+  editable?: boolean;
 };
