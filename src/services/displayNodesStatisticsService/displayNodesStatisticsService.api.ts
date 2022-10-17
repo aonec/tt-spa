@@ -1,8 +1,8 @@
 import { axios } from '01/axios';
-import { ReadingsInterface } from '01/_pages/Graph/components/GraphView/GraphView.types';
+import { ArchivesDataModel } from 'myApi';
 import { FetchArchiveReadingsPayload } from './displayNodesStatisticsService.types';
 
 export const requestNodeReadings = async (
   params: FetchArchiveReadingsPayload
-): Promise<ReadingsInterface> =>
-  axios.get<any, ReadingsInterface>('Reports/Archives', { params });
+): Promise<ArchivesDataModel> =>
+  axios.get(`Nodes/${params.nodeId}/Statistics`, { params });

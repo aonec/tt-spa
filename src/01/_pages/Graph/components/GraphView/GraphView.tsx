@@ -10,10 +10,12 @@ import {
 import React from 'react';
 import { minBy, maxBy, get } from 'lodash';
 import 'antd/es/date-picker/style/index';
-import FallbackGraph from '../../assets/FallbackGraph.svg';
-import { GraphViewProps } from './GraphView.types';
-import { formGraphData, formTicks, getTickFormat } from '../../utils';
-import { renderForHeatAndDeltaMass } from '../../utils/renderForHeatAndDeltaMass';
+import {
+  GraphViewProps,
+  PreparedArchiveValues,
+  ResourceType,
+} from './GraphView.types';
+import { formTicks, getTickFormat } from '../../utils';
 import Gradient from '../Gradient';
 import { TickComponent } from '../TickComponent';
 import { CustomTooltip } from '../CustomTooltip';
@@ -35,22 +37,29 @@ export const GraphView: React.FC<GraphViewProps> = ({
   data,
   reportType,
 }) => {
-  const { resource, averageDeltaMass } = data;
+  const { resource, data: readingsData } = data;
 
-  const archiveEntries = get(data, 'archiveEntries', []);
+  const archiveValues = (readingsData || []).find(
+    (reading) => reading.header === graphParam
+  )?.data;
 
-  if (archiveEntries.length === 0) {
-    return <FallbackGraph />;
+  if (!archiveValues || archiveValues.length === 0) {
+    return null;
   }
 
-  const tickValues = formTicks(archiveEntries, reportType);
+  const preparedArchiveValues = archiveValues.reduce((acc, reading) => {
+    if (!reading?.time || !reading.value) {
+      return acc;
+    }
+    return [...acc, reading as PreparedArchiveValues];
+  }, [] as PreparedArchiveValues[]);
 
-  const ticksData = tickValues.map((tick) => tick.timestamp);
+  const tickValues = formTicks(preparedArchiveValues, reportType);
 
-  const graphData = formGraphData(archiveEntries, graphParam);
+  const ticksData = tickValues.map((tick) => tick.time);
 
-  const minElement = minBy(graphData, (obj) => obj.value);
-  const maxElement = maxBy(graphData, (obj) => obj.value);
+  const minElement = minBy(preparedArchiveValues, (obj) => obj.value);
+  const maxElement = maxBy(preparedArchiveValues, (obj) => obj.value);
 
   let minValue = minElement!.value > 0 ? 0 : 1.5 * minElement!.value;
   let maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value;
@@ -64,17 +73,15 @@ export const GraphView: React.FC<GraphViewProps> = ({
     parent: { overflow: 'visible' },
     data: {
       fill: `url(#${data.resource})`,
-      stroke: getResourceColor(resource),
+      stroke: getResourceColor(resource as ResourceType),
       strokeWidth: 2,
     },
   };
 
-  const isAverageLineRendered = renderForHeatAndDeltaMass(resource, graphParam);
-
   return (
     <>
       <GraphWrapper>
-        <Gradient resource={resource} />
+        <Gradient resource={resource as ResourceType} />
         <VictoryChart
           padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
           domain={{ y: [minValue, maxValue] }}
@@ -94,7 +101,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             tickComponent={<TickComponent />}
             tickFormat={(x) =>
               ticksData.includes(x)
-                ? getTickFormat(archiveEntries, reportType, x)
+                ? getTickFormat(preparedArchiveValues, reportType, x)
                 : ''
             }
             style={horizontalAxisStyle}
@@ -133,22 +140,10 @@ export const GraphView: React.FC<GraphViewProps> = ({
             }
             labels={() => ''}
             style={tooltipStyle}
-            data={graphData}
+            data={archiveValues}
             x="time"
             y="value"
           />
-
-          {isAverageLineRendered ? (
-            <VictoryLine
-              samples={1}
-              y={() => averageDeltaMass}
-              style={{
-                data: {
-                  stroke: 'var(--main-100)',
-                },
-              }}
-            />
-          ) : null}
         </VictoryChart>
       </GraphWrapper>
       <GraphLegend graphParam={graphParam} />

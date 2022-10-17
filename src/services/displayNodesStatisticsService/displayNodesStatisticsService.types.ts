@@ -1,24 +1,20 @@
-import {
-  ReadingsInterface,
-  ReportType,
-} from '01/_pages/Graph/components/GraphView/GraphView.types';
-import { EResourceType } from 'myApi';
+import { ReportType } from '01/_pages/Graph/components/GraphView/GraphView.types';
 
 export type DisplayNodesStatisticsContainerProps = {
   nodeId: number;
-  resource: EResourceType;
   pipeCount: number;
 };
 
 export type FetchArchiveReadingsPayload = ArchiveReadingsFilter & {
   nodeId: number;
+  pipeCount: number;
 };
 
 export type DateRange = {
-  from: string;
-  to: string;
+  From: string;
+  To: string;
 };
 
 export type ArchiveReadingsFilter = DateRange & {
-  reportType: ReportType;
+  ReportType: ReportType;
 };

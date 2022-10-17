@@ -1,9 +1,8 @@
 import { ResourceType } from '../components/GraphView/GraphView.types';
-import { GraphParamsType } from '../Graph';
 
 export const renderForHeatAndDeltaMass = (
   resource: ResourceType,
-  graphParam: GraphParamsType
+  graphParam: string
 ) => {
   return resource === 'Heat' && graphParam === 'deltaMass';
 };

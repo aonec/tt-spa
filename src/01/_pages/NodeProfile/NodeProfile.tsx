@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
 import Documents from './components/Documents';
-import Graph from '../Graph/Graph';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
@@ -48,7 +47,6 @@ export const Content: React.FC<ContentProps> = React.memo(
               <>
                 <DisplayNodesStatisticsContainer
                   nodeId={Number(nodeId)}
-                  resource={resource}
                   pipeCount={communicationPipes?.length || 0}
                 />
               </>
