@@ -1,12 +1,12 @@
 import { GraphFilterForm } from '01/_pages/Graph/components/GraphFilterForm';
 import { GraphView } from '01/_pages/Graph/components/GraphView';
-import { Empty, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC, useMemo } from 'react';
-import { FallbackGraphIcon } from 'ui-kit/icons';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
 import { Title, Wrapper } from './displayNodesStatisticsService.styled';
 import { DisplayNodesStatisticsContainerProps } from './displayNodesStatisticsService.types';
+import { GraphEmptyData } from './view/GraphEmptyData';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
@@ -63,14 +63,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
             </Wrapper>
           </>
         )}
-        {!isLoading && !archiveReadingExist && (
-          <Empty
-            description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
-            image={<FallbackGraphIcon />}
-            imageStyle={{ height: '400px' }}
-            style={{ textAlign: 'start', color: '#272f5a' }}
-          />
-        )}
+        {!isLoading && !archiveReadingExist && <GraphEmptyData />}
       </div>
     </>
   );

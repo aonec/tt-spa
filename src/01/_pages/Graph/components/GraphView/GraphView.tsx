@@ -27,6 +27,7 @@ import {
 import { getResourceColor } from '01/utils/getResourceColor';
 import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 import { GraphLegend } from '../GraphLegend/GraphLegend';
+import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 
 const minDelta = 0.01;
 const width = 730;
@@ -44,7 +45,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   )?.data;
 
   if (!archiveValues || archiveValues.length === 0) {
-    return null;
+    return <GraphEmptyData/>;
   }
 
   const preparedArchiveValues = archiveValues.reduce((acc, reading) => {
