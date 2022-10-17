@@ -51,7 +51,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   }, [values]);
 
   useEffect(() => {
-    if (!values.futureCheckingDate) return;
+    if (!values.lastCheckingDate) return;
 
     setFieldValue(
       'futureCheckingDate',
