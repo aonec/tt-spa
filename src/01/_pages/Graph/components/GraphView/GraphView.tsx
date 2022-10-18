@@ -28,6 +28,7 @@ import { getResourceColor } from '01/utils/getResourceColor';
 import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
+import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 
 const minDelta = 0.01;
 const width = 730;
@@ -38,7 +39,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
   data,
   reportType,
 }) => {
-  const { resource, data: readingsData } = data;
+  const { resource, data: readingsData, averageDeltaMass } = data;
+  const isAverageLineRendered = renderForHeatAndDeltaMass(resource as ResourceType, graphParam);
 
   const archiveValues = (readingsData || []).find(
     (reading) => reading.header === graphParam
@@ -145,6 +147,17 @@ export const GraphView: React.FC<GraphViewProps> = ({
             x="time"
             y="value"
           />
+          {isAverageLineRendered && averageDeltaMass ? (
+            <VictoryLine
+              samples={1}
+              y={() => averageDeltaMass}
+              style={{
+                data: {
+                  stroke: 'var(--main-100)',
+                },
+              }}
+            />
+          ) : null}
         </VictoryChart>
       </GraphWrapper>
       <GraphLegend graphParam={graphParam} />

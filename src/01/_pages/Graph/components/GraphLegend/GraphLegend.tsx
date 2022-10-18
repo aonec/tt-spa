@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useStore } from 'effector-react';
 import { $graphData } from '../../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
-import { renderForHeatAndDeltaMass } from '../../utils/renderForHeatAndDeltaMass';
 import {
   Accuracy,
   LegendLine,
@@ -12,55 +11,59 @@ import {
 } from './GraphLegend.styled';
 import { GraphLegendProps } from './GraphLegend.types';
 import { ResourceType } from '../GraphView/GraphView.types';
+import { renderForHeatAndDeltaMass } from './GraphLegend.utils';
 
 export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
   const graphData = useStore($graphData);
-  if (!graphData) {
+  if (!graphData || !graphData.resource) {
     return null;
   }
-  const { data, resource } = graphData;
+  const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
+  const isShouldBeRenderedAccuracyLine = renderForHeatAndDeltaMass(
+    resource as ResourceType,
+    graphParam
+  );
 
   const renderAccuracyLegendLine = () => {
-    const isAccuracyRendered = renderForHeatAndDeltaMass(
-      resource as ResourceType,
-      graphParam
-    );
-    if (!isAccuracyRendered) {
+    if (
+      !isShouldBeRenderedAccuracyLine ||
+      !deltaMassAccuracy ||
+      !averageDeltaMass
+    ) {
       return null;
     }
     return <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>;
   };
-  // const absoluteDelta = Number(
-  //   Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
-  // );
 
-  // const renderAccuracyValue = () => {
-  //   const isAccuracyRendered = renderForHeatAndDeltaMass(
-  //     resource as ResourceType,
-  //     graphParam
-  //   );
+  const renderAccuracyValue = () => {
+    if (
+      !isShouldBeRenderedAccuracyLine ||
+      !deltaMassAccuracy ||
+      !averageDeltaMass
+    ) {
+      return null;
+    }
+    const absoluteDelta = Number(
+      Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
+    );
 
-  //   if (!isAccuracyRendered) {
-  //     return null;
-  //   }
-
-  //   return (
-  //     <Tooltip
-  //       getPopupContainer={(triggerNode) =>
-  //         triggerNode.parentNode as HTMLElement
-  //       }
-  //       color={'var(--main-100)'}
-  //       title={
-  //         absoluteDelta === 0
-  //           ? 'Абсолютная погрешность крайне мала'
-  //           : `Абсолютная погрешность ${absoluteDelta} т`
-  //       }
-  //     >
-  //       <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
-  //       <Accuracy>Относительная погрешность</Accuracy>
-  //     </Tooltip>
-  //   );
-  // };
+    return (
+      <Tooltip
+        getPopupContainer={(triggerNode) =>
+          triggerNode.parentNode as HTMLElement
+        }
+        color={'var(--main-100)'}
+        title={
+          absoluteDelta === 0
+            ? 'Абсолютная погрешность крайне мала'
+            : `Абсолютная погрешность ${absoluteDelta} т`
+        }
+      >
+        <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
+        <Accuracy>Относительная погрешность</Accuracy>
+      </Tooltip>
+    );
+  };
 
   return (
     <LegendWrapper>
@@ -73,7 +76,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
         </LegendLine>
         {renderAccuracyLegendLine()}
       </LegendLineWrapper>
-      {/* {renderAccuracyValue()} */}
+      {renderAccuracyValue()}
     </LegendWrapper>
   );
 };
