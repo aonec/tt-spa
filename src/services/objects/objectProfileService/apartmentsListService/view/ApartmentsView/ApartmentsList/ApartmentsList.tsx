@@ -7,7 +7,7 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ apartments }) => {
   return (
     <Wrapper>
       {apartments.map((apartment) => (
-        <ApartmentItem apartment={apartment} />
+        <ApartmentItem key={apartment.id} apartment={apartment} />
       ))}
     </Wrapper>
   );

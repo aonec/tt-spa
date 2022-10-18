@@ -1,7 +1,15 @@
 import React, { FC } from 'react';
-import { Wrapper } from './ApartmentsCells.styled';
+import { LegendWrapper } from './ApartmentsCells.styled';
 import { ApartmentsCellsProps } from './ApartmentsCells.types';
+import { ApartmentStatusLegend } from './ApartmentStatusLegend';
 
-export const ApartmentsCells: FC<ApartmentsCellsProps> = ({}) => {
-  return <Wrapper></Wrapper>
+export const ApartmentsCells: FC<ApartmentsCellsProps> = ({ apartments }) => {
+  return (
+    <div>
+      <LegendWrapper>
+        <ApartmentStatusLegend status="Performed" />
+        <ApartmentStatusLegend status="Overdue" />
+      </LegendWrapper>
+    </div>
+  );
 };
