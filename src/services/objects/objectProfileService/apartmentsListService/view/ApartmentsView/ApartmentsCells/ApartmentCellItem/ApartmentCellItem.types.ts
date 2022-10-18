@@ -1,6 +1,6 @@
 import { ApartmentListResponse } from 'myApi';
 
-export type ApartmentItemProps = {
+export type ApartmentCellItemProps = {
   apartment: ApartmentListResponse;
   hosuingStockId: number;
 };

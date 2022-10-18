@@ -13,16 +13,17 @@ import {
 } from './ApartmentItem.styled';
 import { ApartmentItemProps } from './ApartmentItem.types';
 
-export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
-  const { id } = useParams<{ id: string }>();
-
+export const ApartmentItem: FC<ApartmentItemProps> = ({
+  apartment,
+  hosuingStockId,
+}) => {
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
 
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
   const isTasksOnApartmentExist = Boolean(apartment.numberOfTasks);
 
   return (
-    <Wrapper to={`/objects/${id}/apartments/${apartment.id}`}>
+    <Wrapper to={`/objects/${hosuingStockId}/apartments/${apartment.id}`}>
       <ApartmentNumberWrapper>
         №{apartment.apartmentNumber}
         {isTasksOnApartmentExist && (

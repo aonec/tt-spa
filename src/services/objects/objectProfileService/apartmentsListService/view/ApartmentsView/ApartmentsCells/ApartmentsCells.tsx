@@ -1,15 +1,28 @@
 import React, { FC } from 'react';
-import { LegendWrapper } from './ApartmentsCells.styled';
+import { ApartmentCellItem } from './ApartmentCellItem';
+import { CellsWrapper, LegendWrapper, Wrapper } from './ApartmentsCells.styled';
 import { ApartmentsCellsProps } from './ApartmentsCells.types';
 import { ApartmentStatusLegend } from './ApartmentStatusLegend';
 
-export const ApartmentsCells: FC<ApartmentsCellsProps> = ({ apartments }) => {
+export const ApartmentsCells: FC<ApartmentsCellsProps> = ({
+  apartments,
+  hosuingStockId,
+}) => {
   return (
-    <div>
+    <Wrapper>
       <LegendWrapper>
         <ApartmentStatusLegend status="Performed" />
         <ApartmentStatusLegend status="Overdue" />
       </LegendWrapper>
-    </div>
+      <CellsWrapper>
+        {apartments.map((apartment) => (
+          <ApartmentCellItem
+            hosuingStockId={hosuingStockId}
+            key={apartment.id}
+            apartment={apartment}
+          />
+        ))}
+      </CellsWrapper>
+    </Wrapper>
   );
 };
