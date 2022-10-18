@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { EResourceType } from 'myApi';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -9,7 +9,6 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import { DevicePipeMagistralDictionary } from './SwitchDeviceForm.constants';
 import {
-  Wrapper,
   DeviceInfoWrapper,
   ResourceOptionWrapper,
   ResourceOptionNameWrapper,
@@ -59,12 +58,16 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
     );
   }, [values.lastCheckingDate]);
 
-  const magistral = devicePipe?.hubConnection?.hub?.magistral
-    ? DevicePipeMagistralDictionary[devicePipe.hubConnection.hub.magistral]
-    : '';
+  const magistral = useMemo(() => {
+    const magistralType = devicePipe?.hubConnection?.hub?.magistral;
+
+    if (!magistralType) return '';
+
+    return DevicePipeMagistralDictionary[magistralType];
+  }, []);
 
   return (
-    <Wrapper>
+    <div>
       <DeviceInfoWrapper>
         <FormItem label="Тип ресурса">
           <Select disabled value={device.resource || undefined}>
@@ -153,6 +156,6 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
           />
         </FormItem>
       </DeviceCheckingDatesWrapper>
-    </Wrapper>
+    </div>
   );
 };

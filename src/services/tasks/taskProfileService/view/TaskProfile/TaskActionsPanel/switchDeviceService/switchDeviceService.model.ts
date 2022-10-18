@@ -20,7 +20,7 @@ const $devicePipe = domain
   .createStore<PipeHousingMeteringDeviceResponse | null>(null)
   .on(fetchDevicePipeFx.doneData, (_, devicePipe) => devicePipe);
 
-const $device = $task.map((task) => task?.device);
+const $device = $task.map((task) => task?.device || null);
 
 forward({
   from: DevicePipeGate.open.map(({ deviceId }) => deviceId),
