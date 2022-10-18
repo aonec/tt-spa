@@ -3777,7 +3777,9 @@ export interface OrganizationUserListResponse {
   /** @format int32 */
   id: number;
   email: string | null;
-  name: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
   cellphone: string | null;
 
   /** @format int32 */
