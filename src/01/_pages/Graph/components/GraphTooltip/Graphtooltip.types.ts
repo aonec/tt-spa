@@ -6,4 +6,5 @@ export type GraphTooltipProps = VictoryLabelProps & {
     value: number;
   };
   graphParam: string;
+  measure: string;
 };

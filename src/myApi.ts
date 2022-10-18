@@ -352,6 +352,7 @@ export interface ApartmentStatusSetRequest {
 
 export interface ArchivesDataGroup {
   header?: string | null;
+  measure?: string | null;
   data?: ArchivesDataGroupValue[] | null;
 }
 

@@ -13,7 +13,7 @@ const formatDate = (timeStamp: string): Date => {
 };
 
 export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
-  const { datum, x, y, graphParam } = props;
+  const { datum, x, y,measure } = props;
   return (
     <g style={{ pointerEvents: 'none' }}>
       <foreignObject
@@ -26,7 +26,7 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
         <TooltipBlock value={datum!.value}>
           <DateBlock>{format(formatDate(datum!.time), 'dd.MM.yyyy')}</DateBlock>
           <Value>
-            {datum!.value.toFixed(3)}
+            {datum!.value.toFixed(3)} {measure}
           </Value>
           <Pointer value={datum!.value} />
         </TooltipBlock>

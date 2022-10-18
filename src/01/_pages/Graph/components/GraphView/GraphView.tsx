@@ -45,9 +45,11 @@ export const GraphView: React.FC<GraphViewProps> = ({
     graphParam
   );
 
-  const archiveValues = (readingsData || []).find(
+  const requiredArchiveValues = (readingsData || []).find(
     (reading) => reading.header === graphParam
-  )?.data;
+  );
+
+  const archiveValues = requiredArchiveValues?.data;
 
   if (!archiveValues || archiveValues.length === 0) {
     return <GraphEmptyData />;
@@ -64,6 +66,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
   const tickValues = formTicks(preparedArchiveValues, reportType);
   const ticksData = tickValues.map((tick) => tick.time);
+
+  const measure = requiredArchiveValues?.measure;
 
   const minElement = minBy(preparedArchiveValues, (obj) => obj.value);
   const maxElement = maxBy(preparedArchiveValues, (obj) => obj.value);
@@ -143,7 +147,12 @@ export const GraphView: React.FC<GraphViewProps> = ({
                   left: 16,
                 }}
                 height={height}
-                flyoutComponent={<GraphTooltip graphParam={graphParam} />}
+                flyoutComponent={
+                  <GraphTooltip
+                    graphParam={graphParam}
+                    measure={measure || ''}
+                  />
+                }
                 minValue={minValue}
                 maxValue={maxValue}
               />
@@ -154,7 +163,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             x="time"
             y="value"
           />
-          {isAverageLineRendered && Number.isInteger(averageDeltaMass) ? (
+          {isAverageLineRendered && Number.isFinite(averageDeltaMass) ? (
             <VictoryLine
               samples={1}
               y={() => averageDeltaMass}
