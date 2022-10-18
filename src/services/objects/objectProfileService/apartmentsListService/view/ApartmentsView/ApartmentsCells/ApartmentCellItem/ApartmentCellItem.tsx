@@ -53,7 +53,7 @@ export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
           <HomeownerName>
             {apartment.homeownerName}{' '}
             {Boolean(additionalHomeownersCount) && (
-              <AdditionalHomeownersCountWrapper>
+              <AdditionalHomeownersCountWrapper filled>
                 <AdditionalHomeownersCountTextWrapper>
                   +{additionalHomeownersCount}
                 </AdditionalHomeownersCountTextWrapper>

@@ -23,6 +23,7 @@ export const CellWrapper = styled(Link)`
   &:hover {
     transform: scale(1.2);
     box-shadow: 0 5px 10px rgba(0, 10, 60, 0.2);
+    color: #272f5a;
   }
 `;
 

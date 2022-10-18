@@ -33,11 +33,14 @@ export const HomeownerNameWrapper = styled.div`
   align-items: center;
 `;
 
-export const AdditionalHomeownersCountWrapper = styled.div`
+export const AdditionalHomeownersCountWrapper = styled.div<{
+  filled?: boolean;
+}>`
   margin-left: 10px;
-  color: #189ee9;
-  background: rgba(24, 158, 233, 0.16);
-  width: 17px;
+  color: ${({ filled }) => (filled ? 'white' : '#189ee9')};
+  background: ${({ filled }) =>
+    filled ? '#189ee9' : 'rgba(24, 158, 233, 0.16)'};
+  width: 17.5px;
   height: 17px;
   font-size: 10px;
   border-radius: 15px;
