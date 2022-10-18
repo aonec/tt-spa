@@ -31,7 +31,7 @@ const Staff = () => {
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>
-          {firstName} {lastName} {middleName}
+          {lastName} {firstName} {middleName}
         </div>
         <StaffStatus status={status?.type} />
         <div className={classes.cellphone}>
