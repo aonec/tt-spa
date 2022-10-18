@@ -1,3 +1,4 @@
+import { ChevronRight } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -23,4 +24,38 @@ export const CellWrapper = styled(Link)`
     transform: scale(1.2);
     box-shadow: 0 5px 10px rgba(0, 10, 60, 0.2);
   }
+`;
+
+export const PopoverTitle = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const HomeownerName = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #272f5a;
+`;
+
+export const AdditionalInfoTextWrapper = styled.div`
+  margin-top: 5px;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgba(39, 47, 90, 0.7);
+`;
+
+export const BottomContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const PopoverLink = styled(Link)`
+  display: flex;
+  align-items: center;
+`;
+
+export const PopoverLinkChevron = styled(ChevronRight)`
+  margin-left: 5px;
 `;

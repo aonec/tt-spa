@@ -1,6 +1,5 @@
 import { EApartmentStatus } from 'myApi';
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
 import { PauseIcon, WarningIcon } from 'ui-kit/icons';
 import {
   AdditionalHomeownersCountTextWrapper,
