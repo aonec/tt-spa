@@ -243,7 +243,7 @@ export interface ApartmentListResponse {
   /** @format int32 */
   homeownersCount: number | null;
   personalAccountNumber: string | null;
-  status: string | null;
+  status: EApartmentStatus;
 
   /** @format float */
   square: number | null;
