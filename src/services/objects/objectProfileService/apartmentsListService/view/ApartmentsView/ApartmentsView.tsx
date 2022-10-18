@@ -34,7 +34,9 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
         />
       </HeaderWrapper>
       {isLoading && <Skeleton active />}
-      {!isLoading && apartmentsPagedList && <ViewComponent />}
+      {!isLoading && apartmentsPagedList?.items && (
+        <ViewComponent apartments={apartmentsPagedList.items} />
+      )}
       {!isLoading && !apartmentsPagedList && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}

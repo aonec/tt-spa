@@ -1,4 +1,4 @@
-import { ApartmentListResponsePagedList } from 'myApi';
+import { ApartmentListResponse, ApartmentListResponsePagedList } from 'myApi';
 import { FC } from 'react';
 
 export type ApartmentsViewProps = {
@@ -8,6 +8,8 @@ export type ApartmentsViewProps = {
 
 export type SegmentType = 'list' | 'cells';
 
-export type ListComponentProps = {};
+export type ListComponentProps = {
+  apartments: ApartmentListResponse[]
+};
 
 export type ListComponents = { [key in SegmentType]: FC<ListComponentProps> };
