@@ -9,7 +9,7 @@ export type ApartmentsViewProps = {
 export type SegmentType = 'list' | 'cells';
 
 export type ListComponentProps = {
-  apartments: ApartmentListResponse[]
+  apartments: ApartmentListResponse[];
 };
 
 export type ListComponents = { [key in SegmentType]: FC<ListComponentProps> };
