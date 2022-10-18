@@ -19,16 +19,18 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
     return null;
   }
   const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
-  const isShouldBeRenderedAccuracyLine = renderForHeatAndDeltaMass(
+  const isDeltaMass = renderForHeatAndDeltaMass(
     resource as ResourceType,
     graphParam
   );
 
   const renderAccuracyLegendLine = () => {
     if (
-      !isShouldBeRenderedAccuracyLine ||
-      !deltaMassAccuracy ||
-      !averageDeltaMass
+      !isDeltaMass ||
+      deltaMassAccuracy === null ||
+      deltaMassAccuracy === undefined ||
+      averageDeltaMass === null ||
+      averageDeltaMass === undefined
     ) {
       return null;
     }
@@ -37,9 +39,11 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
 
   const renderAccuracyValue = () => {
     if (
-      !isShouldBeRenderedAccuracyLine ||
-      !deltaMassAccuracy ||
-      !averageDeltaMass
+      !isDeltaMass ||
+      deltaMassAccuracy === null ||
+      deltaMassAccuracy === undefined ||
+      averageDeltaMass === null ||
+      averageDeltaMass === undefined
     ) {
       return null;
     }

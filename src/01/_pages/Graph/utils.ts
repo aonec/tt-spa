@@ -99,18 +99,18 @@ export const formTicks = (
 };
 
 export const getTickFormat = (
-  archiveArr: PreparedArchiveValues[],
+  archiveArrLength: number,
   reportType: ReportType,
   x: string
 ) => {
   if (reportType === 'daily') {
     return format(formatDate(x), 'dd.MM');
   }
-  if (archiveArr.length <= 24) {
+  if (archiveArrLength <= 24) {
     return format(formatDate(x), 'HH');
   }
 
-  if (archiveArr.length >= 97) {
+  if (archiveArrLength >= 97) {
     return format(formatDate(x), 'H');
   }
 

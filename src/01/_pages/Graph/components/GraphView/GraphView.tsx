@@ -40,25 +40,29 @@ export const GraphView: React.FC<GraphViewProps> = ({
   reportType,
 }) => {
   const { resource, data: readingsData, averageDeltaMass } = data;
-  const isAverageLineRendered = renderForHeatAndDeltaMass(resource as ResourceType, graphParam);
+  const isAverageLineRendered = renderForHeatAndDeltaMass(
+    resource as ResourceType,
+    graphParam
+  );
 
   const archiveValues = (readingsData || []).find(
     (reading) => reading.header === graphParam
   )?.data;
 
   if (!archiveValues || archiveValues.length === 0) {
-    return <GraphEmptyData/>;
+    return <GraphEmptyData />;
   }
 
   const preparedArchiveValues = archiveValues.reduce((acc, reading) => {
-    if (!reading?.time || !reading.value) {
+    if (!reading?.time || reading.value === undefined) {
       return acc;
     }
     return [...acc, reading as PreparedArchiveValues];
   }, [] as PreparedArchiveValues[]);
 
-  const tickValues = formTicks(preparedArchiveValues, reportType);
+  const archiveLength = preparedArchiveValues.length;
 
+  const tickValues = formTicks(preparedArchiveValues, reportType);
   const ticksData = tickValues.map((tick) => tick.time);
 
   const minElement = minBy(preparedArchiveValues, (obj) => obj.value);
@@ -70,6 +74,9 @@ export const GraphView: React.FC<GraphViewProps> = ({
   if (maxValue === minValue && minValue === 0) maxValue += minDelta;
   if (maxValue / 2 > Math.abs(minValue) && minValue < 0) {
     minValue = -maxValue / 2;
+  }
+  if (Math.abs(minValue) / 2 > maxValue) {
+    maxValue = -minValue / 2;
   }
 
   const tooltipStyle = {
@@ -104,7 +111,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             tickComponent={<TickComponent />}
             tickFormat={(x) =>
               ticksData.includes(x)
-                ? getTickFormat(preparedArchiveValues, reportType, x)
+                ? getTickFormat(archiveLength, reportType, x)
                 : ''
             }
             style={horizontalAxisStyle}
@@ -147,7 +154,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             x="time"
             y="value"
           />
-          {isAverageLineRendered && averageDeltaMass ? (
+          {isAverageLineRendered && Number.isInteger(averageDeltaMass) ? (
             <VictoryLine
               samples={1}
               y={() => averageDeltaMass}
