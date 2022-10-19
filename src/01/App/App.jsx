@@ -13,8 +13,6 @@ import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
   Login,
-  TaskProfile,
-  ObjectProfile,
   MetersPage,
   ApartmentProfile,
   ErrorPage,
@@ -58,6 +56,7 @@ import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { useStore } from 'effector-react';
 import { TaskProfileContainer } from 'services/tasks/taskProfileService';
+import { ObjectProfileContainer } from 'services/objects/objectProfileService';
 
 moment.locale('ru');
 
@@ -110,7 +109,7 @@ const Internal = () => {
                   component={TaskProfileContainer}
                   exact
                 />
-                
+
                 <Route
                   path="/tasks/list/:grouptype"
                   component={TasksProfileContainer}
@@ -136,8 +135,8 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
-                component={ObjectProfile}
+                path="/objects/profile/:housingStockId"
+                component={ObjectProfileContainer}
                 exact
               />
 
