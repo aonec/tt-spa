@@ -11,7 +11,8 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
   isLoading,
   hosuingStockId,
   currentSegment,
-  setCurrentSegment
+  setCurrentSegment,
+  setCurrentApartmentId,
 }) => {
   const ViewComponent = components[currentSegment];
 
@@ -36,7 +37,11 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
       </HeaderWrapper>
       {isLoading && <Skeleton active />}
       {!isLoading && apartmentsPagedList?.items && (
-        <ViewComponent hosuingStockId={hosuingStockId} apartments={apartmentsPagedList.items} />
+        <ViewComponent
+          hosuingStockId={hosuingStockId}
+          apartments={apartmentsPagedList.items}
+          setCurrentApartmentId={setCurrentApartmentId}
+        />
       )}
       {!isLoading && !apartmentsPagedList && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />

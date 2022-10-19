@@ -6,6 +6,7 @@ import { ApartmentsListProps } from './ApartmentsList.types';
 export const ApartmentsList: FC<ApartmentsListProps> = ({
   apartments,
   hosuingStockId,
+  setCurrentApartmentId,
 }) => {
   return (
     <Wrapper>
@@ -14,6 +15,7 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({
           hosuingStockId={hosuingStockId}
           key={apartment.id}
           apartment={apartment}
+          setCurrentApartmentId={setCurrentApartmentId}
         />
       ))}
     </Wrapper>
