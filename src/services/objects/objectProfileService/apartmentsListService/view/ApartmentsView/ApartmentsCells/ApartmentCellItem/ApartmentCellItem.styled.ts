@@ -1,14 +1,17 @@
+import { ETasksState } from 'myApi';
 import { ChevronRight } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { TasksStateBackgroundLookup } from '../ApartmentStatusLegend/ApartmentStatusLegend.constants';
+import { TasksStateColorsLookup } from './ApartmentCellItem.constants';
 
-export const CellWrapper = styled(Link)`
+export const CellWrapper = styled(Link)<{ tasksState: ETasksState }>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 34px;
   height: 34px;
-  background: #ffffff;
+  background: ${({ tasksState }) => TasksStateBackgroundLookup[tasksState]};
   border: 1px solid #f3f5f6;
   box-shadow: 0 5px 10px rgba(0, 10, 60, 0.14);
   font-weight: 500;
@@ -18,12 +21,13 @@ export const CellWrapper = styled(Link)`
   transition: 0.2s;
   white-space: nowrap;
   overflow: hidden;
-  color: #272f5a;
+  color: ${({ tasksState }) => TasksStateColorsLookup[tasksState]};
 
   &:hover {
     transform: scale(1.2);
     box-shadow: 0 5px 10px rgba(0, 10, 60, 0.2);
-    color: #272f5a;
+    color: white;
+    background: #272f5a;
   }
 `;
 

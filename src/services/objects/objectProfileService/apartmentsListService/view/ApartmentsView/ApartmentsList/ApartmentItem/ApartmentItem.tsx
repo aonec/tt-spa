@@ -1,4 +1,4 @@
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus, ETasksState } from 'myApi';
 import React, { FC } from 'react';
 import { PauseIcon, WarningIcon } from 'ui-kit/icons';
 import {
@@ -19,7 +19,9 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
 
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
-  const isTasksOnApartmentExist = Boolean(apartment.numberOfTasks);
+  const isTasksOnApartmentExist = Boolean(
+    apartment.tasksState !== ETasksState.NoTasks
+  );
 
   return (
     <Wrapper to={`/objects/${hosuingStockId}/apartments/${apartment.id}`}>

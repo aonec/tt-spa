@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ApartmentTaskStatusNamesLookup } from './ApartmentStatusLegend.constants';
+import { TasksStateNamesLookup } from './ApartmentStatusLegend.constants';
 import { StatusCircle, Text, Wrapper } from './ApartmentStatusLegend.styled';
 import { ApartmentStatusLegendProps } from './ApartmentStatusLegend.types';
 
@@ -9,7 +9,7 @@ export const ApartmentStatusLegend: FC<ApartmentStatusLegendProps> = ({
   return (
     <Wrapper>
       <StatusCircle status={status} />
-      <Text>{ApartmentTaskStatusNamesLookup[status]}</Text>
+      <Text>{TasksStateNamesLookup[status]}</Text>
     </Wrapper>
   );
 };

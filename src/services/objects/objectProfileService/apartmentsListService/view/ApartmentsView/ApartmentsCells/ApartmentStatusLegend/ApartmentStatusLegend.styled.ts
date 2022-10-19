@@ -1,6 +1,6 @@
-import { ApartmentTaskStatus } from './ApartmentStatusLegend.types';
+import { ETasksState } from 'myApi';
 import styled from 'styled-components';
-import { ApartmentTaskStatusColosLookup } from './ApartmentStatusLegend.constants';
+import { TasksStateBackgroundLookup } from './ApartmentStatusLegend.constants';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -8,12 +8,12 @@ export const Wrapper = styled.div`
   margin-right: 15px;
 `;
 
-export const StatusCircle = styled.div<{ status: ApartmentTaskStatus }>`
+export const StatusCircle = styled.div<{ status: ETasksState }>`
   min-width: 5.5px;
   height: 5.5px;
   border-radius: 6px;
   transform: translateY(1px) scale(1.1);
-  background: ${({ status }) => ApartmentTaskStatusColosLookup[status]};
+  background: ${({ status }) => TasksStateBackgroundLookup[status]};
 `;
 
 export const Text = styled.div`

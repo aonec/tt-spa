@@ -1,3 +1,4 @@
+import { ETasksState } from 'myApi';
 import React, { FC } from 'react';
 import { ApartmentCellItem } from './ApartmentCellItem';
 import { CellsWrapper, LegendWrapper, Wrapper } from './ApartmentsCells.styled';
@@ -11,8 +12,8 @@ export const ApartmentsCells: FC<ApartmentsCellsProps> = ({
   return (
     <Wrapper>
       <LegendWrapper>
-        <ApartmentStatusLegend status="Performed" />
-        <ApartmentStatusLegend status="Overdue" />
+        <ApartmentStatusLegend status={ETasksState.OnTime} />
+        <ApartmentStatusLegend status={ETasksState.MissedDeadline} />
       </LegendWrapper>
       <CellsWrapper>
         {apartments.map((apartment) => (

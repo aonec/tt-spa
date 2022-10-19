@@ -10,7 +10,7 @@ import {
   PopoverTitle,
 } from './ApartmentCellItem.styled';
 import { ApartmentCellItemProps } from './ApartmentCellItem.types';
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus, ETasksState } from 'myApi';
 import {
   AdditionalHomeownersCountTextWrapper,
   AdditionalHomeownersCountWrapper,
@@ -24,7 +24,9 @@ export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
   hosuingStockId,
 }) => {
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
-  const isTasksOnApartmentExist = Boolean(apartment.numberOfTasks);
+  const isTasksOnApartmentExist = Boolean(
+    apartment.tasksState !== ETasksState.NoTasks
+  );
 
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
 
@@ -51,7 +53,7 @@ export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
       content={
         <div>
           <HomeownerName>
-            {apartment.homeownerName}{' '}
+            {apartment.homeownerName}
             {Boolean(additionalHomeownersCount) && (
               <AdditionalHomeownersCountWrapper filled>
                 <AdditionalHomeownersCountTextWrapper>
@@ -76,7 +78,9 @@ export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
       trigger="hover"
       mouseEnterDelay={0.5}
     >
-      <CellWrapper to={apartmentLink}>{apartment.apartmentNumber}</CellWrapper>
+      <CellWrapper tasksState={apartment.tasksState} to={apartmentLink}>
+        {apartment.apartmentNumber}
+      </CellWrapper>
     </Popover>
   );
 };

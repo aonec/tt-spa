@@ -1,15 +1,17 @@
-import { ApartmentTaskStatus } from './ApartmentStatusLegend.types';
+import { ETasksState } from 'myApi';
 
-export const ApartmentTaskStatusColosLookup: {
-  [key in ApartmentTaskStatus]: string;
+export const TasksStateBackgroundLookup: {
+  [key in ETasksState]: string;
 } = {
-  Performed: '#17B45A',
-  Overdue: '#FF8C68',
+  [ETasksState.OnTime]: '#17B45A',
+  [ETasksState.MissedDeadline]: '#FF8C68',
+  [ETasksState.NoTasks]: '#FFFFFF',
 };
 
-export const ApartmentTaskStatusNamesLookup: {
-  [key in ApartmentTaskStatus]: string;
+export const TasksStateNamesLookup: {
+  [key in ETasksState]: string;
 } = {
-  Performed: 'Квартира с активной задачей',
-  Overdue: 'Квартира с просроченной задачей',
+  [ETasksState.OnTime]: 'Квартира с активной задачей',
+  [ETasksState.MissedDeadline]: 'Квартира с просроченной задачей',
+  [ETasksState.NoTasks]: 'Нет задач',
 };

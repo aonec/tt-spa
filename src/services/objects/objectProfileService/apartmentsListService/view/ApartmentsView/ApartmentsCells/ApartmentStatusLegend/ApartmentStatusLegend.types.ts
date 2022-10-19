@@ -1,5 +1,5 @@
-export type ApartmentTaskStatus = 'Performed' | 'Overdue';
+import { ETasksState } from "myApi";
 
 export type ApartmentStatusLegendProps = {
-  status: ApartmentTaskStatus;
+  status: ETasksState;
 };
