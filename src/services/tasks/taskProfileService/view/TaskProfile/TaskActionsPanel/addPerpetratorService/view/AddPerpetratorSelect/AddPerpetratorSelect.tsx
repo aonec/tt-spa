@@ -30,7 +30,7 @@ export const AddPerpetratorSelect: FC<AddPerpetratorSelectProps> = ({
       >
         {users.map((user) => (
           <Select.Option key={user.id} value={user.id}>
-            {user.name}
+            {user.firstName} {user.lastName} {user.middleName}
           </Select.Option>
         ))}
       </Select>
