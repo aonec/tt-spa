@@ -13,6 +13,8 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
   currentSegment,
   setCurrentSegment,
   setCurrentApartmentId,
+  currentApartmentId,
+  clearCurrentApartmentId,
 }) => {
   const ViewComponent = components[currentSegment];
 
@@ -41,6 +43,8 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
           hosuingStockId={hosuingStockId}
           apartments={apartmentsPagedList.items}
           setCurrentApartmentId={setCurrentApartmentId}
+          currentApartmentId={currentApartmentId}
+          clearCurrentApartmentId={clearCurrentApartmentId}
         />
       )}
       {!isLoading && !apartmentsPagedList && (

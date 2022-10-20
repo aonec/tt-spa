@@ -10,12 +10,16 @@ export type ApartmentsViewProps = {
   currentSegment: SegmentType;
   setCurrentSegment: (segment: SegmentType) => void;
   setCurrentApartmentId: (id: number) => void;
+  currentApartmentId: number | null;
+  clearCurrentApartmentId: () => void;
 };
 
 export type ListComponentProps = {
   apartments: ApartmentListResponse[];
   hosuingStockId: number;
   setCurrentApartmentId: (id: number) => void;
+  currentApartmentId: number | null;
+  clearCurrentApartmentId: () => void;
 };
 
 export type ListComponents = { [key in SegmentType]: FC<ListComponentProps> };

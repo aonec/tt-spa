@@ -19,28 +19,6 @@ export const ApartmentsListContainer = () => {
   const setCurrentApartmentId = useEvent(inputs.setCurrentApartmentId);
   const clearCurrentApartmentId = useEvent(inputs.clearCurrentApartmentId);
 
-  useEffect(() => {
-    if (!apartmentsPagedList || !currentApartmentId || isLoading) return;
-
-    if (currentSegment === 'cells') {
-      clearCurrentApartmentId();
-      return;
-    }
-
-    const apartmentNodeId = `apartment-list-item-${currentApartmentId}`;
-
-    const node = document.getElementById(apartmentNodeId);
-
-    if (!node) return;
-
-    node.scrollIntoView({
-      block: 'start',
-      behavior: 'smooth',
-    });
-
-    clearCurrentApartmentId();
-  }, [currentApartmentId, apartmentsPagedList, isLoading, currentSegment]);
-
   return (
     <>
       <ApartmentsListGate housingStockId={Number(id)} />
@@ -51,6 +29,8 @@ export const ApartmentsListContainer = () => {
         setCurrentSegment={setCurrentSegment}
         currentSegment={currentSegment}
         setCurrentApartmentId={setCurrentApartmentId}
+        currentApartmentId={currentApartmentId}
+        clearCurrentApartmentId={() => clearCurrentApartmentId()}
       />
     </>
   );
