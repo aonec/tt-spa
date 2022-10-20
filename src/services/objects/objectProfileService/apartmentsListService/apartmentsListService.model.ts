@@ -2,6 +2,7 @@ import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentListResponsePagedList } from 'myApi';
 import { getApartmentsList } from './apartmentsListService.api';
+import { SegmentType } from './view/ApartmentsView/ApartmentsView.types';
 
 const domain = createDomain('apartmentsListService');
 
@@ -12,11 +13,24 @@ const fetchApartmentsList = domain.createEffect<
 
 const ApartmentsListGate = createGate<{ housingStockId: number }>();
 
-const $apartmentsPagedList = domain.createStore<ApartmentListResponsePagedList | null>(
-  null
-);
+const setCurrentApartmentId = domain.createEvent<number>();
 
-$apartmentsPagedList.on(fetchApartmentsList.doneData, (_, data) => data);
+const clearCurrentApartmentId = domain.createEvent();
+
+const $currentApartmentId = domain
+  .createStore<number | null>(null)
+  .on(setCurrentApartmentId, (_, id) => id)
+  .reset(clearCurrentApartmentId);
+
+const $apartmentsPagedList = domain
+  .createStore<ApartmentListResponsePagedList | null>(null)
+  .on(fetchApartmentsList.doneData, (_, data) => data);
+
+const setCurrentSegment = domain.createEvent<SegmentType>();
+
+const $currentSegment = domain
+  .createStore<SegmentType>('list')
+  .on(setCurrentSegment, (_, segment) => segment);
 
 sample({
   source: ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),
@@ -42,6 +56,13 @@ export const apartmentsListService = {
   outputs: {
     $apartmentsPagedList,
     $isLoading,
+    $currentSegment,
+    $currentApartmentId,
   },
-  gates: { ApartmentsListGate },
+  inputs: {
+    setCurrentSegment,
+    setCurrentApartmentId,
+    clearCurrentApartmentId,
+  },
+  gates: { ApartmentsListGate, setCurrentSegment },
 };

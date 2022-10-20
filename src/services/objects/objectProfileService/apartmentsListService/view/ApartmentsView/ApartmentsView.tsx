@@ -9,9 +9,13 @@ import { ApartmentsViewProps, SegmentType } from './ApartmentsView.types';
 export const ApartmentsView: FC<ApartmentsViewProps> = ({
   apartmentsPagedList,
   isLoading,
+  hosuingStockId,
+  currentSegment,
+  setCurrentSegment,
+  setCurrentApartmentId,
+  currentApartmentId,
+  clearCurrentApartmentId,
 }) => {
-  const [currentSegment, setCurrentSegment] = useState<SegmentType>('list');
-
   const ViewComponent = components[currentSegment];
 
   return (
@@ -35,7 +39,13 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
       </HeaderWrapper>
       {isLoading && <Skeleton active />}
       {!isLoading && apartmentsPagedList?.items && (
-        <ViewComponent apartments={apartmentsPagedList.items} />
+        <ViewComponent
+          hosuingStockId={hosuingStockId}
+          apartments={apartmentsPagedList.items}
+          setCurrentApartmentId={setCurrentApartmentId}
+          currentApartmentId={currentApartmentId}
+          clearCurrentApartmentId={clearCurrentApartmentId}
+        />
       )}
       {!isLoading && !apartmentsPagedList && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />

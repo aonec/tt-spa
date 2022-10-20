@@ -1,6 +1,5 @@
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus, ETasksState } from 'myApi';
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
 import { PauseIcon, WarningIcon } from 'ui-kit/icons';
 import {
   AdditionalHomeownersCountTextWrapper,
@@ -13,16 +12,24 @@ import {
 } from './ApartmentItem.styled';
 import { ApartmentItemProps } from './ApartmentItem.types';
 
-export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
-  const { id } = useParams<{ id: string }>();
-
+export const ApartmentItem: FC<ApartmentItemProps> = ({
+  apartment,
+  hosuingStockId,
+  setCurrentApartmentId,
+}) => {
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
 
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
-  const isTasksOnApartmentExist = Boolean(apartment.numberOfTasks);
+  const isTasksOnApartmentExist = Boolean(
+    apartment.tasksState !== ETasksState.NoTasks
+  );
 
   return (
-    <Wrapper to={`/objects/${id}/apartments/${apartment.id}`}>
+    <Wrapper
+      id={`apartment-list-item-${apartment.id}`}
+      to={`/objects/${hosuingStockId}/apartments/${apartment.id}`}
+      onClick={() => setCurrentApartmentId(apartment.id)}
+    >
       <ApartmentNumberWrapper>
         №{apartment.apartmentNumber}
         {isTasksOnApartmentExist && (
