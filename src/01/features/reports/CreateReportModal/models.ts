@@ -1,10 +1,15 @@
+import { EffectFailDataAxiosError } from './../../../../types/index';
 import axios from 'axios';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import moment, { Moment, unitOfTime } from 'moment';
+import moment from 'moment';
+import { EResourceType } from 'myApi';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
+import { message } from 'antd';
+import queryString from 'query-string';
+import { ZippedReports } from './CreateReport.constants';
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -30,6 +35,9 @@ export const form = createForm({
     rangePeriod: {
       init: [null, null] as RangePeriod,
     },
+    resources: {
+      init: [] as EResourceType[],
+    },
   },
 });
 
@@ -40,15 +48,21 @@ const createReportFx = createReportDomain.createEffect<
       From?: string | null;
       To?: string | null;
     };
+    resources?: EResourceType[];
   },
-  void
->(async ({ date, type }) => {
+  void,
+  EffectFailDataAxiosError
+>(async ({ date, type, resources }) => {
   const res: string = await axios.get(`Reports/${type}`, {
     params: {
       From: date.From && moment(date.From).startOf('day').toISOString(),
       To: date.To && moment(date.To).endOf('day').toISOString(),
+      resources,
     },
     responseType: 'blob',
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
+    },
   });
 
   const url = window.URL.createObjectURL(new Blob([res]));
@@ -57,7 +71,8 @@ const createReportFx = createReportDomain.createEffect<
     url,
     `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
       date.To
-    ).format('MMMM_YYYY')}`
+    ).format('MMMM_YYYY')}`,
+    ZippedReports.includes(type)
   );
 });
 
@@ -69,15 +84,17 @@ forward({
   from: form.formValidated,
   to: createReport,
 });
+
 const workingReports = [
   ReportType.HouseManagementsReport,
   ReportType.OperatorsWorkingReport,
   ReportType.InspectorsWorkingReport,
 ];
+
 sample({
   source: form.$values,
   clock: createReport,
-  fn: ({ type, period, rangePeriod }) => {
+  fn: ({ type, period, rangePeriod, resources }) => {
     if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
@@ -89,6 +106,7 @@ sample({
         From: rangePeriod![0]?.startOf('day')?.toISOString(),
         To: rangePeriod![1]?.endOf('day')?.toISOString(),
       },
+      resources,
     };
   },
   target: createReportFx,
@@ -102,6 +120,10 @@ forward({
   from: reportsInputs.createReportButtonClicked,
   to: openModalButtonClicked,
 });
+
+createReportFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
 
 const $loading = combine(createReportFx.pending, (...pendings) =>
   pendings.some(Boolean)

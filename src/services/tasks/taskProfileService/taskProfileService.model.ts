@@ -1,3 +1,4 @@
+import { pushStagePayloadValidationsArray } from './taskProfileService.constants';
 import { message } from 'antd';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
@@ -181,7 +182,27 @@ guard({
     data,
     taskId: task?.id,
   })),
-  clock: handlePushStage,
+  clock: guard({
+    source: combine($task, $pushStageRequestPayload),
+    clock: handlePushStage,
+    filter: ([task, payload]) => {
+      const taskType = task?.type;
+      const validation =
+        taskType &&
+        pushStagePayloadValidationsArray.find((elem) => elem.type === taskType)
+          ?.schema;
+
+      try {
+        validation?.validateSync(payload);
+      } catch (e) {
+        message.error((e as { message: string }).message);
+
+        return false;
+      }
+
+      return true;
+    },
+  }),
   filter: (payload): payload is PushStageRequestPayload =>
     Boolean(payload.taskId),
   target: pushStageFx,

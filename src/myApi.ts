@@ -243,7 +243,7 @@ export interface ApartmentListResponse {
   /** @format int32 */
   homeownersCount: number | null;
   personalAccountNumber: string | null;
-  status: string | null;
+  status: EApartmentStatus;
 
   /** @format float */
   square: number | null;
@@ -348,6 +348,35 @@ export interface ApartmentStatusSetRequest {
   /** @format date-time */
   toDate?: string | null;
   documentIds?: number[] | null;
+}
+
+export interface ArchivesDataGroup {
+  header?: string | null;
+  measure?: string | null;
+  data?: ArchivesDataGroupValue[] | null;
+}
+
+export interface ArchivesDataGroupValue {
+  /** @format date-time */
+  time?: string;
+
+  /** @format double */
+  value?: number;
+}
+
+export interface ArchivesDataModel {
+  reportType?: string | null;
+  resource?: string | null;
+
+  /** @format int32 */
+  systemPipeCount?: number;
+
+  /** @format double */
+  deltaMassAccuracy?: number | null;
+
+  /** @format double */
+  averageDeltaMass?: number | null;
+  data?: ArchivesDataGroup[] | null;
 }
 
 export interface BaseIndividualDeviceReadingsCreateRequest {
@@ -766,6 +795,7 @@ export interface CreateCalculatorRequest {
 
   /** @format int32 */
   infoId: number;
+  model?: string | null;
 }
 
 export interface CreateCommunicationPipeRequest {
@@ -1315,6 +1345,8 @@ export enum EIndividualDeviceReadingsSource {
   Duplicated = "Duplicated",
   Erc = "Erc",
   TtmFromErc = "TtmFromErc",
+  TelegramBot = "TelegramBot",
+  DeviceTelemetry = "DeviceTelemetry",
 }
 
 export enum ELivingHouseType {
@@ -1370,10 +1402,7 @@ export enum EManagingFirmTaskFilterType {
   CalculatorLackOfConnection = "CalculatorLackOfConnection",
   IndividualDeviceCheck = "IndividualDeviceCheck",
   PipeRupture = "PipeRupture",
-  CurrentApplication = "CurrentApplication",
-  EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
-  PlannedApplication = "PlannedApplication",
   MeasurementErrorAny = "MeasurementErrorAny",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
 }
@@ -2133,7 +2162,14 @@ export interface HomeownerAccountListResponse {
 
   /** @format date-time */
   openAtFact: string;
+
+  /** @format date-time */
+  closedAt: string | null;
+
+  /** @format date-time */
+  editedAt: string | null;
   isMainPersonalAccountNumber: boolean;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export enum HomeownerAccountOrderRule {
@@ -2167,8 +2203,12 @@ export interface HomeownerAccountResponse {
   /** @format date-time */
   closedAt: string | null;
 
+  /** @format date-time */
+  editedAt: string | null;
+
   /** @format double */
   ownershipArea: number;
+  replacedByAccount: ReplacementAccount | null;
 }
 
 export interface HomeownerAccountResponseICollectionSuccessApiResponse {
@@ -3475,6 +3515,7 @@ export interface MeteringDeviceResponse {
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   type: string | null;
+  typeName: string | null;
   resource: EResourceType | null;
 }
 
@@ -3743,7 +3784,9 @@ export interface OrganizationUserListResponse {
   /** @format int32 */
   id: number;
   email: string | null;
-  name: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
   cellphone: string | null;
 
   /** @format int32 */
@@ -4106,6 +4149,18 @@ export interface RefreshResponseSuccessApiResponse {
 export interface RefreshTokenRequest {
   token: string;
   refreshToken: string;
+}
+
+export interface ReplacementAccount {
+  /** @format uuid */
+  id?: string;
+  personalAccountNumber?: string | null;
+
+  /** @format date-time */
+  openAt?: string;
+
+  /** @format date-time */
+  openAtFact?: string;
 }
 
 export interface ReportDataModel {
@@ -4777,13 +4832,18 @@ export interface TaskCreateRequest {
   targetObject?: TaskCreationTargetObject | null;
   creationReason?: string | null;
   taskType?: ETaskCreateType;
+
+  /** @format date-time */
+  activationTriggerDateTimeUtc?: string | null;
+
+  /** @format uuid */
+  activationTriggerGuid?: string | null;
 }
 
 export interface TaskCreateResponse {
   /** @format int32 */
   id: number;
   type: EManagingFirmTaskType;
-  isValidated: boolean;
 }
 
 export interface TaskCreateResponseSuccessApiResponse {
@@ -9024,6 +9084,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesStatisticsDetail
+     * @summary ReportRead
+     * @request GET:/api/Nodes/{nodeId}/Statistics
+     * @secure
+     */
+    nodesStatisticsDetail: (
+      nodeId: number,
+      query?: { ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
+      params: RequestParams = {},
+    ) =>
+      this.request<ArchivesDataModel, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Statistics`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
@@ -10065,7 +10148,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Reports/CheckingDatesReport
      * @secure
      */
-    reportsCheckingDatesReportList: (query?: { To?: string }, params: RequestParams = {}) =>
+    reportsCheckingDatesReportList: (
+      query?: { To?: string; From?: string; Resources?: EResourceType[] },
+      params: RequestParams = {},
+    ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/CheckingDatesReport`,
         method: "GET",

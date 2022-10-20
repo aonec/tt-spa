@@ -1,9 +1,6 @@
 import { format } from 'date-fns';
-import { GraphParamsType } from './Graph';
-import { EResourceType } from '../../../myApi';
 import {
-  ArchiveEntryInterface,
-  GraphDataInterface,
+  PreparedArchiveValues,
   ReportType,
 } from './components/GraphView/GraphView.types';
 import moment from 'moment';
@@ -37,10 +34,10 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
   return day % 5 === 0;
 };
 
-const sortArchiveArray = (archiveArr: ArchiveEntryInterface[]) => {
+export const sortArchiveArray = (archiveArr: PreparedArchiveValues[]) => {
   const sortedArchive = archiveArr.sort((first, second) => {
-    const firstDate = moment(first.timestamp);
-    const secondDate = moment(second.timestamp);
+    const firstDate = moment(first.time);
+    const secondDate = moment(second.time);
     return firstDate.diff(secondDate);
   });
 
@@ -48,33 +45,34 @@ const sortArchiveArray = (archiveArr: ArchiveEntryInterface[]) => {
 };
 
 const formHourlyTicks = (
-  archiveArr: ArchiveEntryInterface[]
-): ArchiveEntryInterface[] => {
+  archiveArr: PreparedArchiveValues[]
+): PreparedArchiveValues[] => {
   if (archiveArr.length <= 24) return archiveArr;
+
   const sortedArchive = sortArchiveArray(archiveArr);
 
   return [
-    ...sortedArchive.filter((entry) => isHourMultiplySix(entry.timestamp)),
+    ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
     sortedArchive[sortedArchive.length - 1],
   ];
 };
 
 const formDailyTicks = (
-  archiveArr: ArchiveEntryInterface[]
-): ArchiveEntryInterface[] => {
+  archiveArr: PreparedArchiveValues[]
+): PreparedArchiveValues[] => {
   if (archiveArr.length <= 14) return archiveArr;
   const sortedArchive = sortArchiveArray(archiveArr);
 
   const length = sortedArchive.length;
   const multipleFives = sortedArchive.filter((entry) =>
-    isDayMultiplyFive(entry.timestamp)
+    isDayMultiplyFive(entry.time)
   );
   const delta1 =
-    getDayFromTimeStamp(multipleFives[0].timestamp) -
-    getDayFromTimeStamp(sortedArchive[0].timestamp);
+    getDayFromTimeStamp(multipleFives[0].time) -
+    getDayFromTimeStamp(sortedArchive[0].time);
   const delta2 =
-    getDayFromTimeStamp(sortedArchive[length - 1].timestamp) -
-    getDayFromTimeStamp(multipleFives[multipleFives.length - 1].timestamp);
+    getDayFromTimeStamp(sortedArchive[length - 1].time) -
+    getDayFromTimeStamp(multipleFives[multipleFives.length - 1].time);
   const sliceParam1 = delta1 < 2 ? 1 : 0;
   const sliceParam2 =
     delta2 < 2 ? multipleFives.length - 1 : multipleFives.length;
@@ -87,9 +85,9 @@ const formDailyTicks = (
 };
 
 export const formTicks = (
-  archiveArr: ArchiveEntryInterface[],
+  archiveArr: PreparedArchiveValues[],
   reportType: ReportType
-): ArchiveEntryInterface[] => {
+): PreparedArchiveValues[] => {
   switch (reportType) {
     case 'hourly':
       return formHourlyTicks(archiveArr);
@@ -101,86 +99,20 @@ export const formTicks = (
 };
 
 export const getTickFormat = (
-  archiveArr: ArchiveEntryInterface[],
+  archiveArrLength: number,
   reportType: ReportType,
   x: string
 ) => {
   if (reportType === 'daily') {
     return format(formatDate(x), 'dd.MM');
   }
-  if (archiveArr.length <= 24) {
+  if (archiveArrLength <= 24) {
     return format(formatDate(x), 'HH');
   }
 
-  if (archiveArr.length >= 97) {
+  if (archiveArrLength >= 97) {
     return format(formatDate(x), 'H');
   }
 
   return format(formatDate(x), 'HH:mm');
-};
-
-export const getGraphParams = (
-  resource: EResourceType,
-  pipeCount: number
-): GraphParamsType[] => {
-  switch (resource) {
-    case 'ColdWaterSupply':
-      return ['inputVolume'];
-    case 'HotWaterSupply':
-      return pipeCount === 1
-        ? ['energy', 'inputVolume', 'inputMass', 'inputTemperature']
-        : [
-            'energy',
-            'inputMass',
-            'outputMass',
-            'deltaMass',
-            'inputVolume',
-            'outputVolume',
-            'deltaVolume',
-            'inputTemperature',
-            'outputTemperature',
-          ];
-    case 'Heat':
-      return pipeCount === 1
-        ? ['energy', 'inputVolume', 'inputMass', 'inputTemperature']
-        : [
-            'energy',
-            'inputMass',
-            'outputMass',
-            'deltaMass',
-            'inputVolume',
-            'outputVolume',
-            'deltaVolume',
-            'inputTemperature',
-            'outputTemperature',
-          ];
-    default:
-      return [];
-  }
-};
-
-export const paramsTranslation: Partial<
-  { [key in GraphParamsType]: string }
-> = {
-  inputVolume: 'Входящий объем, м³',
-  outputVolume: 'Выходящий объем, м³',
-  deltaVolume: 'Расход по объему, м³',
-  inputMass: 'Входящая масса, т',
-  outputMass: 'Выходящая масса, т',
-  deltaMass: 'Расход по массе, т',
-  energy: 'Энергия, ГКал',
-  inputTemperature: 'Входящая температура, ℃',
-  outputTemperature: 'Выходящая температура, ℃',
-};
-
-export const formGraphData = (
-  ticks: ArchiveEntryInterface[],
-  graphParam: GraphParamsType
-): GraphDataInterface[] => {
-  return ticks.map((entry) => {
-    return {
-      time: entry.timestamp,
-      value: entry[graphParam],
-    };
-  });
 };

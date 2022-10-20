@@ -12,13 +12,13 @@ import {
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import moment from 'moment';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse | IndividualDeviceOnTaskResponse;
 }
 
 const DeviceInfo = ({ device }: DeviceInfoProps) => {
-  const { icon, color } = DeviceIcons[device.resource] || {};
   const isActive = device.closingDate === null;
   const history = useHistory();
 
@@ -26,7 +26,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
     <DeviceColumn>
       <DeviceLink to={history.location.pathname}>
         <Space>
-          <StockIconTT icon={icon} fill={color} dark />
+          <ResourceIconLookup resource={device.resource} />
         </Space>
         <Space w={7} />
         {device.serialNumber}

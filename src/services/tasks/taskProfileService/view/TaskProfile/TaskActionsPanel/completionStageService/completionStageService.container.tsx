@@ -5,7 +5,7 @@ import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { completionStageService } from './completionStageService.model';
 import { CompletionSelect } from './view/CompletionSelect';
 import { CompletionComment } from './view/CompletionComment';
-import { previousReadingIndexLimit } from 'services/meters/apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
+import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 
 const { outputs } = completionStageService;
 
@@ -16,12 +16,17 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
 
   const taskType = useStore(outputs.$taskType);
 
+  const payload = useStore(taskProfileService.outputs.$pushStageRequestPayload);
+
   function handleChangeConfirmationType(
     confirmationType: ETaskConfirmationType
   ) {
     handleChange((prev) => ({
       ...prev,
-      taskConfirmation: { ...prev.taskConfirmation, type: confirmationType },
+      taskConfirmation: {
+        ...(prev.taskConfirmation || {}),
+        type: confirmationType,
+      },
     }));
   }
 
@@ -30,9 +35,10 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
       if (!prev.taskConfirmation) {
         return {};
       }
+
       return {
         ...prev,
-        taskConfirmation: { ...prev.taskConfirmation, comment },
+        taskConfirmation: { ...(prev.taskConfirmation || {}), comment },
       };
     });
   }
@@ -46,7 +52,10 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
         handleChangeConfirmation={handleChangeConfirmationType}
         taskType={taskType}
       />
-      <CompletionComment handleChangeComment={handleChangeComment} />
+      <CompletionComment
+        disabled={!payload.taskConfirmation?.type}
+        handleChangeComment={handleChangeComment}
+      />
     </>
   );
 };
