@@ -12,7 +12,7 @@ export const Segmented = <T extends string>({
       {items.map(({ title, icon, name }) => (
         <SegmentItem onClick={() => onChange(name)} isActive={active === name}>
           {icon}
-          <SegmentTitle>{title}</SegmentTitle>
+          {title && <SegmentTitle>{title}</SegmentTitle>}
         </SegmentItem>
       ))}
     </Wrapper>

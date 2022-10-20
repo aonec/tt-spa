@@ -1,14 +1,9 @@
 /* eslint-disable */
 
 import React from 'react';
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
-import {
-  getInfo,
-  getEvents,
-  getApartments,
-  getDevices,
-} from '01/_api/objects_page';
+import { getInfo, getEvents, getDevices } from '01/_api/objects_page';
 
 export const useFetchPage = (state, dispatch) => {
   const { url, path, isExact, params } = useRouteMatch('/:page/:id');
@@ -30,9 +25,6 @@ export const useFetchPage = (state, dispatch) => {
     }
     if (isPageApartmentExact && !apartments && params.id) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
-      getApartments({ housingStockId: params.id }).then((data) =>
-        dispatch({ type: 'success', data })
-      );
     }
 
     if ((info || devices) && !events) {

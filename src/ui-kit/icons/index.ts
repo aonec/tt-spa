@@ -44,6 +44,9 @@ import { ReactComponent as PendingApprovalIcon } from './svg/pendingApproval.svg
 import { ReactComponent as RegisteredIcon } from './svg/registered.svg';
 import { ReactComponent as TelegramIcon } from './svg/telegram.svg';
 import { ReactComponent as SearchIcon } from './svg/search.svg';
+import { ReactComponent as ListIcon } from './svg/list.svg';
+import { ReactComponent as CellsIcon } from './svg/cells.svg';
+import { ReactComponent as PauseIcon } from './svg/pause.svg';
 
 export {
   FinishIcon,
@@ -91,5 +94,8 @@ export {
   PendingApprovalIcon,
   RegisteredIcon,
   TelegramIcon,
+  CellsIcon,
+  PauseIcon,
+  ListIcon,
   SearchIcon,
 };
