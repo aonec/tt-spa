@@ -10,6 +10,7 @@ import { downloadURI } from './utils';
 import { message } from 'antd';
 import queryString from 'query-string';
 import { ZippedReports } from './CreateReport.constants';
+import { reportsListService } from '../reportsListService';
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -79,6 +80,11 @@ const createReportFx = createReportDomain.createEffect<
 $isModalOpen.reset(createReportFx.doneData);
 
 const createReport = createReportDomain.createEvent();
+
+forward({
+  from: createReportFx.doneData,
+  to: reportsListService.inputs.refetchReportsHistory,
+});
 
 forward({
   from: form.formValidated,

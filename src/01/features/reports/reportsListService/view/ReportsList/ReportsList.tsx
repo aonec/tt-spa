@@ -1,7 +1,7 @@
 import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { ReportListItem } from './ReportListItem';
-import { Wrapper } from './ReportsList.styled';
+import { Header } from './ReportsList.styled';
 import { ReportsListProps } from './ReportsList.types';
 
 export const ReportsList: FC<ReportsListProps> = ({
@@ -9,7 +9,8 @@ export const ReportsList: FC<ReportsListProps> = ({
   isLoading,
 }) => {
   return (
-    <Wrapper>
+    <div>
+      <Header>Актуальные отчеты</Header>
       {isLoading && <Skeleton active />}
       {!reportsList?.length && !isLoading && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -18,6 +19,6 @@ export const ReportsList: FC<ReportsListProps> = ({
         reportsList?.map((report) => (
           <ReportListItem key={report.id} report={report} />
         ))}
-    </Wrapper>
+    </div>
   );
 };
