@@ -1,10 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import { Button, Form, Radio, Tooltip } from 'antd';
-import { GraphParamsType } from '../../Graph';
 import IconTT from '../../../../tt-components/IconTT';
-import { paramsTranslation } from '../../utils';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import { ArchiveReadingsFilter } from 'services/displayNodesStatisticsService/displayNodesStatisticsService.types';
 import { FormItem } from 'ui-kit/FormItem';
@@ -17,7 +15,7 @@ import {
   RangeWrapper,
 } from './GraphFilterForm.styled';
 import { SelectSC } from '01/shared/ui/Fields';
-import { RadioOptions } from './GraphFilterForm.constants';
+import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
@@ -28,11 +26,13 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   currentFilter,
 }) => {
   const [isActive, setIsActive] = useState(false);
+  const openModal = () => setIsActive(true);
+  const closeModal = () => setIsActive(false);
 
   const handleSubmit = useCallback(
     (filter: ArchiveReadingsFilter) => {
       setArchiveFilter(filter);
-      setIsActive((state) => !state);
+      closeModal();
     },
     [setArchiveFilter, setIsActive]
   );
@@ -50,9 +50,15 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   });
 
   const options = paramsList.map((param) => ({
-    label: paramsTranslation[param],
+    label: param,
     value: param,
   }));
+
+  useEffect(() => {
+    if (paramsList[0]) {
+      setGraphParam(paramsList[0]);
+    }
+  }, [setGraphParam, paramsList]);
 
   return (
     <GraphFilter>
@@ -60,7 +66,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
         <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
             <Button
-              onClick={() => setIsActive((state) => !state)}
+              onClick={() => openModal()}
               icon={<IconTT icon="searchFilter" />}
               style={{ marginRight: 16 }}
             />
@@ -70,9 +76,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
             value={currentGraphParam}
             showArrow={true}
             options={options}
-            onChange={(selectedValue) =>
-              setGraphParam(selectedValue as GraphParamsType)
-            }
+            onChange={(selectedValue) => setGraphParam(selectedValue as string)}
           />
         </ClosedFilterWrapper>
       ) : (
@@ -98,15 +102,40 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                       const diff = currentDay.diff(date.startOf('day'));
                       return diff < 0;
                     }}
-                    value={[moment(values.from), moment(values.to)]}
+                    value={[moment(values.From), moment(values.To)]}
                     onChange={(rangeValue) => {
                       if (!rangeValue || !rangeValue?.[0] || !rangeValue?.[1]) {
                         return null;
                       }
-                      const from = rangeValue[0].format('YYYY-MM-DD HH:mm:ss');
-                      const to = rangeValue[1].format('YYYY-MM-DD HH:mm:ss');
-                      setFieldValue('from', from);
-                      setFieldValue('to', to);
+                      const From = rangeValue[0].format('YYYY-MM-DD HH:mm:ss');
+                      const To = rangeValue[1]
+                        .endOf('day')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                      setFieldValue('From', From);
+                      setFieldValue('To', To);
+                    }}
+                    ranges={{
+                      [RangeOptions.LastDay]: [
+                        moment().startOf('day'),
+                        moment().endOf('day'),
+                      ],
+                      [RangeOptions.LastWeek]: [
+                        moment().subtract(1, 'week').set({
+                          hour: 0,
+                          minute: 0,
+                          second: 0,
+                          millisecond: 0,
+                        }),
+                        moment().startOf('day'),
+                      ],
+                      [RangeOptions.ThisMonth]: [
+                        moment().startOf('month'),
+                        moment().startOf('day'),
+                      ],
+                      [RangeOptions.LastMonth]: [
+                        moment().startOf('month').subtract(1, 'months'),
+                        moment().subtract(1, 'months').endOf('month'),
+                      ],
                     }}
                   />
                 </RangeWrapper>
@@ -115,9 +144,9 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               <FormItem label="Тип отчета">
                 <div>
                   <Radio.Group
-                    value={values.reportType}
+                    value={values.ReportType}
                     onChange={(event) =>
-                      setFieldValue('reportType', event.target.value)
+                      setFieldValue('ReportType', event.target.value)
                     }
                     options={RadioOptions}
                   />
@@ -125,7 +154,12 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               </FormItem>
             </FormBody>
             <FormFooter>
-              <ButtonTT color="white" small style={{ marginRight: 16 }}>
+              <ButtonTT
+                color="white"
+                small
+                style={{ marginRight: 16 }}
+                onClick={() => closeModal()}
+              >
                 Отмена
               </ButtonTT>
               <ButtonTT
@@ -145,9 +179,9 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
 };
 
 type GraphFilterFormProps = {
-  setGraphParam: (type: GraphParamsType) => void;
-  currentGraphParam: GraphParamsType;
+  setGraphParam: (type: string) => void;
+  currentGraphParam: string;
   setArchiveFilter: (filter: ArchiveReadingsFilter) => void;
   currentFilter: ArchiveReadingsFilter;
-  paramsList: GraphParamsType[];
+  paramsList: string[];
 };

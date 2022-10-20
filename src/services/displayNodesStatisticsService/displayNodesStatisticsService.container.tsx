@@ -1,20 +1,19 @@
 import { GraphFilterForm } from '01/_pages/Graph/components/GraphFilterForm';
 import { GraphView } from '01/_pages/Graph/components/GraphView';
-import { getGraphParams } from '01/_pages/Graph/utils';
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
 import { Title, Wrapper } from './displayNodesStatisticsService.styled';
 import { DisplayNodesStatisticsContainerProps } from './displayNodesStatisticsService.types';
+import { GraphEmptyData } from './view/GraphEmptyData';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
-const { NodeIdGate } = gates;
+const { NodeInfoGate } = gates;
 
 export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainerProps> = ({
   nodeId,
   pipeCount,
-  resource,
 }) => {
   const currentArhiveFilter = useStore(outputs.$archiveFilter);
   const graphType = useStore(outputs.$graphType);
@@ -24,30 +23,47 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
   const setGraphType = useEvent(inputs.setGraphType);
   const setArchiveFilter = useEvent(inputs.setArchiveFilter);
 
+  const archive = archiveData?.data || [];
+  const paramsList = useMemo(
+    () =>
+      archive.reduce((acc, readings) => {
+        const header = readings?.header;
+        if (!header) {
+          return acc;
+        }
+        return [...acc, header];
+      }, [] as string[]),
+    [archive]
+  );
+
+  const archiveReadingExist = archive.length !== 0;
+
   return (
     <>
-      <NodeIdGate nodeId={nodeId} />
+      <NodeInfoGate nodeId={nodeId} pipeCount={pipeCount} />
       <div>
         <Title>Статистика по объекту</Title>
-        <GraphFilterForm
-          currentGraphParam={graphType}
-          currentFilter={currentArhiveFilter}
-          paramsList={getGraphParams(resource, pipeCount)}
-          setGraphParam={setGraphType}
-          setArchiveFilter={setArchiveFilter}
-        />
+
         {isLoading && <Skeleton active />}
-        {!isLoading && (
-          <Wrapper>
-            {archiveData && (
+        {!isLoading && archiveData && archiveReadingExist && (
+          <>
+            <GraphFilterForm
+              currentGraphParam={graphType}
+              currentFilter={currentArhiveFilter}
+              paramsList={paramsList}
+              setGraphParam={setGraphType}
+              setArchiveFilter={setArchiveFilter}
+            />
+            <Wrapper>
               <GraphView
                 graphParam={graphType}
                 data={archiveData}
-                reportType={currentArhiveFilter.reportType}
+                reportType={currentArhiveFilter.ReportType}
               />
-            )}
-          </Wrapper>
+            </Wrapper>
+          </>
         )}
+        {!isLoading && !archiveReadingExist && <GraphEmptyData />}
       </div>
     </>
   );

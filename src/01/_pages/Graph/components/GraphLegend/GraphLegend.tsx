@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useStore } from 'effector-react';
 import { $graphData } from '../../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
-import { renderForHeatAndDeltaMass } from '../../utils/renderForHeatAndDeltaMass';
 import {
   Accuracy,
   LegendLine,
@@ -11,31 +10,46 @@ import {
   Percents,
 } from './GraphLegend.styled';
 import { GraphLegendProps } from './GraphLegend.types';
+import { ResourceType } from '../GraphView/GraphView.types';
+import { renderForHeatAndDeltaMass } from './GraphLegend.utils';
 
 export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
-  const data = useStore($graphData);
-  if (!data) {
+  const graphData = useStore($graphData);
+  if (!graphData || !graphData.resource) {
     return null;
   }
-  const { averageDeltaMass, deltaMassAccuracy, resource } = data;
-  const absoluteDelta = Number(
-    Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
+  const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
+  const isDeltaMass = renderForHeatAndDeltaMass(
+    resource as ResourceType,
+    graphParam
   );
 
   const renderAccuracyLegendLine = () => {
-    const isAccuracyRendered = renderForHeatAndDeltaMass(resource, graphParam);
-    if (!isAccuracyRendered) {
+    if (
+      !isDeltaMass ||
+      deltaMassAccuracy === null ||
+      deltaMassAccuracy === undefined ||
+      averageDeltaMass === null ||
+      averageDeltaMass === undefined
+    ) {
       return null;
     }
     return <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>;
   };
 
   const renderAccuracyValue = () => {
-    const isAccuracyRendered = renderForHeatAndDeltaMass(resource, graphParam);
-
-    if (!isAccuracyRendered) {
+    if (
+      !isDeltaMass ||
+      deltaMassAccuracy === null ||
+      deltaMassAccuracy === undefined ||
+      averageDeltaMass === null ||
+      averageDeltaMass === undefined
+    ) {
       return null;
     }
+    const absoluteDelta = Number(
+      Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
+    );
 
     return (
       <Tooltip
@@ -58,7 +72,10 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
   return (
     <LegendWrapper>
       <LegendLineWrapper>
-        <LegendLine resource={resource} style={{ marginBottom: 16 }}>
+        <LegendLine
+          resource={resource as ResourceType}
+          style={{ marginBottom: 16 }}
+        >
           Текущий период
         </LegendLine>
         {renderAccuracyLegendLine()}

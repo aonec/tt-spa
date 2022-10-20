@@ -1,6 +1,5 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { GraphParamsType } from '../../Graph';
 import { DateBlock, Pointer, TooltipBlock, Value } from './GraphTooltip.styled';
 import { GraphTooltipProps } from './Graphtooltip.types';
 
@@ -13,22 +12,8 @@ const formatDate = (timeStamp: string): Date => {
   return date;
 };
 
-const meteringUnits: Partial<
-  { [key in GraphParamsType]: 'ГКал' | 'т' | 'м³' | '℃' }
-> = {
-  energy: 'ГКал',
-  inputMass: 'т',
-  outputMass: 'т',
-  deltaMass: 'т',
-  inputVolume: 'м³',
-  outputVolume: 'м³',
-  deltaVolume: 'м³',
-  inputTemperature: '℃',
-  outputTemperature: '℃',
-};
-
 export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
-  const { datum, x, y, graphParam } = props;
+  const { datum, x, y,measure } = props;
   return (
     <g style={{ pointerEvents: 'none' }}>
       <foreignObject
@@ -41,7 +26,7 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
         <TooltipBlock value={datum!.value}>
           <DateBlock>{format(formatDate(datum!.time), 'dd.MM.yyyy')}</DateBlock>
           <Value>
-            {datum!.value.toFixed(3)} {meteringUnits[graphParam]}
+            {datum!.value.toFixed(3)} {measure}
           </Value>
           <Pointer value={datum!.value} />
         </TooltipBlock>

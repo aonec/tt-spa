@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const GraphFilter = styled.div`
-  margin-top: 8px;
+  margin-top: 16px;
   margin-bottom: 16px;
-  width: 100%;
+  width: 730px;
 
   form {
     .ant-picker-input {
@@ -23,7 +23,7 @@ export const GraphFilter = styled.div`
 
 export const OpenedFilter = styled.div`
   background: #fff;
-
+  width: 100%;
   box-shadow: var(--shadow);
 `;
 
@@ -69,4 +69,5 @@ export const ClosedFilterWrapper = styled.div`
   margin-bottom: 10;
   padding-left: 8;
   padding-top: 16;
+  width: 100%;
 `;
