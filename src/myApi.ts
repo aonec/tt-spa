@@ -244,12 +244,13 @@ export interface ApartmentListResponse {
   homeownersCount: number | null;
   personalAccountNumber: string | null;
   status: EApartmentStatus;
-
-  /** @format float */
-  square: number | null;
+  tasksState: ETasksState;
 
   /** @format int32 */
   numberOfTasks: number;
+
+  /** @format float */
+  square: number | null;
   comment: string | null;
   housingStock: HousingStockListResponse | null;
 }
@@ -352,6 +353,7 @@ export interface ApartmentStatusSetRequest {
 
 export interface ArchivesDataGroup {
   header?: string | null;
+  measure?: string | null;
   data?: ArchivesDataGroupValue[] | null;
 }
 
@@ -1731,6 +1733,12 @@ export enum ETaskTargetType {
   Housing = "Housing",
   Node = "Node",
   Application = "Application",
+}
+
+export enum ETasksState {
+  NoTasks = "NoTasks",
+  OnTime = "OnTime",
+  MissedDeadline = "MissedDeadline",
 }
 
 export enum EValueNodeWorkingRangeRelation {
