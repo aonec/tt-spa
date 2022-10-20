@@ -1,5 +1,6 @@
-import { EManagingFirmTaskType } from 'myApi';
+import { EManagingFirmTaskType, EStageActionType } from 'myApi';
 import * as yup from 'yup';
+import { switchDeviceValidationSchema } from './view/TaskProfile/TaskActionsPanel/switchDeviceService/view/SwitchDeviceForm/SwitchDeviceForm.constants';
 
 export const completionLabelsDictionary: { [key: string]: string } = {
   [EManagingFirmTaskType.PipeRupture]: 'Подтверждение порыва',
@@ -7,7 +8,7 @@ export const completionLabelsDictionary: { [key: string]: string } = {
 
 export const pushStagePayloadValidationsArray = [
   {
-    type: EManagingFirmTaskType.PipeRupture,
+    taskType: EManagingFirmTaskType.PipeRupture,
     schema: yup.object().shape({
       taskConfirmation: yup.object().shape({
         type: yup
@@ -23,5 +24,9 @@ export const pushStagePayloadValidationsArray = [
         }),
       }),
     }),
+  },
+  {
+    actionType: EStageActionType.SwitchDevices,
+    schema: switchDeviceValidationSchema,
   },
 ];
