@@ -32,13 +32,10 @@ sample({
     ),
     clock: ApartmentsListGate.open,
     filter: ([apartmentsPagedList, housingStockId]) => {
-      const apartment = apartmentsPagedList?.items?.[0];
+      const apartmentHosuingStockId =
+        apartmentsPagedList?.items?.[0]?.housingStock?.id;
 
-      if (!apartment) return true;
-
-      if (apartment.housingStock?.id === housingStockId) return false;
-
-      return true;
+      return apartmentHosuingStockId !== housingStockId;
     },
   }),
   target: fetchApartmentsList,

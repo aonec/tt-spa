@@ -1,14 +1,11 @@
 /* eslint-disable */
 
 import React, { useEffect, useMemo, useState } from 'react';
-
-import { UserInfo } from './UserInfo';
 import { Icon, Loader } from '01/components';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import styled from 'styled-components';
-
 import { ReactComponent as EditIcon } from './icons/Edit.svg';
 import TextArea from 'antd/lib/input/TextArea';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
@@ -30,47 +27,60 @@ import moment from 'moment';
 import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
-import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 import {
-  $currentPersonalNumberIndex,
-  setCurrentPersonalNumberIndex,
+  $currentPersonalNumberId,
+  setCurrentPersonalNumberId,
 } from '01/features/homeowner/displayHomeowner/models';
 import {
+  AlertContent,
   AlertLink,
   ApartmentAlertWrapper,
+  ApartmentInfoWrap,
+  ApartmentTitle,
   ArrowRight,
+  GroupWrapper,
   HomeownerAccountChangeDate,
   Wrapper,
 } from './ApartmentInfo.styled';
 import { checkIsHomeownerAccountRecentlyModified } from './utils';
 import { Skeleton } from 'antd';
 import { ESecuredIdentityRoleName } from 'myApi';
+import { HomeownerInfo } from './HomeownerInfo';
+import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { ReplacedAccountAlert } from './ReplacedAccountAlert';
+import { EditedAccountsAlert } from './EditedAccountsAlert';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
   const history = useHistory();
   const { id } = useParams();
 
-  const currentPersonalNumberIndex = useStore($currentPersonalNumberIndex);
+  const currentPersonalNumberId = useStore($currentPersonalNumberId);
 
   const apartment = useStore($apartment);
-  const homeownerAccounts = apartment?.homeownerAccounts;
+  const homeownerAccounts = apartment?.homeownerAccounts || [];
+
+  const openedHomeownerAccounts = useMemo(
+    () => homeownerAccounts.filter((account) => !account.closedAt),
+    [homeownerAccounts]
+  );
 
   useEffect(() => {
-    setCurrentPersonalNumberIndex(0);
-  }, [homeownerAccounts]);
+    setCurrentPersonalNumberId(openedHomeownerAccounts[0]?.id);
+  }, [openedHomeownerAccounts]);
 
-  const { userInfo = [], title, comment } = useApartmentInfo(
-    apartment,
-    currentPersonalNumberIndex
-  );
+  const title = getApartmentAddressString(apartment);
+
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const currentHomeowner =
-    homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
+    openedHomeownerAccounts &&
+    openedHomeownerAccounts.find(
+      (account) => account.id === currentPersonalNumberId
+    );
 
   const pending = useStore(fetchApartmentFx.pending);
 
@@ -102,8 +112,19 @@ export const ApartmentInfo = () => {
 
   const isApartmentTaskExist = Boolean(apartmentTaskId);
 
-  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
+  const recentlyModifiedApartmentPersonalAccounts = openedHomeownerAccounts.filter(
     checkIsHomeownerAccountRecentlyModified
+  );
+
+  const recentlyReplacedAccounts = (apartment?.homeownerAccounts || []).filter(
+    (account) =>
+      account.replacedByAccount &&
+      moment().diff(moment(account.closedAt), 'month') < 3
+  );
+
+  const recentlyEditedAccounts = openedHomeownerAccounts.filter(
+    (account) =>
+      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3
   );
 
   const menuButtonArray = [
@@ -133,6 +154,25 @@ export const ApartmentInfo = () => {
       cb: () => getIssueCertificateButtonClicked(),
     },
   ];
+
+  const editedAccountsAlert = useMemo(
+    () =>
+      recentlyEditedAccounts.map((account) => (
+        <EditedAccountsAlert key={account.id} recentlyEditedAccount={account} />
+      )),
+    [recentlyEditedAccounts]
+  );
+
+  const replacedAccountsAlert = useMemo(
+    () =>
+      recentlyReplacedAccounts.map((account) => (
+        <ReplacedAccountAlert
+          key={account.id}
+          recentlyReplacedAccount={account}
+        />
+      )),
+    [recentlyReplacedAccounts]
+  );
 
   const pausedAlert = isPaused && (
     <ApartmentAlertWrapper>
@@ -203,44 +243,49 @@ export const ApartmentInfo = () => {
   const toggle = (
     <div onClick={() => setShow((p) => !p)} style={{ cursor: 'pointer' }}>
       {show ? (
-        <>
+        <GroupWrapper>
           <Icon
             icon="off"
             color="var(--main-100)"
             style={{ marginRight: 8, position: 'relative', top: 1 }}
           />
           <span>Скрыть подробную информацию</span>
-        </>
+        </GroupWrapper>
       ) : (
-        <>
+        <GroupWrapper>
           <Icon
             icon="on"
             color="var(--main-100)"
             style={{ marginRight: 8, position: 'relative', top: 1 }}
           />
           <span>Показать подробную информацию</span>
-        </>
+        </GroupWrapper>
       )}
     </div>
   );
 
   const content = apartment && (
-    <Grid>
-      <div>
-        <Spaces spaceStyles={{ height: 10 }}>
-          <CommentTitle>Управляющая компания</CommentTitle>
-          {houseManagementRender}
-          {toggle}
-        </Spaces>
-        {show ? (
-          <>
-            <Space h={10} />
-            <UserInfo list={userInfo} />
-          </>
-        ) : null}
-      </div>
-      <ApartmentComment comment={comment} />
-    </Grid>
+    <>
+      <Grid>
+        <div>
+          <Spaces spaceStyles={{ height: 10 }}>
+            <CommentTitle>Управляющая компания</CommentTitle>
+            {houseManagementRender}
+            {toggle}
+          </Spaces>
+        </div>
+        <ApartmentComment comment={apartment.comment || ''} />
+      </Grid>
+      {show ? (
+        <>
+          <Space h={10} />
+          <HomeownerInfo
+            apartment={apartment}
+            currentPersonalNumberId={currentPersonalNumberId}
+          />
+        </>
+      ) : null}
+    </>
   );
 
   return (
@@ -253,11 +298,11 @@ export const ApartmentInfo = () => {
         <Flex>
           <ApartmentTitle>{title}</ApartmentTitle>
           <Space />
-          {homeownerAccounts?.map(
-            (homeowner, index) =>
+          {openedHomeownerAccounts?.map(
+            (homeowner) =>
               homeowner?.personalAccountNumber && (
                 <PersonalNumber
-                  onClick={() => setCurrentPersonalNumberIndex(index)}
+                  onClick={() => setCurrentPersonalNumberId(homeowner.id)}
                   isCurrent={currentHomeowner?.id === homeowner.id}
                   key={homeowner.id}
                 >
@@ -278,10 +323,12 @@ export const ApartmentInfo = () => {
 
       {!pending && (
         <>
-          <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
           {apartment && pausedAlert}
           {isApartmentTaskExist && apartmentTaskAlert}
+          {replacedAccountsAlert}
+          {editedAccountsAlert}
           {apartmentHomeownerAcconutChangeAlerts}
+          <ApartmentInfoWrap>{content}</ApartmentInfoWrap>
         </>
       )}
     </Wrapper>
@@ -316,24 +363,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
-`;
-
-const ApartmentInfoWrap = styled.div`
-  padding: 10px 10px 10px 15px;
-  margin: 15px 0 0;
-  background: rgba(24, 158, 233, 0.1);
-  border-radius: 10px;
-`;
-
-const ApartmentTitle = styled.div`
-  font-weight: 500;
-  font-size: 18px;
-`;
-
-const AlertContent = styled(Flex)`
-  justify-content: space-between;
-  width: 100%;
-  cursor: pointer;
+  height: 100%;
 `;
 
 const CommentModuleWrap = styled.div``;
@@ -350,6 +380,7 @@ const CommentWrap = styled.div`
 `;
 const CommentText = styled.div`
   font-size: 16px;
+  word-break: break-all;
 `;
 
 const ApartmentComment = ({ comment: commentInitial }) => {

@@ -4,10 +4,15 @@ import { HomeownerAccountResponse } from 'myApi';
 
 export const $homeowner = createStore<HomeownerAccountResponse | null>(null);
 
-export const fetchHomeownerFx = createEffect<string, HomeownerAccountResponse>();
+export const fetchHomeownerFx = createEffect<
+  string,
+  HomeownerAccountResponse
+>();
 
 export const HomeownerGate = createGate<{ id: string }>();
 
-export const $currentPersonalNumberIndex = createStore(0);
-
-export const setCurrentPersonalNumberIndex = createEvent<number>();
+export const setCurrentPersonalNumberId = createEvent<string>();
+export const $currentPersonalNumberId = createStore<string>('').on(
+  setCurrentPersonalNumberId,
+  (_, id) => id
+);
