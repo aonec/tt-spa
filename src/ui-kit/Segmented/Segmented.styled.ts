@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
 `;
 
 export const SegmentItem = styled.div<{ isActive?: boolean }>`
-  padding: 0 15px;
+  padding: 0 10px;
   height: 32px;
   display: flex;
   align-items: center;
@@ -22,8 +22,13 @@ export const SegmentItem = styled.div<{ isActive?: boolean }>`
 
   color: ${({ isActive }) => (isActive ? '#189ee9' : '#252f5a')};
   border: 1px solid ${({ isActive }) => (isActive ? '#189ee9' : '#dcdee4')};
+
   path {
     fill: ${({ isActive }) => (isActive ? '#189ee9' : '#252f5a')};
+  }
+
+  rect {
+    stroke: ${({ isActive }) => (isActive ? '#189ee9' : '#252f5a')};
   }
 
   &:hover {
@@ -34,6 +39,10 @@ export const SegmentItem = styled.div<{ isActive?: boolean }>`
 
     path {
       fill: #189ee9;
+    }
+
+    rect {
+      stroke: #189ee9;
     }
   }
 `;

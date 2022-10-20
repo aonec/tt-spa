@@ -21,10 +21,11 @@ import moment from 'moment';
 import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
 import { useEvent, useStore } from 'effector-react';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
+import { ApartmentsListContainer } from 'services/objects/objectProfileService/apartmentsListService';
 
 export const ObjectContext = React.createContext();
 
-const { gates, outputs, inputs } = objectProfileService;
+const { gates, outputs } = objectProfileService;
 const { ObjectProfileIdGate } = gates;
 
 function reducer(state, action) {
@@ -77,11 +78,6 @@ export const ObjectProfile = () => {
       }),
     [disconnections]
   );
-  const apartmentId = useStore(outputs.$apartmentId);
-  const setApartmentId = useEvent(inputs.setApartmentId);
-
-  const isApartmentsLoading = state?.apartments?.loading;
-  const apartments = state?.apartments?.items || [];
 
   useEffect(() => {
     setLoading(true);
@@ -101,7 +97,7 @@ export const ObjectProfile = () => {
 
   const { push } = useHistory();
   const info = useObjectInformation(state);
-  const { header = [], events = [], aparts = [] } = state;
+  const { header = [], events = [] } = state;
 
   if (loading) {
     return <Loader size={'64'} />;
@@ -131,7 +127,6 @@ export const ObjectProfile = () => {
       key: 'apartments',
       cb: () => {
         push(`${path}/apartments`);
-        setApartmentId(null);
       },
     },
     {
@@ -166,17 +161,8 @@ export const ObjectProfile = () => {
               </div>
             </Route>
 
-            <Route path="/objects/(\\d+)/apartments" exact>
-              <Apartments
-                path="/objects/(\\d+)/apartments"
-                onClick={(id) =>
-                  push(`/objects/${housingStockId}/apartments/${id}`)
-                }
-                apartmentId={apartmentId}
-                setApartmentId={setApartmentId}
-                loading={isApartmentsLoading}
-                items={apartments}
-              />
+            <Route path="/objects/:id/apartments" exact>
+              <ApartmentsListContainer />
             </Route>
 
             <Route path="/objects/:id/devices" exact>

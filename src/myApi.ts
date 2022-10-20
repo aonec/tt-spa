@@ -243,7 +243,7 @@ export interface ApartmentListResponse {
   /** @format int32 */
   homeownersCount: number | null;
   personalAccountNumber: string | null;
-  status: string | null;
+  status: EApartmentStatus;
 
   /** @format float */
   square: number | null;
@@ -369,6 +369,12 @@ export interface ArchivesDataModel {
 
   /** @format int32 */
   systemPipeCount?: number;
+
+  /** @format double */
+  deltaMassAccuracy?: number | null;
+
+  /** @format double */
+  averageDeltaMass?: number | null;
   data?: ArchivesDataGroup[] | null;
 }
 
