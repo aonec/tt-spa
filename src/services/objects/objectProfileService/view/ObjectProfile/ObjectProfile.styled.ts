@@ -12,7 +12,7 @@ export const TabsSC = styled(Tabs)`
   margin-top: 16px;
   .ant-tabs-tab-btn {
     color: #272f5a;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 16px;
   }
 `;

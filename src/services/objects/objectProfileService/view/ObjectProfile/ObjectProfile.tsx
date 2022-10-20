@@ -1,8 +1,11 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
+import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { ApartmentsListContainer } from '../../apartmentsListService';
 import { ObjectProfileGrouptype } from '../../objectProfileService.constants';
+import { ObjectInfo } from '../ObjectInfo';
 import { CityWrappper, TabsSC, Wrapper } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
 const { TabPane } = TabsSC;
@@ -25,19 +28,20 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
         onChange={(grouptype) =>
           setCurrentGrouptype(grouptype as ObjectProfileGrouptype)
         }
+        activeKey={currentGrouptype}
       >
-        <TabPane
-          tab="Общая информация"
-          key={ObjectProfileGrouptype.Common}
-        ></TabPane>
-        <TabPane
-          tab="Квартиры"
-          key={ObjectProfileGrouptype.Apartments}
-        ></TabPane>
+        <TabPane tab="Общая информация" key={ObjectProfileGrouptype.Common}>
+          <ObjectInfo housingStock={housingStock}/>
+        </TabPane>
+        <TabPane tab="Квартиры" key={ObjectProfileGrouptype.Apartments}>
+          <ApartmentsListContainer />
+        </TabPane>
         <TabPane
           tab="Системы учета ресурсов"
           key={ObjectProfileGrouptype.Devices}
-        ></TabPane>
+        >
+          <ResourceAccountingSystemsContainer />
+        </TabPane>
       </TabsSC>
     </Wrapper>
   );

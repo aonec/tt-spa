@@ -9,14 +9,14 @@ const { outputs, gates } = resourceAccountingSystemsService;
 const { NodesGate } = gates;
 
 export const ResourceAccountingSystemsContainer = () => {
-  const { id } = useParams<{ id: string }>();
+  const { housingStockId } = useParams<{ housingStockId: string }>();
 
   const nodes = useStore(outputs.$nodes);
   const isLoading = useStore(outputs.$isLoading);
 
   return (
     <>
-      {id && <NodesGate housingStockId={Number(id)} />}
+      {housingStockId && <NodesGate housingStockId={Number(housingStockId)} />}
       <ResourceAccountingSystems nodes={nodes} isLoading={isLoading} />
     </>
   );
