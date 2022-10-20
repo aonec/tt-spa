@@ -1,10 +1,10 @@
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { reportsListService } from './reportsListService.model';
 import { ReportsList } from './view/ReportsList';
 import { SearchReports } from './view/SearchReports';
 
-const { outputs, gates } = reportsListService;
+const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
 
 export const ReportsListContainer = () => {
@@ -13,6 +13,8 @@ export const ReportsListContainer = () => {
   );
   const isLoading = useStore(outputs.$isLoading);
 
+  const openExistedReport = useEvent(inputs.openExistedReport);
+
   return (
     <>
       <ReportsHistoryGate />
@@ -20,6 +22,7 @@ export const ReportsListContainer = () => {
       <ReportsList
         reportsList={reportsHistoryListPagedData?.items || null}
         isLoading={isLoading}
+        openExistedReport={openExistedReport}
       />
     </>
   );

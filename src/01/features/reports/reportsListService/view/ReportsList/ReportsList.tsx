@@ -7,6 +7,7 @@ import { ReportsListProps } from './ReportsList.types';
 export const ReportsList: FC<ReportsListProps> = ({
   reportsList,
   isLoading,
+  openExistedReport,
 }) => {
   return (
     <div>
@@ -17,7 +18,11 @@ export const ReportsList: FC<ReportsListProps> = ({
       )}
       {!isLoading &&
         reportsList?.map((report) => (
-          <ReportListItem key={report.id} report={report} />
+          <ReportListItem
+            openExistedReport={openExistedReport}
+            key={report.id}
+            report={report}
+          />
         ))}
     </div>
   );

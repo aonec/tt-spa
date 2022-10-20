@@ -1,23 +1,25 @@
-import { EffectFailDataAxiosError } from './../../../../types/index';
 import axios from 'axios';
-import { combine, createDomain, forward, guard, sample } from 'effector';
-import { createForm } from 'effector-forms/dist';
 import moment from 'moment';
+import { message } from 'antd';
+import queryString from 'query-string';
+import { combine, createDomain, forward, sample } from 'effector';
 import { EResourceType } from 'myApi';
+import { createForm } from 'effector-forms/dist';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
-import { message } from 'antd';
-import queryString from 'query-string';
 import { ZippedReports } from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
+import { EffectFailDataAxiosError } from './../../../../types/index';
 
 const createReportDomain = createDomain('CreateReport');
 
-const $isModalOpen = createReportDomain.createStore(false);
-
 const openModalButtonClicked = createReportDomain.createEvent();
 const closeModalButonClicked = createReportDomain.createEvent();
+
+const $isModalOpen = createReportDomain
+  .createStore(false)
+  .on(reportsListService.inputs.openExistedReport, () => true);
 
 export const form = createForm({
   fields: {
@@ -40,6 +42,11 @@ export const form = createForm({
       init: [] as EResourceType[],
     },
   },
+});
+
+forward({
+  from: reportsListService.inputs.openExistedReport,
+  to: form.setForm,
 });
 
 const createReportFx = createReportDomain.createEffect<
@@ -143,4 +150,9 @@ export const outputs = {
 export const inputs = {
   openModalButtonClicked,
   closeModalButonClicked,
+};
+
+export const createReportService = {
+  inputs,
+  outputs,
 };

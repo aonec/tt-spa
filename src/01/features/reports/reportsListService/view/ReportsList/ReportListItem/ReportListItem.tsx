@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   ContextMenuWrapper,
   ReportDate,
@@ -9,7 +9,26 @@ import { ReportListItemProps } from './ReportListItem.types';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import moment from 'moment';
 
-export const ReportListItem: FC<ReportListItemProps> = ({ report }) => {
+export const ReportListItem: FC<ReportListItemProps> = ({
+  report,
+  openExistedReport,
+}) => {
+  const parameters = useMemo(() => {
+    const lowerCaseParameters = Object.entries(report.parameters).reduce(
+      (acc, [key, value]) => {
+        const lowerCaseKey = key.charAt(0).toLowerCase() + key.slice(1);
+
+        return { ...acc, [lowerCaseKey]: value };
+      },
+      {}
+    );
+
+    return {
+      ...lowerCaseParameters,
+      type: report.reportName,
+    };
+  }, [report]);
+
   return (
     <Wrapper>
       <ReportName>{report.reportNameText}</ReportName>
@@ -20,7 +39,10 @@ export const ReportListItem: FC<ReportListItemProps> = ({ report }) => {
           menuButtons={[
             {
               title: 'Открыть отчет',
-              onClick: () => {},
+              onClick: () => {
+                console.log(parameters);
+                openExistedReport(parameters);
+              },
             },
           ]}
         />
