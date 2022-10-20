@@ -15,6 +15,7 @@ import { ApartmentItemProps } from './ApartmentItem.types';
 export const ApartmentItem: FC<ApartmentItemProps> = ({
   apartment,
   hosuingStockId,
+  setCurrentApartmentId,
 }) => {
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
 
@@ -24,7 +25,11 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({
   );
 
   return (
-    <Wrapper to={`/objects/${hosuingStockId}/apartments/${apartment.id}`}>
+    <Wrapper
+      id={`apartment-list-item-${apartment.id}`}
+      to={`/objects/${hosuingStockId}/apartments/${apartment.id}`}
+      onClick={() => setCurrentApartmentId(apartment.id)}
+    >
       <ApartmentNumberWrapper>
         №{apartment.apartmentNumber}
         {isTasksOnApartmentExist && (

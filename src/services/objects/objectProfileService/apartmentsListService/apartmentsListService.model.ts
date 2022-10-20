@@ -13,6 +13,15 @@ const fetchApartmentsList = domain.createEffect<
 
 const ApartmentsListGate = createGate<{ housingStockId: number }>();
 
+const setCurrentApartmentId = domain.createEvent<number>();
+
+const clearCurrentApartmentId = domain.createEvent();
+
+const $currentApartmentId = domain
+  .createStore<number | null>(null)
+  .on(setCurrentApartmentId, (_, id) => id)
+  .reset(clearCurrentApartmentId);
+
 const $apartmentsPagedList = domain
   .createStore<ApartmentListResponsePagedList | null>(null)
   .on(fetchApartmentsList.doneData, (_, data) => data);
@@ -48,9 +57,12 @@ export const apartmentsListService = {
     $apartmentsPagedList,
     $isLoading,
     $currentSegment,
+    $currentApartmentId,
   },
   inputs: {
     setCurrentSegment,
+    setCurrentApartmentId,
+    clearCurrentApartmentId,
   },
   gates: { ApartmentsListGate, setCurrentSegment },
 };
