@@ -163,16 +163,6 @@ export const ObjectProfile = () => {
 
             <Route path="/objects/:id/apartments" exact>
               <ApartmentsListContainer />
-              {/* <Apartments
-                path="/objects/(\\d+)/apartments"
-                onClick={(id) =>
-                  push(`/objects/${housingStockId}/apartments/${id}`)
-                }
-                apartmentId={apartmentId}
-                setApartmentId={setApartmentId}
-                loading={isApartmentsLoading}
-                items={apartments}
-              /> */}
             </Route>
 
             <Route path="/objects/:id/devices" exact>
