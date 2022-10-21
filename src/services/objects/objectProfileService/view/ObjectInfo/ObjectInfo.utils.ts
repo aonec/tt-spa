@@ -1,7 +1,10 @@
 import moment from 'moment';
 import { HousingStockResponse } from 'myApi';
+import { ObjectInfoRowField } from './ObjectInfo.constants';
 
-export const getObjectInfoFields = (object: HousingStockResponse) => {
+export const getObjectInfoFields = (
+  object: HousingStockResponse
+): { [key in ObjectInfoRowField]: string | number | null } => {
   const {
     address,
     houseType,
@@ -18,6 +21,7 @@ export const getObjectInfoFields = (object: HousingStockResponse) => {
 
   const city = address?.mainAddress?.city || null;
   const constructionYear = moment(constructionDate).format('YYYY');
+  const isThereElevatorText = isThereElevator ? 'Есть' : 'Нет';
 
   return {
     city,
@@ -25,7 +29,7 @@ export const getObjectInfoFields = (object: HousingStockResponse) => {
     index,
     numberOfEntrances,
     numberOfFloors,
-    isThereElevator,
+    isThereElevator: isThereElevatorText,
     numberOfApartments,
     totalLivingArea,
     areaOfNonResidential,
@@ -33,17 +37,3 @@ export const getObjectInfoFields = (object: HousingStockResponse) => {
     constructionYear,
   };
 };
-
-export enum ObjectInfoRowTitle {
-  city = 'Город',
-  houseType = 'Тип дома',
-  index = 'Индекс',
-  numberOfEntrances = 'Количество подъездов',
-  numberOfFloors = 'Количество этажей',
-  isThereElevator = 'Наличие лифта',
-  numberOfApartments = 'Количество квартир',
-  totalLivingArea = 'Общая площадь жилых помещений',
-  areaOfNonResidential = 'Площадь нежилых помещений',
-  totalArea = 'Общая площадь',
-  constructionYear = 'Год постройки',
-}

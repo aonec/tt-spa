@@ -44,6 +44,7 @@ const $currentGrouptype = domain
 const $isLoading = getHousingStockFx.pending;
 
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
+const ObjectGroupIsOpen = createGate();
 
 forward({
   from: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
@@ -51,7 +52,7 @@ forward({
 });
 
 forward({
-  from: ObjectProfileIdGate.close,
+  from: ObjectGroupIsOpen.close,
   to: resetGrouptype,
 });
 
@@ -64,5 +65,8 @@ export const objectProfileService = {
     $isLoading,
     $currentGrouptype,
   },
-  gates: { ObjectProfileIdGate },
+  gates: {
+    ObjectProfileIdGate,
+    ObjectGroupIsOpen,
+  },
 };

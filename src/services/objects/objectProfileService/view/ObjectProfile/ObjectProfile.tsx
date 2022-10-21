@@ -6,7 +6,7 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { ApartmentsListContainer } from '../../apartmentsListService';
 import { ObjectProfileGrouptype } from '../../objectProfileService.constants';
 import { ObjectInfo } from '../ObjectInfo';
-import { CityWrappper, TabsSC, Wrapper } from './ObjectProfile.styled';
+import { CityWrappper, TabsSC } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
 const { TabPane } = TabsSC;
 
@@ -20,10 +20,11 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   const city = address?.mainAddress?.city || '';
 
   return (
-    <Wrapper>
+    <>
       <GoBack />
       <PageHeader title={`${addressString}`} />
       <CityWrappper>{city}</CityWrappper>
+
       <TabsSC
         onChange={(grouptype) =>
           setCurrentGrouptype(grouptype as ObjectProfileGrouptype)
@@ -31,7 +32,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
         activeKey={currentGrouptype}
       >
         <TabPane tab="Общая информация" key={ObjectProfileGrouptype.Common}>
-          <ObjectInfo housingStock={housingStock}/>
+          <ObjectInfo housingStock={housingStock} />
         </TabPane>
         <TabPane tab="Квартиры" key={ObjectProfileGrouptype.Apartments}>
           <ApartmentsListContainer />
@@ -43,6 +44,6 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
           <ResourceAccountingSystemsContainer />
         </TabPane>
       </TabsSC>
-    </Wrapper>
+    </>
   );
 };
