@@ -20,7 +20,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   const city = address?.mainAddress?.city || '';
 
   return (
-    <>
+    <div>
       <GoBack />
       <PageHeader title={`${addressString}`} />
       <CityWrappper>{city}</CityWrappper>
@@ -44,6 +44,6 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
           <ResourceAccountingSystemsContainer />
         </TabPane>
       </TabsSC>
-    </>
+    </div>
   );
 };
