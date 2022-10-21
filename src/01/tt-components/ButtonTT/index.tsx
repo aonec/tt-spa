@@ -7,7 +7,7 @@ interface Props {
   small?: boolean;
   transparent?: boolean;
   big?: boolean;
-  color: string;
+  color: 'blue' | 'blueshadow' | 'red' | 'white' | 'yellow';
   key: string;
   onClick: any;
   htmlType?: string;
@@ -62,7 +62,7 @@ export const ButtonTT = styled.button<Partial<Props>>`
       `) ||
     (color === 'blue' &&
       css`
-        background: var(--primary);
+        background: rgb(24, 158, 233);
         color: #ffffff;
       `) ||
     (color === 'blueshadow' &&
@@ -76,27 +76,10 @@ export const ButtonTT = styled.button<Partial<Props>>`
         background: transparent;
         color: #272f5a;
         border: 1px solid #dcdee4;
-      `)|| 
-      (color === "yellow" && css`
+      `) ||
+    (color === 'yellow' &&
+      css`
         background: #ffff68;
-      `)} ;
-
-  ${({ color }) =>
-    (color === 'red' &&
-      css`
-        background: #fc525b;
-        color: #ffffff;
-      `) ||
-    (color === 'blue' &&
-      css`
-        background: #189ee9;
-        color: #ffffff;
-      `) ||
-    (color === 'white' &&
-      css`
-        background: transparent;
-        color: #272f5a;
-        border: 1px solid #dcdee4;
       `)};
 
   &:active {

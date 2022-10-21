@@ -1,8 +1,6 @@
 import { createEvent, createStore } from 'effector';
-import { RequestNodeReadingsFunctionInterface } from '../../../../_api/node_readings_page';
+import { ArchivesDataModel } from 'myApi';
 
-export const setDataToStore = createEvent<RequestNodeReadingsFunctionInterface>();
+export const setDataToStore = createEvent<ArchivesDataModel>();
 
-export const $graphData = createStore<RequestNodeReadingsFunctionInterface>(
-  {} as RequestNodeReadingsFunctionInterface
-);
+export const $graphData = createStore<ArchivesDataModel | null>(null);
