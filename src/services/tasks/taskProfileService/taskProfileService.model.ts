@@ -189,8 +189,15 @@ guard({
       const taskType = task?.type;
       const validation =
         taskType &&
-        pushStagePayloadValidationsArray.find((elem) => elem.type === taskType)
-          ?.schema;
+        pushStagePayloadValidationsArray.find((elem) => {
+          const isTaskTypeIntersection = elem.taskType === taskType;
+
+          const isActionsIntersection =
+            elem.actionType &&
+            task?.currentStage?.actions?.includes(elem.actionType);
+
+          return isTaskTypeIntersection || isActionsIntersection;
+        })?.schema;
 
       try {
         validation?.validateSync(payload);
