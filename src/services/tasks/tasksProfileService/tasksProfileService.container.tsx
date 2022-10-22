@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { TaskGroupingFilter } from 'myApi';
@@ -43,9 +43,10 @@ export const TasksProfileContainer = () => {
   const closeExtendedSearch = useEvent(inputs.extendedSearchClosed);
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
   const clearFilters = useEvent(inputs.clearFilters);
-  const clearApartment = useEvent(inputs.clearApartment);
 
-  const { apartmentId, housingStockId } = queryString.parse(window.location.search);
+  const { apartmentId, housingStockId } = queryString.parse(
+    window.location.search
+  );
 
   const preparedApartmentId = Array.isArray(apartmentId)
     ? apartmentId[0]
@@ -55,16 +56,11 @@ export const TasksProfileContainer = () => {
     ? housingStockId[0]
     : housingStockId;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     closeExtendedSearch();
-    const isApartmentIdExist = Boolean(apartmentId);
-
-    if (isApartmentIdExist) {
-      lastGroupTypeRef.current = grouptype;
-
-      return;
+    if (!lastGroupTypeRef.current) {
+      changeGroupType(grouptype);
     }
-    clearApartment();
 
     if (lastGroupTypeRef.current === grouptype) {
       return;

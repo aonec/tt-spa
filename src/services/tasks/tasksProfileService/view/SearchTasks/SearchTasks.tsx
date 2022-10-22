@@ -13,7 +13,6 @@ import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { initialValues } from 'services/devices/сhangeODPUService/view/ChangeODPUPage/ChangeODPUForm/ChangeODPUForm.constants';
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
@@ -28,6 +27,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   perpetrators,
   streets,
   cities,
+  address,
 }) => {
   const {
     values,
@@ -56,10 +56,12 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         : cities?.length === 1
         ? cities[0]
         : currentFilter?.City,
-      Street: currentFilter?.Street,
-      HousingStockNumber: currentFilter?.HousingStockNumber,
-      Corpus: currentFilter?.Corpus,
-      ApartmentNumber: currentFilter?.ApartmentNumber,
+      Street: currentFilter?.Street || address.Street,
+      HousingStockNumber:
+        currentFilter?.HousingStockNumber || address.HousingStockNumber,
+      Corpus: currentFilter?.Corpus || address.Corpus,
+      ApartmentNumber:
+        currentFilter?.ApartmentNumber || address.ApartmentNumber,
       PageNumber: currentFilter?.PageNumber,
       PageSize: currentFilter?.PageSize,
       OrderBy: currentFilter?.OrderBy,
@@ -109,6 +111,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
 
     lastGroupTypeRef.current = currentFilter?.GroupType;
   }, [currentFilter?.GroupType, lastGroupTypeRef, clearInput]);
+
   const isArchived = currentFilter?.GroupType === 'Archived';
   return (
     <ExtendedSearch
@@ -140,7 +143,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         </>
       }
     >
-      <ExistingStreetsGate City={values.City}/>
+      <ExistingStreetsGate City={values.City} />
       <ExistingCitiesGate />
       <Wrapper>
         <InputSC

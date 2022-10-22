@@ -7,6 +7,7 @@ import {
 } from 'myApi';
 import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
+import { ObjectAddress } from '../TasksProfile/TasksProfile.types';
 
 export type SearchTasksProps = {
   onSubmit: (formFilter: GetTasksListRequestPayload) => void;
@@ -21,6 +22,7 @@ export type SearchTasksProps = {
   perpetrators: perpetratorItemsProps[] | null;
   streets: string[];
   cities: string[] | null;
+  address: ObjectAddress;
 };
 
 export const TasksFilterTypeDictionary = {};

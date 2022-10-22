@@ -1,8 +1,9 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
-  ESecuredIdentityRoleName, ETaskEngineeringElement,
+  ESecuredIdentityRoleName,
+  ETaskEngineeringElement,
   TaskGroupingFilter,
   TasksPagedList,
 } from 'myApi';
@@ -13,15 +14,10 @@ import {
   $perpetratorIdStore,
 } from '../taskTypesService/taskTypesService.model';
 import { getTasks } from './tasksProfileService.api';
-import {FiltersGatePayload, GetTasksListRequestPayload} from './tasksProfileService.types';
-import {getApartmentAddressObject} from "./tasksProfileService.utils";
-
-// const apartmentAddress = getApartmentAddressObject(apartment);
-// handleSearch({
-//   ...apartmentAddress,
-//   GroupType: grouptype,
-//   EngineeringElement: ETaskEngineeringElement.IndividualDevice,
-// });
+import {
+  FiltersGatePayload,
+  GetTasksListRequestPayload,
+} from './tasksProfileService.types';
 
 const domain = createDomain('tasksProfileService');
 
@@ -44,8 +40,6 @@ const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
-
-const clearApartment = domain.createEvent();
 
 const $isLoading = searchTasksFx.pending;
 
@@ -112,16 +106,20 @@ sample({
 });
 
 sample({
-  clock: FiltersGate.state,
+  clock: guard({
+    clock: FiltersGate.state,
+    filter: ({ apartmentId, housingStockId }) =>
+      Boolean(apartmentId) || Boolean(housingStockId),
+  }),
   fn: ({ apartmentId, housingStockId }) => {
     if (apartmentId) {
-      return { ApartmentId: Number(apartmentId) }
+      return { ApartmentId: Number(apartmentId) };
     }
 
-    return { HousingStockId: Number(housingStockId) }
+    return { HousingStockId: Number(housingStockId) };
   },
-  target: searchTasks
-})
+  target: searchTasks,
+});
 
 export const tasksProfileService = {
   inputs: {
@@ -132,7 +130,6 @@ export const tasksProfileService = {
     extendedSearchClosed,
     extendedSearchOpened,
     clearFilters,
-    clearApartment,
   },
   outputs: {
     $taskTypes,
