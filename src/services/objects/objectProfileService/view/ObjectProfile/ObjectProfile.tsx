@@ -8,6 +8,7 @@ import { ObjectProfileGrouptype } from '../../objectProfileService.constants';
 import { ObjectInfo } from '../ObjectInfo';
 import { CityWrappper, TabsSC } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
+import {RedirectToTasksContainer} from "./redirectToTasks";
 const { TabPane } = TabsSC;
 
 export const ObjectProfile: FC<ObjectProfileProps> = ({
@@ -33,15 +34,18 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
       >
         <TabPane tab="Общая информация" key={ObjectProfileGrouptype.Common}>
           <ObjectInfo housingStock={housingStock} />
+          <RedirectToTasksContainer />
         </TabPane>
         <TabPane tab="Квартиры" key={ObjectProfileGrouptype.Apartments}>
           <ApartmentsListContainer />
+          <RedirectToTasksContainer />
         </TabPane>
         <TabPane
           tab="Системы учета ресурсов"
           key={ObjectProfileGrouptype.Devices}
         >
           <ResourceAccountingSystemsContainer />
+          <RedirectToTasksContainer />
         </TabPane>
       </TabsSC>
     </div>

@@ -10,6 +10,7 @@ import {
   fetchResourceDisconnectionOnHousingStock,
 } from './objectProfileService.api';
 import { ObjectProfileGrouptype } from './objectProfileService.constants';
+import { tasksProfileService } from "../../tasks/tasksProfileService";
 
 const domain = createDomain('objectProfileService');
 
@@ -19,6 +20,18 @@ const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
 const $housingStock = domain
   .createStore<HousingStockResponse | null>(null)
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock);
+
+const $taskCount = $housingStock.map((housingStock) => {
+  return 5;
+})
+
+const $housingStockId = $housingStock.map((housingStock) => {
+  return housingStock?.id || null;
+})
+
+const $isAdministrator = tasksProfileService.outputs.$isAdministrator.map(
+  (isAdministrator) => isAdministrator
+);
 
 const $resourceDisconnections = domain.createStore<
   ResourceDisconnectingResponse[]
@@ -64,6 +77,9 @@ export const objectProfileService = {
     $housingStock,
     $isLoading,
     $currentGrouptype,
+    $taskCount,
+    $housingStockId,
+    $isAdministrator
   },
   gates: {
     ObjectProfileIdGate,

@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
-import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
+import { TaskGroupingFilter } from 'myApi';
 import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
-import {
-  getApartmentAddressObject,
-  prepareData,
-} from './tasksProfileService.utils';
+import { prepareData } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -33,7 +30,6 @@ export const TasksProfileContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
   const isSpectator = useStore(outputs.$isSpectator);
-  const apartment = useStore(outputs.$apartment);
   const streets = useStore(adresses.streets);
   const cities = useStore($existingCities);
 
@@ -49,10 +45,15 @@ export const TasksProfileContainer = () => {
   const clearFilters = useEvent(inputs.clearFilters);
   const clearApartment = useEvent(inputs.clearApartment);
 
-  const { apartmentId } = queryString.parse(window.location.search);
+  const { apartmentId, housingStockId } = queryString.parse(window.location.search);
+
   const preparedApartmentId = Array.isArray(apartmentId)
     ? apartmentId[0]
     : apartmentId;
+
+  const preparedHousingStockId = Array.isArray(housingStockId)
+    ? housingStockId[0]
+    : housingStockId;
 
   useEffect(() => {
     closeExtendedSearch();
@@ -79,17 +80,6 @@ export const TasksProfileContainer = () => {
     lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 
-  useEffect(() => {
-    if (apartment) {
-      const apartmentAddress = getApartmentAddressObject(apartment);
-      handleSearch({
-        ...apartmentAddress,
-        GroupType: grouptype,
-        EngineeringElement: ETaskEngineeringElement.IndividualDevice,
-      });
-    }
-  }, [apartment]);
-
   const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
     () => prepareData(pagedTasks?.items || [], grouptype),
@@ -98,8 +88,11 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      {preparedApartmentId && (
-        <ApartmentIdGate apartmentId={preparedApartmentId} />
+      {(preparedApartmentId || preparedHousingStockId) && (
+        <ApartmentIdGate
+          apartmentId={preparedApartmentId}
+          housingStockId={preparedHousingStockId}
+        />
       )}
       <TaskTypesGate />
       <ExistingCitiesGate />

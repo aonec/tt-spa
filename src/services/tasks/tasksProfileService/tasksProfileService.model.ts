@@ -2,7 +2,7 @@ import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
-  ESecuredIdentityRoleName,
+  ESecuredIdentityRoleName, ETaskEngineeringElement,
   TaskGroupingFilter,
   TasksPagedList,
 } from 'myApi';
@@ -12,12 +12,18 @@ import {
   $housingManagments,
   $perpetratorIdStore,
 } from '../taskTypesService/taskTypesService.model';
-import { fetchApartment, getTasks } from './tasksProfileService.api';
-import { GetTasksListRequestPayload } from './tasksProfileService.types';
+import { getTasks } from './tasksProfileService.api';
+import {FiltersGatePayload, GetTasksListRequestPayload} from './tasksProfileService.types';
+import {getApartmentAddressObject} from "./tasksProfileService.utils";
+
+// const apartmentAddress = getApartmentAddressObject(apartment);
+// handleSearch({
+//   ...apartmentAddress,
+//   GroupType: grouptype,
+//   EngineeringElement: ETaskEngineeringElement.IndividualDevice,
+// });
 
 const domain = createDomain('tasksProfileService');
-
-const $apartment = domain.createStore<ApartmentResponse | null>(null);
 
 const $searchState = domain.createStore<GetTasksListRequestPayload>({});
 
@@ -40,13 +46,6 @@ const searchTasksFx = domain.createEffect<
 >(getTasks);
 
 const clearApartment = domain.createEvent();
-const getApartmentFx = domain.createEffect<string, ApartmentResponse>(
-  fetchApartment
-);
-
-$apartment
-  .on(getApartmentFx.doneData, (_, apartment) => apartment)
-  .reset(clearApartment);
 
 const $isLoading = searchTasksFx.pending;
 
@@ -73,7 +72,7 @@ const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
 });
 
 const TasksIsOpen = createGate();
-const ApartmentIdGate = createGate<{ apartmentId: string }>();
+const FiltersGate = createGate<FiltersGatePayload>();
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
@@ -112,10 +111,17 @@ sample({
   target: searchTasksFx,
 });
 
-forward({
-  from: ApartmentIdGate.state.map(({ apartmentId }) => apartmentId),
-  to: getApartmentFx,
-});
+sample({
+  clock: FiltersGate.state,
+  fn: ({ apartmentId, housingStockId }) => {
+    if (apartmentId) {
+      return { ApartmentId: Number(apartmentId) }
+    }
+
+    return { HousingStockId: Number(housingStockId) }
+  },
+  target: searchTasks
+})
 
 export const tasksProfileService = {
   inputs: {
@@ -138,10 +144,9 @@ export const tasksProfileService = {
     $perpetratorIdStore,
     $isSpectator,
     $isAdministrator,
-    $apartment,
   },
   gates: {
     TasksIsOpen,
-    ApartmentIdGate,
+    ApartmentIdGate: FiltersGate,
   },
 };

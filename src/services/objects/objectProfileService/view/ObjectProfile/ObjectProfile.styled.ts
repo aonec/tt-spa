@@ -18,6 +18,6 @@ export const TabsSC = styled(Tabs)`
   }
   .ant-tabs-tabpane {
     display: grid;
-    grid-template-columns: 800px 400px;
+    grid-template-columns: 800px 300px;
   }
 `;
