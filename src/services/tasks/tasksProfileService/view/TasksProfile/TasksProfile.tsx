@@ -1,13 +1,12 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
-import { ObjectAddress, TasksProfileProps } from './TasksProfile.types';
+import { TasksProfileProps } from './TasksProfile.types';
 import { TaskGroupingFilter } from 'myApi';
-import { getAddressObject } from '../../tasksProfileService.utils';
 const { TabPane } = TabsSC;
 
 export const TasksProfile: FC<TasksProfileProps> = ({
@@ -31,14 +30,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   cities,
   isSpectator,
 }) => {
-  const [address, setAddress] = useState<ObjectAddress>({
-    ApartmentNumber: '',
-    City: '',
-    Corpus: '',
-    HousingStockNumber: '',
-    Street: '',
-  });
-
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
     pagedTasks || {};
@@ -57,19 +48,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       history.push('/tasks/list/Observing');
     }
   });
-
-  useEffect(() => {
-    if (initialValues.ApartmentId || initialValues.HousingStockId) {
-      const relatedTaask = pagedTasks?.items?.[0];
-      const relatedTaskAddress = relatedTaask?.address || null;
-      let objectAddress = getAddressObject(relatedTaskAddress);
-      
-      if (initialValues.HousingStockId) {
-        objectAddress = { ...objectAddress, ApartmentNumber: '' };
-      }
-      setAddress(objectAddress);
-    }
-  }, [pagedTasks, initialValues]);
 
   return (
     <Wrapper>
@@ -94,7 +72,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
       </TabsSC>
       <SearchTasks
         onSubmit={handleSearch}
-        address={address}
         taskTypes={taskTypes}
         currentFilter={initialValues}
         isExtendedSearchOpen={isExtendedSearchOpen}

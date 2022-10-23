@@ -29,11 +29,3 @@ export type TasksProfileProps = {
   cities: string[] | null;
   isSpectator: boolean;
 };
-
-export type ObjectAddress = {
-  City: string;
-  Street: string;
-  Corpus: string;
-  HousingStockNumber: string;
-  ApartmentNumber: string;
-};

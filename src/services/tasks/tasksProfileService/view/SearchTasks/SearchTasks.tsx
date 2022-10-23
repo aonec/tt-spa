@@ -2,7 +2,11 @@ import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import {
+  EManagingFirmTaskFilterType,
+  ETaskEngineeringElement,
+  TaskGroupingFilter,
+} from 'myApi';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
@@ -27,7 +31,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   perpetrators,
   streets,
   cities,
-  address,
 }) => {
   const {
     values,
@@ -56,12 +59,10 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         : cities?.length === 1
         ? cities[0]
         : currentFilter?.City,
-      Street: currentFilter?.Street || address.Street,
-      HousingStockNumber:
-        currentFilter?.HousingStockNumber || address.HousingStockNumber,
-      Corpus: currentFilter?.Corpus || address.Corpus,
-      ApartmentNumber:
-        currentFilter?.ApartmentNumber || address.ApartmentNumber,
+      Street: currentFilter?.Street,
+      HousingStockNumber: currentFilter?.HousingStockNumber,
+      Corpus: currentFilter?.Corpus,
+      ApartmentNumber: currentFilter?.ApartmentNumber,
       PageNumber: currentFilter?.PageNumber,
       PageSize: currentFilter?.PageSize,
       OrderBy: currentFilter?.OrderBy,

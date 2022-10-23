@@ -1,9 +1,10 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
   ESecuredIdentityRoleName,
   ETaskEngineeringElement,
+  HousingStockResponse,
   TaskGroupingFilter,
   TasksPagedList,
 } from 'myApi';
@@ -13,13 +14,37 @@ import {
   $housingManagments,
   $perpetratorIdStore,
 } from '../taskTypesService/taskTypesService.model';
-import { getTasks } from './tasksProfileService.api';
+import {
+  fetchApartment,
+  fetchHousingStock,
+  getTasks,
+} from './tasksProfileService.api';
 import {
   FiltersGatePayload,
   GetTasksListRequestPayload,
 } from './tasksProfileService.types';
 
 const domain = createDomain('tasksProfileService');
+
+const clearAddress = domain.createEvent();
+
+const getApartmentFx = domain.createEffect<
+  { apartmentId: string },
+  ApartmentResponse
+>(fetchApartment);
+const $apartment = domain
+  .createStore<ApartmentResponse | null>(null)
+  .on(getApartmentFx.doneData, (_, apartment) => apartment)
+  .reset(clearAddress);
+
+const getHousingStockFx = domain.createEffect<
+  { housingStockId: string },
+  HousingStockResponse
+>(fetchHousingStock);
+const $housingStock = domain
+  .createStore<HousingStockResponse | null>(null)
+  .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
+  .reset(clearAddress);
 
 const $searchState = domain.createStore<GetTasksListRequestPayload>({});
 
@@ -105,20 +130,20 @@ sample({
   target: searchTasksFx,
 });
 
-sample({
-  clock: guard({
+split({
+  source: guard({
     clock: FiltersGate.state,
     filter: ({ apartmentId, housingStockId }) =>
       Boolean(apartmentId) || Boolean(housingStockId),
   }),
-  fn: ({ apartmentId, housingStockId }) => {
-    if (apartmentId) {
-      return { ApartmentId: Number(apartmentId) };
-    }
-
-    return { HousingStockId: Number(housingStockId) };
+  match: {
+    housingStock: (ids) => Boolean(ids.housingStockId),
+    apartmentId: (ids) => Boolean(ids.apartmentId),
   },
-  target: searchTasks,
+  cases: {
+    apartmentId: getApartmentFx,
+    housingStock: getHousingStockFx,
+  },
 });
 
 export const tasksProfileService = {
@@ -130,6 +155,7 @@ export const tasksProfileService = {
     extendedSearchClosed,
     extendedSearchOpened,
     clearFilters,
+    clearAddress,
   },
   outputs: {
     $taskTypes,
@@ -141,6 +167,8 @@ export const tasksProfileService = {
     $perpetratorIdStore,
     $isSpectator,
     $isAdministrator,
+    $apartment,
+    $housingStock,
   },
   gates: {
     TasksIsOpen,

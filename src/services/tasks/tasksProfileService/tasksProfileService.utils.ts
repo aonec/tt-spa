@@ -4,26 +4,28 @@ import {
   EStageTimeStatus,
   ETaskClosingStatus,
   FullAddressResponse,
+  HousingStockListResponse,
+  HousingStockResponse,
   TaskListResponse,
   TaskResponse,
 } from 'myApi';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
-export const getAddressObject = (object: FullAddressResponse | null) => {
-  const City = object?.city || '';
-  const Street = object?.street || '';
-  const Corpus = object?.corpus || '';
-  const HousingStockNumber = object?.housingStockNumber || '';
-
-  const ApartmentNumber = object?.apartmentNumber || '';
+export const getAddressObject = (
+  object: HousingStockListResponse | HousingStockResponse | null
+) => {
+  const address = object?.address?.mainAddress;
+  const City = address?.city || '';
+  const Street = address?.street || '';
+  const Corpus = address?.corpus || '';
+  const HousingStockNumber = address?.number || '';
 
   return {
     City,
     Street,
     Corpus,
     HousingStockNumber,
-    ApartmentNumber,
   };
 };
 
