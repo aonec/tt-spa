@@ -17,7 +17,7 @@ export const RedirectToTasksContainer = () => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper >
       <TasksCard
         id={String(housingStockId)}
         tasksNumber={tasksCount}

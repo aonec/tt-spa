@@ -7,7 +7,7 @@ export const TasksCard: FC<TasksCardProps> = ({
   id,
   tasksNumber,
   isAdministrator,
-  type
+  type,
 }) => {
   const isTasksExist = Boolean(tasksNumber);
 
@@ -15,18 +15,14 @@ export const TasksCard: FC<TasksCardProps> = ({
     ? TaskGroupingFilter.Observing
     : TaskGroupingFilter.Executing;
 
-  const queryId = type === 'apartment'
-    ? `apartmentId=${id}`
-    : `housingStockId=${id}`;
+  const queryId =
+    type === 'apartment' ? `apartmentId=${id}` : `housingStockId=${id}`;
 
   return (
     <Wrapper>
       <TasksNumberWrapper>Задачи: {tasksNumber}</TasksNumberWrapper>
       {isTasksExist && (
-        <MoreWrapper
-          to={`/tasks/list/${groupType}?${queryId}`}
-          target="_blank"
-        >
+        <MoreWrapper to={`/tasks/list/${groupType}?${queryId}`} target="_blank">
           {'Перейти >'}
         </MoreWrapper>
       )}

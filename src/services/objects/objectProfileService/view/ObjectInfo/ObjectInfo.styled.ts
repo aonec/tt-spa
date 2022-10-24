@@ -9,6 +9,8 @@ export const RowWrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   align-items: center;
   height: 48px;
+  min-width: 650px;
+  padding-left: 15px;
 
   color: #272f5ae5;
   font-size: 14px;
