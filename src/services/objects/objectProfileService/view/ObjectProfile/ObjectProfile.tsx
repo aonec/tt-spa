@@ -6,9 +6,9 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { ApartmentsListContainer } from '../../apartmentsListService';
 import { ObjectProfileGrouptype } from '../../objectProfileService.constants';
 import { ObjectInfo } from '../ObjectInfo';
-import { CityWrappper, TabsSC } from './ObjectProfile.styled';
+import { CityWrappper, TabsSC, TitleWrapper } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
-import {RedirectToTasksContainer} from "./redirectToTasks";
+import { RedirectToTasksContainer } from './redirectToTasks';
 const { TabPane } = TabsSC;
 
 export const ObjectProfile: FC<ObjectProfileProps> = ({
@@ -23,7 +23,9 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   return (
     <div>
       <GoBack />
-      <PageHeader title={`${addressString}`} />
+      <TitleWrapper>
+        <PageHeader title={`${addressString}`} />
+      </TitleWrapper>
       <CityWrappper>{city}</CityWrappper>
 
       <TabsSC

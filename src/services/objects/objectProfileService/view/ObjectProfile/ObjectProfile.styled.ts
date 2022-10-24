@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const CityWrappper = styled.div`
   font-size: 14px;
   color: #272f5ae5;
+  min-height: 16px;
 `;
 
 export const TabsSC = styled(Tabs)`
@@ -20,4 +21,9 @@ export const TabsSC = styled(Tabs)`
     display: grid;
     grid-template-columns: 800px 300px;
   }
+`;
+
+export const TitleWrapper = styled.div`
+  min-height: 48px;
+  margin-top: 16px;
 `;
