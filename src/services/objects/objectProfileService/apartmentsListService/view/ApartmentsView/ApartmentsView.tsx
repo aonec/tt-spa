@@ -26,12 +26,12 @@ export const ApartmentsView: FC<ApartmentsViewProps> = ({
           active={currentSegment}
           items={[
             {
-              name: 'list',
-              icon: <ListIcon />,
-            },
-            {
               name: 'cells',
               icon: <CellsIcon />,
+            },
+            {
+              name: 'list',
+              icon: <ListIcon />,
             },
           ]}
           onChange={setCurrentSegment}

@@ -29,7 +29,7 @@ const $apartmentsPagedList = domain
 const setCurrentSegment = domain.createEvent<SegmentType>();
 
 const $currentSegment = domain
-  .createStore<SegmentType>('list')
+  .createStore<SegmentType>('cells')
   .on(setCurrentSegment, (_, segment) => segment);
 
 sample({
