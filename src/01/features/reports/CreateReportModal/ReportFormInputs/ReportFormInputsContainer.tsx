@@ -14,7 +14,7 @@ export const ReportFormInputsContainer = () => {
       type: { value: type },
       period: { value: period, onChange: changePeriod },
       rangePeriod: { value: rangePeriod, onChange: changeRangePeriod },
-      resources: { onChange: handleChangeResources },
+      resources: { value: resources, onChange: handleChangeResources },
     },
   } = useForm(form);
 
@@ -48,9 +48,12 @@ export const ReportFormInputsContainer = () => {
         reportTypes: [ReportType.CheckingDatesReport],
         element: (
           <>
-            <ResourceSelect onChange={handleChangeResources} />
+            <ResourceSelect
+              resources={resources}
+              onChange={handleChangeResources}
+            />
             <RangeDatePicker
-              label='Период выхода поверки'
+              label="Период выхода поверки"
               rangePeriod={rangePeriod}
               onChange={changeRangePeriod}
             />
