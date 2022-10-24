@@ -22,7 +22,6 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.Archive]: <ArchiveIcon />,
     [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
-    [EIndividualDeviceReadingsSource.Sputnik]: null,
     [EIndividualDeviceReadingsSource.Duplicated]: <ArchiveIcon />,
     [EIndividualDeviceReadingsSource.Erc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.Ttm]: <UserIcon />,
@@ -41,7 +40,6 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.Archive]: 'Архив',
     [EIndividualDeviceReadingsSource.Bank]: 'Банк',
     [EIndividualDeviceReadingsSource.GosUslugi]: 'Госуслуги',
-    [EIndividualDeviceReadingsSource.Sputnik]: 'Спутник',
     [EIndividualDeviceReadingsSource.Duplicated]: 'Архив (Повторные показания)',
     [EIndividualDeviceReadingsSource.Erc]: 'ЕРЦ',
     [EIndividualDeviceReadingsSource.Ttm]: userName || 'TTM',
@@ -49,6 +47,8 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.TelegramBot]: 'Показания из телеграм-бота',
     [EIndividualDeviceReadingsSource.DeviceTelemetry]:
       'Автоматические показания с счетчика',
+    [EIndividualDeviceReadingsSource.Duplicated]: 'Продублированные показания',
+    [EIndividualDeviceReadingsSource.Sputnik]: 'Показания из "Спутник"',
   }[source];
 
   return name;
