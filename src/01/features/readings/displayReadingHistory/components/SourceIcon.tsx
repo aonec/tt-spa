@@ -22,7 +22,6 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.Archive]: <ArchiveIcon />,
     [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
-    [EIndividualDeviceReadingsSource.Duplicated]: <ArchiveIcon />,
     [EIndividualDeviceReadingsSource.Erc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.Ttm]: <UserIcon />,
     [EIndividualDeviceReadingsSource.TtmFromErc]: <ErcIcon />,
