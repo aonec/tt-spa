@@ -243,13 +243,14 @@ export interface ApartmentListResponse {
   /** @format int32 */
   homeownersCount: number | null;
   personalAccountNumber: string | null;
-  status: string | null;
-
-  /** @format float */
-  square: number | null;
+  status: EApartmentStatus;
+  tasksState: ETasksState;
 
   /** @format int32 */
   numberOfTasks: number;
+
+  /** @format float */
+  square: number | null;
   comment: string | null;
   housingStock: HousingStockListResponse | null;
 }
@@ -352,6 +353,7 @@ export interface ApartmentStatusSetRequest {
 
 export interface ArchivesDataGroup {
   header?: string | null;
+  measure?: string | null;
   data?: ArchivesDataGroupValue[] | null;
 }
 
@@ -369,6 +371,12 @@ export interface ArchivesDataModel {
 
   /** @format int32 */
   systemPipeCount?: number;
+
+  /** @format double */
+  deltaMassAccuracy?: number | null;
+
+  /** @format double */
+  averageDeltaMass?: number | null;
   data?: ArchivesDataGroup[] | null;
 }
 
@@ -1531,6 +1539,14 @@ export enum EReportFormat {
   Rso = "Rso",
 }
 
+export enum EReportName {
+  OperatorsWorkingReport = "OperatorsWorkingReport",
+  InspectorsWorkingReport = "InspectorsWorkingReport",
+  CallCenterWorkingReport = "CallCenterWorkingReport",
+  HouseManagementsReport = "HouseManagementsReport",
+  CheckingDatesReport = "CheckingDatesReport",
+}
+
 export enum EReportType {
   None = "None",
   Hourly = "Hourly",
@@ -1725,6 +1741,12 @@ export enum ETaskTargetType {
   Housing = "Housing",
   Node = "Node",
   Application = "Application",
+}
+
+export enum ETasksState {
+  NoTasks = "NoTasks",
+  OnTime = "OnTime",
+  MissedDeadline = "MissedDeadline",
 }
 
 export enum EValueNodeWorkingRangeRelation {
@@ -4181,6 +4203,43 @@ export interface ReportHeader {
   group?: string | null;
 }
 
+export interface ReportRequestHistoryResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  userId: number;
+
+  /** @format date-time */
+  timeStamp: string;
+  reportName: EReportName;
+  reportNameText: string | null;
+  parameters: Record<string, string>;
+}
+
+export interface ReportRequestHistoryResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: ReportRequestHistoryResponse[] | null;
+}
+
 export interface ResourceDisconnectingCreateRequest {
   resource: EResourceType;
   sender: string;
@@ -6546,6 +6605,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<void, any>({
         path: `/api/DataMigrations/ImportHousingStockInfo`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportNumberOfLivingCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportNumberOfLiving
+     * @secure
+     */
+    dataMigrationsImportNumberOfLivingCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportNumberOfLiving`,
         method: "POST",
         body: data,
         secure: true,
@@ -10285,6 +10373,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Reports/DataForMLExport`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsReportRequestsHistoryList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/ReportRequestsHistory
+     * @secure
+     */
+    reportsReportRequestsHistoryList: (params: RequestParams = {}) =>
+      this.request<ReportRequestHistoryResponsePagedList, ErrorApiResponse>({
+        path: `/api/Reports/ReportRequestsHistory`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,

@@ -51,6 +51,16 @@ body {
   color: var(--main-100);
   font-size: 14px;
   line-height: 16px;
+
+  .ant-tooltip-inner {
+    color: white;
+    background-color: #272f5a;
+    border-radius: 4px;
+
+    path {
+      fill: #272f5a;
+    }
+  }
 }
 
 *,
@@ -188,6 +198,6 @@ sup {
 .ant-pagination-item-link,
 .ant-pagination-options-quick-jumper input {
   border: 0 !important;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 6px 10px #00000033 !important;
   border-radius: 6px !important;
 }

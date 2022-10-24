@@ -1,8 +1,6 @@
 import {
-  $currentPersonalNumberIndex,
   fetchHomeownerFx,
   HomeownerGate,
-  setCurrentPersonalNumberIndex,
 } from './index';
 import { $homeowner } from '.';
 import { sample } from 'effector';
@@ -17,8 +15,3 @@ sample({
   clock: [HomeownerGate.state, HomeownerGate.open],
   target: fetchHomeownerFx,
 });
-
-$currentPersonalNumberIndex.on(
-  setCurrentPersonalNumberIndex,
-  (_, value) => value
-);

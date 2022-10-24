@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type SegmentItem<T> = {
-  title: string;
+  title?: string;
   name: T;
   icon: ReactElement;
 };

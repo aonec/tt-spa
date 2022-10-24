@@ -18,6 +18,7 @@ import { SetNextStageDeadlineContainer } from './SetNextStageDeadlineService';
 import { CloseDevicesContainer } from './CloseDeviceService';
 import { CommentContainer } from './commentService';
 import { AttachDocumentContainer } from './attachDocumentService';
+import { SwitchDeviceContainer } from './switchDeviceService';
 
 export const taskActionsComponents: TaskActionsComponent[] = [
   {
@@ -86,6 +87,11 @@ export const taskActionsComponents: TaskActionsComponent[] = [
   {
     actionType: EStageActionType.AddComment,
     Component: CommentContainer,
+    position: TaskPanelInputPositionType.Full,
+  },
+  {
+    actionType: EStageActionType.SwitchDevices,
+    Component: SwitchDeviceContainer,
     position: TaskPanelInputPositionType.Full,
   },
 ];

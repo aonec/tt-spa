@@ -41,10 +41,11 @@ interface AlertWrapProps {
 }
 
 export const AlertWrap = styled(Flex)`
-  background: ${({ color }: AlertWrapProps) => `#${color || '189ee9'}16`};
+  background: ${({ color }: AlertWrapProps) => `#${color || '189ee9'}35`};
   border-left: 2px solid
     ${({ color }: AlertWrapProps) => `#${color || '189ee9'}`};
   padding: 10px 18px;
+  color: #272f5a;
 `;
 
 const Wide = styled.div`
