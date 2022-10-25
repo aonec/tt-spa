@@ -1,5 +1,6 @@
 export type TasksCardProps = {
-  apartmentId: string;
+  id: string;
   tasksNumber: number;
   isAdministrator: boolean;
+  type: 'apartment' | 'housingStock'
 };

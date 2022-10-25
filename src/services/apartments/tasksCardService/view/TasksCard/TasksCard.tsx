@@ -4,23 +4,25 @@ import { MoreWrapper, TasksNumberWrapper, Wrapper } from './TasksCard.styled';
 import { TasksCardProps } from './TasksCard.types';
 
 export const TasksCard: FC<TasksCardProps> = ({
-  apartmentId,
+  id,
   tasksNumber,
   isAdministrator,
+  type,
 }) => {
   const isTasksExist = Boolean(tasksNumber);
-  const grouptype = isAdministrator
+
+  const groupType = isAdministrator
     ? TaskGroupingFilter.Observing
     : TaskGroupingFilter.Executing;
+
+  const queryId =
+    type === 'apartment' ? `apartmentId=${id}` : `housingStockId=${id}`;
 
   return (
     <Wrapper>
       <TasksNumberWrapper>Задачи: {tasksNumber}</TasksNumberWrapper>
       {isTasksExist && (
-        <MoreWrapper
-          to={`/tasks/list/${grouptype}?apartmentId=${apartmentId}`}
-          target="_blank"
-        >
+        <MoreWrapper to={`/tasks/list/${groupType}?${queryId}`} target="_blank">
           {'Перейти >'}
         </MoreWrapper>
       )}

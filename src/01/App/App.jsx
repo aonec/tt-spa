@@ -13,8 +13,6 @@ import ruRu from 'antd/es/locale/ru_RU';
 import { YMaps } from 'react-yandex-maps';
 import {
   Login,
-  TaskProfile,
-  ObjectProfile,
   MetersPage,
   ApartmentProfile,
   ErrorPage,
@@ -58,6 +56,10 @@ import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { useStore } from 'effector-react';
 import { TaskProfileContainer } from 'services/tasks/taskProfileService';
+import {
+  ObjectProfileContainer,
+  objectProfileService,
+} from 'services/objects/objectProfileService';
 
 moment.locale('ru');
 
@@ -70,6 +72,7 @@ const Internal = () => {
     : '/tasks/list/Executing';
 
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
+  const ObjectIsOpen = objectProfileService.gates.ObjectGroupIsOpen;
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -110,10 +113,30 @@ const Internal = () => {
                   component={TaskProfileContainer}
                   exact
                 />
-                
+
                 <Route
                   path="/tasks/list/:grouptype"
                   component={TasksProfileContainer}
+                  exact
+                />
+              </Route>
+
+              <Route
+                path="/objects/:searchType?"
+                component={ObjectsProfileContainer}
+                exact
+              />
+
+              <Route path="/objects">
+                <ObjectIsOpen />
+                <Route
+                  path="/objects/profile/:housingStockId"
+                  component={ObjectProfileContainer}
+                  exact
+                />
+                <Route
+                  path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|actsJournal)?"
+                  component={ApartmentProfile}
                   exact
                 />
               </Route>
@@ -133,18 +156,6 @@ const Internal = () => {
               <Route
                 path="/electricNode/:deviceId/edit"
                 component={EditElectricNodeContainer}
-              />
-
-              <Route
-                path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
-                component={ObjectProfile}
-                exact
-              />
-
-              <Route
-                path="/objects/:searchType?"
-                component={ObjectsProfileContainer}
-                exact
               />
 
               <Route path="/devices/" component={DevicesFromSearch} exact />
@@ -213,11 +224,6 @@ const Internal = () => {
                 exact
               />
 
-              <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|actsJournal)?"
-                component={ApartmentProfile}
-                exact
-              />
               <Route
                 path="/individualDevices/:deviceId"
                 component={IndividualDevice}

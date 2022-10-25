@@ -2709,6 +2709,9 @@ export interface HousingStockResponse {
   /** @format int32 */
   inspectedDay: number | null;
   address: HousingStockAddressResponse | null;
+
+  /** @format int32 */
+  numberOfTasks: number;
 }
 
 export interface HousingStockResponseSuccessApiResponse {
