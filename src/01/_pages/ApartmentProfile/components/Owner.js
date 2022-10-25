@@ -317,10 +317,6 @@ const Owner = (props) => {
           )}
         </ListItemValue>
       </ListItem>
-
-      <Button style={{ marginTop: '16px' }}>
-        Перейти в профиль собственника
-      </Button>
     </>
   );
 };
