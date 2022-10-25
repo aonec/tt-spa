@@ -13,8 +13,6 @@ interface Props {
 export const PeriodDatePicker: FC<Props> = ({ date, onChange, format }) => {
   const handleChange = useCallback(
     (value: moment.Moment | null) => {
-      console.log(value);
-
       value && onChange(value);
     },
     [onChange]
