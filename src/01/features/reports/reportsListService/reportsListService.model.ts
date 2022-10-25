@@ -1,7 +1,6 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { ReportRequestHistoryResponsePagedList } from 'myApi';
-import { createReportService } from '../CreateReportModal/models';
 import { getReportsHistoryList } from './reportsListService.api';
 
 const domain = createDomain('reportsListService');
@@ -10,6 +9,8 @@ const fetchReportsHistoryList = domain.createEffect<
   void,
   ReportRequestHistoryResponsePagedList
 >(getReportsHistoryList);
+
+const setPageNumber = domain.createEvent<number>();
 
 const ReportsHistoryGate = createGate();
 
@@ -22,9 +23,19 @@ const $reportsHistoryPagedData = domain
   .on(fetchReportsHistoryList.doneData, (_, data) => data)
   .reset(ReportsHistoryGate.close);
 
-forward({
-  from: [ReportsHistoryGate.open, refetchReportsHistory],
-  to: fetchReportsHistoryList,
+const $pageNumber = domain
+  .createStore<number>(1)
+  .on(setPageNumber, (_, pageNumber) => pageNumber);
+
+sample({
+  source: $pageNumber,
+  clock: [ReportsHistoryGate.open, refetchReportsHistory],
+  fn: (pageNumber) => {
+    return {
+      
+    }
+  },
+  target: fetchReportsHistoryList,
 });
 
 const $isLoading = fetchReportsHistoryList.pending;
@@ -33,10 +44,12 @@ export const reportsListService = {
   inputs: {
     refetchReportsHistory,
     openExistedReport,
+    setPageNumber,
   },
   outputs: {
     $reportsHistoryPagedData,
     $isLoading,
+    $pageNumber,
   },
   gates: { ReportsHistoryGate },
 };

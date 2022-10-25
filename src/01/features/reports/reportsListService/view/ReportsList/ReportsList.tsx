@@ -1,7 +1,12 @@
 import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
+import { EyeIcon } from 'ui-kit/icons';
 import { ReportListItem } from './ReportListItem';
-import { Header } from './ReportsList.styled';
+import {
+  Header,
+  ShowArchivedReportsTextWrapper,
+  ShowArchivedReportsWrapper,
+} from './ReportsList.styled';
 import { ReportsListProps } from './ReportsList.types';
 
 export const ReportsList: FC<ReportsListProps> = ({
@@ -24,6 +29,12 @@ export const ReportsList: FC<ReportsListProps> = ({
             report={report}
           />
         ))}
+      <ShowArchivedReportsWrapper>
+        <EyeIcon />
+        <ShowArchivedReportsTextWrapper>
+          Показать архивные отчеты (56)
+        </ShowArchivedReportsTextWrapper>
+      </ShowArchivedReportsWrapper>
     </div>
   );
 };
