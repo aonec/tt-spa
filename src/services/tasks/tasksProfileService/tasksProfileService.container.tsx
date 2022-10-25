@@ -1,14 +1,11 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
 import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
-import {
-  getApartmentAddressObject,
-  prepareData,
-} from './tasksProfileService.utils';
+import { getAddressObject, prepareData } from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -34,6 +31,7 @@ export const TasksProfileContainer = () => {
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
   const isSpectator = useStore(outputs.$isSpectator);
   const apartment = useStore(outputs.$apartment);
+  const housingStock = useStore(outputs.$housingStock);
   const streets = useStore(adresses.streets);
   const cities = useStore($existingCities);
 
@@ -47,23 +45,35 @@ export const TasksProfileContainer = () => {
   const closeExtendedSearch = useEvent(inputs.extendedSearchClosed);
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
   const clearFilters = useEvent(inputs.clearFilters);
-  const clearApartment = useEvent(inputs.clearApartment);
+  const clearAddress = useEvent(inputs.clearAddress);
 
-  const { apartmentId } = queryString.parse(window.location.search);
+  const { apartmentId, housingStockId } = queryString.parse(
+    window.location.search
+  );
+
   const preparedApartmentId = Array.isArray(apartmentId)
     ? apartmentId[0]
     : apartmentId;
 
+  const preparedHousingStockId = Array.isArray(housingStockId)
+    ? housingStockId[0]
+    : housingStockId;
+
   useEffect(() => {
     closeExtendedSearch();
-    const isApartmentIdExist = Boolean(apartmentId);
 
-    if (isApartmentIdExist) {
+    const isApartmentIdExist = Boolean(apartmentId);
+    const isHousingStockIdExist = Boolean(housingStockId);
+    if (isApartmentIdExist || isHousingStockIdExist) {
       lastGroupTypeRef.current = grouptype;
 
       return;
     }
-    clearApartment();
+    clearAddress();
+
+    if (!lastGroupTypeRef.current) {
+      changeGroupType(grouptype);
+    }
 
     if (lastGroupTypeRef.current === grouptype) {
       return;
@@ -79,27 +89,39 @@ export const TasksProfileContainer = () => {
     lastGroupTypeRef.current = grouptype;
   }, [grouptype, lastGroupTypeRef]);
 
-  useEffect(() => {
-    if (apartment) {
-      const apartmentAddress = getApartmentAddressObject(apartment);
-      handleSearch({
-        ...apartmentAddress,
-        GroupType: grouptype,
-        EngineeringElement: ETaskEngineeringElement.IndividualDevice,
-      });
-    }
-  }, [apartment]);
-
   const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
     () => prepareData(pagedTasks?.items || [], grouptype),
     [pagedTasks?.items]
   );
 
+  useEffect(() => {
+    if (apartment) {
+      const apartmentAddress = getAddressObject(apartment.housingStock);
+      handleSearch({
+        ...apartmentAddress,
+        ApartmentNumber: apartment.apartmentNumber || '',
+        GroupType: grouptype,
+        EngineeringElement: ETaskEngineeringElement.IndividualDevice,
+      });
+      return;
+    }
+    if (housingStock) {
+      const apartmentAddress = getAddressObject(housingStock);
+      handleSearch({
+        ...apartmentAddress,
+        GroupType: grouptype,
+      });
+    }
+  }, [apartment, housingStock]);
+
   return (
     <>
-      {preparedApartmentId && (
-        <ApartmentIdGate apartmentId={preparedApartmentId} />
+      {(preparedApartmentId || preparedHousingStockId) && (
+        <ApartmentIdGate
+          apartmentId={preparedApartmentId}
+          housingStockId={preparedHousingStockId}
+        />
       )}
       <TaskTypesGate />
       <ExistingCitiesGate />

@@ -22,7 +22,8 @@ export const PageHeader: FC<Props> = ({ title, contextMenu }) => {
 };
 
 const PageHeaderStyled = styled.div`
-  margin: 5px 0;
   display: flex;
+  align-items: center;
+  margin: 5px 0;
   justify-content: space-between;
 `;

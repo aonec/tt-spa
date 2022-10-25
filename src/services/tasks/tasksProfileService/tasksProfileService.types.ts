@@ -36,6 +36,11 @@ export type GetTasksListRequestPayload = {
   OrderBy?: EOrderByRule;
 };
 
+export type FiltersGatePayload = {
+  apartmentId: string | null,
+  housingStockId: string | null
+}
+
 export const EngineeringElementLookUp: {
   [key in ETaskEngineeringElement]: string;
 } = {

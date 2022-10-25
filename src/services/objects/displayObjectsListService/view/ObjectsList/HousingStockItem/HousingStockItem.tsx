@@ -36,7 +36,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   }, [housingStock.numberOfTasks]);
 
   return (
-    <Wrapper to={`/objects/${housingStock.id}`}>
+    <Wrapper to={`/objects/profile/${housingStock.id}`}>
       <div>
         <Address>
           {address}

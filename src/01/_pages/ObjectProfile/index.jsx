@@ -1,32 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'reshadow/macro';
-import { Route, useParams, useHistory, Link } from 'react-router-dom';
+import { Route, useParams, useHistory } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
-import { Apartments } from './components/Apartments';
-import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import { GoBack } from 'ui-kit/shared_components/GoBack/GoBack';
 import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
-import { Alert } from '01/shared/ui/Alert/Alert';
-import { AlertContent, AlertWrapper } from './objectProfileService.styled';
-import { objectProfileService } from './objectProfileService.model';
-import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
-import moment from 'moment';
-import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
-import { useEvent, useStore } from 'effector-react';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 import { ApartmentsListContainer } from 'services/objects/objectProfileService/apartmentsListService';
 
 export const ObjectContext = React.createContext();
-
-const { gates, outputs } = objectProfileService;
-const { ObjectProfileIdGate } = gates;
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -51,33 +39,6 @@ export const ObjectProfile = () => {
   const [nodes, setNodes] = useState();
   const [object, setObject] = useState();
   const [loading, setLoading] = useState(false);
-
-  const disconnections = useStore(outputs.$resourceDisconnections);
-
-  const disconnectionsAlert = useMemo(
-    () =>
-      disconnections.map((disconnection) => {
-        const resourceName = actResourceNamesLookup[disconnection.resource];
-        const entDate = moment(disconnection.endDate).format('DD.MM.YYYY');
-
-        const disconnectionType = disconnection.disconnectingType.description;
-
-        return (
-          <AlertWrapper>
-            <Alert type="stop" iconColor="#189ee9">
-              <AlertContent>
-                <div>
-                  На объекте отключение ресурса {resourceName}, тип:{' '}
-                  {disconnectionType}, до {entDate}
-                </div>
-                <InvisibleContextMenuButton />
-              </AlertContent>
-            </Alert>
-          </AlertWrapper>
-        );
-      }),
-    [disconnections]
-  );
 
   useEffect(() => {
     setLoading(true);
@@ -140,7 +101,6 @@ export const ObjectProfile = () => {
 
   return styled(grid)(
     <>
-      <ObjectProfileIdGate objectId={Number(housingStockId)} />
       <ObjectContext.Provider value={context}>
         <GoBack />
         <Header
@@ -154,7 +114,6 @@ export const ObjectProfile = () => {
         <grid>
           <div>
             <Route path="/objects/(\\d+)" exact>
-              {disconnectionsAlert}
               <div>
                 <Information {...info} />
                 <MapObject object={object} />

@@ -1,9 +1,6 @@
 /* eslint-disable */
 
-import { NodeProfile } from './NodeProfile/NodeProfile.container';
-
 export * from './Login';
-export * from './TaskProfile';
 export * from './Objects';
 export * from './ObjectProfile';
 export * from './DeviceProfile';
