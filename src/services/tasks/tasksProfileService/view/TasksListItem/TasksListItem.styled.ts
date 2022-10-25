@@ -46,10 +46,6 @@ export const TimerRowWrapper = styled.div`
 export const DeviceInfoWrapper = styled.div`
   display: flex;
   align-items: center;
-
-  svg:first-of-type {
-    transform: scale(0.9);
-  }
 `;
 
 export const InfoBlockWrapper = styled.div`
@@ -106,4 +102,15 @@ export const Wrapper = styled.div`
   &:first-child {
     margin-top: 0px;
   }
+`;
+
+export const PipeNodeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const PipeNodeNameWrapper = styled.div`
+  margin-left: 8px;
+  font-weight: 600;
+  color: #272f5acc;
 `;

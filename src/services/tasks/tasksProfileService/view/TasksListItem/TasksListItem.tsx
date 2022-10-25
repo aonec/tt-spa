@@ -14,6 +14,8 @@ import {
   InfoWrapper,
   MapIconSC,
   NameRowWrapper,
+  PipeNodeNameWrapper,
+  PipeNodeWrapper,
   SerialNumberWrapper,
   TaskItemWrapper,
   TaskNameWrapper,
@@ -36,6 +38,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     id,
     formatedCreationTime,
     address,
+    pipeNode,
   } = task;
   const taskName = currentStage ? currentStage.name : name;
 
@@ -57,6 +60,17 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     }
     return <CalculatorIcon />;
   }, [device]);
+
+  const pipeNodeInfo = useMemo(() => {
+    if (!pipeNode) return null;
+
+    return (
+      <PipeNodeWrapper>
+        <ResourceIconLookup resource={pipeNode.resource} />
+        <PipeNodeNameWrapper>Узел {pipeNode.number}</PipeNodeNameWrapper>
+      </PipeNodeWrapper>
+    );
+  }, [pipeNode]);
 
   return (
     <Wrapper>
@@ -89,6 +103,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
                   <TextWrapper>{device.model}</TextWrapper>
                 </DeviceInfoWrapper>
               )}
+              {pipeNodeInfo}
 
               <MapIconSC />
               <TextWrapper>
