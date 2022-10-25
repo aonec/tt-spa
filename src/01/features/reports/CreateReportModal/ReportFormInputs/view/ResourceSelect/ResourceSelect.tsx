@@ -7,10 +7,12 @@ import { ResourceSelectProps } from './ResourceSelect.types';
 
 export const ResourceSelect: FC<ResourceSelectProps> = ({
   onChange,
+  resources,
 }) => {
   return (
     <FormItem label="Ресурс">
       <Select
+        value={resources}
         onChange={(resources) => {
           onChange(resources as EResourceType[]);
         }}
