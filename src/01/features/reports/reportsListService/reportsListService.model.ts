@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { combine, createDomain, sample, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { ReportRequestHistoryPagedList } from 'myApi';
 import { getReportsHistoryList } from './reportsListService.api';
@@ -12,8 +12,6 @@ const fetchReportsHistoryList = domain.createEffect<
   ReportRequestHistoryPagedList
 >(getReportsHistoryList);
 
-const setPageNumber = domain.createEvent<number>();
-
 const ReportsHistoryGate = createGate();
 
 const refetchReportsHistory = domain.createEvent();
@@ -25,19 +23,41 @@ const $reportsHistoryPagedData = domain
   .on(fetchReportsHistoryList.doneData, (_, data) => data)
   .reset(ReportsHistoryGate.close);
 
+const setIsShowActual = domain.createEvent<boolean>();
+
+const $isShowActual = domain
+  .createStore(true)
+  .on(setIsShowActual, (_, isShow) => isShow);
+
+const setReportNameText = domain.createEvent<string>();
+
+const $reportNameText = domain
+  .createStore<string>('')
+  .on(setReportNameText, (_, text) => text);
+
+const setPageNumber = domain.createEvent<number>();
+
 const $pageNumber = domain
   .createStore<number>(1)
-  .on(setPageNumber, (_, pageNumber) => pageNumber);
+  .on(setPageNumber, (_, pageNumber) => pageNumber)
+  .reset($isShowActual, $reportNameText, $reportNameText);
 
-$pageNumber.watch(() => refetchReportsHistory());
+const $requestPayload = combine($isShowActual, $pageNumber, $reportNameText);
+
+forward({
+  from: $requestPayload,
+  to: refetchReportsHistory,
+});
 
 sample({
-  source: $pageNumber,
+  source: $requestPayload,
   clock: [ReportsHistoryGate.open, refetchReportsHistory],
-  fn: (pageNumber) => {
+  fn: ([isActual, pageNumber, reportNameText]) => {
     const payload: GetReportsHistoryListRequestPayload = {
-      PageNumber: pageNumber,
       PageSize: PAGE_SIZE,
+      PageNumber: pageNumber,
+      IsActual: isActual,
+      ReportNameText: reportNameText,
     };
 
     return payload;
@@ -52,11 +72,15 @@ export const reportsListService = {
     refetchReportsHistory,
     openExistedReport,
     setPageNumber,
+    setIsShowActual,
+    setReportNameText,
   },
   outputs: {
     $reportsHistoryPagedData,
     $isLoading,
     $pageNumber,
+    $isShowActual,
+    $reportNameText,
   },
   gates: { ReportsHistoryGate },
 };

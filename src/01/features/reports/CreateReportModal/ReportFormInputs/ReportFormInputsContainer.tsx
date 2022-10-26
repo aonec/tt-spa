@@ -1,7 +1,5 @@
 import { useForm } from 'effector-forms/dist';
-import { EResourceType } from 'myApi';
 import React, { useMemo } from 'react';
-import { FormItem } from 'ui-kit/FormItem';
 import { form } from '../models';
 import { ReportType } from '../types';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
@@ -61,7 +59,7 @@ export const ReportFormInputsContainer = () => {
         ),
       },
     ],
-    [rangePeriod, period, changePeriod]
+    [rangePeriod, period, changePeriod, resources]
   );
 
   const formInputsElement = (type &&

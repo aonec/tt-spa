@@ -10433,6 +10433,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         ReportNameText?: string;
         ReportName?: EReportName;
+        IsActual?: boolean;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
