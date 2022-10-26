@@ -14,7 +14,6 @@
   - editNodeService
     - editNodeService.models.ts
     - editNodeService.conainer.ts
-    - editNodeService.relations.ts
     - editNodeService.types.ts
     - editNodeService.container.ts
     - editNodeService.api.ts
@@ -87,20 +86,6 @@ export const deleteIndividualDeviceService = {
 };
 ```
 
-### deleteIndividualDeviceService.relations.ts
-Описывются связи с внешними сервисами
-
-```ts
-import { forward } from 'effector';
-import { deleteIndividualDeviceService } from './deleteIndividualDeviceService.models';
-import { refetchIndividualDevices } from '../displayIndividualDevices';
-
-forward({
-  from: deleteIndividualDeviceService.inputs.deletingComplete,
-  to: refetchIndividualDevices,
-});
-```
-
 ### deleteIndividualDeviceService.api.ts
 Описываются ассинхранные запросы к апи
 
@@ -143,4 +128,13 @@ export const DeleteIndividualDeviceModalContainer = () => {
     />
   );
 };
+```
+
+## Использование ttcodegen 
+
+### документация: [ttcodegen](https://www.npmjs.com/package/@pronix/ttcodegen)
+
+### Установка:
+```cmd
+npm i -g @pronix/ttcodegen
 ```
