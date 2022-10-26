@@ -1,13 +1,15 @@
 import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ReportRequestHistoryResponsePagedList } from 'myApi';
+import { ReportRequestHistoryPagedList } from 'myApi';
 import { getReportsHistoryList } from './reportsListService.api';
+import { PAGE_SIZE } from './reportsListService.constants';
+import { GetReportsHistoryListRequestPayload } from './reportsListService.types';
 
 const domain = createDomain('reportsListService');
 
 const fetchReportsHistoryList = domain.createEffect<
-  void,
-  ReportRequestHistoryResponsePagedList
+  GetReportsHistoryListRequestPayload,
+  ReportRequestHistoryPagedList
 >(getReportsHistoryList);
 
 const setPageNumber = domain.createEvent<number>();
@@ -19,7 +21,7 @@ const refetchReportsHistory = domain.createEvent();
 const openExistedReport = domain.createEvent<Record<string, string>>();
 
 const $reportsHistoryPagedData = domain
-  .createStore<ReportRequestHistoryResponsePagedList | null>(null)
+  .createStore<ReportRequestHistoryPagedList | null>(null)
   .on(fetchReportsHistoryList.doneData, (_, data) => data)
   .reset(ReportsHistoryGate.close);
 
@@ -27,13 +29,18 @@ const $pageNumber = domain
   .createStore<number>(1)
   .on(setPageNumber, (_, pageNumber) => pageNumber);
 
+$pageNumber.watch(() => refetchReportsHistory());
+
 sample({
   source: $pageNumber,
   clock: [ReportsHistoryGate.open, refetchReportsHistory],
   fn: (pageNumber) => {
-    return {
-      
-    }
+    const payload: GetReportsHistoryListRequestPayload = {
+      PageNumber: pageNumber,
+      PageSize: PAGE_SIZE,
+    };
+
+    return payload;
   },
   target: fetchReportsHistoryList,
 });

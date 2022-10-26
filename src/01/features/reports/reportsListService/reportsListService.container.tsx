@@ -17,6 +17,7 @@ export const ReportsListContainer = () => {
   const pageNumber = useStore(outputs.$pageNumber);
 
   const openExistedReport = useEvent(inputs.openExistedReport);
+  const setPageNumber = useEvent(inputs.setPageNumber);
 
   return (
     <>
@@ -29,6 +30,7 @@ export const ReportsListContainer = () => {
       />
       <Pagination
         pageSize={PAGE_SIZE}
+        onChange={setPageNumber}
         current={pageNumber}
         total={reportsHistoryListPagedData?.totalItems}
       />
