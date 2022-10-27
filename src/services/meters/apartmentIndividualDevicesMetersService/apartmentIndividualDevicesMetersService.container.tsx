@@ -9,6 +9,9 @@ import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDe
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { Params } from './apartmentIndividualDevicesMetersService.types';
+import {
+  EditReadingsHistoryContainer,
+} from '../editReadingsHistoryService';
 
 const {
   inputs,
@@ -19,7 +22,7 @@ const {
 export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   apartmentId,
   maxWidth,
-  editable
+  editable,
 }) => {
   const { id: apartmentIdFromParams } = useParams<{ id: string }>();
 
@@ -53,6 +56,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       <ReadingsHistoryModal />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />
+      <EditReadingsHistoryContainer />
       <DeleteIndividualDeviceModalContainer />
       <ApartmentIndividualDevicesMeters
         individualDevicesList={individualDevicesList}
