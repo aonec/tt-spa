@@ -63,6 +63,7 @@ const ApartmentProfile = () => {
     numberOfLiving,
     normativeNumberOfLiving,
     homeownerAccounts,
+    coldWaterRiserCount,
   } = apartment;
 
   const tasksNumber = activeTaskIds.length;
@@ -82,7 +83,7 @@ const ApartmentProfile = () => {
             editable={false}
           />
         </Route>
-        <Route path="/objects/:id/:apartmentId/homeowners" exact>
+        <Route path="/*/:apartmentId/homeowners" exact>
           <Owners homeownerAccounts={homeownerAccounts} />
         </Route>
         <Route path="/*/:apartmentId/actsJournal" exact>
@@ -94,6 +95,7 @@ const ApartmentProfile = () => {
               square={square}
               numberOfLiving={numberOfLiving}
               normativeNumberOfLiving={normativeNumberOfLiving}
+              coldWaterRiserCount={coldWaterRiserCount}
             />
           </InformationWrapper>
         </Route>

@@ -246,7 +246,12 @@ export const Certificate = (props) => {
 
 const TitleWrap = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
+
+  svg {
+    transform: scale(1.2);
+  }
+
   ${(props) =>
     props.primary &&
     css`
@@ -254,6 +259,7 @@ const TitleWrap = styled.div`
       color: white;
     `};
 `;
+
 const Owner = (props) => {
   const { name, personalAccountNumber, phoneNumber, id } = props;
 
@@ -286,8 +292,8 @@ const Owner = (props) => {
   );
 
   return (
-    <>
-      <TitleWrap style={{ paddingTop: '32px' }}>
+    <OwnerWrapper>
+      <TitleWrap>
         <Icon icon="key" />
         <Title size="24" style={{ paddingLeft: '8px' }}>
           {name?.replaceAll(' unknown', '') ||
@@ -317,9 +323,13 @@ const Owner = (props) => {
           )}
         </ListItemValue>
       </ListItem>
-    </>
+    </OwnerWrapper>
   );
 };
+
+const OwnerWrapper = styled.div`
+  margin-bottom: 32px;
+`;
 
 const IconWrap = styled.div`
   transition: 0.2s;

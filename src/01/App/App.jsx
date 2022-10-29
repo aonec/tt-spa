@@ -135,7 +135,7 @@ const Internal = () => {
                   exact
                 />
                 <Route
-                  path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|actsJournal)?"
+                  path="/objects/(\\d+)/apartments/(\\d+)/(testimony|homeowners|documents|actsJournal)?"
                   component={ApartmentProfile}
                   exact
                 />
