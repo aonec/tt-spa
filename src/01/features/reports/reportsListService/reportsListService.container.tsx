@@ -42,7 +42,7 @@ export const ReportsListContainer = () => {
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived
         }
         onChange={(key) =>
-          setIsShowActual(key === ReportStatusType.Actual ? true : false)
+          setIsShowActual(key === ReportStatusType.Actual)
         }
       >
         <Tabs.TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
