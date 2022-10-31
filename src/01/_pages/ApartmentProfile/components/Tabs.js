@@ -8,6 +8,7 @@ import { tabs } from '01/r_comp';
 
 const tabItems = [
   ['Общие данные', ''],
+  ['Собственники', 'homeowners'],
   ['Приборы учёта', 'testimony'],
   ['Журнал актов', 'actsJournal'],
 ];
