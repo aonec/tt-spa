@@ -1,5 +1,8 @@
 import { axios } from '01/axios';
-import { ReportRequestHistoryResponsePagedList } from 'myApi';
+import { ReportRequestHistoryPagedList } from 'myApi';
+import { GetReportsHistoryListRequestPayload } from './reportsListService.types';
 
-export const getReportsHistoryList = (): Promise<ReportRequestHistoryResponsePagedList> =>
-  axios.get('Reports/ReportRequestsHistory');
+export const getReportsHistoryList = (
+  payload: GetReportsHistoryListRequestPayload
+): Promise<ReportRequestHistoryPagedList> =>
+  axios.get('Reports/ReportRequestsHistory', { params: payload });

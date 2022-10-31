@@ -1,14 +1,15 @@
-import { createDomain, forward } from 'effector';
+import { combine, createDomain, sample, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { ReportRequestHistoryResponsePagedList } from 'myApi';
-import { createReportService } from '../CreateReportModal/models';
+import { ReportRequestHistoryPagedList } from 'myApi';
 import { getReportsHistoryList } from './reportsListService.api';
+import { PAGE_SIZE } from './reportsListService.constants';
+import { GetReportsHistoryListRequestPayload } from './reportsListService.types';
 
 const domain = createDomain('reportsListService');
 
 const fetchReportsHistoryList = domain.createEffect<
-  void,
-  ReportRequestHistoryResponsePagedList
+  GetReportsHistoryListRequestPayload,
+  ReportRequestHistoryPagedList
 >(getReportsHistoryList);
 
 const ReportsHistoryGate = createGate();
@@ -18,13 +19,50 @@ const refetchReportsHistory = domain.createEvent();
 const openExistedReport = domain.createEvent<Record<string, string>>();
 
 const $reportsHistoryPagedData = domain
-  .createStore<ReportRequestHistoryResponsePagedList | null>(null)
+  .createStore<ReportRequestHistoryPagedList | null>(null)
   .on(fetchReportsHistoryList.doneData, (_, data) => data)
   .reset(ReportsHistoryGate.close);
 
+const setIsShowActual = domain.createEvent<boolean>();
+
+const $isShowActual = domain
+  .createStore(true)
+  .on(setIsShowActual, (_, isShow) => isShow);
+
+const setReportNameText = domain.createEvent<string>();
+
+const $reportNameText = domain
+  .createStore<string>('')
+  .on(setReportNameText, (_, text) => text);
+
+const setPageNumber = domain.createEvent<number>();
+
+const $pageNumber = domain
+  .createStore<number>(1)
+  .on(setPageNumber, (_, pageNumber) => pageNumber)
+  .reset($isShowActual, $reportNameText, $reportNameText);
+
+const $requestPayload = combine($isShowActual, $pageNumber, $reportNameText);
+
 forward({
-  from: [ReportsHistoryGate.open, refetchReportsHistory],
-  to: fetchReportsHistoryList,
+  from: $requestPayload,
+  to: refetchReportsHistory,
+});
+
+sample({
+  source: $requestPayload,
+  clock: [ReportsHistoryGate.open, refetchReportsHistory],
+  fn: ([isActual, pageNumber, reportNameText]) => {
+    const payload: GetReportsHistoryListRequestPayload = {
+      PageSize: PAGE_SIZE,
+      PageNumber: pageNumber,
+      IsActual: isActual,
+      ReportNameText: reportNameText,
+    };
+
+    return payload;
+  },
+  target: fetchReportsHistoryList,
 });
 
 const $isLoading = fetchReportsHistoryList.pending;
@@ -33,10 +71,16 @@ export const reportsListService = {
   inputs: {
     refetchReportsHistory,
     openExistedReport,
+    setPageNumber,
+    setIsShowActual,
+    setReportNameText,
   },
   outputs: {
     $reportsHistoryPagedData,
     $isLoading,
+    $pageNumber,
+    $isShowActual,
+    $reportNameText,
   },
   gates: { ReportsHistoryGate },
 };

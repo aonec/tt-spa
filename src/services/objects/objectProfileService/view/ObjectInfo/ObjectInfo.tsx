@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ObjectInfoRowField, ObjectInfoRowTitle } from './ObjectInfo.constants';
 import { RowWrapper, Wrapper } from './ObjectInfo.styled';
 import { ObjectInfoProps } from './ObjectInfo.types';
