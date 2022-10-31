@@ -29,7 +29,7 @@ export const Header = styled.div`
   }
 `;
 
-export const DatePickerSC = styled(DatePicker)`
+export const DatePickerSC = styled(DatePicker)<{ isActive?: boolean }>`
   width: 200px;
 
   background-color: transparent !important;
@@ -39,6 +39,11 @@ export const DatePickerSC = styled(DatePicker)`
     text-transform: capitalize;
     text-align: center;
     cursor: pointer;
+    color: ${({ isActive }) => (isActive ? '#189ee9' : '#272F5A')};
+
+    :hover {
+      color: #189ee9;
+    }
   }
 
   span.ant-picker-clear {

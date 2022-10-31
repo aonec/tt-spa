@@ -29,6 +29,8 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
   setReadings,
   editReadings,
 }) => {
+  const [isActive, setIsActive] = useState(false);
+
   const { rateType, resource } = device;
   const rateNum = rateType ? getRateNum(rateType) : 0;
 
@@ -74,6 +76,8 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
               value={moment(readingDate, ReadingDateFormat)}
               format="MMMM YYYY"
               picker="month"
+              isActive={isActive}
+              onOpenChange={(isOpen) => setIsActive(isOpen)}
               inputReadOnly
               bordered={false}
               onChange={(date) => {

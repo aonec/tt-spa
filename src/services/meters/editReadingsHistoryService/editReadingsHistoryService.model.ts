@@ -1,6 +1,9 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { message } from 'antd';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import moment from 'moment';
 import { IndividualDeviceListItemResponse } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
+import { apartmentIndividualDevicesMetersService } from '../apartmentIndividualDevicesMetersService';
 import { BufferedReadingValues } from '../individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import { fetchEditReadingsHistory } from './editReadingsHistoryService.api';
 import { ReadingDateFormat } from './editReadingsHistoryService.constants';
@@ -11,7 +14,8 @@ const domain = createDomain('editReadingsHistoryService');
 const editReadingsHistory = domain.createEvent();
 const editReadingsHistoryFx = domain.createEffect<
   EditReadingsHistoryPayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(fetchEditReadingsHistory);
 
 const openModal = domain.createEvent<IndividualDeviceListItemResponse>();
@@ -55,6 +59,22 @@ sample({
   },
   target: editReadingsHistoryFx,
 });
+
+forward({
+  from: editReadingsHistoryFx.doneData,
+  to: [
+    apartmentIndividualDevicesMetersService.inputs.refetchIndividualDevices,
+    closeModal,
+  ],
+});
+
+editReadingsHistoryFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+editReadingsHistoryFx.doneData.watch(() =>
+  message.success('Показание успешно сохранено')
+);
 
 export const editReadingsHistoryService = {
   inputs: {
