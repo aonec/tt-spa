@@ -1,21 +1,14 @@
 import React, { FC } from 'react';
-import { Tabs } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { DevicesReportModal } from '01/features/devicesReport';
-import {
-  searchStateChanged,
-  showDownloadDeviceReportButtonClicked,
-} from '01/features/devicesReport/models';
-import { MenuButtonTT } from '01/tt-components';
+import { searchStateChanged } from '01/features/devicesReport/models';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
-import { HeaderWrapper, HeaderText, Wrapper } from './DevicesProfile.styled';
+import { Wrapper } from './DevicesProfile.styled';
 
-const { TabPane: Tab } = Tabs;
 interface DeviceProfileProps {
   setFilter: (payload: CalculatorsListRequestPayload) => void;
   isOpen: boolean;
@@ -25,6 +18,7 @@ interface DeviceProfileProps {
   searchState: CalculatorsListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
 }
+
 export const DevicesProfile: FC<DeviceProfileProps> = ({
   setFilter,
   isOpen,
@@ -33,16 +27,6 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   searchState,
   clearSearchPayload,
 }) => {
-  const menuButtonArr = [
-    {
-      title: 'Выгрузить список приборов',
-      cb: showDownloadDeviceReportButtonClicked,
-      show: true,
-      color: 'default',
-      clickable: true,
-    },
-  ];
-
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -86,46 +70,33 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   });
 
   return (
-    <div>
-      <HeaderWrapper>
-        <HeaderText>Приборы</HeaderText>
-        <MenuButtonTT menuButtonArr={menuButtonArr} />
-      </HeaderWrapper>
-      <Wrapper>
-        <Tabs defaultActiveKey="1">
-          <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1"></Tab>
-        </Tabs>
-        <SearchDevices
-          isExtendedSearchOpen={isOpen}
-          submitForm={submitForm}
-          setFieldValue={setFieldValue}
-          values={values}
-        >
-          <ExtendedSearch
-            isOpen={isOpen}
-            handleClose={() => {
-              close();
-            }}
-            handleOpen={() => open()}
-            handleApply={() => {
-              submitForm();
-              searchStateChanged(values);
-            }}
-            handleClear={() => {
-              resetForm();
-              clearSearchPayload();
-            }}
-            extendedSearchContent={
-              <ExtendedSearchForm
-                setFieldValue={setFieldValue}
-                values={values}
-              />
-            }
-          />
-        </SearchDevices>
-        <DevicesListContainer />
-        <DevicesReportModal />
-      </Wrapper>
-    </div>
+    <Wrapper>
+      <SearchDevices
+        isExtendedSearchOpen={isOpen}
+        submitForm={submitForm}
+        setFieldValue={setFieldValue}
+        values={values}
+      >
+        <ExtendedSearch
+          isOpen={isOpen}
+          handleClose={() => {
+            close();
+          }}
+          handleOpen={() => open()}
+          handleApply={() => {
+            submitForm();
+            searchStateChanged(values);
+          }}
+          handleClear={() => {
+            resetForm();
+            clearSearchPayload();
+          }}
+          extendedSearchContent={
+            <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
+          }
+        />
+      </SearchDevices>
+      <DevicesListContainer />
+    </Wrapper>
   );
 };
