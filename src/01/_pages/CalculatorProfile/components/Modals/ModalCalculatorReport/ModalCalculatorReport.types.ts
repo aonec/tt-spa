@@ -1,5 +1,5 @@
-import moment from "moment";
-import { EReportFormat, EReportType } from "myApi";
+import moment from 'moment';
+import { EReportFormat, EReportType } from 'myApi';
 
 export type GetReportParams = {
   NodeId?: number;
@@ -10,11 +10,11 @@ export type GetReportParams = {
 };
 
 export type ModalCalculatorReportFormT = {
-    period:string,
-      detail: string,
-      begin: moment.Moment,
-      end: moment.Moment,
-      resource: string,
-      nodeId: null | number,
-      customPeriodDisabled: boolean,
-}
+  period: string;
+  detail: string;
+  begin: moment.Moment | null;
+  end: moment.Moment | null;
+  resource: string;
+  nodeId: null | number;
+  customPeriodDisabled: boolean;
+};

@@ -1,4 +1,5 @@
 import { ReportType } from '01/_pages/Graph/components/GraphView/GraphView.types';
+import moment from 'moment';
 
 export type DisplayNodesStatisticsContainerProps = {
   nodeId: number;
@@ -13,6 +14,11 @@ export type FetchArchiveReadingsPayload = ArchiveReadingsFilter & {
 export type DateRange = {
   From: string;
   To: string;
+};
+
+export type FormikDateRange = {
+  From: moment.Moment | null;
+  To: moment.Moment | null;
 };
 
 export type ArchiveReadingsFilter = DateRange & {

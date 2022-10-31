@@ -4,10 +4,14 @@ import { useFormik } from 'formik';
 import { Button, Form, Radio, Tooltip } from 'antd';
 import IconTT from '../../../../tt-components/IconTT';
 import ButtonTT from '../../../../tt-components/ButtonTT';
-import { ArchiveReadingsFilter } from 'services/displayNodesStatisticsService/displayNodesStatisticsService.types';
+import {
+  ArchiveReadingsFilter,
+  FormikDateRange,
+} from 'services/displayNodesStatisticsService/displayNodesStatisticsService.types';
 import { FormItem } from 'ui-kit/FormItem';
 import {
   ClosedFilterWrapper,
+  ErrorsWrapper,
   FormBody,
   FormFooter,
   GraphFilter,
@@ -17,6 +21,9 @@ import {
 import { SelectSC } from '01/shared/ui/Fields';
 import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { ReportType } from '../GraphView/GraphView.types';
+import * as yup from 'yup';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -37,16 +44,28 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
     [setArchiveFilter, setIsActive]
   );
 
-  const {
-    setFieldValue,
-    values,
-    submitForm,
-  } = useFormik<ArchiveReadingsFilter>({
+  const { setFieldValue, values, submitForm, errors } = useFormik<
+    FormikDateRange & { ReportType: ReportType }
+  >({
     initialValues: {
-      ...currentFilter,
+      ReportType: currentFilter.ReportType,
+      From: moment(currentFilter.From),
+      To: moment(currentFilter.To),
     },
     enableReinitialize: true,
-    onSubmit: handleSubmit,
+    validationSchema: yup.object().shape({
+      From: yup.date().nullable().required('Введите начальную дату'),
+      To: yup.date().nullable().required('Введите конечную дату'),
+    }),
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      if (values.From && values.To) {
+        const From = values.From.format('YYYY-MM-DD HH:mm:ss');
+        const To = values.To.endOf('day').format('YYYY-MM-DD HH:mm:ss');
+        handleSubmit({ ...values, From, To });
+      }
+    },
   });
 
   const options = paramsList.map((param) => ({
@@ -76,6 +95,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
             value={currentGraphParam}
             showArrow={true}
             options={options}
+            disabled={options.length === 0}
             onChange={(selectedValue) => setGraphParam(selectedValue as string)}
           />
         </ClosedFilterWrapper>
@@ -102,17 +122,14 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                       const diff = currentDay.diff(date.startOf('day'));
                       return diff < 0;
                     }}
-                    value={[moment(values.From), moment(values.To)]}
+                    value={[values.From, values.To]}
                     onChange={(rangeValue) => {
-                      if (!rangeValue || !rangeValue?.[0] || !rangeValue?.[1]) {
-                        return null;
-                      }
-                      const From = rangeValue[0].format('YYYY-MM-DD HH:mm:ss');
-                      const To = rangeValue[1]
-                        .endOf('day')
-                        .format('YYYY-MM-DD HH:mm:ss');
-                      setFieldValue('From', From);
-                      setFieldValue('To', To);
+                      setFieldValue('From', rangeValue?.[0] || null);
+                      setFieldValue('To', rangeValue?.[1] || null);
+                    }}
+                    onFocus={() => {
+                      setFieldValue('From', null);
+                      setFieldValue('To', null);
                     }}
                     ranges={{
                       [RangeOptions.LastDay]: [
@@ -139,6 +156,10 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                     }}
                   />
                 </RangeWrapper>
+                <ErrorsWrapper>
+                  <ErrorMessage>{errors.From}</ErrorMessage>
+                  <ErrorMessage>{errors.To}</ErrorMessage>
+                </ErrorsWrapper>
               </FormItem>
 
               <FormItem label="Тип отчета">
