@@ -3,6 +3,8 @@ import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
+import { FormItem } from 'ui-kit/FormItem';
+import { SearchFieldsLabels } from './AddressSearch.constants';
 import { Wrapper } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 
@@ -13,7 +15,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   handleSubmit,
   handleChange,
   fields,
-  customTemplate
+  customTemplate,
+  showLabels,
+  disabledFields,
 }) => {
   const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(5);
 
@@ -28,13 +32,14 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     clearingFieldsTypes.forEach((fieldType) => handleChange(fieldType, ''));
   }
 
-  const citySearch = (index: number) => (
+  const citySearch = (index: number, isDisabled?: boolean) => (
     <SelectSC
       placeholder="Город"
       ref={refs[index]}
       onKeyDown={keyDownEnterGuardedHandler(index)}
       onChange={(value) => handleChange(SearchFieldType.City, value.toString())}
       value={values.city}
+      disabled={isDisabled}
     >
       {cities?.map((elem, index) => (
         <SelectSC.Option key={index} value={elem}>
@@ -44,7 +49,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     </SelectSC>
   );
 
-  const streetSearch = (index: number) => (
+  const streetSearch = (index: number, isDisabled?: boolean) => (
     <StyledAutocomplete
       placeholder="Улица"
       ref={refs[index]}
@@ -63,10 +68,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       onClick={() => {
         clearFields(index);
       }}
+      disabled={isDisabled}
     />
   );
 
-  const homeNumberSearch = (index: number) => (
+  const homeNumberSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
       placeholder="Дом"
       value={values.house}
@@ -79,10 +85,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         fromEnter(handleSubmit)(e);
         keyDownEnterGuardedHandler(index)(e);
       }}
+      disabled={isDisabled}
     />
   );
 
-  const corpusSearch = (index: number) => (
+  const corpusSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
       placeholder="Корпус"
       value={values.corpus}
@@ -95,10 +102,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         fromEnter(handleSubmit)(e);
         keyDownEnterGuardedHandler(index)(e);
       }}
+      disabled={isDisabled}
     />
   );
 
-  const apartmentSearch = (index: number) => (
+  const apartmentSearch = (index: number, isDisabled?: boolean) => (
     <InputSC
       placeholder="Квартирa"
       value={values.apartment}
@@ -111,10 +119,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         fromEnter(handleSubmit)(e);
         keyDownEnterGuardedHandler(index)(e);
       }}
+      disabled={isDisabled}
     />
   );
 
-  const fieldsLookup: { [key: string]: (index: number) => ReactElement } = {
+  const fieldsLookup: { [key: string]: (index: number, isDisabled?: boolean) => ReactElement } = {
     [SearchFieldType.City]: citySearch,
     [SearchFieldType.Street]: streetSearch,
     [SearchFieldType.House]: homeNumberSearch,
@@ -122,11 +131,22 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     [SearchFieldType.Apartment]: apartmentSearch,
   };
 
-  const searchFields = fields.map((fieldType, index) => (
-    <React.Fragment key={fieldType}>
-      {fieldsLookup[fieldType](index)}
-    </React.Fragment>
-  ));
+  const searchFields = fields.map((fieldType, index) => {
+    const field = fieldsLookup[fieldType](index, disabledFields?.includes(fieldType));
 
-  return <Wrapper fields={fields} customTemplate={customTemplate}>{searchFields}</Wrapper>;
+    return (
+      <React.Fragment key={fieldType}>
+        {showLabels && (
+          <FormItem label={SearchFieldsLabels[fieldType]}>{field}</FormItem>
+        )}
+        {!showLabels && field}
+      </React.Fragment>
+    );
+  });
+
+  return (
+    <Wrapper fields={fields} customTemplate={customTemplate}>
+      {searchFields}
+    </Wrapper>
+  );
 };

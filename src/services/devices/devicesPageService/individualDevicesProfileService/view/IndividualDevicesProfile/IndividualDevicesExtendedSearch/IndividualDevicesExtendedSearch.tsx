@@ -3,10 +3,11 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';
-import { AddressFormSearchContainer } from 'services/addressFormSearchService';
+import { DevicesSearchType } from '../../../individualDevicesProfileService.types';
 
 export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearchProps> = ({
   children,
+  devicesSearchType,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -19,7 +20,8 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
       }}
       extendedSearchContent={
         <>
-          <AddressFormSearchContainer
+          <AddressSearchContainer
+            showLabels
             fields={[
               SearchFieldType.City,
               SearchFieldType.Street,
@@ -28,6 +30,11 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
               SearchFieldType.Apartment,
             ]}
             handleSubmit={() => {}}
+            disabledFields={
+              devicesSearchType === DevicesSearchType.SearialNumber
+                ? [SearchFieldType.Apartment]
+                : undefined
+            }
             customTemplate={[
               {
                 fieldType: SearchFieldType.City,

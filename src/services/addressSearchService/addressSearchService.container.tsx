@@ -14,6 +14,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   handleSubmit: onSubmit,
   initialValues,
   customTemplate,
+  showLabels,
+  disabledFields,
 }) => {
   const { outputs } = addressSearchService;
   const {
@@ -53,6 +55,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         handleSubmit={handleSubmit}
         fields={fields}
         customTemplate={customTemplate}
+        showLabels={showLabels}
+        disabledFields={disabledFields}
       />
     </>
   );

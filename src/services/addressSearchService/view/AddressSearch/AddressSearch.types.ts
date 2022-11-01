@@ -27,4 +27,6 @@ export type AddressSearchProps = {
   cities: string[];
   fields: SearchFieldType[];
   customTemplate?: CustomTemplateType;
+  showLabels?: boolean;
+  disabledFields?: SearchFieldType[];
 };

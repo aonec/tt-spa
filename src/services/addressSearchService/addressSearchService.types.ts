@@ -9,4 +9,6 @@ export type AddressSearchContainerProps = {
   handleSubmit: (values: AddressSearchValues) => void;
   initialValues?: AddressSearchValues | null;
   customTemplate?: CustomTemplateType;
+  showLabels?: boolean;
+  disabledFields?: SearchFieldType[];
 };
