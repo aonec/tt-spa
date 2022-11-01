@@ -4,18 +4,19 @@ import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
 import React, { FC, useEffect } from 'react';
-import { addressSearchService } from './addressSearchService.models';
-import { AddressSearchContainerProps } from './addressSearchService.types';
+import { addressFormSearchService } from './addressFormSearchService.model';
+import { AddressSearchContainerProps } from './addressFormSearchService.types';
 import { AddressSearch } from './view/AddressSearch';
 import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 
-export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
+const { outputs } = addressFormSearchService;
+
+export const AddressFormSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
   handleSubmit: onSubmit,
   initialValues,
   customTemplate,
 }) => {
-  const { outputs } = addressSearchService;
   const {
     values,
     handleSubmit,

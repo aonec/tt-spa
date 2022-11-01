@@ -13,6 +13,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   handleSubmit,
   handleChange,
   fields,
+  customTemplate
 }) => {
   const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(5);
 
@@ -127,5 +128,5 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     </React.Fragment>
   ));
 
-  return <Wrapper fields={fields}>{searchFields}</Wrapper>;
+  return <Wrapper fields={fields} customTemplate={customTemplate}>{searchFields}</Wrapper>;
 };
