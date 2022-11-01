@@ -1,3 +1,8 @@
 import { axios } from '01/axios';
+import { IndividualDeviceListResponseFromDevicePagePagedList } from 'myApi';
+import { IndividualDeviceSearchbySerialNumberPayload } from './individualDevicesViesBySerialNumberService.types';
 
-export const fetchIndividualDevices = () => axios.get('devices/individual');
+export const fetchIndividualDevices = (
+  params: IndividualDeviceSearchbySerialNumberPayload
+): Promise<IndividualDeviceListResponseFromDevicePagePagedList> =>
+  axios.get('devices/individual', { params });
