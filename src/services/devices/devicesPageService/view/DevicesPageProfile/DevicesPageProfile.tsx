@@ -6,6 +6,7 @@ import { DevicesProfileTabsType } from '../../devicesPageService.types';
 import { Wrapper } from './DevicesPageProfile.styled';
 import { DevicesPageProfileProps } from './DevicesPageProfile.types';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
+import { IndividualDevicesProfileContainer } from '../../individualDevicesProfileService';
 
 export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   type,
@@ -34,10 +35,9 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
         <Tabs.TabPane tab="ОДПУ" key={DevicesProfileTabsType.ODPU}>
           <DevicesProfileContainer />
         </Tabs.TabPane>
-        <Tabs.TabPane
-          tab="ИПУ"
-          key={DevicesProfileTabsType.IndividualDevices}
-        ></Tabs.TabPane>
+        <Tabs.TabPane tab="ИПУ" key={DevicesProfileTabsType.IndividualDevices}>
+          <IndividualDevicesProfileContainer />
+        </Tabs.TabPane>
       </Tabs>
     </Wrapper>
   );
