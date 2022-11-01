@@ -8,8 +8,8 @@ import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import {
   SearchFieldsWrapper,
   Wrapper,
-} from './IndividualDevicesBySerialNumberSearch.styled';
-import { IndividualDevicesViewBySerialNumberSearchProps } from './IndividualDevicesBySerialNumberSearch.types';
+} from './SerialNumberSearch.styled';
+import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
 
 export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesViewBySerialNumberSearchProps> = ({}) => {
   return (

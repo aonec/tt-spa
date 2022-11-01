@@ -1,1 +1,1 @@
-export { IndividualDevicesViewBySerialNumberSearch } from './IndividualDevicesBySerialNumberSearch'
+export { IndividualDevicesViewBySerialNumberSearch } from './SerialNumberSearch'
