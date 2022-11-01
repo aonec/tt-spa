@@ -2,6 +2,7 @@ import { Radio } from 'antd';
 import React, { FC } from 'react';
 import { DevicesSearchType } from '../../individualDevicesProfileService.types';
 import { IndividualDevicesViewComponents } from './IndividualDevicesProfile.constants';
+import { Wrapper } from './IndividualDevicesProfile.styled';
 import { IndividualDevicesProfileProps } from './IndividualDevicesProfile.types';
 
 export const IndividualDevicesProfile: FC<IndividualDevicesProfileProps> = ({
@@ -11,7 +12,7 @@ export const IndividualDevicesProfile: FC<IndividualDevicesProfileProps> = ({
   const Component = IndividualDevicesViewComponents[devicesSearchType];
 
   return (
-    <div>
+    <Wrapper>
       <Radio.Group
         value={devicesSearchType}
         onChange={(value) =>
@@ -24,6 +25,6 @@ export const IndividualDevicesProfile: FC<IndividualDevicesProfileProps> = ({
       <div>
         <Component />
       </div>
-    </div>
+    </Wrapper>
   );
 };
