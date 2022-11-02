@@ -7,13 +7,11 @@ export const Wrapper = styled.div`
 
 export const SearchWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1.7fr 1fr;
+  grid-template-columns: 1fr 0.3fr;
 `;
 
 export const SearchInputsWrapper = styled.div`
   margin-left: 15px;
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  display: flex;
   align-items: center;
-  grid-gap: 15px;
 `;

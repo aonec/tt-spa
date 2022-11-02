@@ -1,7 +1,7 @@
 import { SelectSC } from '01/shared/ui/Fields';
 import { Checkbox } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/individualDevicesProfileService/individualDevicesProfileService.types';
@@ -15,7 +15,10 @@ import {
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 
 export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({}) => {
-  const initialValues = {
+  const [
+    initialValues,
+    setInitialValues,
+  ] = useState<SearchIndividualDevicesRequestPayload>({
     City: '',
     Street: '',
     HouseNumber: '',
@@ -28,7 +31,8 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
     ApartmentStatus: null,
     ClosingReason: null,
     ExpiresCheckingDateAt: null,
-  };
+    IsAlsoClosing: false,
+  });
 
   const {
     values,
@@ -42,8 +46,11 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
   return (
     <Wrapper>
       <IndividualDevicesExtendedSearch
-        handleApply={console.log}
+        handleApply={(values) =>
+          setInitialValues((prev) => ({ ...prev, ...values }))
+        }
         devicesSearchType={DevicesSearchType.Address}
+        values={values}
       >
         <SearchWrapper>
           <AddressSearchContainer
@@ -54,7 +61,23 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
               SearchFieldType.Corpus,
               SearchFieldType.Apartment,
             ]}
-            handleSubmit={console.log}
+            initialValues={{
+              city: values.City,
+              street: values.Street,
+              house: values.HouseNumber,
+              corpus: values.HouseCorpus,
+              apartment: values.Apartment,
+            }}
+            handleSubmit={(values) =>
+              setInitialValues((prev) => ({
+                ...prev,
+                City: values.city,
+                Street: values.street,
+                HouseNumber: values.house,
+                HouseCorpus: values.corpus,
+                Apartment: values.apartment,
+              }))
+            }
             customTemplate={[
               {
                 fieldType: SearchFieldType.Street,
@@ -63,7 +86,6 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
             ]}
           />
           <SearchInputsWrapper>
-            <SelectSC placeholder="Ресурс"></SelectSC>
             <Checkbox>Закрытые приборы</Checkbox>
           </SearchInputsWrapper>
         </SearchWrapper>
