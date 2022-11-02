@@ -1,7 +1,6 @@
-import { SelectSC } from '01/shared/ui/Fields';
 import { Checkbox } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/individualDevicesProfileService/individualDevicesProfileService.types';
@@ -14,7 +13,9 @@ import {
 } from './IndividualDevicesAddressSearch.styled';
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 
-export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({}) => {
+export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({
+  setIndividualDeviceSearchRquestPayload,
+}) => {
   const [
     initialValues,
     setInitialValues,
@@ -34,14 +35,13 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
     IsAlsoClosing: false,
   });
 
-  const {
-    values,
-    setFieldValue,
-  } = useFormik<SearchIndividualDevicesRequestPayload>({
+  const { values } = useFormik<SearchIndividualDevicesRequestPayload>({
     initialValues,
     onSubmit: () => {},
     enableReinitialize: true,
   });
+
+  useEffect(() => setIndividualDeviceSearchRquestPayload(values), [values]);
 
   return (
     <Wrapper>
