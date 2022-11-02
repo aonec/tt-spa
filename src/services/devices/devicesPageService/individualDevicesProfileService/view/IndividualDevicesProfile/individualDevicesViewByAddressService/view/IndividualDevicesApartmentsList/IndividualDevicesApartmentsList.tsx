@@ -7,6 +7,7 @@ import { IndividualDevicesApartmentsListProps } from './IndividualDevicesApartme
 export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsListProps> = ({
   housingsByFilter,
   isLoading,
+  individualDevicesApartmentsList,
 }) => {
   return (
     <Wrapper>
@@ -14,6 +15,9 @@ export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsList
       {!isLoading && housingsByFilter && (
         <AddressHeader housingsByFilter={housingsByFilter} />
       )}
+      {!isLoading &&
+        individualDevicesApartmentsList &&
+        JSON.stringify(individualDevicesApartmentsList)}
     </Wrapper>
   );
 };

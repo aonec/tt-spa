@@ -1,9 +1,16 @@
-import { createDomain, sample, forward, guard, Store } from 'effector';
+import { combine, createDomain, guard, Store } from 'effector';
 import { createGate } from 'effector-react';
-import { HousingByFilterResponse } from 'myApi';
-import { getHousingsByFilter } from './individualDevicesViewByAddressService.api';
+import {
+  ApartmentByAddressFilterResponsePagedList,
+  HousingByFilterResponse,
+} from 'myApi';
+import {
+  getHousingsByFilter,
+  getIndividualDevicesApartments,
+} from './individualDevicesViewByAddressService.api';
 import {
   GetHousingByFilterRequestPayload,
+  GetIndividualDevicesApartments,
   SearchIndividualDevicesRequestPayload,
 } from './individualDevicesViewByAddressService.types';
 
@@ -13,19 +20,30 @@ const setIndividualDeviceSearchRquestPayload = domain.createEvent<SearchIndividu
 
 const IndividualDevicesSearchGate = createGate();
 
-const $individualDeviceSearchRquestPayload = domain
-  .createStore<SearchIndividualDevicesRequestPayload | null>(null)
-  .on(setIndividualDeviceSearchRquestPayload, (_, data) => data)
-  .reset(IndividualDevicesSearchGate.close);
-
 const fetchHousingsByFilter = domain.createEffect<
   GetHousingByFilterRequestPayload,
   HousingByFilterResponse | null
 >(getHousingsByFilter);
 
+const fetchIndividualDevicesApartments = domain.createEffect<
+  GetIndividualDevicesApartments,
+  ApartmentByAddressFilterResponsePagedList | null
+>(getIndividualDevicesApartments);
+
+const $individualDevicesApartmentsPagedData = domain
+  .createStore<ApartmentByAddressFilterResponsePagedList | null>(null)
+  .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
+  .reset(IndividualDevicesSearchGate.close);
+
+const $individualDeviceSearchRquestPayload = domain
+  .createStore<SearchIndividualDevicesRequestPayload | null>(null)
+  .on(setIndividualDeviceSearchRquestPayload, (_, data) => data)
+  .reset(IndividualDevicesSearchGate.close);
+
 const $housingsByFilter = domain
   .createStore<HousingByFilterResponse | null>(null)
-  .on(fetchHousingsByFilter.doneData, (_, data) => data);
+  .on(fetchHousingsByFilter.doneData, (_, data) => data)
+  .reset(IndividualDevicesSearchGate.close);
 
 const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRquestPayload.map(
   (values) => {
@@ -49,7 +67,42 @@ guard({
   target: fetchHousingsByFilter,
 });
 
+const $getIndividualDevices: Store<GetIndividualDevicesApartments | null> = combine(
+  $individualDeviceSearchRquestPayload,
+  $housingsByFilter
+).map(([searchPayload, housingsByFilter]) => {
+  const apartmentId = housingsByFilter?.current?.id;
+
+  if (!apartmentId) return null;
+
+  const payload: GetIndividualDevicesApartments = {
+    HousingStockId: apartmentId,
+    ApartmentNumber: searchPayload?.Apartment || undefined,
+    'DeviceFilter.Resource': searchPayload?.Resource || undefined,
+    'DeviceFilter.Model': searchPayload?.Model,
+    'DeviceFilter.ClosingReason': searchPayload?.ClosingReason || undefined,
+    'DeviceFilter.MountPlace': searchPayload?.MountPlace || undefined,
+    'DeviceFilter.ApartmentStatus': searchPayload?.ApartmentStatus || undefined,
+    'DeviceFilter.ExpiresCheckingDateAt':
+      searchPayload?.ExpiresCheckingDateAt || undefined,
+    'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
+    PageNumber: 1,
+    PageSize: 10,
+  };
+
+  return payload;
+});
+
+guard({
+  clock: $getIndividualDevices,
+  filter: (payload): payload is GetIndividualDevicesApartments =>
+    Boolean(payload),
+  target: fetchIndividualDevicesApartments,
+});
+
 const $isHousingsByFilterLoading = fetchHousingsByFilter.pending;
+const $isIndividualDevicesApartmentsLoading =
+  fetchIndividualDevicesApartments.pending;
 
 export const individualDevicesViewByAddressService = {
   inputs: {
@@ -58,6 +111,8 @@ export const individualDevicesViewByAddressService = {
   outputs: {
     $housingsByFilter,
     $isHousingsByFilterLoading,
+    $individualDevicesApartmentsPagedData,
+    $isIndividualDevicesApartmentsLoading,
   },
   gates: {
     IndividualDevicesSearchGate,

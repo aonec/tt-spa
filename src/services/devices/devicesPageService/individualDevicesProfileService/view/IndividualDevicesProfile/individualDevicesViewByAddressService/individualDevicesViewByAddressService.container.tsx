@@ -12,6 +12,12 @@ export const IndividualDevicesViewByAddressContainer = () => {
   const isHousingsByFilterLoading = useStore(
     outputs.$isHousingsByFilterLoading
   );
+  const individualDevicesApartmentsPagedData = useStore(
+    outputs.$individualDevicesApartmentsPagedData
+  );
+  const isIndividualDevicesApartmentsLoading = useStore(
+    outputs.$isIndividualDevicesApartmentsLoading
+  );
 
   const setIndividualDeviceSearchRquestPayload = useEvent(
     inputs.setIndividualDeviceSearchRquestPayload
@@ -27,7 +33,12 @@ export const IndividualDevicesViewByAddressContainer = () => {
       />
       <IndividualDevicesApartmentsList
         housingsByFilter={housingsByFilter}
-        isLoading={isHousingsByFilterLoading}
+        isLoading={
+          isHousingsByFilterLoading || isIndividualDevicesApartmentsLoading
+        }
+        individualDevicesApartmentsList={
+          individualDevicesApartmentsPagedData?.items
+        }
       />
     </>
   );
