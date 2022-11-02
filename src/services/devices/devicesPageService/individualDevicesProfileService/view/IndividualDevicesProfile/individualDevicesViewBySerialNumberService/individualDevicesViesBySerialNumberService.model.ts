@@ -1,6 +1,5 @@
 import { createDomain, forward } from 'effector';
 import {
-  EApartmentStatus,
   IndividualDeviceListResponseFromDevicePage,
   IndividualDeviceListResponseFromDevicePagePagedList,
 } from 'myApi';
@@ -23,6 +22,7 @@ const $searchPayload = domain
   .createStore<IndividualDeviceSearchbySerialNumberPayload>({
     SerialNumber: '',
     Resource: null,
+    ApartmentStatus: null,
     IsAlsoClosing: false,
   })
   .on(setFilter, (_, filter) => filter);

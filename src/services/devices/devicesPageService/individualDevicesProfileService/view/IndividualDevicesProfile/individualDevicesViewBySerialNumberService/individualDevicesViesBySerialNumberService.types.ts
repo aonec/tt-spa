@@ -1,8 +1,9 @@
 import { EActResourceType, EApartmentStatus, EResourceType } from 'myApi';
+import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 
-export type IndividualDeviceSearchbySerialNumberPayload = {
+export type IndividualDeviceSearchbySerialNumberPayload = SearchIndividualDevicesParams & {
   SerialNumber: string;
-  ApartmentStatus?: EApartmentStatus;
+  ApartmentStatus: EApartmentStatus | null;
   Resource: EResourceType | null;
   IsAlsoClosing: boolean;
 };
