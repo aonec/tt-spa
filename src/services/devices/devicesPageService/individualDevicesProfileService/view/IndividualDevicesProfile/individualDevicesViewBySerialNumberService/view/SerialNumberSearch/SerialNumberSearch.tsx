@@ -84,7 +84,8 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
             placeholder="Ресурс"
             value={values.Resource || EActResourceType.All}
             onChange={(value) => {
-              setFieldValue('Resource', value);
+              const resource = value === EActResourceType.All ? null : value;
+              setFieldValue('Resource', resource);
               handleSubmit();
             }}
             onKeyDown={handleEnter(1)}
