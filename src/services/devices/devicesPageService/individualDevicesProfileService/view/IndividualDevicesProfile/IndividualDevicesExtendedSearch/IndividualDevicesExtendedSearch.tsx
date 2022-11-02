@@ -49,12 +49,13 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
       ClosingReason: null,
       ExpiresCheckingDateAt: null,
       ...formValues,
-    }
-  }, [formValues])
+    };
+  }, [formValues]);
 
   const { values, setFieldValue } = useFormik<SearchIndividualDevicesParams>({
     initialValues,
     onSubmit: () => {},
+    enableReinitialize: true,
   });
 
   return (
