@@ -57,6 +57,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
   const {
     values,
     setFieldValue: setFormikValue,
+    resetForm,
   } = useFormik<SearchIndividualDevicesParams>({
     initialValues,
     onSubmit: () => {},
@@ -77,6 +78,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
         handleApply(values);
         setIsOpen(false);
       }}
+      handleClear={resetForm}
       extendedSearchContent={
         <>
           <AddressSearchContainer
@@ -121,6 +123,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 placeholder="Ресурс"
                 value={values.Resource || undefined}
                 onChange={(value) => setFieldValue('Resource', value)}
+                allowClear
               >
                 {Object.values(EResourceType).map((resource) => (
                   <SelectSC key={resource} value={resource}>
@@ -139,6 +142,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 placeholder="Статус кв"
                 value={values.ApartmentStatus || undefined}
                 onChange={(value) => setFieldValue('ApartmentStatus', value)}
+                allowClear
               >
                 {[EApartmentStatus.Ok, EApartmentStatus.Pause].map((status) => (
                   <SelectSC.Option key={status} value={status}>
@@ -172,6 +176,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 placeholder="Место установки прибора"
                 value={values.MountPlace || undefined}
                 onChange={(value) => setFieldValue('Model', value)}
+                allowClear
               ></SelectSC>
             </FormItem>
             <FormItem label="Причина закрытия ИПУ">
@@ -179,6 +184,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 placeholder="Причина закрытия ИПУ"
                 value={values.ClosingReason || undefined}
                 onChange={(value) => setFieldValue('ClosingReason', value)}
+                allowClear
               >
                 {Object.entries(closingReasonLookup).map(
                   ([closingReason, text]) => (
@@ -196,6 +202,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
                 onChange={(value) =>
                   setFieldValue('ExpiresCheckingDateAt', value)
                 }
+                allowClear
               >
                 {Object.entries(expiresCheckingDateAtLookup).map(
                   ([key, value]) => (
