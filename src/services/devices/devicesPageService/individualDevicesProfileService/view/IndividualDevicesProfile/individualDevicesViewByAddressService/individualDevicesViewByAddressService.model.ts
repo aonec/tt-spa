@@ -8,6 +8,7 @@ import {
   getHousingsByFilter,
   getIndividualDevicesApartments,
 } from './individualDevicesViewByAddressService.api';
+import { APARTMENTS_LIST_PAGE_SIZE } from './individualDevicesViewByAddressService.constatnts';
 import {
   GetHousingByFilterRequestPayload,
   GetIndividualDevicesApartments,
@@ -87,7 +88,7 @@ const $getIndividualDevices: Store<GetIndividualDevicesApartments | null> = comb
       searchPayload?.ExpiresCheckingDateAt || undefined,
     'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
     PageNumber: 1,
-    PageSize: 10,
+    PageSize: APARTMENTS_LIST_PAGE_SIZE,
   };
 
   return payload;

@@ -1,8 +1,11 @@
+import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { APARTMENTS_LIST_PAGE_SIZE } from './individualDevicesViewByAddressService.constatnts';
 import { individualDevicesViewByAddressService } from './individualDevicesViewByAddressService.model';
 import { IndividualDevicesAddressSearch } from './view/IndividualDevicesAddressSearch';
 import { IndividualDevicesApartmentsList } from './view/IndividualDevicesApartmentsList';
+import { Wrapper } from './individualDevicesViewByAddressService.styled';
 
 const { inputs, outputs, gates } = individualDevicesViewByAddressService;
 const { IndividualDevicesSearchGate } = gates;
@@ -24,7 +27,7 @@ export const IndividualDevicesViewByAddressContainer = () => {
   );
 
   return (
-    <>
+    <Wrapper>
       <IndividualDevicesSearchGate />
       <IndividualDevicesAddressSearch
         setIndividualDeviceSearchRquestPayload={
@@ -40,6 +43,14 @@ export const IndividualDevicesViewByAddressContainer = () => {
           individualDevicesApartmentsPagedData?.items
         }
       />
-    </>
+      {individualDevicesApartmentsPagedData && (
+        <Pagination
+          pageSize={APARTMENTS_LIST_PAGE_SIZE}
+          total={individualDevicesApartmentsPagedData?.totalItems}
+          current={1}
+          showSizeChanger={false}
+        />
+      )}
+    </Wrapper>
   );
 };

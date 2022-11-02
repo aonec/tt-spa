@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 
 export const SearchWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 0.3fr;
+  grid-template-columns: 1fr 0.25fr;
 `;
 
 export const SearchInputsWrapper = styled.div`

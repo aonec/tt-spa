@@ -1,3 +1,9 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export const Wrapper = styled.div``
+export const Wrapper = styled.div`
+  padding-bottom: 10px;
+`;
+
+export const ListWrapper = styled.div`
+  margin-top: 10px;
+`;

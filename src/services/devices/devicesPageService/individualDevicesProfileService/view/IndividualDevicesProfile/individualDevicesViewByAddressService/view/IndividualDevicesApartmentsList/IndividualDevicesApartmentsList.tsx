@@ -1,7 +1,8 @@
 import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { AddressHeader } from './AddressHeader';
-import { Wrapper } from './IndividualDevicesApartmentsList.styled';
+import { IndividualDevicesApartmentItem } from './IndividualDevicesApartmentItem';
+import { ListWrapper, Wrapper } from './IndividualDevicesApartmentsList.styled';
 import { IndividualDevicesApartmentsListProps } from './IndividualDevicesApartmentsList.types';
 
 export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsListProps> = ({
@@ -15,9 +16,16 @@ export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsList
       {!isLoading && housingsByFilter && (
         <AddressHeader housingsByFilter={housingsByFilter} />
       )}
-      {!isLoading &&
-        individualDevicesApartmentsList &&
-        JSON.stringify(individualDevicesApartmentsList)}
+      <ListWrapper>
+        {!isLoading &&
+          individualDevicesApartmentsList &&
+          individualDevicesApartmentsList.map((apartment) => (
+            <IndividualDevicesApartmentItem
+              key={apartment.apartmentId}
+              individualDevicesApartment={apartment}
+            />
+          ))}
+      </ListWrapper>
     </Wrapper>
   );
 };
