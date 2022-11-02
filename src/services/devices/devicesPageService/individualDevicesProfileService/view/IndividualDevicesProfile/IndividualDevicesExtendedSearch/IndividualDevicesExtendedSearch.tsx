@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -31,11 +31,12 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
   children,
   devicesSearchType,
   handleApply,
+  values: formValues = {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { values, setFieldValue } = useFormik<SearchIndividualDevicesParams>({
-    initialValues: {
+  const initialValues = useMemo(() => {
+    return {
       City: '',
       Street: '',
       HouseNumber: '',
@@ -47,7 +48,12 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
       ApartmentStatus: null,
       ClosingReason: null,
       ExpiresCheckingDateAt: null,
-    },
+      ...formValues,
+    }
+  }, [formValues])
+
+  const { values, setFieldValue } = useFormik<SearchIndividualDevicesParams>({
+    initialValues,
     onSubmit: () => {},
   });
 
@@ -141,7 +147,9 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
             <FormItem label="Номер прибора">
               <InputSC
                 value={values.SerialNumber || undefined}
-                onChange={(event) => setFieldValue('SerialNumber', event.target.value)}
+                onChange={(event) =>
+                  setFieldValue('SerialNumber', event.target.value)
+                }
                 disabled={devicesSearchType === DevicesSearchType.Address}
                 placeholder="Номер прибора"
               />
