@@ -11,3 +11,12 @@ export const SecondLineWrapper = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 15px;
 `;
+
+export const ResourceOptionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ResourceNameWrapper = styled.div`
+  margin-left: 5px;
+`;

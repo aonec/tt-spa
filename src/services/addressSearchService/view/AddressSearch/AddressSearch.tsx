@@ -123,7 +123,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     />
   );
 
-  const fieldsLookup: { [key: string]: (index: number, isDisabled?: boolean) => ReactElement } = {
+  const fieldsLookup: {
+    [key: string]: (index: number, isDisabled?: boolean) => ReactElement;
+  } = {
     [SearchFieldType.City]: citySearch,
     [SearchFieldType.Street]: streetSearch,
     [SearchFieldType.House]: homeNumberSearch,
@@ -132,7 +134,10 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   };
 
   const searchFields = fields.map((fieldType, index) => {
-    const field = fieldsLookup[fieldType](index, disabledFields?.includes(fieldType));
+    const field = fieldsLookup[fieldType](
+      index,
+      disabledFields?.includes(fieldType)
+    );
 
     return (
       <React.Fragment key={fieldType}>

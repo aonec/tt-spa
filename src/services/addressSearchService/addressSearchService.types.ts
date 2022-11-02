@@ -6,9 +6,10 @@ import {
 
 export type AddressSearchContainerProps = {
   fields: SearchFieldType[];
-  handleSubmit: (values: AddressSearchValues) => void;
+  handleSubmit?: (values: AddressSearchValues) => void;
   initialValues?: AddressSearchValues | null;
   customTemplate?: CustomTemplateType;
   showLabels?: boolean;
   disabledFields?: SearchFieldType[];
+  onChange?: (key: string, value: string) => void;
 };
