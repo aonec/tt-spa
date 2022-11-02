@@ -26,13 +26,10 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
   } = useFormik<SearchIndividualDevicesRequestPayload>({
     initialValues: filters,
     onSubmit: (values) => {
-      console.log(values);
       setIndividualDeviceSearchRequestPayload(values);
     },
     enableReinitialize: true,
   });
-
-  useEffect(() => setIndividualDeviceSearchRequestPayload(values), [values]);
 
   const submitWrap = async (callback: () => Promise<any>) => {
     await callback();
