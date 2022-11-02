@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   height: 48px;
-  border-radius: 4px;
   transition: 0.2s;
   cursor: pointer;
+  z-index: 3;
 
   padding: 0 10px;
 

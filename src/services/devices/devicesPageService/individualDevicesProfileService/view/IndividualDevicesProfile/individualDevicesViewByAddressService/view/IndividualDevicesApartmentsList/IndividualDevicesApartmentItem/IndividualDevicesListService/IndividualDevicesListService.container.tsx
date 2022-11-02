@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
-import { IndividualDevicesListContainerProps } from './IndividualDevicesListService.types';
+import { IndividualDevicesListContainerProps } from './individualDevicesListService.types';
+import { IndividualDevicesList } from './view/IndividualDevicesList';
 
 export const IndividualDevicesListContainer: FC<IndividualDevicesListContainerProps> = () => {
-  return <></>;
+  return <IndividualDevicesList />;
 };

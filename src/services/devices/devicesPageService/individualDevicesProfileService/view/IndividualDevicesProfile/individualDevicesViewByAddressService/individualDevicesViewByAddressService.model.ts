@@ -36,11 +36,6 @@ const fetchIndividualDevicesApartments = domain.createEffect<
   ApartmentByAddressFilterResponsePagedList | null
 >(getIndividualDevicesApartments);
 
-const $individualDevicesApartmentsPagedData = domain
-  .createStore<ApartmentByAddressFilterResponsePagedList | null>(null)
-  .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
-  .reset(clearSearchPayload);
-
 const $individualDeviceSearchRequestPayload = domain
   .createStore<SearchIndividualDevicesRequestPayload>(searchInitialValues)
   .on(setIndividualDeviceSearchRequestPayload, (_, data) => data)
@@ -50,6 +45,11 @@ const $housingsByFilter = domain
   .createStore<HousingByFilterResponse | null>(null)
   .on(fetchHousingsByFilter.doneData, (_, data) => data)
   .reset(clearSearchPayload);
+
+const $individualDevicesApartmentsPagedData = domain
+  .createStore<ApartmentByAddressFilterResponsePagedList | null>(null)
+  .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
+  .reset(clearSearchPayload, fetchIndividualDevicesApartments.failData);
 
 const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
   (values) => {

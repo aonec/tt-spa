@@ -1,2 +1,2 @@
-export { IndividualDevicesListService } from './IndividualDevicesListService.model';
-export { IndividualDevicesListContainer } from './IndividualDevicesListService.container';
+export { individualDevicesListService } from './individualDevicesListService.model';
+export { IndividualDevicesListContainer } from './individualDevicesListService.container';

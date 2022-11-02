@@ -1,14 +1,14 @@
 import { createDomain } from 'effector';
 
-const domain = createDomain(
-  'IndividualDevicesListService'
-);
+const domain = createDomain('individualDevicesListService');
 
-export const IndividualDevicesListService = {
-  inputs: {
-  
-  },
-  outputs: {
+const toggleBlock = domain.createEvent<number>();
 
-  },
+const $openedBlockId = domain
+  .createStore<number | null>(null)
+  .on(toggleBlock, (prevId, id) => (prevId === id ? null : id));
+
+export const individualDevicesListService = {
+  inputs: { toggleBlock },
+  outputs: { $openedBlockId },
 };
