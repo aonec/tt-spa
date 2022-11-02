@@ -6,13 +6,14 @@ export const Wrapper = styled.div`
 `;
 
 export const SearchWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
 `;
 
 export const SearchInputsWrapper = styled.div`
   margin-left: 15px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr;
+  grid-template-columns: 1fr 1.5fr;
   align-items: center;
   grid-gap: 15px;
 `;
