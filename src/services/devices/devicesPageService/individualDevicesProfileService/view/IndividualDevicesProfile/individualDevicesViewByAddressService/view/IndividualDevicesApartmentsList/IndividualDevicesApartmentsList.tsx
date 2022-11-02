@@ -1,5 +1,6 @@
-import { Skeleton } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
+import { AddressHeader } from './AddressHeader';
 import { Wrapper } from './IndividualDevicesApartmentsList.styled';
 import { IndividualDevicesApartmentsListProps } from './IndividualDevicesApartmentsList.types';
 
@@ -10,7 +11,9 @@ export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsList
   return (
     <Wrapper>
       {isLoading && <Skeleton active />}
-      {!isLoading && housingsByFilter && JSON.stringify(housingsByFilter)}
+      {!isLoading && housingsByFilter && (
+        <AddressHeader housingsByFilter={housingsByFilter} />
+      )}
     </Wrapper>
   );
 };
