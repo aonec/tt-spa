@@ -1,14 +1,8 @@
 import { createDomain } from 'effector';
 
-const domain = createDomain(
-  'individualDevicesViewByAddressService'
-);
+const domain = createDomain('individualDevicesViewByAddressService');
 
 export const individualDevicesViewByAddressService = {
-  inputs: {
-  
-  },
-  outputs: {
-
-  },
+  inputs: {},
+  outputs: {},
 };

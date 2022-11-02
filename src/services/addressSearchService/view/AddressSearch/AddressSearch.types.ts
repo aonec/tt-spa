@@ -14,6 +14,11 @@ export type AddressSearchValues = {
   apartment?: string;
 };
 
+export type CustomTemplateType = {
+  fieldType: SearchFieldType;
+  templateValue: string;
+}[];
+
 export type AddressSearchProps = {
   values: AddressSearchValues;
   handleChange: (field: SearchFieldType, value: string) => void;
@@ -21,4 +26,7 @@ export type AddressSearchProps = {
   streets: string[];
   cities: string[];
   fields: SearchFieldType[];
+  customTemplate?: CustomTemplateType;
+  showLabels?: boolean;
+  disabledFields?: SearchFieldType[];
 };
