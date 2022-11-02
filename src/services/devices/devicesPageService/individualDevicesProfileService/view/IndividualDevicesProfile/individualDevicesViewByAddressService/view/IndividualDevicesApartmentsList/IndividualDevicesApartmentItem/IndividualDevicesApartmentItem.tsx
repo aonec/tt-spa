@@ -7,6 +7,7 @@ import {
 } from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
 import {
   ApartmentNumber,
+  Chevron,
   PersonalAccountNumber,
   Wrapper,
 } from './IndividualDevicesApartmentItem.styled';
@@ -24,6 +25,7 @@ export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemPr
 
   return (
     <Wrapper>
+      <Chevron open={false} />
       <ApartmentNumber>
         №{individualDevicesApartment?.apartmentNumber}
       </ApartmentNumber>

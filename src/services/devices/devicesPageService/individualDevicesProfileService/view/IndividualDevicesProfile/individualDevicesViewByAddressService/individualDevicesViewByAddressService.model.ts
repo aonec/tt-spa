@@ -8,7 +8,10 @@ import {
   getHousingsByFilter,
   getIndividualDevicesApartments,
 } from './individualDevicesViewByAddressService.api';
-import { APARTMENTS_LIST_PAGE_SIZE } from './individualDevicesViewByAddressService.constatnts';
+import {
+  APARTMENTS_LIST_PAGE_SIZE,
+  searchInitialValues,
+} from './individualDevicesViewByAddressService.constatnts';
 import {
   GetHousingByFilterRequestPayload,
   GetIndividualDevicesApartments,
@@ -17,9 +20,11 @@ import {
 
 const domain = createDomain('individualDevicesViewByAddressService');
 
-const setIndividualDeviceSearchRquestPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
+const setIndividualDeviceSearchRequestPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
 
 const IndividualDevicesSearchGate = createGate();
+
+const clearSearchPayload = domain.createEvent();
 
 const fetchHousingsByFilter = domain.createEffect<
   GetHousingByFilterRequestPayload,
@@ -34,19 +39,19 @@ const fetchIndividualDevicesApartments = domain.createEffect<
 const $individualDevicesApartmentsPagedData = domain
   .createStore<ApartmentByAddressFilterResponsePagedList | null>(null)
   .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
-  .reset(IndividualDevicesSearchGate.close);
+  .reset(clearSearchPayload);
 
-const $individualDeviceSearchRquestPayload = domain
-  .createStore<SearchIndividualDevicesRequestPayload | null>(null)
-  .on(setIndividualDeviceSearchRquestPayload, (_, data) => data)
-  .reset(IndividualDevicesSearchGate.close);
+const $individualDeviceSearchRequestPayload = domain
+  .createStore<SearchIndividualDevicesRequestPayload>(searchInitialValues)
+  .on(setIndividualDeviceSearchRequestPayload, (_, data) => data)
+  .reset(clearSearchPayload);
 
 const $housingsByFilter = domain
   .createStore<HousingByFilterResponse | null>(null)
   .on(fetchHousingsByFilter.doneData, (_, data) => data)
-  .reset(IndividualDevicesSearchGate.close);
+  .reset(clearSearchPayload);
 
-const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRquestPayload.map(
+const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
   (values) => {
     if (!(values?.City && values?.Street && values?.HouseNumber)) return null;
 
@@ -69,7 +74,7 @@ guard({
 });
 
 const $getIndividualDevices: Store<GetIndividualDevicesApartments | null> = combine(
-  $individualDeviceSearchRquestPayload,
+  $individualDeviceSearchRequestPayload,
   $housingsByFilter
 ).map(([searchPayload, housingsByFilter]) => {
   const apartmentId = housingsByFilter?.current?.id;
@@ -107,9 +112,11 @@ const $isIndividualDevicesApartmentsLoading =
 
 export const individualDevicesViewByAddressService = {
   inputs: {
-    setIndividualDeviceSearchRquestPayload,
+    setIndividualDeviceSearchRequestPayload,
+    clearSearchPayload,
   },
   outputs: {
+    $individualDeviceSearchRequestPayload,
     $housingsByFilter,
     $isHousingsByFilterLoading,
     $individualDevicesApartmentsPagedData,

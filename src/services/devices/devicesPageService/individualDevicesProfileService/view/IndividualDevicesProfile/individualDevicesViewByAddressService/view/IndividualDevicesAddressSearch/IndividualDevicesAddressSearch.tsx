@@ -14,41 +14,38 @@ import {
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 
 export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({
-  setIndividualDeviceSearchRquestPayload,
+  setIndividualDeviceSearchRequestPayload,
+  filters,
+  clearSearchPayload,
 }) => {
-  const [
-    initialValues,
-    setInitialValues,
-  ] = useState<SearchIndividualDevicesRequestPayload>({
-    City: '',
-    Street: '',
-    HouseNumber: '',
-    Apartment: '',
-    HouseCorpus: '',
-    Model: '',
-    SerialNumber: '',
-    MountPlace: '',
-    Resource: null,
-    ApartmentStatus: null,
-    ClosingReason: null,
-    ExpiresCheckingDateAt: null,
-    IsAlsoClosing: false,
-  });
-
-  const { values } = useFormik<SearchIndividualDevicesRequestPayload>({
-    initialValues,
-    onSubmit: () => {},
+  const {
+    values,
+    handleSubmit,
+    setValues,
+    setFieldValue,
+  } = useFormik<SearchIndividualDevicesRequestPayload>({
+    initialValues: filters,
+    onSubmit: (values) => {
+      console.log(values);
+      setIndividualDeviceSearchRequestPayload(values);
+    },
     enableReinitialize: true,
   });
 
-  useEffect(() => setIndividualDeviceSearchRquestPayload(values), [values]);
+  useEffect(() => setIndividualDeviceSearchRequestPayload(values), [values]);
+
+  const submitWrap = async (callback: () => Promise<any>) => {
+    await callback();
+    handleSubmit();
+  };
 
   return (
     <Wrapper>
       <IndividualDevicesExtendedSearch
-        handleApply={(values) =>
-          setInitialValues((prev) => ({ ...prev, ...values }))
-        }
+        handleClear={clearSearchPayload}
+        handleApply={(values) => {
+          submitWrap(() => setValues((prev) => ({ ...prev, ...values })));
+        }}
         devicesSearchType={DevicesSearchType.Address}
         values={values}
       >
@@ -69,14 +66,16 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
               apartment: values.Apartment,
             }}
             handleSubmit={(values) =>
-              setInitialValues((prev) => ({
-                ...prev,
-                City: values.city,
-                Street: values.street,
-                HouseNumber: values.house,
-                HouseCorpus: values.corpus,
-                Apartment: values.apartment,
-              }))
+              submitWrap(() =>
+                setValues((prev) => ({
+                  ...prev,
+                  City: values.city,
+                  Street: values.street,
+                  HouseNumber: values.house,
+                  HouseCorpus: values.corpus,
+                  Apartment: values.apartment,
+                }))
+              )
             }
             customTemplate={[
               {
@@ -86,7 +85,16 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
             ]}
           />
           <SearchInputsWrapper>
-            <Checkbox>Закрытые приборы</Checkbox>
+            <Checkbox
+              checked={values.IsAlsoClosing}
+              onChange={(event) =>
+                submitWrap(() =>
+                  setFieldValue('IsAlsoClosing', event.target.checked)
+                )
+              }
+            >
+              Закрытые приборы
+            </Checkbox>
           </SearchInputsWrapper>
         </SearchWrapper>
       </IndividualDevicesExtendedSearch>

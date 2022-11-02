@@ -21,17 +21,21 @@ export const IndividualDevicesViewByAddressContainer = () => {
   const isIndividualDevicesApartmentsLoading = useStore(
     outputs.$isIndividualDevicesApartmentsLoading
   );
+  const filters = useStore(outputs.$individualDeviceSearchRequestPayload);
 
-  const setIndividualDeviceSearchRquestPayload = useEvent(
-    inputs.setIndividualDeviceSearchRquestPayload
+  const setIndividualDeviceSearchRequestPayload = useEvent(
+    inputs.setIndividualDeviceSearchRequestPayload
   );
+  const clearSearchPayload = useEvent(inputs.clearSearchPayload);
 
   return (
     <Wrapper>
       <IndividualDevicesSearchGate />
       <IndividualDevicesAddressSearch
-        setIndividualDeviceSearchRquestPayload={
-          setIndividualDeviceSearchRquestPayload
+        clearSearchPayload={() => clearSearchPayload()}
+        filters={filters}
+        setIndividualDeviceSearchRequestPayload={
+          setIndividualDeviceSearchRequestPayload
         }
       />
       <IndividualDevicesApartmentsList
