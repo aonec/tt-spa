@@ -3,7 +3,10 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { DEVICES_LIST_BY_SERIAL_NUMBER_SIZE } from './individualDevicesViesBySerialNumberService.constants';
 import { individualDevicesViewBySerialNumberService } from './individualDevicesViesBySerialNumberService.model';
-import { PaginationSC } from './individualDevicesViesBySerialNumberService.styled';
+import {
+  PaginationSC,
+  Wrapper,
+} from './individualDevicesViesBySerialNumberService.styled';
 import { IndividualDeviceListBySerialNumber } from './view/IndividualDeviceListBySerialNumber';
 import { IndividualDevicesViewBySerialNumberSearch } from './view/SerialNumberSearch';
 
@@ -25,9 +28,9 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
         setFilter={setFilter}
       />
       {!isLoading && Boolean(devices.length) && (
-        <>
+        <Wrapper>
           <div>
-            <IndividualDeviceListBySerialNumber devices={devices}/>
+            <IndividualDeviceListBySerialNumber devices={devices} />
           </div>
           <PaginationSC
             defaultCurrent={1}
@@ -37,7 +40,7 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
             current={filter?.PageNumber}
             showSizeChanger={false}
           />
-        </>
+        </Wrapper>
       )}
       {isLoading && <Skeleton active />}
     </>

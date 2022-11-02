@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import {
   IndividualDeviceListResponseFromDevicePage,
   IndividualDeviceListResponseFromDevicePagePagedList,
@@ -30,17 +30,20 @@ const $searchPayload = domain
     Resource: null,
     ApartmentStatus: null,
     IsAlsoClosing: false,
-    PageSize: DEVICES_LIST_BY_SERIAL_NUMBER_SIZE,
     PageNumber: 1,
   })
-  .on(setFilter, (_, filter) => filter)
+  .on(setFilter, (_, filter) => ({ ...filter, PageNumber: 1 }))
   .on(changePageNumber, (filter, PageNumber) => ({ ...filter, PageNumber }));
 
 const $isLoading = getDevicesFx.pending;
 
-forward({
-  from: $searchPayload,
-  to: getDevicesFx,
+sample({
+  clock: $searchPayload,
+  fn: (payload) => ({
+    ...payload,
+    PageSize: DEVICES_LIST_BY_SERIAL_NUMBER_SIZE,
+  }),
+  target: getDevicesFx,
 });
 
 export const individualDevicesViewBySerialNumberService = {
