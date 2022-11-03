@@ -22,11 +22,13 @@ export const IndividualDevicesViewByAddressContainer = () => {
     outputs.$isIndividualDevicesApartmentsLoading
   );
   const filters = useStore(outputs.$individualDeviceSearchRequestPayload);
+  const pageNumber = useStore(outputs.$pageNumber);
 
   const setIndividualDeviceSearchRequestPayload = useEvent(
     inputs.setIndividualDeviceSearchRequestPayload
   );
   const clearSearchPayload = useEvent(inputs.clearSearchPayload);
+  const setPageNumber = useEvent(inputs.setPageNumber);
 
   return (
     <Wrapper>
@@ -51,7 +53,8 @@ export const IndividualDevicesViewByAddressContainer = () => {
         <Pagination
           pageSize={APARTMENTS_LIST_PAGE_SIZE}
           total={individualDevicesApartmentsPagedData?.totalItems}
-          current={1}
+          current={pageNumber}
+          onChange={setPageNumber}
           showSizeChanger={false}
         />
       )}

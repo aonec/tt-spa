@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
+  max-width: 250px;
 `;
 
 export const SerialNumber = styled.div`

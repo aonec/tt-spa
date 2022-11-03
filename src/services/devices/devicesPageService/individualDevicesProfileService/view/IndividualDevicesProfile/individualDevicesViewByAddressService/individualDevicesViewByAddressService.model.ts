@@ -26,6 +26,8 @@ const IndividualDevicesSearchGate = createGate();
 
 const clearSearchPayload = domain.createEvent();
 
+const setPageNumber = domain.createEvent<number>();
+
 const fetchHousingsByFilter = domain.createEffect<
   GetHousingByFilterRequestPayload,
   HousingByFilterResponse | null
@@ -51,6 +53,11 @@ const $individualDevicesApartmentsPagedData = domain
   .on(fetchIndividualDevicesApartments.doneData, (_, data) => data)
   .reset(clearSearchPayload, fetchIndividualDevicesApartments.failData);
 
+const $pageNumber = domain
+  .createStore<number>(1)
+  .on(setPageNumber, (_, pageNumber) => pageNumber)
+  .reset($individualDeviceSearchRequestPayload);
+
 const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
   (values) => {
     if (!(values?.City && values?.Street && values?.HouseNumber)) return null;
@@ -73,10 +80,11 @@ guard({
   target: fetchHousingsByFilter,
 });
 
-const $getIndividualDevices: Store<GetIndividualDevicesApartments | null> = combine(
+const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesApartments | null> = combine(
   $individualDeviceSearchRequestPayload,
-  $housingsByFilter
-).map(([searchPayload, housingsByFilter]) => {
+  $housingsByFilter,
+  $pageNumber
+).map(([searchPayload, housingsByFilter, pageNumber]) => {
   const apartmentId = housingsByFilter?.current?.id;
 
   if (!apartmentId) return null;
@@ -92,7 +100,7 @@ const $getIndividualDevices: Store<GetIndividualDevicesApartments | null> = comb
     'DeviceFilter.ExpiresCheckingDateAt':
       searchPayload?.ExpiresCheckingDateAt || undefined,
     'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
-    PageNumber: 1,
+    PageNumber: pageNumber,
     PageSize: APARTMENTS_LIST_PAGE_SIZE,
   };
 
@@ -100,7 +108,7 @@ const $getIndividualDevices: Store<GetIndividualDevicesApartments | null> = comb
 });
 
 guard({
-  clock: $getIndividualDevices,
+  clock: $getIndividualDevicesApartmentsRequestPayload,
   filter: (payload): payload is GetIndividualDevicesApartments =>
     Boolean(payload),
   target: fetchIndividualDevicesApartments,
@@ -114,6 +122,7 @@ export const individualDevicesViewByAddressService = {
   inputs: {
     setIndividualDeviceSearchRequestPayload,
     clearSearchPayload,
+    setPageNumber,
   },
   outputs: {
     $individualDeviceSearchRequestPayload,
@@ -121,6 +130,7 @@ export const individualDevicesViewByAddressService = {
     $isHousingsByFilterLoading,
     $individualDevicesApartmentsPagedData,
     $isIndividualDevicesApartmentsLoading,
+    $pageNumber,
   },
   gates: {
     IndividualDevicesSearchGate,
