@@ -6,6 +6,7 @@ import {
   AdditionalHomeownersCountWrapper,
   HomeownerNameWrapper,
 } from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
+import { IndividualDevicesListContainer, individualDevicesListService } from '../../../../individualDevicesListService';
 import {
   ApartmentNumber,
   Chevron,
@@ -13,10 +14,7 @@ import {
   Wrapper,
 } from './IndividualDevicesApartmentItem.styled';
 import { IndividualDevicesApartmentItemProps } from './IndividualDevicesApartmentItem.types';
-import {
-  IndividualDevicesListContainer,
-  individualDevicesListService,
-} from './individualDevicesListService';
+
 
 const { inputs, outputs } = individualDevicesListService;
 
