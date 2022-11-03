@@ -3,11 +3,12 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 2fr 1.5fr 0.5fr;
+  grid-template-columns: 1fr 2fr 1.5fr 0.7fr;
+  grid-gap: 15px;
 
   width: 100%;
   height: 48px;
-  padding: 8px 16px;
+  padding: 8px 10px;
   margin-top: 4px;
   position: relative;
   cursor: pointer;
@@ -30,11 +31,6 @@ export const ContextMenuWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-export const ArrowWrapper = styled.div<{ isActive: boolean }>`
-  transform: rotate(${({ isActive }) => (isActive ? '90deg' : '-90deg')});
-  transition: 0.2s;
 `;
 
 export const SerialNumberWrapper = styled.div`
@@ -64,9 +60,12 @@ export const HomeownerWrapper = styled.div`
 `;
 
 export const HomeownerAccountNumber = styled.div`
-  color: #272f5ae5;
-  max-width: 60px;
+  color: rgba(39, 47, 90, 0.6);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-align: right;
+  width: 100%;
+  max-width: 100px;
+  margin-right: 35px;
 `;

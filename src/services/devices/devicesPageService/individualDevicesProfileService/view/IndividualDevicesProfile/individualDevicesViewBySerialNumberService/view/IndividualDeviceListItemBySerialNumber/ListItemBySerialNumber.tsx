@@ -5,10 +5,10 @@ import {
   AdditionalHomeownersCountTextWrapper,
   AdditionalHomeownersCountWrapper,
 } from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
-import { ChevronIcon } from 'ui-kit/icons';
+import { individualDevicesListService } from '../../../individualDevicesListService';
+import { Chevron } from '../../../individualDevicesViewByAddressService/view/IndividualDevicesApartmentsList/IndividualDevicesApartmentItem/IndividualDevicesApartmentItem.styled';
 import {
   AddressWrapper,
-  ArrowWrapper,
   ContextMenuWrapper,
   GroupWrapper,
   HomeownerAccountNumber,
@@ -22,6 +22,8 @@ import {
   getHomeownerName,
 } from './ListItemBySerialNumber.utils';
 
+const { inputs, outputs } = individualDevicesListService;
+
 export const IndividualDeviceListItemBySerialNumber: FC<IndividualDeviceListItemBySerialNumberProps> = ({
   device,
 }) => {
@@ -32,14 +34,12 @@ export const IndividualDeviceListItemBySerialNumber: FC<IndividualDeviceListItem
 
   const { name, personalNumber } = getHomeownerName(homeowners || []) || {};
 
-  const isActive = false;
+  const isOpen = false;
 
   return (
     <Wrapper>
       <GroupWrapper>
-        <ArrowWrapper isActive={isActive}>
-          <ChevronIcon />
-        </ArrowWrapper>
+        <Chevron open={isOpen} />
         <SerialNumberWrapper>{serialNumber}</SerialNumberWrapper>
       </GroupWrapper>
       <GroupWrapper>

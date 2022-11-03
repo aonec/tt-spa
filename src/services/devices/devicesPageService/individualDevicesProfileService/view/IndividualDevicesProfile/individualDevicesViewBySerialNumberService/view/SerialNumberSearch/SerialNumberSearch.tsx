@@ -121,7 +121,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
               handleSubmit();
             }}
           >
-            Показать закрытые приборы
+            Закрытые приборы
           </CheckboxSC>
         </SearchFieldsWrapper>
       </IndividualDevicesExtendedSearch>

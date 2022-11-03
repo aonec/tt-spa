@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   height: 48px;
   transition: 0.2s;
   cursor: pointer;
+  color: #272f5ae5;
 
   padding: 0 10px;
 
@@ -31,6 +32,7 @@ export const PersonalAccountNumber = styled.div`
 `;
 
 export const Chevron = styled(ChevronDown)<{ open: boolean }>`
+  transition: 0.2s;
   transform: ${({ open }) => (open ? 'rotate(180deg)' : '')};
   cursor: pointer;
 `;
