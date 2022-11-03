@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isDeviceOpen: boolean }>`
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 2fr 1.5fr 0.7fr;
@@ -16,6 +16,9 @@ export const Wrapper = styled.div`
   &:first-child {
     margin-top: 0px;
   }
+
+  ${({ isDeviceOpen }) =>
+    isDeviceOpen && `box-shadow: 0px 6px 6px rgba(78, 93, 146, 0.16);`}
 
   &:hover {
     box-shadow: 0px 6px 6px rgba(78, 93, 146, 0.16);

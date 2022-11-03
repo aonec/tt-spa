@@ -14,5 +14,4 @@ export const Header = styled.div`
   grid-template-columns: ${individualDeviceGrid};
   color: rgba(39, 47, 90, 0.9);
   font-size: 12px;
-  box-shadow: inset 0px 4px 4px rgba(78, 93, 146, 0.16);
 `;

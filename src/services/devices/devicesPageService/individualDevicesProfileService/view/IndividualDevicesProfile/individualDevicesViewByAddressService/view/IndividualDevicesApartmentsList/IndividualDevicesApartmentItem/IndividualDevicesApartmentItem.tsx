@@ -40,7 +40,10 @@ export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemPr
 
   return (
     <>
-      <Wrapper onClick={() => apartmentId && toggleApartment(apartmentId)}>
+      <Wrapper
+        isApartmentOpen={isApartmentOpen}
+        onClick={() => apartmentId && toggleApartment(apartmentId)}
+      >
         <Chevron open={isApartmentOpen} />
         <ApartmentNumber>
           №{individualDevicesApartment?.apartmentNumber}

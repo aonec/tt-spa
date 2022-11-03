@@ -46,15 +46,18 @@ export const IndividualDeviceListItemBySerialNumber: FC<IndividualDeviceListItem
 
   return (
     <>
-      <Wrapper onClick={() => device.id && toggleDevice(device.id)}>
+      <Wrapper
+        isDeviceOpen={isDeviceOpen}
+        onClick={() => device.id && toggleDevice(device.id)}
+      >
         <GroupWrapper>
           <Chevron open={isDeviceOpen} />
           <SerialNumberWrapper>{serialNumber}</SerialNumberWrapper>
         </GroupWrapper>
         <GroupWrapper>
-          <AddressWrapper>
-            <Tooltip title={addressString}>{addressString}</Tooltip>
-          </AddressWrapper>
+          <Tooltip title={addressString}>
+            <AddressWrapper>{addressString}</AddressWrapper>
+          </Tooltip>
         </GroupWrapper>
         <GroupWrapper>
           <HomeownerWrapper>{name}</HomeownerWrapper>
