@@ -10,6 +10,7 @@ export const Wrapper = styled.div<{ clickable: boolean }>`
   overflow: hidden;
   max-width: 250px;
   cursor: pointer;
+  transition: 0.2s;
 
   &:hover {
     div {
