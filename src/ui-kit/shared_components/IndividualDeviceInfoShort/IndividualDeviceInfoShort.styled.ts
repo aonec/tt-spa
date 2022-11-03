@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 const clickableMixin = css`
-  cursor: pointer;
   color: #189ee9 !important;
 `;
 
@@ -10,6 +9,7 @@ export const Wrapper = styled.div<{ clickable: boolean }>`
   align-items: center;
   overflow: hidden;
   max-width: 250px;
+  cursor: pointer;
 
   &:hover {
     div {
