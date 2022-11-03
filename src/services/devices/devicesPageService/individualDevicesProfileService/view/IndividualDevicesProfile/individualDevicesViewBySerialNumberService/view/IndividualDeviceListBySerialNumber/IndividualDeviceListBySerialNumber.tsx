@@ -7,7 +7,7 @@ export const IndividualDeviceListBySerialNumber: FC<IndividualDeviceListBySerial
   devices,
 }) => {
   const list = devices.map((device) => (
-    <IndividualDeviceListItemBySerialNumber device={device} />
+    <IndividualDeviceListItemBySerialNumber key={device.id} device={device} />
   ));
   return <Wrapper>{list}</Wrapper>;
 };
