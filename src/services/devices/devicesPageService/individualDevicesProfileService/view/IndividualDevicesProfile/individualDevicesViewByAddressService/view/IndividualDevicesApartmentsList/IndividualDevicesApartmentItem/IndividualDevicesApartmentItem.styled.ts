@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   height: 48px;
   transition: 0.2s;
   cursor: pointer;
-  z-index: 3;
 
   padding: 0 10px;
 

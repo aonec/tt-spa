@@ -56,7 +56,10 @@ export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemPr
           )}
         </HomeownerNameWrapper>
         <PersonalAccountNumber>{personalAccountNumber}</PersonalAccountNumber>
-        <ContextMenuButton size="small" />
+        <ContextMenuButton
+          menuButtons={[{ title: 'Открыть квартиру', onClick: () => {} }]}
+          size="small"
+        />
       </Wrapper>
       {isApartmentOpen && (
         <IndividualDevicesListContainer
