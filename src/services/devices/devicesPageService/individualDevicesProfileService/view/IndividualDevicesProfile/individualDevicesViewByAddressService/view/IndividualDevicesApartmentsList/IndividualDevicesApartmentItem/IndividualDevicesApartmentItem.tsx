@@ -22,6 +22,7 @@ const { inputs, outputs } = individualDevicesListService;
 
 export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemProps> = ({
   individualDevicesApartment,
+  housingStockId,
 }) => {
   const openedApartmentId = useStore(outputs.$openedBlockId);
 
@@ -59,13 +60,12 @@ export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemPr
           )}
         </HomeownerNameWrapper>
         <PersonalAccountNumber>{personalAccountNumber}</PersonalAccountNumber>
-        <ContextMenuButton
-          menuButtons={[{ title: 'Открыть квартиру', onClick: () => {} }]}
-          size="small"
-        />
+        <ContextMenuButton size="small" />
       </Wrapper>
       {isApartmentOpen && (
         <IndividualDevicesListContainer
+          apartmentId={individualDevicesApartment.apartmentId}
+          housingStockId={housingStockId}
           devicesIds={individualDevicesApartment.deviceIds || []}
         />
       )}

@@ -77,7 +77,11 @@ export const IndividualDeviceListItemBySerialNumber: FC<IndividualDeviceListItem
         </ContextMenuWrapper>
       </Wrapper>
       {isDeviceOpen && device.id && (
-        <IndividualDevicesListContainer devicesIds={[device.id]} />
+        <IndividualDevicesListContainer
+          apartmentId={device.apartmentId}
+          housingStockId={device.housingStockId}
+          devicesIds={[device.id]}
+        />
       )}
     </>
   );

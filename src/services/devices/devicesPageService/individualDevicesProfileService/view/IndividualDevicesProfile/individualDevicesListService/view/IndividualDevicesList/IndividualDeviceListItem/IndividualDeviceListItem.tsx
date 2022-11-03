@@ -1,6 +1,7 @@
 import { Tooltip } from 'antd';
 import moment from 'moment';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { SearchIcon } from 'ui-kit/icons';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoShort } from 'ui-kit/shared_components/IndividualDeviceInfoShort';
@@ -17,12 +18,24 @@ import { IndividualDeviceListItemProps } from './IndividualDeviceListItem.types'
 
 export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   device,
+  housingStockId,
+  apartmentId,
 }) => {
+  const history = useHistory();
+
+  const handleClickDevice = useCallback(
+    () => history.push(`/objects/${housingStockId}/apartments/${apartmentId}`),
+    [history, housingStockId, apartmentId]
+  );
+
   return (
     <Wrapper>
       <Tooltip title={`${device.serialNumber || ''} (${device.model || ''})`}>
         <div>
-          <IndividualDeviceInfoShort device={device} />
+          <IndividualDeviceInfoShort
+            onClick={handleClickDevice}
+            device={device}
+          />
         </div>
       </Tooltip>
       <DeviceStatusWrapper>

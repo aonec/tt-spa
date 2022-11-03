@@ -10,9 +10,10 @@ import { IndividualDeviceInfoShortProps } from './IndividualDeviceInfoShort.type
 
 export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
   device,
+  onClick,
 }) => {
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick} clickable={Boolean(onClick)}>
       <IconWrapper>
         {device.resource && <ResourceIconLookup resource={device.resource} />}
       </IconWrapper>

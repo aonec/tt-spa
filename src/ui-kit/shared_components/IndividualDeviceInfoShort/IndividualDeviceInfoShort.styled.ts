@@ -1,10 +1,21 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div`
+const clickableMixin = css`
+  cursor: pointer;
+  color: #189ee9 !important;
+`;
+
+export const Wrapper = styled.div<{ clickable: boolean }>`
   display: flex;
   align-items: center;
   overflow: hidden;
   max-width: 250px;
+
+  &:hover {
+    div {
+      ${({ clickable }) => clickable && clickableMixin}
+    }
+  }
 `;
 
 export const SerialNumber = styled.div`
