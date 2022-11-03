@@ -23,6 +23,7 @@ import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.
 import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
 import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/SelectSwitchDeviceTypeModal';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
@@ -42,6 +43,10 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
 
   const onDeleteIndividualDevice = useEvent(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
+  );
+
+  const openEditReadingsHistoryModal = useEvent(
+    editReadingsHistoryService.inputs.openModal
   );
 
   const managementFirmUser = useStore($currentManagingFirmUser);
@@ -102,6 +107,10 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         color: Color.danger,
         onClick: () => onDeleteIndividualDevice(device),
       },
+      {
+        title: 'Ввести показание за произвольный период',
+        onClick: () => openEditReadingsHistoryModal(device),
+      },
     ],
     [
       device,
@@ -110,6 +119,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       onDeleteIndividualDevice,
       isDeviceClosed,
       managementFirmUser,
+      openEditReadingsHistoryModal,
     ]
   );
 
