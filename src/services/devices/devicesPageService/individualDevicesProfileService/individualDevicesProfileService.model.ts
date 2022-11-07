@@ -6,7 +6,7 @@ const domain = createDomain('individualDevicesProfileService');
 const setDevicesSearchType = domain.createEvent<DevicesSearchType>();
 
 export const $devicesSearchType = domain
-  .createStore<DevicesSearchType>(DevicesSearchType.Address)
+  .createStore<DevicesSearchType>(DevicesSearchType.SearialNumber)
   .on(setDevicesSearchType, (_, type) => type);
 
 export const individualDevicesProfileService = {
