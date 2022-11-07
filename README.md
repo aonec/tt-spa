@@ -14,7 +14,6 @@
   - editNodeService
     - editNodeService.models.ts
     - editNodeService.conainer.ts
-    - editNodeService.relations.ts
     - editNodeService.types.ts
     - editNodeService.container.ts
     - editNodeService.api.ts
@@ -39,22 +38,22 @@ import { createDomain, guard } from 'effector';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
-const deleteIndividualDeviceDomain = createDomain(
+const domain = createDomain(
   'deleteIndividualDeviceService'
 );
 
-const $currentIndividualDevice = deleteIndividualDeviceDomain.createStore<IndividualDeviceListItemResponse | null>(
+const $currentIndividualDevice = domain.createStore<IndividualDeviceListItemResponse | null>(
   null
 );
 
 const $isModalOpen = $currentIndividualDevice.map(Boolean);
 
-const deleteDeviceModalOpened = deleteIndividualDeviceDomain.createEvent<IndividualDeviceListItemResponse>();
-const deleteDeviceModalClosed = deleteIndividualDeviceDomain.createEvent();
+const deleteDeviceModalOpened = domain.createEvent<IndividualDeviceListItemResponse>();
+const deleteDeviceModalClosed = domain.createEvent();
 
-const acceptDeleteDevice = deleteIndividualDeviceDomain.createEvent();
+const acceptDeleteDevice = domain.createEvent();
 
-const deleteIndividualDeviceFx = deleteIndividualDeviceDomain.createEffect<
+const deleteIndividualDeviceFx = domain.createEffect<
   number,
   void
 >(deleteDevice);
@@ -85,20 +84,6 @@ export const deleteIndividualDeviceService = {
     $loading: deleteIndividualDeviceFx.pending,
   },
 };
-```
-
-### deleteIndividualDeviceService.relations.ts
-Описывются связи с внешними сервисами
-
-```ts
-import { forward } from 'effector';
-import { deleteIndividualDeviceService } from './deleteIndividualDeviceService.models';
-import { refetchIndividualDevices } from '../displayIndividualDevices';
-
-forward({
-  from: deleteIndividualDeviceService.inputs.deletingComplete,
-  to: refetchIndividualDevices,
-});
 ```
 
 ### deleteIndividualDeviceService.api.ts
@@ -143,4 +128,13 @@ export const DeleteIndividualDeviceModalContainer = () => {
     />
   );
 };
+```
+
+## Использование ttcodegen 
+
+### документация: [ttcodegen](https://www.npmjs.com/package/@pronix/ttcodegen)
+
+### Установка:
+```cmd
+npm i -g @pronix/ttcodegen
 ```

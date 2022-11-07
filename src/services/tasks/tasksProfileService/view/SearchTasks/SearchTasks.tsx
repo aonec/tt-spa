@@ -2,7 +2,11 @@ import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
+import {
+  EManagingFirmTaskFilterType,
+  ETaskEngineeringElement,
+  TaskGroupingFilter,
+} from 'myApi';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { InputSC } from '01/shared/ui/Fields';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
@@ -13,7 +17,6 @@ import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { SearchTasksProps } from './SearchTasks.types';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { initialValues } from 'services/devices/сhangeODPUService/view/ChangeODPUPage/ChangeODPUForm/ChangeODPUForm.constants';
 
 export const SearchTasks: FC<SearchTasksProps> = ({
   onSubmit,
@@ -109,6 +112,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
 
     lastGroupTypeRef.current = currentFilter?.GroupType;
   }, [currentFilter?.GroupType, lastGroupTypeRef, clearInput]);
+
   const isArchived = currentFilter?.GroupType === 'Archived';
   return (
     <ExtendedSearch
@@ -140,7 +144,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
         </>
       }
     >
-      <ExistingStreetsGate City={values.City}/>
+      <ExistingStreetsGate City={values.City} />
       <ExistingCitiesGate />
       <Wrapper>
         <InputSC

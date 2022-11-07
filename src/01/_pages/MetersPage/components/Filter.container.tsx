@@ -42,8 +42,11 @@ export const FilterContainer = () => {
     if (!apartment?.homeownerAccounts?.length) {
       return setQuestion('');
     }
+    const existingAccounts = apartment.homeownerAccounts.filter(
+      (account) => !Boolean(account.closedAt)
+    );
 
-    const homeownerName = apartment?.homeownerAccounts[0]?.name;
+    const homeownerName = existingAccounts[0]?.name;
 
     if (homeownerName && id) {
       setQuestion(homeownerName);

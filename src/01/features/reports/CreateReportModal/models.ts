@@ -44,9 +44,24 @@ export const form = createForm({
   },
 });
 
-forward({
-  from: reportsListService.inputs.openExistedReport,
-  to: form.setForm,
+sample({
+  clock: reportsListService.inputs.openExistedReport,
+  fn: (values) => {
+    const formValues = {
+      type: values.type as ReportType,
+      resources: values.resources
+        ? (JSON.parse(values.resources) as EResourceType[])
+        : [],
+      period: values.to ? moment(values.to) : null,
+      rangePeriod: [
+        values.from ? moment(values.from) : null,
+        values.to ? moment(values.to) : null,
+      ] as RangePeriod,
+    };
+
+    return formValues;
+  },
+  target: form.setForm,
 });
 
 const createReportFx = createReportDomain.createEffect<

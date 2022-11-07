@@ -14,7 +14,6 @@ import Owners from './components/Owners';
 import { Header, Information } from './components';
 
 // Получаем типовые функции по запросам к серверу
-import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 import { useAsync } from '../../hooks/useAsync';
 
 import { ApartmentGate } from '01/features/apartments/displayApartment/models';
@@ -46,7 +45,6 @@ const ApartmentProfile = () => {
   if (!data) return null;
 
   const apartment = data[0];
-  const devices = data[2];
 
   if (status === 'error') return 'ОШИБКА ЗАГРУЗКИ';
   if (status === 'loading') return <Loader show size="32" />;
@@ -60,12 +58,12 @@ const ApartmentProfile = () => {
   // Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
   const {
     id,
-    apartmentNumber,
     activeTaskIds,
     square,
     numberOfLiving,
     normativeNumberOfLiving,
     homeownerAccounts,
+    coldWaterRiserCount,
   } = apartment;
 
   const tasksNumber = activeTaskIds.length;
@@ -85,7 +83,9 @@ const ApartmentProfile = () => {
             editable={false}
           />
         </Route>
-
+        <Route path="/*/:apartmentId/homeowners" exact>
+          <Owners homeownerAccounts={homeownerAccounts} />
+        </Route>
         <Route path="/*/:apartmentId/actsJournal" exact>
           <ApartmentActsListContainer />
         </Route>
@@ -95,8 +95,8 @@ const ApartmentProfile = () => {
               square={square}
               numberOfLiving={numberOfLiving}
               normativeNumberOfLiving={normativeNumberOfLiving}
+              coldWaterRiserCount={coldWaterRiserCount}
             />
-            <Owners homeownerAccounts={homeownerAccounts} />
           </InformationWrapper>
         </Route>
         <CardsWrapper>

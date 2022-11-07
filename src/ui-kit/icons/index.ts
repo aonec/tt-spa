@@ -48,6 +48,9 @@ import { ReactComponent as SearchIcon } from './svg/search.svg';
 import { ReactComponent as ListIcon } from './svg/list.svg';
 import { ReactComponent as CellsIcon } from './svg/cells.svg';
 import { ReactComponent as PauseIcon } from './svg/pause.svg';
+import { ReactComponent as SputnikIcon } from './svg/sputnik.svg';
+import { ReactComponent as DubbedIcon } from './svg/dubbed.svg';
+import { ReactComponent as EyeIcon } from './svg/eye.svg';
 
 export {
   FinishIcon,
@@ -100,4 +103,7 @@ export {
   PauseIcon,
   ListIcon,
   SearchIcon,
+  SputnikIcon,
+  DubbedIcon,
+  EyeIcon,
 };

@@ -2709,6 +2709,9 @@ export interface HousingStockResponse {
   /** @format int32 */
   inspectedDay: number | null;
   address: HousingStockAddressResponse | null;
+
+  /** @format int32 */
+  numberOfTasks: number;
 }
 
 export interface HousingStockResponseSuccessApiResponse {
@@ -4203,21 +4206,7 @@ export interface ReportHeader {
   group?: string | null;
 }
 
-export interface ReportRequestHistoryResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format int32 */
-  userId: number;
-
-  /** @format date-time */
-  timeStamp: string;
-  reportName: EReportName;
-  reportNameText: string | null;
-  parameters: Record<string, string>;
-}
-
-export interface ReportRequestHistoryResponsePagedList {
+export interface ReportRequestHistoryPagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -4238,6 +4227,30 @@ export interface ReportRequestHistoryResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: ReportRequestHistoryResponse[] | null;
+
+  /** @format int32 */
+  totalActualReports: number | null;
+
+  /** @format int32 */
+  totalDeprecatedReports: number | null;
+
+  /** @format int32 */
+  totalReports: number | null;
+}
+
+export interface ReportRequestHistoryResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  userId: number;
+
+  /** @format date-time */
+  timeStamp: string;
+  reportName: EReportName;
+  reportNameText: string | null;
+  parameters: Record<string, string>;
+  isActual: boolean;
 }
 
 export interface ResourceDisconnectingCreateRequest {
@@ -10382,15 +10395,55 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Старший оператор</li>
      *
      * @tags Reports
+     * @name ReportsSoiReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/SoiReport
+     * @secure
+     */
+    reportsSoiReportList: (
+      query?: {
+        HouseManagementId?: string;
+        HousingStockId?: number;
+        Resource?: EResourceType;
+        From?: string;
+        To?: string;
+        NormativePerPerson?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/SoiReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li>
+     *
+     * @tags Reports
      * @name ReportsReportRequestsHistoryList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/ReportRequestsHistory
      * @secure
      */
-    reportsReportRequestsHistoryList: (params: RequestParams = {}) =>
-      this.request<ReportRequestHistoryResponsePagedList, ErrorApiResponse>({
+    reportsReportRequestsHistoryList: (
+      query?: {
+        ReportNameText?: string;
+        ReportName?: EReportName;
+        IsActual?: boolean;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ReportRequestHistoryPagedList, ErrorApiResponse>({
         path: `/api/Reports/ReportRequestsHistory`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,

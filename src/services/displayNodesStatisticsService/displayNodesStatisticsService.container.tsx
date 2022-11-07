@@ -43,17 +43,17 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
       <NodeInfoGate nodeId={nodeId} pipeCount={pipeCount} />
       <div>
         <Title>Статистика по объекту</Title>
+        <GraphFilterForm
+          currentGraphParam={graphType}
+          currentFilter={currentArhiveFilter}
+          paramsList={paramsList}
+          setGraphParam={setGraphType}
+          setArchiveFilter={setArchiveFilter}
+        />
 
         {isLoading && <Skeleton active />}
         {!isLoading && archiveData && archiveReadingExist && (
           <>
-            <GraphFilterForm
-              currentGraphParam={graphType}
-              currentFilter={currentArhiveFilter}
-              paramsList={paramsList}
-              setGraphParam={setGraphType}
-              setArchiveFilter={setArchiveFilter}
-            />
             <Wrapper>
               <GraphView
                 graphParam={graphType}

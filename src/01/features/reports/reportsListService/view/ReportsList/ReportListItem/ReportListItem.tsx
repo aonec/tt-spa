@@ -40,7 +40,6 @@ export const ReportListItem: FC<ReportListItemProps> = ({
             {
               title: 'Открыть отчет',
               onClick: () => {
-                console.log(parameters);
                 openExistedReport(parameters);
               },
             },

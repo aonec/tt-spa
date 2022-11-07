@@ -21,6 +21,12 @@ export const GraphFilter = styled.div`
   }
 `;
 
+export const ErrorsWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`;
+
 export const OpenedFilter = styled.div`
   background: #fff;
   width: 100%;
