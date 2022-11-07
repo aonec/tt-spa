@@ -100,6 +100,4 @@ export const privates: MenuFiltrationConfig = {
   [MenuType.SettingsAdministrator]: [ESecuredIdentityRoleName.Administrator],
 };
 
-export const hidden: MenuFiltrationConfig = {
-  [MenuType.Devices]: [ESecuredIdentityRoleName.Operator],
-};
+export const hidden: MenuFiltrationConfig = {};
