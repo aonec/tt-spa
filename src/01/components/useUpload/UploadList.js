@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 
 import { Icon } from 'components';
 
@@ -12,7 +11,7 @@ export const UploadList = ({
   loading = false,
   click = () => {},
 }) => {
-  return styled(styles)(
+  return (
     <ul>
       {files &&
         Object.values(files).map(({ name }) => (
@@ -40,55 +39,5 @@ export const UploadList = ({
 };
 
 UploadList.defaultProps = {
-  styles: css`
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      font-size: 14px;
-      line-height: 16px;
-    }
-
-    li {
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-gap: 8px;
-      align-items: center;
-      margin: 4px;
-    }
-
-    a,
-    button {
-      cursor: pointer;
-      color: inherit;
-    }
-
-    button {
-      display: inherit;
-      &:hover {
-        color: rgb(var(--error));
-      }
-    }
-
-    a:hover {
-      color: rgb(var(--primary));
-    }
-
-    load,
-    span {
-      cursor: wait;
-    }
-
-    load {
-      animation: spin 1000ms infinite linear;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  `,
+  styles: {},
 };

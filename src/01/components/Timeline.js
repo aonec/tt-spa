@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 
 import { formatTime, date } from '01/servises/date';
 
@@ -20,16 +19,7 @@ export const Timeline = ({
   const time = new Date(expectedCompletionTime) - Date.now();
   const task = formatTime(time);
   const before = date(expectedCompletionTime).short;
-  return styled(styles)`
-    line {
-      width: ${percent};
-      background-color: ${color};
-    }
-
-    time::before {
-      display: ${showTitle ? 'block' : 'none'};
-    }
-  `(
+  return (
     <div {...props}>
       <timeline>
         <line as="span" />

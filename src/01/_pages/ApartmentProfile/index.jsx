@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
-import styled from 'reshadow/macro';
-import styledComponents from 'styled-components';
-import { grid } from '01/r_comp';
 import { Loader } from '01/components/Loader';
 import {
   getApartment,
@@ -68,7 +65,7 @@ const ApartmentProfile = () => {
 
   const tasksNumber = activeTaskIds.length;
 
-  return styled(grid)(
+  return (
     <>
       <GoBack />
       <ApartmentGate id={Number(apartmentId)} />

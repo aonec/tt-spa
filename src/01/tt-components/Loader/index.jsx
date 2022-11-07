@@ -1,9 +1,8 @@
 import React from 'react';
-import styled, { css, use } from 'reshadow/macro';
 import Icon from '../Icon';
 
 export const Loader = ({ styles, size, center, ...props }) => {
-  return styled(styles)(
+  return (
     <div {...props} {...use({ center })}>
       <Icon icon="replacement" size={size} />
     </div>

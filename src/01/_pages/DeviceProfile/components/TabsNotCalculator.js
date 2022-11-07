@@ -1,10 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
 import { NavLink, useRouteMatch } from 'react-router-dom';
-
-import { tabs } from '01/r_comp';
 
 const tabItems = [
   ['Общая информация', ''],
@@ -16,7 +13,7 @@ export const TabsNotCalculator = React.memo(() => {
   const { url } =
     useRouteMatch('/*/*/devices/(\\d+)/') ||
     useRouteMatch('/housingMeteringDevices/(\\d+)');
-  return styled(tabs)(
+  return (
     <tabs>
       {tabItems.map((t) => (
         <NavLink

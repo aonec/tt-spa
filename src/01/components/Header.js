@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 
 export const Header = ({
   styles,
@@ -9,7 +8,7 @@ export const Header = ({
   title = 'Заголовок',
   loading = false,
 }) => {
-  if (loading) return styled(styles)(<header>loaing</header>);
+  if (loading) return <header>loaing</header>;
 
   switch (page) {
     case 'tasks':
@@ -25,13 +24,5 @@ export const Header = ({
 };
 
 Header.defaultProps = {
-  styles: css`
-    header {
-      display: grid;
-      grid-template-rows: 48px 16px;
-      grid-row-gap: 8px;
-      align-items: center;
-      padding: 8px;
-    }
-  `,
+  styles: {},
 };

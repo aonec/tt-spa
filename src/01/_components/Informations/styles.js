@@ -1,7 +1,5 @@
 /* eslint-disable */
 
-import { css } from 'reshadow/macro';
-
 export const styles = css`
   information {
     display: grid;

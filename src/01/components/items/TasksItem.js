@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 import { Icon } from '01/components/Icon';
 import { date } from '01/servises/date';
 import { Timeline } from '01/components/Timeline';
@@ -20,7 +19,7 @@ export const TasksItem = ({
   device,
   path,
 }) => {
-  return styled(styles)(
+  return (
     <item>
       <header as="Link" to={path + id}>
         <h4>{currentStage ? currentStage.name : name}</h4>

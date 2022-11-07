@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
-import styled from 'reshadow/macro';
 
 import { Loader } from '01/components';
 import * as style from '_reshadow';
@@ -29,19 +28,7 @@ export const Apartments = React.memo(
       }
     }, [loading]);
 
-    return styled(style.item)`
-      item {
-        grid-template-columns: 1fr 2fr 0.5fr 0.5fr;
-        border-bottom: 1px solid var(--frame);
-      }
-      apartments {
-        display: grid;
-        height: fit-content;
-      }
-      Loader {
-        margin: 0 auto;
-      }
-    `(
+    return (
       <Route path={path} exact>
         <apartments>
           <h2>Список квартир</h2>

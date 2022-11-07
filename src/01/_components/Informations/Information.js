@@ -1,17 +1,7 @@
-/* eslint-disable */
-
-import React from 'react';
-import styled from 'reshadow/macro';
-
 import { Loader } from '01/components/Loader';
-import { information } from '01/r_comp';
 
 export const Information = ({ list = [], loading = true, ...props }) => {
-  return styled(information)`
-    Loader {
-      justify-self: center;
-    }
-  `(
+  return (
     <information {...props}>
       <h2>Общая информация</h2>
       <Loader show={loading} size="32">

@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { use, css } from 'reshadow/macro';
 
 import { Icon } from '01/components/Icon';
 import { Loader } from '01/components';
@@ -20,15 +19,7 @@ export const SelectList = ({
   const selectList = React.useRef();
 
   if (loading)
-    return styled(styles)`
-      select_list {
-        display: grid;
-        place-content: center;
-      }
-      select_list[|show] {
-        min-height: calc(1 * var(--h));
-      }
-    `(
+    return (
       <select_list {...use({ show })} tabIndex="0" {...props}>
         <Loader show={loading} size="32" />
       </select_list>
@@ -62,11 +53,7 @@ export const SelectList = ({
     ...props,
   };
 
-  return styled(styles)`
-    select_list[|show] {
-      min-height: ${`calc(${len} * var(--h))`};
-    }
-  `(
+  return (
     <select_list {...use({ show })} {...listProps}>
       {!list?.length && <empty>Нет данных</empty>}
       {list?.map(({ name, icon, id }, i) => (
@@ -91,59 +78,5 @@ export const SelectList = ({
 };
 
 SelectList.defaultProps = {
-  styles: css`
-    select_list {
-      outline: 0;
-      background-color: #fff;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      padding: 0 var(--pdng);
-      color: var(--main-80);
-      height: 0;
-      position: absolute;
-      min-width: max-content;
-      width: 100%;
-      top: 100%;
-      display: grid;
-      z-index: 50;
-    }
-
-    empty {
-      place-self: center;
-    }
-
-    select_item {
-      height: var(--h);
-      padding: 8px;
-      border-bottom: 1px solid var(--frame);
-      position: relative;
-      display: flex;
-      align-items: center;
-      &::before {
-        content: '';
-        position: absolute;
-        z-index: 0;
-        top: 0;
-        left: -16px;
-        right: -16px;
-        bottom: 0;
-        background-color: transparent;
-      }
-      &:hover,
-      &[|focus],
-      &[|checked] {
-        color: #fff;
-        &::before {
-          background-color: var(--active);
-        }
-      }
-    }
-
-    span,
-    Icon {
-      position: relative;
-      margin-left: 8px;
-    }
-  `,
+  styles: {},
 };

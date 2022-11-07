@@ -1,5 +1,4 @@
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 import { Loader } from '01/components/Loader';
 import { HeaderWrap } from '../../../_components/Headers';
 import ModalCalculator from './Modals/AddCalculator';
@@ -8,24 +7,6 @@ import ModalCommonReport from './Modals/CommonReport';
 import { MenuButtonTT } from '../../../tt-components';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-
-const styles = css`
-  h {
-    display: grid;
-    grid-template-rows: 48px 16px;
-    grid-gap: 8px;
-    align-items: center;
-  }
-
-  h_title {
-    font-size: 32px;
-    font-weight: 300;
-  }
-
-  h_subtitle {
-    opacity: 0.8;
-  }
-`;
 
 export const Header = React.memo(
   ({ 0: title, 1: subtitle, setCommonReport, commonReport, object }) => {
@@ -58,7 +39,7 @@ export const Header = React.memo(
       },
     ];
 
-    return styled(styles)(
+    return (
       <h>
         <HeaderWrap
           style={{

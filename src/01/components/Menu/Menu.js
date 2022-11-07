@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { menu as style } from '01/styles/menu';
 import { Icon } from '01/components/Icon';
 import { useMenu } from './useMenu';
 import { Space } from '01/shared/ui/Layout/Space/Space';

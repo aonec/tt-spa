@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { use } from 'reshadow/macro';
 import { SelectField } from './SelectField';
 import { SelectList } from './SelectList';
 import t from 'prop-types';
@@ -20,31 +19,8 @@ export const Select = ({
   React.useEffect(() => {
     if (!loading) getSelectData(checked);
   }, [checked]);
-  return styled`
-    select_wraper {
-      --active: var(--primary-100);
-      --h: var(--h-norm);
-      --pdng: 8px;
-      position: relative;
-      color: var(--main-80);
-      cursor: pointer;
-      &[|big] {
-        font-size: 16px;
-        line-height: 2em;
-        --h: var(--h-big);
-        //width: 100%;
-      }
-    }
-
-    label {
-      color: var(--main-60);
-      font-weight: 500;
-      margin-bottom: 8px;
-      display: inline-block;
-      line-height: 16px;
-    }
-  `(
-    <select_wraper {...use({ big })} {...props}>
+  return (
+    <select_wraper {...props}>
       {labelText && <label>{labelText}</label>}
       <SelectList
         onCheck={setChecked}
@@ -61,7 +37,6 @@ export const Select = ({
         list={list}
         checkList={checked}
         placeholder={placeholder}
-        show={showList}
         setShow={setShowList}
       />
     </select_wraper>

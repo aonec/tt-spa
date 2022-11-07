@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 
 import { Icon } from '01/components/Icon';
 
@@ -11,7 +10,7 @@ export const Device = ({
   ...props
 }) => {
   if (!model) return null;
-  return styled(styles)(
+  return (
     <device {...props}>
       <Icon {...getDeviceIconProps(resource)} />
       {model} ({serialNumber})
@@ -20,15 +19,7 @@ export const Device = ({
 };
 
 Device.defaultProps = {
-  styles: css`
-    device {
-      display: inline-flex;
-      align-items: center;
-    }
-    Icon {
-      margin-right: 8px;
-    }
-  `,
+  styles: {},
 };
 
 function getDeviceIconProps(resource) {

@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 import { Loader, Icon } from '01/components';
 
 const styles = css`
@@ -35,7 +34,7 @@ export const UploadButton = ({
     e.target.value = null;
   };
 
-  return styled(styles)(
+  return (
     <upload as="label" {...props}>
       {text}
       <Loader show={loading}>
@@ -45,4 +44,3 @@ export const UploadButton = ({
     </upload>
   );
 };
-

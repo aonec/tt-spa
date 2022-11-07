@@ -1,9 +1,7 @@
 import React from 'react';
-import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.scss';
 import '01/css/styles.css';
-import { app } from '01/styles/app';
 import { Logotip } from '01/components';
 import moment from 'moment';
 import { Provider } from 'react-redux';
@@ -74,7 +72,7 @@ const Internal = () => {
 
   const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   const ObjectIsOpen = objectProfileService.gates.ObjectGroupIsOpen;
-  return styled(app)(
+  return (
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/logout" render={() => 'logout'} />

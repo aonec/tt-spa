@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css, use } from 'reshadow/macro';
 
 import { Icon } from '01/components/Icon';
 
@@ -31,7 +30,7 @@ export const SelectField = ({
         </>
       );
 
-  return styled(styles)(
+  return (
     <field
       {...props}
       ref={field}
@@ -45,35 +44,5 @@ export const SelectField = ({
 };
 
 SelectField.defaultProps = {
-  styles: css`
-    field {
-      outline: 0;
-      min-height: var(--h);
-      border: 1px solid var(--frame);
-      border-radius: 4px;
-      padding: 8px var(--pdng);
-      display: flex;
-      & > Icon {
-        align-self: center;
-        margin-left: auto;
-      }
-
-      &[|show] {
-        border-color: var(--active);
-        & > Icon {
-          transform: rotate(180deg);
-        }
-      }
-    }
-
-    content {
-      padding: 0 8px;
-      display: flex;
-      align-items: center;
-    }
-
-    Icon {
-      margin-right: 8px;
-    }
-  `,
+  styles: {},
 };

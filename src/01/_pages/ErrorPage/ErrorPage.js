@@ -1,9 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled from 'reshadow/macro';
 import { useParams } from 'react-router-dom';
-import { input, button } from '../../r_comp';
 // import { Tabs } from './components/Tabs'
 
 import './ErrorPage.css';
@@ -13,7 +11,7 @@ const buttonHandler = () => {
 
 export const ErrorPage = () => {
   const params = useParams();
-  return styled(button)(
+  return (
     <div className="error-page">
       <h1 className="error-page__title title-40">Ресурсы не найдены</h1>
       <button

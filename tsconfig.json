@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -9,14 +8,14 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "noFallthroughCasesInSwitch": true
+    "jsx": "react-jsx",
+    "baseUrl": "src",
   },
-  "include": ["src", "src/01/features/nodes/nodeArchiveService/searchNodeArchiveFiltersService/.tsx"],
-  "typeRoots": ["../node_modules/@types", "../@types"]
+  "include": ["src"],
 }

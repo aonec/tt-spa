@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 import t from 'prop-types';
 import { Icon } from '01/components/Icon';
 
@@ -22,7 +21,7 @@ const style = css`
 `;
 
 export const Loader = ({ children = null, show = false, ...props }) => {
-  const loader = styled(style)(<Icon icon="replacement" {...props} />);
+  const loader = <Icon icon="replacement" {...props} />;
   return show ? loader : children;
 };
 

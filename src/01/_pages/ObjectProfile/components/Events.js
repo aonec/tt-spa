@@ -1,53 +1,12 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 import { useHistory } from 'react-router-dom';
 import { Loader, Icon } from '01/components';
-const styles = css`
-  e_list,
-  e_item {
-    display: grid;
-    grid-gap: 16px;
-    align-items: center;
-  }
-
-  e_item {
-    padding: 8px;
-    grid-row-gap: 8px;
-    cursor: pointer;
-    &:hover {
-      color: var(--primary-100);
-    }
-
-    & e_title,
-    & e_name {
-      grid-column: 1 / -1;
-    }
-  }
-
-  e_name {
-    opacity: 0.45;
-  }
-
-  timer,
-  perp {
-    display: inline-flex;
-    opacity: 0.6;
-  }
-
-  timer_text {
-    margin: 0 4px;
-  }
-
-  Icon {
-    margin-right: 8px;
-  }
-`;
 
 export const Events = ({ title = '', loading = true, items = [] }) => {
   const { push } = useHistory();
-  return styled(styles)(
+  return (
     <section>
       <h2>{title}</h2>
       <e_list>

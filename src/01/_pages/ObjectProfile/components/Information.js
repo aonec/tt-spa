@@ -1,19 +1,11 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { use } from 'reshadow/macro';
 import { useHistory } from 'react-router-dom';
-
-import { Loader } from '01/components/Loader';
-import { information } from '01/r_comp';
 
 export const Information = ({ list = [], loading = true, ...props }) => {
   const { push } = useHistory();
-  return styled(information)`
-    Loader {
-      justify-self: center;
-    }
-  `(
+  return (
     <information {...props}>
       <h2>Общая информация</h2>
       {/* <Loader show={loading} size="32"> */}

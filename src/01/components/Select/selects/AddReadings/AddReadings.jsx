@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import * as s from '01/r_comp';
-import styled from 'reshadow/macro';
 import { getDevicesByApartment } from '../../../../_api/readings_page';
 import DeviceReadingForm from './DeviceReadingForm/DeviceReadingForm';
 import { formReadingsToPush } from '../../../../utils/formReadingsToPush';
@@ -42,7 +40,7 @@ const AddReadings = ({ apartmentId, addReadings, readingsBlocked }) => {
     />
   ));
 
-  return styled(s.input)(
+  return (
     <div style={{ gridArea: 'ar' }}>
       <input_frame data-disabled data-big style={{ marginBottom: 30 }}>
         <input disabled value={'Ввод показаний'} />

@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { Route, useHistory, useRouteMatch } from 'react-router-dom';
-import styled, { css } from 'reshadow/macro';
 
 import { Icon } from '01/components/Icon';
-import { button } from '01/r_comp';
 
 const hb = css`
   hb {
@@ -32,7 +30,7 @@ export const HeaderBlock = ({
 }) => {
   const { push } = useHistory();
   const { url } = useRouteMatch();
-  return styled(hb)(
+  return (
     <hb {...props}>
       {loader && 'loader'}
       <Route path="/object/(\\d+)">

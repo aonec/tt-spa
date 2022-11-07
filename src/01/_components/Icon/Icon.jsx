@@ -1,5 +1,4 @@
 import React from 'react';
-import styledReshadow from 'reshadow/macro';
 import icons from '01/assets/icons.json';
 import styled from 'styled-components';
 import { ReactComponent as WaterIcon } from './icons/water.svg';
@@ -32,12 +31,7 @@ export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
     );
   }
 
-  return styledReshadow()`
-    svg {
-      width: ${`${size}px`};
-      height: ${`${size}px`};
-    }
-  `(
+  return (
     <svg viewBox="0 0 16 16" fill="currentColor" {...props}>
       <path as="path" clipRule="evenodd" fillRule="evenodd" d={icons[icon]} />
     </svg>

@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css, use } from 'reshadow/macro';
-
 import { formatTime, date } from '01/servises/date';
 import { Icon } from '01/components/Icon';
 
@@ -37,7 +35,7 @@ export const Timer = ({
   const stageTime = new Date(currentStage?.expectedCompletionTime) - Date.now();
   const stage = formatTime(stageTime);
   const before = date(currentStage?.expectedCompletionTime).short;
-  return styled(styles)(
+  return (
     <time {...props}>
       <Icon icon="timer" />
       Время на этап:

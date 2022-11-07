@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 
 import { Timeline } from '01/components/Timeline';
 import { Timer } from '01/components/Timer';
@@ -16,62 +15,13 @@ export const TaksIdHeader = ({
 }) => {
   // ----------loading-------------
   if (!name)
-    return styled(styles)(
+    return (
       <block>
         <h1>Загрузка...</h1>
       </block>
     );
 
-  // ---------create timer------------
-  const timer = styled()`
-    Timer {
-      color: var(--main-60);
-    }
-  `(
-    <Timer
-      {...{
-        currentStage,
-        creationTime,
-        expectedCompletionTime,
-        closingTime,
-      }}
-    />
-  );
-  // ------------archived--------------
-  if (closingTime) {
-    return styled(styles)(
-      <block>
-        <h1>{name}</h1>
-        {timer}
-      </block>
-    );
-  }
-
-  // -----------create timeline-------------
-  const timeline = styled`
-    Timeline {
-      color: var(--main-80);
-    }
-  `(
-    <Timeline
-      {...{
-        creationTime,
-        expectedCompletionTime,
-        closingTime,
-      }}
-      style={css`
-        time::before {
-          content: 'Время на задачу';
-          top: -100%;
-          margin-top: -8px;
-          color: var(--main-60);
-        }
-      `}
-    />
-  );
-
-  // -----------executing, observing-------------
-  return styled(styles)(
+  return (
     <block>
       <h1>{currentStage.name}</h1>
       <name>{name}</name>

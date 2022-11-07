@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React, { useReducer, useState } from 'react';
-import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
 import axios from '01/axios';
@@ -12,52 +11,6 @@ import { formQueryString } from '../../utils/formQueryString';
 import { useDebounce } from '../../hooks/useDebounce';
 import { sortObjects } from '../../utils/sortObjects';
 import Header from './ObjectsSearchForm/components/Header';
-
-const styles = css`
-  obj_item {
-    display: grid;
-    grid-template-columns: 2fr repeat(3, 0.5fr);
-    align-items: center;
-    width: 100%;
-    line-height: 32px;
-    padding: 8px;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-  }
-
-  span,
-  city,
-  task {
-    display: flex;
-    align-items: center;
-  }
-
-  city,
-  task {
-    opacity: 0.8;
-  }
-
-  task Icon {
-    color: var(--error);
-    margin-left: 16px;
-    margin-right: 8px;
-  }
-
-  aparts {
-    opacity: 0.6;
-    text-align: right;
-  }
-
-  LinkRow {
-    display: contents;
-
-    &:hover {
-      color: var(--primary-100);
-    }
-  }
-`;
 
 const initialState = {
   city: '',
@@ -82,7 +35,7 @@ export const StyledObject = ({
     </task>
   ) : null;
 
-  return styled(styles)(
+  return (
     <obj_item key={id}>
       <LinkRow to={`/meters/houses/${id}`}>
         <span>
