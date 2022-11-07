@@ -28,7 +28,7 @@ sample({
   clock: guard({
     source: $isLoading,
     clock: IndividualDevicesIds.state,
-    filter: (pending) => !pending,
+    filter: (isLoading) => !isLoading,
   }),
   target: fetchIndividualDevicesList,
 });
