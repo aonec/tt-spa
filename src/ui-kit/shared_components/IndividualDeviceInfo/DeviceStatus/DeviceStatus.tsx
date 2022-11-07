@@ -21,7 +21,7 @@ export const DeviceStatus: FC<DeviceStatusProps> = ({
 }) => {
   const statusText = isActive ? 'Активен' : 'Закрыт';
 
-  const closingReasonText = closingReasonLookup[closingReason];
+  const closingReasonText = closingReason && closingReasonLookup[closingReason];
 
   return (
     <Wrapper>

@@ -1,8 +1,9 @@
-import { HousingByFilterResponse } from 'myApi';
 import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';
 
 export type IndividualDevicesAddressSearchProps = {
-  setIndividualDeviceSearchRquestPayload: (
+  setIndividualDeviceSearchRequestPayload: (
     payload: SearchIndividualDevicesRequestPayload
   ) => void;
+  filters: SearchIndividualDevicesRequestPayload;
+  clearSearchPayload: () => void;
 };

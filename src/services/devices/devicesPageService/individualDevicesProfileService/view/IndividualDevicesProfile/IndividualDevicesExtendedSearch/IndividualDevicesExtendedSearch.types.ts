@@ -7,6 +7,6 @@ import {
 export type IndividualDevicesExtendedSearchProps = {
   devicesSearchType: DevicesSearchType;
   handleApply: (values: SearchIndividualDevicesParams) => void;
-  values?: SearchIndividualDevicesParams;
-  onChange?: (key: string, value: string | SelectValue) => void;
+  values: SearchIndividualDevicesParams;
+  handleClear?: () => void;
 };

@@ -1,15 +1,15 @@
+import { ChevronDown } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   height: 48px;
-  border-radius: 4px;
   transition: 0.2s;
   cursor: pointer;
 
   padding: 0 10px;
 
   display: grid;
-  grid-template-columns: 0.2fr 2fr 0.25fr 30px;
+  grid-template-columns: 15px 0.2fr 2fr 0.25fr 30px;
   align-items: center;
   grid-gap: 15px;
 
@@ -28,4 +28,9 @@ export const PersonalAccountNumber = styled.div`
   color: rgba(39, 47, 90, 0.6);
   text-align: right;
   padding-right: 25px;
+`;
+
+export const Chevron = styled(ChevronDown)<{ open: boolean }>`
+  transform: ${({ open }) => (open ? 'rotate(180deg)' : '')};
+  cursor: pointer;
 `;
