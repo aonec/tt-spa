@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { apartmentsListService } from './apartmentsListService.model';
 import { ApartmentsView } from './view/ApartmentsView';

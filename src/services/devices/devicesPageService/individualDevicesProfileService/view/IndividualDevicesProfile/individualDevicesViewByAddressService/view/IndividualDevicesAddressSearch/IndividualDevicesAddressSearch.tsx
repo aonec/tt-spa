@@ -1,10 +1,11 @@
-import { SelectSC } from '01/shared/ui/Fields';
 import { Checkbox } from 'antd';
-import React, { FC } from 'react';
+import { useFormik } from 'formik';
+import React, { FC, useEffect, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/individualDevicesProfileService/individualDevicesProfileService.types';
 import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExtendedSearch';
+import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';
 import {
   SearchInputsWrapper,
   SearchWrapper,
@@ -12,12 +13,44 @@ import {
 } from './IndividualDevicesAddressSearch.styled';
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 
-export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({}) => {
+export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({
+  setIndividualDeviceSearchRquestPayload,
+}) => {
+  const [
+    initialValues,
+    setInitialValues,
+  ] = useState<SearchIndividualDevicesRequestPayload>({
+    City: '',
+    Street: '',
+    HouseNumber: '',
+    Apartment: '',
+    HouseCorpus: '',
+    Model: '',
+    SerialNumber: '',
+    MountPlace: '',
+    Resource: null,
+    ApartmentStatus: null,
+    ClosingReason: null,
+    ExpiresCheckingDateAt: null,
+    IsAlsoClosing: false,
+  });
+
+  const { values } = useFormik<SearchIndividualDevicesRequestPayload>({
+    initialValues,
+    onSubmit: () => {},
+    enableReinitialize: true,
+  });
+
+  useEffect(() => setIndividualDeviceSearchRquestPayload(values), [values]);
+
   return (
     <Wrapper>
       <IndividualDevicesExtendedSearch
-        handleApply={console.log}
+        handleApply={(values) =>
+          setInitialValues((prev) => ({ ...prev, ...values }))
+        }
         devicesSearchType={DevicesSearchType.Address}
+        values={values}
       >
         <SearchWrapper>
           <AddressSearchContainer
@@ -28,7 +61,23 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
               SearchFieldType.Corpus,
               SearchFieldType.Apartment,
             ]}
-            handleSubmit={console.log}
+            initialValues={{
+              city: values.City,
+              street: values.Street,
+              house: values.HouseNumber,
+              corpus: values.HouseCorpus,
+              apartment: values.Apartment,
+            }}
+            handleSubmit={(values) =>
+              setInitialValues((prev) => ({
+                ...prev,
+                City: values.city,
+                Street: values.street,
+                HouseNumber: values.house,
+                HouseCorpus: values.corpus,
+                Apartment: values.apartment,
+              }))
+            }
             customTemplate={[
               {
                 fieldType: SearchFieldType.Street,
@@ -37,8 +86,6 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
             ]}
           />
           <SearchInputsWrapper>
-            <SelectSC placeholder="Ресурс"></SelectSC>
-            <SelectSC placeholder="Статус"></SelectSC>
             <Checkbox>Закрытые приборы</Checkbox>
           </SearchInputsWrapper>
         </SearchWrapper>

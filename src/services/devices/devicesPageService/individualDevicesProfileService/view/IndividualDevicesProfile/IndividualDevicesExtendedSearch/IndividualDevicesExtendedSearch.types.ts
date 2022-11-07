@@ -1,3 +1,4 @@
+import { SelectValue } from 'antd/lib/select';
 import {
   DevicesSearchType,
   SearchIndividualDevicesParams,
@@ -6,5 +7,6 @@ import {
 export type IndividualDevicesExtendedSearchProps = {
   devicesSearchType: DevicesSearchType;
   handleApply: (values: SearchIndividualDevicesParams) => void;
-  values?: SearchIndividualDevicesParams
+  values?: SearchIndividualDevicesParams;
+  onChange?: (key: string, value: string | SelectValue) => void;
 };

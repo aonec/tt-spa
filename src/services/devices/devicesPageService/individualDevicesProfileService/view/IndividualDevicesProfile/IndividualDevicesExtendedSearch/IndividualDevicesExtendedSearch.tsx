@@ -26,11 +26,13 @@ import {
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { SelectValue } from 'antd/lib/select';
 
 export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearchProps> = ({
   children,
   devicesSearchType,
   handleApply,
+  onChange,
   values: formValues = {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,11 +54,19 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
     };
   }, [formValues]);
 
-  const { values, setFieldValue } = useFormik<SearchIndividualDevicesParams>({
+  const {
+    values,
+    setFieldValue: setFormikValue,
+  } = useFormik<SearchIndividualDevicesParams>({
     initialValues,
     onSubmit: () => {},
     enableReinitialize: true,
   });
+
+  const setFieldValue = (key: string, value: string | SelectValue) => {
+    setFormikValue(key, value);
+    if (onChange) onChange(key, value);
+  };
 
   return (
     <ExtendedSearch
