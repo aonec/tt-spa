@@ -11,6 +11,8 @@ const {
 
 export const IndividualDevicesListContainer: FC<IndividualDevicesListContainerProps> = ({
   devicesIds,
+  housingStockId,
+  apartmentId,
 }) => {
   const isLoading = useStore(outputs.$isLoading);
   const individualDevicesList = useStore(outputs.$individualDevicesList);
@@ -21,6 +23,8 @@ export const IndividualDevicesListContainer: FC<IndividualDevicesListContainerPr
       <IndividualDevicesList
         isLoading={isLoading}
         individualDevicesList={individualDevicesList}
+        housingStockId={housingStockId}
+        apartmentId={apartmentId}
       />
     </>
   );

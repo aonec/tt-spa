@@ -10,7 +10,6 @@ export const StatusBar = styled.div<{ isActive: boolean }>`
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  transform: translateY(2px);
   background-color: ${({ isActive }) => (isActive ? '#00b300' : '#ff0000')};
 `;
 

@@ -1,10 +1,12 @@
 import { ChevronDown } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isApartmentOpen: boolean }>`
   height: 48px;
   transition: 0.2s;
   cursor: pointer;
+  color: #272f5ae5;
+  position: relative;
 
   padding: 0 10px;
 
@@ -13,9 +15,11 @@ export const Wrapper = styled.div`
   align-items: center;
   grid-gap: 15px;
 
+  ${({ isApartmentOpen }) =>
+    isApartmentOpen && 'box-shadow: 0px 6px 6px rgba(78, 93, 146, 0.16);'}
+
   &:hover {
-    box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
-      0px 8px 16px rgba(78, 93, 146, 0.08);
+    box-shadow: 0px 6px 6px rgba(78, 93, 146, 0.16);
   }
 `;
 
@@ -31,6 +35,7 @@ export const PersonalAccountNumber = styled.div`
 `;
 
 export const Chevron = styled(ChevronDown)<{ open: boolean }>`
+  transition: 0.2s;
   transform: ${({ open }) => (open ? 'rotate(180deg)' : '')};
   cursor: pointer;
 `;

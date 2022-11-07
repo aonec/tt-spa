@@ -2985,7 +2985,17 @@ export interface IndividualDeviceListItemResponsePagedListSuccessApiResponse {
 export interface IndividualDeviceListResponseFromDevicePage {
   /** @format int32 */
   id?: number;
+  model?: string | null;
   serialNumber?: string | null;
+
+  /** @format date-time */
+  closingDate?: string | null;
+
+  /** @format int32 */
+  housingStockId?: number;
+
+  /** @format int32 */
+  apartmentId?: number;
   address?: ApartmentAddress | null;
   homeowners?: HomeownerAccount[] | null;
 }
@@ -4292,6 +4302,16 @@ export interface Point {
   longitude?: number;
 }
 
+export interface ProblemDetails {
+  type?: string | null;
+  title?: string | null;
+
+  /** @format int32 */
+  status?: number | null;
+  detail?: string | null;
+  instance?: string | null;
+}
+
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
@@ -5558,6 +5578,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -5723,6 +5745,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -5836,7 +5860,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     apartmentsApartmentChecksDetail: (
       apartmentId: number,
-      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule; Skip?: number; Take?: number },
       params: RequestParams = {},
     ) =>
       this.request<ApartmentCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
@@ -6231,6 +6255,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -6277,6 +6303,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7314,6 +7342,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: OrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7606,6 +7636,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -7803,6 +7835,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -8053,7 +8087,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksExistingCitiesList: (
-      query?: { City?: string; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: {
+        City?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
@@ -8075,7 +8116,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksExistingStreetsList: (
-      query?: { Street?: string; City?: string; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: {
+        Street?: string;
+        City?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
@@ -8119,7 +8168,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksExistingStreetsWithHousingStockNumbersList: (
-      query?: { Street?: string; City?: string; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: {
+        Street?: string;
+        City?: string;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<StreetWithHousingStockNumbersResponsePagedListSuccessApiResponse, ErrorApiResponse>({
@@ -8498,8 +8555,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     devicesIndividualApartmentsList: (
-      query?: {
-        HousingStockId?: number;
+      query: {
+        HousingStockId: number;
         ApartmentNumber?: string;
         "DeviceFilter.Resource"?: EResourceType;
         "DeviceFilter.Model"?: string;
@@ -8511,6 +8568,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -8533,7 +8592,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     devicesIndividualDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<IndividualDeviceResponseFromDevicePageSuccessApiResponse, ErrorApiResponse>({
+      this.request<IndividualDeviceResponseFromDevicePageSuccessApiResponse, ProblemDetails | ErrorApiResponse>({
         path: `/api/Devices/Individual/${deviceId}`,
         method: "GET",
         secure: true,
@@ -8567,6 +8626,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -8720,6 +8781,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -9166,6 +9229,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -9291,6 +9356,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -9334,6 +9401,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -9376,7 +9445,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     nodesChecksDetail: (
       nodeId: number,
-      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule; Skip?: number; Take?: number },
       params: RequestParams = {},
     ) =>
       this.request<NodeCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
@@ -9755,7 +9824,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     organizationsList: (
-      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule; Skip?: number; Take?: number },
       params: RequestParams = {},
     ) =>
       this.request<OrganizationResponsePagedListSuccessApiResponse, ErrorApiResponse>({
@@ -9822,6 +9891,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -10512,7 +10583,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsCheckingDatesReportList: (
-      query?: { To?: string; From?: string; Resources?: EResourceType[] },
+      query: { To?: string; From?: string; Resources: EResourceType[] },
       params: RequestParams = {},
     ) =>
       this.request<File, ErrorApiResponse>({
@@ -10706,6 +10777,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -10738,6 +10811,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11198,6 +11273,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11245,6 +11322,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11552,6 +11631,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
+        Skip?: number;
+        Take?: number;
       },
       params: RequestParams = {},
     ) =>

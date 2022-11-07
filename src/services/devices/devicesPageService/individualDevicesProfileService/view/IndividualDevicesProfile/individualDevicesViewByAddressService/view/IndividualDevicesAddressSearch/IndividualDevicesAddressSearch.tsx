@@ -5,6 +5,7 @@ import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/individualDevicesProfileService/individualDevicesProfileService.types';
 import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExtendedSearch';
+import { CheckboxSC } from '../../../individualDevicesViewBySerialNumberService/view/SerialNumberSearch/SerialNumberSearch.styled';
 import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';
 import {
   SearchInputsWrapper,
@@ -82,7 +83,7 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
             ]}
           />
           <SearchInputsWrapper>
-            <Checkbox
+            <CheckboxSC
               checked={values.IsAlsoClosing}
               onChange={(event) =>
                 submitWrap(() =>
@@ -91,7 +92,7 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
               }
             >
               Закрытые приборы
-            </Checkbox>
+            </CheckboxSC>
           </SearchInputsWrapper>
         </SearchWrapper>
       </IndividualDevicesExtendedSearch>

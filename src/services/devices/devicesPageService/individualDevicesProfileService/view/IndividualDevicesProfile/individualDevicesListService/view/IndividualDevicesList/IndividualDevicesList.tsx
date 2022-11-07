@@ -7,6 +7,8 @@ import { IndividualDevicesListProps } from './IndividualDevicesList.types';
 export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   isLoading,
   individualDevicesList,
+  apartmentId,
+  housingStockId,
 }) => {
   return (
     <Wrapper>
@@ -21,7 +23,12 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
       {isLoading && <Skeleton active />}
       {!isLoading &&
         individualDevicesList?.map((device) => (
-          <IndividualDeviceListItem key={device.id} device={device} />
+          <IndividualDeviceListItem
+            apartmentId={apartmentId}
+            housingStockId={housingStockId}
+            key={device.id}
+            device={device}
+          />
         ))}
     </Wrapper>
   );

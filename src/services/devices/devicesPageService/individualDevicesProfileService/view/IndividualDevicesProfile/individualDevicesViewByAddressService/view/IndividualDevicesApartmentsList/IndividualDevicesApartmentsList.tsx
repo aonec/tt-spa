@@ -23,6 +23,7 @@ export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsList
             <IndividualDevicesApartmentItem
               key={apartment.apartmentId}
               individualDevicesApartment={apartment}
+              housingStockId={housingsByFilter?.current?.id}
             />
           ))}
       </ListWrapper>

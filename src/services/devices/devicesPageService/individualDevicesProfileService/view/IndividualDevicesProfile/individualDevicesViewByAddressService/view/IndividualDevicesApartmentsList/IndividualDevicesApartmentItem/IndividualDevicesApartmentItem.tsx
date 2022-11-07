@@ -6,7 +6,10 @@ import {
   AdditionalHomeownersCountWrapper,
   HomeownerNameWrapper,
 } from 'services/objects/objectProfileService/apartmentsListService/view/ApartmentsView/ApartmentsList/ApartmentItem/ApartmentItem.styled';
-import { IndividualDevicesListContainer, individualDevicesListService } from '../../../../individualDevicesListService';
+import {
+  IndividualDevicesListContainer,
+  individualDevicesListService,
+} from '../../../../individualDevicesListService';
 import {
   ApartmentNumber,
   Chevron,
@@ -15,11 +18,11 @@ import {
 } from './IndividualDevicesApartmentItem.styled';
 import { IndividualDevicesApartmentItemProps } from './IndividualDevicesApartmentItem.types';
 
-
 const { inputs, outputs } = individualDevicesListService;
 
 export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemProps> = ({
   individualDevicesApartment,
+  housingStockId,
 }) => {
   const openedApartmentId = useStore(outputs.$openedBlockId);
 
@@ -38,7 +41,10 @@ export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemPr
 
   return (
     <>
-      <Wrapper onClick={() => apartmentId && toggleApartment(apartmentId)}>
+      <Wrapper
+        isApartmentOpen={isApartmentOpen}
+        onClick={() => apartmentId && toggleApartment(apartmentId)}
+      >
         <Chevron open={isApartmentOpen} />
         <ApartmentNumber>
           №{individualDevicesApartment?.apartmentNumber}
@@ -54,13 +60,12 @@ export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemPr
           )}
         </HomeownerNameWrapper>
         <PersonalAccountNumber>{personalAccountNumber}</PersonalAccountNumber>
-        <ContextMenuButton
-          menuButtons={[{ title: 'Открыть квартиру', onClick: () => {} }]}
-          size="small"
-        />
+        <ContextMenuButton size="small" />
       </Wrapper>
       {isApartmentOpen && (
         <IndividualDevicesListContainer
+          apartmentId={individualDevicesApartment.apartmentId}
+          housingStockId={housingStockId}
           devicesIds={individualDevicesApartment.deviceIds || []}
         />
       )}
