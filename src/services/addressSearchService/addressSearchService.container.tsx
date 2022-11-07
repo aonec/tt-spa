@@ -11,8 +11,12 @@ import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
-  handleSubmit: onSubmit,
+  handleSubmit: onSubmit = () => {},
   initialValues,
+  customTemplate,
+  showLabels,
+  disabledFields,
+  onChange,
 }) => {
   const { outputs } = addressSearchService;
   const {
@@ -38,7 +42,13 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     if (!cities?.length || initialValues?.city) return;
 
     setFieldValue('city', last(cities));
+    if (onChange) onChange('city', last(cities) || '');
   }, [cities, initialValues]);
+
+  const handleChange = (key: string, value: string) => {
+    setFieldValue(key, value);
+    if (onChange) onChange(key, value);
+  };
 
   return (
     <>
@@ -47,10 +57,13 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       <AddressSearch
         cities={cities || []}
         streets={streets}
-        handleChange={setFieldValue}
+        handleChange={handleChange}
         values={values}
         handleSubmit={handleSubmit}
         fields={fields}
+        customTemplate={customTemplate}
+        showLabels={showLabels}
+        disabledFields={disabledFields}
       />
     </>
   );

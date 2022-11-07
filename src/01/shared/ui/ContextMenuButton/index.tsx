@@ -40,11 +40,13 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   );
 
   return (
-    <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
-      <StyledMenuButton size={size}>
-        <MoreOutlined />
-      </StyledMenuButton>
-    </Dropdown>
+    <div onClick={(e) => e.stopPropagation()}>
+      <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
+        <StyledMenuButton size={size}>
+          <MoreOutlined />
+        </StyledMenuButton>
+      </Dropdown>
+    </div>
   );
 };
 
