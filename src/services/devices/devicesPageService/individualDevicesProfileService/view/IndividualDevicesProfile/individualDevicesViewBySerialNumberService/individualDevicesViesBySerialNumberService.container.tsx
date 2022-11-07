@@ -19,11 +19,13 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
 
   const setFilter = useEvent(inputs.setFilter);
+  const clearSearchPayload = useEvent(inputs.clearFilter);
   const changePageNumber = useEvent(inputs.changePageNumber);
 
   return (
     <>
       <IndividualDevicesViewBySerialNumberSearch
+        clearSearchPayload={() => clearSearchPayload()}
         filter={filter}
         setFilter={setFilter}
       />
