@@ -60,6 +60,7 @@ import {
   ObjectProfileContainer,
   objectProfileService,
 } from 'services/objects/objectProfileService';
+import { DevicesPageContainer } from 'services/devices/devicesPageService';
 
 moment.locale('ru');
 
@@ -142,8 +143,8 @@ const Internal = () => {
               </Route>
 
               <Route
-                path="/devices/"
-                component={DevicesProfileContainer}
+                path="/devices/:type?"
+                component={DevicesPageContainer}
                 exact
               />
 
