@@ -4,6 +4,6 @@ export type MeteringDevicesListModalProps = {
   isModalOpen: boolean;
   isLoading: boolean;
   meterindDevicesList: PipeNodeMeteringDeviceResponse[] | null;
-  closeDevicesListModel: () => void;
+  closeDevicesListModal: () => void;
   pipeNode: NodeOnHousingStockResponse | null;
 };

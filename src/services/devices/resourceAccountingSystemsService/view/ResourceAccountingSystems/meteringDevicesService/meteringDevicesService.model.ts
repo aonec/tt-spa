@@ -9,7 +9,7 @@ const domain = createDomain('meteringDevicesService');
 
 const openDevicesListModal = domain.createEvent<NodeOnHousingStockResponse>();
 
-const closeDevicesListModel = domain.createEvent();
+const closeDevicesListModal = domain.createEvent();
 
 const clearMeteringDevicesList = domain.createEvent();
 
@@ -21,7 +21,7 @@ const fetchMeteringDevices = domain.createEffect<
 const $pipeNode = domain
   .createStore<NodeOnHousingStockResponse | null>(null)
   .on(openDevicesListModal, (_, node) => node)
-  .reset(closeDevicesListModel);
+  .reset(closeDevicesListModal);
 
 const $meterindDevicesList = domain
   .createStore<PipeNodeMeteringDeviceResponse[] | null>(null)
@@ -47,7 +47,7 @@ const $isLoading = fetchMeteringDevices.pending;
 export const meteringDevicesService = {
   inputs: {
     openDevicesListModal,
-    closeDevicesListModel,
+    closeDevicesListModal,
   },
   outputs: {
     $isModalOpen,

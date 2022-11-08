@@ -11,14 +11,14 @@ export const MeteringDevicesContainer = () => {
   const meterindDevicesList = useStore(outputs.$meterindDevicesList);
   const pipeNode = useStore(outputs.$pipeNode);
 
-  const closeDevicesListModel = useEvent(inputs.closeDevicesListModel);
+  const closeDevicesListModal = useEvent(inputs.closeDevicesListModal);
 
   return (
     <MeteringDevicesListModal
       isModalOpen={isModalOpen}
       isLoading={isLoading}
       meterindDevicesList={meterindDevicesList}
-      closeDevicesListModel={() => closeDevicesListModel()}
+      closeDevicesListModal={() => closeDevicesListModal()}
       pipeNode={pipeNode}
     />
   );

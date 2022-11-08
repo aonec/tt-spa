@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Skeleton } from 'antd';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { PipeNodeInfo } from '../PipeNodeInfo';
@@ -10,15 +10,17 @@ export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
   isLoading,
   isModalOpen,
   meterindDevicesList,
-  closeDevicesListModel,
+  closeDevicesListModal,
   pipeNode,
 }) => {
+  useEffect(() => closeDevicesListModal, []);
+
   return (
     <ModalTT
       title="Приборы"
       visible={isModalOpen}
       footer={null}
-      onCancel={closeDevicesListModel}
+      onCancel={closeDevicesListModal}
       centered
     >
       {pipeNode && <PipeNodeInfo pipeNode={pipeNode} />}
