@@ -71,7 +71,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
             data-reading-input={'searchBySerialNumber'}
             prefix={<SearchIcon />}
             type="number"
-            placeholder="Введите серийный номер пробера"
+            placeholder="Введите серийный номер прибора"
             onChange={(e) => setFieldValue('SerialNumber', e.target.value)}
             value={values.SerialNumber}
             onKeyDown={fromEnter(() => {
