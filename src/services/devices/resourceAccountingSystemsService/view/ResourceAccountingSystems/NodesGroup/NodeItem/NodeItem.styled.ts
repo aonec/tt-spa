@@ -63,3 +63,8 @@ export const NodeInfoWrapper = styled.div`
 export const NodeInfo = styled.div`
   margin-left: 10px;
 `;
+
+export const DeviceIconWrapper = styled.div`
+  margin-left: 15px;
+  cursor: pointer;
+`;

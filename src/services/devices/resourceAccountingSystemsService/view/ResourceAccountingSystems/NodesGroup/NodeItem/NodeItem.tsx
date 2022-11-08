@@ -1,8 +1,10 @@
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { DeviceIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
+  DeviceIconWrapper,
   NoCalculatorTextWrapper,
   NodeInfo,
   NodeInfoWrapper,
@@ -14,7 +16,11 @@ import {
 import { NodeItemProps } from './NodeItem.types';
 import { NodeStatus } from './NodeStatus';
 
-export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
+export const NodeItem: FC<NodeItemProps> = ({
+  node,
+  segmentName,
+  openDevicesListModal,
+}) => {
   const content = useMemo(() => {
     const nodeInfo = (
       <Link to={`/nodes/${node.id}`}>
@@ -56,6 +62,9 @@ export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
       {content}
       <NodeStatusWrapper>
         <NodeStatus status={node.status} />
+        <DeviceIconWrapper>
+          <DeviceIcon onClick={() => openDevicesListModal(node.id)} />
+        </DeviceIconWrapper>
       </NodeStatusWrapper>
     </Wrapper>
   );

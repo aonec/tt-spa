@@ -5,4 +5,5 @@ export type NodesGroupProps = {
   segmentName: ResourceAccountingSystemsSegment;
   nodes: NodeOnHousingStockResponse[];
   groupKey: string;
+  openDevicesListModal: (payload: number) => number;
 };

@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import { EResourceType, NodeOnHousingStockResponse } from 'myApi';
 import { getNodes } from './resourceAccountingSystemsService.api';
 import { sortNodes } from './resourceAccountingSystemsService.utils';
+import { meteringDevicesService } from './view/ResourceAccountingSystems/meteringDevicesService';
 
 const domain = createDomain('resourceAccountingSystemsService');
 
@@ -32,6 +33,9 @@ forward({
 const $isLoading = fetchNodesFx.pending;
 
 export const resourceAccountingSystemsService = {
+  inputs: {
+    openDevicesListModal: meteringDevicesService.inputs.openDevicesListModal,
+  },
   outputs: { $nodes, $isLoading },
   gates: { NodesGate },
 };

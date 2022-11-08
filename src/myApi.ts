@@ -4236,6 +4236,16 @@ export interface PipeNodeIntoCalculatorResponse {
   communicationPipes: CommunicationPipeResponse[] | null;
 }
 
+export interface PipeNodeMeteringDeviceResponse {
+  model: string | null;
+  serialNumber: string | null;
+  hasActiveTasks: boolean;
+
+  /** @format int32 */
+  pipeNumber: number;
+  magistral: EMagistralType;
+}
+
 export interface PipeNodeResponse {
   /** @format int32 */
   id: number;
@@ -10330,6 +10340,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesMeteringDevicesDetail
+     * @summary NodeRead
+     * @request GET:/api/PipeNodes/{pipeNodeId}/MeteringDevices
+     * @secure
+     */
+    pipeNodesMeteringDevicesDetail: (pipeNodeId: number, params: RequestParams = {}) =>
+      this.request<PipeNodeMeteringDeviceResponse[], any>({
+        path: `/api/PipeNodes/${pipeNodeId}/MeteringDevices`,
+        method: "GET",
+        secure: true,
+        format: "json",
         ...params,
       }),
 

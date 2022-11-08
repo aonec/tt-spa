@@ -22,6 +22,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
   nodes,
   groupKey,
   segmentName,
+  openDevicesListModal,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -72,7 +73,11 @@ export const NodesGroup: FC<NodesGroupProps> = ({
       {isOpen && (
         <div>
           {nodes.map((node) => (
-            <NodeItem node={node} segmentName={segmentName} />
+            <NodeItem
+              node={node}
+              segmentName={segmentName}
+              openDevicesListModal={openDevicesListModal}
+            />
           ))}
         </div>
       )}
