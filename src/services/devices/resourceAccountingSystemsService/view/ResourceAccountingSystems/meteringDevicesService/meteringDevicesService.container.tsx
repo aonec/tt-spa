@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useEvent, useStore, useStoreMap } from 'effector-react';
 import React from 'react';
 import { meteringDevicesService } from './meteringDevicesService.model';
 import { MeteringDevicesListModal } from './view/MeteringDevicesListModal';
@@ -9,6 +9,7 @@ export const MeteringDevicesContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$isLoading);
   const meterindDevicesList = useStore(outputs.$meterindDevicesList);
+  const pipeNode = useStore(outputs.$pipeNode);
 
   const closeDevicesListModel = useEvent(inputs.closeDevicesListModel);
 
@@ -18,6 +19,7 @@ export const MeteringDevicesContainer = () => {
       isLoading={isLoading}
       meterindDevicesList={meterindDevicesList}
       closeDevicesListModel={() => closeDevicesListModel()}
+      pipeNode={pipeNode}
     />
   );
 };

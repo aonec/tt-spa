@@ -63,7 +63,7 @@ export const NodeItem: FC<NodeItemProps> = ({
       <NodeStatusWrapper>
         <NodeStatus status={node.status} />
         <DeviceIconWrapper>
-          <DeviceIcon onClick={() => openDevicesListModal(node.id)} />
+          <DeviceIcon onClick={() => openDevicesListModal(node)} />
         </DeviceIconWrapper>
       </NodeStatusWrapper>
     </Wrapper>

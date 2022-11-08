@@ -3,7 +3,7 @@ import { NodeOnHousingStockResponse } from 'myApi';
 export type ResourceAccountingSystemsProps = {
   nodes: NodeOnHousingStockResponse[] | null;
   isLoading: boolean;
-  openDevicesListModal: (payload: number) => number;
+  openDevicesListModal: (payload: NodeOnHousingStockResponse) => void;
 };
 
 export type ResourceAccountingSystemsSegment = 'resource' | 'calculator';

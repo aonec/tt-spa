@@ -1,10 +1,13 @@
 import { createDomain, guard, sample } from 'effector';
-import { PipeNodeMeteringDeviceResponse } from 'myApi';
+import {
+  NodeOnHousingStockResponse,
+  PipeNodeMeteringDeviceResponse,
+} from 'myApi';
 import { getMeteringDevices } from './meteringDevicesService.api';
 
 const domain = createDomain('meteringDevicesService');
 
-const openDevicesListModal = domain.createEvent<number>();
+const openDevicesListModal = domain.createEvent<NodeOnHousingStockResponse>();
 
 const closeDevicesListModel = domain.createEvent();
 
@@ -15,9 +18,9 @@ const fetchMeteringDevices = domain.createEffect<
   PipeNodeMeteringDeviceResponse[]
 >(getMeteringDevices);
 
-const $pipeNodeId = domain
-  .createStore<number | null>(null)
-  .on(openDevicesListModal, (_, id) => id)
+const $pipeNode = domain
+  .createStore<NodeOnHousingStockResponse | null>(null)
+  .on(openDevicesListModal, (_, node) => node)
   .reset(closeDevicesListModel);
 
 const $meterindDevicesList = domain
@@ -26,18 +29,18 @@ const $meterindDevicesList = domain
   .reset(clearMeteringDevicesList);
 
 guard({
-  clock: $pipeNodeId,
+  clock: $pipeNode,
   filter: (id) => !id,
   target: clearMeteringDevicesList,
 });
 
 guard({
-  clock: $pipeNodeId,
+  clock: $pipeNode.map((node) => node?.id),
   filter: (id): id is number => typeof id === 'number',
   target: fetchMeteringDevices,
 });
 
-const $isModalOpen = $pipeNodeId.map(Boolean);
+const $isModalOpen = $pipeNode.map(Boolean);
 
 const $isLoading = fetchMeteringDevices.pending;
 
@@ -50,5 +53,6 @@ export const meteringDevicesService = {
     $isModalOpen,
     $isLoading,
     $meterindDevicesList,
+    $pipeNode,
   },
 };

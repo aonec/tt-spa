@@ -4,5 +4,5 @@ import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystem
 export type NodeItemProps = {
   node: NodeOnHousingStockResponse;
   segmentName: ResourceAccountingSystemsSegment;
-  openDevicesListModal: (payload: number) => number;
+  openDevicesListModal: (payload: NodeOnHousingStockResponse) => void;
 };

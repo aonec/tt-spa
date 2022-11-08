@@ -1,8 +1,9 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
-import { Skeleton } from 'antd';
 import React, { FC } from 'react';
+import { Skeleton } from 'antd';
+import { ModalTT } from '01/shared/ui/ModalTT';
+import { PipeNodeInfo } from '../PipeNodeInfo';
 import { MeteringDeviceListItem } from './MeteringDeviceListItem';
-import { Wrapper } from './MeteringDevicesListModal.styled';
+import { DevicesListWrapper } from './MeteringDevicesListModal.styled';
 import { MeteringDevicesListModalProps } from './MeteringDevicesListModal.types';
 
 export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
@@ -10,6 +11,7 @@ export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
   isModalOpen,
   meterindDevicesList,
   closeDevicesListModel,
+  pipeNode,
 }) => {
   return (
     <ModalTT
@@ -19,14 +21,15 @@ export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
       onCancel={closeDevicesListModel}
       centered
     >
-      <div>
-        {isLoading && <Skeleton active />}
+      {pipeNode && <PipeNodeInfo pipeNode={pipeNode} />}
+      {isLoading && <Skeleton active />}
+      <DevicesListWrapper>
         {!isLoading &&
           meterindDevicesList?.length &&
           meterindDevicesList.map((device) => (
             <MeteringDeviceListItem device={device} />
           ))}
-      </div>
+      </DevicesListWrapper>
     </ModalTT>
   );
 };
