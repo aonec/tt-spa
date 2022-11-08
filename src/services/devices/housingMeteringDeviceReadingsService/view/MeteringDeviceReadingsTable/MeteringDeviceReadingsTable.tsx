@@ -13,7 +13,7 @@ export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> =
       {readings.map(({year, readings}) => (
         <MeteringDeviceYearReadings
           year={year}
-          readings={readings}
+          yearRreadings={readings}
           isColdWater={isColdWater}
           key={year}
         />

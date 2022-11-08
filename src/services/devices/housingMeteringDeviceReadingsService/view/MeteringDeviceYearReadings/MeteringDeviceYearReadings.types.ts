@@ -3,8 +3,9 @@ import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 
 export type MeteringDeviceYearReadingsProps = {
   year: string;
-  readings: Dictionary<
-    HousingMeteringDeviceReadingsIncludingPlacementResponse[]
-  >;
+  yearRreadings: {
+    month: string;
+    readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
+  }[];
   isColdWater: boolean;
 };

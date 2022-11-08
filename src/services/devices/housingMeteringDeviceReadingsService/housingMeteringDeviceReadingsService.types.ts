@@ -11,7 +11,8 @@ export type HousingMeteringDeviceReadingsContainerProps = {
 
 export type PreparedMeteringDeviceReadings = {
   year: string;
-  readings: Dictionary<
-    HousingMeteringDeviceReadingsIncludingPlacementResponse[]
-  >;
+  readings: {
+    month: string;
+    readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
+  }[];
 }[];

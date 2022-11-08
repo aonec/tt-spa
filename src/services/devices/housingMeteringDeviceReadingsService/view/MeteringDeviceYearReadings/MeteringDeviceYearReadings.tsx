@@ -4,22 +4,22 @@ import { ArrowSC, Year } from './MeteringDeviceYearReadings.styled';
 import { MeteringDeviceYearReadingsProps } from './MeteringDeviceYearReadings.types';
 
 export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = ({
-  readings,
+  yearRreadings,
   year,
   isColdWater,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const list = useMemo(
     () =>
-      Object.entries(readings).map(([month, reading]) => (
+      yearRreadings.map(({ month, readings }) => (
         <MeteringDeviceMonthReading
-          monthReadings={reading}
+          monthReadings={readings}
           isColdWater={isColdWater}
           month={month}
           key={month}
         />
       )),
-    [readings]
+    [yearRreadings]
   );
 
   return (
