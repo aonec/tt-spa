@@ -5,6 +5,7 @@ import { DeviceIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
+  BaseNodeInfo,
   DeviceIconWrapper,
   NoCalculatorTextWrapper,
   NodeInfo,
@@ -12,6 +13,7 @@ import {
   NodeName,
   NodeServiceZone,
   NodeStatusWrapper,
+  ResourceIconWrapper,
   Wrapper,
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
@@ -24,7 +26,7 @@ export const NodeItem: FC<NodeItemProps> = ({
 }) => {
   const content = useMemo(() => {
     const nodeInfo = (
-      <NodeInfoWrapper>
+      <BaseNodeInfo>
         <Link to={`/nodes/${node.id}`}>
           <NodeName>Узел {node.number}</NodeName>
           <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
@@ -36,7 +38,7 @@ export const NodeItem: FC<NodeItemProps> = ({
             <DeviceIcon onClick={() => openDevicesListModal(node)} />
           </DeviceIconWrapper>
         </Tooltip>
-      </NodeInfoWrapper>
+      </BaseNodeInfo>
     );
 
     if (segmentName === 'resource')
@@ -55,10 +57,12 @@ export const NodeItem: FC<NodeItemProps> = ({
       return (
         <>
           <NodeInfoWrapper>
-            <ResourceIconLookup
-              style={{ transform: 'translateY(-8px)' }}
-              resource={node.resource}
-            />
+            <ResourceIconWrapper>
+              <ResourceIconLookup
+                style={{ transform: 'translateY(-8px)' }}
+                resource={node.resource}
+              />
+            </ResourceIconWrapper>
             <NodeInfo>{nodeInfo}</NodeInfo>
           </NodeInfoWrapper>
         </>
