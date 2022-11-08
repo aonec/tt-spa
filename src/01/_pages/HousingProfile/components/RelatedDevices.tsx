@@ -5,6 +5,7 @@ import { Icon } from '01/_components/Icon';
 import { NavLink } from 'react-router-dom';
 import { IconTT } from '../../../tt-components';
 import moment from 'moment';
+import { NoCalculatorText } from './RelatedDevices.styled';
 
 interface RelatedDevicesInterface {
   device: any;
@@ -44,7 +45,11 @@ export const RelatedDevices = ({ device }: RelatedDevicesInterface) => {
 
   return (
     <ListWrap>
-      <CalcItem />
+      {calculatorId ? (
+        <CalcItem />
+      ) : (
+        <NoCalculatorText>Нет вычислителя на узле</NoCalculatorText>
+      )}
     </ListWrap>
   );
 };
