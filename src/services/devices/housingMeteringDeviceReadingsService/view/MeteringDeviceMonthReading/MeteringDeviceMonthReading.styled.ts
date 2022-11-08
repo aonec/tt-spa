@@ -1,13 +1,23 @@
+import { InputSC as Input } from '01/shared/ui/Fields';
 import styled from 'styled-components';
+import {
+  gridTemplateForColdWaterResource,
+  gridTemplateNotForColdWaterResource,
+} from '../MeteringDeviceReadingsTableHeader/MeteringDeviceReadingsTableHeader.constants';
 
 export const Wrapper = styled.div<{ isColdWater: boolean }>`
   display: grid;
   align-items: center;
   grid-template-columns: ${({ isColdWater }) =>
-    isColdWater ? '2.5fr 5.5fr 4fr' : '2fr 5fr 3fr'};
+    isColdWater
+      ? gridTemplateForColdWaterResource
+      : gridTemplateNotForColdWaterResource};
 
   padding: 8px 16px;
   height: 48px;
+  &:last-child {
+    margin-bottom: 8px;
+  }
 `;
 
 export const MonthWrapper = styled.div`
@@ -19,4 +29,10 @@ export const MonthWrapper = styled.div`
 
   color: #272f5a;
   text-transform: capitalize;
+`;
+
+export const InputSC = styled(Input)`
+  width: 120px !important;
+  height: 32px;
+  box-shadow: none;
 `;

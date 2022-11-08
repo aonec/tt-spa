@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { MeteringDeviceReadingsTableHeader } from '../MeteringDeviceReadingsTableHeader';
 import { MeteringDeviceYearReadings } from '../MeteringDeviceYearReadings';
-import { Wrapper } from './MeteringDeviceReadingsTable.styled';
 import { MeteringDeviceReadingsTableProps } from './MeteringDeviceReadingsTable.types';
 
 export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> = ({
@@ -9,15 +8,16 @@ export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> =
   readings,
 }) => {
   return (
-    <Wrapper>
+    <div>
       <MeteringDeviceReadingsTableHeader isColdWater={isColdWater} />
-      {Object.entries(readings).map(([year, yearReadings]) => (
+      {readings.map(({year, readings}) => (
         <MeteringDeviceYearReadings
           year={year}
-          readings={yearReadings}
+          readings={readings}
           isColdWater={isColdWater}
+          key={year}
         />
       ))}
-    </Wrapper>
+    </div>
   );
 };

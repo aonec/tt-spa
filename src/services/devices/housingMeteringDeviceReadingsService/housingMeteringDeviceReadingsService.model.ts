@@ -1,12 +1,8 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import _, { Dictionary } from 'lodash';
-import {
-  EResourceType,
-  GetHousingMeteringDeviceReadingsResponse,
-  HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+import { EResourceType, GetHousingMeteringDeviceReadingsResponse } from 'myApi';
 import { fetchHousingMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.api';
+import { PreparedMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.types';
 import { groupReadings } from './housingMeteringDeviceReadingsService.utils';
 
 const domain = createDomain('housingMeteringDeviceReadingsService');
@@ -17,9 +13,7 @@ const getHousingMeteringDeviceReadingsFx = domain.createEffect<
 >(fetchHousingMeteringDeviceReadings);
 
 const $readings = domain
-  .createStore<
-    Dictionary<HousingMeteringDeviceReadingsIncludingPlacementResponse[]>
-  >({})
+  .createStore<PreparedMeteringDeviceReadings>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
     groupReadings(response.items || [])
   );

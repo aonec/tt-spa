@@ -65,10 +65,6 @@ export const Content: React.FC<ContentProps> = React.memo(
             )}
           </Route>
           <Route path={`${path}/readings`} exact>
-            {/* <HousingMeteringDeviceReadings
-              nodeId={Number(nodeId)}
-              resource={resource}
-            /> */}
             <HousingMeteringDeviceReadingsContainer
               nodeId={Number(nodeId)}
               resource={resource}

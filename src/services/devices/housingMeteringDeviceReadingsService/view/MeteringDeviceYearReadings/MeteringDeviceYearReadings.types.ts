@@ -1,7 +1,10 @@
+import { Dictionary } from 'lodash';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 
 export type MeteringDeviceYearReadingsProps = {
   year: string;
-  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
+  readings: Dictionary<
+    HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+  >;
   isColdWater: boolean;
 };

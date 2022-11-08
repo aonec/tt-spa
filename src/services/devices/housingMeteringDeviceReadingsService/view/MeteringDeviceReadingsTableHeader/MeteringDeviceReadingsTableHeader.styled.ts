@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+import {
+  gridTemplateForColdWaterResource,
+  gridTemplateNotForColdWaterResource,
+} from './MeteringDeviceReadingsTableHeader.constants';
 
 export const Wrapper = styled.div<{ isColdWater: boolean }>`
   display: grid;
@@ -13,6 +17,8 @@ export const Wrapper = styled.div<{ isColdWater: boolean }>`
   color: #272f5ae5;
 
   grid-template-columns: ${({ isColdWater }) =>
-    isColdWater ? '2.5fr 5.5fr 4fr' : '2fr 5fr 3fr'};
+    isColdWater
+      ? gridTemplateForColdWaterResource
+      : gridTemplateNotForColdWaterResource};
   background-color: #272f5a0a;
 `;

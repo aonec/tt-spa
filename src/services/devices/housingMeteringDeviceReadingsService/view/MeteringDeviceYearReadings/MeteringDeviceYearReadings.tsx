@@ -1,5 +1,4 @@
-import React, { FC, useMemo } from 'react';
-import { ArrowDown } from 'react-bootstrap-icons';
+import React, { FC, useMemo, useState } from 'react';
 import { MeteringDeviceMonthReading } from '../MeteringDeviceMonthReading';
 import { ArrowSC, Year } from './MeteringDeviceYearReadings.styled';
 import { MeteringDeviceYearReadingsProps } from './MeteringDeviceYearReadings.types';
@@ -9,25 +8,27 @@ export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = (
   year,
   isColdWater,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const list = useMemo(
     () =>
-      readings.map((reading) => (
+      Object.entries(readings).map(([month, reading]) => (
         <MeteringDeviceMonthReading
-          reading={reading}
+          monthReadings={reading}
           isColdWater={isColdWater}
+          month={month}
+          key={month}
         />
       )),
     [readings]
   );
-  const open = true;
 
   return (
     <>
-      <Year>
+      <Year onClick={() => setIsOpen((isOpen) => !isOpen)}>
         {year} год
-        <ArrowSC open={open} />
+        <ArrowSC open={isOpen} />
       </Year>
-      {open && list}
+      {isOpen && list}
     </>
   );
 };
