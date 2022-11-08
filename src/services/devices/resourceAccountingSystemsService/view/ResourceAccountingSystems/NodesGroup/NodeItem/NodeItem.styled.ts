@@ -58,6 +58,7 @@ export const NodeStatusWrapper = styled.div`
 export const NodeInfoWrapper = styled.div`
   display: flex;
   align-items: center;
+  min-width: 150px;
 `;
 
 export const NodeInfo = styled.div`
@@ -65,6 +66,7 @@ export const NodeInfo = styled.div`
 `;
 
 export const DeviceIconWrapper = styled.div`
-  margin-left: 15px;
+  margin-left: 35px;
   cursor: pointer;
+  transform: scale(1.3);
 `;

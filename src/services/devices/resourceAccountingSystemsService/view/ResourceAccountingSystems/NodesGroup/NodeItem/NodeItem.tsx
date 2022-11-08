@@ -1,3 +1,4 @@
+import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DeviceIcon } from 'ui-kit/icons';
@@ -23,12 +24,19 @@ export const NodeItem: FC<NodeItemProps> = ({
 }) => {
   const content = useMemo(() => {
     const nodeInfo = (
-      <Link to={`/nodes/${node.id}`}>
-        <NodeName>Узел {node.number}</NodeName>
-        <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
-          {node.serviceZone?.name || 'Зона не указана'}
-        </NodeServiceZone>
-      </Link>
+      <NodeInfoWrapper>
+        <Link to={`/nodes/${node.id}`}>
+          <NodeName>Узел {node.number}</NodeName>
+          <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
+            {node.serviceZone?.name || 'Зона не указана'}
+          </NodeServiceZone>
+        </Link>
+        <Tooltip title="Показать приборы">
+          <DeviceIconWrapper>
+            <DeviceIcon onClick={() => openDevicesListModal(node)} />
+          </DeviceIconWrapper>
+        </Tooltip>
+      </NodeInfoWrapper>
     );
 
     if (segmentName === 'resource')
@@ -62,9 +70,6 @@ export const NodeItem: FC<NodeItemProps> = ({
       {content}
       <NodeStatusWrapper>
         <NodeStatus status={node.status} />
-        <DeviceIconWrapper>
-          <DeviceIcon onClick={() => openDevicesListModal(node)} />
-        </DeviceIconWrapper>
       </NodeStatusWrapper>
     </Wrapper>
   );
