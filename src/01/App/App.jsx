@@ -62,6 +62,7 @@ const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
 
   const ObjectIsOpen = objectProfileService.gates.ObjectGroupIsOpen;
+
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -81,13 +82,11 @@ const Internal = () => {
             <Switch>
               <Redirect
                 from="/"
-                to={
-                  roles.includes('ManagingFirmOperator')
-                    ? '/meters/apartments'
-                    : '/tasks/'
-                }
+                to={roles.includes('Operator') ? '/meters/' : '/tasks/'}
                 exact
               />
+
+              {TasksRouter()}
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
@@ -112,8 +111,6 @@ const Internal = () => {
                   exact
                 />
               </Route>
-
-              <TasksRouter />
 
               <Route
                 path="/devices/:type?"
