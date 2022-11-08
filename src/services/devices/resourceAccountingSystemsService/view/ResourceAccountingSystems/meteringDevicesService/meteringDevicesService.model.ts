@@ -29,12 +29,6 @@ const $meterindDevicesList = domain
   .reset(clearMeteringDevicesList);
 
 guard({
-  clock: $pipeNode,
-  filter: (id) => !id,
-  target: clearMeteringDevicesList,
-});
-
-guard({
   clock: $pipeNode.map((node) => node?.id),
   filter: (id): id is number => typeof id === 'number',
   target: fetchMeteringDevices,

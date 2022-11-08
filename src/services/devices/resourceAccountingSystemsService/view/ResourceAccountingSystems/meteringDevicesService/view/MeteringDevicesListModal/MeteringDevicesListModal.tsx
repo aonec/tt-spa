@@ -13,8 +13,6 @@ export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
   closeDevicesListModal,
   pipeNode,
 }) => {
-  useEffect(() => closeDevicesListModal, []);
-
   return (
     <ModalTT
       title="Приборы"

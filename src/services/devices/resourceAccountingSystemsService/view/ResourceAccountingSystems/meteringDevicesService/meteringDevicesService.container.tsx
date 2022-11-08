@@ -1,5 +1,5 @@
 import { useEvent, useStore, useStoreMap } from 'effector-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { meteringDevicesService } from './meteringDevicesService.model';
 import { MeteringDevicesListModal } from './view/MeteringDevicesListModal';
 
@@ -12,6 +12,8 @@ export const MeteringDevicesContainer = () => {
   const pipeNode = useStore(outputs.$pipeNode);
 
   const closeDevicesListModal = useEvent(inputs.closeDevicesListModal);
+
+  useEffect(() => () => closeDevicesListModal(), [closeDevicesListModal]);
 
   return (
     <MeteringDevicesListModal
