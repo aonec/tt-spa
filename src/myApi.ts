@@ -3561,6 +3561,16 @@ export interface ManagementFirmEventDataTaskResponse {
   type: EManagingFirmTaskType;
 }
 
+export interface ManagementFirmFiltersConfigurationResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  managementFirmId: number;
+  hasHousingStockCorpuses: boolean;
+  pipeDiameters: number[] | null;
+}
+
 export interface MeasurableIntervalResponse {
   /** @format double */
   maxValue: number | null;
@@ -3884,6 +3894,7 @@ export interface OrganizationResponse {
   email: string | null;
   workingTime: string | null;
   address: OrganizationAddressResponse | null;
+  filtersConfiguration: ManagementFirmFiltersConfigurationResponse | null;
 }
 
 export interface OrganizationResponsePagedList {
@@ -3959,6 +3970,7 @@ export interface OrganizationUserListResponse {
   /** @format int32 */
   executingTaskCount: number;
   status: UserStatusResponse | null;
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
 export interface OrganizationUserListResponseListSuccessApiResponse {
@@ -4234,6 +4246,16 @@ export interface PipeNodeIntoCalculatorResponse {
   /** @format date-time */
   futureCommercialAccountingDate: string | null;
   communicationPipes: CommunicationPipeResponse[] | null;
+}
+
+export interface PipeNodeMeteringDeviceResponse {
+  model: string | null;
+  serialNumber: string | null;
+  hasActiveTasks: boolean;
+
+  /** @format int32 */
+  pipeNumber: number;
+  magistral: EMagistralType;
 }
 
 export interface PipeNodeResponse {
@@ -6839,6 +6861,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsUpdateFiltersConfigurationsCreate
+     * @request POST:/api/DataMigrations/UpdateFiltersConfigurations
+     * @secure
+     */
+    dataMigrationsUpdateFiltersConfigurationsCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/UpdateFiltersConfigurations`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Documents
@@ -8517,6 +8555,37 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/Imports/ImportOrganizationWithoutNodes`,
         method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Imports
+     * @name ImportsImportHouseManagementsCreate
+     * @summary HouseManagementUpdate
+     * @request POST:/api/Imports/ImportHouseManagements
+     * @secure
+     */
+    importsImportHouseManagementsCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      query?: { managementFirmId?: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Imports/ImportHouseManagements`,
+        method: "POST",
+        query: query,
         body: data,
         secure: true,
         type: ContentType.FormData,
@@ -10330,6 +10399,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesMeteringDevicesDetail
+     * @summary NodeRead
+     * @request GET:/api/PipeNodes/{pipeNodeId}/MeteringDevices
+     * @secure
+     */
+    pipeNodesMeteringDevicesDetail: (pipeNodeId: number, params: RequestParams = {}) =>
+      this.request<PipeNodeMeteringDeviceResponse[], any>({
+        path: `/api/PipeNodes/${pipeNodeId}/MeteringDevices`,
+        method: "GET",
+        secure: true,
+        format: "json",
         ...params,
       }),
 
