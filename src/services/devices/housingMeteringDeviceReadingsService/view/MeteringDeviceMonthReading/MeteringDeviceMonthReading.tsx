@@ -1,4 +1,3 @@
-import { EMagistralType } from 'myApi';
 import React, { FC, useMemo } from 'react';
 import {
   InputSC,
@@ -13,12 +12,9 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
   month,
 }) => {
   const inputs = useMemo(() => {
-    const feedFlowReading = monthReadings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedFlow
-    );
-    const feedBackFlowReading = monthReadings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedBackFlow
-    );
+    const feedFlowReading = monthReadings[0];
+    const feedBackFlowReading = monthReadings[1];
+    
     if (isColdWater && feedFlowReading) {
       return <InputSC size="small" value={feedFlowReading.value} />;
     }

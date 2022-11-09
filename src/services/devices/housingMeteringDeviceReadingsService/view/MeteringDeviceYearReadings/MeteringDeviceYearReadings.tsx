@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { FC, useMemo, useState } from 'react';
 import { MeteringDeviceMonthReading } from '../MeteringDeviceMonthReading';
 import { ArrowSC, Year } from './MeteringDeviceYearReadings.styled';

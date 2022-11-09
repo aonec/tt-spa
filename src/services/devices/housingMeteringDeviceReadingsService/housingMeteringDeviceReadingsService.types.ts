@@ -1,8 +1,4 @@
-import { Dictionary } from 'lodash';
-import {
-  EResourceType,
-  HousingMeteringDeviceReadingsIncludingPlacementResponse,
-} from 'myApi';
+import { EResourceType } from 'myApi';
 
 export type HousingMeteringDeviceReadingsContainerProps = {
   nodeId: number;
@@ -13,6 +9,11 @@ export type PreparedMeteringDeviceReadings = {
   year: string;
   readings: {
     month: string;
-    readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
+    readings: (SortedMeteringDeviceReading | null)[];
   }[];
 }[];
+
+export type SortedMeteringDeviceReading = {
+  value: number;
+  deviceId: number;
+};

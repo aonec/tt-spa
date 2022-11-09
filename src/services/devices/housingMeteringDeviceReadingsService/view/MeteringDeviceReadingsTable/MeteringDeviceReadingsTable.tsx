@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { FC } from 'react';
 import { MeteringDeviceReadingsTableHeader } from '../MeteringDeviceReadingsTableHeader';
 import { MeteringDeviceYearReadings } from '../MeteringDeviceYearReadings';

@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import { EResourceType, GetHousingMeteringDeviceReadingsResponse } from 'myApi';
 import { fetchHousingMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.api';
 import { PreparedMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.types';
-import { groupReadings } from './housingMeteringDeviceReadingsService.utils';
+import { groupWithEmptyReadings } from './housingMeteringDeviceReadingsService.utils';
 
 const domain = createDomain('housingMeteringDeviceReadingsService');
 
@@ -15,7 +15,7 @@ const getHousingMeteringDeviceReadingsFx = domain.createEffect<
 const $readings = domain
   .createStore<PreparedMeteringDeviceReadings>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
-    groupReadings(response.items || [])
+    groupWithEmptyReadings(response.items || [])
   );
 
 const setResource = domain.createEvent<EResourceType>();

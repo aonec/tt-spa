@@ -1,7 +1,7 @@
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import { SortedMeteringDeviceReading } from '../../housingMeteringDeviceReadingsService.types';
 
 export type MeteringDeviceMonthReadingProps = {
-  monthReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
+  monthReadings: (SortedMeteringDeviceReading | null)[];
   isColdWater: boolean;
   month: string;
 };
