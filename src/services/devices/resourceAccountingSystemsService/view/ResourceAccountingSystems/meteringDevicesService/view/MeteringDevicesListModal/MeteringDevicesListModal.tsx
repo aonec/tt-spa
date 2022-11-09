@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Skeleton } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { PipeNodeInfo } from '../PipeNodeInfo';
 import { MeteringDeviceListItem } from './MeteringDeviceListItem';
@@ -25,10 +25,16 @@ export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
       {isLoading && <Skeleton active />}
       <DevicesListWrapper>
         {!isLoading &&
-          meterindDevicesList?.length &&
-          meterindDevicesList.map((device) => (
+          Boolean(meterindDevicesList?.length) &&
+          meterindDevicesList?.map((device) => (
             <MeteringDeviceListItem device={device} />
           ))}
+        {!isLoading && meterindDevicesList?.length === 0 && (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="Нет подключённых приборов"
+          />
+        )}
       </DevicesListWrapper>
     </ModalTT>
   );
