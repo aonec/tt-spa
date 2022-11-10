@@ -64,14 +64,9 @@ export const Login = () => {
   async function FormSubmitHadler() {
     setLoading(true);
     try {
-      await axios.post('auth/login', { email, password });
-      const res = await axios.get('OrganizationUsers/current');
+      const res = await axios.post('auth/login', { email, password });
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
-      replace(
-        res.roles.some((elem) => elem.type === 'ManagingFirmOperator')
-          ? '/meters'
-          : '/tasks/'
-      );
+      replace(res.roles.includes('Operator') ? '/meters' : '/tasks');
     } catch (error) {
       console.log(error);
       message.error('Корректно введите логин и пароль');
@@ -82,7 +77,6 @@ export const Login = () => {
 
   const isDev = useIsDev();
 
-  
   return (
     <Main>
       <LoginLeft>
