@@ -18,6 +18,8 @@ import { StaffStatus } from '01/features/staff/displayStaff/models/components/St
 import { editStaffStatusButtonClicked } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus/models';
 import { EditStaffStatusModal } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus';
 import { useHistory } from 'react-router-dom';
+import { Tooltip } from 'antd';
+import { sortUserRoles } from './Staff.utils';
 
 const Staff = () => {
   const users = useStore($staffList);
@@ -26,17 +28,34 @@ const Staff = () => {
   const phoneMask = usePhoneMask();
 
   const res = users?.map((item, index) => {
-    const { id, cellphone, status, firstName, lastName, middleName } = item;
+    const {
+      id,
+      cellphone,
+      status,
+      firstName,
+      lastName,
+      middleName,
+      roles,
+    } = item;
+
+    const sortedRoles = sortUserRoles(roles || []);
+
+    const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
 
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>
           {lastName} {firstName} {middleName}
         </div>
-        <StaffStatus status={status?.type} />
+
+        <div className={classes.role}>
+          <Tooltip title={rolesString}>{sortedRoles[0]?.value}</Tooltip>
+        </div>
+
         <div className={classes.cellphone}>
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
         </div>
+        <StaffStatus status={status?.type} />
         <MenuButtonTT
           menuButtonArr={[
             {
