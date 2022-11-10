@@ -2,6 +2,7 @@ import { useForm } from 'effector-forms/dist';
 import React, { useMemo } from 'react';
 import { form } from '../models';
 import { ReportType } from '../types';
+import { ClosedIndividualDevicesFormContainer } from './closedIndividualDevicesFormService';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
 import { RangeDatePicker } from './view/RangeDatePicker';
 import { ResourceSelect } from './view/ResourceSelect';
@@ -57,6 +58,10 @@ export const ReportFormInputsContainer = () => {
             />
           </>
         ),
+      },
+      {
+        reportTypes: [ReportType.ClosedIndividualDevicesReport],
+        element: <ClosedIndividualDevicesFormContainer  />,
       },
     ],
     [rangePeriod, period, changePeriod, resources]
