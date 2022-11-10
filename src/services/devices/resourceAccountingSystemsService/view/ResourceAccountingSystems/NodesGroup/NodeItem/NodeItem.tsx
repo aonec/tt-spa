@@ -59,7 +59,6 @@ export const NodeItem: FC<NodeItemProps> = ({
           <NodeInfoWrapper>
             <ResourceIconWrapper>
               <ResourceIconLookup
-                style={{ transform: 'translateY(-8px)' }}
                 resource={node.resource}
               />
             </ResourceIconWrapper>

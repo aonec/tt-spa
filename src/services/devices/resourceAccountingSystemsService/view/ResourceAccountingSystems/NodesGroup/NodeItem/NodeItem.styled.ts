@@ -72,9 +72,14 @@ export const NodeInfo = styled.div`
 
 export const DeviceIconWrapper = styled.div`
   cursor: pointer;
-  transform: scale(1.3);
+
+  svg {
+    width: 21px;
+    height: 16px;
+  }
 `;
 
 export const ResourceIconWrapper = styled.div`
   width: 18px;
+  transform: translateY(-8px);
 `;
