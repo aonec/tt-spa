@@ -2,7 +2,7 @@ import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { EResourceType, GetHousingMeteringDeviceReadingsResponse } from 'myApi';
 import { fetchHousingMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.api';
-import { PreparedMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.types';
+import { PreparedMeteringDeviceReading } from './housingMeteringDeviceReadingsService.types';
 import { groupWithEmptyReadings } from './housingMeteringDeviceReadingsService.utils';
 
 const domain = createDomain('housingMeteringDeviceReadingsService');
@@ -13,7 +13,7 @@ const getHousingMeteringDeviceReadingsFx = domain.createEffect<
 >(fetchHousingMeteringDeviceReadings);
 
 const $readings = domain
-  .createStore<PreparedMeteringDeviceReadings>([])
+  .createStore<PreparedMeteringDeviceReading[]>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
     groupWithEmptyReadings(response.items || [])
   );

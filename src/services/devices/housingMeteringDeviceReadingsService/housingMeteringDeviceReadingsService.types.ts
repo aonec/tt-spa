@@ -5,13 +5,13 @@ export type HousingMeteringDeviceReadingsContainerProps = {
   resource: EResourceType;
 };
 
-export type PreparedMeteringDeviceReadings = {
+export type PreparedMeteringDeviceReading = {
   year: string;
   readings: {
     month: string;
-    readings: (SortedMeteringDeviceReading | null)[];
+    readings: SortedMeteringDeviceReading[];
   }[];
-}[];
+};
 
 export type SortedMeteringDeviceReading = {
   value: number;

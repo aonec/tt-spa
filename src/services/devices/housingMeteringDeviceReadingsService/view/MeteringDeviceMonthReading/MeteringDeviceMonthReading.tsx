@@ -1,4 +1,5 @@
-import React, { FC, useMemo } from 'react';
+import { useFormik } from 'formik';
+import React, { FC, useMemo, useState } from 'react';
 import {
   InputSC,
   MonthWrapper,
@@ -11,24 +12,71 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
   isColdWater,
   month,
 }) => {
-  const inputs = useMemo(() => {
-    const feedFlowReading = monthReadings[0];
-    const feedBackFlowReading = monthReadings[1];
-    
-    if (isColdWater && feedFlowReading) {
-      return <InputSC size="small" value={feedFlowReading.value} />;
+  const { values, setFieldValue } = useFormik({
+    initialValues: {
+      feedFlowReading: monthReadings[0],
+      feedBackFlowReading: monthReadings?.[1] || null,
+    },
+    enableReinitialize: true,
+    onSubmit: console.log,
+  });
+
+  const coldWaterInput = useMemo(() => {
+    if (!values.feedFlowReading) {
+      return null;
     }
-    if (!feedFlowReading || !feedBackFlowReading) {
+    return (
+      <InputSC
+        size="small"
+        value={values.feedFlowReading.value}
+        onChange={(e) =>
+          setFieldValue('feedFlowReading', {
+            ...values.feedFlowReading,
+            value: e.target.value,
+          })
+        }
+      />
+    );
+  }, [values, setFieldValue]);
+
+  const notColdWaterInput = useMemo(() => {
+    if (!values.feedFlowReading || !values.feedBackFlowReading) {
       return null;
     }
 
     return (
       <>
-        <InputSC size="small" value={feedFlowReading.value} />
-        <InputSC size="small" value={feedBackFlowReading.value} />
+        <InputSC
+          size="small"
+          value={values.feedFlowReading.value}
+          onChange={(e) =>
+            setFieldValue('feedFlowReading', {
+              ...values.feedFlowReading,
+              value: e.target.value,
+            })
+          }
+        />
+        <InputSC
+          size="small"
+          value={values.feedBackFlowReading.value}
+          onChange={(e) =>
+            setFieldValue('feedBackFlowReading', {
+              ...values.feedBackFlowReading,
+              value: e.target.value,
+            })
+          }
+        />
       </>
     );
-  }, [monthReadings, isColdWater]);
+  }, [values, setFieldValue]);
+
+  const inputs = useMemo(() => {
+    if (isColdWater) {
+      return coldWaterInput;
+    }
+
+    return notColdWaterInput;
+  }, [isColdWater, values]);
 
   return (
     <Wrapper isColdWater={isColdWater}>

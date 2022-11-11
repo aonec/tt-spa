@@ -62,12 +62,14 @@ export const groupWithEmptyReadings = (
 
     const readings = sortedReadingsDictionary[date];
     if (!readings) {
-      return [
-        { value: 0, deviceId: feedFlowId, year, month },
-        feedBackFlowId
-          ? { value: 0, deviceId: feedBackFlowId, year, month }
-          : null,
-      ];
+      let result = [{ value: 0, deviceId: feedFlowId, year, month }];
+      if (feedBackFlowId) {
+        result = [
+          ...result,
+          { value: 0, deviceId: feedBackFlowId, year, month },
+        ];
+      }
+      return result;
     }
 
     return readings;

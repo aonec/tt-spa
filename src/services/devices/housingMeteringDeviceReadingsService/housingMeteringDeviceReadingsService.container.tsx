@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { housingMeteringDeviceReadingsService } from './housingMeteringDeviceReadingsService.model';
 import { HousingMeteringDeviceReadingsContainerProps } from './housingMeteringDeviceReadingsService.types';
 import { MeteringDeviceReadingsTable } from './view/MeteringDeviceReadingsTable';
@@ -18,7 +18,10 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
     <>
       <NodeResourceGate resource={resource} />
       <NodeIdGate nodeId={nodeId} />
-      <MeteringDeviceReadingsTable isColdWater={isColdWater} readings={readings}/>
+      <MeteringDeviceReadingsTable
+        isColdWater={isColdWater}
+        readings={readings}
+      />
     </>
   );
 };
