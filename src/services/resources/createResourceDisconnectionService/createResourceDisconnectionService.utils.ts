@@ -10,25 +10,25 @@ export const prepareAddressesForTreeSelect = (
   parentId?: string
 ) =>
   items.reduce((acc, { street, addresses }) => {
-    if (street) {
-      const childrenAddresses = addresses || [];
-      const children = childrenAddresses.map((address) => ({
-        title: `${street}, ${address.housingStockNumber}`,
-        value: address.housingStockId,
-        key: address.housingStockId,
-      }));
+    if (!street) return acc;
 
-      return [
-        ...acc,
-        {
-          title: street,
-          key: `${street}${parentId}`,
-          value: `${street}${parentId}`,
-          children,
-        },
-      ];
-    }
-    return acc;
+    const childrenAddresses = addresses || [];
+    
+    const children = childrenAddresses.map((address) => ({
+      title: `${street}, ${address.housingStockNumber}`,
+      value: address.housingStockId,
+      key: address.housingStockId,
+    }));
+
+    return [
+      ...acc,
+      {
+        title: street,
+        key: `${street}${parentId}`,
+        value: `${street}${parentId}`,
+        children,
+      },
+    ];
   }, [] as TreeSelectElement[]);
 
 export const prepareAddressesWithParentsForTreeSelect = (
