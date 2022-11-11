@@ -1,3 +1,8 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export const Wrapper = styled.div``
+export const FormGrid = styled.div`
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+`;

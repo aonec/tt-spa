@@ -48,6 +48,7 @@ export const TreeSelectSC = styled(TreeSelect)`
   * {
     font-size: 16px !important;
     line-height: 32px;
+    caret-color: rgba(0, 0, 0, 0);
   }
 
   .ant-select-selector {
