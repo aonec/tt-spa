@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
+import moment from 'moment';
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   EResourceType,
@@ -77,6 +78,12 @@ forward({
 
 createReadingFx.failData.watch((error) =>
   message.error(error.response.data.error.Text)
+);
+
+createReadingFx.done.watch(({ params }) =>
+  message.success(
+    `Показание за ${moment(params.readingDate).format('MMMM YYYY')} сохранено!`
+  )
 );
 
 export const housingMeteringDeviceReadingsService = {

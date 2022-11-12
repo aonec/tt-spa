@@ -11,6 +11,7 @@ export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = (
   createReading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  
   const list = useMemo(
     () =>
       yearRreadings.map(({ month, readings }) => (

@@ -11,7 +11,6 @@ export const Wrapper = styled.div<{ isColdWater: boolean }>`
   overflow: hidden;
 
   padding: 0 16px;
-  margin-bottom: 8px;
   height: 48px;
 
   color: #272f5ae5;

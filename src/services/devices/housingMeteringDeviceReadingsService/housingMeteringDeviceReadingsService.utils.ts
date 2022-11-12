@@ -13,10 +13,12 @@ const getDeviceIds = (
     readings.find(
       (reading) => reading.magistralType === EMagistralType.FeedFlow
     ) || null;
+
   const feedBackFlowReading =
     readings.find(
       (reading) => reading.magistralType === EMagistralType.FeedBackFlow
     ) || null;
+
   return [feedFlowReading?.deviceId, feedBackFlowReading?.deviceId];
 };
 
@@ -57,18 +59,21 @@ export const groupWithEmptyReadings = (
     const date = `${year} ${month}`;
 
     const readings = sortedReadingsDictionary[date];
-    if (!readings) {
-      let result = [{ value: 0, deviceId: feedFlowId, year, month }];
-      if (feedBackFlowId) {
-        result = [
-          ...result,
-          { value: 0, deviceId: feedBackFlowId, year, month },
-        ];
-      }
-      return result;
+
+    if (readings) {
+      return readings;
     }
 
-    return readings;
+    let result = [{ value: null, deviceId: feedFlowId, year, month }];
+
+    if (feedBackFlowId) {
+      result = [
+        ...result,
+        { value: null, deviceId: feedBackFlowId, year, month },
+      ];
+    }
+
+    return result;
   });
 
   const groupedReadingsByYear = _.groupBy(

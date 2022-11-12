@@ -14,6 +14,6 @@ export type PreparedMeteringDeviceReading = {
 };
 
 export type SortedMeteringDeviceReading = {
-  value: number;
+  value: number | null;
   deviceId: number;
 };

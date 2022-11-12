@@ -8,8 +8,7 @@ export const Year = styled.div`
 
   border-bottom: 1px solid #dcdee4;
 
-  margin-top: 8px;
-  padding: 8px 16px;
+  padding: 12px 16px;
   font-size: 16px;
   color: #272f5ae5;
 
