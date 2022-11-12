@@ -19,7 +19,7 @@ export const Header = () => {
         <GoBack path={`/objects/${id}`} />
         <div>
           <Title>Добавление нового узла</Title>
-          <Subtitle to={`/objects/${id}`}>
+          <Subtitle to={`/objects/profile/${id}`}>
             {getHousingStockAddress(housingStock, true)}
           </Subtitle>
         </div>
