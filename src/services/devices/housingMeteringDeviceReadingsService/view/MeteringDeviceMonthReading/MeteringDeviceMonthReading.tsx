@@ -20,7 +20,7 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
       feedBackFlowReading: monthReadings?.[1] || null,
     },
     enableReinitialize: true,
-    onSubmit: console.log,
+    onSubmit: ()=> void 0,
   });
 
   const coldWaterInput = useMemo(() => {
