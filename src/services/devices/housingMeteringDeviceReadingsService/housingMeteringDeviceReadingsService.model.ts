@@ -1,7 +1,14 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { EResourceType, GetHousingMeteringDeviceReadingsResponse } from 'myApi';
-import { fetchHousingMeteringDeviceReadings } from './housingMeteringDeviceReadingsService.api';
+import {
+  CreateHousingMeteringDeviceReadingsRequest,
+  EResourceType,
+  GetHousingMeteringDeviceReadingsResponse,
+} from 'myApi';
+import {
+  createHousingMeteringDeviceReading,
+  fetchHousingMeteringDeviceReadings,
+} from './housingMeteringDeviceReadingsService.api';
 import { PreparedMeteringDeviceReading } from './housingMeteringDeviceReadingsService.types';
 import { groupWithEmptyReadings } from './housingMeteringDeviceReadingsService.utils';
 
@@ -23,6 +30,12 @@ const $isColdWater = domain
   .createStore(false)
   .on(setResource, (_, resource) => resource === EResourceType.ColdWaterSupply);
 
+const createReading = domain.createEvent<CreateHousingMeteringDeviceReadingsRequest>();
+const createReadingFx = domain.createEffect<
+  CreateHousingMeteringDeviceReadingsRequest,
+  void
+>(createHousingMeteringDeviceReading);
+
 const NodeIdGate = createGate<{ nodeId: number }>();
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
 
@@ -36,8 +49,13 @@ forward({
   to: setResource,
 });
 
+forward({
+  from: createReading,
+  to: createReadingFx,
+});
+
 export const housingMeteringDeviceReadingsService = {
-  inputs: {},
+  inputs: { createReading },
   outputs: {
     $readings,
     $isColdWater,

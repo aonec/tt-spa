@@ -27,12 +27,8 @@ export const groupWithEmptyReadings = (
     (reading) => !reading.isArchived && !reading.isRemoved
   );
 
-  const testReading = { ...existingReadings[0], year: 2020, month: 'апрель' };
-
-  const testReadings = [...existingReadings, testReading];
-
   const sortedReadingsDictionary = _.groupBy(
-    testReadings,
+    existingReadings,
     (reading) => `${reading.year} ${reading.month}`
   );
   const sortedReadings = Object.keys(

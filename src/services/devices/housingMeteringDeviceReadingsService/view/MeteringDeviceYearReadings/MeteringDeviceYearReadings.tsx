@@ -8,6 +8,7 @@ export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = (
   yearRreadings,
   year,
   isColdWater,
+  createReading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const list = useMemo(
@@ -18,6 +19,7 @@ export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = (
           isColdWater={isColdWater}
           month={month}
           key={month}
+          createReading={(reading)=>createReading({month, ...reading}) }
         />
       )),
     [yearRreadings]

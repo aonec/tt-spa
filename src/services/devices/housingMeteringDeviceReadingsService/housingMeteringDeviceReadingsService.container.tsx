@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React, { FC, useState } from 'react';
 import { housingMeteringDeviceReadingsService } from './housingMeteringDeviceReadingsService.model';
 import { HousingMeteringDeviceReadingsContainerProps } from './housingMeteringDeviceReadingsService.types';
@@ -14,6 +14,8 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
   const readings = useStore(outputs.$readings);
   const isColdWater = useStore(outputs.$isColdWater);
 
+  const createReading = useEvent(inputs.createReading);
+
   return (
     <>
       <NodeResourceGate resource={resource} />
@@ -21,6 +23,7 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
       <MeteringDeviceReadingsTable
         isColdWater={isColdWater}
         readings={readings}
+        createReading={createReading}
       />
     </>
   );

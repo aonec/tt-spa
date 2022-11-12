@@ -6,11 +6,13 @@ import {
   Wrapper,
 } from './MeteringDeviceMonthReading.styled';
 import { MeteringDeviceMonthReadingProps } from './MeteringDeviceMonthReading.types';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
 
 export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = ({
   monthReadings,
   isColdWater,
   month,
+  createReading,
 }) => {
   const { values, setFieldValue } = useFormik({
     initialValues: {
@@ -22,17 +24,19 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
   });
 
   const coldWaterInput = useMemo(() => {
-    if (!values.feedFlowReading) {
+    const { feedFlowReading } = values;
+    if (!feedFlowReading) {
       return null;
     }
     return (
       <InputSC
         size="small"
-        value={values.feedFlowReading.value}
+        value={feedFlowReading.value}
+        onKeyDown={fromEnter(() => createReading({ ...feedFlowReading }))}
         onChange={(e) =>
           setFieldValue('feedFlowReading', {
-            ...values.feedFlowReading,
-            value: e.target.value,
+            ...feedFlowReading,
+            value: Number(e.target.value),
           })
         }
       />
@@ -40,7 +44,8 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
   }, [values, setFieldValue]);
 
   const notColdWaterInput = useMemo(() => {
-    if (!values.feedFlowReading || !values.feedBackFlowReading) {
+    const { feedBackFlowReading, feedFlowReading } = values;
+    if (!feedFlowReading || !feedBackFlowReading) {
       return null;
     }
 
@@ -48,21 +53,23 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
       <>
         <InputSC
           size="small"
-          value={values.feedFlowReading.value}
+          value={feedFlowReading.value}
+          onKeyDown={fromEnter(() => createReading({ ...feedFlowReading }))}
           onChange={(e) =>
             setFieldValue('feedFlowReading', {
-              ...values.feedFlowReading,
-              value: e.target.value,
+              ...feedFlowReading,
+              value: Number(e.target.value),
             })
           }
         />
         <InputSC
           size="small"
-          value={values.feedBackFlowReading.value}
+          value={feedBackFlowReading.value}
+          onKeyDown={fromEnter(() => createReading({ ...feedBackFlowReading }))}
           onChange={(e) =>
             setFieldValue('feedBackFlowReading', {
-              ...values.feedBackFlowReading,
-              value: e.target.value,
+              ...feedBackFlowReading,
+              value: Number(e.target.value),
             })
           }
         />

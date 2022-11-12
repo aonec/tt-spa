@@ -7,4 +7,9 @@ export type MeteringDeviceYearReadingsProps = {
     readings: SortedMeteringDeviceReading[];
   }[];
   isColdWater: boolean;
+  createReading: (reading: {
+    value: number;
+    deviceId: number;
+    month: string;
+  }) => void;
 };
