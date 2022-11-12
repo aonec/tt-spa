@@ -31,7 +31,7 @@ export const groupWithEmptyReadings = (
     existingReadings,
     (reading) => `${reading.year} ${reading.month}`
   );
-  const sortedReadings = Object.keys(
+  const sortedReadingsDates = Object.keys(
     sortedReadingsDictionary
   ).sort((first, second) =>
     moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month')
@@ -39,7 +39,7 @@ export const groupWithEmptyReadings = (
 
   const [feedFlowId, feedBackFlowId] = getDeviceIds(existingReadings);
 
-  const firstReadingDate = sortedReadings[0];
+  const firstReadingDate = sortedReadingsDates[0];
 
   if (!firstReadingDate || !feedFlowId) {
     return [];

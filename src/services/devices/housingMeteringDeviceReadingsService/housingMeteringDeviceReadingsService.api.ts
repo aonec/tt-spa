@@ -2,6 +2,7 @@ import { axios } from '01/axios';
 import {
   CreateHousingMeteringDeviceReadingsRequest,
   GetHousingMeteringDeviceReadingsResponse,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
 } from 'myApi';
 
 export const fetchHousingMeteringDeviceReadings = (
@@ -11,4 +12,4 @@ export const fetchHousingMeteringDeviceReadings = (
 
 export const createHousingMeteringDeviceReading = (
   reading: CreateHousingMeteringDeviceReadingsRequest
-): Promise<void> => axios.post('HousingMeteringDeviceReadings', reading);
+): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> => axios.post('HousingMeteringDeviceReadings', reading);
