@@ -1,7 +1,7 @@
 import { closingReasons } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';

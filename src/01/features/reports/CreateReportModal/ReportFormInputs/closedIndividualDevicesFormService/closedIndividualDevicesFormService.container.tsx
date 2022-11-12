@@ -5,28 +5,21 @@ import { closedIndividualDevicesFormService } from './closedIndividualDevicesFor
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
 
 export const ClosedIndividualDevicesFormContainer = () => {
-  const unloadSelectType = useStore(
-    closedIndividualDevicesFormService.outputs.$unloadSelectType
-  );
-  const setUnloadSelectType = useEvent(
-    closedIndividualDevicesFormService.inputs.setUnloadSelectType
-  );
+  const { inputs, outputs } = closedIndividualDevicesFormService;
 
-  const addressesPagedList = useStore(
-    closedIndividualDevicesFormService.outputs.$addressesPagedList
-  );
+  const unloadSelectType = useStore(outputs.$unloadSelectType);
 
-  const organizationPagedList = useStore(
-    closedIndividualDevicesFormService.outputs.$organizationPagedList
-  );
+  const setUnloadSelectType = useEvent(inputs.setUnloadSelectType);
 
-  const houseManagementList = useStore(closedIndividualDevicesFormService.outputs.$houseManagementList)
+  const addressesPagedList = useStore(outputs.$addressesPagedList);
+
+  const organizationPagedList = useStore(outputs.$organizationPagedList);
+
+  const houseManagementList = useStore(outputs.$houseManagementList);
 
   const preparedAddresses = prepareAddressesForTreeSelect(
     addressesPagedList?.items || []
   );
-
- 
 
   return (
     <ClosedIndividualDevicesForm
