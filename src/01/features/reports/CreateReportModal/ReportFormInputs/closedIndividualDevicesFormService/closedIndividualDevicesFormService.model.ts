@@ -34,9 +34,7 @@ guard({
   filter: (value: UnloadingType | null) => {
     return value === 'ByAddress';
   },
-  target: fetchAdressesFx.prepend(() => {
-    return {};
-  }),
+  target: fetchAdressesFx.prepend(() => ({})),
 });
 
 const fetchOrganzationFx = domain.createEffect<
@@ -49,9 +47,7 @@ guard({
   filter: (value: UnloadingType | null) => {
     return value === 'AllManagingFirm';
   },
-  target: fetchOrganzationFx.prepend(() => {
-    return {};
-  }),
+  target: fetchOrganzationFx.prepend(() => ({})),
 });
 
 const fetchHouseManagementsFx = domain.createEffect<
@@ -64,9 +60,7 @@ guard({
   filter: (value: UnloadingType | null) => {
     return value === 'ByHouseManagement';
   },
-  target: fetchHouseManagementsFx.prepend(() => {
-    return {};
-  }),
+  target: fetchHouseManagementsFx.prepend(() => ({})),
 });
 
 const $addressesPagedList = domain
