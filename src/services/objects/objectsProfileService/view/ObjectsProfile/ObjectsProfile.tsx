@@ -32,7 +32,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         onClick: handleExportGroupReport,
       },
       {
-        title: 'Создать оключение ресурса на объекте',
+        title: 'Создать отключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
       },
     ],
