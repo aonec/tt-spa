@@ -7,13 +7,14 @@ import { TreeSelectElement } from './view/CreateResourceDisconnectionModal/Creat
 
 export const prepareAddressesForTreeSelect = (
   items: StreetWithHousingStockNumbersResponse[],
-  parentId?: string
+  parentId?: string,
+  isSelectableStreetNode: boolean = true
 ) =>
   items.reduce((acc, { street, addresses }) => {
     if (!street) return acc;
 
     const childrenAddresses = addresses || [];
-    
+
     const children = childrenAddresses.map((address) => ({
       title: `${street}, ${address.housingStockNumber}`,
       value: address.housingStockId,
@@ -27,6 +28,7 @@ export const prepareAddressesForTreeSelect = (
         key: `${street}${parentId}`,
         value: `${street}${parentId}`,
         children,
+        selectable: isSelectableStreetNode,
       },
     ];
   }, [] as TreeSelectElement[]);

@@ -18,7 +18,9 @@ export const ClosedIndividualDevicesFormContainer = () => {
   const houseManagementList = useStore(outputs.$houseManagementList);
 
   const preparedAddresses = prepareAddressesForTreeSelect(
-    addressesPagedList?.items || []
+    addressesPagedList?.items || [],
+    undefined,
+    false
   );
 
   return (

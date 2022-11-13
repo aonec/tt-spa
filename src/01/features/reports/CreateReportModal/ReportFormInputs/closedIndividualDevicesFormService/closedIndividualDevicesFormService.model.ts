@@ -31,9 +31,7 @@ const fetchAdressesFx = domain.createEffect<
 
 guard({
   source: $unloadSelectType,
-  filter: (value: UnloadingType | null) => {
-    return value === 'ByAddress';
-  },
+  filter: (value: UnloadingType | null) => value === 'ByAddress',
   target: fetchAdressesFx.prepend(() => ({})),
 });
 

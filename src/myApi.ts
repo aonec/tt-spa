@@ -3027,6 +3027,15 @@ export interface IndividualDeviceListResponseFromDevicePagePagedListSuccessApiRe
   successResponse: IndividualDeviceListResponseFromDevicePagePagedList | null;
 }
 
+export interface IndividualDeviceMountPlaceForFilterResponse {
+  name: string | null;
+  description: string | null;
+}
+
+export interface IndividualDeviceMountPlaceForFilterResponseListSuccessApiResponse {
+  successResponse: IndividualDeviceMountPlaceForFilterResponse[] | null;
+}
+
 export interface IndividualDeviceMountPlaceListResponse {
   /** @format int32 */
   id: number;
@@ -4529,6 +4538,62 @@ export interface ResourceDisconnectingUpdateRequest {
   /** @format date-time */
   endDate?: string | null;
   sender?: string | null;
+}
+
+export enum ResourceType {
+  None = "None",
+  Heat = "Heat",
+  HotWaterSupply = "HotWaterSupply",
+  ColdWaterSupply = "ColdWaterSupply",
+  Electricity = "Electricity",
+}
+
+export interface SamoletArchiveResponse {
+  /** @format date-time */
+  timestamp: string;
+
+  /** @format double */
+  t1: number;
+
+  /** @format double */
+  t2: number;
+
+  /** @format double */
+  td: number;
+
+  /** @format double */
+  v1: number;
+
+  /** @format double */
+  v2: number;
+
+  /** @format double */
+  vd: number;
+
+  /** @format double */
+  p1: number;
+
+  /** @format double */
+  p2: number;
+
+  /** @format double */
+  q: number;
+
+  /** @format double */
+  workingTime: number;
+  hasFaults: boolean;
+}
+
+export interface SamoletCalculatorResponse {
+  serialNumber: string | null;
+  model: string | null;
+  address: string | null;
+  resourceType: string | null;
+  archives: SamoletArchiveResponse[] | null;
+}
+
+export interface SamoletCalculatorResponseIEnumerableSuccessApiResponse {
+  successResponse: SamoletCalculatorResponse[] | null;
 }
 
 export interface SetMagneticSealRequest {
@@ -6092,6 +6157,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ECheckTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/CheckTypes`,
         method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Archives
+     * @name ArchivesCalculatorsArchivesList
+     * @request GET:/api/Archives/CalculatorsArchives
+     * @secure
+     */
+    archivesCalculatorsArchivesList: (
+      query: { from: string; to: string; resourceType: ResourceType },
+      params: RequestParams = {},
+    ) =>
+      this.request<SamoletCalculatorResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Archives/CalculatorsArchives`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -8184,7 +8270,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksExistingHousingStockNumberList: (
-      query?: { city?: string; street?: string },
+      query: { city: string; street: string },
       params: RequestParams = {},
     ) =>
       this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
@@ -8723,6 +8809,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/IndividualDeviceMountPlaces`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags IndividualDeviceMountPlaces
+     * @name IndividualDeviceMountPlacesAllList
+     * @summary IndividualDeviceMountPlaceRead
+     * @request GET:/api/IndividualDeviceMountPlaces/All
+     * @secure
+     */
+    individualDeviceMountPlacesAllList: (params: RequestParams = {}) =>
+      this.request<IndividualDeviceMountPlaceForFilterResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDeviceMountPlaces/All`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -9884,7 +9988,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Фоновый рабочий</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li><li>Фоновый рабочий</li>
      *
      * @tags Organizations
      * @name OrganizationsList
@@ -10585,7 +10689,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsOperatorsWorkingReportList
@@ -10604,7 +10708,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsInspectorsWorkingReportList
@@ -10623,7 +10727,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsCallCenterWorkingReportList
@@ -10642,7 +10746,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsHouseManagementsReportList
@@ -10661,7 +10765,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsCheckingDatesReportList
@@ -10683,7 +10787,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsReadingsReportList
@@ -10702,20 +10806,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsManuallyClosedDevicesReportList
+     * @name ReportsClosedDevicesReportList
      * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/ManuallyClosedDevicesReport
+     * @request GET:/api/Reports/ClosedDevicesReport
      * @secure
      */
-    reportsManuallyClosedDevicesReportList: (
-      query?: { ManagementFirmId?: number; Resource?: EResourceType; To?: string; From?: string },
+    reportsClosedDevicesReportList: (
+      query?: {
+        ManagementFirmId?: number;
+        HouseManagementId?: string;
+        HousingStockId?: number;
+        Resources?: EResourceType[];
+        ClosingReasons?: EClosingReason[];
+        From?: string;
+        To?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/ManuallyClosedDevicesReport`,
+        path: `/api/Reports/ClosedDevicesReport`,
         method: "GET",
         query: query,
         secure: true,
@@ -10724,7 +10836,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsApartmentsWithPreviousBrokenDevicesReportList
@@ -10742,7 +10854,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsRunnerReportsList
@@ -10761,7 +10873,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsMahallyaTasksReportList
@@ -10779,7 +10891,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsHomeownerAccountsForErcList
@@ -10797,7 +10909,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsDataForMlExportList
@@ -10819,7 +10931,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsSoiReportList
@@ -10848,7 +10960,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li>
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
      * @name ReportsReportRequestsHistoryList

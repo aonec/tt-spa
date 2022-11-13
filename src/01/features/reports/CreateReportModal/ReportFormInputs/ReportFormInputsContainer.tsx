@@ -60,8 +60,8 @@ export const ReportFormInputsContainer = () => {
         ),
       },
       {
-        reportTypes: [ReportType.ClosedIndividualDevicesReport],
-        element: <ClosedIndividualDevicesFormContainer  />,
+        reportTypes: [ReportType.ClosedDevicesReport],
+        element: <ClosedIndividualDevicesFormContainer />,
       },
     ],
     [rangePeriod, period, changePeriod, resources]
