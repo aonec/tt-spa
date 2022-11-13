@@ -15,11 +15,10 @@ export type PreparedMeteringDeviceReading = {
 
 export type SortedMeteringDeviceReading = {
   value: number | null;
-  consumption: string;
   deviceId: number;
 };
 
-export type MeteringDeviceReadingWithEmpties = Omit<
-  SortedMeteringDeviceReading,
-  'consumption'
-> & { year: string | number; month: string | null };
+export type MeteringDeviceReadingWithEmpties = SortedMeteringDeviceReading & {
+  year: string | number;
+  month: string | null;
+};

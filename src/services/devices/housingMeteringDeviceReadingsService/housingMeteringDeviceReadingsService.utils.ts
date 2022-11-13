@@ -42,11 +42,7 @@ export const groupWithEmptyReadings = (
       .add(diff + index, 'month')
       .format('MMMM');
     const date = `${year} ${month}`;
-    const prevDate = moment(date, 'YYYY MMMM')
-      .subtract(1, 'month')
-      .format('YYYY MMMM');
 
-    const prevReadings = sortedReadingsDictionary[prevDate];
     let readings: MeteringDeviceReadingWithEmpties[] | undefined =
       sortedReadingsDictionary[date];
 
@@ -73,10 +69,7 @@ export const groupWithEmptyReadings = (
       }
     }
 
-    return readings.map((reading, index) => ({
-      ...reading,
-      consumption: calculateConsumption(reading, prevReadings?.[index]),
-    }));
+    return readings;
   });
 
   const groupedReadings = groupReadings(readingsWithEmpty);
@@ -87,7 +80,6 @@ export const groupWithEmptyReadings = (
 const groupReadings = (
   readings: {
     value: number | null;
-    consumption: string;
     deviceId: number;
     year: string | number;
     month: string | null;
@@ -134,19 +126,4 @@ const getDeviceIds = (
     ) || null;
 
   return [feedFlowReading?.deviceId, feedBackFlowReading?.deviceId];
-};
-
-const calculateConsumption = (
-  currentReading: MeteringDeviceReadingWithEmpties | undefined,
-  prevReading: MeteringDeviceReadingWithEmpties | undefined
-) => {
-  if (!currentReading?.value || !prevReading?.value) {
-    return '-';
-  }
-  const currentValue = currentReading.value;
-  const prevValue = prevReading.value;
-
-  const consumption = String(currentValue - prevValue);
-
-  return consumption;
 };
