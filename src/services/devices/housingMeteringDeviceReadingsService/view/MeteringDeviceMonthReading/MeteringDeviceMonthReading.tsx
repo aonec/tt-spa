@@ -54,6 +54,7 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
     <Wrapper isColdWater={isColdWater}>
       <MonthWrapper>{month}</MonthWrapper>
       {inputs}
+      {}
     </Wrapper>
   );
 };

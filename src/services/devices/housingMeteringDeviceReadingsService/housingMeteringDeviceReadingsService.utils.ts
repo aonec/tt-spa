@@ -5,22 +5,7 @@ import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
-
-const getDeviceIds = (
-  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
-) => {
-  const feedFlowReading =
-    readings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedFlow
-    ) || null;
-
-  const feedBackFlowReading =
-    readings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedBackFlow
-    ) || null;
-
-  return [feedFlowReading?.deviceId, feedBackFlowReading?.deviceId];
-};
+import { MeteringDeviceReadingWithEmpties } from './housingMeteringDeviceReadingsService.types';
 
 export const groupWithEmptyReadings = (
   allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
@@ -57,27 +42,59 @@ export const groupWithEmptyReadings = (
       .add(diff + index, 'month')
       .format('MMMM');
     const date = `${year} ${month}`;
+    const prevDate = moment(date, 'YYYY MMMM')
+      .subtract(1, 'month')
+      .format('YYYY MMMM');
 
-    const readings = sortedReadingsDictionary[date];
+    const prevReadings = sortedReadingsDictionary[prevDate];
+    let readings: MeteringDeviceReadingWithEmpties[] | undefined =
+      sortedReadingsDictionary[date];
 
-    if (readings) {
-      return readings;
-    }
-
-    let result = [{ value: null, deviceId: feedFlowId, year, month }];
-
-    if (feedBackFlowId) {
-      result = [
-        ...result,
-        { value: null, deviceId: feedBackFlowId, year, month },
+    if (!readings) {
+      readings = [
+        {
+          value: null,
+          deviceId: feedFlowId,
+          year,
+          month,
+        },
       ];
+
+      if (feedBackFlowId) {
+        readings = [
+          ...readings,
+          {
+            value: null,
+            deviceId: feedBackFlowId,
+            year,
+            month,
+          },
+        ];
+      }
     }
 
-    return result;
+    return readings.map((reading, index) => ({
+      ...reading,
+      consumption: calculateConsumption(reading, prevReadings?.[index]),
+    }));
   });
 
+  const groupedReadings = groupReadings(readingsWithEmpty);
+
+  return groupedReadings;
+};
+
+const groupReadings = (
+  readings: {
+    value: number | null;
+    consumption: string;
+    deviceId: number;
+    year: string | number;
+    month: string | null;
+  }[][]
+) => {
   const groupedReadingsByYear = _.groupBy(
-    readingsWithEmpty,
+    readings,
     (readings) => readings[0]?.year
   );
 
@@ -101,4 +118,35 @@ export const groupWithEmptyReadings = (
   );
 
   return _.reverse(groupedReadingsByMonth);
+};
+
+const getDeviceIds = (
+  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+) => {
+  const feedFlowReading =
+    readings.find(
+      (reading) => reading.magistralType === EMagistralType.FeedFlow
+    ) || null;
+
+  const feedBackFlowReading =
+    readings.find(
+      (reading) => reading.magistralType === EMagistralType.FeedBackFlow
+    ) || null;
+
+  return [feedFlowReading?.deviceId, feedBackFlowReading?.deviceId];
+};
+
+const calculateConsumption = (
+  currentReading: MeteringDeviceReadingWithEmpties | undefined,
+  prevReading: MeteringDeviceReadingWithEmpties | undefined
+) => {
+  if (!currentReading?.value || !prevReading?.value) {
+    return '-';
+  }
+  const currentValue = currentReading.value;
+  const prevValue = prevReading.value;
+
+  const consumption = String(currentValue - prevValue);
+
+  return consumption;
 };
