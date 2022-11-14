@@ -1,4 +1,7 @@
 import { axios } from '01/axios';
+import { downloadURI } from '01/features/reports/CreateReportModal/utils';
+import { omit } from 'lodash';
+import moment from 'moment';
 import {
   HouseManagementResponse,
   StreetWithHousingStockNumbersResponsePagedList,
@@ -9,9 +12,20 @@ import {
   GetHouseManagementsRequestPayload,
 } from './soiReportService.model.types';
 
-export const getSoiReport = (
+export const getSoiReport = async (
   params: CreateSoiReportRequestPayload
-): Promise<void> => axios.get('Reports/SoiReport', { params });
+): Promise<void> => {
+  const res: string = await axios.get('Reports/SoiReport', {
+    params: omit(params, ['ReportName']),
+  });
+
+  const url = window.URL.createObjectURL(new Blob([res]));
+
+  downloadURI(
+    url,
+    `${params.ReportName}_${moment(params.To).format('MMMM_YYYY')}`
+  );
+};
 
 export const getHouseManagements = (
   params: GetHouseManagementsRequestPayload
