@@ -17,9 +17,8 @@ export const getSoiReport = async (
 ): Promise<void> => {
   const res: string = await axios.get('Reports/SoiReport', {
     params: omit(params, ['ReportName']),
+    responseType: 'blob',
   });
-
-  console.log(res);
 
   const url = window.URL.createObjectURL(new Blob([res]));
 

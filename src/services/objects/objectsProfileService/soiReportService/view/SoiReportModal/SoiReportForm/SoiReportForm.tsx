@@ -1,6 +1,7 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
+import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React, { FC } from 'react';
 import { resourcesNamesLookup } from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
@@ -161,6 +162,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             onChange={(value) => setFieldValue('Date', value)}
             picker={values.Period}
             format={values.Period === 'month' ? 'MMMM YYYY' : 'YYYY'}
+            disabledDate={(date) => moment().diff(date) < 0}
           />
         </FormItem>
       </FormGrid>
