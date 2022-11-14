@@ -20,6 +20,7 @@ import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSe
 export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesViewBySerialNumberSearchProps> = ({
   filter,
   setFilter,
+  clearSearchPayload,
 }) => {
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
@@ -34,14 +35,14 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
       ApartmentStatus: filter.ApartmentStatus || null,
       Resource: filter.Resource || null,
       IsAlsoClosing: filter.IsAlsoClosing,
-      Model: '',
-      MountPlace: '',
-      ClosingReason: null,
-      ExpiresCheckingDateAt: null,
-      City: '',
-      HouseCorpus: '',
-      HouseNumber: '',
-      PageNumber: 1,
+      Model: filter.Model || '',
+      MountPlace: filter.MountPlace || '',
+      ClosingReason: filter.ClosingReason || null,
+      ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
+      City: filter.City || '',
+      HouseCorpus: filter.HouseCorpus || '',
+      HouseNumber: filter.HouseNumber || '',
+      Street: filter.Street || '',
     },
     enableReinitialize: true,
     onSubmit: setFilter,
@@ -60,6 +61,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
     <Wrapper>
       <IndividualDevicesExtendedSearch
         devicesSearchType={DevicesSearchType.SearialNumber}
+        handleClear={clearSearchPayload}
         handleApply={(newValues) => {
           setValues((oldValues) => ({ ...oldValues, ...newValues }));
           handleSubmit();
