@@ -1,3 +1,4 @@
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import { EResourceType } from 'myApi';
@@ -15,7 +16,7 @@ import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { SoiReportType } from '../../../soiReportService.model.types';
 import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
-import { formInitialValues } from './SoiReportForm.constants';
+import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
 import { getDatePeriod } from './SoiReportForm.utils';
@@ -29,8 +30,15 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
   preparedAddresses,
   createSoiReport,
 }) => {
-  const { values, handleSubmit, handleChange, setFieldValue } = useFormik({
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    setFieldValue,
+    errors,
+  } = useFormik({
     initialValues: formInitialValues,
+    validationSchema,
     onSubmit: (values) => {
       if (!values.Period || !values.Date) return;
 
@@ -61,6 +69,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
           name="ReportName"
           placeholder="Введите название отчёта"
         />
+        <ErrorMessage>{errors.ReportName}</ErrorMessage>
       </FormItem>
       <FormGrid>
         <FormItem label="Город">
@@ -133,6 +142,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             name="NormativePerPerson"
             placeholder="Выберите норматив"
           />
+          <ErrorMessage>{errors.NormativePerPerson}</ErrorMessage>
         </FormItem>
         <FormItem label="Тип периода">
           <Radio.Group

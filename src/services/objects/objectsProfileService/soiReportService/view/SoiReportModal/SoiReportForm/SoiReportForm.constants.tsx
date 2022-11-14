@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { EResourceType } from 'myApi';
+import * as Yup from 'yup';
 
 export const formInitialValues = {
   ReportName: 'Отчёт_по_СОИ',
@@ -8,5 +9,10 @@ export const formInitialValues = {
   Resource: null as EResourceType | null,
   Period: 'month' as 'year' | 'month',
   NormativePerPerson: '',
-  Date: null as moment.Moment | null,
+  Date: moment() as moment.Moment | null,
 };
+
+export const validationSchema = Yup.object().shape({
+  ReportName: Yup.string().required('Это поле обязательное'),
+  NormativePerPerson: Yup.string().required('Это поле обязательное'),
+});

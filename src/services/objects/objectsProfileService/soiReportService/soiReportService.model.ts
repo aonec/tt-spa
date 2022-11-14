@@ -15,6 +15,8 @@ import {
   SoiReportType,
 } from './soiReportService.model.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('soiReportService');
 
@@ -36,7 +38,8 @@ const fetchAdressesFx = domain.createEffect<
 
 const createSoiReportFx = domain.createEffect<
   CreateSoiReportRequestPayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(getSoiReport);
 
 const $addressesPagedList = domain
@@ -94,6 +97,10 @@ forward({
   from: createSoiReport,
   to: createSoiReportFx,
 });
+
+createSoiReportFx.failData.watch((e) =>
+  message.error(e.response.data.error.Text)
+);
 
 const $isCreateReportLoading = createSoiReportFx.pending;
 
