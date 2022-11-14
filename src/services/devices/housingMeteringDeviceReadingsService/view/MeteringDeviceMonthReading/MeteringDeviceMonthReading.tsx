@@ -1,4 +1,6 @@
 import { useFormik } from 'formik';
+import { round } from 'lodash';
+import { EMagistralType } from 'myApi';
 import React, { FC, useMemo, useState } from 'react';
 import { MonthWrapper, Wrapper } from './MeteringDeviceMonthReading.styled';
 import { MeteringDeviceMonthReadingProps } from './MeteringDeviceMonthReading.types';
@@ -9,26 +11,51 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
   isColdWater,
   month,
   createReading,
+  allReadings,
 }) => {
   const { values, setFieldValue } = useFormik({
     initialValues: {
-      feedFlowReading: monthReadings[0],
-      feedBackFlowReading: monthReadings?.[1] || null,
+      feedFlowReading: monthReadings.find(
+        (reading) => reading?.magistralType === EMagistralType.FeedFlow
+      ),
+      feedBackFlowReading: monthReadings.find(
+        (reading) => reading?.magistralType === EMagistralType.FeedBackFlow
+      ),
     },
     enableReinitialize: true,
     onSubmit: () => void 0,
   });
 
   const consumption = useMemo(() => {
-    const [feedFlowReading, feedBackFlowReading] = monthReadings;
-    if (!feedFlowReading?.value) {
+    const { feedBackFlowReading, feedFlowReading } = values;
+
+    if (!feedFlowReading?.previousReadingsId) {
       return '-';
     }
-    if (!feedBackFlowReading?.value) {
-      return feedFlowReading.value;
+
+    const prevFeedFlowReadingValue =
+      allReadings.find(
+        (reading) => reading.id === feedFlowReading.previousReadingsId
+      )?.value || 0;
+
+    const result = round(
+      Number(feedFlowReading?.value) - prevFeedFlowReadingValue,
+      3
+    );
+
+    if (!feedBackFlowReading?.previousReadingsId) {
+      return '-';
     }
-    return Number(feedFlowReading.value) - Number(feedBackFlowReading.value);
-  }, [monthReadings]);
+    const prevBackFeedFlowReadingValue =
+      allReadings.find(
+        (reading) => reading.id === feedBackFlowReading.previousReadingsId
+      )?.value || 0;
+
+    return round(
+      result + prevBackFeedFlowReadingValue - Number(feedBackFlowReading.value),
+      3
+    );
+  }, [monthReadings, allReadings]);
 
   const inputs = useMemo(() => {
     const { feedBackFlowReading, feedFlowReading } = values;
@@ -41,6 +68,7 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
         />
       );
     }
+
     if (!feedFlowReading || !feedBackFlowReading) {
       return null;
     }

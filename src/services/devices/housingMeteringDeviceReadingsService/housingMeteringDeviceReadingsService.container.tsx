@@ -16,14 +16,16 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
   const isColdWater = useStore(outputs.$isColdWater);
   const isLoading = useStore(outputs.$isLoading);
 
+  const isShowLoader = readings.length === 0 && isLoading;
+
   const createReading = useEvent(inputs.createReading);
 
   return (
     <>
       <NodeResourceGate resource={resource} />
       <NodeIdGate nodeId={nodeId} />
-      {isLoading && <Skeleton active />}
-      {!isLoading && (
+      {isShowLoader && <Skeleton active />}
+      {!isShowLoader && (
         <MeteringDeviceReadingsTable
           isColdWater={isColdWater}
           readings={readings}

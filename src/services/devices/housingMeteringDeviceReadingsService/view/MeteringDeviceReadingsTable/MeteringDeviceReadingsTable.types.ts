@@ -1,8 +1,10 @@
-import { CreateHousingMeteringDeviceReadingsRequest } from 'myApi';
-import { PreparedMeteringDeviceReading } from '../../housingMeteringDeviceReadingsService.types';
+import {
+  CreateHousingMeteringDeviceReadingsRequest,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
+} from 'myApi';
 
 export type MeteringDeviceReadingsTableProps = {
   isColdWater: boolean;
-  readings: PreparedMeteringDeviceReading[];
+  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
   createReading: (reading: CreateHousingMeteringDeviceReadingsRequest) => void;
 };

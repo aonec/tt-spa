@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import {
@@ -13,8 +13,6 @@ import {
   createHousingMeteringDeviceReading,
   fetchHousingMeteringDeviceReadings,
 } from './housingMeteringDeviceReadingsService.api';
-import { PreparedMeteringDeviceReading } from './housingMeteringDeviceReadingsService.types';
-import { groupWithEmptyReadings } from './housingMeteringDeviceReadingsService.utils';
 
 const domain = createDomain('housingMeteringDeviceReadingsService');
 
@@ -30,28 +28,16 @@ const createReadingFx = domain.createEffect<
   EffectFailDataAxiosError
 >(createHousingMeteringDeviceReading);
 
+const clearStore = domain.createEvent();
+
 const $readings = domain
-  .createStore<PreparedMeteringDeviceReading[]>([])
+  .createStore<HousingMeteringDeviceReadingsIncludingPlacementResponse[]>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
-    groupWithEmptyReadings(response.items || [])
+    (response.items || []).filter(
+      (reading) => !reading.isArchived && !reading.isRemoved
+    )
   )
-  .on(createReadingFx.doneData, (readings, newReading) =>
-    readings.map((year) => {
-      if (Number(year.year) === newReading.year) {
-        const newYearReadings = year.readings.map((month) => {
-          if (month.month === newReading.month) {
-            const newMonthReadings = month.readings.map((reading) =>
-              reading.deviceId === newReading.deviceId ? newReading : reading
-            );
-            return { month: month.month, readings: newMonthReadings };
-          }
-          return month;
-        });
-        return { year: year.year, readings: newYearReadings };
-      }
-      return year;
-    })
-  );
+  .reset(clearStore);
 
 const setResource = domain.createEvent<EResourceType>();
 const $isColdWater = domain
@@ -64,7 +50,7 @@ const NodeIdGate = createGate<{ nodeId: number }>();
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
 
 forward({
-  from: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  from: NodeIdGate.open.map(({ nodeId }) => nodeId),
   to: getHousingMeteringDeviceReadingsFx,
 });
 
@@ -76,6 +62,17 @@ forward({
 forward({
   from: createReading,
   to: createReadingFx,
+});
+
+sample({
+  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  clock: createReadingFx.doneData,
+  target: getHousingMeteringDeviceReadingsFx,
+});
+
+forward({
+  from: NodeIdGate.close,
+  to: clearStore,
 });
 
 createReadingFx.failData.watch((error) =>

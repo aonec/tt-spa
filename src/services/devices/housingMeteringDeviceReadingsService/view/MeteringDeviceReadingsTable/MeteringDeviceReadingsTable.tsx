@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
+import { groupWithEmptyReadings } from '../../housingMeteringDeviceReadingsService.utils';
 import { MeteringDeviceReadingsTableHeader } from '../MeteringDeviceReadingsTableHeader';
 import { MeteringDeviceYearReadings } from '../MeteringDeviceYearReadings';
 import { MeteringDeviceReadingsTableProps } from './MeteringDeviceReadingsTable.types';
@@ -10,13 +11,16 @@ export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> =
   readings,
   createReading,
 }) => {
+  const preparedReadings = useMemo(()=> groupWithEmptyReadings(readings), [readings])
+
   return (
     <div>
       <MeteringDeviceReadingsTableHeader isColdWater={isColdWater} />
-      {readings.map(({ year, readings }) => (
+      {preparedReadings.map(({ year, readings: yearReadings }) => (
         <MeteringDeviceYearReadings
+          allReadings={readings}
           year={year}
-          yearRreadings={readings}
+          yearRreadings={yearReadings}
           isColdWater={isColdWater}
           key={year}
           createReading={(reading) => {

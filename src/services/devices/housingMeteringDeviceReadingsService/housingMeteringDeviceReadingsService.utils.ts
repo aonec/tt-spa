@@ -10,12 +10,8 @@ import { MeteringDeviceReadingWithEmpties } from './housingMeteringDeviceReading
 export const groupWithEmptyReadings = (
   allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 ) => {
-  const existingReadings = allReadings.filter(
-    (reading) => !reading.isArchived && !reading.isRemoved
-  );
-
   const sortedReadingsDictionary = _.groupBy(
-    existingReadings,
+    allReadings,
     (reading) => `${reading.year} ${reading.month}`
   );
   const sortedReadingsDates = Object.keys(
@@ -24,7 +20,7 @@ export const groupWithEmptyReadings = (
     moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month')
   );
 
-  const [feedFlowId, feedBackFlowId] = getDeviceIds(existingReadings);
+  const [feedFlowId, feedBackFlowId] = getDeviceIds(allReadings);
 
   const firstReadingDate = sortedReadingsDates[0];
 
@@ -50,25 +46,38 @@ export const groupWithEmptyReadings = (
       readings = [
         {
           value: null,
+          previousReadingsId: null,
+          magistralType: EMagistralType.FeedFlow,
+          id: null,
           deviceId: feedFlowId,
           year,
           month,
         },
       ];
-
-      if (feedBackFlowId) {
-        readings = [
-          ...readings,
-          {
-            value: null,
-            deviceId: feedBackFlowId,
-            year,
-            month,
-          },
-        ];
-      }
     }
 
+    if (feedBackFlowId && readings.length === 1) {
+      const isFeedBackFlowExist =
+        readings[0].magistralType === EMagistralType.FeedBackFlow;
+
+      const magistralType = isFeedBackFlowExist
+        ? EMagistralType.FeedFlow
+        : EMagistralType.FeedBackFlow;
+      const deviceId = isFeedBackFlowExist ? feedFlowId : feedBackFlowId;
+
+      readings = [
+        ...readings,
+        {
+          value: null,
+          magistralType,
+          previousReadingsId: null,
+          id: null,
+          deviceId,
+          year,
+          month,
+        },
+      ];
+    }
     return readings;
   });
 
@@ -81,6 +90,9 @@ const groupReadings = (
   readings: {
     value: number | null;
     deviceId: number;
+    previousReadingsId: string | null;
+    magistralType: EMagistralType;
+    id: string | null;
     year: string | number;
     month: string | null;
   }[][]

@@ -9,21 +9,25 @@ export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = (
   year,
   isColdWater,
   createReading,
+  allReadings,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const list = useMemo(
     () =>
-      yearRreadings.map(({ month, readings }) => (
-        <MeteringDeviceMonthReading
-          monthReadings={readings}
-          isColdWater={isColdWater}
-          month={month}
-          key={month}
-          createReading={(reading)=>createReading({month, ...reading}) }
-        />
-      )),
-    [yearRreadings]
+      yearRreadings.map(({ month, readings }) => {
+        return (
+          <MeteringDeviceMonthReading
+            monthReadings={readings}
+            allReadings={allReadings}
+            isColdWater={isColdWater}
+            month={month}
+            key={month}
+            createReading={(reading) => createReading({ month, ...reading })}
+          />
+        );
+      }),
+    [yearRreadings, allReadings]
   );
 
   return (

@@ -1,4 +1,4 @@
-import { EResourceType } from 'myApi';
+import { EMagistralType, EResourceType } from 'myApi';
 
 export type HousingMeteringDeviceReadingsContainerProps = {
   nodeId: number;
@@ -16,6 +16,9 @@ export type PreparedMeteringDeviceReading = {
 export type SortedMeteringDeviceReading = {
   value: number | null;
   deviceId: number;
+  previousReadingsId: string | null;
+  magistralType: EMagistralType;
+  id: string | null;
 };
 
 export type MeteringDeviceReadingWithEmpties = SortedMeteringDeviceReading & {
