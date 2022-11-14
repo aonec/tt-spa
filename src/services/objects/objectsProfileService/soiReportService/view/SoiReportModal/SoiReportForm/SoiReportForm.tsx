@@ -8,6 +8,7 @@ import {
   ResourceOptionWrapper,
 } from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.styled';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
+import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
@@ -31,9 +32,9 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
   const { values, handleSubmit, handleChange, setFieldValue } = useFormik({
     initialValues: formInitialValues,
     onSubmit: (values) => {
-      if (!values.Period) return;
+      if (!values.Period || !values.Date) return;
 
-      const { From, To } = getDatePeriod(values.Period);
+      const { From, To } = getDatePeriod(values.Period, values.Date);
 
       const normativePerPerson = values.NormativePerPerson
         ? Number(values.NormativePerPerson)
@@ -133,16 +134,24 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             placeholder="Выберите норматив"
           />
         </FormItem>
-        <FormItem label="Период">
+        <FormItem label="Тип периода">
           <Radio.Group
             value={values.Period}
             onChange={(event) => setFieldValue('Period', event.target.value)}
           >
-            <Space direction="vertical">
+            <Space direction="horizontal">
               <Radio value={'month'}>Месяц</Radio>
               <Radio value={'year'}>Год</Radio>
             </Space>
           </Radio.Group>
+        </FormItem>
+        <FormItem label="Период">
+          <DatePicker
+            value={values.Date}
+            onChange={(value) => setFieldValue('Date', value)}
+            picker={values.Period}
+            format={values.Period === 'month' ? 'MMMM YYYY' : 'YYYY'}
+          />
         </FormItem>
       </FormGrid>
     </Form>

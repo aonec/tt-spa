@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { EResourceType } from 'myApi';
 
 export const formInitialValues = {
@@ -5,6 +6,7 @@ export const formInitialValues = {
   HouseManagementId: null as string | null,
   HousingStockId: null as number | null,
   Resource: null as EResourceType | null,
-  Period: null as 'year' | 'month' | null,
+  Period: 'month' as 'year' | 'month',
   NormativePerPerson: '',
+  Date: null as moment.Moment | null,
 };

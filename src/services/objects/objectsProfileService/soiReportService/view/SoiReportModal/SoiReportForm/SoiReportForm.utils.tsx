@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-export function getDatePeriod(period: 'year' | 'month') {
-  const toDate = moment();
-  const fromDate = moment().add(-1, period);
+export function getDatePeriod(period: 'year' | 'month', date: moment.Moment) {
+  const toDate = moment(date).startOf(period);
+  const fromDate = moment(date).endOf(period);
 
   return { From: fromDate.toISOString(true), To: toDate.toISOString(true) };
 }
