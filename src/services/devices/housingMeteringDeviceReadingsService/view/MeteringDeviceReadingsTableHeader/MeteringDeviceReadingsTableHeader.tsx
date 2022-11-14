@@ -16,7 +16,7 @@ export const MeteringDeviceReadingsTableHeader: FC<MeteringDeviceReadingsTableHe
     <Wrapper isColdWater={isColdWater}>
       <div>Месяц</div>
       {volumeColumns()}
-      <div>Потребление, м³</div>
+      <div>Расход, м³</div>
     </Wrapper>
   );
 };

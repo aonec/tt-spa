@@ -19,6 +19,17 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
     onSubmit: () => void 0,
   });
 
+  const consumption = useMemo(() => {
+    const [feedFlowReading, feedBackFlowReading] = monthReadings;
+    if (!feedFlowReading?.value) {
+      return '-';
+    }
+    if (!feedBackFlowReading?.value) {
+      return feedFlowReading.value;
+    }
+    return Number(feedFlowReading.value) - Number(feedBackFlowReading.value);
+  }, [monthReadings]);
+
   const inputs = useMemo(() => {
     const { feedBackFlowReading, feedFlowReading } = values;
     if (isColdWater && feedFlowReading) {
@@ -54,6 +65,7 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
     <Wrapper isColdWater={isColdWater}>
       <MonthWrapper>{month}</MonthWrapper>
       {inputs}
+      {consumption}
     </Wrapper>
   );
 };

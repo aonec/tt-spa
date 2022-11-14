@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC, useState } from 'react';
 import { housingMeteringDeviceReadingsService } from './housingMeteringDeviceReadingsService.model';
@@ -13,6 +14,7 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
 }) => {
   const readings = useStore(outputs.$readings);
   const isColdWater = useStore(outputs.$isColdWater);
+  const isLoading = useStore(outputs.$isLoading);
 
   const createReading = useEvent(inputs.createReading);
 
@@ -20,11 +22,14 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
     <>
       <NodeResourceGate resource={resource} />
       <NodeIdGate nodeId={nodeId} />
-      <MeteringDeviceReadingsTable
-        isColdWater={isColdWater}
-        readings={readings}
-        createReading={createReading}
-      />
+      {isLoading && <Skeleton active />}
+      {!isLoading && (
+        <MeteringDeviceReadingsTable
+          isColdWater={isColdWater}
+          readings={readings}
+          createReading={createReading}
+        />
+      )}
     </>
   );
 };

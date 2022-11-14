@@ -35,28 +35,30 @@ const $readings = domain
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
     groupWithEmptyReadings(response.items || [])
   )
-  // .on(createReadingFx.doneData, (readings, newReading) =>
-  //   readings.map((year) => {
-  //     if (Number(year.year) === newReading.year) {
-  //       const newYearReadings = year.readings.map((month) => {
-  //         if (month.month === newReading.month) {
-  //           const newMonthReadings = month.readings.map((reading) =>
-  //             reading.deviceId === newReading.deviceId ? newReading : reading
-  //           );
-  //           return { month: month.month, readings: newMonthReadings };
-  //         }
-  //         return month;
-  //       });
-  //       return { year: year.year, readings: newYearReadings };
-  //     }
-  //     return year;
-  //   })
-  // );
+  .on(createReadingFx.doneData, (readings, newReading) =>
+    readings.map((year) => {
+      if (Number(year.year) === newReading.year) {
+        const newYearReadings = year.readings.map((month) => {
+          if (month.month === newReading.month) {
+            const newMonthReadings = month.readings.map((reading) =>
+              reading.deviceId === newReading.deviceId ? newReading : reading
+            );
+            return { month: month.month, readings: newMonthReadings };
+          }
+          return month;
+        });
+        return { year: year.year, readings: newYearReadings };
+      }
+      return year;
+    })
+  );
 
 const setResource = domain.createEvent<EResourceType>();
 const $isColdWater = domain
   .createStore(false)
   .on(setResource, (_, resource) => resource === EResourceType.ColdWaterSupply);
+
+const $isLoading = getHousingMeteringDeviceReadingsFx.pending;
 
 const NodeIdGate = createGate<{ nodeId: number }>();
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
@@ -91,6 +93,7 @@ export const housingMeteringDeviceReadingsService = {
   outputs: {
     $readings,
     $isColdWater,
+    $isLoading,
   },
   gates: {
     NodeIdGate,
