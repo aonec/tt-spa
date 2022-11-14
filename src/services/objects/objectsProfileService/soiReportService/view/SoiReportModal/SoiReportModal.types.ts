@@ -1,6 +1,9 @@
 import { HouseManagementResponse } from 'myApi';
 import { TreeSelectElement } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
-import { SoiReportType } from '../../soiReportService.model.types';
+import {
+  CreateSoiReportRequestPayload,
+  SoiReportType,
+} from '../../soiReportService.model.types';
 
 export type SoiReportModalProps = {
   isModalOpen: boolean;
@@ -12,4 +15,6 @@ export type SoiReportModalProps = {
   selectedCity: string | null;
   houseManagements: HouseManagementResponse[] | null;
   preparedAddresses: TreeSelectElement[];
+  createSoiReport: (payload: CreateSoiReportRequestPayload) => void;
+  isCreateReportLoading: boolean;
 };

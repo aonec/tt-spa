@@ -1,10 +1,15 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
-import { getAdresses, getHouseManagements } from './soiReportService.api';
 import {
+  getAdresses,
+  getHouseManagements,
+  getSoiReport,
+} from './soiReportService.api';
+import {
+  CreateSoiReportRequestPayload,
   GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
   SoiReportType,
@@ -17,6 +22,8 @@ const openSoiReportModal = domain.createEvent();
 
 const closeSoiReportModal = domain.createEvent();
 
+const createSoiReport = domain.createEvent<CreateSoiReportRequestPayload>();
+
 const fetchHouseManagementFx = domain.createEffect<
   GetHouseManagementsRequestPayload,
   HouseManagementResponse[]
@@ -26,6 +33,11 @@ const fetchAdressesFx = domain.createEffect<
   GetAddressesRequestPayload,
   StreetWithHousingStockNumbersResponsePagedList
 >(getAdresses);
+
+const createSoiReportFx = domain.createEffect<
+  CreateSoiReportRequestPayload,
+  void
+>(getSoiReport);
 
 const $addressesPagedList = domain
   .createStore<StreetWithHousingStockNumbersResponsePagedList | null>(null)
@@ -78,12 +90,20 @@ sample({
   target: fetchAdressesFx,
 });
 
+forward({
+  from: createSoiReport,
+  to: createSoiReportFx,
+});
+
+const $isCreateReportLoading = createSoiReportFx.pending;
+
 export const soiReportService = {
   inputs: {
     openSoiReportModal,
     closeSoiReportModal,
     setSoiReportType,
     setSelectedCity,
+    createSoiReport,
   },
   outputs: {
     $isModalOpen,
@@ -92,5 +112,6 @@ export const soiReportService = {
     $existingCities,
     $selectedCity,
     $addressesPagedList,
+    $isCreateReportLoading,
   },
 };

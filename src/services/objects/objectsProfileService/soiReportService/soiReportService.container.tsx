@@ -13,13 +13,17 @@ export const SoiReportContainer = () => {
   const selectedCity = useStore(outputs.$selectedCity);
   const houseManagements = useStore(outputs.$houseManagements);
   const addressesPagedList = useStore(outputs.$addressesPagedList);
+  const isCreateReportLoading = useStore(outputs.$isCreateReportLoading);
 
   const closeSoiReportModal = useEvent(inputs.closeSoiReportModal);
   const setSoiReportType = useEvent(inputs.setSoiReportType);
   const setSelectedCity = useEvent(inputs.setSelectedCity);
+  const createSoiReport = useEvent(inputs.createSoiReport);
 
   const preparedAddresses = prepareAddressesForTreeSelect(
-    addressesPagedList?.items || []
+    addressesPagedList?.items || [],
+    undefined,
+    false
   );
 
   return (
@@ -33,6 +37,8 @@ export const SoiReportContainer = () => {
       setSelectedCity={setSelectedCity}
       houseManagements={houseManagements}
       preparedAddresses={preparedAddresses}
+      createSoiReport={createSoiReport}
+      isCreateReportLoading={isCreateReportLoading}
     />
   );
 };

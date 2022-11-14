@@ -18,5 +18,5 @@ export const ResourceOptionWrapper = styled.div`
 `;
 
 export const ResourceNameWrapper = styled.div`
-  margin-left: 5px;
+  margin-left: 7px;
 `;

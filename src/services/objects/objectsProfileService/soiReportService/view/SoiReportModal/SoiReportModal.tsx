@@ -5,6 +5,7 @@ import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { ActionButton } from 'ui-kit/shared_components/ActionButton';
 import { SoiReportType } from '../../soiReportService.model.types';
 import { SoiReportForm } from './SoiReportForm';
+import { CREATE_SOI_REPORT_FORM_ID } from './SoiReportModal.constants';
 import { ActionButtonsWrapper } from './SoiReportModal.styled';
 import { SoiReportModalProps } from './SoiReportModal.types';
 
@@ -18,6 +19,8 @@ export const SoiReportModal: FC<SoiReportModalProps> = ({
   setSelectedCity,
   houseManagements,
   preparedAddresses,
+  isCreateReportLoading,
+  createSoiReport,
 }) => {
   if (!soiReportType) {
     return (
@@ -46,9 +49,10 @@ export const SoiReportModal: FC<SoiReportModalProps> = ({
   return (
     <FormModal
       visible={isModalOpen}
-      title="Выберите тип отчета"
-      formId="id"
+      title="Выгрузить сводный отчёт"
+      formId={CREATE_SOI_REPORT_FORM_ID}
       onCancel={closeSoiReportModal}
+      loading={isCreateReportLoading}
       form={
         <SoiReportForm
           selectedCity={selectedCity}
@@ -57,6 +61,7 @@ export const SoiReportModal: FC<SoiReportModalProps> = ({
           soiReportType={soiReportType}
           houseManagements={houseManagements}
           preparedAddresses={preparedAddresses}
+          createSoiReport={createSoiReport}
         />
       }
       submitBtnText="Выгрузить отчёт"

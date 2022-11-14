@@ -4,9 +4,14 @@ import {
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
 import {
+  CreateSoiReportRequestPayload,
   GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
 } from './soiReportService.model.types';
+
+export const getSoiReport = (
+  params: CreateSoiReportRequestPayload
+): Promise<void> => axios.get('Reports/SoiReport', { params });
 
 export const getHouseManagements = (
   params: GetHouseManagementsRequestPayload
