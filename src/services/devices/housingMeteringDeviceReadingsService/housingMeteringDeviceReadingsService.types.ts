@@ -23,5 +23,4 @@ export type SortedMeteringDeviceReading = {
 
 export type MeteringDeviceReadingWithEmpties = SortedMeteringDeviceReading & {
   year: string | number;
-  month: string | null;
 };

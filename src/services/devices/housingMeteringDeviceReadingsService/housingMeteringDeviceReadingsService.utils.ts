@@ -14,6 +14,7 @@ export const groupWithEmptyReadings = (
     allReadings,
     (reading) => `${reading.year} ${reading.month}`
   );
+
   const sortedReadingsDates = Object.keys(
     sortedReadingsDictionary
   ).sort((first, second) =>
@@ -51,7 +52,6 @@ export const groupWithEmptyReadings = (
           id: null,
           deviceId: feedFlowId,
           year,
-          month,
         },
       ];
     }
@@ -74,51 +74,33 @@ export const groupWithEmptyReadings = (
           id: null,
           deviceId,
           year,
-          month,
         },
       ];
     }
-    return readings;
+    return { year, month, readings };
   });
-
   const groupedReadings = groupReadings(readingsWithEmpty);
 
   return groupedReadings;
 };
 
 const groupReadings = (
-  readings: {
-    value: number | null;
-    deviceId: number;
-    previousReadingsId: string | null;
-    magistralType: EMagistralType;
-    id: string | null;
-    year: string | number;
-    month: string | null;
-  }[][]
+  yearReadings: {
+    year: string;
+    month: string;
+    readings: MeteringDeviceReadingWithEmpties[];
+  }[]
 ) => {
   const groupedReadingsByYear = _.groupBy(
-    readings,
-    (readings) => readings[0]?.year
+    yearReadings,
+    (readings) => readings.year
   );
 
   const groupedReadingsByMonth = Object.entries(groupedReadingsByYear).map(
-    ([year, yearReadings]) => {
-      const flattenByYear = yearReadings.flat();
-
-      const groupedbyMonth = _.groupBy(
-        flattenByYear,
-        (readings) => readings?.month
-      );
-
-      const formatedByMonth = Object.entries(groupedbyMonth).map(
-        ([month, readings]) => ({
-          month,
-          readings,
-        })
-      );
-      return { year, readings: _.reverse(formatedByMonth) };
-    }
+    ([year, yearReadings]) => ({
+      year,
+      readings: _.reverse(yearReadings),
+    })
   );
 
   return _.reverse(groupedReadingsByMonth);

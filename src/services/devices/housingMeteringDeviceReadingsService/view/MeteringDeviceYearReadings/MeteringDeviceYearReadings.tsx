@@ -27,7 +27,7 @@ export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = (
           />
         );
       }),
-    [yearRreadings, allReadings]
+    [yearRreadings, allReadings, isColdWater]
   );
 
   return (

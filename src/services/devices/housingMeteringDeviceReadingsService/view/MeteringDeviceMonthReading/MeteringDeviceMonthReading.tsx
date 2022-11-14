@@ -29,13 +29,16 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
   const consumption = useMemo(() => {
     const { feedBackFlowReading, feedFlowReading } = values;
 
-    if (!feedFlowReading?.previousReadingsId) {
+    const isFeedFlowReadingExist =
+      feedFlowReading && typeof feedFlowReading.value === 'number';
+
+    if ((!isFeedFlowReadingExist && isColdWater) || !feedBackFlowReading) {
       return '-';
     }
 
     const prevFeedFlowReadingValue =
       allReadings.find(
-        (reading) => reading.id === feedFlowReading.previousReadingsId
+        (reading) => reading.id === feedFlowReading?.previousReadingsId
       )?.value || 0;
 
     const result = round(
@@ -43,19 +46,18 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
       3
     );
 
-    if (!feedBackFlowReading?.previousReadingsId) {
-      return '-';
-    }
     const prevBackFeedFlowReadingValue =
       allReadings.find(
-        (reading) => reading.id === feedBackFlowReading.previousReadingsId
+        (reading) => reading.id === feedBackFlowReading?.previousReadingsId
       )?.value || 0;
 
     return round(
-      result + prevBackFeedFlowReadingValue - Number(feedBackFlowReading.value),
+      result +
+        prevBackFeedFlowReadingValue -
+        Number(feedBackFlowReading?.value),
       3
     );
-  }, [monthReadings, allReadings]);
+  }, [allReadings, values]);
 
   const inputs = useMemo(() => {
     const { feedBackFlowReading, feedFlowReading } = values;
