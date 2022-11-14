@@ -49,7 +49,7 @@ export const SoiReportModal: FC<SoiReportModalProps> = ({
   return (
     <FormModal
       visible={isModalOpen}
-      title="Выгрузить сводный отчёт"
+      title="Выгрузка отчёта по СОИ"
       formId={CREATE_SOI_REPORT_FORM_ID}
       onCancel={closeSoiReportModal}
       loading={isCreateReportLoading}

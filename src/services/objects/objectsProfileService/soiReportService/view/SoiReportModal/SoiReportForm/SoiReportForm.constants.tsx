@@ -1,7 +1,7 @@
 import { EResourceType } from 'myApi';
 
 export const formInitialValues = {
-  ReportName: 'Сводный_отчёт.xlsx',
+  ReportName: 'Отчёт_по_СОИ',
   HouseManagementId: null as string | null,
   HousingStockId: null as number | null,
   Resource: null as EResourceType | null,

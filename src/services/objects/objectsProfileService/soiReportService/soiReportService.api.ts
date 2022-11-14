@@ -19,6 +19,8 @@ export const getSoiReport = async (
     params: omit(params, ['ReportName']),
   });
 
+  console.log(res);
+
   const url = window.URL.createObjectURL(new Blob([res]));
 
   downloadURI(
