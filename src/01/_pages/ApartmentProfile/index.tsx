@@ -52,6 +52,7 @@ const ApartmentProfile = () => {
   if (status === 'loading') return <Loader show size="32" />;
 
   const Wrapper = styledComponents.div`
+  margin-top: 25px;
   display: flex;
   padding-bottom: 40px;
   max-width: 1300px;
