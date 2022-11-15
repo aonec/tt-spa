@@ -25,17 +25,19 @@ import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 
 const ApartmentProfile = () => {
-  const params = useParams();
-  const apartmentId = params[1];
-  const housingStockId = params[0];
+  const { apartmentId, housingStockId } = useParams<{
+    housingStockId: string;
+    apartmentId: string;
+    apartmentSection: 'testimony' | 'homeowners' | 'documents' | 'actsJournal';
+  }>();
 
-  const { data, status, run } = useAsync();
+  const { data, status, run }: any = useAsync();
 
   useEffect(() => {
     const request = () =>
       Promise.all([
-        getApartment(apartmentId),
-        getTasks(apartmentId),
+        getApartment(Number(apartmentId)),
+        getTasks(Number(apartmentId)),
         getApartmentDevices(apartmentId),
       ]);
 

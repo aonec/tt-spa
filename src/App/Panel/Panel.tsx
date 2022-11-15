@@ -1,7 +1,16 @@
+import { Logotip } from '01/components';
 import React, { FC } from 'react';
-import { Wrapper } from './Panel.styled';
+import { MenuContainer } from 'services/menuService';
+import { MenuWrapper, Wrapper } from './Panel.styled';
 import { PanelProps } from './Panel.types';
 
 export const Panel: FC<PanelProps> = ({}) => {
-  return <Wrapper></Wrapper>
+  return (
+    <Wrapper>
+      <Logotip />
+      <MenuWrapper>
+        <MenuContainer />
+      </MenuWrapper>
+    </Wrapper>
+  );
 };

@@ -1,12 +1,14 @@
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
-import { useStore } from 'effector-react';
 import React from 'react';
+import { useStore } from 'effector-react';
 import { Router } from './view/Router';
+import { routerService } from './routerService.model';
+
+const { outputs } = routerService;
 
 export const RouterContainer = () => {
-  const current = useStore($currentManagingFirmUser);
+  const current = useStore(outputs.$currentManagingFirmUser);
 
-  const roles = current?.roles;
+  const roles = current?.roles?.map(({ key }) => key!) || [];
 
-  return <Router />;
+  return <Router roles={roles} />;
 };

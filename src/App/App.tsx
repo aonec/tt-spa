@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Bootstrap } from './Bootstrap';
 import { RouterContainer } from './routerService';
+import '01/css/index.scss';
+import '01/css/styles.css';
 
 export const App: FC = () => {
   return (
