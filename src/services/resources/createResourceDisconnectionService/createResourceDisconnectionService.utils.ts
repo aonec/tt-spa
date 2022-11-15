@@ -5,11 +5,17 @@ import {
 } from 'myApi';
 import { TreeSelectElement } from './view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
-export const prepareAddressesForTreeSelect = (
-  items: StreetWithHousingStockNumbersResponse[],
-  parentId?: string,
-  isSelectableStreetNode: boolean = true
-) =>
+type PrepareAddressesParams = {
+  items: StreetWithHousingStockNumbersResponse[];
+  parentId?: string;
+  isSelectableStreetNode?: boolean;
+};
+
+export const prepareAddressesForTreeSelect = ({
+  items,
+  parentId,
+  isSelectableStreetNode = true,
+}: PrepareAddressesParams) =>
   items.reduce((acc, { street, addresses }) => {
     if (!street) return acc;
 
@@ -42,7 +48,10 @@ export const prepareAddressesWithParentsForTreeSelect = (
     if (!streets || !name) {
       return acc;
     }
-    const children = prepareAddressesForTreeSelect(streets, id);
+    const children = prepareAddressesForTreeSelect({
+      items: streets,
+      parentId: id,
+    });
 
     return [...acc, { title: name, value: id, key: id, children }];
   }, [] as TreeSelectElement[]);

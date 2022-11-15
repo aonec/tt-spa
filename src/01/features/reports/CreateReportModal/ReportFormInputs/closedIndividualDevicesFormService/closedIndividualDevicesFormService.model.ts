@@ -25,40 +25,36 @@ const $unloadSelectType = domain
   .on(setUnloadSelectType, (_, unloadType) => unloadType);
 
 const fetchAdressesFx = domain.createEffect<
-  GetAddressesRequestPayload,
+  any,
   StreetWithHousingStockNumbersResponsePagedList
 >(getAdresses);
 
 guard({
   source: $unloadSelectType,
   filter: (value: UnloadingType | null) => value === 'ByAddress',
-  target: fetchAdressesFx.prepend(() => ({})),
+  target: fetchAdressesFx,
 });
 
 const fetchOrganzationFx = domain.createEffect<
-  GetOrganizationsPayload,
+  any,
   OrganizationResponsePagedList
 >(getOrganizations);
 
 guard({
   source: $unloadSelectType,
-  filter: (value: UnloadingType | null) => {
-    return value === 'AllManagingFirm';
-  },
-  target: fetchOrganzationFx.prepend(() => ({})),
+  filter: (value: UnloadingType | null) => value === 'AllManagingFirm',
+  target: fetchOrganzationFx,
 });
 
 const fetchHouseManagementsFx = domain.createEffect<
-  GetHouseManagementsPayload,
+  any,
   HouseManagementResponse[] | null
 >(getHouseManagements);
 
 guard({
   source: $unloadSelectType,
-  filter: (value: UnloadingType | null) => {
-    return value === 'ByHouseManagement';
-  },
-  target: fetchHouseManagementsFx.prepend(() => ({})),
+  filter: (value: UnloadingType | null) => value === 'ByHouseManagement',
+  target: fetchHouseManagementsFx,
 });
 
 const $addressesPagedList = domain

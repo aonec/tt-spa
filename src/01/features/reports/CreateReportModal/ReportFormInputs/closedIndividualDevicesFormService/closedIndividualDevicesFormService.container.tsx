@@ -17,11 +17,10 @@ export const ClosedIndividualDevicesFormContainer = () => {
 
   const houseManagementList = useStore(outputs.$houseManagementList);
 
-  const preparedAddresses = prepareAddressesForTreeSelect(
-    addressesPagedList?.items || [],
-    undefined,
-    false
-  );
+  const preparedAddresses = prepareAddressesForTreeSelect({
+    items: addressesPagedList?.items || [],
+    isSelectableStreetNode: false,
+  });
 
   return (
     <ClosedIndividualDevicesForm

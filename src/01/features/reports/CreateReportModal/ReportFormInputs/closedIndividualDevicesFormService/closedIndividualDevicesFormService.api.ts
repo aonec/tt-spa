@@ -11,7 +11,7 @@ import {
 } from './closedIndividualDevicesFormService.types';
 
 export const getAdresses = (
-  payload: GetAddressesRequestPayload
+  payload: any
 ): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,
@@ -19,7 +19,7 @@ export const getAdresses = (
 };
 
 export const getOrganizations = (
-  payload: GetOrganizationsPayload
+  payload: any
 ): Promise<OrganizationResponsePagedList> => {
   return axios.get('Organizations', {
     params: payload,
@@ -27,7 +27,7 @@ export const getOrganizations = (
 };
 
 export const getHouseManagements = (
-  payload: GetHouseManagementsPayload
+  payload: any
 ): Promise<HouseManagementResponse[] | null> => {
   return axios.get('HouseManagements', {
     params: payload,
