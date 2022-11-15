@@ -40,42 +40,37 @@ export const groupWithEmptyReadings = (
       .format('MMMM');
     const date = `${year} ${month}`;
 
-    let readings: MeteringDeviceReadingWithEmpties[] | undefined =
-      sortedReadingsDictionary[date];
+    const readings: MeteringDeviceReadingWithEmpties[] =
+      sortedReadingsDictionary[date] || [];
 
-    if (!readings) {
-      readings = [
-        {
-          value: null,
-          previousReadingsId: null,
-          magistralType: EMagistralType.FeedFlow,
-          id: null,
-          deviceId: feedFlowId,
-          year,
-        },
-      ];
+    if (readings.length === 0) {
+      readings.push({
+        value: null,
+        previousReadingsId: null,
+        magistralType: EMagistralType.FeedFlow,
+        id: null,
+        deviceId: feedFlowId,
+        year,
+      });
     }
 
     if (feedBackFlowId && readings.length === 1) {
       const isFeedBackFlowExist =
-        readings[0].magistralType === EMagistralType.FeedBackFlow;
+        readings[0].magistralType === EMagistralType.FeedFlow;
 
       const magistralType = isFeedBackFlowExist
         ? EMagistralType.FeedFlow
         : EMagistralType.FeedBackFlow;
       const deviceId = isFeedBackFlowExist ? feedFlowId : feedBackFlowId;
 
-      readings = [
-        ...readings,
-        {
-          value: null,
-          magistralType,
-          previousReadingsId: null,
-          id: null,
-          deviceId,
-          year,
-        },
-      ];
+      readings.push({
+        value: null,
+        magistralType,
+        previousReadingsId: null,
+        id: null,
+        deviceId,
+        year,
+      });
     }
     return { year, month, readings };
   });

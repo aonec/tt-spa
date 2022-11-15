@@ -1,7 +1,9 @@
 export const getInputValue = (value: number | null) => {
-  if (value) return value;
+  if (value === null) {
+    return '';
+  }
 
-  return typeof value === 'number' ? value : '';
+  return value;
 };
 
 export const getReadingValue = (value: string) => {

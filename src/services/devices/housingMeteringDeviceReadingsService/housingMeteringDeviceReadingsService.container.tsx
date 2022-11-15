@@ -1,6 +1,7 @@
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC, useState } from 'react';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { housingMeteringDeviceReadingsService } from './housingMeteringDeviceReadingsService.model';
 import { HousingMeteringDeviceReadingsContainerProps } from './housingMeteringDeviceReadingsService.types';
 import { MeteringDeviceReadingsTable } from './view/MeteringDeviceReadingsTable';
@@ -24,14 +25,13 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
     <>
       <NodeResourceGate resource={resource} />
       <NodeIdGate nodeId={nodeId} />
-      {isShowLoader && <Skeleton active />}
-      {!isShowLoader && (
+      <WithLoader isLoading={isShowLoader}>
         <MeteringDeviceReadingsTable
           isColdWater={isColdWater}
           readings={readings}
           createReading={createReading}
         />
-      )}
+      </WithLoader>
     </>
   );
 };
