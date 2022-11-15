@@ -4,11 +4,7 @@ import {
   OrganizationResponsePagedList,
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
-import {
-  GetAddressesRequestPayload,
-  GetHouseManagementsPayload,
-  GetOrganizationsPayload,
-} from './closedIndividualDevicesFormService.types';
+
 
 export const getAdresses = (
   payload: any

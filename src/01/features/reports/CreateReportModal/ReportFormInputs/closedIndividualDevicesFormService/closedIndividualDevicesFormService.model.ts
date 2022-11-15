@@ -9,12 +9,7 @@ import {
   getHouseManagements,
   getOrganizations,
 } from './closedIndividualDevicesFormService.api';
-import {
-  GetAddressesRequestPayload,
-  GetHouseManagementsPayload,
-  GetOrganizationsPayload,
-  UnloadingType,
-} from './closedIndividualDevicesFormService.types';
+import { UnloadingType } from './closedIndividualDevicesFormService.types';
 
 const domain = createDomain('closedIndividualDevicesFormService');
 

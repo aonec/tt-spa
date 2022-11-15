@@ -45,6 +45,10 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
         value: housingStockId,
         onChange: handleChangeHousingStockId,
       },
+      isWithoutApartments: {
+        value: isWithoutApartments,
+        onChange: handleChangeWithoutApartments,
+      },
     },
   } = useForm(form);
 
@@ -152,8 +156,13 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
 
       <SpaceLine />
 
-      <Checkbox>
-        {'Исключить квартиры с открытыми ИПУ по выбранному адресу'}
+      <Checkbox
+        checked={isWithoutApartments}
+        onChange={(event) =>
+          handleChangeWithoutApartments(event.target.checked)
+        }
+      >
+        Исключить квартиры с открытыми ИПУ по выбранному ресурсу
       </Checkbox>
     </div>
   );

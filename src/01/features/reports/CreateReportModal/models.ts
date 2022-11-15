@@ -53,6 +53,9 @@ export const form = createForm({
     housingStockId: {
       init: null as number | null,
     },
+    isWithoutApartments: {
+      init: false,
+    },
   },
 });
 
@@ -70,7 +73,7 @@ sample({
         values.to ? moment(values.to) : null,
       ] as RangePeriod,
     };
-
+    console.log(values);
     return formValues;
   },
   target: form.setForm,
@@ -88,6 +91,7 @@ const createReportFx = createReportDomain.createEffect<
     housingStockId?: number | null;
     houseManagementId?: string | null;
     managementFirmId?: number | null;
+    isWithoutApartments?: boolean;
   },
   void,
   EffectFailDataAxiosError
@@ -100,6 +104,7 @@ const createReportFx = createReportDomain.createEffect<
     housingStockId,
     houseManagementId,
     managementFirmId,
+    isWithoutApartments,
   }) => {
     const res: string = await axios.get(`Reports/${type}`, {
       params: {
@@ -110,6 +115,7 @@ const createReportFx = createReportDomain.createEffect<
         HousingStockId: housingStockId,
         HouseManagementId: houseManagementId,
         ManagementFirmId: managementFirmId,
+        WithoutApartmentsWithOpenDevicesByResources: isWithoutApartments,
       },
       responseType: 'blob',
       paramsSerializer: (params) => {
@@ -166,6 +172,7 @@ sample({
     housingStockId,
     houseManagementId,
     managementFirmId,
+    isWithoutApartments,
   }) => {
     if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
@@ -183,6 +190,7 @@ sample({
       housingStockId,
       houseManagementId,
       managementFirmId,
+      isWithoutApartments,
     };
   },
   target: createReportFx,

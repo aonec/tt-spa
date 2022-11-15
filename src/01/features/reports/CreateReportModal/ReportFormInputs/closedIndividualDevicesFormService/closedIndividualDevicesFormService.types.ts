@@ -1,4 +1,3 @@
-import { EOrderByRule } from 'myApi';
 
 export enum UnloadingType {
   AllManagingFirm = 'AllManagingFirm',
@@ -6,24 +5,3 @@ export enum UnloadingType {
   ByAddress = 'ByAddress',
 }
 
-export type GetAddressesRequestPayload = {
-  Street?: string;
-  City?: string;
-  PageNumber?: number;
-  PageSize?: number;
-  OrderBy?: EOrderByRule;
-  Skip?: number;
-  Take?: number;
-};
-
-export type GetOrganizationsPayload = {
-  PageNumber?: number;
-  PageSize?: number;
-  OrderBy?: EOrderByRule;
-  Skip?: number;
-  Take?: number;
-};
-
-export type GetHouseManagementsPayload = {
-  City?: string;
-};
