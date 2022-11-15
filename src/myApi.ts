@@ -847,6 +847,9 @@ export interface CreateCommunicationPipeRequest {
   /** @format int32 */
   number?: number;
   magistral?: EMagistralType;
+
+  /** @format int32 */
+  diameter?: number;
   devices?: CreatePipeHousingMeteringDeviceRequest[] | null;
 }
 
@@ -1038,6 +1041,9 @@ export interface CreatePipeConnectionRequest {
 
   /** @format int32 */
   nodeId?: number;
+
+  /** @format int32 */
+  diameter?: number;
 }
 
 export interface CreatePipeHousingMeteringDeviceRequest {
@@ -1071,9 +1077,6 @@ export interface CreatePipeHousingMeteringDeviceRequest {
   /** @format double */
   maxReadingsValue?: number | null;
   pipe?: CreatePipeConnectionRequest | null;
-
-  /** @format int32 */
-  diameter?: number | null;
 }
 
 export interface CreatePipeNodeRequest {
@@ -1589,6 +1592,7 @@ export enum EReportName {
   CallCenterWorkingReport = "CallCenterWorkingReport",
   HouseManagementsReport = "HouseManagementsReport",
   CheckingDatesReport = "CheckingDatesReport",
+  ClosedDevicesReport = "ClosedDevicesReport",
 }
 
 export enum EReportType {
@@ -5474,9 +5478,6 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
   /** @format date-time */
   futureCheckingDate?: string | null;
   pipe?: CreatePipeConnectionRequest | null;
-
-  /** @format int32 */
-  diameter?: number | null;
 }
 
 export interface UpdatePipeNodeRequest {
@@ -10823,6 +10824,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ClosingReasons?: EClosingReason[];
         From?: string;
         To?: string;
+        WithoutApartmentsWithOpenDevicesByResources?: boolean;
       },
       params: RequestParams = {},
     ) =>
@@ -10931,22 +10933,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Reports
      * @name ReportsSoiReportList
-     * @summary ReadingReportForOperator
+     * @summary SoiReportCreate
      * @request GET:/api/Reports/SoiReport
      * @secure
      */
     reportsSoiReportList: (
-      query?: {
+      query: {
         HouseManagementId?: string;
         HousingStockId?: number;
         Resource?: EResourceType;
         From?: string;
         To?: string;
-        NormativePerPerson?: number;
+        NormativePerPerson: number;
       },
       params: RequestParams = {},
     ) =>

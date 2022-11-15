@@ -45,35 +45,24 @@ import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
-import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { MenuContainer } from 'services/menuService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import {
-  TasksProfileContainer,
-  tasksProfileService,
-} from 'services/tasks/tasksProfileService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { useStore } from 'effector-react';
-import { TaskProfileContainer } from 'services/tasks/taskProfileService';
 import {
   ObjectProfileContainer,
   objectProfileService,
 } from 'services/objects/objectProfileService';
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
+import { TasksRouter } from 'services/tasks/tasks.router';
 
 moment.locale('ru');
 
 const Internal = () => {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
 
-  const isSpectator = useStore(tasksProfileService.outputs.$isSpectator);
-  const initialTasksPath = isSpectator
-    ? '/tasks/list/Observing'
-    : '/tasks/list/Executing';
-
-  const TasksIsOpen = tasksProfileService.gates.TasksIsOpen;
   const ObjectIsOpen = objectProfileService.gates.ObjectGroupIsOpen;
+
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -93,33 +82,14 @@ const Internal = () => {
             <Switch>
               <Redirect
                 from="/"
-                to={
-                  roles.includes('ManagingFirmOperator')
-                    ? '/meters/apartments'
-                    : initialTasksPath
-                }
+                to={roles.includes('Operator') ? '/meters/' : '/tasks/'}
                 exact
               />
-              <Redirect from="/tasks" to={initialTasksPath} exact />
+
+              {TasksRouter()}
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
-              </Route>
-
-              <Route path="/tasks">
-                <TasksIsOpen />
-
-                <Route
-                  path="/tasks/profile/:taskId"
-                  component={TaskProfileContainer}
-                  exact
-                />
-
-                <Route
-                  path="/tasks/list/:grouptype"
-                  component={TasksProfileContainer}
-                  exact
-                />
               </Route>
 
               <Route
