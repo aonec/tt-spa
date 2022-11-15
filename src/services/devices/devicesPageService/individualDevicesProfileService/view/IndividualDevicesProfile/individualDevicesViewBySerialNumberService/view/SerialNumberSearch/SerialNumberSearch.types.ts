@@ -3,4 +3,5 @@ import { IndividualDeviceSearchbySerialNumberPayload } from '../../individualDev
 export type IndividualDevicesViewBySerialNumberSearchProps = {
   filter: IndividualDeviceSearchbySerialNumberPayload;
   setFilter: (payload: IndividualDeviceSearchbySerialNumberPayload) => void;
+  clearSearchPayload: () => void;
 };

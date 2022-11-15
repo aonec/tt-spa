@@ -1,28 +1,44 @@
+import { Tooltip } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { DeviceIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
+  BaseNodeInfo,
+  DeviceIconWrapper,
   NoCalculatorTextWrapper,
   NodeInfo,
   NodeInfoWrapper,
   NodeName,
   NodeServiceZone,
   NodeStatusWrapper,
+  ResourceIconWrapper,
   Wrapper,
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
 import { NodeStatus } from './NodeStatus';
 
-export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
+export const NodeItem: FC<NodeItemProps> = ({
+  node,
+  segmentName,
+  openDevicesListModal,
+}) => {
   const content = useMemo(() => {
     const nodeInfo = (
-      <Link to={`/nodes/${node.id}`}>
-        <NodeName>Узел {node.number}</NodeName>
-        <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
-          {node.serviceZone?.name || 'Зона не указана'}
-        </NodeServiceZone>
-      </Link>
+      <BaseNodeInfo>
+        <Link to={`/nodes/${node.id}`}>
+          <NodeName>Узел {node.number}</NodeName>
+          <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
+            {node.serviceZone?.name || 'Зона не указана'}
+          </NodeServiceZone>
+        </Link>
+        <Tooltip title="Показать приборы">
+          <DeviceIconWrapper>
+            <DeviceIcon onClick={() => openDevicesListModal(node)} />
+          </DeviceIconWrapper>
+        </Tooltip>
+      </BaseNodeInfo>
     );
 
     if (segmentName === 'resource')
@@ -41,10 +57,11 @@ export const NodeItem: FC<NodeItemProps> = ({ node, segmentName }) => {
       return (
         <>
           <NodeInfoWrapper>
-            <ResourceIconLookup
-              style={{ transform: 'translateY(-8px)' }}
-              resource={node.resource}
-            />
+            <ResourceIconWrapper>
+              <ResourceIconLookup
+                resource={node.resource}
+              />
+            </ResourceIconWrapper>
             <NodeInfo>{nodeInfo}</NodeInfo>
           </NodeInfoWrapper>
         </>
