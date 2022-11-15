@@ -1,18 +1,18 @@
 import React from 'react';
 import { FC } from 'react';
-import styled from 'styled-components';
 import {
   ContextMenuButton,
   ContextMenuButtonProps,
 } from '../ContextMenuButton';
 import { PageTitle } from '../Title';
+import { PageHeaderStyled } from './PageHeader.styled';
 
 interface Props {
   title: string;
   contextMenu?: ContextMenuButtonProps;
 }
 
-export const PageHeader: FC<Props> = ({ title, contextMenu }) => {
+export const PageHeader: FC<Props> = ({ title, contextMenu, children }) => {
   return (
     <PageHeaderStyled>
       <PageTitle>{title}</PageTitle>
@@ -20,10 +20,3 @@ export const PageHeader: FC<Props> = ({ title, contextMenu }) => {
     </PageHeaderStyled>
   );
 };
-
-const PageHeaderStyled = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 5px 0;
-  justify-content: space-between;
-`;
