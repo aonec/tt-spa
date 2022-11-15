@@ -98,6 +98,12 @@ const Internal = () => {
                 exact
               />
 
+              <Route
+                path="/objects/:housingStockId(\\d+)/add_node"
+                component={AddNode}
+                exact
+              />
+
               <Route path="/objects">
                 <ObjectIsOpen />
                 <Route
@@ -186,12 +192,6 @@ const Internal = () => {
               <Route
                 path="/housingMeteringDevices/:deviceId/edit_odpu/"
                 component={EditODPU}
-                exact
-              />
-
-              <Route
-                path="/objects/:housingStockId(\\d+)/add_node"
-                component={AddNode}
                 exact
               />
 

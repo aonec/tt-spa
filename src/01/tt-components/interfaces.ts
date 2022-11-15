@@ -1,4 +1,4 @@
-import { TaskListResponse } from '../../myApi';
+import { HousingStockResponse, TaskListResponse } from '../../myApi';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface MenuButtonInterface {
@@ -32,4 +32,5 @@ export interface AlertInterface {
 export interface ModalInterface {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  object: HousingStockResponse | null;
 }
