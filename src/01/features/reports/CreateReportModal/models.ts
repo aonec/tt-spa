@@ -73,7 +73,6 @@ sample({
         values.to ? moment(values.to) : null,
       ] as RangePeriod,
     };
-    console.log(values);
     return formValues;
   },
   target: form.setForm,
