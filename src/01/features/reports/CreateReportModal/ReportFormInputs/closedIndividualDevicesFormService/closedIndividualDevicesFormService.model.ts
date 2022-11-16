@@ -26,7 +26,7 @@ const fetchAdressesFx = domain.createEffect<
 
 guard({
   source: $unloadSelectType,
-  filter: (value: UnloadingType | null) => value === 'ByAddress',
+  filter: (value) => value === 'ByAddress',
   target: fetchAdressesFx,
 });
 
@@ -37,7 +37,7 @@ const fetchOrganzationFx = domain.createEffect<
 
 guard({
   source: $unloadSelectType,
-  filter: (value: UnloadingType | null) => value === 'AllManagingFirm',
+  filter: (value) => value === 'AllManagingFirm',
   target: fetchOrganzationFx,
 });
 
@@ -48,7 +48,7 @@ const fetchHouseManagementsFx = domain.createEffect<
 
 guard({
   source: $unloadSelectType,
-  filter: (value: UnloadingType | null) => value === 'ByHouseManagement',
+  filter: (value) => value === 'ByHouseManagement',
   target: fetchHouseManagementsFx,
 });
 

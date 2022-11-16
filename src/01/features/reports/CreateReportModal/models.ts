@@ -72,11 +72,30 @@ sample({
         values.from ? moment(values.from) : null,
         values.to ? moment(values.to) : null,
       ] as RangePeriod,
+      isWithoutApartments:
+        values.withoutApartmentsWithOpenDevicesByResources === 'True'
+          ? true
+          : false,
+      closingReasons: values.closingReasons
+        ? JSON.parse(values.closingReasons)
+        : [],
+
+      managementFirmId: values.managementFirmId
+        ? Number(values.managementFirmId)
+        : null,
+      houseManagementId: values.houseManagementId,
+      housingStockId: values.housingStockId
+        ? Number(values.housingStockId)
+        : null,
     };
+
+    console.log(values);
     return formValues;
   },
   target: form.setForm,
 });
+
+
 
 const createReportFx = createReportDomain.createEffect<
   {
