@@ -1,12 +1,14 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
+import getAccessesList from '01/_api/utils/getAccessesList';
 import React, { FC } from 'react';
+import { useHistory } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/devices/resourceAccountingSystemsService';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { ApartmentsListContainer } from '../../apartmentsListService';
 import { ObjectProfileGrouptype } from '../../objectProfileService.constants';
 import { ObjectInfo } from '../ObjectInfo';
-import { CityWrappper, TabsSC, TitleWrapper } from './ObjectProfile.styled';
+import { CityWrappper, TabsSC } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
 import { RedirectToTasksContainer } from './redirectToTasks';
 const { TabPane } = TabsSC;
@@ -15,7 +17,11 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   housingStock,
   currentGrouptype,
   setCurrentGrouptype,
+  openCommonReport,
 }) => {
+  const history = useHistory();
+  const { show } = getAccessesList();
+
   const { address } = housingStock;
   const addressString = getHousingStockAddress(housingStock);
   const city = address?.mainAddress?.city || '';
@@ -23,9 +29,23 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   return (
     <div>
       <GoBack />
-      <TitleWrapper>
-        <PageHeader title={`${addressString}`} />
-      </TitleWrapper>
+      <PageHeader
+        title={`${addressString}`}
+        contextMenu={{
+          menuButtons: [
+            {
+              title: 'Добавить узел',
+              onClick: () =>
+                history.push(`/objects/${housingStock.id}/add_node`),
+              hidden: !show('CalculatorUpdate') as boolean,
+            },
+            {
+              title: 'Выгрузка сводного отчёта',
+              onClick: () => openCommonReport(),
+            },
+          ],
+        }}
+      />
       <CityWrappper>{city}</CityWrappper>
 
       <TabsSC

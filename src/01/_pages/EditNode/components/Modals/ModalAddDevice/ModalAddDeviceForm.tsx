@@ -157,14 +157,14 @@ const ModalAddDeviceForm = ({
         .toISOString(),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       model: values.model,
-      diameter:
-        values.housingMeteringDeviceType === 'FlowMeter'
-          ? values.diameter
-          : null,
       pipe: {
         pipeNumber: values.pipeNumber,
         magistral: values.magistral,
         nodeId: node.id,
+        diameter:
+          values.housingMeteringDeviceType === 'FlowMeter'
+            ? values.diameter
+            : null,
       },
     };
     addHousingMeteringDevice(form).then(() => {

@@ -94,8 +94,8 @@ const AddDeviceForm = (props: any) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
         model: values.model,
-        diameter: values.diameter,
         pipe: {
+          diameter: values.diameter,
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
           pipeNumber: values.pipeNumber,
