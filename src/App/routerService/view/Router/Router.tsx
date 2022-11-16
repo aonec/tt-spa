@@ -74,7 +74,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route
-                  path="/objects/:searchType?"
+                  path="/objects/:segment/:searchType?"
                   component={ObjectsProfileContainer}
                   exact
                 />

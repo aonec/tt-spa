@@ -10,11 +10,15 @@ import { CreateResourceDisconnectionContainer } from 'services/resources/createR
 import { SearchType } from './objectsProfileService.types';
 import { SoiReportContainer, soiReportService } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
+import { SegmentType } from './view/ObjectsProfile/ObjectsProfile.types';
 
 const { inputs } = soiReportService;
 
 export const ObjectsProfileContainer = () => {
-  const { searchType } = useParams<{ searchType?: SearchType }>();
+  const { searchType, segment } = useParams<{
+    searchType?: SearchType;
+    segment: SegmentType;
+  }>();
 
   const history = useHistory();
 
@@ -28,10 +32,10 @@ export const ObjectsProfileContainer = () => {
   );
 
   useEffect(() => {
-    if (!searchType) {
-      history.push(`/objects/${SearchType.Houses}`);
+    if (!searchType && segment === 'list') {
+      history.push(`/objects/list/${SearchType.Houses}`);
     }
-  }, [searchType]);
+  }, [searchType, segment]);
 
   return (
     <>
@@ -42,6 +46,7 @@ export const ObjectsProfileContainer = () => {
       <ObjectsProfile
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
+        segment={segment}
         handleExportGroupReport={handleExportGroupReport}
         handleOpenChooseResourceDisconnectionModal={() =>
           handleOpenChooseResourceDisconnectionModal()

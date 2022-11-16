@@ -5,4 +5,7 @@ export type ObjectsProfileProps = {
   handleOpenChooseResourceDisconnectionModal: () => void;
   searchType?: SearchType;
   openSoiReportModal: () => void;
+  segment: SegmentType;
 };
+
+export type SegmentType = 'list' | 'map';

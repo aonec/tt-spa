@@ -5,7 +5,11 @@ import {
   ContextMenuButtonProps,
 } from '../ContextMenuButton';
 import { PageTitle } from '../Title';
-import { PageHeaderStyled } from './PageHeader.styled';
+import {
+  ContentWrapper,
+  ContextMenuWrapper,
+  PageHeaderStyled,
+} from './PageHeader.styled';
 
 interface Props {
   title: string;
@@ -16,7 +20,12 @@ export const PageHeader: FC<Props> = ({ title, contextMenu, children }) => {
   return (
     <PageHeaderStyled>
       <PageTitle>{title}</PageTitle>
-      {contextMenu && <ContextMenuButton {...contextMenu} />}
+      <ContentWrapper>
+        {children}
+        <ContextMenuWrapper>
+          {contextMenu && <ContextMenuButton {...contextMenu} />}
+        </ContextMenuWrapper>
+      </ContentWrapper>
     </PageHeaderStyled>
   );
 };
