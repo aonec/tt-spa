@@ -1,11 +1,15 @@
 /* eslint-disable */
 
+import {
+  ApartmentResponse,
+  IndividualDeviceListItemResponsePagedList,
+  TasksPagedList,
+} from 'myApi';
 import axios from '../../axios';
 
-export async function getApartment(id = 0) {
+export async function getApartment(id = 0): Promise<ApartmentResponse> {
   try {
-    const res = await axios.get(`Apartments/${id}`);
-    return res;
+    return await axios.get(`Apartments/${id}`);
   } catch (error) {
     throw {
       resource: 'apartment',
@@ -14,10 +18,9 @@ export async function getApartment(id = 0) {
   }
 }
 
-export async function getTasks(id = 0) {
+export async function getTasks(id = 0): Promise<TasksPagedList> {
   try {
-    const res = await axios.get(`Tasks?ApartmentId=${id}`);
-    return res;
+    return await axios.get(`Tasks?ApartmentId=${id}`);
   } catch (error) {
     throw {
       resource: 'tasks',
@@ -26,10 +29,11 @@ export async function getTasks(id = 0) {
   }
 }
 
-export async function getApartmentDevices(id = '') {
+export async function getApartmentDevices(
+  id = ''
+): Promise<IndividualDeviceListItemResponsePagedList> {
   try {
-    const res = await axios.get(`IndividualDevices?ApartmentId=${id}`);
-    return res;
+    return await axios.get(`IndividualDevices?ApartmentId=${id}`);
   } catch (error) {
     throw {
       resource: 'devices',
