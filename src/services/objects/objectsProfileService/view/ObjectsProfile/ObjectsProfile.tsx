@@ -1,14 +1,14 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import React, { FC, ReactNode, useMemo } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
 import { DisplayPersonalNumbersListContainer } from 'services/objects/displayPersonalNumbersListService';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { Segmented } from 'ui-kit/Segmented';
 import { SearchType } from '../../objectsProfileService.types';
+import { ObjectMapsContainer } from './objectMapsService';
 import {
   Wrapper,
   ContentWrapper,
@@ -81,7 +81,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
           <ContentWrapper>{objectsProfileComponent}</ContentWrapper>
         </Wrapper>
       ),
-      map: <></>,
+      map: <ObjectMapsContainer />,
     };
 
     return dictionary[segment];
@@ -95,6 +95,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
           menuButtons,
           size: 'small',
         }}
+        hasPaddings={segment === 'map'}
       >
         <Segmented<SegmentType>
           active={segment}

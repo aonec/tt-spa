@@ -14,11 +14,17 @@ import {
 interface Props {
   title: string;
   contextMenu?: ContextMenuButtonProps;
+  hasPaddings?: boolean;
 }
 
-export const PageHeader: FC<Props> = ({ title, contextMenu, children }) => {
+export const PageHeader: FC<Props> = ({
+  title,
+  contextMenu,
+  children,
+  hasPaddings,
+}) => {
   return (
-    <PageHeaderStyled>
+    <PageHeaderStyled hasPaddings={hasPaddings}>
       <PageTitle>{title}</PageTitle>
       <ContentWrapper>
         {children}

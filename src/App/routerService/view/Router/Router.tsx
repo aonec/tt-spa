@@ -47,10 +47,11 @@ const { gates } = objectProfileService;
 
 const { ObjectGroupIsOpen } = gates;
 
-export const Router: FC<RouterProps> = ({ roles }) => {
+export const Router: FC<RouterProps> = ({ roles, isMapPage }) => {
   const redirectRoute = roles?.includes(ESecuredIdentityRoleName.Operator)
     ? '/meters/'
     : '/tasks/';
+
   return (
     <Wrapper>
       <Switch>
@@ -63,7 +64,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
           <Layout>
             <Panel />
             <div />
-            <PageWrapper>
+            <PageWrapper hasPaddings={!isMapPage}>
               <Switch>
                 <Redirect from="/" to={redirectRoute} exact />
 

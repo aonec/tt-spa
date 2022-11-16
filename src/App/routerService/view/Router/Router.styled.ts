@@ -8,7 +8,6 @@ export const Layout = styled.div`
   grid-template-columns: 208px 1fr;
 `;
 
-export const PageWrapper = styled.div`
-  padding: 16px 56px;
+export const PageWrapper = styled.div<{ hasPaddings?: boolean }>`
+  padding: ${({ hasPaddings = true }) => (hasPaddings ? '16px 56px' : 'none')};
 `;
-
