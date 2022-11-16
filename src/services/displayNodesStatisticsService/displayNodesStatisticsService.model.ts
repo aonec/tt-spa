@@ -17,12 +17,13 @@ const clearStores = domain.createEvent();
 const setGraphType = domain.createEvent<string>();
 const $graphType = domain
   .createStore<string>('')
-  .on(setGraphType, (_, type) => type);
+  .on(setGraphType, (_, type) => type)
+  .reset(clearStores);
 
 const setArchiveFilter = domain.createEvent<ArchiveReadingsFilter>();
 const $archiveFilter = domain
   .createStore<ArchiveReadingsFilter>({
-    ReportType: 'daily',
+    ReportType: 'hourly',
     From: moment()
       .subtract(1, 'week')
       .startOf('day')
