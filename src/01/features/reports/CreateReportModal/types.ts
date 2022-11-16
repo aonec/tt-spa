@@ -6,6 +6,7 @@ export enum ReportType {
   CallCenterWorkingReport = 'CallCenterWorkingReport',
   InspectorsWorkingReport = 'InspectorsWorkingReport',
   CheckingDatesReport = 'CheckingDatesReport',
+  ClosedDevicesReport = 'ClosedDevicesReport',
 }
 
 export function getReportTypeTitleName(type: ReportType) {
@@ -16,6 +17,7 @@ export function getReportTypeTitleName(type: ReportType) {
       'Еженедельный отчет по работе операторов',
     [ReportType.InspectorsWorkingReport]: 'Отчет по инспекторам',
     [ReportType.CheckingDatesReport]: 'Отчет по выходу поверки ИПУ',
+    [ReportType.ClosedDevicesReport]: 'Отчет по закрытым приборам',
   };
 
   return types[type];
