@@ -5,4 +5,5 @@ export type ObjectProfileProps = {
   housingStock: HousingStockResponse;
   currentGrouptype: ObjectProfileGrouptype;
   setCurrentGrouptype: (grouptype: ObjectProfileGrouptype) => void;
+  openCommonReport: () => void;
 };
