@@ -6,17 +6,12 @@ import { UnloadingType } from './closedIndividualDevicesFormService.types';
 sample({
   clock: reportsListService.inputs.openExistedReport,
   fn: (values) => {
-        console.log(values);
-        console.log(values.houseManagementId);
-        console.log(values.housingStockId);
-    if (values.houseManagementId) {
+    if (values.houseManagementId !== 'null') {
       return UnloadingType.ByHouseManagement;
     }
-    if (values.housingStockId) {
-      console.log(values.housingStockId);
+    if (values.housingStockId !== 'null') {
       return UnloadingType.ByAddress;
     }
-
     return UnloadingType.AllManagingFirm;
   },
   target: closedIndividualDevicesFormService.inputs.setUnloadSelectType,

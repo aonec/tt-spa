@@ -7,10 +7,11 @@ import { EClosingReason, EResourceType } from 'myApi';
 import { createForm } from 'effector-forms/dist';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
-import { downloadURI } from './utils';
+import { downloadURI, getUnloadPlaceData } from './utils';
 import { ZippedReports } from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from './../../../../types/index';
+import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -80,22 +81,20 @@ sample({
         ? JSON.parse(values.closingReasons)
         : [],
 
-      managementFirmId: values.managementFirmId
-        ? Number(values.managementFirmId)
-        : null,
-      houseManagementId: values.houseManagementId,
-      housingStockId: values.housingStockId
-        ? Number(values.housingStockId)
-        : null,
+      managementFirmId:
+        values.managementFirmId !== 'null'
+          ? Number(values.managementFirmId)
+          : null,
+      houseManagementId:
+        values.houseManagementId !== 'null' ? values.houseManagementId : null,
+      housingStockId:
+        values.housingStockId !== 'null' ? Number(values.housingStockId) : null,
     };
 
-    console.log(values);
     return formValues;
   },
   target: form.setForm,
 });
-
-
 
 const createReportFx = createReportDomain.createEffect<
   {
@@ -179,19 +178,30 @@ const workingReports = [
 ];
 
 sample({
-  source: form.$values,
+  source: combine(
+    form.$values,
+    closedIndividualDevicesFormService.outputs.$unloadSelectType
+  ),
   clock: createReport,
-  fn: ({
-    type,
-    period,
-    rangePeriod,
-    resources,
-    closingReasons,
-    housingStockId,
-    houseManagementId,
-    managementFirmId,
-    isWithoutApartments,
-  }) => {
+  fn: ([
+    {
+      type,
+      period,
+      rangePeriod,
+      resources,
+      closingReasons,
+      housingStockId,
+      houseManagementId,
+      managementFirmId,
+      isWithoutApartments,
+    },
+    unloadType,
+  ]) => {
+    const unloadPlaceData = getUnloadPlaceData(unloadType, {
+      housingStockId,
+      houseManagementId,
+      managementFirmId,
+    });
     if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
@@ -205,10 +215,8 @@ sample({
       },
       resources,
       closingReasons,
-      housingStockId,
-      houseManagementId,
-      managementFirmId,
       isWithoutApartments,
+      ...unloadPlaceData,
     };
   },
   target: createReportFx,

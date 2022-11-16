@@ -52,14 +52,6 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
     },
   } = useForm(form);
 
-  useEffect(() => {
-    if (!unloadSelectType) return;
-
-    handleChangeManagementFirmId(null);
-    handleChangeHouseManagementId(null);
-    handleChangeHousingStockId(null);
-  }, [unloadSelectType]);
-
   return (
     <div>
       <ExportTypeSelectWrapper>
