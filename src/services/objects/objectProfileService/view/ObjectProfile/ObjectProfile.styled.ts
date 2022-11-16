@@ -22,10 +22,3 @@ export const TabsSC = styled(Tabs)`
     grid-template-columns: auto 300px;
   }
 `;
-
-export const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  margin-top: 16px;
-`;

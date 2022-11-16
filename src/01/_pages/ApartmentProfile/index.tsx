@@ -23,6 +23,11 @@ import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { CardsWrapper, InformationWrapper } from './ApartmentProfile.styled';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
+import {
+  ApartmentResponse,
+  IndividualDeviceListItemResponsePagedList,
+  TasksPagedList,
+} from 'myApi';
 
 const ApartmentProfile = () => {
   const { apartmentId, housingStockId } = useParams<{
@@ -31,7 +36,13 @@ const ApartmentProfile = () => {
     apartmentSection: 'testimony' | 'homeowners' | 'documents' | 'actsJournal';
   }>();
 
-  const { data, status, run }: any = useAsync();
+  const { data, status, run } = useAsync<
+    [
+      ApartmentResponse,
+      TasksPagedList,
+      IndividualDeviceListItemResponsePagedList
+    ]
+  >();
 
   useEffect(() => {
     const request = () =>
@@ -49,7 +60,7 @@ const ApartmentProfile = () => {
   const apartment = data[0];
 
   if (status === 'error') return 'ОШИБКА ЗАГРУЗКИ';
-  if (status === 'loading') return <Loader show size="32" />;
+  if (status === 'pending') return <Loader show size="32" />;
 
   const Wrapper = styledComponents.div`
   margin-top: 25px;
@@ -69,7 +80,7 @@ const ApartmentProfile = () => {
     coldWaterRiserCount,
   } = apartment;
 
-  const tasksNumber = activeTaskIds.length;
+  const tasksNumber = activeTaskIds?.length;
 
   return styled(grid)(
     <>
@@ -105,7 +116,7 @@ const ApartmentProfile = () => {
         <CardsWrapper>
           <TasksCardContainer
             apartmentId={apartmentId}
-            tasksNumber={tasksNumber}
+            tasksNumber={tasksNumber || 0}
           />
           <ActsCardContainer
             apartmentId={apartmentId}
