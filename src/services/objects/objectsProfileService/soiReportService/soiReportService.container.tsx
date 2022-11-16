@@ -20,11 +20,10 @@ export const SoiReportContainer = () => {
   const setSelectedCity = useEvent(inputs.setSelectedCity);
   const createSoiReport = useEvent(inputs.createSoiReport);
 
-  const preparedAddresses = prepareAddressesForTreeSelect(
-    addressesPagedList?.items || [],
-    undefined,
-    false
-  );
+  const preparedAddresses = prepareAddressesForTreeSelect({
+    items: addressesPagedList?.items || [],
+    isSelectableStreetNode: false,
+  });
 
   return (
     <SoiReportModal
