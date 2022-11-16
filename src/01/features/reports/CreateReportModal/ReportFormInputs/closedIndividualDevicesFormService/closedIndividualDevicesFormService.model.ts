@@ -20,35 +20,35 @@ const $unloadSelectType = domain
   .on(setUnloadSelectType, (_, unloadType) => unloadType);
 
 const fetchAdressesFx = domain.createEffect<
-  any,
+  void,
   StreetWithHousingStockNumbersResponsePagedList
 >(getAdresses);
 
 guard({
   source: $unloadSelectType,
-  filter: (value) => value === 'ByAddress',
+  filter: (value) => value === UnloadingType.ByAddress,
   target: fetchAdressesFx,
 });
 
 const fetchOrganzationFx = domain.createEffect<
-  any,
+  void,
   OrganizationResponsePagedList
 >(getOrganizations);
 
 guard({
   source: $unloadSelectType,
-  filter: (value) => value === 'AllManagingFirm',
+  filter: (value) => value === UnloadingType.AllManagingFirm,
   target: fetchOrganzationFx,
 });
 
 const fetchHouseManagementsFx = domain.createEffect<
-  any,
+  void,
   HouseManagementResponse[] | null
 >(getHouseManagements);
 
 guard({
   source: $unloadSelectType,
-  filter: (value) => value === 'ByHouseManagement',
+  filter: (value) => value === UnloadingType.ByHouseManagement,
   target: fetchHouseManagementsFx,
 });
 

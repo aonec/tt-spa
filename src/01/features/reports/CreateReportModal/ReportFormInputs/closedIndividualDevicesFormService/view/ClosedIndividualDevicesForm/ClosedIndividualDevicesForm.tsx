@@ -76,7 +76,7 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
             ))}
           </Select>
         </FormItem>
-        {unloadSelectType === 'ByAddress' && (
+        {unloadSelectType === UnloadingType.ByAddress && (
           <FormItem label={unloadingTypesForLabelDictionary[unloadSelectType]}>
             <TreeSelectSC
               placeholder="Выберите из списка"
@@ -89,7 +89,7 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
             />
           </FormItem>
         )}
-        {unloadSelectType === 'AllManagingFirm' && (
+        {unloadSelectType === UnloadingType.AllManagingFirm && (
           <FormItem label={unloadingTypesForLabelDictionary[unloadSelectType]}>
             <Select
               placeholder="Выберите из списка"
@@ -107,7 +107,7 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
             </Select>
           </FormItem>
         )}
-        {unloadSelectType === 'ByHouseManagement' && (
+        {unloadSelectType === UnloadingType.ByHouseManagement && (
           <FormItem label={unloadingTypesForLabelDictionary[unloadSelectType]}>
             <Select
               placeholder="Выберите из списка"

@@ -7,7 +7,7 @@ import {
 
 
 export const getAdresses = (
-  payload: any
+  payload: void
 ): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,
@@ -15,7 +15,7 @@ export const getAdresses = (
 };
 
 export const getOrganizations = (
-  payload: any
+  payload: void
 ): Promise<OrganizationResponsePagedList> => {
   return axios.get('Organizations', {
     params: payload,
@@ -23,7 +23,7 @@ export const getOrganizations = (
 };
 
 export const getHouseManagements = (
-  payload: any
+  payload: void
 ): Promise<HouseManagementResponse[] | null> => {
   return axios.get('HouseManagements', {
     params: payload,
