@@ -1,13 +1,18 @@
+import { useStore } from 'effector-react';
 import React from 'react';
-import { Map } from 'react-yandex-maps';
+import { objectMapsService } from './objectMapsService.model';
+import { ObjectsMaps } from './view/ObjectsMaps';
+
+const { outputs, gates } = objectMapsService;
+const { StreetsWithHousingStocksGate } = gates;
 
 export const ObjectMapsContainer = () => {
+  const streetsData = useStore(outputs.$addressesPagedList);
+  
   return (
-    <Map
-      defaultState={{ center: [55.63, 51.82], zoom: 15 }}
-      width={window.screen.width - 210}
-      height={window.screen.height - 195}
-    />
+    <>
+      <StreetsWithHousingStocksGate />
+      <ObjectsMaps streetsData={streetsData} />
+    </>
   );
 };
-
