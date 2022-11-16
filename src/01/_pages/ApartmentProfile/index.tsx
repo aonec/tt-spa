@@ -23,19 +23,32 @@ import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { CardsWrapper, InformationWrapper } from './ApartmentProfile.styled';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
+import {
+  ApartmentResponse,
+  IndividualDeviceListItemResponsePagedList,
+  TasksPagedList,
+} from 'myApi';
 
 const ApartmentProfile = () => {
-  const params = useParams();
-  const apartmentId = params[1];
-  const housingStockId = params[0];
+  const { apartmentId, housingStockId } = useParams<{
+    housingStockId: string;
+    apartmentId: string;
+    apartmentSection: 'testimony' | 'homeowners' | 'documents' | 'actsJournal';
+  }>();
 
-  const { data, status, run } = useAsync();
+  const { data, status, run } = useAsync<
+    [
+      ApartmentResponse,
+      TasksPagedList,
+      IndividualDeviceListItemResponsePagedList
+    ]
+  >();
 
   useEffect(() => {
     const request = () =>
       Promise.all([
-        getApartment(apartmentId),
-        getTasks(apartmentId),
+        getApartment(Number(apartmentId)),
+        getTasks(Number(apartmentId)),
         getApartmentDevices(apartmentId),
       ]);
 
@@ -47,9 +60,10 @@ const ApartmentProfile = () => {
   const apartment = data[0];
 
   if (status === 'error') return 'ОШИБКА ЗАГРУЗКИ';
-  if (status === 'loading') return <Loader show size="32" />;
+  if (status === 'pending') return <Loader show size="32" />;
 
   const Wrapper = styledComponents.div`
+  margin-top: 25px;
   display: flex;
   padding-bottom: 40px;
   max-width: 1300px;
@@ -66,7 +80,7 @@ const ApartmentProfile = () => {
     coldWaterRiserCount,
   } = apartment;
 
-  const tasksNumber = activeTaskIds.length;
+  const tasksNumber = activeTaskIds?.length;
 
   return styled(grid)(
     <>
@@ -102,7 +116,7 @@ const ApartmentProfile = () => {
         <CardsWrapper>
           <TasksCardContainer
             apartmentId={apartmentId}
-            tasksNumber={tasksNumber}
+            tasksNumber={tasksNumber || 0}
           />
           <ActsCardContainer
             apartmentId={apartmentId}

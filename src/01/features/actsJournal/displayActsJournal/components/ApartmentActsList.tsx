@@ -1,4 +1,3 @@
-import { Icon } from '01/shared/ui/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
@@ -85,7 +84,7 @@ export const ApartmentActsList = () => {
         AddressOrderBy={fields.AddressOrderBy.value}
       />
       <PendingLoader loading={pending} skeleton>
-        {acts?.length === 0 && (
+        {!acts?.length && (
           <Flex style={{ justifyContent: 'center' }}>
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -96,7 +95,7 @@ export const ApartmentActsList = () => {
 
         <div>{acts?.map(renderAct)}</div>
       </PendingLoader>
-      <SpaceLine noTop />
+      <SpaceLine noTop={!pending} />
       {actsPagedData && (
         <Pagination
           showQuickJumper
