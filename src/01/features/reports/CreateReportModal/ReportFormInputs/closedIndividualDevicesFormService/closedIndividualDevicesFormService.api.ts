@@ -5,27 +5,16 @@ import {
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
 
-
-export const getAdresses = (
-  payload: void
-): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
-  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
-    params: payload,
-  });
+export const getAdresses = (): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
+  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers');
 };
 
-export const getOrganizations = (
-  payload: void
-): Promise<OrganizationResponsePagedList> => {
-  return axios.get('Organizations', {
-    params: payload,
-  });
+export const getOrganizations = (): Promise<OrganizationResponsePagedList> => {
+  return axios.get('Organizations');
 };
 
-export const getHouseManagements = (
-  payload: void
-): Promise<HouseManagementResponse[] | null> => {
-  return axios.get('HouseManagements', {
-    params: payload,
-  });
+export const getHouseManagements = (): Promise<
+  HouseManagementResponse[] | null
+> => {
+  return axios.get('HouseManagements');
 };
