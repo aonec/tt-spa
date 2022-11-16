@@ -8,15 +8,21 @@ import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resour
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { SearchType } from './objectsProfileService.types';
+import { SoiReportContainer, soiReportService } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
+
+const { inputs } = soiReportService;
 
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
   const history = useHistory();
 
+  const openSoiReportModal = useEvent(inputs.openSoiReportModal);
+
   const dispatch = useAppDispatch();
   const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
+
   const handleOpenChooseResourceDisconnectionModal = useEvent(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal
   );
@@ -29,11 +35,12 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
-    
+      <SoiReportContainer />
       <CreateResourceDisconnectionContainer />
-      <ChooseTypeOfResourceDisconnectionModalContainer/>
+      <ChooseTypeOfResourceDisconnectionModalContainer />
       <GroupReport />
       <ObjectsProfile
+        openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
         handleExportGroupReport={handleExportGroupReport}
         handleOpenChooseResourceDisconnectionModal={() =>

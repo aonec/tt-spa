@@ -7,7 +7,8 @@ import { TreeSelectElement } from './view/CreateResourceDisconnectionModal/Creat
 
 export const prepareAddressesForTreeSelect = (
   items: StreetWithHousingStockNumbersResponse[],
-  parentId?: string
+  parentId?: string,
+  isSelectableStreetNode: boolean = true
 ) =>
   items.reduce((acc, { street, addresses }) => {
     if (street) {
@@ -25,6 +26,7 @@ export const prepareAddressesForTreeSelect = (
           key: `${street}${parentId}`,
           value: `${street}${parentId}`,
           children,
+          selectable: isSelectableStreetNode,
         },
       ];
     }
