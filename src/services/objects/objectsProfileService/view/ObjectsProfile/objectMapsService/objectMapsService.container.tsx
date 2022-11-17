@@ -8,11 +8,11 @@ const { StreetsWithHousingStocksGate } = gates;
 
 export const ObjectMapsContainer = () => {
   const streetsData = useStore(outputs.$addressesPagedList);
-  
+
   return (
     <>
       <StreetsWithHousingStocksGate />
-      <ObjectsMaps streetsData={streetsData} />
+      <ObjectsMaps streetsData={streetsData?.items || null} />
     </>
   );
 };

@@ -1,5 +1,5 @@
-import { StreetWithHousingStockNumbersResponsePagedList } from 'myApi';
+import { StreetWithHousingStockNumbersResponse } from 'myApi';
 
 export type MapPanelProps = {
-  streetsData: StreetWithHousingStockNumbersResponsePagedList | null;
+  streetsData: StreetWithHousingStockNumbersResponse[] | null;
 };
