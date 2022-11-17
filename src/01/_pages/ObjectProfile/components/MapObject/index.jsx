@@ -4,7 +4,7 @@ import {
   Placemark,
   ZoomControl,
   FullscreenControl,
-} from 'react-yandex-maps';
+} from '@pbe/react-yandex-maps';
 import objectIcon from './object.svg';
 import styled from 'styled-components';
 import { IconTT } from '../../../../tt-components';
