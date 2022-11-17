@@ -4,6 +4,7 @@ import { MapPanel } from './MapPanel';
 import { PanelWrapper, Wrapper } from './ObjectsMaps.styled';
 import { ObjectsMapsProps } from './ObjectsMaps.types';
 import { activeMark } from './assets/activeMark';
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
 
 export const ObjectsMaps: FC<ObjectsMapsProps> = ({
   streetsData,
@@ -14,14 +15,17 @@ export const ObjectsMaps: FC<ObjectsMapsProps> = ({
 }) => {
   const pos = [55.63844, 51.820907];
 
-  const [template, setTemplate] = useState(null);
+  const [
+    template,
+    setTemplate,
+  ] = useState<ymaps.IClassConstructor<ymaps.layout.templateBased.Base> | null>(
+    null
+  );
 
-  const onLoad = (ymaps: any) => {
-    console.log({ ...ymaps });
-    return;
+  const onLoad = (ymaps: YMapsApi) => {
     if (!ymaps) return;
 
-    const temp = ymaps.templateLayoutFactory.createClass(activeMark);
+    const temp = ymaps.templateLayoutFactory?.createClass(activeMark);
 
     console.log(temp);
 
@@ -38,11 +42,11 @@ export const ObjectsMaps: FC<ObjectsMapsProps> = ({
         }}
         width={window.screen.width - 210}
         height={window.screen.height - 195}
-        state={housingStock ? { center: pos, zoom: 16 } : undefined}
+        state={housingStock ? { center: pos, zoom: 18 } : undefined}
       >
         <Placemark defaultGeometry={pos} />
 
-        {/* {template && (
+        {template && (
           <Placemark
             key={'dsad-213213'}
             geometry={pos}
@@ -57,7 +61,7 @@ export const ObjectsMaps: FC<ObjectsMapsProps> = ({
                 : undefined
             }
           />
-        )} */}
+        )}
       </Map>
       <PanelWrapper>
         <MapPanel
