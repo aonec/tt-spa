@@ -3,6 +3,7 @@ import { Map, Placemark } from '@pbe/react-yandex-maps';
 import { MapPanel } from './MapPanel';
 import { PanelWrapper, Wrapper } from './ObjectsMaps.styled';
 import { ObjectsMapsProps } from './ObjectsMaps.types';
+import activeMark from "./assets/activeMark.svg"
 
 export const ObjectsMaps: FC<ObjectsMapsProps> = ({
   streetsData,
@@ -24,7 +25,14 @@ export const ObjectsMaps: FC<ObjectsMapsProps> = ({
         height={window.screen.height - 195}
         state={housingStock ? { center: pos, zoom: 18 } : undefined}
       >
-        <Placemark defaultGeometry={pos} />
+        <Placemark
+          defaultGeometry={pos}
+          options={{
+            iconLayout: 'default#image',
+            iconImageHref: activeMark,
+            iconImageSize: [52, 52],
+          }}
+        />
       </Map>
       <PanelWrapper>
         <MapPanel
