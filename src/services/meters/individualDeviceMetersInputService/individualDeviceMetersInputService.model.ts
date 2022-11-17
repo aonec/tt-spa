@@ -55,6 +55,8 @@ uploadMeterFx.failData.watch((error) =>
   message.error(error.response.data.error.Text)
 );
 
+const clearStatuses = domain.createEvent();
+
 $uploadingMetersStatuses
   .on(uploadMeter, (state, { meter: { deviceId }, sliderIndex }) => ({
     ...state,
@@ -98,7 +100,8 @@ $uploadingMetersStatuses
         [sliderIndex]: MetersInputBlockStatus.Failed,
       },
     })
-  );
+  )
+  .reset(clearStatuses);
 
 $devices
   .on(uploadMeterFx.done, (state, { params, result }) =>
@@ -144,6 +147,7 @@ export const individualDeviceMetersInputService = {
     deleteMeter,
     uploadMeterFx,
     deleteMeterFx,
+    clearStatuses,
   },
   outputs: {
     $uploadingMetersStatuses,
