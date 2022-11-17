@@ -300,6 +300,7 @@ const getSerialNumberForCheck = (
   axios.get('IndividualDevices', {
     params: {
       serialNumber,
+      pageSize: 1,
     },
   });
 
@@ -315,6 +316,13 @@ forward({
   to: fetchSerialNumberForCheckFx,
 });
 
-export const $serialNumberForChecking = createStore<
-IndividualDeviceListItemResponsePagedList | null
->(null).on(fetchSerialNumberForCheckFx.doneData, (_, data) => data).reset(fetchSerialNumberForCheckFx)
+export const $serialNumberForChecking = createStore<IndividualDeviceListItemResponsePagedList | null>(
+  null
+)
+  .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
+  .reset(fetchSerialNumberForCheckFx);
+
+export const $isFetchSerialNumberLoading = createStore<boolean>(false)
+  .on(fetchSerialNumberForCheckFx, () => true)
+  .on(fetchSerialNumberForCheckFx.done, () => false)
+  .on(fetchSerialNumberForCheckFx.fail, () => false);

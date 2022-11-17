@@ -44,6 +44,7 @@ import { Loader } from '01/components';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
 import {
+  $isFetchSerialNumberLoading,
   $serialNumberForChecking,
   handleFetchSerialNumberForCheck,
 } from '../../models/init';
@@ -120,7 +121,8 @@ export const BaseInfoStage = () => {
     handleFetchSerialNumberForCheck
   );
   const serialNumberForChecking = useStore($serialNumberForChecking);
-  console.log(serialNumberForChecking);
+
+  const isFetchSerialNumberLoading = useStore($isFetchSerialNumberLoading);
 
   const bottomDateFields = (
     <FormWrap>
@@ -284,15 +286,17 @@ export const BaseInfoStage = () => {
           value={fields.serialNumber.value}
           onKeyDown={enterKeyDownHandler(0, isSwitch)}
           onBlur={(value) => eventFetchSerialNumberForCheck(value.target.value)}
-        />
+          suffix={<Loader show={isFetchSerialNumberLoading} />}
+        ></InputTT>
         <ErrorMessage>
           {fields.serialNumber.errorText({
             required: 'Это поле обязательное',
           })}
         </ErrorMessage>
-        { serialNumberForChecking && serialNumberForChecking?.items!.length !== 0 ? (
+        {serialNumberForChecking &&
+        serialNumberForChecking?.items![0].serialNumber === fields.serialNumber.value ? (
           <ErrorMessage>
-             Данный серийный номер уже существует в базе
+            Данный серийный номер уже существует в базе
           </ErrorMessage>
         ) : null}
       </FormItem>
