@@ -322,7 +322,4 @@ export const $serialNumberForChecking = createStore<IndividualDeviceListItemResp
   .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
   .reset(fetchSerialNumberForCheckFx);
 
-export const $isFetchSerialNumberLoading = createStore<boolean>(false)
-  .on(fetchSerialNumberForCheckFx, () => true)
-  .on(fetchSerialNumberForCheckFx.done, () => false)
-  .on(fetchSerialNumberForCheckFx.fail, () => false);
+export const $isFetchSerialNumberLoading = fetchSerialNumberForCheckFx.pending;

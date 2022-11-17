@@ -124,6 +124,11 @@ export const BaseInfoStage = () => {
 
   const isFetchSerialNumberLoading = useStore($isFetchSerialNumberLoading);
 
+  const isSerialNumberAllreadyExist =
+    Boolean(serialNumberForChecking?.items?.length) &&
+    serialNumberForChecking?.items![0].serialNumber ===
+      fields.serialNumber.value;
+
   const bottomDateFields = (
     <FormWrap>
       <FormItem label="Дата последней поверки прибора">
@@ -285,7 +290,10 @@ export const BaseInfoStage = () => {
           name="serialNumber"
           value={fields.serialNumber.value}
           onKeyDown={enterKeyDownHandler(0, isSwitch)}
-          onBlur={(value) => eventFetchSerialNumberForCheck(value.target.value)}
+          onBlur={(value) =>
+            value.target.value &&
+            eventFetchSerialNumberForCheck(value.target.value)
+          }
           suffix={<Loader show={isFetchSerialNumberLoading} />}
         ></InputTT>
         <ErrorMessage>
@@ -293,12 +301,11 @@ export const BaseInfoStage = () => {
             required: 'Это поле обязательное',
           })}
         </ErrorMessage>
-        {serialNumberForChecking &&
-        serialNumberForChecking?.items![0].serialNumber === fields.serialNumber.value ? (
+        {isSerialNumberAllreadyExist && (
           <ErrorMessage>
             Данный серийный номер уже существует в базе
           </ErrorMessage>
-        ) : null}
+        )}
       </FormItem>
 
       <FormItem label="Модель прибора">
