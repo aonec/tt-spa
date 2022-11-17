@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import { ButtonTT } from '../../tt-components';
 import img from './electro.png';
 // background-image: url(${img});
