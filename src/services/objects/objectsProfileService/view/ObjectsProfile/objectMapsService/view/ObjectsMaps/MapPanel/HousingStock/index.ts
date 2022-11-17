@@ -1,0 +1,1 @@
+export { HousingStock } from './HousingStock'

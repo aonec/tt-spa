@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isWithPaddings: boolean }>`
   width: 352px;
-  padding: 15px;
+  padding: ${({ isWithPaddings }) => (isWithPaddings ? '15px' : 'none')};
   background: white;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);

@@ -8,8 +8,17 @@ import {
 } from './MapPanel.styled';
 import { MapPanelProps } from './MapPanel.types';
 import { countSimilarityPoints, getAddressSearchData } from './MapPanel.utils';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { Skeleton } from 'antd';
+import { HousingStock } from './HousingStock';
 
-export const MapPanel: FC<MapPanelProps> = ({ streetsData }) => {
+export const MapPanel: FC<MapPanelProps> = ({
+  streetsData,
+  handleClickHousingStock,
+  isLoadingHousingStock,
+  housingStock,
+  clearHosuingStock,
+}) => {
   const [addressSearch, setAddressSearch] = useState('');
 
   const addressData = getAddressSearchData(streetsData);
@@ -31,12 +40,22 @@ export const MapPanel: FC<MapPanelProps> = ({ streetsData }) => {
         })
         .slice(0, 5) || []
     : [];
-  return (
-    <Wrapper>
+
+  function handleChooseHousingStock(id?: number) {
+    if (!id) return;
+
+    handleClickHousingStock(id);
+    setAddressSearch('');
+  }
+
+  const search = (
+    <>
       {Boolean(pagedFilteredAddressData.length) && (
         <SearchResultWrapper>
           {pagedFilteredAddressData.map((elem) => (
-            <SearchResultItem>{elem.addressString}</SearchResultItem>
+            <SearchResultItem onClick={() => handleChooseHousingStock(elem.id)}>
+              {elem.addressString}
+            </SearchResultItem>
           ))}
         </SearchResultWrapper>
       )}
@@ -45,7 +64,23 @@ export const MapPanel: FC<MapPanelProps> = ({ streetsData }) => {
         onChange={(e) => setAddressSearch(e.target.value)}
         prefix={<SearchIcon />}
         placeholder="Введите адрес"
+        onKeyDown={fromEnter(() =>
+          handleChooseHousingStock(pagedFilteredAddressData[0]?.id)
+        )}
       />
+    </>
+  );
+
+  return (
+    <Wrapper isWithPaddings={!housingStock}>
+      {!housingStock && search}
+      {isLoadingHousingStock && <Skeleton active />}
+      {!isLoadingHousingStock && housingStock && (
+        <HousingStock
+          clearHosuingStock={clearHosuingStock}
+          housingStock={housingStock}
+        />
+      )}
     </Wrapper>
   );
 };
