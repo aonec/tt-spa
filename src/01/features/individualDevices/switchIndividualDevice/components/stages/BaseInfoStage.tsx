@@ -8,7 +8,7 @@ import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -43,6 +43,10 @@ import { DatePickerNative, fromEnter } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
+import {
+  $serialNumberForChecking,
+  handleFetchSerialNumberForCheck,
+} from '../../models/init';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -111,6 +115,12 @@ export const BaseInfoStage = () => {
       fields.newDeviceReadings.onChange(oldDeviceReadings);
     }
   }, [isCheck, fields.oldDeviceReadings.value]);
+
+  const eventFetchSerialNumberForCheck = useEvent(
+    handleFetchSerialNumberForCheck
+  );
+  const serialNumberForChecking = useStore($serialNumberForChecking);
+  console.log(serialNumberForChecking);
 
   const bottomDateFields = (
     <FormWrap>
@@ -273,12 +283,18 @@ export const BaseInfoStage = () => {
           name="serialNumber"
           value={fields.serialNumber.value}
           onKeyDown={enterKeyDownHandler(0, isSwitch)}
+          onBlur={(value) => eventFetchSerialNumberForCheck(value.target.value)}
         />
         <ErrorMessage>
           {fields.serialNumber.errorText({
             required: 'Это поле обязательное',
           })}
         </ErrorMessage>
+        { serialNumberForChecking && serialNumberForChecking?.items!.length !== 0 ? (
+          <ErrorMessage>
+             Данный серийный номер уже существует в базе
+          </ErrorMessage>
+        ) : null}
       </FormItem>
 
       <FormItem label="Модель прибора">

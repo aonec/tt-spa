@@ -18,7 +18,9 @@ interface Props {
   setSearchContext: (context: 1 | 2) => void;
 }
 
-export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
+export const SerialNumberSearch: React.FC<Props> = ({
+  setSearchContext,
+}) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
   const [loading, setLoading] = useState(false);

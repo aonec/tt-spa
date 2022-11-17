@@ -8,7 +8,15 @@ import {
   fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
-import { forward, sample, combine, guard } from 'effector';
+import {
+  forward,
+  sample,
+  combine,
+  guard,
+  createEffect,
+  createEvent,
+  createStore,
+} from 'effector';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -30,6 +38,8 @@ import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import {
   EIndividualDeviceRateType,
+  IndividualDeviceListItemResponse,
+  IndividualDeviceListItemResponsePagedList,
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
 } from 'myApi';
@@ -37,6 +47,7 @@ import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import moment from 'moment';
 import { getReadingValuesArray } from '../components/ReadingsInput';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { axios } from '01/axios';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -282,3 +293,28 @@ export const getSerialNumberAfterString = (
     reopen: '*',
   }[type];
 };
+
+const getSerialNumberForCheck = (
+  serialNumber: string
+): Promise<IndividualDeviceListItemResponsePagedList> =>
+  axios.get('IndividualDevices', {
+    params: {
+      serialNumber,
+    },
+  });
+
+const fetchSerialNumberForCheckFx = createEffect<
+  string,
+  IndividualDeviceListItemResponsePagedList
+>(getSerialNumberForCheck);
+
+export const handleFetchSerialNumberForCheck = createEvent<string>();
+
+forward({
+  from: handleFetchSerialNumberForCheck,
+  to: fetchSerialNumberForCheckFx,
+});
+
+export const $serialNumberForChecking = createStore<
+IndividualDeviceListItemResponsePagedList | null
+>(null).on(fetchSerialNumberForCheckFx.doneData, (_, data) => data).reset(fetchSerialNumberForCheckFx)
