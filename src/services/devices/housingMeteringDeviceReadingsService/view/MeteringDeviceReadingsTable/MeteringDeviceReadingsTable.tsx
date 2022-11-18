@@ -10,8 +10,12 @@ export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> =
   isColdWater,
   readings,
   createReading,
+  deviceIds,
 }) => {
-  const preparedReadings = useMemo(()=> groupWithEmptyReadings(readings), [readings])
+  const preparedReadings = useMemo(
+    () => groupWithEmptyReadings(readings, deviceIds),
+    [readings, deviceIds]
+  );
 
   return (
     <div>
@@ -26,8 +30,8 @@ export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> =
           createReading={(reading) => {
             const { deviceId, month, value } = reading;
             const readingDate = moment(`${year} ${month}`, 'YYYY MMMM')
-              .add(1, 'month')
-              .add(14, 'days')
+              .startOf('month')
+              .utcOffset(0, true)
               .format();
             createReading({ readingDate, deviceId, value });
           }}
