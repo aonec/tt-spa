@@ -1,3 +1,4 @@
+import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
 import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';
 
 export type IndividualDevicesAddressSearchProps = {
@@ -6,4 +7,5 @@ export type IndividualDevicesAddressSearchProps = {
   ) => void;
   filters: SearchIndividualDevicesRequestPayload;
   clearSearchPayload: () => void;
+  mountPlaces: IndividualDeviceMountPlaceForFilterResponse[];
 };

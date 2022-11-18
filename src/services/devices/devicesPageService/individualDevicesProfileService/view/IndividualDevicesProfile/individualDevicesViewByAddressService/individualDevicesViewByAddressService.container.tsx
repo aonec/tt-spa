@@ -23,6 +23,7 @@ export const IndividualDevicesViewByAddressContainer = () => {
   );
   const filters = useStore(outputs.$individualDeviceSearchRequestPayload);
   const pageNumber = useStore(outputs.$pageNumber);
+  const mountPlaces = useStore(outputs.$mountPlaces);
 
   const setIndividualDeviceSearchRequestPayload = useEvent(
     inputs.setIndividualDeviceSearchRequestPayload
@@ -39,6 +40,7 @@ export const IndividualDevicesViewByAddressContainer = () => {
         setIndividualDeviceSearchRequestPayload={
           setIndividualDeviceSearchRequestPayload
         }
+        mountPlaces={mountPlaces}
       />
       <IndividualDevicesApartmentsList
         housingsByFilter={housingsByFilter}
