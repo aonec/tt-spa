@@ -87,7 +87,7 @@ export const Header = ({
           {`${model} (${serialNumber})`}
         </Title>
 
-        <Subtitle to={`/objects/${id}`}>
+        <Subtitle to={`/objects/profile/${id}`}>
           <Tooltip title={fullAddress}>
             <AdditionalAddress>
               <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>

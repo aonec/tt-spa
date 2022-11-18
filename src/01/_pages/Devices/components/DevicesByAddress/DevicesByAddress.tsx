@@ -17,7 +17,7 @@ const DevicesByAddress = ({
   return (
     <>
       {addressDevicesGroup.address ? (
-        <Subtitle fontWeight={400} to={`/objects/${housingStockId}`}>
+        <Subtitle fontWeight={400} to={`/objects/profile/${housingStockId}`}>
           {getHousingStockAddress(addressDevicesGroup, true)}
         </Subtitle>
       ) : (
