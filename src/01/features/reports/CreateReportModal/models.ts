@@ -7,8 +7,11 @@ import { EClosingReason, EResourceType } from 'myApi';
 import { createForm } from 'effector-forms/dist';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
-import { downloadURI, getUnloadPlaceData } from './utils';
-import { ZippedReports } from './CreateReport.constants';
+import { downloadURI } from './utils';
+import {
+  UnloadTypeFieldsDictionary,
+  ZippedReports,
+} from './CreateReport.constants';
 import { reportsListService } from '../reportsListService';
 import { EffectFailDataAxiosError } from './../../../../types/index';
 import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
@@ -74,9 +77,7 @@ sample({
         values.to ? moment(values.to) : null,
       ] as RangePeriod,
       isWithoutApartments:
-        values.withoutApartmentsWithOpenDevicesByResources === 'True'
-          ? true
-          : false,
+        values.withoutApartmentsWithOpenDevicesByResources === 'True',
       closingReasons: values.closingReasons
         ? JSON.parse(values.closingReasons)
         : [],
@@ -197,11 +198,13 @@ sample({
     },
     unloadType,
   ]) => {
-    const unloadPlaceData = getUnloadPlaceData(unloadType, {
+    const unloadPlaceData: { [key: string]: string | null | number } = {
       housingStockId,
       houseManagementId,
       managementFirmId,
-    });
+    };
+    const key = unloadType && UnloadTypeFieldsDictionary[unloadType];
+
     if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
@@ -216,7 +219,7 @@ sample({
       resources,
       closingReasons,
       isWithoutApartments,
-      ...unloadPlaceData,
+      ...(key ? { [key]: unloadPlaceData[key] } : {}),
     };
   },
   target: createReportFx,
