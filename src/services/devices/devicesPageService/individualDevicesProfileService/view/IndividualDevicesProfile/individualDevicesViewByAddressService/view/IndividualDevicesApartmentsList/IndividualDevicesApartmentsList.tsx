@@ -9,12 +9,16 @@ export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsList
   housingsByFilter,
   isLoading,
   individualDevicesApartmentsList,
+  updateSearchPayload,
 }) => {
   return (
     <Wrapper>
       {isLoading && <Skeleton active />}
       {!isLoading && housingsByFilter && (
-        <AddressHeader housingsByFilter={housingsByFilter} />
+        <AddressHeader
+          updateSearchPayload={updateSearchPayload}
+          housingsByFilter={housingsByFilter}
+        />
       )}
       <ListWrapper>
         {!isLoading &&

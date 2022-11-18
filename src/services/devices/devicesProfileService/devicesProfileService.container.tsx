@@ -3,6 +3,7 @@ import React from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
+
 const { outputs, inputs, gates } = displayDevicesService;
 
 export const DevicesProfileContainer = () => {
