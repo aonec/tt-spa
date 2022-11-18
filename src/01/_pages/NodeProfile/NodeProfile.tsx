@@ -15,6 +15,7 @@ import { SidePanel } from '01/shared/ui/SidePanel';
 import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { ContentProps } from './NodeProfile.types';
 import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({ tabItems, node, loading, nodeId, path }) => {
@@ -64,7 +65,7 @@ export const Content: React.FC<ContentProps> = React.memo(
             )}
           </Route>
           <Route path={`${path}/readings`} exact>
-            <HousingMeteringDeviceReadings
+            <HousingMeteringDeviceReadingsContainer
               nodeId={Number(nodeId)}
               resource={resource}
             />

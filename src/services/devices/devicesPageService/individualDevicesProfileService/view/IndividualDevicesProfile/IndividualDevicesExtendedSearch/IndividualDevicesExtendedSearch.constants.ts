@@ -14,8 +14,8 @@ export const resourcesNamesLookup: { [key in EResourceType]: string } = {
 
 export const apartmentStatusesLookup: { [key in EApartmentStatus]: string } = {
   [EApartmentStatus.Debtor]: 'Должник',
-  [EApartmentStatus.Ok]: 'Ок',
-  [EApartmentStatus.Pause]: 'Пауза',
+  [EApartmentStatus.Ok]: 'Передают показания',
+  [EApartmentStatus.Pause]: 'На паузе',
 };
 
 export const closingReasonLookup: { [key: string]: string | null } = {

@@ -125,9 +125,9 @@ const FormEditODPU = ({
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        diameter: Number(values.diameter),
         pipe: {
           // calculatorId: values.calculatorId,
+          diameter: Number(values.diameter),
           entryNumber: Number(values.entryNumber),
           pipeNumber: Number(values.pipeNumber),
           magistral: magistralEnum,

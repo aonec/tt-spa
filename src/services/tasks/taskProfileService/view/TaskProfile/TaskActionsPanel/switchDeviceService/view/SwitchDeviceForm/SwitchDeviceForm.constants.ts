@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const DevicePipeMagistralDictionary: { [key: string]: string } = {
-  FeedFlow: 'подающая',
+  DevicePipeMagistralDictionary: 'подающая',
   FeedBackFlow: 'обратная',
 };
 

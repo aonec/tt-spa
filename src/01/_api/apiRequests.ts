@@ -108,21 +108,6 @@ export async function getCalculator(id: number) {
   }
 }
 
-export async function addHousingMeteringDevice(
-  form: CreatePipeHousingMeteringDeviceRequest
-) {
-  try {
-    const res = await axios.post('PipeHousingMeteringDevices', form);
-    alert('ОДПУ успешно создан !');
-    return res;
-  } catch (error) {
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка добавления ОДПУ',
-    };
-  }
-}
-
 export async function getHousingStock(housingStockId: number) {
   try {
     const res: HousingStockResponse = await axios.get(

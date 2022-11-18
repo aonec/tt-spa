@@ -1,5 +1,3 @@
-import { EResourceType } from './../../../../../../../myApi';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import styled from 'styled-components';
 import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystems.types';
 
@@ -60,6 +58,28 @@ export const NodeInfoWrapper = styled.div`
   align-items: center;
 `;
 
+export const BaseNodeInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 120px;
+  max-width: 120px;
+`;
+
 export const NodeInfo = styled.div`
   margin-left: 10px;
+`;
+
+export const DeviceIconWrapper = styled.div`
+  cursor: pointer;
+
+  svg {
+    width: 21px;
+    height: 16px;
+  }
+`;
+
+export const ResourceIconWrapper = styled.div`
+  width: 18px;
+  transform: translateY(-8px);
 `;
