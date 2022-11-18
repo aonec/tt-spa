@@ -125,8 +125,7 @@ export const BaseInfoStage = () => {
   const isFetchSerialNumberLoading = useStore($isFetchSerialNumberLoading);
 
   const isSerialNumberAllreadyExist =
-    Boolean(serialNumberForChecking?.items?.length) &&
-    serialNumberForChecking?.items![0].serialNumber ===
+    serialNumberForChecking?.items?.[0]?.serialNumber ===
       fields.serialNumber.value;
 
   const bottomDateFields = (
@@ -295,7 +294,7 @@ export const BaseInfoStage = () => {
             eventFetchSerialNumberForCheck(value.target.value)
           }
           suffix={<Loader show={isFetchSerialNumberLoading} />}
-        ></InputTT>
+        />
         <ErrorMessage>
           {fields.serialNumber.errorText({
             required: 'Это поле обязательное',
