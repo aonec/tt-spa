@@ -1,3 +1,4 @@
+import { HouseAddress } from 'myApi';
 import React, { FC } from 'react';
 import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
 import {
@@ -10,8 +11,23 @@ import {
 } from './AddressHeader.styled';
 import { AddressHeaderProps } from './AddressHeader.types';
 
-export const AddressHeader: FC<AddressHeaderProps> = ({ housingsByFilter }) => {
+export const AddressHeader: FC<AddressHeaderProps> = ({
+  housingsByFilter,
+  updateSearchPayload,
+}) => {
   const address = housingsByFilter.current?.address;
+
+  const previuosAddress = housingsByFilter?.previous?.address;
+  const nextAddress = housingsByFilter?.next?.address;
+
+  const handleClickAddress = (address: HouseAddress) => {
+    updateSearchPayload({
+      City: address.city || undefined,
+      Street: address.street || undefined,
+      HouseNumber: address.houseNumber || undefined,
+      HouseCorpus: address.houseCorpus || undefined,
+    });
+  };
 
   return (
     <Wrapper>
@@ -20,15 +36,19 @@ export const AddressHeader: FC<AddressHeaderProps> = ({ housingsByFilter }) => {
         {address?.houseCorpus}
       </CurrentHousingStock>
       <SwitcherWrapper>
-        {housingsByFilter.previous?.address && (
-          <HousingStocksSwitcher>
+        {previuosAddress && (
+          <HousingStocksSwitcher
+            onClick={() => handleClickAddress(previuosAddress)}
+          >
             <ChevronLeft />
-            {getHousingStockAddressString(housingsByFilter.previous.address)}
+            {getHousingStockAddressString(previuosAddress)}
           </HousingStocksSwitcher>
         )}
-        {housingsByFilter.next?.address && (
-          <HousingStocksSwitcher>
-            {getHousingStockAddressString(housingsByFilter.next.address)}
+        {nextAddress && (
+          <HousingStocksSwitcher
+            onClick={() => handleClickAddress(nextAddress)}
+          >
+            {getHousingStockAddressString(nextAddress)}
             <ChevronRight />
           </HousingStocksSwitcher>
         )}

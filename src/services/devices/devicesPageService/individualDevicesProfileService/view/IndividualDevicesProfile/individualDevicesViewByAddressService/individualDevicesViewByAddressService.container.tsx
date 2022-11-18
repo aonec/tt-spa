@@ -27,6 +27,7 @@ export const IndividualDevicesViewByAddressContainer = () => {
   const setIndividualDeviceSearchRequestPayload = useEvent(
     inputs.setIndividualDeviceSearchRequestPayload
   );
+  const updateSearchPayload = useEvent(inputs.updateSearchPayload);
   const clearSearchPayload = useEvent(inputs.clearSearchPayload);
   const setPageNumber = useEvent(inputs.setPageNumber);
 
@@ -48,6 +49,7 @@ export const IndividualDevicesViewByAddressContainer = () => {
         individualDevicesApartmentsList={
           individualDevicesApartmentsPagedData?.items
         }
+        updateSearchPayload={updateSearchPayload}
       />
       {individualDevicesApartmentsPagedData && (
         <Pagination
