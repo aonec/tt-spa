@@ -93,14 +93,18 @@ const AddDeviceForm = (props) => {
         serialNumber: values.serialNumber,
         lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
         futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
-        lastCommercialAccountingDate: moment(values.lastCommercialAccountingDate).toISOString(true),
-        futureCommercialAccountingDate: moment(values.futureCommercialAccountingDate).toISOString(true),
+        lastCommercialAccountingDate: moment(
+          values.lastCommercialAccountingDate
+        ).toISOString(true),
+        futureCommercialAccountingDate: moment(
+          values.futureCommercialAccountingDate
+        ).toISOString(true),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        diameter: values.diameter,
         pipe: {
+          diameter: values.diameter,
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
           pipeNumber: values.pipeNumber,

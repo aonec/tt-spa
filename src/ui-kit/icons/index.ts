@@ -51,6 +51,8 @@ import { ReactComponent as PauseIcon } from './svg/pause.svg';
 import { ReactComponent as SputnikIcon } from './svg/sputnik.svg';
 import { ReactComponent as DubbedIcon } from './svg/dubbed.svg';
 import { ReactComponent as EyeIcon } from './svg/eye.svg';
+import { ReactComponent as CityIcon } from './svg/city.svg';
+import { ReactComponent as BagIcon } from './svg/bag.svg';
 
 export {
   FinishIcon,
@@ -106,4 +108,6 @@ export {
   SputnikIcon,
   DubbedIcon,
   EyeIcon,
+  CityIcon,
+  BagIcon,
 };

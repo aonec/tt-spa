@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { Tabs } from 'antd';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
-import { DevicesProfileTabsType } from '../../devicesPageService.types';
 import { Wrapper } from './DevicesPageProfile.styled';
 import { DevicesPageProfileProps } from './DevicesPageProfile.types';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { IndividualDevicesProfileContainer } from '../../individualDevicesProfileService';
+import { DevicesProfileTabsType } from '../../devicesPageService.types';
 
 export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   type,
@@ -14,9 +14,9 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
 }) => {
   const menuButtonArr = [
     {
-      title: 'Выгрузить список приборов',
+      title: 'Выгрузить список ОДПУ',
       onClick: showDownloadDeviceReportButtonClicked,
-      show: true,
+      hidden: type !== DevicesProfileTabsType.ODPU,
     },
   ];
 

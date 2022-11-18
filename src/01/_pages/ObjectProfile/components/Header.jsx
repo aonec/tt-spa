@@ -85,10 +85,6 @@ export const Header = React.memo(
               <MenuButtonTT menuButtonArr={menuButtonArr} />
               <ModalCalculator />
               <ModalAddDevice />
-              <ModalCommonReport
-                visible={commonReport}
-                setVisible={setCommonReport}
-              />
             </div>
           </Loader>
         </HeaderWrap>

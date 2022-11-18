@@ -74,7 +74,20 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   }));
 
   useEffect(() => {
-    if (paramsList[0]) {
+    const isCurrentFieldExist = paramsList.find(
+      (field) => field === currentGraphParam
+    );
+    if (isCurrentFieldExist) {
+      return;
+    }
+
+    const volumeConsumptionField = paramsList.find(
+      (field) => field === 'Расход по объему, м³'
+    );
+
+    if (volumeConsumptionField) {
+      setGraphParam(volumeConsumptionField);
+    } else if (paramsList[0]) {
       setGraphParam(paramsList[0]);
     }
   }, [setGraphParam, paramsList]);

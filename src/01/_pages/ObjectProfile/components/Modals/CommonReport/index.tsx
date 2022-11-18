@@ -31,10 +31,11 @@ interface ObjectContextInterface {
   calculators: CalculatorListResponse[] | null;
 }
 
-const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
-  const { object, calculators }: ObjectContextInterface = useContext(
-    ObjectContext
-  );
+const ModalCommonReport = ({ visible, setVisible, object }: ModalInterface) => {
+  if (!object) {
+    return null;
+  }
+
   const handleCancel = () => {
     setVisible(false);
   };

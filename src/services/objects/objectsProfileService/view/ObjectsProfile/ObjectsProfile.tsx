@@ -24,6 +24,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleExportGroupReport,
   handleOpenChooseResourceDisconnectionModal,
   searchType,
+  openSoiReportModal,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -32,7 +33,11 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         onClick: handleExportGroupReport,
       },
       {
-        title: 'Создать отключение ресурса на объекте',
+        title: 'Выгрузить отчёт по СОИ',
+        onClick: openSoiReportModal,
+      },
+      {
+        title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
       },
     ],
@@ -67,7 +72,9 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
               <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
             </Link>
             <Link to={`/objects/${SearchType.PersonaNumbers}`}>
-              <Radio value={SearchType.PersonaNumbers}>Поиск по лицевому счету</Radio>
+              <Radio value={SearchType.PersonaNumbers}>
+                Поиск по лицевому счету
+              </Radio>
             </Link>
           </Radio.Group>
         </SearchTypesWrapper>

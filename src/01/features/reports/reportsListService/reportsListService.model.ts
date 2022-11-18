@@ -1,6 +1,6 @@
 import { combine, createDomain, sample, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { ReportRequestHistoryPagedList } from 'myApi';
+import { EOrderByRule, ReportRequestHistoryPagedList } from 'myApi';
 import { getReportsHistoryList } from './reportsListService.api';
 import { PAGE_SIZE } from './reportsListService.constants';
 import { GetReportsHistoryListRequestPayload } from './reportsListService.types';
@@ -58,6 +58,7 @@ sample({
       PageNumber: pageNumber,
       IsActual: isActual,
       ReportNameText: reportNameText,
+      OrderBy: EOrderByRule.Descending,
     };
 
     return payload;

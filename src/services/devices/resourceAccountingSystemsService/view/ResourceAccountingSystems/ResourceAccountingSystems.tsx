@@ -18,6 +18,7 @@ import { getNodesGroups } from './ResourceAccountingSystems.utils';
 export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
   nodes,
   isLoading,
+  openDevicesListModal,
 }) => {
   const [
     segmentName,
@@ -64,6 +65,7 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
                   key={key}
                   groupKey={key}
                   segmentName={segmentName}
+                  openDevicesListModal={openDevicesListModal}
                 />
               );
             })}

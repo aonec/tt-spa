@@ -3,7 +3,7 @@ import moment from 'moment';
 import { message } from 'antd';
 import queryString from 'query-string';
 import { combine, createDomain, forward, sample } from 'effector';
-import { EResourceType } from 'myApi';
+import { EClosingReason, EResourceType } from 'myApi';
 import { createForm } from 'effector-forms/dist';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
@@ -41,6 +41,21 @@ export const form = createForm({
     resources: {
       init: [] as EResourceType[],
     },
+    closingReasons: {
+      init: [] as EClosingReason[],
+    },
+    managementFirmId: {
+      init: null as number | null,
+    },
+    houseManagementId: {
+      init: null as string | null,
+    },
+    housingStockId: {
+      init: null as number | null,
+    },
+    isWithoutApartments: {
+      init: false,
+    },
   },
 });
 
@@ -58,7 +73,6 @@ sample({
         values.to ? moment(values.to) : null,
       ] as RangePeriod,
     };
-
     return formValues;
   },
   target: form.setForm,
@@ -72,31 +86,57 @@ const createReportFx = createReportDomain.createEffect<
       To?: string | null;
     };
     resources?: EResourceType[];
+    closingReasons?: EClosingReason[];
+    housingStockId?: number | null;
+    houseManagementId?: string | null;
+    managementFirmId?: number | null;
+    isWithoutApartments?: boolean;
   },
   void,
   EffectFailDataAxiosError
->(async ({ date, type, resources }) => {
-  const res: string = await axios.get(`Reports/${type}`, {
-    params: {
-      From: date.From && moment(date.From).startOf('day').toISOString(),
-      To: date.To && moment(date.To).endOf('day').toISOString(),
-      resources,
-    },
-    responseType: 'blob',
-    paramsSerializer: (params) => {
-      return queryString.stringify(params);
-    },
-  });
+>(
+  async ({
+    date,
+    type,
+    resources,
+    closingReasons,
+    housingStockId,
+    houseManagementId,
+    managementFirmId,
+    isWithoutApartments,
+  }) => {
+    const res: string = await axios.get(`Reports/${type}`, {
+      params: {
+        From: date.From && moment(date.From).startOf('day').toISOString(),
+        To: date.To && moment(date.To).endOf('day').toISOString(),
+        Resources: resources,
+        ClosingReasons: closingReasons,
+        HousingStockId: housingStockId,
+        HouseManagementId: houseManagementId,
+        ManagementFirmId: managementFirmId,
+        WithoutApartmentsWithOpenDevicesByResources: isWithoutApartments,
+      },
+      responseType: 'blob',
+      paramsSerializer: (params) => {
+        return queryString.stringify(params);
+      },
+    });
 
-  const url = window.URL.createObjectURL(new Blob([res]));
+    const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(
-    url,
-    `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
-      date.To
-    ).format('MMMM_YYYY')}`,
-    ZippedReports.includes(type)
-  );
+    downloadURI(
+      url,
+      `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
+        date.To
+      ).format('MMMM_YYYY')}`,
+      ZippedReports.includes(type)
+    );
+  }
+);
+
+forward({
+  from: createReportFx.doneData,
+  to: form.reset,
 });
 
 $isModalOpen.reset(createReportFx.doneData);
@@ -122,7 +162,17 @@ const workingReports = [
 sample({
   source: form.$values,
   clock: createReport,
-  fn: ({ type, period, rangePeriod, resources }) => {
+  fn: ({
+    type,
+    period,
+    rangePeriod,
+    resources,
+    closingReasons,
+    housingStockId,
+    houseManagementId,
+    managementFirmId,
+    isWithoutApartments,
+  }) => {
     if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
@@ -135,6 +185,11 @@ sample({
         To: rangePeriod![1]?.endOf('day')?.toISOString(),
       },
       resources,
+      closingReasons,
+      housingStockId,
+      houseManagementId,
+      managementFirmId,
+      isWithoutApartments,
     };
   },
   target: createReportFx,
