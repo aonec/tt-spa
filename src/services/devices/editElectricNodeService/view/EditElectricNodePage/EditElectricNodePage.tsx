@@ -9,6 +9,7 @@ import {
   AddressWrapper,
   InfoWrapper,
   TabsSC,
+  TitleWrapper,
   WarningWrapper,
 } from './EditElectricNodePage.styled';
 import {
@@ -30,7 +31,9 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
   return (
     <div>
       <GoBack path="/meters/accountingNodes" />
-      <PageHeader title={`${deviceTitle} Редактирование`} />
+      <TitleWrapper>
+        <PageHeader title={`${deviceTitle} Редактирование`} />
+      </TitleWrapper>
 
       {isLoadingDevice && <Skeleton active />}
       {!isLoadingDevice && device && (
