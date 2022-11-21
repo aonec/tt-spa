@@ -25,3 +25,7 @@ export const WarningWrapper = styled.div`
   line-height: 1.5;
   margin-bottom: 22px;
 `;
+
+export const TitleWrapper = styled.div`
+  line-height: 50px;
+`;
