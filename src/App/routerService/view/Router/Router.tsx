@@ -79,6 +79,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
+                <Route
+                  path="/objects/:housingStockId/apartments/:apartmentId/edit"
+                  component={() => <div>Edit apartment</div>}
+                  exact
+                />
+                
                 <Route path="/objects">
                   <ObjectGroupIsOpen />
                   <Route
