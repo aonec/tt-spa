@@ -1,12 +1,12 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Select } from 'antd';
-import { useEvent } from 'effector-react';
+import { Checkbox, Select } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC } from 'react';
-import { AddressSearchValues } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import React, { FC, useState } from 'react';
 import { Button } from 'ui-kit/Button';
+import { Input } from 'ui-kit/Input';
 import {
   BlockTitle,
   ErrorMessage,
@@ -15,10 +15,13 @@ import {
   StyledAutoComplete,
 } from '../CreateObjectPage.styled';
 import {
+  AddButton,
   ButtonPadding,
   Footer,
   GridWrapper,
   ItemGridWrapper,
+  NextCancelBlock,
+  NonUserSelect,
   Wrapper,
 } from './CreateObjectAddressStage.styled';
 import {
@@ -47,6 +50,9 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     onSubmit: (address) => {},
   });
 
+  const [isHasOtherAddress, setHasOtherAddress] = useState(false);
+  console.log(isHasOtherAddress);
+
   return (
     <>
       <ExistingCitiesGate />
@@ -60,10 +66,8 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <FormItem label="Город">
             <StyledSelect
               placeholder="Выберите из списка"
-              // onChange={(value: any) => {
-              //   fields.resource.onChange(value);
-              // }}
-              // value={fields.resource.value || undefined}
+              onChange={() => {}}
+              // value={}
             >
               {allCities?.map((city) => (
                 <Select.Option value={city}>{city}</Select.Option>
@@ -81,55 +85,54 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               placeholder="Улица"
               value={values.street}
               onChange={(value) => {}}
-              onKeyDown={(e) => {}}
               onClick={() => {}}
-              // options={options}
-              // disabled={isDisabled}
             />
           </FormItem>
 
           <ItemGridWrapper>
             <FormItem label="Номер дома">
-              <StyledAutoComplete
+              <Input
                 placeholder="Введите"
                 value=""
                 onChange={(value) => {}}
-                onKeyDown={(e) => {}}
                 onClick={() => {}}
-                // options={options}
-                // disabled={isDisabled}
               />
             </FormItem>
             <FormItem label="Корпус">
-              <StyledAutoComplete
+              <Input
                 placeholder="Введите"
                 value=""
                 onChange={(value) => {}}
-                onKeyDown={(e) => {}}
                 onClick={() => {}}
-                // options={options}
-                // disabled={isDisabled}
               />
             </FormItem>
           </ItemGridWrapper>
+
           <FormItem label="Индекс">
-            <StyledAutoComplete
+            <Input
               placeholder="Введите"
               value=""
               onChange={(value) => {}}
-              onKeyDown={(e) => {}}
               onClick={() => {}}
-              // options={options}
-              // disabled={isDisabled}
             />
           </FormItem>
         </GridWrapper>
 
+        <SpaceLine />
+
+        {/* <BlockTitle>Адреса, под которыми известен объект</BlockTitle> */}
+
+        <AddButton className="ant-btn-link" onClick={() => {}}>
+          + Добавить адрес
+        </AddButton>
+
         <Footer>
-          <ButtonPadding>
-            <Button type="ghost">Отмена</Button>
-          </ButtonPadding>
-          <Button sidePadding={25}> Далее </Button>
+          <NextCancelBlock>
+            <ButtonPadding>
+              <Button type="ghost">Отмена</Button>
+            </ButtonPadding>
+            <Button sidePadding={25}> Далее </Button>
+          </NextCancelBlock>
         </Footer>
       </Wrapper>
     </>

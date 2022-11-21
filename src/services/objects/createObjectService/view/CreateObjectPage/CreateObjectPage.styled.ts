@@ -13,7 +13,8 @@ export const HeaderTitle = styled.div`
   font-size: 32px;
   line-height: 48px;
   color: #272f5ab2;
-  margin-top: 6px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 `;
 
 export const GridWrapper = styled.div`
@@ -34,6 +35,7 @@ export const BlockTitle = styled.div`
   font-weight: 500;
   line-height: 32px;
   letter-spacing: 0em;
+  user-select: none;
 `;
 
 export const ErrorMessage = styled.div`
