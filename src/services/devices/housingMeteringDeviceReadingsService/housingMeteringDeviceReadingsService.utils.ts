@@ -13,35 +13,8 @@ export const groupWithEmptyReadings = (
   allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
   deviceIds: { [key in EMagistralType]: number | null }
 ) => {
-  const readigns = [
-    {
-      nodeId: 28398443,
-      deviceId: 242,
-      deviceModel: 'РС (72-А)',
-      deviceSerialNumber: '060382',
-      magistralType: EMagistralType.FeedFlow,
-      id: '02e837cf-c59d-4f34-9fd2-7f7fe26ec2f7',
-      value: 21,
-      previousReadingsId: 'eef571ef-1c84-44cd-af73-25e7c5de52fc',
-      readingDate: '2022-09-01T00:00:00+00:00',
-      uploadDate: '2022-11-18T22:00:00.857331+00:00',
-      year: 2021,
-      month: 'сентябрь',
-      isCurrentMonth: false,
-      nonResidentialRoomConsumption: null,
-      user: {
-        id: 1309662,
-        name: 'Елена Администратор УК',
-        email: '1.4@mail.ru',
-      },
-      isArchived: false,
-      isRemoved: false,
-      removedTime: null,
-      removedByUser: null,
-    },
-  ];
   const sortedReadingsDictionary = _.groupBy(
-    readigns,
+    allReadings,
     (reading) => `${reading.year} ${reading.month}`
   );
 
@@ -52,6 +25,7 @@ export const groupWithEmptyReadings = (
   );
 
   const { FeedBackFlow: feedBackFlowId, FeedFlow: feedFlowId } = deviceIds;
+
   if (!feedFlowId) {
     return [];
   }
