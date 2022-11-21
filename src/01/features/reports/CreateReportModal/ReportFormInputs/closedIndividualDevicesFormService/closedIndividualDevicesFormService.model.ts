@@ -1,4 +1,4 @@
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, guard } from 'effector';
 import {
   HouseManagementResponse,
   OrganizationResponsePagedList,
