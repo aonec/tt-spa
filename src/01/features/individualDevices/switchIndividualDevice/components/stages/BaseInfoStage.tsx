@@ -122,6 +122,8 @@ export const BaseInfoStage = () => {
   );
   const serialNumberForChecking = useStore($serialNumberForChecking);
 
+  console.log(serialNumberForChecking);
+
   const isFetchSerialNumberLoading = useStore($isFetchSerialNumberLoading);
 
   const isSerialNumberAllreadyExist =

@@ -30,7 +30,6 @@ import {
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import {
   $isFetchSerialNumberLoading,

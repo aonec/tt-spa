@@ -38,8 +38,7 @@ import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import {
   EIndividualDeviceRateType,
-  IndividualDeviceListItemResponse,
-  IndividualDeviceListItemResponsePagedList,
+  IndividualDeviceListResponseFromDevicePagePagedList,
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
 } from 'myApi';
@@ -296,17 +295,16 @@ export const getSerialNumberAfterString = (
 
 const getSerialNumberForCheck = (
   serialNumber: string
-): Promise<IndividualDeviceListItemResponsePagedList> =>
-  axios.get('IndividualDevices', {
+): Promise<IndividualDeviceListResponseFromDevicePagePagedList> =>
+  axios.get('devices/individual', {
     params: {
       serialNumber,
-      pageSize: 1,
     },
   });
 
 const fetchSerialNumberForCheckFx = createEffect<
   string,
-  IndividualDeviceListItemResponsePagedList
+  IndividualDeviceListResponseFromDevicePagePagedList
 >(getSerialNumberForCheck);
 
 export const handleFetchSerialNumberForCheck = createEvent<string>();
@@ -316,7 +314,7 @@ forward({
   to: fetchSerialNumberForCheckFx,
 });
 
-export const $serialNumberForChecking = createStore<IndividualDeviceListItemResponsePagedList | null>(
+export const $serialNumberForChecking = createStore<IndividualDeviceListResponseFromDevicePagePagedList | null>(
   null
 )
   .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
