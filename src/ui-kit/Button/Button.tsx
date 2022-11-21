@@ -10,6 +10,7 @@ export const Button: FC<ButtonProps> = (props) => {
     onClick,
     disabled,
     size = 'middle',
+    sidePadding
   } = props;
 
   const classNameString = [
@@ -24,6 +25,7 @@ export const Button: FC<ButtonProps> = (props) => {
       onClick={disabled ? undefined : onClick}
       className={classNameString}
       size={size}
+      sidePadding={sidePadding}
     >
       {props.children}
       {icon && <IconWrapper>{icon}</IconWrapper>}
