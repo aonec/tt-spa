@@ -1,4 +1,7 @@
-import { openReadingsHistoryModal } from './../../../01/features/readings/displayReadingHistory/models/index';
+import {
+  closeReadingsHistoryModal,
+  openReadingsHistoryModal,
+} from './../../../01/features/readings/displayReadingHistory/models/index';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -74,6 +77,11 @@ guard({
   source: IndividualDevicesGate.state,
   filter: (params) => Boolean(params.ApartmentId),
   target: fetchIndividualDevicesFx,
+});
+
+forward({
+  from: closeReadingsHistoryModal,
+  to: refetchIndividualDevices,
 });
 
 $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);

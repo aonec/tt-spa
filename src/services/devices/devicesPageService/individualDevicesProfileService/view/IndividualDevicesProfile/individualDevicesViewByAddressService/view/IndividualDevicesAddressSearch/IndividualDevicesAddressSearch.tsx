@@ -1,4 +1,3 @@
-import { Checkbox } from 'antd';
 import { useFormik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
@@ -18,6 +17,7 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
   setIndividualDeviceSearchRequestPayload,
   filters,
   clearSearchPayload,
+  mountPlaces,
 }) => {
   const {
     values,
@@ -46,6 +46,7 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
         }}
         devicesSearchType={DevicesSearchType.Address}
         values={values}
+        mountPlaces={mountPlaces}
       >
         <SearchWrapper>
           <AddressSearchContainer

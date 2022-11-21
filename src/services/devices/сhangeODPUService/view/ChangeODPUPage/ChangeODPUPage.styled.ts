@@ -12,3 +12,7 @@ export const InforWrapper = styled.div`
 export const AddressWrapper = styled.div`
   color: rgba(39, 47, 90);
 `;
+
+export const TitleWrapper = styled.div`
+  line-height: 50px;
+`;

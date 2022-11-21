@@ -4,6 +4,7 @@ import {
   ApartmentByAddressFilterResponsePagedList,
   HousingByFilterResponse,
 } from 'myApi';
+import { individualDevicesProfileService } from '../../../individualDevicesProfileService.model';
 import {
   getHousingsByFilter,
   getIndividualDevicesApartments,
@@ -21,6 +22,8 @@ import {
 const domain = createDomain('individualDevicesViewByAddressService');
 
 const setIndividualDeviceSearchRequestPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
+
+const updateSearchPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
 
 const IndividualDevicesSearchGate = createGate();
 
@@ -41,6 +44,7 @@ const fetchIndividualDevicesApartments = domain.createEffect<
 const $individualDeviceSearchRequestPayload = domain
   .createStore<SearchIndividualDevicesRequestPayload>(searchInitialValues)
   .on(setIndividualDeviceSearchRequestPayload, (_, data) => data)
+  .on(updateSearchPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(clearSearchPayload);
 
 const $housingsByFilter = domain
@@ -58,7 +62,7 @@ const $pageNumber = domain
   .on(setPageNumber, (_, pageNumber) => pageNumber)
   .reset($individualDeviceSearchRequestPayload);
 
-const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
+const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
   (values) => {
     if (!(values?.City && values?.Street && values?.HouseNumber)) return null;
 
@@ -74,7 +78,7 @@ const $getHousingsByFilterRquestPayload: Store<GetHousingByFilterRequestPayload 
 );
 
 guard({
-  clock: $getHousingsByFilterRquestPayload,
+  clock: $getHousingsByFilterRequestPayload,
   filter: (payload): payload is GetHousingByFilterRequestPayload =>
     Boolean(payload),
   target: fetchHousingsByFilter,
@@ -123,6 +127,7 @@ export const individualDevicesViewByAddressService = {
     setIndividualDeviceSearchRequestPayload,
     clearSearchPayload,
     setPageNumber,
+    updateSearchPayload,
   },
   outputs: {
     $individualDeviceSearchRequestPayload,
@@ -131,6 +136,7 @@ export const individualDevicesViewByAddressService = {
     $individualDevicesApartmentsPagedData,
     $isIndividualDevicesApartmentsLoading,
     $pageNumber,
+    $mountPlaces: individualDevicesProfileService.outputs.$mountPlaces,
   },
   gates: {
     IndividualDevicesSearchGate,

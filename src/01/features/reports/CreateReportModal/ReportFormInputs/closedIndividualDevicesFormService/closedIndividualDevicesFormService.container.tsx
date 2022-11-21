@@ -1,8 +1,12 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { prepareAddressesForTreeSelect } from 'services/resources/createResourceDisconnectionService/createResourceDisconnectionService.utils';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
+import './closedIndividualDevicesFormService.relations';
+import { sample } from 'effector';
+import { reportsListService } from '01/features/reports/reportsListService';
+import { UnloadingType } from './closedIndividualDevicesFormService.types';
 
 export const ClosedIndividualDevicesFormContainer = () => {
   const { inputs, outputs } = closedIndividualDevicesFormService;
@@ -21,6 +25,7 @@ export const ClosedIndividualDevicesFormContainer = () => {
     items: addressesPagedList?.items || [],
     isSelectableStreetNode: false,
   });
+
 
   return (
     <ClosedIndividualDevicesForm

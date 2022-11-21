@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Empty, Skeleton } from 'antd';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { PipeNodeInfo } from '../PipeNodeInfo';
