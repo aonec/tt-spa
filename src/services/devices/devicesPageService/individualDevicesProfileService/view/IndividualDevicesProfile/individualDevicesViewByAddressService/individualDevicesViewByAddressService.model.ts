@@ -4,6 +4,7 @@ import {
   ApartmentByAddressFilterResponsePagedList,
   HousingByFilterResponse,
 } from 'myApi';
+import { individualDevicesProfileService } from '../../../individualDevicesProfileService.model';
 import {
   getHousingsByFilter,
   getIndividualDevicesApartments,
@@ -135,6 +136,7 @@ export const individualDevicesViewByAddressService = {
     $individualDevicesApartmentsPagedData,
     $isIndividualDevicesApartmentsLoading,
     $pageNumber,
+    $mountPlaces: individualDevicesProfileService.outputs.$mountPlaces,
   },
   gates: {
     IndividualDevicesSearchGate,
