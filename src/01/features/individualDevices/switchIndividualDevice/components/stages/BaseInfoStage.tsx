@@ -122,13 +122,11 @@ export const BaseInfoStage = () => {
   );
   const serialNumberForChecking = useStore($serialNumberForChecking);
 
-  console.log(serialNumberForChecking);
-
   const isFetchSerialNumberLoading = useStore($isFetchSerialNumberLoading);
 
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber ===
-      fields.serialNumber.value;
+    fields.serialNumber.value;
 
   const bottomDateFields = (
     <FormWrap>

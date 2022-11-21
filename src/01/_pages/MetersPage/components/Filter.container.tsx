@@ -103,8 +103,6 @@ export const FilterContainer = () => {
     </>
   );
 
- 
-
   return (
     <Wrapper>
       <Radio.Group value={searchContext} onChange={onChangeRadio}>
