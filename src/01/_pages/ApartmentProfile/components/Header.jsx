@@ -3,21 +3,11 @@ import styled from 'styled-components';
 import { Text } from './Text';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export const Header = ({ apartment }) => {
   const history = useHistory();
-  const location = useLocation();
-
-  const handleEditApartment = useCallback(() => {
-    const pathArray = location.pathname.split('/');
-
-    pathArray.push('edit');
-
-    const path = pathArray.join('/');
-
-    history.push(path);
-  }, [location.pathname, history]);
+  const { apartmentId } = useParams();
 
   return (
     <div>
@@ -27,7 +17,7 @@ export const Header = ({ apartment }) => {
           menuButtons: [
             {
               title: 'Редактировать квартиру',
-              onClick: handleEditApartment,
+              onClick: () => history.push(`/apartment/${apartmentId}/edit`),
             },
           ],
         }}

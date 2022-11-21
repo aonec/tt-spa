@@ -42,6 +42,7 @@ import { StatisticsPage } from '01/features/statistics';
 import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
+import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 
 const { gates } = objectProfileService;
 
@@ -80,8 +81,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/objects/:housingStockId/apartments/:apartmentId/edit"
-                  component={() => <div>Edit apartment</div>}
+                  path="/apartment/:apartmentId/edit"
+                  component={EditApartmentProfileContainer}
                   exact
                 />
                 
