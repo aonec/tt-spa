@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Tabs } from 'antd';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
-import { Wrapper } from './DevicesPageProfile.styled';
+import { TabsSC, Wrapper } from './DevicesPageProfile.styled';
 import { DevicesPageProfileProps } from './DevicesPageProfile.types';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { IndividualDevicesProfileContainer } from '../../individualDevicesProfileService';
@@ -26,19 +26,23 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
         title="Приборы"
         contextMenu={{ menuButtons: menuButtonArr }}
       />
-      <Tabs
+
+      <TabsSC
         activeKey={type}
         onChange={(activeKey) =>
           setDevicesType(activeKey as DevicesProfileTabsType)
         }
       >
-        <Tabs.TabPane tab="ОДПУ" key={DevicesProfileTabsType.ODPU}>
+        <TabsSC.TabPane tab="ОДПУ" key={DevicesProfileTabsType.ODPU}>
           <DevicesProfileContainer />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="ИПУ" key={DevicesProfileTabsType.IndividualDevices}>
+        </TabsSC.TabPane>
+        <TabsSC.TabPane
+          tab="ИПУ"
+          key={DevicesProfileTabsType.IndividualDevices}
+        >
           <IndividualDevicesProfileContainer />
-        </Tabs.TabPane>
-      </Tabs>
+        </TabsSC.TabPane>
+      </TabsSC>
     </Wrapper>
   );
 };

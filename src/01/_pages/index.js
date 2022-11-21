@@ -9,7 +9,6 @@ export * from './ApartmentProfile';
 export * from './ErrorPage';
 export * from './AccessDeniedPage';
 export * from './EditCalculator';
-export * from './Devices';
 export * from './CalculatorProfile';
 export * from './HousingProfile';
 export * from './Settings';

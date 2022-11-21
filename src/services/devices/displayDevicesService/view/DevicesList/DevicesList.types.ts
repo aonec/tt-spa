@@ -1,10 +1,14 @@
-import { CalculatorListResponse } from 'myApi';
+import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { DevicesByAddressInterface } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
+import { HousingByFilterResponse } from 'myApi';
 
 export type DevicesListProps = {
-  calculators: CalculatorListResponse[];
+  devices: DevicesByAddressInterface[];
+  housingsByFilter: HousingByFilterResponse[];
   isLoading: boolean;
   total?: number;
   pageNumber?: number;
   pageSize?: number;
   setPageNumber: (pageNumber: number) => void;
+  setAddress: (address: CalculatorsListRequestPayload) => void;
 };

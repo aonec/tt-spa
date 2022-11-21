@@ -1,8 +1,16 @@
-import { createDomain, forward, guard, sample } from 'effector';
-import { getCalculatorsList } from './displayDevicesService.api';
-import { CalculatorListResponsePagedList } from 'myApi';
+import { combine, createDomain, forward, guard, sample } from 'effector';
+import {
+  getCalculatorsList,
+  getHousingsByFilter,
+} from './displayDevicesService.api';
+import {
+  CalculatorListResponsePagedList,
+  HousingByFilterResponse,
+} from 'myApi';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { createGate } from 'effector-react';
+import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
+import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 
 const domain = createDomain('displayDevicesService');
 
@@ -10,7 +18,17 @@ const $calculatorsPagedData = domain.createStore<CalculatorListResponsePagedList
   null
 );
 
-const $calculators = $calculatorsPagedData.map((data) => data?.items || []);
+const fetchHousingsByFilterFx = domain.createEffect<
+  GetHousingByFilterRequestPayload[],
+  HousingByFilterResponse[]
+>(getHousingsByFilter);
+const $housingsByFilter = domain
+  .createStore<HousingByFilterResponse[]>([])
+  .on(fetchHousingsByFilterFx.doneData, (_, addresses) => addresses);
+
+const $devices = $calculatorsPagedData.map((data) =>
+  groupDevicesByObjects(data?.items || [])
+);
 
 const fetchCalculatorsFx = domain.createEffect<
   CalculatorsListRequestPayload,
@@ -19,7 +37,11 @@ const fetchCalculatorsFx = domain.createEffect<
 
 const setDevicesProfileFilter = domain.createEvent<CalculatorsListRequestPayload>();
 
-const $loading = fetchCalculatorsFx.pending;
+const $loading = combine(
+  fetchCalculatorsFx.pending,
+  fetchHousingsByFilterFx.pending,
+  (...loading) => loading.includes(true)
+);
 
 const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
   PageNumber: 1,
@@ -71,6 +93,28 @@ forward({
   to: clearSearchPayload,
 });
 
+sample({
+  clock: $devices.map((devices) =>
+    devices.reduce((acc, device) => {
+      const { city, street, corpus, number } =
+        device.address?.mainAddress || {};
+      if (!city || !street || !number) {
+        return acc;
+      }
+      return [
+        ...acc,
+        {
+          City: city,
+          Street: street,
+          Number: number,
+          Corpus: corpus || undefined,
+        },
+      ];
+    }, [] as GetHousingByFilterRequestPayload[])
+  ),
+  target: fetchHousingsByFilterFx,
+});
+
 const $isExtendedSearchOpen = domain.createStore(false);
 
 $isExtendedSearchOpen
@@ -87,12 +131,13 @@ export const displayDevicesService = {
   },
   outputs: {
     $total,
-    $calculators,
+    $devices,
     $loading,
     $isExtendedSearchOpen,
     $pageNumber,
     $pageSize,
     $searchPayload,
+    $housingsByFilter,
   },
   gates: {
     CalculatorsGate,
