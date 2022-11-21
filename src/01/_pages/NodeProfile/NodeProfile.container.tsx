@@ -68,7 +68,7 @@ export const NodeProfile = () => {
         },
       },
     ],
-    [path]
+    [path, isReadings]
   );
 
   const { NodeGate } = nodeService.gates;

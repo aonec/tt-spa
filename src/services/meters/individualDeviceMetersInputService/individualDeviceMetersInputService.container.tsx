@@ -48,6 +48,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const uploadMeter = useEvent(inputs.uploadMeter);
 
   const deleteMeter = useEvent(inputs.deleteMeter);
+  const clearStatuses = useEvent(inputs.clearStatuses);
 
   const previousReadingByCurrentSliderIndex = useMemo(() => {
     if (!device.readings) return;
@@ -56,6 +57,10 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
 
     return getExistingReading(preparedReadings, sliderIndex, 'prev');
   }, [device.readings, sliderIndex]);
+
+  useEffect(() => {
+    clearStatuses();
+  }, [device.id]);
 
   const {
     previousReading,

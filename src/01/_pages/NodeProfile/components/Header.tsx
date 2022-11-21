@@ -99,7 +99,7 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
         </TitleWrap>
 
         <SubtitleWrap>
-          <Subtitle to={`/objects/${objectId}`}>
+          <Subtitle to={`/objects/profile/${objectId}`}>
             <Tooltip title={fullAddress}>
               <AdditionalAddress>
                 <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>
