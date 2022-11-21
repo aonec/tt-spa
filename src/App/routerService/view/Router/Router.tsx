@@ -141,7 +141,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/nodes/:nodeId(\\d+)/edit"
+                  path="/nodes/:nodeId/edit"
                   component={EditNode}
                   exact
                 />
