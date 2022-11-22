@@ -3,6 +3,7 @@ import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingSto
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Select } from 'antd';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
@@ -25,17 +26,28 @@ import {
   CreateObjectAddressStageProps,
   ObjectAddressValues,
 } from './CreateObjectAddressStage.types';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
+  handleAddressData
 }) => {
   const allCities = existingCities;
+
+  const validationsSchema = yup.object().shape({
+    city: yup.string().required('Обязательное поле'),
+    street: yup.string().required('Обязательное поле'),
+    house: yup.string().required('Обязательное поле'),
+    corpus: yup.string(),
+    index: yup.string(),
+  });
 
   const {
     values,
     handleSubmit,
     setFieldValue,
+    errors,
   } = useFormik<ObjectAddressValues>({
     initialValues: {
       city: '',
@@ -46,7 +58,11 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       additionalAddresses: [],
     },
     enableReinitialize: true,
-    onSubmit: (address) => {},
+    onSubmit: (data) => {
+      handleAddressData(data);
+    },
+    validateOnBlur: true,
+    validationSchema: validationsSchema,
   });
 
   const additionalAddressesFieldOnChange = (
@@ -99,6 +115,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                 <Select.Option value={city}>{city}</Select.Option>
               ))}
             </StyledSelect>
+            <ErrorMessage> {errors.city} </ErrorMessage>
           </FormItem>
 
           <FormItem label="Улица">
@@ -108,6 +125,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               onChange={(value) => setFieldValue('street', value)}
               options={preparedExistingStreets}
             />
+            <ErrorMessage> {errors.street} </ErrorMessage>
           </FormItem>
 
           <ItemGridWrapper>
@@ -117,6 +135,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                 value={values.house}
                 onChange={(value) => setFieldValue('house', value.target.value)}
               />
+              <ErrorMessage> {errors.house} </ErrorMessage>
             </FormItem>
             <FormItem label="Корпус">
               <Input
@@ -240,7 +259,14 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
             <ButtonPadding>
               <Button type="ghost">Отмена</Button>
             </ButtonPadding>
-            <Button sidePadding={25}> Далее </Button>
+            <Button
+              sidePadding={25}
+              onClick={() => {
+                handleSubmit();
+              }}
+            >
+              Далее
+            </Button>
           </NextCancelBlock>
         </Footer>
       </Wrapper>

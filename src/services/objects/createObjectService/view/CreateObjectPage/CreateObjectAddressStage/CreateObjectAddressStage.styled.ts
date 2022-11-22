@@ -6,7 +6,6 @@ export const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 12px;
-  position: relative;
 `;
 
 export const NextCancelBlock = styled.div`

@@ -1,6 +1,7 @@
 export type CreateObjectAddressStageProps = {
   existingStreets: string[] | null;
   existingCities: string[] | null;
+  handleAddressData: (payload: ObjectAddressValues) => void;
 };
 
 export type Address = {

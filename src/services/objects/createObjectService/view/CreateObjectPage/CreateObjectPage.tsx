@@ -15,6 +15,9 @@ import { CreateObjectPageProps } from './CreateObjectPage.types';
 export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   existingStreets,
   existingCities,
+  stageNumber,
+  handleAddressData,
+  houseManagements,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -32,15 +35,22 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
 
       <GridWrapper>
         <div>
-          <CreateObjectAddressStage
-            existingStreets={existingStreets}
-            existingCities={existingCities}
-          />
-          <CreateObjectMainInfoStage />
-          <CreateObjectAdditionalInfoStage />
+          {stageNumber === 1 && (
+            <CreateObjectAddressStage
+              existingStreets={existingStreets}
+              existingCities={existingCities}
+              handleAddressData={handleAddressData}
+            />
+          )}
+
+          {stageNumber === 2 && (
+            <CreateObjectMainInfoStage houseManagements={houseManagements} />
+          )}
+
+          {stageNumber === 3 && <CreateObjectAdditionalInfoStage />}
         </div>
         <div>
-          <Steps direction="vertical" current={1}>
+          <Steps direction="vertical" current={stageNumber - 1}>
             {stepTitles.map((step) => (
               <Step title={step} key={step} />
             ))}
