@@ -61,7 +61,7 @@ export const Header = ({ node }: HeaderInterface) => {
         </TitleWrap>
 
         <SubtitleWrap>
-          <Subtitle to={`/objects/${objectId}`}>
+          <Subtitle to={`/objects/profile/${objectId}`}>
             {getHousingStockAddress(address, true)}
           </Subtitle>
           <NodeStatus />
