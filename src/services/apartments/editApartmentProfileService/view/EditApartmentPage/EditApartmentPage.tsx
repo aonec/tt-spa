@@ -13,12 +13,15 @@ import {
 import { EditApartmentPageProps } from './EditApartmentPage.types';
 import { getHousingStockAddress } from './EditApartmentPage.utils';
 import { TabsSection } from '../../editApartmentProfileService.types';
+import { EditCommonDataForm } from './EditCommonDataForm';
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
   isLoading,
   tabSection,
   setTabSection,
+  handleUpdateApartment,
+  isUpdatingApartmentLoading,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -53,7 +56,13 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
             onChange={(activeKey) => setTabSection(activeKey as TabsSection)}
           >
             <Tabs.TabPane tab="Общие данные" key={TabsSection.CommonData}>
-              Общие данные
+              {apartment && (
+                <EditCommonDataForm
+                  apartment={apartment}
+                  handleUpdateApartment={handleUpdateApartment}
+                  isUpdatingApartmentLoading={isUpdatingApartmentLoading}
+                />
+              )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
               Собственники

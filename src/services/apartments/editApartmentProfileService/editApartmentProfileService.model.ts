@@ -1,27 +1,44 @@
-import { getApartment } from './editApartmentProfileService.api';
 import { ApartmentResponse } from 'myApi';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { TabsSection } from './editApartmentProfileService.types';
+import { PutApartment, TabsSection } from './editApartmentProfileService.types';
+import { getApartment, putApartment } from './editApartmentProfileService.api';
 
 const domain = createDomain('editApartmentProfileService');
 
-const fetchApartment = domain.createEffect<number, ApartmentResponse>(
+const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
   getApartment
+);
+
+const handleUpdateApartment = domain.createEvent<PutApartment>();
+
+const updateApartmentFx = domain.createEffect<PutApartment, ApartmentResponse>(
+  putApartment
 );
 
 const ApartmentGate = createGate<{ apartmentId: number }>();
 
 const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
-  .on(fetchApartment.doneData, (_, apartment) => apartment)
+  .on(
+    [fetchApartmentFx.doneData, updateApartmentFx.doneData],
+    (_, apartment) => apartment
+  )
   .reset(ApartmentGate.close);
+
 forward({
   from: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
-  to: fetchApartment,
+  to: fetchApartmentFx,
 });
 
-const $isLoading = fetchApartment.pending;
+forward({
+  from: handleUpdateApartment,
+  to: updateApartmentFx,
+});
+
+const $isLoading = fetchApartmentFx.pending;
+
+const $isUpdatingApartmentLoading = updateApartmentFx.pending;
 
 const setTabSection = domain.createEvent<TabsSection>();
 
@@ -31,11 +48,12 @@ const $tabSection = domain
   .reset(ApartmentGate.close);
 
 export const editApartmentProfileService = {
-  inputs: { setTabSection },
+  inputs: { setTabSection, handleUpdateApartment },
   outputs: {
     $apartment,
     $isLoading,
     $tabSection,
+    $isUpdatingApartmentLoading,
   },
   gates: { ApartmentGate },
 };

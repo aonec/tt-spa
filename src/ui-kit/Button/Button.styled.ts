@@ -48,6 +48,7 @@ export const Wrapper = styled.div<{
   type: ButtonStyleType;
   size: ButtonSizeType;
   disabled?: boolean;
+  isLoading?: boolean;
 }>`
   background-color: ${({ type }) => buttonBackgroundColorsDictionary[type]};
   color: ${({ type }) => buttonFontColorsDictionary[type]};
