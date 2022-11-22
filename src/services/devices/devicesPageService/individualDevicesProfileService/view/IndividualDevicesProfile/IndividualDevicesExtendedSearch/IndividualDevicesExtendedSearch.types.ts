@@ -1,4 +1,5 @@
 import { SelectValue } from 'antd/lib/select';
+import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
 import {
   DevicesSearchType,
   SearchIndividualDevicesParams,
@@ -9,4 +10,5 @@ export type IndividualDevicesExtendedSearchProps = {
   handleApply: (values: SearchIndividualDevicesParams) => void;
   values: SearchIndividualDevicesParams;
   handleClear?: () => void;
+  mountPlaces: IndividualDeviceMountPlaceForFilterResponse[];
 };

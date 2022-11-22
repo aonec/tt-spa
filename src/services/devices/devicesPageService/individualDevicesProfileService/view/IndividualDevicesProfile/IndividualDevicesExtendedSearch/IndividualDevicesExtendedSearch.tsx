@@ -33,6 +33,7 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
   handleApply,
   values: filters,
   handleClear,
+  mountPlaces,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -156,9 +157,20 @@ export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearch
               <SelectSC
                 placeholder="Место установки прибора"
                 value={values.MountPlace || undefined}
-                onChange={(value) => setFieldValue('Model', value || null)}
+                onChange={(value) => setFieldValue('MountPlace', value || null)}
                 allowClear
-              ></SelectSC>
+              >
+                {mountPlaces.map(({ description, name }) => {
+                  if (!name) {
+                    return null;
+                  }
+                  return (
+                    <SelectSC.Option key={name} value={name}>
+                      {description}
+                    </SelectSC.Option>
+                  );
+                })}
+              </SelectSC>
             </FormItem>
             <FormItem label="Причина закрытия ИПУ">
               <SelectSC

@@ -16,6 +16,7 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
   const filter = useStore(outputs.$searchPayload);
   const devices = useStore(outputs.$devices);
   const totalItems = useStore(outputs.$totalItems);
+  const mountPlaces = useStore(outputs.$mountPlaces);
   const isLoading = useStore(outputs.$isLoading);
 
   const setFilter = useEvent(inputs.setFilter);
@@ -28,6 +29,7 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
         clearSearchPayload={() => clearSearchPayload()}
         filter={filter}
         setFilter={setFilter}
+        mountPlaces={mountPlaces}
       />
       {!isLoading && Boolean(devices.length) && (
         <Wrapper>

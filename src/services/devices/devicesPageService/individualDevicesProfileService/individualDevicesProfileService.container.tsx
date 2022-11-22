@@ -3,7 +3,8 @@ import { useEvent, useStore } from 'effector-react';
 import { individualDevicesProfileService } from './individualDevicesProfileService.model';
 import { IndividualDevicesProfile } from './view/IndividualDevicesProfile';
 
-const { inputs, outputs } = individualDevicesProfileService;
+const { inputs, outputs, gates } = individualDevicesProfileService;
+const { IndividualDevicesGate } = gates;
 
 export const IndividualDevicesProfileContainer = () => {
   const devicesSearchType = useStore(outputs.$devicesSearchType);
@@ -11,9 +12,12 @@ export const IndividualDevicesProfileContainer = () => {
   const setDevicesSearchType = useEvent(inputs.setDevicesSearchType);
 
   return (
-    <IndividualDevicesProfile
-      devicesSearchType={devicesSearchType}
-      setDevicesSearchType={setDevicesSearchType}
-    />
+    <>
+      <IndividualDevicesGate />
+      <IndividualDevicesProfile
+        devicesSearchType={devicesSearchType}
+        setDevicesSearchType={setDevicesSearchType}
+      />
+    </>
   );
 };
