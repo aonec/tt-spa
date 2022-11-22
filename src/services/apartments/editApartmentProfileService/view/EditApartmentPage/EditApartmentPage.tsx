@@ -1,20 +1,24 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
+import { Tabs } from 'ui-kit/Tabs';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
 import {
   AdditionalAddressWrapper,
   HeaderInfoWrapper,
   HeaderWrapper,
+  TabsWrapper,
 } from './EditApartmentPage.styled';
 import { EditApartmentPageProps } from './EditApartmentPage.types';
 import { getHousingStockAddress } from './EditApartmentPage.utils';
+import { TabsSection } from '../../editApartmentProfileService.types';
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
   isLoading,
+  tabSection,
+  setTabSection,
 }) => {
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
@@ -33,17 +37,35 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
               <>{address?.city}</>
               <>
                 {`${address && getHousingStockAddress(address)} `}
-                {Boolean(additionalAddresses?.length) &&
-                  additionalAddresses?.map((elem) => (
-                    <AdditionalAddressWrapper>
-                      {getHousingStockAddress(elem)}
-                    </AdditionalAddressWrapper>
-                  ))}
+                {additionalAddresses?.map((elem) => (
+                  <AdditionalAddressWrapper>
+                    {getHousingStockAddress(elem)}
+                  </AdditionalAddressWrapper>
+                ))}
               </>
               <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
             </HeaderInfoString>
           </HeaderInfoWrapper>
         </HeaderWrapper>
+        <TabsWrapper>
+          <Tabs
+            activeKey={tabSection}
+            onChange={(activeKey) => setTabSection(activeKey as TabsSection)}
+          >
+            <Tabs.TabPane tab="Общие данные" key={TabsSection.CommonData}>
+              Общие данные
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
+              Собственники
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Документы" key={TabsSection.Documents}>
+              Документы
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
+              Журнал актов
+            </Tabs.TabPane>
+          </Tabs>
+        </TabsWrapper>
       </WithLoader>
     </div>
   );
