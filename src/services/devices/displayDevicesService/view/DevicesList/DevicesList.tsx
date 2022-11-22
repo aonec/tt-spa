@@ -13,6 +13,8 @@ export const DevicesList: FC<DevicesListProps> = ({
   setPageNumber,
   setAddress,
   housingsByFilter,
+  devicesSearchType,
+  setDevicesSearchType,
 }) => {
   const isDevicesListEmpty = !devices.length;
   const deviceArray = devices.map((addressDevicesGroup) => (
@@ -24,6 +26,8 @@ export const DevicesList: FC<DevicesListProps> = ({
         (housing) =>
           housing.current?.id === addressDevicesGroup.devices[0].address?.id
       )}
+      devicesSearchType={devicesSearchType}
+      setDevicesSearchType={setDevicesSearchType}
     />
   ));
   return (

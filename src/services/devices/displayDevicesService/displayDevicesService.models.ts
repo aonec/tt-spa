@@ -5,12 +5,14 @@ import {
 } from './displayDevicesService.api';
 import {
   CalculatorListResponsePagedList,
+  EOrderByRule,
   HousingByFilterResponse,
 } from 'myApi';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { createGate } from 'effector-react';
 import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
+import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 
 const domain = createDomain('displayDevicesService');
 
@@ -46,7 +48,13 @@ const $loading = combine(
 const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
   PageNumber: 1,
   PageSize: 10,
+  OrderBy: EOrderByRule.Ascending,
 });
+
+const setDevicesSearchType = domain.createEvent<DevicesSearchType>();
+const $devicesSearchType = domain
+  .createStore<DevicesSearchType>(DevicesSearchType.SearialNumber)
+  .on(setDevicesSearchType, (_, type) => type);
 
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
@@ -131,6 +139,7 @@ export const displayDevicesService = {
     extendedSearchClosed,
     setPageNumber,
     clearSearchPayload,
+    setDevicesSearchType,
   },
   outputs: {
     $total,
@@ -141,6 +150,7 @@ export const displayDevicesService = {
     $pageSize,
     $searchPayload,
     $housingsByFilter,
+    $devicesSearchType,
   },
   gates: {
     CalculatorsGate,

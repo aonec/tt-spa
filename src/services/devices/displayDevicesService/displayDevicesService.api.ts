@@ -10,7 +10,7 @@ export const getCalculatorsList = (
   params: CalculatorsListRequestPayload
 ): Promise<CalculatorListResponsePagedList> =>
   axios.get(`Calculators`, {
-    params: { ...params, OrderBy: 'Ascending' },
+    params,
   });
 
 export const getHousingsByFilter = (

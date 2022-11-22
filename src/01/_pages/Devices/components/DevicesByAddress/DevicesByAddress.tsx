@@ -1,5 +1,6 @@
 import { HouseAddress } from 'myApi';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { Switcher } from 'ui-kit/shared_components/Switcher';
 import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
 import { Subtitle } from '../../../../_components/Headers';
@@ -11,20 +12,28 @@ export const DevicesByAddress: FC<DevicesByAddressPropsInterface> = ({
   addressDevicesGroup,
   housingsByFilter,
   setAddress,
+  devicesSearchType,
+  setDevicesSearchType,
 }) => {
   const address = housingsByFilter?.current?.address;
 
   const nextAddress = housingsByFilter?.next?.address;
   const previousAddress = housingsByFilter?.previous?.address;
 
-  const handleClickAddress = (address: HouseAddress) => {
-    setAddress({
-      'Filter.Address.City': address.city || undefined,
-      'Filter.Address.Street': address.street || undefined,
-      'Filter.Address.HousingStockNumber': address.houseNumber || undefined,
-      'Filter.Address.Corpus': address.houseCorpus || undefined,
-    });
-  };
+  const handleClickAddress = useCallback(
+    (address: HouseAddress) => {
+      if (devicesSearchType !== DevicesSearchType.Address) {
+        setDevicesSearchType(DevicesSearchType.Address);
+      }
+      setAddress({
+        'Filter.Address.City': address.city || undefined,
+        'Filter.Address.Street': address.street || undefined,
+        'Filter.Address.HousingStockNumber': address.houseNumber || undefined,
+        'Filter.Address.Corpus': address.houseCorpus || undefined,
+      });
+    },
+    [setAddress, devicesSearchType, setDevicesSearchType]
+  );
 
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
     <DeviceBlock device={device} key={device.id} />

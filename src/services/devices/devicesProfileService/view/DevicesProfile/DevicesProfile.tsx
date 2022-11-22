@@ -8,6 +8,8 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
+import { Radio } from 'antd';
 
 interface DeviceProfileProps {
   setFilter: (payload: CalculatorsListRequestPayload) => void;
@@ -17,6 +19,8 @@ interface DeviceProfileProps {
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
   searchState: CalculatorsListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
+  devicesSearchType: DevicesSearchType;
+  setDevicesSearchType: (type: DevicesSearchType) => void;
 }
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
@@ -26,6 +30,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   open,
   searchState,
   clearSearchPayload,
+  devicesSearchType,
+  setDevicesSearchType,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -71,11 +77,22 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
 
   return (
     <Wrapper>
+      <Radio.Group
+        value={devicesSearchType}
+        onChange={(value) =>
+          setDevicesSearchType(value.target.value as DevicesSearchType)
+        }
+      >
+        <Radio value={DevicesSearchType.SearialNumber}>Поиск по прибору</Radio>
+        <Radio value={DevicesSearchType.Address}>Поиск по адресу</Radio>
+      </Radio.Group>
+
       <SearchDevices
         isExtendedSearchOpen={isOpen}
         submitForm={submitForm}
         setFieldValue={setFieldValue}
         values={values}
+        devicesSearchType={devicesSearchType}
       >
         <ExtendedSearch
           isOpen={isOpen}

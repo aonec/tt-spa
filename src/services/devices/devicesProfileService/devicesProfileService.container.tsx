@@ -11,7 +11,9 @@ export const DevicesProfileContainer = () => {
 
   const isOpen = useStore(outputs.$isExtendedSearchOpen);
   const searchState = useStore(outputs.$searchPayload);
+  const devicesSearchType = useStore(outputs.$devicesSearchType);
 
+  const setDevicesSearchType = useEvent(inputs.setDevicesSearchType);
   const clearSearchPayload = useEvent(inputs.clearSearchPayload);
   const setDevicesProfileFilter = useEvent(inputs.setDevicesProfileFilter);
   const close = useEvent(inputs.extendedSearchClosed);
@@ -30,6 +32,8 @@ export const DevicesProfileContainer = () => {
         open={open}
         searchState={searchState}
         clearSearchPayload={clearSearchPayload}
+        devicesSearchType={devicesSearchType}
+        setDevicesSearchType={setDevicesSearchType}
       />
     </>
   );
