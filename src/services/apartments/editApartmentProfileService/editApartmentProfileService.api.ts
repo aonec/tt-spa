@@ -9,4 +9,4 @@ export const putApartment = ({
   ApartmentId,
   ...params
 }: PutApartment): Promise<ApartmentResponse> =>
-  axios.put(`Apartments/${ApartmentId}`, { params });
+  axios.put(`Apartments/${ApartmentId}`, params);

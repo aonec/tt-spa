@@ -27,14 +27,18 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
       ColdWaterRiserCount: apartment.coldWaterRiserCount,
       HotWaterRiserCount: apartment.hotWaterRiserCount,
     },
-    onSubmit: (values) =>
+    onSubmit: (values) => {
       handleUpdateApartment({
         ApartmentId: apartment.id,
-        Square: values.Square || undefined,
-        NumberOfLiving: values.NumberOfLiving || undefined,
-        ColdWaterRiserCount: values.ColdWaterRiserCount || undefined,
-        HotWaterRiserCount: values.HotWaterRiserCount || undefined,
-      }),
+        Square: Number(values.Square) || undefined,
+        NumberOfLiving: Number(values.NumberOfLiving) || undefined,
+        ColdWaterRiserCount: Number(values.ColdWaterRiserCount) || undefined,
+        HotWaterRiserCount: Number(values.HotWaterRiserCount) || undefined,
+        NormativeNumberOfLiving:
+          Number(values.NormativeNumberOfLiving) || undefined,
+      });
+    },
+    enableReinitialize: true,
   });
 
   return (

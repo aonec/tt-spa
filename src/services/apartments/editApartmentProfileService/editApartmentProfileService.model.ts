@@ -1,8 +1,10 @@
+import { message } from 'antd';
 import { ApartmentResponse } from 'myApi';
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { PutApartment, TabsSection } from './editApartmentProfileService.types';
 import { getApartment, putApartment } from './editApartmentProfileService.api';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('editApartmentProfileService');
 
@@ -12,9 +14,11 @@ const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
 
 const handleUpdateApartment = domain.createEvent<PutApartment>();
 
-const updateApartmentFx = domain.createEffect<PutApartment, ApartmentResponse>(
-  putApartment
-);
+const updateApartmentFx = domain.createEffect<
+  PutApartment,
+  ApartmentResponse,
+  EffectFailDataAxiosError
+>(putApartment);
 
 const ApartmentGate = createGate<{ apartmentId: number }>();
 
@@ -46,6 +50,12 @@ const $tabSection = domain
   .createStore<TabsSection>(TabsSection.CommonData)
   .on(setTabSection, (_, tab) => tab)
   .reset(ApartmentGate.close);
+
+updateApartmentFx.doneData.watch(() => message.success('Данные обновлены'));
+
+updateApartmentFx.failData.watch((e) =>
+  message.error(e.response.data.error.Text)
+);
 
 export const editApartmentProfileService = {
   inputs: { setTabSection, handleUpdateApartment },
