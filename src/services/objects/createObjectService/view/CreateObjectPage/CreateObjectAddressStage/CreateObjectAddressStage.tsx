@@ -67,6 +67,10 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       })
     );
 
+  const preparedExistingStreets = existingStreets?.map((street) => ({
+    value: street,
+  }));
+
   return (
     <>
       <ExistingCitiesGate />
@@ -94,6 +98,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               placeholder="Улица"
               value={values.street}
               onChange={(value) => setFieldValue('street', value)}
+              options={preparedExistingStreets}
             />
           </FormItem>
 
