@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   position: fixed;
   height: 100vh;
   background: #f3f5f6;
+  z-index: 5;
 `;
 
 export const MenuWrapper = styled.div`

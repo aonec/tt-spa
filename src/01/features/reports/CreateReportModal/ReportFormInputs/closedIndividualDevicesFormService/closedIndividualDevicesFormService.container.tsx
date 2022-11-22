@@ -1,11 +1,9 @@
 import { useEvent, useStore } from 'effector-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { prepareAddressesForTreeSelect } from 'services/resources/createResourceDisconnectionService/createResourceDisconnectionService.utils';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
 import './closedIndividualDevicesFormService.relations';
-import { sample } from 'effector';
-import { reportsListService } from '01/features/reports/reportsListService';
 import { UnloadingType } from './closedIndividualDevicesFormService.types';
 
 export const ClosedIndividualDevicesFormContainer = () => {
