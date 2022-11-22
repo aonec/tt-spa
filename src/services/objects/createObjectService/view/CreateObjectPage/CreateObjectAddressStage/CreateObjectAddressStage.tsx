@@ -4,16 +4,13 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
+import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Button } from 'ui-kit/Button';
+import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
-import {
-  BlockTitle,
-  ErrorMessage,
-  FormItem,
-  PageTitle,
-  StyledAutoComplete,
-} from '../CreateObjectPage.styled';
+import { BlockTitle, PageTitle } from '../CreateObjectPage.styled';
 import {
   AddButton,
   ButtonPadding,
@@ -52,8 +49,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     onSubmit: (address) => {},
   });
 
-  useEffect(() => console.log(values), [values]);
-
   const additionalAddressesFieldOnChange = (
     index: number,
     fieldName: string,
@@ -67,9 +62,22 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       })
     );
 
-  const preparedExistingStreets = existingStreets?.map((street) => ({
-    value: street,
-  }));
+  const addressSearch = values.street;
+
+  const preparedExistingStreets = existingStreets
+    ?.sort((a, b) => {
+      const aPoints = countSimilarityPoints(addressSearch, a);
+      const bPoints = countSimilarityPoints(addressSearch, b);
+
+      if (aPoints < bPoints) return 1;
+
+      if (aPoints > bPoints) return -1;
+
+      return 0;
+    })
+    .map((street) => ({
+      value: street,
+    }));
 
   return (
     <>
@@ -94,7 +102,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           </FormItem>
 
           <FormItem label="Улица">
-            <StyledAutoComplete
+            <AutoComplete
               placeholder="Улица"
               value={values.street}
               onChange={(value) => setFieldValue('street', value)}
@@ -138,25 +146,11 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <>
             <GridWrapper>
               <FormItem label="Город">
-                <StyledSelect
-                  placeholder="Выберите из списка"
-                  value={elem.city}
-                  onChange={(value) =>
-                    additionalAddressesFieldOnChange(
-                      index,
-                      'city',
-                      value as string
-                    )
-                  }
-                >
-                  {allCities?.map((city) => (
-                    <Select.Option value={city}>{city}</Select.Option>
-                  ))}
-                </StyledSelect>
+                <StyledSelect value={values.city} disabled />
               </FormItem>
 
               <FormItem label="Улица">
-                <StyledAutoComplete
+                <AutoComplete
                   placeholder="Улица"
                   onChange={(value) =>
                     additionalAddressesFieldOnChange(
@@ -166,6 +160,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                     )
                   }
                   value={elem.street}
+                  options={preparedExistingStreets}
                 />
               </FormItem>
 
@@ -233,7 +228,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           onClick={() =>
             setFieldValue('additionalAddresses', [
               ...values.additionalAddresses,
-              { city: '', street: '', house: '', corpus: '' },
+              { street: '', house: '', corpus: '' },
             ])
           }
         >

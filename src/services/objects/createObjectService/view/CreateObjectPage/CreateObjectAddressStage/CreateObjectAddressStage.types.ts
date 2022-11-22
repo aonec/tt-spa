@@ -4,7 +4,6 @@ export type CreateObjectAddressStageProps = {
 };
 
 export type Address = {
-  city: string;
   street: string;
   house: string;
   corpus: string;
