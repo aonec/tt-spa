@@ -2,9 +2,9 @@ import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStoc
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Checkbox, Select } from 'antd';
+import { Select } from 'antd';
 import { useFormik } from 'formik';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { Input } from 'ui-kit/Input';
 import {
@@ -17,11 +17,11 @@ import {
 import {
   AddButton,
   ButtonPadding,
+  DeleteButton,
   Footer,
   GridWrapper,
   ItemGridWrapper,
   NextCancelBlock,
-  NonUserSelect,
   Wrapper,
 } from './CreateObjectAddressStage.styled';
 import {
@@ -45,13 +45,27 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       street: '',
       house: '',
       corpus: '',
+      index: '',
+      additionalAddresses: [],
     },
     enableReinitialize: true,
     onSubmit: (address) => {},
   });
 
-  const [isHasOtherAddress, setHasOtherAddress] = useState(false);
-  console.log(isHasOtherAddress);
+  useEffect(() => console.log(values), [values]);
+
+  const additionalAddressesFieldOnChange = (
+    index: number,
+    fieldName: string,
+    value: string
+  ) =>
+    setFieldValue(
+      'additionalAddresses',
+      values.additionalAddresses.map((el, i) => {
+        if (index !== i) return el;
+        return { ...el, [fieldName]: value };
+      })
+    );
 
   return (
     <>
@@ -66,26 +80,20 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <FormItem label="Город">
             <StyledSelect
               placeholder="Выберите из списка"
-              onChange={() => {}}
-              // value={}
+              onChange={(value) => setFieldValue('city', value)}
+              value={values.city}
             >
               {allCities?.map((city) => (
                 <Select.Option value={city}>{city}</Select.Option>
               ))}
             </StyledSelect>
-            {/* <ErrorMessage>
-            {fields.model.errorText({
-              required: 'Это поле обязательное',
-            })} 
-           </ErrorMessage> */}
           </FormItem>
 
           <FormItem label="Улица">
             <StyledAutoComplete
               placeholder="Улица"
               value={values.street}
-              onChange={(value) => {}}
-              onClick={() => {}}
+              onChange={(value) => setFieldValue('street', value)}
             />
           </FormItem>
 
@@ -93,17 +101,17 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
             <FormItem label="Номер дома">
               <Input
                 placeholder="Введите"
-                value=""
-                onChange={(value) => {}}
-                onClick={() => {}}
+                value={values.house}
+                onChange={(value) => setFieldValue('house', value.target.value)}
               />
             </FormItem>
             <FormItem label="Корпус">
               <Input
                 placeholder="Введите"
-                value=""
-                onChange={(value) => {}}
-                onClick={() => {}}
+                value={values.corpus}
+                onChange={(value) =>
+                  setFieldValue('corpus', value.target.value)
+                }
               />
             </FormItem>
           </ItemGridWrapper>
@@ -111,18 +119,119 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <FormItem label="Индекс">
             <Input
               placeholder="Введите"
-              value=""
-              onChange={(value) => {}}
-              onClick={() => {}}
+              value={values.index}
+              onChange={(value) => setFieldValue('index', value.target.value)}
             />
           </FormItem>
         </GridWrapper>
 
         <SpaceLine />
 
-        {/* <BlockTitle>Адреса, под которыми известен объект</BlockTitle> */}
+        <BlockTitle>Адреса, под которыми известен объект</BlockTitle>
 
-        <AddButton className="ant-btn-link" onClick={() => {}}>
+        {values.additionalAddresses.map((elem, index) => (
+          <>
+            <GridWrapper>
+              <FormItem label="Город">
+                <StyledSelect
+                  placeholder="Выберите из списка"
+                  value={elem.city}
+                  onChange={(value) =>
+                    additionalAddressesFieldOnChange(
+                      index,
+                      'city',
+                      value as string
+                    )
+                  }
+                >
+                  {allCities?.map((city) => (
+                    <Select.Option value={city}>{city}</Select.Option>
+                  ))}
+                </StyledSelect>
+              </FormItem>
+
+              <FormItem label="Улица">
+                <StyledAutoComplete
+                  placeholder="Улица"
+                  onChange={(value) =>
+                    additionalAddressesFieldOnChange(
+                      index,
+                      'street',
+                      value as string
+                    )
+                  }
+                  value={elem.street}
+                />
+              </FormItem>
+
+              <ItemGridWrapper>
+                <FormItem label="Номер дома">
+                  <Input
+                    placeholder="Введите"
+                    value={elem.house}
+                    onChange={(value) =>
+                      additionalAddressesFieldOnChange(
+                        index,
+                        'house',
+                        value.target.value as string
+                      )
+                    }
+                  />
+                </FormItem>
+
+                <FormItem label="Корпус">
+                  <Input
+                    placeholder="Введите"
+                    value={elem.corpus}
+                    onChange={(value) =>
+                      additionalAddressesFieldOnChange(
+                        index,
+                        'corpus',
+                        value.target.value as string
+                      )
+                    }
+                  />
+                </FormItem>
+              </ItemGridWrapper>
+
+              <FormItem label="Индекс">
+                <Input
+                  placeholder="Введите"
+                  value={elem.index}
+                  onChange={(value) =>
+                    additionalAddressesFieldOnChange(
+                      index,
+                      'index',
+                      value.target.value as string
+                    )
+                  }
+                />
+              </FormItem>
+            </GridWrapper>
+            <DeleteButton
+              className="ant-btn-link"
+              onClick={() =>
+                setFieldValue(
+                  'additionalAddresses',
+                  values.additionalAddresses.filter((el, i) => index !== i)
+                )
+              }
+            >
+              - Удалить адрес
+            </DeleteButton>
+            <SpaceLine />
+          </>
+        ))}
+
+        <AddButton
+          className="ant-btn-link"
+          onClick={() =>
+            setFieldValue('additionalAddresses', [
+              ...values.additionalAddresses,
+              { city: '', street: '', house: '', corpus: '' },
+            ])
+          }
+        >
           + Добавить адрес
         </AddButton>
 

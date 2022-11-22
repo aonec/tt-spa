@@ -35,7 +35,12 @@ export const NonUserSelect = styled.div`
 `;
 
 export const AddButton = styled.div`
-  margin-top: 24px;
+  margin-top: 14px;
   cursor: pointer;
-  position: absolute;
+`;
+
+export const DeleteButton = styled.div`
+  margin-top: 4px;
+  cursor: pointer;
+  color: red;
 `;

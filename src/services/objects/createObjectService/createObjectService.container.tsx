@@ -9,8 +9,6 @@ export const CreateObjectContainer = () => {
   const existingCities = useStore(outputs.cities);
   const existingStreets = useStore(outputs.streets);
 
-  console.log(existingCities);
-
   return (
     <>
       <CreateObjectPage
