@@ -103,7 +103,7 @@ const ApartmentProfile = () => {
         <Route path="/*/:apartmentId/actsJournal" exact>
           <ApartmentActsListContainer />
         </Route>
-        <Route path="/objects/:id/apartments/:apartmentId" exact>
+        <Route path="/apartments/:apartmentId" exact>
           <InformationWrapper>
             <Information
               square={square}

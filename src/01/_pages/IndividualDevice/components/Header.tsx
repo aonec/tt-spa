@@ -75,7 +75,7 @@ export const Header = ({ device }: HeaderInterface) => {
             {`${model} (${serialNumber})`}
           </Title>
           <div style={{ display: 'flex' }}>
-            <Subtitle to={`/objects/${id}/apartments/${apartmentId}`}>
+            <Subtitle to={`/apartments/${apartmentId}`}>
               {getApartmentFromFullAddress(address, true)}
             </Subtitle>
             <IsActive closingDate={closingDate} />

@@ -8,11 +8,11 @@ import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('editApartmentProfileService');
 
+const handleUpdateApartment = domain.createEvent<PutApartment>();
+
 const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
   getApartment
 );
-
-const handleUpdateApartment = domain.createEvent<PutApartment>();
 
 const updateApartmentFx = domain.createEffect<
   PutApartment,
