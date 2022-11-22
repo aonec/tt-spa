@@ -11,9 +11,9 @@ import {
   TabsWrapper,
 } from './EditApartmentPage.styled';
 import { EditApartmentPageProps } from './EditApartmentPage.types';
-import { getHousingStockAddress } from './EditApartmentPage.utils';
 import { TabsSection } from '../../editApartmentProfileService.types';
 import { EditCommonDataForm } from './EditCommonDataForm';
+import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
@@ -39,10 +39,10 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
             <HeaderInfoString>
               <>{address?.city}</>
               <>
-                {`${address && getHousingStockAddress(address)} `}
+                {`${address && getHousingStockItemAddress(address)} `}
                 {additionalAddresses?.map((elem) => (
                   <AdditionalAddressWrapper>
-                    {getHousingStockAddress(elem)}
+                    {getHousingStockItemAddress(elem)}
                   </AdditionalAddressWrapper>
                 ))}
               </>

@@ -1,4 +1,4 @@
-import { createDomain } from 'effector';
+import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { ApartmentResponse } from 'myApi';
 import { getApartment } from './apartmentProfileService.api';
@@ -16,8 +16,14 @@ const $apartment = domain
   .on(fetchApartmentFx.doneData, (_, apartment) => apartment)
   .reset(ApartmentGate.close);
 
+forward({
+  from: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
+  to: fetchApartmentFx,
+});
+
+const $isApartmentLoading = fetchApartmentFx.pending;
+
 export const apartmentProfileService = {
-  inputs: {},
-  outputs: { $apartment },
+  outputs: { $apartment, $isApartmentLoading },
   gates: { ApartmentGate },
 };

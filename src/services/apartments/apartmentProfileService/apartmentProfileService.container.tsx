@@ -1,6 +1,34 @@
+import { useStore } from 'effector-react';
 import React from 'react';
+import { Redirect, useParams } from 'react-router-dom';
+import { apartmentProfileService } from './apartmentProfileService.model';
 import { ApartmentProfile } from './view/ApartmentProfile';
+import { ApartmentSection } from './view/ApartmentProfile/ApartmentProfile.types';
+
+const { gates, outputs } = apartmentProfileService;
+const { ApartmentGate } = gates;
 
 export const ApartmentProfileContainer = () => {
-  return <ApartmentProfile />;
+  const { apartmentId } = useParams<{ apartmentId: string }>();
+
+  const apartment = useStore(outputs.$apartment);
+  const isApartmentLoading = useStore(outputs.$isApartmentLoading);
+
+  const { tabSection } = useParams<{ tabSection: ApartmentSection }>();
+
+  return (
+    <>
+      {!tabSection && (
+        <Redirect
+          to={`/apartments/${apartmentId}/${ApartmentSection.CommonData}`}
+        />
+      )}
+      {apartmentId && <ApartmentGate apartmentId={Number(apartmentId)} />}
+      <ApartmentProfile
+        apartment={apartment}
+        isApartmentLoading={isApartmentLoading}
+        tabSection={tabSection}
+      />
+    </>
+  );
 };

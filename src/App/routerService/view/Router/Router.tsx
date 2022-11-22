@@ -94,7 +94,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/apartments/:apartmentId/:apartmentSection?"
+                  path="/apartments/:apartmentId/:tabSection?"
                   component={ApartmentProfileContainer}
                   exact
                 />

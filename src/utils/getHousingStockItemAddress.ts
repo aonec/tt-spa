@@ -1,6 +1,6 @@
 import { HousingStockAddressItemResponse } from 'myApi';
 
-export const getHousingStockAddress = (
+export const getHousingStockItemAddress = (
   address: HousingStockAddressItemResponse
 ) => {
   const { street, number, corpus } = address;
