@@ -79,6 +79,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   component={CreateObjectContainer}
                   exact
                 />
+                  path="/objects/:housingStockId/add_node"
+                  component={AddNode}
+                  exact
+                />
+
                 <Route
                   path="/objects/:searchType?"
                   component={ObjectsProfileContainer}
@@ -141,14 +146,14 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
-                  component={NodeProfile}
+                  path="/nodes/:nodeId/edit"
+                  component={EditNode}
                   exact
                 />
 
                 <Route
-                  path="/nodes/:nodeId(\\d+)/edit"
-                  component={EditNode}
+                  path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
+                  component={NodeProfile}
                   exact
                 />
 
@@ -173,12 +178,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route
                   path="/housingMeteringDevices/:deviceId/edit_odpu/"
                   component={EditODPU}
-                  exact
-                />
-
-                <Route
-                  path="/objects/:housingStockId(\\d+)/add_node"
-                  component={AddNode}
                   exact
                 />
 

@@ -21,6 +21,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
   filter,
   setFilter,
   clearSearchPayload,
+  mountPlaces,
 }) => {
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
@@ -67,6 +68,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
           handleSubmit();
         }}
         values={values}
+        mountPlaces={mountPlaces}
       >
         <SearchFieldsWrapper>
           <InputSC
