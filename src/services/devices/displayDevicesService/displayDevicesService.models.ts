@@ -72,7 +72,10 @@ sample({
 });
 
 $searchPayload
-  .on(setDevicesProfileFilter, (_, filter) => filter)
+  .on(setDevicesProfileFilter, (oldFilter, filter) => ({
+    ...oldFilter,
+    ...filter,
+  }))
   .on(setPageNumber, (state, pageNumber) => ({
     ...state,
     PageNumber: pageNumber,

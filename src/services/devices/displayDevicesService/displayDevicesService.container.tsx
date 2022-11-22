@@ -1,4 +1,3 @@
-import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { displayDevicesService } from './displayDevicesService.models';
