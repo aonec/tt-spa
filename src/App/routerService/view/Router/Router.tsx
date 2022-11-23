@@ -5,7 +5,6 @@ import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
   AddNode,
-  ApartmentProfile,
   CalculatorProfile,
   Contractor,
   DevicesFromSearch,
