@@ -39,7 +39,7 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
             <HeaderInfoString>
               <>{address?.city}</>
               <>
-                {`${address && getHousingStockAddress(address)} `}
+                {address && getHousingStockAddress(address)}
                 {additionalAddresses?.map((elem) => (
                   <AdditionalAddressWrapper>
                     {getHousingStockAddress(elem)}
