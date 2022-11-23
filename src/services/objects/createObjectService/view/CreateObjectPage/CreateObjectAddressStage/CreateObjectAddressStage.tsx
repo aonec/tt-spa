@@ -33,8 +33,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
 }) => {
-  const allCities = existingCities;
-
   const {
     values,
     handleSubmit,
@@ -51,8 +49,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     enableReinitialize: true,
     onSubmit: (address) => {},
   });
-
-  useEffect(() => console.log(values), [values]);
 
   const additionalAddressesFieldOnChange = (
     index: number,
@@ -87,7 +83,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               onChange={(value) => setFieldValue('city', value)}
               value={values.city}
             >
-              {allCities?.map((city) => (
+              {existingCities?.map((city) => (
                 <Select.Option value={city}>{city}</Select.Option>
               ))}
             </StyledSelect>
@@ -149,7 +145,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                     )
                   }
                 >
-                  {allCities?.map((city) => (
+                  {existingCities?.map((city) => (
                     <Select.Option value={city}>{city}</Select.Option>
                   ))}
                 </StyledSelect>

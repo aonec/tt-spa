@@ -79,6 +79,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   component={CreateObjectContainer}
                   exact
                 />
+
+                <Route
                   path="/objects/:housingStockId/add_node"
                   component={AddNode}
                   exact
@@ -145,11 +147,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
-                <Route
-                  path="/nodes/:nodeId/edit"
-                  component={EditNode}
-                  exact
-                />
+                <Route path="/nodes/:nodeId/edit" component={EditNode} exact />
 
                 <Route
                   path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
