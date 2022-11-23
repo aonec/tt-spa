@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const HeaderInfo = styled.div`
   padding: 0;
   margin: 0;
@@ -21,4 +19,9 @@ export const HeaderWrapper = styled.div`
 
 export const TabsWrapper = styled.div`
   margin-top: 15px;
+`;
+
+export const ContentWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 875px 350px;
 `;

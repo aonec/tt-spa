@@ -1,6 +1,9 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { ActsCardContainer } from 'services/apartments/actsCardService';
+import { TasksCardContainer } from 'services/apartments/tasksCardService';
+import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
@@ -8,9 +11,9 @@ import { Tabs } from 'ui-kit/Tabs';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import {
   AdditionalAddressWrapper,
+  ContentWrapper,
   HeaderWrapper,
   TabsWrapper,
-  Wrapper,
 } from './ApartmentProfile.styled';
 import {
   ApartmentProfileProps,
@@ -28,10 +31,26 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
 
+  const ContentComponentsDictionary: {
+    [key in ApartmentSection]: ReactNode;
+  } = {
+    [ApartmentSection.CommonData]: <></>,
+    [ApartmentSection.Homeowners]: <></>,
+    [ApartmentSection.Testimony]: apartment && (
+      <ApartmentIndividualDevicesMetersContainer
+        maxWidth={860}
+        apartmentId={apartment.id}
+        editable={false}
+      />
+    ),
+    [ApartmentSection.ActsJournal]: <></>,
+    [ApartmentSection.Documents]: <></>,
+  };
+
   return (
     <WithLoader isLoading={isApartmentLoading}>
       {apartment && (
-        <Wrapper>
+        <div>
           <GoBack />
           <HeaderWrapper>
             <PageHeader
@@ -71,27 +90,36 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               <Tabs.TabPane
                 tab="Общие данные"
                 key={ApartmentSection.CommonData}
-              >
-                дата
-              </Tabs.TabPane>
+              />
               <Tabs.TabPane
                 tab="Собственники"
                 key={ApartmentSection.Homeowners}
-              >
-                Собственники
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Документы" key={ApartmentSection.Documents}>
-                Документы
-              </Tabs.TabPane>
+              />
+              <Tabs.TabPane
+                tab="Приборы учета"
+                key={ApartmentSection.Testimony}
+              />
+              <Tabs.TabPane tab="Документы" key={ApartmentSection.Documents} />
               <Tabs.TabPane
                 tab="Журнал актов"
                 key={ApartmentSection.ActsJournal}
-              >
-                Журнал актов
-              </Tabs.TabPane>
+              />
             </Tabs>
           </TabsWrapper>
-        </Wrapper>
+          <ContentWrapper>
+            <div>{tabSection && ContentComponentsDictionary[tabSection]}</div>
+            <div>
+              <TasksCardContainer
+                apartmentId={String(apartment.id)}
+                tasksNumber={apartment.activeTaskIds?.length || 0}
+              />
+              <ActsCardContainer
+                apartmentId={String(apartment.id)}
+                housingStockId={String(apartment.housingStock?.id)}
+              />
+            </div>
+          </ContentWrapper>
+        </div>
       )}
     </WithLoader>
   );

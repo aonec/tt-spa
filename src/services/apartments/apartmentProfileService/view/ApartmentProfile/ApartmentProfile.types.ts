@@ -3,7 +3,7 @@ import { ApartmentResponse } from 'myApi';
 export type ApartmentProfileProps = {
   apartment: ApartmentResponse | null;
   isApartmentLoading: boolean;
-  tabSection: ApartmentSection;
+  tabSection?: ApartmentSection;
 };
 
 export enum ApartmentSection {
