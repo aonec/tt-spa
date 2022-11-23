@@ -9,8 +9,6 @@ export const Header = styled.h1`
   margin: 0;
 `;
 
-
-
 export const Footer = styled.div`
   background-color: var(--bg);
   height: 76px;
