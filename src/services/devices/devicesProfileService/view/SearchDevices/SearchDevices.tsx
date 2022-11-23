@@ -33,6 +33,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   setFieldValue,
   values,
   devicesSearchType,
+  serialNumber,
+  setSerialNumber,
 }) => {
   const marks = {
     0: '0',
@@ -73,17 +75,24 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
       <FormItem>
         <InputSC
           onChange={(value) => {
-            setFieldValue('Question', value.target.value);
+            setSerialNumber(value.target.value);
           }}
           className={styles.input}
-          value={values?.Question}
+          value={serialNumber}
           placeholder="Введите серийный номер прибора"
           prefix={<Icon icon="search" />}
           onKeyDown={fromEnter(submitForm)}
         />
       </FormItem>
     );
-  }, [setFieldValue, values, devicesSearchType, submitForm]);
+  }, [
+    setFieldValue,
+    values,
+    devicesSearchType,
+    submitForm,
+    serialNumber,
+    setSerialNumber,
+  ]);
 
   return (
     <Wrapper>

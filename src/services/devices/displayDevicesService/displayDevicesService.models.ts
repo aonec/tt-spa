@@ -51,6 +51,11 @@ const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
   OrderBy: EOrderByRule.Ascending,
 });
 
+const setSerialNumber = domain.createEvent<string>();
+const $serialNumber = domain
+  .createStore<string>('')
+  .on(setSerialNumber, (_, serialNumber) => serialNumber);
+
 const setDevicesSearchType = domain.createEvent<DevicesSearchType>();
 const $devicesSearchType = domain
   .createStore<DevicesSearchType>(DevicesSearchType.SearialNumber)
@@ -60,10 +65,11 @@ const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
 
 const clearSearchPayload = domain.createEvent();
+const clearCalculators = domain.createEvent();
 
 $calculatorsPagedData
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
-  .reset(fetchCalculatorsFx.failData);
+  .reset([fetchCalculatorsFx.failData, clearCalculators]);
 
 const $total = $calculatorsPagedData.map((state) => state?.totalItems);
 const $pageNumber = $calculatorsPagedData.map((state) => state?.pageNumber);
@@ -72,6 +78,11 @@ const $pageSize = $calculatorsPagedData.map((state) => state?.pageSize);
 const setPageNumber = domain.createEvent<number>();
 
 export const CalculatorsGate = createGate();
+
+forward({
+  from: $devicesSearchType,
+  to: clearCalculators,
+});
 
 sample({
   source: $searchPayload,
@@ -91,11 +102,12 @@ $searchPayload
   .reset(clearSearchPayload);
 
 sample({
+  source: $serialNumber,
   clock: guard({
     clock: $searchPayload,
     filter: Boolean,
   }),
-  fn: (payload) => ({ ...payload, pageSize: 10 }),
+  fn: (Question, payload) => ({ ...payload, PageSize: 10, Question }),
   target: fetchCalculatorsFx,
 });
 
@@ -140,6 +152,7 @@ export const displayDevicesService = {
     setPageNumber,
     clearSearchPayload,
     setDevicesSearchType,
+    setSerialNumber,
   },
   outputs: {
     $total,
@@ -151,6 +164,7 @@ export const displayDevicesService = {
     $searchPayload,
     $housingsByFilter,
     $devicesSearchType,
+    $serialNumber,
   },
   gates: {
     CalculatorsGate,

@@ -21,6 +21,8 @@ interface DeviceProfileProps {
   clearSearchPayload: (payload: void) => void;
   devicesSearchType: DevicesSearchType;
   setDevicesSearchType: (type: DevicesSearchType) => void;
+  setSerialNumber: (value: string) => void;
+  serialNumber: string;
 }
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
@@ -32,6 +34,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   clearSearchPayload,
   devicesSearchType,
   setDevicesSearchType,
+  serialNumber,
+  setSerialNumber,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -93,6 +97,8 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         setFieldValue={setFieldValue}
         values={values}
         devicesSearchType={devicesSearchType}
+        serialNumber={serialNumber}
+        setSerialNumber={setSerialNumber}
       >
         <ExtendedSearch
           isOpen={isOpen}

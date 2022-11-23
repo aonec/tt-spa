@@ -13,4 +13,6 @@ export type SearchDevicesProps = {
   ) => void;
   values: CalculatorsListRequestPayload;
   devicesSearchType: DevicesSearchType;
+  setSerialNumber: (value: string) => void;
+  serialNumber: string;
 };
