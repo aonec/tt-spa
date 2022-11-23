@@ -14,6 +14,8 @@ import { Title } from 'ui-kit/Title';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import {
   AdditionalAddressWrapper,
+  BaseContentWrapper,
+  CardsWrapper,
   CommonInfoWrapper,
   ContentWrapper,
   HeaderWrapper,
@@ -23,6 +25,7 @@ import {
   ApartmentProfileProps,
   ApartmentSection,
 } from './ApartmentProfile.types';
+import { HomeownersList } from './HomeownersList';
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   apartment,
@@ -86,7 +89,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         )}
       </CommonInfoWrapper>
     ),
-    [ApartmentSection.Homeowners]: <></>,
+    [ApartmentSection.Homeowners]: apartment?.homeownerAccounts && (
+      <HomeownersList homeowners={apartment?.homeownerAccounts} />
+    ),
     [ApartmentSection.Testimony]: apartment && (
       <ApartmentIndividualDevicesMetersContainer
         maxWidth={860}
@@ -156,8 +161,10 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             </Tabs>
           </TabsWrapper>
           <ContentWrapper>
-            <div>{tabSection && ContentComponentsDictionary[tabSection]}</div>
-            <div>
+            <BaseContentWrapper>
+              {tabSection && ContentComponentsDictionary[tabSection]}
+            </BaseContentWrapper>
+            <CardsWrapper>
               <TasksCardContainer
                 apartmentId={String(apartment.id)}
                 tasksNumber={apartment.activeTaskIds?.length || 0}
@@ -166,7 +173,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 apartmentId={String(apartment.id)}
                 housingStockId={String(apartment.housingStock?.id)}
               />
-            </div>
+            </CardsWrapper>
           </ContentWrapper>
         </div>
       )}

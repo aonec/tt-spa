@@ -22,10 +22,19 @@ export const TabsWrapper = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 875px 320px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const BaseContentWrapper = styled.div`
+  min-width: 900px;
 `;
 
 export const CommonInfoWrapper = styled.div`
-  padding-right: 25px;
+  max-width: 716px;
+`;
+
+export const CardsWrapper = styled.div`
+  width: 312px;
 `;
