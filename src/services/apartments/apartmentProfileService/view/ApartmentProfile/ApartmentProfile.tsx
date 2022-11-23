@@ -2,15 +2,19 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC, ReactNode } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Tabs } from 'ui-kit/Tabs';
+import { Title } from 'ui-kit/Title';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import {
   AdditionalAddressWrapper,
+  CommonInfoWrapper,
   ContentWrapper,
   HeaderWrapper,
   TabsWrapper,
@@ -31,10 +35,57 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
 
+  const homeowner = apartment?.homeownerAccounts?.[0];
+
+  const houseManagement = apartment?.housingStock?.houseManagement;
+
+  const houseManagementInfo =
+    houseManagement?.comment &&
+    houseManagement?.phone &&
+    `${houseManagement?.comment || ''} (${houseManagement?.phone})`;
+
   const ContentComponentsDictionary: {
     [key in ApartmentSection]: ReactNode;
   } = {
-    [ApartmentSection.CommonData]: <></>,
+    [ApartmentSection.CommonData]: (
+      <CommonInfoWrapper>
+        <Title>Информация</Title>
+        {apartment && (
+          <CommonInfo
+            items={[
+              {
+                key: 'Площадь жилого помещения',
+                value: apartment.square && `${apartment.square} м²`,
+              },
+              {
+                key: 'Количество проживающих / зарегистрированных',
+                value: apartment.normativeNumberOfLiving,
+              },
+              {
+                key: 'Нормативное количество проживающих',
+                value: apartment.numberOfLiving,
+              },
+              {
+                key: 'Основной лицевой счет ',
+                value: homeowner?.personalAccountNumber,
+              },
+              {
+                key: 'Основной платежный код',
+                value: homeowner?.paymentCode,
+              },
+              {
+                key: 'Управляющая компания',
+                value: houseManagement?.name,
+              },
+              {
+                key: 'Информация об УК',
+                value: houseManagementInfo,
+              },
+            ]}
+          />
+        )}
+      </CommonInfoWrapper>
+    ),
     [ApartmentSection.Homeowners]: <></>,
     [ApartmentSection.Testimony]: apartment && (
       <ApartmentIndividualDevicesMetersContainer
@@ -43,8 +94,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         editable={false}
       />
     ),
-    [ApartmentSection.ActsJournal]: <></>,
-    [ApartmentSection.Documents]: <></>,
+    [ApartmentSection.ActsJournal]: <ApartmentActsListContainer />,
   };
 
   return (
@@ -99,7 +149,6 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 tab="Приборы учета"
                 key={ApartmentSection.Testimony}
               />
-              <Tabs.TabPane tab="Документы" key={ApartmentSection.Documents} />
               <Tabs.TabPane
                 tab="Журнал актов"
                 key={ApartmentSection.ActsJournal}

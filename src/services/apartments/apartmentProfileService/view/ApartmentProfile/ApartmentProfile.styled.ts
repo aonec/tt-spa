@@ -23,5 +23,9 @@ export const TabsWrapper = styled.div`
 
 export const ContentWrapper = styled.div`
   display: grid;
-  grid-template-columns: 875px 350px;
+  grid-template-columns: 875px 320px;
+`;
+
+export const CommonInfoWrapper = styled.div`
+  padding-right: 25px;
 `;

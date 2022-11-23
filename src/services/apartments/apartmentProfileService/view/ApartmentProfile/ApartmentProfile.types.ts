@@ -10,6 +10,5 @@ export enum ApartmentSection {
   CommonData = 'commonData',
   Testimony = 'testimony',
   Homeowners = 'homeowners',
-  Documents = 'documents',
   ActsJournal = 'actsJournal',
 }
