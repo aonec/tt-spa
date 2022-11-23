@@ -250,8 +250,13 @@ const EditNodeForm = ({
                 format="DD.MM.YYYY"
                 placeholder="Укажите дату..."
                 allowClear={false}
-                onChange={(value)=>{
-                  setFieldsValue({"futureCommercialAccountingDate": moment(value).add(4, 'years')})
+                onChange={(value) => {
+                  setFieldsValue({
+                    futureCommercialAccountingDate: moment(value).add(
+                      4,
+                      'years'
+                    ),
+                  });
                 }}
               />
             </Form.Item>

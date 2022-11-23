@@ -42,6 +42,7 @@ import { StatisticsPage } from '01/features/statistics';
 import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
+import { EditNodeContainer } from 'services/devices/editNodeService';
 
 const { gates } = objectProfileService;
 
@@ -142,7 +143,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path="/nodes/:nodeId/edit"
-                  component={EditNode}
+                  component={EditNodeContainer}
                   exact
                 />
 
