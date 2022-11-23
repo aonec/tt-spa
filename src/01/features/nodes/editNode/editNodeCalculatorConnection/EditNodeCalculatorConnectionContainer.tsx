@@ -7,19 +7,23 @@ import { RemoveConnectionConfirmModalContainer } from './components/RemoveConnec
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import { AddNodeCalculatorConnectionModalContainer } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModalContainer';
 import { addNodeCalculatorService } from './components/AddNodeCalculatorConnectionModal/models';
-import { Loader } from '../../../../components/Loader';
-import { NodeConnection } from "../../../../tt-components/NodeConnection";
+import { NodeConnection } from '../../../../tt-components/NodeConnection';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { Empty } from 'antd';
 
 export const EditNodeCalculatorConnectionContainer = () => {
-  const { NodeGate } = inputs;
+  const { nodeId } = useParams<{ nodeId: string }>();
 
+  const { NodeGate } = inputs;
   const node = useStore(outputs.$node);
   const loading = useStore(nodeService.outputs.$loading);
 
-  const handleOpenConfirmModal = useEvent(RemoveNodeCalculatorConnectionService.inputs.openConfirmationModal);
-  const handleEdit = useEvent(addNodeCalculatorService.inputs.openAddNodeCalculatorConnectionModal)
-
-  const { nodeId } = useParams<{ nodeId: string }>();
+  const handleOpenConfirmModal = useEvent(
+    RemoveNodeCalculatorConnectionService.inputs.openConfirmationModal
+  );
+  const handleEdit = useEvent(
+    addNodeCalculatorService.inputs.openAddNodeCalculatorConnectionModal
+  );
 
   const showCalculator = Boolean(node?.calculator);
 
@@ -28,8 +32,8 @@ export const EditNodeCalculatorConnectionContainer = () => {
       <RemoveConnectionConfirmModalContainer />
       <AddNodeCalculatorConnectionModalContainer />
       <NodeGate id={Number(nodeId)} />
-        {loading && <Loader show />}
-        {!loading && showCalculator && (
+      <WithLoader isLoading={loading}>
+        {showCalculator && (
           <NodeConnection
             onEdit={() => handleEdit()}
             onRemoveConnection={() => handleOpenConfirmModal()}
@@ -37,15 +41,19 @@ export const EditNodeCalculatorConnectionContainer = () => {
             edit
           />
         )}
-      {!loading && !showCalculator && (
-        <ButtonTT
-          color="white"
-          onClick={() => handleEdit()}
-          type={"button"}
-        >
-          + Подключить вычислитель
-        </ButtonTT>
-      )}
+        {!showCalculator && (
+          <>
+            <Empty description="К узлу не подключен вычислитель" />
+            <ButtonTT
+              color="white"
+              onClick={() => handleEdit()}
+              type={'button'}
+            >
+              + Подключить вычислитель
+            </ButtonTT>
+          </>
+        )}
+      </WithLoader>
     </>
   );
 };
