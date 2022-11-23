@@ -8,10 +8,17 @@ import { PageTitle } from '../CreateObjectPage.styled';
 import {
   AddTPButton,
   ButtonPadding,
+  FlexEnd,
+  FlexStart,
   Footer,
   GridContainer,
+  InputTypeDisplayingDiv,
+  PencilIconSc,
   RightButtonBlock,
+  Subtitle,
+  Title,
   Wrapper,
+  XIconSc,
 } from './CreateObjectMainInfoStage.styled';
 import { CreateObjectMainInfoStageProps } from './CreateObjectMainInfoStage.types';
 import { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal/CreateNewHeatingPointModal';
@@ -19,6 +26,8 @@ import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
+  goBackStage,
+  onPageCancel,
 }) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -86,36 +95,56 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         <SpaceLine />
 
-        <GridContainer>
-          <FormItem label="Тепловой пункт">
-            <StyledSelect
-              placeholder="Выберите из списка"
-              onChange={(value) => {}}
-            >
-              {houseManagements?.map(
-                (houseManagement) =>
-                  houseManagement.name && (
-                    <Select.Option value={houseManagement.name}>
-                      {houseManagement.name}
-                    </Select.Option>
-                  )
-              )}
-            </StyledSelect>
-          </FormItem>
+        {false && (
+          <GridContainer>
+            <FormItem label="Тепловой пункт">
+              <StyledSelect
+                placeholder="Выберите из списка"
+                onChange={(value) => {}}
+              >
+                {houseManagements?.map(
+                  (houseManagement) =>
+                    houseManagement.name && (
+                      <Select.Option value={houseManagement.name}>
+                        {houseManagement.name}
+                      </Select.Option>
+                    )
+                )}
+              </StyledSelect>
+            </FormItem>
 
-          <AddTPButton
-            className="ant-btn-link"
-            onClick={() => setModalOpen((prev) => !prev)}
-          >
-            + Добавить новый ТП
-          </AddTPButton>
-        </GridContainer>
+            <AddTPButton
+              className="ant-btn-link"
+              onClick={() => setModalOpen((prev) => !prev)}
+            >
+              + Добавить новый ТП
+            </AddTPButton>
+          </GridContainer>
+        )}
+
+        {true && (
+          <FormItem label="Тепловой пункт">
+            <InputTypeDisplayingDiv>
+              <FlexStart>
+                <Title> ЦТП 2 </Title> <Subtitle> (123456789) </Subtitle>
+              </FlexStart>
+              <FlexEnd>
+                <PencilIconSc />
+                <XIconSc />
+              </FlexEnd>
+            </InputTypeDisplayingDiv>
+          </FormItem>
+        )}
 
         <Footer>
-          <Button type="ghost">Назад</Button>
+          <Button type="ghost" onClick={() => goBackStage()}>
+            Назад
+          </Button>
           <RightButtonBlock>
             <ButtonPadding>
-              <Button type="ghost">Отмена</Button>
+              <Button type="ghost" onClick={() => onPageCancel()}>
+                Отмена
+              </Button>
             </ButtonPadding>
             <Button sidePadding={25} onClick={() => {}}>
               Далее

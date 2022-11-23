@@ -18,6 +18,9 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   stageNumber,
   handleAddressData,
   houseManagements,
+  goBackStage,
+  onPageCancel,
+  createObjectData
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -40,14 +43,25 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               existingStreets={existingStreets}
               existingCities={existingCities}
               handleAddressData={handleAddressData}
+              onPageCancel={onPageCancel}
+              createObjectData={createObjectData}
             />
           )}
 
           {stageNumber === 2 && (
-            <CreateObjectMainInfoStage houseManagements={houseManagements} />
+            <CreateObjectMainInfoStage
+              houseManagements={houseManagements}
+              goBackStage={goBackStage}
+              onPageCancel={onPageCancel}
+            />
           )}
 
-          {stageNumber === 3 && <CreateObjectAdditionalInfoStage />}
+          {stageNumber === 3 && (
+            <CreateObjectAdditionalInfoStage
+              goBackStage={goBackStage}
+              onPageCancel={onPageCancel}
+            />
+          )}
         </div>
         <div>
           <Steps direction="vertical" current={stageNumber - 1}>

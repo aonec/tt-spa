@@ -7,4 +7,8 @@ export type CreateObjectPageProps = {
   stageNumber: number;
   handleAddressData: (payload: ObjectAddressValues) => void;
   houseManagements: HouseManagementResponse[] | null;
+  goBackStage: (payload: void) => void;
+  onPageCancel: (payload: void) => void;
+  createObjectData: ObjectAddressValues | null;
+  
 };

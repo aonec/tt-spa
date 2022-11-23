@@ -12,9 +12,12 @@ const $createObjectData = domain
   .createStore<ObjectAddressValues | null>(null)
   .on(handleAddressData, (_, addresses) => addresses);
 
+const goBackStage = domain.createEvent();
+
 const $stageNumber = domain
   .createStore<number>(2)
-  .on(handleAddressData, () => 2);
+  .on(handleAddressData, () => 2)
+  .on(goBackStage, (prev) => prev - 1);
 
 const fetchHouseManagementsFx = domain.createEffect<
   void,
@@ -31,8 +34,9 @@ const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementsFx.doneData, (_, data) => data);
 
+
 export const createObjectService = {
-  inputs: { handleAddressData },
+  inputs: { handleAddressData, goBackStage },
   outputs: { $createObjectData, $stageNumber, $houseManagements },
   gates: { HouseManagementsFetchGate },
 };

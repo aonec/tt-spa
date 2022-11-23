@@ -31,7 +31,9 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
-  handleAddressData
+  handleAddressData,
+  onPageCancel,
+  createObjectData,
 }) => {
   const allCities = existingCities;
 
@@ -50,12 +52,12 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     errors,
   } = useFormik<ObjectAddressValues>({
     initialValues: {
-      city: '',
-      street: '',
-      house: '',
-      corpus: '',
-      index: '',
-      additionalAddresses: [],
+      city: createObjectData?.city || '',
+      street: createObjectData?.street || '',
+      house: createObjectData?.house || '',
+      corpus: createObjectData?.corpus || '',
+      index: createObjectData?.index || '',
+      additionalAddresses: createObjectData?.additionalAddresses || [],
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -257,7 +259,9 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <Footer>
           <NextCancelBlock>
             <ButtonPadding>
-              <Button type="ghost">Отмена</Button>
+              <Button type="ghost" onClick={() => onPageCancel()}>
+                Отмена
+              </Button>
             </ButtonPadding>
             <Button
               sidePadding={25}

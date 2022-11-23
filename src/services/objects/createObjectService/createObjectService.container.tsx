@@ -1,5 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
@@ -13,7 +14,12 @@ export const CreateObjectContainer = () => {
 
   const stageNumber = useStore(outputs.$stageNumber);
   const houseManagements = useStore(outputs.$houseManagements);
+  const createObjectData= useStore(outputs.$createObjectData)
   const handleAddressData = useEvent(inputs.handleAddressData);
+  const goBackStage = useEvent(inputs.goBackStage);
+
+  const history = useHistory();
+  const onPageCancel = () => history.goBack();
 
   return (
     <>
@@ -21,9 +27,12 @@ export const CreateObjectContainer = () => {
       <CreateObjectPage
         existingCities={existingCities}
         existingStreets={existingStreets}
+        createObjectData={createObjectData}
         stageNumber={stageNumber}
         handleAddressData={handleAddressData}
         houseManagements={houseManagements}
+        goBackStage={goBackStage}
+        onPageCancel={onPageCancel}
       />
     </>
   );
