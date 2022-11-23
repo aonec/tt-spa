@@ -15,7 +15,7 @@ const $createObjectData = domain
 const goBackStage = domain.createEvent();
 
 const $stageNumber = domain
-  .createStore<number>(2)
+  .createStore<number>(3)
   .on(handleAddressData, () => 2)
   .on(goBackStage, (prev) => prev - 1);
 

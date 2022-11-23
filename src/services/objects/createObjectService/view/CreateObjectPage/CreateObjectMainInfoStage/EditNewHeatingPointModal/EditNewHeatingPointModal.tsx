@@ -14,13 +14,16 @@ import {
   Wrapper,
 } from '../CreateNewHeatingPointModal/CreateNewHeatingPointModal.styled';
 
-export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({}) => {
+export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({
+  isEditModalOpen,
+  setEditModalOpen,
+}) => {
   return (
     <Wrapper>
       <StyledModal
         centered
-        visible={false}
-        onCancel={() => {}}
+        visible={isEditModalOpen}
+        onCancel={() => setEditModalOpen(false)}
         width={800}
         title={
           <>
@@ -30,7 +33,7 @@ export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({}) 
         footer={
           <Footer>
             <MarginSide>
-              <ButtonTT color="white" onClick={() => {}}>
+              <ButtonTT color="white" onClick={() => setEditModalOpen(false)}>
                 Отмена
               </ButtonTT>
             </MarginSide>

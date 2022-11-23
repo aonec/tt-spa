@@ -29,15 +29,19 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   goBackStage,
   onPageCancel,
 }) => {
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
   return (
     <>
       <CreateNewHeatingPointModal
-        isModalOpen={isModalOpen}
-        setModalOpen={setModalOpen}
+        isModalOpen={isCreateModalOpen}
+        setModalOpen={setCreateModalOpen}
       />
-      <EditNewHeatingPointModal />
+      <EditNewHeatingPointModal
+        isEditModalOpen={isEditModalOpen}
+        setEditModalOpen={setEditModalOpen}
+      />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
@@ -95,7 +99,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         <SpaceLine />
 
-        {false && (
+        {true && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
               <StyledSelect
@@ -115,7 +119,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
             <AddTPButton
               className="ant-btn-link"
-              onClick={() => setModalOpen((prev) => !prev)}
+              onClick={() => setCreateModalOpen((prev) => !prev)}
             >
               + Добавить новый ТП
             </AddTPButton>
@@ -129,7 +133,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 <Title> ЦТП 2 </Title> <Subtitle> (123456789) </Subtitle>
               </FlexStart>
               <FlexEnd>
-                <PencilIconSc />
+                <PencilIconSc onClick={() => setEditModalOpen(true)} />
                 <XIconSc />
               </FlexEnd>
             </InputTypeDisplayingDiv>

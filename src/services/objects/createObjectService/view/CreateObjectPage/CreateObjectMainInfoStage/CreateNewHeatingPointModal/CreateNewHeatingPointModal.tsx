@@ -25,11 +25,7 @@ export const CreateNewHeatingPointModal: FC<CreateNewHeatingPointModalProps> = (
         visible={isModalOpen}
         onCancel={() => setModalOpen(false)}
         width={800}
-        title={
-          <>
-            <Header>Создание нового ТП</Header>
-          </>
-        }
+        title={<Header>Создание нового ТП</Header>}
         footer={
           <Footer>
             <MarginSide>
