@@ -1,12 +1,15 @@
 import React, { FC } from 'react';
-import { PencilIcon, TrashIcon } from 'ui-kit/icons';
 import { List } from 'ui-kit/List';
+import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import {
   CrownIconSC,
   IconsWrapper,
+  LinkButtonWrapper,
   Name,
   PaymentCode,
+  PencilIconSC,
   PersonalAccountNumber,
+  TrashIconSC,
   Wrapper,
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
@@ -27,12 +30,15 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
             </PersonalAccountNumber>,
             <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
             <IconsWrapper>
-              <PencilIcon />
-              <TrashIcon />
+              <PencilIconSC />
+              <TrashIconSC />
             </IconsWrapper>,
           ],
         }))}
       </List>
+      <LinkButtonWrapper>
+        <LinkButton>+ Добавить собственника</LinkButton>
+      </LinkButtonWrapper>
     </Wrapper>
   );
 };

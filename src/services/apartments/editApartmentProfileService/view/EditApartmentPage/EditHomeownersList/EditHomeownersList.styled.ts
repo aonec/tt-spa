@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CrownIcon } from 'ui-kit/icons';
+import { CrownIcon, PencilIcon, TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   max-width: 616px;
@@ -36,4 +36,16 @@ export const IconsWrapper = styled.div`
 export const CrownIconSC = styled(CrownIcon)`
   margin-left: 8px;
   transform: translateY(-1px);
+`;
+
+export const LinkButtonWrapper = styled.div`
+  margin-top: 25px;
+`;
+
+export const PencilIconSC = styled(PencilIcon)`
+  cursor: pointer;
+`;
+
+export const TrashIconSC = styled(TrashIcon)`
+  cursor: pointer;
 `;
