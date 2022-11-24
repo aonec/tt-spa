@@ -1,0 +1,1 @@
+export { HeaderInfoString } from './HeaderInfoString'

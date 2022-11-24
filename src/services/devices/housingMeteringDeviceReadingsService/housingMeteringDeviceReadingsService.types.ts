@@ -3,6 +3,7 @@ import { EMagistralType, EResourceType } from 'myApi';
 export type HousingMeteringDeviceReadingsContainerProps = {
   nodeId: number;
   resource: EResourceType;
+  deviceIds: { [key in EMagistralType]: number | null };
 };
 
 export type PreparedMeteringDeviceReading = {
