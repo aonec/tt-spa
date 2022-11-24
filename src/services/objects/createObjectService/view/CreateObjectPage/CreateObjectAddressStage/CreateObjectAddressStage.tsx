@@ -3,17 +3,15 @@ import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingSto
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Select } from 'antd';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
+import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Button } from 'ui-kit/Button';
+import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
-import {
-  BlockTitle,
-  ErrorMessage,
-  FormItem,
-  PageTitle,
-  StyledAutoComplete,
-} from '../CreateObjectPage.styled';
+import { BlockTitle, PageTitle } from '../CreateObjectPage.styled';
 import {
   AddButton,
   ButtonPadding,
@@ -28,26 +26,43 @@ import {
   CreateObjectAddressStageProps,
   ObjectAddressValues,
 } from './CreateObjectAddressStage.types';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
+  handleAddressData,
+  onPageCancel,
+  createObjectData,
 }) => {
+  const validationsSchema = yup.object().shape({
+    city: yup.string().required('Обязательное поле'),
+    street: yup.string().required('Обязательное поле'),
+    house: yup.string().required('Обязательное поле'),
+    corpus: yup.string(),
+    index: yup.string(),
+  });
+
   const {
     values,
     handleSubmit,
     setFieldValue,
+    errors,
   } = useFormik<ObjectAddressValues>({
     initialValues: {
-      city: '',
-      street: '',
-      house: '',
-      corpus: '',
-      index: '',
-      additionalAddresses: [],
+      city: createObjectData?.city || '',
+      street: createObjectData?.street || '',
+      house: createObjectData?.house || '',
+      corpus: createObjectData?.corpus || '',
+      index: createObjectData?.index || '',
+      additionalAddresses: createObjectData?.additionalAddresses || [],
     },
     enableReinitialize: true,
-    onSubmit: (address) => {},
+    onSubmit: (data) => {
+      handleAddressData(data);
+    },
+    validateOnBlur: true,
+    validationSchema: validationsSchema,
   });
 
   const additionalAddressesFieldOnChange = (
@@ -63,9 +78,22 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       })
     );
 
-  const preparedExistingStreets = existingStreets?.map((street) => ({
-    value: street,
-  }));
+  const addressSearch = values.street;
+
+  const preparedExistingStreets = existingStreets
+    ?.sort((a, b) => {
+      const aPoints = countSimilarityPoints(addressSearch, a);
+      const bPoints = countSimilarityPoints(addressSearch, b);
+
+      if (aPoints < bPoints) return 1;
+
+      if (aPoints > bPoints) return -1;
+
+      return 0;
+    })
+    .map((street) => ({
+      value: street,
+    }));
 
   return (
     <>
@@ -87,15 +115,17 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                 <Select.Option value={city}>{city}</Select.Option>
               ))}
             </StyledSelect>
+            <ErrorMessage> {errors.city} </ErrorMessage>
           </FormItem>
 
           <FormItem label="Улица">
-            <StyledAutoComplete
+            <AutoComplete
               placeholder="Улица"
               value={values.street}
               onChange={(value) => setFieldValue('street', value)}
               options={preparedExistingStreets}
             />
+            <ErrorMessage> {errors.street} </ErrorMessage>
           </FormItem>
 
           <ItemGridWrapper>
@@ -105,6 +135,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                 value={values.house}
                 onChange={(value) => setFieldValue('house', value.target.value)}
               />
+              <ErrorMessage> {errors.house} </ErrorMessage>
             </FormItem>
             <FormItem label="Корпус">
               <Input
@@ -134,25 +165,11 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <>
             <GridWrapper>
               <FormItem label="Город">
-                <StyledSelect
-                  placeholder="Выберите из списка"
-                  value={elem.city}
-                  onChange={(value) =>
-                    additionalAddressesFieldOnChange(
-                      index,
-                      'city',
-                      value as string
-                    )
-                  }
-                >
-                  {existingCities?.map((city) => (
-                    <Select.Option value={city}>{city}</Select.Option>
-                  ))}
-                </StyledSelect>
+                <StyledSelect value={values.city} disabled />
               </FormItem>
 
               <FormItem label="Улица">
-                <StyledAutoComplete
+                <AutoComplete
                   placeholder="Улица"
                   onChange={(value) =>
                     additionalAddressesFieldOnChange(
@@ -162,6 +179,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                     )
                   }
                   value={elem.street}
+                  options={preparedExistingStreets}
                 />
               </FormItem>
 
@@ -229,7 +247,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           onClick={() =>
             setFieldValue('additionalAddresses', [
               ...values.additionalAddresses,
-              { city: '', street: '', house: '', corpus: '' },
+              { street: '', house: '', corpus: '' },
             ])
           }
         >
@@ -239,9 +257,18 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <Footer>
           <NextCancelBlock>
             <ButtonPadding>
-              <Button type="ghost">Отмена</Button>
+              <Button type="ghost" onClick={() => onPageCancel()}>
+                Отмена
+              </Button>
             </ButtonPadding>
-            <Button sidePadding={25}> Далее </Button>
+            <Button
+              sidePadding={25}
+              onClick={() => {
+                handleSubmit();
+              }}
+            >
+              Далее
+            </Button>
           </NextCancelBlock>
         </Footer>
       </Wrapper>

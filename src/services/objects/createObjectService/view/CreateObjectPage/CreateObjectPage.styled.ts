@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { AutoComplete, Form } from 'antd';
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  width: 900px;
+`;
 
 export const Header = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ export const PageTitle = styled.div`
   letter-spacing: 0em;
   margin-bottom: 10px;
 `;
+
 export const BlockTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
@@ -38,22 +40,4 @@ export const BlockTitle = styled.div`
   user-select: none;
 `;
 
-export const ErrorMessage = styled.div`
-  color: red;
-`;
 
-export const FormItem = styled(Form.Item)`
-  width: 100%;
-`;
-
-export const StyledAutoComplete = styled(AutoComplete)`
-  .ant-select-selector {
-    border-radius: 4px !important;
-    height: 48px !important;
-    padding: 4px 24px !important;
-
-    input {
-      padding: 6px 12px 0 12px !important;
-    }
-  }
-`;

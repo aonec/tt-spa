@@ -15,6 +15,12 @@ import { CreateObjectPageProps } from './CreateObjectPage.types';
 export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   existingStreets,
   existingCities,
+  stageNumber,
+  handleAddressData,
+  houseManagements,
+  goBackStage,
+  onPageCancel,
+  createObjectData
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -32,15 +38,33 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
 
       <GridWrapper>
         <div>
-          <CreateObjectAddressStage
-            existingStreets={existingStreets}
-            existingCities={existingCities}
-          />
-          <CreateObjectMainInfoStage />
-          <CreateObjectAdditionalInfoStage />
+          {stageNumber === 1 && (
+            <CreateObjectAddressStage
+              existingStreets={existingStreets}
+              existingCities={existingCities}
+              handleAddressData={handleAddressData}
+              onPageCancel={onPageCancel}
+              createObjectData={createObjectData}
+            />
+          )}
+
+          {stageNumber === 2 && (
+            <CreateObjectMainInfoStage
+              houseManagements={houseManagements}
+              goBackStage={goBackStage}
+              onPageCancel={onPageCancel}
+            />
+          )}
+
+          {stageNumber === 3 && (
+            <CreateObjectAdditionalInfoStage
+              goBackStage={goBackStage}
+              onPageCancel={onPageCancel}
+            />
+          )}
         </div>
         <div>
-          <Steps direction="vertical" current={1}>
+          <Steps direction="vertical" current={stageNumber - 1}>
             {stepTitles.map((step) => (
               <Step title={step} key={step} />
             ))}
