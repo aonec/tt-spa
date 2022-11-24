@@ -14,6 +14,8 @@ import { EditApartmentPageProps } from './EditApartmentPage.types';
 import { TabsSection } from '../../editApartmentProfileService.types';
 import { EditCommonDataForm } from './EditCommonDataForm';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
+import { EditHomeownersList } from './EditHomeownersList';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
@@ -65,13 +67,12 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
               )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
-              Собственники
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Документы" key={TabsSection.Documents}>
-              Документы
+              {apartment?.homeownerAccounts && (
+                <EditHomeownersList homeowners={apartment?.homeownerAccounts} />
+              )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
-              Журнал актов
+              <ApartmentActsListContainer />
             </Tabs.TabPane>
           </Tabs>
         </TabsWrapper>
