@@ -69,13 +69,17 @@ const getPreviousExistingReading = (readings: MeteringDeviceReading[]) => {
 };
 
 const getCurrentReading = (readings: MeteringDeviceReading[]) => {
-  const currentDate = moment().add(1, 'month');
+  const currentDate = moment();
 
   const res = readings.find((reading) => {
     const readingDate = moment(reading.readingDate);
     const diff = currentDate.diff(readingDate, 'months');
 
-    return diff === 0;
+    console.log(diff, readingDate.format('DD.MM.YYYY'));
+
+    if (diff === 0) return true;
+
+    return false;
   });
 
   return res;
