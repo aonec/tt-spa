@@ -1,14 +1,17 @@
 import _ from 'lodash';
 import moment from 'moment';
 import {
+  EHousingMeteringDeviceType,
   EMagistralType,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
+  PipeNodeResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import { MeteringDeviceReadingWithEmpties } from './housingMeteringDeviceReadingsService.types';
 
 export const groupWithEmptyReadings = (
-  allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+  allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
+  deviceIds: { [key in EMagistralType]: number | null }
 ) => {
   const sortedReadingsDictionary = _.groupBy(
     allReadings,
@@ -21,12 +24,16 @@ export const groupWithEmptyReadings = (
     moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month')
   );
 
-  const [feedFlowId, feedBackFlowId] = getDeviceIds(allReadings);
+  const { FeedBackFlow: feedBackFlowId, FeedFlow: feedFlowId } = deviceIds;
 
-  const firstReadingDate = sortedReadingsDates[0];
-
-  if (!firstReadingDate || !feedFlowId) {
+  if (!feedFlowId) {
     return [];
+  }
+
+  let firstReadingDate = moment(sortedReadingsDates[0], 'YYYY MMMM');
+
+  if (!firstReadingDate.isValid()) {
+    firstReadingDate = moment();
   }
 
   const diff = moment(firstReadingDate, 'YYYY MMMM').diff(moment(), 'month');
@@ -56,7 +63,7 @@ export const groupWithEmptyReadings = (
 
     if (feedBackFlowId && readings.length === 1) {
       const isFeedBackFlowExist =
-        readings[0].magistralType === EMagistralType.FeedFlow;
+        readings[0].magistralType === EMagistralType.FeedBackFlow;
 
       const magistralType = isFeedBackFlowExist
         ? EMagistralType.FeedFlow
@@ -101,18 +108,28 @@ const groupReadings = (
   return _.reverse(groupedReadingsByMonth);
 };
 
-const getDeviceIds = (
-  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
-) => {
-  const feedFlowReading =
-    readings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedFlow
-    ) || null;
+export const getDeviceIds = (node: PipeNodeResponse) => {
+  const pipes = node.communicationPipes || [];
 
-  const feedBackFlowReading =
-    readings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedBackFlow
-    ) || null;
+  const feedFlowDevices =
+    pipes.find((pipe) => pipe.magistral === EMagistralType.FeedFlow)?.devices ||
+    [];
+  const feedBackFlowDevices =
+    pipes.find((pipe) => pipe.magistral === EMagistralType.FeedBackFlow)
+      ?.devices || [];
 
-  return [feedFlowReading?.deviceId, feedBackFlowReading?.deviceId];
+  const feedFlowDevice = feedFlowDevices.find(
+    (device) =>
+      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter
+  );
+  const feedBackFlowDevice = feedBackFlowDevices.find(
+    (device) =>
+      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter
+  );
+
+  return {
+    [EMagistralType.FeedBackFlow]: feedBackFlowDevice?.id || null,
+    [EMagistralType.FeedFlow]: feedFlowDevice?.id || null,
+    [EMagistralType.Recharge]: null,
+  };
 };

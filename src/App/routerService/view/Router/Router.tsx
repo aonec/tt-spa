@@ -43,6 +43,7 @@ import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
+import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 
 const { gates } = objectProfileService;
 
@@ -92,6 +93,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
+                <Route
+                  path="/apartment/:apartmentId/edit"
+                  component={EditApartmentProfileContainer}
+                  exact
+                />
+                
                 <Route path="/objects">
                   <ObjectGroupIsOpen />
                   <Route
