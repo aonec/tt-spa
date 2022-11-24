@@ -42,7 +42,7 @@ const setDevicesProfileFilter = domain.createEvent<CalculatorsListRequestPayload
 const $loading = combine(
   fetchCalculatorsFx.pending,
   fetchHousingsByFilterFx.pending,
-  (...loading) => loading.includes(true)
+  (...loadings) => loadings.includes(true)
 );
 
 const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
