@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { List } from 'ui-kit/List';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { CreateHomeownerContainer } from './createHomeownerService';
 import {
   CrownIconSC,
   IconsWrapper,
@@ -18,27 +19,30 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   homeowners,
 }) => {
   return (
-    <Wrapper>
-      <List gridTemp="1fr 0.35fr 0.25fr 0.25fr">
-        {homeowners.map((homeowner) => ({
-          key: homeowner.id,
-          nodes: [
-            <Name>{homeowner.name}</Name>,
-            <PersonalAccountNumber>
-              {homeowner.personalAccountNumber}
-              {homeowner.isMainPersonalAccountNumber && <CrownIconSC />}
-            </PersonalAccountNumber>,
-            <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
-            <IconsWrapper>
-              <PencilIconSC />
-              <TrashIconSC />
-            </IconsWrapper>,
-          ],
-        }))}
-      </List>
-      <LinkButtonWrapper>
-        <LinkButton>+ Добавить собственника</LinkButton>
-      </LinkButtonWrapper>
-    </Wrapper>
+    <>
+      <CreateHomeownerContainer />
+      <Wrapper>
+        <List gridTemp="1fr 0.35fr 0.25fr 0.25fr">
+          {homeowners.map((homeowner) => ({
+            key: homeowner.id,
+            nodes: [
+              <Name>{homeowner.name}</Name>,
+              <PersonalAccountNumber>
+                {homeowner.personalAccountNumber}
+                {homeowner.isMainPersonalAccountNumber && <CrownIconSC />}
+              </PersonalAccountNumber>,
+              <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
+              <IconsWrapper>
+                <PencilIconSC />
+                <TrashIconSC />
+              </IconsWrapper>,
+            ],
+          }))}
+        </List>
+        <LinkButtonWrapper>
+          <LinkButton>+ Добавить собственника</LinkButton>
+        </LinkButtonWrapper>
+      </Wrapper>
+    </>
   );
 };
