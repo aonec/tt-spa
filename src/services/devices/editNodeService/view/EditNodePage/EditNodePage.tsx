@@ -19,6 +19,8 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   node,
   grouptype,
   setGrouptype,
+  openAddNewZonesModal,
+  nodeZones,
 }) => {
   const { number, address, resource } = node;
 
@@ -40,7 +42,11 @@ export const EditNodePage: FC<EditNodePageProps> = ({
         onChange={(grouptype) => setGrouptype(grouptype as NodeEditGrouptype)}
       >
         <TabPane tab="Общая информация" key={NodeEditGrouptype.CommonInfo}>
-          <EditNodeCommonInfo />
+          <EditNodeCommonInfo
+            node={node}
+            openAddNewZonesModal={openAddNewZonesModal}
+            nodeZones={nodeZones}
+          />
         </TabPane>
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>
           <EditNodeCalculatorConnectionContainer />

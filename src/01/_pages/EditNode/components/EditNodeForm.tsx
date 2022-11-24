@@ -173,9 +173,6 @@ const EditNodeForm = ({
         requiredMark={false}
         scrollToFirstError
       >
-        <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-         
-
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
           <EditNodeCalculatorConnectionContainer />
         </StyledFormPage>
@@ -253,27 +250,6 @@ const ButtonLoader = styled(Loader)`
 const Flex = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const Zone = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const ZoneInner = styled.div`
-  display: flex;
-  margin: 8px 0;
-`;
-
-const AddZoneText = styled.div`
-  display: flex;
-  align-items: center;
-  color: var(--primary-100);
-  height: 48px;
-  margin-left: 16px;
-  cursor: pointer;
-  font-weight: 500;
 `;
 
 export default EditNodeForm;

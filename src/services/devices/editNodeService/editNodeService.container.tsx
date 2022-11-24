@@ -1,3 +1,5 @@
+import AddNewZonesModal from '01/features/serviceZones/addServiceZone';
+import { addServiceZoneButtonClicked } from '01/features/serviceZones/addServiceZone/models';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -14,18 +16,24 @@ export const EditNodeContainer = () => {
   const node = useStore(outputs.$node);
   const isLoading = useStore(outputs.$isLoading);
   const grouptype = useStore(outputs.$editNodeGrouptype);
+  const nodeZones = useStore(outputs.$nodeZones);
 
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
+  const openAddNewZonesModal = useEvent(addServiceZoneButtonClicked);
 
   return (
     <>
       <NodeIdGate nodeId={nodeId} />
+      <AddNewZonesModal />
+
       <WithLoader isLoading={isLoading}>
         {node && (
           <EditNodePage
             node={node}
             grouptype={grouptype}
             setGrouptype={setGrouptype}
+            openAddNewZonesModal={() => openAddNewZonesModal()}
+            nodeZones={nodeZones}
           />
         )}
       </WithLoader>
