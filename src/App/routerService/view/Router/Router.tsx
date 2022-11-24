@@ -98,7 +98,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   component={EditApartmentProfileContainer}
                   exact
                 />
-                
+
                 <Route path="/objects">
                   <ObjectGroupIsOpen />
                   <Route

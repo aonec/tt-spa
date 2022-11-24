@@ -35,8 +35,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   onPageCancel,
   createObjectData,
 }) => {
-  const allCities = existingCities;
-
   const validationsSchema = yup.object().shape({
     city: yup.string().required('Обязательное поле'),
     street: yup.string().required('Обязательное поле'),
@@ -113,7 +111,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               onChange={(value) => setFieldValue('city', value)}
               value={values.city}
             >
-              {allCities?.map((city) => (
+              {existingCities?.map((city) => (
                 <Select.Option value={city}>{city}</Select.Option>
               ))}
             </StyledSelect>
