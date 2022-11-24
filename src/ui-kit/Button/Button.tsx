@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Loader } from '01/components';
 import { IconWrapper, Wrapper } from './Button.styled';
 import { ButtonProps } from './Button.types';
 
@@ -8,8 +9,9 @@ export const Button: FC<ButtonProps> = (props) => {
     type = 'default',
     className,
     onClick,
-    disabled,
+    disabled = props.isLoading,
     size = 'middle',
+    isLoading,
   } = props;
 
   const classNameString = [
@@ -26,7 +28,12 @@ export const Button: FC<ButtonProps> = (props) => {
       size={size}
     >
       {props.children}
-      {icon && <IconWrapper>{icon}</IconWrapper>}
+      {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}
+      {isLoading && (
+        <IconWrapper>
+          <Loader show />
+        </IconWrapper>
+      )}
     </Wrapper>
   );
 };

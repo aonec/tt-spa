@@ -1,1 +1,1 @@
-export { Input } from './Input.styled'
+export { Input, InputWithAddon } from './Input.styled';
