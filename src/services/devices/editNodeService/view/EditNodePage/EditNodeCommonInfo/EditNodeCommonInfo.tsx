@@ -1,114 +1,118 @@
-import React, { FC } from 'react';
-import { Wrapper } from './EditNodeCommonInfo.styled';
+import React, { FC, useMemo } from 'react';
+import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
+import { DatePicker } from 'ui-kit/DatePicker';
+import { Input } from 'ui-kit/Input';
+import { FormItem } from 'ui-kit/FormItem';
+import { Select } from 'ui-kit/Select';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import {
+  AddZoneText,
+  InfoWrapper,
+  ResourceText,
+  SelectWrapper,
+  Wrapper,
+} from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
+import { useFormik } from 'formik';
 
-export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({}) => {
-  return <Wrapper>
-     <Form.Item
-            style={styles.w100}
-            label="Тип ресурса"
-            name={'resource'}
-            rules={[{ required: true, message: 'Выберите Тип ресурса' }]}
-          >
-            <SelectTT
-              placeholder="Выберите Тип ресурса"
-              options={resources}
-              disabled
-            />
-          </Form.Item>
+export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
+  node,
+  openAddNewZonesModal,
+  nodeZones,
+}) => {
+  const { values } = useFormik({
+    initialValues: {
+      resource: node.resource,
+      nodeServiceZoneId: node.nodeServiceZone?.id,
+      number: node.number,
+    },
+    enableReinitialize: true,
+    onSubmit: console.log,
+  });
 
-          <Form.Item
-            style={styles.w100}
-            label="Номер узла"
-            name="number"
-            rules={[{ required: true, message: 'Выберите Номер узла' }]}
-          >
-            <InputTT placeholder="Номер узла" />
-          </Form.Item>
+  
+  const selectZonesOptions = useMemo(
+    () =>
+      nodeZones.map((zone) => ({
+        value: zone.id,
+        label: zone.name,
+      })),
+    [nodeZones]
+  );
 
-          <Zone>
-            <label
-              htmlFor="serviceZone"
-              style={{ color: 'var(--main-70)', fontWeight: 500 }}
-            >
-              Зона:
-            </label>
-            <ZoneInner>
-              <SelectTT
-                id="serviceZone"
-                style={styles.w49}
-                onChange={(chosenInputId) => {
-                  setChosenInput(+chosenInputId);
-                }}
-                placeholder="Зона"
-                options={selectZonesOptions}
-                value={chosenInputForSelect?.value}
-              />
-              <AddZoneText onClick={() => addServiceZoneButtonClicked()}>
-                + Добавить новую зону
-              </AddZoneText>
-            </ZoneInner>
-          </Zone>
+  return (
+    <Wrapper>
+      <FormItem label="Тип ресурса" className="resource">
+        <Select
+          placeholder="Выберите тип ресурса"
+          value={values.resource}
+          disabled
+        >
+          <Select.Option value={values.resource}>
+            <SelectWrapper>
+              <ResourceIconLookup resource={values.resource} />
+              <ResourceText>{ResourceLookUp[values.resource]}</ResourceText>
+            </SelectWrapper>
+          </Select.Option>
+        </Select>
+      </FormItem>
 
-          <AddNewZonesModal />
+      <InfoWrapper>
+        <FormItem label="Номер узла">
+          <Input placeholder="Номер узла" name="number" />
+        </FormItem>
 
-          <Form.Item
-            style={styles.w100}
-            label="Коммерческий учет показателей приборов"
-            name="nodeStatus"
-            rules={[{ required: true, message: 'Выберите Коммерческий учет' }]}
-          >
-            <SelectTT
-              placeholder="Коммерческий учет показателей приборов"
-              options={nodeStatusList}
-            />
-          </Form.Item>
+        <FormItem label="Статус узла">
+          <Select></Select>
+        </FormItem>
 
-          <>
-            <Form.Item
-              style={styles.w100}
-              label="Дата начала действия акта-допуска"
-              name="lastCommercialAccountingDate"
-              rules={[
-                {
-                  required: true,
-                  message: 'Выберите Дата начала действия акта-допуска',
-                },
-              ]}
-            >
-              <DatePickerTT
-                format="DD.MM.YYYY"
-                placeholder="Укажите дату..."
-                allowClear={false}
-                onChange={(value) => {
-                  setFieldsValue({
-                    futureCommercialAccountingDate: moment(value).add(
-                      4,
-                      'years'
-                    ),
-                  });
-                }}
-              />
-            </Form.Item>
+        <FormItem label="Зона">
+          <Select
+            // onChange={(chosenInputId) => {
+            //   setChosenInput(+chosenInputId);
+            // }}
+            placeholder="Зона"
+            options={selectZonesOptions}
+            // value={chosenInputForSelect?.value}
+          />
+        </FormItem>
+        <AddZoneText onClick={() => openAddNewZonesModal()}>
+          + Добавить новую зону
+        </AddZoneText>
+      </InfoWrapper>
 
-            <Form.Item
-              style={styles.w100}
-              label="Дата окончания действия акта-допуска"
-              name="futureCommercialAccountingDate"
-              rules={[
-                {
-                  required: true,
-                  message: 'Выберите Дата окончания действия акта-допуска',
-                },
-              ]}
-            >
-              <DatePickerTT
-                format="DD.MM.YYYY"
-                placeholder="Укажите дату..."
-                allowClear={false}
-              />
-            </Form.Item>
-          </>
-        </StyledFormPage>
-  </Wrapper>
+      <FormItem label="Коммерческий учет показателей приборов">
+        <Select placeholder="Коммерческий учет показателей приборов" />
+      </FormItem>
+
+      <>
+        <FormItem
+          label="Дата начала действия акта-допуска"
+          // message: 'Выберите Дата начала действия акта-допуска',
+        >
+          {/* <DatePicker
+            format="DD.MM.YYYY"
+            placeholder="Укажите дату..."
+            allowClear={false}
+            onChange={(value) => {
+              setFieldsValue({
+                futureCommercialAccountingDate: moment(value).add(4, 'years'),
+              });
+            }}
+          /> */}
+        </FormItem>
+
+        <FormItem
+          label="Дата окончания действия акта-допуска"
+          // message: 'Выберите Дата окончания действия акта-допуска',
+        >
+          <DatePicker
+            format="DD.MM.YYYY"
+            placeholder="Укажите дату..."
+            allowClear={false}
+          />
+        </FormItem>
+      </>
+    </Wrapper>
+  );
 };
