@@ -5,6 +5,7 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
+import * as yup from 'yup';
 import {
   AddTPButton,
   ButtonPadding,
@@ -20,9 +21,15 @@ import {
   Wrapper,
   XIconSc,
 } from './CreateObjectMainInfoStage.styled';
-import { CreateObjectMainInfoStageProps } from './CreateObjectMainInfoStage.types';
+import {
+  CreateObjectMainInfoStageProps,
+  ObjectMainInfoValues,
+} from './CreateObjectMainInfoStage.types';
 import { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal/CreateNewHeatingPointModal';
 import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
+import { useFormik } from 'formik';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { HeatingPoint } from './CreateNewHeatingPointModal/CreateNewHeatingPointForm/CreateNewHeatingPointForm.types';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -32,11 +39,44 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
+  const [
+    newHeatingPointModalData,
+    setNewHeatingPointModalData,
+  ] = useState<HeatingPoint | null>(null);
+
+  const validationsSchema = yup.object().shape({
+    houseManagement: yup.string().required('Обязательное поле'),
+    objectCategotry: yup.string().required('Обязательное поле'),
+    objectType: yup.string().required('Обязательное поле'),
+    heatingPoint: yup.string(),
+  });
+
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    errors,
+  } = useFormik<ObjectMainInfoValues>({
+    initialValues: {
+      houseManagement: '',
+      objectCategotry: '',
+      objectType: '',
+      heatingPoint: { heatingPointType: '', heatingPointNumber: '' },
+    },
+    enableReinitialize: true,
+    onSubmit: (data) => {
+      console.log(data);
+    },
+    validateOnBlur: true,
+    validationSchema: validationsSchema,
+  });
+
   return (
     <>
       <CreateNewHeatingPointModal
-        isModalOpen={isCreateModalOpen}
-        setModalOpen={setCreateModalOpen}
+        isCreateModalOpen={isCreateModalOpen}
+        setCreateModalOpen={setCreateModalOpen}
+        setNewHeatingPointModalData={setNewHeatingPointModalData}
       />
       <EditNewHeatingPointModal
         isEditModalOpen={isEditModalOpen}
@@ -48,7 +88,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
         <FormItem label="Домоуправления">
           <StyledSelect
             placeholder="Выберите из списка"
-            onChange={(value) => {}}
+            onChange={(value) => setFieldValue('houseManagement', value)}
+            value={values.houseManagement}
           >
             {houseManagements?.map(
               (houseManagement) =>
@@ -59,6 +100,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 )
             )}
           </StyledSelect>
+          <ErrorMessage>{errors.houseManagement}</ErrorMessage>
         </FormItem>
 
         <SpaceLine />
@@ -67,7 +109,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           <FormItem label="Категория объекта">
             <StyledSelect
               placeholder="Выберите из списка"
-              onChange={(value) => {}}
+              onChange={(value) => setFieldValue('objectCategotry', value)}
+              value={values.objectCategotry}
             >
               {houseManagements?.map(
                 (houseManagement) =>
@@ -78,12 +121,14 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                   )
               )}
             </StyledSelect>
+            <ErrorMessage>{errors.objectCategotry}</ErrorMessage>
           </FormItem>
 
           <FormItem label="Тип объекта">
             <StyledSelect
               placeholder="Выберите из списка"
-              onChange={(value) => {}}
+              onChange={(value) => setFieldValue('objectType', value)}
+              value={values.objectType}
             >
               {houseManagements?.map(
                 (houseManagement) =>
@@ -94,17 +139,22 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                   )
               )}
             </StyledSelect>
+            <ErrorMessage>{errors.objectType}</ErrorMessage>
           </FormItem>
         </GridContainer>
 
         <SpaceLine />
 
-        {true && (
+        {!newHeatingPointModalData && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
               <StyledSelect
                 placeholder="Выберите из списка"
-                onChange={(value) => {}}
+                onChange={(value) => setFieldValue('heatingPoint', value)}
+                value={
+                  (values.heatingPoint.heatingPointType,
+                  values.heatingPoint.heatingPointNumber)
+                }
               >
                 {houseManagements?.map(
                   (houseManagement) =>
@@ -115,6 +165,9 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                     )
                 )}
               </StyledSelect>
+              <ErrorMessage>
+                {errors.heatingPoint?.heatingPointType}
+              </ErrorMessage>
             </FormItem>
 
             <AddTPButton
@@ -126,11 +179,16 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           </GridContainer>
         )}
 
-        {true && (
+        {newHeatingPointModalData && (
           <FormItem label="Тепловой пункт">
             <InputTypeDisplayingDiv>
               <FlexStart>
-                <Title> ЦТП 2 </Title> <Subtitle> (123456789) </Subtitle>
+                <Title>
+                  {newHeatingPointModalData.heatingPoint.heatingPointType}
+                </Title>
+                <Subtitle>
+                  ({newHeatingPointModalData.heatingPoint.heatingPointNumber})
+                </Subtitle>
               </FlexStart>
               <FlexEnd>
                 <PencilIconSc onClick={() => setEditModalOpen(true)} />
@@ -150,7 +208,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button sidePadding={25} onClick={() => {}}>
+            <Button sidePadding={25} onClick={() => handleSubmit()}>
               Далее
             </Button>
           </RightButtonBlock>

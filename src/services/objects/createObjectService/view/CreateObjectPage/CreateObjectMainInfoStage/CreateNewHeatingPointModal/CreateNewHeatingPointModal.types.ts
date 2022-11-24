@@ -1,4 +1,7 @@
+import { HeatingPoint } from './CreateNewHeatingPointForm/CreateNewHeatingPointForm.types';
+
 export type CreateNewHeatingPointModalProps = {
-  isModalOpen: boolean;
-  setModalOpen: (payload: boolean) => void;
+  isCreateModalOpen: boolean;
+  setCreateModalOpen: (payload: boolean) => void;
+  setNewHeatingPointModalData: (payload: HeatingPoint) => void;
 };

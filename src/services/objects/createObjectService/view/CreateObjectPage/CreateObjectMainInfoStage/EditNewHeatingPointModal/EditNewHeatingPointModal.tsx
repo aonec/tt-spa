@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { EditNewHeatingPointModalProps } from './EditNewHeatingPointModal.types';
 import { StyledModal } from '01/shared/ui/Modal/Modal';
 import { StyledSelect } from '01/shared/ui/Select/components';
-import { ButtonTT, InputTT } from '01/tt-components';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -13,6 +12,7 @@ import {
   MarginSide,
   Wrapper,
 } from '../CreateNewHeatingPointModal/CreateNewHeatingPointModal.styled';
+import { Input } from 'ui-kit/Input';
 
 export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({
   isEditModalOpen,
@@ -33,9 +33,9 @@ export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({
         footer={
           <Footer>
             <MarginSide>
-              <ButtonTT color="white" onClick={() => setEditModalOpen(false)}>
+              <Button type="ghost" onClick={() => setEditModalOpen(false)}>
                 Отмена
-              </ButtonTT>
+              </Button>
             </MarginSide>
             <Button sidePadding={25} onClick={() => {}} disabled={false}>
               Сохранить измениния
@@ -54,7 +54,7 @@ export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({
           </FormItem>
 
           <FormItem label="Номер ТП">
-            <InputTT placeholder="Введите" />
+            <Input placeholder="Введите" />
           </FormItem>
         </GridContainer>
       </StyledModal>
