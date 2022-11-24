@@ -48,11 +48,14 @@ export const Wrapper = styled.div<{
   type: ButtonStyleType;
   size: ButtonSizeType;
   disabled?: boolean;
+  sidePadding?: number;
   isLoading?: boolean;
 }>`
   background-color: ${({ type }) => buttonBackgroundColorsDictionary[type]};
   color: ${({ type }) => buttonFontColorsDictionary[type]};
-  padding: 0 ${({ size }) => buttonSizesDictionary[size].padding}px;
+  padding: 0
+    ${({ size, sidePadding = 0 }) =>
+      buttonSizesDictionary[size].padding + sidePadding}px;
   border-radius: 4px;
   font-size: ${({ size }) => buttonSizesDictionary[size].fontSize}px;
   font-weight: 600;

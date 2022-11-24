@@ -27,6 +27,8 @@ export const ObjectsProfileContainer = () => {
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal
   );
 
+  const handleCreateObject = () => history.push('/objects/create');
+
   useEffect(() => {
     if (!searchType) {
       history.push(`/objects/${SearchType.Houses}`);
@@ -46,6 +48,7 @@ export const ObjectsProfileContainer = () => {
         handleOpenChooseResourceDisconnectionModal={() =>
           handleOpenChooseResourceDisconnectionModal()
         }
+        handleCreateObject={handleCreateObject}
       />
     </>
   );
