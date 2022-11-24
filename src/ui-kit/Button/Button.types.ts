@@ -6,6 +6,7 @@ export type ButtonProps = {
   icon?: ReactElement;
   size?: ButtonSizeType;
   sidePadding?: number;
+  isLoading?: boolean;
 } & HTMLAttributes<HTMLElement>;
 
 export type ButtonSizeType = 'middle' | 'small';

@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { round } from 'lodash';
 import { EMagistralType } from 'myApi';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { MonthWrapper, Wrapper } from './MeteringDeviceMonthReading.styled';
 import { MeteringDeviceMonthReadingProps } from './MeteringDeviceMonthReading.types';
 import { MeteringDeviceMonthReadingInput } from './MeteringDeviceMonthReadingInput';
@@ -31,8 +31,13 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
 
     const isFeedFlowReadingExist =
       feedFlowReading && typeof feedFlowReading.value === 'number';
+    const isFeedFlowBackReadingExist =
+      feedBackFlowReading && typeof feedBackFlowReading.value === 'number';
 
-    if ((!isFeedFlowReadingExist && isColdWater) || !feedBackFlowReading) {
+    if (
+      !isFeedFlowReadingExist ||
+      (!isColdWater && !isFeedFlowBackReadingExist)
+    ) {
       return '-';
     }
 
@@ -54,7 +59,7 @@ export const MeteringDeviceMonthReading: FC<MeteringDeviceMonthReadingProps> = (
     return round(
       result +
         prevBackFeedFlowReadingValue -
-        Number(feedBackFlowReading?.value),
+        Number(feedBackFlowReading?.value || 0),
       3
     );
   }, [allReadings, values]);
