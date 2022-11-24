@@ -75,9 +75,7 @@ const getCurrentReading = (readings: MeteringDeviceReading[]) => {
     const readingDate = moment(reading.readingDate);
     const diff = currentDate.diff(readingDate, 'months');
 
-    if (diff === 0) return true;
-
-    return false;
+    return diff === 0;
   });
 
   return res;
