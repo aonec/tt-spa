@@ -35,11 +35,6 @@ forward({
   to: requestServiceZonesFx,
 });
 
-// forward({
-//   from: PageGate.close,
-//   to: $serviceZones.reset,
-// });
-
 $serviceZones.reset(PageGate.close);
 
 $requestServiceZonesStatus

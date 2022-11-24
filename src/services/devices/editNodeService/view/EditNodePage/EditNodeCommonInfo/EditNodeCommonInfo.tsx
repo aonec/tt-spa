@@ -10,27 +10,38 @@ import {
   InfoWrapper,
   ResourceText,
   SelectWrapper,
+  SwitchTextWrapper,
+  SwitchWrapper,
   Wrapper,
 } from './EditNodeCommonInfo.styled';
-import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
+import {
+  EditNodeCommonInfoProps,
+  UpdatePipeNodeFormik,
+} from './EditNodeCommonInfo.types';
 import { useFormik } from 'formik';
+import { ENodeCommercialAccountStatus } from 'myApi';
+import moment from 'moment';
+import { Switch } from 'antd';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
   openAddNewZonesModal,
   nodeZones,
 }) => {
-  const { values } = useFormik({
+  const { values, setFieldValue } = useFormik<UpdatePipeNodeFormik>({
     initialValues: {
-      resource: node.resource,
       nodeServiceZoneId: node.nodeServiceZone?.id,
-      number: node.number,
+      number: String(node.number),
+      nodeStatus: node.nodeStatus?.value,
+      futureCommercialAccountingDate: moment(
+        node.futureCommercialAccountingDate
+      ),
+      lastCommercialAccountingDate: moment(node.lastCommercialAccountingDate),
     },
     enableReinitialize: true,
     onSubmit: console.log,
   });
 
-  
   const selectZonesOptions = useMemo(
     () =>
       nodeZones.map((zone) => ({
@@ -45,74 +56,103 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       <FormItem label="Тип ресурса" className="resource">
         <Select
           placeholder="Выберите тип ресурса"
-          value={values.resource}
+          value={node.resource}
           disabled
         >
-          <Select.Option value={values.resource}>
+          <Select.Option value={node.resource}>
             <SelectWrapper>
-              <ResourceIconLookup resource={values.resource} />
-              <ResourceText>{ResourceLookUp[values.resource]}</ResourceText>
+              <ResourceIconLookup resource={node.resource} />
+              <ResourceText>{ResourceLookUp[node.resource]}</ResourceText>
             </SelectWrapper>
           </Select.Option>
         </Select>
       </FormItem>
-
       <InfoWrapper>
         <FormItem label="Номер узла">
-          <Input placeholder="Номер узла" name="number" />
+          <Input
+            placeholder="Номер узла"
+            value={values.number}
+            onChange={(e) => setFieldValue('number', e.target.value)}
+            type="number"
+          />
         </FormItem>
 
         <FormItem label="Статус узла">
-          <Select></Select>
+          <Select value={values.nodeStatus}>
+            <Select.Option value={ENodeCommercialAccountStatus.Registered}>
+              Сдан на коммерческий учет
+            </Select.Option>
+            <Select.Option value={ENodeCommercialAccountStatus.NotRegistered}>
+              Не на коммерческом учете
+            </Select.Option>
+            <Select.Option value={ENodeCommercialAccountStatus.OnReview}>
+              На утверждении
+            </Select.Option>
+            <Select.Option value={ENodeCommercialAccountStatus.Prepared}>
+              Подговлен к сдаче
+            </Select.Option>
+          </Select>
         </FormItem>
-
-        <FormItem label="Зона">
+      </InfoWrapper>
+      <FormItem label="Зона">
+        <InfoWrapper>
           <Select
-            // onChange={(chosenInputId) => {
-            //   setChosenInput(+chosenInputId);
-            // }}
+            value={values.nodeServiceZoneId || undefined}
+            onChange={(chosenInputId) =>
+              setFieldValue('nodeServiceZoneId', chosenInputId)
+            }
             placeholder="Зона"
             options={selectZonesOptions}
-            // value={chosenInputForSelect?.value}
           />
-        </FormItem>
-        <AddZoneText onClick={() => openAddNewZonesModal()}>
-          + Добавить новую зону
-        </AddZoneText>
-      </InfoWrapper>
-
-      <FormItem label="Коммерческий учет показателей приборов">
-        <Select placeholder="Коммерческий учет показателей приборов" />
+          <AddZoneText onClick={() => openAddNewZonesModal()}>
+            + Добавить новую зону
+          </AddZoneText>
+        </InfoWrapper>
       </FormItem>
 
-      <>
-        <FormItem
-          label="Дата начала действия акта-допуска"
-          // message: 'Выберите Дата начала действия акта-допуска',
-        >
-          {/* <DatePicker
-            format="DD.MM.YYYY"
-            placeholder="Укажите дату..."
-            allowClear={false}
-            onChange={(value) => {
-              setFieldsValue({
-                futureCommercialAccountingDate: moment(value).add(4, 'years'),
-              });
-            }}
-          /> */}
-        </FormItem>
+      <SwitchWrapper>
+        <Switch />
+        <SwitchTextWrapper>
+          Коммерческий учет показателей приборов
+        </SwitchTextWrapper>
+      </SwitchWrapper>
 
-        <FormItem
-          label="Дата окончания действия акта-допуска"
-          // message: 'Выберите Дата окончания действия акта-допуска',
-        >
-          <DatePicker
-            format="DD.MM.YYYY"
-            placeholder="Укажите дату..."
-            allowClear={false}
-          />
-        </FormItem>
-      </>
+      <FormItem
+        label="Дата начала действия акта-допуска"
+        // message: 'Выберите Дата начала действия акта-допуска',
+      >
+        <DatePicker
+          format="DD.MM.YYYY"
+          placeholder="Укажите дату..."
+          value={values.lastCommercialAccountingDate}
+          allowClear={false}
+          onChange={(value) => {
+            setFieldValue('lastCommercialAccountingDate', moment(value));
+            setFieldValue(
+              'futureCommercialAccountingDate',
+              moment(value).add(4, 'years')
+            );
+          }}
+        />
+      </FormItem>
+
+      <FormItem
+        label="Дата окончания действия акта-допуска"
+        // message: 'Выберите Дата окончания действия акта-допуска',
+      >
+        <DatePicker
+          format="DD.MM.YYYY"
+          placeholder="Укажите дату..."
+          allowClear={false}
+          value={values.futureCommercialAccountingDate}
+          onChange={(value) =>
+            setFieldValue(
+              'futureCommercialAccountingDate',
+              moment(value).add(4, 'years')
+            )
+          }
+        />
+      </FormItem>
     </Wrapper>
   );
 };
