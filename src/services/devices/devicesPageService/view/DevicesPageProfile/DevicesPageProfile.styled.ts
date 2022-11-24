@@ -6,5 +6,5 @@ export const Wrapper = styled.div`
 `;
 
 export const TabsSC = styled(Tabs)`
-  overflow: visible;
+  padding: 0 0 16px 8px;
 `;
