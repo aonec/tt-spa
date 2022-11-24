@@ -16,6 +16,7 @@ import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/no
 import { ContentProps } from './NodeProfile.types';
 import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
 import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({ tabItems, node, loading, nodeId, path }) => {
@@ -68,6 +69,7 @@ export const Content: React.FC<ContentProps> = React.memo(
             <HousingMeteringDeviceReadingsContainer
               nodeId={Number(nodeId)}
               resource={resource}
+              deviceIds={getDeviceIds(node)}
             />
           </Route>
           <Route path={`${path}/connection`} exact>

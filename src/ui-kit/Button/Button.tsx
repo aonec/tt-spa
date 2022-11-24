@@ -11,6 +11,7 @@ export const Button: FC<ButtonProps> = (props) => {
     onClick,
     disabled = props.isLoading,
     size = 'middle',
+    sidePadding,
     isLoading,
   } = props;
 
@@ -26,6 +27,7 @@ export const Button: FC<ButtonProps> = (props) => {
       onClick={disabled ? undefined : onClick}
       className={classNameString}
       size={size}
+      sidePadding={sidePadding}
     >
       {props.children}
       {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}

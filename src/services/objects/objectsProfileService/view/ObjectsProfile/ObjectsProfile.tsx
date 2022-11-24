@@ -25,6 +25,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleOpenChooseResourceDisconnectionModal,
   searchType,
   openSoiReportModal,
+  handleCreateObject,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -39,6 +40,10 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       {
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
+      },
+      {
+        title: 'Создать объект',
+        onClick: handleCreateObject,
       },
     ],
     [handleExportGroupReport, handleOpenChooseResourceDisconnectionModal]
