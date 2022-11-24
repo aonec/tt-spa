@@ -20,21 +20,27 @@ export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceRea
 
   const isShowLoader = readings.length === 0 && isLoading;
 
+  const isDevicesExist = readings.length !== 0;
+
   const createReading = useEvent(inputs.createReading);
 
   return (
     <>
       <NodeResourceGate resource={resource} />
       <NodeIdGate nodeId={nodeId} />
-
-      <WithLoader isLoading={isShowLoader}>
-        <MeteringDeviceReadingsTable
-          isColdWater={isColdWater}
-          readings={readings}
-          createReading={createReading}
-          deviceIds={deviceIds}
-        />
-      </WithLoader>
+      {!isDevicesExist && (
+        <NoFlowMeterTitle>На узле не хватает расходомера(-ов)</NoFlowMeterTitle>
+      )}
+      {isDevicesExist && (
+        <WithLoader isLoading={isShowLoader}>
+          <MeteringDeviceReadingsTable
+            isColdWater={isColdWater}
+            readings={readings}
+            createReading={createReading}
+            deviceIds={deviceIds}
+          />
+        </WithLoader>
+      )}
     </>
   );
 };
