@@ -35,8 +35,10 @@ const $createObjectData = domain
   .on(handleAddressData, (_, addresses) => addresses);
 
 const $stageNumber = domain
-  .createStore<number>(4)
+  .createStore<number>(1)
   .on(handleAddressData, () => 2)
+  .on(handleMainInfoData, () => 3)
+  .on(handleAdditionalInfoData, () => 4)
   .on(goBackStage, (prev) => prev - 1);
 
 const $houseManagements = domain
