@@ -1,1 +1,0 @@
-export { CreateNewHeatingPointForm } from './CreateNewHeatingPointForm'

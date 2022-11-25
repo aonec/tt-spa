@@ -101,7 +101,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       {values.city && <ExistingStreetsGate City={values.city} />}
 
       <Wrapper>
-        <PageTitle>Адресс объекта</PageTitle>
+        <PageTitle>Адрес объекта</PageTitle>
 
         <BlockTitle>Основной адрес объекта</BlockTitle>
         <GridWrapper>

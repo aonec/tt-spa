@@ -29,7 +29,7 @@ import { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal/CreateN
 import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { HeatingPoint } from './CreateNewHeatingPointModal/CreateNewHeatingPointForm/CreateNewHeatingPointForm.types';
+import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -81,6 +81,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
       <EditNewHeatingPointModal
         isEditModalOpen={isEditModalOpen}
         setEditModalOpen={setEditModalOpen}
+        setNewHeatingPointModalData={setNewHeatingPointModalData}
       />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
