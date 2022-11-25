@@ -2,7 +2,7 @@ export type CreateObjectAddressStageProps = {
   existingStreets: string[] | null;
   existingCities: string[] | null;
   handleAddressData: (payload: ObjectAddressValues) => void;
-  onPageCancel: (payload: void) => void;
+  onPageCancel: () => void;
   createObjectData: ObjectAddressValues | null;
 };
 

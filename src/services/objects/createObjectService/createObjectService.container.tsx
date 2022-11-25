@@ -36,7 +36,7 @@ export const CreateObjectContainer = () => {
         handleMainInfoData={handleMainInfoData}
         handleAdditionalInfoData={handleAdditionalInfoData}
         houseManagements={houseManagements}
-        goBackStage={goBackStage}
+        goBackStage={() => goBackStage()}
         onPageCancel={onPageCancel}
         handleSubmitCreateObject={handleSubmitCreateObject}
       />

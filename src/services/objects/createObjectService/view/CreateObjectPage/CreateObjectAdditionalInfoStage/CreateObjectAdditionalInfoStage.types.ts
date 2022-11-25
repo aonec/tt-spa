@@ -1,6 +1,6 @@
 export type CreateObjectAdditionalInfoStageProps = {
-  goBackStage: (payload: void) => void;
-  onPageCancel: (payload: void) => void;
+  goBackStage: () => void;
+  onPageCancel: () => void;
   handleAdditionalInfoData: (payload: AdditionalInfo) => void;
 };
 

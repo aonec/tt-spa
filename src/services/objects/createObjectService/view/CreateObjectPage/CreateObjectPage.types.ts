@@ -11,8 +11,8 @@ export type CreateObjectPageProps = {
   handleMainInfoData: (payload: ObjectMainInfoValues) => void;
   handleAdditionalInfoData: (payload: AdditionalInfo) => void;
   houseManagements: HouseManagementResponse[] | null;
-  goBackStage: (payload: void) => void;
-  onPageCancel: (payload: void) => void;
+  goBackStage: () => void;
+  onPageCancel: () => void;
   createObjectData: ObjectAddressValues | null;
-  handleSubmitCreateObject: (payload: void) => void;
+  handleSubmitCreateObject: () => void;
 };
