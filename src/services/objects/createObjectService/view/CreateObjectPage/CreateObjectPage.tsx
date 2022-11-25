@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoStage';
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';
+import { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';
 import { CreateObjectMainInfoStage } from './CreateObjectMainInfoStage';
 import {
   GridWrapper,
@@ -20,7 +21,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   houseManagements,
   goBackStage,
   onPageCancel,
-  createObjectData
+  createObjectData,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -62,6 +63,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               onPageCancel={onPageCancel}
             />
           )}
+          {stageNumber === 4 && <CreateObjectFinalStageModal />}
         </div>
         <div>
           <Steps direction="vertical" current={stageNumber - 1}>
