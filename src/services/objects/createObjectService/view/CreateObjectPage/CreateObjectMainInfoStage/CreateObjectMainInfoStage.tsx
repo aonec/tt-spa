@@ -5,7 +5,6 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
-import * as yup from 'yup';
 import {
   AddTPButton,
   ButtonPadding,
@@ -30,6 +29,10 @@ import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
+import {
+  initialValues,
+  validationSchema,
+} from './createObjectMainInfoStage.constants';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -44,31 +47,19 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     setNewHeatingPointModalData,
   ] = useState<HeatingPoint | null>(null);
 
-  const validationsSchema = yup.object().shape({
-    houseManagement: yup.string().required('Обязательное поле'),
-    objectCategotry: yup.string().required('Обязательное поле'),
-    objectType: yup.string().required('Обязательное поле'),
-    heatingPoint: yup.string(),
-  });
-
   const {
     values,
     handleSubmit,
     setFieldValue,
     errors,
   } = useFormik<ObjectMainInfoValues>({
-    initialValues: {
-      houseManagement: '',
-      objectCategotry: '',
-      objectType: '',
-      heatingPoint: { heatingPointType: '', heatingPointNumber: '' },
-    },
+    initialValues,
     enableReinitialize: true,
     onSubmit: (data) => {
       console.log(data);
     },
     validateOnBlur: true,
-    validationSchema: validationsSchema,
+    validationSchema,
   });
 
   return (

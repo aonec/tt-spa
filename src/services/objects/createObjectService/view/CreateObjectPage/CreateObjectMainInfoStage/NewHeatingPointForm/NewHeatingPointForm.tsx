@@ -7,33 +7,27 @@ import {
 import { StyledSelect } from '01/shared/ui/Select/components';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { Input } from 'ui-kit/Input';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
+import {
+  initialValues,
+  validationSchema,
+} from './newHeatingPointForm.constants';
 export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
   setNewHeatingPointModalData,
   setCreateModalOpen,
   setEditModalOpen,
   formId,
 }) => {
-  const validationsSchema = yup.object().shape({
-    heatingPoint: yup.object().shape({
-      heatingPointType: yup.string().required('Обязательное поле'),
-      heatingPointNumber: yup.string().required('Обязательное поле'),
-    }),
-  });
-
   const {
     values,
     handleSubmit,
     setFieldValue,
     errors,
   } = useFormik<HeatingPoint>({
-    initialValues: {
-      heatingPoint: { heatingPointType: '', heatingPointNumber: '' },
-    },
+    initialValues,
     enableReinitialize: true,
     onSubmit: (data) => {
       setNewHeatingPointModalData(data);
@@ -41,7 +35,7 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
       setEditModalOpen && setEditModalOpen(false);
     },
     validateOnBlur: true,
-    validationSchema: validationsSchema,
+    validationSchema,
   });
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
