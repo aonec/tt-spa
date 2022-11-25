@@ -4,6 +4,7 @@ export type CreateObjectMainInfoStageProps = {
   houseManagements: HouseManagementResponse[] | null;
   goBackStage: (payload: void) => void;
   onPageCancel: (payload: void) => void;
+  handleMainInfoData: (payload: ObjectMainInfoValues) => void;
 };
 
 export type ObjectMainInfoValues = {

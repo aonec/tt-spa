@@ -38,6 +38,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
   goBackStage,
   onPageCancel,
+  handleMainInfoData,
 }) => {
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     initialValues,
     enableReinitialize: true,
     onSubmit: (data) => {
-      console.log(data);
+      handleMainInfoData(data);
     },
     validateOnBlur: true,
     validationSchema,
@@ -184,7 +185,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
               </FlexStart>
               <FlexEnd>
                 <PencilIconSc onClick={() => setEditModalOpen(true)} />
-                <XIconSc />
+                <XIconSc onClick={() => setNewHeatingPointModalData(null)} />
               </FlexEnd>
             </InputTypeDisplayingDiv>
           </FormItem>
