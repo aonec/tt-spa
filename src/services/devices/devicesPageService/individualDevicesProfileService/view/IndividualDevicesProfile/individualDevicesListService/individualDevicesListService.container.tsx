@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useStore } from 'effector-react';
 import { individualDevicesListService } from './individualDevicesListService.model';
 import { IndividualDevicesListContainerProps } from './individualDevicesListService.types';

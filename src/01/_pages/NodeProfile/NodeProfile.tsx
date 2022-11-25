@@ -9,13 +9,13 @@ import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
 import { NodeConnection } from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
-import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { SidePanel } from '01/shared/ui/SidePanel';
 import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { ContentProps } from './NodeProfile.types';
 import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
 import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({ tabItems, node, loading, nodeId, path }) => {
@@ -68,6 +68,7 @@ export const Content: React.FC<ContentProps> = React.memo(
             <HousingMeteringDeviceReadingsContainer
               nodeId={Number(nodeId)}
               resource={resource}
+              deviceIds={getDeviceIds(node)}
             />
           </Route>
           <Route path={`${path}/connection`} exact>
