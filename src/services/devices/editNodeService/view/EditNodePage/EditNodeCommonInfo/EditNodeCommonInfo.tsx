@@ -7,6 +7,8 @@ import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   AddZoneText,
+  ButtonSC,
+  FooterWrapper,
   InfoWrapper,
   ResourceText,
   SelectWrapper,
@@ -22,6 +24,7 @@ import { useFormik } from 'formik';
 import { ENodeCommercialAccountStatus } from 'myApi';
 import moment from 'moment';
 import { Form, Switch } from 'antd';
+import { Button } from 'ui-kit/Button';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
@@ -162,6 +165,14 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           />
         </FormItem>
       </Form>
+
+      <FooterWrapper>
+        <Button form={formId} type="ghost">
+          Отмена
+        </Button>
+
+        <ButtonSC form={formId}>Сохранить</ButtonSC>
+      </FooterWrapper>
     </Wrapper>
   );
 };

@@ -173,10 +173,6 @@ const EditNodeForm = ({
         requiredMark={false}
         scrollToFirstError
       >
-        <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          <EditNodeCalculatorConnectionContainer />
-        </StyledFormPage>
-
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>
           <div style={styles.w100}>
             <NodeRelatedDevices
@@ -203,41 +199,6 @@ const EditNodeForm = ({
             <IconTT icon="plus" />
           </ButtonTT>
         </StyledFormPage>
-
-        <StyledFormPage hidden={Number(currentTabKey) !== 4}>
-          <FilesList
-            initialFiles={renderDocuments}
-            controlType="DELETE"
-            removeFile={(_, fileId = 0) => {
-              setDeletedDocumentIds((prev) => [...prev, fileId]);
-            }}
-          />
-          <DocumentsUpload
-            onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}
-          />
-        </StyledFormPage>
-
-        <StyledFooter form right>
-          <NavLink to={`/nodes/${nodeId}`}>
-            <ButtonTT
-              color="white"
-              type="button"
-              style={{ marginRight: '16px' }}
-            >
-              Отмена
-            </ButtonTT>
-          </NavLink>
-          <ButtonTT
-            color="blue"
-            type="submit"
-            disabled={isRequestServiceZonesError || pendingSave}
-          >
-            <Flex>
-              {<ButtonLoader show={pendingSave} />}
-              Сохранить
-            </Flex>
-          </ButtonTT>
-        </StyledFooter>
       </Form>
     </>
   );
