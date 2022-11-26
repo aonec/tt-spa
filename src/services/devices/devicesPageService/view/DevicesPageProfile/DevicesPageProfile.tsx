@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Tabs } from 'antd';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
-import { TabsSC, Wrapper } from './DevicesPageProfile.styled';
+import { TabsSC } from './DevicesPageProfile.styled';
 import { DevicesPageProfileProps } from './DevicesPageProfile.types';
 import { DevicesProfileContainer } from 'services/devices/devicesProfileService';
 import { IndividualDevicesProfileContainer } from '../../individualDevicesProfileService';
@@ -21,7 +21,7 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   ];
 
   return (
-    <Wrapper>
+    <>
       <PageHeader
         title="Приборы"
         contextMenu={{ menuButtons: menuButtonArr }}
@@ -43,6 +43,6 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
           <IndividualDevicesProfileContainer />
         </TabsSC.TabPane>
       </TabsSC>
-    </Wrapper>
+    </>
   );
 };
