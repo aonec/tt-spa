@@ -34,7 +34,7 @@ export const PersonalNumberItem: FC<PersonalNumberItemProps> = ({
   }, [apartment.numberOfTasks]);
 
   return (
-    <Wrapper to={`/objects/${mainAddress?.id}/apartments/${apartment.id}`}>
+    <Wrapper to={`/apartments/${apartment.id}`}>
       <div>
         <AccountNumber>{personalAccountNumber}</AccountNumber>
         {numberOfTasks}
