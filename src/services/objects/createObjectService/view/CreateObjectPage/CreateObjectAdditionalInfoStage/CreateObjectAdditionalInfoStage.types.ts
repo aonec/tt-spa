@@ -1,7 +1,10 @@
+import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
+
 export type CreateObjectAdditionalInfoStageProps = {
   goBackStage: () => void;
   onPageCancel: () => void;
-  handleAdditionalInfoData: (payload: AdditionalInfo) => void;
+  // handleAdditionalInfoData: (payload: AdditionalInfo) => void;
+  handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
 };
 
 export type AdditionalInfo = {

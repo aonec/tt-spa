@@ -5,9 +5,9 @@ import { CreateObjectFinalStageModalProps } from './CreateObjectFinalStageModal.
 import { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm/CreateObjectFinalStageForm';
 
 export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> = ({
-  handleSubmit,
   onPageCancel,
   goBackStage,
+  createObjectData
 }) => {
   const formId = 'create-object-final-stage-form';
   return (
@@ -19,7 +19,7 @@ export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> =
         form={
           <CreateObjectFinalStageForm
             formId={formId}
-            handleSubmit={handleSubmit}
+            createObjectData={createObjectData}
           />
         }
         formId={formId}

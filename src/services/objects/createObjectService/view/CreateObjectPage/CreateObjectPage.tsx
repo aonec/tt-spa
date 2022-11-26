@@ -17,14 +17,11 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   existingStreets,
   existingCities,
   stageNumber,
-  handleAddressData,
   houseManagements,
   goBackStage,
   onPageCancel,
   createObjectData,
   handleSubmitCreateObject,
-  handleAdditionalInfoData,
-  handleMainInfoData,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -46,9 +43,9 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             <CreateObjectAddressStage
               existingStreets={existingStreets}
               existingCities={existingCities}
-              handleAddressData={handleAddressData}
               onPageCancel={onPageCancel}
               createObjectData={createObjectData}
+              handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}
 
@@ -57,7 +54,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               houseManagements={houseManagements}
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
-              handleMainInfoData={handleMainInfoData}
+              handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}
 
@@ -65,14 +62,14 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             <CreateObjectAdditionalInfoStage
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
-              handleAdditionalInfoData={handleAdditionalInfoData}
+              handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}
           {stageNumber === 4 && (
             <CreateObjectFinalStageModal
-              handleSubmit={handleSubmitCreateObject}
               onPageCancel={onPageCancel}
               goBackStage={goBackStage}
+              createObjectData={createObjectData}
             />
           )}
         </div>

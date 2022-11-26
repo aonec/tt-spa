@@ -12,23 +12,32 @@ import { CreateObjectFinalStageFormProps } from './CreateObjectFinalStageForm.ty
 
 export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
   formId,
-  handleSubmit,
+  createObjectData,
 }) => {
   return (
-    <Form id={formId} onSubmitCapture={() => handleSubmit()}>
+    <Form id={formId} onSubmitCapture={() => {}}>
       <Wrapper>
         <PageTitle>1. Адрес объекта</PageTitle>
 
         <GridContainer>
           <FieldDescrition>Основной адрес</FieldDescrition>
-          <Field>Некрасова 9</Field>
+          {createObjectData ? (
+            <Field>{`${createObjectData.city},${createObjectData.street},${createObjectData.house}`}</Field>
+          ) : (
+            <Field>'-'</Field>
+          )}
         </GridContainer>
         <SpaceLine />
+
         <GridContainer>
-          <FieldDescrition>
-            Адреса, под которыми известен объект
-          </FieldDescrition>
-          <Field>Некрасова 11</Field>
+          {createObjectData?.additionalAddresses?.map((e) => (
+            <>
+              <FieldDescrition>
+                Адреса, под которыми известен объект
+              </FieldDescrition>
+              <Field>{`${createObjectData.city},${e.street},${e.house}`}</Field>
+            </>
+          ))}
         </GridContainer>
         <SpaceLine />
 

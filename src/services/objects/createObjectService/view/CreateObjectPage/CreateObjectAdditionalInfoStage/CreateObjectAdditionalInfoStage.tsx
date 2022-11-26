@@ -22,7 +22,8 @@ import {
 export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
   goBackStage,
   onPageCancel,
-  handleAdditionalInfoData,
+  // handleAdditionalInfoData,
+  handleSubmitCreateObject,
 }) => {
   const lift = ['Есть', 'Нет'];
 
@@ -34,7 +35,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      handleAdditionalInfoData(data);
+      handleSubmitCreateObject(data);
     },
     validateOnBlur: true,
     validationSchema,

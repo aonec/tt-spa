@@ -1,5 +1,7 @@
+import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
+
 export type CreateObjectFinalStageModalProps = {
-  handleSubmit: () => void;
   onPageCancel: () => void;
   goBackStage: () => void;
+  createObjectData: ObjectCreateSubmitData | null;
 };

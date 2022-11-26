@@ -1,9 +1,12 @@
+import { ObjectCreateSubmitData } from '../../../createObjectService.types';
+
 export type CreateObjectAddressStageProps = {
   existingStreets: string[] | null;
   existingCities: string[] | null;
-  handleAddressData: (payload: ObjectAddressValues) => void;
+  // handleAddressData: (payload: ObjectAddressValues) => void;
   onPageCancel: () => void;
-  createObjectData: ObjectAddressValues | null;
+  createObjectData: ObjectCreateSubmitData | null;
+  handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
 };
 
 export type Address = {

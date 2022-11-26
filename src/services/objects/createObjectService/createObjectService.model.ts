@@ -2,21 +2,24 @@ import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { HouseManagementResponse } from 'myApi';
 import { getHouseManagements } from './createObjectService.api';
+import { ObjectCreateSubmitData } from './createObjectService.types';
 import { AdditionalInfo } from './view/CreateObjectPage/CreateObjectAdditionalInfoStage/CreateObjectAdditionalInfoStage.types';
 import { ObjectAddressValues } from './view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.types';
 import { ObjectMainInfoValues } from './view/CreateObjectPage/CreateObjectMainInfoStage/CreateObjectMainInfoStage.types';
 
 const domain = createDomain('createObjectService');
 
-const handleAddressData = domain.createEvent<ObjectAddressValues>();
+const handleSubmitData = domain.createEvent<ObjectCreateSubmitData>();
 
-const handleMainInfoData = domain.createEvent<ObjectMainInfoValues>();
+// const handleAddressData = domain.createEvent<ObjectAddressValues>();
 
-const handleAdditionalInfoData = domain.createEvent<AdditionalInfo>();
+// const handleMainInfoData = domain.createEvent<ObjectMainInfoValues>();
+
+// const handleAdditionalInfoData = domain.createEvent<AdditionalInfo>();
 
 const goBackStage = domain.createEvent();
 
-const handleSubmitCreateObject = domain.createEvent();
+const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
 const HouseManagementsFetchGate = createGate();
 
@@ -31,14 +34,15 @@ forward({
 });
 
 const $createObjectData = domain
-  .createStore<ObjectAddressValues | null>(null)
-  .on(handleAddressData, (_, addresses) => addresses);
+  .createStore<ObjectCreateSubmitData | null>(null)
+  .on(handleSubmitCreateObject, (oldData, newData) => ({
+    ...oldData,
+    ...newData,
+  }));
 
 const $stageNumber = domain
   .createStore<number>(1)
-  .on(handleAddressData, () => 2)
-  .on(handleMainInfoData, () => 3)
-  .on(handleAdditionalInfoData, () => 4)
+  .on(handleSubmitCreateObject, (prev) => prev + 1)
   .on(goBackStage, (prev) => prev - 1);
 
 const $houseManagements = domain
@@ -47,11 +51,8 @@ const $houseManagements = domain
 
 export const createObjectService = {
   inputs: {
-    handleAddressData,
     goBackStage,
     handleSubmitCreateObject,
-    handleMainInfoData,
-    handleAdditionalInfoData,
   },
   outputs: { $createObjectData, $stageNumber, $houseManagements },
   gates: { HouseManagementsFetchGate },

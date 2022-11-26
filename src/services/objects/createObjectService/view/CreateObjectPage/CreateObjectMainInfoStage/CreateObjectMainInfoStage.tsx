@@ -38,7 +38,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
   goBackStage,
   onPageCancel,
-  handleMainInfoData,
+  // handleMainInfoData,
+  handleSubmitCreateObject
 }) => {
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -57,7 +58,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     initialValues,
     enableReinitialize: true,
     onSubmit: (data) => {
-      handleMainInfoData(data);
+      handleSubmitCreateObject(data);
     },
     validateOnBlur: true,
     validationSchema,

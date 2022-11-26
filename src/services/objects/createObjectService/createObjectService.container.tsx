@@ -15,15 +15,16 @@ export const CreateObjectContainer = () => {
   const stageNumber = useStore(outputs.$stageNumber);
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
-  const handleAddressData = useEvent(inputs.handleAddressData);
-  const handleMainInfoData = useEvent(inputs.handleMainInfoData);
-  const handleAdditionalInfoData = useEvent(inputs.handleAdditionalInfoData);
+
+  console.log(createObjectData);
+  
+  const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
+
   const goBackStage = useEvent(inputs.goBackStage);
 
   const history = useHistory();
   const onPageCancel = () => history.goBack();
 
-  const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
   return (
     <>
       <HouseManagementsFetchGate />
@@ -32,9 +33,6 @@ export const CreateObjectContainer = () => {
         existingStreets={existingStreets}
         createObjectData={createObjectData}
         stageNumber={stageNumber}
-        handleAddressData={handleAddressData}
-        handleMainInfoData={handleMainInfoData}
-        handleAdditionalInfoData={handleAdditionalInfoData}
         houseManagements={houseManagements}
         goBackStage={() => goBackStage()}
         onPageCancel={onPageCancel}

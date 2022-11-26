@@ -31,9 +31,10 @@ import { validationSchema } from './createObjectAddressStage.constants';
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
-  handleAddressData,
+  // handleAddressData,
   onPageCancel,
   createObjectData,
+  handleSubmitCreateObject
 }) => {
   const {
     values,
@@ -51,7 +52,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      handleAddressData(data);
+      handleSubmitCreateObject(data);
     },
     validateOnBlur: true,
     validationSchema,
