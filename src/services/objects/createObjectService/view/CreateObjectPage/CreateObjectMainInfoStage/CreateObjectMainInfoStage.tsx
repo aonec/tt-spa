@@ -36,26 +36,24 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   goBackStage,
   onPageCancel,
   handleSubmitCreateObject,
+  createObjectData,
 }) => {
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
   const [
-    newHeatingPointModalData,
-    setNewHeatingPointModalData,
-  ] = useState<HeatingPoint | null>(null);
-
-  useEffect(() => {
-    setFieldValue('heatingPoint', newHeatingPointModalData);
-  }, [setNewHeatingPointModalData]);
+    isInputTypeDisplayingDivShow,
+    setInputTypeDisplayingDivShow,
+  ] = useState<boolean>(false);
 
   const initialValues = {
-    houseManagement: '',
-    objectCategotry: '',
-    objectType: '',
+    houseManagement: createObjectData?.houseManagement || '',
+    objectCategotry: createObjectData?.objectCategotry || '',
+    objectType: createObjectData?.objectType || '',
     heatingPoint: {
-      heatingPointType: '',
-      heatingPointNumber: '',
+      heatingPointType: createObjectData?.heatingPoint?.heatingPointType || '',
+      heatingPointNumber:
+        createObjectData?.heatingPoint?.heatingPointNumber || '',
     },
   };
 
@@ -79,12 +77,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
       <CreateNewHeatingPointModal
         isCreateModalOpen={isCreateModalOpen}
         setCreateModalOpen={setCreateModalOpen}
-        setNewHeatingPointModalData={setNewHeatingPointModalData}
+        setNewHeatingPointModalData={(heatingPoint) =>
+          setFieldValue('heatingPoint', heatingPoint)
+        }
+        setInputTypeDisplayingDivShow={setInputTypeDisplayingDivShow}
       />
       <EditNewHeatingPointModal
         isEditModalOpen={isEditModalOpen}
         setEditModalOpen={setEditModalOpen}
-        setNewHeatingPointModalData={setNewHeatingPointModalData}
+        setNewHeatingPointModalData={(heatingPoint) =>
+          setFieldValue('heatingPoint', heatingPoint)
+        }
       />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
@@ -149,7 +152,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         <SpaceLine />
 
-        {!newHeatingPointModalData && (
+        {!isInputTypeDisplayingDivShow && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
               <StyledSelect
@@ -185,20 +188,24 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           </GridContainer>
         )}
 
-        {newHeatingPointModalData && (
+        {isInputTypeDisplayingDivShow && (
           <FormItem label="Тепловой пункт">
             <InputTypeDisplayingDiv>
               <FlexStart>
-                <Title>
-                  {newHeatingPointModalData.heatingPoint.heatingPointType}
-                </Title>
-                <Subtitle>
-                  {newHeatingPointModalData.heatingPoint.heatingPointNumber}
-                </Subtitle>
+                <Title>{values.heatingPoint.heatingPointType}</Title>
+                <Subtitle>{values.heatingPoint.heatingPointNumber}</Subtitle>
               </FlexStart>
               <FlexEnd>
                 <PencilIconSc onClick={() => setEditModalOpen(true)} />
-                <XIconSc onClick={() => setNewHeatingPointModalData(null)} />
+                <XIconSc
+                  onClick={() => {
+                    setInputTypeDisplayingDivShow(false);
+                    setFieldValue('heatingPoint', {
+                      heatingPointType: '',
+                      heatingPointNumber: '',
+                    });
+                  }}
+                />
               </FlexEnd>
             </InputTypeDisplayingDiv>
           </FormItem>

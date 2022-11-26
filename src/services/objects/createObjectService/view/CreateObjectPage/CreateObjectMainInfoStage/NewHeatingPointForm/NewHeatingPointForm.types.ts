@@ -3,8 +3,10 @@ export type NewHeatingPointFormProps = {
   setEditModalOpen?: (payload: boolean) => void;
   setNewHeatingPointModalData: (payload: HeatingPoint) => void;
   formId: string;
+  setInputTypeDisplayingDivShow?: (payload: boolean) => void;
 };
 
 export type HeatingPoint = {
-  heatingPoint: { heatingPointType: string; heatingPointNumber: string };
+  heatingPointType: string;
+  heatingPointNumber: string;
 };

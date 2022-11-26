@@ -22,16 +22,16 @@ import {
 export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
   goBackStage,
   onPageCancel,
-  // handleAdditionalInfoData,
   handleSubmitCreateObject,
+  createObjectData,
 }) => {
   const lift = ['Есть', 'Нет'];
 
   const { values, handleSubmit, setFieldValue } = useFormik<AdditionalInfo>({
     initialValues: {
-      floors: '',
-      entrances: '',
-      elevator: '',
+      floors: createObjectData?.floors || '',
+      entrances: createObjectData?.entrances || '',
+      elevator: createObjectData?.elevator || '',
     },
     enableReinitialize: true,
     onSubmit: (data) => {

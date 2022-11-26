@@ -54,6 +54,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               houseManagements={houseManagements}
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
+              createObjectData={createObjectData}
               handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}
@@ -62,6 +63,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             <CreateObjectAdditionalInfoStage
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
+              createObjectData={createObjectData}
               handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}

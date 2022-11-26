@@ -3,8 +3,8 @@ import { ObjectCreateSubmitData } from 'services/objects/createObjectService/cre
 export type CreateObjectAdditionalInfoStageProps = {
   goBackStage: () => void;
   onPageCancel: () => void;
-  // handleAdditionalInfoData: (payload: AdditionalInfo) => void;
   handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
+  createObjectData: ObjectCreateSubmitData | null;
 };
 
 export type AdditionalInfo = {

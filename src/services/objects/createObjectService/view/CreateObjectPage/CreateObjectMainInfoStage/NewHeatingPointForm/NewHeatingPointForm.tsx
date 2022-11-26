@@ -11,14 +11,12 @@ import { useFormik } from 'formik';
 import { Input } from 'ui-kit/Input';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
-import {
-  initialValues,
-  validationSchema,
-} from './newHeatingPointForm.constants';
+import { validationSchema } from './newHeatingPointForm.constants';
 export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
   setNewHeatingPointModalData,
   setCreateModalOpen,
   setEditModalOpen,
+  setInputTypeDisplayingDivShow,
   formId,
 }) => {
   const {
@@ -27,12 +25,17 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
     setFieldValue,
     errors,
   } = useFormik<HeatingPoint>({
-    initialValues,
+    initialValues: {
+      heatingPointType: '',
+      heatingPointNumber: '',
+    },
     enableReinitialize: true,
     onSubmit: (data) => {
       setNewHeatingPointModalData(data);
+      console.log(data);
       setCreateModalOpen && setCreateModalOpen(false);
       setEditModalOpen && setEditModalOpen(false);
+      setInputTypeDisplayingDivShow && setInputTypeDisplayingDivShow(true);
     },
     validateOnBlur: true,
     validationSchema,
@@ -43,33 +46,25 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
         <FormItem label="Тип ТП">
           <StyledSelect
             placeholder="Выберите из списка"
-            value={values.heatingPoint.heatingPointType}
-            onChange={(value) =>
-              setFieldValue('heatingPoint', {
-                ...values.heatingPoint,
-                heatingPointType: value,
-              })
-            }
+            value={values.heatingPointType}
+            onChange={(value) => setFieldValue('heatingPointType', value)}
           >
             <Select.Option value={'Элемент массива строк'}>
               {'Элемент массива строк'}
             </Select.Option>
           </StyledSelect>
-          <ErrorMessage>{errors.heatingPoint?.heatingPointType}</ErrorMessage>
+          <ErrorMessage>{errors?.heatingPointType}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Номер ТП">
           <Input
             placeholder="Введите"
-            value={values.heatingPoint.heatingPointNumber}
+            value={values.heatingPointNumber}
             onChange={(value) =>
-              setFieldValue('heatingPoint', {
-                ...values.heatingPoint,
-                heatingPointNumber: value.target.value,
-              })
+              setFieldValue('heatingPointNumber', value.target.value)
             }
           />
-          <ErrorMessage>{errors.heatingPoint?.heatingPointNumber}</ErrorMessage>
+          <ErrorMessage>{errors?.heatingPointNumber}</ErrorMessage>
         </FormItem>
       </GridContainer>
     </Form>
