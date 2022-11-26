@@ -1,7 +1,6 @@
 import { Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -35,17 +34,4 @@ export const TabsSC = styled(Tabs)`
     font-weight: 500;
     font-size: 16px;
   }
-`;
-
-export const FooterWrapper = styled.div`
-  width: 100%;
-  max-width: 560px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 16px;
-`;
-
-export const ButtonSC = styled(Button)`
-  margin-left: 16px;
 `;
