@@ -1,6 +1,8 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import React, { FC } from 'react';
+import { ButtonTT } from '01/tt-components';
+import React, { FC, useMemo } from 'react';
+import { Button } from 'ui-kit/Button';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
@@ -8,6 +10,8 @@ import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
 import {
   AddressWrapper,
+  ButtonSC,
+  FooterWrapper,
   HeaderWrapper,
   ResourceIconWrapper,
   TabsSC,
@@ -22,7 +26,22 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   openAddNewZonesModal,
   nodeZones,
 }) => {
-  const { number, address, resource } = node;
+  const { number, address, resource, documents } = node;
+
+  const formId = 'edit-node-page';
+
+  const footer = useMemo(
+    () => (
+      <FooterWrapper>
+        <Button form={formId} type="ghost">
+          Отмена
+        </Button>
+
+        <ButtonSC form={formId}>Сохранить</ButtonSC>
+      </FooterWrapper>
+    ),
+    [formId]
+  );
 
   return (
     <>
@@ -46,7 +65,9 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             node={node}
             openAddNewZonesModal={openAddNewZonesModal}
             nodeZones={nodeZones}
+            formId={formId}
           />
+          {footer}
         </TabPane>
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>
           <EditNodeCalculatorConnectionContainer />
@@ -55,7 +76,9 @@ export const EditNodePage: FC<EditNodePageProps> = ({
           tab="Подключенные приборы"
           key={NodeEditGrouptype.Devices}
         ></TabPane>
-        <TabPane tab="Документы" key={NodeEditGrouptype.Documents}></TabPane>
+        <TabPane tab="Документы" key={NodeEditGrouptype.Documents}>
+          {footer}
+        </TabPane>
       </TabsSC>
     </>
   );
