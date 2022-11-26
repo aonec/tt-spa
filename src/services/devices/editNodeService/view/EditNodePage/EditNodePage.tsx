@@ -2,6 +2,7 @@ import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNod
 import { PageHeader } from '01/shared/ui/PageHeader';
 import NodeRelatedDevices from '01/tt-components/NodeRelatedDevices';
 import ModalAddDevice from '01/_pages/EditNode/components/Modals/ModalAddDevice';
+import { DocumentLiteResponse } from 'myApi';
 import React, { FC, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
@@ -28,8 +29,13 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   nodeZones,
   magistrals,
   refetchNode,
+  updateDocuments,
 }) => {
   const { number, address, resource, documents } = node;
+
+  const [docs, setDocuments] = useState<DocumentLiteResponse[]>(
+    documents || []
+  );
 
   const formId = 'edit-node-page';
 
@@ -58,9 +64,11 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             formId={formId}
           />
         </TabPane>
+
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>
           <EditNodeCalculatorConnectionContainer />
         </TabPane>
+
         <TabPane tab="Подключенные приборы" key={NodeEditGrouptype.Devices}>
           <EditNodeRelatedDevices
             node={node}
@@ -68,8 +76,12 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             refetchNode={refetchNode}
           />
         </TabPane>
+
         <TabPane tab="Документы" key={NodeEditGrouptype.Documents}>
-          <EditNodeUploadDocuments documents={documents || []} />
+          <EditNodeUploadDocuments
+            documents={docs}
+            setDocuments={setDocuments}
+          />
         </TabPane>
       </TabsSC>
     </>

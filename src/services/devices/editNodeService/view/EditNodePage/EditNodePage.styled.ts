@@ -13,6 +13,7 @@ export const HeaderWrapper = styled.div`
 
 export const AddressWrapper = styled(Link)`
   color: #272f5ae5;
+  font-weight: 500;
 `;
 
 export const ResourceIconWrapper = styled.div`
