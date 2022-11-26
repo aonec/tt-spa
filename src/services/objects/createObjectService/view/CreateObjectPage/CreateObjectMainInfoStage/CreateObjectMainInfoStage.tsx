@@ -1,6 +1,6 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/shared/ui/Select/components';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -29,17 +29,13 @@ import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
-import {
-  initialValues,
-  validationSchema,
-} from './createObjectMainInfoStage.constants';
+import { validationSchema } from './createObjectMainInfoStage.constants';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
   goBackStage,
   onPageCancel,
-  // handleMainInfoData,
-  handleSubmitCreateObject
+  handleSubmitCreateObject,
 }) => {
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -48,6 +44,20 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     newHeatingPointModalData,
     setNewHeatingPointModalData,
   ] = useState<HeatingPoint | null>(null);
+
+  useEffect(() => {
+    setFieldValue('heatingPoint', newHeatingPointModalData);
+  }, [setNewHeatingPointModalData]);
+
+  const initialValues = {
+    houseManagement: '',
+    objectCategotry: '',
+    objectType: '',
+    heatingPoint: {
+      heatingPointType: '',
+      heatingPointNumber: '',
+    },
+  };
 
   const {
     values,
@@ -144,11 +154,13 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
             <FormItem label="Тепловой пункт">
               <StyledSelect
                 placeholder="Выберите из списка"
-                onChange={(value) => setFieldValue('heatingPoint', value)}
-                value={
-                  (values.heatingPoint.heatingPointType,
-                  values.heatingPoint.heatingPointNumber)
-                }
+                onChange={(value) => {
+                  setFieldValue('heatingPoint', {
+                    ...values.heatingPoint,
+                    heatingPointType: value,
+                  });
+                }}
+                value={values.heatingPoint.heatingPointType}
               >
                 {houseManagements?.map(
                   (houseManagement) =>
@@ -181,7 +193,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                   {newHeatingPointModalData.heatingPoint.heatingPointType}
                 </Title>
                 <Subtitle>
-                  ({newHeatingPointModalData.heatingPoint.heatingPointNumber})
+                  {newHeatingPointModalData.heatingPoint.heatingPointNumber}
                 </Subtitle>
               </FlexStart>
               <FlexEnd>

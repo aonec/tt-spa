@@ -10,5 +10,5 @@ export type CreateObjectAdditionalInfoStageProps = {
 export type AdditionalInfo = {
   floors: string;
   entrances: string;
-  elevater: string;
+  elevator: string;
 };

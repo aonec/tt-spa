@@ -7,9 +7,4 @@ export const validationSchema = yup.object().shape({
   heatingPoint: yup.string(),
 });
 
-export const initialValues = {
-  houseManagement: '',
-  objectCategotry: '',
-  objectType: '',
-  heatingPoint: { heatingPointType: '', heatingPointNumber: '' },
-};
+

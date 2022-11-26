@@ -21,46 +21,62 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
 
         <GridContainer>
           <FieldDescrition>Основной адрес</FieldDescrition>
-          {createObjectData ? (
-            <Field>{`${createObjectData.city},${createObjectData.street},${createObjectData.house}`}</Field>
+          {createObjectData?.house ? (
+            <Field>{`${createObjectData.city}, ул. ${createObjectData.street}, ${createObjectData.house} ${createObjectData.corpus}`}</Field>
           ) : (
-            <Field>'-'</Field>
+            <Field>-</Field>
           )}
         </GridContainer>
         <SpaceLine />
 
-        <GridContainer>
-          {createObjectData?.additionalAddresses?.map((e) => (
+        {createObjectData?.additionalAddresses?.length ? (
+          createObjectData.additionalAddresses.map((e) => (
             <>
+              <GridContainer>
+                <FieldDescrition>
+                  Адреса, под которыми известен объект
+                </FieldDescrition>
+                <Field>{`${createObjectData.city}, ул. ${e.street}, ${e.house} ${e.corpus}`}</Field>
+              </GridContainer>
+              <SpaceLine />
+            </>
+          ))
+        ) : (
+          <>
+            <GridContainer>
               <FieldDescrition>
                 Адреса, под которыми известен объект
               </FieldDescrition>
-              <Field>{`${createObjectData.city},${e.street},${e.house}`}</Field>
-            </>
-          ))}
-        </GridContainer>
-        <SpaceLine />
+              <Field>-</Field>
+            </GridContainer>
+            <SpaceLine />
+          </>
+        )}
 
         <PageTitle>2. Основная информация </PageTitle>
 
         <GridContainer>
           <FieldDescrition>Домоуправление</FieldDescrition>
-          <Field>«Умный дом»</Field>
+          <Field>{createObjectData?.houseManagement || '-'}</Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Категория объекта</FieldDescrition>
-          <Field>Жилое</Field>
+          <Field>{createObjectData?.objectCategotry || '-'}</Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тип объекта</FieldDescrition>
-          <Field>Многоквартирный дом</Field>
+          <Field>{createObjectData?.objectType || '-'}</Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тепловой пункт</FieldDescrition>
-          <Field>ЦТП 1 (12763781)</Field>
+          {createObjectData?.heatingPoint?.heatingPointType ? (
+            <Field>{`${createObjectData?.heatingPoint?.heatingPointType} (${createObjectData?.heatingPoint?.heatingPointNumber})`}</Field>
+          ) : (
+            <Field>-</Field>
+          )}
         </GridContainer>
         <SpaceLine />
 
@@ -68,17 +84,17 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
 
         <GridContainer>
           <FieldDescrition>Число этажей</FieldDescrition>
-          <Field>10</Field>
+          <Field>{createObjectData?.floors || '-'}</Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Число подъездов</FieldDescrition>
-          <Field>-</Field>
+          <Field>{createObjectData?.entrances || '-'}</Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Лифт</FieldDescrition>
-          <Field>Есть</Field>
+          <Field>{createObjectData?.elevator || '-'}</Field>
         </GridContainer>
         <SpaceLine />
       </Wrapper>

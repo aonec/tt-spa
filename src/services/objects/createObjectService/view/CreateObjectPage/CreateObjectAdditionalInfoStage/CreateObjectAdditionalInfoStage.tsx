@@ -31,7 +31,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
     initialValues: {
       floors: '',
       entrances: '',
-      elevater: '',
+      elevator: '',
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -65,8 +65,8 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
         <FormItem label="Лифт">
           <StyledSelect
             placeholder="Выберите из списка"
-            onChange={(value) => setFieldValue('elevater', value)}
-            value={values.elevater}
+            onChange={(value) => setFieldValue('elevator', value)}
+            value={values.elevator}
           >
             {lift.map((e) => (
               <Select.Option value={e}>{e}</Select.Option>
