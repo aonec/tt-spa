@@ -12,10 +12,8 @@ import {
   fetchNode,
   fetchPipeNodeMagistrals,
   fetchServiceZones,
-  fetchUpdateDocuments,
 } from './editNodeService.api';
 import { NodeEditGrouptype } from './editNodeService.constants';
-import { UpdateDocumentPayload } from './editNodeService.types';
 
 const domain = createDomain('editNodeService');
 
@@ -51,11 +49,6 @@ const $node = domain
   .on(getNodeFx.doneData, (_, node) => node)
   .reset(clearStore);
 
-const updateDocumentsFx = domain.createEffect<UpdateDocumentPayload, void>(
-  fetchUpdateDocuments
-);
-const updateDocuments = domain.createEvent<number[]>();
-
 const NodeIdGate = createGate<{ nodeId: string }>();
 
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
@@ -90,18 +83,10 @@ forward({
   to: getNodeZonesFx,
 });
 
-sample({
-  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
-  clock: updateDocuments,
-  fn: (nodeId, documentsIds) => ({ nodeId, documentsIds }),
-  target: updateDocumentsFx,
-});
-
 export const editNodeService = {
   inputs: {
     setEditNodeGrouptype,
     refetchNode,
-    updateDocuments,
   },
   outputs: {
     $node,
