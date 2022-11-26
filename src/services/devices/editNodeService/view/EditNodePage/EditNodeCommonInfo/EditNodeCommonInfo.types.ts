@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
   ENodeCommercialAccountStatus,
   NodeServiceZoneResponse,
@@ -10,11 +9,12 @@ export type EditNodeCommonInfoProps = {
   node: PipeNodeResponse;
   openAddNewZonesModal: () => void;
   nodeZones: NodeServiceZoneResponse[];
+  formId: string;
 };
 
 export type UpdatePipeNodeFormik = Omit<UpdatePipeNodeRequest, 'number'> & {
   number?: string;
   nodeStatus?: ENodeCommercialAccountStatus;
-  futureCommercialAccountingDate: string ;
+  futureCommercialAccountingDate: string;
   lastCommercialAccountingDate: string;
 };

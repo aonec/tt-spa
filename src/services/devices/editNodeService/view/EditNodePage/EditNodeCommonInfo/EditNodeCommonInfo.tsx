@@ -21,12 +21,13 @@ import {
 import { useFormik } from 'formik';
 import { ENodeCommercialAccountStatus } from 'myApi';
 import moment from 'moment';
-import { Switch } from 'antd';
+import { Form, Switch } from 'antd';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
   openAddNewZonesModal,
   nodeZones,
+  formId,
 }) => {
   const lastCommercialAccountingDate = useMemo(
     () => node.lastCommercialAccountingDate || moment().format(),
@@ -38,7 +39,11 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
     [node]
   );
 
-  const { values, setFieldValue } = useFormik<UpdatePipeNodeFormik>({
+  const {
+    values,
+    setFieldValue,
+    handleSubmit,
+  } = useFormik<UpdatePipeNodeFormik>({
     initialValues: {
       nodeServiceZoneId: node.nodeServiceZone?.id,
       number: String(node.number),
@@ -61,100 +66,102 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
 
   return (
     <Wrapper>
-      <FormItem label="Тип ресурса" className="resource">
-        <Select
-          placeholder="Выберите тип ресурса"
-          value={node.resource}
-          disabled
-        >
-          <Select.Option value={node.resource}>
-            <SelectWrapper>
-              <ResourceIconLookup resource={node.resource} />
-              <ResourceText>{ResourceLookUp[node.resource]}</ResourceText>
-            </SelectWrapper>
-          </Select.Option>
-        </Select>
-      </FormItem>
-      <InfoWrapper>
-        <FormItem label="Номер узла">
-          <Input
-            placeholder="Номер узла"
-            value={values.number}
-            onChange={(e) => setFieldValue('number', e.target.value)}
-            type="number"
-          />
-        </FormItem>
-
-        <FormItem label="Статус узла">
-          <Select value={values.nodeStatus}>
-            <Select.Option value={ENodeCommercialAccountStatus.Registered}>
-              Сдан на коммерческий учет
-            </Select.Option>
-            <Select.Option value={ENodeCommercialAccountStatus.NotRegistered}>
-              Не на коммерческом учете
-            </Select.Option>
-            <Select.Option value={ENodeCommercialAccountStatus.OnReview}>
-              На утверждении
-            </Select.Option>
-            <Select.Option value={ENodeCommercialAccountStatus.Prepared}>
-              Подговлен к сдаче
+      <Form id={formId} onSubmitCapture={handleSubmit}>
+        <FormItem label="Тип ресурса" className="resource">
+          <Select
+            placeholder="Выберите тип ресурса"
+            value={node.resource}
+            disabled
+          >
+            <Select.Option value={node.resource}>
+              <SelectWrapper>
+                <ResourceIconLookup resource={node.resource} />
+                <ResourceText>{ResourceLookUp[node.resource]}</ResourceText>
+              </SelectWrapper>
             </Select.Option>
           </Select>
         </FormItem>
-      </InfoWrapper>
-      <FormItem label="Зона">
         <InfoWrapper>
-          <Select
-            value={values.nodeServiceZoneId || undefined}
-            onChange={(chosenInputId) =>
-              setFieldValue('nodeServiceZoneId', chosenInputId)
-            }
-            placeholder="Зона"
-            options={selectZonesOptions}
-          />
-          <AddZoneText onClick={() => openAddNewZonesModal()}>
-            + Добавить новую зону
-          </AddZoneText>
+          <FormItem label="Номер узла">
+            <Input
+              placeholder="Номер узла"
+              value={values.number}
+              onChange={(e) => setFieldValue('number', e.target.value)}
+              type="number"
+            />
+          </FormItem>
+
+          <FormItem label="Статус узла">
+            <Select value={values.nodeStatus}>
+              <Select.Option value={ENodeCommercialAccountStatus.Registered}>
+                Сдан на коммерческий учет
+              </Select.Option>
+              <Select.Option value={ENodeCommercialAccountStatus.NotRegistered}>
+                Не на коммерческом учете
+              </Select.Option>
+              <Select.Option value={ENodeCommercialAccountStatus.OnReview}>
+                На утверждении
+              </Select.Option>
+              <Select.Option value={ENodeCommercialAccountStatus.Prepared}>
+                Подговлен к сдаче
+              </Select.Option>
+            </Select>
+          </FormItem>
         </InfoWrapper>
-      </FormItem>
+        <FormItem label="Зона">
+          <InfoWrapper>
+            <Select
+              value={values.nodeServiceZoneId || undefined}
+              onChange={(chosenInputId) =>
+                setFieldValue('nodeServiceZoneId', chosenInputId)
+              }
+              placeholder="Зона"
+              options={selectZonesOptions}
+            />
+            <AddZoneText onClick={() => openAddNewZonesModal()}>
+              + Добавить новую зону
+            </AddZoneText>
+          </InfoWrapper>
+        </FormItem>
 
-      <SwitchWrapper>
-        <Switch />
-        <SwitchTextWrapper>
-          Коммерческий учет показателей приборов
-        </SwitchTextWrapper>
-      </SwitchWrapper>
+        <SwitchWrapper>
+          <Switch />
+          <SwitchTextWrapper>
+            Коммерческий учет показателей приборов
+          </SwitchTextWrapper>
+        </SwitchWrapper>
 
-      <FormItem label="Дата начала действия акта-допуска">
-        <DatePicker
-          format="DD.MM.YYYY"
-          placeholder="Укажите дату..."
-          value={moment(values.lastCommercialAccountingDate)}
-          allowClear={false}
-          onChange={(value) => {
-            if (!value) {
-              return setFieldValue('lastCommercialAccountingDate', moment());
+        <FormItem label="Дата начала действия акта-допуска">
+          <DatePicker
+            format="DD.MM.YYYY"
+            placeholder="Укажите дату..."
+            value={moment(values.lastCommercialAccountingDate)}
+            allowClear={false}
+            onChange={(value) => {
+              if (!value) {
+                return setFieldValue('lastCommercialAccountingDate', moment());
+              }
+              setFieldValue('lastCommercialAccountingDate', value.format());
+              setFieldValue(
+                'futureCommercialAccountingDate',
+                value.add(4, 'years').format()
+              );
+            }}
+          />
+        </FormItem>
+
+        <FormItem label="Дата окончания действия акта-допуска">
+          <DatePicker
+            format="DD.MM.YYYY"
+            placeholder="Укажите дату..."
+            allowClear={false}
+            value={moment(values.futureCommercialAccountingDate)}
+            onChange={(_, strValue) =>
+              setFieldValue('futureCommercialAccountingDate', strValue)
             }
-            setFieldValue('lastCommercialAccountingDate', value.format());
-            setFieldValue(
-              'futureCommercialAccountingDate',
-              value.add(4, 'years').format()
-            );
-          }}
-        />
-      </FormItem>
-
-      <FormItem label="Дата окончания действия акта-допуска">
-        <DatePicker
-          format="DD.MM.YYYY"
-          placeholder="Укажите дату..."
-          allowClear={false}
-          value={moment(values.futureCommercialAccountingDate)}
-          onChange={(_, strValue) =>
-            setFieldValue('futureCommercialAccountingDate', strValue)
-          }
-        />
-      </FormItem>
+          />
+        </FormItem>
+      </Form>
     </Wrapper>
   );
 };

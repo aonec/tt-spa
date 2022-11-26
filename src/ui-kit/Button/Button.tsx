@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Loader } from '01/components';
 import { IconWrapper, Wrapper } from './Button.styled';
 import { ButtonProps } from './Button.types';
@@ -13,6 +13,7 @@ export const Button: FC<ButtonProps> = (props) => {
     size = 'middle',
     sidePadding,
     isLoading,
+    form,
   } = props;
 
   const classNameString = [
@@ -20,11 +21,23 @@ export const Button: FC<ButtonProps> = (props) => {
     ...(disabled ? ['tt-button-disabled'] : []),
   ].join(' ');
 
+  const handleSubmit = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (form) {
+        document.forms.namedItem(form)?.requestSubmit();
+      }
+      if (onClick) {
+        return onClick(e);
+      }
+    },
+    [onClick, form]
+  );
+
   return (
     <Wrapper
       {...props}
       type={type}
-      onClick={disabled ? undefined : onClick}
+      onClick={disabled ? undefined : handleSubmit}
       className={classNameString}
       size={size}
       sidePadding={sidePadding}
