@@ -5,6 +5,7 @@ import {
   NodeServiceZoneListResponse,
   PipeNodeResponse,
 } from 'myApi';
+import { UpdateDocumentPayload } from './editNodeService.types';
 
 export const fetchNode = (nodeId: string): Promise<PipeNodeResponse> =>
   axios.get(`PipeNodes/${nodeId}`);
@@ -12,13 +13,11 @@ export const fetchNode = (nodeId: string): Promise<PipeNodeResponse> =>
 export const fetchServiceZones = (): Promise<NodeServiceZoneListResponse> =>
   axios.get('NodeServiceZones');
 
-export const updateDocuments = ({
+export const fetchUpdateDocuments = ({
   nodeId,
   documentsIds,
-}: {
-  nodeId: number;
-  documentsIds: number[];
-}): Promise<void> => axios.post(`Nodes/${nodeId}/Documents`, { documentsIds });
+}: UpdateDocumentPayload): Promise<void> =>
+  axios.post(`Nodes/${nodeId}/Documents`, { documentsIds });
 
 export const fetchPipeNodeMagistrals = (
   resource: EResourceType

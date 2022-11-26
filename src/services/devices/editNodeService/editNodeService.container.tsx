@@ -23,6 +23,7 @@ export const EditNodeContainer = () => {
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
   const openAddNewZonesModal = useEvent(addServiceZoneButtonClicked);
   const refetchNode = useEvent(inputs.refetchNode);
+  const updateDocuments = useEvent(inputs.updateDocuments);
 
   return (
     <>
@@ -41,6 +42,7 @@ export const EditNodeContainer = () => {
               nodeZones={nodeZones}
               magistrals={magistrals}
               refetchNode={() => refetchNode()}
+              updateDocuments={updateDocuments}
             />
           </>
         )}

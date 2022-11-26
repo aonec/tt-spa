@@ -13,4 +13,5 @@ export type EditNodePageProps = {
   nodeZones: NodeServiceZoneResponse[];
   magistrals: EMagistralTypeStringDictionaryItem[];
   refetchNode: () => void;
+  updateDocuments: (ids: number[]) => void;
 };

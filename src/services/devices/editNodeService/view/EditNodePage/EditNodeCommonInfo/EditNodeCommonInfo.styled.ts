@@ -22,8 +22,10 @@ export const AddZoneText = styled.div`
   color: rgb(24, 158, 233);
   height: 48px;
   margin-left: 16px;
-  cursor: pointer;
   font-weight: 500;
+  font-size: 16px;
+
+  cursor: pointer;
 `;
 
 export const ResourceText = styled.div`
