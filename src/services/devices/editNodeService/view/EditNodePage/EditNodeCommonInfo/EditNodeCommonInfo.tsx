@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Input } from 'ui-kit/Input';
@@ -28,15 +28,23 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   openAddNewZonesModal,
   nodeZones,
 }) => {
+  const lastCommercialAccountingDate = useMemo(
+    () => node.lastCommercialAccountingDate || moment().format(),
+    [node]
+  );
+  const futureCommercialAccountingDate = useMemo(
+    () =>
+      node.futureCommercialAccountingDate || moment().add(4, 'year').format(),
+    [node]
+  );
+
   const { values, setFieldValue } = useFormik<UpdatePipeNodeFormik>({
     initialValues: {
       nodeServiceZoneId: node.nodeServiceZone?.id,
       number: String(node.number),
       nodeStatus: node.nodeStatus?.value,
-      futureCommercialAccountingDate: moment(
-        node.futureCommercialAccountingDate
-      ),
-      lastCommercialAccountingDate: moment(node.lastCommercialAccountingDate),
+      futureCommercialAccountingDate,
+      lastCommercialAccountingDate,
     },
     enableReinitialize: true,
     onSubmit: console.log,
@@ -117,39 +125,33 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         </SwitchTextWrapper>
       </SwitchWrapper>
 
-      <FormItem
-        label="Дата начала действия акта-допуска"
-        // message: 'Выберите Дата начала действия акта-допуска',
-      >
+      <FormItem label="Дата начала действия акта-допуска">
         <DatePicker
           format="DD.MM.YYYY"
           placeholder="Укажите дату..."
-          value={values.lastCommercialAccountingDate}
+          value={moment(values.lastCommercialAccountingDate)}
           allowClear={false}
           onChange={(value) => {
-            setFieldValue('lastCommercialAccountingDate', moment(value));
+            if (!value) {
+              return setFieldValue('lastCommercialAccountingDate', moment());
+            }
+            setFieldValue('lastCommercialAccountingDate', value.format());
             setFieldValue(
               'futureCommercialAccountingDate',
-              moment(value).add(4, 'years')
+              value.add(4, 'years').format()
             );
           }}
         />
       </FormItem>
 
-      <FormItem
-        label="Дата окончания действия акта-допуска"
-        // message: 'Выберите Дата окончания действия акта-допуска',
-      >
+      <FormItem label="Дата окончания действия акта-допуска">
         <DatePicker
           format="DD.MM.YYYY"
           placeholder="Укажите дату..."
           allowClear={false}
-          value={values.futureCommercialAccountingDate}
-          onChange={(value) =>
-            setFieldValue(
-              'futureCommercialAccountingDate',
-              moment(value).add(4, 'years')
-            )
+          value={moment(values.futureCommercialAccountingDate)}
+          onChange={(_, strValue) =>
+            setFieldValue('futureCommercialAccountingDate', strValue)
           }
         />
       </FormItem>

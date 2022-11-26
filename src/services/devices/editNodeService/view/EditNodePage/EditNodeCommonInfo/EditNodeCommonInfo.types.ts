@@ -15,6 +15,6 @@ export type EditNodeCommonInfoProps = {
 export type UpdatePipeNodeFormik = Omit<UpdatePipeNodeRequest, 'number'> & {
   number?: string;
   nodeStatus?: ENodeCommercialAccountStatus;
-  futureCommercialAccountingDate: moment.Moment;
-  lastCommercialAccountingDate: moment.Moment;
+  futureCommercialAccountingDate: string ;
+  lastCommercialAccountingDate: string;
 };
