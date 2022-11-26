@@ -17,7 +17,6 @@ import {
   PipeNodeResponse,
   UpdatePipeNodeRequest,
 } from '../../../../myApi';
-import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
@@ -174,15 +173,7 @@ const EditNodeForm = ({
         scrollToFirstError
       >
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-          <div style={styles.w100}>
-            <NodeRelatedDevices
-              node={node}
-              edit={true}
-              close={false}
-              setDeregisterDeviceValue={setDeregisterDeviceValue}
-              setDeregisterDevice={setDeregisterDevice}
-            />
-          </div>
+          <div style={styles.w100}></div>
 
           <ButtonTT
             type="button"

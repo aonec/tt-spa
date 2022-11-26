@@ -8,5 +8,3 @@ export const OpenModalText = styled.div`
 
   cursor: pointer;
 `;
-
-

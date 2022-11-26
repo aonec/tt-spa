@@ -5,7 +5,7 @@ import React, { FC, useState } from 'react';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { EditNodeUploadDocumentsModal } from '../EditNodeUploadDocumentsModal';
+import { EditNodeUploadDocumentsModal } from './EditNodeUploadDocumentsModal';
 import { OpenModalText } from './EditNodeUploadDocuments.styled';
 import { EditNodeUploadDocumentsProps } from './EditNodeUploadDocuments.types';
 

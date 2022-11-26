@@ -43,7 +43,10 @@ export const EditNodeCalculatorConnectionContainer = () => {
         )}
         {!showCalculator && (
           <>
-            <Empty description="К узлу не подключен вычислитель" />
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="К узлу не подключен вычислитель"
+            />
             <ButtonTT
               color="white"
               onClick={() => handleEdit()}

@@ -134,7 +134,7 @@ const ModalAddDeviceForm = ({
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
-    diameter: null,
+    diameter: undefined,
     diameterVisible: true,
     calculatorId: calculatorId,
     entryNumber,
@@ -164,7 +164,7 @@ const ModalAddDeviceForm = ({
         diameter:
           values.housingMeteringDeviceType === 'FlowMeter'
             ? values.diameter
-            : null,
+            : undefined,
       },
     };
     addHousingMeteringDevice(form).then(() => {
@@ -258,7 +258,8 @@ const ModalAddDeviceForm = ({
                         : setValidationSchema(
                             validationSchemaTemperatureSensor
                           );
-                      value !== 'FlowMeter' && setFieldValue('diameter', null);
+                      value !== 'FlowMeter' &&
+                        setFieldValue('diameter', undefined);
                       coldWaterValidation(value);
                       validateSensor(value);
                     }}
