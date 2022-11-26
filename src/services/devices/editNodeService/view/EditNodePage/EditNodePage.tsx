@@ -1,10 +1,6 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import NodeRelatedDevices from '01/tt-components/NodeRelatedDevices';
-import ModalAddDevice from '01/_pages/EditNode/components/Modals/ModalAddDevice';
-import { DocumentLiteResponse } from 'myApi';
 import React, { FC, useState } from 'react';
-import { Button } from 'ui-kit/Button';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
@@ -18,7 +14,7 @@ import {
 } from './EditNodePage.styled';
 import { EditNodePageProps } from './EditNodePage.types';
 import { EditNodeRelatedDevices } from './EditNodeRelatedDevices';
-import { EditNodeUploadDocuments } from './EditNodeUploadDocuments';
+import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsService';
 const { TabPane } = TabsSC;
 
 export const EditNodePage: FC<EditNodePageProps> = ({
@@ -29,13 +25,8 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   nodeZones,
   magistrals,
   refetchNode,
-  updateDocuments,
 }) => {
-  const { number, address, resource, documents } = node;
-
-  const [docs, setDocuments] = useState<DocumentLiteResponse[]>(
-    documents || []
-  );
+  const { number, address, resource } = node;
 
   const formId = 'edit-node-page';
 
@@ -78,10 +69,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
         </TabPane>
 
         <TabPane tab="Документы" key={NodeEditGrouptype.Documents}>
-          <EditNodeUploadDocuments
-            documents={docs}
-            setDocuments={setDocuments}
-          />
+          <EditNodeUploadDocumentsContainer />
         </TabPane>
       </TabsSC>
     </>
