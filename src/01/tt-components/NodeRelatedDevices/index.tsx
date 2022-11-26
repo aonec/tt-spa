@@ -13,16 +13,11 @@ interface NodesInterface {
   node: PipeNodeResponse;
   edit?: boolean;
   close?: boolean;
-  setDeregisterDeviceValue?: any;
-  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const NodeRelatedDevices = ({
   node,
   edit = false,
-  close = false,
-  setDeregisterDeviceValue,
-  setDeregisterDevice,
 }: NodesInterface) => {
   if (!node) {
     return <Loader show size={32} />;
@@ -90,22 +85,6 @@ export const NodeRelatedDevices = ({
             >
               <IconTT icon="edit" />
             </Link>
-          ) : null}
-          {close ? (
-            <IconTT
-              icon="del"
-              style={{ marginLeft: 8, cursor: 'pointer' }}
-              onClick={() => {
-                if (setDeregisterDeviceValue) {
-                  getHousingMeteringDevice(id).then((res) => {
-                    setDeregisterDeviceValue(res);
-                  });
-                }
-                if (setDeregisterDevice) {
-                  setDeregisterDevice(true);
-                }
-              }}
-            />
           ) : null}
         </EditOptions>
       </ListItem>
