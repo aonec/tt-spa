@@ -1,6 +1,26 @@
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { CreateHomeownerModal } from './view/CreateHomeownerModal';
+import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
+import { EditHomeownerForm } from '../EditHomeownerForm';
+import { createHomeownerService } from './createHomeownerService.model';
+
+const { inputs, outputs } = createHomeownerService;
+
+const formId = 'create-homeowner-form';
 
 export const CreateHomeownerContainer = () => {
-  return <CreateHomeownerModal />
+  const isModalOpen = useStore(outputs.$isModalOpen);
+
+  const handleCloseModal = useEvent(inputs.closeCreateHomeownerModal);
+
+  return (
+    <FormModal
+      visible={isModalOpen}
+      onCancel={() => handleCloseModal()}
+      title="Добавить собственника"
+      submitBtnText="Добавить собственника"
+      formId={formId}
+      form={<EditHomeownerForm formId={formId} />}
+    />
+  );
 };

@@ -1,7 +1,11 @@
+import { useEvent } from 'effector-react';
 import React, { FC } from 'react';
 import { List } from 'ui-kit/List';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
-import { CreateHomeownerContainer } from './createHomeownerService';
+import {
+  CreateHomeownerContainer,
+  createHomeownerService,
+} from './createHomeownerService';
 import {
   CrownIconSC,
   IconsWrapper,
@@ -15,9 +19,15 @@ import {
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
 
+const {
+  inputs: { openCreateHomeownerModal },
+} = createHomeownerService;
+
 export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   homeowners,
 }) => {
+  const handleAddHomeowner = useEvent(openCreateHomeownerModal);
+
   return (
     <>
       <CreateHomeownerContainer />
@@ -40,7 +50,9 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
           }))}
         </List>
         <LinkButtonWrapper>
-          <LinkButton>+ Добавить собственника</LinkButton>
+          <LinkButton onClick={() => handleAddHomeowner()}>
+            + Добавить собственника
+          </LinkButton>
         </LinkButtonWrapper>
       </Wrapper>
     </>
