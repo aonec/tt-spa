@@ -14,6 +14,7 @@ export const HeaderWrapper = styled.div`
 export const AddressWrapper = styled(Link)`
   color: #272f5ae5;
   font-weight: 500;
+  margin-top: 8px;
 `;
 
 export const ResourceIconWrapper = styled.div`
@@ -30,9 +31,14 @@ export const ResourceIconWrapper = styled.div`
 export const TabsSC = styled(Tabs)`
   margin-top: 16px;
   overflow: visible;
+
   .ant-tabs-tab-btn {
     color: #272f5a;
     font-weight: 500;
     font-size: 16px;
   }
+`;
+
+export const ContentWrapper = styled.div`
+  max-width: 820px;
 `;
