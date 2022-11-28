@@ -4,5 +4,7 @@ import { formInitialValues } from './EditHomeownerForm.constants';
 export type EditHomeownerFormProps = {
   formId: string;
   handleSubmit: (data: HomeownerAccountCreateServiceModel) => void;
-  initialValues?: typeof formInitialValues;
+  initialValues?: EditHomeownerPayload;
 };
+
+export type EditHomeownerPayload = typeof formInitialValues

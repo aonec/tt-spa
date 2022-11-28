@@ -6,6 +6,7 @@ import {
   CreateHomeownerContainer,
   createHomeownerService,
 } from './createHomeownerService';
+import { EditHomeownerContainer } from './editHomeownerService';
 import {
   CrownIconSC,
   IconsWrapper,
@@ -31,6 +32,7 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   return (
     <>
       <CreateHomeownerContainer />
+      <EditHomeownerContainer />
       <Wrapper>
         <List gridTemp="1fr 0.35fr 0.25fr 0.25fr">
           {homeowners.map((homeowner) => ({
