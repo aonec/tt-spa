@@ -4,6 +4,7 @@ import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
 import React, { FC, useEffect } from 'react';
+import { currentUserService } from 'services/currentUserService';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
 import { AddressSearch } from './view/AddressSearch';
@@ -37,6 +38,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
   const cities = useStore(outputs.cities);
   const streets = useStore(outputs.streets);
+  const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
 
   useEffect(() => {
     if (!cities?.length || initialValues?.city) return;

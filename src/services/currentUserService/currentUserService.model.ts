@@ -5,9 +5,17 @@ import { OrganizationUserResponse } from 'myApi';
 
 const domain = createDomain('currentUserService');
 
-const $currentUser = domain.createStore<OrganizationUserResponse | null>(null);
+const fetchCurrentUserFx = domain.createEffect<void, OrganizationUserResponse>(
+  getCurrentUser
+);
+const $currentUser = domain
+  .createStore<OrganizationUserResponse | null>(null)
+  .on(fetchCurrentUserFx.doneData, (_, user) => user);
 
-const fetchCurrentUserFx = domain.createEffect<void, OrganizationUserResponse>(getCurrentUser);
+const $hasCorpuses = $currentUser.map(
+  (user) =>
+    user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false
+);
 
 const $isLoading = fetchCurrentUserFx.pending;
 
@@ -15,12 +23,11 @@ const CurrentUserGate = createGate();
 
 forward({ from: CurrentUserGate.open, to: fetchCurrentUserFx });
 
-$currentUser.on(fetchCurrentUserFx.doneData, (_, user) => user);
-
 export const currentUserService = {
   outputs: {
     $currentUser,
     $isLoading,
+    $hasCorpuses
   },
   gates: {
     CurrentUserGate,
