@@ -9,7 +9,7 @@ import { closeHomeownerAccountService } from './closeHomeownerAccountService.mod
 
 const { inputs, outputs } = closeHomeownerAccountService;
 
-const formId = 'close-homowne-account-form';
+const formId = 'close-homeowner-account-form';
 
 export const CloseHomeownerAccountContainer = () => {
   const [closedAt, setClosedAt] = useState<moment.Moment | null>(null);
