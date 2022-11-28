@@ -1,4 +1,13 @@
+import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
+
 export type CreateObjectAdditionalInfoStageProps = {
-  goBackStage: (payload: void) => void;
-  onPageCancel: (payload: void) => void;
+  goBackStage: () => void;
+  onPageCancel: () => void;
+  handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
+};
+
+export type AdditionalInfo = {
+  floors: string;
+  entrances: string;
+  elevater: string;
 };
