@@ -6,7 +6,10 @@ import {
   CreateHomeownerContainer,
   createHomeownerService,
 } from './createHomeownerService';
-import { EditHomeownerContainer } from './editHomeownerService';
+import {
+  EditHomeownerContainer,
+  editHomeownerService,
+} from './editHomeownerService';
 import {
   CrownIconSC,
   IconsWrapper,
@@ -19,10 +22,18 @@ import {
   Wrapper,
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
+import { EditHomeownerPayload } from './EditHomeownerForm/EditHomeownerForm.types';
+import moment from 'moment';
+import { PersonType } from 'myApi';
+import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
 
 const {
   inputs: { openCreateHomeownerModal },
 } = createHomeownerService;
+
+const {
+  inputs: { openEditHomeownerModal },
+} = editHomeownerService;
 
 export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   homeowners,
@@ -35,21 +46,36 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
       <EditHomeownerContainer />
       <Wrapper>
         <List gridTemp="1fr 0.35fr 0.25fr 0.25fr">
-          {homeowners.map((homeowner) => ({
-            key: homeowner.id,
-            nodes: [
-              <Name>{homeowner.name}</Name>,
-              <PersonalAccountNumber>
-                {homeowner.personalAccountNumber}
-                {homeowner.isMainPersonalAccountNumber && <CrownIconSC />}
-              </PersonalAccountNumber>,
-              <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
-              <IconsWrapper>
-                <PencilIconSC />
-                <TrashIconSC />
-              </IconsWrapper>,
-            ],
-          }))}
+          {homeowners.map((homeowner) => {
+            const payload: EditHomeownerFormPayload = {
+              id: homeowner.id,
+              personalAccountNumber: homeowner.personalAccountNumber || '',
+              name: homeowner.name || '',
+              phoneNumber: homeowner.phoneNumber || '',
+              paymentCode: homeowner.paymentCode || '',
+              personType: String(homeowner.personType) as PersonType,
+              openAt: moment(homeowner.openAt),
+              isMainOnApartment: homeowner.isMainPersonalAccountNumber,
+            };
+
+            return {
+              key: homeowner.id,
+              nodes: [
+                <Name>{homeowner.name}</Name>,
+                <PersonalAccountNumber>
+                  {homeowner.personalAccountNumber}
+                  {homeowner.isMainPersonalAccountNumber && <CrownIconSC />}
+                </PersonalAccountNumber>,
+                <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
+                <IconsWrapper>
+                  <PencilIconSC
+                    onClick={() => openEditHomeownerModal(payload)}
+                  />
+                  <TrashIconSC />
+                </IconsWrapper>,
+              ],
+            };
+          })}
         </List>
         <LinkButtonWrapper>
           <LinkButton onClick={() => handleAddHomeowner()}>
