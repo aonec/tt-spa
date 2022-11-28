@@ -44,6 +44,7 @@ import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
+import { EmployeeProfileContainer } from 'services/employeeProfileService';
 
 const { gates } = objectProfileService;
 
@@ -137,6 +138,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
                 <Route path="/companyProfile/:section?" component={Settings} />
                 <Route path="/companyProfile/staff/:id" component={Settings} />
+
+                <Route
+                  path="/userProfile/:id"
+                  component={EmployeeProfileContainer}
+                />
 
                 <Route path="/devices/(\\d+)" component={Devices} exact />
 
