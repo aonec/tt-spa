@@ -6,6 +6,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
+import { ContentWrapper } from './EditNodePage.styled';
 import {
   AddressWrapper,
   HeaderWrapper,
@@ -57,19 +58,25 @@ export const EditNodePage: FC<EditNodePageProps> = ({
         </TabPane>
 
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>
-          <EditNodeCalculatorConnectionContainer />
+          <ContentWrapper>
+            <EditNodeCalculatorConnectionContainer />
+          </ContentWrapper>
         </TabPane>
 
         <TabPane tab="Подключенные приборы" key={NodeEditGrouptype.Devices}>
-          <EditNodeRelatedDevices
-            node={node}
-            magistrals={magistrals}
-            refetchNode={refetchNode}
-          />
+          <ContentWrapper>
+            <EditNodeRelatedDevices
+              node={node}
+              magistrals={magistrals}
+              refetchNode={refetchNode}
+            />
+          </ContentWrapper>
         </TabPane>
 
         <TabPane tab="Документы" key={NodeEditGrouptype.Documents}>
-          <EditNodeUploadDocumentsContainer />
+          <ContentWrapper>
+            <EditNodeUploadDocumentsContainer />
+          </ContentWrapper>
         </TabPane>
       </TabsSC>
     </>
