@@ -35,15 +35,7 @@ export const EditNodeUploadDocumentsContainer = () => {
           description="Нет докуменов"
         />
       )}
-      {isDocsExist && (
-        <DocumentsList
-          documents={documents}
-          removeDocument={(id) =>
-            updateDocuments(documents.filter((document) => document.id !== id))
-          }
-          isLoading={false}
-        />
-      )}
+      {isDocsExist && <DocumentsList documents={documents} isLoading={false} />}
 
       <OpenModalText onClick={() => openModal()}>
         + Добавить документ

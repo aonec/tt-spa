@@ -140,16 +140,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
             placeholder="Укажите дату..."
             value={moment(values.lastCommercialAccountingDate)}
             allowClear={false}
-            onChange={(value) => {
-              if (!value) {
-                return setFieldValue('lastCommercialAccountingDate', moment());
-              }
-              setFieldValue('lastCommercialAccountingDate', value.format());
-              setFieldValue(
-                'futureCommercialAccountingDate',
-                value.add(4, 'years').format()
-              );
-            }}
+            disabled
           />
         </FormItem>
 
@@ -159,15 +150,13 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
             placeholder="Укажите дату..."
             allowClear={false}
             value={moment(values.futureCommercialAccountingDate)}
-            onChange={(_, strValue) =>
-              setFieldValue('futureCommercialAccountingDate', strValue)
-            }
+            disabled
           />
         </FormItem>
       </Form>
 
       <FooterWrapper>
-        <Button form={formId} type="ghost">
+        <Button onClick={() => handleSubmit()} type="ghost">
           Отмена
         </Button>
 
