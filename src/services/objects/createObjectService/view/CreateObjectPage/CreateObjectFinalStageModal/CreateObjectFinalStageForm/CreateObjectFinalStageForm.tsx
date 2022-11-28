@@ -22,12 +22,19 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <GridContainer>
           <FieldDescrition>Основной адрес</FieldDescrition>
           {createObjectData?.house ? (
-            <Field>{`${createObjectData.city}, ул. ${createObjectData.street}, ${createObjectData.house} ${createObjectData.corpus}`}</Field>
+            <Field>{`${createObjectData.city}, ул. ${createObjectData.street}, ${createObjectData.house} к. ${createObjectData.corpus}`}</Field>
           ) : (
             <Field>-</Field>
           )}
         </GridContainer>
         <SpaceLine />
+        <>
+          <GridContainer>
+            <FieldDescrition>Индекс</FieldDescrition>
+            <Field>{createObjectData?.index || '-'}</Field>
+          </GridContainer>
+          <SpaceLine />
+        </>
 
         {createObjectData?.additionalAddresses?.length ? (
           createObjectData.additionalAddresses.map((e) => (
@@ -36,7 +43,13 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
                 <FieldDescrition>
                   Адреса, под которыми известен объект
                 </FieldDescrition>
-                <Field>{`${createObjectData.city}, ул. ${e.street}, ${e.house} ${e.corpus}`}</Field>
+                <Field>{`${createObjectData.city}, ул. ${e.street}, ${e.house} к. ${e.corpus}`}</Field>
+              </GridContainer>
+              <SpaceLine />
+
+              <GridContainer>
+                <FieldDescrition>Индекс</FieldDescrition>
+                <Field>{e?.index || '-'}</Field>
               </GridContainer>
               <SpaceLine />
             </>
