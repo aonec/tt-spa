@@ -15,8 +15,6 @@ export const CreateObjectContainer = () => {
   const stageNumber = useStore(outputs.$stageNumber);
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
-
-  console.log(createObjectData);
   
   const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
 

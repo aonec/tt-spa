@@ -3,19 +3,8 @@ import { createGate } from 'effector-react';
 import { HouseManagementResponse } from 'myApi';
 import { getHouseManagements } from './createObjectService.api';
 import { ObjectCreateSubmitData } from './createObjectService.types';
-import { AdditionalInfo } from './view/CreateObjectPage/CreateObjectAdditionalInfoStage/CreateObjectAdditionalInfoStage.types';
-import { ObjectAddressValues } from './view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.types';
-import { ObjectMainInfoValues } from './view/CreateObjectPage/CreateObjectMainInfoStage/CreateObjectMainInfoStage.types';
 
 const domain = createDomain('createObjectService');
-
-const handleSubmitData = domain.createEvent<ObjectCreateSubmitData>();
-
-// const handleAddressData = domain.createEvent<ObjectAddressValues>();
-
-// const handleMainInfoData = domain.createEvent<ObjectMainInfoValues>();
-
-// const handleAdditionalInfoData = domain.createEvent<AdditionalInfo>();
 
 const goBackStage = domain.createEvent();
 

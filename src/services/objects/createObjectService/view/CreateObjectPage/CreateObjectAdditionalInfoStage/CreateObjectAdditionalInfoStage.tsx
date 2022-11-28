@@ -22,7 +22,6 @@ import {
 export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
   goBackStage,
   onPageCancel,
-  // handleAdditionalInfoData,
   handleSubmitCreateObject,
 }) => {
   const lift = ['Есть', 'Нет'];

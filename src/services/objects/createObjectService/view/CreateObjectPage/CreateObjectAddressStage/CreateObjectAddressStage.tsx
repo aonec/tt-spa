@@ -31,7 +31,6 @@ import { validationSchema } from './createObjectAddressStage.constants';
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
-  // handleAddressData,
   onPageCancel,
   createObjectData,
   handleSubmitCreateObject
