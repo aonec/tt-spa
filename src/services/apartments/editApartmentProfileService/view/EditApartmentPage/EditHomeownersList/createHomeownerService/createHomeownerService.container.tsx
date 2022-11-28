@@ -10,8 +10,10 @@ const formId = 'create-homeowner-form';
 
 export const CreateHomeownerContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
+  const isLoading = useStore(outputs.$isLoading);
 
   const handleCloseModal = useEvent(inputs.closeCreateHomeownerModal);
+  const handleCreateHomeowner = useEvent(inputs.handleCreateHomeowner);
 
   return (
     <FormModal
@@ -20,7 +22,13 @@ export const CreateHomeownerContainer = () => {
       title="Добавить собственника"
       submitBtnText="Добавить собственника"
       formId={formId}
-      form={<EditHomeownerForm formId={formId} />}
+      loading={isLoading}
+      form={
+        <EditHomeownerForm
+          formId={formId}
+          handleSubmit={handleCreateHomeowner}
+        />
+      }
     />
   );
 };

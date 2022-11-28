@@ -1,7 +1,8 @@
 import moment from 'moment';
 import { PersonType } from 'myApi';
+import * as Yup from 'yup';
 
-export const formInditialValues = {
+export const formInitialValues = {
   personalAccountNumber: '',
   name: '',
   phoneNumber: '',
@@ -10,3 +11,10 @@ export const formInditialValues = {
   openAt: null as null | moment.Moment,
   isMainOnApartment: false,
 };
+
+export const validationSchema = Yup.object().shape({
+  personalAccountNumber: Yup.string().required('Это поле обязательное'),
+  name: Yup.string().required('Это поле обязательное'),
+  phoneNumber: Yup.string().required('Это поле обязательное'),
+  paymentCode: Yup.string().required('Это поле обязательное'),
+});
