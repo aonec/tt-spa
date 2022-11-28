@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import { ConfigProvider, Select } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
-import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import {
   StyledRangePicker,
   StyledContainerThreeItems,
-  StyledContainerFourItems,
   StyledSlider,
   LabelCS,
+  StyledFormThreeRows,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
 import type { Moment } from 'moment';
@@ -15,9 +14,10 @@ import moment from 'moment';
 import {
   FormItem,
   SelectSC,
-  StyledFormThreeRows,
 } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
-import { InputSC } from '01/shared/ui/Fields';
+import { AddressSearchContainer } from 'services/addressSearchService';
+import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
 
 const { Option } = Select;
 
@@ -34,59 +34,31 @@ export const ExtendedSearchForm: FC<{
   const dateFormat = 'YYYY-MM-DD';
 
   return (
-    <StyledFormThreeRows id="searchForm" initialValues={{ remember: true }}>
-      <StyledContainerFourItems>
-        <FormItem>
-          <LabelCS>Город: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.City']", value.target.value)
-            }
-            className={styles.input}
-            value={values['Filter.Address.City']}
-            placeholder="Город"
-          />
-        </FormItem>
-
-        <FormItem>
-          <LabelCS>Улица: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.Street']", value.target.value)
-            }
-            className={styles.input}
-            value={values['Filter.Address.Street']}
-            placeholder="Улица"
-          />
-        </FormItem>
-
-        <FormItem>
-          <LabelCS>Дом: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue(
-                "['Filter.Address.HousingStockNumber']",
-                value.target.value
-              )
-            }
-            className={styles.input}
-            value={values['Filter.Address.HousingStockNumber']}
-            placeholder="Дом"
-          />
-        </FormItem>
-
-        <FormItem>
-          <LabelCS>Корпус: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.Corpus']", value.target.value)
-            }
-            className={styles.input}
-            value={values['Filter.Address.Corpus']}
-            placeholder="Корпус"
-          />
-        </FormItem>
-      </StyledContainerFourItems>
+    <StyledFormThreeRows>
+      <AddressSearchContainer
+        onChange={(key, value) =>
+          setFieldValue(`[${DeviceAddressSearchFieldsNameLookup[key]}]`, value)
+        }
+        fields={[
+          SearchFieldType.City,
+          SearchFieldType.Street,
+          SearchFieldType.House,
+          SearchFieldType.Corpus,
+        ]}
+        showLabels
+        initialValues={{
+          city: values['Filter.Address.City'],
+          street: values['Filter.Address.Street'],
+          house: values['Filter.Address.HousingStockNumber'],
+          corpus: values['Filter.Address.Corpus'],
+        }}
+        customTemplate={[
+          { fieldType: SearchFieldType.City, templateValue: '300px' },
+          { fieldType: SearchFieldType.Street, templateValue: '300px' },
+          { fieldType: SearchFieldType.House, templateValue: '1fr' },
+          { fieldType: SearchFieldType.Corpus, templateValue: '1fr' },
+        ]}
+      />
       <StyledContainerThreeItems>
         <FormItem>
           <LabelCS>Тип ресурса: </LabelCS>

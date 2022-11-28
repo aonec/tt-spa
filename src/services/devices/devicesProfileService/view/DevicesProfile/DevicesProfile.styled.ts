@@ -15,7 +15,7 @@ export const StyledSlider = styled(Slider)`
 
 export const StyledContainerFourItems = styled.div`
   display: grid;
-  grid-template-columns: 4fr 4fr 1.9fr 1.9fr;
+  grid-template-columns: 4fr 4fr 1.9fr;
   gap: 15px;
 `;
 
@@ -40,6 +40,16 @@ export const StyledForm = styled(Form)`
   gap: 2px;
 `;
 
+export const StyledFormThreeRows = styled.div`
+  margin-bottom: 10px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  align-items: center;
+  gap: 5px;
+`;
+
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -53,4 +63,8 @@ export const HeaderText = styled.h1`
 export const LabelCS = styled.label`
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: rgba(39, 47, 90, 0.7) !important;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
 `;

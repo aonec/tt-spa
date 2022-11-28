@@ -30,7 +30,7 @@ sample({
     }
   ),
   clock: addPersonalNmberSaveButtonClicked,
-  target: addPersonalNumberFx,
+  target: addPersonalNumberFx as any,
 });
 
 $addPersonalNumberRequestStatus
