@@ -156,11 +156,9 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       </Form>
 
       <FooterWrapper>
-        <Button onClick={() => handleSubmit()} type="ghost">
-          Отмена
-        </Button>
+        <Button type="ghost">Отмена</Button>
 
-        <ButtonSC form={formId}>Сохранить</ButtonSC>
+        <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
       </FooterWrapper>
     </Wrapper>
   );
