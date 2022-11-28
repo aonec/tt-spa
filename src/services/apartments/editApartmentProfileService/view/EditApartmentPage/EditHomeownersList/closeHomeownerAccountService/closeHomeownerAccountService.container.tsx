@@ -25,7 +25,7 @@ export const CloseHomeownerAccountContainer = () => {
   const handleSubmit = () => {
     if (!closedAt) return;
 
-    handleCloseHomeownerAccount({ closedAt: closedAt.format('DD.MM.YYYY') });
+    handleCloseHomeownerAccount({ closedAt: closedAt.format('YYYY-MM-DD') });
   };
 
   return (
