@@ -29,6 +29,9 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
 
+  const filteredHomeownerAccounts =
+    apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
+
   return (
     <div>
       <WithLoader isLoading={isLoading}>
@@ -67,8 +70,8 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
               )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
-              {apartment?.homeownerAccounts && (
-                <EditHomeownersList homeowners={apartment?.homeownerAccounts} />
+              {filteredHomeownerAccounts && (
+                <EditHomeownersList homeowners={filteredHomeownerAccounts} />
               )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
