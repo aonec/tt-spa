@@ -18,6 +18,7 @@ import { EditHomeownerFormProps } from './EditHomeownerForm.types';
 export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   formId,
   handleSubmit,
+  initialValues,
 }) => {
   const { apartmentId } = useParams<{ apartmentId: string }>();
 
@@ -28,7 +29,7 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
     handleSubmit: handleSubmitForm,
     errors,
   } = useFormik({
-    initialValues: formInitialValues,
+    initialValues: initialValues || formInitialValues,
     onSubmit: (values) => {
       handleSubmit({
         apartmentId: Number(apartmentId),
