@@ -7,7 +7,6 @@ export type ButtonProps = {
   size?: ButtonSizeType;
   sidePadding?: number;
   isLoading?: boolean;
-  form?: string;
 } & HTMLAttributes<HTMLElement>;
 
 export type ButtonSizeType = 'middle' | 'small';
