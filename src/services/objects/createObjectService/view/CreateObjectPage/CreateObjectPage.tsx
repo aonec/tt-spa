@@ -22,6 +22,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   onPageCancel,
   createObjectData,
   handleSubmitCreateObject,
+  heatingStations
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -56,6 +57,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               onPageCancel={onPageCancel}
               createObjectData={createObjectData}
               handleSubmitCreateObject={handleSubmitCreateObject}
+              heatingStations={heatingStations}
             />
           )}
 

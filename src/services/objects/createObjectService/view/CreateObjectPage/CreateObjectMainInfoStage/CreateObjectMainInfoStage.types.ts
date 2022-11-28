@@ -1,4 +1,4 @@
-import { HouseManagementResponse } from 'myApi';
+import { HeatingStationResponsePagedList, HouseManagementResponse } from 'myApi';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
 import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
 
@@ -8,6 +8,7 @@ export type CreateObjectMainInfoStageProps = {
   onPageCancel: (payload: void) => void;
   handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
   createObjectData: ObjectCreateSubmitData | null;
+  heatingStations: HeatingStationResponsePagedList | null;
 };
 
 export type ObjectMainInfoValues = {

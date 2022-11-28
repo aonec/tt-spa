@@ -1,6 +1,6 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/shared/ui/Select/components';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -30,6 +30,7 @@ import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
 import { validationSchema } from './createObjectMainInfoStage.constants';
+import { createObjectService } from 'services/objects/createObjectService/createObjectService.model';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -37,14 +38,20 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   onPageCancel,
   handleSubmitCreateObject,
   createObjectData,
+  heatingStations,
 }) => {
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+
+  const { gates } = createObjectService;
+  const { HeatingStationsFetchGate } = gates;
 
   const [
     isInputTypeDisplayingDivShow,
     setInputTypeDisplayingDivShow,
   ] = useState<boolean>(false);
+
+  const heatingStationsValues = heatingStations?.items;
 
   const initialValues = {
     houseManagement: createObjectData?.houseManagement || '',
@@ -74,6 +81,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
   return (
     <>
+      <HeatingStationsFetchGate />
       <CreateNewHeatingPointModal
         isCreateModalOpen={isCreateModalOpen}
         setCreateModalOpen={setCreateModalOpen}
@@ -165,11 +173,11 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 }}
                 value={values.heatingPoint.heatingPointType}
               >
-                {houseManagements?.map(
-                  (houseManagement) =>
-                    houseManagement.name && (
-                      <Select.Option value={houseManagement.name}>
-                        {houseManagement.name}
+                {heatingStationsValues?.map(
+                  (heatingStations) =>
+                    heatingStations.name && (
+                      <Select.Option value={heatingStations.name}>
+                        {heatingStations.name}
                       </Select.Option>
                     )
                 )}

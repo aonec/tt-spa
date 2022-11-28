@@ -15,9 +15,10 @@ export const CreateObjectContainer = () => {
   const stageNumber = useStore(outputs.$stageNumber);
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
+  const heatingStations = useStore(outputs.$heatingStations);
 
-  console.log(createObjectData);
-  
+  console.log(heatingStations);
+
   const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
 
   const goBackStage = useEvent(inputs.goBackStage);
@@ -37,6 +38,7 @@ export const CreateObjectContainer = () => {
         goBackStage={() => goBackStage()}
         onPageCancel={onPageCancel}
         handleSubmitCreateObject={handleSubmitCreateObject}
+        heatingStations={heatingStations}
       />
     </>
   );

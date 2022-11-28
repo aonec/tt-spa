@@ -1,21 +1,16 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
-import { HouseManagementResponse } from 'myApi';
-import { getHouseManagements } from './createObjectService.api';
+import {
+  HeatingStationResponsePagedList,
+  HouseManagementResponse,
+} from 'myApi';
+import {
+  getHeatingStations,
+  getHouseManagements,
+} from './createObjectService.api';
 import { ObjectCreateSubmitData } from './createObjectService.types';
-import { AdditionalInfo } from './view/CreateObjectPage/CreateObjectAdditionalInfoStage/CreateObjectAdditionalInfoStage.types';
-import { ObjectAddressValues } from './view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.types';
-import { ObjectMainInfoValues } from './view/CreateObjectPage/CreateObjectMainInfoStage/CreateObjectMainInfoStage.types';
 
 const domain = createDomain('createObjectService');
-
-const handleSubmitData = domain.createEvent<ObjectCreateSubmitData>();
-
-// const handleAddressData = domain.createEvent<ObjectAddressValues>();
-
-// const handleMainInfoData = domain.createEvent<ObjectMainInfoValues>();
-
-// const handleAdditionalInfoData = domain.createEvent<AdditionalInfo>();
 
 const goBackStage = domain.createEvent();
 
@@ -23,14 +18,26 @@ const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
 const HouseManagementsFetchGate = createGate();
 
+const HeatingStationsFetchGate = createGate();
+
 const fetchHouseManagementsFx = domain.createEffect<
   void,
   HouseManagementResponse[] | null
 >(getHouseManagements);
 
+const fetchHeatingStationFx = domain.createEffect<
+  void,
+  HeatingStationResponsePagedList | null
+>(getHeatingStations);
+
 forward({
   from: HouseManagementsFetchGate.open,
   to: fetchHouseManagementsFx,
+});
+
+forward({
+  from: HeatingStationsFetchGate.open,
+  to: fetchHeatingStationFx,
 });
 
 const $createObjectData = domain
@@ -49,11 +56,20 @@ const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementsFx.doneData, (_, data) => data);
 
+const $heatingStations = domain
+  .createStore<HeatingStationResponsePagedList | null>(null)
+  .on(fetchHeatingStationFx.doneData, (_, data) => data);
+
 export const createObjectService = {
   inputs: {
     goBackStage,
     handleSubmitCreateObject,
   },
-  outputs: { $createObjectData, $stageNumber, $houseManagements },
-  gates: { HouseManagementsFetchGate },
+  outputs: {
+    $createObjectData,
+    $stageNumber,
+    $houseManagements,
+    $heatingStations,
+  },
+  gates: { HouseManagementsFetchGate, HeatingStationsFetchGate },
 };
