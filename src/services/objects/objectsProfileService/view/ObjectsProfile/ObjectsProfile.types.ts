@@ -5,4 +5,5 @@ export type ObjectsProfileProps = {
   handleOpenChooseResourceDisconnectionModal: () => void;
   searchType?: SearchType;
   openSoiReportModal: () => void;
+  handleCreateObject: () => void;
 };

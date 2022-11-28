@@ -43,7 +43,7 @@ export const StatisticsList: React.FC = () => {
     homeownerAccountFullName,
     homeownerAccountPhoneNumber,
   }: SubscriberStatisticsСonsumptionResponse) => (
-    <ApartmentWrap to={`/objects/${housingStockId}/apartments/${apartmentId}`}>
+    <ApartmentWrap to={`/apartments/${apartmentId}`}>
       <div>{apartmentNumber}</div>
       <div>{formatValue(round(coldWaterSupplyConsumption!, 3))}</div>
       <div>{formatValue(round(hotWaterSupplyConsumption!, 3))}</div>

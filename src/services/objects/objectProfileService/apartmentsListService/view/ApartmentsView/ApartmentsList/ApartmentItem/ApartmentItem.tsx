@@ -27,7 +27,7 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({
   return (
     <Wrapper
       id={`apartment-list-item-${apartment.id}`}
-      to={`/objects/${hosuingStockId}/apartments/${apartment.id}`}
+      to={`/apartments/${apartment.id}`}
       onClick={() => setCurrentApartmentId(apartment.id)}
     >
       <ApartmentNumberWrapper>

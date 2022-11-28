@@ -1,19 +1,22 @@
 import _ from 'lodash';
 import moment from 'moment';
 import {
+  EHousingMeteringDeviceType,
   EMagistralType,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
+  PipeNodeResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
-import { MeteringDeviceReadingWithEmpties } from './housingMeteringDeviceReadingsService.types';
+import { SortedMeteringDeviceReading } from './housingMeteringDeviceReadingsService.types';
 
 export const groupWithEmptyReadings = (
-  allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+  allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
+  deviceIds: { [key in EMagistralType]: number | null }
 ) => {
-  const sortedReadingsDictionary = _.groupBy(
-    allReadings,
-    (reading) => `${reading.year} ${reading.month}`
-  );
+  const sortedReadingsDictionary = _.groupBy(allReadings, (reading) => {
+    const readingDate = moment(reading.readingDate);
+    return `${readingDate.format('YYYY')} ${readingDate.format('MMMM')}`;
+  });
 
   const sortedReadingsDates = Object.keys(
     sortedReadingsDictionary
@@ -21,27 +24,32 @@ export const groupWithEmptyReadings = (
     moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month')
   );
 
-  const [feedFlowId, feedBackFlowId] = getDeviceIds(allReadings);
+  const { FeedBackFlow: feedBackFlowId, FeedFlow: feedFlowId } = deviceIds;
 
-  const firstReadingDate = sortedReadingsDates[0];
-
-  if (!firstReadingDate || !feedFlowId) {
+  if (!feedFlowId) {
     return [];
   }
 
-  const diff = moment(firstReadingDate, 'YYYY MMMM').diff(moment(), 'month');
+  let firstReadingDate = moment(sortedReadingsDates[0], 'YYYY MMMM');
+
+  if (!firstReadingDate.isValid()) {
+    firstReadingDate = moment().add(1, 'month');
+  }
+
+  const diff = moment(firstReadingDate, 'YYYY MMMM').diff(
+    moment().add(1, 'month'),
+    'month'
+  );
 
   const readingsWithEmpty = getFilledArray(Math.abs(diff) + 1, (index) => {
-    const year = moment()
-      .add(diff + index, 'month')
-      .format('YYYY');
-    const month = moment()
-      .add(diff + index, 'month')
-      .format('MMMM');
-    const date = `${year} ${month}`;
+    const date = moment().add(diff + index + 1, 'month');
+    const year = date.format('YYYY');
+    const month = date.format('MMMM');
 
-    const readings: MeteringDeviceReadingWithEmpties[] =
-      sortedReadingsDictionary[date] || [];
+    const dateString = `${year} ${month}`;
+
+    const readings: SortedMeteringDeviceReading[] =
+      sortedReadingsDictionary[dateString] || [];
 
     if (readings.length === 0) {
       readings.push({
@@ -50,13 +58,12 @@ export const groupWithEmptyReadings = (
         magistralType: EMagistralType.FeedFlow,
         id: null,
         deviceId: feedFlowId,
-        year,
       });
     }
 
     if (feedBackFlowId && readings.length === 1) {
       const isFeedBackFlowExist =
-        readings[0].magistralType === EMagistralType.FeedFlow;
+        readings[0].magistralType === EMagistralType.FeedBackFlow;
 
       const magistralType = isFeedBackFlowExist
         ? EMagistralType.FeedFlow
@@ -69,7 +76,6 @@ export const groupWithEmptyReadings = (
         previousReadingsId: null,
         id: null,
         deviceId,
-        year,
       });
     }
     return { year, month, readings };
@@ -83,7 +89,7 @@ const groupReadings = (
   yearReadings: {
     year: string;
     month: string;
-    readings: MeteringDeviceReadingWithEmpties[];
+    readings: SortedMeteringDeviceReading[];
   }[]
 ) => {
   const groupedReadingsByYear = _.groupBy(
@@ -101,18 +107,28 @@ const groupReadings = (
   return _.reverse(groupedReadingsByMonth);
 };
 
-const getDeviceIds = (
-  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
-) => {
-  const feedFlowReading =
-    readings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedFlow
-    ) || null;
+export const getDeviceIds = (node: PipeNodeResponse) => {
+  const pipes = node.communicationPipes || [];
 
-  const feedBackFlowReading =
-    readings.find(
-      (reading) => reading.magistralType === EMagistralType.FeedBackFlow
-    ) || null;
+  const feedFlowDevices =
+    pipes.find((pipe) => pipe.magistral === EMagistralType.FeedFlow)?.devices ||
+    [];
+  const feedBackFlowDevices =
+    pipes.find((pipe) => pipe.magistral === EMagistralType.FeedBackFlow)
+      ?.devices || [];
 
-  return [feedFlowReading?.deviceId, feedBackFlowReading?.deviceId];
+  const feedFlowDevice = feedFlowDevices.find(
+    (device) =>
+      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter
+  );
+  const feedBackFlowDevice = feedBackFlowDevices.find(
+    (device) =>
+      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter
+  );
+
+  return {
+    [EMagistralType.FeedBackFlow]: feedBackFlowDevice?.id || null,
+    [EMagistralType.FeedFlow]: feedFlowDevice?.id || null,
+    [EMagistralType.Recharge]: null,
+  };
 };

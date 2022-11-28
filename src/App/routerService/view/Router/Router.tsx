@@ -5,7 +5,6 @@ import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
   AddNode,
-  ApartmentProfile,
   CalculatorProfile,
   Contractor,
   DevicesFromSearch,
@@ -42,6 +41,9 @@ import { StatisticsPage } from '01/features/statistics';
 import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
+import { CreateObjectContainer } from 'services/objects/createObjectService';
+import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
+import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 
 const { gates } = objectProfileService;
 
@@ -74,6 +76,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route
+                  path="/objects/create"
+                  component={CreateObjectContainer}
+                  exact
+                />
+
+                <Route
                   path="/objects/:housingStockId/add_node"
                   component={AddNode}
                   exact
@@ -85,16 +93,23 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
+                <Route
+                  path="/apartments/:apartmentId/edit"
+                  component={EditApartmentProfileContainer}
+                  exact
+                />
+
+                <Route
+                  path="/apartments/:apartmentId/:tabSection?"
+                  component={ApartmentProfileContainer}
+                  exact
+                />
+
                 <Route path="/objects">
                   <ObjectGroupIsOpen />
                   <Route
                     path="/objects/profile/:housingStockId"
                     component={ObjectProfileContainer}
-                    exact
-                  />
-                  <Route
-                    path="/objects/:housingStockId/apartments/:apartmentId/:apartmentSection?"
-                    component={ApartmentProfile}
                     exact
                   />
                 </Route>
@@ -140,11 +155,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
-                <Route
-                  path="/nodes/:nodeId/edit"
-                  component={EditNode}
-                  exact
-                />
+                <Route path="/nodes/:nodeId/edit" component={EditNode} exact />
 
                 <Route
                   path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
