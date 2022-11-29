@@ -14,7 +14,7 @@ const fetchUserDataFx = domain.createEffect<
 
 sample({
   clock: FetchUserDataGate.open,
-  fn: (id) => id.id,
+  fn: ({ id }) => id,
   target: fetchUserDataFx,
 });
 
