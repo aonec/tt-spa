@@ -1,6 +1,4 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { useEvent, useStore } from 'effector-react';
-import moment from 'moment';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
@@ -42,18 +40,13 @@ import {
 } from './displayReadingHistory.styled';
 import { RenderReading } from './displayReadingHistory.types';
 import {
-  CorrectReadingValuesValidationResult,
-  round,
-} from '01/hooks/useReadings';
-import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import { Alert } from '01/shared/ui/Alert/Alert';
 
 interface Props {
   isModal?: boolean;
@@ -98,6 +91,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   } = useOpenedYears(values?.yearReadings || []);
 
   const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
+
+  const apartment = useStore($apartment);
+  console.log(apartment?.homeownerAccounts);
 
   const renderReading = ({
     year,
@@ -238,15 +234,27 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       isHasArchived && isFirst ? arrowButton : <ArrowButtonBlock />;
 
     return (
-      <WrapComponent>
-        {monthName}
-        <div>{readingsInputs}</div>
-        <div>{consumption}</div>
-        <div>{averageConsumption}</div>
-        <div>{source}</div>
-        <div>{entryDate}</div>
-        {arrowButtonComponent}
-      </WrapComponent>
+      <>
+        <WrapComponent>
+          {monthName}
+          <div>{readingsInputs}</div>
+          <div>{consumption}</div>
+          <div>{averageConsumption}</div>
+          <div>{source}</div>
+          <div>{entryDate}</div>
+          {arrowButtonComponent}
+
+          {apartment?.homeownerAccounts &&
+            apartment.homeownerAccounts.map((e) => (
+              <Alert>
+                <div>
+                  {e.personalAccountNumber} 0000
+                  {e.replacedByAccount?.personalAccountNumber}
+                </div>
+              </Alert>
+            ))}
+        </WrapComponent>
+      </>
     );
   };
 
