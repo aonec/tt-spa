@@ -49,11 +49,6 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
     },
   ];
 
-  const competencies = [
-    'Теплотехнические работы',
-    'Ремонтно- эксплуатационные работы',
-  ];
-
   return (
     <Wrapper>
       <Margin>
@@ -87,12 +82,16 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
       {currentTabKey === '1' && (
         <GridWrapper>
           <div>
-            <BlockTitle>Компетенции</BlockTitle>
-            <CompetenciesContainer>
-              {competencies.map((e) => (
-                <СompetenceDiv>{e}</СompetenceDiv>
-              ))}
-            </CompetenciesContainer>
+            {userData?.competences?.length ? (
+              <>
+                <BlockTitle>Компетенции</BlockTitle>
+                <CompetenciesContainer>
+                  {userData?.competences.map((e) => (
+                    <СompetenceDiv>{e.title}</СompetenceDiv>
+                  ))}
+                </CompetenciesContainer>
+              </>
+            ) : null}
 
             <BlockTitle>Информация</BlockTitle>
 

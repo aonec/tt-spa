@@ -8,9 +8,6 @@ export const BlockTitle = styled.div`
   line-height: 32px;
   color: #272f5a;
   margin: 16px 0px 26px 0px;
-  :first-child {
-    margin: 16px 0px 0px 0px;
-  }
 `;
 
 export const GridWrapper = styled.div`
