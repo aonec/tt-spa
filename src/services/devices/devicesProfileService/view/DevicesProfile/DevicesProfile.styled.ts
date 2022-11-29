@@ -11,6 +11,12 @@ export const StyledSlider = styled(Slider)`
   &.ant-slider.ant-slider-with-marks {
     margin-bottom: 12px !important;
   }
+  &.ant-slider-mark-text {
+    font-size: 12px !important;
+  }
+  .ant-slider-mark-text-active {
+    color: #272f5ab2;
+  }
 `;
 
 export const StyledContainerFourItems = styled.div`
@@ -32,7 +38,7 @@ export const StyledRangePicker = styled(RangePicker)<{ isShadow?: boolean }>`
     isShadow ? `0 4px 7px #02004b1f` : 'none'};
 `;
 
-export const StyledForm = styled(Form)`
+export const StyledForm = styled.div`
   margin-bottom: 10px;
   margin-top: 10px;
   display: grid;
@@ -63,7 +69,7 @@ export const HeaderText = styled.h1`
 export const LabelCS = styled.label`
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: rgba(39, 47, 90, 0.7) !important;
+  color: #272f5ab2 !important;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;

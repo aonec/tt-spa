@@ -12,7 +12,6 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
-  CustomGrid,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
@@ -38,11 +37,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   return (
     <Wrapper>
       {!isExtendedSearchOpen ? (
-        <StyledForm
-          id="searchForm"
-          initialValues={{ remember: true }}
-          onChange={() => submitForm()}
-        >
+        <StyledForm>
           <StyledGrid isExtendedSearchOpen={isExtendedSearchOpen}>
             {children}
             <FormItem>
@@ -64,7 +59,6 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 </StyledLabelSimple>
                 <SelectSC
                   style={{ width: '65%' }}
-                  id="sortBy"
                   value={values?.OrderBy}
                   placeholder="Дате проверки"
                   onChange={(value) => setFieldValue('OrderBy', value)}
@@ -84,7 +78,6 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   Истекает дата поверки:{' '}
                 </StyledLabelSimple>
                 <SelectSC
-                  id="expirationDate"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}
                   onChange={(value) =>
@@ -130,9 +123,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
           </Grid>
         </StyledForm>
       ) : (
-        <CustomGrid>
-          <Form.Item name="advancedButton">{children}</Form.Item>
-        </CustomGrid>
+        <FormItem>{children}</FormItem>
       )}
     </Wrapper>
   );

@@ -37,7 +37,7 @@ export const ExtendedSearchForm: FC<{
     <StyledFormThreeRows>
       <AddressSearchContainer
         onChange={(key, value) =>
-          setFieldValue(`[${DeviceAddressSearchFieldsNameLookup[key]}]`, value)
+          setFieldValue(DeviceAddressSearchFieldsNameLookup[key], value)
         }
         fields={[
           SearchFieldType.City,

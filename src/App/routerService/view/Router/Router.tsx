@@ -7,7 +7,6 @@ import {
   AddNode,
   CalculatorProfile,
   Contractor,
-  DevicesFromSearch,
   EditCalculator,
   EditNode,
   ErrorPage,
@@ -130,8 +129,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/electricNode/:deviceId/edit"
                   component={EditElectricNodeContainer}
                 />
-
-                <Route path="/devices/" component={DevicesFromSearch} exact />
 
                 <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                   <EditManagingFirmUserPage />

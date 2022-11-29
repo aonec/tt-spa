@@ -13,12 +13,6 @@ export const StyledGrid = styled.div<{ isExtendedSearchOpen: boolean }>`
   gap: 15px;
 `;
 
-export const CustomGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 5px;
-`;
-
 export const SCSlider = styled(Slider)`
   width: 70%;
   &.ant-slider.ant-slider-with-marks {
