@@ -47,6 +47,8 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         ? Number(values.NormativePerPerson)
         : null;
 
+      const date = moment(values.Date).set('day', 15);
+
       createSoiReport({
         ReportName: values.ReportName,
         HouseManagementId: values.HouseManagementId || undefined,
@@ -57,8 +59,8 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
           values.Period === 'year'
             ? ESoiReportPeriod.Year
             : ESoiReportPeriod.Month,
-        Year: values.Date.year(),
-        Month: values.Date.month(),
+        Year: date.year(),
+        Month: date.month(),
       });
     },
   });
