@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { Select, Tooltip } from 'antd';
 import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { InputSC, StyledAutocomplete } from '01/shared/ui/Fields';
+import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
 import {
   ApartmentNumberWrapper,
@@ -27,13 +27,12 @@ import {
   TimeStatusesLookUp,
 } from '../../tasksProfileService.types';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import {
-  AddressSearchValues,
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
+import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 
 const { Option } = Select;
 
@@ -46,12 +45,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
 }) => {
   const isIndividualDevice = values.EngineeringElement === 'IndividualDevice';
 
-  const {
-    keyDownEnterGuardedHandler,
-    refs,
-    onEnterHandler,
-    refWithoutDisabled,
-  } = useOnEnterSwitch(11, 1);
+  const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
 
   const taskCategories: taskCategotiesProps = {
     All: Object.keys(
@@ -142,13 +136,13 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             </Tooltip>
           </StyledTooltiContainer>
           <InputSC
+            data-reading-input="tasksExtendedSearch"
             onChange={(value) =>
               setFieldValue('ApartmentNumber', value.target.value)
             }
             value={values.ApartmentNumber}
-            ref={isIndividualDevice ? refs[4] : null}
             onKeyDown={
-              isIndividualDevice ? keyDownEnterGuardedHandler(4) : undefined
+              isIndividualDevice ? fromEnter(() => next(0)) : undefined
             }
             placeholder="Квартира"
             disabled={values.EngineeringElement !== 'IndividualDevice'}
@@ -159,15 +153,12 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Элемент инженерной сети: </label>
           <SelectSC
+            data-reading-input="tasksExtendedSearch"
+            showAction={['focus']}
             placeholder="Элемент"
             value={values.EngineeringElement}
             onChange={(value) => setFieldValue('EngineeringElement', value)}
-            ref={isIndividualDevice ? refs[5] : refWithoutDisabled[4]}
-            onKeyDown={
-              isIndividualDevice
-                ? keyDownEnterGuardedHandler(5)
-                : keyDownEnterGuardedHandler(4)
-            }
+            onKeyDown={fromEnter(() => next(1))}
           >
             <Option value={''}>Все</Option>
             {Object.keys(ETaskEngineeringElement).map((el) => {
@@ -182,17 +173,14 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Тип ресурса: </label>
           <SelectSC
+            data-reading-input="tasksExtendedSearch"
+            showAction={['focus']}
             placeholder="Тип ресурса"
             value={values.Resource}
             onChange={(value) => {
               setFieldValue('Resource', value);
             }}
-            ref={isIndividualDevice ? refs[6] : refWithoutDisabled[5]}
-            onKeyDown={
-              isIndividualDevice
-                ? keyDownEnterGuardedHandler(6)
-                : keyDownEnterGuardedHandler(5)
-            }
+            onKeyDown={fromEnter(() => next(2))}
           >
             <Option value={''}>Все</Option>
             {Object.keys(EResourceType).map((el) => {
@@ -207,6 +195,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Домоуправление: </label>
           <SelectSC
+            data-reading-input="tasksExtendedSearch"
+            showAction={['focus']}
             id="HouseManagementId"
             placeholder="Домоуправление"
             value={values?.HouseManagementId}
@@ -214,12 +204,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               setFieldValue('HouseManagementId', value);
             }}
             style={{ textOverflow: 'ellipsis', maxWidth: '300' }}
-            ref={isIndividualDevice ? refs[7] : refWithoutDisabled[6]}
-            onKeyDown={
-              isIndividualDevice
-                ? keyDownEnterGuardedHandler(7)
-                : keyDownEnterGuardedHandler(6)
-            }
+            onKeyDown={fromEnter(() => next(3))}
           >
             <Option value={''}>Все</Option>
             {housingManagments &&
@@ -235,17 +220,14 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Статус: </label>
           <SelectSC
+            data-reading-input="tasksExtendedSearch"
+            showAction={['focus']}
             placeholder="Статус"
             value={values.TimeStatus}
             onChange={(value) => {
               setFieldValue('TimeStatus', value);
             }}
-            ref={isIndividualDevice ? refs[8] : refWithoutDisabled[7]}
-            onKeyDown={
-              isIndividualDevice
-                ? keyDownEnterGuardedHandler(8)
-                : keyDownEnterGuardedHandler(7)
-            }
+            onKeyDown={fromEnter(() => next(4))}
           >
             <Option value={''}>Все</Option>
             {Object.keys(EStageTimeStatus).map((el) => {
@@ -260,18 +242,14 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Тип задачи: </label>
           <OverFlowSelectSC
+            data-reading-input="tasksExtendedSearch"
             id="TaskType"
             placeholder="Тип задачи"
             value={values.TaskType!}
             onChange={(value) => {
               setFieldValue('TaskType', value);
             }}
-            ref={isIndividualDevice ? refs[9] : refWithoutDisabled[8]}
-            onKeyDown={
-              isIndividualDevice
-                ? keyDownEnterGuardedHandler(9)
-                : keyDownEnterGuardedHandler(8)
-            }
+            onKeyDown={fromEnter(() => next(5))}
           >
             {FilteredTaskTypes &&
               FilteredTaskTypes.map(({ value, key }) => (
@@ -284,24 +262,17 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         <FormItem>
           <label>Исполнитель: </label>
           <SelectSC
+            data-reading-input="tasksExtendedSearch"
+            showAction={['focus']}
             placeholder="Исполнитель"
             value={values.PerpetratorId}
             onChange={(value) => {
               setFieldValue('PerpetratorId', value);
             }}
-            ref={isIndividualDevice ? refs[10] : refWithoutDisabled[9]}
             onKeyDown={
               isIndividualDevice
-                ? (e) => {
-                    fromEnter(() => {
-                      onEnterHandler(10);
-                    })(e);
-                  }
-                : (e) => {
-                    fromEnter(() => {
-                      onEnterHandler(9);
-                    })(e);
-                  }
+                ? fromEnter(() => next(6))
+                : fromEnter(() => next(0))
             }
           >
             <Option value={''}>Все</Option>

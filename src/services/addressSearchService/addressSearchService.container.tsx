@@ -41,8 +41,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
   const cities = useStore(outputs.cities);
   const streets = useStore(outputs.streets);
-  // const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
-  const hasCorpuses = false;
+  const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
 
   const preparedFields = useMemo(
     () =>
