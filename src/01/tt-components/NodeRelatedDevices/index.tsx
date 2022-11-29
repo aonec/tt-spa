@@ -55,10 +55,6 @@ export const NodeRelatedDevices = ({
       <ListItem key={id}>
         <Tooltip title={`${model}(${serialNumber})`}>
           <NameWrap to={`/housingMeteringDevices/${id}`}>
-            <IconTT
-              icon={(resource || 'next').toLowerCase()}
-              style={{ marginRight: 8 }}
-            />
             <Name style={{ marginRight: 8 }}>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
           </NameWrap>
