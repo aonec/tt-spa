@@ -35,7 +35,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
 
   const [currentTabKey, setTab] = useState('1');
-  console.log(currentTabKey);
+
   const tabItems: Array<TabsItemInterface> = [
     {
       title: 'Общие данные',
@@ -84,69 +84,72 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
         <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
       </Margin>
 
-      <GridWrapper>
-        <div>
-          <BlockTitle>Компетенции</BlockTitle>
-          <CompetenciesContainer>
-            {competencies.map((e) => (
-              <СompetenceDiv>{e}</СompetenceDiv>
-            ))}
-          </CompetenciesContainer>
+      {currentTabKey === '1' && (
+        <GridWrapper>
+          <div>
+            <BlockTitle>Компетенции</BlockTitle>
+            <CompetenciesContainer>
+              {competencies.map((e) => (
+                <СompetenceDiv>{e}</СompetenceDiv>
+              ))}
+            </CompetenciesContainer>
 
-          <BlockTitle>Информация</BlockTitle>
+            <BlockTitle>Информация</BlockTitle>
 
-          <GridContainer>
-            <FieldTitle>ФИО</FieldTitle>
-            <FieldName>{userInitials}</FieldName>
-          </GridContainer>
-          <SpaceLine />
+            <GridContainer>
+              <FieldTitle>ФИО</FieldTitle>
+              <FieldName>{userInitials}</FieldName>
+            </GridContainer>
+            <SpaceLine />
 
-          <GridContainer>
-            <FieldTitle>Электронная почта</FieldTitle>
-            <Field>{userData?.email || '-'} </Field>
-          </GridContainer>
-          <SpaceLine />
+            <GridContainer>
+              <FieldTitle>Электронная почта</FieldTitle>
+              <Field>{userData?.email || '-'} </Field>
+            </GridContainer>
+            <SpaceLine />
 
-          <GridContainer>
-            <FieldTitle>Контактный телефон</FieldTitle>
-            <Field>
-              {userData?.cellphone
-                ? phoneMask.maskValue(userData?.cellphone)
-                : 'Телефон не указан'}
-            </Field>
-          </GridContainer>
-          <SpaceLine />
+            <GridContainer>
+              <FieldTitle>Контактный телефон</FieldTitle>
+              <Field>
+                {userData?.cellphone
+                  ? phoneMask.maskValue(userData?.cellphone)
+                  : 'Телефон не указан'}
+              </Field>
+            </GridContainer>
+            <SpaceLine />
 
-          <GridContainer>
-            <FieldTitle>Роль</FieldTitle>
-            <Field>
-              <Tooltip title={rolesString}>
-                {(sortedRoles.length && sortedRoles?.[0].value) ||
-                  'Роли не найдены'}
-              </Tooltip>
-            </Field>
-          </GridContainer>
-          <SpaceLine />
+            <GridContainer>
+              <FieldTitle>Роль</FieldTitle>
+              <Field>
+                <Tooltip title={rolesString}>
+                  {(sortedRoles.length && sortedRoles?.[0].value) ||
+                    'Роли не найдены'}
+                </Tooltip>
+              </Field>
+            </GridContainer>
+            <SpaceLine />
 
-          <GridContainer>
-            <FieldTitle>Дата начала работы</FieldTitle>
-            <Field>
-              {(userData?.hireDate &&
-                moment(userData?.hireDate).format('DD.MM.YYYY')) ||
-                'Нет данных'}
-            </Field>
-          </GridContainer>
-          <SpaceLine />
-          <GridContainer>
-            <FieldTitle>Объекты на обслуживании</FieldTitle>
-            <FieldHousingStocksNumber>
-              Выбрано {userData?.housingStocks?.length} адресов
-            </FieldHousingStocksNumber>
-          </GridContainer>
-          <SpaceLine />
-        </div>
-        <div></div>
-      </GridWrapper>
+            <GridContainer>
+              <FieldTitle>Дата начала работы</FieldTitle>
+              <Field>
+                {(userData?.hireDate &&
+                  moment(userData?.hireDate).format('DD.MM.YYYY')) ||
+                  'Нет данных'}
+              </Field>
+            </GridContainer>
+            <SpaceLine />
+            <GridContainer>
+              <FieldTitle>Объекты на обслуживании</FieldTitle>
+              <FieldHousingStocksNumber>
+                Выбрано {userData?.housingStocks?.length} адресов
+              </FieldHousingStocksNumber>
+            </GridContainer>
+            <SpaceLine />
+          </div>
+          <div></div>
+        </GridWrapper>
+      )}
+      {currentTabKey === '2' && <h2>Страница появится в будущем</h2>}
     </Wrapper>
   );
 };

@@ -10,7 +10,6 @@ export const EmployeeProfileContainer = () => {
 
   const { FetchUserDataGate } = gates;
   const userData = useStore(outputs.$userData);
-  console.log(userData);
 
   return (
     <>
