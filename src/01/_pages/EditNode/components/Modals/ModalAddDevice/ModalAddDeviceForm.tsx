@@ -139,7 +139,7 @@ const ModalAddDeviceForm = ({
     calculatorId: calculatorId,
     entryNumber,
     pipeNumber: null,
-    magistral: magistrals[0].key,
+    magistral: magistrals[0]?.key,
     number,
     nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
