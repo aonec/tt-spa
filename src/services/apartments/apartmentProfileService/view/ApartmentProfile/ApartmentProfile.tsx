@@ -1,6 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC, ReactNode } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 import { TasksCardContainer } from 'services/apartments/tasksCardService';
