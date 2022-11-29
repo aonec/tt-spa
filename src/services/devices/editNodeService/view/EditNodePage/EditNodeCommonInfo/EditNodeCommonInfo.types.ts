@@ -1,5 +1,4 @@
 import {
-  ENodeCommercialAccountStatus,
   NodeServiceZoneResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
@@ -10,11 +9,5 @@ export type EditNodeCommonInfoProps = {
   openAddNewZonesModal: () => void;
   nodeZones: NodeServiceZoneResponse[];
   formId: string;
-};
-
-export type UpdatePipeNodeFormik = Omit<UpdatePipeNodeRequest, 'number'> & {
-  number?: string;
-  nodeStatus?: ENodeCommercialAccountStatus;
-  futureCommercialAccountingDate: string;
-  lastCommercialAccountingDate: string;
+  updateNode: (payload: UpdatePipeNodeRequest) => void;
 };

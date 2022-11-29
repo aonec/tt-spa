@@ -4,6 +4,7 @@ import {
   EResourceType,
   NodeServiceZoneListResponse,
   PipeNodeResponse,
+  UpdatePipeNodeRequest,
 } from 'myApi';
 
 export const fetchNode = (nodeId: string): Promise<PipeNodeResponse> =>
@@ -16,3 +17,11 @@ export const fetchPipeNodeMagistrals = (
   resource: EResourceType
 ): Promise<EMagistralTypeStringDictionaryItem[]> =>
   axios.get('PipeNodes/PipeMagistralTypes', { params: { resource } });
+
+export const fetchUpdateNode = ({
+  pipeNodeId,
+  payload,
+}: {
+  pipeNodeId: string;
+  payload: UpdatePipeNodeRequest;
+}): Promise<void> => axios.put(`PipeNodes/${pipeNodeId}`, payload);

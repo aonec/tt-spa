@@ -1,6 +1,6 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
@@ -26,6 +26,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   nodeZones,
   magistrals,
   refetchNode,
+  updateNode
 }) => {
   const { number, address, resource } = node;
 
@@ -54,6 +55,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             openAddNewZonesModal={openAddNewZonesModal}
             nodeZones={nodeZones}
             formId={formId}
+            updateNode={updateNode}
           />
         </TabPane>
 
