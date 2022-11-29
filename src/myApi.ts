@@ -1691,6 +1691,11 @@ export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiRespo
   successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
+export enum ESoiReportPeriod {
+  Month = "Month",
+  Year = "Year",
+}
+
 export enum EStageActionType {
   AddDocuments = "AddDocuments",
   AddPerpetrator = "AddPerpetrator",
@@ -10980,13 +10985,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsSoiReportList: (
-      query: {
+      query?: {
         HouseManagementId?: string;
         HousingStockId?: number;
         Resource?: EResourceType;
-        From?: string;
-        To?: string;
-        NormativePerPerson: number;
+        Month?: number;
+        Year?: number;
+        Period?: ESoiReportPeriod;
+        NormativePerPerson?: number;
       },
       params: RequestParams = {},
     ) =>
