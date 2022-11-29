@@ -1,8 +1,7 @@
 import AddNewZonesModal from '01/features/serviceZones/addServiceZone';
 import { addServiceZoneButtonClicked } from '01/features/serviceZones/addServiceZone/models';
-import ModalAddDevice from '01/_pages/EditNode/components/Modals/ModalAddDevice';
 import { useEvent, useStore } from 'effector-react';
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { editNodeService } from './editNodeService.model';
@@ -23,6 +22,7 @@ export const EditNodeContainer = () => {
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
   const openAddNewZonesModal = useEvent(addServiceZoneButtonClicked);
   const refetchNode = useEvent(inputs.refetchNode);
+  const updateNode = useEvent(inputs.updateNode);
 
   return (
     <>
@@ -41,6 +41,7 @@ export const EditNodeContainer = () => {
               nodeZones={nodeZones}
               magistrals={magistrals}
               refetchNode={() => refetchNode()}
+              updateNode={updateNode}
             />
           </>
         )}

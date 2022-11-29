@@ -7,11 +7,13 @@ import {
   NodeServiceZoneListResponse,
   NodeServiceZoneResponse,
   PipeNodeResponse,
+  UpdatePipeNodeRequest,
 } from 'myApi';
 import {
   fetchNode,
   fetchPipeNodeMagistrals,
   fetchServiceZones,
+  fetchUpdateNode,
 } from './editNodeService.api';
 import { NodeEditGrouptype } from './editNodeService.constants';
 
@@ -49,6 +51,9 @@ const $node = domain
   .on(getNodeFx.doneData, (_, node) => node)
   .reset(clearStore);
 
+const updateNode = domain.createEvent<UpdatePipeNodeRequest>();
+const updateNodeFx = domain.createEffect(fetchUpdateNode);
+
 const NodeIdGate = createGate<{ nodeId: string }>();
 
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
@@ -83,10 +88,23 @@ forward({
   to: getNodeZonesFx,
 });
 
+forward({
+  from: updateNodeFx.doneData,
+  to: refetchNode,
+});
+
+sample({
+  source: NodeIdGate.state.map(({ nodeId }) => nodeId),
+  clock: updateNode,
+  fn: (pipeNodeId, payload) => ({ pipeNodeId, payload }),
+  target: updateNodeFx,
+});
+
 export const editNodeService = {
   inputs: {
     setEditNodeGrouptype,
     refetchNode,
+    updateNode,
   },
   outputs: {
     $node,
