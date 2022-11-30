@@ -398,7 +398,13 @@ export interface ApartmentStatusSetRequest {
 export interface ArchivesDataGroup {
   header?: string | null;
   measure?: string | null;
+  groupType?: ArchivesDataGroupType;
   data?: ArchivesDataGroupValue[] | null;
+}
+
+export enum ArchivesDataGroupType {
+  Undefined = "Undefined",
+  Volume = "Volume",
 }
 
 export interface ArchivesDataGroupValue {
@@ -1691,6 +1697,11 @@ export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiRespo
   successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
+export enum ESoiReportPeriod {
+  Month = "Month",
+  Year = "Year",
+}
+
 export enum EStageActionType {
   AddDocuments = "AddDocuments",
   AddPerpetrator = "AddPerpetrator",
@@ -1955,6 +1966,14 @@ export interface FullAddressResponse {
   apartmentId: number | null;
   apartmentNumber: string | null;
   comment: string | null;
+}
+
+export interface GetDataForHousingConsumptionPlotResponse {
+  housingConsumption: DateTimeDoubleDictionaryItem[] | null;
+}
+
+export interface GetDataForHousingConsumptionPlotResponseSuccessApiResponse {
+  successResponse: GetDataForHousingConsumptionPlotResponse | null;
 }
 
 export interface GetDataForIndividualDevicesConsumptionPlotResponse {
@@ -10564,6 +10583,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesDataForHousingConsumptionPlotList
+     * @summary HousingMeteringDeviceReadingsRead
+     * @request GET:/api/PipeNodes/DataForHousingConsumptionPlot
+     * @secure
+     */
+    pipeNodesDataForHousingConsumptionPlotList: (
+      query: { HousingStockId: number; ResourceType: EResourceType; From: string; To: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetDataForHousingConsumptionPlotResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/PipeNodes/DataForHousingConsumptionPlot`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
@@ -10980,13 +11021,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsSoiReportList: (
-      query: {
+      query?: {
         HouseManagementId?: string;
         HousingStockId?: number;
         Resource?: EResourceType;
-        From?: string;
-        To?: string;
-        NormativePerPerson: number;
+        Month?: number;
+        Year?: number;
+        Period?: ESoiReportPeriod;
+        NormativePerPerson?: number;
       },
       params: RequestParams = {},
     ) =>

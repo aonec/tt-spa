@@ -7,7 +7,8 @@ import { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm/CreateO
 export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> = ({
   onPageCancel,
   goBackStage,
-  createObjectData
+  createObjectData,
+  houseManagements,
 }) => {
   const formId = 'create-object-final-stage-form';
   return (
@@ -20,6 +21,7 @@ export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> =
           <CreateObjectFinalStageForm
             formId={formId}
             createObjectData={createObjectData}
+            houseManagements={houseManagements}
           />
         }
         formId={formId}

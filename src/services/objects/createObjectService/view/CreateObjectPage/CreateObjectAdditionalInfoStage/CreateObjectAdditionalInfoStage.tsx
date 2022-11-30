@@ -69,7 +69,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
             value={values.elevator}
           >
             {lift.map((e) => (
-              <Select.Option value={e}>{e}</Select.Option>
+              <Select.Option value={e} key={e}>{e}</Select.Option>
             ))}
           </StyledSelect>
         </FormItem>

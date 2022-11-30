@@ -9,11 +9,19 @@ import {
   Wrapper,
 } from './CreateObjectFinalStageForm.styled';
 import { CreateObjectFinalStageFormProps } from './CreateObjectFinalStageForm.types';
+import { HouseCategoryDictionary } from '../../CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 
 export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
   formId,
   createObjectData,
+  houseManagements,
 }) => {
+  const houseManagrmentName = houseManagements?.find(
+    (e) => e.id === createObjectData?.houseManagement
+  )?.name;
+
+  const objectCategory = createObjectData?.objectCategotry 
+
   return (
     <Form id={formId} onSubmitCapture={() => {}}>
       <Wrapper>
@@ -65,22 +73,29 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
             <SpaceLine />
           </>
         )}
-
         <PageTitle>2. Основная информация </PageTitle>
 
         <GridContainer>
           <FieldDescrition>Домоуправление</FieldDescrition>
-          <Field>{createObjectData?.houseManagement || '-'}</Field>
+          <Field>{houseManagrmentName || '-'}</Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Категория объекта</FieldDescrition>
-          <Field>{createObjectData?.objectCategotry || '-'}</Field>
+          <Field>
+            {objectCategory
+              ? HouseCategoryDictionary[objectCategory]
+              : '-'}
+          </Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тип объекта</FieldDescrition>
-          <Field>{createObjectData?.objectType || '-'}</Field>
+          <Field>
+            {createObjectData?.livingHouseType ||
+              createObjectData?.nonResidentialHouseType ||
+              '-'}
+          </Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>

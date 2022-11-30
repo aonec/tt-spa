@@ -7,6 +7,6 @@ export type NewHeatingPointFormProps = {
 };
 
 export type HeatingPoint = {
-  heatingPointType: string;
-  heatingPointNumber: string;
+  heatingPointType: string | null;
+  heatingPointNumber: string | null;
 };

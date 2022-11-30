@@ -46,7 +46,7 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
         <FormItem label="Тип ТП">
           <StyledSelect
             placeholder="Выберите из списка"
-            value={values.heatingPointType}
+            value={values.heatingPointType || undefined}
             onChange={(value) => setFieldValue('heatingPointType', value)}
           >
             <Select.Option value={'Элемент массива строк'}>
@@ -59,7 +59,7 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
         <FormItem label="Номер ТП">
           <Input
             placeholder="Введите"
-            value={values.heatingPointNumber}
+            value={values.heatingPointNumber || undefined}
             onChange={(value) =>
               setFieldValue('heatingPointNumber', value.target.value)
             }

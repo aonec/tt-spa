@@ -1,8 +1,6 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Select } from 'antd';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
@@ -27,13 +25,15 @@ import {
 } from './CreateObjectAddressStage.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
+import { StyledSelect } from '01/shared/ui/Select/components';
+import { Select } from 'ui-kit/Select';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
   onPageCancel,
   createObjectData,
-  handleSubmitCreateObject
+  handleSubmitCreateObject,
 }) => {
   const {
     values,
@@ -42,18 +42,18 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     errors,
   } = useFormik<ObjectAddressValues>({
     initialValues: {
-      city: createObjectData?.city || '',
-      street: createObjectData?.street || '',
-      house: createObjectData?.house || '',
-      corpus: createObjectData?.corpus || '',
-      index: createObjectData?.index || '',
+      city: createObjectData?.city || null,
+      street: createObjectData?.street || "",
+      house: createObjectData?.house || null,
+      corpus: createObjectData?.corpus || null,
+      index: createObjectData?.index || null,
       additionalAddresses: createObjectData?.additionalAddresses || [],
     },
     enableReinitialize: true,
     onSubmit: (data) => {
       handleSubmitCreateObject(data);
     },
-    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema,
   });
 
@@ -72,20 +72,22 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
 
   const addressSearch = values.street;
 
-  const preparedExistingStreets = existingStreets
-    ?.sort((a, b) => {
-      const aPoints = countSimilarityPoints(addressSearch, a);
-      const bPoints = countSimilarityPoints(addressSearch, b);
+  const preparedExistingStreets =
+    addressSearch !== null &&
+    existingStreets
+      ?.sort((a, b) => {
+        const aPoints = countSimilarityPoints(addressSearch, a);
+        const bPoints = countSimilarityPoints(addressSearch, b);
 
-      if (aPoints < bPoints) return 1;
+        if (aPoints < bPoints) return 1;
 
-      if (aPoints > bPoints) return -1;
+        if (aPoints > bPoints) return -1;
 
-      return 0;
-    })
-    .map((street) => ({
-      value: street,
-    }));
+        return 0;
+      })
+      .map((street) => ({
+        value: street,
+      }));
 
   return (
     <>
@@ -98,24 +100,26 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <BlockTitle>Основной адрес объекта</BlockTitle>
         <GridWrapper>
           <FormItem label="Город">
-            <StyledSelect
-              placeholder="Выберите из списка"
+            <Select
               onChange={(value) => setFieldValue('city', value)}
-              value={values.city}
+              value={values.city || undefined}
+              placeholder="Выберите из списка"
             >
               {existingCities?.map((city) => (
-                <Select.Option value={city}>{city}</Select.Option>
+                <Select.Option value={city} key={city}>
+                  {city}
+                </Select.Option>
               ))}
-            </StyledSelect>
+            </Select>
             <ErrorMessage> {errors.city} </ErrorMessage>
           </FormItem>
 
           <FormItem label="Улица">
             <AutoComplete
               placeholder="Улица"
-              value={values.street}
+              value={values.street }
               onChange={(value) => setFieldValue('street', value)}
-              options={preparedExistingStreets}
+              options={preparedExistingStreets || undefined}
             />
             <ErrorMessage> {errors.street} </ErrorMessage>
           </FormItem>
@@ -124,7 +128,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
             <FormItem label="Номер дома">
               <Input
                 placeholder="Введите"
-                value={values.house}
+                value={values.house || undefined}
                 onChange={(value) => setFieldValue('house', value.target.value)}
               />
               <ErrorMessage> {errors.house} </ErrorMessage>
@@ -132,7 +136,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
             <FormItem label="Корпус">
               <Input
                 placeholder="Введите"
-                value={values.corpus}
+                value={values.corpus || undefined}
                 onChange={(value) =>
                   setFieldValue('corpus', value.target.value)
                 }
@@ -143,7 +147,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <FormItem label="Индекс">
             <Input
               placeholder="Введите"
-              value={values.index}
+              value={values.index || undefined}
               onChange={(value) => setFieldValue('index', value.target.value)}
             />
           </FormItem>
@@ -157,7 +161,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <>
             <GridWrapper>
               <FormItem label="Город">
-                <StyledSelect value={values.city} disabled />
+                <StyledSelect value={values.city || undefined} disabled />
               </FormItem>
 
               <FormItem label="Улица">
@@ -171,7 +175,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                     )
                   }
                   value={elem.street}
-                  options={preparedExistingStreets}
+                  options={preparedExistingStreets || undefined}
                 />
               </FormItem>
 

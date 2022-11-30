@@ -1,4 +1,10 @@
-import { HeatingStationResponsePagedList, HouseManagementResponse } from 'myApi';
+import {
+  EHouseCategory,
+  ELivingHouseType,
+  ENonResidentialHouseType,
+  HeatingStationResponsePagedList,
+  HouseManagementResponse,
+} from 'myApi';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
 import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
 
@@ -12,8 +18,9 @@ export type CreateObjectMainInfoStageProps = {
 };
 
 export type ObjectMainInfoValues = {
-  houseManagement: string;
-  objectCategotry: string;
-  objectType: string;
+  houseManagement: string | null;
+  objectCategotry: EHouseCategory | null;
+  livingHouseType: ELivingHouseType | null;
+  nonResidentialHouseType: ENonResidentialHouseType | null;
   heatingPoint: HeatingPoint;
 };

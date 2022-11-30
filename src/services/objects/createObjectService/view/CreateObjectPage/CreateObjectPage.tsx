@@ -1,6 +1,7 @@
 import { Steps } from 'antd';
 import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { Title } from 'ui-kit/Title';
 import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoStage';
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';
 import { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';
@@ -74,10 +75,13 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               onPageCancel={onPageCancel}
               goBackStage={goBackStage}
               createObjectData={createObjectData}
+              houseManagements= {houseManagements}
+              
             />
           )}
         </div>
         <div>
+          <Title>Этапы создания</Title>
           <Steps direction="vertical" current={stageNumber - 1}>
             {stepTitles.map((step) => (
               <Step title={step} key={step} />
