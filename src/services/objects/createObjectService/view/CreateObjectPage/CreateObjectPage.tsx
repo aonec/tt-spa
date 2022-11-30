@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoStage';
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';
+import { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';
 import { CreateObjectMainInfoStage } from './CreateObjectMainInfoStage';
 import {
   GridWrapper,
@@ -16,11 +17,11 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   existingStreets,
   existingCities,
   stageNumber,
-  handleAddressData,
   houseManagements,
   goBackStage,
   onPageCancel,
-  createObjectData
+  createObjectData,
+  handleSubmitCreateObject,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -42,9 +43,9 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             <CreateObjectAddressStage
               existingStreets={existingStreets}
               existingCities={existingCities}
-              handleAddressData={handleAddressData}
               onPageCancel={onPageCancel}
               createObjectData={createObjectData}
+              handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}
 
@@ -53,6 +54,7 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               houseManagements={houseManagements}
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
+              handleSubmitCreateObject={handleSubmitCreateObject}
             />
           )}
 
@@ -60,6 +62,14 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             <CreateObjectAdditionalInfoStage
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
+              handleSubmitCreateObject={handleSubmitCreateObject}
+            />
+          )}
+          {stageNumber === 4 && (
+            <CreateObjectFinalStageModal
+              onPageCancel={onPageCancel}
+              goBackStage={goBackStage}
+              createObjectData={createObjectData}
             />
           )}
         </div>

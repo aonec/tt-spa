@@ -30,7 +30,7 @@ export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
 
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;
 
-  const apartmentLink = `/objects/${hosuingStockId}/apartments/${apartment.id}`;
+  const apartmentLink = `/apartments/${apartment.id}`;
 
   return (
     <Popover

@@ -33,7 +33,7 @@ export const ActsCard: FC<ActsCardProps> = ({
       <TitleWrapper>Журнал актов</TitleWrapper>
       {cards}
       <MoreDocumentsLink
-        to={`/objects/${housingStockId}/apartments/${apartmentid}/actsJournal`}
+        to={`/apartments/${apartmentid}/actsJournal`}
       >
         <DocumentIconSC />
         Показать все акты

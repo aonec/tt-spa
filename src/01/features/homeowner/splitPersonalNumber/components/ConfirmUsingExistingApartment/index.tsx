@@ -75,7 +75,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
 
   const getLinkOnApartmentProfile = () =>
     apartment
-      ? `/objects/${apartment?.housingStock?.id}/apartments/${apartment?.id}`
+      ? `/apartments/${apartment?.id}`
       : '';
 
   const isApartmentHasDevices = Boolean(devices?.length);

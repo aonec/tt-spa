@@ -1192,6 +1192,14 @@ export interface DataAfterSplittingHomeownerAccountResponseSuccessApiResponse {
   successResponse: DataAfterSplittingHomeownerAccountResponse | null;
 }
 
+export interface DateTimeDoubleDictionaryItem {
+  /** @format date-time */
+  key?: string;
+
+  /** @format double */
+  value?: number;
+}
+
 export interface DisableNodeWorkingRangeRequest {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
@@ -1683,6 +1691,11 @@ export interface ESecuredIdentityRoleNameStringDictionaryItemListSuccessApiRespo
   successResponse: ESecuredIdentityRoleNameStringDictionaryItem[] | null;
 }
 
+export enum ESoiReportPeriod {
+  Month = "Month",
+  Year = "Year",
+}
+
 export enum EStageActionType {
   AddDocuments = "AddDocuments",
   AddPerpetrator = "AddPerpetrator",
@@ -1949,6 +1962,15 @@ export interface FullAddressResponse {
   comment: string | null;
 }
 
+export interface GetDataForIndividualDevicesConsumptionPlotResponse {
+  normativeConsumption: DateTimeDoubleDictionaryItem[] | null;
+  subscriberConsumption: DateTimeDoubleDictionaryItem[] | null;
+}
+
+export interface GetDataForIndividualDevicesConsumptionPlotResponseSuccessApiResponse {
+  successResponse: GetDataForIndividualDevicesConsumptionPlotResponse | null;
+}
+
 export interface GetHousingMeteringDeviceReadingsResponse {
   items: HousingMeteringDeviceReadingsIncludingPlacementResponse[] | null;
 }
@@ -2188,6 +2210,7 @@ export interface HomeownerAccountCreateServiceModel {
   /** @format int32 */
   apartmentId?: number;
   personalAccountNumber?: string | null;
+  paymentCode?: string | null;
   name?: string | null;
   phoneNumber?: string | null;
   personType?: PersonType;
@@ -2481,13 +2504,13 @@ export interface HousingMeteringDeviceIncludingReadingsResponsePagedListSuccessA
 
 export interface HousingMeteringDeviceReadingsHistoryItemResponse {
   /** @format uuid */
-  id: string | null;
+  id: string;
 
   /** @format double */
   value: number;
 
-  /** @format uuid */
-  previousReadingsId: string | null;
+  /** @format double */
+  nonResidentialRoomConsumption: number | null;
 
   /** @format date-time */
   readingDate: string;
@@ -2495,13 +2518,8 @@ export interface HousingMeteringDeviceReadingsHistoryItemResponse {
   /** @format date-time */
   uploadDate: string;
 
-  /** @format int32 */
-  year: number;
-  month: string | null;
-  isCurrentMonth: boolean;
-
-  /** @format double */
-  nonResidentialRoomConsumption: number | null;
+  /** @format uuid */
+  previousReadingsId: string | null;
   user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
@@ -2524,13 +2542,13 @@ export interface HousingMeteringDeviceReadingsHistoryResponseSuccessApiResponse 
 
 export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
   /** @format uuid */
-  id: string | null;
+  id: string;
 
   /** @format double */
   value: number;
 
-  /** @format uuid */
-  previousReadingsId: string | null;
+  /** @format double */
+  nonResidentialRoomConsumption: number | null;
 
   /** @format date-time */
   readingDate: string;
@@ -2538,13 +2556,8 @@ export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
   /** @format date-time */
   uploadDate: string;
 
-  /** @format int32 */
-  year: number;
-  month: string | null;
-  isCurrentMonth: boolean;
-
-  /** @format double */
-  nonResidentialRoomConsumption: number | null;
+  /** @format uuid */
+  previousReadingsId: string | null;
   user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
@@ -2575,13 +2588,13 @@ export interface HousingMeteringDeviceReadingsMonthHistoryResponse {
 
 export interface HousingMeteringDeviceReadingsResponse {
   /** @format uuid */
-  id: string | null;
+  id: string;
 
   /** @format double */
   value: number;
 
-  /** @format uuid */
-  previousReadingsId: string | null;
+  /** @format double */
+  nonResidentialRoomConsumption: number | null;
 
   /** @format date-time */
   readingDate: string;
@@ -2589,13 +2602,8 @@ export interface HousingMeteringDeviceReadingsResponse {
   /** @format date-time */
   uploadDate: string;
 
-  /** @format int32 */
-  year: number;
-  month: string | null;
-  isCurrentMonth: boolean;
-
-  /** @format double */
-  nonResidentialRoomConsumption: number | null;
+  /** @format uuid */
+  previousReadingsId: string | null;
   user: OrganizationUserShortResponse | null;
   isArchived: boolean;
   isRemoved: boolean;
@@ -4600,6 +4608,19 @@ export interface SamoletCalculatorResponseIEnumerableSuccessApiResponse {
   successResponse: SamoletCalculatorResponse[] | null;
 }
 
+export interface SamoletGetAllConnectedResponse {
+  /** @format int32 */
+  id: number;
+  serialNumber: string | null;
+  model: string | null;
+  address: string | null;
+  resources: string[] | null;
+}
+
+export interface SamoletGetAllConnectedResponseListSuccessApiResponse {
+  successResponse: SamoletGetAllConnectedResponse[] | null;
+}
+
 export interface SetMagneticSealRequest {
   /** @format date-time */
   magneticSealInstallationDate?: string | null;
@@ -6166,27 +6187,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Archives
-     * @name ArchivesCalculatorsArchivesList
-     * @request GET:/api/Archives/CalculatorsArchives
-     * @secure
-     */
-    archivesCalculatorsArchivesList: (
-      query: { from: string; to: string; resourceType: ResourceType },
-      params: RequestParams = {},
-    ) =>
-      this.request<SamoletCalculatorResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Archives/CalculatorsArchives`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Auth
      * @name AuthLoginCreate
      * @request POST:/api/Auth/login
@@ -7743,6 +7743,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsSyncReadingsFromArchivesCreate
+     * @summary HousingMeteringDeviceReadingsCreate
+     * @request POST:/api/HousingMeteringDeviceReadings/SyncReadingsFromArchives
+     * @secure
+     */
+    housingMeteringDeviceReadingsSyncReadingsFromArchivesCreate: (
+      query?: { from?: string; to?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/HousingMeteringDeviceReadings/SyncReadingsFromArchives`,
+        method: "POST",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags HousingMeteringDevices
@@ -8889,6 +8910,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<IndividualDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/${readingId}/remove`,
         method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     *
+     * @tags IndividualDeviceReadings
+     * @name IndividualDeviceReadingsDataForSubscriberAndNormativeConsumptionPlotList
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot
+     * @secure
+     */
+    individualDeviceReadingsDataForSubscriberAndNormativeConsumptionPlotList: (
+      query: { HousingStockId: number; ResourceType: EResourceType; From: string; To: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetDataForIndividualDevicesConsumptionPlotResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -10942,13 +10985,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsSoiReportList: (
-      query: {
+      query?: {
         HouseManagementId?: string;
         HousingStockId?: number;
         Resource?: EResourceType;
-        From?: string;
-        To?: string;
-        NormativePerPerson: number;
+        Month?: number;
+        Year?: number;
+        Period?: ESoiReportPeriod;
+        NormativePerPerson?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -11166,6 +11210,44 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     resourceDisconnectingFiltersList: (params: RequestParams = {}) =>
       this.request<ResourceDisconnectingFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/filters`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags SamoletIntegration
+     * @name SamoletIntegrationCalculatorsArchivesList
+     * @request GET:/api/SamoletIntegration/CalculatorsArchives
+     * @secure
+     */
+    samoletIntegrationCalculatorsArchivesList: (
+      query: { from: string; to: string; resourceType: ResourceType },
+      params: RequestParams = {},
+    ) =>
+      this.request<SamoletCalculatorResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/SamoletIntegration/CalculatorsArchives`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags SamoletIntegration
+     * @name SamoletIntegrationGetAllConnectedList
+     * @request GET:/api/SamoletIntegration/GetAllConnected
+     * @secure
+     */
+    samoletIntegrationGetAllConnectedList: (params: RequestParams = {}) =>
+      this.request<SamoletGetAllConnectedResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/SamoletIntegration/GetAllConnected`,
         method: "GET",
         secure: true,
         format: "json",

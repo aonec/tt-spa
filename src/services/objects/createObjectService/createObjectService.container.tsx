@@ -14,8 +14,10 @@ export const CreateObjectContainer = () => {
 
   const stageNumber = useStore(outputs.$stageNumber);
   const houseManagements = useStore(outputs.$houseManagements);
-  const createObjectData= useStore(outputs.$createObjectData)
-  const handleAddressData = useEvent(inputs.handleAddressData);
+  const createObjectData = useStore(outputs.$createObjectData);
+  
+  const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
+
   const goBackStage = useEvent(inputs.goBackStage);
 
   const history = useHistory();
@@ -29,10 +31,10 @@ export const CreateObjectContainer = () => {
         existingStreets={existingStreets}
         createObjectData={createObjectData}
         stageNumber={stageNumber}
-        handleAddressData={handleAddressData}
         houseManagements={houseManagements}
-        goBackStage={goBackStage}
+        goBackStage={() => goBackStage()}
         onPageCancel={onPageCancel}
+        handleSubmitCreateObject={handleSubmitCreateObject}
       />
     </>
   );
