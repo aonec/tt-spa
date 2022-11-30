@@ -33,6 +33,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
               housingStock={housingStock}
               existingCities={existingCities}
               existingStreets={existingStreets}
+              handleSubmit={console.log}
             />
           </WithLoader>
         </div>

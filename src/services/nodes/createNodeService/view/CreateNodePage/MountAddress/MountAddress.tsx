@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
@@ -13,18 +13,23 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
+import { getHousuingStocks } from 'services/objects/displayObjectsListService/displayObjectsListService.api';
+import { message } from 'antd';
 
 export const MountAddress: FC<MountAddressProps> = ({
   housingStock,
   existingCities,
   existingStreets,
+  handleSubmit,
 }) => {
   const address = housingStock?.address?.mainAddress;
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     values,
     handleChange,
-    handleSubmit,
+    handleSubmit: handleSubmitForm,
     setFieldValue,
     errors,
   } = useFormik({
@@ -34,14 +39,47 @@ export const MountAddress: FC<MountAddressProps> = ({
       number: address?.number || '',
       corpus: address?.corpus || '',
     },
-    onSubmit: async () => {},
+    onSubmit: async (values) => {
+      if (housingStock) {
+        handleSubmit(housingStock.id);
+
+        return;
+      }
+
+      if (!values.city) return;
+
+      try {
+        setIsLoading(true);
+
+        const housingStocks = await getHousuingStocks({
+          City: values.city,
+          Street: values.street,
+          HousingStockNumber: values.number,
+          Corpus: values.corpus,
+          PageNumber: 1,
+          PageSize: 1,
+        });
+
+        setIsLoading(false);
+
+        const housingStock = housingStocks.items?.[0];
+
+        if (!housingStock) return;
+
+        handleSubmit(housingStock.id);
+
+        return;
+      } catch (error) {
+        message.error('Ошибка загрузки');
+      }
+    },
     validationSchema,
     validateOnChange: false,
     validateOnBlur: false,
     enableReinitialize: true,
   });
 
-  const isFieldsDisabled = Boolean(housingStock);
+  const isFieldsDisabled = Boolean(housingStock) || isLoading;
 
   const prparedStreetsOptions = getPreparedStreetsOptions(
     values.street,
@@ -101,7 +139,7 @@ export const MountAddress: FC<MountAddressProps> = ({
         </FormWrapper>
         <Footer>
           <Button type="ghost">Отмена</Button>
-          <Button sidePadding={20} onClick={() => handleSubmit()}>
+          <Button sidePadding={20} onClick={() => handleSubmitForm()}>
             Даллее
           </Button>
         </Footer>
