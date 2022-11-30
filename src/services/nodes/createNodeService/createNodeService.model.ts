@@ -42,7 +42,7 @@ guard({
 });
 
 forward({
-  from: updateRequestPayload,
+  from: [updateRequestPayload, fetchHousingStockFx.doneData],
   to: goNextStep,
 });
 
