@@ -10,20 +10,22 @@ import { PageTitle } from '../Title';
 interface Props {
   title: string;
   contextMenu?: ContextMenuButtonProps;
+  isTopMargin?: boolean;
+  isGhost?: boolean;
 }
 
-export const PageHeader: FC<Props> = ({ title, contextMenu }) => {
+export const PageHeader: FC<Props> = ({ title, contextMenu, isTopMargin, isGhost }) => {
   return (
-    <PageHeaderStyled>
-      <PageTitle>{title}</PageTitle>
+    <PageHeaderStyled isTopMargin={isTopMargin}>
+      <PageTitle isGhost={isGhost}>{title}</PageTitle>
       {contextMenu && <ContextMenuButton {...contextMenu} />}
     </PageHeaderStyled>
   );
 };
 
-const PageHeaderStyled = styled.div`
+const PageHeaderStyled = styled.div<{ isTopMargin?: boolean }>`
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  margin: ${({ isTopMargin }) => (isTopMargin ? '25px 0' : '5px 0')};
   justify-content: space-between;
 `;

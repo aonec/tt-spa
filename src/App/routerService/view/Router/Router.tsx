@@ -43,6 +43,7 @@ import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
+import { CreateNodeContainer } from 'services/nodes/createNodeService';
 
 const { gates } = objectProfileService;
 
@@ -82,7 +83,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path="/objects/:housingStockId/addNode"
-                  component={() => null}
+                  component={CreateNodeContainer}
                   exact
                 />
 
