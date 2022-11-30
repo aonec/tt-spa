@@ -142,7 +142,7 @@ export const MountAddress: FC<MountAddressProps> = ({
             Отмена
           </Button>
           <Button sidePadding={20} onClick={() => handleSubmitForm()}>
-            Даллее
+            Далее
           </Button>
         </Footer>
       </div>

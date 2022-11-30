@@ -16,7 +16,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
         <Button type="ghost" onClick={goPrevStep}>
           Назад
         </Button>
-        <Button sidePadding={20}>Даллее</Button>
+        <Button sidePadding={20}>Далее</Button>
       </Footer>
     </div>
   );
