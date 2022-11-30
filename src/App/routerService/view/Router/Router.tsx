@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  AddNode,
   CalculatorProfile,
   Contractor,
   DevicesFromSearch,
@@ -82,8 +81,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/objects/:housingStockId/add_node"
-                  component={AddNode}
+                  path="/objects/:housingStockId/addNode"
+                  component={() => null}
                   exact
                 />
 
