@@ -1,10 +1,11 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Steps } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Title } from 'ui-kit/Title';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { ConnectionSettings } from './ConnectionSettings';
 import { AddressWrapper, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
@@ -16,7 +17,22 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   existingCities,
   isLoadingHousingStock,
   existingStreets,
+  updateRequestPayload,
+  goPrevStep,
+  stepNumber,
 }) => {
+  const stepComponentDictionary: { [key: number]: ReactNode } = {
+    0: (
+      <MountAddress
+        housingStock={housingStock}
+        existingCities={existingCities}
+        existingStreets={existingStreets}
+        updateRequestPayload={updateRequestPayload}
+      />
+    ),
+    1: <ConnectionSettings goPrevStep={goPrevStep} />,
+  };
+
   return (
     <div>
       <GoBack />
@@ -29,17 +45,12 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
       <Wrapper>
         <div>
           <WithLoader isLoading={isLoadingHousingStock}>
-            <MountAddress
-              housingStock={housingStock}
-              existingCities={existingCities}
-              existingStreets={existingStreets}
-              handleSubmit={console.log}
-            />
+            {stepComponentDictionary[stepNumber]}
           </WithLoader>
         </div>
         <div>
           <Title>Этапы создания</Title>
-          <Steps direction="vertical" current={0}>
+          <Steps direction="vertical" current={stepNumber}>
             <Step title="Адрес установки" />
             <Step title="Настройки соединения" />
             <Step title="Общие данные об узле" />

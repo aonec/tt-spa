@@ -115,6 +115,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route
+                  path="/devices/addNode"
+                  component={CreateNodeContainer}
+                  exact
+                />
+
+                <Route
                   path="/devices/:type?"
                   component={DevicesPageContainer}
                   exact

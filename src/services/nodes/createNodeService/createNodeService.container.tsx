@@ -1,11 +1,11 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 
-const { outputs, gates } = createNodeService;
+const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate } = gates;
 
 export const CreateNodeContainer = () => {
@@ -15,18 +15,23 @@ export const CreateNodeContainer = () => {
   const existingCities = useStore(outputs.$existingCities);
   const existingStreets = useStore(outputs.$existingStreets);
   const isLoadingHousingStock = useStore(outputs.$isLoadingHousingStock);
+  const stepNumber = useStore(outputs.$stepNumber);
+
+  const updateRequestPayload = useEvent(inputs.updateRequestPayload);
+  const goPrevStep = useEvent(inputs.goPrevStep);
 
   return (
     <>
-      {housingStockId && (
-        <CreateNodeGate housingStockId={Number(housingStockId)} />
-      )}
+      <CreateNodeGate housingStockId={Number(housingStockId)} />
       <ExistingCitiesGate />
       <CreateNodePage
         housingStock={housingStock}
         existingCities={existingCities}
         existingStreets={existingStreets}
         isLoadingHousingStock={isLoadingHousingStock}
+        updateRequestPayload={updateRequestPayload}
+        goPrevStep={() => goPrevStep()}
+        stepNumber={stepNumber}
       />
     </>
   );
