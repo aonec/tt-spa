@@ -46,7 +46,8 @@ import {
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { Alert } from '01/shared/ui/Alert/Alert';
+import moment from 'moment';
+import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 
 interface Props {
   isModal?: boolean;
@@ -93,7 +94,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
 
   const apartment = useStore($apartment);
-  console.log(apartment?.homeownerAccounts);
 
   const renderReading = ({
     year,
@@ -233,8 +233,37 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     const arrowButtonComponent =
       isHasArchived && isFirst ? arrowButton : <ArrowButtonBlock />;
 
+    const actualHomeownerAccount =
+      apartment?.homeownerAccounts?.[apartment?.homeownerAccounts?.length - 1];
+
+    const recentlyReplacedAccount =
+      apartment?.homeownerAccounts && apartment?.homeownerAccounts?.length > 1
+        ? apartment?.homeownerAccounts.find((account) => {
+            return (
+              account.replacedByAccount?.personalAccountNumber ===
+              actualHomeownerAccount?.personalAccountNumber
+            );
+          })
+        : null;
+
+    const accountLastChangeYear = moment(actualHomeownerAccount?.openAt).year();
+    const accountLastChangeMonth = moment(actualHomeownerAccount?.openAt)
+      .set('day', 15)
+      .month();
+
+    const isShowReplaceAccountAlert =
+      year === accountLastChangeYear &&
+      month === accountLastChangeMonth &&
+      Boolean(recentlyReplacedAccount) &&
+      isFirst;
+
     return (
       <>
+        {isShowReplaceAccountAlert && (
+          <ReplacedAccountAlert
+            recentlyReplacedAccount={recentlyReplacedAccount!}
+          />
+        )}
         <WrapComponent>
           {monthName}
           <div>{readingsInputs}</div>
@@ -243,16 +272,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           <div>{source}</div>
           <div>{entryDate}</div>
           {arrowButtonComponent}
-
-          {apartment?.homeownerAccounts &&
-            apartment.homeownerAccounts.map((e) => (
-              <Alert>
-                <div>
-                  {e.personalAccountNumber} 0000
-                  {e.replacedByAccount?.personalAccountNumber}
-                </div>
-              </Alert>
-            ))}
         </WrapComponent>
       </>
     );
