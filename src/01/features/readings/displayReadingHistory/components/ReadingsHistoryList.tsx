@@ -48,6 +48,7 @@ import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateN
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
+import _ from 'lodash';
 
 interface Props {
   isModal?: boolean;
@@ -233,12 +234,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     const arrowButtonComponent =
       isHasArchived && isFirst ? arrowButton : <ArrowButtonBlock />;
 
-    const actualHomeownerAccount =
-      apartment?.homeownerAccounts?.[apartment?.homeownerAccounts?.length - 1];
+    const actualHomeownerAccount = _.last(apartment?.homeownerAccounts);
 
     const recentlyReplacedAccount =
-      apartment?.homeownerAccounts && apartment?.homeownerAccounts?.length > 1
-        ? apartment?.homeownerAccounts.find((account) => {
+      apartment?.homeownerAccounts && apartment.homeownerAccounts.length > 1
+        ? _.find(apartment?.homeownerAccounts, (account) => {
             return (
               account.replacedByAccount?.personalAccountNumber ===
               actualHomeownerAccount?.personalAccountNumber
