@@ -5,7 +5,7 @@ import { useEvent, useStore } from 'effector-react';
 import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
-import { Title, Wrapper } from './displayNodesStatisticsService.styled';
+import { PageWrapper, Title, Wrapper } from './displayNodesStatisticsService.styled';
 import { DisplayNodesStatisticsContainerProps } from './displayNodesStatisticsService.types';
 import { GraphEmptyData } from './view/GraphEmptyData';
 import { NodeStatisticsTable } from './view/NodeStatisticsTable';
@@ -43,7 +43,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
   return (
     <>
       <NodeInfoGate nodeId={nodeId} pipeCount={pipeCount} />
-      <div>
+      <PageWrapper>
         <Title>Статистика по объекту</Title>
         <GraphFilterForm
           currentGraphParam={graphType}
@@ -72,7 +72,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
           )}
           {!archiveReadingExist && <GraphEmptyData />}
         </WithLoader>
-      </div>
+      </PageWrapper>
     </>
   );
 };

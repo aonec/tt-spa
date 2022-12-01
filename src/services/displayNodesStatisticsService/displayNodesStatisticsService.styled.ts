@@ -11,3 +11,7 @@ export const Title = styled.div`
   font-size: 24px;
   color: #272f5a;
 `;
+
+export const PageWrapper = styled.div`
+  padding-bottom: 24px;
+`;
