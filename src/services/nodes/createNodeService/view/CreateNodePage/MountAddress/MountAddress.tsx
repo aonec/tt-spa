@@ -24,6 +24,7 @@ export const MountAddress: FC<MountAddressProps> = ({
   existingCities,
   existingStreets,
   updateRequestPayload,
+  isDisabledAddress,
 }) => {
   const savedHousingStock = useStore(outputs.$housingStockListItem);
   const isLoading = useStore(outputs.$isLoading);
@@ -79,7 +80,8 @@ export const MountAddress: FC<MountAddressProps> = ({
     enableReinitialize: true,
   });
 
-  const isFieldsDisabled = Boolean(housingStock) || isLoading;
+  const isFieldsDisabled =
+    (Boolean(housingStock) && isDisabledAddress) || isLoading;
 
   const prparedStreetsOptions = getPreparedStreetsOptions(
     values.street,

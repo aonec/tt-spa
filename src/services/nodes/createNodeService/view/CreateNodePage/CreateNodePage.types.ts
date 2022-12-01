@@ -9,4 +9,6 @@ export type CreateNodePageProps = {
   updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
   goPrevStep: () => void;
   calculatorsList: CalculatorIntoHousingStockResponse[] | null;
+  openCreateCalculatorModal: () => void;
+  isDisabledAddress: boolean;
 };

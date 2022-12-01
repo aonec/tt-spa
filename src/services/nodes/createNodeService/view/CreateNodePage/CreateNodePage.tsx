@@ -21,6 +21,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   goPrevStep,
   stepNumber,
   calculatorsList,
+  openCreateCalculatorModal,
+  isDisabledAddress,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -29,12 +31,15 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         existingCities={existingCities}
         existingStreets={existingStreets}
         updateRequestPayload={updateRequestPayload}
+        isDisabledAddress={isDisabledAddress}
       />
     ),
     1: (
       <ConnectionSettings
         goPrevStep={goPrevStep}
         calculatorsList={calculatorsList}
+        openCreateCalculatorModal={openCreateCalculatorModal}
+        updateRequestPayload={updateRequestPayload}
       />
     ),
   };

@@ -1,6 +1,6 @@
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
@@ -8,6 +8,7 @@ import {
   HousingStockResponse,
 } from 'myApi';
 import { getCalculatorsList, getHousingStock } from './createNodeService.api';
+import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 
 const domain = createDomain('createNodeService');
 
@@ -47,6 +48,18 @@ const $housingStock = domain
 const $calculatorsList = domain
   .createStore<CalculatorIntoHousingStockResponse[] | null>(null)
   .on(fetchCalculatorsListFx.doneData, (_, calculators) => calculators)
+  .on(
+    createCalcuatorService.events.newCalculatorCreated,
+    (prev, newCalculator) => [
+      ...(prev || []),
+      {
+        id: newCalculator.id,
+        serialNumber: newCalculator.serialNumber,
+        model: newCalculator.model,
+        calculatorInfoId: null,
+      },
+    ]
+  )
   .reset(CreateNodeGate.close);
 
 guard({
@@ -55,10 +68,15 @@ guard({
   target: fetchHousingStockFx,
 });
 
-sample({
-  clock: fetchHousingStockFx.doneData,
-  fn: ({ id }) => ({ housingStockId: id }),
-  target: updateRequestPayload,
+guard({
+  source: $requestPayload.map(({ housingStockId }) => housingStockId),
+  clock: guard({
+    source: CreateNodeGate.state,
+    clock: $requestPayload.map(({ housingStockId }) => housingStockId),
+    filter: ({ housingStockId }) => !housingStockId,
+  }),
+  filter: Boolean,
+  target: fetchHousingStockFx,
 });
 
 forward({
@@ -68,7 +86,7 @@ forward({
 
 guard({
   clock: $requestPayload.map(({ housingStockId }) => housingStockId),
-  filter: Boolean,
+  filter: (id): id is number => Boolean(id),
   target: fetchCalculatorsListFx,
 });
 
@@ -78,6 +96,8 @@ export const createNodeService = {
   inputs: {
     goPrevStep,
     updateRequestPayload,
+    openCreateCalculatorModal:
+      createCalcuatorService.inputs.openCreateCalculatorModal,
   },
   outputs: {
     $housingStock,
@@ -86,6 +106,10 @@ export const createNodeService = {
     $isLoadingHousingStock,
     $stepNumber,
     $calculatorsList,
+    $requestPayload,
   },
-  gates: { CreateNodeGate },
+  gates: {
+    CreateNodeGate,
+    CreateCalculatorGate: createCalcuatorService.gates.CreateCalculatorGate,
+  },
 };
