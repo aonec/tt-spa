@@ -1,19 +1,19 @@
-import { CreateCalculatorModalContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/CreateCalculatorModalContainer';
-import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import { useEvent, useStore } from 'effector-react';
 import { useFormik } from 'formik';
-import React, { FC, useEffect } from 'react';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { CreateCalculatorModalContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/CreateCalculatorModalContainer';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import {
   ConnectionTypeDictionary,
-  initialValues,
   validationSchema,
 } from './ConnectionSettings.constants';
+import { connectionSettingsService } from './ConnectionSettings.model';
 import {
   CalculatorSelectWrapper,
   CreateCalculatorButtonWrapper,
@@ -22,23 +22,56 @@ import {
   CalculatorConnectionType,
   ConnectionSettingsProps,
 } from './ConnectionSettings.types';
+import { SelectValue } from 'antd/lib/select';
 
-const { events } = createCalcuatorService;
+const { inputs, outputs } = connectionSettingsService;
 
 export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
   goPrevStep,
   calculatorsList,
   openCreateCalculatorModal,
+  updateRequestPayload,
+  requestPayload,
 }) => {
+  const connectionType = useStore(outputs.$connectionType);
+
+  const setConnectionType = useEvent(inputs.setConnectionType);
+
+  const initialValues = useMemo(() => {
+    return {
+      connectionType: connectionType,
+      calculatorId: requestPayload.calculatorId || null,
+      entryNumber: requestPayload.entryNumber || null,
+    };
+  }, [requestPayload, connectionType]);
+
   const { values, setFieldValue, handleSubmit, errors } = useFormik({
     initialValues,
-    onSubmit: () => {},
+    onSubmit: (values) => {
+      const isNoConnection =
+        values.connectionType === CalculatorConnectionType.NoConnection;
+
+      if (isNoConnection) {
+        updateRequestPayload({
+          calculatorId: null,
+          entryNumber: null,
+        });
+        return;
+      }
+
+      updateRequestPayload({
+        calculatorId: values.calculatorId,
+        entryNumber: values.entryNumber,
+      });
+    },
     validationSchema,
+    validateOnChange: false,
+    enableReinitialize: true,
   });
 
   useEffect(
     () =>
-      events.newCalculatorCreated.watch(({ id }) =>
+      inputs.newCalculatorCreated.watch(({ id }) =>
         setFieldValue('calculatorId', id)
       ).unsubscribe,
     []
@@ -46,6 +79,23 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
 
   const isFieldsDisabled =
     values.connectionType !== CalculatorConnectionType.Connected;
+
+  useEffect(() => {
+    if (values.connectionType && values.connectionType !== connectionType) {
+      setConnectionType(values.connectionType);
+    }
+  }, [values.connectionType, connectionType]);
+
+  const handleChangeConnectionType = useCallback(
+    async (value: SelectValue) => {
+      await setFieldValue('connectionType', value);
+
+      if (value === CalculatorConnectionType.NoConnection) {
+        handleSubmit();
+      }
+    },
+    [handleSubmit, setFieldValue]
+  );
 
   return (
     <>
@@ -57,7 +107,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
             <Select
               placeholder="Выберите"
               value={values.connectionType || undefined}
-              onChange={(value) => setFieldValue('connectionType', value)}
+              onChange={handleChangeConnectionType}
             >
               {Object.values(CalculatorConnectionType).map((connectionType) => (
                 <Select.Option key={connectionType} value={connectionType}>

@@ -11,4 +11,5 @@ export type CreateNodePageProps = {
   calculatorsList: CalculatorIntoHousingStockResponse[] | null;
   openCreateCalculatorModal: () => void;
   isDisabledAddress: boolean;
+  requestPayload: CreatePipeNodeRequest
 };

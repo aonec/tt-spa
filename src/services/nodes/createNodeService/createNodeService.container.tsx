@@ -39,6 +39,7 @@ export const CreateNodeContainer = () => {
         calculatorsList={calculatorsList}
         openCreateCalculatorModal={() => openCreateCalculatorModal()}
         isDisabledAddress={Boolean(housingStockId)}
+        requestPayload={requestPayload}
       />
     </>
   );
