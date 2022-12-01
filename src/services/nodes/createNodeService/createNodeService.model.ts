@@ -1,15 +1,24 @@
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { createDomain, forward, guard } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { CreatePipeNodeRequest, HousingStockResponse } from 'myApi';
-import { getHousingStock } from './createNodeService.api';
+import {
+  CalculatorIntoHousingStockResponse,
+  CreatePipeNodeRequest,
+  HousingStockResponse,
+} from 'myApi';
+import { getCalculatorsList, getHousingStock } from './createNodeService.api';
 
 const domain = createDomain('createNodeService');
 
 const fetchHousingStockFx = domain.createEffect<number, HousingStockResponse>(
   getHousingStock
 );
+
+const fetchCalculatorsListFx = domain.createEffect<
+  number,
+  CalculatorIntoHousingStockResponse[] | null
+>(getCalculatorsList);
 
 const CreateNodeGate = createGate<{ housingStockId: number }>();
 
@@ -35,15 +44,32 @@ const $housingStock = domain
   .on(fetchHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(CreateNodeGate.close);
 
+const $calculatorsList = domain
+  .createStore<CalculatorIntoHousingStockResponse[] | null>(null)
+  .on(fetchCalculatorsListFx.doneData, (_, calculators) => calculators)
+  .reset(CreateNodeGate.close);
+
 guard({
   clock: CreateNodeGate.open.map(({ housingStockId }) => housingStockId),
   filter: Boolean,
   target: fetchHousingStockFx,
 });
 
+sample({
+  clock: fetchHousingStockFx.doneData,
+  fn: ({ id }) => ({ housingStockId: id }),
+  target: updateRequestPayload,
+});
+
 forward({
-  from: [updateRequestPayload, fetchHousingStockFx.doneData],
+  from: updateRequestPayload,
   to: goNextStep,
+});
+
+guard({
+  clock: $requestPayload.map(({ housingStockId }) => housingStockId),
+  filter: Boolean,
+  target: fetchCalculatorsListFx,
 });
 
 const $isLoadingHousingStock = fetchHousingStockFx.pending;
@@ -59,6 +85,7 @@ export const createNodeService = {
     $existingStreets,
     $isLoadingHousingStock,
     $stepNumber,
+    $calculatorsList,
   },
   gates: { CreateNodeGate },
 };

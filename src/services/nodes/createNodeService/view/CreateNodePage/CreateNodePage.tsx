@@ -20,6 +20,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   updateRequestPayload,
   goPrevStep,
   stepNumber,
+  calculatorsList,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -30,7 +31,12 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         updateRequestPayload={updateRequestPayload}
       />
     ),
-    1: <ConnectionSettings goPrevStep={goPrevStep} />,
+    1: (
+      <ConnectionSettings
+        goPrevStep={goPrevStep}
+        calculatorsList={calculatorsList}
+      />
+    ),
   };
 
   return (

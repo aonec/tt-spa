@@ -16,6 +16,7 @@ export const CreateNodeContainer = () => {
   const existingStreets = useStore(outputs.$existingStreets);
   const isLoadingHousingStock = useStore(outputs.$isLoadingHousingStock);
   const stepNumber = useStore(outputs.$stepNumber);
+  const calculatorsList = useStore(outputs.$calculatorsList);
 
   const updateRequestPayload = useEvent(inputs.updateRequestPayload);
   const goPrevStep = useEvent(inputs.goPrevStep);
@@ -32,6 +33,7 @@ export const CreateNodeContainer = () => {
         updateRequestPayload={updateRequestPayload}
         goPrevStep={() => goPrevStep()}
         stepNumber={stepNumber}
+        calculatorsList={calculatorsList}
       />
     </>
   );
