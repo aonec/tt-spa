@@ -4,12 +4,20 @@ import React, { FC } from 'react';
 import {
   Field,
   FieldDescrition,
+  FieldForAdditionalAddresses,
   GridContainer,
+  GridContainerForAdditionalAddresses,
   PageTitle,
+  SpacedIndex,
+  SpacesHouseNumber,
   Wrapper,
 } from './CreateObjectFinalStageForm.styled';
 import { CreateObjectFinalStageFormProps } from './CreateObjectFinalStageForm.types';
-import { HouseCategoryDictionary } from '../../CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
+import {
+  HouseCategoryDictionary,
+  LivingHouseTypeDictionary,
+  NonResidentialHouseTypeDictionary,
+} from '../../CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 
 export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
   formId,
@@ -20,7 +28,17 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     (e) => e.id === createObjectData?.houseManagement
   )?.name;
 
-  const objectCategory = createObjectData?.objectCategotry 
+  const objectCategory = createObjectData?.objectCategotry;
+
+  const preparedLivingType =
+    createObjectData?.livingHouseType &&
+    LivingHouseTypeDictionary[createObjectData?.livingHouseType];
+
+  const preparedNonResidentialType =
+    createObjectData?.nonResidentialHouseType &&
+    NonResidentialHouseTypeDictionary[
+      createObjectData?.nonResidentialHouseType
+    ];
 
   return (
     <Form id={formId} onSubmitCapture={() => {}}>
@@ -30,38 +48,41 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <GridContainer>
           <FieldDescrition>Основной адрес</FieldDescrition>
           {createObjectData?.house ? (
-            <Field>{`${createObjectData.city}, ул. ${createObjectData.street}, ${createObjectData.house} к. ${createObjectData.corpus}`}</Field>
+            <Field>
+              {createObjectData.city}, ул. {createObjectData.street},
+              <SpacesHouseNumber>{createObjectData.house}</SpacesHouseNumber>
+              {createObjectData.corpus ? `к. ${createObjectData.corpus} ` : ''}
+              {createObjectData.index ? (
+                <SpacedIndex>({createObjectData?.index})</SpacedIndex>
+              ) : (
+                ''
+              )}
+            </Field>
           ) : (
             <Field>-</Field>
           )}
         </GridContainer>
         <SpaceLine />
-        <>
-          <GridContainer>
-            <FieldDescrition>Индекс</FieldDescrition>
-            <Field>{createObjectData?.index || '-'}</Field>
-          </GridContainer>
-          <SpaceLine />
-        </>
 
         {createObjectData?.additionalAddresses?.length ? (
-          createObjectData.additionalAddresses.map((e) => (
-            <>
-              <GridContainer>
-                <FieldDescrition>
-                  Адреса, под которыми известен объект
-                </FieldDescrition>
-                <Field>{`${createObjectData.city}, ул. ${e.street}, ${e.house} к. ${e.corpus}`}</Field>
-              </GridContainer>
-              <SpaceLine />
-
-              <GridContainer>
-                <FieldDescrition>Индекс</FieldDescrition>
-                <Field>{e?.index || '-'}</Field>
-              </GridContainer>
-              <SpaceLine />
-            </>
-          ))
+          <>
+            <GridContainer>
+              <FieldDescrition>
+                Адреса, под которыми известен объект
+              </FieldDescrition>
+              <GridContainerForAdditionalAddresses>
+                {createObjectData.additionalAddresses.map((e, i, arr) => (
+                  <FieldForAdditionalAddresses>
+                    ул. {e.street},
+                    <SpacesHouseNumber>{e.house}</SpacesHouseNumber>
+                    {e.corpus ? `к. ${e.corpus} ` : ''}
+                    {e.index ? <SpacedIndex>({e?.index})</SpacedIndex> : ''}
+                  </FieldForAdditionalAddresses>
+                ))}
+              </GridContainerForAdditionalAddresses>
+            </GridContainer>
+            <SpaceLine />
+          </>
         ) : (
           <>
             <GridContainer>
@@ -83,25 +104,25 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <GridContainer>
           <FieldDescrition>Категория объекта</FieldDescrition>
           <Field>
-            {objectCategory
-              ? HouseCategoryDictionary[objectCategory]
-              : '-'}
+            {objectCategory ? HouseCategoryDictionary[objectCategory] : '-'}
           </Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тип объекта</FieldDescrition>
           <Field>
-            {createObjectData?.livingHouseType ||
-              createObjectData?.nonResidentialHouseType ||
-              '-'}
+            {preparedLivingType || preparedNonResidentialType || '-'}
           </Field>
         </GridContainer>
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тепловой пункт</FieldDescrition>
           {createObjectData?.heatingPoint?.heatingPointType ? (
-            <Field>{`${createObjectData?.heatingPoint?.heatingPointType} (${createObjectData?.heatingPoint?.heatingPointNumber})`}</Field>
+            <Field>{`${createObjectData?.heatingPoint?.heatingPointType} ${
+              createObjectData?.heatingPoint?.heatingPointNumber
+                ? `${createObjectData?.heatingPoint?.heatingPointNumber}`
+                : ''
+            }`}</Field>
           ) : (
             <Field>-</Field>
           )}

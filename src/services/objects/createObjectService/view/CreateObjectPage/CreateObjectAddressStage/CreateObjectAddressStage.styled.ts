@@ -36,12 +36,14 @@ export const NonUserSelect = styled.div`
 export const AddButton = styled.div`
   margin-top: 14px;
   cursor: pointer;
+  width: max-content;
 `;
 
 export const DeleteButton = styled.div`
   margin-top: 4px;
   cursor: pointer;
   color: red;
+  width: max-content;
 `;
 
 
