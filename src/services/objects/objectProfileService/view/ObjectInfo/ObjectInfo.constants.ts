@@ -1,6 +1,6 @@
 export enum ObjectInfoRowField {
   city = 'city',
-  houseType = 'houseType',
+  houseTypeString = 'houseTypeString',
   index = 'index',
   numberOfEntrances = 'numberOfEntrances',
   numberOfFloors = 'numberOfFloors',
@@ -14,7 +14,7 @@ export enum ObjectInfoRowField {
 
 export enum ObjectInfoRowTitle {
   city = 'Город',
-  houseType = 'Тип дома',
+  houseTypeString = 'Тип дома',
   index = 'Индекс',
   numberOfEntrances = 'Количество подъездов',
   numberOfFloors = 'Количество этажей',

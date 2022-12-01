@@ -7,7 +7,7 @@ export const getObjectInfoFields = (
 ): { [key in ObjectInfoRowField]: string | number | null } => {
   const {
     address,
-    houseType,
+    houseTypeString,
     index,
     numberOfFloors,
     numberOfEntrances,
@@ -25,7 +25,7 @@ export const getObjectInfoFields = (
 
   return {
     city,
-    houseType,
+    houseTypeString,
     index,
     numberOfEntrances,
     numberOfFloors,

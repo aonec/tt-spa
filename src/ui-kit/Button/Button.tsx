@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Loader } from '01/components';
 import { IconWrapper, Wrapper } from './Button.styled';
 import { ButtonProps } from './Button.types';
@@ -20,11 +20,23 @@ export const Button: FC<ButtonProps> = (props) => {
     ...(disabled ? ['tt-button-disabled'] : []),
   ].join(' ');
 
+  const handleSubmit = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (disabled) {
+        return;
+      }
+      if (onClick) {
+        return onClick(e);
+      }
+    },
+    [onClick, disabled]
+  );
+
   return (
     <Wrapper
       {...props}
       type={type}
-      onClick={disabled ? undefined : onClick}
+      onClick={handleSubmit}
       className={classNameString}
       size={size}
       sidePadding={sidePadding}
