@@ -15,14 +15,19 @@ import {
 } from './ConnectionSettings.constants';
 import { connectionSettingsService } from './ConnectionSettings.model';
 import {
+  CalculatorModel,
   CalculatorSelectWrapper,
+  CalculatorSerialNumber,
   CreateCalculatorButtonWrapper,
+  FormItemSC,
 } from './ConnectionSettings.styled';
 import {
   CalculatorConnectionType,
   ConnectionSettingsProps,
 } from './ConnectionSettings.types';
 import { SelectValue } from 'antd/lib/select';
+import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
+import { CalculatorIcon } from 'ui-kit/icons';
 
 const { inputs, outputs } = connectionSettingsService;
 
@@ -97,6 +102,16 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
     [handleSubmit, setFieldValue]
   );
 
+  const selectedCalculator = useMemo(() => {
+    if (!values.calculatorId || !calculatorsList?.length) return null;
+
+    return (
+      calculatorsList.find(
+        (calculator) => calculator.id === values.calculatorId
+      ) || null
+    );
+  }, [values.calculatorId, calculatorsList]);
+
   return (
     <>
       <CreateCalculatorModalContainer />
@@ -118,26 +133,48 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
             <ErrorMessage>{errors.connectionType}</ErrorMessage>
           </FormItem>
           <CalculatorSelectWrapper>
-            <FormItem label="Вычислитель, к которому подключен узел">
-              <Select
-                disabled={isFieldsDisabled}
-                placeholder="Выберите"
-                value={values.calculatorId || undefined}
-                onChange={(value) => setFieldValue('calculatorId', value)}
-              >
-                {calculatorsList?.map((calculator) => (
-                  <Select.Option key={calculator.id} value={calculator.id}>
-                    {calculator.serialNumber} ({calculator.model})
-                  </Select.Option>
-                ))}
-              </Select>
-              <ErrorMessage>{errors.calculatorId}</ErrorMessage>
-            </FormItem>
-            <CreateCalculatorButtonWrapper>
-              <LinkButton onClick={openCreateCalculatorModal}>
-                + Создать новый вычислитель
-              </LinkButton>
-            </CreateCalculatorButtonWrapper>
+            <FormItemSC
+              isWide={Boolean(selectedCalculator)}
+              label="Вычислитель, к которому подключен узел"
+            >
+              {!selectedCalculator && (
+                <>
+                  <Select
+                    disabled={isFieldsDisabled}
+                    placeholder="Выберите"
+                    value={values.calculatorId || undefined}
+                    onChange={(value) => setFieldValue('calculatorId', value)}
+                  >
+                    {calculatorsList?.map((calculator) => (
+                      <Select.Option key={calculator.id} value={calculator.id}>
+                        {calculator.serialNumber} ({calculator.model})
+                      </Select.Option>
+                    ))}
+                  </Select>
+                  <ErrorMessage>{errors.calculatorId}</ErrorMessage>
+                </>
+              )}
+              {selectedCalculator && (
+                <SelectedEntityPanel
+                  onRemove={() => setFieldValue('calculatorId', null)}
+                >
+                  <CalculatorIcon />
+                  <CalculatorSerialNumber>
+                    {selectedCalculator.serialNumber}
+                  </CalculatorSerialNumber>
+                  <CalculatorModel>
+                    ({selectedCalculator.model})
+                  </CalculatorModel>
+                </SelectedEntityPanel>
+              )}
+            </FormItemSC>
+            {!selectedCalculator && (
+              <CreateCalculatorButtonWrapper>
+                <LinkButton onClick={openCreateCalculatorModal}>
+                  + Создать новый вычислитель
+                </LinkButton>
+              </CreateCalculatorButtonWrapper>
+            )}
           </CalculatorSelectWrapper>
           <FormItem label="Номер ввода">
             <Select
