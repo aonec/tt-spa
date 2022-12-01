@@ -31,7 +31,7 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
         </GroupWrapper>
         <GroupWrapper>
           <LinkSC
-            to={`/objects/${housingStockId}/apartments/${apartmentId}/testimony`}
+            to={`/apartments/${apartmentId}/testimony`}
           >
             Перейти в профиль
           </LinkSC>

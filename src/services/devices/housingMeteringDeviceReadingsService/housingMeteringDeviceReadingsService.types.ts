@@ -21,7 +21,3 @@ export type SortedMeteringDeviceReading = {
   magistralType: EMagistralType;
   id: string | null;
 };
-
-export type MeteringDeviceReadingWithEmpties = SortedMeteringDeviceReading & {
-  year: string | number;
-};

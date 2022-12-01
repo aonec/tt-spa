@@ -11,9 +11,11 @@ import {
   TabsWrapper,
 } from './EditApartmentPage.styled';
 import { EditApartmentPageProps } from './EditApartmentPage.types';
-import { getHousingStockAddress } from './EditApartmentPage.utils';
 import { TabsSection } from '../../editApartmentProfileService.types';
 import { EditCommonDataForm } from './EditCommonDataForm';
+import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
+import { EditHomeownersList } from './EditHomeownersList';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
@@ -27,6 +29,9 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
 
+  const filteredHomeownerAccounts =
+    apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
+
   return (
     <div>
       <WithLoader isLoading={isLoading}>
@@ -39,10 +44,10 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
             <HeaderInfoString>
               <>{address?.city}</>
               <>
-                {address && getHousingStockAddress(address)}
+                {address && getHousingStockItemAddress(address)}
                 {additionalAddresses?.map((elem) => (
                   <AdditionalAddressWrapper>
-                    {getHousingStockAddress(elem)}
+                    {getHousingStockItemAddress(elem)}
                   </AdditionalAddressWrapper>
                 ))}
               </>
@@ -65,13 +70,12 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
               )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
-              Собственники
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Документы" key={TabsSection.Documents}>
-              Документы
+              {filteredHomeownerAccounts && (
+                <EditHomeownersList homeowners={filteredHomeownerAccounts} />
+              )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
-              Журнал актов
+              <ApartmentActsListContainer />
             </Tabs.TabPane>
           </Tabs>
         </TabsWrapper>

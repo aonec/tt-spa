@@ -7,16 +7,16 @@ import {
   PipeNodeResponse,
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
-import { MeteringDeviceReadingWithEmpties } from './housingMeteringDeviceReadingsService.types';
+import { SortedMeteringDeviceReading } from './housingMeteringDeviceReadingsService.types';
 
 export const groupWithEmptyReadings = (
   allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
   deviceIds: { [key in EMagistralType]: number | null }
 ) => {
-  const sortedReadingsDictionary = _.groupBy(
-    allReadings,
-    (reading) => `${reading.year} ${reading.month}`
-  );
+  const sortedReadingsDictionary = _.groupBy(allReadings, (reading) => {
+    const readingDate = moment(reading.readingDate);
+    return `${readingDate.format('YYYY')} ${readingDate.format('MMMM')}`;
+  });
 
   const sortedReadingsDates = Object.keys(
     sortedReadingsDictionary
@@ -33,22 +33,23 @@ export const groupWithEmptyReadings = (
   let firstReadingDate = moment(sortedReadingsDates[0], 'YYYY MMMM');
 
   if (!firstReadingDate.isValid()) {
-    firstReadingDate = moment();
+    firstReadingDate = moment().add(1, 'month');
   }
 
-  const diff = moment(firstReadingDate, 'YYYY MMMM').diff(moment(), 'month');
+  const diff = moment(firstReadingDate, 'YYYY MMMM').diff(
+    moment().add(1, 'month'),
+    'month'
+  );
 
   const readingsWithEmpty = getFilledArray(Math.abs(diff) + 1, (index) => {
-    const year = moment()
-      .add(diff + index, 'month')
-      .format('YYYY');
-    const month = moment()
-      .add(diff + index, 'month')
-      .format('MMMM');
-    const date = `${year} ${month}`;
+    const date = moment().add(diff + index + 1, 'month');
+    const year = date.format('YYYY');
+    const month = date.format('MMMM');
 
-    const readings: MeteringDeviceReadingWithEmpties[] =
-      sortedReadingsDictionary[date] || [];
+    const dateString = `${year} ${month}`;
+
+    const readings: SortedMeteringDeviceReading[] =
+      sortedReadingsDictionary[dateString] || [];
 
     if (readings.length === 0) {
       readings.push({
@@ -57,7 +58,6 @@ export const groupWithEmptyReadings = (
         magistralType: EMagistralType.FeedFlow,
         id: null,
         deviceId: feedFlowId,
-        year,
       });
     }
 
@@ -76,7 +76,6 @@ export const groupWithEmptyReadings = (
         previousReadingsId: null,
         id: null,
         deviceId,
-        year,
       });
     }
     return { year, month, readings };
@@ -90,7 +89,7 @@ const groupReadings = (
   yearReadings: {
     year: string;
     month: string;
-    readings: MeteringDeviceReadingWithEmpties[];
+    readings: SortedMeteringDeviceReading[];
   }[]
 ) => {
   const groupedReadingsByYear = _.groupBy(

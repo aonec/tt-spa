@@ -12,7 +12,7 @@ export const InfoItem = styled.div`
   margin-left: 10px;
   color: #272f5ae5;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 13px;
 
   &:first-child {
     margin-left: 0;

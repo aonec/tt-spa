@@ -3,7 +3,6 @@ import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingSto
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Select } from 'antd';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
@@ -27,22 +26,15 @@ import {
   ObjectAddressValues,
 } from './CreateObjectAddressStage.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { validationSchema } from './createObjectAddressStage.constants';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
-  handleAddressData,
   onPageCancel,
   createObjectData,
+  handleSubmitCreateObject
 }) => {
-  const validationsSchema = yup.object().shape({
-    city: yup.string().required('Обязательное поле'),
-    street: yup.string().required('Обязательное поле'),
-    house: yup.string().required('Обязательное поле'),
-    corpus: yup.string(),
-    index: yup.string(),
-  });
-
   const {
     values,
     handleSubmit,
@@ -59,10 +51,10 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      handleAddressData(data);
+      handleSubmitCreateObject(data);
     },
     validateOnBlur: true,
-    validationSchema: validationsSchema,
+    validationSchema,
   });
 
   const additionalAddressesFieldOnChange = (
@@ -101,7 +93,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
       {values.city && <ExistingStreetsGate City={values.city} />}
 
       <Wrapper>
-        <PageTitle>Адресс объекта</PageTitle>
+        <PageTitle>Адрес объекта</PageTitle>
 
         <BlockTitle>Основной адрес объекта</BlockTitle>
         <GridWrapper>

@@ -45,7 +45,7 @@ export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagi
   );
 
   return (
-    <Wrapper to={`/objects/${housingStockId}/apartments/${apartmentId}`}>
+    <Wrapper to={`/apartments/${apartmentId}`}>
       <ApartmentNumberWrapper>{apartmentNumber}</ApartmentNumberWrapper>
       <ConsumptionWrapper>
         {preparedColdWaterSupplyСonsumption}

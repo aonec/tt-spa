@@ -25,7 +25,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const apartmentComment = apartment?.comment || '';
 
   const linkPath = apartment
-    ? `/objects/${housingStockId}/apartments/${apartmentId}`
+    ? `/apartments/${apartmentId}`
     : `/objects/profile/${housingStockId}`;
 
   const preparedCreationTime = creationTime
