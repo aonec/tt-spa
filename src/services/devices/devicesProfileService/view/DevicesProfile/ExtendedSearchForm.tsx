@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ConfigProvider, Select } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import {
@@ -29,6 +29,7 @@ export const ExtendedSearchForm: FC<{
     0: '0',
     255: '255',
   };
+
   type RangeValue = [Moment | null, Moment | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
@@ -116,8 +117,11 @@ export const ExtendedSearchForm: FC<{
               triggerNode.parentNode as HTMLElement
             }
             defaultValue={[0, 255]}
+            marks={marks}
+            min={0}
             max={255}
             range
+            step={null}
             value={[
               values['Filter.DiameterRange.From']
                 ? values['Filter.DiameterRange.From']
@@ -126,7 +130,6 @@ export const ExtendedSearchForm: FC<{
                 ? values['Filter.DiameterRange.To']
                 : 255,
             ]}
-            marks={marks}
             onChange={(value: [number, number]) => {
               setFieldValue("['Filter.DiameterRange.From']", value[0]);
               setFieldValue("['Filter.DiameterRange.To']", value[1]);
