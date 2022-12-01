@@ -26,7 +26,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   nodeZones,
   magistrals,
   refetchNode,
-  updateNode
+  updateNode,
 }) => {
   const { number, address, resource } = node;
 

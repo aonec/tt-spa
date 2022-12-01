@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Divider } from 'antd';
+import { Divider, message } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -44,6 +44,7 @@ import {
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import { addHousingMeteringDevice } from './apiModalAddDevice';
 import Warning from '../../../../../tt-components/Warning';
+import { EffectFailDataAxiosError } from 'types';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
@@ -134,7 +135,7 @@ const ModalAddDeviceForm = ({
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
-    diameter: undefined,
+    diameter: null,
     diameterVisible: true,
     calculatorId: calculatorId,
     entryNumber,
@@ -161,16 +162,18 @@ const ModalAddDeviceForm = ({
         pipeNumber: values.pipeNumber,
         magistral: values.magistral,
         nodeId: node.id,
-        diameter:
-          values.housingMeteringDeviceType === 'FlowMeter'
-            ? values.diameter
-            : undefined,
+        diameter: values.diameter,
       },
     };
-    addHousingMeteringDevice(form).then(() => {
-      setVisible(false);
-      refetchNode();
-    });
+    addHousingMeteringDevice(form)
+      .then(() => {
+        message.success('ОДПУ успешно создан');
+        setVisible(false);
+        refetchNode();
+      })
+      .catch((failedResponse: EffectFailDataAxiosError) =>
+        message.error(failedResponse.response.data.error.Text)
+      );
   };
 
   function handleBeforeSubmit(errors: any) {
@@ -371,15 +374,13 @@ const ModalAddDeviceForm = ({
                   <InputFormik name="serialNumber" />
                 </Form.Item>
 
-                {values.housingMeteringDeviceType === 'FlowMeter' ? (
-                  <Form.Item
-                    name="diameter"
-                    label="Диаметр трубы (мм)"
-                    style={styles.w100}
-                  >
-                    <InputNumberFormik name="diameter" min={0} step={1} />
-                  </Form.Item>
-                ) : null}
+                <Form.Item
+                  name="diameter"
+                  label="Диаметр трубы (мм)"
+                  style={styles.w100}
+                >
+                  <InputNumberFormik name="diameter" min={0} step={1} />
+                </Form.Item>
 
                 <Form.Item
                   name="lastCheckingDate"

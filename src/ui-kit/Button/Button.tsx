@@ -13,7 +13,6 @@ export const Button: FC<ButtonProps> = (props) => {
     size = 'middle',
     sidePadding,
     isLoading,
-
   } = props;
 
   const classNameString = [
@@ -24,7 +23,7 @@ export const Button: FC<ButtonProps> = (props) => {
   const handleSubmit = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (disabled) {
-        return undefined;
+        return;
       }
       if (onClick) {
         return onClick(e);

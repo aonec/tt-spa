@@ -61,7 +61,7 @@ const NodeResourceGate = createGate<{ resource: EResourceType }>();
 const $isLoading = getNodeFx.pending;
 
 forward({
-  from: NodeResourceGate.state.map(({ resource }) => resource),
+  from: NodeResourceGate.open.map(({ resource }) => resource),
   to: getMagistralsFx,
 });
 
