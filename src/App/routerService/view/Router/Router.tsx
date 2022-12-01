@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  AddNode,
   CalculatorProfile,
   Contractor,
   DevicesFromSearch,
@@ -45,6 +44,7 @@ import { EditNodeContainer } from 'services/devices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
+import { CreateNodeContainer } from 'services/nodes/createNodeService';
 
 const { gates } = objectProfileService;
 
@@ -83,8 +83,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/objects/:housingStockId/add_node"
-                  component={AddNode}
+                  path="/objects/:housingStockId/addNode"
+                  component={CreateNodeContainer}
                   exact
                 />
 
@@ -114,6 +114,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                     exact
                   />
                 </Route>
+
+                <Route
+                  path="/devices/addNode"
+                  component={CreateNodeContainer}
+                  exact
+                />
 
                 <Route
                   path="/devices/:type?"

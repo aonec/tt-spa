@@ -5,7 +5,6 @@ import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/Individu
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
-import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
@@ -27,13 +26,14 @@ import {
 } from './CreateObjectAddressStage.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
+import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
   existingCities,
   onPageCancel,
   createObjectData,
-  handleSubmitCreateObject
+  handleSubmitCreateObject,
 }) => {
   const {
     values,
@@ -72,20 +72,10 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
 
   const addressSearch = values.street;
 
-  const preparedExistingStreets = existingStreets
-    ?.sort((a, b) => {
-      const aPoints = countSimilarityPoints(addressSearch, a);
-      const bPoints = countSimilarityPoints(addressSearch, b);
-
-      if (aPoints < bPoints) return 1;
-
-      if (aPoints > bPoints) return -1;
-
-      return 0;
-    })
-    .map((street) => ({
-      value: street,
-    }));
+  const preparedExistingStreets = getPreparedStreetsOptions(
+    addressSearch,
+    existingStreets || []
+  );
 
   return (
     <>
