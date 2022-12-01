@@ -23,7 +23,7 @@ import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
-import { CreateNewHeatingStationModal } from './CreateNewHeatingStationModal/CreateNewHeatingStationModal';
+import { CreateNewHeatingStationModal } from '../../../../heatingStations/createHeatingStationService/view/CreateNewHeatingStationModal/CreateNewHeatingStationModal';
 import { EditNewHeatingStationModal } from './EditNewHeatingStationModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
@@ -41,6 +41,7 @@ import {
 } from 'myApi';
 import { sortBy } from 'lodash';
 import { useEvent } from 'effector-react';
+import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -50,19 +51,10 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   createObjectData,
   heatingStations,
 }) => {
-  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
-  const [
-    isInputTypeDisplayingDivShow,
-    setInputTypeDisplayingDivShow,
-  ] = useState<boolean>(false);
 
-  const handleCreateHeatingStation = useEvent(
-    createObjectService.inputs.handleCreateHeatingStation
-  );
 
-  const { gates } = createObjectService;
+  const { gates } = createHeatingStationService;
   const { HeatingStationsFetchGate } = gates;
 
   const heatingStationsValues = heatingStations?.items;
@@ -98,22 +90,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   return (
     <>
       <HeatingStationsFetchGate />
-      <CreateNewHeatingStationModal
-        isCreateModalOpen={isCreateModalOpen}
-        setCreateModalOpen={setCreateModalOpen}
-        setNewHeatingStationModalData={(heatingStation) =>
-          setFieldValue('heatingStation', heatingStation)
-        }
-        setInputTypeDisplayingDivShow={setInputTypeDisplayingDivShow}
-        handleCreateHeatingStation={handleCreateHeatingStation}
-      />
-      <EditNewHeatingStationModal
-        isEditModalOpen={isEditModalOpen}
-        setEditModalOpen={setEditModalOpen}
-        setNewHeatingStationModalData={(heatingStation) =>
-          setFieldValue('heatingStation', heatingStation)
-        }
-      />
+      
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 

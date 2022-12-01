@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { NewHeatingStationForm } from '../NewHeatingStationForm';
+import { NewHeatingStationForm } from '../../../../../heatingStations/NewHeatingStationForm';
 import { EditNewHeatingStationModalProps } from './EditNewHeatingStationModal.types';
 
 export const EditNewHeatingStationModal: FC<EditNewHeatingStationModalProps> = ({

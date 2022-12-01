@@ -12,11 +12,8 @@ import { Input } from 'ui-kit/Input';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { validationSchema } from './newHeatingStationForm.constants';
+
 export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
-  setNewHeatingStationModalData,
-  setCreateModalOpen,
-  setEditModalOpen,
-  setInputTypeDisplayingDivShow,
   formId,
   handleCreateHeatingStation,
 }) => {
@@ -32,11 +29,7 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      setNewHeatingStationModalData(data);
       console.log(data);
-      setCreateModalOpen && setCreateModalOpen(false);
-      setEditModalOpen && setEditModalOpen(false);
-      setInputTypeDisplayingDivShow && setInputTypeDisplayingDivShow(true);
     },
     validateOnBlur: true,
     validationSchema,

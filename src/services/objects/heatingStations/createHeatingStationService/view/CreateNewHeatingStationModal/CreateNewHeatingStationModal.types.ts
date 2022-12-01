@@ -1,5 +1,5 @@
 import { AddHeatingStationRequest } from 'myApi';
-import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.types';
+import { HeatingStation } from '../../../NewHeatingStationForm/NewHeatingStationForm.types';
 
 export type CreateNewHeatingStationModalProps = {
   isCreateModalOpen: boolean;

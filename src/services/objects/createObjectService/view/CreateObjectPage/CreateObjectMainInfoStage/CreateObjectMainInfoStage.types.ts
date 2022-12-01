@@ -6,7 +6,7 @@ import {
   HouseManagementResponse,
 } from 'myApi';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
-import { HeatingStation } from './NewHeatingStationForm/NewHeatingStationForm.types';
+import { HeatingStation } from '../../../../heatingStations/NewHeatingStationForm/NewHeatingStationForm.types';
 
 export type CreateObjectMainInfoStageProps = {
   houseManagements: HouseManagementResponse[] | null;
