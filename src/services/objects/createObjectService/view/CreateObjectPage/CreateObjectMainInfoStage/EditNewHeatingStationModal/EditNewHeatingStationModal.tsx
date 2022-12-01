@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { NewHeatingPointForm } from '../NewHeatingPointForm';
-import { EditNewHeatingPointModalProps } from './EditNewHeatingPointModal.types';
+import { NewHeatingStationForm } from '../NewHeatingStationForm';
+import { EditNewHeatingStationModalProps } from './EditNewHeatingStationModal.types';
 
-export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({
+export const EditNewHeatingStationModal: FC<EditNewHeatingStationModalProps> = ({
   isEditModalOpen,
   setEditModalOpen,
-  setNewHeatingPointModalData,
+  setNewHeatingStationModalData,
 }) => {
   const formId = 'edit-new-heating-point-form';
   return (
@@ -15,8 +15,8 @@ export const EditNewHeatingPointModal: FC<EditNewHeatingPointModalProps> = ({
       visible={isEditModalOpen}
       onCancel={() => setEditModalOpen(false)}
       form={
-        <NewHeatingPointForm
-          setNewHeatingPointModalData={setNewHeatingPointModalData}
+        <NewHeatingStationForm
+          setNewHeatingStationModalData={setNewHeatingStationModalData}
           setEditModalOpen={setEditModalOpen}
           formId={formId}
         />

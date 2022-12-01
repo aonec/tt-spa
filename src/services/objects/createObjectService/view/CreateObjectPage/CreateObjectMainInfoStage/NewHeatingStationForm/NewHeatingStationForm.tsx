@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { GridContainer } from './NewHeatingPointForm.styled';
+import { GridContainer } from './NewHeatingStationForm.styled';
 import {
-  HeatingPoint,
-  NewHeatingPointFormProps,
-} from './NewHeatingPointForm.types';
+  HeatingStation,
+  NewHeatingStationFormProps,
+} from './NewHeatingStationForm.types';
 import { StyledSelect } from '01/shared/ui/Select/components';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -11,9 +11,9 @@ import { useFormik } from 'formik';
 import { Input } from 'ui-kit/Input';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
-import { validationSchema } from './newHeatingPointForm.constants';
-export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
-  setNewHeatingPointModalData,
+import { validationSchema } from './newHeatingStationForm.constants';
+export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
+  setNewHeatingStationModalData,
   setCreateModalOpen,
   setEditModalOpen,
   setInputTypeDisplayingDivShow,
@@ -25,14 +25,14 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
     handleSubmit,
     setFieldValue,
     errors,
-  } = useFormik<HeatingPoint>({
+  } = useFormik<HeatingStation>({
     initialValues: {
-      heatingPointType: '',
-      heatingPointNumber: '',
+      heatingStationType: '',
+      heatingStationNumber: '',
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      setNewHeatingPointModalData(data);
+      setNewHeatingStationModalData(data);
       console.log(data);
       setCreateModalOpen && setCreateModalOpen(false);
       setEditModalOpen && setEditModalOpen(false);
@@ -44,28 +44,28 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <GridContainer>
-        <FormItem label="Тип ТП">
+        <FormItem label="Тип">
           <StyledSelect
             placeholder="Выберите из списка"
-            value={values.heatingPointType || undefined}
-            onChange={(value) => setFieldValue('heatingPointType', value)}
+            value={values.heatingStationType || undefined}
+            onChange={(value) => setFieldValue('heatingStationType', value)}
           >
             <Select.Option value={'Элемент массива строк'}>
               {'Элемент массива строк'}
             </Select.Option>
           </StyledSelect>
-          <ErrorMessage>{errors?.heatingPointType}</ErrorMessage>
+          <ErrorMessage>{errors?.heatingStationType}</ErrorMessage>
         </FormItem>
 
-        <FormItem label="Номер ТП">
+        <FormItem label="Название">
           <Input
             placeholder="Введите"
-            value={values.heatingPointNumber || undefined}
+            value={values.heatingStationNumber || undefined}
             onChange={(value) =>
-              setFieldValue('heatingPointNumber', value.target.value)
+              setFieldValue('heatingStationNumber', value.target.value)
             }
           />
-          <ErrorMessage>{errors?.heatingPointNumber}</ErrorMessage>
+          <ErrorMessage>{errors?.heatingStationNumber}</ErrorMessage>
         </FormItem>
       </GridContainer>
     </Form>

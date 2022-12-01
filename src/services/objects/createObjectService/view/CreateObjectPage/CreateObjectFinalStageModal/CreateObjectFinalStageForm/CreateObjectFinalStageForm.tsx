@@ -117,10 +117,10 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тепловой пункт</FieldDescrition>
-          {createObjectData?.heatingPoint?.heatingPointType ? (
-            <Field>{`${createObjectData?.heatingPoint?.heatingPointType} ${
-              createObjectData?.heatingPoint?.heatingPointNumber
-                ? `${createObjectData?.heatingPoint?.heatingPointNumber}`
+          {createObjectData?.heatingStation?.heatingStationType ? (
+            <Field>{`${createObjectData?.heatingStation?.heatingStationType} ${
+              createObjectData?.heatingStation?.heatingStationNumber
+                ? `${createObjectData?.heatingStation?.heatingStationNumber}`
                 : ''
             }`}</Field>
           ) : (

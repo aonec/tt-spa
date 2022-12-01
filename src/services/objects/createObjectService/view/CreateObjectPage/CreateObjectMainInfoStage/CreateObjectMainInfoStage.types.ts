@@ -6,7 +6,7 @@ import {
   HouseManagementResponse,
 } from 'myApi';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
-import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
+import { HeatingStation } from './NewHeatingStationForm/NewHeatingStationForm.types';
 
 export type CreateObjectMainInfoStageProps = {
   houseManagements: HouseManagementResponse[] | null;
@@ -22,5 +22,5 @@ export type ObjectMainInfoValues = {
   objectCategotry: EHouseCategory | null;
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
-  heatingPoint: HeatingPoint;
+  heatingStation: HeatingStation;
 };

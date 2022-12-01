@@ -23,8 +23,8 @@ import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
-import { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal/CreateNewHeatingPointModal';
-import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
+import { CreateNewHeatingStationModal } from './CreateNewHeatingStationModal/CreateNewHeatingStationModal';
+import { EditNewHeatingStationModal } from './EditNewHeatingStationModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import {
@@ -72,11 +72,11 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     objectCategotry: createObjectData?.objectCategotry || null,
     livingHouseType: createObjectData?.livingHouseType || null,
     nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
-    heatingPoint: {
-      heatingPointType:
-        createObjectData?.heatingPoint?.heatingPointType || null,
-      heatingPointNumber:
-        createObjectData?.heatingPoint?.heatingPointNumber || null,
+    heatingStation: {
+      heatingStationType:
+        createObjectData?.heatingStation?.heatingStationType || null,
+      heatingStationNumber:
+        createObjectData?.heatingStation?.heatingStationNumber || null,
     },
   };
 
@@ -98,20 +98,20 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   return (
     <>
       <HeatingStationsFetchGate />
-      <CreateNewHeatingPointModal
+      <CreateNewHeatingStationModal
         isCreateModalOpen={isCreateModalOpen}
         setCreateModalOpen={setCreateModalOpen}
-        setNewHeatingPointModalData={(heatingPoint) =>
-          setFieldValue('heatingPoint', heatingPoint)
+        setNewHeatingStationModalData={(heatingStation) =>
+          setFieldValue('heatingStation', heatingStation)
         }
         setInputTypeDisplayingDivShow={setInputTypeDisplayingDivShow}
         handleCreateHeatingStation={handleCreateHeatingStation}
       />
-      <EditNewHeatingPointModal
+      <EditNewHeatingStationModal
         isEditModalOpen={isEditModalOpen}
         setEditModalOpen={setEditModalOpen}
-        setNewHeatingPointModalData={(heatingPoint) =>
-          setFieldValue('heatingPoint', heatingPoint)
+        setNewHeatingStationModalData={(heatingStation) =>
+          setFieldValue('heatingStation', heatingStation)
         }
       />
       <Wrapper>
@@ -210,12 +210,12 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
               <Select
                 placeholder="Выберите из списка"
                 onChange={(value) => {
-                  setFieldValue('heatingPoint', {
-                    ...values.heatingPoint,
-                    heatingPointType: value,
+                  setFieldValue('heatingStation', {
+                    ...values.heatingStation,
+                    heatingStationType: value,
                   });
                 }}
-                value={values.heatingPoint.heatingPointType || undefined}
+                value={values.heatingStation.heatingStationType || undefined}
               >
                 {sortBy(heatingStationsValues, 'name')?.map(
                   (heatingStations) =>
@@ -227,7 +227,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 )}
               </Select>
               <ErrorMessage>
-                {errors.heatingPoint?.heatingPointType}
+                {errors.heatingStation?.heatingStationType}
               </ErrorMessage>
             </FormItem>
 
@@ -244,17 +244,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           <FormItem label="Тепловой пункт">
             <InputTypeDisplayingDiv>
               <FlexStart>
-                <Title>{values.heatingPoint.heatingPointType}</Title>
-                <Subtitle>{values.heatingPoint.heatingPointNumber}</Subtitle>
+                <Title>{values.heatingStation.heatingStationType}</Title>
+                <Subtitle>{values.heatingStation.heatingStationNumber}</Subtitle>
               </FlexStart>
               <FlexEnd>
                 <PencilIconSc onClick={() => setEditModalOpen(true)} />
                 <XIconSc
                   onClick={() => {
                     setInputTypeDisplayingDivShow(false);
-                    setFieldValue('heatingPoint', {
-                      heatingPointType: '',
-                      heatingPointNumber: '',
+                    setFieldValue('heatingStation', {
+                      heatingStationType: '',
+                      heatingStationNumber: '',
                     });
                   }}
                 />
