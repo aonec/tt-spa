@@ -6,16 +6,15 @@ import { NewHeatingStationForm } from '../../../NewHeatingStationForm';
 const formId = 'create-new-heating-point-form';
 
 export const CreateNewHeatingStationModal: FC<CreateNewHeatingStationModalProps> = ({
-  isCreateModalOpen,
-  setCreateModalOpen,
-  handleCreateHeatingStation
+  handleCreateHeatingStation,
+  isModalOpen,
+  setModalOpen,
 }) => {
-  
   return (
     <FormModal
       title="Создание нового ТП"
-      visible={isCreateModalOpen}
-      onCancel={() => setCreateModalOpen(false)}
+      visible={isModalOpen}
+      onCancel={() => setModalOpen(false)}
       form={
         <NewHeatingStationForm
           formId={formId}
