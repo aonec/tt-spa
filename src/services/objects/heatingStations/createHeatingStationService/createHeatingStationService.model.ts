@@ -14,6 +14,8 @@ const domain = createDomain('createHeatingStationService');
 
 const handleCreateHeatingStation = domain.createEvent<AddHeatingStationRequest>();
 
+const setModalOpen = domain.createEvent();
+
 const HeatingStationsFetchGate = createGate();
 
 const fetchHeatingStationFx = domain.createEffect<
@@ -36,6 +38,7 @@ forward({
   to: createHeatingStationFx,
 });
 
+
 const $heatingStations = domain
   .createStore<HeatingStationResponsePagedList | null>(null)
   .on(fetchHeatingStationFx.doneData, (_, data) => data);
@@ -44,8 +47,10 @@ const $newHeatingStation = domain
   .createStore<HeatingStationResponse | null>(null)
   .on(createHeatingStationFx.doneData, (_, data) => data);
 
+const isModalOpen = domain.createStore<boolean>(false);
+
 export const createHeatingStationService = {
   inputs: { handleCreateHeatingStation },
   outputs: { $heatingStations },
-  gates: {HeatingStationsFetchGate},
+  gates: { HeatingStationsFetchGate },
 };
