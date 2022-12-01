@@ -22,10 +22,13 @@ import {
   Wrapper,
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
-import { EditHomeownerPayload } from './EditHomeownerForm/EditHomeownerForm.types';
 import moment from 'moment';
 import { PersonType } from 'myApi';
 import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
+import {
+  CloseHomeownerAccountContainer,
+  closeHomeownerAccountService,
+} from './closeHomeownerAccountService';
 
 const {
   inputs: { openCreateHomeownerModal },
@@ -34,6 +37,10 @@ const {
 const {
   inputs: { openEditHomeownerModal },
 } = editHomeownerService;
+
+const {
+  inputs: { openClosingHomeownerModal },
+} = closeHomeownerAccountService;
 
 export const EditHomeownersList: FC<EditHomeownersListProps> = ({
   homeowners,
@@ -44,6 +51,7 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
     <>
       <CreateHomeownerContainer />
       <EditHomeownerContainer />
+      <CloseHomeownerAccountContainer />
       <Wrapper>
         <List gridTemp="1fr 0.35fr 0.25fr 0.25fr">
           {homeowners.map((homeowner) => {
@@ -71,7 +79,9 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
                   <PencilIconSC
                     onClick={() => openEditHomeownerModal(payload)}
                   />
-                  <TrashIconSC />
+                  <TrashIconSC
+                    onClick={() => openClosingHomeownerModal(homeowner.id)}
+                  />
                 </IconsWrapper>,
               ],
             };

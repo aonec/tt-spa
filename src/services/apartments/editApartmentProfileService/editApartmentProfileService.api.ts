@@ -8,5 +8,6 @@ export const getApartment = (apartmentId: number): Promise<ApartmentResponse> =>
 export const putApartment = ({
   ApartmentId,
   ...params
-}: PutApartment): Promise<ApartmentResponse> =>
-  axios.put(`Apartments/${ApartmentId}`, params);
+}: PutApartment): Promise<ApartmentResponse> => {
+  return axios.put(`Apartments/${ApartmentId}`, params);
+};

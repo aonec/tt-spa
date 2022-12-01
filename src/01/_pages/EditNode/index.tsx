@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
-import { Header } from './components/Header';
 import EditNodeForm from './components/EditNodeForm';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
@@ -92,7 +91,6 @@ export const EditNode = () => {
       <NodeResourceGate resource={node.resource} />
       <PageGate />
       <GoBack path={`/nodes/${nodeId}`} />
-      <Header node={node} nodeId={nodeId} />
       <div style={{ width: '66%' }}>
         <Tabs tabItems={tabItems} tabsType={'tabs'} />
         <EditNodeForm
@@ -110,13 +108,7 @@ export const EditNode = () => {
         setVisible={setDeregisterDevice}
         device={deregisterDeviceValue}
       />
-      <ModalAddDevice
-        visible={visibleAddDevice}
-        setVisible={setVisibleAddDevice}
-        magistrals={magistrals}
-        node={node}
-        refetchNode={getNodeReq}
-      />
+      
     </EditNodeContext.Provider>
   );
 };
