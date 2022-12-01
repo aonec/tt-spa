@@ -18,6 +18,7 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
   setEditModalOpen,
   setInputTypeDisplayingDivShow,
   formId,
+  handleCreateHeatingStation,
 }) => {
   const {
     values,

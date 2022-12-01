@@ -1,5 +1,4 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import React, { FC, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
@@ -41,6 +40,7 @@ import {
   ENonResidentialHouseType,
 } from 'myApi';
 import { sortBy } from 'lodash';
+import { useEvent } from 'effector-react';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -53,13 +53,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
-  const { gates } = createObjectService;
-  const { HeatingStationsFetchGate } = gates;
-
   const [
     isInputTypeDisplayingDivShow,
     setInputTypeDisplayingDivShow,
   ] = useState<boolean>(false);
+
+  const handleCreateHeatingStation = useEvent(
+    createObjectService.inputs.handleCreateHeatingStation
+  );
+
+  const { gates } = createObjectService;
+  const { HeatingStationsFetchGate } = gates;
 
   const heatingStationsValues = heatingStations?.items;
 
@@ -101,6 +105,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           setFieldValue('heatingPoint', heatingPoint)
         }
         setInputTypeDisplayingDivShow={setInputTypeDisplayingDivShow}
+        handleCreateHeatingStation={handleCreateHeatingStation}
       />
       <EditNewHeatingPointModal
         isEditModalOpen={isEditModalOpen}

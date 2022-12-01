@@ -1,3 +1,4 @@
+import { AddHeatingStationRequest } from 'myApi';
 import { HeatingPoint } from '../NewHeatingPointForm/NewHeatingPointForm.types';
 
 export type CreateNewHeatingPointModalProps = {
@@ -5,4 +6,5 @@ export type CreateNewHeatingPointModalProps = {
   setCreateModalOpen: (payload: boolean) => void;
   setNewHeatingPointModalData: (payload: HeatingPoint) => void;
   setInputTypeDisplayingDivShow: (payload: boolean) => void;
+  handleCreateHeatingStation: (payload: AddHeatingStationRequest) => void
 };
