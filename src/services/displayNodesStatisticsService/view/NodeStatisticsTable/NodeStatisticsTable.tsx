@@ -52,9 +52,10 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
     return null;
   }
 
+  const start = (page - 1) * NODE_STATISTICS_PAGE_SIZE;
   const pagedReadings = sortedArchiveReadings.slice(
-    (page - 1) * NODE_STATISTICS_PAGE_SIZE,
-    page * NODE_STATISTICS_PAGE_SIZE
+    start,
+    start + NODE_STATISTICS_PAGE_SIZE
   );
 
   const dates = pagedReadings.map((reading) => reading.time);
