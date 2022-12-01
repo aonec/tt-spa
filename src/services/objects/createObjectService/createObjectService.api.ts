@@ -4,6 +4,8 @@ import {
   HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
+  HousingStockCreateRequest,
+  HousingStockResponse,
 } from 'myApi';
 
 export const getHouseManagements = (): Promise<
@@ -20,4 +22,10 @@ export const postHeatingStation = (
   requestPayload: AddHeatingStationRequest
 ): Promise<HeatingStationResponse | null> => {
   return axios.post('HeatingStation', requestPayload);
+};
+
+export const postCreateObject = (
+  requestPayload: HousingStockCreateRequest
+): Promise<HousingStockResponse | null> => {
+  return axios.post('HousingStocks', requestPayload);
 };

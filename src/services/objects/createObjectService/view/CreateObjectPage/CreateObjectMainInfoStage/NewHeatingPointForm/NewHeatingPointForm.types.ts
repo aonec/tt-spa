@@ -6,7 +6,7 @@ export type NewHeatingPointFormProps = {
   setNewHeatingPointModalData: (payload: HeatingPoint) => void;
   formId: string;
   setInputTypeDisplayingDivShow?: (payload: boolean) => void;
-  handleCreateHeatingStation: (payload: AddHeatingStationRequest) => void
+  handleCreateHeatingStation?: (payload: AddHeatingStationRequest) => void
 };
 
 export type HeatingPoint = {

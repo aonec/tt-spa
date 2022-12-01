@@ -16,6 +16,7 @@ export const CreateObjectContainer = () => {
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
   console.log(createObjectData);
+  
   const heatingStations = useStore(outputs.$heatingStations);
 
   const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
