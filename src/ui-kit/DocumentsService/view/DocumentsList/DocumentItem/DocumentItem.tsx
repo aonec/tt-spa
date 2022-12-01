@@ -25,10 +25,10 @@ export const DocumentItem: FC<DocumentItemProps> = ({
     [document.uploadingTime]
   );
 
-  const handleRemoveDocument = useCallback(() => removeDocument(document.id), [
-    document.id,
-    removeDocument,
-  ]);
+  const handleRemoveDocument = useCallback(
+    () => removeDocument && removeDocument(document.id),
+    [document.id, removeDocument]
+  );
 
   const handleSaveDocument = useCallback(() => {
     saveDocument(document);
@@ -46,7 +46,7 @@ export const DocumentItem: FC<DocumentItemProps> = ({
       </DocumentDateWrapper>
       <ManageButtonsWrapper>
         <DownloadIconSC onClick={handleSaveDocument} />
-        <TrashIconSC onClick={handleRemoveDocument} />
+        {removeDocument && <TrashIconSC onClick={handleRemoveDocument} />}
       </ManageButtonsWrapper>
     </Wrapper>
   );
