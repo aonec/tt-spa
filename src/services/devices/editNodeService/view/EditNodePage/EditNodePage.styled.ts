@@ -1,7 +1,6 @@
 import { Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -14,6 +13,8 @@ export const HeaderWrapper = styled.div`
 
 export const AddressWrapper = styled(Link)`
   color: #272f5ae5;
+  font-weight: 500;
+  margin-top: 8px;
 `;
 
 export const ResourceIconWrapper = styled.div`
@@ -30,6 +31,7 @@ export const ResourceIconWrapper = styled.div`
 export const TabsSC = styled(Tabs)`
   margin-top: 16px;
   overflow: visible;
+
   .ant-tabs-tab-btn {
     color: #272f5a;
     font-weight: 500;
@@ -37,15 +39,6 @@ export const TabsSC = styled(Tabs)`
   }
 `;
 
-export const FooterWrapper = styled.div`
-  width: 100%;
-  max-width: 560px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 16px;
-`;
-
-export const ButtonSC = styled(Button)`
-  margin-left: 16px;
+export const ContentWrapper = styled.div`
+  max-width: 820px;
 `;

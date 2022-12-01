@@ -13,7 +13,6 @@ export const Button: FC<ButtonProps> = (props) => {
     size = 'middle',
     sidePadding,
     isLoading,
-    form,
   } = props;
 
   const classNameString = [
@@ -23,21 +22,21 @@ export const Button: FC<ButtonProps> = (props) => {
 
   const handleSubmit = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (form) {
-        document.forms.namedItem(form)?.requestSubmit();
+      if (disabled) {
+        return;
       }
       if (onClick) {
         return onClick(e);
       }
     },
-    [onClick, form]
+    [onClick, disabled]
   );
 
   return (
     <Wrapper
       {...props}
       type={type}
-      onClick={disabled ? undefined : handleSubmit}
+      onClick={handleSubmit}
       className={classNameString}
       size={size}
       sidePadding={sidePadding}

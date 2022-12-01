@@ -17,7 +17,6 @@ import {
   PipeNodeResponse,
   UpdatePipeNodeRequest,
 } from '../../../../myApi';
-import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
@@ -173,20 +172,8 @@ const EditNodeForm = ({
         requiredMark={false}
         scrollToFirstError
       >
-        <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          <EditNodeCalculatorConnectionContainer />
-        </StyledFormPage>
-
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-          <div style={styles.w100}>
-            <NodeRelatedDevices
-              node={node}
-              edit={true}
-              close={false}
-              setDeregisterDeviceValue={setDeregisterDeviceValue}
-              setDeregisterDevice={setDeregisterDevice}
-            />
-          </div>
+          <div style={styles.w100}></div>
 
           <ButtonTT
             type="button"
@@ -203,41 +190,6 @@ const EditNodeForm = ({
             <IconTT icon="plus" />
           </ButtonTT>
         </StyledFormPage>
-
-        <StyledFormPage hidden={Number(currentTabKey) !== 4}>
-          <FilesList
-            initialFiles={renderDocuments}
-            controlType="DELETE"
-            removeFile={(_, fileId = 0) => {
-              setDeletedDocumentIds((prev) => [...prev, fileId]);
-            }}
-          />
-          <DocumentsUpload
-            onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}
-          />
-        </StyledFormPage>
-
-        <StyledFooter form right>
-          <NavLink to={`/nodes/${nodeId}`}>
-            <ButtonTT
-              color="white"
-              type="button"
-              style={{ marginRight: '16px' }}
-            >
-              Отмена
-            </ButtonTT>
-          </NavLink>
-          <ButtonTT
-            color="blue"
-            type="submit"
-            disabled={isRequestServiceZonesError || pendingSave}
-          >
-            <Flex>
-              {<ButtonLoader show={pendingSave} />}
-              Сохранить
-            </Flex>
-          </ButtonTT>
-        </StyledFooter>
       </Form>
     </>
   );

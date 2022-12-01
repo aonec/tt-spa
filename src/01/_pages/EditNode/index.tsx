@@ -108,13 +108,7 @@ export const EditNode = () => {
         setVisible={setDeregisterDevice}
         device={deregisterDeviceValue}
       />
-      <ModalAddDevice
-        visible={visibleAddDevice}
-        setVisible={setVisibleAddDevice}
-        magistrals={magistrals}
-        node={node}
-        refetchNode={getNodeReq}
-      />
+      
     </EditNodeContext.Provider>
   );
 };

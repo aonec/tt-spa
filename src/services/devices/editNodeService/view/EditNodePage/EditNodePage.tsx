@@ -1,22 +1,21 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { ButtonTT } from '01/tt-components';
-import React, { FC, useMemo } from 'react';
-import { Button } from 'ui-kit/Button';
+import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
+import { ContentWrapper } from './EditNodePage.styled';
 import {
   AddressWrapper,
-  ButtonSC,
-  FooterWrapper,
   HeaderWrapper,
   ResourceIconWrapper,
   TabsSC,
 } from './EditNodePage.styled';
 import { EditNodePageProps } from './EditNodePage.types';
+import { EditNodeRelatedDevices } from './EditNodeRelatedDevices';
+import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsService';
 const { TabPane } = TabsSC;
 
 export const EditNodePage: FC<EditNodePageProps> = ({
@@ -25,23 +24,13 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   setGrouptype,
   openAddNewZonesModal,
   nodeZones,
+  magistrals,
+  refetchNode,
+  updateNode,
 }) => {
-  const { number, address, resource, documents } = node;
+  const { number, address, resource } = node;
 
   const formId = 'edit-node-page';
-
-  const footer = useMemo(
-    () => (
-      <FooterWrapper>
-        <Button form={formId} type="ghost">
-          Отмена
-        </Button>
-
-        <ButtonSC form={formId}>Сохранить</ButtonSC>
-      </FooterWrapper>
-    ),
-    [formId]
-  );
 
   return (
     <>
@@ -66,18 +55,30 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             openAddNewZonesModal={openAddNewZonesModal}
             nodeZones={nodeZones}
             formId={formId}
+            updateNode={updateNode}
           />
-          {footer}
         </TabPane>
+
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>
-          <EditNodeCalculatorConnectionContainer />
+          <ContentWrapper>
+            <EditNodeCalculatorConnectionContainer />
+          </ContentWrapper>
         </TabPane>
-        <TabPane
-          tab="Подключенные приборы"
-          key={NodeEditGrouptype.Devices}
-        ></TabPane>
+
+        <TabPane tab="Подключенные приборы" key={NodeEditGrouptype.Devices}>
+          <ContentWrapper>
+            <EditNodeRelatedDevices
+              node={node}
+              magistrals={magistrals}
+              refetchNode={refetchNode}
+            />
+          </ContentWrapper>
+        </TabPane>
+
         <TabPane tab="Документы" key={NodeEditGrouptype.Documents}>
-          {footer}
+          <ContentWrapper>
+            <EditNodeUploadDocumentsContainer />
+          </ContentWrapper>
         </TabPane>
       </TabsSC>
     </>

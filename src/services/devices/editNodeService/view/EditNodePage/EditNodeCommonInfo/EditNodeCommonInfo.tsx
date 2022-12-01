@@ -7,6 +7,8 @@ import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   AddZoneText,
+  ButtonSC,
+  FooterWrapper,
   InfoWrapper,
   ResourceText,
   SelectWrapper,
@@ -14,45 +16,45 @@ import {
   SwitchWrapper,
   Wrapper,
 } from './EditNodeCommonInfo.styled';
-import {
-  EditNodeCommonInfoProps,
-  UpdatePipeNodeFormik,
-} from './EditNodeCommonInfo.types';
+import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus, UpdatePipeNodeRequest } from 'myApi';
 import moment from 'moment';
 import { Form, Switch } from 'antd';
+import { Button } from 'ui-kit/Button';
+import { useHistory } from 'react-router-dom';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
   openAddNewZonesModal,
   nodeZones,
   formId,
+  updateNode,
 }) => {
-  const lastCommercialAccountingDate = useMemo(
-    () => node.lastCommercialAccountingDate || moment().format(),
-    [node]
-  );
-  const futureCommercialAccountingDate = useMemo(
-    () =>
-      node.futureCommercialAccountingDate || moment().add(4, 'year').format(),
-    [node]
-  );
+  const history = useHistory();
+
+  const futureCommercialAccountingDate = node.futureCommercialAccountingDate
+    ? moment(node.futureCommercialAccountingDate)
+    : undefined;
+
+  const lastCommercialAccountingDate = node.lastCommercialAccountingDate
+    ? moment(node.lastCommercialAccountingDate)
+    : undefined;
+
+  const isChecked =
+    node.nodeStatus?.value !== ENodeCommercialAccountStatus.NotRegistered;
 
   const {
     values,
     setFieldValue,
     handleSubmit,
-  } = useFormik<UpdatePipeNodeFormik>({
+  } = useFormik<UpdatePipeNodeRequest>({
     initialValues: {
       nodeServiceZoneId: node.nodeServiceZone?.id,
-      number: String(node.number),
-      nodeStatus: node.nodeStatus?.value,
-      futureCommercialAccountingDate,
-      lastCommercialAccountingDate,
+      number: node.number,
     },
     enableReinitialize: true,
-    onSubmit: console.log,
+    onSubmit: (values) => updateNode(values),
   });
 
   const selectZonesOptions = useMemo(
@@ -85,14 +87,14 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           <FormItem label="Номер узла">
             <Input
               placeholder="Номер узла"
-              value={values.number}
-              onChange={(e) => setFieldValue('number', e.target.value)}
+              value={String(values.number)}
+              onChange={(e) => setFieldValue('number', Number(e.target.value))}
               type="number"
             />
           </FormItem>
 
           <FormItem label="Статус узла">
-            <Select value={values.nodeStatus}>
+            <Select value={node.nodeStatus?.value} disabled>
               <Select.Option value={ENodeCommercialAccountStatus.Registered}>
                 Сдан на коммерческий учет
               </Select.Option>
@@ -125,7 +127,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         </FormItem>
 
         <SwitchWrapper>
-          <Switch />
+          <Switch disabled checked={isChecked} />
           <SwitchTextWrapper>
             Коммерческий учет показателей приборов
           </SwitchTextWrapper>
@@ -135,18 +137,9 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           <DatePicker
             format="DD.MM.YYYY"
             placeholder="Укажите дату..."
-            value={moment(values.lastCommercialAccountingDate)}
+            value={lastCommercialAccountingDate}
             allowClear={false}
-            onChange={(value) => {
-              if (!value) {
-                return setFieldValue('lastCommercialAccountingDate', moment());
-              }
-              setFieldValue('lastCommercialAccountingDate', value.format());
-              setFieldValue(
-                'futureCommercialAccountingDate',
-                value.add(4, 'years').format()
-              );
-            }}
+            disabled
           />
         </FormItem>
 
@@ -155,13 +148,19 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
             format="DD.MM.YYYY"
             placeholder="Укажите дату..."
             allowClear={false}
-            value={moment(values.futureCommercialAccountingDate)}
-            onChange={(_, strValue) =>
-              setFieldValue('futureCommercialAccountingDate', strValue)
-            }
+            value={futureCommercialAccountingDate}
+            disabled
           />
         </FormItem>
       </Form>
+
+      <FooterWrapper>
+        <Button type="ghost" onClick={() => history.goBack()}>
+          Отмена
+        </Button>
+
+        <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
+      </FooterWrapper>
     </Wrapper>
   );
 };

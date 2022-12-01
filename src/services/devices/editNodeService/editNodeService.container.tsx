@@ -8,7 +8,7 @@ import { editNodeService } from './editNodeService.model';
 import { EditNodePage } from './view/EditNodePage';
 
 const { gates, inputs, outputs } = editNodeService;
-const { NodeIdGate } = gates;
+const { NodeIdGate, NodeResourceGate } = gates;
 
 export const EditNodeContainer = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -17,9 +17,12 @@ export const EditNodeContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const grouptype = useStore(outputs.$editNodeGrouptype);
   const nodeZones = useStore(outputs.$nodeZones);
+  const magistrals = useStore(outputs.$magistrals);
 
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
   const openAddNewZonesModal = useEvent(addServiceZoneButtonClicked);
+  const refetchNode = useEvent(inputs.refetchNode);
+  const updateNode = useEvent(inputs.updateNode);
 
   return (
     <>
@@ -28,13 +31,19 @@ export const EditNodeContainer = () => {
 
       <WithLoader isLoading={isLoading}>
         {node && (
-          <EditNodePage
-            node={node}
-            grouptype={grouptype}
-            setGrouptype={setGrouptype}
-            openAddNewZonesModal={() => openAddNewZonesModal()}
-            nodeZones={nodeZones}
-          />
+          <>
+            <NodeResourceGate resource={node.resource} />
+            <EditNodePage
+              node={node}
+              grouptype={grouptype}
+              setGrouptype={setGrouptype}
+              openAddNewZonesModal={() => openAddNewZonesModal()}
+              nodeZones={nodeZones}
+              magistrals={magistrals}
+              refetchNode={() => refetchNode()}
+              updateNode={updateNode}
+            />
+          </>
         )}
       </WithLoader>
     </>

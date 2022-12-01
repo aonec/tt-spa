@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 
 export const Wrapper = styled.div`
   width: 560px;
@@ -21,8 +22,10 @@ export const AddZoneText = styled.div`
   color: rgb(24, 158, 233);
   height: 48px;
   margin-left: 16px;
-  cursor: pointer;
   font-weight: 500;
+  font-size: 16px;
+
+  cursor: pointer;
 `;
 
 export const ResourceText = styled.div`
@@ -49,4 +52,17 @@ export const SwitchWrapper = styled.div`
   align-items: center;
   cursor: pointer;
   margin: 16px 0px;
+`;
+
+export const FooterWrapper = styled.div`
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 16px;
+`;
+
+export const ButtonSC = styled(Button)`
+  margin-left: 16px;
 `;
