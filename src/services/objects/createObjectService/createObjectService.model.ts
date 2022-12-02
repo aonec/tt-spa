@@ -57,6 +57,8 @@ const createObjectFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postCreateObject);
 
+const handleCreateObjectSuccessDone = createObjectFx.doneData;
+
 const $createObjectData = domain
   .createStore<ObjectCreateSubmitData | null>(null)
   .on(handleSubmitCreateObject, (oldData, newData) => ({
@@ -191,6 +193,7 @@ export const createObjectService = {
     handlePostCreateObject,
     openPreviewModal,
     closePreviewModal,
+    handleCreateObjectSuccessDone,
   },
   outputs: {
     $createObjectData,

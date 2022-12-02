@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from './createObjectService.model';
@@ -14,7 +14,6 @@ export const CreateObjectContainer = () => {
 
   const stageNumber = useStore(outputs.$stageNumber);
   const isPreviewModalOpen = useStore(outputs.$isPreviewModalOpen);
-  console.log(isPreviewModalOpen);
 
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
@@ -30,6 +29,14 @@ export const CreateObjectContainer = () => {
 
   const history = useHistory();
   const onPageCancel = () => history.goBack();
+
+  useEffect(() => {
+    inputs.handleCreateObjectSuccessDone.watch((data) => {
+      if (data?.id) {
+        history.push(`/objects/profile/${data.id}`);
+      }
+    });
+  }, []);
 
   return (
     <>
