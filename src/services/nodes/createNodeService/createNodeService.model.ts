@@ -41,7 +41,7 @@ const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
 
 const $stepNumber = domain
-  .createStore(2)
+  .createStore(0)
   .on(goNextStep, (number) => (number === 3 ? number : number + 1))
   .on(goPrevStep, (number) => (number === 0 ? number : number - 1))
   .reset(CreateNodeGate.close);
