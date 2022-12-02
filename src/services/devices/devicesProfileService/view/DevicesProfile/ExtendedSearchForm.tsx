@@ -18,17 +18,16 @@ import {
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
+import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 
 const { Option } = Select;
 
 export const ExtendedSearchForm: FC<{
   values: CalculatorsListRequestPayload;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-}> = ({ values, setFieldValue }) => {
-  const marks = {
-    0: '0',
-    255: '255',
-  };
+  diametersConfig: DiamtersConfig;
+}> = ({ values, setFieldValue, diametersConfig }) => {
+  const { marks, maxValue, minValue } = diametersConfig;
 
   type RangeValue = [Moment | null, Moment | null] | null;
 
@@ -118,8 +117,8 @@ export const ExtendedSearchForm: FC<{
             }
             defaultValue={[0, 255]}
             marks={marks}
-            min={0}
-            max={255}
+            min={minValue}
+            max={maxValue}
             range
             step={null}
             value={[

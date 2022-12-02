@@ -26,11 +26,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   submitForm,
   setFieldValue,
   values,
+  diametersConfig,
 }) => {
-  const marks = {
-    0: '0',
-    255: '255',
-  };
+  const { marks, maxValue, minValue } = diametersConfig;
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
 
@@ -101,7 +99,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                     triggerNode.parentNode as HTMLElement
                   }
                   defaultValue={[0, 255]}
-                  max={255}
+                  max={maxValue}
+                  min={minValue}
+                  step={null}
                   range
                   value={[
                     values['Filter.DiameterRange.From']

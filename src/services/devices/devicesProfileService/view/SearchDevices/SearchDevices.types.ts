@@ -1,6 +1,7 @@
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { FormikErrors } from 'formik';
 import { FormEvent } from 'react';
+import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 
 export type SearchDevicesProps = {
   isExtendedSearchOpen: boolean;
@@ -11,4 +12,5 @@ export type SearchDevicesProps = {
     shouldValidate?: boolean | undefined
   ) => Promise<void> | Promise<FormikErrors<CalculatorsListRequestPayload>>;
   values: CalculatorsListRequestPayload;
+  diametersConfig: DiamtersConfig;
 };

@@ -8,6 +8,7 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
+import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 
 interface DeviceProfileProps {
   setFilter: (payload: CalculatorsListRequestPayload) => void;
@@ -17,6 +18,7 @@ interface DeviceProfileProps {
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
   searchState: CalculatorsListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
+  diametersConfig: DiamtersConfig;
 }
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
@@ -26,6 +28,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   open,
   searchState,
   clearSearchPayload,
+  diametersConfig,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -76,6 +79,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         submitForm={submitForm}
         setFieldValue={setFieldValue}
         values={values}
+        diametersConfig={diametersConfig}
       >
         <ExtendedSearch
           isOpen={isOpen}
@@ -92,7 +96,11 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             clearSearchPayload();
           }}
           extendedSearchContent={
-            <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
+            <ExtendedSearchForm
+              setFieldValue={setFieldValue}
+              values={values}
+              diametersConfig={diametersConfig}
+            />
           }
         />
       </SearchDevices>
