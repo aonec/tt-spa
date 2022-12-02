@@ -6,7 +6,7 @@ import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
 
 const { inputs, outputs, gates } = createObjectService;
-const { HouseManagementsFetchGate } = gates;
+const { HouseManagementsFetchGate, PageCloseGate } = gates;
 
 export const CreateObjectContainer = () => {
   const existingCities = useStore(addressSearchService.outputs.cities);
@@ -31,15 +31,17 @@ export const CreateObjectContainer = () => {
   const onPageCancel = () => history.goBack();
 
   useEffect(() => {
-    inputs.handleCreateObjectSuccessDone.watch((data) => {
+    return inputs.handleCreateObjectSuccessDone.watch((data) => {
       if (data?.id) {
         history.push(`/objects/profile/${data.id}`);
       }
-    });
+
+    }).unsubscribe;
   }, []);
 
   return (
     <>
+    <PageCloseGate />
       <HouseManagementsFetchGate />
       <CreateObjectPage
         existingCities={existingCities}

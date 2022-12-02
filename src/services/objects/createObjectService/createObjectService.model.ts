@@ -32,9 +32,11 @@ const handlePostCreateObject = domain.createEvent();
 const closePreviewModal = domain.createEvent<void>();
 const openPreviewModal = domain.createEvent<void>();
 
-const HouseManagementsFetchGate = createGate();
+const resetter = domain.createEvent<void>();
 
+const HouseManagementsFetchGate = createGate();
 const HeatingStationsFetchGate = createGate();
+const PageCloseGate = createGate();
 
 const fetchHouseManagementsFx = domain.createEffect<
   void,
@@ -64,7 +66,8 @@ const $createObjectData = domain
   .on(handleSubmitCreateObject, (oldData, newData) => ({
     ...oldData,
     ...newData,
-  }));
+  }))
+  .reset(resetter);
 
 const $stageNumber = domain
   .createStore<number>(1)
@@ -73,7 +76,8 @@ const $stageNumber = domain
   )
   .on(goBackStage, (stageNumber) =>
     stageNumber === 1 ? stageNumber : stageNumber - 1
-  );
+  )
+  .reset(resetter);
 
 const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
@@ -105,6 +109,11 @@ forward({
 forward({
   from: handleCreateHeatingStation,
   to: createHeatingStationFx,
+});
+
+forward({
+  from: PageCloseGate.close,
+  to: resetter,
 });
 
 guard({
@@ -202,5 +211,5 @@ export const createObjectService = {
     $heatingStations,
     $isPreviewModalOpen,
   },
-  gates: { HouseManagementsFetchGate, HeatingStationsFetchGate },
+  gates: { HouseManagementsFetchGate, HeatingStationsFetchGate, PageCloseGate },
 };
