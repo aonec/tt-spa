@@ -4,6 +4,7 @@ import {
   NodeStatusTextDictionary,
 } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { NodeResourcesList, NodeStatusesList } from './CommonData.types';
+import * as Yup from 'yup';
 
 export const nodeResources: NodeResourcesList = [
   {
@@ -27,3 +28,10 @@ export const nodeStatuses: NodeStatusesList = Object.values(
   text: NodeStatusTextDictionary[nodeStatus],
   Icon: NodeStatusIconsDictionary[nodeStatus],
 }));
+
+export const validationSchema = Yup.object().shape({
+  resource: Yup.string().nullable().required('Это поле обязательное'),
+  nodeStatus: Yup.string().nullable().required('Это поле обязательное'),
+  nodeServiceZoneId: Yup.string().nullable().required('Это поле обязательное'),
+  number: Yup.string().required('Это поле обязательное'),
+});

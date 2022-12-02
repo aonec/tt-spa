@@ -6,6 +6,7 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Title } from 'ui-kit/Title';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonData } from './CommonData';
+import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
 import { AddressWrapper, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
@@ -53,8 +54,10 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         nodeServiceZones={nodeServiceZones}
         updateRequestPayload={updateRequestPayload}
         openCreateNodeServiceZoneModal={openCreateNodeServiceZoneModal}
+        requestPayload={requestPayload}
       />
     ),
+    3: <ConnectedDevices />,
   };
 
   return (

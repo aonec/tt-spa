@@ -9,7 +9,11 @@ import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
-import { nodeResources, nodeStatuses } from './CommonData.contstants';
+import {
+  nodeResources,
+  nodeStatuses,
+  validationSchema,
+} from './CommonData.contstants';
 import {
   CreateNodeServiceZoneContainer,
   createNodeServiceZoneService,
@@ -24,9 +28,10 @@ import {
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
-import moment from 'moment';
+import { ENodeCommercialAccountStatus } from 'myApi';
 import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { getInitialDateFieldValue } from './CommonData.utils';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -34,18 +39,56 @@ export const CommonData: FC<CommonDataProps> = ({
   goPrevStep,
   nodeServiceZones,
   openCreateNodeServiceZoneModal,
+  requestPayload,
+  updateRequestPayload,
 }) => {
-  const { values, handleChange, setFieldValue } = useFormik({
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+    errors,
+    handleSubmit,
+  } = useFormik({
     initialValues: {
-      resource: null as EResourceType | null,
-      number: '',
-      nodeStatus: null as ENodeCommercialAccountStatus | null,
-      nodeServiceZoneId: null as number | null,
-      startCommercialAccountingDate: null as moment.Moment | null,
-      endCommercialAccountingDate: null as moment.Moment | null,
+      resource: requestPayload.resource || null,
+      number: requestPayload.number ? String(requestPayload.number) : '',
+      nodeStatus: requestPayload.nodeStatus || null,
+      nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
+      startCommercialAccountingDate: getInitialDateFieldValue(
+        requestPayload.startCommercialAccountingDate
+      ),
+      endCommercialAccountingDate: getInitialDateFieldValue(
+        requestPayload.endCommercialAccountingDate
+      ),
       documents: [] as Document[],
     },
-    onSubmit: () => {},
+    validationSchema,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      const {
+        resource,
+        number,
+        nodeStatus,
+        nodeServiceZoneId,
+        startCommercialAccountingDate,
+        endCommercialAccountingDate,
+      } = values;
+
+      if (!resource || !number || !nodeStatus || !nodeServiceZoneId) return;
+
+      updateRequestPayload({
+        resource,
+        number: Number(number),
+        nodeStatus,
+        nodeServiceZoneId,
+        startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
+          true
+        ),
+        endCommercialAccountingDate: endCommercialAccountingDate?.toISOString(
+          true
+        ),
+      });
+    },
   });
 
   useEffect(
@@ -77,14 +120,17 @@ export const CommonData: FC<CommonDataProps> = ({
                 </Select.Option>
               ))}
             </Select>
+            <ErrorMessage>{errors.resource}</ErrorMessage>
           </FormItem>
           <FormItem label="Номер узла">
             <Input
               placeholder="Введите"
               name="number"
+              type="number"
               value={values.number}
               onChange={handleChange}
             />
+            <ErrorMessage>{errors.number}</ErrorMessage>
           </FormItem>
         </FirstLineWrapper>
         <SecondLineWrapper>
@@ -100,6 +146,7 @@ export const CommonData: FC<CommonDataProps> = ({
                 </Select.Option>
               ))}
             </Select>
+            <ErrorMessage>{errors.nodeServiceZoneId}</ErrorMessage>
           </FormItem>
           <CreateNewZoneButtonWrapper>
             <LinkButton onClick={openCreateNodeServiceZoneModal}>
@@ -122,6 +169,7 @@ export const CommonData: FC<CommonDataProps> = ({
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
         </FormItem>
         {values.nodeStatus === ENodeCommercialAccountStatus.Registered && (
           <ThirdLineWrapper>
@@ -160,7 +208,7 @@ export const CommonData: FC<CommonDataProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20} onClick={() => {}}>
+          <Button sidePadding={20} onClick={() => handleSubmit()}>
             Далее
           </Button>
         </Footer>
