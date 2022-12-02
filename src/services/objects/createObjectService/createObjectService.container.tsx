@@ -13,13 +13,18 @@ export const CreateObjectContainer = () => {
   const existingStreets = useStore(addressSearchService.outputs.streets);
 
   const stageNumber = useStore(outputs.$stageNumber);
+  const isPreviewModalOpen = useStore(outputs.$isPreviewModalOpen);
+  console.log(isPreviewModalOpen);
+
   const houseManagements = useStore(outputs.$houseManagements);
   const createObjectData = useStore(outputs.$createObjectData);
-  console.log(createObjectData);
-  
   const heatingStations = useStore(outputs.$heatingStations);
 
   const handleSubmitCreateObject = useEvent(inputs.handleSubmitCreateObject);
+  const handlePostCreateObject = useEvent(inputs.handlePostCreateObject);
+
+  const openPreviewModal = useEvent(inputs.openPreviewModal);
+  const closePreviewModal = useEvent(inputs.closePreviewModal);
 
   const goBackStage = useEvent(inputs.goBackStage);
 
@@ -39,6 +44,10 @@ export const CreateObjectContainer = () => {
         onPageCancel={onPageCancel}
         handleSubmitCreateObject={handleSubmitCreateObject}
         heatingStations={heatingStations}
+        handlePostCreateObject={() => handlePostCreateObject()}
+        isPreviewModalOpen={isPreviewModalOpen}
+        openPreviewModal={() => openPreviewModal()}
+        closePreviewModal={() => closePreviewModal()}
       />
     </>
   );

@@ -5,23 +5,27 @@ import { CreateObjectFinalStageModalProps } from './CreateObjectFinalStageModal.
 import { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm/CreateObjectFinalStageForm';
 
 export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> = ({
-  onPageCancel,
-  goBackStage,
   createObjectData,
   houseManagements,
+  handlePostCreateObject,
+  heatingStations,
+  closePreviewModal,
+  isPreviewModalOpen,
 }) => {
   const formId = 'create-object-final-stage-form';
   return (
     <Wrapper>
       <FormModal
         title="Добавление нового объекта"
-        visible={true}
-        onCancel={() => goBackStage()}
+        visible={isPreviewModalOpen}
+        onCancel={closePreviewModal}
+        onSubmit={handlePostCreateObject}
         form={
           <CreateObjectFinalStageForm
             formId={formId}
             createObjectData={createObjectData}
             houseManagements={houseManagements}
+            heatingStations={heatingStations}
           />
         }
         formId={formId}

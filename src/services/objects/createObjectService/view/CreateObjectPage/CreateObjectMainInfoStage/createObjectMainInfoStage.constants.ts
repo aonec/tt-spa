@@ -10,7 +10,7 @@ export const validationSchema = yup.object().shape({
   objectCategotry: yup.string().nullable().required('Обязательное поле'),
   livingHouseType: yup.string().nullable(),
   nonResidentialHouseType: yup.string().nullable(),
-  heatingPoint: yup.string(),
+  heatingStationId: yup.string().nullable().required('Обязательное поле'),
 });
 
 export const HouseCategoryDictionary: { [key in EHouseCategory]: string } = {

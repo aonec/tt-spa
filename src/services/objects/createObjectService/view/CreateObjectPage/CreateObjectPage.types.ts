@@ -14,4 +14,8 @@ export type CreateObjectPageProps = {
   createObjectData: ObjectCreateSubmitData | null;
   handleSubmitCreateObject: (values: ObjectCreateSubmitData) => void;
   heatingStations: HeatingStationResponsePagedList | null;
+  handlePostCreateObject:() => void;
+  isPreviewModalOpen: boolean;
+  openPreviewModal: () => void;
+  closePreviewModal: () => void;
 };

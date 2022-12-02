@@ -22,5 +22,5 @@ export type ObjectMainInfoValues = {
   objectCategotry: EHouseCategory | null;
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
-  heatingPoint: HeatingPoint;
+  heatingStationId: string | null;
 };

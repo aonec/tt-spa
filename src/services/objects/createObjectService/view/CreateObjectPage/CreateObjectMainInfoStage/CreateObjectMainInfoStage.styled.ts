@@ -94,10 +94,16 @@ export const Title = styled.div`
   line-height: 32px;
   color: #272f5a;
 `;
+
 export const Subtitle = styled.div`
   margin-left: 8px;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   color: rgba(39, 47, 90, 0.7);
+`;
+
+export const WrapperLinkButton = styled.div`
+  width: max-content;
+  margin-top: 45px;
 `;

@@ -24,6 +24,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
   formId,
   createObjectData,
   houseManagements,
+  heatingStations,
 }) => {
   const houseManagrmentName = houseManagements?.find(
     (e) => e.id === createObjectData?.houseManagement
@@ -40,6 +41,10 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     NonResidentialHouseTypeDictionary[
       createObjectData?.nonResidentialHouseType
     ];
+
+  const heatingStation = heatingStations?.items?.find(
+    (e) => e.id === createObjectData?.heatingStationId
+  );
 
   return (
     <Form id={formId} onSubmitCapture={() => {}}>
@@ -118,15 +123,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тепловой пункт</FieldDescrition>
-          {createObjectData?.heatingPoint?.heatingPointType ? (
-            <Field>{`${createObjectData?.heatingPoint?.heatingPointType} ${
-              createObjectData?.heatingPoint?.heatingPointNumber
-                ? `${createObjectData?.heatingPoint?.heatingPointNumber}`
-                : ''
-            }`}</Field>
-          ) : (
-            <Field>-</Field>
-          )}
+          <Field>{heatingStation?.name || '-'}</Field>
         </GridContainer>
         <SpaceLine />
 

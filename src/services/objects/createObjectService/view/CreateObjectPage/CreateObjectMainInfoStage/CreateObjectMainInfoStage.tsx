@@ -5,26 +5,22 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
-  AddTPButton,
   ButtonPadding,
   FlexEnd,
   FlexStart,
   Footer,
   GridContainer,
   InputTypeDisplayingDiv,
-  PencilIconSc,
   RightButtonBlock,
-  Subtitle,
   Title,
   Wrapper,
+  WrapperLinkButton,
   XIconSc,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
-import { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal/CreateNewHeatingPointModal';
-import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import {
@@ -40,7 +36,7 @@ import {
   ENonResidentialHouseType,
 } from 'myApi';
 import { sortBy } from 'lodash';
-import { useEvent } from 'effector-react';
+import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -50,18 +46,6 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   createObjectData,
   heatingStations,
 }) => {
-  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
-
-  const [
-    isInputTypeDisplayingDivShow,
-    setInputTypeDisplayingDivShow,
-  ] = useState<boolean>(false);
-
-  const handleCreateHeatingStation = useEvent(
-    createObjectService.inputs.handleCreateHeatingStation
-  );
-
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
 
@@ -72,12 +56,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     objectCategotry: createObjectData?.objectCategotry || null,
     livingHouseType: createObjectData?.livingHouseType || null,
     nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
-    heatingPoint: {
-      heatingPointType:
-        createObjectData?.heatingPoint?.heatingPointType || null,
-      heatingPointNumber:
-        createObjectData?.heatingPoint?.heatingPointNumber || null,
-    },
+    heatingStationId: createObjectData?.heatingStationId || null,
   };
 
   const {
@@ -91,29 +70,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     onSubmit: (data) => {
       handleSubmitCreateObject(data);
     },
-    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema,
   });
+
+  const selectedHeatingStation = heatingStations?.items?.find(
+    (station) => station.id === values.heatingStationId
+  );
 
   return (
     <>
       <HeatingStationsFetchGate />
-      <CreateNewHeatingPointModal
-        isCreateModalOpen={isCreateModalOpen}
-        setCreateModalOpen={setCreateModalOpen}
-        setNewHeatingPointModalData={(heatingPoint) =>
-          setFieldValue('heatingPoint', heatingPoint)
-        }
-        setInputTypeDisplayingDivShow={setInputTypeDisplayingDivShow}
-        handleCreateHeatingStation={handleCreateHeatingStation}
-      />
-      <EditNewHeatingPointModal
-        isEditModalOpen={isEditModalOpen}
-        setEditModalOpen={setEditModalOpen}
-        setNewHeatingPointModalData={(heatingPoint) =>
-          setFieldValue('heatingPoint', heatingPoint)
-        }
-      />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
@@ -204,58 +171,46 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         <SpaceLine />
 
-        {!isInputTypeDisplayingDivShow && (
+        {!values.heatingStationId && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
               <Select
                 placeholder="Выберите из списка"
                 onChange={(value) => {
-                  setFieldValue('heatingPoint', {
-                    ...values.heatingPoint,
-                    heatingPointType: value,
-                  });
+                  setFieldValue('heatingStationId', value);
                 }}
-                value={values.heatingPoint.heatingPointType || undefined}
+                value={values.heatingStationId || undefined}
               >
-                {sortBy(heatingStationsValues, 'name')?.map(
+                {sortBy(heatingStationsValues || [], 'name').map(
                   (heatingStations) =>
                     heatingStations.name && (
-                      <Select.Option value={heatingStations.name}>
+                      <Select.Option
+                        value={heatingStations.id}
+                        key={heatingStations.id}
+                      >
                         {heatingStations.name}
                       </Select.Option>
                     )
                 )}
               </Select>
-              <ErrorMessage>
-                {errors.heatingPoint?.heatingPointType}
-              </ErrorMessage>
+              <ErrorMessage>{errors.heatingStationId}</ErrorMessage>
             </FormItem>
-
-            <AddTPButton
-              className="ant-btn-link"
-              onClick={() => setCreateModalOpen((prev) => !prev)}
-            >
-              + Добавить новый ТП
-            </AddTPButton>
+            <WrapperLinkButton>
+              <LinkButton onClick={() => {}}>+ Добавить новый ТП</LinkButton>
+            </WrapperLinkButton>
           </GridContainer>
         )}
 
-        {isInputTypeDisplayingDivShow && (
+        {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
             <InputTypeDisplayingDiv>
               <FlexStart>
-                <Title>{values.heatingPoint.heatingPointType}</Title>
-                <Subtitle>{values.heatingPoint.heatingPointNumber}</Subtitle>
+                <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
-                <PencilIconSc onClick={() => setEditModalOpen(true)} />
                 <XIconSc
                   onClick={() => {
-                    setInputTypeDisplayingDivShow(false);
-                    setFieldValue('heatingPoint', {
-                      heatingPointType: '',
-                      heatingPointNumber: '',
-                    });
+                    setFieldValue('heatingStationId', null);
                   }}
                 />
               </FlexEnd>

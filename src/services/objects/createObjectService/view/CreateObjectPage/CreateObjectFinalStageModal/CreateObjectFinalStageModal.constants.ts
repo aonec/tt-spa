@@ -5,4 +5,7 @@ export const ElevatorDictionary = {
   [ElevatorExistingType.NotAvailable]: 'Нет',
 };
 
-export const IsElevatorDictionary = {};
+export const IsElevatorDictionaryBoolean = {
+  [ElevatorExistingType.Available]: true,
+  [ElevatorExistingType.NotAvailable]: false,
+};
