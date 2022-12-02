@@ -2,7 +2,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceType } from 'myApi';
+import { EResourceType, ESoiReportPeriod } from 'myApi';
 import React, { FC } from 'react';
 import { resourcesNamesLookup } from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
 import {
@@ -20,7 +20,6 @@ import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
-import { getDatePeriod } from './SoiReportForm.utils';
 
 export const SoiReportForm: FC<SoiReportFormProps> = ({
   soiReportType,
@@ -43,20 +42,24 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
     onSubmit: (values) => {
       if (!values.Period || !values.Date) return;
 
-      const { From, To } = getDatePeriod(values.Period, values.Date);
-
       const normativePerPerson = values.NormativePerPerson
         ? Number(values.NormativePerPerson)
         : null;
 
+      const date = moment(values.Date).set('day', 15);
+
       createSoiReport({
         ReportName: values.ReportName,
-        HouseManagementId: values.HouseManagementId,
-        HousingStockId: values.HousingStockId,
-        Resource: values.Resource,
-        NormativePerPerson: normativePerPerson,
-        From,
-        To,
+        HouseManagementId: values.HouseManagementId || undefined,
+        HousingStockId: values.HousingStockId || undefined,
+        Resource: values.Resource || undefined,
+        NormativePerPerson: normativePerPerson || undefined,
+        Period:
+          values.Period === 'year'
+            ? ESoiReportPeriod.Year
+            : ESoiReportPeriod.Month,
+        Year: date.year(),
+        Month: date.month(),
       });
     },
   });

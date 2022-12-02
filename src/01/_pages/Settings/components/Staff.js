@@ -60,7 +60,7 @@ const Staff = () => {
           menuButtonArr={[
             {
               title: 'Открыть профиль сотрудника',
-              cb: () => {},
+              cb: () => history.push(`/userProfile/${id}`),
               show: true,
               color: 'default',
               clickable: true,

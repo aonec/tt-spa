@@ -14,6 +14,8 @@ import { TabsSection } from '../../editApartmentProfileService.types';
 import { EditCommonDataForm } from './EditCommonDataForm';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
+import { EditHomeownersList } from './EditHomeownersList';
+import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
@@ -26,6 +28,9 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   const address = apartment?.housingStock?.address?.mainAddress;
   const additionalAddresses =
     apartment?.housingStock?.address?.additionalAddresses;
+
+  const filteredHomeownerAccounts =
+    apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
 
   return (
     <div>
@@ -65,13 +70,12 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
               )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
-              Собственники
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Документы" key={TabsSection.Documents}>
-              Документы
+              {filteredHomeownerAccounts && (
+                <EditHomeownersList homeowners={filteredHomeownerAccounts} />
+              )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
-              Журнал актов
+              <ApartmentActsListContainer />
             </Tabs.TabPane>
           </Tabs>
         </TabsWrapper>

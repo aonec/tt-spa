@@ -1,13 +1,13 @@
-import axiosHttpClient from 'axios';
+import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 
 export const devUrl = 'https://staging.transparent-technology.ru/api/';
 
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
-axiosHttpClient.defaults.baseURL = baseURL;
+axios.defaults.baseURL = baseURL;
 
-axiosHttpClient.interceptors.request.use((req) => {
+axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
 
   if (req.url && checkUrl('refresh', req.url)) {
@@ -19,7 +19,7 @@ axiosHttpClient.interceptors.request.use((req) => {
   return req;
 });
 
-axiosHttpClient.interceptors.response.use(
+axios.interceptors.response.use(
   ({ data, config }) => {
     const { url } = config;
 
@@ -43,27 +43,30 @@ axiosHttpClient.interceptors.response.use(
   },
   (error) => {
     const status = error?.response?.status;
+
+    if (status === 401 && checkUrl('refresh', error.config.url)) {
+      localStorage.clear();
+      window.location.replace('/login');
+      return;
+    }
+
     if (status === 401 && !checkUrl('login', error.config.url)) {
       const { config } = error;
 
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axiosHttpClient.post('/auth/refreshToken').then(
+          axios.post('/auth/refreshToken').then(
             () => {
               setIsRefreshRunning(false);
 
-              return resolve(axiosHttpClient(config));
-            },
-            () => {
-              localStorage.clear();
-              window.location.replace('/login');
+              return resolve(axios(config));
             }
           );
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {
-              resolve(axiosHttpClient(config));
+              resolve(axios(config));
               subscription.unsubscribe();
             }
           });
@@ -97,6 +100,6 @@ export const setIsRefreshRunning = createEvent<boolean>();
 
 $isRefreshRunning.on(setIsRefreshRunning, (_, value) => value);
 
-export default axiosHttpClient;
+export default axios;
 
-export const axios = axiosHttpClient;
+export { axios };

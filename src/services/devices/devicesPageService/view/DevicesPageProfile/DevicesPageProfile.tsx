@@ -11,12 +11,17 @@ import { DevicesProfileTabsType } from '../../devicesPageService.types';
 export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   type,
   setDevicesType,
+  handleAddNode,
 }) => {
   const menuButtonArr = [
     {
       title: 'Выгрузить список ОДПУ',
       onClick: showDownloadDeviceReportButtonClicked,
       hidden: type !== DevicesProfileTabsType.ODPU,
+    },
+    {
+      title: 'Добавить узел',
+      onClick: handleAddNode,
     },
   ];
 
