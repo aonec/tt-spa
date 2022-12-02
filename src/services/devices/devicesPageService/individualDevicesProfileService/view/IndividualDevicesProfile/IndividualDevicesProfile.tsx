@@ -1,6 +1,6 @@
 import { Radio } from 'antd';
 import React, { FC } from 'react';
-import { DevicesSearchType } from '../../individualDevicesProfileService.types';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { IndividualDevicesViewComponents } from './IndividualDevicesProfile.constants';
 import { Wrapper } from './IndividualDevicesProfile.styled';
 import { IndividualDevicesProfileProps } from './IndividualDevicesProfile.types';
