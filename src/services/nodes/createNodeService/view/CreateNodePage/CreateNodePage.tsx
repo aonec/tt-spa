@@ -24,7 +24,9 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   calculatorsList,
   openCreateCalculatorModal,
   isDisabledAddress,
-  requestPayload
+  requestPayload,
+  nodeServiceZones,
+  openCreateNodeServiceZoneModal,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -45,7 +47,14 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         requestPayload={requestPayload}
       />
     ),
-    2: <CommonData goPrevStep={goPrevStep} />,
+    2: (
+      <CommonData
+        goPrevStep={goPrevStep}
+        nodeServiceZones={nodeServiceZones}
+        updateRequestPayload={updateRequestPayload}
+        openCreateNodeServiceZoneModal={openCreateNodeServiceZoneModal}
+      />
+    ),
   };
 
   return (
