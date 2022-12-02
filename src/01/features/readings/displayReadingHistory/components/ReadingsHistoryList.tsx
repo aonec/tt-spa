@@ -5,7 +5,7 @@ import {
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useOpenedYears } from '../hooks/useOpenedYears';
 import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
@@ -26,6 +26,7 @@ import {
   getActiveReadings,
   getNewReadingDate,
   getPreviousReadingByHistory,
+  getRecentlyReplacedAccount,
   validateReadings,
 } from './displayReadingHistory.utils';
 import {
@@ -236,15 +237,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
     const actualHomeownerAccount = _.last(apartment?.homeownerAccounts);
 
-    const recentlyReplacedAccount =
-      apartment?.homeownerAccounts && apartment.homeownerAccounts.length > 1
-        ? _.find(apartment?.homeownerAccounts, (account) => {
-            return (
-              account.replacedByAccount?.personalAccountNumber ===
-              actualHomeownerAccount?.personalAccountNumber
-            );
-          })
-        : null;
+    const recentlyReplacedAccount = getRecentlyReplacedAccount(apartment?.homeownerAccounts || [], actualHomeownerAccount)
 
     const accountLastChangeYear = moment(actualHomeownerAccount?.openAt).year();
     const accountLastChangeMonth = moment(actualHomeownerAccount?.openAt)

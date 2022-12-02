@@ -2,7 +2,9 @@ import React from 'react';
 import { CorrectReadingValuesValidationResult } from '../../../../hooks/useReadings';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import {
+  ApartmentResponse,
   EResourceType,
+  HomeownerAccountListResponse,
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceResponse,
@@ -10,8 +12,7 @@ import {
 import moment from 'moment';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import _ from 'lodash/fp';
-import { round } from 'lodash';
+import _, { round } from 'lodash';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
@@ -167,3 +168,18 @@ export function getPreviousReadingByHistory(
 
   return res;
 }
+
+export const getRecentlyReplacedAccount = (
+  homeownerAccounts: HomeownerAccountListResponse[],
+  actualHomeownerAccount: HomeownerAccountListResponse | undefined
+) => {
+  if (!(homeownerAccounts.length > 1)) return null;
+  return (
+    _.find(homeownerAccounts, (account) => {
+      return (
+        account.replacedByAccount?.personalAccountNumber ===
+        actualHomeownerAccount?.personalAccountNumber
+      );
+    }) || null
+  );
+};
