@@ -5,5 +5,7 @@ export type CreateObjectFinalStageModalProps = {
   onPageCancel: () => void;
   goBackStage: () => void;
   createObjectData: ObjectCreateSubmitData | null;
-  houseManagements : HouseManagementResponse[] | null
+  houseManagements: HouseManagementResponse[] | null;
 };
+
+

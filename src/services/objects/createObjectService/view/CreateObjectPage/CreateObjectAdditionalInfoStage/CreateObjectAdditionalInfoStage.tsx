@@ -5,6 +5,8 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
+import { ElevatorExistingType } from '../CreateObjectFinalStageModal/CreateObjectFinalStageForm/CreateObjectFinalStageForm.types';
+import { ElevatorDictionary } from '../CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 import { PageTitle } from '../CreateObjectPage.styled';
 import { validationSchema } from './createObjectAdditionalInfoStage.constants';
 import {
@@ -25,13 +27,12 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
   handleSubmitCreateObject,
   createObjectData,
 }) => {
-  const lift = ['Есть', 'Нет'];
 
   const { values, handleSubmit, setFieldValue } = useFormik<AdditionalInfo>({
     initialValues: {
       floors: createObjectData?.floors || '',
       entrances: createObjectData?.entrances || '',
-      elevator: createObjectData?.elevator || '',
+      elevator: createObjectData?.elevator || null,
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -66,10 +67,12 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
           <StyledSelect
             placeholder="Выберите из списка"
             onChange={(value) => setFieldValue('elevator', value)}
-            value={values.elevator}
+            value={values.elevator || undefined}
           >
-            {lift.map((e) => (
-              <Select.Option value={e} key={e}>{e}</Select.Option>
+            {Object.values(ElevatorExistingType).map((e) => (
+              <Select.Option value={e} key={e}>
+                {ElevatorDictionary[e]}
+              </Select.Option>
             ))}
           </StyledSelect>
         </FormItem>

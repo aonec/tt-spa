@@ -1,4 +1,5 @@
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
+import { ElevatorExistingType } from '../CreateObjectFinalStageModal/CreateObjectFinalStageForm/CreateObjectFinalStageForm.types';
 
 export type CreateObjectAdditionalInfoStageProps = {
   goBackStage: () => void;
@@ -10,5 +11,5 @@ export type CreateObjectAdditionalInfoStageProps = {
 export type AdditionalInfo = {
   floors: string;
   entrances: string;
-  elevator: string;
+  elevator: ElevatorExistingType | null;
 };

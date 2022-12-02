@@ -18,6 +18,7 @@ import {
   LivingHouseTypeDictionary,
   NonResidentialHouseTypeDictionary,
 } from '../../CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
+import { ElevatorDictionary } from '../CreateObjectFinalStageModal.constants';
 
 export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
   formId,
@@ -143,7 +144,11 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Лифт</FieldDescrition>
-          <Field>{createObjectData?.elevator || '-'}</Field>
+          <Field>
+            {createObjectData?.elevator
+              ? ElevatorDictionary[createObjectData?.elevator]
+              : '-'}
+          </Field>
         </GridContainer>
         <SpaceLine />
       </Wrapper>

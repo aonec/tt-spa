@@ -6,3 +6,8 @@ export type CreateObjectFinalStageFormProps = {
   createObjectData: ObjectCreateSubmitData | null;
   houseManagements : HouseManagementResponse[] | null
 };
+
+export enum ElevatorExistingType {
+  Available = 'available',
+  NotAvailable = 'notAvailable',
+}
