@@ -43,6 +43,7 @@ import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { EditNodeContainer } from 'services/devices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
+import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 
@@ -145,6 +146,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
                 <Route path="/companyProfile/:section?" component={Settings} />
                 <Route path="/companyProfile/staff/:id" component={Settings} />
+
+                <Route
+                  path="/userProfile/:id"
+                  component={EmployeeProfileContainer}
+                />
 
                 <Route path="/devices/(\\d+)" component={Devices} exact />
 
