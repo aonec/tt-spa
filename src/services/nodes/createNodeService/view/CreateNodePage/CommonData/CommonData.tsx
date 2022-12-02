@@ -5,11 +5,16 @@ import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
+import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
+import { nodeResources, nodeStatuses } from './CommonData.contstants';
 import {
+  CreateNewZoneButtonWrapper,
   FilesUploaderWrapper,
   FirstLineWrapper,
+  SelectOptionWithIconWrapper,
   SecondLineWrapper,
   ThirdLineWrapper,
 } from './CommonData.styled';
@@ -21,7 +26,16 @@ export const CommonData: FC<CommonDataProps> = ({ goPrevStep }) => {
       <Title>Общие данные об узле</Title>
       <FirstLineWrapper>
         <FormItem label="Ресурс">
-          <Select placeholder="Выберите"></Select>
+          <Select placeholder="Выберите">
+            {nodeResources.map(({ resource, text }) => (
+              <Select.Option key={resource} value={resource}>
+                <SelectOptionWithIconWrapper>
+                  <ResourceIconLookup resource={resource} />
+                  <div>{text}</div>
+                </SelectOptionWithIconWrapper>
+              </Select.Option>
+            ))}
+          </Select>
         </FormItem>
         <FormItem label="Номер узла">
           <Input placeholder="Введите" />
@@ -31,9 +45,21 @@ export const CommonData: FC<CommonDataProps> = ({ goPrevStep }) => {
         <FormItem label="Зона">
           <Select placeholder="Выберите"></Select>
         </FormItem>
+        <CreateNewZoneButtonWrapper>
+          <LinkButton onClick={() => {}}>+ Создать новую зону</LinkButton>
+        </CreateNewZoneButtonWrapper>
       </SecondLineWrapper>
       <FormItem label="Коммерческий учет показателей приборов">
-        <Select placeholder="Выберите"></Select>
+        <Select placeholder="Выберите">
+          {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
+            <Select.Option key={nodeStatus} value={nodeStatus}>
+              <SelectOptionWithIconWrapper>
+                <Icon />
+                <div>{text}</div>
+              </SelectOptionWithIconWrapper>
+            </Select.Option>
+          ))}
+        </Select>
       </FormItem>
       <ThirdLineWrapper>
         <FormItem label="Дата начала действия акта-допуска">

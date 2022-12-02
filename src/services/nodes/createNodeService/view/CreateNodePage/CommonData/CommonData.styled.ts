@@ -19,5 +19,16 @@ export const ThirdLineWrapper = styled.div`
 `;
 
 export const FilesUploaderWrapper = styled.div`
-    margin-top: 16px;
+  margin-top: 16px;
+`;
+
+export const CreateNewZoneButtonWrapper = styled.div`
+  display: flex;
+  margin: 45px 0 0 25px;
+`;
+
+export const SelectOptionWithIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
