@@ -269,11 +269,19 @@ export interface ApartmentCreateRequest {
 
   /** @format float */
   square?: number | null;
+<<<<<<< Updated upstream
 
   /** @format int32 */
   numberOfLiving?: number | null;
 
   /** @format int32 */
+=======
+
+  /** @format int32 */
+  numberOfLiving?: number | null;
+
+  /** @format int32 */
+>>>>>>> Stashed changes
   normativeNumberOfLiving?: number | null;
   mainHomeownerAccountNumber?: string | null;
   comment?: string | null;
@@ -403,6 +411,27 @@ export interface ApartmentStatusSetRequest {
   /** @format date-time */
   toDate?: string | null;
   documentIds?: number[] | null;
+}
+
+export interface ApartmentUpdateRequest {
+  /** @format double */
+  square?: number | null;
+
+  /** @format int32 */
+  numberOfLiving?: number | null;
+
+  /** @format int32 */
+  normativeNumberOfLiving?: number | null;
+
+  /** @format uuid */
+  mainHomeownerAccountId?: string | null;
+  comment?: string | null;
+
+  /** @format int32 */
+  coldWaterRiserCount?: number | null;
+
+  /** @format int32 */
+  hotWaterRiserCount?: number | null;
 }
 
 export interface ArchivesDataGroup {
@@ -2012,6 +2041,14 @@ export interface FullAddressResponse {
   comment: string | null;
 }
 
+export interface GetDataForHousingConsumptionPlotResponse {
+  housingConsumption: DateTimeDoubleDictionaryItem[] | null;
+}
+
+export interface GetDataForHousingConsumptionPlotResponseSuccessApiResponse {
+  successResponse: GetDataForHousingConsumptionPlotResponse | null;
+}
+
 export interface GetDataForIndividualDevicesConsumptionPlotResponse {
   normativeConsumption: DateTimeDoubleDictionaryItem[] | null;
   subscriberConsumption: DateTimeDoubleDictionaryItem[] | null;
@@ -2406,6 +2443,7 @@ export interface HomeownerAccountUpdateRequest {
 
   /** @format double */
   ownershipArea?: number | null;
+  isMainOnApartment?: boolean | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -2691,7 +2729,10 @@ export interface HousingStockAddressCreateRequest {
   street: string;
   number: string;
   corpus?: string | null;
+<<<<<<< Updated upstream
   index?: string | null;
+=======
+>>>>>>> Stashed changes
 }
 
 export interface HousingStockAddressItemResponse {
@@ -2717,7 +2758,10 @@ export interface HousingStockAddressResponse {
 export interface HousingStockCreateRequest {
   /** @format uuid */
   heatingStationId: string;
+<<<<<<< Updated upstream
   hasIndividualHeatingStation: boolean;
+=======
+>>>>>>> Stashed changes
   mainAddress: HousingStockAddressCreateRequest;
   otherAddresses?: HousingStockAddressCreateRequest[] | null;
   coordinates?: Point | null;
@@ -2734,6 +2778,10 @@ export interface HousingStockCreateRequest {
   /** @format int32 */
   numberOfEntrances?: number | null;
   isThereElevator?: boolean | null;
+<<<<<<< Updated upstream
+=======
+  index?: string | null;
+>>>>>>> Stashed changes
 }
 
 export interface HousingStockDeviceListResponse {
@@ -2888,6 +2936,8 @@ export interface HousingStockShortResponse {
 
 export interface HousingStockUpdateRequest {
   houseCategory?: EHouseCategory | null;
+  livingHouseType?: ELivingHouseType | null;
+  nonResidentialHouseType?: ENonResidentialHouseType | null;
 
   /** @format int32 */
   numberOfEntrances?: number | null;
@@ -5951,24 +6001,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (
-      apartmentId: number,
-      query?: {
-        Square?: number;
-        NumberOfLiving?: number;
-        NormativeNumberOfLiving?: number;
-        MainHomeownerAccountId?: string;
-        Comment?: string;
-        ColdWaterRiserCount?: number;
-        HotWaterRiserCount?: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest, params: RequestParams = {}) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: "PUT",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -6417,6 +6456,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         "Filter.DiameterRange.From"?: number;
         "Filter.DiameterRange.To"?: number;
+        "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
@@ -6465,6 +6505,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         "Filter.DiameterRange.From"?: number;
         "Filter.DiameterRange.To"?: number;
+        "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
@@ -9687,6 +9728,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "DevicesFilter.Question"?: string;
         "DevicesFilter.DiameterRange.From"?: number;
         "DevicesFilter.DiameterRange.To"?: number;
+        "DevicesFilter.PipeDiameters"?: number[];
         "CommercialDateRange.From"?: string;
         "CommercialDateRange.To"?: string;
         PageNumber?: number;
