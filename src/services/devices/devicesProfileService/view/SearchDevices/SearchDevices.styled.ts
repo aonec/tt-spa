@@ -4,6 +4,7 @@ export { StyledForm } from '../DevicesProfile/DevicesProfile.styled';
 
 export const Wrapper = styled.div`
   box-shadow: unset;
+  margin-top: 15px;
 `;
 
 export const StyledGrid = styled.div<{ isExtendedSearchOpen: boolean }>`
@@ -40,7 +41,6 @@ export const FlexCenterRow = styled.div`
 `;
 
 export const Grid = styled.div`
-  margin-top: 15px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;

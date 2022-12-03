@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { DevicesSearchType } from '../../individualDevicesProfileService.types';
 import { IndividualDevicesViewBySerialNumberContainer } from './individualDevicesViewBySerialNumberService';
 import { IndividualDevicesViewByAddressContainer } from './individualDevicesViewByAddressService';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 
 export const IndividualDevicesViewComponents: {
   [key in DevicesSearchType]: FC;

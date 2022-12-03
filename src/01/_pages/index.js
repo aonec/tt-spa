@@ -18,6 +18,5 @@ export { NodeProfile } from './NodeProfile/NodeProfile.container';
 export * from './IndividualDevice';
 export * from './MapTemplate';
 export * from './EditNode';
-export * from './AddNode';
 export * from './EditHousingMeteringDevice';
 export * from './IndividualDeviceEdit';

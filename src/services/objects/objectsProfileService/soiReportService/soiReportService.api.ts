@@ -24,7 +24,7 @@ export const getSoiReport = async (
 
   downloadURI(
     url,
-    `${params.ReportName}_${moment(params.To).format('MMMM_YYYY')}`
+    `${params.ReportName}_${params.Month}.${params.Year}`
   );
 };
 

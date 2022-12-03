@@ -36,7 +36,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
             {
               title: 'Добавить узел',
               onClick: () =>
-                history.push(`/objects/${housingStock.id}/add_node`),
+                history.push(`/objects/${housingStock.id}/addNode`),
               hidden: !show('CalculatorUpdate') as boolean,
             },
             {

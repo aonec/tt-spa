@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
 import { Form, Select } from 'antd';
 import _ from 'lodash';
@@ -17,6 +17,11 @@ import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { FormItem } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { AddressSearchContainer } from 'services/addressSearchService';
+import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
 
 const { Option } = Select;
 
@@ -27,10 +32,64 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   setFieldValue,
   values,
   diametersConfig,
+  devicesSearchType,
+  serialNumber,
+  setSerialNumber,
 }) => {
   const { marks, maxValue, minValue } = diametersConfig;
 
   const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
+
+  const searchComponent = useMemo(() => {
+    if (devicesSearchType === DevicesSearchType.Address) {
+      return (
+        <div>
+          <AddressSearchContainer
+            fields={[
+              SearchFieldType.City,
+              SearchFieldType.Street,
+              SearchFieldType.House,
+              SearchFieldType.Corpus,
+            ]}
+            initialValues={{
+              city: values['Filter.Address.City'],
+              street: values['Filter.Address.Street'],
+              house: values['Filter.Address.HousingStockNumber'],
+              corpus: values['Filter.Address.Corpus'],
+            }}
+            onChange={(key, value) =>
+              setFieldValue(
+                `['Filter.Address.${SearchDevicesFormikFieldsLookup[key]}']`,
+                value
+              )
+            }
+            handleSubmit={() => submitForm()}
+          />
+        </div>
+      );
+    }
+    return (
+      <FormItem>
+        <InputSC
+          onChange={(value) => {
+            setSerialNumber(value.target.value);
+          }}
+          className={styles.input}
+          value={serialNumber}
+          placeholder="Введите серийный номер прибора"
+          prefix={<Icon icon="search" />}
+          onKeyDown={fromEnter(submitForm)}
+        />
+      </FormItem>
+    );
+  }, [
+    setFieldValue,
+    values,
+    devicesSearchType,
+    submitForm,
+    serialNumber,
+    setSerialNumber,
+  ]);
 
   return (
     <Wrapper>
@@ -38,18 +97,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
         <StyledForm>
           <StyledGrid isExtendedSearchOpen={isExtendedSearchOpen}>
             {children}
-            <FormItem>
-              <InputSC
-                onChange={(value) =>
-                  setFieldValue('Question', value.target.value)
-                }
-                className={styles.input}
-                value={values?.Question}
-                placeholder="Введите серийный номер прибора"
-                prefix={<Icon icon="search" />}
-              />
-            </FormItem>
-
+            {searchComponent}
             <FormItem>
               <FlexCenterRow>
                 <StyledLabelSimple htmlFor="sortBy">

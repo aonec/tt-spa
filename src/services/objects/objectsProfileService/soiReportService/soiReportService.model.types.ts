@@ -1,4 +1,4 @@
-import { EOrderByRule, EResourceType } from 'myApi';
+import { EOrderByRule, EResourceType, ESoiReportPeriod } from 'myApi';
 
 export enum SoiReportType {
   HouseManagement = 'HouseManagement',
@@ -19,10 +19,11 @@ export type GetAddressesRequestPayload = {
 
 export type CreateSoiReportRequestPayload = {
   ReportName: string;
-  HouseManagementId?: string | null;
-  HousingStockId?: number | null;
-  Resource?: EResourceType | null;
-  From?: string;
-  To?: string;
-  NormativePerPerson?: number | null;
+  HouseManagementId?: string;
+  HousingStockId?: number;
+  Resource?: EResourceType;
+  Month?: number;
+  Year?: number;
+  Period?: ESoiReportPeriod;
+  NormativePerPerson?: number;
 };

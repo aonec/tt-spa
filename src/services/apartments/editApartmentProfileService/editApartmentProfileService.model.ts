@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { ApartmentResponse } from 'myApi';
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PutApartment, TabsSection } from './editApartmentProfileService.types';
 import { getApartment, putApartment } from './editApartmentProfileService.api';
@@ -13,6 +13,8 @@ const handleUpdateApartment = domain.createEvent<PutApartment>();
 const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
   getApartment
 );
+
+const refetchAaprtment = domain.createEvent();
 
 const updateApartmentFx = domain.createEffect<
   PutApartment,
@@ -33,6 +35,12 @@ const $apartment = domain
 forward({
   from: ApartmentGate.open.map(({ apartmentId }) => apartmentId),
   to: fetchApartmentFx,
+});
+
+sample({
+  source: ApartmentGate.state.map(({ apartmentId }) => apartmentId),
+  clock: refetchAaprtment,
+  target: fetchApartmentFx,
 });
 
 forward({
@@ -58,7 +66,7 @@ updateApartmentFx.failData.watch((e) =>
 );
 
 export const editApartmentProfileService = {
-  inputs: { setTabSection, handleUpdateApartment },
+  inputs: { setTabSection, handleUpdateApartment, refetchAaprtment },
   outputs: {
     $apartment,
     $isLoading,

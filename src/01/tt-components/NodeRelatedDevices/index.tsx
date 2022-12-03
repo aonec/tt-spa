@@ -13,16 +13,11 @@ interface NodesInterface {
   node: PipeNodeResponse;
   edit?: boolean;
   close?: boolean;
-  setDeregisterDeviceValue?: any;
-  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const NodeRelatedDevices = ({
   node,
   edit = false,
-  close = false,
-  setDeregisterDeviceValue,
-  setDeregisterDevice,
 }: NodesInterface) => {
   if (!node) {
     return <Loader show size={32} />;
@@ -60,10 +55,6 @@ export const NodeRelatedDevices = ({
       <ListItem key={id}>
         <Tooltip title={`${model}(${serialNumber})`}>
           <NameWrap to={`/housingMeteringDevices/${id}`}>
-            <IconTT
-              icon={(resource || 'next').toLowerCase()}
-              style={{ marginRight: 8 }}
-            />
             <Name style={{ marginRight: 8 }}>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
           </NameWrap>
@@ -90,22 +81,6 @@ export const NodeRelatedDevices = ({
             >
               <IconTT icon="edit" />
             </Link>
-          ) : null}
-          {close ? (
-            <IconTT
-              icon="del"
-              style={{ marginLeft: 8, cursor: 'pointer' }}
-              onClick={() => {
-                if (setDeregisterDeviceValue) {
-                  getHousingMeteringDevice(id).then((res) => {
-                    setDeregisterDeviceValue(res);
-                  });
-                }
-                if (setDeregisterDevice) {
-                  setDeregisterDevice(true);
-                }
-              }}
-            />
           ) : null}
         </EditOptions>
       </ListItem>
