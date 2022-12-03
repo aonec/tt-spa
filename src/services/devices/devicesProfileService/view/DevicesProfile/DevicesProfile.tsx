@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { searchStateChanged } from '01/features/devicesReport/models';
@@ -47,8 +47,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     resetForm,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
-      'Filter.DiameterRange.From': searchState?.['Filter.DiameterRange.From'],
-      'Filter.DiameterRange.To': searchState?.['Filter.DiameterRange.To'],
+      'Filter.PipeDiameters': searchState?.['Filter.PipeDiameters'],
       'Filter.ExpiresCheckingDateAt':
         searchState?.['Filter.ExpiresCheckingDateAt'],
       'Filter.Resource': searchState?.['Filter.Resource'],

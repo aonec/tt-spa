@@ -23,8 +23,8 @@ const $diametersConfig = $currentUser.map((user) => {
     user?.organization?.filtersConfiguration?.pipeDiameters || []
   ).sort((first, second) => first - second);
 
-  const minValue = _.first(diameters);
-  const maxValue = _.last(diameters);
+  const minValue = _.first(diameters) || 0;
+  const maxValue = _.last(diameters) || 255;
 
   const marks = diameters.reduce((acc, value) => {
     if (value === minValue) {
@@ -36,7 +36,7 @@ const $diametersConfig = $currentUser.map((user) => {
     return { ...acc, [value]: '' };
   }, {} as { [key: string]: string });
 
-  return { marks, maxValue, minValue };
+  return { marks, maxValue, minValue, diameters };
 });
 
 const $isLoading = fetchCurrentUserFx.pending;

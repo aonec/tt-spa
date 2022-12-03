@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider, Select } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import {
@@ -27,11 +27,31 @@ export const ExtendedSearchForm: FC<{
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   diametersConfig: DiamtersConfig;
 }> = ({ values, setFieldValue, diametersConfig }) => {
-  const { marks, maxValue, minValue } = diametersConfig;
+  const { marks, maxValue, minValue, diameters } = diametersConfig;
 
   type RangeValue = [Moment | null, Moment | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
+
+  const rangeValues: [number, number] = useMemo(() => {
+    const first = _.first(values['Filter.PipeDiameters']);
+
+    const last = _.last(values['Filter.PipeDiameters']);
+
+    return [first || minValue, last || maxValue];
+  }, [values]);
+
+  const handleChangeRange = useCallback(
+    (value: [number, number]) => {
+      const firstIndex = diameters.findIndex((elem) => elem === value[0]);
+      const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
+      setFieldValue(
+        "['Filter.PipeDiameters']",
+        diameters.slice(firstIndex, secondIndex)
+      );
+    },
+    [diameters, setFieldValue]
+  );
 
   return (
     <StyledFormThreeRows>
@@ -121,18 +141,8 @@ export const ExtendedSearchForm: FC<{
             max={maxValue}
             range
             step={null}
-            value={[
-              values['Filter.DiameterRange.From']
-                ? values['Filter.DiameterRange.From']
-                : 0,
-              values['Filter.DiameterRange.To']
-                ? values['Filter.DiameterRange.To']
-                : 255,
-            ]}
-            onChange={(value: [number, number]) => {
-              setFieldValue("['Filter.DiameterRange.From']", value[0]);
-              setFieldValue("['Filter.DiameterRange.To']", value[1]);
-            }}
+            value={rangeValues}
+            onChange={handleChangeRange}
           />
         </FormItem>
         <FormItem>

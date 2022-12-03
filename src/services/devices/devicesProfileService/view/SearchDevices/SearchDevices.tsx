@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
 import { Form, Select } from 'antd';
 import _ from 'lodash';
@@ -22,6 +22,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { useDebounce } from '01/hooks/useDebounce';
 
 const { Option } = Select;
 
@@ -36,9 +37,33 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   serialNumber,
   setSerialNumber,
 }) => {
-  const { marks, maxValue, minValue } = diametersConfig;
+  const { marks, maxValue, minValue, diameters } = diametersConfig;
 
-  const debouncedFilterChange = _.debounce(() => submitForm(), 1000);
+  const debouncedFilterChange = _.debounce(() => submitForm(), 1000, {
+    
+  });
+
+  const handleChangeRange = useCallback(
+    (value: [number, number]) => {
+      const firstIndex = diameters.findIndex((elem) => elem === value[0]);
+      const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
+
+      setFieldValue(
+        "['Filter.PipeDiameters']",
+        diameters.slice(firstIndex, secondIndex)
+      );
+      debouncedFilterChange();
+    },
+    [setFieldValue, diameters, debouncedFilterChange]
+  );
+
+  const rangeValues: [number, number] = useMemo(() => {
+    const first = _.first(values['Filter.PipeDiameters']);
+
+    const last = _.last(values['Filter.PipeDiameters']);
+
+    return [first || minValue, last || maxValue];
+  }, [values, minValue, maxValue]);
 
   const searchComponent = useMemo(() => {
     if (devicesSearchType === DevicesSearchType.Address) {
@@ -151,20 +176,9 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   min={minValue}
                   step={null}
                   range
-                  value={[
-                    values['Filter.DiameterRange.From']
-                      ? values['Filter.DiameterRange.From']
-                      : 0,
-                    values['Filter.DiameterRange.To']
-                      ? values['Filter.DiameterRange.To']
-                      : 255,
-                  ]}
+                  value={rangeValues}
                   marks={marks}
-                  onChange={(value: [number, number]) => {
-                    setFieldValue("['Filter.DiameterRange.From']", value[0]);
-                    setFieldValue("['Filter.DiameterRange.To']", value[1]);
-                    debouncedFilterChange();
-                  }}
+                  onChange={handleChangeRange}
                 />
               </div>
             </FormItem>
