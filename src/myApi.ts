@@ -269,19 +269,11 @@ export interface ApartmentCreateRequest {
 
   /** @format float */
   square?: number | null;
-<<<<<<< Updated upstream
 
   /** @format int32 */
   numberOfLiving?: number | null;
 
   /** @format int32 */
-=======
-
-  /** @format int32 */
-  numberOfLiving?: number | null;
-
-  /** @format int32 */
->>>>>>> Stashed changes
   normativeNumberOfLiving?: number | null;
   mainHomeownerAccountNumber?: string | null;
   comment?: string | null;
@@ -2729,10 +2721,6 @@ export interface HousingStockAddressCreateRequest {
   street: string;
   number: string;
   corpus?: string | null;
-<<<<<<< Updated upstream
-  index?: string | null;
-=======
->>>>>>> Stashed changes
 }
 
 export interface HousingStockAddressItemResponse {
@@ -2758,10 +2746,6 @@ export interface HousingStockAddressResponse {
 export interface HousingStockCreateRequest {
   /** @format uuid */
   heatingStationId: string;
-<<<<<<< Updated upstream
-  hasIndividualHeatingStation: boolean;
-=======
->>>>>>> Stashed changes
   mainAddress: HousingStockAddressCreateRequest;
   otherAddresses?: HousingStockAddressCreateRequest[] | null;
   coordinates?: Point | null;
@@ -2778,10 +2762,7 @@ export interface HousingStockCreateRequest {
   /** @format int32 */
   numberOfEntrances?: number | null;
   isThereElevator?: boolean | null;
-<<<<<<< Updated upstream
-=======
   index?: string | null;
->>>>>>> Stashed changes
 }
 
 export interface HousingStockDeviceListResponse {
