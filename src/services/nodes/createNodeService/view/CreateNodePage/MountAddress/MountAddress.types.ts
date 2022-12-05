@@ -5,4 +5,5 @@ export type MountAddressProps = {
   existingCities: string[] | null;
   existingStreets: string[];
   updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
+  isDisabledAddress: boolean;
 };

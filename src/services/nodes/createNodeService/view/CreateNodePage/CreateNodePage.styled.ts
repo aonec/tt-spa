@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Footer = styled.div`
-  margin-top: 16px;
+  margin-top: 26px;
   display: flex;
   justify-content: flex-end;
   gap: 16px;

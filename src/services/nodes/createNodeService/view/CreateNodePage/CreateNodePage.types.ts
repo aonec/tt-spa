@@ -1,4 +1,4 @@
-import { CreatePipeNodeRequest, HousingStockResponse } from 'myApi';
+import { CalculatorIntoHousingStockResponse, CreatePipeNodeRequest, HousingStockResponse } from 'myApi';
 
 export type CreateNodePageProps = {
   housingStock: HousingStockResponse | null;
@@ -8,4 +8,8 @@ export type CreateNodePageProps = {
   stepNumber: number;
   updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
   goPrevStep: () => void;
+  calculatorsList: CalculatorIntoHousingStockResponse[] | null;
+  openCreateCalculatorModal: () => void;
+  isDisabledAddress: boolean;
+  requestPayload: CreatePipeNodeRequest
 };
