@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { HouseManagementResponse } from 'myApi';
+import { HouseManagementResponse, HousingStockCreateRequest } from 'myApi';
 import { getHouseManagements } from './createObjectService.api';
 import { ObjectCreateSubmitData } from './createObjectService.types';
 import { IsElevatorDictionaryBoolean } from './view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
@@ -27,15 +27,7 @@ const fetchHouseManagementsFx = domain.createEffect<
   HouseManagementResponse[] | null
 >(getHouseManagements);
 
-const fetchHeatingStationFx = domain.createEffect<
-  void,
-  HeatingStationResponsePagedList | null
->(getHeatingStations);
 
-const createHeatingStationFx = domain.createEffect<
-  AddHeatingStationRequest,
-  HeatingStationResponse | null
->(postHeatingStation);
 
 const createObjectFx = domain.createEffect<
   HousingStockCreateRequest,
@@ -67,13 +59,6 @@ const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementsFx.doneData, (_, data) => data);
 
-const $heatingStations = domain
-  .createStore<HeatingStationResponsePagedList | null>(null)
-  .on(fetchHeatingStationFx.doneData, (_, data) => data);
-
-const $newNeatingStation = domain
-  .createStore<HeatingStationResponse | null>(null)
-  .on(createHeatingStationFx.doneData, (_, data) => data);
 
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)

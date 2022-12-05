@@ -46,9 +46,6 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   createObjectData,
   heatingStations,
 }) => {
-  const { gates } = createObjectService;
-  const { HeatingStationsFetchGate } = gates;
-
   const heatingStationsValues = heatingStations?.items;
 
   const initialValues = {
@@ -80,7 +77,6 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
   return (
     <>
-      <HeatingStationsFetchGate />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
