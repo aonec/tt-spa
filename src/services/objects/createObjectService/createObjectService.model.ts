@@ -156,9 +156,8 @@ guard({
           street,
           number: house,
           corpus,
-          index,
         },
-        hasIndividualHeatingStation: false,
+        index,
         otherAddresses:
           additionalAddresses?.map((e) => {
             return {
@@ -166,7 +165,6 @@ guard({
               street: e.street,
               number: e.house,
               corpus: e.corpus,
-              index: e.index,
             };
           }) || null,
         heatingStationId,

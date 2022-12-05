@@ -77,12 +77,11 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
                 Адреса, под которыми известен объект
               </FieldDescrition>
               <GridContainerForAdditionalAddresses>
-                {createObjectData.additionalAddresses.map((e, i, arr) => (
-                  <FieldForAdditionalAddresses>
+                {createObjectData.additionalAddresses.map((e, i) => (
+                  <FieldForAdditionalAddresses key={i}>
                     ул. {e.street},
                     <SpacesHouseNumber>{e.house}</SpacesHouseNumber>
                     {e.corpus ? `к. ${e.corpus} ` : ''}
-                    {e.index ? <SpacedIndex>({e?.index})</SpacedIndex> : ''}
                   </FieldForAdditionalAddresses>
                 ))}
               </GridContainerForAdditionalAddresses>

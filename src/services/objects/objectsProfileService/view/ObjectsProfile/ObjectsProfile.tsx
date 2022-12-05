@@ -1,7 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
@@ -26,6 +25,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   searchType,
   openSoiReportModal,
   handleCreateObject,
+  isAdministrator,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -44,6 +44,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       {
         title: 'Создать объект',
         onClick: handleCreateObject,
+        hidden: !isAdministrator,
       },
     ],
     [handleExportGroupReport, handleOpenChooseResourceDisconnectionModal]
