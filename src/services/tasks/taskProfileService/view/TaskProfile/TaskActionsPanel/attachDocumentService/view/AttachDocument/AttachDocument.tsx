@@ -18,7 +18,7 @@ export const AttachDocument: FC<AttachDocumentProps> = ({
       documents={documents}
       onChange={setDocuments}
       uniqId="task-profile-documents-attach"
-      lable={componentData.lable}
+      label={componentData.lable}
       componentType={DocumentsUploadComponentType.Line}
       max={componentData.maxDocuments}
     />

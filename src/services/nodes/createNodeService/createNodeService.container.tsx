@@ -18,10 +18,14 @@ export const CreateNodeContainer = () => {
   const stepNumber = useStore(outputs.$stepNumber);
   const calculatorsList = useStore(outputs.$calculatorsList);
   const requestPayload = useStore(outputs.$requestPayload);
+  const nodeServiceZones = useStore(outputs.$nodeServiceZones);
 
   const updateRequestPayload = useEvent(inputs.updateRequestPayload);
   const goPrevStep = useEvent(inputs.goPrevStep);
   const openCreateCalculatorModal = useEvent(inputs.openCreateCalculatorModal);
+  const openCreateNodeServiceZoneModal = useEvent(
+    inputs.openCreateNodeServiceZoneModal
+  );
 
   return (
     <>
@@ -40,6 +44,8 @@ export const CreateNodeContainer = () => {
         openCreateCalculatorModal={() => openCreateCalculatorModal()}
         isDisabledAddress={Boolean(housingStockId)}
         requestPayload={requestPayload}
+        nodeServiceZones={nodeServiceZones}
+        openCreateNodeServiceZoneModal={() => openCreateNodeServiceZoneModal()}
       />
     </>
   );

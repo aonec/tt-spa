@@ -1,3 +1,4 @@
+import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, forward, guard, sample } from 'effector';
@@ -6,8 +7,13 @@ import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
   HousingStockResponse,
+  NodeServiceZoneListResponse,
 } from 'myApi';
-import { getCalculatorsList, getHousingStock } from './createNodeService.api';
+import {
+  getCalculatorsList,
+  getHousingStock,
+  getNodeServiceZones,
+} from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 
 const domain = createDomain('createNodeService');
@@ -21,6 +27,11 @@ const fetchCalculatorsListFx = domain.createEffect<
   CalculatorIntoHousingStockResponse[] | null
 >(getCalculatorsList);
 
+const fetchNodeServiceZonesFx = domain.createEffect<
+  void,
+  NodeServiceZoneListResponse | null
+>(getNodeServiceZones);
+
 const CreateNodeGate = createGate<{ housingStockId: number }>();
 
 const updateRequestPayload = domain.createEvent<CreatePipeNodeRequest>();
@@ -30,7 +41,7 @@ const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
 
 const $stepNumber = domain
-  .createStore(0)
+  .createStore(2)
   .on(goNextStep, (number) => (number === 3 ? number : number + 1))
   .on(goPrevStep, (number) => (number === 0 ? number : number - 1))
   .reset(CreateNodeGate.close);
@@ -62,6 +73,11 @@ const $calculatorsList = domain
   )
   .reset(CreateNodeGate.close);
 
+const $nodeServiceZones = domain
+  .createStore<NodeServiceZoneListResponse | null>(null)
+  .on(fetchNodeServiceZonesFx.doneData, (_, zones) => zones)
+  .reset(CreateNodeGate.close);
+
 guard({
   clock: CreateNodeGate.open.map(({ housingStockId }) => housingStockId),
   filter: Boolean,
@@ -90,6 +106,14 @@ guard({
   target: fetchCalculatorsListFx,
 });
 
+forward({
+  from: [
+    CreateNodeGate.open,
+    createNodeServiceZoneService.inputs.handleServiceZoneCreated,
+  ],
+  to: fetchNodeServiceZonesFx,
+});
+
 const $isLoadingHousingStock = fetchHousingStockFx.pending;
 
 export const createNodeService = {
@@ -98,6 +122,8 @@ export const createNodeService = {
     updateRequestPayload,
     openCreateCalculatorModal:
       createCalcuatorService.inputs.openCreateCalculatorModal,
+    openCreateNodeServiceZoneModal:
+      createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
   },
   outputs: {
     $housingStock,
@@ -107,6 +133,7 @@ export const createNodeService = {
     $stepNumber,
     $calculatorsList,
     $requestPayload,
+    $nodeServiceZones,
   },
   gates: {
     CreateNodeGate,

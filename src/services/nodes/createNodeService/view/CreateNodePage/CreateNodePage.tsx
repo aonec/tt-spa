@@ -6,6 +6,7 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Title } from 'ui-kit/Title';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonData } from './CommonData';
+import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
 import { AddressWrapper, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
@@ -24,7 +25,9 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   calculatorsList,
   openCreateCalculatorModal,
   isDisabledAddress,
-  requestPayload
+  requestPayload,
+  nodeServiceZones,
+  openCreateNodeServiceZoneModal,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -45,7 +48,16 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         requestPayload={requestPayload}
       />
     ),
-    2: <CommonData goPrevStep={goPrevStep} />,
+    2: (
+      <CommonData
+        goPrevStep={goPrevStep}
+        nodeServiceZones={nodeServiceZones}
+        updateRequestPayload={updateRequestPayload}
+        openCreateNodeServiceZoneModal={openCreateNodeServiceZoneModal}
+        requestPayload={requestPayload}
+      />
+    ),
+    3: <ConnectedDevices />,
   };
 
   return (
