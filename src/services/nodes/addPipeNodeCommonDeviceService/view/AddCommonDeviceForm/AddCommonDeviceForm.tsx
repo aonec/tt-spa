@@ -11,20 +11,31 @@ const { TabPane } = Tabs;
 export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
   currentFormStep,
   resource,
+  updateRequestPayload,
+  formId,
 }) => {
+  const componentsDictionary: { [key: number]: FC } = {
+    0: () => (
+      <CommonDataStep
+        formId={formId}
+        resource={resource}
+        updateRequestPayload={updateRequestPayload}
+      />
+    ),
+    1: () => <DeviceStep />,
+    2: () => <DocumentsStep />,
+  };
+
+  const FormComponent = componentsDictionary[currentFormStep];
+
   return (
     <Wrapper>
-      <Tabs activeKey={currentFormStep}>
-        <TabPane tab="Шаг 1. Общие данные" key="0">
-          <CommonDataStep resource={resource} />
-        </TabPane>
-        <TabPane tab="Шаг 2. Прибор" key="1">
-          <DeviceStep />
-        </TabPane>
-        <TabPane tab="Шаг 3. Документы" key="2">
-          <DocumentsStep />
-        </TabPane>
+      <Tabs activeKey={String(currentFormStep)}>
+        <TabPane tab="Шаг 1. Общие данные" key="0" />
+        <TabPane tab="Шаг 2. Прибор" key="1" />
+        <TabPane tab="Шаг 3. Документы" key="2" />
       </Tabs>
+      <FormComponent />
     </Wrapper>
   );
 };

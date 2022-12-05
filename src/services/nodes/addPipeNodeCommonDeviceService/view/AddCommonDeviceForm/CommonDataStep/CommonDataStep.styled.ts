@@ -1,3 +1,7 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export const Wrapper = styled.div``
+export const LineWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+`;

@@ -1,16 +1,19 @@
 import { createDomain, forward } from 'effector';
 import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
+import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
 
 const domain = createDomain('addPipeNodeCommonDeviceService');
 
-const updateCommonDeviceRequestPayload = domain.createEvent<CreatePipeHousingMeteringDeviceInNodeRequest>();
+const updateCommonDeviceRequestPayload = domain.createEvent<CreateCommonDevicePartitial>();
 
 const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
 
 const openAddCommonDeviceModal = domain.createEvent();
 const closeAddCommonDeviceModal = domain.createEvent();
+
+const $requestPayload = domain.createStore<CreateCommonDevicePartitial>({});
 
 const $isModalOpen = domain
   .createStore(false)
@@ -37,5 +40,6 @@ export const addPipeNodeCommonDeviceService = {
   outputs: {
     $isModalOpen,
     $currentFormStep,
+    $requestPayload,
   },
 };

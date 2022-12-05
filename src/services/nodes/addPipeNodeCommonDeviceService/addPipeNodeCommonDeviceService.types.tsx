@@ -1,5 +1,10 @@
-import { EResourceType } from "myApi"
+import {
+  CreatePipeHousingMeteringDeviceInNodeRequest,
+  EResourceType,
+} from 'myApi';
 
 export type Props = {
-    resource: EResourceType
-}
+  resource: EResourceType;
+};
+
+export type CreateCommonDevicePartitial = Partial<CreatePipeHousingMeteringDeviceInNodeRequest>;
