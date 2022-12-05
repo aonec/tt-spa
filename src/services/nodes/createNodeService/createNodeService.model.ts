@@ -1,7 +1,7 @@
 import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,

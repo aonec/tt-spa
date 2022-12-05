@@ -57,7 +57,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         requestPayload={requestPayload}
       />
     ),
-    3: <ConnectedDevices />,
+    3: <ConnectedDevices goPrevStep={goPrevStep} />,
   };
 
   return (

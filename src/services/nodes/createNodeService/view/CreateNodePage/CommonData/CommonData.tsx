@@ -171,30 +171,31 @@ export const CommonData: FC<CommonDataProps> = ({
           </Select>
           <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
         </FormItem>
-        {values.nodeStatus === ENodeCommercialAccountStatus.Registered && (
-          <ThirdLineWrapper>
-            <FormItem label="Дата начала действия акта-допуска">
-              <DatePicker
-                value={values.startCommercialAccountingDate || undefined}
-                onChange={(value) =>
-                  setFieldValue('startCommercialAccountingDate', value)
-                }
-                format="DD.MM.YYYY"
-                placeholder="Введите дату"
-              />
-            </FormItem>
-            <FormItem label="Дата окончания действия акта-допуска">
-              <DatePicker
-                value={values.endCommercialAccountingDate || undefined}
-                onChange={(value) =>
-                  setFieldValue('endCommercialAccountingDate', value)
-                }
-                format="DD.MM.YYYY"
-                placeholder="Введите дату"
-              />
-            </FormItem>
-          </ThirdLineWrapper>
-        )}
+        {values.nodeStatus &&
+          values.nodeStatus !== ENodeCommercialAccountStatus.NotRegistered && (
+            <ThirdLineWrapper>
+              <FormItem label="Дата начала действия акта-допуска">
+                <DatePicker
+                  value={values.startCommercialAccountingDate || undefined}
+                  onChange={(value) =>
+                    setFieldValue('startCommercialAccountingDate', value)
+                  }
+                  format="DD.MM.YYYY"
+                  placeholder="Введите дату"
+                />
+              </FormItem>
+              <FormItem label="Дата окончания действия акта-допуска">
+                <DatePicker
+                  value={values.endCommercialAccountingDate || undefined}
+                  onChange={(value) =>
+                    setFieldValue('endCommercialAccountingDate', value)
+                  }
+                  format="DD.MM.YYYY"
+                  placeholder="Введите дату"
+                />
+              </FormItem>
+            </ThirdLineWrapper>
+          )}
         <FilesUploaderWrapper>
           <DocumentsUploadContainer
             label="Добавьте акт-допуска"
