@@ -49,10 +49,10 @@ $resourceDisconnections.on(
 
 const resetGrouptype = domain.createEvent();
 const setCurrentGroutype = domain.createEvent<ObjectProfileGrouptype>();
+
 const $currentGrouptype = domain
   .createStore<ObjectProfileGrouptype>(ObjectProfileGrouptype.Common)
   .on(setCurrentGroutype, (_, grouptype) => grouptype)
-  .reset(resetGrouptype);
 
 const $isLoading = getHousingStockFx.pending;
 
