@@ -11,7 +11,7 @@ export type CommonDataProps = {
   nodeServiceZones: NodeServiceZoneListResponse | null;
   updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
   openCreateNodeServiceZoneModal: () => void;
-  requestPayload: CreatePipeNodeRequest
+  requestPayload: CreatePipeNodeRequest;
 };
 
 export type NodeResourcesList = { resource: EResourceType; text: string }[];

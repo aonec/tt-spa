@@ -15,6 +15,7 @@ import {
   getNodeServiceZones,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { addPipeNodeCommonDeviceService } from '../addPipeNodeCommonDeviceService';
 
 const domain = createDomain('createNodeService');
 
@@ -41,7 +42,7 @@ const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
 
 const $stepNumber = domain
-  .createStore(0)
+  .createStore(3)
   .on(goNextStep, (number) => (number === 3 ? number : number + 1))
   .on(goPrevStep, (number) => (number === 0 ? number : number - 1))
   .reset(CreateNodeGate.close);
@@ -124,6 +125,8 @@ export const createNodeService = {
       createCalcuatorService.inputs.openCreateCalculatorModal,
     openCreateNodeServiceZoneModal:
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
+    openAddCommonDeviceModal:
+      addPipeNodeCommonDeviceService.inputs.openAddCommonDeviceModal,
   },
   outputs: {
     $housingStock,
