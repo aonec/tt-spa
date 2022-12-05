@@ -130,7 +130,7 @@ export const ExtendedSearchForm: FC<{
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
         <FormItem>
-          <LabelCS>Диаметр прибора, мм: </LabelCS>
+          <LabelCS>Диаметр трубы, мм: </LabelCS>
           <StyledSlider
             getTooltipPopupContainer={(triggerNode) =>
               triggerNode.parentNode as HTMLElement

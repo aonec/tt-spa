@@ -165,7 +165,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
             <FormItem>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <StyledLabel>Диаметр прибора, мм </StyledLabel>
+                <StyledLabel>Диаметр трубы, мм </StyledLabel>
 
                 <SCSlider
                   getTooltipPopupContainer={(triggerNode) =>
