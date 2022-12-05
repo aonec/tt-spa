@@ -10,6 +10,8 @@ import {
   HousingStockResponse,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
+import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
+import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import {
   getHeatingStations,
   getHouseManagements,
@@ -32,11 +34,17 @@ const handlePostCreateObject = domain.createEvent();
 const closePreviewModal = domain.createEvent<void>();
 const openPreviewModal = domain.createEvent<void>();
 
+const closeCreateHeatingStationModal =
+  createHeatingStationService.inputs.handleCloseModal;
+const openCreateHeatingStationModal =
+  createHeatingStationService.inputs.handleOpenModal;
+
 const resetter = domain.createEvent<void>();
 
 const HouseManagementsFetchGate = createGate();
-const HeatingStationsFetchGate = createGate();
 const PageCloseGate = createGate();
+const HeatingStationsFetchGate =
+  displayHeatingStationsService.gates.HeatingStationsFetchGate;
 
 const fetchHouseManagementsFx = domain.createEffect<
   void,
@@ -83,18 +91,12 @@ const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementsFx.doneData, (_, data) => data);
 
-const $heatingStations = domain
-  .createStore<HeatingStationResponsePagedList | null>(null)
-  .on(fetchHeatingStationFx.doneData, (_, data) => data);
-
-const $newNeatingStation = domain
-  .createStore<HeatingStationResponse | null>(null)
-  .on(createHeatingStationFx.doneData, (_, data) => data);
-
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
   .on(closePreviewModal, () => false)
   .on(openPreviewModal, () => true);
+
+const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
 forward({
   from: HouseManagementsFetchGate.open,
@@ -201,13 +203,14 @@ export const createObjectService = {
     openPreviewModal,
     closePreviewModal,
     handleCreateObjectSuccessDone,
+    openCreateHeatingStationModal,
   },
   outputs: {
     $createObjectData,
     $stageNumber,
     $houseManagements,
-    $heatingStations,
     $isPreviewModalOpen,
+    $heatingStations,
   },
-  gates: { HouseManagementsFetchGate, HeatingStationsFetchGate, PageCloseGate },
+  gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
 };

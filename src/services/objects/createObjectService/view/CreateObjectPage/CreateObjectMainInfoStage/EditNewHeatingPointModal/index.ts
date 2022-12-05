@@ -1,1 +1,0 @@
-export { EditNewHeatingPointModal } from './EditNewHeatingPointModal'

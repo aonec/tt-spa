@@ -45,6 +45,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   handleSubmitCreateObject,
   createObjectData,
   heatingStations,
+  openCreateHeatingStationModal,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -196,7 +197,9 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
               <ErrorMessage>{errors.heatingStationId}</ErrorMessage>
             </FormItem>
             <WrapperLinkButton>
-              <LinkButton onClick={() => {}}>+ Добавить новый ТП</LinkButton>
+              <LinkButton onClick={openCreateHeatingStationModal}>
+                + Добавить новый ТП
+              </LinkButton>
             </WrapperLinkButton>
           </GridContainer>
         )}
