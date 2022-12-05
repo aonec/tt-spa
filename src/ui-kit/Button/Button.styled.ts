@@ -4,7 +4,7 @@ import { ButtonSizeType, ButtonStyleType } from './Button.types';
 const buttonBackgroundColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee9',
   danger: '#ff4545',
-  ghost: '#ffffff',
+  ghost: 'transparent',
 };
 
 const buttonShadowColorsDictionary: { [key in ButtonStyleType]: string } = {
