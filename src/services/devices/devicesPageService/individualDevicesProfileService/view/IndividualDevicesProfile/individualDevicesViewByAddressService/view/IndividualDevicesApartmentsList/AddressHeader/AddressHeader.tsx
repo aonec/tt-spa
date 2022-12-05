@@ -1,14 +1,8 @@
 import { HouseAddress } from 'myApi';
 import React, { FC } from 'react';
+import { Switcher } from 'ui-kit/shared_components/Switcher';
 import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
-import {
-  ChevronLeft,
-  ChevronRight,
-  CurrentHousingStock,
-  HousingStocksSwitcher,
-  SwitcherWrapper,
-  Wrapper,
-} from './AddressHeader.styled';
+import { CurrentHousingStock, Wrapper } from './AddressHeader.styled';
 import { AddressHeaderProps } from './AddressHeader.types';
 
 export const AddressHeader: FC<AddressHeaderProps> = ({
@@ -35,24 +29,12 @@ export const AddressHeader: FC<AddressHeaderProps> = ({
         {address?.city}, ул. {address?.street} {address?.houseNumber}
         {address?.houseCorpus}
       </CurrentHousingStock>
-      <SwitcherWrapper>
-        {previuosAddress && (
-          <HousingStocksSwitcher
-            onClick={() => handleClickAddress(previuosAddress)}
-          >
-            <ChevronLeft />
-            {getHousingStockAddressString(previuosAddress)}
-          </HousingStocksSwitcher>
-        )}
-        {nextAddress && (
-          <HousingStocksSwitcher
-            onClick={() => handleClickAddress(nextAddress)}
-          >
-            {getHousingStockAddressString(nextAddress)}
-            <ChevronRight />
-          </HousingStocksSwitcher>
-        )}
-      </SwitcherWrapper>
+      <Switcher
+        nextValue={nextAddress}
+        previousValue={previuosAddress}
+        textConstructor={(address) => getHousingStockAddressString(address)}
+        handleClick={handleClickAddress}
+      />
     </Wrapper>
   );
 };
