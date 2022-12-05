@@ -70,37 +70,25 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         </GridContainer>
         <SpaceLine />
 
-        {createObjectData?.additionalAddresses?.length ? (
-          <>
-            <GridContainer>
-              <FieldDescrition>
-                Адреса, под которыми известен объект
-              </FieldDescrition>
-              <GridContainerForAdditionalAddresses>
-                {createObjectData.additionalAddresses.map((e, i) => (
-                  <FieldForAdditionalAddresses key={i}>
-                    ул. {e.street},
-                    <SpacesHouseNumber>{e.house}</SpacesHouseNumber>
-                    {e.corpus ? `к. ${e.corpus} ` : ''}
-                  </FieldForAdditionalAddresses>
-                ))}
-              </GridContainerForAdditionalAddresses>
-            </GridContainer>
-            <SpaceLine />
-          </>
-        ) : (
-          <>
-            <GridContainer>
-              <FieldDescrition>
-                Адреса, под которыми известен объект
-              </FieldDescrition>
-              <Field>-</Field>
-            </GridContainer>
-            <SpaceLine />
-          </>
-        )}
-        <PageTitle>2. Основная информация </PageTitle>
+        <GridContainer>
+          <FieldDescrition>
+            Адреса, под которыми известен объект
+          </FieldDescrition>
+          <GridContainerForAdditionalAddresses>
+            {createObjectData?.additionalAddresses?.length &&
+              createObjectData.additionalAddresses.map((e, i) => (
+                <FieldForAdditionalAddresses key={i}>
+                  ул. {e.street},
+                  <SpacesHouseNumber>{e.house}</SpacesHouseNumber>
+                  {e.corpus ? `к. ${e.corpus} ` : ''}
+                </FieldForAdditionalAddresses>
+              ))}
+            {!createObjectData?.additionalAddresses?.length && <Field>-</Field>}
+          </GridContainerForAdditionalAddresses>
+        </GridContainer>
+        <SpaceLine />
 
+        <PageTitle>2. Основная информация </PageTitle>
         <GridContainer>
           <FieldDescrition>Домоуправление</FieldDescrition>
           <Field>{houseManagrmentName || '-'}</Field>
