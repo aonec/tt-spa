@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { Tabs } from 'ui-kit/Tabs';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import {
   AdditionalAddressWrapper,
   HeaderInfoWrapper,
@@ -13,6 +12,7 @@ import {
 import { EditApartmentPageProps } from './EditApartmentPage.types';
 import { TabsSection } from '../../editApartmentProfileService.types';
 import { EditCommonDataForm } from './EditCommonDataForm';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { EditHomeownersList } from './EditHomeownersList';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
