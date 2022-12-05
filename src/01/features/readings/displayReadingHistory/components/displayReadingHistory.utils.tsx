@@ -171,15 +171,20 @@ export function getPreviousReadingByHistory(
 
 export const getRecentlyReplacedAccount = (
   homeownerAccounts: HomeownerAccountListResponse[],
-  actualHomeownerAccount: HomeownerAccountListResponse | undefined
+  actualHomeownerAccount?: HomeownerAccountListResponse
 ) => {
-  if (!(homeownerAccounts.length > 1)) return null;
-  return (
-    _.find(homeownerAccounts, (account) => {
-      return (
-        account.replacedByAccount?.personalAccountNumber ===
-        actualHomeownerAccount?.personalAccountNumber
-      );
-    }) || null
-  );
+  if (homeownerAccounts.length <= 1) return null;
+
+  const actualPersonalAccountNumber =
+    actualHomeownerAccount?.personalAccountNumber;
+
+  // находим такой лицевой счет, который был заменен на актуальный
+  const recentlyPeplacedAccount = _.find(homeownerAccounts, (account) => {
+    const actualAccountNumberFromReplaced =
+      account.replacedByAccount?.personalAccountNumber;
+
+    return actualAccountNumberFromReplaced === actualPersonalAccountNumber;
+  });
+
+  return recentlyPeplacedAccount || null;
 };

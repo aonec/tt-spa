@@ -10,7 +10,7 @@ import {
 import { sample, forward } from 'effector';
 import { $apartment, fetchApartmentFx } from '.';
 
- $apartment
+$apartment
   .on(fetchApartmentFx.doneData, (_, apartment) => {
     return apartment;
   })

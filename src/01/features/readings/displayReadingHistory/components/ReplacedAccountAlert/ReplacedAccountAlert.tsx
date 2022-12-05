@@ -18,9 +18,11 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   if (!recentlyReplacedAccount.replacedByAccount) {
     return null;
   }
+  
   const closedDate = moment(recentlyReplacedAccount.closedAt).format(
     'DD.MM.YYYY'
   );
+
   return (
     <ApartmentAlertWrapper>
       <Alert type="info">
