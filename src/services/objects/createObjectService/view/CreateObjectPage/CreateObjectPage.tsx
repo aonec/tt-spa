@@ -23,7 +23,11 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   onPageCancel,
   createObjectData,
   handleSubmitCreateObject,
-  heatingStations
+  heatingStations,
+  handlePostCreateObject,
+  closePreviewModal,
+  openPreviewModal,
+  isPreviewModalOpen,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -31,6 +35,8 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
     'Основная информация',
     'Дополнительная информация',
   ];
+
+  console.log(stageNumber);
 
   return (
     <Wrapper>
@@ -68,17 +74,18 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               onPageCancel={onPageCancel}
               createObjectData={createObjectData}
               handleSubmitCreateObject={handleSubmitCreateObject}
+              openPreviewModal={openPreviewModal}
             />
           )}
-          {stageNumber === 4 && (
-            <CreateObjectFinalStageModal
-              onPageCancel={onPageCancel}
-              goBackStage={goBackStage}
-              createObjectData={createObjectData}
-              houseManagements= {houseManagements}
-              
-            />
-          )}
+
+          <CreateObjectFinalStageModal
+            createObjectData={createObjectData}
+            houseManagements={houseManagements}
+            handlePostCreateObject={handlePostCreateObject}
+            heatingStations={heatingStations}
+            closePreviewModal={closePreviewModal}
+            isPreviewModalOpen={isPreviewModalOpen}
+          />
         </div>
         <div>
           <Title>Этапы создания</Title>

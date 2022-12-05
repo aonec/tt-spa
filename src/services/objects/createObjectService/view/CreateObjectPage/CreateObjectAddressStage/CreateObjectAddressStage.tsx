@@ -10,7 +10,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { BlockTitle, PageTitle } from '../CreateObjectPage.styled';
 import {
-  AddButton,
+  AddButtonWrapper,
   ButtonPadding,
   DeleteButton,
   Footer,
@@ -27,6 +27,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
 import { StyledSelect } from '01/shared/ui/Select/components';
 import { Select } from 'ui-kit/Select';
+import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
@@ -43,7 +44,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   } = useFormik<ObjectAddressValues>({
     initialValues: {
       city: createObjectData?.city || null,
-      street: createObjectData?.street || "",
+      street: createObjectData?.street || '',
       house: createObjectData?.house || null,
       corpus: createObjectData?.corpus || null,
       index: createObjectData?.index || null,
@@ -117,7 +118,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <FormItem label="Улица">
             <AutoComplete
               placeholder="Улица"
-              value={values.street }
+              value={values.street}
               onChange={(value) => setFieldValue('street', value)}
               options={preparedExistingStreets || undefined}
             />
@@ -159,7 +160,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
 
         {values.additionalAddresses.map((elem, index) => (
           <>
-            <GridWrapper>
+            <GridWrapper key={index}>
               <FormItem label="Город">
                 <StyledSelect value={values.city || undefined} disabled />
               </FormItem>
@@ -208,20 +209,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                   />
                 </FormItem>
               </ItemGridWrapper>
-
-              <FormItem label="Индекс">
-                <Input
-                  placeholder="Введите"
-                  value={elem.index}
-                  onChange={(value) =>
-                    additionalAddressesFieldOnChange(
-                      index,
-                      'index',
-                      value.target.value as string
-                    )
-                  }
-                />
-              </FormItem>
             </GridWrapper>
             <DeleteButton
               className="ant-btn-link"
@@ -237,18 +224,18 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
             <SpaceLine />
           </>
         ))}
-
-        <AddButton
-          className="ant-btn-link"
-          onClick={() =>
-            setFieldValue('additionalAddresses', [
-              ...values.additionalAddresses,
-              { street: '', house: '', corpus: '' },
-            ])
-          }
-        >
-          + Добавить адрес
-        </AddButton>
+        <AddButtonWrapper>
+          <LinkButton
+            onClick={() =>
+              setFieldValue('additionalAddresses', [
+                ...values.additionalAddresses,
+                { street: '', house: '', corpus: '' },
+              ])
+            }
+          >
+            + Добавить адрес
+          </LinkButton>
+        </AddButtonWrapper>
 
         <Footer>
           <NextCancelBlock>

@@ -18,11 +18,13 @@ import {
   LivingHouseTypeDictionary,
   NonResidentialHouseTypeDictionary,
 } from '../../CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
+import { ElevatorDictionary } from '../CreateObjectFinalStageModal.constants';
 
 export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
   formId,
   createObjectData,
   houseManagements,
+  heatingStations,
 }) => {
   const houseManagrmentName = houseManagements?.find(
     (e) => e.id === createObjectData?.houseManagement
@@ -39,6 +41,10 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     NonResidentialHouseTypeDictionary[
       createObjectData?.nonResidentialHouseType
     ];
+
+  const heatingStation = heatingStations?.items?.find(
+    (e) => e.id === createObjectData?.heatingStationId
+  );
 
   return (
     <Form id={formId} onSubmitCapture={() => {}}>
@@ -71,12 +77,11 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
                 Адреса, под которыми известен объект
               </FieldDescrition>
               <GridContainerForAdditionalAddresses>
-                {createObjectData.additionalAddresses.map((e, i, arr) => (
-                  <FieldForAdditionalAddresses>
+                {createObjectData.additionalAddresses.map((e, i) => (
+                  <FieldForAdditionalAddresses key={i}>
                     ул. {e.street},
                     <SpacesHouseNumber>{e.house}</SpacesHouseNumber>
                     {e.corpus ? `к. ${e.corpus} ` : ''}
-                    {e.index ? <SpacedIndex>({e?.index})</SpacedIndex> : ''}
                   </FieldForAdditionalAddresses>
                 ))}
               </GridContainerForAdditionalAddresses>
@@ -117,15 +122,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Тепловой пункт</FieldDescrition>
-          {createObjectData?.heatingStation?.heatingStationType ? (
-            <Field>{`${createObjectData?.heatingStation?.heatingStationType} ${
-              createObjectData?.heatingStation?.heatingStationNumber
-                ? `${createObjectData?.heatingStation?.heatingStationNumber}`
-                : ''
-            }`}</Field>
-          ) : (
-            <Field>-</Field>
-          )}
+          <Field>{heatingStation?.name || '-'}</Field>
         </GridContainer>
         <SpaceLine />
 
@@ -143,7 +140,11 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
         <SpaceLine />
         <GridContainer>
           <FieldDescrition>Лифт</FieldDescrition>
-          <Field>{createObjectData?.elevator || '-'}</Field>
+          <Field>
+            {createObjectData?.elevator
+              ? ElevatorDictionary[createObjectData?.elevator]
+              : '-'}
+          </Field>
         </GridContainer>
         <SpaceLine />
       </Wrapper>

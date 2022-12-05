@@ -1,30 +1,26 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
-  AddTPButton,
   ButtonPadding,
   FlexEnd,
   FlexStart,
   Footer,
   GridContainer,
   InputTypeDisplayingDiv,
-  PencilIconSc,
   RightButtonBlock,
-  Subtitle,
   Title,
   Wrapper,
+  WrapperLinkButton,
   XIconSc,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
-import { CreateNewHeatingStationModal } from '../../../../heatingStations/createHeatingStationService/view/CreateNewHeatingStationModal/CreateNewHeatingStationModal';
-import { EditNewHeatingStationModal } from './EditNewHeatingStationModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import {
@@ -40,8 +36,7 @@ import {
   ENonResidentialHouseType,
 } from 'myApi';
 import { sortBy } from 'lodash';
-import { useEvent } from 'effector-react';
-import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
+import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -51,10 +46,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   createObjectData,
   heatingStations,
 }) => {
-
-
-
-  const { gates } = createHeatingStationService;
+  const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
 
   const heatingStationsValues = heatingStations?.items;
@@ -64,12 +56,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     objectCategotry: createObjectData?.objectCategotry || null,
     livingHouseType: createObjectData?.livingHouseType || null,
     nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
-    heatingStation: {
-      heatingStationType:
-        createObjectData?.heatingStation?.heatingStationType || null,
-      heatingStationNumber:
-        createObjectData?.heatingStation?.heatingStationNumber || null,
-    },
+    heatingStationId: createObjectData?.heatingStationId || null,
   };
 
   const {
@@ -83,14 +70,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     onSubmit: (data) => {
       handleSubmitCreateObject(data);
     },
-    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema,
   });
+
+  const selectedHeatingStation = heatingStations?.items?.find(
+    (station) => station.id === values.heatingStationId
+  );
 
   return (
     <>
       <HeatingStationsFetchGate />
-      
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
@@ -181,58 +171,46 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         <SpaceLine />
 
-        {!isInputTypeDisplayingDivShow && (
+        {!values.heatingStationId && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
               <Select
                 placeholder="Выберите из списка"
                 onChange={(value) => {
-                  setFieldValue('heatingStation', {
-                    ...values.heatingStation,
-                    heatingStationType: value,
-                  });
+                  setFieldValue('heatingStationId', value);
                 }}
-                value={values.heatingStation.heatingStationType || undefined}
+                value={values.heatingStationId || undefined}
               >
-                {sortBy(heatingStationsValues, 'name')?.map(
+                {sortBy(heatingStationsValues || [], 'name').map(
                   (heatingStations) =>
                     heatingStations.name && (
-                      <Select.Option value={heatingStations.name}>
+                      <Select.Option
+                        value={heatingStations.id}
+                        key={heatingStations.id}
+                      >
                         {heatingStations.name}
                       </Select.Option>
                     )
                 )}
               </Select>
-              <ErrorMessage>
-                {errors.heatingStation?.heatingStationType}
-              </ErrorMessage>
+              <ErrorMessage>{errors.heatingStationId}</ErrorMessage>
             </FormItem>
-
-            <AddTPButton
-              className="ant-btn-link"
-              onClick={() => setCreateModalOpen((prev) => !prev)}
-            >
-              + Добавить новый ТП
-            </AddTPButton>
+            <WrapperLinkButton>
+              <LinkButton onClick={() => {}}>+ Добавить новый ТП</LinkButton>
+            </WrapperLinkButton>
           </GridContainer>
         )}
 
-        {isInputTypeDisplayingDivShow && (
+        {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
             <InputTypeDisplayingDiv>
               <FlexStart>
-                <Title>{values.heatingStation.heatingStationType}</Title>
-                <Subtitle>{values.heatingStation.heatingStationNumber}</Subtitle>
+                <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
-                <PencilIconSc onClick={() => setEditModalOpen(true)} />
                 <XIconSc
                   onClick={() => {
-                    setInputTypeDisplayingDivShow(false);
-                    setFieldValue('heatingStation', {
-                      heatingStationType: '',
-                      heatingStationNumber: '',
-                    });
+                    setFieldValue('heatingStationId', null);
                   }}
                 />
               </FlexEnd>
