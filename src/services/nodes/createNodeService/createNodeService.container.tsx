@@ -35,7 +35,9 @@ export const CreateNodeContainer = () => {
       <CreateNodeGate housingStockId={Number(housingStockId)} />
       <ExistingCitiesGate />
       <CreateCalculatorGate housingStockId={requestPayload.housingStockId} />
-      <AddPipeNodeCommonDeviceContainer />
+      {requestPayload.resource && (
+        <AddPipeNodeCommonDeviceContainer resource={requestPayload.resource} />
+      )}
       <CreateNodeServiceZoneContainer />
       <CreateNodePage
         housingStock={housingStock}

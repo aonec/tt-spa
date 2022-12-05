@@ -6,6 +6,7 @@ import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
+  EResourceType,
   HousingStockResponse,
   NodeServiceZoneListResponse,
 } from 'myApi';
@@ -48,7 +49,9 @@ const $stepNumber = domain
   .reset(CreateNodeGate.close);
 
 const $requestPayload = domain
-  .createStore<CreatePipeNodeRequest>({})
+  .createStore<CreatePipeNodeRequest>({
+    resource: EResourceType.ColdWaterSupply,
+  })
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(CreateNodeGate.close);
 
