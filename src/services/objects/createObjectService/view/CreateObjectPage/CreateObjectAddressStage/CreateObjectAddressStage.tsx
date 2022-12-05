@@ -3,7 +3,6 @@ import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingSto
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
-import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
@@ -28,6 +27,7 @@ import { validationSchema } from './createObjectAddressStage.constants';
 import { StyledSelect } from '01/shared/ui/Select/components';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
@@ -73,22 +73,10 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
 
   const addressSearch = values.street;
 
-  const preparedExistingStreets =
-    addressSearch !== null &&
-    existingStreets
-      ?.sort((a, b) => {
-        const aPoints = countSimilarityPoints(addressSearch, a);
-        const bPoints = countSimilarityPoints(addressSearch, b);
-
-        if (aPoints < bPoints) return 1;
-
-        if (aPoints > bPoints) return -1;
-
-        return 0;
-      })
-      .map((street) => ({
-        value: street,
-      }));
+  const preparedExistingStreets = getPreparedStreetsOptions(
+    addressSearch,
+    existingStreets || []
+  );
 
   return (
     <>

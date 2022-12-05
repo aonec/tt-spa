@@ -1,0 +1,1 @@
+export { CommonData } from './CommonData'

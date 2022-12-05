@@ -7,6 +7,6 @@ export type DocumentsLineUploadProps = {
   documents: Document[];
   accept: string;
   uniqId: string;
-  lable?: string;
+  label?: string;
   isMaxDocuments: boolean;
 };

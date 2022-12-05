@@ -1,6 +1,7 @@
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { FormikErrors } from 'formik';
 import { FormEvent } from 'react';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 
 export type SearchDevicesProps = {
   isExtendedSearchOpen: boolean;
@@ -9,6 +10,9 @@ export type SearchDevicesProps = {
     field: string,
     value: any,
     shouldValidate?: boolean | undefined
-  ) => Promise<void> | Promise<FormikErrors<CalculatorsListRequestPayload>>;
+  ) => void;
   values: CalculatorsListRequestPayload;
+  devicesSearchType: DevicesSearchType;
+  setSerialNumber: (value: string) => void;
+  serialNumber: string;
 };

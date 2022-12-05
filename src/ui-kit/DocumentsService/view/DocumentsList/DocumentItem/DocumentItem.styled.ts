@@ -1,4 +1,3 @@
-import { Skeleton } from 'antd';
 import styled from 'styled-components';
 import { DocumentIcon, DownloadIcon, TrashIcon } from 'ui-kit/icons';
 
@@ -38,7 +37,9 @@ export const DocumentDateWrapper = styled.div`
 export const DocumentDate = styled.div`
   margin-left: 8px;
   font-size: 16px;
+  white-space: nowrap;
   color: rgba(39, 47, 90, 0.7);
+  margin-right: 12px;
 `;
 
 export const ManageButtonsWrapper = styled.div`

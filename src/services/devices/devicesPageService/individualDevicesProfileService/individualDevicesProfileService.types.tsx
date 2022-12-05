@@ -6,11 +6,6 @@ import {
   EResourceType,
 } from 'myApi';
 
-export enum DevicesSearchType {
-  Address = 'Address',
-  SearialNumber = 'SearialNumber',
-}
-
 export type SearchIndividualDevicesParams = {
   City?: string;
   Street?: string;

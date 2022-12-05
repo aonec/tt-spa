@@ -57,14 +57,6 @@ export const Header = ({
           color: 'default',
         },
         {
-          title: 'Добавить Узел',
-          cb: () => {
-            push(`/objects/${device?.address?.id}/add_node`);
-          },
-          show: show('CalculatorUpdate'),
-          color: 'default',
-        },
-        {
           title: 'Поверить вычислитель',
           cb: () => {
             setCheck(true);
