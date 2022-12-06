@@ -64,10 +64,6 @@ forward({
 const $existingCities = addressSearchService.outputs.cities;
 const $existingStreets = addressSearchService.outputs.streets;
 
-const $newHeatingStationData = domain
-  .createStore<HeatingStationResponse | null>(null)
-  .on(createHeatingStationFx.doneData, (_, data) => data);
-
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleOpenModal, () => true)

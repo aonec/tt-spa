@@ -11,6 +11,7 @@ import {
   Footer,
   GridContainer,
   InputTypeDisplayingDiv,
+  PencilIconSc,
   RightButtonBlock,
   Title,
   Wrapper,
@@ -51,6 +52,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   createObjectData,
   heatingStations,
   openCreateHeatingStationModal,
+  openEditHeatingStationModal,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -224,6 +226,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
+                <PencilIconSc onClick={openEditHeatingStationModal} />
                 <XIconSc
                   onClick={() => {
                     setFieldValue('heatingStationId', null);

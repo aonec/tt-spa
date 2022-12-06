@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { CreateHeatingStationContainer } from '../heatingStations/createHeatingStationService';
+import { EditHeatingStationContainer } from '../heatingStations/editHeatingStationService';
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
 
@@ -34,6 +35,10 @@ export const CreateObjectContainer = () => {
     inputs.openCreateHeatingStationModal
   );
 
+  const openEditHeatingStationModal = useEvent(
+    inputs.openEditHeatingStationModal
+  );
+
   const goBackStage = useEvent(inputs.goBackStage);
 
   const history = useHistory();
@@ -53,6 +58,7 @@ export const CreateObjectContainer = () => {
       <HouseManagementsFetchGate />
       <HeatingStationsFetchGate />
       <CreateHeatingStationContainer />
+      <EditHeatingStationContainer />
       <CreateObjectPage
         existingCities={existingCities}
         existingStreets={existingStreets}
@@ -68,6 +74,7 @@ export const CreateObjectContainer = () => {
         openPreviewModal={() => openPreviewModal()}
         closePreviewModal={() => closePreviewModal()}
         openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
+        openEditHeatingStationModal={() => openEditHeatingStationModal()}
       />
     </>
   );

@@ -19,4 +19,5 @@ export type CreateObjectPageProps = {
   openPreviewModal: () => void;
   closePreviewModal: () => void;
   openCreateHeatingStationModal: () => void;
+  openEditHeatingStationModal: () => void
 };

@@ -12,6 +12,7 @@ import {
 import { EffectFailDataAxiosError } from 'types';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
+import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
 import {
   getHeatingStations,
   getHouseManagements,
@@ -34,10 +35,11 @@ const handlePostCreateObject = domain.createEvent();
 const closePreviewModal = domain.createEvent<void>();
 const openPreviewModal = domain.createEvent<void>();
 
-const closeCreateHeatingStationModal =
-  createHeatingStationService.inputs.handleCloseModal;
 const openCreateHeatingStationModal =
   createHeatingStationService.inputs.handleOpenModal;
+
+const openEditHeatingStationModal =
+  editHeatingStationService.inputs.handleOpenModal;
 
 const resetter = domain.createEvent<void>();
 
@@ -205,6 +207,7 @@ export const createObjectService = {
     closePreviewModal,
     handleCreateObjectSuccessDone,
     openCreateHeatingStationModal,
+    openEditHeatingStationModal,
   },
   outputs: {
     $createObjectData,
