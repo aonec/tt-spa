@@ -1,6 +1,11 @@
 import { message } from 'antd';
 import { createDomain, guard, sample } from 'effector';
-import { AddHeatingStationRequest, HeatingStationResponse } from 'myApi';
+import {
+  AddHeatingStationRequest,
+  CreateAddressRequest,
+  HeatingStationResponse,
+} from 'myApi';
+import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
 import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.types';
 import { postHeatingStation } from './createHeatingStationService.api';
@@ -23,12 +28,19 @@ guard({
     fn: (data: HeatingStation) => {
       if (!data) return null;
       if (!data.name) return null;
+      if (!data.address) return null;
 
       const payload: AddHeatingStationRequest = {
         name: data.name,
         isThermalChamber: data.isThermalChamber
           ? HeatingStationTypeRequestDictionary[data.isThermalChamber]
           : undefined,
+
+        address: {
+          city: data.address.city,
+          street: data.address.street,
+          number: data.address.number,
+        } as CreateAddressRequest,
       };
 
       return payload;
@@ -39,6 +51,9 @@ guard({
 });
 
 createHeatingStationFx.failData.watch((error) => message.error(error.name));
+
+const $existingCities = addressSearchService.outputs.cities;
+const $existingStreets = addressSearchService.outputs.streets;
 
 const $newHeatingStation = domain
   .createStore<HeatingStationResponse | null>(null)
@@ -51,6 +66,6 @@ const $isModalOpen = domain
 
 export const createHeatingStationService = {
   inputs: { handleCreateHeatingStation, handleOpenModal, handleCloseModal },
-  outputs: { $isModalOpen },
+  outputs: { $isModalOpen, $existingCities, $existingStreets },
   gates: {},
 };

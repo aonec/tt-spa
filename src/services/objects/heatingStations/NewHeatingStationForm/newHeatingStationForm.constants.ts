@@ -3,6 +3,9 @@ import { HeatingStationType } from './NewHeatingStationForm.types';
 
 export const validationSchema = yup.object().shape({
   name: yup.string().nullable().required('Обязательное поле'),
+  city: yup.string().nullable().required('Обязательное поле'),
+  street: yup.string().required('Обязательное поле'),
+  house: yup.string().nullable().required('Обязательное поле'),
 });
 
 export const HeatingStationTypeRequestDictionary: {

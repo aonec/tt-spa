@@ -9,6 +9,8 @@ export const CreateNewHeatingStationModal: FC<CreateNewHeatingStationModalProps>
   handleCreateHeatingStation,
   isModalOpen,
   handleCloseModal,
+  existingCities,
+  existingStreets,
 }) => {
   return (
     <FormModal
@@ -19,6 +21,8 @@ export const CreateNewHeatingStationModal: FC<CreateNewHeatingStationModalProps>
         <NewHeatingStationForm
           formId={formId}
           handleCreateHeatingStation={handleCreateHeatingStation}
+          existingCities={existingCities}
+          existingStreets={existingStreets}
         />
       }
       formId={formId}
