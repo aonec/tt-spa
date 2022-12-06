@@ -43,6 +43,7 @@ const resetter = domain.createEvent<void>();
 
 const HouseManagementsFetchGate = createGate();
 const PageCloseGate = createGate();
+
 const HeatingStationsFetchGate =
   displayHeatingStationsService.gates.HeatingStationsFetchGate;
 
@@ -134,7 +135,7 @@ guard({
         additionalAddresses,
         heatingStationId,
         houseManagement,
-        objectCategotry,
+        objectCategory,
         livingHouseType,
         nonResidentialHouseType,
         floors,
@@ -148,7 +149,7 @@ guard({
         !house ||
         !heatingStationId ||
         !houseManagement ||
-        !objectCategotry
+        !objectCategory
       )
         return null;
 
@@ -171,7 +172,7 @@ guard({
           }) || null,
         heatingStationId,
         houseManagementId: houseManagement,
-        houseCategory: objectCategotry,
+        houseCategory: objectCategory,
         livingHouseType: livingHouseType || null,
         nonResidentialHouseType: nonResidentialHouseType || null,
         numberOfFloors: Number(floors) || null,

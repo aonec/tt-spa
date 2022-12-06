@@ -30,7 +30,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     (e) => e.id === createObjectData?.houseManagement
   )?.name;
 
-  const objectCategory = createObjectData?.objectCategotry;
+  const objectCategory = createObjectData?.objectCategory;
 
   const preparedLivingType =
     createObjectData?.livingHouseType &&

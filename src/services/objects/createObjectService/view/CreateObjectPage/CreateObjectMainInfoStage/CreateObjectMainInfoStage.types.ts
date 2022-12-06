@@ -19,7 +19,7 @@ export type CreateObjectMainInfoStageProps = {
 
 export type ObjectMainInfoValues = {
   houseManagement: string | null;
-  objectCategotry: EHouseCategory | null;
+  objectCategory: EHouseCategory | null;
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
   heatingStationId: string | null;

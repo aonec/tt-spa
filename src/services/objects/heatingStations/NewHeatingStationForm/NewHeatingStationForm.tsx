@@ -44,7 +44,6 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
     enableReinitialize: true,
     onSubmit: (data) => {
       handleCreateHeatingStation(data);
-      console.log(data);
     },
     validateOnChange: false,
     validationSchema,

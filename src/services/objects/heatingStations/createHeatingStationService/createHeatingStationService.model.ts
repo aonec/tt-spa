@@ -1,11 +1,12 @@
 import { message } from 'antd';
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import {
   AddHeatingStationRequest,
   CreateAddressRequest,
   HeatingStationResponse,
 } from 'myApi';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { EffectFailDataAxiosError } from 'types';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
 import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.types';
 import { postHeatingStation } from './createHeatingStationService.api';
@@ -19,7 +20,8 @@ const handleCloseModal = domain.createEvent<void>();
 
 const createHeatingStationFx = domain.createEffect<
   AddHeatingStationRequest,
-  HeatingStationResponse | null
+  HeatingStationResponse | null,
+  EffectFailDataAxiosError
 >(postHeatingStation);
 
 guard({
@@ -50,12 +52,19 @@ guard({
   target: createHeatingStationFx,
 });
 
-createHeatingStationFx.failData.watch((error) => message.error(error.name));
+createHeatingStationFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+forward({
+  from: createHeatingStationFx.doneData,
+  to: handleCloseModal,
+});
 
 const $existingCities = addressSearchService.outputs.cities;
 const $existingStreets = addressSearchService.outputs.streets;
 
-const $newHeatingStation = domain
+const $newHeatingStationData = domain
   .createStore<HeatingStationResponse | null>(null)
   .on(createHeatingStationFx.doneData, (_, data) => data);
 
@@ -64,8 +73,15 @@ const $isModalOpen = domain
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 
+const handleHeatingStationCreated = createHeatingStationFx.doneData;
+
 export const createHeatingStationService = {
-  inputs: { handleCreateHeatingStation, handleOpenModal, handleCloseModal },
+  inputs: {
+    handleCreateHeatingStation,
+    handleOpenModal,
+    handleCloseModal,
+    handleHeatingStationCreated,
+  },
   outputs: { $isModalOpen, $existingCities, $existingStreets },
   gates: {},
 };
