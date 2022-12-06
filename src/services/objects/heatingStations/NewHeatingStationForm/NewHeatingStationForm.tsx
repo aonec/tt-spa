@@ -94,7 +94,9 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
         <AddressGridWrapper>
           <FormItem label="Город">
             <Select
-              onChange={(value) => setFieldValue('city', value)}
+              onChange={(value) =>
+                setFieldValue('address', { ...values.address, city: value })
+              }
               value={values.address.city || undefined}
               placeholder="Выберите из списка"
             >
@@ -111,7 +113,9 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
             <AutoComplete
               placeholder="Улица"
               value={values.address.street}
-              onChange={(value) => setFieldValue('street', value)}
+              onChange={(value) =>
+                setFieldValue('address', { ...values.address, street: value })
+              }
               options={preparedExistingStreets || undefined}
             />
             <ErrorMessage> {errors.address?.street} </ErrorMessage>
@@ -121,7 +125,12 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
             <Input
               placeholder="Введите"
               value={values.address.number || undefined}
-              onChange={(value) => setFieldValue('number', value.target.value)}
+              onChange={(value) =>
+                setFieldValue('address', {
+                  ...values.address,
+                  number: value.target.value,
+                })
+              }
             />
             <ErrorMessage> {errors.address?.number} </ErrorMessage>
           </FormItem>
