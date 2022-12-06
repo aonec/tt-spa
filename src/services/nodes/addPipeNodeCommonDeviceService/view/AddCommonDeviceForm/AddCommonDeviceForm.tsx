@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Tabs } from 'ui-kit/Tabs';
 import { Wrapper } from './AddCommonDeviceForm.styled';
 import { AddCommonDeviceFormProps } from './AddCommonDeviceForm.types';
@@ -15,9 +15,10 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
   formId,
   requestPayload,
   openAddPipeModal,
+  communicationPipes,
 }) => {
-  const componentsDictionary: { [key: number]: FC } = {
-    0: () => (
+  const componentsDictionary: { [key: number]: ReactNode } = {
+    0: (
       <CommonDataStep
         formId={formId}
         resource={resource}
@@ -25,11 +26,16 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
         requestPayload={requestPayload}
       />
     ),
-    1: () => <DeviceStep openAddPipeModal={openAddPipeModal} />,
-    2: () => <DocumentsStep />,
+    1: (
+      <DeviceStep
+        openAddPipeModal={openAddPipeModal}
+        communicationPipes={communicationPipes}
+      />
+    ),
+    2: <DocumentsStep />,
   };
 
-  const FormComponent = componentsDictionary[currentFormStep];
+  const formComponent = componentsDictionary[currentFormStep];
 
   return (
     <Wrapper>
@@ -38,7 +44,7 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
         <TabPane tab="Шаг 2. Прибор" key="1" />
         <TabPane tab="Шаг 3. Документы" key="2" />
       </Tabs>
-      <FormComponent />
+      {formComponent}
     </Wrapper>
   );
 };

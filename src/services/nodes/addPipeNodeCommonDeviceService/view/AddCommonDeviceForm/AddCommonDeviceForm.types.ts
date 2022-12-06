@@ -1,5 +1,5 @@
 import { EResourceType } from 'myApi';
-import { CreateCommonDevicePartitial } from '../../addPipeNodeCommonDeviceService.types';
+import { CommunicationPipePayload, CreateCommonDevicePartitial } from '../../addPipeNodeCommonDeviceService.types';
 
 export type AddCommonDeviceFormProps = {
   currentFormStep: number;
@@ -8,4 +8,5 @@ export type AddCommonDeviceFormProps = {
   resource: EResourceType;
   requestPayload: CreateCommonDevicePartitial;
   openAddPipeModal: () => void;
+  communicationPipes: CommunicationPipePayload[];
 };

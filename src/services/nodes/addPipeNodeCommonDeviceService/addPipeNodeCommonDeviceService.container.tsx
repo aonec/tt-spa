@@ -11,7 +11,11 @@ const { inputs, outputs } = addPipeNodeCommonDeviceService;
 
 const formId = 'add-common-device-form';
 
-export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({ resource }) => {
+export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
+  resource,
+  communicationPipes,
+  handleAddCommunicationPipe,
+}) => {
   const isModalOpen = useStore(outputs.$isModalOpen);
   const currentFormStep = useStore(outputs.$currentFormStep);
   const requestPayload = useStore(outputs.$requestPayload);
@@ -46,6 +50,7 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({ resource }) => {
             <AddCommunicationPipeModal
               isOpen={isAddPipeModalOpen}
               closeAddPipeModal={() => closeAddPipeModal()}
+              handleAddCommunicationPipe={handleAddCommunicationPipe}
             />
             <AddCommonDeviceForm
               updateRequestPayload={updateRequestPayload}
@@ -54,6 +59,7 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({ resource }) => {
               currentFormStep={currentFormStep}
               requestPayload={requestPayload}
               openAddPipeModal={() => openAddPipeModal()}
+              communicationPipes={communicationPipes}
             />
           </>
         }

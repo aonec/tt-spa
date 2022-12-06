@@ -37,6 +37,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
         <AddPipeNodeCommonDeviceContainer
           handleAddCommunicationPipe={handleAddCommunicationPipe}
           resource={resource}
+          communicationPipes={communicationPipes}
         />
       )}
       <div>

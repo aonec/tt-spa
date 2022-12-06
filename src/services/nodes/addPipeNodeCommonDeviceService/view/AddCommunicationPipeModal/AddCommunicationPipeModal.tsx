@@ -1,37 +1,58 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
+import { useEvent } from 'effector-react';
 import { useFormik } from 'formik';
 import { EMagistralType } from 'myApi';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { MagistralsDisctionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService/view/MeteringDevicesListModal/MeteringDeviceListItem/MeteringDeviceListItem.constants';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input, InputWithAddon } from 'ui-kit/Input';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { Select } from 'ui-kit/Select';
 import { validationSchema } from './AddCommunicationPipeModal.constants';
+import { addCommunicationPipeService } from './AddCommunicationPipeModal.model';
 import { LineWrapper } from './AddCommunicationPipeModal.styled';
 import { AddCommunicationPipeModalProps } from './AddCommunicationPipeModal.types';
 
 const formId = 'add-communication-pipe-modal';
 
+const { inputs } = addCommunicationPipeService;
+
 export const AddCommunicationPipeModal: FC<AddCommunicationPipeModalProps> = ({
   isOpen,
   closeAddPipeModal,
+  handleAddCommunicationPipe,
 }) => {
+  const handleCreatePipe = useEvent(inputs.handleCreatePipe);
+
   const {
     values,
     handleChange,
     setFieldValue,
     errors,
     handleSubmit,
+    resetForm,
   } = useFormik({
     initialValues: {
       number: '',
       diameter: '',
       magistral: null as null | EMagistralType,
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      if (!values.magistral) return;
+
+      const id = Date.now();
+
+      handleAddCommunicationPipe({
+        id,
+        number: Number(values.number),
+        diameter: Number(values.diameter),
+        magistral: values.magistral,
+      });
+
+      closeAddPipeModal();
+      resetForm();
+      handleCreatePipe(id);
     },
     validateOnChange: false,
     validationSchema,
