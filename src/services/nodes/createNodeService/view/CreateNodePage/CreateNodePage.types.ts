@@ -19,5 +19,4 @@ export type CreateNodePageProps = {
   requestPayload: CreatePipeNodeRequest;
   nodeServiceZones: NodeServiceZoneListResponse | null;
   openCreateNodeServiceZoneModal: () => void;
-  openAddCommonDeviceModal: () => void;
 };

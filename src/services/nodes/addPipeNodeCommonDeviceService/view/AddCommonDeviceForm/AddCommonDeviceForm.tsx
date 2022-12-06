@@ -13,6 +13,8 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
   resource,
   updateRequestPayload,
   formId,
+  requestPayload,
+  openAddPipeModal,
 }) => {
   const componentsDictionary: { [key: number]: FC } = {
     0: () => (
@@ -20,9 +22,10 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
         formId={formId}
         resource={resource}
         updateRequestPayload={updateRequestPayload}
+        requestPayload={requestPayload}
       />
     ),
-    1: () => <DeviceStep />,
+    1: () => <DeviceStep openAddPipeModal={openAddPipeModal} />,
     2: () => <DocumentsStep />,
   };
 

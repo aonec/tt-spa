@@ -5,4 +5,5 @@ export type CommonDataStepProps = {
   resource: EResourceType;
   formId: string;
   updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
+  requestPayload: CreateCommonDevicePartitial;
 };

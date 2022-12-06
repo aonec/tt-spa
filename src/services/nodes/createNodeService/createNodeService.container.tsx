@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { AddPipeNodeCommonDeviceContainer } from '../addPipeNodeCommonDeviceService';
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService';
@@ -28,16 +27,12 @@ export const CreateNodeContainer = () => {
   const openCreateNodeServiceZoneModal = useEvent(
     inputs.openCreateNodeServiceZoneModal
   );
-  const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
 
   return (
     <>
       <CreateNodeGate housingStockId={Number(housingStockId)} />
       <ExistingCitiesGate />
       <CreateCalculatorGate housingStockId={requestPayload.housingStockId} />
-      {requestPayload.resource && (
-        <AddPipeNodeCommonDeviceContainer resource={requestPayload.resource} />
-      )}
       <CreateNodeServiceZoneContainer />
       <CreateNodePage
         housingStock={housingStock}
@@ -53,7 +48,6 @@ export const CreateNodeContainer = () => {
         requestPayload={requestPayload}
         nodeServiceZones={nodeServiceZones}
         openCreateNodeServiceZoneModal={() => openCreateNodeServiceZoneModal()}
-        openAddCommonDeviceModal={() => openAddCommonDeviceModal()}
       />
     </>
   );

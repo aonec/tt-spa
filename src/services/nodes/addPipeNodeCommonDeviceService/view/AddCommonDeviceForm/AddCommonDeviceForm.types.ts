@@ -4,8 +4,8 @@ import { CreateCommonDevicePartitial } from '../../addPipeNodeCommonDeviceServic
 export type AddCommonDeviceFormProps = {
   currentFormStep: number;
   formId: string;
-  updateRequestPayload: (
-    payload: CreateCommonDevicePartitial
-  ) => void;
+  updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   resource: EResourceType;
+  requestPayload: CreateCommonDevicePartitial;
+  openAddPipeModal: () => void;
 };

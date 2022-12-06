@@ -17,10 +17,12 @@ export const CommonDataStep: FC<CommonDataStepProps> = ({
   resource,
   updateRequestPayload,
   formId,
+  requestPayload,
 }) => {
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
-      housingMeteringDeviceType: null as EHousingMeteringDeviceType | null,
+      housingMeteringDeviceType:
+        requestPayload.housingMeteringDeviceType || null,
     },
     onSubmit: (values) => {
       if (!values.housingMeteringDeviceType) return;
@@ -30,6 +32,8 @@ export const CommonDataStep: FC<CommonDataStepProps> = ({
       });
     },
     validationSchema,
+    enableReinitialize: true,
+    validateOnChange: false,
   });
 
   const deviceTypesOptions = [
