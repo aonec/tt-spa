@@ -2,6 +2,7 @@ import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { HeatingStationResponsePagedList } from 'myApi';
 import { createHeatingStationService } from '../createHeatingStationService';
+import { editHeatingStationService } from '../editHeatingStationService';
 import { getHeatingStations } from './displayHeatingStationsService.api';
 
 const domain = createDomain('displayHeatingStationsService');
@@ -21,6 +22,7 @@ forward({
   from: [
     HeatingStationsFetchGate.open,
     createHeatingStationService.inputs.handleHeatingStationCreated,
+    editHeatingStationService.inputs.handleHeatingStationEdited,
   ],
   to: fetchHeatingStationFx,
 });

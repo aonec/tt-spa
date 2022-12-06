@@ -11,6 +11,7 @@ export const EditHeatingStationModal: FC<EditHeatingStationModalProps> = ({
   handleCloseModal,
   existingCities,
   existingStreets,
+  currentHeatingStationId,
 }) => {
   return (
     <FormModal
@@ -23,6 +24,7 @@ export const EditHeatingStationModal: FC<EditHeatingStationModalProps> = ({
           handleEditHeatingStation={handleEditHeatingStation}
           existingCities={existingCities}
           existingStreets={existingStreets}
+          currentHeatingStationId={currentHeatingStationId}
         />
       }
       formId={formId}

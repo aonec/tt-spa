@@ -30,7 +30,9 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   existingCities,
   existingStreets,
   handleEditHeatingStation,
+  currentHeatingStationId,
 }) => {
+  const id = currentHeatingStationId;
 
   const {
     values,
@@ -46,7 +48,9 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
     enableReinitialize: true,
     onSubmit: (data) => {
       handleCreateHeatingStation && handleCreateHeatingStation(data);
-      // handleEditHeatingStation && handleEditHeatingStation(data);
+      handleEditHeatingStation &&
+        currentHeatingStationId &&
+        handleEditHeatingStation({ id: currentHeatingStationId, data });
     },
     validateOnChange: false,
     validationSchema,

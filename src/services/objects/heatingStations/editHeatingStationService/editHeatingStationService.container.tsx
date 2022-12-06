@@ -11,6 +11,8 @@ export const EditHeatingStationContainer = () => {
   const existingCities = useStore(outputs.$existingCities);
   const existingStreets = useStore(outputs.$existingStreets);
 
+  const currentHeatingStationId = useStore(outputs.$currentHeatingStationId);
+
   const handleCloseModal = useEvent(inputs.handleCloseModal);
 
   const handleEditHeatingStation = useEvent(inputs.handleEditHeatingStation);
@@ -23,6 +25,7 @@ export const EditHeatingStationContainer = () => {
         handleCloseModal={() => handleCloseModal()}
         existingCities={existingCities}
         existingStreets={existingStreets}
+        currentHeatingStationId={currentHeatingStationId}
       />
     </>
   );

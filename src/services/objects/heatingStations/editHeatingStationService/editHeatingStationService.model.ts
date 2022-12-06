@@ -22,6 +22,8 @@ const handleEditHeatingStation = domain.createEvent<{
 const handleOpenModal = domain.createEvent<void>();
 const handleCloseModal = domain.createEvent<void>();
 
+const idCapture = domain.createEvent<string>();
+
 const editHeatingStationFx = domain.createEffect<
   requestParams,
   HeatingStationResponse | null,
@@ -74,6 +76,11 @@ const $isModalOpen = domain
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 
+const $currentHeatingStationId = domain
+  .createStore<string | null>(null)
+  .on(idCapture, (_, id) => id)
+  .reset(handleCloseModal);
+
 const handleHeatingStationEdited = editHeatingStationFx.doneData;
 
 export const editHeatingStationService = {
@@ -82,6 +89,12 @@ export const editHeatingStationService = {
     handleOpenModal,
     handleEditHeatingStation,
     handleHeatingStationEdited,
+    idCapture,
   },
-  outputs: { $existingCities, $existingStreets, $isModalOpen },
+  outputs: {
+    $existingCities,
+    $existingStreets,
+    $isModalOpen,
+    $currentHeatingStationId,
+  },
 };

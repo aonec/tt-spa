@@ -7,6 +7,7 @@ export type NewHeatingStationFormProps = {
   }) => void;
   existingCities: string[] | null;
   existingStreets: string[];
+  currentHeatingStationId?: string | null;
 };
 
 export type HeatingStation = {

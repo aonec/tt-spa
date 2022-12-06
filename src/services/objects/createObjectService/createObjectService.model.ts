@@ -3,8 +3,6 @@ import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   AddHeatingStationRequest,
-  HeatingStationResponse,
-  HeatingStationResponsePagedList,
   HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
@@ -14,10 +12,8 @@ import { createHeatingStationService } from '../heatingStations/createHeatingSta
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
 import {
-  getHeatingStations,
   getHouseManagements,
   postCreateObject,
-  postHeatingStation,
 } from './createObjectService.api';
 import { ObjectCreateSubmitData } from './createObjectService.types';
 import { IsElevatorDictionaryBoolean } from './view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
@@ -41,6 +37,8 @@ const openCreateHeatingStationModal =
 const openEditHeatingStationModal =
   editHeatingStationService.inputs.handleOpenModal;
 
+const heatingStationIdCapture = editHeatingStationService.inputs.idCapture;
+
 const resetter = domain.createEvent<void>();
 
 const HouseManagementsFetchGate = createGate();
@@ -53,16 +51,6 @@ const fetchHouseManagementsFx = domain.createEffect<
   void,
   HouseManagementResponse[] | null
 >(getHouseManagements);
-
-const fetchHeatingStationFx = domain.createEffect<
-  void,
-  HeatingStationResponsePagedList | null
->(getHeatingStations);
-
-const createHeatingStationFx = domain.createEffect<
-  AddHeatingStationRequest,
-  HeatingStationResponse | null
->(postHeatingStation);
 
 const createObjectFx = domain.createEffect<
   HousingStockCreateRequest,
@@ -104,16 +92,6 @@ const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 forward({
   from: HouseManagementsFetchGate.open,
   to: fetchHouseManagementsFx,
-});
-
-forward({
-  from: HeatingStationsFetchGate.open,
-  to: fetchHeatingStationFx,
-});
-
-forward({
-  from: handleCreateHeatingStation,
-  to: createHeatingStationFx,
 });
 
 forward({
@@ -208,6 +186,7 @@ export const createObjectService = {
     handleCreateObjectSuccessDone,
     openCreateHeatingStationModal,
     openEditHeatingStationModal,
+    heatingStationIdCapture
   },
   outputs: {
     $createObjectData,
