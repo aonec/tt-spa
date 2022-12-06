@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Title } from 'ui-kit/Title';
@@ -9,7 +9,14 @@ import { Empty } from 'antd';
 import { addConnectedCommonDevicesService } from './ConnectedDevices.models';
 import { useEvent } from 'effector-react';
 import { AddPipeNodeCommonDeviceContainer } from 'services/nodes/addPipeNodeCommonDeviceService';
-import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
+import {
+  CommunicationPipePayload,
+  CreateCommonDevicePartitial,
+} from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
+import { omit } from 'lodash';
+import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
+import { CommunicationPipesListWrapper } from './ConnectedDevices.styled';
+import { CommunicationPipeListItem } from './CommunicationPipeListItem';
 
 const { inputs } = addConnectedCommonDevicesService;
 
@@ -31,6 +38,33 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     setCommunicationPipes((prev) => [...prev, communicationPipe]);
   };
 
+  const handleAddDevice = (device: CreateCommonDevicePartitial) => {
+    const pipeId = device.pipeId;
+
+    const newDevice = omit(
+      device,
+      'pipeId'
+    ) as CreatePipeHousingMeteringDeviceInNodeRequest;
+
+    setCommunicationPipes((pipes) =>
+      pipes.map((pipe) => {
+        if (pipe.id !== pipeId) return pipe;
+
+        const pipeDevices = pipe.devices || [];
+
+        return {
+          ...pipe,
+          devices: [...pipeDevices, newDevice],
+        };
+      })
+    );
+  };
+
+  useEffect(
+    () => inputs.handleMeteringDeviceCreated.watch(handleAddDevice).unsubscribe,
+    []
+  );
+
   return (
     <>
       {resource && (
@@ -42,11 +76,22 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
       )}
       <div>
         <Title>Подключенные приборы</Title>
-        <Empty
-          description="Нет подключённых приборов"
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-        />
-        <SpaceLine noTop />
+        {!communicationPipes.length && (
+          <>
+            <Empty
+              description="Нет подключённых приборов"
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+            <SpaceLine noTop />
+          </>
+        )}
+        {Boolean(communicationPipes.length) && (
+          <CommunicationPipesListWrapper>
+            {communicationPipes.map((pipe) => (
+              <CommunicationPipeListItem key={pipe.id} pipe={pipe} />
+            ))}
+          </CommunicationPipesListWrapper>
+        )}
         <LinkButton onClick={() => openAddCommonDeviceModal()}>
           + Добавить прибор
         </LinkButton>

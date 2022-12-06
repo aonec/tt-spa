@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
 
@@ -14,6 +14,10 @@ const closeAddCommonDeviceModal = domain.createEvent();
 
 const openAddPipeModal = domain.createEvent();
 const closeAddPipeModal = domain.createEvent();
+
+const handleFormComplete = domain.createEvent();
+
+const handleMeteringDeviceCreated = domain.createEvent<CreateCommonDevicePartitial>();
 
 const $requestPayload = domain
   .createStore<CreateCommonDevicePartitial>({})
@@ -44,6 +48,12 @@ forward({
   to: goNextStep,
 });
 
+sample({
+  source: $requestPayload,
+  clock: handleFormComplete,
+  target: handleMeteringDeviceCreated,
+});
+
 export const addPipeNodeCommonDeviceService = {
   inputs: {
     openAddCommonDeviceModal,
@@ -52,6 +62,8 @@ export const addPipeNodeCommonDeviceService = {
     goPrevStep,
     openAddPipeModal,
     closeAddPipeModal,
+    handleFormComplete,
+    handleMeteringDeviceCreated,
   },
   outputs: {
     $isModalOpen,

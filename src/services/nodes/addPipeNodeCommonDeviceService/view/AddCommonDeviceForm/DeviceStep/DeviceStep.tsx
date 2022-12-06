@@ -1,14 +1,17 @@
-import { Form } from 'antd';
-import { useFormik } from 'formik';
-import moment from 'moment';
 import React, { FC, useEffect } from 'react';
+import { useFormik } from 'formik';
+import { Form } from 'antd';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { MagistralsDisctionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService/view/MeteringDevicesListModal/MeteringDeviceListItem/MeteringDeviceListItem.constants';
+import { getInitialDateFieldValue } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.utils';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { addCommunicationPipeService } from '../../AddCommunicationPipeModal/AddCommunicationPipeModal.model';
+import { validationSchema } from './DeviceStep.constants';
 import {
   CreatePipeButtonWrapper,
   LineWrapper,
@@ -23,16 +26,42 @@ const { inputs } = addCommunicationPipeService;
 export const DeviceStep: FC<DeviceStepProps> = ({
   openAddPipeModal,
   communicationPipes,
+  requestPayload,
+  updateRequestPayload,
+  formId,
 }) => {
-  const { values, setFieldValue, handleChange } = useFormik({
+  const {
+    values,
+    setFieldValue,
+    handleChange,
+    errors,
+    handleSubmit,
+  } = useFormik({
     initialValues: {
-      model: '',
-      serialNumber: '',
-      lastCheckingDate: null as null | moment.Moment,
-      futureCheckingDate: null as null | moment.Moment,
-      pipeId: null as null | number,
+      model: requestPayload.model,
+      serialNumber: requestPayload.serialNumber,
+      lastCheckingDate: getInitialDateFieldValue(
+        requestPayload.lastCheckingDate
+      ),
+      futureCheckingDate: getInitialDateFieldValue(
+        requestPayload.futureCheckingDate
+      ),
+      pipeId: requestPayload.pipeId || null,
     },
-    onSubmit: () => {},
+    validationSchema,
+    enableReinitialize: true,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      if (!values.pipeId) return;
+
+      updateRequestPayload({
+        model: values.model,
+        serialNumber: values.serialNumber,
+        lastCheckingDate: values.lastCheckingDate?.format('YYYY-MM-DD'),
+        futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
+        pipeId: values.pipeId,
+      });
+    },
   });
 
   useEffect(
@@ -43,7 +72,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
   );
 
   return (
-    <Form>
+    <Form id={formId} onSubmitCapture={handleSubmit}>
       <LineWrapper>
         <FormItem label="Модель прибора">
           <Input
@@ -52,6 +81,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
             value={values.model}
             onChange={handleChange}
           />
+          <ErrorMessage>{errors.model}</ErrorMessage>
         </FormItem>
         <FormItem label="Серийный номер">
           <Input
@@ -60,6 +90,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
             value={values.serialNumber}
             onChange={handleChange}
           />
+          <ErrorMessage>{errors.serialNumber}</ErrorMessage>
         </FormItem>
         <FormItem label="Дата последней поверки прибора">
           <DatePicker
@@ -77,6 +108,9 @@ export const DeviceStep: FC<DeviceStepProps> = ({
             format="DD.MM.YYYY"
           />
         </FormItem>
+      </LineWrapper>
+      <SpaceLine />
+      <LineWrapper>
         <FormItem label="Труба">
           <Select
             placeholder="Выберите"
@@ -93,6 +127,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.pipeId}</ErrorMessage>
         </FormItem>
         <CreatePipeButtonWrapper>
           <LinkButton onClick={openAddPipeModal}>+ Добавить трубу</LinkButton>

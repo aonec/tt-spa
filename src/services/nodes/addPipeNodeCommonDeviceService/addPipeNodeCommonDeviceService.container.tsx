@@ -28,6 +28,7 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
   const goPrevStep = useEvent(inputs.goPrevStep);
   const openAddPipeModal = useEvent(inputs.openAddPipeModal);
   const closeAddPipeModal = useEvent(inputs.closeAddPipeModal);
+  const handleFormComplete = useEvent(inputs.handleFormComplete);
 
   const submitBtnText =
     currentFormStep === EXTREAM_STEP_NUMBER ? 'Добавить' : 'Далее';
@@ -60,6 +61,7 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
               requestPayload={requestPayload}
               openAddPipeModal={() => openAddPipeModal()}
               communicationPipes={communicationPipes}
+              handleFormComplete={() => handleFormComplete()}
             />
           </>
         }
