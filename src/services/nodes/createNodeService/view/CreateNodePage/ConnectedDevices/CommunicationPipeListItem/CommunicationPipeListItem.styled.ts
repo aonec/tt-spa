@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  margin-top: 4px;
-  border-radius: 4px;
-  border: 1px solid #e3e3e3;
-  padding: 16px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
+    0px 8px 16px rgba(78, 93, 146, 0.08);
+
+  margin-top: 5px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 `;
 
 export const InfoWrapper = styled.div`
@@ -12,6 +17,7 @@ export const InfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 16px;
+  padding: 16px;
 `;
 
 export const MagistralLabel = styled.span`
