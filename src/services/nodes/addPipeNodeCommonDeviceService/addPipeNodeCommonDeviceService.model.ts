@@ -54,6 +54,11 @@ sample({
   target: handleMeteringDeviceCreated,
 });
 
+forward({
+  from: handleMeteringDeviceCreated,
+  to: closeAddCommonDeviceModal,
+});
+
 export const addPipeNodeCommonDeviceService = {
   inputs: {
     openAddCommonDeviceModal,

@@ -85,10 +85,14 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
             <SpaceLine noTop />
           </>
         )}
-        {Boolean(communicationPipes.length) && (
+        {Boolean(communicationPipes.length) && resource && (
           <CommunicationPipesListWrapper>
             {communicationPipes.map((pipe) => (
-              <CommunicationPipeListItem key={pipe.id} pipe={pipe} />
+              <CommunicationPipeListItem
+                resource={resource}
+                key={pipe.id}
+                pipe={pipe}
+              />
             ))}
           </CommunicationPipesListWrapper>
         )}

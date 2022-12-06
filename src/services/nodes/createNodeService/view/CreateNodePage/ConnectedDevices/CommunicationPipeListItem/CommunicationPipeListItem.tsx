@@ -7,9 +7,11 @@ import {
   Wrapper,
 } from './CommunicationPipeListItem.styled';
 import { CommunicationPipeListItemProps } from './CommunicationPipeListItem.types';
+import { MeteringDeviceListItem } from './MeteringDeviceListItem';
 
 export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   pipe,
+  resource,
 }) => {
   return (
     <Wrapper>
@@ -22,6 +24,11 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
           {pipe.magistral && MagistralsDisctionary[pipe.magistral]}
         </div>
       </InfoWrapper>
+      <div>
+        {pipe.devices?.map((device) => (
+          <MeteringDeviceListItem device={device} resource={resource} />
+        ))}
+      </div>
     </Wrapper>
   );
 };
