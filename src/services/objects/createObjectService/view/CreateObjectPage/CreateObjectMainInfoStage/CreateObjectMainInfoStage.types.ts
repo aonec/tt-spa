@@ -2,6 +2,7 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
+  HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
 } from 'myApi';
@@ -16,7 +17,7 @@ export type CreateObjectMainInfoStageProps = {
   heatingStations: HeatingStationResponsePagedList | null;
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void
-  heatingStationIdCapture: (payload: string) => void
+  heatingStationCapture: (payload: HeatingStationResponse) => void
 };
 
 export type ObjectMainInfoValues = {

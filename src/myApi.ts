@@ -29,7 +29,7 @@ export interface AddApartmentActRequest {
 export interface AddHeatingStationRequest {
   name: string;
   isThermalChamber?: boolean;
-  address?: CreateAddressRequest | null;
+  address: CreateAddressRequest;
 }
 
 export interface AddNodeDocumentsRequest {
@@ -2204,6 +2204,7 @@ export interface HeatingStationResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isThermalChamber: boolean;
   address: AddressResponse | null;
   housingStocks: HousingStockShortResponse[] | null;
 }

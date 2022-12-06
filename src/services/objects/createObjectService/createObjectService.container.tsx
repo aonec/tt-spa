@@ -39,7 +39,7 @@ export const CreateObjectContainer = () => {
     inputs.openEditHeatingStationModal
   );
 
-  const heatingStationIdCapture = useEvent(inputs.heatingStationIdCapture);
+  const heatingStationCapture = useEvent(inputs.heatingStationCapture);
 
   const goBackStage = useEvent(inputs.goBackStage);
 
@@ -77,7 +77,7 @@ export const CreateObjectContainer = () => {
         closePreviewModal={() => closePreviewModal()}
         openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
         openEditHeatingStationModal={() => openEditHeatingStationModal()}
-        heatingStationIdCapture={heatingStationIdCapture}
+        heatingStationCapture={heatingStationCapture}
       />
     </>
   );

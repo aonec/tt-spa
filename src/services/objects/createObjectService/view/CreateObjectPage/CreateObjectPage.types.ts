@@ -1,4 +1,5 @@
 import {
+  HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
 } from 'myApi';
@@ -20,5 +21,5 @@ export type CreateObjectPageProps = {
   closePreviewModal: () => void;
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void
-  heatingStationIdCapture: (payload: string) => void
+  heatingStationCapture: (payload: HeatingStationResponse | undefined) => void
 };

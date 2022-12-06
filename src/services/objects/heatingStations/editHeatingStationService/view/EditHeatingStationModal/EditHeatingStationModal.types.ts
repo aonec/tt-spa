@@ -1,3 +1,4 @@
+import { HeatingStationResponse } from 'myApi';
 import { HeatingStation } from 'services/objects/heatingStations/NewHeatingStationForm/NewHeatingStationForm.types';
 
 export type EditHeatingStationModalProps = {
@@ -9,5 +10,5 @@ export type EditHeatingStationModalProps = {
   handleCloseModal: () => void;
   existingCities: string[] | null;
   existingStreets: string[];
-  currentHeatingStationId: string | null;
+  openedHeatingStationData: HeatingStationResponse | null
 };

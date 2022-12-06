@@ -1,3 +1,5 @@
+import { HeatingStationResponse } from "myApi";
+
 export type NewHeatingStationFormProps = {
   formId: string;
   handleCreateHeatingStation?: (payload: HeatingStation) => void;
@@ -8,6 +10,7 @@ export type NewHeatingStationFormProps = {
   existingCities: string[] | null;
   existingStreets: string[];
   currentHeatingStationId?: string | null;
+  openedHeatingStationData?: HeatingStationResponse | null
 };
 
 export type HeatingStation = {

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from 'effector-react';
+import { useEvent, useStore, useStoreMap } from 'effector-react';
 import React from 'react';
 import { editHeatingStationService } from './editHeatingStationService.model';
 import { EditHeatingStationModal } from './view/EditHeatingStationModal';
@@ -11,8 +11,11 @@ export const EditHeatingStationContainer = () => {
   const existingCities = useStore(outputs.$existingCities);
   const existingStreets = useStore(outputs.$existingStreets);
 
-  const currentHeatingStationId = useStore(outputs.$currentHeatingStationId);
+  const currentHeatingStation = useStore(outputs.$currentHeatingStation);
 
+  const heatingStations = useStore(outputs.$heatingStations);
+
+ 
   const handleCloseModal = useEvent(inputs.handleCloseModal);
 
   const handleEditHeatingStation = useEvent(inputs.handleEditHeatingStation);
@@ -25,7 +28,7 @@ export const EditHeatingStationContainer = () => {
         handleCloseModal={() => handleCloseModal()}
         existingCities={existingCities}
         existingStreets={existingStreets}
-        currentHeatingStationId={currentHeatingStationId}
+        openedHeatingStationData={currentHeatingStation}
       />
     </>
   );

@@ -37,7 +37,8 @@ const openCreateHeatingStationModal =
 const openEditHeatingStationModal =
   editHeatingStationService.inputs.handleOpenModal;
 
-const heatingStationIdCapture = editHeatingStationService.inputs.idCapture;
+const heatingStationCapture =
+  editHeatingStationService.inputs.currentHeatingStatitonDataCapture;
 
 const resetter = domain.createEvent<void>();
 
@@ -186,7 +187,7 @@ export const createObjectService = {
     handleCreateObjectSuccessDone,
     openCreateHeatingStationModal,
     openEditHeatingStationModal,
-    heatingStationIdCapture
+    heatingStationCapture,
   },
   outputs: {
     $createObjectData,

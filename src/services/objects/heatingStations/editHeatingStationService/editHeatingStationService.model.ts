@@ -7,6 +7,7 @@ import {
 } from 'myApi';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
+import { displayHeatingStationsService } from '../displayHeatingStationsService';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
 import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.types';
 import { editHeatingStation } from './editHeatingStationService.api';
@@ -22,7 +23,9 @@ const handleEditHeatingStation = domain.createEvent<{
 const handleOpenModal = domain.createEvent<void>();
 const handleCloseModal = domain.createEvent<void>();
 
-const idCapture = domain.createEvent<string>();
+const currentHeatingStatitonDataCapture = domain.createEvent<
+  HeatingStationResponse | undefined
+>();
 
 const editHeatingStationFx = domain.createEffect<
   requestParams,
@@ -76,10 +79,12 @@ const $isModalOpen = domain
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 
-const $currentHeatingStationId = domain
-  .createStore<string | null>(null)
-  .on(idCapture, (_, id) => id)
+const $currentHeatingStation = domain
+  .createStore<HeatingStationResponse | null>(null)
+  .on(currentHeatingStatitonDataCapture, (_, id) => id)
   .reset(handleCloseModal);
+
+const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
 const handleHeatingStationEdited = editHeatingStationFx.doneData;
 
@@ -89,12 +94,13 @@ export const editHeatingStationService = {
     handleOpenModal,
     handleEditHeatingStation,
     handleHeatingStationEdited,
-    idCapture,
+    currentHeatingStatitonDataCapture,
   },
   outputs: {
     $existingCities,
     $existingStreets,
     $isModalOpen,
-    $currentHeatingStationId,
+    $currentHeatingStation,
+    $heatingStations,
   },
 };

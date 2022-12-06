@@ -57,7 +57,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   heatingStations,
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
-  heatingStationIdCapture,
+  heatingStationCapture,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -241,8 +241,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 <PencilIconSc
                   onClick={() => {
                     openEditHeatingStationModal();
-                    values.heatingStationId &&
-                      heatingStationIdCapture(values.heatingStationId);
+                    selectedHeatingStation &&
+                    heatingStationCapture(selectedHeatingStation);
                   }}
                 />
                 <XIconSc

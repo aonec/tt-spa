@@ -30,10 +30,8 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   existingCities,
   existingStreets,
   handleEditHeatingStation,
-  currentHeatingStationId,
+  openedHeatingStationData,
 }) => {
-  const id = currentHeatingStationId;
-
   const {
     values,
     handleSubmit,
@@ -41,16 +39,22 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
     errors,
   } = useFormik<HeatingStation>({
     initialValues: {
-      isThermalChamber: null,
-      name: null,
-      address: { city: null, street: '', number: null },
+      isThermalChamber: openedHeatingStationData?.isThermalChamber
+        ? HeatingStationType.ThermalChamber
+        : HeatingStationType.CentralHeatingStation || null,
+      name: openedHeatingStationData?.name || null,
+      address: {
+        city: openedHeatingStationData?.address?.city || null,
+        street: openedHeatingStationData?.address?.street || '',
+        number: openedHeatingStationData?.address?.housingStockNumber || null,
+      },
     },
     enableReinitialize: true,
     onSubmit: (data) => {
       handleCreateHeatingStation && handleCreateHeatingStation(data);
       handleEditHeatingStation &&
-        currentHeatingStationId &&
-        handleEditHeatingStation({ id: currentHeatingStationId, data });
+        openedHeatingStationData?.id &&
+        handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
     },
     validateOnChange: false,
     validationSchema,
