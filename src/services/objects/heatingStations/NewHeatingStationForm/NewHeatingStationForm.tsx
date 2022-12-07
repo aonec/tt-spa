@@ -39,9 +39,9 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
     errors,
   } = useFormik<HeatingStation>({
     initialValues: {
-      isThermalChamber: openedHeatingStationData?.isThermalChamber
+      isThermalChamber: (openedHeatingStationData?.isThermalChamber
         ? HeatingStationType.ThermalChamber
-        : HeatingStationType.CentralHeatingStation || null,
+        : HeatingStationType.CentralHeatingStation) || null,
       name: openedHeatingStationData?.name || null,
       address: {
         city: openedHeatingStationData?.address?.city || null,

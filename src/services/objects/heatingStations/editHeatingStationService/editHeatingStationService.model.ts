@@ -7,7 +7,6 @@ import {
 } from 'myApi';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { EffectFailDataAxiosError } from 'types';
-import { displayHeatingStationsService } from '../displayHeatingStationsService';
 import { HeatingStationTypeRequestDictionary } from '../NewHeatingStationForm/newHeatingStationForm.constants';
 import { HeatingStation } from '../NewHeatingStationForm/NewHeatingStationForm.types';
 import { editHeatingStation } from './editHeatingStationService.api';
@@ -84,8 +83,6 @@ const $currentHeatingStation = domain
   .on(currentHeatingStatitonDataCapture, (_, id) => id)
   .reset(handleCloseModal);
 
-const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
-
 const handleHeatingStationEdited = editHeatingStationFx.doneData;
 
 export const editHeatingStationService = {
@@ -101,6 +98,5 @@ export const editHeatingStationService = {
     $existingStreets,
     $isModalOpen,
     $currentHeatingStation,
-    $heatingStations,
   },
 };
