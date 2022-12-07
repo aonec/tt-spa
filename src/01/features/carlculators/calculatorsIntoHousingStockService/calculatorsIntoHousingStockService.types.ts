@@ -10,6 +10,7 @@ import {
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;
   'Filter.DiameterRange.To'?: number;
+  'Filter.PipeDiameters'?: number[];
   'Filter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
   'Filter.Resource'?: EResourceType;
   'Filter.Model'?: string;

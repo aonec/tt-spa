@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { displayDevicesService } from '../displayDevicesService';
 import { DevicesProfile } from './view/DevicesProfile';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
+import { currentUserService } from 'services/currentUserService';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
 
 const { outputs, inputs, gates } = displayDevicesService;
@@ -16,6 +17,7 @@ export const DevicesProfileContainer = () => {
 
   const isOpen = useStore(outputs.$isExtendedSearchOpen);
   const searchState = useStore(outputs.$searchPayload);
+  const diametersConfig = useStore(currentUserService.outputs.$diametersConfig);
   const devicesSearchType = useStore(outputs.$devicesSearchType);
   const serialNumber = useStore(outputs.$serialNumber);
 
@@ -56,6 +58,7 @@ export const DevicesProfileContainer = () => {
         open={open}
         searchState={searchState}
         clearSearchPayload={clearSearchPayload}
+        diametersConfig={diametersConfig}
         devicesSearchType={devicesSearchType}
         setDevicesSearchType={setDevicesSearchType}
         serialNumber={serialNumber}

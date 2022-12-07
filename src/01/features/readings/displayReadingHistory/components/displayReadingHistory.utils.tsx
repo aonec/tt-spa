@@ -2,7 +2,9 @@ import React from 'react';
 import { CorrectReadingValuesValidationResult } from '../../../../hooks/useReadings';
 import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import {
+  ApartmentResponse,
   EResourceType,
+  HomeownerAccountListResponse,
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceResponse,
@@ -10,8 +12,7 @@ import {
 import moment from 'moment';
 import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import _ from 'lodash/fp';
-import { round } from 'lodash';
+import _, { round } from 'lodash';
 
 export function getNewReadingDate(month: number, year: number) {
   const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
@@ -167,3 +168,23 @@ export function getPreviousReadingByHistory(
 
   return res;
 }
+
+export const getRecentlyReplacedAccount = (
+  homeownerAccounts: HomeownerAccountListResponse[],
+  actualHomeownerAccount?: HomeownerAccountListResponse
+) => {
+  if (homeownerAccounts.length <= 1) return null;
+
+  const actualPersonalAccountNumber =
+    actualHomeownerAccount?.personalAccountNumber;
+
+  // находим такой лицевой счет, который был заменен на актуальный
+  const recentlyPeplacedAccount = _.find(homeownerAccounts, (account) => {
+    const actualAccountNumberFromReplaced =
+      account.replacedByAccount?.personalAccountNumber;
+
+    return actualAccountNumberFromReplaced === actualPersonalAccountNumber;
+  });
+
+  return recentlyPeplacedAccount || null;
+};
