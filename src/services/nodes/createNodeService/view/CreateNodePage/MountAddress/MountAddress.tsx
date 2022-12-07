@@ -44,6 +44,9 @@ export const MountAddress: FC<MountAddressProps> = ({
     };
   }, [savedHousingStock, address]);
 
+  const isFieldsDisabled =
+    (Boolean(housingStock) && isDisabledAddress) || isLoading;
+
   const {
     values,
     handleChange,
@@ -53,7 +56,7 @@ export const MountAddress: FC<MountAddressProps> = ({
   } = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      if (housingStock) {
+      if (housingStock && isFieldsDisabled) {
         updateRequestPayload({ housingStockId: housingStock.id });
 
         return;
@@ -79,9 +82,6 @@ export const MountAddress: FC<MountAddressProps> = ({
     validateOnBlur: false,
     enableReinitialize: true,
   });
-
-  const isFieldsDisabled =
-    (Boolean(housingStock) && isDisabledAddress) || isLoading;
 
   const prparedStreetsOptions = getPreparedStreetsOptions(
     values.street,

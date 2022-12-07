@@ -1,11 +1,12 @@
 import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
+  EResourceType,
   HousingStockResponse,
   NodeServiceZoneListResponse,
 } from 'myApi';
@@ -15,6 +16,7 @@ import {
   getNodeServiceZones,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { addPipeNodeCommonDeviceService } from '../addPipeNodeCommonDeviceService';
 
 const domain = createDomain('createNodeService');
 
@@ -41,13 +43,15 @@ const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
 
 const $stepNumber = domain
-  .createStore(2)
-  .on(goNextStep, (number) => (number === 3 ? number : number + 1))
-  .on(goPrevStep, (number) => (number === 0 ? number : number - 1))
+  .createStore(3)
+  .on(goNextStep, (step) => step + 1)
+  .on(goPrevStep, (step) => step - 1)
   .reset(CreateNodeGate.close);
 
 const $requestPayload = domain
-  .createStore<CreatePipeNodeRequest>({})
+  .createStore<CreatePipeNodeRequest>({
+    resource: EResourceType.ColdWaterSupply,
+  })
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(CreateNodeGate.close);
 
@@ -95,9 +99,11 @@ guard({
   target: fetchHousingStockFx,
 });
 
-forward({
-  from: updateRequestPayload,
-  to: goNextStep,
+guard({
+  source: $stepNumber,
+  clock: updateRequestPayload,
+  filter: (stepNumber) => stepNumber < 3,
+  target: goNextStep,
 });
 
 guard({
@@ -124,6 +130,8 @@ export const createNodeService = {
       createCalcuatorService.inputs.openCreateCalculatorModal,
     openCreateNodeServiceZoneModal:
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
+    openAddCommonDeviceModal:
+      addPipeNodeCommonDeviceService.inputs.openAddCommonDeviceModal,
   },
   outputs: {
     $housingStock,
