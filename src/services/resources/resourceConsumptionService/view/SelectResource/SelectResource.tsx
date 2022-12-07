@@ -16,6 +16,7 @@ export const SelectResource: FC<SelectResourceProps> = ({
           setResource={setResource}
           resource={resourceType as EResourceType}
           active={selectedResource === resourceType}
+          key={resourceType}
         />
       ))}
     </Wrapper>

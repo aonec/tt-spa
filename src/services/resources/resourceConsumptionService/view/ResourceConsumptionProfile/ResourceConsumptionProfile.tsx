@@ -11,6 +11,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   resourceConsumptionFilter,
   setResource,
   setFilter,
+  housingConsumptionData,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
@@ -23,7 +24,10 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
         />
 
         <WithLoader isLoading={isLoading}>
-          <ResourceConsumptionGraph />
+          <ResourceConsumptionGraph
+            housingConsumptionData={housingConsumptionData}
+            resource={ResourceType}
+          />
         </WithLoader>
       </GraphWrapper>
       <ResourceConsumptionFilter

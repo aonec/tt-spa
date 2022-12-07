@@ -24,6 +24,7 @@ export const ResourceConsumptionContainer = () => {
         resourceConsumptionFilter={resourceConsumptionFilter}
         setResource={setResource}
         setFilter={setFilter}
+        housingConsumptionData={housingConsumptionData}
       />
     </>
   );

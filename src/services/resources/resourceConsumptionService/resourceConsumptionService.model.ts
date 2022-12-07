@@ -40,10 +40,12 @@ const getHousingConsumptionFx = domain.createEffect<
   HousingConsumptionDataForTwoMonth
 >(fetchHousingConsumptionsForTwoMonth);
 
+const clearData = domain.createEvent();
+
 const $housingConsumptionData = domain
   .createStore<HousingConsumptionDataForTwoMonth | null>(null)
   .on(getHousingConsumptionFx.doneData, (_, data) => data)
-  .reset(clearStore);
+  .reset(clearData);
 
 const ResourceConsumptionGate = createGate();
 
@@ -63,7 +65,12 @@ guard({
 
 forward({
   from: ResourceConsumptionGate.close,
-  to: clearStore,
+  to: [clearStore, clearData],
+});
+
+forward({
+  from: getHousingConsumptionFx.failData,
+  to: clearData,
 });
 
 export const resourceConsumptionService = {
@@ -78,4 +85,3 @@ export const resourceConsumptionService = {
   },
   gates: { ResourceConsumptionGate },
 };
-$resourceConsumptionFilter.watch(console.log);
