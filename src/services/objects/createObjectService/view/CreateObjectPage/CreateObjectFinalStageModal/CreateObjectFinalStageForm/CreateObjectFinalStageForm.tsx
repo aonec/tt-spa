@@ -19,6 +19,7 @@ import {
   NonResidentialHouseTypeDictionary,
 } from '../../CreateObjectMainInfoStage/createObjectMainInfoStage.constants';
 import { ElevatorDictionary } from '../CreateObjectFinalStageModal.constants';
+import { AddressField } from './AddressField';
 
 export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
   formId,
@@ -27,7 +28,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
   heatingStations,
 }) => {
   const houseManagrmentName = houseManagements?.find(
-    (e) => e.id === createObjectData?.houseManagement
+    (elem) => elem.id === createObjectData?.houseManagement
   )?.name;
 
   const objectCategory = createObjectData?.objectCategotry;
@@ -43,7 +44,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     ];
 
   const heatingStation = heatingStations?.items?.find(
-    (e) => e.id === createObjectData?.heatingStationId
+    (elem) => elem.id === createObjectData?.heatingStationId
   );
 
   return (
@@ -53,20 +54,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
 
         <GridContainer>
           <FieldDescrition>Основной адрес</FieldDescrition>
-          {createObjectData?.house ? (
-            <Field>
-              {createObjectData.city}, ул. {createObjectData.street},
-              <SpacesHouseNumber>{createObjectData.house}</SpacesHouseNumber>
-              {createObjectData.corpus ? `к. ${createObjectData.corpus} ` : ''}
-              {createObjectData.index ? (
-                <SpacedIndex>({createObjectData?.index})</SpacedIndex>
-              ) : (
-                ''
-              )}
-            </Field>
-          ) : (
-            <Field>-</Field>
-          )}
+          <AddressField createObjectData={createObjectData} />
         </GridContainer>
         <SpaceLine />
 
@@ -77,12 +65,16 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
                 Адреса, под которыми известен объект
               </FieldDescrition>
               <GridContainerForAdditionalAddresses>
-                {createObjectData.additionalAddresses.map((e, i, arr) => (
+                {createObjectData.additionalAddresses.map((elem) => (
                   <FieldForAdditionalAddresses>
-                    ул. {e.street},
-                    <SpacesHouseNumber>{e.house}</SpacesHouseNumber>
-                    {e.corpus ? `к. ${e.corpus} ` : ''}
-                    {e.index ? <SpacedIndex>({e?.index})</SpacedIndex> : ''}
+                    ул. {elem.street},
+                    <SpacesHouseNumber>{elem.house}</SpacesHouseNumber>
+                    {elem.corpus ? `к. ${elem.corpus} ` : ''}
+                    {elem.index ? (
+                      <SpacedIndex>({elem?.index})</SpacedIndex>
+                    ) : (
+                      ''
+                    )}
                   </FieldForAdditionalAddresses>
                 ))}
               </GridContainerForAdditionalAddresses>

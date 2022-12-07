@@ -18,7 +18,6 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
   setEditModalOpen,
   setInputTypeDisplayingDivShow,
   formId,
-  handleCreateHeatingStation,
 }) => {
   const {
     values,
@@ -33,12 +32,11 @@ export const NewHeatingPointForm: FC<NewHeatingPointFormProps> = ({
     enableReinitialize: true,
     onSubmit: (data) => {
       setNewHeatingPointModalData(data);
-      console.log(data);
       setCreateModalOpen && setCreateModalOpen(false);
       setEditModalOpen && setEditModalOpen(false);
       setInputTypeDisplayingDivShow && setInputTypeDisplayingDivShow(true);
     },
-    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema,
   });
   return (
