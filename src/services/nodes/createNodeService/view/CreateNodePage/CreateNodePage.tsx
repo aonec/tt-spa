@@ -28,6 +28,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   requestPayload,
   nodeServiceZones,
   openCreateNodeServiceZoneModal,
+  openConfiramtionModal,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -62,6 +63,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         goPrevStep={goPrevStep}
         requestPayload={requestPayload}
         updateRequestPayload={updateRequestPayload}
+        openConfiramtionModal={openConfiramtionModal}
       />
     ),
   };

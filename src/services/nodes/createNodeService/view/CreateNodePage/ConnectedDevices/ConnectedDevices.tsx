@@ -24,6 +24,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   goPrevStep,
   requestPayload,
   updateRequestPayload,
+  openConfiramtionModal,
 }) => {
   const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
 
@@ -114,7 +115,9 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20}>Создать узел</Button>
+          <Button sidePadding={20} onClick={openConfiramtionModal}>
+            Создать узел
+          </Button>
         </Footer>
       </div>
     </>
