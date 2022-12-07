@@ -89,12 +89,12 @@ const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesA
   $housingsByFilter,
   $pageNumber
 ).map(([searchPayload, housingsByFilter, pageNumber]) => {
-  const apartmentId = housingsByFilter?.current?.id;
+  const housingStockId = housingsByFilter?.current?.id;
 
-  if (!apartmentId) return null;
+  if (!housingStockId) return null;
 
   const payload: GetIndividualDevicesApartments = {
-    HousingStockId: apartmentId,
+    HousingStockId: housingStockId,
     ApartmentNumber: searchPayload?.Apartment || undefined,
     'DeviceFilter.Resource': searchPayload?.Resource || undefined,
     'DeviceFilter.Model': searchPayload?.Model,

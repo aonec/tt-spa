@@ -264,11 +264,18 @@ export interface ApartmentCreateRequest {
   housingStockId: number;
   number: string;
 
-  /** @format double */
-  square?: number;
+  /** @format int32 */
+  floor?: number | null;
+
+  /** @format float */
+  square?: number | null;
 
   /** @format int32 */
-  numberOfLiving?: number;
+  numberOfLiving?: number | null;
+
+  /** @format int32 */
+  normativeNumberOfLiving?: number | null;
+  mainHomeownerAccountNumber?: string | null;
   comment?: string | null;
 
   /** @format int32 */
@@ -359,6 +366,9 @@ export interface ApartmentResponse {
   normativeNumberOfLiving: number | null;
 
   /** @format int32 */
+  floor: number | null;
+
+  /** @format int32 */
   coldWaterRiserCount: number | null;
 
   /** @format int32 */
@@ -395,10 +405,37 @@ export interface ApartmentStatusSetRequest {
   documentIds?: number[] | null;
 }
 
+export interface ApartmentUpdateRequest {
+  /** @format double */
+  square?: number | null;
+
+  /** @format int32 */
+  numberOfLiving?: number | null;
+
+  /** @format int32 */
+  normativeNumberOfLiving?: number | null;
+
+  /** @format uuid */
+  mainHomeownerAccountId?: string | null;
+  comment?: string | null;
+
+  /** @format int32 */
+  coldWaterRiserCount?: number | null;
+
+  /** @format int32 */
+  hotWaterRiserCount?: number | null;
+}
+
 export interface ArchivesDataGroup {
   header?: string | null;
   measure?: string | null;
+  groupType?: ArchivesDataGroupType;
   data?: ArchivesDataGroupValue[] | null;
+}
+
+export enum ArchivesDataGroupType {
+  Undefined = "Undefined",
+  Volume = "Volume",
 }
 
 export interface ArchivesDataGroupValue {
@@ -850,7 +887,7 @@ export interface CreateCommunicationPipeRequest {
 
   /** @format int32 */
   diameter?: number;
-  devices?: CreatePipeHousingMeteringDeviceRequest[] | null;
+  devices?: CreatePipeHousingMeteringDeviceInNodeRequest[] | null;
 }
 
 export interface CreateCurrentTransformerRequest {
@@ -1044,6 +1081,38 @@ export interface CreatePipeConnectionRequest {
 
   /** @format int32 */
   diameter?: number;
+}
+
+export interface CreatePipeHousingMeteringDeviceInNodeRequest {
+  serialNumber: string;
+  sealNumber?: string | null;
+
+  /** @format date-time */
+  sealInstallationDate?: string | null;
+
+  /** @format date-time */
+  lastCheckingDate?: string | null;
+
+  /** @format date-time */
+  futureCheckingDate?: string | null;
+  documentsIds?: number[] | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format double */
+  scaleFactor?: number | null;
+
+  /** @format date-time */
+  openingDate?: string | null;
+  housingMeteringDeviceType: EHousingMeteringDeviceType;
+  model: string;
+
+  /** @format double */
+  minReadingsValue?: number | null;
+
+  /** @format double */
+  maxReadingsValue?: number | null;
 }
 
 export interface CreatePipeHousingMeteringDeviceRequest {
@@ -1406,6 +1475,7 @@ export enum EIndividualDeviceReadingsSource {
 }
 
 export enum ELivingHouseType {
+  None = "None",
   ApartmentHouse = "ApartmentHouse",
   Townhouse = "Townhouse",
   Private = "Private",
@@ -1543,6 +1613,7 @@ export interface ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse
 }
 
 export enum ENonResidentialHouseType {
+  None = "None",
   Social = "Social",
   Commercial = "Commercial",
 }
@@ -1962,6 +2033,14 @@ export interface FullAddressResponse {
   comment: string | null;
 }
 
+export interface GetDataForHousingConsumptionPlotResponse {
+  housingConsumption: DateTimeDoubleDictionaryItem[] | null;
+}
+
+export interface GetDataForHousingConsumptionPlotResponseSuccessApiResponse {
+  successResponse: GetDataForHousingConsumptionPlotResponse | null;
+}
+
 export interface GetDataForIndividualDevicesConsumptionPlotResponse {
   normativeConsumption: DateTimeDoubleDictionaryItem[] | null;
   subscriberConsumption: DateTimeDoubleDictionaryItem[] | null;
@@ -2356,6 +2435,7 @@ export interface HomeownerAccountUpdateRequest {
 
   /** @format double */
   ownershipArea?: number | null;
+  isMainOnApartment?: boolean | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -2635,6 +2715,14 @@ export interface HousingStock {
   address?: HouseAddress | null;
 }
 
+export interface HousingStockAddressCreateRequest {
+  district?: string | null;
+  city: string;
+  street: string;
+  number: string;
+  corpus?: string | null;
+}
+
 export interface HousingStockAddressItemResponse {
   /** @format int32 */
   id: number;
@@ -2658,14 +2746,23 @@ export interface HousingStockAddressResponse {
 export interface HousingStockCreateRequest {
   /** @format uuid */
   heatingStationId: string;
-  hasIndividualHeatingStation?: boolean;
-  corpus?: string | null;
+  mainAddress: HousingStockAddressCreateRequest;
+  otherAddresses?: HousingStockAddressCreateRequest[] | null;
   coordinates?: Point | null;
+
+  /** @format uuid */
+  houseManagementId: string;
+  houseCategory: EHouseCategory;
+  livingHouseType?: ELivingHouseType | null;
+  nonResidentialHouseType?: ENonResidentialHouseType | null;
+
+  /** @format int32 */
+  numberOfFloors?: number | null;
+
+  /** @format int32 */
+  numberOfEntrances?: number | null;
+  isThereElevator?: boolean | null;
   index?: string | null;
-  district?: string | null;
-  city: string;
-  street: string;
-  number: string;
 }
 
 export interface HousingStockDeviceListResponse {
@@ -2705,8 +2802,11 @@ export interface HousingStockListResponse {
 
   /** @format int32 */
   managingFirmId: number;
-  houseCategory: string | null;
-  houseType: string | null;
+  houseCategory: EHouseCategory;
+  livingHouseType: ELivingHouseType;
+  nonResidentialHouseType: ENonResidentialHouseType;
+  houseCategoryString: string | null;
+  houseTypeString: string | null;
 
   /** @format int32 */
   numberOfTasks: number | null;
@@ -2755,8 +2855,11 @@ export interface HousingStockResponse {
   fiasId: string | null;
   index: string | null;
   coordinates: Point | null;
-  houseCategory: string | null;
-  houseType: string | null;
+  houseCategory: EHouseCategory;
+  livingHouseType: ELivingHouseType | null;
+  nonResidentialHouseType: ENonResidentialHouseType | null;
+  houseCategoryString: string | null;
+  houseTypeString: string | null;
 
   /** @format int32 */
   numberOfEntrances: number | null;
@@ -2814,6 +2917,8 @@ export interface HousingStockShortResponse {
 
 export interface HousingStockUpdateRequest {
   houseCategory?: EHouseCategory | null;
+  livingHouseType?: ELivingHouseType | null;
+  nonResidentialHouseType?: ENonResidentialHouseType | null;
 
   /** @format int32 */
   numberOfEntrances?: number | null;
@@ -5877,24 +5982,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (
-      apartmentId: number,
-      query?: {
-        Square?: number;
-        NumberOfLiving?: number;
-        NormativeNumberOfLiving?: number;
-        MainHomeownerAccountId?: string;
-        Comment?: string;
-        ColdWaterRiserCount?: number;
-        HotWaterRiserCount?: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest, params: RequestParams = {}) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: "PUT",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -6343,6 +6437,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         "Filter.DiameterRange.From"?: number;
         "Filter.DiameterRange.To"?: number;
+        "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
@@ -6391,6 +6486,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         "Filter.DiameterRange.From"?: number;
         "Filter.DiameterRange.To"?: number;
+        "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
@@ -9613,6 +9709,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "DevicesFilter.Question"?: string;
         "DevicesFilter.DiameterRange.From"?: number;
         "DevicesFilter.DiameterRange.To"?: number;
+        "DevicesFilter.PipeDiameters"?: number[];
         "CommercialDateRange.From"?: string;
         "CommercialDateRange.To"?: string;
         PageNumber?: number;
@@ -10563,6 +10660,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<PipeNodeMeteringDeviceResponse[], any>({
         path: `/api/PipeNodes/${pipeNodeId}/MeteringDevices`,
         method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesDataForHousingConsumptionPlotList
+     * @summary HousingMeteringDeviceReadingsRead
+     * @request GET:/api/PipeNodes/DataForHousingConsumptionPlot
+     * @secure
+     */
+    pipeNodesDataForHousingConsumptionPlotList: (
+      query: { HousingStockId: number; ResourceType: EResourceType; From: string; To: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetDataForHousingConsumptionPlotResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/PipeNodes/DataForHousingConsumptionPlot`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,

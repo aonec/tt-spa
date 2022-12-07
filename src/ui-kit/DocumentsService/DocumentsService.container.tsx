@@ -16,7 +16,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   max = Infinity,
   documents,
   onChange,
-  lable,
+  label,
   componentType = DocumentsUploadComponentType.DragAndDrop,
 }) => {
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
@@ -34,7 +34,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           accept={accept}
           fileHandler={(files) => handleFile(files[0])}
           uniqId={uniqId}
-          text={lable}
+          text={label}
           style={{ marginBottom: 15 }}
         />
       )}
@@ -52,7 +52,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
       documents={documents}
       accept={accept}
       uniqId={uniqId}
-      lable={lable}
+      label={label}
       isMaxDocuments={isMaxDocuments}
     />
   );

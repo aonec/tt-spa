@@ -17,7 +17,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,
   accept,
   uniqId,
-  lable = 'Загрузить файл',
+  label = 'Загрузить файл',
   isLoading,
   documents,
   isMaxDocuments,
@@ -52,6 +52,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
     <Wrapper>
       {!isLoading && !isMaxDocuments && (
         <input
+          disabled={isLoading}
           id={id}
           type="file"
           name="file"
@@ -69,7 +70,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
           type="ghost"
           icon={<UploadIcon />}
         >
-          {lable}
+          {label}
         </Button>
       </label>
 

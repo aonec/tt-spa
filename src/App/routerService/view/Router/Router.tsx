@@ -4,10 +4,8 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  AddNode,
   CalculatorProfile,
   Contractor,
-  DevicesFromSearch,
   EditCalculator,
   EditNode,
   ErrorPage,
@@ -41,9 +39,12 @@ import { StatisticsPage } from '01/features/statistics';
 import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
+import { EditNodeContainer } from 'services/devices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
+import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
+import { CreateNodeContainer } from 'services/nodes/createNodeService';
 
 const { gates } = objectProfileService;
 
@@ -82,8 +83,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/objects/:housingStockId/add_node"
-                  component={AddNode}
+                  path="/objects/:housingStockId/addNode"
+                  component={CreateNodeContainer}
                   exact
                 />
 
@@ -115,6 +116,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route
+                  path="/devices/addNode"
+                  component={CreateNodeContainer}
+                  exact
+                />
+
+                <Route
                   path="/devices/:type?"
                   component={DevicesPageContainer}
                   exact
@@ -131,13 +138,16 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   component={EditElectricNodeContainer}
                 />
 
-                <Route path="/devices/" component={DevicesFromSearch} exact />
-
                 <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                   <EditManagingFirmUserPage />
                 </Route>
                 <Route path="/companyProfile/:section?" component={Settings} />
                 <Route path="/companyProfile/staff/:id" component={Settings} />
+
+                <Route
+                  path="/userProfile/:id"
+                  component={EmployeeProfileContainer}
+                />
 
                 <Route path="/devices/(\\d+)" component={Devices} exact />
 
@@ -155,7 +165,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
-                <Route path="/nodes/:nodeId/edit" component={EditNode} exact />
+                <Route
+                  path="/nodes/:nodeId/edit"
+                  component={EditNodeContainer}
+                  exact
+                />
 
                 <Route
                   path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"

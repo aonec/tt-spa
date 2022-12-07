@@ -9,6 +9,8 @@ import axios from 'axios';
 import { nodeService } from '../../../../../displayNode/models';
 import { addNodeCalculatorService } from '../models';
 import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
+import { createGate } from 'effector-react';
 
 const createCalcuatorDomain = createDomain();
 
@@ -22,6 +24,8 @@ const previousStage = createCalcuatorDomain.createEvent();
 const setStage = createCalcuatorDomain.createEvent<Stage>();
 
 const resetStage = createCalcuatorDomain.createEvent();
+
+const CreateCalculatorGate = createGate<{ housingStockId?: number }>();
 
 $stage.on(setStage, (_, value) => value);
 
@@ -53,7 +57,8 @@ const baseInfoAddNodeCalculatorConnectionForm = createForm({
 
 const createCalculatorFx = createCalcuatorDomain.createEffect<
   CreateCalculatorRequest,
-  MeteringDeviceResponse
+  MeteringDeviceResponse,
+  EffectFailDataAxiosError
 >((payload) => axios.post('Calculators', payload));
 
 const saveButtonClicked = createCalcuatorDomain.createEvent();
@@ -62,15 +67,17 @@ sample({
   source: combine(
     nodeService.outputs.$node,
     baseInfoAddNodeCalculatorConnectionForm.$values,
-    addNodeCalculatorService.inputs.connectionSettingsForm.$values
+    addNodeCalculatorService.inputs.connectionSettingsForm.$values,
+    CreateCalculatorGate.state
   ),
   clock: saveButtonClicked,
   fn: ([
     node,
     { serialNumber, lastCheckingDate, futureCheckingDate, infoId },
     { isConnected, ipV4, port, deviceAddress },
+    gateState
   ]) => ({
-    housingStockId: node?.housingStockId,
+    housingStockId: node?.housingStockId || gateState?.housingStockId,
     infoId,
     isConnected,
     serialNumber,
@@ -99,8 +106,8 @@ createCalculatorFx.doneData.watch(() =>
   message.success('Вычислитель успешно создан!')
 );
 
-createCalculatorFx.failData.watch(() => {
-  message.error('Ошибка создания вычислителя');
+createCalculatorFx.failData.watch((e) => {
+  message.error(e.response.data.error.Text);
 });
 
 sample({
@@ -129,5 +136,8 @@ export const createCalcuatorService = {
   },
   events: {
     newCalculatorCreated: createCalculatorFx.doneData,
+  },
+  gates: {
+    CreateCalculatorGate,
   },
 };

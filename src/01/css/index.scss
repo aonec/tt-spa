@@ -201,3 +201,39 @@ sup {
   box-shadow: 0 6px 10px #00000033 !important;
   border-radius: 6px !important;
 }
+
+.ant-steps-item-wait {
+  * .ant-steps-item-icon {
+    background: #f3f5f6;
+    border: none;
+
+    .ant-steps-icon {
+      color: #272f5ae5;
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+}
+
+.ant-steps-item-container {
+  min-height: 60px;
+}
+
+.ant-steps-item-active {
+  * .ant-steps-item-title {
+    color: #272f5acc !important;
+    font-weight: 500;
+  }
+}
+
+.ant-select-disabled.ant-select {
+  &:not(.ant-select-customize-input) {
+    .ant-select-selector {
+      color: #272f5acc;
+    }
+  }
+}
+
+.ant-input-disabled {
+  color: #272f5acc !important;
+}
