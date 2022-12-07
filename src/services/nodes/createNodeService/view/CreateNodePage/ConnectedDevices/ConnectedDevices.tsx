@@ -23,6 +23,7 @@ const { inputs } = addConnectedCommonDevicesService;
 export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   goPrevStep,
   requestPayload,
+  updateRequestPayload,
 }) => {
   const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
 
@@ -64,6 +65,16 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     () => inputs.handleMeteringDeviceCreated.watch(handleAddDevice).unsubscribe,
     []
   );
+
+  useEffect(() => {
+    if (requestPayload.communicationPipes) {
+      setCommunicationPipes(requestPayload.communicationPipes);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateRequestPayload({ communicationPipes });
+  }, [communicationPipes]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { MagistralsDisctionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService/view/MeteringDevicesListModal/MeteringDeviceListItem/MeteringDeviceListItem.constants';
 import {
+  DiameterLabel,
   InfoWrapper,
   MagistralLabel,
   PipeNumber,
@@ -17,9 +18,10 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
     <Wrapper>
       <InfoWrapper>
         <div>
-          <PipeNumber>№{pipe.number}</PipeNumber> ({pipe.diameter}мм){' '}
+          <PipeNumber>Труба №{pipe.number}</PipeNumber>
         </div>
         <div>
+          <DiameterLabel>Диаметр:</DiameterLabel> {pipe.diameter}мм{' '}
           <MagistralLabel>магистраль:</MagistralLabel>{' '}
           {pipe.magistral && MagistralsDisctionary[pipe.magistral]}
         </div>

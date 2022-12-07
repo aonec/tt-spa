@@ -16,6 +16,7 @@ import {
   getNodeServiceZones,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { CreateNodeFormPayload } from './createNodeService.types';
 
 const domain = createDomain('createNodeService');
 
@@ -35,7 +36,7 @@ const fetchNodeServiceZonesFx = domain.createEffect<
 
 const CreateNodeGate = createGate<{ housingStockId: number }>();
 
-const updateRequestPayload = domain.createEvent<CreatePipeNodeRequest>();
+const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();
 
 const goNextStep = domain.createEvent();
 
@@ -48,7 +49,7 @@ const $stepNumber = domain
   .reset(CreateNodeGate.close);
 
 const $requestPayload = domain
-  .createStore<CreatePipeNodeRequest>({
+  .createStore<CreateNodeFormPayload>({
     resource: EResourceType.ColdWaterSupply,
   })
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
