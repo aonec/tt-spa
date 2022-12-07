@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { createNodeService } from './createNodeService.model';
@@ -12,6 +12,7 @@ const { CreateNodeGate, CreateCalculatorGate } = gates;
 
 export const CreateNodeContainer = () => {
   const { housingStockId } = useParams<{ housingStockId: string }>();
+  const history = useHistory();
 
   const housingStock = useStore(outputs.$housingStock);
   const existingCities = useStore(outputs.$existingCities);
@@ -24,6 +25,7 @@ export const CreateNodeContainer = () => {
   const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
   const selectedCalculator = useStore(outputs.$selectedCalculator);
   const selectedServiceZone = useStore(outputs.$selectedServiceZone);
+  const isCreatePipeNodeLoading = useStore(outputs.$isCreatePipeNodeLoading);
 
   const updateRequestPayload = useEvent(inputs.updateRequestPayload);
   const goPrevStep = useEvent(inputs.goPrevStep);
@@ -33,6 +35,13 @@ export const CreateNodeContainer = () => {
   );
   const openConfiramtionModal = useEvent(inputs.openConfiramtionModal);
   const closeConfiramtionModal = useEvent(inputs.closeConfiramtionModal);
+  const handleSubmitForm = useEvent(inputs.handleSubmitForm);
+
+  useEffect(() => {
+    return inputs.handlePipeNodeCreated.watch((node) =>
+      history.push(`/nodes/${node.id}`)
+    );
+  }, []);
 
   return (
     <>
@@ -48,6 +57,8 @@ export const CreateNodeContainer = () => {
           housingStock={housingStock}
           calculator={selectedCalculator}
           serviceZone={selectedServiceZone}
+          handleSubmitForm={() => handleSubmitForm()}
+          isLoading={isCreatePipeNodeLoading}
         />
       )}
       <CreateNodePage

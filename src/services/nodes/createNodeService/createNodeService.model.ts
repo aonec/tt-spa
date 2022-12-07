@@ -1,28 +1,39 @@
 import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
-  EResourceType,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  PipeNodeResponse,
 } from 'myApi';
 import {
   getCalculatorsList,
   getHousingStock,
   getNodeServiceZones,
+  postPipeNode,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 import { CreateNodeFormPayload } from './createNodeService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('createNodeService');
+
+const createPipeNodeFx = domain.createEffect<
+  CreatePipeNodeRequest,
+  PipeNodeResponse,
+  EffectFailDataAxiosError
+>(postPipeNode);
 
 const fetchHousingStockFx = domain.createEffect<number, HousingStockResponse>(
   getHousingStock
 );
+
+const handleSubmitForm = domain.createEvent();
 
 const fetchCalculatorsListFx = domain.createEffect<
   number,
@@ -124,6 +135,12 @@ forward({
   to: fetchNodeServiceZonesFx,
 });
 
+sample({
+  source: $requestPayload,
+  clock: handleSubmitForm,
+  target: createPipeNodeFx,
+});
+
 const $isLoadingHousingStock = fetchHousingStockFx.pending;
 
 const $selectedCalculator = combine(
@@ -143,6 +160,16 @@ const $selectedServiceZone = combine(
     ) || null
 );
 
+const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
+
+const handlePipeNodeCreated = createPipeNodeFx.doneData;
+
+createPipeNodeFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+createPipeNodeFx.doneData.watch(() => message.success('Узел успешно создан!'));
+
 export const createNodeService = {
   inputs: {
     goPrevStep,
@@ -153,6 +180,8 @@ export const createNodeService = {
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
     openConfiramtionModal,
     closeConfiramtionModal,
+    handleSubmitForm,
+    handlePipeNodeCreated,
   },
   outputs: {
     $housingStock,
@@ -166,6 +195,7 @@ export const createNodeService = {
     $isConfirmationModalOpen,
     $selectedCalculator,
     $selectedServiceZone,
+    $isCreatePipeNodeLoading,
   },
   gates: {
     CreateNodeGate,
