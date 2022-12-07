@@ -25,7 +25,5 @@ export type TasksProfileProps = {
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: perpetratorItemsProps[] | null;
-  streets: string[];
-  cities: string[] | null;
   isSpectator: boolean;
 };
