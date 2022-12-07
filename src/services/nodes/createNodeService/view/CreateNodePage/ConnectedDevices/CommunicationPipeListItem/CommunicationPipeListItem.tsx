@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { MagistralsDisctionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService/view/MeteringDevicesListModal/MeteringDeviceListItem/MeteringDeviceListItem.constants';
+import { MagistralsDisctionary } from 'dictionaries';
 import {
   InfoWrapper,
   MagistralLabel,
