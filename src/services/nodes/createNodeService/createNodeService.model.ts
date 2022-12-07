@@ -16,7 +16,6 @@ import {
   getNodeServiceZones,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
-import { addPipeNodeCommonDeviceService } from '../addPipeNodeCommonDeviceService';
 
 const domain = createDomain('createNodeService');
 
@@ -130,8 +129,6 @@ export const createNodeService = {
       createCalcuatorService.inputs.openCreateCalculatorModal,
     openCreateNodeServiceZoneModal:
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
-    openAddCommonDeviceModal:
-      addPipeNodeCommonDeviceService.inputs.openAddCommonDeviceModal,
   },
   outputs: {
     $housingStock,

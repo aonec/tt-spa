@@ -1,10 +1,16 @@
-import { CreatePipeHousingMeteringDeviceInNodeRequest, EResourceType } from 'myApi';
+import { EResourceType } from 'myApi';
+import {
+  CommunicationPipePayload,
+  CreateCommonDevicePartitial,
+} from '../../addPipeNodeCommonDeviceService.types';
 
 export type AddCommonDeviceFormProps = {
+  currentFormStep: number;
   formId: string;
-  currentFormStep: string;
-  updateRequestPayload: (
-    payload: CreatePipeHousingMeteringDeviceInNodeRequest
-  ) => void;
+  updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   resource: EResourceType;
+  requestPayload: CreateCommonDevicePartitial;
+  openAddPipeModal: () => void;
+  communicationPipes: CommunicationPipePayload[];
+  handleFormComplete: () => void;
 };

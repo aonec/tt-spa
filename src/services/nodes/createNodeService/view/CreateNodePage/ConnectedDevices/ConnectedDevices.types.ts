@@ -1,4 +1,7 @@
+import { CreateCommunicationPipeRequest, CreatePipeNodeRequest, EResourceType } from 'myApi';
+
 export type ConnectedDevicesProps = {
   goPrevStep: () => void;
-  openAddCommonDeviceModal: () => void;
+  requestPayload: CreatePipeNodeRequest;
 };
+

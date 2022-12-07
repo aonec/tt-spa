@@ -19,6 +19,10 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   label,
   componentType = DocumentsUploadComponentType.DragAndDrop,
 }) => {
+  if (!documents) {
+    documents = [];
+  }
+
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
     onChange
@@ -35,14 +39,18 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           fileHandler={(files) => handleFile(files[0])}
           uniqId={uniqId}
           text={label}
-          style={{ marginBottom: 15 }}
+          style={{
+            marginBottom: Boolean(documents.length) || isLoading ? 16 : 0,
+          }}
         />
       )}
-      <DocumentsList
-        isLoading={isLoading}
-        removeDocument={removeDocument}
-        documents={documents}
-      />
+      {(Boolean(documents.length) || isLoading) && (
+        <DocumentsList
+          isLoading={isLoading}
+          removeDocument={removeDocument}
+          documents={documents}
+        />
+      )}
     </div>
   ) : (
     <DocumentsLineUpload
