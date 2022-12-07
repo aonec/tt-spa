@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { DevicesSearchType } from 'services/devices/devicesPageService/individualDevicesProfileService/individualDevicesProfileService.types';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExtendedSearch';
 import { CheckboxSC } from '../../../individualDevicesViewBySerialNumberService/view/SerialNumberSearch/SerialNumberSearch.styled';
 import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesViewByAddressService.types';

@@ -25,7 +25,6 @@ export * from './Events';
 export * from './IconTT';
 export * from './AutoCompleteTT';
 export * from './MenuButtonTT';
-export * from './Stages';
 export * from './GridTT';
 export * from './EditButtonTT';
 export * from './MultiSelectTT';
