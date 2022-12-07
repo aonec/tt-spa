@@ -1,4 +1,4 @@
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
