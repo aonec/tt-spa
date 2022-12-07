@@ -1,5 +1,5 @@
-import { EResourceType } from "myApi"
+import { EResourceType } from 'myApi';
 
 export type Props = {
-    resource: EResourceType
-}
+  resource: EResourceType;
+};
