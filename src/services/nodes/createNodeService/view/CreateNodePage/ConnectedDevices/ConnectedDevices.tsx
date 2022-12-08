@@ -77,6 +77,23 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     updateRequestPayload({ communicationPipes });
   }, [communicationPipes]);
 
+  const handleDeletePipe = (pipeId: number) => {
+    setCommunicationPipes((prev) => prev.filter((elem) => elem.id !== pipeId));
+  };
+
+  const handleDeleteDevice = (pipeId: number, deviceIndex: number) => {
+    setCommunicationPipes((prev) =>
+      prev.map((pipe) => {
+        if (pipe.id !== pipeId) return pipe;
+
+        return {
+          ...pipe,
+          devices: pipe.devices?.filter((_, index) => index !== deviceIndex),
+        };
+      })
+    );
+  };
+
   return (
     <>
       {resource && (
@@ -104,6 +121,8 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
                 resource={resource}
                 key={pipe.id}
                 pipe={pipe}
+                handleDeletePipe={handleDeletePipe}
+                handleDeleteDevice={handleDeleteDevice}
               />
             ))}
           </CommunicationPipesListWrapper>
