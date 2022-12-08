@@ -27,3 +27,9 @@ export const TypeLabel = styled.span`
   opacity: 0.8;
   font-weight: 400;
 `;
+
+export const RightContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;

@@ -20,6 +20,7 @@ import {
 } from './DeviceStep.styled';
 import { DeviceStepProps } from './DeviceStep.types';
 import { MagistralsDisctionary } from 'dictionaries';
+import moment from 'moment';
 
 const { inputs } = addCommunicationPipeService;
 
@@ -95,7 +96,10 @@ export const DeviceStep: FC<DeviceStepProps> = ({
         <FormItem label="Дата последней поверки прибора">
           <DatePicker
             value={values.lastCheckingDate}
-            onChange={(date) => setFieldValue('lastCheckingDate', date)}
+            onChange={(date) => {
+              setFieldValue('lastCheckingDate', date);
+              setFieldValue('futureCheckingDate', moment(date).add('year', 4));
+            }}
             placeholder="Выберите"
             format="DD.MM.YYYY"
           />

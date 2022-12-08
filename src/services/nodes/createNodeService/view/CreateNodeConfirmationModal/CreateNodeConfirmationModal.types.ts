@@ -11,5 +11,7 @@ export type CreateNodeConfirmationModalProps = {
   requestPayload: CreateNodeFormPayload;
   housingStock: HousingStockResponse;
   calculator: CalculatorIntoHousingStockResponse | null;
-  serviceZone: NodeServiceZoneResponse 
+  serviceZone: NodeServiceZoneResponse;
+  isLoading: boolean;
+  handleSubmitForm: () => void;
 };

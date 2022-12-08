@@ -37,3 +37,9 @@ export const DiameterLabel = styled.span`
   opacity: 0.8;
   font-weight: 400;
 `;
+
+export const RighContentWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  align-items: center;
+`;

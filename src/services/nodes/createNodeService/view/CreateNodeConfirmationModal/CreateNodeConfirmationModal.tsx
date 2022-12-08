@@ -34,6 +34,8 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
   calculator,
   requestPayload,
   serviceZone,
+  isLoading,
+  handleSubmitForm,
 }) => {
   const commercialAccountingDatesString = useMemo(() => {
     if (
@@ -63,7 +65,11 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
           <Button type="ghost" onClick={handleClose}>
             Отмена
           </Button>
-          <Button onClick={handleClose} sidePadding={20}>
+          <Button
+            isLoading={isLoading}
+            sidePadding={20}
+            onClick={handleSubmitForm}
+          >
             Создать узел
           </Button>
         </Footer>
