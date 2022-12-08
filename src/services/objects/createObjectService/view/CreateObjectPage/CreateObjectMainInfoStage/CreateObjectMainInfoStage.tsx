@@ -15,7 +15,7 @@ import {
   Title,
   Wrapper,
   WrapperLinkButton,
-  XIconSc,
+  CloseIconSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
@@ -208,7 +208,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
-                <XIconSc
+                <CloseIconSC
                   onClick={() => {
                     setFieldValue('heatingStationId', null);
                   }}

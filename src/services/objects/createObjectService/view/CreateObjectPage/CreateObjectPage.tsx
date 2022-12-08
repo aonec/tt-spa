@@ -36,8 +36,6 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
     'Дополнительная информация',
   ];
 
-  console.log(stageNumber);
-
   return (
     <Wrapper>
       <Header>

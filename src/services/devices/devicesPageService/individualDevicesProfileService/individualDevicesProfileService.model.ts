@@ -1,8 +1,8 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
+import { DevicesSearchType } from '../devicesPageService.types';
 import { fetchMouintPlaces } from './individualDevicesProfileService.api';
-import { DevicesSearchType } from './individualDevicesProfileService.types';
 
 const domain = createDomain('individualDevicesProfileService');
 

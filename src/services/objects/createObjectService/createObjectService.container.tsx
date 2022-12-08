@@ -35,13 +35,12 @@ export const CreateObjectContainer = () => {
       if (data?.id) {
         history.push(`/objects/profile/${data.id}`);
       }
-
     }).unsubscribe;
   }, []);
 
   return (
     <>
-    <PageCloseGate />
+      <PageCloseGate />
       <HouseManagementsFetchGate />
       <CreateObjectPage
         existingCities={existingCities}

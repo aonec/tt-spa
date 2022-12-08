@@ -4,13 +4,13 @@ import { ButtonSizeType, ButtonStyleType } from './Button.types';
 const buttonBackgroundColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee9',
   danger: '#ff4545',
-  ghost: '#ffffff',
+  ghost: 'inherit',
 };
 
 const buttonShadowColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee940',
   danger: '#ff454540',
-  ghost: '#f1f1f1',
+  ghost: '#efefef',
 };
 
 const buttonFontColorsDictionary: { [key in ButtonStyleType]: string } = {

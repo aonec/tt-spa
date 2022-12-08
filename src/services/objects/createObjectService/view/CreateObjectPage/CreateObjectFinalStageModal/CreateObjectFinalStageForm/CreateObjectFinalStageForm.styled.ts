@@ -10,9 +10,7 @@ export const GridContainer = styled.div`
 
 export const GridContainerForAdditionalAddresses = styled.div`
   display: grid;
-  /* grid-template-columns: 1fr 2.5fr; */
   grid-gap: 5px;
-  /* grid-template-rows: 2fr 1fr */
 `;
 
 export const PageTitle = styled.div`

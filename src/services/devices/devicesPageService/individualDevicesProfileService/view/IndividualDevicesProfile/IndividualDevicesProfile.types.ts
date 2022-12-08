@@ -1,4 +1,4 @@
-import { DevicesSearchType } from '../../individualDevicesProfileService.types';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 
 export type IndividualDevicesProfileProps = {
   devicesSearchType: DevicesSearchType;

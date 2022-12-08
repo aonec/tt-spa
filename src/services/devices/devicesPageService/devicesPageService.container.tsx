@@ -22,10 +22,16 @@ export const DevicesPageContainer = () => {
     [history]
   );
 
+  const handleAddNode = () => history.push('/devices/addNode');
+
   return (
     <>
       <DevicesReportModal />
-      <DevicesPageProfile setDevicesType={setDevicesType} type={type} />
+      <DevicesPageProfile
+        setDevicesType={setDevicesType}
+        type={type}
+        handleAddNode={handleAddNode}
+      />
     </>
   );
 };
