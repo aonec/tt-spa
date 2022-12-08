@@ -12,7 +12,6 @@ import moment from 'moment';
 import { resources } from '../../../tt-components/localBases';
 import {
   ButtonTT,
-  DatePickerTT,
   Header,
   InputNumberTT,
   InputTT,
@@ -21,7 +20,6 @@ import {
   styles,
 } from '../../../tt-components';
 import {
-  EResourceType,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
@@ -404,7 +402,6 @@ export const StyledSelect = styled(Select)`
   }
   .ant-select-item {
     margin: 0 !important;
-    //border: 1px solid black;
     padding: 0 !important;
 
     &:hover {

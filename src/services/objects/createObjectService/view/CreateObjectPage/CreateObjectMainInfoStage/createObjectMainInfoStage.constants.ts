@@ -1,15 +1,36 @@
+import {
+  EHouseCategory,
+  ELivingHouseType,
+  ENonResidentialHouseType,
+} from 'myApi';
 import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({
-  houseManagement: yup.string().required('Обязательное поле'),
-  objectCategotry: yup.string().required('Обязательное поле'),
-  objectType: yup.string().required('Обязательное поле'),
-  heatingPoint: yup.string(),
+  houseManagement: yup.string().nullable().required('Обязательное поле'),
+  objectCategotry: yup.string().nullable().required('Обязательное поле'),
+  livingHouseType: yup.string().nullable(),
+  nonResidentialHouseType: yup.string().nullable(),
+  heatingStationId: yup.string().nullable().required('Обязательное поле'),
 });
 
-export const initialValues = {
-  houseManagement: '',
-  objectCategotry: '',
-  objectType: '',
-  heatingPoint: { heatingPointType: '', heatingPointNumber: '' },
+export const HouseCategoryDictionary: { [key in EHouseCategory]: string } = {
+  [EHouseCategory.Living]: 'Жилое',
+  [EHouseCategory.NonResidential]: 'Нежилое',
+};
+
+export const LivingHouseTypeDictionary: {
+  [key in ELivingHouseType]: string;
+} = {
+  [ELivingHouseType.None]: 'Не выбрано',
+  [ELivingHouseType.ApartmentHouse]: 'Многоквартирный дом',
+  [ELivingHouseType.Private]: 'Частный дом',
+  [ELivingHouseType.Townhouse]: 'Таунхаус',
+};
+
+export const NonResidentialHouseTypeDictionary: {
+  [key in ENonResidentialHouseType]: string;
+} = {
+  [ENonResidentialHouseType.None]: 'Не выбрано',
+  [ENonResidentialHouseType.Social]: 'Социальное помещение',
+  [ENonResidentialHouseType.Commercial]: 'Коммерческое помещение',
 };
