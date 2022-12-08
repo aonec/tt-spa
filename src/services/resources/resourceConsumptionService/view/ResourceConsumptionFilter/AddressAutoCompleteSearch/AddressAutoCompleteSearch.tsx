@@ -24,7 +24,6 @@ export const AddressAutoCompleteSearch: FC<AddressAutoCompleteSearchProps> = ({
         )
       }
       options={options}
-      onClick={() => setAddressSearch('')}
     />
   );
 };

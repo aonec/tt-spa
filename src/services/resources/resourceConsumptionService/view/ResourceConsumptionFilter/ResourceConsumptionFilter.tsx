@@ -5,10 +5,8 @@ import moment from 'moment';
 import React, { FC } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
-import { managementFirmConsumptionRatesService } from 'services/meters/managementFirmConsumptionRatesService';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
-import { GetHousingConsumptionDataFormik } from '../../resourceConsumptionService.types';
 import { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
@@ -19,7 +17,10 @@ import {
   TitleText,
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
-import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
+import {
+  GetHousingConsumptionDataFormik,
+  ResourceConsumptionFilterProps,
+} from './ResourceConsumptionFilter.types';
 
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
@@ -41,12 +42,19 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     errors,
   } = useFormik<GetHousingConsumptionDataFormik>({
     initialValues: {
-      HousingStockId: filter?.HousingStockId || 0,
+      HousingStockId: filter?.HousingStockId || null,
       From: initialDate,
     },
     validationSchema: resourceConsumptionFilterValidationSchema,
     enableReinitialize: true,
-    onSubmit: setFilter,
+    onSubmit: (values) => {
+      const { HousingStockId } = values;
+      if (!HousingStockId) {
+        return;
+      }
+
+      setFilter({ ...values, HousingStockId });
+    },
   });
 
   return (

@@ -1,4 +1,6 @@
+import { CustomTooltip } from '01/_pages/Graph/components/CustomTooltip';
 import Gradient from '01/_pages/Graph/components/Gradient';
+import { GraphTooltip } from '01/_pages/Graph/components/GraphTooltip';
 import {
   horizontalAxisStyle,
   verticalAxisStyle,
@@ -108,6 +110,23 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           y="value"
           interpolation="monotoneX"
           style={getCurrentDataStyle(resource)}
+          labels={() => ''}
+          labelComponent={
+            <CustomTooltip
+              flyoutStyle={{ fill: 'var(--main-100)' }}
+              style={{ fill: '#fff' }}
+              flyoutPadding={{
+                top: 8,
+                right: 16,
+                bottom: 8,
+                left: 16,
+              }}
+              height={height}
+              // flyoutComponent={<GraphTooltip measure={''} />}
+              minValue={minValue}
+              maxValue={maxValue}
+            />
+          }
         />
 
         <VictoryLine

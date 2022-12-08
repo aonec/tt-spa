@@ -8,7 +8,7 @@ import {
 } from './resourceConsumptionService.api';
 import {
   HousingConsumptionDataFilter,
-  GetHousingConsumptionDataFormik,
+  GetHousingConsumptionDataFilter,
   HousingConsumptionDataForTwoMonth,
 } from './resourceConsumptionService.types';
 import { getAddressSearchData } from './resourceConsumptionService.utils';
@@ -44,7 +44,7 @@ const $addressesList = combine(
   }
 );
 
-const setFilter = domain.createEvent<GetHousingConsumptionDataFormik>();
+const setFilter = domain.createEvent<GetHousingConsumptionDataFilter>();
 const setResource = domain.createEvent<EResourceType>();
 const $resourceConsumptionFilter = domain
   .createStore<Partial<HousingConsumptionDataFilter> | null>(null)
