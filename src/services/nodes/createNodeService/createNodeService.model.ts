@@ -57,7 +57,7 @@ const openConfiramtionModal = domain.createEvent();
 const closeConfiramtionModal = domain.createEvent();
 
 const $stepNumber = domain
-  .createStore(3)
+  .createStore(0)
   .on(goNextStep, (step) => step + 1)
   .on(goPrevStep, (step) => step - 1)
   .reset(CreateNodeGate.close);
