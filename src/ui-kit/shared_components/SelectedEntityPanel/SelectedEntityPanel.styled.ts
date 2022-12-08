@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PencilIcon, XIcon } from 'ui-kit/icons';
+import { PencilIcon, CloseIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   padding: 0 16px;
 `;
 
-export const XIconSC = styled(XIcon)`
+export const CloseIconSC = styled(CloseIcon)`
   path {
     fill: #272f5a52;
   }

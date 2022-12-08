@@ -5,13 +5,17 @@ import {
   NodeServiceZoneListResponse,
 } from 'myApi';
 import { FC } from 'react';
+import {
+  CreateNodeFormPayload,
+  UpdateNodeFormPayloadCallback,
+} from 'services/nodes/createNodeService/createNodeService.types';
 
 export type CommonDataProps = {
   goPrevStep: () => void;
   nodeServiceZones: NodeServiceZoneListResponse | null;
-  updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
+  updateRequestPayload: UpdateNodeFormPayloadCallback;
   openCreateNodeServiceZoneModal: () => void;
-  requestPayload: CreatePipeNodeRequest
+  requestPayload: CreateNodeFormPayload;
 };
 
 export type NodeResourcesList = { resource: EResourceType; text: string }[];

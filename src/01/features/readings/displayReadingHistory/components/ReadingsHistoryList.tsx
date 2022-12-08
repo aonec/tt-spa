@@ -1,13 +1,11 @@
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { useEvent, useStore } from 'effector-react';
-import moment from 'moment';
 import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
 } from 'myApi';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useOpenedYears } from '../hooks/useOpenedYears';
 import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
@@ -28,6 +26,7 @@ import {
   getActiveReadings,
   getNewReadingDate,
   getPreviousReadingByHistory,
+  getRecentlyReplacedAccount,
   validateReadings,
 } from './displayReadingHistory.utils';
 import {
@@ -42,18 +41,15 @@ import {
 } from './displayReadingHistory.styled';
 import { RenderReading } from './displayReadingHistory.types';
 import {
-  CorrectReadingValuesValidationResult,
-  round,
-} from '01/hooks/useReadings';
-import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
-import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
-import {
   managementFirmConsumptionRatesService,
   useManagingFirmConsumptionRates,
 } from 'services/meters/managementFirmConsumptionRatesService';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import moment from 'moment';
+import { ReplacedAccountAlert } from './ReplacedAccountAlert';
+import _ from 'lodash';
 
 interface Props {
   isModal?: boolean;
@@ -98,6 +94,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   } = useOpenedYears(values?.yearReadings || []);
 
   const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
+
+  const apartment = useStore($apartment);
 
   const renderReading = ({
     year,
@@ -237,16 +235,38 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     const arrowButtonComponent =
       isHasArchived && isFirst ? arrowButton : <ArrowButtonBlock />;
 
+    const actualHomeownerAccount = _.last(apartment?.homeownerAccounts);
+
+    const recentlyReplacedAccount = getRecentlyReplacedAccount(apartment?.homeownerAccounts || [], actualHomeownerAccount)
+
+    const accountLastChangeYear = moment(actualHomeownerAccount?.openAt).year();
+    const accountLastChangeMonth = moment(actualHomeownerAccount?.openAt)
+      .set('day', 15)
+      .month();
+
+    const isShowReplaceAccountAlert =
+      year === accountLastChangeYear &&
+      month === accountLastChangeMonth &&
+      Boolean(recentlyReplacedAccount) &&
+      isFirst;
+
     return (
-      <WrapComponent>
-        {monthName}
-        <div>{readingsInputs}</div>
-        <div>{consumption}</div>
-        <div>{averageConsumption}</div>
-        <div>{source}</div>
-        <div>{entryDate}</div>
-        {arrowButtonComponent}
-      </WrapComponent>
+      <>
+        {isShowReplaceAccountAlert && (
+          <ReplacedAccountAlert
+            recentlyReplacedAccount={recentlyReplacedAccount!}
+          />
+        )}
+        <WrapComponent>
+          {monthName}
+          <div>{readingsInputs}</div>
+          <div>{consumption}</div>
+          <div>{averageConsumption}</div>
+          <div>{source}</div>
+          <div>{entryDate}</div>
+          {arrowButtonComponent}
+        </WrapComponent>
+      </>
     );
   };
 
