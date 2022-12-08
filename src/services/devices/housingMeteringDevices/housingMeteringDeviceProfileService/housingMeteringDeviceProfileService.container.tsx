@@ -1,16 +1,18 @@
 import React from 'react';
-import { CommonInfo } from './view/CommonInfo';
-import { ConnectionSettings } from './view/ConnectionSettings';
-import { Documents } from './view/Documents';
+import { useParams } from 'react-router-dom';
+import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
+import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
+
+const { inputs, outputs, gates } = housingMeteringDeviceProfileService;
+const { FetchHousingMeteringDeviceGate } = gates;
 
 export const HousingMeteringDeviceProfileContainer = () => {
+  const { deviceId } = useParams<{ deviceId: string }>();
+
   return (
     <>
-
-    
-      {<CommonInfo />}
-      {<ConnectionSettings />}
-      {<Documents />}
+      <FetchHousingMeteringDeviceGate deviceId={deviceId} />
+      <HousingMeteringDeviceProfile deviceId={deviceId} />
     </>
   );
 };

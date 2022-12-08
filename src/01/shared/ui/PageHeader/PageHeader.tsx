@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
 import {
@@ -8,13 +8,18 @@ import {
 import { PageTitle } from '../Title';
 
 interface Props {
-  title: string;
+  title: ReactNode;
   contextMenu?: ContextMenuButtonProps;
   isTopMargin?: boolean;
   isGhost?: boolean;
 }
 
-export const PageHeader: FC<Props> = ({ title, contextMenu, isTopMargin, isGhost }) => {
+export const PageHeader: FC<Props> = ({
+  title,
+  contextMenu,
+  isTopMargin,
+  isGhost,
+}) => {
   return (
     <PageHeaderStyled isTopMargin={isTopMargin}>
       <PageTitle isGhost={isGhost}>{title}</PageTitle>
