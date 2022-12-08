@@ -1,4 +1,5 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
+import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
 
@@ -39,13 +40,14 @@ const $isAddPipeModalOpen = domain
 
 const $currentFormStep = domain
   .createStore<number>(0)
-  .on(goNextStep, (prev) => (prev === EXTREAM_STEP_NUMBER ? prev : prev + 1))
-  .on(goPrevStep, (prev) => (prev === 0 ? prev : prev - 1))
-  .reset(closeAddCommonDeviceModal);
+  .on(goNextStep, (prev) => prev + 1)
+  .on(goPrevStep, (prev) => prev - 1);
 
-forward({
-  from: updateCommonDeviceRequestPayload,
-  to: goNextStep,
+guard({
+  source: $currentFormStep,
+  clock: updateCommonDeviceRequestPayload,
+  filter: (stepNumber) => stepNumber < EXTREAM_STEP_NUMBER,
+  target: goNextStep,
 });
 
 sample({

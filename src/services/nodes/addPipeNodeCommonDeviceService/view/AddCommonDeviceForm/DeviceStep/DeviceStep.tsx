@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import { Form } from 'antd';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { MagistralsDisctionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService/view/MeteringDevicesListModal/MeteringDeviceListItem/MeteringDeviceListItem.constants';
 import { getInitialDateFieldValue } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.utils';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
@@ -20,6 +19,7 @@ import {
   PipeSelectOption,
 } from './DeviceStep.styled';
 import { DeviceStepProps } from './DeviceStep.types';
+import { MagistralsDisctionary } from 'dictionaries';
 
 const { inputs } = addCommunicationPipeService;
 

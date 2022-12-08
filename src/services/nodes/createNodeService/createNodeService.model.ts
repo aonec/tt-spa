@@ -57,9 +57,9 @@ const openConfiramtionModal = domain.createEvent();
 const closeConfiramtionModal = domain.createEvent();
 
 const $stepNumber = domain
-  .createStore(0)
-  .on(goNextStep, (number) => (number === 3 ? number : number + 1))
-  .on(goPrevStep, (number) => (number === 0 ? number : number - 1))
+  .createStore(3)
+  .on(goNextStep, (step) => step + 1)
+  .on(goPrevStep, (step) => step - 1)
   .reset(CreateNodeGate.close);
 
 const $requestPayload = domain
@@ -116,9 +116,11 @@ guard({
   target: fetchHousingStockFx,
 });
 
-forward({
-  from: updateRequestPayload,
-  to: goNextStep,
+guard({
+  source: $stepNumber,
+  clock: updateRequestPayload,
+  filter: (stepNumber) => stepNumber < 3,
+  target: goNextStep,
 });
 
 guard({

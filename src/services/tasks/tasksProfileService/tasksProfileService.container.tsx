@@ -32,8 +32,6 @@ export const TasksProfileContainer = () => {
   const isSpectator = useStore(outputs.$isSpectator);
   const apartment = useStore(outputs.$apartment);
   const housingStock = useStore(outputs.$housingStock);
-  const streets = useStore(adresses.streets);
-  const cities = useStore($existingCities);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.exportTasksList
@@ -142,8 +140,6 @@ export const TasksProfileContainer = () => {
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
         perpetrators={perpetrators}
-        streets={streets}
-        cities={cities}
         isSpectator={isSpectator}
       />
     </>
