@@ -92,10 +92,6 @@ const $heatingStations = domain
   .createStore<HeatingStationResponsePagedList | null>(null)
   .on(fetchHeatingStationFx.doneData, (_, data) => data);
 
-const $newHeatingStation = domain
-  .createStore<HeatingStationResponse | null>(null)
-  .on(createHeatingStationFx.doneData, (_, data) => data);
-
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
   .on(closePreviewModal, () => false)
@@ -133,7 +129,6 @@ guard({
         street,
         house,
         corpus,
-        index,
         additionalAddresses,
         heatingStationId,
         houseManagement,
@@ -161,9 +156,7 @@ guard({
           street,
           number: house,
           corpus,
-          index,
         },
-        hasIndividualHeatingStation: false,
         otherAddresses:
           additionalAddresses?.map((elem) => {
             return {
