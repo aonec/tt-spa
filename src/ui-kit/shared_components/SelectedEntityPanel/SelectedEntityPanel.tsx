@@ -4,7 +4,7 @@ import {
   IconsWrapper,
   PencilIconSC,
   Wrapper,
-  XIconSC,
+  CloseIconSC,
 } from './SelectedEntityPanel.styled';
 import { SelectedEntityPanelProps } from './SelectedEntityPanel.types';
 
@@ -18,7 +18,7 @@ export const SelectedEntityPanel: FC<SelectedEntityPanelProps> = ({
       <ContentWrapper>{children}</ContentWrapper>
       <IconsWrapper>
         {onEdit && <PencilIconSC onClick={onEdit} />}
-        {onRemove && <XIconSC onClick={onRemove} />}
+        {onRemove && <CloseIconSC onClick={onRemove} />}
       </IconsWrapper>
     </Wrapper>
   );
