@@ -58,6 +58,7 @@ import { ReactComponent as KeysIcon } from './svg/keys.svg';
 import { ReactComponent as CrownIcon } from './svg/crown.svg';
 import { ReactComponent as ArrowRightLongIcon } from './svg/arrowRightLong.svg';
 import { ReactComponent as ClosedEyeIcon } from './svg/closedEye.svg';
+import { ReactComponent as CitySmallIcon } from './svg/citySmall.svg';
 
 export {
   FinishIcon,
@@ -120,4 +121,5 @@ export {
   CrownIcon,
   ArrowRightLongIcon,
   ClosedEyeIcon,
+  CitySmallIcon,
 };

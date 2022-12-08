@@ -5,6 +5,7 @@ import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStoc
 import { createNodeService } from './createNodeService.model';
 import { CreateNodePage } from './view/CreateNodePage';
 import { CreateNodeServiceZoneContainer } from '../createNodeServiceZoneService';
+import { CreateNodeConfirmationModal } from './view/CreateNodeConfirmationModal';
 
 const { inputs, outputs, gates } = createNodeService;
 const { CreateNodeGate, CreateCalculatorGate } = gates;
@@ -20,6 +21,9 @@ export const CreateNodeContainer = () => {
   const calculatorsList = useStore(outputs.$calculatorsList);
   const requestPayload = useStore(outputs.$requestPayload);
   const nodeServiceZones = useStore(outputs.$nodeServiceZones);
+  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
+  const selectedCalculator = useStore(outputs.$selectedCalculator);
+  const selectedServiceZone = useStore(outputs.$selectedServiceZone);
 
   const updateRequestPayload = useEvent(inputs.updateRequestPayload);
   const goPrevStep = useEvent(inputs.goPrevStep);
@@ -27,6 +31,8 @@ export const CreateNodeContainer = () => {
   const openCreateNodeServiceZoneModal = useEvent(
     inputs.openCreateNodeServiceZoneModal
   );
+  const openConfiramtionModal = useEvent(inputs.openConfiramtionModal);
+  const closeConfiramtionModal = useEvent(inputs.closeConfiramtionModal);
 
   return (
     <>
@@ -34,6 +40,16 @@ export const CreateNodeContainer = () => {
       <ExistingCitiesGate />
       <CreateCalculatorGate housingStockId={requestPayload.housingStockId} />
       <CreateNodeServiceZoneContainer />
+      {housingStock && selectedServiceZone && (
+        <CreateNodeConfirmationModal
+          isOpen={isConfirmationModalOpen}
+          handleClose={() => closeConfiramtionModal()}
+          requestPayload={requestPayload}
+          housingStock={housingStock}
+          calculator={selectedCalculator}
+          serviceZone={selectedServiceZone}
+        />
+      )}
       <CreateNodePage
         housingStock={housingStock}
         existingCities={existingCities}
@@ -48,6 +64,7 @@ export const CreateNodeContainer = () => {
         requestPayload={requestPayload}
         nodeServiceZones={nodeServiceZones}
         openCreateNodeServiceZoneModal={() => openCreateNodeServiceZoneModal()}
+        openConfiramtionModal={() => openConfiramtionModal()}
       />
     </>
   );

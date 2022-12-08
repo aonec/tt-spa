@@ -1,7 +1,11 @@
-import { CreateCommunicationPipeRequest, CreatePipeNodeRequest, EResourceType } from 'myApi';
+import {
+  CreateNodeFormPayload,
+  UpdateNodeFormPayloadCallback,
+} from 'services/nodes/createNodeService/createNodeService.types';
 
 export type ConnectedDevicesProps = {
   goPrevStep: () => void;
-  requestPayload: CreatePipeNodeRequest;
+  requestPayload: CreateNodeFormPayload;
+  updateRequestPayload: UpdateNodeFormPayloadCallback;
+  openConfiramtionModal: () => void;
 };
-

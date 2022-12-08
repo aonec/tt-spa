@@ -1,7 +1,7 @@
 import { createNodeServiceZoneService } from './../createNodeServiceZoneService/createNodeServiceZoneService.model';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { createDomain, forward, guard } from 'effector';
+import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
@@ -16,6 +16,7 @@ import {
   getNodeServiceZones,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { CreateNodeFormPayload } from './createNodeService.types';
 
 const domain = createDomain('createNodeService');
 
@@ -35,11 +36,14 @@ const fetchNodeServiceZonesFx = domain.createEffect<
 
 const CreateNodeGate = createGate<{ housingStockId: number }>();
 
-const updateRequestPayload = domain.createEvent<CreatePipeNodeRequest>();
+const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();
 
 const goNextStep = domain.createEvent();
 
 const goPrevStep = domain.createEvent();
+
+const openConfiramtionModal = domain.createEvent();
+const closeConfiramtionModal = domain.createEvent();
 
 const $stepNumber = domain
   .createStore(3)
@@ -48,9 +52,7 @@ const $stepNumber = domain
   .reset(CreateNodeGate.close);
 
 const $requestPayload = domain
-  .createStore<CreatePipeNodeRequest>({
-    resource: EResourceType.ColdWaterSupply,
-  })
+  .createStore<CreateNodeFormPayload>({})
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(CreateNodeGate.close);
 
@@ -75,6 +77,11 @@ const $calculatorsList = domain
     ]
   )
   .reset(CreateNodeGate.close);
+
+const $isConfirmationModalOpen = domain
+  .createStore(false)
+  .on(openConfiramtionModal, () => true)
+  .reset(closeConfiramtionModal);
 
 const $nodeServiceZones = domain
   .createStore<NodeServiceZoneListResponse | null>(null)
@@ -121,6 +128,23 @@ forward({
 
 const $isLoadingHousingStock = fetchHousingStockFx.pending;
 
+const $selectedCalculator = combine(
+  $requestPayload,
+  $calculatorsList,
+  ({ calculatorId }, calculatorsList) =>
+    calculatorsList?.find((calculator) => calculator.id === calculatorId) ||
+    null
+);
+
+const $selectedServiceZone = combine(
+  $requestPayload,
+  $nodeServiceZones,
+  ({ nodeServiceZoneId }, serviceZones) =>
+    serviceZones?.nodeServiceZones?.find(
+      (serviceZone) => serviceZone.id === nodeServiceZoneId
+    ) || null
+);
+
 export const createNodeService = {
   inputs: {
     goPrevStep,
@@ -129,6 +153,8 @@ export const createNodeService = {
       createCalcuatorService.inputs.openCreateCalculatorModal,
     openCreateNodeServiceZoneModal:
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
+    openConfiramtionModal,
+    closeConfiramtionModal,
   },
   outputs: {
     $housingStock,
@@ -139,6 +165,9 @@ export const createNodeService = {
     $calculatorsList,
     $requestPayload,
     $nodeServiceZones,
+    $isConfirmationModalOpen,
+    $selectedCalculator,
+    $selectedServiceZone,
   },
   gates: {
     CreateNodeGate,

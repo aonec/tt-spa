@@ -13,18 +13,27 @@ export const Wrapper = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
-  color: #272f5ad1;
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: 14px;
   padding: 16px;
+  color: #272f5ab2;
+  font-weight: 500;
 `;
 
 export const MagistralLabel = styled.span`
-  opacity: 0.75;
+  margin-left: 8px;
+  opacity: 0.8;
+  font-weight: 400;
 `;
 
 export const PipeNumber = styled.span`
   font-weight: 500;
+  font-size: 16px;
   color: #272f5a;
+`;
+
+export const DiameterLabel = styled.span`
+  opacity: 0.8;
+  font-weight: 400;
 `;

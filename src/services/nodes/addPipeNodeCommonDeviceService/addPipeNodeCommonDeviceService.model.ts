@@ -1,4 +1,4 @@
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
@@ -54,6 +54,11 @@ sample({
   source: $requestPayload,
   clock: handleFormComplete,
   target: handleMeteringDeviceCreated,
+});
+
+forward({
+  from: handleMeteringDeviceCreated,
+  to: closeAddCommonDeviceModal,
 });
 
 export const addPipeNodeCommonDeviceService = {

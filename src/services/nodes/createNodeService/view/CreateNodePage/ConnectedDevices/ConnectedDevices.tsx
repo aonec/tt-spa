@@ -23,6 +23,8 @@ const { inputs } = addConnectedCommonDevicesService;
 export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   goPrevStep,
   requestPayload,
+  updateRequestPayload,
+  openConfiramtionModal,
 }) => {
   const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
 
@@ -65,6 +67,16 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     []
   );
 
+  useEffect(() => {
+    if (requestPayload.communicationPipes) {
+      setCommunicationPipes(requestPayload.communicationPipes);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateRequestPayload({ communicationPipes });
+  }, [communicationPipes]);
+
   return (
     <>
       {resource && (
@@ -85,10 +97,14 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
             <SpaceLine noTop />
           </>
         )}
-        {Boolean(communicationPipes.length) && (
+        {Boolean(communicationPipes.length) && resource && (
           <CommunicationPipesListWrapper>
             {communicationPipes.map((pipe) => (
-              <CommunicationPipeListItem key={pipe.id} pipe={pipe} />
+              <CommunicationPipeListItem
+                resource={resource}
+                key={pipe.id}
+                pipe={pipe}
+              />
             ))}
           </CommunicationPipesListWrapper>
         )}
@@ -99,7 +115,9 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20}>Создать узел</Button>
+          <Button sidePadding={20} onClick={openConfiramtionModal}>
+            Создать узел
+          </Button>
         </Footer>
       </div>
     </>
