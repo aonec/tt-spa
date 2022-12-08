@@ -41,7 +41,8 @@ const $isAddPipeModalOpen = domain
 const $currentFormStep = domain
   .createStore<number>(0)
   .on(goNextStep, (prev) => prev + 1)
-  .on(goPrevStep, (prev) => prev - 1);
+  .on(goPrevStep, (prev) => prev - 1)
+  .reset(closeAddCommonDeviceModal);
 
 guard({
   source: $currentFormStep,
