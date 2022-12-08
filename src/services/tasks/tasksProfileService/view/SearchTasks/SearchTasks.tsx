@@ -29,8 +29,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   changeFiltersByGroupType,
   housingManagments,
   perpetrators,
-  streets,
-  cities,
 }) => {
   const {
     values,
@@ -54,11 +52,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       PerpetratorId: currentFilter?.PerpetratorId,
       Resource: currentFilter?.Resource,
       EngineeringElement: currentFilter?.EngineeringElement,
-      City: currentFilter?.City
-        ? currentFilter?.City
-        : cities?.length === 1
-        ? cities[0]
-        : currentFilter?.City,
+      City: currentFilter?.City || '',
       Street: currentFilter?.Street,
       HousingStockNumber: currentFilter?.HousingStockNumber,
       Corpus: currentFilter?.Corpus,
@@ -137,8 +131,6 @@ export const SearchTasks: FC<SearchTasksProps> = ({
               values={values}
               housingManagments={housingManagments}
               perpetrators={perpetrators}
-              streets={streets}
-              cities={cities}
             />
           )}
         </>

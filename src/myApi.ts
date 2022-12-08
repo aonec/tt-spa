@@ -405,6 +405,27 @@ export interface ApartmentStatusSetRequest {
   documentIds?: number[] | null;
 }
 
+export interface ApartmentUpdateRequest {
+  /** @format double */
+  square?: number | null;
+
+  /** @format int32 */
+  numberOfLiving?: number | null;
+
+  /** @format int32 */
+  normativeNumberOfLiving?: number | null;
+
+  /** @format uuid */
+  mainHomeownerAccountId?: string | null;
+  comment?: string | null;
+
+  /** @format int32 */
+  coldWaterRiserCount?: number | null;
+
+  /** @format int32 */
+  hotWaterRiserCount?: number | null;
+}
+
 export interface ArchivesDataGroup {
   header?: string | null;
   measure?: string | null;
@@ -724,6 +745,9 @@ export interface CommunicationPipeResponse {
   /** @format int32 */
   entryNumber: number | null;
   magistral: string | null;
+
+  /** @format int32 */
+  diameter: number | null;
   devices: PipeHousingMeteringDeviceListResponse[] | null;
 }
 
@@ -2414,6 +2438,7 @@ export interface HomeownerAccountUpdateRequest {
 
   /** @format double */
   ownershipArea?: number | null;
+  isMainOnApartment?: boolean | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -2699,7 +2724,6 @@ export interface HousingStockAddressCreateRequest {
   street: string;
   number: string;
   corpus?: string | null;
-  index?: string | null;
 }
 
 export interface HousingStockAddressItemResponse {
@@ -2725,7 +2749,6 @@ export interface HousingStockAddressResponse {
 export interface HousingStockCreateRequest {
   /** @format uuid */
   heatingStationId: string;
-  hasIndividualHeatingStation: boolean;
   mainAddress: HousingStockAddressCreateRequest;
   otherAddresses?: HousingStockAddressCreateRequest[] | null;
   coordinates?: Point | null;
@@ -2742,6 +2765,7 @@ export interface HousingStockCreateRequest {
   /** @format int32 */
   numberOfEntrances?: number | null;
   isThereElevator?: boolean | null;
+  index?: string | null;
 }
 
 export interface HousingStockDeviceListResponse {
@@ -2896,6 +2920,8 @@ export interface HousingStockShortResponse {
 
 export interface HousingStockUpdateRequest {
   houseCategory?: EHouseCategory | null;
+  livingHouseType?: ELivingHouseType | null;
+  nonResidentialHouseType?: ENonResidentialHouseType | null;
 
   /** @format int32 */
   numberOfEntrances?: number | null;
@@ -5959,24 +5985,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (
-      apartmentId: number,
-      query?: {
-        Square?: number;
-        NumberOfLiving?: number;
-        NormativeNumberOfLiving?: number;
-        MainHomeownerAccountId?: string;
-        Comment?: string;
-        ColdWaterRiserCount?: number;
-        HotWaterRiserCount?: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest, params: RequestParams = {}) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: "PUT",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -6425,6 +6440,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         "Filter.DiameterRange.From"?: number;
         "Filter.DiameterRange.To"?: number;
+        "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
@@ -6473,6 +6489,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         "Filter.DiameterRange.From"?: number;
         "Filter.DiameterRange.To"?: number;
+        "Filter.PipeDiameters"?: number[];
         "Filter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "Filter.Resource"?: EResourceType;
         "Filter.Model"?: string;
@@ -9695,6 +9712,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "DevicesFilter.Question"?: string;
         "DevicesFilter.DiameterRange.From"?: number;
         "DevicesFilter.DiameterRange.To"?: number;
+        "DevicesFilter.PipeDiameters"?: number[];
         "CommercialDateRange.From"?: string;
         "CommercialDateRange.To"?: string;
         PageNumber?: number;

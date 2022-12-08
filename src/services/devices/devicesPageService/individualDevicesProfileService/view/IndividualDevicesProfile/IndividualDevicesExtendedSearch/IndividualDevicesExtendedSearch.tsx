@@ -3,10 +3,7 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';
-import {
-  DevicesSearchType,
-  SearchIndividualDevicesParams,
-} from '../../../individualDevicesProfileService.types';
+import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 import {
   FirstLineWrapper,
   ResourceNameWrapper,
@@ -26,6 +23,7 @@ import {
   resourcesNamesLookup,
 } from './IndividualDevicesExtendedSearch.constants';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 
 export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearchProps> = ({
   children,

@@ -4,7 +4,7 @@ import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import { EActResourceType, EApartmentStatus } from 'myApi';
 import React, { FC, useCallback } from 'react';
-import { DevicesSearchType } from 'services/devices/devicesPageService/individualDevicesProfileService/individualDevicesProfileService.types';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIcon } from 'ui-kit/icons';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { IndividualDevicesExtendedSearch } from '../../../IndividualDevicesExtendedSearch';

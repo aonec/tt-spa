@@ -1,13 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider, Select } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
-import styles from '../SearchDevices/DeviceSearchForm.module.scss';
 import {
   StyledRangePicker,
   StyledContainerThreeItems,
-  StyledContainerFourItems,
   StyledSlider,
   LabelCS,
+  StyledFormThreeRows,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
 import type { Moment } from 'moment';
@@ -15,78 +14,71 @@ import moment from 'moment';
 import {
   FormItem,
   SelectSC,
-  StyledFormThreeRows,
 } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
-import { InputSC } from '01/shared/ui/Fields';
+import { AddressSearchContainer } from 'services/addressSearchService';
+import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
+import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 
 const { Option } = Select;
 
 export const ExtendedSearchForm: FC<{
   values: CalculatorsListRequestPayload;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-}> = ({ values, setFieldValue }) => {
-  const marks = {
-    0: '0',
-    255: '255',
-  };
+  diametersConfig: DiamtersConfig;
+}> = ({ values, setFieldValue, diametersConfig }) => {
+  const { marks, maxValue, minValue, diameters } = diametersConfig;
+
   type RangeValue = [Moment | null, Moment | null] | null;
 
   const dateFormat = 'YYYY-MM-DD';
 
+  const rangeValues: [number, number] = useMemo(() => {
+    const first = _.first(values['Filter.PipeDiameters']);
+
+    const last = _.last(values['Filter.PipeDiameters']);
+
+    return [first || minValue, last || maxValue];
+  }, [values]);
+
+  const handleChangeRange = useCallback(
+    (value: [number, number]) => {
+      const firstIndex = diameters.findIndex((elem) => elem === value[0]);
+      const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
+      setFieldValue(
+        "['Filter.PipeDiameters']",
+        diameters.slice(firstIndex, secondIndex)
+      );
+    },
+    [diameters, setFieldValue]
+  );
+
   return (
-    <StyledFormThreeRows id="searchForm" initialValues={{ remember: true }}>
-      <StyledContainerFourItems>
-        <FormItem>
-          <LabelCS>Город: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.City']", value.target.value)
-            }
-            className={styles.input}
-            value={values['Filter.Address.City']}
-            placeholder="Город"
-          />
-        </FormItem>
-
-        <FormItem>
-          <LabelCS>Улица: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.Street']", value.target.value)
-            }
-            className={styles.input}
-            value={values['Filter.Address.Street']}
-            placeholder="Улица"
-          />
-        </FormItem>
-
-        <FormItem>
-          <LabelCS>Дом: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue(
-                "['Filter.Address.HousingStockNumber']",
-                value.target.value
-              )
-            }
-            className={styles.input}
-            value={values['Filter.Address.HousingStockNumber']}
-            placeholder="Дом"
-          />
-        </FormItem>
-
-        <FormItem>
-          <LabelCS>Корпус: </LabelCS>
-          <InputSC
-            onChange={(value) =>
-              setFieldValue("['Filter.Address.Corpus']", value.target.value)
-            }
-            className={styles.input}
-            value={values['Filter.Address.Corpus']}
-            placeholder="Корпус"
-          />
-        </FormItem>
-      </StyledContainerFourItems>
+    <StyledFormThreeRows>
+      <AddressSearchContainer
+        onChange={(key, value) =>
+          setFieldValue(DeviceAddressSearchFieldsNameLookup[key], value)
+        }
+        fields={[
+          SearchFieldType.City,
+          SearchFieldType.Street,
+          SearchFieldType.House,
+          SearchFieldType.Corpus,
+        ]}
+        showLabels
+        initialValues={{
+          city: values['Filter.Address.City'],
+          street: values['Filter.Address.Street'],
+          house: values['Filter.Address.HousingStockNumber'],
+          corpus: values['Filter.Address.Corpus'],
+        }}
+        customTemplate={[
+          { fieldType: SearchFieldType.City, templateValue: '300px' },
+          { fieldType: SearchFieldType.Street, templateValue: '300px' },
+          { fieldType: SearchFieldType.House, templateValue: '1fr' },
+          { fieldType: SearchFieldType.Corpus, templateValue: '1fr' },
+        ]}
+      />
       <StyledContainerThreeItems>
         <FormItem>
           <LabelCS>Тип ресурса: </LabelCS>
@@ -138,27 +130,19 @@ export const ExtendedSearchForm: FC<{
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
         <FormItem>
-          <LabelCS>Диаметр прибора, мм: </LabelCS>
+          <LabelCS>Диаметр трубы, мм: </LabelCS>
           <StyledSlider
             getTooltipPopupContainer={(triggerNode) =>
               triggerNode.parentNode as HTMLElement
             }
             defaultValue={[0, 255]}
-            max={255}
-            range
-            value={[
-              values['Filter.DiameterRange.From']
-                ? values['Filter.DiameterRange.From']
-                : 0,
-              values['Filter.DiameterRange.To']
-                ? values['Filter.DiameterRange.To']
-                : 255,
-            ]}
             marks={marks}
-            onChange={(value: [number, number]) => {
-              setFieldValue("['Filter.DiameterRange.From']", value[0]);
-              setFieldValue("['Filter.DiameterRange.To']", value[1]);
-            }}
+            min={minValue}
+            max={maxValue}
+            range
+            step={null}
+            value={rangeValues}
+            onChange={handleChangeRange}
           />
         </FormItem>
         <FormItem>

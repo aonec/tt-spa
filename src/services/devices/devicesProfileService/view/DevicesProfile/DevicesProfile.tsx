@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { searchStateChanged } from '01/features/devicesReport/models';
@@ -8,6 +8,9 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';
+import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
+import { Radio } from 'antd';
 
 interface DeviceProfileProps {
   setFilter: (payload: CalculatorsListRequestPayload) => void;
@@ -17,6 +20,11 @@ interface DeviceProfileProps {
   showDownloadDeviceReportButtonClicked: (payload: void) => void;
   searchState: CalculatorsListRequestPayload | null;
   clearSearchPayload: (payload: void) => void;
+  diametersConfig: DiamtersConfig;
+  devicesSearchType: DevicesSearchType;
+  setDevicesSearchType: (type: DevicesSearchType) => void;
+  setSerialNumber: (value: string) => void;
+  serialNumber: string;
 }
 
 export const DevicesProfile: FC<DeviceProfileProps> = ({
@@ -26,6 +34,11 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
   open,
   searchState,
   clearSearchPayload,
+  diametersConfig,
+  devicesSearchType,
+  setDevicesSearchType,
+  serialNumber,
+  setSerialNumber,
 }) => {
   const {
     handleSubmit: submitForm,
@@ -34,8 +47,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
     resetForm,
   } = useFormik<CalculatorsListRequestPayload>({
     initialValues: {
-      'Filter.DiameterRange.From': searchState?.['Filter.DiameterRange.From'],
-      'Filter.DiameterRange.To': searchState?.['Filter.DiameterRange.To'],
+      'Filter.PipeDiameters': searchState?.['Filter.PipeDiameters'],
       'Filter.ExpiresCheckingDateAt':
         searchState?.['Filter.ExpiresCheckingDateAt'],
       'Filter.Resource': searchState?.['Filter.Resource'],
@@ -71,11 +83,25 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
 
   return (
     <Wrapper>
+      <Radio.Group
+        value={devicesSearchType}
+        onChange={(value) =>
+          setDevicesSearchType(value.target.value as DevicesSearchType)
+        }
+      >
+        <Radio value={DevicesSearchType.SearialNumber}>Поиск по прибору</Radio>
+        <Radio value={DevicesSearchType.Address}>Поиск по адресу</Radio>
+      </Radio.Group>
+
       <SearchDevices
         isExtendedSearchOpen={isOpen}
         submitForm={submitForm}
         setFieldValue={setFieldValue}
         values={values}
+        diametersConfig={diametersConfig}
+        devicesSearchType={devicesSearchType}
+        serialNumber={serialNumber}
+        setSerialNumber={setSerialNumber}
       >
         <ExtendedSearch
           isOpen={isOpen}
@@ -92,7 +118,11 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
             clearSearchPayload();
           }}
           extendedSearchContent={
-            <ExtendedSearchForm setFieldValue={setFieldValue} values={values} />
+            <ExtendedSearchForm
+              setFieldValue={setFieldValue}
+              values={values}
+              diametersConfig={diametersConfig}
+            />
           }
         />
       </SearchDevices>
