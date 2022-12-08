@@ -7,6 +7,7 @@ import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 import { TaskGroupingFilter } from 'myApi';
+
 const { TabPane } = TabsSC;
 
 export const TasksProfile: FC<TasksProfileProps> = ({

@@ -745,6 +745,9 @@ export interface CommunicationPipeResponse {
   /** @format int32 */
   entryNumber: number | null;
   magistral: string | null;
+
+  /** @format int32 */
+  diameter: number | null;
   devices: PipeHousingMeteringDeviceListResponse[] | null;
 }
 

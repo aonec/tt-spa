@@ -1,7 +1,7 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import React, { FC } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
-import { MagistralsDisctionary } from './MeteringDeviceListItem.constants';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { MagistralsDisctionary } from 'dictionaries';
 import {
   AdditionalInfo,
   BaseInfo,
