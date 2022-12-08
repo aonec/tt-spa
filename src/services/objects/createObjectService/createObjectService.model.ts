@@ -80,7 +80,7 @@ const $stageNumber = domain
 guard({
   source: $stageNumber,
   clock: handleSubmitCreateObject,
-  filter: (stageNumber) => stageNumber < 3 && stageNumber > 0,
+  filter: (stageNumber) => stageNumber < 3 ,
   target: goNextStage,
 });
 
