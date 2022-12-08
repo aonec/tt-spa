@@ -16,3 +16,13 @@ export type GetHousingConsumptionDataFormik = Omit<
   HousingConsumptionDataFilter,
   'ResourceType' | 'To'
 >;
+
+export type AddressWithSearchString = {
+  id: number;
+  addressString: string;
+};
+
+export type PreparedHouseManagements = {
+  id: string;
+  name: string | null;
+};

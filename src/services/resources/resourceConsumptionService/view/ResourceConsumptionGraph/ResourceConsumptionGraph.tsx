@@ -21,10 +21,7 @@ import {
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
-import {
-  getMinAndMaxForResourceConsumptionGraph,
-  prepareDataForConsumptionGraph,
-} from './ResourceConsumptionGraph.utils';
+import { getMinAndMaxForResourceConsumptionGraph } from './ResourceConsumptionGraph.utils';
 
 const height = 360;
 
@@ -43,6 +40,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
     const handleResize = () => setWidth(wrapperNode?.clientWidth || 0);
     window.addEventListener('resize', handleResize);
+
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
@@ -56,18 +54,10 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     return <GraphEmptyData />;
   }
 
-  const { maxValue, minValue } = getMinAndMaxForResourceConsumptionGraph(
-    [
-      housingConsumptionData.currentMonthData,
-      housingConsumptionData.prevMonthData,
-    ].map(prepareData)
-  );
+  const { currentMonthData, prevMonthData } = housingConsumptionData;
 
-  const data = prepareDataForConsumptionGraph(
-    housingConsumptionData.prevMonthData
-  );
-  const currentData = prepareDataForConsumptionGraph(
-    housingConsumptionData.currentMonthData
+  const { maxValue, minValue } = getMinAndMaxForResourceConsumptionGraph(
+    [currentMonthData, prevMonthData].map(prepareData)
   );
 
   return (
@@ -113,14 +103,19 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           }}
         />
         <VictoryArea
-          data={currentData}
+          data={currentMonthData}
           x="key"
           y="value"
           interpolation="monotoneX"
           style={getCurrentDataStyle(resource)}
         />
 
-        <VictoryLine data={data} interpolation="monotoneX" x="key" y="value" />
+        <VictoryLine
+          data={prevMonthData}
+          interpolation="monotoneX"
+          x="key"
+          y="value"
+        />
       </VictoryChart>
     </Wrapper>
   );

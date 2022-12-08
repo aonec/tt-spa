@@ -3,6 +3,8 @@ import {
   HousingConsumptionDataFilter,
   GetHousingConsumptionDataFormik,
   HousingConsumptionDataForTwoMonth,
+  AddressWithSearchString,
+  PreparedHouseManagements,
 } from '../../resourceConsumptionService.types';
 
 export type ResourceConsumptionProfileProps = {
@@ -11,4 +13,8 @@ export type ResourceConsumptionProfileProps = {
   setFilter: (filter: GetHousingConsumptionDataFormik) => void;
   setResource: (resource: EResourceType) => void;
   housingConsumptionData: HousingConsumptionDataForTwoMonth | null;
+  streetsList: AddressWithSearchString[];
+  selectedHouseManagement: string;
+  setHouseManagement: (houseManagement: string) => void;
+  houseManagements: PreparedHouseManagements[];
 };

@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ResourceConsumptionProfile } from './view/ResourceConsumptionProfile';
 
@@ -12,9 +12,22 @@ export const ResourceConsumptionContainer = () => {
     outputs.$resourceConsumptionFilter
   );
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
+  const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
+  const streetsListInHouseManagement = useStore(outputs.$addressesList);
+  const houseManagements = useStore(outputs.$houseManagements);
 
   const setResource = useEvent(inputs.setResource);
   const setFilter = useEvent(inputs.setFilter);
+  const setHouseManagement = useEvent(inputs.selectHouseManagememt);
+
+  const preparedHouseManagements = useMemo(
+    () =>
+      houseManagements.map((houseManagement) => ({
+        id: houseManagement.id,
+        name: houseManagement.name,
+      })),
+    [houseManagements]
+  );
 
   return (
     <>
@@ -25,6 +38,10 @@ export const ResourceConsumptionContainer = () => {
         setResource={setResource}
         setFilter={setFilter}
         housingConsumptionData={housingConsumptionData}
+        streetsList={streetsListInHouseManagement}
+        selectedHouseManagement={selectedHouseManagement}
+        setHouseManagement={setHouseManagement}
+        houseManagements={preparedHouseManagements}
       />
     </>
   );
