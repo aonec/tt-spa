@@ -45,12 +45,15 @@ const CurrentUserGate = createGate();
 
 forward({ from: CurrentUserGate.open, to: fetchCurrentUserFx });
 
+const $currentUserRoles = $currentUser.map((user) => user?.roles || []);
+
 export const currentUserService = {
   outputs: {
     $currentUser,
     $isLoading,
     $hasCorpuses,
     $diametersConfig,
+    $currentUserRoles,
   },
   gates: {
     CurrentUserGate,

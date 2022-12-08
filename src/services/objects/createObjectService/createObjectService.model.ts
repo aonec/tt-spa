@@ -36,6 +36,9 @@ const handlePostCreateObject = domain.createEvent();
 const closePreviewModal = domain.createEvent();
 const openPreviewModal = domain.createEvent();
 
+const handleHeatindStationModalOpen =
+  createHeatingStationService.inputs.handleOpenModal;
+
 const resetter = domain.createEvent();
 
 const HouseManagementsFetchGate = createGate();
@@ -84,7 +87,7 @@ const $stageNumber = domain
 guard({
   source: $stageNumber,
   clock: handleSubmitCreateObject,
-  filter: (stageNumber) => stageNumber < 3 ,
+  filter: (stageNumber) => stageNumber < 3,
   target: goNextStage,
 });
 
@@ -202,6 +205,7 @@ export const createObjectService = {
     openPreviewModal,
     closePreviewModal,
     handleCreateObjectSuccessDone,
+    handleHeatindStationModalOpen,
   },
   outputs: {
     $createObjectData,
