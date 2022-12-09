@@ -16,4 +16,4 @@ export const $apartmentEditMode = createStore(false);
 
 export const ApartmentEditModeGate = createGate();
 
-export const switchApartmentEditMode = createEvent<void>();
+export const switchApartmentEditMode = createEvent();

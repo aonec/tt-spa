@@ -27,7 +27,7 @@ import { ReactComponent as DownloadIcon } from './svg/download.svg';
 import { ReactComponent as ExitIcon } from './svg/exit.svg';
 import { ReactComponent as TimerIcon } from './svg/timer.svg';
 import { ReactComponent as OkIcon } from './svg/ok.svg';
-import { ReactComponent as XIcon } from './svg/x.svg';
+import { ReactComponent as CloseIcon } from './svg/close.svg';
 import { ReactComponent as MapIcon } from './svg/map.svg';
 import { ReactComponent as NumberIcon } from './svg/number.svg';
 import { ReactComponent as CalendarIcon } from './svg/calendar.svg';
@@ -69,7 +69,7 @@ export {
   CalendarIcon,
   NumberIcon,
   MapIcon,
-  XIcon,
+  CloseIcon,
   OkIcon,
   StarIcon,
   CheckIcon,

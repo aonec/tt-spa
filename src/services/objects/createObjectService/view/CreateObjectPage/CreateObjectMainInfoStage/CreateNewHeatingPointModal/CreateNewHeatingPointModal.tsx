@@ -7,6 +7,8 @@ export const CreateNewHeatingPointModal: FC<CreateNewHeatingPointModalProps> = (
   isCreateModalOpen,
   setCreateModalOpen,
   setNewHeatingPointModalData,
+  setInputTypeDisplayingDivShow,
+  handleCreateHeatingStation
 }) => {
   const formId = 'create-new-heating-point-form';
   return (
@@ -18,7 +20,9 @@ export const CreateNewHeatingPointModal: FC<CreateNewHeatingPointModalProps> = (
         <NewHeatingPointForm
           setNewHeatingPointModalData={setNewHeatingPointModalData}
           setCreateModalOpen={setCreateModalOpen}
+          setInputTypeDisplayingDivShow={setInputTypeDisplayingDivShow}
           formId={formId}
+          handleCreateHeatingStation={handleCreateHeatingStation}
         />
       }
       formId={formId}

@@ -1,4 +1,7 @@
-import { HouseManagementResponse } from 'myApi';
+import {
+  HeatingStationResponsePagedList,
+  HouseManagementResponse,
+} from 'myApi';
 import { ObjectCreateSubmitData } from '../../createObjectService.types';
 
 export type CreateObjectPageProps = {
@@ -10,4 +13,9 @@ export type CreateObjectPageProps = {
   onPageCancel: () => void;
   createObjectData: ObjectCreateSubmitData | null;
   handleSubmitCreateObject: (values: ObjectCreateSubmitData) => void;
+  heatingStations: HeatingStationResponsePagedList | null;
+  handlePostCreateObject:() => void;
+  isPreviewModalOpen: boolean;
+  openPreviewModal: () => void;
+  closePreviewModal: () => void;
 };
