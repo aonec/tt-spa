@@ -1,3 +1,4 @@
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { StyledSelect } from '01/shared/ui/Select/components';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
@@ -5,8 +6,9 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
+import { ElevatorExistingType } from '../CreateObjectFinalStageModal/CreateObjectFinalStageForm/CreateObjectFinalStageForm.types';
+import { ElevatorDictionary } from '../CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 import { PageTitle } from '../CreateObjectPage.styled';
-import { validationSchema } from './createObjectAdditionalInfoStage.constants';
 import {
   ButtonPadding,
   Footer,
@@ -23,21 +25,21 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
   goBackStage,
   onPageCancel,
   handleSubmitCreateObject,
+  createObjectData,
+  openPreviewModal,
 }) => {
-  const lift = ['Есть', 'Нет'];
-
   const { values, handleSubmit, setFieldValue } = useFormik<AdditionalInfo>({
     initialValues: {
-      floors: '',
-      entrances: '',
-      elevater: '',
+      floors: createObjectData?.floors || null,
+      entrances: createObjectData?.entrances || null,
+      elevator: createObjectData?.elevator || null,
     },
     enableReinitialize: true,
     onSubmit: (data) => {
       handleSubmitCreateObject(data);
+      openPreviewModal();
     },
-    validateOnBlur: true,
-    validationSchema,
+    validateOnChange: false,
   });
 
   return (
@@ -49,7 +51,8 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
           <Input
             placeholder="Введите"
             onChange={(value) => setFieldValue('floors', value.target.value)}
-            value={values.floors}
+            value={values.floors || undefined}
+            type="number"
           />
         </FormItem>
 
@@ -57,18 +60,21 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
           <Input
             placeholder="Введите"
             onChange={(value) => setFieldValue('entrances', value.target.value)}
-            value={values.entrances}
+            value={values.entrances || undefined}
+            type="number"
           />
         </FormItem>
 
         <FormItem label="Лифт">
           <StyledSelect
             placeholder="Выберите из списка"
-            onChange={(value) => setFieldValue('elevater', value)}
-            value={values.elevater}
+            onChange={(value) => setFieldValue('elevator', value)}
+            value={values.elevator || undefined}
           >
-            {lift.map((e) => (
-              <Select.Option value={e}>{e}</Select.Option>
+            {Object.values(ElevatorExistingType).map((e) => (
+              <Select.Option value={e} key={e}>
+                {ElevatorDictionary[e]}
+              </Select.Option>
             ))}
           </StyledSelect>
         </FormItem>

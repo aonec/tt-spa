@@ -19,8 +19,6 @@ export type SearchTasksProps = {
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: perpetratorItemsProps[] | null;
-  streets: string[];
-  cities: string[] | null;
 };
 
 export const TasksFilterTypeDictionary = {};
@@ -35,8 +33,6 @@ export type ExtendedSearchTypes = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;
   perpetrators?: perpetratorItemsProps[] | null;
-  streets?: string[];
-  cities?: string[] | null;
 };
 
 export type taskCategotiesProps = {

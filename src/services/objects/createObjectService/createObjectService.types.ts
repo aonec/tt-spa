@@ -3,3 +3,4 @@ import { ObjectAddressValues } from "./view/CreateObjectPage/CreateObjectAddress
 import { ObjectMainInfoValues } from "./view/CreateObjectPage/CreateObjectMainInfoStage/CreateObjectMainInfoStage.types";
 
 export type ObjectCreateSubmitData = Partial<ObjectAddressValues & ObjectMainInfoValues & AdditionalInfo>
+

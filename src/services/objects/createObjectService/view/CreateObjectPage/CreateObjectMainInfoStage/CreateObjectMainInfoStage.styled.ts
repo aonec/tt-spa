@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PencilIcon, XIcon } from 'ui-kit/icons';
+import { PencilIcon, CloseIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div``;
 
@@ -44,7 +44,7 @@ export const InputTypeDisplayingDiv = styled.div`
   margin-bottom: 20px;
 `;
 
-export const XIconSc = styled(XIcon)`
+export const CloseIconSC = styled(CloseIcon)`
   path {
     fill: #272f5a52;
   }
@@ -94,10 +94,16 @@ export const Title = styled.div`
   line-height: 32px;
   color: #272f5a;
 `;
+
 export const Subtitle = styled.div`
   margin-left: 8px;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   color: rgba(39, 47, 90, 0.7);
+`;
+
+export const WrapperLinkButton = styled.div`
+  width: max-content;
+  margin-top: 45px;
 `;

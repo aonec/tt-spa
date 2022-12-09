@@ -8,19 +8,32 @@ import {
   CreatePipeNodeRequest,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  PipeNodeResponse,
 } from 'myApi';
 import {
   getCalculatorsList,
   getHousingStock,
   getNodeServiceZones,
+  postPipeNode,
 } from './createNodeService.api';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { CreateNodeFormPayload } from './createNodeService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('createNodeService');
+
+const createPipeNodeFx = domain.createEffect<
+  CreatePipeNodeRequest,
+  PipeNodeResponse,
+  EffectFailDataAxiosError
+>(postPipeNode);
 
 const fetchHousingStockFx = domain.createEffect<number, HousingStockResponse>(
   getHousingStock
 );
+
+const handleSubmitForm = domain.createEvent();
 
 const fetchCalculatorsListFx = domain.createEffect<
   number,
@@ -34,20 +47,23 @@ const fetchNodeServiceZonesFx = domain.createEffect<
 
 const CreateNodeGate = createGate<{ housingStockId: number }>();
 
-const updateRequestPayload = domain.createEvent<CreatePipeNodeRequest>();
+const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();
 
 const goNextStep = domain.createEvent();
 
 const goPrevStep = domain.createEvent();
 
+const openConfiramtionModal = domain.createEvent();
+const closeConfiramtionModal = domain.createEvent();
+
 const $stepNumber = domain
-  .createStore(2)
-  .on(goNextStep, (number) => (number === 3 ? number : number + 1))
-  .on(goPrevStep, (number) => (number === 0 ? number : number - 1))
+  .createStore(0)
+  .on(goNextStep, (step) => step + 1)
+  .on(goPrevStep, (step) => step - 1)
   .reset(CreateNodeGate.close);
 
 const $requestPayload = domain
-  .createStore<CreatePipeNodeRequest>({})
+  .createStore<CreateNodeFormPayload>({})
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(CreateNodeGate.close);
 
@@ -73,6 +89,11 @@ const $calculatorsList = domain
   )
   .reset(CreateNodeGate.close);
 
+const $isConfirmationModalOpen = domain
+  .createStore(false)
+  .on(openConfiramtionModal, () => true)
+  .reset(closeConfiramtionModal);
+
 const $nodeServiceZones = domain
   .createStore<NodeServiceZoneListResponse | null>(null)
   .on(fetchNodeServiceZonesFx.doneData, (_, zones) => zones)
@@ -95,9 +116,11 @@ guard({
   target: fetchHousingStockFx,
 });
 
-forward({
-  from: updateRequestPayload,
-  to: goNextStep,
+guard({
+  source: $stepNumber,
+  clock: updateRequestPayload,
+  filter: (stepNumber) => stepNumber < 3,
+  target: goNextStep,
 });
 
 guard({
@@ -114,7 +137,40 @@ forward({
   to: fetchNodeServiceZonesFx,
 });
 
+sample({
+  source: $requestPayload,
+  clock: handleSubmitForm,
+  target: createPipeNodeFx,
+});
+
 const $isLoadingHousingStock = fetchHousingStockFx.pending;
+
+const $selectedCalculator = combine(
+  $requestPayload,
+  $calculatorsList,
+  ({ calculatorId }, calculatorsList) =>
+    calculatorsList?.find((calculator) => calculator.id === calculatorId) ||
+    null
+);
+
+const $selectedServiceZone = combine(
+  $requestPayload,
+  $nodeServiceZones,
+  ({ nodeServiceZoneId }, serviceZones) =>
+    serviceZones?.nodeServiceZones?.find(
+      (serviceZone) => serviceZone.id === nodeServiceZoneId
+    ) || null
+);
+
+const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
+
+const handlePipeNodeCreated = createPipeNodeFx.doneData;
+
+createPipeNodeFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+createPipeNodeFx.doneData.watch(() => message.success('Узел успешно создан!'));
 
 export const createNodeService = {
   inputs: {
@@ -124,6 +180,10 @@ export const createNodeService = {
       createCalcuatorService.inputs.openCreateCalculatorModal,
     openCreateNodeServiceZoneModal:
       createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
+    openConfiramtionModal,
+    closeConfiramtionModal,
+    handleSubmitForm,
+    handlePipeNodeCreated,
   },
   outputs: {
     $housingStock,
@@ -134,6 +194,10 @@ export const createNodeService = {
     $calculatorsList,
     $requestPayload,
     $nodeServiceZones,
+    $isConfirmationModalOpen,
+    $selectedCalculator,
+    $selectedServiceZone,
+    $isCreatePipeNodeLoading,
   },
   gates: {
     CreateNodeGate,
