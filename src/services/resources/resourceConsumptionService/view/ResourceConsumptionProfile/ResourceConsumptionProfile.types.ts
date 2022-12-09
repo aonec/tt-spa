@@ -19,6 +19,7 @@ export type ResourceConsumptionProfileProps = {
   setHouseManagement: (houseManagement: string) => void;
   houseManagements: PreparedHouseManagements[];
   handleClearData: () => void;
+  handleClearFilter: () => void;
   selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setSelectedGraphTypes: (
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth

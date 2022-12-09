@@ -120,6 +120,7 @@ export const resourceConsumptionService = {
     setFilter,
     selectHouseManagememt,
     clearData,
+    clearStore,
     setSelectedGraphTypes,
   },
   outputs: {

@@ -21,6 +21,7 @@ export const ResourceConsumptionContainer = () => {
   const setFilter = useEvent(inputs.setFilter);
   const setHouseManagement = useEvent(inputs.selectHouseManagememt);
   const handleClearData = useEvent(inputs.clearData);
+  const handleClearFilter = useEvent(inputs.clearStore);
   const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
 
   const preparedHouseManagements = useMemo(
@@ -46,6 +47,7 @@ export const ResourceConsumptionContainer = () => {
         setHouseManagement={setHouseManagement}
         houseManagements={preparedHouseManagements}
         handleClearData={() => handleClearData()}
+        handleClearFilter={() => handleClearFilter()}
         selectedGraphTypes={selectedGraphTypes}
         setSelectedGraphTypes={setSelectedGraphTypes}
       />

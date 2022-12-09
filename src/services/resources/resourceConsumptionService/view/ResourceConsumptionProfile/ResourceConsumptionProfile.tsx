@@ -19,6 +19,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   setHouseManagement,
   houseManagements,
   handleClearData,
+  handleClearFilter,
   selectedGraphTypes,
   setSelectedGraphTypes,
 }) => {
@@ -60,6 +61,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
         setHouseManagement={setHouseManagement}
         houseManagements={houseManagements}
         handleClearData={handleClearData}
+        handleClearFilter={handleClearFilter}
       />
     </Wrapper>
   );

@@ -30,6 +30,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setHouseManagement,
   houseManagements,
   handleClearData,
+  handleClearFilter,
 }) => {
   const initialDate = filter?.From
     ? filter.From
@@ -62,6 +63,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     resetForm();
     setHouseManagement('');
     handleClearData();
+    handleClearFilter();
   }, [resetForm, setHouseManagement]);
 
   return (

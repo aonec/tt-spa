@@ -13,6 +13,7 @@ export type ResourceConsumptionFilterProps = {
   setHouseManagement: (houseManagement: string) => void;
   houseManagements: PreparedHouseManagements[];
   handleClearData: () => void;
+  handleClearFilter: () => void;
 };
 
 export type GetHousingConsumptionDataFormik = {
