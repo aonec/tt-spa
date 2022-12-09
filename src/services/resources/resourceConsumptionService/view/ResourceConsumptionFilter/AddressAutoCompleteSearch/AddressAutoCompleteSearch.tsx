@@ -1,6 +1,5 @@
-import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AddressAutoCompleteSearchProps } from './AddressAutoCompleteSearch.types';
 import { prepareOptionsForAutoComplete } from './AddressAutoCompleteSearch.utils';
 
@@ -11,6 +10,10 @@ export const AddressAutoCompleteSearch: FC<AddressAutoCompleteSearchProps> = ({
   const [addressSearch, setAddressSearch] = useState('');
 
   const options = prepareOptionsForAutoComplete(streetsList, addressSearch);
+
+  useEffect(() => {
+    setAddressSearch('');
+  }, [streetsList]);
 
   return (
     <StyledAutocomplete

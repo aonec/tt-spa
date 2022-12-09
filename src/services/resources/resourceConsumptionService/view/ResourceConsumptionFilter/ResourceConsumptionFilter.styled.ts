@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { DatePicker } from 'ui-kit/DatePicker';
 
 export const Wrapper = styled.div`
-  width: 320px;
+  width: 340px;
   height: fit-content;
   margin-left: 16px;
 
@@ -44,5 +44,4 @@ export const Footer = styled.div`
 
   padding: 16px;
   background-color: #f3f5f6;
-  gap: 16px;
 `;

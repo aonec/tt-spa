@@ -2,16 +2,18 @@ import { axios } from '01/axios';
 import moment from 'moment';
 import {
   GetDataForHousingConsumptionPlotResponse,
+  GetDataForIndividualDevicesConsumptionPlotResponse,
   HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
-import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.model.types';
-import { HousingConsumptionDataFilter } from './resourceConsumptionService.types';
+import {
+  ConsumptionDataFilter,
+  HousingConsumptionDataForTwoMonth,
+} from './resourceConsumptionService.types';
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 
-export const fetchHousingConsumptionsForTwoMonth = async (
-  params: HousingConsumptionDataFilter
-) => {
+export const fetchConsumptionsForTwoMonth = async (
+  params: ConsumptionDataFilter
+): Promise<HousingConsumptionDataForTwoMonth> => {
   const prevMonth = moment(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
     ...params,
@@ -19,25 +21,56 @@ export const fetchHousingConsumptionsForTwoMonth = async (
     To: prevMonth.endOf('month').utcOffset(0, true).format(),
   };
 
-  const currentMonthData = await fetchHousingConsumptionData(params);
-  const prevMonthData = await fetchHousingConsumptionData(
+  const currentHousingMonthData = await fetchHousingConsumptionData(params);
+  const prevHousingMonthData = await fetchHousingConsumptionData(
+    paramsForPrevMonthRequest
+  );
+
+  const currentNormativeAndSubscriberData = await fetchNormativeConsumptionData(
+    params
+  );
+  const prevNormativeAndSubscriberData = await fetchNormativeConsumptionData(
     paramsForPrevMonthRequest
   );
 
   return {
-    currentMonthData: prepareDataForConsumptionGraph(
-      currentMonthData.housingConsumption || []
-    ),
-    prevMonthData: prepareDataForConsumptionGraph(
-      prevMonthData.housingConsumption || []
-    ),
+    currentMonthData: {
+      housing: prepareDataForConsumptionGraph(
+        currentHousingMonthData.housingConsumption || []
+      ),
+      normative: prepareDataForConsumptionGraph(
+        currentNormativeAndSubscriberData.normativeConsumption || []
+      ),
+      subscriber: prepareDataForConsumptionGraph(
+        currentNormativeAndSubscriberData.subscriberConsumption || []
+      ),
+    },
+    prevMonthData: {
+      housing: prepareDataForConsumptionGraph(
+        prevHousingMonthData.housingConsumption || []
+      ),
+      normative: prepareDataForConsumptionGraph(
+        prevNormativeAndSubscriberData.normativeConsumption || []
+      ),
+      subscriber: prepareDataForConsumptionGraph(
+        prevNormativeAndSubscriberData.subscriberConsumption || []
+      ),
+    },
   };
 };
 
 export const fetchHousingConsumptionData = (
-  params: HousingConsumptionDataFilter
+  params: ConsumptionDataFilter
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
   axios.get('PipeNodes/DataForHousingConsumptionPlot', { params });
+
+export const fetchNormativeConsumptionData = (
+  params: ConsumptionDataFilter
+): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
+  axios.get(
+    'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
+    { params }
+  );
 
 export const fetchAddresses = (): Promise<
   HouseManagementWithStreetsResponse[]

@@ -19,6 +19,7 @@ export const ResourceConsumptionContainer = () => {
   const setResource = useEvent(inputs.setResource);
   const setFilter = useEvent(inputs.setFilter);
   const setHouseManagement = useEvent(inputs.selectHouseManagememt);
+  const handleClearData = useEvent(inputs.clearData);
 
   const preparedHouseManagements = useMemo(
     () =>
@@ -42,6 +43,7 @@ export const ResourceConsumptionContainer = () => {
         selectedHouseManagement={selectedHouseManagement}
         setHouseManagement={setHouseManagement}
         houseManagements={preparedHouseManagements}
+        handleClearData={() => handleClearData()}
       />
     </>
   );

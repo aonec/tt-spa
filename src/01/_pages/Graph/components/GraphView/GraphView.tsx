@@ -8,12 +8,8 @@ import {
   VictoryLabel,
 } from 'victory';
 import React from 'react';
-import { minBy, maxBy, get } from 'lodash';
 import 'antd/es/date-picker/style/index';
-import {
-  GraphViewProps,
-  ResourceType,
-} from './GraphView.types';
+import { GraphViewProps, ResourceType } from './GraphView.types';
 import { formTicks, getTickFormat } from '../../utils';
 import Gradient from '../Gradient';
 import { TickComponent } from '../TickComponent';

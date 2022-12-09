@@ -1,14 +1,15 @@
+import { message } from 'antd';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import { EResourceType, HouseManagementWithStreetsResponse } from 'myApi';
 import {
   fetchAddresses,
-  fetchHousingConsumptionsForTwoMonth,
+  fetchConsumptionsForTwoMonth,
 } from './resourceConsumptionService.api';
 import {
-  HousingConsumptionDataFilter,
-  GetHousingConsumptionDataFilter,
+  ConsumptionDataFilter,
+  GetConsumptionDataFilter,
   HousingConsumptionDataForTwoMonth,
 } from './resourceConsumptionService.types';
 import { getAddressSearchData } from './resourceConsumptionService.utils';
@@ -44,10 +45,10 @@ const $addressesList = combine(
   }
 );
 
-const setFilter = domain.createEvent<GetHousingConsumptionDataFilter>();
+const setFilter = domain.createEvent<GetConsumptionDataFilter>();
 const setResource = domain.createEvent<EResourceType>();
 const $resourceConsumptionFilter = domain
-  .createStore<Partial<HousingConsumptionDataFilter> | null>(null)
+  .createStore<Partial<ConsumptionDataFilter> | null>(null)
   .on(setResource, (oldFilter, ResourceType) => ({
     ...oldFilter,
     ResourceType,
@@ -60,9 +61,9 @@ const $resourceConsumptionFilter = domain
   .reset(clearStore);
 
 const getHousingConsumptionFx = domain.createEffect<
-  HousingConsumptionDataFilter,
+  ConsumptionDataFilter,
   HousingConsumptionDataForTwoMonth
->(fetchHousingConsumptionsForTwoMonth);
+>(fetchConsumptionsForTwoMonth);
 
 const clearData = domain.createEvent();
 
@@ -77,7 +78,7 @@ const $isLoading = getHousingConsumptionFx.pending;
 
 guard({
   source: $resourceConsumptionFilter,
-  filter: (filter): filter is HousingConsumptionDataFilter =>
+  filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&
@@ -109,6 +110,7 @@ export const resourceConsumptionService = {
     setResource,
     setFilter,
     selectHouseManagememt,
+    clearData,
   },
   outputs: {
     $housingConsumptionData,

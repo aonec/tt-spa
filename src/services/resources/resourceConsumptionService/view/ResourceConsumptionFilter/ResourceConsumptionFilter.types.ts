@@ -1,18 +1,18 @@
-import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.model.types';
 import {
-  HousingConsumptionDataFilter,
-  GetHousingConsumptionDataFilter,
+  GetConsumptionDataFilter,
   AddressWithSearchString,
   PreparedHouseManagements,
+  ConsumptionDataFilter,
 } from '../../resourceConsumptionService.types';
 
 export type ResourceConsumptionFilterProps = {
-  setFilter: (filter: GetHousingConsumptionDataFilter) => void;
-  filter: Partial<HousingConsumptionDataFilter> | null;
+  setFilter: (filter: GetConsumptionDataFilter) => void;
+  filter: Partial<ConsumptionDataFilter> | null;
   streetsList: AddressWithSearchString[];
   selectedHouseManagement: string;
   setHouseManagement: (houseManagement: string) => void;
   houseManagements: PreparedHouseManagements[];
+  handleClearData: () => void;
 };
 
 export type GetHousingConsumptionDataFormik = {

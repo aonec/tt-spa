@@ -2,7 +2,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
@@ -29,6 +29,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   selectedHouseManagement,
   setHouseManagement,
   houseManagements,
+  handleClearData,
 }) => {
   const initialDate = filter?.From
     ? filter.From
@@ -56,6 +57,12 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       setFilter({ ...values, HousingStockId });
     },
   });
+
+  const handleReset = useCallback(() => {
+    resetForm();
+    setHouseManagement('');
+    handleClearData();
+  }, [resetForm, setHouseManagement]);
 
   return (
     <Wrapper>
@@ -122,10 +129,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         </FormItem>
       </ContentWrapper>
       <Footer>
-        <Button type="ghost" onClick={() => resetForm()}>
-          Отмена
+        <Button type="ghost" onClick={handleReset}>
+          Сбросить
         </Button>
-        <Button type="default" onClick={() => submitForm()}>
+        <Button type="default" onClick={submitForm}>
           Применить фильтр
         </Button>
       </Footer>

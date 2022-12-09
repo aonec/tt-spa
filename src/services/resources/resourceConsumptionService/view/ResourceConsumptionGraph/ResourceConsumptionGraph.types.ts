@@ -3,5 +3,6 @@ import { HousingConsumptionDataForTwoMonth } from '../../resourceConsumptionServ
 
 export type ResourceConsumptionGraphProps = {
   housingConsumptionData: HousingConsumptionDataForTwoMonth | null;
-  resource?: EResourceType ;
+  resource?: EResourceType;
+  startOfMonth: string;
 };

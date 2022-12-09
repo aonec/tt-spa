@@ -2,9 +2,11 @@ import React, { FC } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ResourceConsumptionFilter } from '../ResourceConsumptionFilter';
 import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
+import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
 import { GraphWrapper, Wrapper } from './ResourceConsumptionProfile.styled';
 import { ResourceConsumptionProfileProps } from './ResourceConsumptionProfile.types';
+import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
 
 export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = ({
   isLoading,
@@ -16,6 +18,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   selectedHouseManagement,
   setHouseManagement,
   houseManagements,
+  handleClearData,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
@@ -31,7 +34,13 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
           <ResourceConsumptionGraph
             housingConsumptionData={housingConsumptionData}
             resource={ResourceType}
+            startOfMonth={resourceConsumptionFilter?.From || ''}
           />
+          {housingConsumptionData && (
+            <SelectResourceConsumptionType
+              disabled={getDisabledGraphTypes(housingConsumptionData)}
+            />
+          )}
         </WithLoader>
       </GraphWrapper>
       <ResourceConsumptionFilter
@@ -41,6 +50,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
         selectedHouseManagement={selectedHouseManagement}
         setHouseManagement={setHouseManagement}
         houseManagements={houseManagements}
+        handleClearData={handleClearData}
       />
     </Wrapper>
   );

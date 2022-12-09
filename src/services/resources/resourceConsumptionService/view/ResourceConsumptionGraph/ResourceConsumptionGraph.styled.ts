@@ -7,7 +7,6 @@ export const Wrapper = styled.div`
     overflow: visible !important;
   }
 
-  margin-top: 24px;
   padding-bottom: 48px;
 `;
 

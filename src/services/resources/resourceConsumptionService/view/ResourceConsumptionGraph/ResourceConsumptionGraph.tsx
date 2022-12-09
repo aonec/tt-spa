@@ -1,6 +1,5 @@
 import { CustomTooltip } from '01/_pages/Graph/components/CustomTooltip';
 import Gradient from '01/_pages/Graph/components/Gradient';
-import { GraphTooltip } from '01/_pages/Graph/components/GraphTooltip';
 import {
   horizontalAxisStyle,
   verticalAxisStyle,
@@ -24,12 +23,14 @@ import {
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
 import { getMinAndMaxForResourceConsumptionGraph } from './ResourceConsumptionGraph.utils';
+import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
 
 const height = 360;
 
 export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   housingConsumptionData,
   resource,
+  startOfMonth,
 }) => {
   const [width, setWidth] = useState(0);
 
@@ -50,7 +51,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   if (
     !housingConsumptionData ||
-    housingConsumptionData.currentMonthData.length === 0 ||
+    housingConsumptionData.currentMonthData.housing.length === 0 ||
     !resource
   ) {
     return <GraphEmptyData />;
@@ -59,7 +60,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   const { currentMonthData, prevMonthData } = housingConsumptionData;
 
   const { maxValue, minValue } = getMinAndMaxForResourceConsumptionGraph(
-    [currentMonthData, prevMonthData].map(prepareData)
+    [...Object.values(currentMonthData), ...Object.values(prevMonthData)].map(
+      prepareData
+    )
   );
 
   return (
@@ -104,8 +107,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             },
           }}
         />
+
         <VictoryArea
-          data={currentMonthData}
+          data={currentMonthData.housing}
           x="key"
           y="value"
           interpolation="monotoneX"
@@ -122,7 +126,9 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                 left: 16,
               }}
               height={height}
-              // flyoutComponent={<GraphTooltip measure={''} />}
+              flyoutComponent={
+                <ResourceConsumptionGraphTooltip startOfMonth={startOfMonth} />
+              }
               minValue={minValue}
               maxValue={maxValue}
             />
@@ -130,7 +136,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         />
 
         <VictoryLine
-          data={prevMonthData}
+          data={prevMonthData.housing}
           interpolation="monotoneX"
           x="key"
           y="value"
