@@ -13,6 +13,7 @@ export const GroupWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 12px;
+  width: fit-content;
 
   gap: 8px;
   color: #272f5ae5;
