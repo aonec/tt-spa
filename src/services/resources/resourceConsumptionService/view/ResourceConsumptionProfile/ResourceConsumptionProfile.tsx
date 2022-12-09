@@ -39,14 +39,17 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
           />
-          {housingConsumptionData && (
-            <SelectResourceConsumptionType
-              disabled={getDisabledGraphTypes(housingConsumptionData)}
-              checked={selectedGraphTypes}
-              setCheckedGraphTypes={setSelectedGraphTypes}
-              resource={resourceConsumptionFilter?.ResourceType}
-            />
-          )}
+          {housingConsumptionData &&
+            Boolean(
+              housingConsumptionData?.currentMonthData.housing.length
+            ) && (
+              <SelectResourceConsumptionType
+                disabled={getDisabledGraphTypes(housingConsumptionData)}
+                checked={selectedGraphTypes}
+                setCheckedGraphTypes={setSelectedGraphTypes}
+                resource={resourceConsumptionFilter?.ResourceType}
+              />
+            )}
         </WithLoader>
       </GraphWrapper>
       <ResourceConsumptionFilter
