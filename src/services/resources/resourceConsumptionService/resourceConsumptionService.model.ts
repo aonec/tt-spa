@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
@@ -7,12 +6,14 @@ import {
   fetchAddresses,
   fetchConsumptionsForTwoMonth,
 } from './resourceConsumptionService.api';
+import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
   ConsumptionDataFilter,
   GetConsumptionDataFilter,
-  HousingConsumptionDataForTwoMonth,
+  ConsumptionDataForTwoMonth,
 } from './resourceConsumptionService.types';
 import { getAddressSearchData } from './resourceConsumptionService.utils';
+import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -62,14 +63,22 @@ const $resourceConsumptionFilter = domain
 
 const getHousingConsumptionFx = domain.createEffect<
   ConsumptionDataFilter,
-  HousingConsumptionDataForTwoMonth
+  ConsumptionDataForTwoMonth
 >(fetchConsumptionsForTwoMonth);
 
 const clearData = domain.createEvent();
 
 const $housingConsumptionData = domain
-  .createStore<HousingConsumptionDataForTwoMonth | null>(null)
+  .createStore<ConsumptionDataForTwoMonth | null>(null)
   .on(getHousingConsumptionFx.doneData, (_, data) => data)
+  .reset(clearData);
+
+const setSelectedGraphTypes = domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
+const $selectedGraphTypes = domain
+  .createStore<BooleanTypesOfResourceConsumptionGraphForTwoMonth>(
+    initialSelectedGraphTypes
+  )
+  .on(setSelectedGraphTypes, (_, selected) => selected)
   .reset(clearData);
 
 const ResourceConsumptionGate = createGate();
@@ -111,6 +120,7 @@ export const resourceConsumptionService = {
     setFilter,
     selectHouseManagememt,
     clearData,
+    setSelectedGraphTypes,
   },
   outputs: {
     $housingConsumptionData,
@@ -119,6 +129,7 @@ export const resourceConsumptionService = {
     $addressesList,
     $selectedHouseManagement,
     $houseManagements,
+    $selectedGraphTypes,
   },
   gates: { ResourceConsumptionGate },
 };

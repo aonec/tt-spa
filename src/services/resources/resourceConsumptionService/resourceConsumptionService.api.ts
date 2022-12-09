@@ -7,13 +7,13 @@ import {
 } from 'myApi';
 import {
   ConsumptionDataFilter,
-  HousingConsumptionDataForTwoMonth,
+  ConsumptionDataForTwoMonth,
 } from './resourceConsumptionService.types';
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 
 export const fetchConsumptionsForTwoMonth = async (
   params: ConsumptionDataFilter
-): Promise<HousingConsumptionDataForTwoMonth> => {
+): Promise<ConsumptionDataForTwoMonth> => {
   const prevMonth = moment(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
     ...params,

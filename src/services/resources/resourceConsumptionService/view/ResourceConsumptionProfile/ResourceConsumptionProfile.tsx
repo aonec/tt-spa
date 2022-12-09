@@ -19,6 +19,8 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   setHouseManagement,
   houseManagements,
   handleClearData,
+  selectedGraphTypes,
+  setSelectedGraphTypes,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
@@ -32,13 +34,17 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
 
         <WithLoader isLoading={isLoading}>
           <ResourceConsumptionGraph
-            housingConsumptionData={housingConsumptionData}
+            consumptionData={housingConsumptionData}
             resource={ResourceType}
             startOfMonth={resourceConsumptionFilter?.From || ''}
+            checked={selectedGraphTypes}
           />
           {housingConsumptionData && (
             <SelectResourceConsumptionType
               disabled={getDisabledGraphTypes(housingConsumptionData)}
+              checked={selectedGraphTypes}
+              setCheckedGraphTypes={setSelectedGraphTypes}
+              resource={resourceConsumptionFilter?.ResourceType}
             />
           )}
         </WithLoader>

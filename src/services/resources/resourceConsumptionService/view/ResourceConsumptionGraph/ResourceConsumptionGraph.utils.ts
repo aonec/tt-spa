@@ -1,5 +1,9 @@
+import { getResourceColor } from '01/utils/getResourceColor';
 import _ from 'lodash';
+import { EResourceType } from 'myApi';
 import { getMinAndMax } from 'utils/Graph.utils';
+import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
+import { ResourceConsumptionGraphColors } from './SelectResourceConsumptionType/SelectResourceConsumptionType.constants';
 
 const minDelta = 0.01;
 
@@ -15,3 +19,24 @@ export function getMinAndMaxForResourceConsumptionGraph<T>(
 
   return { minValue, maxValue };
 }
+
+export const getGraphTypeColors = ({
+  resource,
+  type,
+  isOpacityNeed,
+}: {
+  resource: EResourceType;
+  type: ResourceConsumptionGraphType;
+  isOpacityNeed?: boolean;
+}) => {
+  let color = ResourceConsumptionGraphColors[type];
+
+  if (type === ResourceConsumptionGraphType.Housing) {
+    color = getResourceColor(resource);
+  }
+
+  if (isOpacityNeed) {
+    color = `${color}99`;
+  }
+  return color;
+};

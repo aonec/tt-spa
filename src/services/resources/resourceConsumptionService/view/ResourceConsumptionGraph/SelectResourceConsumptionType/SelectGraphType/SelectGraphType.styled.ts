@@ -16,6 +16,9 @@ export const GroupWrapper = styled.div`
 
   gap: 8px;
   color: #272f5ae5;
+
+  user-select: none;
+  cursor: pointer;
 `;
 
 export const Circle = styled.div<{ color: string }>`

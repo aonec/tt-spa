@@ -1,8 +1,8 @@
-import { HousingConsumptionDataForTwoMonth } from '../../resourceConsumptionService.types';
+import { ConsumptionDataForTwoMonth } from '../../resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraph } from './ResourceConsumptionProfile.types';
 
 export const getDisabledGraphTypes = (
-  data: HousingConsumptionDataForTwoMonth
+  data: ConsumptionDataForTwoMonth
 ) => {
   return {
     currentMonthData: Object.entries(data.currentMonthData).reduce(

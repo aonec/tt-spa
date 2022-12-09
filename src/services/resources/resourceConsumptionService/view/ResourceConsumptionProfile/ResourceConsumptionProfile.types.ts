@@ -1,7 +1,7 @@
 import { EResourceType } from 'myApi';
 import {
   ConsumptionDataFilter,
-  HousingConsumptionDataForTwoMonth,
+  ConsumptionDataForTwoMonth,
   AddressWithSearchString,
   PreparedHouseManagements,
   GetConsumptionDataFilter,
@@ -13,12 +13,21 @@ export type ResourceConsumptionProfileProps = {
   resourceConsumptionFilter: Partial<ConsumptionDataFilter> | null;
   setFilter: (filter: GetConsumptionDataFilter) => void;
   setResource: (resource: EResourceType) => void;
-  housingConsumptionData: HousingConsumptionDataForTwoMonth | null;
+  housingConsumptionData: ConsumptionDataForTwoMonth | null;
   streetsList: AddressWithSearchString[];
   selectedHouseManagement: string;
   setHouseManagement: (houseManagement: string) => void;
   houseManagements: PreparedHouseManagements[];
   handleClearData: () => void;
+  selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
+  setSelectedGraphTypes: (
+    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
+  ) => void;
+};
+
+export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
+  currentMonthData: BooleanTypesOfResourceConsumptionGraph;
+  prevMonthData: BooleanTypesOfResourceConsumptionGraph;
 };
 
 export type BooleanTypesOfResourceConsumptionGraph = {

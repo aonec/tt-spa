@@ -5,7 +5,7 @@ import {
   verticalAxisStyle,
 } from '01/_pages/Graph/components/GraphView/GraphView.styled';
 import { TickComponent } from '01/_pages/Graph/components/TickComponent';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { prepareData } from 'utils/Graph.utils';
 import {
@@ -17,22 +17,91 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
 } from 'victory';
+import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
 import {
   getCurrentDataStyle,
   Wrapper,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
-import { getMinAndMaxForResourceConsumptionGraph } from './ResourceConsumptionGraph.utils';
+import {
+  getGraphTypeColors,
+  getMinAndMaxForResourceConsumptionGraph,
+} from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
 
 const height = 360;
 
 export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
-  housingConsumptionData,
+  consumptionData,
   resource,
   startOfMonth,
+  checked,
 }) => {
   const [width, setWidth] = useState(0);
+
+  const prevMonthLines = useMemo(() => {
+    if (!consumptionData || !resource) {
+      return null;
+    }
+    const { prevMonthData } = consumptionData;
+
+    return Object.entries(prevMonthData).map(([key, data]) => {
+      if (checked.prevMonthData[key as ResourceConsumptionGraphType]) {
+        return (
+          <VictoryLine
+            data={data}
+            interpolation="monotoneX"
+            x="key"
+            y="value"
+            style={{
+              data: {
+                stroke: getGraphTypeColors({
+                  resource,
+                  type: key as ResourceConsumptionGraphType,
+                  isOpacityNeed: true,
+                }),
+                strokeWidth: 2,
+              },
+            }}
+          />
+        );
+      }
+      return null;
+    });
+  }, [consumptionData, checked, resource]);
+
+  const currentMonthLines = useMemo(() => {
+    if (!consumptionData || !resource) {
+      return null;
+    }
+    const { currentMonthData } = consumptionData;
+
+    return Object.entries(currentMonthData).map(([key, data]) => {
+      if (
+        checked.currentMonthData[key as ResourceConsumptionGraphType] &&
+        key !== ResourceConsumptionGraphType.Housing
+      ) {
+        return (
+          <VictoryLine
+            data={data}
+            interpolation="monotoneX"
+            x="key"
+            y="value"
+            style={{
+              data: {
+                stroke: getGraphTypeColors({
+                  resource,
+                  type: key as ResourceConsumptionGraphType,
+                }),
+                strokeWidth: 2,
+              },
+            }}
+          />
+        );
+      }
+      return null;
+    });
+  }, [consumptionData, checked, resource]);
 
   useEffect(() => {
     const wrapperNode = document.getElementById('graphWrapper');
@@ -50,14 +119,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   }, []);
 
   if (
-    !housingConsumptionData ||
-    housingConsumptionData.currentMonthData.housing.length === 0 ||
+    !consumptionData ||
+    consumptionData.currentMonthData.housing.length === 0 ||
     !resource
   ) {
     return <GraphEmptyData />;
   }
-
-  const { currentMonthData, prevMonthData } = housingConsumptionData;
+  const { currentMonthData, prevMonthData } = consumptionData;
 
   const { maxValue, minValue } = getMinAndMaxForResourceConsumptionGraph(
     [...Object.values(currentMonthData), ...Object.values(prevMonthData)].map(
@@ -107,40 +175,38 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             },
           }}
         />
-
-        <VictoryArea
-          data={currentMonthData.housing}
-          x="key"
-          y="value"
-          interpolation="monotoneX"
-          style={getCurrentDataStyle(resource)}
-          labels={() => ''}
-          labelComponent={
-            <CustomTooltip
-              flyoutStyle={{ fill: 'var(--main-100)' }}
-              style={{ fill: '#fff' }}
-              flyoutPadding={{
-                top: 8,
-                right: 16,
-                bottom: 8,
-                left: 16,
-              }}
-              height={height}
-              flyoutComponent={
-                <ResourceConsumptionGraphTooltip startOfMonth={startOfMonth} />
-              }
-              minValue={minValue}
-              maxValue={maxValue}
-            />
-          }
-        />
-
-        <VictoryLine
-          data={prevMonthData.housing}
-          interpolation="monotoneX"
-          x="key"
-          y="value"
-        />
+        {prevMonthLines}
+        {currentMonthLines}
+        {checked.currentMonthData.housing && (
+          <VictoryArea
+            data={currentMonthData.housing}
+            x="key"
+            y="value"
+            interpolation="monotoneX"
+            style={getCurrentDataStyle(resource)}
+            labels={() => ''}
+            labelComponent={
+              <CustomTooltip
+                flyoutStyle={{ fill: 'var(--main-100)' }}
+                style={{ fill: '#fff' }}
+                flyoutPadding={{
+                  top: 8,
+                  right: 16,
+                  bottom: 8,
+                  left: 16,
+                }}
+                height={height}
+                flyoutComponent={
+                  <ResourceConsumptionGraphTooltip
+                    startOfMonth={startOfMonth}
+                  />
+                }
+                minValue={minValue}
+                maxValue={maxValue}
+              />
+            }
+          />
+        )}
       </VictoryChart>
     </Wrapper>
   );

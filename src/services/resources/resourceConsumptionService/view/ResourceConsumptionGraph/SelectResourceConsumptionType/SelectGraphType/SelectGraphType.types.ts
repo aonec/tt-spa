@@ -3,8 +3,8 @@ import { BooleanTypesOfResourceConsumptionGraph } from '../../../ResourceConsump
 
 export type SelectGraphTypeProps = {
   title: string;
-  colors: {
-    [key in ResourceConsumptionGraphType]: string;
-  };
   disabled: BooleanTypesOfResourceConsumptionGraph;
+  checked: BooleanTypesOfResourceConsumptionGraph;
+  handleSetChecked: (checked: BooleanTypesOfResourceConsumptionGraph) => void;
+  colorConstructor: (type: ResourceConsumptionGraphType) => string;
 };

@@ -1,8 +1,11 @@
-import { BooleanTypesOfResourceConsumptionGraph } from '../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
+import { EResourceType } from 'myApi';
+import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from '../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type SelectResourceConsumptionTypeProps = {
-  disabled: {
-    currentMonthData: BooleanTypesOfResourceConsumptionGraph;
-    prevMonthData: BooleanTypesOfResourceConsumptionGraph;
-  };
+  disabled: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
+  setCheckedGraphTypes: (
+    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
+  ) => void;
+  resource?: EResourceType;
 };

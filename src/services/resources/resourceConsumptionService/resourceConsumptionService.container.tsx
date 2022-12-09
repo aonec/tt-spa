@@ -15,11 +15,13 @@ export const ResourceConsumptionContainer = () => {
   const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
   const streetsListInHouseManagement = useStore(outputs.$addressesList);
   const houseManagements = useStore(outputs.$houseManagements);
+  const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
 
   const setResource = useEvent(inputs.setResource);
   const setFilter = useEvent(inputs.setFilter);
   const setHouseManagement = useEvent(inputs.selectHouseManagememt);
   const handleClearData = useEvent(inputs.clearData);
+  const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
 
   const preparedHouseManagements = useMemo(
     () =>
@@ -44,6 +46,8 @@ export const ResourceConsumptionContainer = () => {
         setHouseManagement={setHouseManagement}
         houseManagements={preparedHouseManagements}
         handleClearData={() => handleClearData()}
+        selectedGraphTypes={selectedGraphTypes}
+        setSelectedGraphTypes={setSelectedGraphTypes}
       />
     </>
   );

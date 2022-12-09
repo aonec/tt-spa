@@ -1,6 +1,6 @@
 import { DateTimeDoubleDictionaryItem, EResourceType } from 'myApi';
 
-export type HousingConsumptionDataForTwoMonth = {
+export type ConsumptionDataForTwoMonth = {
   currentMonthData: MonthConsumptionData;
   prevMonthData: MonthConsumptionData;
 };

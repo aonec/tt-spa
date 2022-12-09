@@ -1,8 +1,10 @@
 import { EResourceType } from 'myApi';
-import { HousingConsumptionDataForTwoMonth } from '../../resourceConsumptionService.types';
+import { ConsumptionDataForTwoMonth } from '../../resourceConsumptionService.types';
+import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from '../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type ResourceConsumptionGraphProps = {
-  housingConsumptionData: HousingConsumptionDataForTwoMonth | null;
+  consumptionData: ConsumptionDataForTwoMonth | null;
   resource?: EResourceType;
   startOfMonth: string;
+  checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
 };
