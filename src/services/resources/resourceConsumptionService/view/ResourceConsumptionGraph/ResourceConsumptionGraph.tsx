@@ -49,6 +49,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       if (checked.prevMonthData[key as ResourceConsumptionGraphType]) {
         return (
           <VictoryLine
+            key={key}
             data={data}
             interpolation="monotoneX"
             x="key"
@@ -83,6 +84,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       ) {
         return (
           <VictoryLine
+            key={key}
             data={data}
             interpolation="monotoneX"
             x="key"

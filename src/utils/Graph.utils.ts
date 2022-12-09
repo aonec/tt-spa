@@ -22,7 +22,7 @@ export function getMinAndMax<T>(
   return { minValue, maxValue };
 }
 
-export function prepareData<T>(data: (T & { value?: number })[]) {
+export function prepareData<T>(data: (T & { value?: number | null })[]) {
   return data.reduce((acc, reading) => {
     if (reading?.value === undefined) {
       return acc;

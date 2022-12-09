@@ -1,4 +1,4 @@
-import { DateTimeDoubleDictionaryItem, EResourceType } from 'myApi';
+import { EResourceType } from 'myApi';
 
 export type ConsumptionDataForTwoMonth = {
   currentMonthData: MonthConsumptionData;
@@ -6,9 +6,14 @@ export type ConsumptionDataForTwoMonth = {
 };
 
 export type MonthConsumptionData = {
-  [ResourceConsumptionGraphType.Housing]: DateTimeDoubleDictionaryItem[];
-  [ResourceConsumptionGraphType.Normative]: DateTimeDoubleDictionaryItem[];
-  [ResourceConsumptionGraphType.Subscriber]: DateTimeDoubleDictionaryItem[];
+  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
+};
+
+export type ResourceConsumptionWithNull = {
+  value?: number | null;
+  key?: string;
 };
 
 export enum ResourceConsumptionGraphType {
