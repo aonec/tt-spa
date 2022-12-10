@@ -141,6 +141,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       <Gradient resource={resource} />
 
       <VictoryChart
+        padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
         domain={{ y: [minValue, maxValue] }}
         style={{
           parent: {
@@ -170,12 +171,15 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         <VictoryLine
           samples={1}
           labels={['0', ``]}
-          labelComponent={<VictoryLabel dx={-17} dy={7} />}
+          labelComponent={<VictoryLabel renderInPortal dy={7} dx={-16} />}
           y={() => 0}
           style={{
             data: {
               stroke: '#dcdee4',
               strokeWidth: 2,
+            },
+            labels: {
+              fill: '#272F5AB2',
             },
           }}
         />
@@ -193,12 +197,6 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
               <CustomTooltip
                 flyoutStyle={{ fill: 'var(--main-100)' }}
                 style={{ fill: '#fff' }}
-                flyoutPadding={{
-                  top: 8,
-                  right: 16,
-                  bottom: 8,
-                  left: 16,
-                }}
                 height={height}
                 flyoutComponent={
                   <ResourceConsumptionGraphTooltip
