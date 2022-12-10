@@ -25,6 +25,7 @@ import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGrap
 import {
   getCurrentDataStyle,
   Wrapper,
+  ZeroLineStyle,
 } from './ResourceConsumptionGraph.styled';
 import { ResourceConsumptionGraphProps } from './ResourceConsumptionGraph.types';
 import {
@@ -156,15 +157,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           labels={['0', ``]}
           labelComponent={<VictoryLabel renderInPortal dy={7} dx={-16} />}
           y={() => 0}
-          style={{
-            data: {
-              stroke: '#dcdee4',
-              strokeWidth: 2,
-            },
-            labels: {
-              fill: '#272F5AB2',
-            },
-          }}
+          style={ZeroLineStyle}
         />
         {lines}
         {checked.currentMonthData.housing && (
