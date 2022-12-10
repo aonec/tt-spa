@@ -2,7 +2,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
@@ -51,6 +51,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     enableReinitialize: true,
     onSubmit: (values) => {
       const { HousingStockId } = values;
+
       if (!HousingStockId) {
         return;
       }

@@ -40,7 +40,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 }) => {
   const [width, setWidth] = useState(0);
 
-  const prevMonthLines = useMemo(() => {
+  const otherMonthLines = useMemo(() => {
     if (!consumptionData || !resource) {
       return null;
     }
@@ -183,7 +183,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             },
           }}
         />
-        {prevMonthLines}
+        {otherMonthLines}
         {currentMonthLines}
         {checked.currentMonthData.housing && (
           <VictoryArea
