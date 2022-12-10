@@ -1,8 +1,8 @@
 import { EResourceType } from 'myApi';
 
 export type ConsumptionDataForTwoMonth = {
-  currentMonthData: MonthConsumptionData;
-  prevMonthData: MonthConsumptionData;
+  [ResourceConsumptionGraphMonth.currentMonthData]: MonthConsumptionData;
+  [ResourceConsumptionGraphMonth.prevMonthData]: MonthConsumptionData;
 };
 
 export type MonthConsumptionData = {
@@ -15,6 +15,11 @@ export type ResourceConsumptionWithNull = {
   value?: number | null;
   key?: string;
 };
+
+export enum ResourceConsumptionGraphMonth {
+  currentMonthData = 'currentMonthData',
+  prevMonthData = 'prevMonthData',
+}
 
 export enum ResourceConsumptionGraphType {
   Housing = 'housing',

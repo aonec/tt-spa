@@ -17,7 +17,10 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
 } from 'victory';
-import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
+import {
+  ResourceConsumptionGraphMonth,
+  ResourceConsumptionGraphType,
+} from '../../resourceConsumptionService.types';
 import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGraph.constants';
 import {
   getCurrentDataStyle,
@@ -40,71 +43,51 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 }) => {
   const [width, setWidth] = useState(0);
 
-  const otherMonthLines = useMemo(() => {
-    if (!consumptionData || !resource) {
-      return null;
-    }
-    const { prevMonthData } = consumptionData;
+  const lines = useMemo(
+    () =>
+      Object.values(ResourceConsumptionGraphMonth).map((month) => {
+        if (!consumptionData || !resource) {
+          return null;
+        }
 
-    return Object.entries(prevMonthData).map(([key, data]) => {
-      if (checked.prevMonthData[key as ResourceConsumptionGraphType]) {
-        return (
-          <VictoryLine
-            key={key}
-            data={data}
-            interpolation="monotoneX"
-            x="key"
-            y="value"
-            style={{
-              data: {
-                stroke: getGraphTypeColors({
-                  resource,
-                  type: key as ResourceConsumptionGraphType,
-                  isOpacityNeed: true,
-                }),
-                strokeWidth: 2,
-              },
-            }}
-          />
-        );
-      }
-      return null;
-    });
-  }, [consumptionData, checked, resource]);
+        const monthData = consumptionData[month];
+        const monthChecked = checked[month];
 
-  const currentMonthLines = useMemo(() => {
-    if (!consumptionData || !resource) {
-      return null;
-    }
-    const { currentMonthData } = consumptionData;
+        return Object.entries(monthData).map(([key, data]) => {
+          const isCurrentMonthHousingData =
+            month === ResourceConsumptionGraphMonth.currentMonthData &&
+            key === ResourceConsumptionGraphType.Housing;
 
-    return Object.entries(currentMonthData).map(([key, data]) => {
-      if (
-        checked.currentMonthData[key as ResourceConsumptionGraphType] &&
-        key !== ResourceConsumptionGraphType.Housing
-      ) {
-        return (
-          <VictoryLine
-            key={key}
-            data={data}
-            interpolation="monotoneX"
-            x="key"
-            y="value"
-            style={{
-              data: {
-                stroke: getGraphTypeColors({
-                  resource,
-                  type: key as ResourceConsumptionGraphType,
-                }),
-                strokeWidth: 2,
-              },
-            }}
-          />
-        );
-      }
-      return null;
-    });
-  }, [consumptionData, checked, resource]);
+          if (
+            monthChecked[key as ResourceConsumptionGraphType] &&
+            !isCurrentMonthHousingData
+          ) {
+            return (
+              <VictoryLine
+                key={key}
+                data={data}
+                interpolation="monotoneX"
+                x="key"
+                y="value"
+                style={{
+                  data: {
+                    stroke: getGraphTypeColors({
+                      resource,
+                      type: key as ResourceConsumptionGraphType,
+                      isOpacityNeed:
+                        month === ResourceConsumptionGraphMonth.prevMonthData,
+                    }),
+                    strokeWidth: 2,
+                  },
+                }}
+              />
+            );
+          }
+          return null;
+        });
+      }),
+    [consumptionData, resource, checked]
+  );
 
   useEffect(() => {
     const wrapperNode = document.getElementById('graphWrapper');
@@ -183,8 +166,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
             },
           }}
         />
-        {otherMonthLines}
-        {currentMonthLines}
+        {lines}
         {checked.currentMonthData.housing && (
           <VictoryArea
             data={currentMonthData.housing}
