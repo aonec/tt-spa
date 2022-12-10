@@ -18,7 +18,7 @@ import {
   VictoryVoronoiContainer,
 } from 'victory';
 import {
-  ResourceConsumptionGraphMonth,
+  ResourceConsumptionGraphDataType,
   ResourceConsumptionGraphType,
 } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGraph.constants';
@@ -38,6 +38,7 @@ const height = 360;
 
 export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   consumptionData,
+  additionalConsumptionData,
   resource,
   startOfMonth,
   checked,
@@ -46,17 +47,31 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   const lines = useMemo(
     () =>
-      Object.values(ResourceConsumptionGraphMonth).map((month) => {
-        if (!consumptionData || !resource) {
+      Object.values(ResourceConsumptionGraphDataType).map((typeOfData) => {
+        const isAdditionalAddress =
+          additionalConsumptionData &&
+          typeOfData === ResourceConsumptionGraphDataType.prevMonthData;
+
+        if (!consumptionData || !resource || isAdditionalAddress) {
           return null;
         }
 
-        const monthData = consumptionData[month];
-        const monthChecked = checked[month];
+        const monthData = consumptionData?.[typeOfData];
+
+        const typeOfChecked =
+          typeOfData === ResourceConsumptionGraphDataType.additionalAddress
+            ? ResourceConsumptionGraphDataType.currentMonthData
+            : typeOfData;
+
+        const monthChecked = checked[typeOfChecked];
+
+        if (!monthData) {
+          return null;
+        }
 
         return Object.entries(monthData).map(([key, data]) => {
           const isCurrentMonthHousingData =
-            month === ResourceConsumptionGraphMonth.currentMonthData &&
+            typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
             key === ResourceConsumptionGraphType.Housing;
 
           if (
@@ -76,7 +91,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                       resource,
                       type: key as ResourceConsumptionGraphType,
                       isOpacityNeed:
-                        month === ResourceConsumptionGraphMonth.prevMonthData,
+                        typeOfData !=
+                        ResourceConsumptionGraphDataType.currentMonthData,
                     }),
                     strokeWidth: 2,
                   },

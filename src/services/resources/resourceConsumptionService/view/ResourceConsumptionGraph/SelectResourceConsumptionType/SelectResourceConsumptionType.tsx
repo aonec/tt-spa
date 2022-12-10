@@ -10,6 +10,7 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
   checked,
   setCheckedGraphTypes,
   resource,
+  isAdditionalAddress
 }) => {
   const handleSetChecked = useCallback(
     (key: string, newChecked: BooleanTypesOfResourceConsumptionGraph) =>
@@ -32,7 +33,7 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
         }
         colorConstructor={(type) => getGraphTypeColors({ resource, type })}
       />
-      <SelectGraphType
+      {!isAdditionalAddress && <SelectGraphType
         title={'Прошлый аналогичный период'}
         disabled={disabled.prevMonthData}
         checked={checked.prevMonthData}
@@ -42,7 +43,7 @@ export const SelectResourceConsumptionType: FC<SelectResourceConsumptionTypeProp
         colorConstructor={(type) =>
           getGraphTypeColors({ resource, type, isOpacityNeed: true })
         }
-      />
+      />}
     </Wrapper>
   );
 };

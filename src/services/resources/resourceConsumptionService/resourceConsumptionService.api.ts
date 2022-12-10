@@ -33,6 +33,7 @@ export const fetchConsumptionsForTwoMonth = async (
 export const fetchConsumptionsForMonth = async (
   params: ConsumptionDataFilter
 ): Promise<MonthConsumptionData> => {
+  console.log(params);
   const housingMonthData = await fetchHousingConsumptionData(params);
 
   const normativeAndSubscriberData = await fetchNormativeConsumptionData(

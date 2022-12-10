@@ -8,4 +8,5 @@ export type SelectResourceConsumptionTypeProps = {
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
   ) => void;
   resource?: EResourceType;
+  isAdditionalAddress: boolean;
 };

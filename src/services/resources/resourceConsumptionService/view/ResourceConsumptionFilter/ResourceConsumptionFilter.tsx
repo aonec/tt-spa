@@ -2,19 +2,23 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
+import { TrashIcon } from 'ui-kit/icons';
 import { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
+  AdditionalAddressWrapper,
   ContentWrapper,
   DatePickerSC,
   Footer,
   FormWrapper,
+  GroupWrapper,
   TitleText,
+  TrashIconSC,
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
 import {
@@ -31,7 +35,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   houseManagements,
   handleClearData,
   handleClearFilter,
+  handleClearAdditionalAddress,
 }) => {
+  const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
+
   const initialDate = filter?.From
     ? filter.From
     : moment().startOf('month').utcOffset(0, true).format();
@@ -45,15 +52,20 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   } = useFormik<GetHousingConsumptionDataFormik>({
     initialValues: {
       HousingStockId: filter?.HousingStockId || null,
+      AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
       From: initialDate,
     },
     validationSchema: resourceConsumptionFilterValidationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      const { HousingStockId } = values;
+      const { HousingStockId, AdditionalHousingStockId } = values;
 
       if (!HousingStockId) {
         return;
+      }
+
+      if (!AdditionalHousingStockId) {
+        handleClearAdditionalAddress();
       }
 
       setFilter({ ...values, HousingStockId });
@@ -130,6 +142,31 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
           />
           <ErrorMessage>{errors.HousingStockId}</ErrorMessage>
         </FormItem>
+        {!isAdditionalAddress && (
+          <AdditionalAddressWrapper
+            onClick={() => setIsAdditionalAddress(true)}
+          >
+            + Добавить адрес для сравнения
+          </AdditionalAddressWrapper>
+        )}
+        {isAdditionalAddress && (
+          <FormItem label="Адрес для сравнения">
+            <GroupWrapper>
+              <AddressAutoCompleteSearch
+                streetsList={streetsList}
+                handleChooseHousingStock={(id) =>
+                  setFieldValue('AdditionalHousingStockId', id)
+                }
+              />
+              <TrashIconSC
+                onClick={() => {
+                  setIsAdditionalAddress(false);
+                  setFieldValue('AdditionalHousingStockId', null);
+                }}
+              />
+            </GroupWrapper>
+          </FormItem>
+        )}
       </ContentWrapper>
       <Footer>
         <Button type="ghost" onClick={handleReset}>

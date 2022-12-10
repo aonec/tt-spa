@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { ResourceConsumptionGraphDataType } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionFilter } from '../ResourceConsumptionFilter';
 import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
@@ -22,8 +23,20 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   handleClearFilter,
   selectedGraphTypes,
   setSelectedGraphTypes,
+  additionalConsumptionData,
+  handleClearAdditionalAddress,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
+
+  const consumptionData = useMemo(() => {
+    if (!housingConsumptionData) {
+      return null;
+    }
+    return {
+      ...housingConsumptionData,
+      [ResourceConsumptionGraphDataType.additionalAddress]: additionalConsumptionData,
+    };
+  }, [housingConsumptionData, additionalConsumptionData]);
 
   return (
     <Wrapper>
@@ -35,10 +48,11 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
 
         <WithLoader isLoading={isLoading}>
           <ResourceConsumptionGraph
-            consumptionData={housingConsumptionData}
+            consumptionData={consumptionData}
             resource={ResourceType}
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
+            additionalConsumptionData={additionalConsumptionData}
           />
           {housingConsumptionData &&
             Boolean(
@@ -49,6 +63,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
                 checked={selectedGraphTypes}
                 setCheckedGraphTypes={setSelectedGraphTypes}
                 resource={resourceConsumptionFilter?.ResourceType}
+                isAdditionalAddress={Boolean(additionalConsumptionData)}
               />
             )}
         </WithLoader>
@@ -62,6 +77,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
         houseManagements={houseManagements}
         handleClearData={handleClearData}
         handleClearFilter={handleClearFilter}
+        handleClearAdditionalAddress={handleClearAdditionalAddress}
       />
     </Wrapper>
   );
