@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { EResourceType } from 'myApi';
 import { getMinAndMax } from 'utils/Graph.utils';
 import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
-import { ResourceConsumptionGraphColors } from './SelectResourceConsumptionType/SelectResourceConsumptionType.constants';
+import { ResourceConsumptionGraphColors } from './ResourceConsumptionGraph.constants';
 
 const minDelta = 0.01;
 

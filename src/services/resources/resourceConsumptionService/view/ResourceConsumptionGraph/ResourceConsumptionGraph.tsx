@@ -18,6 +18,7 @@ import {
   VictoryVoronoiContainer,
 } from 'victory';
 import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
+import { ResourceConsumptionGraphColorsMeasure } from './ResourceConsumptionGraph.constants';
 import {
   getCurrentDataStyle,
   Wrapper,
@@ -173,7 +174,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           y={() => 0}
           style={{
             data: {
-              stroke: 'var(--frame)',
+              stroke: '#dcdee4',
+              strokeWidth: 2,
             },
           }}
         />
@@ -201,6 +203,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                 flyoutComponent={
                   <ResourceConsumptionGraphTooltip
                     startOfMonth={startOfMonth}
+                    measure={ResourceConsumptionGraphColorsMeasure[resource]}
                   />
                 }
                 minValue={minValue}

@@ -6,4 +6,5 @@ export type ResourceConsumptionGraphTooltipProps = VictoryLabelProps & {
     value: number;
   };
   startOfMonth: string;
+  measure: string;
 };
