@@ -37,7 +37,6 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   );
 
   useEffect(() => {
-    console.log('hello');
     setSelectedAddresses(initialSelectedAddresses);
   }, [additionalConsumptionData]);
 
