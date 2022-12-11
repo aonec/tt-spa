@@ -28,6 +28,7 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
           setChecked={(checked) => setChecked(type, checked)}
           color={colorConstructor(type)}
           text={TypeNameLookup[type]}
+          key={type}
         />
       ))}
     </Wrapper>
