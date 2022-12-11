@@ -1,5 +1,8 @@
 import { EResourceType } from 'myApi';
-import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from '../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
+import {
+  BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+  SelectedAddresses,
+} from '../../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type SelectResourceConsumptionTypeProps = {
   disabled: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
@@ -9,4 +12,8 @@ export type SelectResourceConsumptionTypeProps = {
   ) => void;
   resource?: EResourceType;
   isAdditionalAddress: boolean;
+  additionalAddress: string;
+  currentAddress: string;
+  selectedAddresses: SelectedAddresses;
+  setSelectedAddresses: (payload: SelectedAddresses) => void;
 };

@@ -19,6 +19,8 @@ export type ResourceConsumptionFilterProps = {
 
 export type GetHousingConsumptionDataFormik = {
   HousingStockId: number | null;
+  currentAddress: string | null;
+  additionalAddress: string | null;
   AdditionalHousingStockId: number | null;
   From: string;
 };

@@ -1,14 +1,9 @@
-import { Checkbox } from 'antd';
 import React, { FC, useCallback } from 'react';
 import { ResourceConsumptionGraphType } from 'services/resources/resourceConsumptionService/resourceConsumptionService.types';
 import { TypeNameLookup } from './SelectGraphType.constants';
-import {
-  Circle,
-  GroupWrapper,
-  SelectTitle,
-  Wrapper,
-} from './SelectGraphType.styled';
+import { SelectTitle, Wrapper } from './SelectGraphType.styled';
 import { SelectGraphTypeProps } from './SelectGraphType.types';
+import { SelectGraphTypeItem } from './SelectGraphTypeItem';
 
 export const SelectGraphType: FC<SelectGraphTypeProps> = ({
   title,
@@ -27,13 +22,13 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
     <Wrapper>
       <SelectTitle>{title}</SelectTitle>
       {Object.values(ResourceConsumptionGraphType).map((type) => (
-        <GroupWrapper
-          onClick={() => !disabled[type] && setChecked(type, !checked[type])}
-        >
-          <Checkbox disabled={disabled[type]} checked={checked[type]} />
-          <Circle color={colorConstructor(type)} />
-          {TypeNameLookup[type]}
-        </GroupWrapper>
+        <SelectGraphTypeItem
+          disabled={disabled[type]}
+          checked={checked[type]}
+          setChecked={(checked) => setChecked(type, checked)}
+          color={colorConstructor(type)}
+          text={TypeNameLookup[type]}
+        />
       ))}
     </Wrapper>
   );

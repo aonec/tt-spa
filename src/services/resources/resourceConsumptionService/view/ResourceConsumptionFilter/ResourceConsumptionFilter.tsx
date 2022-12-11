@@ -52,11 +52,15 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   } = useFormik<GetHousingConsumptionDataFormik>({
     initialValues: {
       HousingStockId: filter?.HousingStockId || null,
+      currentAddress: filter?.currentAddress || null,
       AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
+      additionalAddress: filter?.additionalAddress || null,
       From: initialDate,
     },
     validationSchema: resourceConsumptionFilterValidationSchema,
     enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: (values) => {
       const { HousingStockId, AdditionalHousingStockId } = values;
 
@@ -136,9 +140,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <FormItem label="Адрес">
           <AddressAutoCompleteSearch
             streetsList={streetsList}
-            handleChooseHousingStock={(id) =>
-              setFieldValue('HousingStockId', id)
-            }
+            handleChooseHousingStock={({ id, address }) => {
+              setFieldValue('HousingStockId', id);
+              setFieldValue('currentAddress', address);
+            }}
           />
           <ErrorMessage>{errors.HousingStockId}</ErrorMessage>
         </FormItem>
@@ -154,9 +159,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             <GroupWrapper>
               <AddressAutoCompleteSearch
                 streetsList={streetsList}
-                handleChooseHousingStock={(id) =>
-                  setFieldValue('AdditionalHousingStockId', id)
-                }
+                handleChooseHousingStock={({ id, address }) => {
+                  setFieldValue('AdditionalHousingStockId', id);
+                  setFieldValue('additionalAddress', address);
+                }}
               />
               <TrashIconSC
                 onClick={() => {

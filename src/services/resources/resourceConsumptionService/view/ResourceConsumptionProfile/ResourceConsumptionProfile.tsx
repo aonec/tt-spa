@@ -1,12 +1,16 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ResourceConsumptionGraphDataType } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionFilter } from '../ResourceConsumptionFilter';
 import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
+import { initialSelectedAddresses } from './ResourceConsumptionProfile.constants';
 import { GraphWrapper, Wrapper } from './ResourceConsumptionProfile.styled';
-import { ResourceConsumptionProfileProps } from './ResourceConsumptionProfile.types';
+import {
+  ResourceConsumptionProfileProps,
+  SelectedAddresses,
+} from './ResourceConsumptionProfile.types';
 import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
 
 export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = ({
@@ -27,6 +31,14 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   handleClearAdditionalAddress,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
+
+  const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
+    initialSelectedAddresses
+  );
+
+  useEffect(() => {
+    setSelectedAddresses(initialSelectedAddresses);
+  }, [additionalConsumptionData]);
 
   const consumptionData = useMemo(() => {
     if (!housingConsumptionData) {
@@ -53,6 +65,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
             additionalConsumptionData={additionalConsumptionData}
+            selectedAddresses={selectedAddresses}
           />
           {housingConsumptionData &&
             Boolean(
@@ -64,6 +77,14 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
                 setCheckedGraphTypes={setSelectedGraphTypes}
                 resource={resourceConsumptionFilter?.ResourceType}
                 isAdditionalAddress={Boolean(additionalConsumptionData)}
+                additionalAddress={
+                  resourceConsumptionFilter?.additionalAddress || ''
+                }
+                currentAddress={resourceConsumptionFilter?.currentAddress || ''}
+                selectedAddresses={selectedAddresses}
+                setSelectedAddresses={(selected) =>
+                  setSelectedAddresses(selected)
+                }
               />
             )}
         </WithLoader>

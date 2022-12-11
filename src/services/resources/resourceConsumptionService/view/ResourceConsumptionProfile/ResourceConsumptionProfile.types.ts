@@ -38,3 +38,8 @@ export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
 export type BooleanTypesOfResourceConsumptionGraph = {
   [key in ResourceConsumptionGraphType]: boolean;
 };
+
+export type SelectedAddresses = {
+  currentAddress: boolean;
+  addditionalAddress: boolean;
+};

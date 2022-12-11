@@ -4,7 +4,10 @@ import {
   MonthConsumptionData,
   ResourceConsumptionGraphDataType,
 } from '../../resourceConsumptionService.types';
-import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from '../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
+import {
+  BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+  SelectedAddresses,
+} from '../ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 export type ResourceConsumptionGraphProps = {
   consumptionData:
@@ -16,4 +19,5 @@ export type ResourceConsumptionGraphProps = {
   startOfMonth: string;
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   additionalConsumptionData: MonthConsumptionData | null;
+  selectedAddresses: SelectedAddresses;
 };

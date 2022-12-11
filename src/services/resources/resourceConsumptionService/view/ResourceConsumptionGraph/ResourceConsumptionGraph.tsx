@@ -42,6 +42,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   resource,
   startOfMonth,
   checked,
+  selectedAddresses,
 }) => {
   const [width, setWidth] = useState(0);
 
@@ -49,10 +50,19 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     () =>
       Object.values(ResourceConsumptionGraphDataType).map((typeOfData) => {
         const isAdditionalAddress =
-          additionalConsumptionData &&
-          typeOfData === ResourceConsumptionGraphDataType.prevMonthData;
+          (additionalConsumptionData &&
+            typeOfData === ResourceConsumptionGraphDataType.prevMonthData) ||
+          !selectedAddresses.addditionalAddress;
+        const hideCurrentMonthData =
+          typeOfData === ResourceConsumptionGraphDataType.currentMonthData &&
+          !selectedAddresses.currentAddress;
 
-        if (!consumptionData || !resource || isAdditionalAddress) {
+        if (
+          !consumptionData ||
+          !resource ||
+          isAdditionalAddress ||
+          hideCurrentMonthData
+        ) {
           return null;
         }
 
@@ -103,7 +113,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           return null;
         });
       }),
-    [consumptionData, resource, checked]
+    [consumptionData, resource, checked, selectedAddresses]
   );
 
   useEffect(() => {
@@ -131,9 +141,11 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
   const { currentMonthData, prevMonthData } = consumptionData;
 
   const { maxValue, minValue } = getMinAndMaxForResourceConsumptionGraph(
-    [...Object.values(currentMonthData), ...Object.values(prevMonthData)].map(
-      prepareData
-    )
+    [
+      ...Object.values(currentMonthData),
+      ...Object.values(prevMonthData),
+      ...Object.values(additionalConsumptionData || {}),
+    ].map(prepareData)
   );
 
   return (
@@ -176,31 +188,32 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           style={ZeroLineStyle}
         />
         {lines}
-        {checked.currentMonthData.housing && (
-          <VictoryArea
-            data={currentMonthData.housing}
-            x="key"
-            y="value"
-            interpolation="monotoneX"
-            style={getCurrentDataStyle(resource)}
-            labels={() => ''}
-            labelComponent={
-              <CustomTooltip
-                flyoutStyle={{ fill: 'var(--main-100)' }}
-                style={{ fill: '#fff' }}
-                height={height}
-                flyoutComponent={
-                  <ResourceConsumptionGraphTooltip
-                    startOfMonth={startOfMonth}
-                    measure={ResourceConsumptionGraphColorsMeasure[resource]}
-                  />
-                }
-                minValue={minValue}
-                maxValue={maxValue}
-              />
-            }
-          />
-        )}
+        {checked.currentMonthData.housing &&
+          selectedAddresses.currentAddress && (
+            <VictoryArea
+              data={currentMonthData.housing}
+              x="key"
+              y="value"
+              interpolation="monotoneX"
+              style={getCurrentDataStyle(resource)}
+              labels={() => ''}
+              labelComponent={
+                <CustomTooltip
+                  flyoutStyle={{ fill: 'var(--main-100)' }}
+                  style={{ fill: '#fff' }}
+                  height={height}
+                  flyoutComponent={
+                    <ResourceConsumptionGraphTooltip
+                      startOfMonth={startOfMonth}
+                      measure={ResourceConsumptionGraphColorsMeasure[resource]}
+                    />
+                  }
+                  minValue={minValue}
+                  maxValue={maxValue}
+                />
+              }
+            />
+          )}
       </VictoryChart>
     </Wrapper>
   );

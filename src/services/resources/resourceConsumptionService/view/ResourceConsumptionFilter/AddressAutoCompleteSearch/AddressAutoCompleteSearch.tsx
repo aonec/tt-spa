@@ -21,11 +21,14 @@ export const AddressAutoCompleteSearch: FC<AddressAutoCompleteSearchProps> = ({
       value={addressSearch}
       onChange={(e) => setAddressSearch(e)}
       placeholder="Введите адрес"
-      onSelect={(address) =>
-        handleChooseHousingStock(
-          streetsList.find((elem) => elem.addressString === address)?.id || 0
-        )
-      }
+      onSelect={(address) => {
+        handleChooseHousingStock({
+          id:
+            streetsList.find((elem) => elem.addressString === address)?.id || 0,
+          address: address,
+        });
+        setAddressSearch(address);
+      }}
       options={options}
     />
   );
