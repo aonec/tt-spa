@@ -1,8 +1,10 @@
 import { axios } from '01/axios';
 import {
   CalculatorIntoHousingStockResponse,
+  CreatePipeNodeRequest,
   HousingStockResponse,
   NodeServiceZoneListResponse,
+  PipeNodeResponse,
 } from 'myApi';
 
 export const getHousingStock = (
@@ -17,3 +19,7 @@ export const getCalculatorsList = (
 
 export const getNodeServiceZones = (): Promise<NodeServiceZoneListResponse | null> =>
   axios.get('NodeServiceZones');
+
+export const postPipeNode = (
+  payload: CreatePipeNodeRequest
+): Promise<PipeNodeResponse> => axios.post('PipeNodes', payload);

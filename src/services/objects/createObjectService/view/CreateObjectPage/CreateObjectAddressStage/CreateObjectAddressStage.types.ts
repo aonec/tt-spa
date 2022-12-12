@@ -12,14 +12,13 @@ export type Address = {
   street: string;
   house: string;
   corpus: string;
-  index: string;
 };
 
 export type ObjectAddressValues = {
-  city: string;
+  city: string | null;
   street: string;
-  house: string;
-  corpus: string;
-  index: string;
+  house: string | null;
+  corpus: string | null;
+  index: string | null;
   additionalAddresses: Address[];
 };
