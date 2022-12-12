@@ -8,24 +8,33 @@ export const prepareOptionsForAutoComplete = (
   if (!addressSearch) {
     return [];
   }
-  const sortedOptions =
-    streets
-      ?.filter((elem) =>
-        Boolean(countSimilarityPoints(addressSearch, elem.addressString))
-      )
-      ?.sort((a, b) => {
-        const aPoints = countSimilarityPoints(addressSearch, a.addressString);
-        const bPoints = countSimilarityPoints(addressSearch, b.addressString);
+  const similarOptions =
+    streets.filter((elem) =>
+      Boolean(countSimilarityPoints(addressSearch, elem.addressString))
+    ) || [];
 
-        if (aPoints < bPoints) return 1;
+  const sortedOptionsBySimilarity = similarOptions.sort((a, b) =>
+    sortOptionsBySimilarity(a, b, addressSearch)
+  );
 
-        if (aPoints > bPoints) return -1;
+  const firstMostSimilarOptions = sortedOptionsBySimilarity.slice(0, 5);
 
-        return 0;
-      })
-      .slice(0, 5) || [];
-
-  return sortedOptions.map((street) => ({
+  return firstMostSimilarOptions.map((street) => ({
     value: street.addressString,
   }));
+};
+
+const sortOptionsBySimilarity = (
+  a: AddressWithSearchString,
+  b: AddressWithSearchString,
+  addressSearch: string
+) => {
+  const aPoints = countSimilarityPoints(addressSearch, a.addressString);
+  const bPoints = countSimilarityPoints(addressSearch, b.addressString);
+
+  if (aPoints < bPoints) return 1;
+
+  if (aPoints > bPoints) return -1;
+
+  return 0;
 };

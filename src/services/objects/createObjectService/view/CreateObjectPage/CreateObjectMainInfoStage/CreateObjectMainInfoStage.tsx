@@ -1,53 +1,69 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/shared/ui/Select/components';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
-  AddTPButton,
   ButtonPadding,
   FlexEnd,
   FlexStart,
   Footer,
   GridContainer,
   InputTypeDisplayingDiv,
-  PencilIconSc,
   RightButtonBlock,
-  Subtitle,
   Title,
   Wrapper,
-  XIconSc,
+  WrapperLinkButton,
+  CloseIconSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
-import { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal/CreateNewHeatingPointModal';
-import { EditNewHeatingPointModal } from './EditNewHeatingPointModal';
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
 import {
-  initialValues,
+  HouseCategoryDictionary,
+  LivingHouseTypeDictionary,
+  NonResidentialHouseTypeDictionary,
   validationSchema,
 } from './createObjectMainInfoStage.constants';
+import { createObjectService } from 'services/objects/createObjectService/createObjectService.model';
+import {
+  EHouseCategory,
+  ELivingHouseType,
+  ENonResidentialHouseType,
+} from 'myApi';
+import { sortBy } from 'lodash';
+import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
+
+const {
+  inputs: { handleHeatingStationCreated },
+} = createHeatingStationService;
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
   goBackStage,
   onPageCancel,
-  // handleMainInfoData,
-  handleSubmitCreateObject
+  handleSubmitCreateObject,
+  createObjectData,
+  heatingStations,
+  openCreateHeatingStationModal,
 }) => {
-  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const { gates } = createObjectService;
+  const { HeatingStationsFetchGate } = gates;
 
-  const [
-    newHeatingPointModalData,
-    setNewHeatingPointModalData,
-  ] = useState<HeatingPoint | null>(null);
+  const heatingStationsValues = heatingStations?.items;
+
+  const initialValues = {
+    houseManagement: createObjectData?.houseManagement || null,
+    objectCategory: createObjectData?.objectCategory || null,
+    livingHouseType: createObjectData?.livingHouseType || null,
+    nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
+    heatingStationId: createObjectData?.heatingStationId || null,
+  };
 
   const {
     values,
@@ -60,40 +76,46 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     onSubmit: (data) => {
       handleSubmitCreateObject(data);
     },
-    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema,
   });
 
+  useEffect(
+    () =>
+      handleHeatingStationCreated.watch((newHeatingStationData) =>
+        setFieldValue('heatingStationId', newHeatingStationData?.id)
+      ),
+    []
+  );
+
+  const selectedHeatingStation = heatingStations?.items?.find(
+    (station) => station.id === values.heatingStationId
+  );
+
   return (
     <>
-      <CreateNewHeatingPointModal
-        isCreateModalOpen={isCreateModalOpen}
-        setCreateModalOpen={setCreateModalOpen}
-        setNewHeatingPointModalData={setNewHeatingPointModalData}
-      />
-      <EditNewHeatingPointModal
-        isEditModalOpen={isEditModalOpen}
-        setEditModalOpen={setEditModalOpen}
-        setNewHeatingPointModalData={setNewHeatingPointModalData}
-      />
+      <HeatingStationsFetchGate />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
         <FormItem label="Домоуправления">
-          <StyledSelect
+          <Select
             placeholder="Выберите из списка"
             onChange={(value) => setFieldValue('houseManagement', value)}
-            value={values.houseManagement}
+            value={values.houseManagement || undefined}
           >
             {houseManagements?.map(
               (houseManagement) =>
                 houseManagement.name && (
-                  <Select.Option value={houseManagement.name}>
+                  <Select.Option
+                    value={houseManagement.id}
+                    key={houseManagement.id}
+                  >
                     {houseManagement.name}
                   </Select.Option>
                 )
             )}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>{errors.houseManagement}</ErrorMessage>
         </FormItem>
 
@@ -101,92 +123,112 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
         <GridContainer>
           <FormItem label="Категория объекта">
-            <StyledSelect
+            <Select
               placeholder="Выберите из списка"
-              onChange={(value) => setFieldValue('objectCategotry', value)}
-              value={values.objectCategotry}
+              onChange={(value) => {
+                setFieldValue('objectCategory', value);
+                setFieldValue('livingHouseType', null);
+                setFieldValue('nonResidentialHouseType', null);
+              }}
+              value={values.objectCategory || undefined}
             >
-              {houseManagements?.map(
-                (houseManagement) =>
-                  houseManagement.name && (
-                    <Select.Option value={houseManagement.name}>
-                      {houseManagement.name}
-                    </Select.Option>
-                  )
-              )}
-            </StyledSelect>
-            <ErrorMessage>{errors.objectCategotry}</ErrorMessage>
+              {Object.values(EHouseCategory).map((category) => (
+                <Select.Option value={category} key={category}>
+                  {HouseCategoryDictionary[category]}
+                </Select.Option>
+              ))}
+            </Select>
+            <ErrorMessage>{errors.objectCategory}</ErrorMessage>
           </FormItem>
 
           <FormItem label="Тип объекта">
-            <StyledSelect
-              placeholder="Выберите из списка"
-              onChange={(value) => setFieldValue('objectType', value)}
-              value={values.objectType}
-            >
-              {houseManagements?.map(
-                (houseManagement) =>
-                  houseManagement.name && (
-                    <Select.Option value={houseManagement.name}>
-                      {houseManagement.name}
+            {!values.objectCategory && (
+              <Select disabled placeholder="Выберите" />
+            )}
+            {values.objectCategory === EHouseCategory.Living && (
+              <>
+                <Select
+                  placeholder="Выберите из списка"
+                  onChange={(value) => setFieldValue('livingHouseType', value)}
+                  value={values.livingHouseType || undefined}
+                >
+                  {Object.values(ELivingHouseType).map((houseType) => (
+                    <Select.Option value={houseType} key={houseType}>
+                      {LivingHouseTypeDictionary[houseType]}
                     </Select.Option>
-                  )
-              )}
-            </StyledSelect>
-            <ErrorMessage>{errors.objectType}</ErrorMessage>
+                  ))}
+                </Select>
+                <ErrorMessage>{errors.livingHouseType}</ErrorMessage>
+              </>
+            )}
+
+            {values.objectCategory === EHouseCategory.NonResidential && (
+              <>
+                <Select
+                  placeholder="Выберите из списка"
+                  onChange={(value) =>
+                    setFieldValue('nonResidentialHouseType', value)
+                  }
+                  value={values.nonResidentialHouseType || undefined}
+                >
+                  {Object.values(ENonResidentialHouseType).map((houseType) => (
+                    <Select.Option value={houseType} key={houseType}>
+                      {NonResidentialHouseTypeDictionary[houseType]}
+                    </Select.Option>
+                  ))}
+                </Select>
+                <ErrorMessage>{errors.nonResidentialHouseType}</ErrorMessage>
+              </>
+            )}
           </FormItem>
         </GridContainer>
 
         <SpaceLine />
 
-        {!newHeatingPointModalData && (
+        {!values.heatingStationId && (
           <GridContainer>
             <FormItem label="Тепловой пункт">
-              <StyledSelect
+              <Select
                 placeholder="Выберите из списка"
-                onChange={(value) => setFieldValue('heatingPoint', value)}
-                value={
-                  (values.heatingPoint.heatingPointType,
-                  values.heatingPoint.heatingPointNumber)
-                }
+                onChange={(value) => {
+                  setFieldValue('heatingStationId', value);
+                }}
+                value={values.heatingStationId || undefined}
               >
-                {houseManagements?.map(
-                  (houseManagement) =>
-                    houseManagement.name && (
-                      <Select.Option value={houseManagement.name}>
-                        {houseManagement.name}
+                {sortBy(heatingStationsValues || [], 'name').map(
+                  (heatingStations) =>
+                    heatingStations.name && (
+                      <Select.Option
+                        value={heatingStations.id}
+                        key={heatingStations.id}
+                      >
+                        {heatingStations.name}
                       </Select.Option>
                     )
                 )}
-              </StyledSelect>
-              <ErrorMessage>
-                {errors.heatingPoint?.heatingPointType}
-              </ErrorMessage>
+              </Select>
+              <ErrorMessage>{errors.heatingStationId}</ErrorMessage>
             </FormItem>
-
-            <AddTPButton
-              className="ant-btn-link"
-              onClick={() => setCreateModalOpen((prev) => !prev)}
-            >
-              + Добавить новый ТП
-            </AddTPButton>
+            <WrapperLinkButton>
+              <LinkButton onClick={openCreateHeatingStationModal}>
+                + Добавить новый ТП
+              </LinkButton>
+            </WrapperLinkButton>
           </GridContainer>
         )}
 
-        {newHeatingPointModalData && (
+        {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
             <InputTypeDisplayingDiv>
               <FlexStart>
-                <Title>
-                  {newHeatingPointModalData.heatingPoint.heatingPointType}
-                </Title>
-                <Subtitle>
-                  ({newHeatingPointModalData.heatingPoint.heatingPointNumber})
-                </Subtitle>
+                <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
-                <PencilIconSc onClick={() => setEditModalOpen(true)} />
-                <XIconSc onClick={() => setNewHeatingPointModalData(null)} />
+                <CloseIconSC
+                  onClick={() => {
+                    setFieldValue('heatingStationId', null);
+                  }}
+                />
               </FlexEnd>
             </InputTypeDisplayingDiv>
           </FormItem>
