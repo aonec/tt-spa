@@ -1,4 +1,4 @@
-import { countSimilarityPoints } from 'services/objects/createObjectService/createObjectService.utils';
+import { countSimilarityPoints } from "utils/countSimilarityPoints";
 
 export function getPreparedStreetsOptions(
   addressSearch: string,
