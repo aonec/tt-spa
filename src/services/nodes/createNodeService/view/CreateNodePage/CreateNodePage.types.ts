@@ -1,9 +1,12 @@
 import {
   CalculatorIntoHousingStockResponse,
-  CreatePipeNodeRequest,
   HousingStockResponse,
   NodeServiceZoneListResponse,
 } from 'myApi';
+import {
+  CreateNodeFormPayload,
+  UpdateNodeFormPayloadCallback,
+} from '../../createNodeService.types';
 
 export type CreateNodePageProps = {
   housingStock: HousingStockResponse | null;
@@ -11,12 +14,13 @@ export type CreateNodePageProps = {
   isLoadingHousingStock: boolean;
   existingStreets: string[];
   stepNumber: number;
-  updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
+  updateRequestPayload: UpdateNodeFormPayloadCallback;
   goPrevStep: () => void;
   calculatorsList: CalculatorIntoHousingStockResponse[] | null;
   openCreateCalculatorModal: () => void;
   isDisabledAddress: boolean;
-  requestPayload: CreatePipeNodeRequest;
+  requestPayload: CreateNodeFormPayload;
   nodeServiceZones: NodeServiceZoneListResponse | null;
   openCreateNodeServiceZoneModal: () => void;
+  openConfiramtionModal: () => void;
 };

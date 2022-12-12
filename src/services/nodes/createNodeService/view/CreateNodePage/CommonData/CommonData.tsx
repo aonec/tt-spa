@@ -14,10 +14,7 @@ import {
   nodeStatuses,
   validationSchema,
 } from './CommonData.contstants';
-import {
-  CreateNodeServiceZoneContainer,
-  createNodeServiceZoneService,
-} from 'services/nodes/createNodeServiceZoneService';
+import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
   CreateNewZoneButtonWrapper,
   FilesUploaderWrapper,
@@ -100,78 +97,77 @@ export const CommonData: FC<CommonDataProps> = ({
   );
 
   return (
-    <>
-      <CreateNodeServiceZoneContainer />
-      <div>
-        <Title>Общие данные об узле</Title>
-        <FirstLineWrapper>
-          <FormItem label="Ресурс">
-            <Select
-              placeholder="Выберите"
-              value={values.resource || undefined}
-              onChange={(value) => setFieldValue('resource', value)}
-            >
-              {nodeResources.map(({ resource, text }) => (
-                <Select.Option key={resource} value={resource}>
-                  <SelectOptionWithIconWrapper>
-                    <ResourceIconLookup resource={resource} />
-                    <div>{text}</div>
-                  </SelectOptionWithIconWrapper>
-                </Select.Option>
-              ))}
-            </Select>
-            <ErrorMessage>{errors.resource}</ErrorMessage>
-          </FormItem>
-          <FormItem label="Номер узла">
-            <Input
-              placeholder="Введите"
-              name="number"
-              type="number"
-              value={values.number}
-              onChange={handleChange}
-            />
-            <ErrorMessage>{errors.number}</ErrorMessage>
-          </FormItem>
-        </FirstLineWrapper>
-        <SecondLineWrapper>
-          <FormItem label="Зона">
-            <Select
-              placeholder="Выберите"
-              value={values.nodeServiceZoneId || undefined}
-              onChange={(value) => setFieldValue('nodeServiceZoneId', value)}
-            >
-              {nodeServiceZones?.nodeServiceZones?.map((zone) => (
-                <Select.Option key={zone.id} value={zone.id}>
-                  {zone.name}
-                </Select.Option>
-              ))}
-            </Select>
-            <ErrorMessage>{errors.nodeServiceZoneId}</ErrorMessage>
-          </FormItem>
-          <CreateNewZoneButtonWrapper>
-            <LinkButton onClick={openCreateNodeServiceZoneModal}>
-              + Создать новую зону
-            </LinkButton>
-          </CreateNewZoneButtonWrapper>
-        </SecondLineWrapper>
-        <FormItem label="Коммерческий учет показателей приборов">
+    <div>
+      <Title>Общие данные об узле</Title>
+      <FirstLineWrapper>
+        <FormItem label="Ресурс">
           <Select
             placeholder="Выберите"
-            value={values.nodeStatus || undefined}
-            onChange={(value) => setFieldValue('nodeStatus', value)}
+            value={values.resource || undefined}
+            onChange={(value) => setFieldValue('resource', value)}
           >
-            {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
-              <Select.Option key={nodeStatus} value={nodeStatus}>
+            {nodeResources.map(({ resource, text }) => (
+              <Select.Option key={resource} value={resource}>
                 <SelectOptionWithIconWrapper>
-                  <Icon />
+                  <ResourceIconLookup resource={resource} />
                   <div>{text}</div>
                 </SelectOptionWithIconWrapper>
               </Select.Option>
             ))}
           </Select>
-          <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
+          <ErrorMessage>{errors.resource}</ErrorMessage>
         </FormItem>
-        {values.nodeStatus === ENodeCommercialAccountStatus.Registered && (
+        <FormItem label="Номер узла">
+          <Input
+            placeholder="Введите"
+            name="number"
+            type="number"
+            value={values.number}
+            onChange={handleChange}
+          />
+          <ErrorMessage>{errors.number}</ErrorMessage>
+        </FormItem>
+      </FirstLineWrapper>
+      <SecondLineWrapper>
+        <FormItem label="Зона">
+          <Select
+            placeholder="Выберите"
+            value={values.nodeServiceZoneId || undefined}
+            onChange={(value) => setFieldValue('nodeServiceZoneId', value)}
+          >
+            {nodeServiceZones?.nodeServiceZones?.map((zone) => (
+              <Select.Option key={zone.id} value={zone.id}>
+                {zone.name}
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>{errors.nodeServiceZoneId}</ErrorMessage>
+        </FormItem>
+        <CreateNewZoneButtonWrapper>
+          <LinkButton onClick={openCreateNodeServiceZoneModal}>
+            + Создать новую зону
+          </LinkButton>
+        </CreateNewZoneButtonWrapper>
+      </SecondLineWrapper>
+      <FormItem label="Коммерческий учет показателей приборов">
+        <Select
+          placeholder="Выберите"
+          value={values.nodeStatus || undefined}
+          onChange={(value) => setFieldValue('nodeStatus', value)}
+        >
+          {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
+            <Select.Option key={nodeStatus} value={nodeStatus}>
+              <SelectOptionWithIconWrapper>
+                <Icon />
+                <div>{text}</div>
+              </SelectOptionWithIconWrapper>
+            </Select.Option>
+          ))}
+        </Select>
+        <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
+      </FormItem>
+      {values.nodeStatus &&
+        values.nodeStatus !== ENodeCommercialAccountStatus.NotRegistered && (
           <ThirdLineWrapper>
             <FormItem label="Дата начала действия акта-допуска">
               <DatePicker
@@ -195,24 +191,23 @@ export const CommonData: FC<CommonDataProps> = ({
             </FormItem>
           </ThirdLineWrapper>
         )}
-        <FilesUploaderWrapper>
-          <DocumentsUploadContainer
-            label="Добавьте акт-допуска"
-            documents={values.documents}
-            uniqId="edit-apartment-act-form"
-            onChange={(documents) => setFieldValue('documents', documents)}
-            max={1}
-          />
-        </FilesUploaderWrapper>
-        <Footer>
-          <Button type="ghost" onClick={goPrevStep}>
-            Назад
-          </Button>
-          <Button sidePadding={20} onClick={() => handleSubmit()}>
-            Далее
-          </Button>
-        </Footer>
-      </div>
-    </>
+      <FilesUploaderWrapper>
+        <DocumentsUploadContainer
+          label="Добавьте акт-допуска"
+          documents={values.documents}
+          uniqId="edit-apartment-act-form"
+          onChange={(documents) => setFieldValue('documents', documents)}
+          max={1}
+        />
+      </FilesUploaderWrapper>
+      <Footer>
+        <Button type="ghost" onClick={goPrevStep}>
+          Назад
+        </Button>
+        <Button sidePadding={20} onClick={() => handleSubmit()}>
+          Далее
+        </Button>
+      </Footer>
+    </div>
   );
 };

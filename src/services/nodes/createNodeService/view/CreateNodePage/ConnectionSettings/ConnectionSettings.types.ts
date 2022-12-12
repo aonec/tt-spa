@@ -1,14 +1,12 @@
-import {
-  CalculatorIntoHousingStockResponse,
-  CreatePipeNodeRequest,
-} from 'myApi';
+import { CalculatorIntoHousingStockResponse } from 'myApi';
+import { CreateNodeFormPayload, UpdateNodeFormPayloadCallback } from 'services/nodes/createNodeService/createNodeService.types';
 
 export type ConnectionSettingsProps = {
   goPrevStep: () => void;
   calculatorsList: CalculatorIntoHousingStockResponse[] | null;
   openCreateCalculatorModal: () => void;
-  updateRequestPayload: (payload: CreatePipeNodeRequest) => void;
-  requestPayload: CreatePipeNodeRequest
+  updateRequestPayload: UpdateNodeFormPayloadCallback;
+  requestPayload: CreateNodeFormPayload;
 };
 
 export enum CalculatorConnectionType {
