@@ -1,8 +1,10 @@
-import moment from 'moment';
+import { useStore } from 'effector-react';
 import { EStageStatus, EStageType } from 'myApi';
 import React, { FC, useMemo } from 'react';
-import { MapIconSC } from 'services/tasks/tasksProfileService/view/TasksListItem/TasksListItem.styled';
+import { currentUserService } from 'services/currentUserService';
+import { Button } from 'ui-kit/Button';
 import { ChoiceIcon, FinishIcon, OkIcon } from 'ui-kit/icons';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
   StageCircleColorLookup,
   StageIconColorLookup,
@@ -10,6 +12,7 @@ import {
 import {
   Circle,
   PerpetratorWrapper,
+  RevertStageButtonWrapper,
   StageInfoWrapper,
   StageLine,
   StageLineWrapper,
@@ -19,10 +22,20 @@ import {
 } from './Stage.styled';
 import { StageProps } from './Stage.types';
 
-export const Stage: FC<StageProps> = ({ stage, isLast }) => {
+export const Stage: FC<StageProps> = ({
+  stage,
+  isLast,
+  canRevertStage,
+  handleRevertStage,
+  isRevertStageLoading,
+}) => {
   const { number, status, type, name, closingTime, perpetrator } = stage;
 
-  const preparedClosingTime = moment(closingTime).format('DD.MM.YYYY HH:MM');
+  const currentUser = useStore(currentUserService.outputs.$currentUser);
+
+  const preparedClosingTime = closingTime
+    ? getTimeStringByUTC(closingTime)
+    : '-';
 
   const icon = useMemo(() => {
     const inProgress = status === EStageStatus.InProgress;
@@ -55,6 +68,10 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
   const circleColor = StageCircleColorLookup[status];
 
   const inProgress = status === EStageStatus.InProgress;
+  const isPerpetrator = perpetrator?.id === currentUser?.id;
+
+  const isShowRevertStageButton = isPerpetrator && canRevertStage;
+
   const isDone = status === EStageStatus.Done;
   const lineIsActive = isDone || inProgress;
 
@@ -70,7 +87,7 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
         </Circle>
         {!isLast && (
           <StageLineWrapper>
-            <StageLine isActive={lineIsActive}/>
+            <StageLine isActive={lineIsActive} />
           </StageLineWrapper>
         )}
       </StagePanelWrapper>
@@ -82,6 +99,18 @@ export const Stage: FC<StageProps> = ({ stage, isLast }) => {
             <div>{perpetrator.name}</div>
             <div>{preparedClosingTime}</div>
           </PerpetratorWrapper>
+        )}
+        {isShowRevertStageButton && (
+          <RevertStageButtonWrapper>
+            <Button
+              type="ghost"
+              size="small"
+              onClick={handleRevertStage}
+              disabled={isRevertStageLoading}
+            >
+              Вернуть этап
+            </Button>
+          </RevertStageButtonWrapper>
         )}
       </StageInfoWrapper>
     </Wrapper>

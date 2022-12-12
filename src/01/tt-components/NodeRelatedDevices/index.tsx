@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { PipeNodeResponse } from '../../../myApi';
@@ -7,21 +7,17 @@ import { Link, useHistory } from 'react-router-dom';
 import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';
 import { magistrals } from '../localBases';
+import { Tooltip } from 'antd';
 
 interface NodesInterface {
   node: PipeNodeResponse;
   edit?: boolean;
   close?: boolean;
-  setDeregisterDeviceValue?: any;
-  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const NodeRelatedDevices = ({
   node,
   edit = false,
-  close = false,
-  setDeregisterDeviceValue,
-  setDeregisterDevice,
 }: NodesInterface) => {
   if (!node) {
     return <Loader show size={32} />;
@@ -57,14 +53,12 @@ export const NodeRelatedDevices = ({
 
     return (
       <ListItem key={id}>
-        <NameWrap to={`/housingMeteringDevices/${id}`}>
-          <IconTT
-            icon={(resource || 'next').toLowerCase()}
-            style={{ marginRight: 8 }}
-          />
-          <Name style={{ marginRight: 8 }}>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
+        <Tooltip title={`${model}(${serialNumber})`}>
+          <NameWrap to={`/housingMeteringDevices/${id}`}>
+            <Name style={{ marginRight: 8 }}>{model}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
+          </NameWrap>
+        </Tooltip>
 
         <State>
           <IconTT icon={icon} />
@@ -88,22 +82,6 @@ export const NodeRelatedDevices = ({
               <IconTT icon="edit" />
             </Link>
           ) : null}
-          {close ? (
-            <IconTT
-              icon="del"
-              style={{ marginLeft: 8, cursor: 'pointer' }}
-              onClick={() => {
-                if (setDeregisterDeviceValue) {
-                  getHousingMeteringDevice(id).then((res) => {
-                    setDeregisterDeviceValue(res);
-                  });
-                }
-                if (setDeregisterDevice) {
-                  setDeregisterDevice(true);
-                }
-              }}
-            />
-          ) : null}
         </EditOptions>
       </ListItem>
     );
@@ -118,6 +96,9 @@ const NameWrap = styled(Link)`
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   &:hover {
     h3,
@@ -166,7 +147,7 @@ const ListWrap = styled.div`
 
 const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 3fr 4fr;
+  grid-template-columns: 5fr 2fr 3fr 4fr 1fr;
   grid-gap: 4px;
   grid-template-rows: 48px;
   align-items: center;

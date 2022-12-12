@@ -1,5 +1,6 @@
 import { TreeSelect } from 'antd';
 import styled from 'styled-components';
+import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 
 export const BaseInfoWrapper = styled.div`
@@ -24,15 +25,8 @@ export const BaseInfoWrapper = styled.div`
   }
 `;
 
-export const ResourceOptionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  .device-resource-icon {
-    svg {
-      margin-right: 10px;
-    }
-  }
+export const InputSC = styled(Input)`
+  color: #272f5ae5;
 `;
 
 export const TimeWrapper = styled.div`
@@ -54,6 +48,7 @@ export const TreeSelectSC = styled(TreeSelect)`
   * {
     font-size: 16px !important;
     line-height: 32px;
+    caret-color: rgba(0, 0, 0, 0);
   }
 
   .ant-select-selector {

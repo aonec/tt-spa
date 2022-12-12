@@ -2,8 +2,10 @@ import { useForm } from 'effector-forms/dist';
 import React, { useMemo } from 'react';
 import { form } from '../models';
 import { ReportType } from '../types';
+import { ClosedIndividualDevicesFormContainer } from './closedIndividualDevicesFormService';
 import { PeriodDatePicker } from './view/PeriodDatePicker';
 import { RangeDatePicker } from './view/RangeDatePicker';
+import { ResourceSelect } from './view/ResourceSelect';
 
 export const ReportFormInputsContainer = () => {
   const {
@@ -11,6 +13,7 @@ export const ReportFormInputsContainer = () => {
       type: { value: type },
       period: { value: period, onChange: changePeriod },
       rangePeriod: { value: rangePeriod, onChange: changeRangePeriod },
+      resources: { value: resources, onChange: handleChangeResources },
     },
   } = useForm(form);
 
@@ -36,17 +39,37 @@ export const ReportFormInputsContainer = () => {
           <RangeDatePicker
             rangePeriod={rangePeriod}
             onChange={changeRangePeriod}
+            label="Период выхода поверки"
           />
         ),
       },
+      {
+        reportTypes: [ReportType.CheckingDatesReport],
+        element: (
+          <>
+            <ResourceSelect
+              resources={resources}
+              onChange={handleChangeResources}
+            />
+            <RangeDatePicker
+              label="Период выхода поверки"
+              rangePeriod={rangePeriod}
+              onChange={changeRangePeriod}
+            />
+          </>
+        ),
+      },
+      {
+        reportTypes: [ReportType.ClosedDevicesReport],
+        element: <ClosedIndividualDevicesFormContainer />,
+      },
     ],
-    [rangePeriod, period, changePeriod]
+    [rangePeriod, period, changePeriod, resources]
   );
 
-  const formInputsElement =
-    type &&
+  const formInputsElement = (type &&
     formInputsLookup.find((formInputs) => formInputs.reportTypes.includes(type))
-      ?.element!;
+      ?.element) || <></>;
 
   return formInputsElement;
 };

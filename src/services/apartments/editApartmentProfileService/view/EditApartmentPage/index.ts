@@ -1,0 +1,1 @@
+export { EditApartmentPage } from './EditApartmentPage'

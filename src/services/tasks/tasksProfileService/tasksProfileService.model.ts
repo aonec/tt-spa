@@ -1,8 +1,10 @@
-import { createDomain, forward } from 'effector';
+import { combine, createDomain, forward, guard, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
   ESecuredIdentityRoleName,
+  ETaskEngineeringElement,
+  HousingStockResponse,
   TaskGroupingFilter,
   TasksPagedList,
 } from 'myApi';
@@ -12,12 +14,37 @@ import {
   $housingManagments,
   $perpetratorIdStore,
 } from '../taskTypesService/taskTypesService.model';
-import { fetchApartment, getTasks } from './tasksProfileService.api';
-import { GetTasksListRequestPayload } from './tasksProfileService.types';
+import {
+  fetchApartment,
+  fetchHousingStock,
+  getTasks,
+} from './tasksProfileService.api';
+import {
+  FiltersGatePayload,
+  GetTasksListRequestPayload,
+} from './tasksProfileService.types';
 
 const domain = createDomain('tasksProfileService');
 
-const $apartment = domain.createStore<ApartmentResponse | null>(null);
+const clearAddress = domain.createEvent();
+
+const getApartmentFx = domain.createEffect<
+  { apartmentId: string },
+  ApartmentResponse
+>(fetchApartment);
+const $apartment = domain
+  .createStore<ApartmentResponse | null>(null)
+  .on(getApartmentFx.doneData, (_, apartment) => apartment)
+  .reset(clearAddress);
+
+const getHousingStockFx = domain.createEffect<
+  { housingStockId: string },
+  HousingStockResponse
+>(fetchHousingStock);
+const $housingStock = domain
+  .createStore<HousingStockResponse | null>(null)
+  .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
+  .reset(clearAddress);
 
 const $searchState = domain.createStore<GetTasksListRequestPayload>({});
 
@@ -38,15 +65,6 @@ const searchTasksFx = domain.createEffect<
   GetTasksListRequestPayload | null,
   TasksPagedList
 >(getTasks);
-
-const clearApartment = domain.createEvent();
-const getApartmentFx = domain.createEffect<string, ApartmentResponse>(
-  fetchApartment
-);
-
-$apartment
-  .on(getApartmentFx.doneData, (_, apartment) => apartment)
-  .reset(clearApartment);
 
 const $isLoading = searchTasksFx.pending;
 
@@ -73,7 +91,7 @@ const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
 });
 
 const TasksIsOpen = createGate();
-const ApartmentIdGate = createGate<{ apartmentId: string }>();
+const FiltersGate = createGate<FiltersGatePayload>();
 
 $tasksPagedData.on(searchTasksFx.doneData, (_, tasksPaged) => tasksPaged);
 
@@ -104,14 +122,28 @@ forward({
   to: clearFilters,
 });
 
-forward({
-  from: $searchState,
-  to: searchTasksFx,
+sample({
+  clock: guard({
+    clock: $searchState,
+    filter: (filter) => Boolean(filter.GroupType),
+  }),
+  target: searchTasksFx,
 });
 
-forward({
-  from: ApartmentIdGate.state.map(({ apartmentId }) => apartmentId),
-  to: getApartmentFx,
+split({
+  source: guard({
+    clock: FiltersGate.state,
+    filter: ({ apartmentId, housingStockId }) =>
+      Boolean(apartmentId) || Boolean(housingStockId),
+  }),
+  match: {
+    housingStock: (ids) => Boolean(ids.housingStockId),
+    apartmentId: (ids) => Boolean(ids.apartmentId),
+  },
+  cases: {
+    apartmentId: getApartmentFx,
+    housingStock: getHousingStockFx,
+  },
 });
 
 export const tasksProfileService = {
@@ -123,7 +155,7 @@ export const tasksProfileService = {
     extendedSearchClosed,
     extendedSearchOpened,
     clearFilters,
-    clearApartment,
+    clearAddress,
   },
   outputs: {
     $taskTypes,
@@ -136,9 +168,10 @@ export const tasksProfileService = {
     $isSpectator,
     $isAdministrator,
     $apartment,
+    $housingStock,
   },
   gates: {
     TasksIsOpen,
-    ApartmentIdGate,
+    ApartmentIdGate: FiltersGate,
   },
 };

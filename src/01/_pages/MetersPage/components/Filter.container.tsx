@@ -13,7 +13,7 @@ import {
   $apartment,
   fetchApartmentFx,
 } from '01/features/apartments/displayApartment/models';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 
 const searchfields = [
@@ -42,8 +42,11 @@ export const FilterContainer = () => {
     if (!apartment?.homeownerAccounts?.length) {
       return setQuestion('');
     }
+    const existingAccounts = apartment.homeownerAccounts.filter(
+      (account) => !Boolean(account.closedAt)
+    );
 
-    const homeownerName = apartment?.homeownerAccounts[0]?.name;
+    const homeownerName = existingAccounts[0]?.name;
 
     if (homeownerName && id) {
       setQuestion(homeownerName);
@@ -108,7 +111,9 @@ export const FilterContainer = () => {
       </Radio.Group>
       <Space style={{ minHeight: 20 }} />
       {isSerialNumberPage && (
-        <SerialNumberSearch setSearchContext={setSearchContext} />
+        <SerialNumberSearch
+          setSearchContext={setSearchContext}
+        />
       )}
       {!isSerialNumberPage && addressSearch}
     </Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import {
@@ -88,7 +88,11 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const selectedHomeowner = apartment?.homeownerAccounts?.find(
     (elem) => Number(elem.id) === homeownerId
   );
-
+  const homeownerAccounts = apartment?.homeownerAccounts || [];
+  const openedHomeownerAccounts = useMemo(
+    () => homeownerAccounts.filter((account) => !account.closedAt),
+    [homeownerAccounts]
+  );
   const selectHomeownerAccount = (
     <StyledSelect
       placeholder="Выберите лицевой счет"
@@ -96,7 +100,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
       value={homeownerId || void 0}
       onChange={setHomeownerId as any}
     >
-      {apartment?.homeownerAccounts?.map((elem) => (
+      {openedHomeownerAccounts.map((elem) => (
         <StyledSelect.Option value={elem.id!} key={elem.id}>
           {selectedHomeowner?.isMainPersonalAccountNumber && <MainIcon />}
           {elem.personalAccountNumber} ({elem?.name?.replaceAll('unknown', '')})

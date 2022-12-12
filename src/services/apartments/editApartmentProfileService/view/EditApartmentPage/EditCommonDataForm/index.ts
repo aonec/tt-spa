@@ -1,0 +1,1 @@
+export { EditCommonDataForm } from './EditCommonDataForm'

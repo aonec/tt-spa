@@ -3,18 +3,19 @@ import { Route } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
 import Documents from './components/Documents';
-import Graph from '../Graph/Graph';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
 import { NodeConnection } from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
-import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { SidePanel } from '01/shared/ui/SidePanel';
 import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { ContentProps } from './NodeProfile.types';
+import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 
 export const Content: React.FC<ContentProps> = React.memo(
   ({ tabItems, node, loading, nodeId, path }) => {
@@ -44,11 +45,12 @@ export const Content: React.FC<ContentProps> = React.memo(
           </Route>
           <Route path={`${path}/stats`} exact>
             {isVisible ? (
-              <Graph
-                nodeId={Number(nodeId)}
-                resource={resource}
-                pipeCount={communicationPipes?.length || 0}
-              />
+              <>
+                <DisplayNodesStatisticsContainer
+                  nodeId={Number(nodeId)}
+                  pipeCount={communicationPipes?.length || 0}
+                />
+              </>
             ) : (
               <>
                 <Alert
@@ -63,9 +65,10 @@ export const Content: React.FC<ContentProps> = React.memo(
             )}
           </Route>
           <Route path={`${path}/readings`} exact>
-            <HousingMeteringDeviceReadings
+            <HousingMeteringDeviceReadingsContainer
               nodeId={Number(nodeId)}
               resource={resource}
+              deviceIds={getDeviceIds(node)}
             />
           </Route>
           <Route path={`${path}/connection`} exact>

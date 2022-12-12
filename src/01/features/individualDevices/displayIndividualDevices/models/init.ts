@@ -38,9 +38,10 @@ guard({
   target: fetchIndividualDevicesFx,
 });
 
-sample({
+guard({
   source: IndividualDevicesGate.state.map((elem) => elem),
   clock: refetchIndividualDevices,
+  filter: (params)=> Object.values(params).length !== 0,
   target: fetchIndividualDevicesFx,
 });
 

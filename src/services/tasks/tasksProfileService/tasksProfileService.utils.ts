@@ -3,28 +3,29 @@ import {
   ApartmentResponse,
   EStageTimeStatus,
   ETaskClosingStatus,
+  FullAddressResponse,
+  HousingStockListResponse,
+  HousingStockResponse,
   TaskListResponse,
   TaskResponse,
 } from 'myApi';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
-export const getApartmentAddressObject = (
-  apartment: ApartmentResponse | null
+export const getAddressObject = (
+  object: HousingStockListResponse | HousingStockResponse | null
 ) => {
-  const housingStock = apartment?.housingStock?.address?.mainAddress;
-  const City = housingStock?.city || '';
-  const Street = housingStock?.street || '';
-  const Corpus = housingStock?.corpus || '';
-  const HousingStockNumber = housingStock?.number || '';
-
-  const ApartmentNumber = apartment?.apartmentNumber || '';
+  const address = object?.address?.mainAddress;
+  const City = address?.city || '';
+  const Street = address?.street || '';
+  const Corpus = address?.corpus || '';
+  const HousingStockNumber = address?.number || '';
 
   return {
     City,
     Street,
     Corpus,
     HousingStockNumber,
-    ApartmentNumber,
   };
 };
 
@@ -33,7 +34,8 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     ...item,
     timeline: createTimeline(item),
     timer: createTimer(item),
-    formatedCreationTime: new Date(item.creationTime!).toLocaleString(),
+    formatedCreationTime:
+      item.creationTime && getTimeStringByUTC(item.creationTime),
     showExecutor: grouptype === 'Observing',
   }));
 
@@ -69,7 +71,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
   } = task;
 
   if (!closingTime) {
-    const { expectedCompletionTime: ext } = currentStage!;
+    const ext = currentStage?.expectedCompletionTime;
     const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
 
     return {

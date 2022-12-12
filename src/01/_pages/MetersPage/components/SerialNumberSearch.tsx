@@ -18,7 +18,9 @@ interface Props {
   setSearchContext: (context: 1 | 2) => void;
 }
 
-export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
+export const SerialNumberSearch: React.FC<Props> = ({
+  setSearchContext,
+}) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,12 @@ export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
       const res: {
         items: IndividualDeviceListItemResponse[];
       } = await axios.get('IndividualDevices', {
-        params: { serialNumber, pageNumber: 1, pageSize: 25 },
+        params: {
+          serialNumber,
+          pageNumber: 1,
+          pageSize: 25,
+          orderRule: 'serialNumber',
+        },
         cancelToken: newCancelToken?.token,
       });
 

@@ -7,10 +7,10 @@ export const Wrapper = styled.div`
 export const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
+  min-height: 48px;
 `;
 
 export const PageHeaderWrapper = styled.div`
-  margin-left: 12px;
   color: #272f5a;
   font-weight: 400;
   font-size: 32px;
@@ -24,6 +24,7 @@ export const InfoWrapper = styled.div`
 
   color: #272f5ae5;
   margin-top: 8px;
+  min-height:16px;
 `;
 
 export const TimerRowWrapper = styled.div`
@@ -41,6 +42,7 @@ export const DeviceIconWrapper = styled.div`
   display: flex;
   align-items: center;
   transform: scale(1.2);
+  margin-right: 12px;
 `;
 
 export const Line = styled.div<{ color?: string }>`

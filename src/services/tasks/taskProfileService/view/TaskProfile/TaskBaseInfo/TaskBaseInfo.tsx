@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, { FC } from 'react';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
   InfoWrapper,
   LinkSC,
@@ -24,10 +25,12 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
   const apartmentComment = apartment?.comment || '';
 
   const linkPath = apartment
-    ? `/objects/${housingStockId}/apartments/${apartmentId}`
-    : `/objects/${housingStockId}`;
+    ? `/apartments/${apartmentId}`
+    : `/objects/profile/${housingStockId}`;
 
-  const preparedCreationTime = moment(creationTime).format('DD.MM.YYYY HH:MM');
+  const preparedCreationTime = creationTime
+    ? getTimeStringByUTC(creationTime)
+    : '-';
 
   return (
     <TaskBaseInfoWrapper>

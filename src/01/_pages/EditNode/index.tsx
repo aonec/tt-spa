@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
-import { Header } from './components/Header';
 import EditNodeForm from './components/EditNodeForm';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
@@ -13,6 +12,10 @@ import { EditNodeContext } from './Context';
 import { getCalculator, getNode } from '../../_api/apiRequests';
 import { PageGate } from '../../features/serviceZones/selectServiceZones/models';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { editNodeService } from './editNodeService.model';
+import { useStore } from 'effector-react';
+
+const { gates, outputs } = editNodeService;
 
 export const EditNode = () => {
   const { nodeId: nodeIdString } = useParams<{ nodeId: string }>();
@@ -23,6 +26,9 @@ export const EditNode = () => {
   const [deregisterDevice, setDeregisterDevice] = useState(false);
   const [deregisterDeviceValue, setDeregisterDeviceValue] = useState();
   const [visibleAddDevice, setVisibleAddDevice] = useState(false);
+  const magistrals = useStore(outputs.$magistrals);
+
+  const { NodeResourceGate } = gates;
 
   const {
     data: calculator,
@@ -31,8 +37,10 @@ export const EditNode = () => {
   } = useAsync<CalculatorResponse>();
   const { data: node, status, run } = useAsync<PipeNodeResponse>();
 
+  const getNodeReq = useCallback(() => run(getNode(nodeId)), [nodeId]);
+
   useEffect(() => {
-    run(getNode(nodeId));
+    getNodeReq();
   }, [nodeId]);
 
   useEffect(() => {
@@ -80,9 +88,9 @@ export const EditNode = () => {
 
   return (
     <EditNodeContext.Provider value={context}>
+      <NodeResourceGate resource={node.resource} />
       <PageGate />
       <GoBack path={`/nodes/${nodeId}`} />
-      <Header node={node} nodeId={nodeId} />
       <div style={{ width: '66%' }}>
         <Tabs tabItems={tabItems} tabsType={'tabs'} />
         <EditNodeForm
@@ -100,12 +108,7 @@ export const EditNode = () => {
         setVisible={setDeregisterDevice}
         device={deregisterDeviceValue}
       />
-      <ModalAddDevice
-        visible={visibleAddDevice}
-        setVisible={setVisibleAddDevice}
-        // calculator={calculator}
-        node={node}
-      />
+      
     </EditNodeContext.Provider>
   );
 };

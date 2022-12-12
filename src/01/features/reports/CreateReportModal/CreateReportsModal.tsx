@@ -17,7 +17,7 @@ export const CreateReportModal: FC<Props> = ({
 }) => {
   return (
     <ModalTT
-      title="Создать отчет"
+      title="Создание отчёта"
       visible={isOpen}
       onCancel={onHide}
       onSubmit={onSave}

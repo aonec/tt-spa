@@ -14,9 +14,10 @@ export const TasksCardContainer: FC<TasksCardContainerProps> = ({
 
   return (
     <TasksCard
-      apartmentId={apartmentId}
+      id={apartmentId}
       tasksNumber={tasksNumber}
       isAdministrator={isAdministrator}
+      type="apartment"
     />
   );
 };

@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const CreateReportForm: FC<Props> = ({ type, setType }) => {
-  const hadnleChange = useCallback(
+  const handleChange = useCallback(
     (value: SelectValue) => value && setType(value as ReportType),
     [setType]
   );
@@ -23,7 +23,7 @@ export const CreateReportForm: FC<Props> = ({ type, setType }) => {
         <StyledSelect
           placeholder="Выберите тип отчета"
           value={type || undefined}
-          onChange={hadnleChange}
+          onChange={handleChange}
         >
           {reportTypeTitleNames.map(({ type, name }) => (
             <Select.Option key={type} value={type}>

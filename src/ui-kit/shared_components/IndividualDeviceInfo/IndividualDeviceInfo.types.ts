@@ -1,6 +1,9 @@
-import { IndividualDeviceOnTaskResponse } from './../../../myApi';
-import { IndividualDeviceResponse } from 'myApi';
+import {
+  IndividualDeviceResponse,
+  IndividualDeviceOnTaskResponse,
+} from 'myApi';
 
 export type IndividualDeviceInfoProps = {
   device: IndividualDeviceResponse | IndividualDeviceOnTaskResponse;
+  showCheckingDates?: boolean;
 };

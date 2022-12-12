@@ -1,26 +1,41 @@
 import GroupReport from '01/features/groupReport';
 import { setGroupStatus } from '01/features/groupReport/models/groupReportReducer';
 import { useAppDispatch } from '01/Redux/store';
-import { useEvent } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
+import { ESecuredIdentityRoleName } from 'myApi';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  CreateResourceDisconnectionContainer,
-  createResourceDisconnectionService,
-} from 'services/resources/createResourceDisconnectionService';
+import { currentUserService } from 'services/currentUserService';
+import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
+import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
+import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { SearchType } from './objectsProfileService.types';
+import { SoiReportContainer, soiReportService } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
+
+const { inputs } = soiReportService;
 
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
 
   const history = useHistory();
 
+  const openSoiReportModal = useEvent(inputs.openSoiReportModal);
+
   const dispatch = useAppDispatch();
   const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
-  const handleOpenCreateResourceDisconnectionModal = useEvent(
-    createResourceDisconnectionService.inputs.openModal
+
+  const handleOpenChooseResourceDisconnectionModal = useEvent(
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal
   );
+
+  const handleCreateObject = () => history.push('/objects/create');
+
+  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
+
+  const isAdministrator = userRoles
+    .map((e) => e.key)
+    .includes(ESecuredIdentityRoleName.Administrator);
 
   useEffect(() => {
     if (!searchType) {
@@ -30,14 +45,19 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
+      <SoiReportContainer />
       <CreateResourceDisconnectionContainer />
+      <ChooseTypeOfResourceDisconnectionModalContainer />
       <GroupReport />
       <ObjectsProfile
+        openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
         handleExportGroupReport={handleExportGroupReport}
-        handleOpenCreateResourceDisconnectionModal={() =>
-          handleOpenCreateResourceDisconnectionModal()
+        handleOpenChooseResourceDisconnectionModal={() =>
+          handleOpenChooseResourceDisconnectionModal()
         }
+        handleCreateObject={handleCreateObject}
+        isAdministrator={isAdministrator}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { string } from 'yup';
 
 interface Props {
   value?: string | null;
@@ -16,6 +17,7 @@ interface Props {
     | null
     | undefined;
   onKeyDown?: (e: any) => any;
+  inputData?: string;
 }
 
 export const DatePickerNative: React.FC<Props> = React.forwardRef(
@@ -29,6 +31,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
       searchStyle,
       fullSize,
       onKeyDown,
+      inputData,
     },
     ref
   ) => {
@@ -51,6 +54,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
 
     return (
       <InputSC
+        data-reading-input={inputData}
         fullSize={fullSize}
         searchStyle={searchStyle}
         id={id}

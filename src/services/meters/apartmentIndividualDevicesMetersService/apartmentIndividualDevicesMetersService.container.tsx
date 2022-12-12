@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
-import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDevicesMetersService.model';
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
+import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
+import { Params } from './apartmentIndividualDevicesMetersService.types';
+import {
+  EditReadingsHistoryContainer,
+} from '../editReadingsHistoryService';
 
 const {
   inputs,
@@ -15,10 +19,18 @@ const {
   gates: { IndividualDevicesGate },
 } = apartmentIndividualDevicesMetersService;
 
-export const ApartmentIndividualDevicesMetersContainer = () => {
-  const { id } = useParams<{ id: string }>();
+export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
+  apartmentId,
+  maxWidth,
+  editable,
+}) => {
+  const { id: apartmentIdFromParams } = useParams<{ id: string }>();
 
-  const individualDevicesList = useStore(outputs.$individualDevicesList);
+  const id = apartmentId || apartmentIdFromParams;
+
+  const individualDevicesList = useStore(
+    outputs.$filteredIndividualDevicesList
+  );
   const isLoading = useStore(outputs.$isLoading);
   const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
   const closedDevicesCount = useStore(outputs.$closedDevicesCount);
@@ -44,6 +56,7 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
       <ReadingsHistoryModal />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />
+      <EditReadingsHistoryContainer />
       <DeleteIndividualDeviceModalContainer />
       <ApartmentIndividualDevicesMeters
         individualDevicesList={individualDevicesList}
@@ -56,6 +69,8 @@ export const ApartmentIndividualDevicesMetersContainer = () => {
         downSliderIndex={() => downSliderIndex()}
         openReadingsHistoryModal={openReadingsHistoryModal}
         managementFirmConsumptionRates={managementFirmConsumptionRates}
+        maxWidth={maxWidth}
+        editable={editable}
       />
     </>
   );

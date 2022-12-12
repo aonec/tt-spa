@@ -35,7 +35,7 @@ export const Header = ({ device }: HousingMeteringDeviceInterface) => {
           {`${model} (${serialNumber})`}
         </Title>
         <Infowrapper>
-          <Subtitle to={`/objects/${id}`}>
+          <Subtitle to={`/objects/profile/${id}`}>
             {getHousingStockAddress(address, true)}
           </Subtitle>
           <IsActive closingDate={closingDate} />

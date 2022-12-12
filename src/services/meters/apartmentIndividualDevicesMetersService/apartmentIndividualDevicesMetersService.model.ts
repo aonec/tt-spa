@@ -1,4 +1,7 @@
-import { openReadingsHistoryModal } from './../../../01/features/readings/displayReadingHistory/models/index';
+import {
+  closeReadingsHistoryModal,
+  openReadingsHistoryModal,
+} from './../../../01/features/readings/displayReadingHistory/models/index';
 import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -26,14 +29,14 @@ const $sliderIndex = domain.createStore(0);
 const upSliderIndex = domain.createEvent();
 const downSliderIndex = domain.createEvent();
 
-const $individualDevicesList = combine(
-  $individualDevicesPagedData,
+const $individualDevicesList = $individualDevicesPagedData.map(
+  (data) => data?.items || []
+);
+
+const $filteredIndividualDevicesList = combine(
+  $individualDevicesList,
   $isShowClosedIndividualDevices
-).map(([data, isShowClosed]) => {
-  const devices = data?.items;
-
-  if (!devices) return [];
-
+).map(([devices, isShowClosed]) => {
   if (isShowClosed) {
     return devices;
   }
@@ -76,6 +79,11 @@ guard({
   target: fetchIndividualDevicesFx,
 });
 
+forward({
+  from: closeReadingsHistoryModal,
+  to: refetchIndividualDevices,
+});
+
 $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
 
 $sliderIndex
@@ -103,6 +111,7 @@ export const apartmentIndividualDevicesMetersService = {
   },
   outputs: {
     $individualDevicesList,
+    $filteredIndividualDevicesList,
     $isLoading,
     $isShowClosedIndividualDevices,
     $closedDevicesCount,

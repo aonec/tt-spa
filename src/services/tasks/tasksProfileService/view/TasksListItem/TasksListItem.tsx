@@ -6,7 +6,6 @@ import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { TimeLine } from 'ui-kit/shared_components/TimeLine';
 import { Timer } from 'ui-kit/shared_components/Timer';
-import { IconLookup } from 'ui-kit/shared_components/Timer/Timer.constants';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import {
   CalendarIconSC,
@@ -15,12 +14,13 @@ import {
   InfoWrapper,
   MapIconSC,
   NameRowWrapper,
+  PipeNodeNameWrapper,
+  PipeNodeWrapper,
   SerialNumberWrapper,
   TaskItemWrapper,
   TaskNameWrapper,
   TextWrapper,
   TimerRowWrapper,
-  TimeWrapper,
   UserIconSC,
   Wrapper,
 } from './TasksListItem.styled';
@@ -38,9 +38,9 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     id,
     formatedCreationTime,
     address,
+    pipeNode,
   } = task;
   const taskName = currentStage ? currentStage.name : name;
-  const Icon = IconLookup.find((elem) => elem.icon === timer?.icon)?.element;
 
   const device = devices ? devices[0] : null;
 
@@ -51,15 +51,26 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
 
     const device = devices[0];
 
-    const allDevicesResource = devices.map((device) => device.resource);
+    const allDevicesResource = devices.map((device) => device?.resource);
     const isUniq = _.uniq(allDevicesResource).length === 1;
-    const iconType = isUniq ? device.resource : EActResourceType.All;
+    const iconType = isUniq ? device?.resource : EActResourceType.All;
 
     if (iconType) {
       return <ResourceIconLookup resource={iconType} />;
     }
     return <CalculatorIcon />;
   }, [device]);
+
+  const pipeNodeInfo = useMemo(() => {
+    if (!pipeNode) return null;
+
+    return (
+      <PipeNodeWrapper>
+        <ResourceIconLookup resource={pipeNode.resource} />
+        <PipeNodeNameWrapper>Узел {pipeNode.number}</PipeNodeNameWrapper>
+      </PipeNodeWrapper>
+    );
+  }, [pipeNode]);
 
   return (
     <Wrapper>
@@ -92,6 +103,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
                   <TextWrapper>{device.model}</TextWrapper>
                 </DeviceInfoWrapper>
               )}
+              {pipeNodeInfo}
 
               <MapIconSC />
               <TextWrapper>

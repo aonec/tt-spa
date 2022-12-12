@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
@@ -7,6 +7,7 @@ import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
 import { TasksProfileProps } from './TasksProfile.types';
 import { TaskGroupingFilter } from 'myApi';
+
 const { TabPane } = TabsSC;
 
 export const TasksProfile: FC<TasksProfileProps> = ({
@@ -26,8 +27,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   changeFiltersByGroupType,
   housingManagments,
   perpetrators,
-  streets,
-  cities,
   isSpectator,
 }) => {
   const history = useHistory();
@@ -81,8 +80,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         changeFiltersByGroupType={changeFiltersByGroupType}
         housingManagments={housingManagments}
         perpetrators={perpetrators}
-        streets={streets}
-        cities={cities}
       />
       <div>{!isLoading && tasksList}</div>
       {isLoading && <Skeleton active />}

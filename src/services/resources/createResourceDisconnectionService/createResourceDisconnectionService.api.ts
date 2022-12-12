@@ -1,6 +1,7 @@
 import { axios } from '01/axios';
 import {
-  HeatingStationResponsePagedList,
+  HeatingStationWithStreetsResponse,
+  HouseManagementWithStreetsResponse,
   ResourceDisconnectingCreateRequest,
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
@@ -9,13 +10,19 @@ export const fetchCreateResourceDisconnection = (
   payload: ResourceDisconnectingCreateRequest
 ): Promise<void> => axios.post('ResourceDisconnecting', payload);
 
-export const fetchHeatingStations = (
-  city: string
-): Promise<HeatingStationResponsePagedList> => axios.get('HeatingStation');
+export const fetchExistingHousingStocks = (): Promise<StreetWithHousingStockNumbersResponsePagedList> =>
+  axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers');
 
-export const fetchExistingHousingStocks = (
-  City: string
-): Promise<StreetWithHousingStockNumbersResponsePagedList> =>
-  axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
-    params: { City },
-  });
+export const fetchExistingHousingStocksWithHouseManagement = (): Promise<
+  HouseManagementWithStreetsResponse[]
+> =>
+  axios.get(
+    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement'
+  );
+
+export const fetchExistingHousingStocksWithHeatingStation = (): Promise<
+  HeatingStationWithStreetsResponse[]
+> =>
+  axios.get(
+    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHeatingStation'
+  );

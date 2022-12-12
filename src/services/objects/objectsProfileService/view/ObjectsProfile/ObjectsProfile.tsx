@@ -1,7 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Radio } from 'antd';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ApartmentsListContainer } from 'services/objects/displayApartmentsListService';
 import { ObjectsListContainer } from 'services/objects/displayObjectsListService';
@@ -22,8 +21,11 @@ const objectListComponentsLookup: { [key: string]: FC } = {
 
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleExportGroupReport,
-  handleOpenCreateResourceDisconnectionModal,
+  handleOpenChooseResourceDisconnectionModal,
   searchType,
+  openSoiReportModal,
+  handleCreateObject,
+  isAdministrator,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -32,11 +34,20 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         onClick: handleExportGroupReport,
       },
       {
+        title: 'Выгрузить отчёт по СОИ',
+        onClick: openSoiReportModal,
+      },
+      {
         title: 'Создать оключение ресурса на объекте',
-        onClick: handleOpenCreateResourceDisconnectionModal,
+        onClick: handleOpenChooseResourceDisconnectionModal,
+      },
+      {
+        title: 'Создать объект',
+        onClick: handleCreateObject,
+        hidden: !isAdministrator,
       },
     ],
-    [handleExportGroupReport, handleOpenCreateResourceDisconnectionModal]
+    [handleExportGroupReport, handleOpenChooseResourceDisconnectionModal]
   );
 
   const objectsProfileComponent = useMemo(() => {
@@ -67,7 +78,9 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
               <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
             </Link>
             <Link to={`/objects/${SearchType.PersonaNumbers}`}>
-              <Radio value={SearchType.PersonaNumbers}>Поиск по лицевому счету</Radio>
+              <Radio value={SearchType.PersonaNumbers}>
+                Поиск по лицевому счету
+              </Radio>
             </Link>
           </Radio.Group>
         </SearchTypesWrapper>

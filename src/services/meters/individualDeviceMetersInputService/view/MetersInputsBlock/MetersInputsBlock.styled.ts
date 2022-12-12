@@ -9,7 +9,7 @@ const ResourceColorLookup = {
   [EResourceType.Electricity]: '#E2B104',
   [EResourceType.ColdWaterSupply]: '#79AFFF',
   [EResourceType.HotWaterSupply]: '#FF8C68',
-  [EResourceType.Heat]: null,
+  [EResourceType.Heat]: '#9254DE',
 };
 
 const InputStatusColors = {
@@ -26,6 +26,7 @@ export const Wrapper = styled.div<{
   border: 1px solid ${getInputBorderColor};
   border-left-width: 5px;
   border-radius: 4px;
+  max-width: 200px;
 
   &:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 25, 0.1);
@@ -48,7 +49,7 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const Input = styled.input<{ status: MetersInputBlockStatus | null }>`
+export const Input = styled.input<{ status?: MetersInputBlockStatus | null }>`
   transition: 0.2s;
   line-height: 0;
   padding: 1px 5px;

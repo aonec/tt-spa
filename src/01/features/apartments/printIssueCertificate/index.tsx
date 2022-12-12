@@ -1,12 +1,12 @@
 import { Loader } from '01/components';
-import { $currentPersonalNumberIndex } from '01/features/homeowner/displayHomeowner/models';
+import { $currentPersonalNumberId } from '01/features/homeowner/displayHomeowner/models';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { ButtonTT } from '01/tt-components';
-import { Certificate } from '01/_pages/ApartmentProfile/components';
 import { useStore } from 'effector-react';
 import React, { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import { $apartment } from '../displayApartment/models';
+import { Certificate } from './Certificate';
 import {
   $homeownerCertificatre,
   $isPrintIssueCertificateModalOpen,
@@ -23,7 +23,7 @@ export const GetIssueCertificateModal = () => {
   const pendingCertificate = useStore(fetchHomeownerCertificate.pending);
   const certificateRef = useRef();
 
-  const homeownerIndex = useStore($currentPersonalNumberIndex);
+  const homeownerId = useStore($currentPersonalNumberId);
 
   if (!apartment?.homeownerAccounts?.length) return <></>;
 
@@ -31,7 +31,11 @@ export const GetIssueCertificateModal = () => {
     <>
       {visible && (
         <HomeownerCerificateGate
-          id={(apartment?.homeownerAccounts[homeownerIndex] as any)?.id!}
+          id={
+            (apartment?.homeownerAccounts.find(
+              (account) => account.id === homeownerId
+            ) as any)?.id!
+          }
         />
       )}
       <ModalTT

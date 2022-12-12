@@ -8,7 +8,10 @@ export const groupDevicesByObjects = (
   devices: CalculatorListResponse[]
 ): DevicesByAddressInterface[] => {
   const devicesByAddresses = Object.values(
-    groupBy(devices, 'address.address.mainAddress.housingStockId')
+    groupBy(devices, (value) => {
+      const address = value.address?.address?.mainAddress;
+      return `${address?.street} ${address?.housingStockId}`;
+    })
   ).map((devices) => ({
     devices,
     address: devices[0].address?.address,

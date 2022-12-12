@@ -97,14 +97,15 @@ const ModalCalculatorReportForm = ({
       nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
-      const { nodeId, detail, resource } = values;
-      const begin = values.begin.toISOString(true);
-      const end = values.end.endOf('day').toISOString(true);
+      const { nodeId, detail } = values;
 
       const shortLink = `Reports/Report`;
-      if (!nodeId) {
+
+      if (!nodeId || !values.begin || !values.end) {
         return null;
       }
+      const begin = values.begin.startOf('day').format('YYYY-MM-DD HH:mm:ss');
+      const end = values.end.endOf('day').format('YYYY-MM-DD HH:mm:ss');
       const params = {
         NodeId: nodeId,
         ReportType: detail as EReportType,
@@ -272,8 +273,12 @@ const ModalCalculatorReportForm = ({
             value={[values.begin, values.end]}
             placeholder={['Дата Начала', 'Дата окончания']}
             onChange={(event) => {
-              setFieldValue('begin', event?.[0]);
-              setFieldValue('end', event?.[1]);
+              setFieldValue('begin', event?.[0] || null);
+              setFieldValue('end', event?.[1] || null);
+            }}
+            onFocus={() => {
+              setFieldValue('begin', null);
+              setFieldValue('end', null);
             }}
             disabled={values.customPeriodDisabled}
           />

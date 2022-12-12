@@ -7,7 +7,7 @@ import {
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -53,9 +53,11 @@ export const addIndividualDeviceForm = createForm({
     },
     lastCheckingDate: {
       init: null as string | null,
+      rules: [{ name: 'required', validator: Boolean }],
     },
     futureCheckingDate: {
       init: null as string | null,
+      rules: [{ name: 'required', validator: Boolean }],
     },
     lastCommercialAccountingDate: {
       init: null as string | null,
@@ -113,7 +115,7 @@ export const addIndividualDeviceForm = createForm({
     },
     isPolling: {
       init: false,
-    }
+    },
   },
   validateOn: ['submit'],
 });

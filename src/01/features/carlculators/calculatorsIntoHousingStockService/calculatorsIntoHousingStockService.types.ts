@@ -10,6 +10,7 @@ import {
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;
   'Filter.DiameterRange.To'?: number;
+  'Filter.PipeDiameters'?: number[];
   'Filter.ExpiresCheckingDateAt'?: EExpiresCheckingDateAt;
   'Filter.Resource'?: EResourceType;
   'Filter.Model'?: string;
@@ -20,7 +21,6 @@ export interface CalculatorsListRequestPayload {
   'Filter.Address.HousingStockNumber'?: string;
   'Filter.Address.Corpus'?: string;
   'Filter.Address.HouseCategory'?: EHouseCategory;
-  'Filter.HousingStockId'?: number;
   'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
   Question?: string;
   OrderRule?: ECalculatorOrderRule;

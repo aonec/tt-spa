@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
-  width: 100%;
+  width: 350px;
   margin-top: 16px;
 `;
 
@@ -72,4 +72,8 @@ export const StageLineWrapper = styled.div`
 export const StagePanelWrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const RevertStageButtonWrapper = styled.div`
+  margin-top: 15px;
 `;

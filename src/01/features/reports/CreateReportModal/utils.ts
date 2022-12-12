@@ -1,9 +1,10 @@
-export function downloadURI(uri: string, name: string) {
+
+export function downloadURI(uri: string, name: string, isZipped?: boolean) {
   const link = document.createElement('a');
 
   link.download = name;
   link.href = uri;
-  link.setAttribute('download', `${name}.xlsx`);
+  link.setAttribute('download', `${name}.${isZipped ? 'zip' : 'xlsx'}`);
 
   document.body.appendChild(link);
 

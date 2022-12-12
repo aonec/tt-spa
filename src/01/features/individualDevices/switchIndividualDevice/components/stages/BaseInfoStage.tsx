@@ -8,9 +8,9 @@ import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -39,9 +39,15 @@ import {
   fetchIndividualDeviceFx,
 } from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative, fromEnter } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
+import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
+import {
+  $isFetchSerialNumberLoading,
+  $serialNumberForChecking,
+  handleFetchSerialNumberForCheck,
+} from '../../models/init';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,6 +64,8 @@ export const BaseInfoStage = () => {
   const isReopen = type === 'reopen';
   const isSwitch = type === 'switch';
 
+  const next = useSwitchInputOnEnter('infoForm', true);
+
   const pending = useStore(fetchIndividualDeviceFx.pending);
 
   const onChange = (e: any) => {
@@ -70,15 +78,69 @@ export const BaseInfoStage = () => {
 
   const modelNameDebounced = fields.model.value;
 
+  const enterKeyDownHandler = useCallback(
+    (index: number, nextCondition: boolean) =>
+      fromEnter(() => {
+        if (!nextCondition) {
+          return null;
+        }
+        return next(index);
+      }),
+    [next]
+  );
+
+  const getDataAttr = (condition: boolean) => {
+    if (condition) {
+      return 'infoForm';
+    }
+    return undefined;
+  };
+
+  const titleOfInput = useMemo(() => {
+    if (isSwitch) {
+      return 'Заменяемый прибор';
+    }
+    if (isCheck) {
+      return 'Прибор до поверки';
+    }
+    if (isReopen) {
+      return 'Прибор до переоткрытия';
+    }
+    return '';
+  }, [isSwitch, isCheck, isReopen]);
+
+  useEffect(() => {
+    if (isCheck) {
+      const oldDeviceReadings = fields.oldDeviceReadings.value;
+
+      fields.newDeviceReadings.onChange(oldDeviceReadings);
+    }
+  }, [isCheck, fields.oldDeviceReadings.value]);
+
+  const eventFetchSerialNumberForCheck = useEvent(
+    handleFetchSerialNumberForCheck
+  );
+  const serialNumberForChecking = useStore($serialNumberForChecking);
+
+  const isFetchSerialNumberLoading = useStore($isFetchSerialNumberLoading);
+
+  const isSerialNumberAllreadyExist =
+    serialNumberForChecking?.items?.[0]?.serialNumber ===
+    fields.serialNumber.value;
+
   const bottomDateFields = (
     <FormWrap>
       <FormItem label="Дата последней поверки прибора">
         <DatePickerNative
+          inputData={getDataAttr(!isReopen)}
+          onKeyDown={enterKeyDownHandler(isCheck ? 0 : 7, !isReopen)}
           disabled={isReopen}
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
-            fields.lastCheckingDate.onChange(incomingValue);
+            fields.lastCheckingDate.onChange(
+              value.utcOffset(0, true).toISOString()
+            );
 
             const nextCheckingDate = moment(value);
 
@@ -91,7 +153,7 @@ export const BaseInfoStage = () => {
             nextCheckingDate.set('year', nextYear);
 
             fields.futureCheckingDate.onChange(
-              nextCheckingDate.toISOString(true)
+              nextCheckingDate.utcOffset(0, true).toISOString()
             );
           }}
           value={fields.lastCheckingDate.value}
@@ -104,8 +166,14 @@ export const BaseInfoStage = () => {
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
+          inputData={getDataAttr(!isReopen)}
+          onKeyDown={enterKeyDownHandler(isCheck ? 1 : 8, !isReopen)}
           disabled={isReopen}
-          onChange={fields.futureCheckingDate.onChange}
+          onChange={(date) =>
+            fields.futureCheckingDate.onChange(
+              moment(date).utcOffset(0, true).toISOString()
+            )
+          }
           value={fields.futureCheckingDate.value}
         />
         <ErrorMessage>
@@ -120,9 +188,13 @@ export const BaseInfoStage = () => {
   const rateTypeSelector = (
     <FormItem label="Тариф прибора">
       <StyledSelect
+        data-reading-input={getDataAttr(isSwitch)}
+        onKeyDown={enterKeyDownHandler(5, isSwitch)}
+        disabled={!isSwitch}
         placeholder="Выберите тариф прибора"
         value={fields.rateType.value}
         onChange={(value) => value && fields.rateType.onChange(value as any)}
+        showAction={['focus']}
       >
         <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
           Одна зона
@@ -140,9 +212,13 @@ export const BaseInfoStage = () => {
   const selectSwitchReason = (
     <Form.Item label="Причина замены">
       <StyledSelect
+        data-reading-input={getDataAttr(isSwitch)}
+        onKeyDown={enterKeyDownHandler(6, isSwitch)}
+        disabled={!isSwitch}
         placeholder="Выберите причину замены"
         value={fields.oldDeviceClosingReason.value || undefined}
         onChange={fields.oldDeviceClosingReason.onChange as any}
+        showAction={['focus']}
       >
         {Object.entries(closingReasons).map(([key, elem]) => (
           <Select.Option value={key} key={key}>
@@ -205,28 +281,42 @@ export const BaseInfoStage = () => {
 
       <FormItem label="Серийный номер">
         <InputTT
-          disabled={isCheck || isReopen}
+          data-reading-input={getDataAttr(isSwitch)}
+          disabled={!isSwitch}
           type="text"
           placeholder="Введите серийный номер прибора"
           onChange={onChange}
           name="serialNumber"
           value={fields.serialNumber.value}
+          onKeyDown={enterKeyDownHandler(0, isSwitch)}
+          onBlur={(value) =>
+            value.target.value &&
+            eventFetchSerialNumberForCheck(value.target.value)
+          }
+          suffix={<Loader show={isFetchSerialNumberLoading} />}
         />
         <ErrorMessage>
           {fields.serialNumber.errorText({
             required: 'Это поле обязательное',
           })}
         </ErrorMessage>
+        {isSerialNumberAllreadyExist && (
+          <ErrorMessage>
+            Данный серийный номер уже существует в базе
+          </ErrorMessage>
+        )}
       </FormItem>
 
       <FormItem label="Модель прибора">
         <StyledAutoComplete
-          disabled={isCheck || isReopen}
+          data-reading-input={getDataAttr(isSwitch)}
+          disabled={!isSwitch}
           size="large"
           value={fields.model.value}
           placeholder="Введите модель прибора"
           onChange={fields.model.onChange}
           options={modelNames?.map((elem) => ({ value: elem })) || []}
+          onKeyDown={enterKeyDownHandler(1, isSwitch)}
         />
         <ErrorMessage>
           {fields.model.errorText({
@@ -238,12 +328,14 @@ export const BaseInfoStage = () => {
       <Flex>
         <FormItem label="Разрядность">
           <InputTT
-            disabled={isCheck || isReopen}
+            data-reading-input={getDataAttr(isSwitch)}
+            disabled={!isSwitch}
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
             onChange={onChange}
             value={fields.bitDepth.value}
+            onKeyDown={enterKeyDownHandler(2, isSwitch)}
           />
           <ErrorMessage>
             {fields.bitDepth.errorText({
@@ -254,12 +346,14 @@ export const BaseInfoStage = () => {
         <Space />
         <FormItem label="Множитель">
           <InputTT
-            disabled={isCheck || isReopen}
+            data-reading-input={getDataAttr(isSwitch)}
+            disabled={!isSwitch}
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
             onChange={onChange}
             value={fields.scaleFactor.value}
+            onKeyDown={enterKeyDownHandler(3, isSwitch)}
           />
           <ErrorMessage>
             {fields.scaleFactor.errorText({
@@ -271,10 +365,12 @@ export const BaseInfoStage = () => {
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
-          disabled={isCheck || isReopen}
+          inputData={getDataAttr(isSwitch)}
+          disabled={!isSwitch}
           value={fields.lastCommercialAccountingDate.value}
           onChange={fields.lastCommercialAccountingDate.onChange}
           placeholder="Введите дату"
+          onKeyDown={enterKeyDownHandler(4, isSwitch)}
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
@@ -306,6 +402,8 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Flex>
             <InputTT
+              data-reading-input={getDataAttr(!isCheck)}
+              onKeyDown={enterKeyDownHandler(isReopen ? 0 : 9, !isCheck)}
               disabled={isCheck}
               placeholder="Номер пломбы"
               value={fields.sealNumber.value}
@@ -317,6 +415,8 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
+            inputData={getDataAttr(!isCheck)}
+            onKeyDown={enterKeyDownHandler(isReopen ? 1 : 10, !isCheck)}
             disabled={isCheck}
             value={fields.sealInstallationDate.value}
             onChange={fields.sealInstallationDate.onChange}
@@ -326,12 +426,14 @@ export const BaseInfoStage = () => {
       </FormWrap>
       <FormItem label="Монтажная организация">
         <StyledSelect
+          data-reading-input={getDataAttr(!isCheck)}
           disabled={isCheck}
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }
           value={fields.contractorId.value || void 0}
           placeholder="Выберите монтажную организацию"
+          showAction={['focus']}
         >
           {contractors?.map((elem) => (
             <StyledSelect.Option value={elem.id} key={elem.id}>
@@ -345,21 +447,17 @@ export const BaseInfoStage = () => {
 
   const readingInputs = device && (
     <div style={{ margin: '10px 0' }}>
-      <ReadingsInput
-        title={
-          isSwitch
-            ? 'Заменяемый прибор'
-            : isCheck
-            ? 'Прибор до поверки'
-            : isReopen
-            ? 'Прибор до переоткрытия'
-            : ''
-        }
-        readings={fields.oldDeviceReadings.value}
-        onChange={fields.oldDeviceReadings.onChange}
-        device={device}
-      />
-      <Space />
+      {!isCheck && (
+        <>
+          <ReadingsInput
+            title={titleOfInput}
+            readings={fields.oldDeviceReadings.value}
+            onChange={fields.oldDeviceReadings.onChange}
+            device={device}
+          />
+          <Space />
+        </>
+      )}
       <ReadingsInput
         title={
           isSwitch

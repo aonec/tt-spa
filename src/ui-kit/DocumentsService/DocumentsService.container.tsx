@@ -1,7 +1,11 @@
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import React, { FC } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
-import { DocumentsUploadContainerProps } from './DocumentsService.types';
+import {
+  DocumentsUploadComponentType,
+  DocumentsUploadContainerProps,
+} from './DocumentsService.types';
+import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
 
 const accept =
@@ -12,8 +16,13 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   max = Infinity,
   documents,
   onChange,
+  label,
+  componentType = DocumentsUploadComponentType.DragAndDrop,
 }) => {
-  
+  if (!documents) {
+    documents = [];
+  }
+
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
     onChange
@@ -21,7 +30,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
 
   const isMaxDocuments = documents.length >= max;
 
-  return (
+  return componentType === DocumentsUploadComponentType.DragAndDrop ? (
     <div>
       {!isMaxDocuments && (
         <DragAndDrop
@@ -29,14 +38,30 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           accept={accept}
           fileHandler={(files) => handleFile(files[0])}
           uniqId={uniqId}
-          style={{ marginBottom: 15 }}
+          text={label}
+          style={{
+            marginBottom: Boolean(documents.length) || isLoading ? 16 : 0,
+          }}
         />
       )}
-      <DocumentsList
-        isLoading={isLoading}
-        removeDocument={removeDocument}
-        documnets={documents}
-      />
+      {(Boolean(documents.length) || isLoading) && (
+        <DocumentsList
+          isLoading={isLoading}
+          removeDocument={removeDocument}
+          documents={documents}
+        />
+      )}
     </div>
+  ) : (
+    <DocumentsLineUpload
+      fileHandler={(files) => handleFile(files[0])}
+      isLoading={isLoading}
+      removeDocument={removeDocument}
+      documents={documents}
+      accept={accept}
+      uniqId={uniqId}
+      label={label}
+      isMaxDocuments={isMaxDocuments}
+    />
   );
 };

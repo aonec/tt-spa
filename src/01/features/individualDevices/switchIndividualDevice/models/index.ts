@@ -1,4 +1,3 @@
-import { createGate } from 'effector-react';
 import {
   EResourceType,
   MeteringDeviceResponse,
@@ -7,9 +6,22 @@ import {
   EClosingReason,
   SwitchIndividualDeviceRequest,
 } from './../../../../../myApi';
-import { createEvent, createStore, createEffect } from 'effector';
+import {
+  createEvent,
+  createStore,
+  createEffect,
+  combine,
+  guard,
+} from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
+import { checkIndividualDevice } from '01/_api/individualDevices';
+import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
+import { $individualDevice } from '../../displayIndividualDevice/models';
+import { createGate } from 'effector-react';
+import moment from 'moment';
+import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
+
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
   null
@@ -77,11 +89,18 @@ export const addIndividualDeviceForm = createForm({
       })[],
     },
     newDeviceReadings: {
-      init: [] as SwitchIndividualDeviceReadingsCreateRequest[],
+      init: [] as (SwitchIndividualDeviceReadingsCreateRequest & {
+        id?: number;
+      })[],
       rules: [
         {
           name: 'required',
-          validator: (value) => Boolean(value.length),
+          validator: (value) => {
+            if ($typeOfIndividualDeviceForm.getState() === 'check') {
+              return true;
+            }
+            return Boolean(value.length);
+          },
         },
       ],
     },
@@ -119,9 +138,93 @@ export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
   SwitchIndividualDeviceRequest,
-  MeteringDeviceResponse
+  void
 >();
+
+export const checkIndividualDeviceFx = createEffect<
+  CheckIndividualDevicePayload,
+  void
+>(checkIndividualDevice);
 
 export const SwitchIndividualDeviceGate = createGate<{
   type: 'reopen' | 'check' | 'switch';
 }>();
+
+export const $typeOfIndividualDeviceForm = SwitchIndividualDeviceGate.state.map(
+  ({ type }) => type
+);
+
+guard({
+  source: combine(
+    addIndividualDeviceForm.$values,
+    $individualDevice,
+    $typeOfIndividualDeviceForm,
+    (values, device, type) => {
+      const {
+        lastCheckingDate,
+        futureCheckingDate,
+        newDeviceReadings,
+        oldDeviceReadings,
+      } = values;
+
+      if (
+        !lastCheckingDate ||
+        !futureCheckingDate ||
+        !device ||
+        type !== 'check'
+      ) {
+        return null;
+      }
+
+      const readingsAfterCheck = newDeviceReadings.length
+        ? newDeviceReadings.reduce((acc, readings) => {
+            const {
+              readingDate,
+              value1,
+              value2,
+              value3,
+              value4,
+              id,
+            } = readings;
+
+            const oldReadings = oldDeviceReadings.find(
+              (reading) => reading?.id === id
+            );
+
+            if (!oldReadings) {
+              return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
+            }
+
+            const {
+              value1: oldValue1,
+              value2: oldValue2,
+              value3: oldValue3,
+              value4: oldValue4,
+            } = oldReadings;
+
+            const isDifferent =
+              oldValue1 !== Number(value1) ||
+              oldValue2 !== Number(value2) ||
+              oldValue3 !== Number(value3) ||
+              oldValue4 !== Number(value4);
+
+            if (!isDifferent) {
+              return acc;
+            }
+
+            return [...acc, getPreparedReadingsOfIndividualDevice(readings)];
+          }, [] as SwitchIndividualDeviceReadingsCreateRequest[])
+        : null;
+
+      return {
+        currentCheckingDate: lastCheckingDate,
+        futureCheckingDate,
+        readingsAfterCheck,
+        deviceId: device.id,
+      };
+    }
+  ),
+  clock: confirmCreationNewDeviceButtonClicked,
+  filter: Boolean,
+  target: checkIndividualDeviceFx,
+});

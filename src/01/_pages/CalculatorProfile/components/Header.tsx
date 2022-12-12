@@ -57,14 +57,6 @@ export const Header = ({
           color: 'default',
         },
         {
-          title: 'Добавить Узел',
-          cb: () => {
-            push(`/objects/${device?.address?.id}/add_node`);
-          },
-          show: show('CalculatorUpdate'),
-          color: 'default',
-        },
-        {
           title: 'Поверить вычислитель',
           cb: () => {
             setCheck(true);
@@ -98,7 +90,7 @@ export const Header = ({
           <IconTT icon={'device'} size={24} style={{ marginRight: '8px' }} />
           {`${model} (${serialNumber})`}
         </Title>
-        <Subtitle to={`/objects/${id}`}>
+        <Subtitle to={`/objects/profile/${id}`}>
           <Tooltip title={fullAddress}>
             <AdditionalAddress>
               <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>

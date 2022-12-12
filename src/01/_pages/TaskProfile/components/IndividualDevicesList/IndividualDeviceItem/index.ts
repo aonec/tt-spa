@@ -1,1 +1,0 @@
-export { IndividualDeviceItem } from './IndividualDeviceItem'

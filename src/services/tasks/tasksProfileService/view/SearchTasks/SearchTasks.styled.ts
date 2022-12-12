@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import {
   StyledContainerThreeItems,
-  StyledForm,
 } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import { Select } from 'antd';
 
@@ -21,13 +20,12 @@ export const StyledContainerThreeItemsMainTypes = styled(
 )`
   margin-top: 10px;
   grid-template-columns: 4fr 4fr 4fr;
-  gap: 16px;
+  grid-column-gap: 16px;
 `;
 
 export const StyledContainerAdressSection = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 4fr 1.19fr 1.18fr 1.18fr;
-  gap: 16px;
+  display: flex;
+  align-items: center;
   margin-top: 10px;
 `;
 
@@ -45,7 +43,7 @@ export const OverFlowSelectSC = styled(Select)<{ isShadow?: boolean }>`
   }
   .ant-select-selector {
     border-radius: 4px !important;
-  };
+  }
 
   box-shadow: ${({ isShadow = true }) =>
     isShadow ? `0 4px 7px #02004b1f` : 'none'};
@@ -61,11 +59,25 @@ export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
   }
 `;
 
-export const StyledFormThreeRows = styled(StyledForm)`
-  grid-template-rows: 1fr 1fr 1fr;
+export const StyledFormTwoRows = styled.div`
+  margin-bottom: 10px;
+  margin-top: 10px;
+  gap: 2px;
+`;
+
+export const StyledFormThreeRows = styled.div`
+  margin-bottom: 10px;
+  margin-top: 10px;
   gap: 5px;
 `;
 
-export const StyledFormTwoRows = styled(StyledForm)`
-  grid-template-rows: 1fr 1fr;
+export const ToExecutionWrapper = styled.div`
+  margin-bottom: 10px;
+  margin-top: 10px;
+  gap: 2px;
+`;
+
+export const ApartmentNumberWrapper = styled.div`
+  margin-left: 16px;
+  width: 110px;
 `;

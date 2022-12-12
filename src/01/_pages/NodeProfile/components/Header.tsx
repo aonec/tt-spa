@@ -50,8 +50,8 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
     {
       title:
         value === 'Registered'
-          ? 'Снять узел с комерческого учета'
-          : 'Поставить узел на комерческий учет',
+          ? 'Снять узел с коммерческого учета'
+          : 'Поставить узел на коммерческий учет',
       show: true,
       cb: () => openRegisterNodeOnCommercialAccountingModal(),
     },
@@ -99,7 +99,7 @@ export const Header = ({ node, nodeId }: HeaderInterface) => {
         </TitleWrap>
 
         <SubtitleWrap>
-          <Subtitle to={`/objects/${objectId}`}>
+          <Subtitle to={`/objects/profile/${objectId}`}>
             <Tooltip title={fullAddress}>
               <AdditionalAddress>
                 <MainAddressWrapper>{mainAddress},&nbsp;</MainAddressWrapper>

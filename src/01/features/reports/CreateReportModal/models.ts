@@ -1,17 +1,29 @@
 import axios from 'axios';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import moment from 'moment';
+import { message } from 'antd';
+import queryString from 'query-string';
+import { combine, createDomain, forward, sample } from 'effector';
+import { EClosingReason, EResourceType } from 'myApi';
 import { createForm } from 'effector-forms/dist';
-import moment, { Moment, unitOfTime } from 'moment';
 import { reportsInputs } from '../models';
 import { getReportTypeTitleName, RangePeriod, ReportType } from './types';
 import { downloadURI } from './utils';
+import {
+  UnloadTypeFieldsDictionary,
+  ZippedReports,
+} from './CreateReport.constants';
+import { reportsListService } from '../reportsListService';
+import { EffectFailDataAxiosError } from './../../../../types/index';
+import { closedIndividualDevicesFormService } from './ReportFormInputs/closedIndividualDevicesFormService';
 
 const createReportDomain = createDomain('CreateReport');
 
-const $isModalOpen = createReportDomain.createStore(false);
-
 const openModalButtonClicked = createReportDomain.createEvent();
 const closeModalButonClicked = createReportDomain.createEvent();
+
+const $isModalOpen = createReportDomain
+  .createStore(false)
+  .on(reportsListService.inputs.openExistedReport, () => true);
 
 export const form = createForm({
   fields: {
@@ -30,7 +42,59 @@ export const form = createForm({
     rangePeriod: {
       init: [null, null] as RangePeriod,
     },
+    resources: {
+      init: [] as EResourceType[],
+    },
+    closingReasons: {
+      init: [] as EClosingReason[],
+    },
+    managementFirmId: {
+      init: null as number | null,
+    },
+    houseManagementId: {
+      init: null as string | null,
+    },
+    housingStockId: {
+      init: null as number | null,
+    },
+    isWithoutApartments: {
+      init: false,
+    },
   },
+});
+
+sample({
+  clock: reportsListService.inputs.openExistedReport,
+  fn: (values) => {
+    const formValues = {
+      type: values.type as ReportType,
+      resources: values.resources
+        ? (JSON.parse(values.resources) as EResourceType[])
+        : [],
+      period: values.to ? moment(values.to) : null,
+      rangePeriod: [
+        values.from ? moment(values.from) : null,
+        values.to ? moment(values.to) : null,
+      ] as RangePeriod,
+      isWithoutApartments:
+        values.withoutApartmentsWithOpenDevicesByResources === 'True',
+      closingReasons: values.closingReasons
+        ? JSON.parse(values.closingReasons)
+        : [],
+
+      managementFirmId:
+        values.managementFirmId !== 'null'
+          ? Number(values.managementFirmId)
+          : null,
+      houseManagementId:
+        values.houseManagementId !== 'null' ? values.houseManagementId : null,
+      housingStockId:
+        values.housingStockId !== 'null' ? Number(values.housingStockId) : null,
+    };
+
+    return formValues;
+  },
+  target: form.setForm,
 });
 
 const createReportFx = createReportDomain.createEffect<
@@ -40,25 +104,58 @@ const createReportFx = createReportDomain.createEffect<
       From?: string | null;
       To?: string | null;
     };
+    resources?: EResourceType[];
+    closingReasons?: EClosingReason[];
+    housingStockId?: number | null;
+    houseManagementId?: string | null;
+    managementFirmId?: number | null;
+    isWithoutApartments?: boolean;
   },
-  void
->(async ({ date, type }) => {
-  const res: string = await axios.get(`Reports/${type}`, {
-    params: {
-      From: date.From && moment(date.From).startOf('day').toISOString(),
-      To: date.To && moment(date.To).endOf('day').toISOString(),
-    },
-    responseType: 'blob',
-  });
+  void,
+  EffectFailDataAxiosError
+>(
+  async ({
+    date,
+    type,
+    resources,
+    closingReasons,
+    housingStockId,
+    houseManagementId,
+    managementFirmId,
+    isWithoutApartments,
+  }) => {
+    const res: string = await axios.get(`Reports/${type}`, {
+      params: {
+        From: date.From && moment(date.From).startOf('day').toISOString(),
+        To: date.To && moment(date.To).endOf('day').toISOString(),
+        Resources: resources,
+        ClosingReasons: closingReasons,
+        HousingStockId: housingStockId,
+        HouseManagementId: houseManagementId,
+        ManagementFirmId: managementFirmId,
+        WithoutApartmentsWithOpenDevicesByResources: isWithoutApartments,
+      },
+      responseType: 'blob',
+      paramsSerializer: (params) => {
+        return queryString.stringify(params);
+      },
+    });
 
-  const url = window.URL.createObjectURL(new Blob([res]));
+    const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(
-    url,
-    `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
-      date.To
-    ).format('MMMM_YYYY')}`
-  );
+    downloadURI(
+      url,
+      `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
+        date.To
+      ).format('MMMM_YYYY')}`,
+      ZippedReports.includes(type)
+    );
+  }
+);
+
+forward({
+  from: createReportFx.doneData,
+  to: form.reset,
 });
 
 $isModalOpen.reset(createReportFx.doneData);
@@ -66,18 +163,48 @@ $isModalOpen.reset(createReportFx.doneData);
 const createReport = createReportDomain.createEvent();
 
 forward({
+  from: createReportFx.doneData,
+  to: reportsListService.inputs.refetchReportsHistory,
+});
+
+forward({
   from: form.formValidated,
   to: createReport,
 });
+
 const workingReports = [
   ReportType.HouseManagementsReport,
   ReportType.OperatorsWorkingReport,
   ReportType.InspectorsWorkingReport,
 ];
+
 sample({
-  source: form.$values,
+  source: combine(
+    form.$values,
+    closedIndividualDevicesFormService.outputs.$unloadSelectType
+  ),
   clock: createReport,
-  fn: ({ type, period, rangePeriod }) => {
+  fn: ([
+    {
+      type,
+      period,
+      rangePeriod,
+      resources,
+      closingReasons,
+      housingStockId,
+      houseManagementId,
+      managementFirmId,
+      isWithoutApartments,
+    },
+    unloadType,
+  ]) => {
+    const unloadPlaceData: { [key: string]: string | null | number } = {
+      housingStockId,
+      houseManagementId,
+      managementFirmId,
+    };
+    const key = unloadType && UnloadTypeFieldsDictionary[unloadType];
+
     if (workingReports.includes(type!)) {
       const startOfPeriod = moment(period).startOf('month').toISOString();
       const endOfPeriod = moment(period).endOf('month').toISOString();
@@ -89,6 +216,10 @@ sample({
         From: rangePeriod![0]?.startOf('day')?.toISOString(),
         To: rangePeriod![1]?.endOf('day')?.toISOString(),
       },
+      resources,
+      closingReasons,
+      isWithoutApartments,
+      ...(key ? { [key]: unloadPlaceData[key] } : {}),
     };
   },
   target: createReportFx,
@@ -103,6 +234,10 @@ forward({
   to: openModalButtonClicked,
 });
 
+createReportFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
 const $loading = combine(createReportFx.pending, (...pendings) =>
   pendings.some(Boolean)
 );
@@ -115,4 +250,9 @@ export const outputs = {
 export const inputs = {
   openModalButtonClicked,
   closeModalButonClicked,
+};
+
+export const createReportService = {
+  inputs,
+  outputs,
 };

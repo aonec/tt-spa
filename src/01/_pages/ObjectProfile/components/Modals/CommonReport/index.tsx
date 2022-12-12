@@ -18,6 +18,7 @@ import {
   CalculatorListResponse,
   HousingStockResponse,
   CalculatorListResponsePagedList,
+  CalculatorIntoHousingStockResponse,
 } from '../../../../../../myApi';
 import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
@@ -30,17 +31,18 @@ interface ObjectContextInterface {
   calculators: CalculatorListResponse[] | null;
 }
 
-const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
-  const { object, calculators }: ObjectContextInterface = useContext(
-    ObjectContext
-  );
+const ModalCommonReport = ({ visible, setVisible, object }: ModalInterface) => {
+  if (!object) {
+    return null;
+  }
+
   const handleCancel = () => {
     setVisible(false);
   };
 
   const street = object?.address?.mainAddress?.street;
   const number = object?.address?.mainAddress?.number;
-  
+
   const reportName = `Сводный_отчёт_${street}_${number}.xlsx`;
   const addressString = getHousingStockAddress(object, true);
 
@@ -49,17 +51,16 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     const { setFieldsValue, getFieldValue } = form;
     const [isDisabled, setIsDisabled] = useState(true);
     const onFinish = async (values: any) => {
-      const begin = moment(getFieldValue('dates')[0]).startOf('day').toISOString();
+      const begin = moment(getFieldValue('dates')[0])
+        .startOf('day')
+        .toISOString();
       const end = moment(getFieldValue('dates')[1]).endOf('day').toISOString();
 
-      const calculatorsResponse: CalculatorListResponsePagedList = await axios.get(
-        'Calculators',
-        {
-          params: { 'Filter.HousingStockId': object.id },
-        }
+      const calculatorsResponse: CalculatorIntoHousingStockResponse[] = await axios.get(
+        `HousingStocks/${object.id}/Calculators`
       );
 
-      const ids = calculatorsResponse?.items?.map((calculator, index) => {
+      const ids = calculatorsResponse.map((calculator, index) => {
         const { id } = calculator;
         return `calculatorsId=${id}`;
       });

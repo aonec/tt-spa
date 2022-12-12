@@ -1,6 +1,5 @@
 import { message } from 'antd';
 import {
-  CalculatorListResponsePagedList,
   CalculatorResponse,
   CreateCalculatorRequest,
   CreatePipeHousingMeteringDeviceRequest,
@@ -11,6 +10,7 @@ import {
   TasksPagedList,
   UpdateIndividualDeviceRequest,
   UpdatePipeNodeRequest,
+  CalculatorListResponse,
 } from '../../myApi';
 import axios from '../axios';
 
@@ -30,7 +30,7 @@ export async function addCalculator(form: CreateCalculatorRequest) {
 
 export async function getObjectCalculators(id: number) {
   try {
-    const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
+    const res = await axios.get(`HousingStocks/${id}/Calculators`);
     return res;
   } catch (error) {
     throw {
@@ -108,21 +108,6 @@ export async function getCalculator(id: number) {
   }
 }
 
-export async function addHousingMeteringDevice(
-  form: CreatePipeHousingMeteringDeviceRequest
-) {
-  try {
-    const res = await axios.post('PipeHousingMeteringDevices', form);
-    alert('ОДПУ успешно создан !');
-    return res;
-  } catch (error) {
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка добавления ОДПУ',
-    };
-  }
-}
-
 export async function getHousingStock(housingStockId: number) {
   try {
     const res: HousingStockResponse = await axios.get(
@@ -139,11 +124,10 @@ export async function getHousingStock(housingStockId: number) {
 
 export async function getHousingStockCalculators(id: number) {
   try {
-    const res: CalculatorListResponsePagedList = await axios.get(
-      `Calculators?Filter.HousingStockId=${id}`
+    const res: CalculatorListResponse[] | null = await axios.get(
+      `HousingStocks/${id}/Calculators`
     );
-    const { items } = res;
-    return items;
+    return res;
   } catch (error) {
     throw {
       resource: 'calculators',

@@ -10,10 +10,10 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({ apartment }) => {
   const mainAddress = apartment?.housingStock?.address?.mainAddress;
 
   return (
-    <Wrapper to={`/objects/${mainAddress?.id}/apartments/${apartment.id}`}>
+    <Wrapper to={`/apartments/${apartment.id}`}>
       <Address>{address}</Address>
       <div>{mainAddress?.city}</div>
-      <div>{apartment?.housingStock?.houseType}</div>
+      <div>{apartment?.housingStock?.houseTypeString}</div>
       <ContextMenuButton size="small" />
     </Wrapper>
   );

@@ -21,8 +21,9 @@ import {
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
 import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
-import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/SelectSwitchDeviceTypeModal';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 
 export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
   device,
@@ -34,6 +35,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   handleUploadReading,
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
+  editable = true,
 }) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -43,9 +45,13 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
   );
 
+  const openEditReadingsHistoryModal = useEvent(
+    editReadingsHistoryService.inputs.openModal
+  );
+
   const managementFirmUser = useStore($currentManagingFirmUser);
 
-  const isDeviceClosed = Boolean(device.closingDate)
+  const isDeviceClosed = Boolean(device.closingDate);
 
   const isSeniorOperator = useMemo(
     () =>
@@ -92,14 +98,18 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       {
         title: 'Закрытие прибора',
         hidden: isDeviceClosed,
-        color: Color.red,
+        color: Color.danger,
         onClick: () => closingIndividualDeviceButtonClicked(device),
       },
       {
         title: 'Удалить прибор',
         hidden: !isSeniorOperator,
-        color: Color.red,
+        color: Color.danger,
         onClick: () => onDeleteIndividualDevice(device),
+      },
+      {
+        title: 'Ввести показание за произвольный период',
+        onClick: () => openEditReadingsHistoryModal(device),
       },
     ],
     [
@@ -109,6 +119,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       onDeleteIndividualDevice,
       isDeviceClosed,
       managementFirmUser,
+      openEditReadingsHistoryModal,
     ]
   );
 
@@ -138,7 +149,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         sliderIndex={sliderIndex}
         isPrevious
         inputIndex={inputIndex}
-        isDisabled={isDeviceClosed}
+        isDisabled={isDeviceClosed || !editable}
         status={uploadingMetersStatuses[sliderIndex]}
         tooltip={(!previousReading && previousReadingTooltipTitle) || ''}
       />
@@ -149,7 +160,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         resource={device.resource}
         sliderIndex={-1}
         inputIndex={inputIndex}
-        isDisabled={isDeviceClosed}
+        isDisabled={isDeviceClosed || !editable}
         status={uploadingMetersStatuses[-1]}
         tooltip={
           (!previousReading &&
@@ -159,24 +170,28 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         }
       />
       <DeviceOptionsWrapper>
-        <StarIcon
-          onClick={() =>
-            history.push(
-              `/apartment/${id}/individualDevice/${device.id}/reopen`
-            )
-          }
-          style={{ cursor: 'pointer' }}
-          className="device-option"
-        />
+        {editable && (
+          <StarIcon
+            onClick={() =>
+              history.push(
+                `/apartment/${id}/individualDevice/${device.id}/reopen`
+              )
+            }
+            style={{ cursor: 'pointer' }}
+            className="device-option"
+          />
+        )}
         <Tooltip title="История показаний" className="device-option">
           <HistoryIcon
             onClick={openReadingsHistoryModal}
             style={{ cursor: 'pointer' }}
           />
         </Tooltip>
-        <div className="device-option">
-          <ContextMenuButton menuButtons={menuButtonArr} size="small" />
-        </div>
+        {editable && (
+          <div className="device-option">
+            <ContextMenuButton menuButtons={menuButtonArr} size="small" />
+          </div>
+        )}
       </DeviceOptionsWrapper>
     </Wrapper>
   );
