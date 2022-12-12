@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
@@ -43,6 +44,23 @@ export const MockComponent = styled.div`
   border-radius: 4px;
   padding: 14px;
   margin: 10px;
+`;
+
+export const TasksWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const Tasks = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #272f5a;
+`;
+
+export const LinkSC = styled(Link)`
+  color: #189ee9;
 `;
 
 export const CommentComponent = styled.div`

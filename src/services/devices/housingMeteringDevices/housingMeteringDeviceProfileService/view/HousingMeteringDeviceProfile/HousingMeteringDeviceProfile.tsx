@@ -26,11 +26,14 @@ import {
   DeviceNumber,
   DeviceTitle,
   IconSubstrate,
+  LinkSC,
   MockComponent,
   PageGridContainer,
   PageTitle,
   RightBlock,
   RightButtonsBlock,
+  Tasks,
+  TasksWrapper,
   UserName,
   Wrapper,
 } from './HousingMeteringDeviceProfile.styled';
@@ -145,7 +148,20 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           </CommentComponent>
 
           <MockComponent>
-            <h3>Задачи: {housingMeteringDeviceTasks?.items?.length}</h3>
+            <TasksWrapper>
+              <Tasks>Задачи: {housingMeteringDeviceTasks?.items?.length}</Tasks>
+
+              {
+                // housingMeteringDeviceTasks?.items?.length
+                1 ? (
+                  <LinkSC to={`/tasks/list/`} target="_blank">
+                    {'Перейти >'}
+                  </LinkSC>
+                ) : (
+                  ''
+                )
+              }
+            </TasksWrapper>
           </MockComponent>
 
           <MockComponent>
