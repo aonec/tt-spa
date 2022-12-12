@@ -32,7 +32,7 @@ export const CreateObjectContainer = () => {
   const closePreviewModal = useEvent(inputs.closePreviewModal);
 
   const openCreateHeatingStationModal = useEvent(
-    inputs.openCreateHeatingStationModal
+    inputs.handleHeatindStationModalOpen
   );
 
   const openEditHeatingStationModal = useEvent(

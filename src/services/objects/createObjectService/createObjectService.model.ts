@@ -42,6 +42,9 @@ const openEditHeatingStationModal =
 const heatingStationCapture =
   editHeatingStationService.inputs.currentHeatingStatitonDataCapture;
 
+const handleHeatindStationModalOpen =
+  createHeatingStationService.inputs.handleOpenModal;
+
 const resetter = domain.createEvent();
 
 const HouseManagementsFetchGate = createGate();
@@ -193,6 +196,7 @@ export const createObjectService = {
     openCreateHeatingStationModal,
     openEditHeatingStationModal,
     heatingStationCapture,
+    handleHeatindStationModalOpen,
   },
   outputs: {
     $createObjectData,

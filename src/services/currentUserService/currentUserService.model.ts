@@ -53,9 +53,9 @@ export const currentUserService = {
   outputs: {
     $currentUser,
     $isLoading,
-    $currentUserRoles,
     $hasCorpuses,
     $diametersConfig,
+    $currentUserRoles
   },
   gates: {
     CurrentUserGate,
