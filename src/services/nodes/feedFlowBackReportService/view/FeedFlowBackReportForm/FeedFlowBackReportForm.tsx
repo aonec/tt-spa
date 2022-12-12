@@ -1,3 +1,4 @@
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -8,6 +9,7 @@ import { Input, InputWithAddon } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { feedFlowBackReportService } from '../../feedFlowBackReportService.model';
+import { validationSchema } from './FeedFlowBackReportForm.constants';
 import { LineWrapper } from './FeedFlowBackReportForm.styled';
 import { FeedFlowBackReportFormProps } from './FeedFlowBackReportForm.types';
 
@@ -21,7 +23,13 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
   formId,
   handleExportReport,
 }) => {
-  const { values, handleChange, setFieldValue, handleSubmit } = useFormik({
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+    handleSubmit,
+    errors,
+  } = useFormik({
     initialValues: {
       name: `Сводный_отчёт_по_обратной_магистрали_${moment().format(
         'DD.MM.YYYY'
@@ -41,6 +49,8 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
         OutdoorTemperature: Number(values.temperature),
       });
     },
+    validationSchema,
+    validateOnChange: false,
   });
 
   return (
@@ -55,6 +65,7 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
             placeholder="Введите название"
             suffix={<>.xlsx</>}
           />
+          <ErrorMessage>{errors.name}</ErrorMessage>
         </FormItem>
         <LineWrapper>
           <FormItem label="Город">
@@ -85,6 +96,7 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
                 </Select.Option>
               ))}
             </Select>
+            <ErrorMessage>{errors.houseMangementId}</ErrorMessage>
           </FormItem>
           <FormItem label="Тип ресурса">
             <ResourceSelect resource={EResourceType.Heat} disabled />
@@ -98,6 +110,7 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
               name="temperature"
               onChange={handleChange}
             />
+            <ErrorMessage>{errors.temperature}</ErrorMessage>
           </FormItem>
         </LineWrapper>
       </Form>
