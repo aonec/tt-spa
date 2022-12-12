@@ -41,6 +41,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   housingMeteringDevice,
   currentTab,
   handleChangeTab,
+  housingMeteringDeviceTasks,
 }) => {
   const { push } = useHistory();
 
@@ -48,7 +49,6 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   const deviceModel = housingMeteringDevice?.model;
   const deviceNumber = housingMeteringDevice?.serialNumber;
   const isActive = housingMeteringDevice?.isActive;
-  console.log(isActive);
 
   return (
     <Wrapper>
@@ -66,7 +66,9 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
             <HeaderInfoString>
               {deviceAddress?.city}
               {`${deviceAddress && getHousingStockItemAddress(deviceAddress)} `}
-              {isActive && <DeviceStatus isActive={isActive} />}
+              {isActive !== undefined && isActive !== null && (
+                <DeviceStatus isActive={isActive} />
+              )}
             </HeaderInfoString>
           </PageTitle>
         }
@@ -143,8 +145,9 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           </CommentComponent>
 
           <MockComponent>
-            <h3>Задачи</h3>
+            <h3>Задачи: {housingMeteringDeviceTasks?.items?.length}</h3>
           </MockComponent>
+
           <MockComponent>
             <h3>Документы</h3>
           </MockComponent>

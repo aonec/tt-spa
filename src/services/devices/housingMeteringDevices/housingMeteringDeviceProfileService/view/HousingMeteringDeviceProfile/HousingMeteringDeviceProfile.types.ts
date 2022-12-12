@@ -1,4 +1,4 @@
-import { PipeHousingMeteringDeviceResponse } from 'myApi';
+import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
 import { HousingProfileTabs } from '../../housingMeteringDeviceProfileService.types';
 
 export type HousingMeteringDeviceProfileProps = {
@@ -6,4 +6,5 @@ export type HousingMeteringDeviceProfileProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
   currentTab: HousingProfileTabs;
   handleChangeTab: (payload: HousingProfileTabs) => void;
+  housingMeteringDeviceTasks: TasksPagedList | null
 };

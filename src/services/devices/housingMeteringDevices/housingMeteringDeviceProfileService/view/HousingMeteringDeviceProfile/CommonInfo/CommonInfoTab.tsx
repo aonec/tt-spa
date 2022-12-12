@@ -19,19 +19,27 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
 
   const items = [
     { key: 'Адрес', value: <Address>{address}</Address> },
-    { key: 'Диаметр прибора', value: `${housingMeteringDevice?.diameter} мм` },
-    { key: 'Магистраль', value: MagistralsDisctionary[magistral] },
+    {
+      key: 'Диаметр прибора',
+      value: housingMeteringDevice?.diameter
+        ? `${housingMeteringDevice.diameter} мм`
+        : '-',
+    },
+    {
+      key: 'Магистраль',
+      value: magistral ? MagistralsDisctionary[magistral] : '-',
+    },
     {
       key: 'Дата поверки прибора',
-      value: moment(housingMeteringDevice?.lastCheckingDate).format(
-        'DD.MM.YYYY'
-      ),
+      value: housingMeteringDevice?.lastCheckingDate
+        ? moment(housingMeteringDevice?.lastCheckingDate).format('DD.MM.YYYY')
+        : '-',
     },
     {
       key: 'Дата следующей поверки прибора',
-      value: moment(housingMeteringDevice?.futureCheckingDate).format(
-        'DD.MM.YYYY'
-      ),
+      value: housingMeteringDevice?.futureCheckingDate
+        ? moment(housingMeteringDevice?.futureCheckingDate).format('DD.MM.YYYY')
+        : '-',
     },
   ];
 

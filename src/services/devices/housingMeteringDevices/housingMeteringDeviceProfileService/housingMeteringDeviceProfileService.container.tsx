@@ -11,6 +11,10 @@ export const HousingMeteringDeviceProfileContainer = () => {
   const { deviceId } = useParams<{ deviceId: string }>();
 
   const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
+  const housingMeteringDeviceTasks = useStore(
+    outputs.$housingMeteringDeviceTask
+  );
+
   const currentTab = useStore(outputs.$currentTab);
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
@@ -26,6 +30,7 @@ export const HousingMeteringDeviceProfileContainer = () => {
         housingMeteringDevice={housingMeteringDevice}
         currentTab={currentTab}
         handleChangeTab={handleChangeTab}
+        housingMeteringDeviceTasks={housingMeteringDeviceTasks}
       />
     </>
   );

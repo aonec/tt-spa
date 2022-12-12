@@ -2,11 +2,11 @@ import { axios } from '01/axios';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
 
 export async function getHousingMeteringDevice(id: number) {
-  return await axios.get<string, PipeHousingMeteringDeviceResponse>(
+  return await axios.get<number, PipeHousingMeteringDeviceResponse>(
     `PipeHousingMeteringDevices/${id}`
   );
 }
 
-export async function getHousingTasks(id: number) {
-  return await axios.get<string, TasksPagedList>(`Tasks?DeviceId=${id}`);
+export async function getDeviceTasks(id: number) {
+  return await axios.get<number, TasksPagedList>(`Tasks?DeviceId=${id}`);
 }
