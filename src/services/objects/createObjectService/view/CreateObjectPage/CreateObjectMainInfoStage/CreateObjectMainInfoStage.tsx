@@ -1,5 +1,5 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -37,6 +37,11 @@ import {
 } from 'myApi';
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
+import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
+
+const {
+  inputs: { handleHeatingStationCreated },
+} = createHeatingStationService;
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -45,6 +50,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   handleSubmitCreateObject,
   createObjectData,
   heatingStations,
+  openCreateHeatingStationModal,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -53,7 +59,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
   const initialValues = {
     houseManagement: createObjectData?.houseManagement || null,
-    objectCategotry: createObjectData?.objectCategotry || null,
+    objectCategory: createObjectData?.objectCategory || null,
     livingHouseType: createObjectData?.livingHouseType || null,
     nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
     heatingStationId: createObjectData?.heatingStationId || null,
@@ -73,6 +79,14 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     validateOnChange: false,
     validationSchema,
   });
+
+  useEffect(
+    () =>
+      handleHeatingStationCreated.watch((newHeatingStationData) =>
+        setFieldValue('heatingStationId', newHeatingStationData?.id)
+      ),
+    []
+  );
 
   const selectedHeatingStation = heatingStations?.items?.find(
     (station) => station.id === values.heatingStationId
@@ -112,11 +126,11 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
             <Select
               placeholder="Выберите из списка"
               onChange={(value) => {
-                setFieldValue('objectCategotry', value);
+                setFieldValue('objectCategory', value);
                 setFieldValue('livingHouseType', null);
                 setFieldValue('nonResidentialHouseType', null);
               }}
-              value={values.objectCategotry || undefined}
+              value={values.objectCategory || undefined}
             >
               {Object.values(EHouseCategory).map((category) => (
                 <Select.Option value={category} key={category}>
@@ -124,14 +138,14 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 </Select.Option>
               ))}
             </Select>
-            <ErrorMessage>{errors.objectCategotry}</ErrorMessage>
+            <ErrorMessage>{errors.objectCategory}</ErrorMessage>
           </FormItem>
 
           <FormItem label="Тип объекта">
-            {!values.objectCategotry && (
+            {!values.objectCategory && (
               <Select disabled placeholder="Выберите" />
             )}
-            {values.objectCategotry === EHouseCategory.Living && (
+            {values.objectCategory === EHouseCategory.Living && (
               <>
                 <Select
                   placeholder="Выберите из списка"
@@ -148,7 +162,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
               </>
             )}
 
-            {values.objectCategotry === EHouseCategory.NonResidential && (
+            {values.objectCategory === EHouseCategory.NonResidential && (
               <>
                 <Select
                   placeholder="Выберите из списка"
@@ -196,7 +210,9 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
               <ErrorMessage>{errors.heatingStationId}</ErrorMessage>
             </FormItem>
             <WrapperLinkButton>
-              <LinkButton onClick={() => {}}>+ Добавить новый ТП</LinkButton>
+              <LinkButton onClick={openCreateHeatingStationModal}>
+                + Добавить новый ТП
+              </LinkButton>
             </WrapperLinkButton>
           </GridContainer>
         )}

@@ -31,7 +31,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     (elem) => elem.id === createObjectData?.houseManagement
   )?.name;
 
-  const objectCategory = createObjectData?.objectCategotry;
+  const objectCategory = createObjectData?.objectCategory;
 
   const preparedLivingType =
     createObjectData?.livingHouseType &&

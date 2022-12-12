@@ -10,6 +10,8 @@ import {
   HousingStockResponse,
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
+import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
+import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import {
   getHeatingStations,
   getHouseManagements,
@@ -34,11 +36,16 @@ const handlePostCreateObject = domain.createEvent();
 const closePreviewModal = domain.createEvent();
 const openPreviewModal = domain.createEvent();
 
+const handleHeatindStationModalOpen =
+  createHeatingStationService.inputs.handleOpenModal;
+
 const resetter = domain.createEvent();
 
 const HouseManagementsFetchGate = createGate();
-const HeatingStationsFetchGate = createGate();
 const PageCloseGate = createGate();
+
+const HeatingStationsFetchGate =
+  displayHeatingStationsService.gates.HeatingStationsFetchGate;
 
 const fetchHouseManagementsFx = domain.createEffect<
   void,
@@ -80,7 +87,7 @@ const $stageNumber = domain
 guard({
   source: $stageNumber,
   clock: handleSubmitCreateObject,
-  filter: (stageNumber) => stageNumber < 3 ,
+  filter: (stageNumber) => stageNumber < 3,
   target: goNextStage,
 });
 
@@ -88,14 +95,12 @@ const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementsFx.doneData, (_, data) => data);
 
-const $heatingStations = domain
-  .createStore<HeatingStationResponsePagedList | null>(null)
-  .on(fetchHeatingStationFx.doneData, (_, data) => data);
-
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
   .on(closePreviewModal, () => false)
   .on(openPreviewModal, () => true);
+
+const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
 forward({
   from: HouseManagementsFetchGate.open,
@@ -132,7 +137,7 @@ guard({
         additionalAddresses,
         heatingStationId,
         houseManagement,
-        objectCategotry,
+        objectCategory,
         livingHouseType,
         nonResidentialHouseType,
         floors,
@@ -146,7 +151,7 @@ guard({
         !house ||
         !heatingStationId ||
         !houseManagement ||
-        !objectCategotry
+        !objectCategory
       )
         return null;
 
@@ -168,7 +173,7 @@ guard({
           }) || null,
         heatingStationId,
         houseManagementId: houseManagement,
-        houseCategory: objectCategotry,
+        houseCategory: objectCategory,
         livingHouseType: livingHouseType || null,
         nonResidentialHouseType: nonResidentialHouseType || null,
         numberOfFloors: Number(floors) || null,
@@ -200,13 +205,14 @@ export const createObjectService = {
     openPreviewModal,
     closePreviewModal,
     handleCreateObjectSuccessDone,
+    handleHeatindStationModalOpen,
   },
   outputs: {
     $createObjectData,
     $stageNumber,
     $houseManagements,
-    $heatingStations,
     $isPreviewModalOpen,
+    $heatingStations,
   },
-  gates: { HouseManagementsFetchGate, HeatingStationsFetchGate, PageCloseGate },
+  gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
 };
