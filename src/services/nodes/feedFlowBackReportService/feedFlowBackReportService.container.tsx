@@ -10,8 +10,12 @@ const { inputs, outputs } = feedFlowBackReportService;
 
 export const FeedFlowBackReportContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
+  const existingCities = useStore(outputs.$existingCities);
+  const houseManagements = useStore(outputs.$houseManagements);
+  const isLoading = useStore(outputs.$isLoading);
 
   const closeModal = useEvent(inputs.closeFeedFlowBackReportModal);
+  const handleExportReport = useEvent(inputs.handleExportReport);
 
   return (
     <FormModal
@@ -20,7 +24,15 @@ export const FeedFlowBackReportContainer = () => {
       onCancel={() => closeModal()}
       visible={isModalOpen}
       formId={formId}
-      form={<FeedFlowBackReportForm />}
+      loading={isLoading}
+      form={
+        <FeedFlowBackReportForm
+          formId={formId}
+          existingCities={existingCities}
+          houseManagements={houseManagements}
+          handleExportReport={handleExportReport}
+        />
+      }
     />
   );
 };
