@@ -12,7 +12,6 @@ import { minBy, maxBy, get } from 'lodash';
 import 'antd/es/date-picker/style/index';
 import {
   GraphViewProps,
-  PreparedArchiveValues,
   ResourceType,
 } from './GraphView.types';
 import { formTicks, getTickFormat } from '../../utils';
@@ -29,6 +28,7 @@ import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
+import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
 
 const minDelta = 0.01;
 const width = 730;
@@ -55,12 +55,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
     return <GraphEmptyData />;
   }
 
-  const preparedArchiveValues = archiveValues.reduce((acc, reading) => {
-    if (!reading?.time || reading.value === undefined) {
-      return acc;
-    }
-    return [...acc, reading as PreparedArchiveValues];
-  }, [] as PreparedArchiveValues[]);
+  const preparedArchiveValues = prepareData(archiveValues);
 
   const archiveLength = preparedArchiveValues.length;
 
@@ -69,19 +64,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
   const measure = requiredArchiveValues?.measure;
 
-  const minElement = minBy(preparedArchiveValues, (obj) => obj.value);
-  const maxElement = maxBy(preparedArchiveValues, (obj) => obj.value);
-
-  let minValue = minElement!.value > 0 ? 0 : 1.5 * minElement!.value;
-  let maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value;
-
-  if (maxValue === minValue && minValue === 0) maxValue += minDelta;
-  if (maxValue / 2 > Math.abs(minValue) && minValue < 0) {
-    minValue = -maxValue / 2;
-  }
-  if (Math.abs(minValue) / 2 > maxValue) {
-    maxValue = -minValue / 2;
-  }
+  const { maxValue, minValue } = getMinAndMax(preparedArchiveValues, minDelta);
 
   const tooltipStyle = {
     parent: { overflow: 'visible' },
@@ -147,12 +130,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
                   left: 16,
                 }}
                 height={height}
-                flyoutComponent={
-                  <GraphTooltip
-                    graphParam={graphParam}
-                    measure={measure || ''}
-                  />
-                }
+                flyoutComponent={<GraphTooltip measure={measure || ''} />}
                 minValue={minValue}
                 maxValue={maxValue}
               />

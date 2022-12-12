@@ -1,7 +1,13 @@
 import { axios } from '01/axios';
 import moment from 'moment';
-import { GetDataForHousingConsumptionPlotResponse } from 'myApi';
+import {
+  GetDataForHousingConsumptionPlotResponse,
+  HouseManagementWithStreetsResponse,
+  StreetWithHousingStockNumbersResponsePagedList,
+} from 'myApi';
+import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.model.types';
 import { HousingConsumptionDataFilter } from './resourceConsumptionService.types';
+import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 
 export const fetchHousingConsumptionsForTwoMonth = async (
   params: HousingConsumptionDataFilter
@@ -19,8 +25,12 @@ export const fetchHousingConsumptionsForTwoMonth = async (
   );
 
   return {
-    currentMonthData: currentMonthData.housingConsumption || [],
-    prevMonthData: prevMonthData.housingConsumption || [],
+    currentMonthData: prepareDataForConsumptionGraph(
+      currentMonthData.housingConsumption || []
+    ),
+    prevMonthData: prepareDataForConsumptionGraph(
+      prevMonthData.housingConsumption || []
+    ),
   };
 };
 
@@ -28,3 +38,10 @@ export const fetchHousingConsumptionData = (
   params: HousingConsumptionDataFilter
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
   axios.get('PipeNodes/DataForHousingConsumptionPlot', { params });
+
+export const fetchAddresses = (): Promise<
+  HouseManagementWithStreetsResponse[]
+> =>
+  axios.get(
+    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement'
+  );
