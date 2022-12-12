@@ -11,10 +11,15 @@ export function getMinAndMax<T>(
   let minValue = minElementValue > 0 ? 0 : 1.5 * minElementValue;
   let maxValue = maxElementValue < 0 ? 0 : 1.5 * maxElementValue;
 
-  if (maxValue === minValue && minValue === 0) maxValue += minDelta;
+  if (maxValue === minValue && minValue === 0) {
+    maxValue += minDelta;
+  }
+
   if (maxValue / 2 > Math.abs(minValue) && minValue < 0) {
+    console.log('hello');
     minValue = -maxValue / 2;
   }
+
   if (Math.abs(minValue) / 2 > maxValue) {
     maxValue = -minValue / 2;
   }

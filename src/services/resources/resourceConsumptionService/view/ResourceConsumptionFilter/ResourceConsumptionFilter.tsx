@@ -2,12 +2,11 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
-import { TrashIcon } from 'ui-kit/icons';
 import { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
@@ -49,6 +48,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     submitForm,
     resetForm,
     errors,
+    setValues,
   } = useFormik<GetHousingConsumptionDataFormik>({
     initialValues: {
       HousingStockId: filter?.HousingStockId || null,
@@ -75,6 +75,16 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       setFilter({ ...values, HousingStockId });
     },
   });
+
+  useEffect(() => {
+    setValues({
+      additionalAddress: null,
+      currentAddress: null,
+      AdditionalHousingStockId: null,
+      HousingStockId: null,
+      From: initialDate,
+    });
+  }, [streetsList]);
 
   const handleReset = useCallback(() => {
     resetForm();
