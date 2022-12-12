@@ -16,7 +16,6 @@ export function getMinAndMax<T>(
   }
 
   if (maxValue / 2 > Math.abs(minValue) && minValue < 0) {
-    console.log('hello');
     minValue = -maxValue / 2;
   }
 

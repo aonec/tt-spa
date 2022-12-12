@@ -50,6 +50,9 @@ export const Footer = styled.div`
 export const AdditionalAddressWrapper = styled.div`
   color: #189ee9;
   font-size: 16px;
+
+  user-select: none;
+  cursor: pointer;
 `;
 
 export const GroupWrapper = styled.div`
