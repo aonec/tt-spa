@@ -13,7 +13,7 @@ import {
   GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
   SoiReportType,
-} from './soiReportService.model.types';
+} from './soiReportService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';

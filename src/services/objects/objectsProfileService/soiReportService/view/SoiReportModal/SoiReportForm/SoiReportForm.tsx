@@ -15,7 +15,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { SoiReportType } from '../../../soiReportService.model.types';
+import { SoiReportType } from '../../../soiReportService.types';
 import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
