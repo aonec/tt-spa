@@ -22,14 +22,16 @@ const domain = createDomain('createObjectService');
 
 const goBackStage = domain.createEvent();
 
+const goNextStage = domain.createEvent();
+
 const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
 const handleCreateHeatingStation = domain.createEvent<AddHeatingStationRequest>();
 
 const handlePostCreateObject = domain.createEvent();
 
-const closePreviewModal = domain.createEvent<void>();
-const openPreviewModal = domain.createEvent<void>();
+const closePreviewModal = domain.createEvent();
+const openPreviewModal = domain.createEvent();
 
 const openCreateHeatingStationModal =
   createHeatingStationService.inputs.handleOpenModal;
@@ -40,7 +42,7 @@ const openEditHeatingStationModal =
 const heatingStationCapture =
   editHeatingStationService.inputs.currentHeatingStatitonDataCapture;
 
-const resetter = domain.createEvent<void>();
+const resetter = domain.createEvent();
 
 const HouseManagementsFetchGate = createGate();
 const PageCloseGate = createGate();
@@ -71,13 +73,16 @@ const $createObjectData = domain
 
 const $stageNumber = domain
   .createStore<number>(1)
-  .on(handleSubmitCreateObject, (stageNumber) =>
-    stageNumber === 3 ? stageNumber : stageNumber + 1
-  )
-  .on(goBackStage, (stageNumber) =>
-    stageNumber === 1 ? stageNumber : stageNumber - 1
-  )
+  .on(goNextStage, (stageNumber) => stageNumber + 1)
+  .on(goBackStage, (stageNumber) => stageNumber - 1)
   .reset(resetter);
+
+guard({
+  source: $stageNumber,
+  clock: handleSubmitCreateObject,
+  filter: (stageNumber) => stageNumber < 3,
+  target: goNextStage,
+});
 
 const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
@@ -143,12 +148,12 @@ guard({
         },
         index,
         otherAddresses:
-          additionalAddresses?.map((e) => {
+          additionalAddresses?.map((elem) => {
             return {
               city,
-              street: e.street,
-              number: e.house,
-              corpus: e.corpus,
+              street: elem.street,
+              number: elem.house,
+              corpus: elem.corpus,
             };
           }) || null,
         heatingStationId,

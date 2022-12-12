@@ -45,7 +45,3 @@ export const DeleteButton = styled.div`
   color: red;
   width: max-content;
 `;
-
-
-
-

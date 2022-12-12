@@ -393,12 +393,11 @@ const ApartmentComment = ({ comment: commentInitial }) => {
 
   const onSaveHandler = async () => {
     setLoading(true);
-    const queryString = formQueryString({ Comment: comment });
 
-    const path = `/Apartments/${Number(id)}${queryString}`;
+    const path = `/Apartments/${Number(id)}`;
 
     try {
-      await axios.put(path);
+      await axios.put(path, { Comment: comment });
 
       setIsEditMode(false);
     } catch (e) {}

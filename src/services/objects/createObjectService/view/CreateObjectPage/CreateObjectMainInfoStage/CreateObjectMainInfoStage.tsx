@@ -16,7 +16,7 @@ import {
   Title,
   Wrapper,
   WrapperLinkButton,
-  XIconSc,
+  CloseIconSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
@@ -242,10 +242,10 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                   onClick={() => {
                     openEditHeatingStationModal();
                     selectedHeatingStation &&
-                    heatingStationCapture(selectedHeatingStation);
+                      heatingStationCapture(selectedHeatingStation);
                   }}
                 />
-                <XIconSc
+                <CloseIconSC
                   onClick={() => {
                     setFieldValue('heatingStationId', null);
                   }}
