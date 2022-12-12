@@ -3,6 +3,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 
 export const Wrapper = styled.div`
   width: 320px;
+  height: fit-content;
   margin-left: 16px;
 
   box-shadow: 0 4px 4px rgba(0, 0, 20, 0.16);

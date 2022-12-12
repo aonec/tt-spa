@@ -7,5 +7,6 @@ export const Wrapper = styled.div`
 
 export const GraphWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   flex-grow: 1;
 `;

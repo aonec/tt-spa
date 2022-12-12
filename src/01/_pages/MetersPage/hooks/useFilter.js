@@ -37,7 +37,7 @@ function filterReducer(state, action) {
   }
 }
 
-export function useAutocomplete(street, streets) {
+export function useAutocomplete(street, streets, optionsNumber = 1) {
   if (street?.toUpperCase() === 'ЛЕ') {
     street = 'лес';
   }
@@ -83,7 +83,9 @@ export function useAutocomplete(street, streets) {
   const match = preparedMatchesArray[0]?.value;
 
   const options =
-    preparedMatchesArray?.length && street ? [preparedMatchesArray[0]] : [];
+    preparedMatchesArray?.length && street
+      ? preparedMatchesArray.slice(0, optionsNumber)
+      : [];
 
   return {
     match,

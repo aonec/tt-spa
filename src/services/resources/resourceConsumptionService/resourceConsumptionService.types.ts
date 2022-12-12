@@ -12,7 +12,17 @@ export type HousingConsumptionDataFilter = {
   To: string;
 };
 
-export type GetHousingConsumptionDataFormik = Omit<
-  HousingConsumptionDataFilter,
-  'ResourceType' | 'To'
->;
+export type GetHousingConsumptionDataFilter = {
+  HousingStockId: number;
+  From: string;
+};
+
+export type AddressWithSearchString = {
+  id: number;
+  addressString: string;
+};
+
+export type PreparedHouseManagements = {
+  id: string;
+  name: string | null;
+};
