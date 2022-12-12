@@ -164,7 +164,6 @@ guard({
               street: elem.street,
               number: elem.house,
               corpus: elem.corpus,
-              index: elem.index,
             };
           }) || null,
         heatingStationId,

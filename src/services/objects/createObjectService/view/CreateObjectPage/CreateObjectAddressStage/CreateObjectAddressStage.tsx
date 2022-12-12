@@ -148,7 +148,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
 
         {values.additionalAddresses.map((elem, index) => (
           <>
-            <GridWrapper>
+            <GridWrapper key={index}>
               <FormItem label="Город">
                 <StyledSelect value={values.city || undefined} disabled />
               </FormItem>
@@ -197,20 +197,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                   />
                 </FormItem>
               </ItemGridWrapper>
-
-              <FormItem label="Индекс">
-                <Input
-                  placeholder="Введите"
-                  value={elem.index}
-                  onChange={(value) =>
-                    additionalAddressesFieldOnChange(
-                      index,
-                      'index',
-                      value.target.value as string
-                    )
-                  }
-                />
-              </FormItem>
             </GridWrapper>
             <DeleteButton
               className="ant-btn-link"

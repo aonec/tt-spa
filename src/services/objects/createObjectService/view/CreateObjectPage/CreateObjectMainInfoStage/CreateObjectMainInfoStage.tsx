@@ -1,5 +1,5 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';

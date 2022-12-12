@@ -1,4 +1,3 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { StyledSelect } from '01/shared/ui/Select/components';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
