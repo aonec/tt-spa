@@ -4,6 +4,8 @@ import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { ResourceConsumptionContainer } from 'services/resources/resourceConsumptionService';
+import { TabsSC } from './StatisticsPage.styled';
 import { SubscribersConsumption } from './subscribersConsumption';
 import { exportSubscribersConsumptionService } from './subscribersConsumption/exportSubscribersConsumptionService';
 import {
@@ -12,7 +14,7 @@ import {
 } from './subscribersConsumption/models';
 import { SubscribersConsumptionSearchType } from './subscribersConsumption/subscribersConsumption.types';
 
-const { TabPane } = Tabs;
+const { TabPane } = TabsSC;
 
 export const StatisticsPage = () => {
   const history = useHistory();
@@ -61,7 +63,7 @@ export const StatisticsPage = () => {
     <div>
       <PageHeader title="Статистика" contextMenu={{ menuButtons }} />
 
-      <Tabs
+      <TabsSC
         activeKey={grouptype}
         onChange={(value) => history.push(`/statistics/${value}`)}
       >
@@ -73,11 +75,10 @@ export const StatisticsPage = () => {
           <SubscribersConsumption />
         </TabPane>
         <TabPane tab="Анализ количества задач" key="tasks"></TabPane>
-        <TabPane
-          tab="Анализ потребления ресурсов"
-          key="resourceConsumption"
-        ></TabPane>
-      </Tabs>
+        <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
+          <ResourceConsumptionContainer />
+        </TabPane>
+      </TabsSC>
     </div>
   );
 };

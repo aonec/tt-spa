@@ -1,6 +1,7 @@
 import { Steps } from 'antd';
 import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { Title } from 'ui-kit/Title';
 import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoStage';
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';
 import { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';
@@ -22,6 +23,12 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
   onPageCancel,
   createObjectData,
   handleSubmitCreateObject,
+  heatingStations,
+  handlePostCreateObject,
+  closePreviewModal,
+  openPreviewModal,
+  isPreviewModalOpen,
+  openCreateHeatingStationModal,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -54,7 +61,10 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
               houseManagements={houseManagements}
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
+              createObjectData={createObjectData}
               handleSubmitCreateObject={handleSubmitCreateObject}
+              heatingStations={heatingStations}
+              openCreateHeatingStationModal={openCreateHeatingStationModal}
             />
           )}
 
@@ -62,18 +72,23 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
             <CreateObjectAdditionalInfoStage
               goBackStage={goBackStage}
               onPageCancel={onPageCancel}
-              handleSubmitCreateObject={handleSubmitCreateObject}
-            />
-          )}
-          {stageNumber === 4 && (
-            <CreateObjectFinalStageModal
-              onPageCancel={onPageCancel}
-              goBackStage={goBackStage}
               createObjectData={createObjectData}
+              handleSubmitCreateObject={handleSubmitCreateObject}
+              openPreviewModal={openPreviewModal}
             />
           )}
+
+          <CreateObjectFinalStageModal
+            createObjectData={createObjectData}
+            houseManagements={houseManagements}
+            handlePostCreateObject={handlePostCreateObject}
+            heatingStations={heatingStations}
+            closePreviewModal={closePreviewModal}
+            isPreviewModalOpen={isPreviewModalOpen}
+          />
         </div>
         <div>
+          <Title>Этапы создания</Title>
           <Steps direction="vertical" current={stageNumber - 1}>
             {stepTitles.map((step) => (
               <Step title={step} key={step} />
