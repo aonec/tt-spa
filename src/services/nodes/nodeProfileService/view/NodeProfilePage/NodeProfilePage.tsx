@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { Empty } from 'antd';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { PageHeader } from '01/shared/ui/PageHeader';
@@ -25,6 +25,7 @@ import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsServ
 import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
+import { NodeConnection } from '01/tt-components/NodeConnection';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -34,39 +35,43 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
 }) => {
   const address = pipeNode?.address?.address;
 
-  const communicationPipes = pipeNode?.communicationPipes;
+  const contentComponents = useMemo(() => {
+    if (!pipeNode) return;
 
-  const contentComponents: {
-    [key in PipeNodeProfileSection]: ReactNode;
-  } = {
-    [PipeNodeProfileSection.Common]: pipeNode && (
-      <CommonInfoTab pipeNode={pipeNode} />
-    ),
-    [PipeNodeProfileSection.Readings]: pipeNode && (
-      <HousingMeteringDeviceReadingsContainer
-        nodeId={pipeNode.id}
-        resource={pipeNode.resource}
-        deviceIds={getDeviceIds(pipeNode)}
-      />
-    ),
-    [PipeNodeProfileSection.Stats]: pipeNode && (
-      <DisplayNodesStatisticsContainer
-        nodeId={pipeNode.id}
-        pipeCount={pipeNode.communicationPipes?.length || 0}
-      />
-    ),
-    [PipeNodeProfileSection.Connection]: <></>,
-    [PipeNodeProfileSection.Related]: pipeNode && (
-      <HousingMeteringDevicesList
-        resource={pipeNode?.resource}
-        communicationPipes={pipeNode.communicationPipes || []}
-      />
-    ),
-    [PipeNodeProfileSection.Checks]: <NodeChecksContainer />,
-    [PipeNodeProfileSection.Documents]: <></>,
-  };
+    const dictionary: {
+      [key in PipeNodeProfileSection]: ReactNode;
+    } = {
+      [PipeNodeProfileSection.Common]: <CommonInfoTab pipeNode={pipeNode} />,
+      [PipeNodeProfileSection.Readings]: (
+        <HousingMeteringDeviceReadingsContainer
+          nodeId={pipeNode.id}
+          resource={pipeNode.resource}
+          deviceIds={getDeviceIds(pipeNode)}
+        />
+      ),
+      [PipeNodeProfileSection.Stats]: (
+        <DisplayNodesStatisticsContainer
+          nodeId={pipeNode.id}
+          pipeCount={pipeNode.communicationPipes?.length || 0}
+        />
+      ),
+      [PipeNodeProfileSection.Connection]: <NodeConnection node={pipeNode} />,
+      [PipeNodeProfileSection.Related]: (
+        <HousingMeteringDevicesList
+          resource={pipeNode.resource}
+          communicationPipes={pipeNode.communicationPipes || []}
+        />
+      ),
+      [PipeNodeProfileSection.Checks]: (
+        <NodeChecksContainer pipeNodeId={pipeNode.id} />
+      ),
+      [PipeNodeProfileSection.Documents]: <></>,
+    };
 
-  const contentComponent = contentComponents[section];
+    return dictionary;
+  }, [pipeNode]);
+
+  const contentComponent = contentComponents && contentComponents[section];
 
   const isShowReadingsTab =
     pipeNode?.calculator === null ||
