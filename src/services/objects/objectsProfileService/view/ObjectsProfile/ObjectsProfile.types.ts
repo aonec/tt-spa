@@ -7,4 +7,5 @@ export type ObjectsProfileProps = {
   openSoiReportModal: () => void;
   handleCreateObject: () => void;
   isAdministrator: boolean;
+  openFeedFlowBackReportModal: () => void;
 };
