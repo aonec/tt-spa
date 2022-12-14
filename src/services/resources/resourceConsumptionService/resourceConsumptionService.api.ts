@@ -3,9 +3,7 @@ import moment from 'moment';
 import {
   GetDataForHousingConsumptionPlotResponse,
   HouseManagementWithStreetsResponse,
-  StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
-import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.model.types';
 import { HousingConsumptionDataFilter } from './resourceConsumptionService.types';
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 

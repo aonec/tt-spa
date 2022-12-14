@@ -1,4 +1,3 @@
-import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.model.types';
 import {
   HousingConsumptionDataFilter,
   GetHousingConsumptionDataFilter,
