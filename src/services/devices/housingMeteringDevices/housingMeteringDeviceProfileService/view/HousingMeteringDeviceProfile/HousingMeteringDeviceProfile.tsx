@@ -71,7 +71,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
               {deviceAddress?.city}
               {deviceAddress && getHousingStockItemAddress(deviceAddress)}
               <div>
-                Узел ***
+                Узел {housingMeteringDevice?.hubConnection?.node?.number}
               </div>
               {isActive !== undefined && isActive !== null && (
                 <DeviceStatus isActive={isActive} />

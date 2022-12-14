@@ -29,7 +29,7 @@ export interface AddApartmentActRequest {
 export interface AddHeatingStationRequest {
   name: string;
   isThermalChamber?: boolean;
-  address?: CreateAddressRequest | null;
+  address: CreateAddressRequest;
 }
 
 export interface AddNodeDocumentsRequest {
@@ -436,6 +436,7 @@ export interface ArchivesDataGroup {
 export enum ArchivesDataGroupType {
   Undefined = "Undefined",
   Volume = "Volume",
+  TemperatureOut = "TemperatureOut",
 }
 
 export interface ArchivesDataGroupValue {
@@ -1534,6 +1535,7 @@ export enum EManagingFirmTaskFilterType {
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   MeasurementErrorAny = "MeasurementErrorAny",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
+  RiserNoReadings = "RiserNoReadings",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1556,6 +1558,7 @@ export enum EManagingFirmTaskType {
   MeasurementErrorCommercial = "MeasurementErrorCommercial",
   MeasurementErrorNonCommercial = "MeasurementErrorNonCommercial",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
+  RiserNoReadings = "RiserNoReadings",
 }
 
 export enum EMeteringDeviceType {
@@ -1853,6 +1856,7 @@ export enum ETaskCreateType {
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   MeasurementError = "MeasurementError",
   IndividualDeviceCheckNoReadings = "IndividualDeviceCheckNoReadings",
+  RiserNoReadings = "RiserNoReadings",
 }
 
 export enum ETaskEngineeringElement {
@@ -2204,6 +2208,7 @@ export interface HeatingStationResponse {
   /** @format uuid */
   id: string;
   name: string | null;
+  isThermalChamber: boolean;
   address: AddressResponse | null;
   housingStocks: HousingStockShortResponse[] | null;
 }
@@ -4247,6 +4252,7 @@ export interface PipeHousingMeteringDeviceConnectionResponse {
 
   /** @format int32 */
   nodeId: number | null;
+  node: PipeHousingMeteringDeviceNodeResponse | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection | null;
@@ -4293,6 +4299,14 @@ export interface PipeHousingMeteringDeviceListResponse {
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   hub: PipeHousingMeteringDeviceHubConnectionResponse | null;
   diameter: string | null;
+}
+
+export interface PipeHousingMeteringDeviceNodeResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
 }
 
 export interface PipeHousingMeteringDeviceResponse {
@@ -4419,6 +4433,9 @@ export interface PipeNodeResponse {
   /** @format int32 */
   entryNumber: number | null;
   communicationPipes: CommunicationPipeResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number;
 }
 
 export interface PipeNodeResponseSuccessApiResponse {
@@ -7059,6 +7076,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/DataMigrations/UpdateFiltersConfigurations`,
         method: "POST",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsImportTemperatureNormativesCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/ImportTemperatureNormatives
+     * @secure
+     */
+    dataMigrationsImportTemperatureNormativesCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ImportTemperatureNormatives`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
         ...params,
       }),
 
@@ -11120,6 +11166,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/SoiReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags Reports
+     * @name ReportsFeedBackFlowTemperatureReportList
+     * @summary ReadingReportForAdministrator
+     * @request GET:/api/Reports/FeedBackFlowTemperatureReport
+     * @secure
+     */
+    reportsFeedBackFlowTemperatureReportList: (
+      query?: { HouseManagementId?: string; OutdoorTemperature?: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/FeedBackFlowTemperatureReport`,
         method: "GET",
         query: query,
         secure: true,

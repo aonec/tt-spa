@@ -129,6 +129,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
 
       <FormItem label="Серийный номер">
         <Input
+          type="number"
           placeholder="Введите"
           value={values.serialNumber || undefined}
           onChange={(value) =>
@@ -139,17 +140,19 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
       </FormItem>
 
       <GridContainer>
-        <FormItem label="Диаметр прибора, мм">
+        <FormItem label="Диаметр трубы, мм">
           <Input
             placeholder="Введите"
             value={values.diameter || undefined}
             onChange={(value) => setFieldValue('diameter', value.target.value)}
+            disabled
           />
           <ErrorMessage> {errors.diameter} </ErrorMessage>
         </FormItem>
 
         <FormItem label="Номер трубы">
           <Input
+            type="number"
             placeholder="Введите"
             value={values.pipeNumber || undefined}
             onChange={(value) =>

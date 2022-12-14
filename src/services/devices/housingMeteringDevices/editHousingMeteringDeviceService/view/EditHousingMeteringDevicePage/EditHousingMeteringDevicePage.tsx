@@ -44,7 +44,10 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
 
             <HeaderInfoString>
               {address?.city}
-              {`${address && getHousingStockItemAddress(address)} `}
+              {address && getHousingStockItemAddress(address)}
+              <div>
+                Узел {housingMeteringDevice?.hubConnection?.node?.number}
+              </div>
               {housingMeteringDevice?.isActive !== undefined &&
                 housingMeteringDevice?.isActive !== null && (
                   <DeviceStatus isActive={housingMeteringDevice?.isActive} />
