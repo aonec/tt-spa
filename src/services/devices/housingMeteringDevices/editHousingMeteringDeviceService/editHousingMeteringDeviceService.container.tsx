@@ -1,12 +1,29 @@
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { EditHousingMeteringDeviceCommonInfo } from './view/EditHousingMeteringDevicePage/Tabs/EditHousingMeteringDeviceCommonInfo';
-import { EditHousingMeteringDeviceDocuments } from './view/EditHousingMeteringDevicePage/Tabs/EditHousingMeteringDeviceDocuments';
+import { useParams } from 'react-router-dom';
+import { editHousingMeteringDeviceService } from './editHousingMeteringDeviceService.model';
+import { EditHousingMeteringDevicePage } from './view/EditHousingMeteringDevicePage';
+
+const { inputs, outputs, gates } = editHousingMeteringDeviceService;
+const { FetchHousingMeteringDeviceGate } = gates;
 
 export const EditHousingMeteringDeviceContainer = () => {
+  const handleChangeTab = useEvent(inputs.handleChangeTab);
+
+  const currentTab = useStore(outputs.$currentTab);
+  const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
+
+  const { deviceId } = useParams<{ deviceId: string }>();
+
   return (
     <>
-      <EditHousingMeteringDeviceCommonInfo />
-      <EditHousingMeteringDeviceDocuments />
+      <FetchHousingMeteringDeviceGate deviceId={Number(deviceId)} />
+
+      <EditHousingMeteringDevicePage
+        handleChangeTab={handleChangeTab}
+        currentTab={currentTab}
+        housingMeteringDevice={housingMeteringDevice}
+      />
     </>
   );
 };

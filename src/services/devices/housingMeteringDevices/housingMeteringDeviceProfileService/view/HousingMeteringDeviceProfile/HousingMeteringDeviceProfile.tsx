@@ -52,6 +52,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   const deviceModel = housingMeteringDevice?.model;
   const deviceNumber = housingMeteringDevice?.serialNumber;
   const isActive = housingMeteringDevice?.isActive;
+  const resource = housingMeteringDevice?.resource;
 
   return (
     <Wrapper>
@@ -61,7 +62,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
         title={
           <PageTitle>
             <DeviceTitle>
-              <ResourceIconLookup resource={EResourceType.ColdWaterSupply} />
+              {resource && <ResourceIconLookup resource={resource} />}
               <DeviceModel>{deviceModel}</DeviceModel>
               <DeviceNumber>{`(${deviceNumber})`}</DeviceNumber>
             </DeviceTitle>
@@ -80,7 +81,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
             {
               title: 'Редактировать ОДПУ',
               onClick: () => {
-                push(`/housingMeteringDevices/${deviceId}/edit_odpu`);
+                push(`/housingMeteringDevices/${deviceId}/edit`);
               },
               color: 'default',
             },

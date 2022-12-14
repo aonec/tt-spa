@@ -23,7 +23,7 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   return (
     <>
-      <FetchHousingMeteringDeviceGate deviceId={deviceId} />
+      <FetchHousingMeteringDeviceGate deviceId={Number(deviceId)} />
 
       <HousingMeteringDeviceProfile
         deviceId={deviceId}

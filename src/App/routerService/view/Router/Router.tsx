@@ -198,7 +198,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/housingMeteringDevices/:deviceId/edit_odpu/"
+                  path="/housingMeteringDevices/:deviceId/edit"
                   component={EditHousingMeteringDeviceContainer}
                   exact
                 />
