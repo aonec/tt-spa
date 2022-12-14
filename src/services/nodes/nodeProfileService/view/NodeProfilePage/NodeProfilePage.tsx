@@ -23,6 +23,8 @@ import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
 import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
 import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
+import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
+import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -31,6 +33,8 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   handleChangeTab,
 }) => {
   const address = pipeNode?.address?.address;
+
+  const communicationPipes = pipeNode?.communicationPipes;
 
   const contentComponents: {
     [key in PipeNodeProfileSection]: ReactNode;
@@ -52,12 +56,21 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
       />
     ),
     [PipeNodeProfileSection.Connection]: <></>,
-    [PipeNodeProfileSection.Related]: <></>,
-    [PipeNodeProfileSection.Checks]: <></>,
+    [PipeNodeProfileSection.Related]: pipeNode && (
+      <HousingMeteringDevicesList
+        resource={pipeNode?.resource}
+        communicationPipes={pipeNode.communicationPipes || []}
+      />
+    ),
+    [PipeNodeProfileSection.Checks]: <NodeChecksContainer />,
     [PipeNodeProfileSection.Documents]: <></>,
   };
 
   const contentComponent = contentComponents[section];
+
+  const isShowReadingsTab =
+    pipeNode?.calculator === null ||
+    pipeNode?.calculator?.isConnected === false;
 
   return (
     <WithLoader isLoading={isLoading}>
@@ -103,10 +116,12 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 tab="Статистика"
                 key={PipeNodeProfileSection.Stats}
               />
-              <Tabs.TabPane
-                tab="Ввод показаний"
-                key={PipeNodeProfileSection.Readings}
-              />
+              {isShowReadingsTab && (
+                <Tabs.TabPane
+                  tab="Ввод показаний"
+                  key={PipeNodeProfileSection.Readings}
+                />
+              )}
               <Tabs.TabPane
                 tab="Настройки соединения"
                 key={PipeNodeProfileSection.Connection}
@@ -116,8 +131,8 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 key={PipeNodeProfileSection.Related}
               />
               <Tabs.TabPane
-                tab="Документы"
-                key={PipeNodeProfileSection.Documents}
+                tab="История проверок"
+                key={PipeNodeProfileSection.Checks}
               />
             </Tabs>
           </TabsWrapper>

@@ -82,3 +82,4 @@ export const ClosedFilterWrapper = styled.div`
 export const ButtonSC = styled(Button)`
   border-radius: 4px;
 `;
+

@@ -19,3 +19,7 @@ export const Title = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
+export const AdditionalAddress = styled.div`
+
+`;
