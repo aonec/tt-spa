@@ -3,10 +3,17 @@ import {
   EHousingMeteringDeviceType,
   EResourceType,
   PipeHousingMeteringDeviceResponse,
+  UpdatePipeHousingMeteringDeviceRequest,
 } from 'myApi';
+
 
 export type EditHousingMeteringDeviceCommonInfoProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
+  handleSubmitForm: (payload: {
+    deviceId: number;
+    request: UpdatePipeHousingMeteringDeviceRequest;
+  }) => void;
+  deviceId: string;
 };
 
 export type EditHousingMeteringDeviceCommonInfoFormTypes = {

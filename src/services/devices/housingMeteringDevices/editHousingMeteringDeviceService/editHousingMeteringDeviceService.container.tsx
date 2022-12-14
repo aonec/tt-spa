@@ -9,6 +9,7 @@ const { FetchHousingMeteringDeviceGate } = gates;
 
 export const EditHousingMeteringDeviceContainer = () => {
   const handleChangeTab = useEvent(inputs.handleChangeTab);
+  const handleSubmitForm = useEvent(inputs.handleSubmitForm);
 
   const currentTab = useStore(outputs.$currentTab);
   const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
@@ -23,6 +24,8 @@ export const EditHousingMeteringDeviceContainer = () => {
         handleChangeTab={handleChangeTab}
         currentTab={currentTab}
         housingMeteringDevice={housingMeteringDevice}
+        handleSubmitForm={handleSubmitForm}
+        deviceId={deviceId}
       />
     </>
   );

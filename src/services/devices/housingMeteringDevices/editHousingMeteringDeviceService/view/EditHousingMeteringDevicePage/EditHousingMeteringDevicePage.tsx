@@ -21,6 +21,8 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
   currentTab,
   handleChangeTab,
   housingMeteringDevice,
+  handleSubmitForm,
+  deviceId,
 }) => {
   const address = housingMeteringDevice?.address?.address?.mainAddress;
 
@@ -65,7 +67,11 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
       </Tabs>
 
       {currentTab === EditHousingMeteringDeviceTabs.CommonInfo && (
-        <EditHousingMeteringDeviceCommonInfo housingMeteringDevice={housingMeteringDevice} />
+        <EditHousingMeteringDeviceCommonInfo
+          housingMeteringDevice={housingMeteringDevice}
+          handleSubmitForm={handleSubmitForm}
+          deviceId={deviceId}
+        />
       )}
       {currentTab === EditHousingMeteringDeviceTabs.Documents && (
         <EditHousingMeteringDeviceDocuments />

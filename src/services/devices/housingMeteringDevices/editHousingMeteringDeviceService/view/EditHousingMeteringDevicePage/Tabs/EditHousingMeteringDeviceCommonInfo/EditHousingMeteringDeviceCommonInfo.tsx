@@ -8,14 +8,15 @@ import {
   UpdatePipeHousingMeteringDeviceRequest,
 } from 'myApi';
 import React, { FC } from 'react';
-import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import { HousingMeteringDeviceDictionary } from 'services/nodes/addPipeNodeCommonDeviceService/view/AddCommonDeviceForm/CommonDataStep/CommonDataStep.constants';
+import { Button } from 'ui-kit/Button';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import {
+  Footer,
   GridContainer,
   Wrapper,
 } from './EditHousingMeteringDeviceCommonInfo.styled';
@@ -26,6 +27,8 @@ import {
 
 export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCommonInfoProps> = ({
   housingMeteringDevice,
+  handleSubmitForm,
+  deviceId,
 }) => {
   const initialValues = {
     resource: housingMeteringDevice?.resource || null,
@@ -61,21 +64,24 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
     enableReinitialize: true,
     onSubmit: () => {
       {
-        const magistralEnum: EMagistralType = values.magistral as EMagistralType;
-
         const form: UpdatePipeHousingMeteringDeviceRequest = {
           serialNumber: values.serialNumber,
           lastCheckingDate: values.lastCheckingDate?.toISOString(true),
           futureCheckingDate: values.futureCheckingDate?.toISOString(true),
-          housingMeteringDeviceType: values.housingMeteringDeviceType,
+          housingMeteringDeviceType: values.housingMeteringDeviceType as EHousingMeteringDeviceType,
           resource: values.resource,
           model: values.model,
           pipe: {
             diameter: Number(values.diameter),
             pipeNumber: Number(values.pipeNumber),
-            magistral: magistralEnum,
+            magistral: values.magistral as EMagistralType,
           },
         };
+        console.log(form);
+        handleSubmitForm({
+          deviceId: Number(deviceId),
+          request: form,
+        });
       }
     },
     validateOnChange: false,
@@ -95,7 +101,10 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
           }
           value={values.housingMeteringDeviceType || undefined}
         >
-          {Object.values(EHousingMeteringDeviceType).map((deviceType) => (
+          {[
+            EHousingMeteringDeviceType.FlowMeter,
+            EHousingMeteringDeviceType.TemperatureSensor,
+          ].map((deviceType) => (
             <Select.Option value={deviceType} key={deviceType}>
               {
                 HousingMeteringDeviceDictionary[
@@ -187,6 +196,33 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
           />
         </FormItem>
       </GridContainer>
+
+      <FormItem label="Город">
+        <Input value={values.city || undefined} disabled />
+      </FormItem>
+
+      <GridContainer>
+        <FormItem label="Улица">
+          <Input value={values.street || undefined} disabled />
+        </FormItem>
+
+        <GridContainer>
+          <FormItem label="Номер дома">
+            <Input value={values.housingStockNumber || undefined} disabled />
+          </FormItem>
+
+          <FormItem label="Корпус">
+            <Input value={values.corpus || undefined} disabled />
+          </FormItem>
+        </GridContainer>
+      </GridContainer>
+
+      <Footer>
+        <Button type="ghost">Отмена</Button>
+        <Button type="default" sidePadding={10} onClick={() => handleSubmit()}>
+          Создать
+        </Button>
+      </Footer>
     </Wrapper>
   );
 };

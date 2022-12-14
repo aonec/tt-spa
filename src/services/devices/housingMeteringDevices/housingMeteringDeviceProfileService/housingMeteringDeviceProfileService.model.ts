@@ -1,6 +1,7 @@
 import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
+import { editHousingMeteringDeviceService } from '../editHousingMeteringDeviceService';
 import {
   getDeviceTasks,
   getHousingMeteringDevice,
@@ -10,6 +11,8 @@ import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types'
 const domain = createDomain('housingMeteringDeviceProfileService');
 
 const handleChangeTab = domain.createEvent<HousingProfileTabs>();
+
+const handleHousingMeteringDeviceUpdate = domain.createEvent();
 
 const FetchHousingMeteringDeviceGate = createGate<{ deviceId: number }>();
 
@@ -22,12 +25,6 @@ const fetchHousingMeteringDeviceTasksFx = domain.createEffect<
   number,
   TasksPagedList
 >(getDeviceTasks);
-
-// sample({
-//   clock: FetchHousingMeteringDeviceGate.open,
-//   fn: (data) => Number(data.deviceId),
-//   target: [fetchHousingMeteringDeviceFx, fetchHousingMeteringDeviceTasksFx],
-// });
 
 const $housingMeteringDevice = domain
   .createStore<PipeHousingMeteringDeviceResponse | null>(null)
@@ -57,8 +54,15 @@ sample({
   target: fetchHousingMeteringDeviceFx,
 });
 
+sample({
+  source: $housingMeteringDevice,
+  clock: handleHousingMeteringDeviceUpdate,
+  fn: (device) => Number(device?.id),
+  target: fetchHousingMeteringDeviceFx,
+});
+
 export const housingMeteringDeviceProfileService = {
-  inputs: { handleChangeTab },
+  inputs: { handleChangeTab, handleHousingMeteringDeviceUpdate },
   outputs: { $housingMeteringDevice, $currentTab, $housingMeteringDeviceTask },
   gates: { FetchHousingMeteringDeviceGate },
 };

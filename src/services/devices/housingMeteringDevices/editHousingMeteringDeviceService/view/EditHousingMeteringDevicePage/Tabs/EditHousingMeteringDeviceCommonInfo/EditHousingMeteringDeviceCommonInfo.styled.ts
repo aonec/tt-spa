@@ -9,3 +9,11 @@ export const GridContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 `;
+
+export const Footer = styled.div`
+  display: flex;
+  aling-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+`;
