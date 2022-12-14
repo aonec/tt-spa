@@ -1,6 +1,7 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import moment from 'moment';
 import React, { FC, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
@@ -10,9 +11,9 @@ import { CalculatorProfileGrouptype } from '../calculatorProfileService.constant
 import {
   AdditionalInfoWrapper,
   AddressLinkWrapper,
+  HeaderTitleWrapper,
   HeaderWrapper,
   TabsSC,
-  Wrapper,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 
@@ -23,7 +24,10 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   currentGrouptype,
   setGrouptype,
 }) => {
+  const history = useHistory();
+
   const {
+    id,
     model,
     serialNumber,
     connection,
@@ -81,17 +85,41 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [connection]
   );
 
+  const menuButtons = useMemo(
+    () => ({
+      menuButtons: [
+        {
+          title: 'Редактировать вычислитель',
+          onClick: () => history.push(`/calculators/${id}/edit`),
+        },
+        { title: 'Поверить вычислитель', onClick: () => void null },
+        {
+          title: 'Выгрузить отчёт об общедомовом потреблении',
+          onClick: () => void null,
+        },
+        {
+          title: 'Снять вычислитель с учёта',
+          onClick: () => void null,
+          color: 'danger',
+        },
+      ],
+    }),
+    []
+  );
+
   return (
-    <Wrapper>
+    <div>
       <GoBack />
       <HeaderWrapper>
         <CalculatorIcon width={24} height={16} />
-        <PageHeader title={headerTitle} />
+        <HeaderTitleWrapper>
+          <PageHeader title={headerTitle} contextMenu={menuButtons} />
+        </HeaderTitleWrapper>
       </HeaderWrapper>
       <AdditionalInfoWrapper>
         <HeaderInfoString>
-          <>{address?.address?.mainAddress?.city || ''}</>
-          {getHousingStockAddress(address)}
+          <>{getHousingStockAddress(address, true)}</>
+          <></>
         </HeaderInfoString>
       </AdditionalInfoWrapper>
       <TabsSC
@@ -123,6 +151,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           key={CalculatorProfileGrouptype.Documents}
         ></TabPane>
       </TabsSC>
-    </Wrapper>
+    </div>
   );
 };

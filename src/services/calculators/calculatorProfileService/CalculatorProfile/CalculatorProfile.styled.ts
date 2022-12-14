@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Tabs } from 'ui-kit/Tabs';
 
-export const Wrapper = styled.div``;
+export const HeaderTitleWrapper = styled.div`
+  flex-grow: 1;
+`;
 
 export const HeaderWrapper = styled.div`
-  margin-top: 16px;
+  margin-top: 12px;
+  width: 100%;
+
   display: flex;
   align-items: center;
   gap: 8px;
@@ -14,7 +18,6 @@ export const HeaderWrapper = styled.div`
 export const AdditionalInfoWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 8px;
   color: #272f5ae5;
   font-weight: 500;
 `;

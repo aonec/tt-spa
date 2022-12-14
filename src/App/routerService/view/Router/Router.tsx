@@ -153,9 +153,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route path="/devices/(\\d+)" component={Devices} exact />
 
                 <Route
-                  path={[
-                    '/calculators/:deviceId',
-                  ]}
+                  path={['/calculators/:deviceId']}
                   component={CalculatorProfileContainer}
                   exact
                 />
