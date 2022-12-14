@@ -4424,6 +4424,9 @@ export interface PipeNodeResponse {
   /** @format int32 */
   entryNumber: number | null;
   communicationPipes: CommunicationPipeResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number;
 }
 
 export interface PipeNodeResponseSuccessApiResponse {

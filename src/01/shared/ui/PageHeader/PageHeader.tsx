@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
 import {
@@ -8,7 +8,7 @@ import {
 import { PageTitle } from '../Title';
 
 interface Props {
-  title: string;
+  title: ReactNode;
   contextMenu?: ContextMenuButtonProps;
   isTopMargin?: boolean;
   isGhost?: boolean;
