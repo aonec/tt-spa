@@ -31,6 +31,7 @@ export const DeviceNumber = styled.div`
 export const PageGridContainer = styled.div`
   display: grid;
   grid-template-columns: 3fr 1fr;
+  gap: 36px;
 `;
 
 export const RightBlock = styled.div``;

@@ -1,5 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
@@ -25,6 +26,9 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
   deviceId,
 }) => {
   const address = housingMeteringDevice?.address?.address?.mainAddress;
+
+  const history = useHistory();
+  const onCancel = () => history.goBack();
 
   return (
     <Wrapper>
@@ -71,6 +75,7 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
           housingMeteringDevice={housingMeteringDevice}
           handleSubmitForm={handleSubmitForm}
           deviceId={deviceId}
+          onCancel={onCancel}
         />
       )}
       {currentTab === EditHousingMeteringDeviceTabs.Documents && (

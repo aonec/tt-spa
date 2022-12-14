@@ -29,6 +29,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
   housingMeteringDevice,
   handleSubmitForm,
   deviceId,
+  onCancel,
 }) => {
   const initialValues = {
     resource: housingMeteringDevice?.resource || null,
@@ -218,7 +219,9 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
       </GridContainer>
 
       <Footer>
-        <Button type="ghost">Отмена</Button>
+        <Button type="ghost" onClick={() => onCancel()}>
+          Отмена
+        </Button>
         <Button type="default" sidePadding={10} onClick={() => handleSubmit()}>
           Создать
         </Button>

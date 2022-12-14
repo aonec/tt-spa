@@ -61,8 +61,15 @@ sample({
   target: fetchHousingMeteringDeviceFx,
 });
 
+const $pending = fetchHousingMeteringDeviceFx.pending;
+
 export const housingMeteringDeviceProfileService = {
   inputs: { handleChangeTab, handleHousingMeteringDeviceUpdate },
-  outputs: { $housingMeteringDevice, $currentTab, $housingMeteringDeviceTask },
+  outputs: {
+    $housingMeteringDevice,
+    $currentTab,
+    $housingMeteringDeviceTask,
+    $pending,
+  },
   gates: { FetchHousingMeteringDeviceGate },
 };

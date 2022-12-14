@@ -6,7 +6,6 @@ import {
   UpdatePipeHousingMeteringDeviceRequest,
 } from 'myApi';
 
-
 export type EditHousingMeteringDeviceCommonInfoProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
   handleSubmitForm: (payload: {
@@ -14,6 +13,7 @@ export type EditHousingMeteringDeviceCommonInfoProps = {
     request: UpdatePipeHousingMeteringDeviceRequest;
   }) => void;
   deviceId: string;
+  onCancel: () => void;
 };
 
 export type EditHousingMeteringDeviceCommonInfoFormTypes = {
