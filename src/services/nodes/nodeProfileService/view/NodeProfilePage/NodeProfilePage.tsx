@@ -1,11 +1,16 @@
-import { Empty } from 'antd';
 import React, { FC, ReactNode } from 'react';
+import { Empty } from 'antd';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { Title, ContentWrapper, TabsWrapper } from './NodeProfilePage.styled';
+import {
+  Title,
+  ContentWrapper,
+  TabsWrapper,
+  Wrapper,
+} from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
   PipeNodeProfileSection,
@@ -14,6 +19,10 @@ import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { HeaderInfoStringWrapper } from 'ui-kit/shared_components/GoBack/GoBack.styled';
 import { Tabs } from 'ui-kit/Tabs';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { CommonInfoTab } from './CommonInfoTab';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
+import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -23,10 +32,25 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
 }) => {
   const address = pipeNode?.address?.address;
 
-  const contentComponents: { [key in PipeNodeProfileSection]: ReactNode } = {
-    [PipeNodeProfileSection.Common]: <></>,
-    [PipeNodeProfileSection.Readings]: <></>,
-    [PipeNodeProfileSection.Stats]: <></>,
+  const contentComponents: {
+    [key in PipeNodeProfileSection]: ReactNode;
+  } = {
+    [PipeNodeProfileSection.Common]: pipeNode && (
+      <CommonInfoTab pipeNode={pipeNode} />
+    ),
+    [PipeNodeProfileSection.Readings]: pipeNode && (
+      <HousingMeteringDeviceReadingsContainer
+        nodeId={pipeNode.id}
+        resource={pipeNode.resource}
+        deviceIds={getDeviceIds(pipeNode)}
+      />
+    ),
+    [PipeNodeProfileSection.Stats]: pipeNode && (
+      <DisplayNodesStatisticsContainer
+        nodeId={pipeNode.id}
+        pipeCount={pipeNode.communicationPipes?.length || 0}
+      />
+    ),
     [PipeNodeProfileSection.Connection]: <></>,
     [PipeNodeProfileSection.Related]: <></>,
     [PipeNodeProfileSection.Checks]: <></>,
@@ -80,7 +104,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 key={PipeNodeProfileSection.Stats}
               />
               <Tabs.TabPane
-                tab="Ввод показанийе"
+                tab="Ввод показаний"
                 key={PipeNodeProfileSection.Readings}
               />
               <Tabs.TabPane
@@ -97,8 +121,8 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               />
             </Tabs>
           </TabsWrapper>
-          <ContentWrapper>
-            <div>{contentComponent}</div>
+          <Wrapper>
+            <ContentWrapper>{contentComponent}</ContentWrapper>
             <div>
               <LinkCard
                 text="Архив"
@@ -111,7 +135,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 showLink={Boolean(pipeNode.numberOfTasks)}
               />
             </div>
-          </ContentWrapper>
+          </Wrapper>
         </div>
       )}
       {!pipeNode && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
