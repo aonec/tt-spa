@@ -45,6 +45,7 @@ import { EditApartmentProfileContainer } from 'services/apartments/editApartment
 import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
+import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
 
 const { gates } = objectProfileService;
 
@@ -153,9 +154,9 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path={[
-                    '/calculators/:deviceId/(connection|related|nodes|documents)?',
+                    '/calculators/:deviceId',
                   ]}
-                  component={CalculatorProfile}
+                  component={CalculatorProfileContainer}
                   exact
                 />
 
