@@ -20,6 +20,6 @@ export type CreateObjectPageProps = {
   openPreviewModal: () => void;
   closePreviewModal: () => void;
   openCreateHeatingStationModal: () => void;
-  openEditHeatingStationModal: () => void
-  heatingStationCapture: (payload: HeatingStationResponse | undefined) => void
+  openEditHeatingStationModal: () => void;
+  heatingStationCapture: (payload: HeatingStationResponse) => void;
 };

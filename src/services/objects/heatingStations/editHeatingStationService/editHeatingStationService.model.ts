@@ -22,9 +22,7 @@ const handleEditHeatingStation = domain.createEvent<{
 const handleOpenModal = domain.createEvent<void>();
 const handleCloseModal = domain.createEvent<void>();
 
-const currentHeatingStatitonDataCapture = domain.createEvent<
-  HeatingStationResponse | undefined
->();
+const currentHeatingStatitonDataCapture = domain.createEvent<HeatingStationResponse>();
 
 const editHeatingStationFx = domain.createEffect<
   requestParams,

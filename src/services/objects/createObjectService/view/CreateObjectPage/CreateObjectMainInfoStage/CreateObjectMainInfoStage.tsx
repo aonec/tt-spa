@@ -11,7 +11,7 @@ import {
   Footer,
   GridContainer,
   InputTypeDisplayingDiv,
-  PencilIconSc,
+  PencilIconSC,
   RightButtonBlock,
   Title,
   Wrapper,
@@ -238,7 +238,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
-                <PencilIconSc
+                <PencilIconSC
                   onClick={() => {
                     openEditHeatingStationModal();
                     selectedHeatingStation &&
