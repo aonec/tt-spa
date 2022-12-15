@@ -6,6 +6,8 @@ import {
   PreparedHouseManagements,
   GetConsumptionDataFilter,
   ResourceConsumptionGraphType,
+  ResourceConsumptionGraphDataType,
+  MonthConsumptionData,
 } from '../../resourceConsumptionService.types';
 
 export type ResourceConsumptionProfileProps = {
@@ -19,17 +21,25 @@ export type ResourceConsumptionProfileProps = {
   setHouseManagement: (houseManagement: string) => void;
   houseManagements: PreparedHouseManagements[];
   handleClearData: () => void;
+  handleClearFilter: () => void;
   selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setSelectedGraphTypes: (
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
   ) => void;
+  additionalConsumptionData: MonthConsumptionData | null;
+  handleClearAdditionalAddress: () => void;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
-  currentMonthData: BooleanTypesOfResourceConsumptionGraph;
-  prevMonthData: BooleanTypesOfResourceConsumptionGraph;
+  [ResourceConsumptionGraphDataType.currentMonthData]: BooleanTypesOfResourceConsumptionGraph;
+  [ResourceConsumptionGraphDataType.prevMonthData]: BooleanTypesOfResourceConsumptionGraph;
 };
 
 export type BooleanTypesOfResourceConsumptionGraph = {
   [key in ResourceConsumptionGraphType]: boolean;
+};
+
+export type SelectedAddresses = {
+  currentAddress: boolean;
+  addditionalAddress: boolean;
 };

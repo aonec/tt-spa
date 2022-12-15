@@ -13,6 +13,7 @@ export const ResourceConsumptionGraphTooltip: FC<ResourceConsumptionGraphTooltip
   y,
   datum,
   startOfMonth,
+  measure,
 }) => {
   const key = Number(datum?.key || 0);
   const value = datum?.value || 0;
@@ -32,7 +33,9 @@ export const ResourceConsumptionGraphTooltip: FC<ResourceConsumptionGraphTooltip
               .add(Number(key) - 1, 'day')
               .format('DD.MM.yyyy')}
           </DateBlock>
-          <Value> Общедомовое потребление {value.toFixed(3)}</Value>
+          <Value>
+            Общедомовое потребление {value.toFixed(3)} {measure}
+          </Value>
           <Pointer value={value} />
         </TooltipBlock>
       </foreignObject>

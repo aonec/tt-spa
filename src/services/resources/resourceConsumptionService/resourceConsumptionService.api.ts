@@ -8,6 +8,7 @@ import {
 import {
   ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
+  MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 
@@ -21,41 +22,33 @@ export const fetchConsumptionsForTwoMonth = async (
     To: prevMonth.endOf('month').utcOffset(0, true).format(),
   };
 
-  const currentHousingMonthData = await fetchHousingConsumptionData(params);
-  const prevHousingMonthData = await fetchHousingConsumptionData(
+  const currentMonthData = await fetchConsumptionsForMonth(params);
+  const prevMonthData = await fetchConsumptionsForMonth(
     paramsForPrevMonthRequest
   );
 
-  const currentNormativeAndSubscriberData = await fetchNormativeConsumptionData(
+  return { currentMonthData, prevMonthData };
+};
+
+export const fetchConsumptionsForMonth = async (
+  params: ConsumptionDataFilter
+): Promise<MonthConsumptionData> => {
+  const housingMonthData = await fetchHousingConsumptionData(params);
+
+  const normativeAndSubscriberData = await fetchNormativeConsumptionData(
     params
-  );
-  const prevNormativeAndSubscriberData = await fetchNormativeConsumptionData(
-    paramsForPrevMonthRequest
   );
 
   return {
-    currentMonthData: {
-      housing: prepareDataForConsumptionGraph(
-        currentHousingMonthData.housingConsumption || []
-      ),
-      normative: prepareDataForConsumptionGraph(
-        currentNormativeAndSubscriberData.normativeConsumption || []
-      ),
-      subscriber: prepareDataForConsumptionGraph(
-        currentNormativeAndSubscriberData.subscriberConsumption || []
-      ),
-    },
-    prevMonthData: {
-      housing: prepareDataForConsumptionGraph(
-        prevHousingMonthData.housingConsumption || []
-      ),
-      normative: prepareDataForConsumptionGraph(
-        prevNormativeAndSubscriberData.normativeConsumption || []
-      ),
-      subscriber: prepareDataForConsumptionGraph(
-        prevNormativeAndSubscriberData.subscriberConsumption || []
-      ),
-    },
+    housing: prepareDataForConsumptionGraph(
+      housingMonthData.housingConsumption || []
+    ),
+    normative: prepareDataForConsumptionGraph(
+      normativeAndSubscriberData.normativeConsumption || []
+    ),
+    subscriber: prepareDataForConsumptionGraph(
+      normativeAndSubscriberData.subscriberConsumption || []
+    ),
   };
 };
 

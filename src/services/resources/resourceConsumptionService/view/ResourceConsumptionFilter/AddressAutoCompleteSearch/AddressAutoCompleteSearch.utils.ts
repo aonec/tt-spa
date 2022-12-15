@@ -5,9 +5,6 @@ export const prepareOptionsForAutoComplete = (
   streets: AddressWithSearchString[],
   addressSearch: string
 ) => {
-  if (!addressSearch) {
-    return [];
-  }
   const similarOptions =
     streets.filter((elem) =>
       Boolean(countSimilarityPoints(addressSearch, elem.addressString))
@@ -17,9 +14,7 @@ export const prepareOptionsForAutoComplete = (
     sortOptionsBySimilarity(a, b, addressSearch)
   );
 
-  const firstMostSimilarOptions = sortedOptionsBySimilarity.slice(0, 5);
-
-  return firstMostSimilarOptions.map((street) => ({
+  return sortedOptionsBySimilarity.map((street) => ({
     value: street.addressString,
   }));
 };

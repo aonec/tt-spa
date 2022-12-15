@@ -76,7 +76,6 @@ export const GraphView: React.FC<GraphViewProps> = ({
       <GraphWrapper>
         <Gradient resource={resource as ResourceType} />
         <VictoryChart
-          padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
           domain={{ y: [minValue, maxValue] }}
           width={width}
           height={height}
@@ -108,6 +107,9 @@ export const GraphView: React.FC<GraphViewProps> = ({
             style={{
               data: {
                 stroke: 'var(--frame)',
+              },
+              labels: {
+                fill: '#272F5AB2',
               },
             }}
           />

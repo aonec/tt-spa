@@ -2,5 +2,11 @@ import { AddressWithSearchString } from 'services/resources/resourceConsumptionS
 
 export type AddressAutoCompleteSearchProps = {
   streetsList: AddressWithSearchString[];
-  handleChooseHousingStock: (id: number) => void;
+  handleChooseHousingStock: ({
+    id,
+    address,
+  }: {
+    id: number;
+    address: string;
+  }) => void;
 };

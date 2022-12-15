@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   width: 340px;
@@ -44,4 +45,22 @@ export const Footer = styled.div`
 
   padding: 16px;
   background-color: #f3f5f6;
+`;
+
+export const AdditionalAddressWrapper = styled.div`
+  color: #189ee9;
+  font-size: 16px;
+
+  user-select: none;
+  cursor: pointer;
+`;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const TrashIconSC = styled(TrashIcon)`
+  cursor: pointer;
+  margin-left: 8px;
 `;
