@@ -14,8 +14,8 @@ import {
   PersonalNumberFormGate,
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
-import { useHistory, useParams } from 'react-router';
 import { ErrorMessage } from '01/features/contractors/addContractors';
+import { ConfirmationAddingExistingPersonalNumber } from '../ConfirmationAddingExistingPersonalNumberModal';
 
 interface Props {
   type?: 'switch' | 'edit' | 'split';
@@ -31,6 +31,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
 
   return (
     <Wrap>
+      <ConfirmationAddingExistingPersonalNumber />
       <PersonalNumberFormGate />
       <Form.Item label="Дата открытия лицевого счета">
         <DatePickerNative
