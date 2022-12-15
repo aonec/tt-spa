@@ -24,11 +24,11 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
   const [page, setPage] = useState(1);
 
   const timeConstructor = useCallback(
-    (data: string) => {
-      const startDateStr = moment(data)
+    (date: string) => {
+      const startDateStr = moment(date)
         .startOf(ReportTimeType[reportType])
         .format(ReportStartTimeFormat[reportType]);
-      const endDateStr = moment(data)
+      const endDateStr = moment(date)
         .endOf(ReportTimeType[reportType])
         .format(ReportEndTimeFormat[reportType]);
       return `${startDateStr} - ${endDateStr}`;

@@ -6,7 +6,9 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
+import { StatusText } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus/DeviceStatus.styled';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 import {
   AdditionalInfoWrapper,
@@ -23,6 +25,8 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
   currentGrouptype,
   setGrouptype,
+  handleOpenCloseCalculatorModal,
+  handleOpenCheckCalculatorModal,
 }) => {
   const history = useHistory();
 
@@ -47,7 +51,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       <CommonInfo
         items={[
           {
-            key: 'Адрес ',
+            key: 'Адрес',
             value: (
               <>
                 {address && (
@@ -60,11 +64,11 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           },
           {
             key: 'Дата поверки прибора',
-            value: moment(lastCheckingDate).format('DD.MM.YYYY'),
+            value: getTimeStringByUTC(lastCheckingDate, 'DD.MM.YYYY'),
           },
           {
             key: 'Дата следующей поверки прибора',
-            value: moment(futureCheckingDate).format('DD.MM.YYYY'),
+            value: getTimeStringByUTC(futureCheckingDate, 'DD.MM.YYYY'),
           },
         ]}
       />
@@ -92,19 +96,22 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           title: 'Редактировать вычислитель',
           onClick: () => history.push(`/calculators/${id}/edit`),
         },
-        { title: 'Поверить вычислитель', onClick: () => void null },
+        {
+          title: 'Поверить вычислитель',
+          onClick: () => handleOpenCheckCalculatorModal(calculator),
+        },
         {
           title: 'Выгрузить отчёт об общедомовом потреблении',
           onClick: () => void null,
         },
         {
           title: 'Снять вычислитель с учёта',
-          onClick: () => void null,
+          onClick: () => handleOpenCloseCalculatorModal(calculator),
           color: 'danger',
         },
       ],
     }),
-    []
+    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
   );
 
   return (

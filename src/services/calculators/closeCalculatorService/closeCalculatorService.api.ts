@@ -1,3 +1,6 @@
 import { axios } from '01/axios';
+import { CloseDeviceRequest } from 'myApi';
 
-export const fetchCloseCalculator = () => axios.post('MeteringDevices/close');
+export const fetchCloseCalculator = (
+  payload: CloseDeviceRequest
+): Promise<void> => axios.post('MeteringDevices/close', payload);

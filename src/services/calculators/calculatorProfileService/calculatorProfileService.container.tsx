@@ -2,8 +2,14 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { CheckCalculatorContainer } from '../checkCalculatorService';
-import { CloseCalculatorContainer } from '../closeCalculatorService';
+import {
+  CheckCalculatorContainer,
+  checkCalculatorService,
+} from '../checkCalculatorService';
+import {
+  CloseCalculatorContainer,
+  closeCalculatorService,
+} from '../closeCalculatorService';
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 
@@ -18,6 +24,12 @@ export const CalculatorProfileContainer = () => {
   const currentGrouptype = useStore(outputs.$currentCalculatorGrouptype);
 
   const setGrouptype = useEvent(inputs.setCalculatorGrouptype);
+  const handleOpenCloseCalculatorModal = useEvent(
+    closeCalculatorService.inputs.openModal
+  );
+  const handleOpenCheckCalculatorModal = useEvent(
+    checkCalculatorService.inputs.openModal
+  );
 
   return (
     <>
@@ -30,6 +42,8 @@ export const CalculatorProfileContainer = () => {
             calculator={calculator}
             currentGrouptype={currentGrouptype}
             setGrouptype={setGrouptype}
+            handleOpenCloseCalculatorModal={handleOpenCloseCalculatorModal}
+            handleOpenCheckCalculatorModal={handleOpenCheckCalculatorModal}
           />
         )}
       </WithLoader>

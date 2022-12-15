@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorResponse } from 'myApi';
 import { fetchCalculator } from './calculatorProfileService.api';
@@ -7,6 +7,7 @@ import { CalculatorProfileGrouptype } from './calculatorProfileService.constants
 const domain = createDomain('calculatorProfileService');
 
 const clearStore = domain.createEvent();
+const refetchCalculator = domain.createEvent();
 
 const setCalculatorGrouptype = domain.createEvent<CalculatorProfileGrouptype>();
 const $currentCalculatorGrouptype = domain
@@ -27,9 +28,15 @@ const $isLoading = getCalculatorFx.pending;
 
 const CalculatorIdGate = createGate<{ id: number }>();
 
-forward({
-  from: CalculatorIdGate.open.map(({ id }) => id),
-  to: getCalculatorFx,
+sample({
+  clock: CalculatorIdGate.open.map(({ id }) => id),
+  target: getCalculatorFx,
+});
+
+sample({
+  source: CalculatorIdGate.open.map(({ id }) => id),
+  clock: refetchCalculator,
+  target: getCalculatorFx,
 });
 
 forward({
@@ -40,6 +47,7 @@ forward({
 export const calculatorProfileService = {
   inputs: {
     setCalculatorGrouptype,
+    refetchCalculator,
   },
   outputs: {
     $calculator,
