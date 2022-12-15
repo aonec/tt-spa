@@ -26,12 +26,15 @@ import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatistics
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from '01/tt-components/NodeConnection';
+import { ENodeCommercialAccountStatus } from 'myApi';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
   pipeNode,
   section = PipeNodeProfileSection.Common,
   handleChangeTab,
+  handleEditNode,
+  openRegisterNodeOnCommercialAccountingModal
 }) => {
   const address = pipeNode?.address?.address;
 
@@ -77,6 +80,9 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     pipeNode?.calculator === null ||
     pipeNode?.calculator?.isConnected === false;
 
+  const isNodeRegistered =
+    pipeNode?.nodeStatus?.value === ENodeCommercialAccountStatus.Registered;
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -94,7 +100,18 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
             }
             isTopMargin
             contextMenu={{
-              menuButtons: [],
+              menuButtons: [
+                {
+                  title: 'Редактировать узел',
+                  onClick: handleEditNode,
+                },
+                {
+                  title: isNodeRegistered
+                    ? 'Снять узел с коммерческого учета'
+                    : 'Поставить узел на коммерческий учет',
+                  onClick: openRegisterNodeOnCommercialAccountingModal,
+                },
+              ],
             }}
           />
           <HeaderInfoStringWrapper>
