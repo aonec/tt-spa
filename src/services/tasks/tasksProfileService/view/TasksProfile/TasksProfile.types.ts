@@ -1,10 +1,10 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
+  OrganizationUserListResponse,
   TaskGroupingFilter,
   TasksPagedList,
 } from 'myApi';
-import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 import { TaskType } from '../TasksListItem/TasksListItem.types';
 
@@ -24,6 +24,6 @@ export type TasksProfileProps = {
   clearFilters: () => void;
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
-  perpetrators: perpetratorItemsProps[] | null;
+  perpetrators: OrganizationUserListResponse[];
   isSpectator: boolean;
 };
