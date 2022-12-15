@@ -20,6 +20,7 @@ export const Title = styled.div`
   gap: 12px;
 `;
 
-export const AdditionalAddress = styled.div`
-
+export const AdditionalAddress = styled.span`
+  font-weight: 400;
+  margin-left: 6px;
 `;

@@ -10,6 +10,7 @@ import {
   ContentWrapper,
   TabsWrapper,
   Wrapper,
+  AdditionalAddress,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
@@ -34,7 +35,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   section = PipeNodeProfileSection.Common,
   handleChangeTab,
   handleEditNode,
-  openRegisterNodeOnCommercialAccountingModal
+  openRegisterNodeOnCommercialAccountingModal,
 }) => {
   const address = pipeNode?.address?.address;
 
@@ -119,7 +120,12 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               <div>{address?.mainAddress?.city}</div>
               <div>
                 {address?.mainAddress &&
-                  getHousingStockItemAddress(address?.mainAddress)}
+                  getHousingStockItemAddress(address?.mainAddress)}{' '}
+                {address?.additionalAddresses?.map((address) => (
+                  <AdditionalAddress>
+                    {getHousingStockItemAddress(address)}
+                  </AdditionalAddress>
+                ))}
               </div>
             </HeaderInfoString>
           </HeaderInfoStringWrapper>
