@@ -65,12 +65,3 @@ export const HeaderText = styled.h1`
   font-weight: 300;
   margin-bottom: 16;
 `;
-
-export const LabelCS = styled.label`
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: #272f5ab2 !important;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-`;
