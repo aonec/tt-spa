@@ -2,6 +2,8 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { CheckCalculatorContainer } from '../checkCalculatorService';
+import { CloseCalculatorContainer } from '../closeCalculatorService';
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 
@@ -20,6 +22,8 @@ export const CalculatorProfileContainer = () => {
   return (
     <>
       <CalculatorIdGate id={Number(deviceId)} />
+      <CheckCalculatorContainer />
+      <CloseCalculatorContainer />
       <WithLoader isLoading={isLoading}>
         {calculator && (
           <CalculatorProfile
