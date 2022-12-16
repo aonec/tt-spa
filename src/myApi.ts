@@ -1273,6 +1273,12 @@ export interface DateTimeDoubleDictionaryItem {
   value?: number;
 }
 
+export interface DateTimeTaskStatisticsItemArrayDictionaryItem {
+  /** @format date-time */
+  key?: string;
+  value?: TaskStatisticsItem[] | null;
+}
+
 export interface DisableNodeWorkingRangeRequest {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
@@ -2823,6 +2829,7 @@ export interface HousingStockListResponse {
   numberOfApartments: number;
   houseManagement: HouseManagementResponse | null;
   address: HousingStockAddressResponse | null;
+  managementFirm: ManagementFirmLiteResponse | null;
 }
 
 export interface HousingStockListResponsePagedList {
@@ -3705,6 +3712,16 @@ export interface ManagementFirmFiltersConfigurationResponse {
   pipeDiameters: number[] | null;
 }
 
+export interface ManagementFirmLiteResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+  information: string | null;
+  email: string | null;
+  workingTime: string | null;
+}
+
 export interface MeasurableIntervalResponse {
   /** @format double */
   maxValue: number | null;
@@ -4252,6 +4269,7 @@ export interface PipeHousingMeteringDeviceConnectionResponse {
 
   /** @format int32 */
   nodeId: number | null;
+  node: PipeHousingMeteringDeviceNodeResponse | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection | null;
@@ -4298,6 +4316,14 @@ export interface PipeHousingMeteringDeviceListResponse {
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   hub: PipeHousingMeteringDeviceHubConnectionResponse | null;
   diameter: string | null;
+}
+
+export interface PipeHousingMeteringDeviceNodeResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
 }
 
 export interface PipeHousingMeteringDeviceResponse {
@@ -4424,6 +4450,9 @@ export interface PipeNodeResponse {
   /** @format int32 */
   entryNumber: number | null;
   communicationPipes: CommunicationPipeResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number;
 }
 
 export interface PipeNodeResponseSuccessApiResponse {
@@ -4466,6 +4495,14 @@ export interface ProblemDetails {
   status?: number | null;
   detail?: string | null;
   instance?: string | null;
+}
+
+export interface RefreshOrganizationApiKeyRequest {
+  canWrite?: boolean;
+  name?: string | null;
+
+  /** @format int32 */
+  organizationId?: number;
 }
 
 export interface RefreshResponse {
@@ -5392,6 +5429,21 @@ export interface TaskResponse {
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
+}
+
+export interface TaskStatisticsItem {
+  /** @format int32 */
+  id?: number;
+  isEmergency?: boolean;
+  isClosed?: boolean;
+}
+
+export interface TaskStatisticsResponse {
+  tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
+}
+
+export interface TaskStatisticsResponseSuccessApiResponse {
+  successResponse: TaskStatisticsResponse | null;
 }
 
 export interface TasksPagedList {
@@ -7093,6 +7145,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsRefreshOrganizationApiKeyCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/RefreshOrganizationApiKey
+     * @secure
+     */
+    dataMigrationsRefreshOrganizationApiKeyCreate: (
+      data: RefreshOrganizationApiKeyRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/RefreshOrganizationApiKey`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -9890,6 +9964,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesTaskStatisticsDetail
+     * @summary ReportRead
+     * @request GET:/api/Nodes/{nodeId}/TaskStatistics
+     * @secure
+     */
+    nodesTaskStatisticsDetail: (
+      nodeId: number,
+      query?: { ReportType?: EReportType; From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<TaskStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/TaskStatistics`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
@@ -10759,27 +10856,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
-     *
-     * @tags Reports
-     * @name ReportsArchivesList
-     * @summary ReportRead
-     * @request GET:/api/Reports/Archives
-     * @secure
-     */
-    reportsArchivesList: (
-      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/Archives`,
-        method: "GET",
-        query: query,
-        secure: true,
         ...params,
       }),
 

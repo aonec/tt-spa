@@ -6,6 +6,7 @@ import {
   VictoryArea,
   VictoryLine,
   VictoryLabel,
+  VictoryScatter,
 } from 'victory';
 import React from 'react';
 import 'antd/es/date-picker/style/index';
@@ -25,6 +26,7 @@ import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
+import moment from 'moment';
 
 const minDelta = 0.01;
 const width = 730;
@@ -34,6 +36,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   graphParam,
   data,
   reportType,
+  taskStatistics,
 }) => {
   const { resource, data: readingsData, averageDeltaMass } = data;
   const isAverageLineRendered = renderForHeatAndDeltaMass(
@@ -75,6 +78,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
     <>
       <GraphWrapper>
         <Gradient resource={resource as ResourceType} />
+
         <VictoryChart
           domain={{ y: [minValue, maxValue] }}
           width={width}
@@ -112,6 +116,18 @@ export const GraphView: React.FC<GraphViewProps> = ({
                 fill: '#272F5AB2',
               },
             }}
+          />
+
+          <VictoryScatter
+            data={taskStatistics.map((elem) => ({
+              x: moment(elem.key).diff(moment(ticksData[0]), 'h'),
+              y: maxValue * 0.9,
+              amount: (elem.value || []).length,
+            }))}
+            sortKey="x"
+            size={8}
+            labels={({ datum }) => datum.amount}
+            style={{ data: { fill: '#272F5A' } }}
           />
           <VictoryArea
             name="graph"
