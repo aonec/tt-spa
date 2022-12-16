@@ -1,15 +1,22 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { MagistralsDisctionary } from 'dictionaries';
 import {
-  DiameterLabel,
+  DevicesAmount,
   InfoWrapper,
-  MagistralLabel,
+  PipeIconWrapper,
+  PipeInfo,
   PipeNumber,
   RighContentWrapper,
   Wrapper,
 } from './CommunicationPipeListItem.styled';
-import { CommunicationPipeListItemProps, TrashIconSC } from './CommunicationPipeListItem.types';
+import {
+  CommunicationPipeListItemProps,
+  TrashIconSC,
+} from './CommunicationPipeListItem.types';
 import { MeteringDeviceListItem } from './MeteringDeviceListItem';
+import { PipeIcon } from 'ui-kit/icons';
+import { getDevicesAmountText } from './CommunicationPipeListItem.utils';
+import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
 
 export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   pipe,
@@ -17,34 +24,51 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   handleDeletePipe,
   handleDeleteDevice,
 }) => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const devicesAmount = pipe.devices?.length || 0;
+
+  const devicesAmountText = getDevicesAmountText(devicesAmount);
+
   return (
     <Wrapper>
       <InfoWrapper>
-        <div>
-          <PipeNumber>Труба №{pipe.number}</PipeNumber>
-        </div>
-        <RighContentWrapper>
+        <PipeIconWrapper>
+          <PipeIcon />
           <div>
-            <DiameterLabel>Диаметр:</DiameterLabel> {pipe.diameter}мм{' '}
-            <MagistralLabel>магистраль:</MagistralLabel>{' '}
-            {pipe.magistral && MagistralsDisctionary[pipe.magistral]}
+            <PipeNumber>Труба №{pipe.number}</PipeNumber>
+            <PipeInfo>
+              {pipe.magistral && MagistralsDisctionary[pipe.magistral]}
+              {typeof pipe.diameter === 'number' && `, ${pipe.diameter}мм`}
+            </PipeInfo>
           </div>
+        </PipeIconWrapper>
+        <RighContentWrapper>
+          <DevicesAmount>
+            {devicesAmount} {devicesAmountText}
+          </DevicesAmount>
+          <ListOpeningChevron
+            isOpen={isOpen}
+            onClick={() => setIsOpen((prev) => !prev)}
+          />
           {handleDeletePipe && (
             <TrashIconSC onClick={() => handleDeletePipe(pipe.id)} />
           )}
         </RighContentWrapper>
       </InfoWrapper>
-      <div>
-        {pipe.devices?.map((device, index) => (
-          <MeteringDeviceListItem
-            device={device}
-            resource={resource}
-            handleDeleteDevice={
-              handleDeleteDevice && (() => handleDeleteDevice(pipe.id, index))
-            }
-          />
-        ))}
-      </div>
+      {isOpen && (
+        <div>
+          {pipe.devices?.map((device, index) => (
+            <MeteringDeviceListItem
+              device={device}
+              resource={resource}
+              handleDeleteDevice={
+                handleDeleteDevice && (() => handleDeleteDevice(pipe.id, index))
+              }
+            />
+          ))}
+        </div>
+      )}
     </Wrapper>
   );
 };
