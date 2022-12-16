@@ -112,7 +112,9 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      {(preparedApartmentId || preparedHousingStockId || preparedPipeNodeId) && (
+      {[preparedApartmentId, preparedHousingStockId, preparedPipeNodeId].some(
+        Boolean
+      ) && (
         <ApartmentIdGate
           apartmentId={preparedApartmentId}
           housingStockId={preparedHousingStockId}
