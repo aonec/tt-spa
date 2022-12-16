@@ -7,6 +7,7 @@ import {
   VictoryLine,
   VictoryLabel,
   VictoryScatter,
+  VictoryPortal,
 } from 'victory';
 import React from 'react';
 import 'antd/es/date-picker/style/index';
@@ -117,18 +118,42 @@ export const GraphView: React.FC<GraphViewProps> = ({
               },
             }}
           />
-
-          <VictoryScatter
-            data={taskStatistics.map((elem) => ({
-              x: moment(elem.key).diff(moment(ticksData[0]), 'h'),
-              y: maxValue * 0.9,
-              amount: (elem.value || []).length,
-            }))}
-            sortKey="x"
-            size={8}
-            labels={({ datum }) => datum.amount}
-            style={{ data: { fill: '#272F5A' } }}
-          />
+          <VictoryPortal>
+            <VictoryScatter
+              data={taskStatistics.map((elem) => ({
+                x: moment(elem.key).diff(moment(ticksData[0]), 'h'),
+                y: maxValue * 0.9,
+                amount: (elem.value || []).length,
+              }))}
+              sortKey="x"
+              size={8}
+              labels={({ datum }) => datum.amount}
+              labelComponent={<VictoryLabel dy={5} />}
+              style={{
+                data: { fill: '#272F5A' },
+                labels: { fill: 'white', fontSize: '10px' },
+              }}
+            />
+          </VictoryPortal>
+          {taskStatistics.map((elem) => {
+            const x = moment(elem.key).diff(moment(ticksData[0]), 'h');
+            return (
+              <VictoryLine
+                data={[
+                  { x, y: 0 },
+                  { x, y: maxValue * 0.9 },
+                ]}
+                style={{
+                  data: {
+                    stroke: '#DCDEE4',
+                    strokeWidth: 1.5,
+                    borderStyle: 'dashed',
+                    strokeDasharray: 5,
+                  },
+                }}
+              />
+            );
+          })}
           <VictoryArea
             name="graph"
             sortKey="time"
