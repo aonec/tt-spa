@@ -37,9 +37,10 @@ export type GetTasksListRequestPayload = {
 };
 
 export type FiltersGatePayload = {
-  apartmentId: string | null,
-  housingStockId: string | null
-}
+  apartmentId: string | null;
+  housingStockId: string | null;
+  pipeNodeId: string | null;
+};
 
 export const EngineeringElementLookUp: {
   [key in ETaskEngineeringElement]: string;

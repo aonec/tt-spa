@@ -29,6 +29,7 @@ import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChe
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from '01/tt-components/NodeConnection';
 import { ENodeCommercialAccountStatus } from 'myApi';
+import qs from 'query-string';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -176,7 +177,10 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               />
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
-                link={`/tasks`}
+                link={qs.stringifyUrl({
+                  url: '/tasks/list/Observing',
+                  query: { pipeNodeId: pipeNode.id },
+                })}
                 showLink={Boolean(pipeNode.numberOfTasks)}
               />
             </div>
