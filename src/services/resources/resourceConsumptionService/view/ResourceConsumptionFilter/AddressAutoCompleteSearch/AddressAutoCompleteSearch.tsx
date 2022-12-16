@@ -1,6 +1,5 @@
-import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AddressAutoCompleteSearchProps } from './AddressAutoCompleteSearch.types';
 import { prepareOptionsForAutoComplete } from './AddressAutoCompleteSearch.utils';
 
@@ -12,17 +11,24 @@ export const AddressAutoCompleteSearch: FC<AddressAutoCompleteSearchProps> = ({
 
   const options = prepareOptionsForAutoComplete(streetsList, addressSearch);
 
+  useEffect(() => {
+    setAddressSearch('');
+  }, [streetsList]);
+
   return (
     <StyledAutocomplete
       disabled={!streetsList.length}
       value={addressSearch}
       onChange={(e) => setAddressSearch(e)}
       placeholder="Введите адрес"
-      onSelect={(address) =>
-        handleChooseHousingStock(
-          streetsList.find((elem) => elem.addressString === address)?.id || 0
-        )
-      }
+      onSelect={(address) => {
+        handleChooseHousingStock({
+          id:
+            streetsList.find((elem) => elem.addressString === address)?.id || 0,
+          address: address,
+        });
+        setAddressSearch(address);
+      }}
       options={options}
     />
   );

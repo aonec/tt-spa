@@ -1,17 +1,21 @@
-import { combine, createDomain, forward, guard } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import { EResourceType, HouseManagementWithStreetsResponse } from 'myApi';
 import {
   fetchAddresses,
-  fetchHousingConsumptionsForTwoMonth,
+  fetchConsumptionsForMonth,
+  fetchConsumptionsForTwoMonth,
 } from './resourceConsumptionService.api';
+import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
-  HousingConsumptionDataFilter,
-  GetHousingConsumptionDataFilter,
-  HousingConsumptionDataForTwoMonth,
+  ConsumptionDataFilter,
+  GetConsumptionDataFilter,
+  ConsumptionDataForTwoMonth,
+  MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { getAddressSearchData } from './resourceConsumptionService.utils';
+import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -44,10 +48,10 @@ const $addressesList = combine(
   }
 );
 
-const setFilter = domain.createEvent<GetHousingConsumptionDataFilter>();
+const setFilter = domain.createEvent<GetConsumptionDataFilter>();
 const setResource = domain.createEvent<EResourceType>();
 const $resourceConsumptionFilter = domain
-  .createStore<Partial<HousingConsumptionDataFilter> | null>(null)
+  .createStore<Partial<ConsumptionDataFilter> | null>(null)
   .on(setResource, (oldFilter, ResourceType) => ({
     ...oldFilter,
     ResourceType,
@@ -60,15 +64,34 @@ const $resourceConsumptionFilter = domain
   .reset(clearStore);
 
 const getHousingConsumptionFx = domain.createEffect<
-  HousingConsumptionDataFilter,
-  HousingConsumptionDataForTwoMonth
->(fetchHousingConsumptionsForTwoMonth);
+  ConsumptionDataFilter,
+  ConsumptionDataForTwoMonth
+>(fetchConsumptionsForTwoMonth);
 
 const clearData = domain.createEvent();
 
 const $housingConsumptionData = domain
-  .createStore<HousingConsumptionDataForTwoMonth | null>(null)
+  .createStore<ConsumptionDataForTwoMonth | null>(null)
   .on(getHousingConsumptionFx.doneData, (_, data) => data)
+  .reset(clearData);
+
+const clearAdditionalAddress = domain.createEvent();
+const getAdditionalConsumptionFx = domain.createEffect<
+  ConsumptionDataFilter,
+  MonthConsumptionData
+>(fetchConsumptionsForMonth);
+const $additionalConsumption = domain
+  .createStore<MonthConsumptionData | null>(null)
+  .on(getAdditionalConsumptionFx.doneData, (_, data) => data)
+  .reset(clearData)
+  .reset(clearAdditionalAddress);
+
+const setSelectedGraphTypes = domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
+const $selectedGraphTypes = domain
+  .createStore<BooleanTypesOfResourceConsumptionGraphForTwoMonth>(
+    initialSelectedGraphTypes
+  )
+  .on(setSelectedGraphTypes, (_, selected) => selected)
   .reset(clearData);
 
 const ResourceConsumptionGate = createGate();
@@ -76,8 +99,23 @@ const ResourceConsumptionGate = createGate();
 const $isLoading = getHousingConsumptionFx.pending;
 
 guard({
+  clock: $resourceConsumptionFilter.map((filter) => ({
+    ...filter,
+    HousingStockId: filter?.AdditionalHousingStockId,
+  })),
+  filter: (filter): filter is ConsumptionDataFilter =>
+    Boolean(
+      filter?.From &&
+        filter?.To &&
+        filter?.HousingStockId &&
+        filter?.ResourceType
+    ),
+  target: getAdditionalConsumptionFx,
+});
+
+guard({
   source: $resourceConsumptionFilter,
-  filter: (filter): filter is HousingConsumptionDataFilter =>
+  filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&
@@ -109,6 +147,10 @@ export const resourceConsumptionService = {
     setResource,
     setFilter,
     selectHouseManagememt,
+    clearData,
+    clearStore,
+    setSelectedGraphTypes,
+    clearAdditionalAddress,
   },
   outputs: {
     $housingConsumptionData,
@@ -117,6 +159,8 @@ export const resourceConsumptionService = {
     $addressesList,
     $selectedHouseManagement,
     $houseManagements,
+    $selectedGraphTypes,
+    $additionalConsumption,
   },
   gates: { ResourceConsumptionGate },
 };
