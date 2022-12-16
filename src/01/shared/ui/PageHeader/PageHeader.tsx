@@ -10,22 +10,21 @@ import { PageTitle } from '../Title';
 interface Props {
   title: ReactNode;
   contextMenu?: ContextMenuButtonProps;
-  isTopMargin?: boolean;
   isGhost?: boolean;
 }
 
-export const PageHeader: FC<Props> = ({ title, contextMenu, isTopMargin, isGhost }) => {
+export const PageHeader: FC<Props> = ({ title, contextMenu, isGhost }) => {
   return (
-    <PageHeaderStyled isTopMargin={isTopMargin}>
+    <PageHeaderStyled>
       <PageTitle isGhost={isGhost}>{title}</PageTitle>
       {contextMenu && <ContextMenuButton {...contextMenu} />}
     </PageHeaderStyled>
   );
 };
 
-const PageHeaderStyled = styled.div<{ isTopMargin?: boolean }>`
+const PageHeaderStyled = styled.div`
   display: flex;
   align-items: center;
-  margin: ${({ isTopMargin }) => (isTopMargin ? '25px 0' : '5px 0')};
   justify-content: space-between;
+  margin: 5px 0;
 `;

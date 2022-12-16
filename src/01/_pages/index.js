@@ -16,6 +16,5 @@ export * from './Contractor';
 export * from './Registration';
 export * from './IndividualDevice';
 export * from './MapTemplate';
-export * from './EditNode';
 export * from './EditHousingMeteringDevice';
 export * from './IndividualDeviceEdit';

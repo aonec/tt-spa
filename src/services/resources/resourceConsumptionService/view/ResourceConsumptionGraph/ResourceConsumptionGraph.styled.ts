@@ -7,7 +7,6 @@ export const Wrapper = styled.div`
     overflow: visible !important;
   }
 
-  margin-top: 24px;
   padding-bottom: 48px;
 `;
 
@@ -19,3 +18,13 @@ export const getCurrentDataStyle = (resource: EResourceType) => ({
     strokeWidth: 2,
   },
 });
+
+export const ZeroLineStyle = {
+  data: {
+    stroke: '#dcdee4',
+    strokeWidth: 2,
+  },
+  labels: {
+    fill: '#272F5AB2',
+  },
+};

@@ -27,7 +27,3 @@ export const ChevronIconSC = styled(ChevronIcon)`
     fill-opacity: 1;
   }
 `;
-
-export const HeaderInfoStringWrapper = styled.div`
-  margin-top: -25px;
-`;

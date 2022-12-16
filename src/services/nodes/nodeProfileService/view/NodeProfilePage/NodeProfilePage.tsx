@@ -10,6 +10,8 @@ import {
   ContentWrapper,
   TabsWrapper,
   Wrapper,
+  HeaderWrapper,
+  HeaderInfoStringWrapper,
   AdditionalAddress,
 } from './NodeProfilePage.styled';
 import {
@@ -17,7 +19,6 @@ import {
   PipeNodeProfileSection,
 } from './NodeProfilePage.types';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
-import { HeaderInfoStringWrapper } from 'ui-kit/shared_components/GoBack/GoBack.styled';
 import { Tabs } from 'ui-kit/Tabs';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { CommonInfoTab } from './CommonInfoTab';
@@ -89,32 +90,33 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
       {pipeNode && (
         <div>
           <GoBack />
-          <PageHeader
-            title={
-              <Title>
-                <ResourceIconLookup
-                  resource={pipeNode.resource}
-                  style={{ transform: 'scale(1.2)' }}
-                />
-                <div>Узел {pipeNode.number}</div>
-              </Title>
-            }
-            isTopMargin
-            contextMenu={{
-              menuButtons: [
-                {
-                  title: 'Редактировать узел',
-                  onClick: handleEditNode,
-                },
-                {
-                  title: isNodeRegistered
-                    ? 'Снять узел с коммерческого учета'
-                    : 'Поставить узел на коммерческий учет',
-                  onClick: openRegisterNodeOnCommercialAccountingModal,
-                },
-              ],
-            }}
-          />
+          <HeaderWrapper>
+            <PageHeader
+              title={
+                <Title>
+                  <ResourceIconLookup
+                    resource={pipeNode.resource}
+                    style={{ transform: 'scale(1.2)' }}
+                  />
+                  <div>Узел {pipeNode.number}</div>
+                </Title>
+              }
+              contextMenu={{
+                menuButtons: [
+                  {
+                    title: 'Редактировать узел',
+                    onClick: handleEditNode,
+                  },
+                  {
+                    title: isNodeRegistered
+                      ? 'Снять узел с коммерческого учета'
+                      : 'Поставить узел на коммерческий учет',
+                    onClick: openRegisterNodeOnCommercialAccountingModal,
+                  },
+                ],
+              }}
+            />
+          </HeaderWrapper>
           <HeaderInfoStringWrapper>
             <HeaderInfoString>
               <div>{address?.mainAddress?.city}</div>

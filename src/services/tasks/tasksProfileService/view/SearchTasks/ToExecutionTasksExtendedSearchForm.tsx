@@ -269,9 +269,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
           >
             <Option value={''}>Все</Option>
             {perpetrators &&
-              perpetrators.map(({ id, name }) => (
+              perpetrators.map(({ id, firstName, lastName }) => (
                 <Option key={id} value={id}>
-                  {name}
+                  {lastName} {firstName}
                 </Option>
               ))}
           </SelectSC>

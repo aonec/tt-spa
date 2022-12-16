@@ -24,3 +24,11 @@ export const AdditionalAddress = styled.span`
   font-weight: 400;
   margin-left: 6px;
 `;
+
+export const HeaderWrapper = styled.div`
+  padding: 25px 0 5px;
+`;
+
+export const HeaderInfoStringWrapper = styled.div`
+  margin-top: -5px;
+`;
