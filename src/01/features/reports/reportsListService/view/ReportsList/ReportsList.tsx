@@ -1,6 +1,7 @@
 import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { ReportListItem } from './ReportListItem';
+import { SkeletonWrapper } from './ReportsList.styled';
 import { ReportsListProps } from './ReportsList.types';
 
 export const ReportsList: FC<ReportsListProps> = ({
@@ -10,7 +11,11 @@ export const ReportsList: FC<ReportsListProps> = ({
 }) => {
   return (
     <div>
-      {isLoading && <Skeleton active />}
+      {isLoading && (
+        <SkeletonWrapper>
+          <Skeleton active />
+        </SkeletonWrapper>
+      )}
       {!reportsList?.length && !isLoading && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
