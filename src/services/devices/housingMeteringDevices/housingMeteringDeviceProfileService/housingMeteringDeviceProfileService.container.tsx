@@ -19,8 +19,6 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
 
-  console.log(housingMeteringDevice);
-
   return (
     <>
       <FetchHousingMeteringDeviceGate deviceId={deviceId} />

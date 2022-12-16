@@ -151,16 +151,13 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
             <TasksWrapper>
               <Tasks>Задачи: {housingMeteringDeviceTasks?.items?.length}</Tasks>
 
-              {
-                // housingMeteringDeviceTasks?.items?.length
-                1 ? (
-                  <LinkSC to={`/tasks/list/`} target="_blank">
-                    {'Перейти >'}
-                  </LinkSC>
-                ) : (
-                  ''
-                )
-              }
+              {housingMeteringDeviceTasks?.items?.length ? (
+                <LinkSC to={`/tasks/list/`} target="_blank">
+                  {'Перейти >'}
+                </LinkSC>
+              ) : (
+                ''
+              )}
             </TasksWrapper>
           </MockComponent>
 
