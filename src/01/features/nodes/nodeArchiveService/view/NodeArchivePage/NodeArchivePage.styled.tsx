@@ -12,3 +12,7 @@ export const FiltersWrap = styled.div`
 export const NodeInfoWrapper = styled.div`
   margin-top: 16px;
 `;
+
+export const HeaderWrapper = styled.div`
+  padding: 25px 0 5px;
+`;

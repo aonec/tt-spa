@@ -10,13 +10,14 @@ import {
   ContentWrapper,
   TabsWrapper,
   Wrapper,
+  HeaderWrapper,
+  HeaderInfoStringWrapper,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
   PipeNodeProfileSection,
 } from './NodeProfilePage.types';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
-import { HeaderInfoStringWrapper } from 'ui-kit/shared_components/GoBack/GoBack.styled';
 import { Tabs } from 'ui-kit/Tabs';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { CommonInfoTab } from './CommonInfoTab';
@@ -82,21 +83,22 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
       {pipeNode && (
         <div>
           <GoBack />
-          <PageHeader
-            title={
-              <Title>
-                <ResourceIconLookup
-                  resource={pipeNode.resource}
-                  style={{ transform: 'scale(1.2)' }}
-                />
-                <div>Узел {pipeNode.number}</div>
-              </Title>
-            }
-            isTopMargin
-            contextMenu={{
-              menuButtons: [],
-            }}
-          />
+          <HeaderWrapper>
+            <PageHeader
+              title={
+                <Title>
+                  <ResourceIconLookup
+                    resource={pipeNode.resource}
+                    style={{ transform: 'scale(1.2)' }}
+                  />
+                  <div>Узел {pipeNode.number}</div>
+                </Title>
+              }
+              contextMenu={{
+                menuButtons: [],
+              }}
+            />
+          </HeaderWrapper>
           <HeaderInfoStringWrapper>
             <HeaderInfoString>
               <div>{address?.mainAddress?.city}</div>

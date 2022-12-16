@@ -8,7 +8,11 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonData } from './CommonData';
 import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
-import { AddressWrapper, Wrapper } from './CreateNodePage.styled';
+import {
+  AddressWrapper,
+  HeaderWrapper,
+  Wrapper,
+} from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
 
@@ -71,7 +75,9 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   return (
     <div>
       <GoBack />
-      <PageHeader title="Добавление нового узла" isTopMargin isGhost />
+      <HeaderWrapper>
+        <PageHeader title="Добавление нового узла" isGhost />
+      </HeaderWrapper>
       {housingStock && (
         <AddressWrapper>
           {getHousingStockAddress(housingStock, true)}

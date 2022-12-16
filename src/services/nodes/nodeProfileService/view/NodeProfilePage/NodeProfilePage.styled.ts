@@ -23,3 +23,11 @@ export const Title = styled.div`
 export const AdditionalAddress = styled.div`
 
 `;
+
+export const HeaderWrapper = styled.div`
+  padding: 25px 0 5px;
+`;
+
+export const HeaderInfoStringWrapper = styled.div`
+  margin-top: -5px;
+`;
