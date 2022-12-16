@@ -19,8 +19,8 @@ const handleEditHeatingStation = domain.createEvent<{
   data: HeatingStation;
 }>();
 
-const handleOpenModal = domain.createEvent<void>();
-const handleCloseModal = domain.createEvent<void>();
+const handleOpenModal = domain.createEvent();
+const handleCloseModal = domain.createEvent();
 
 const currentHeatingStatitonDataCapture = domain.createEvent<HeatingStationResponse>();
 

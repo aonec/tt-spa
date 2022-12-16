@@ -15,8 +15,8 @@ const domain = createDomain('createHeatingStationService');
 
 const handleCreateHeatingStation = domain.createEvent<HeatingStation>();
 
-const handleOpenModal = domain.createEvent<void>();
-const handleCloseModal = domain.createEvent<void>();
+const handleOpenModal = domain.createEvent();
+const handleCloseModal = domain.createEvent();
 
 const createHeatingStationFx = domain.createEffect<
   AddHeatingStationRequest,
