@@ -7,6 +7,7 @@ import {
 } from './housingMeteringDeviceProfileService.api';
 import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 import { checkHousingMeteringDeviceService } from '../checkHousingMeteringDeviceService';
+import { closeHousingMeteringDeviceService } from '../closeHousingMeteringDeviceService';
 
 const domain = createDomain('housingMeteringDeviceProfileService');
 
@@ -72,6 +73,8 @@ export const housingMeteringDeviceProfileService = {
     handleHousingMeteringDeviceUpdate,
     handleCheckModalOpen:
       checkHousingMeteringDeviceService.inputs.handleOpenModal,
+    handleDeviceClosingModalOpen:
+      closeHousingMeteringDeviceService.inputs.handleOpenModal,
   },
   outputs: {
     $housingMeteringDevice,

@@ -8,4 +8,5 @@ export type HousingMeteringDeviceProfileProps = {
   handleChangeTab: (payload: HousingProfileTabs) => void;
   housingMeteringDeviceTasks: TasksPagedList | null;
   handleCheckModalOpen: () => void;
+  handleDeviceClosingModalOpen: () => void;
 };

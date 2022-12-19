@@ -5,6 +5,7 @@ import {
   CheckHousingMeteringDeviceFormTypes,
 } from './CheckHousingMeteringDeviceForm.types';
 import { useFormik } from 'formik';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import moment from 'moment';
 import * as yup from 'yup';
 import { CheckDeviceRequest } from 'myApi';
@@ -29,9 +30,9 @@ export const CheckHousingMeteringDeviceForm: FC<CheckHousingMeteringDeviceFormPr
       futureCheckingDate: null,
     },
     validationSchema: yup.object({
-      deviceId: yup.number().required('Не передан Идентификатор устройства'),
-      lastCheckingDate: yup.string().required('Обязательное поле'),
-      futureCheckingDate: yup.string().required('Обязательное поле'),
+      deviceId: yup.number().required('Не передан идентификатор устройства'),
+      lastCheckingDate: yup.string().nullable().required('Обязательное поле'),
+      futureCheckingDate: yup.string().nullable().required('Обязательное поле'),
     }),
     onSubmit: () => {
       if (values.lastCheckingDate && values.futureCheckingDate) {
@@ -60,6 +61,7 @@ export const CheckHousingMeteringDeviceForm: FC<CheckHousingMeteringDeviceFormPr
             placeholder="Выберите"
             format="DD.MM.YYYY"
           />
+          <ErrorMessage> {errors.lastCheckingDate} </ErrorMessage>
         </FormItem>
 
         <FormItem label="Дата следующей поверки прибора">
@@ -69,6 +71,7 @@ export const CheckHousingMeteringDeviceForm: FC<CheckHousingMeteringDeviceFormPr
             placeholder="Выберите"
             format="DD.MM.YYYY"
           />
+          <ErrorMessage> {errors.futureCheckingDate} </ErrorMessage>
         </FormItem>
       </GridContainer>
     </Form>

@@ -27,6 +27,7 @@ import {
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
+import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';
 
 export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps> = ({
   deviceId,
@@ -35,6 +36,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   handleChangeTab,
   housingMeteringDeviceTasks,
   handleCheckModalOpen,
+  handleDeviceClosingModalOpen,
 }) => {
   const { push } = useHistory();
 
@@ -47,6 +49,9 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   return (
     <>
       <CheckHousingMeteringDeviceContainer
+        housingMeteringDevice={housingMeteringDevice}
+      />
+      <CloseHousingMeteringDeviceContainer
         housingMeteringDevice={housingMeteringDevice}
       />
 
@@ -90,7 +95,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
               },
               {
                 title: 'Закрыть ОДПУ',
-                onClick: () => {},
+                onClick: () => handleDeviceClosingModalOpen(),
                 color: 'danger',
               },
             ],
