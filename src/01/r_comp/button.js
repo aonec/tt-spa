@@ -1,4 +1,4 @@
-/* eslint-disable */
+import styled from 'styled-components';
 
 import { css } from 'reshadow/macro';
 
