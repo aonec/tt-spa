@@ -26,6 +26,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   openSoiReportModal,
   handleCreateObject,
   isAdministrator,
+  openFeedFlowBackReportModal
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -36,6 +37,10 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       {
         title: 'Выгрузить отчёт по СОИ',
         onClick: openSoiReportModal,
+      },
+      {
+        title: 'Выгрузить отчёт по обратной магистрали',
+        onClick: openFeedFlowBackReportModal,
       },
       {
         title: 'Создать оключение ресурса на объекте',

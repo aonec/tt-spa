@@ -3,12 +3,9 @@ import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
   HousingStockFilterResponse,
+  OrganizationUserListResponsePagedList,
   TaskFilterResponse,
 } from 'myApi';
-import {
-  perpetratorItemsProps,
-  perpetratorProps,
-} from './taskTypesService.types';
 
 export const getTaskTypes = async (): Promise<
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null
@@ -27,9 +24,5 @@ export const getHousingManagements = async (): Promise<
   return res?.houseManagements;
 };
 
-export const getPerpetratorIds = async (): Promise<
-  perpetratorItemsProps[] | null
-> => {
-  const res = await axios.get<any, perpetratorProps>('OrganizationUsers');
-  return res?.items;
-};
+export const getPerpetratorIds = (): Promise<OrganizationUserListResponsePagedList> =>
+  axios.get('OrganizationUsers');

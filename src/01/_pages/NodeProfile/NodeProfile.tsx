@@ -68,7 +68,7 @@ export const Content: React.FC<ContentProps> = React.memo(
             <HousingMeteringDeviceReadingsContainer
               nodeId={Number(nodeId)}
               resource={resource}
-              deviceIds={getDeviceIds(node)}
+              deviceIds={getDeviceIds(node)} 
             />
           </Route>
           <Route path={`${path}/connection`} exact>
