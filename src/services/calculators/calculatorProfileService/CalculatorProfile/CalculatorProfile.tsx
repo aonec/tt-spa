@@ -1,4 +1,5 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
+import _ from 'lodash';
 import moment from 'moment';
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +18,9 @@ import {
   TabsSC,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
+import { ConnectionInfo } from './ConnectionInfo';
+import { RelatedDevicesList } from './RelatedDevicesList';
+import { RelatedNodesList } from './RelatedNodesList';
 
 const { TabPane } = TabsSC;
 
@@ -37,8 +41,25 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     address,
     lastCheckingDate,
     futureCheckingDate,
+    isConnected,
+    nodes,
   } = calculator;
-  const { ipV4, deviceAddress, port } = connection || {};
+
+  const relatedDevices = useMemo(
+    () =>
+      (nodes || [])
+        .map((node) => {
+          const { communicationPipes, number } = node;
+
+          const devices = (communicationPipes || [])
+            .map((pipe) => pipe.devices || [])
+            .flat();
+
+          return { devices, nodeNumber: number };
+        })
+        .flat(),
+    [nodes]
+  );
 
   const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
     model,
@@ -77,19 +98,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       />
     ),
     [calculator]
-  );
-
-  const connectionInfo = useMemo(
-    () => (
-      <CommonInfo
-        items={[
-          { key: 'IP адрес вычислителя', value: ipV4 },
-          { key: 'Порт', value: port },
-          { key: 'Адрес прибора', value: deviceAddress },
-        ]}
-      />
-    ),
-    [connection]
   );
 
   const menuButtons = useMemo(
@@ -146,15 +154,22 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           tab="Настройки соединения"
           key={CalculatorProfileGrouptype.Connection}
         >
-          {connectionInfo}
+          <ConnectionInfo
+            connection={connection}
+            isConnected={isConnected || false}
+          />
         </TabPane>
 
-        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes}></TabPane>
+        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes}>
+          <RelatedNodesList nodes={nodes || []} />
+        </TabPane>
 
         <TabPane
           tab="Подключенные приборы"
           key={CalculatorProfileGrouptype.Related}
-        ></TabPane>
+        >
+          <RelatedDevicesList pipeDevices={relatedDevices} />
+        </TabPane>
 
         <TabPane
           tab="Документы"
