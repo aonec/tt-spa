@@ -51,6 +51,7 @@ export const createNodeServiceZoneService = {
     openCreateNodeServiceZoneModal,
     closeCreateNodeServiceZoneModal,
     handleServiceZoneCreated,
+    createNodeServiceZoneFx
   },
   outputs: {
     $isLoading,

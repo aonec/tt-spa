@@ -17,6 +17,5 @@ export * from './Registration';
 export { NodeProfile } from './NodeProfile/NodeProfile.container';
 export * from './IndividualDevice';
 export * from './MapTemplate';
-export * from './EditNode';
 export * from './EditHousingMeteringDevice';
 export * from './IndividualDeviceEdit';

@@ -1,8 +1,10 @@
-import AddNewZonesModal from '01/features/serviceZones/addServiceZone';
-import { addServiceZoneButtonClicked } from '01/features/serviceZones/addServiceZone/models';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import {
+  CreateNodeServiceZoneContainer,
+  createNodeServiceZoneService,
+} from 'services/nodes/createNodeServiceZoneService';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { editNodeService } from './editNodeService.model';
 import { EditNodePage } from './view/EditNodePage';
@@ -20,14 +22,17 @@ export const EditNodeContainer = () => {
   const magistrals = useStore(outputs.$magistrals);
 
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
-  const openAddNewZonesModal = useEvent(addServiceZoneButtonClicked);
+  const openAddNewZonesModal = useEvent(
+    createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal
+  );
+
   const refetchNode = useEvent(inputs.refetchNode);
   const updateNode = useEvent(inputs.updateNode);
 
   return (
     <>
       <NodeIdGate nodeId={nodeId} />
-      <AddNewZonesModal />
+      <CreateNodeServiceZoneContainer />
 
       <WithLoader isLoading={isLoading}>
         {node && (

@@ -1,19 +1,43 @@
-import { DateTimeDoubleDictionaryItem, EResourceType } from 'myApi';
+import { EResourceType } from 'myApi';
 
-export type HousingConsumptionDataForTwoMonth = {
-  currentMonthData: DateTimeDoubleDictionaryItem[];
-  prevMonthData: DateTimeDoubleDictionaryItem[];
+export type ConsumptionDataForTwoMonth = {
+  [ResourceConsumptionGraphDataType.currentMonthData]: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]: MonthConsumptionData;
 };
 
-export type HousingConsumptionDataFilter = {
-  HousingStockId: number;
+export type MonthConsumptionData = {
+  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
+};
+
+export type ResourceConsumptionWithNull = {
+  value?: number | null;
+  key?: string;
+};
+
+export enum ResourceConsumptionGraphDataType {
+  currentMonthData = 'currentMonthData',
+  prevMonthData = 'prevMonthData',
+  additionalAddress = 'additionalAddress',
+}
+
+export enum ResourceConsumptionGraphType {
+  Housing = 'housing',
+  Normative = 'normative',
+  Subscriber = 'subscriber',
+}
+
+export type ConsumptionDataFilter = GetConsumptionDataFilter & {
   ResourceType: EResourceType;
-  From: string;
   To: string;
 };
 
-export type GetHousingConsumptionDataFilter = {
+export type GetConsumptionDataFilter = {
   HousingStockId: number;
+  currentAddress: string | null;
+  additionalAddress: string | null;
+  AdditionalHousingStockId: number | null;
   From: string;
 };
 
