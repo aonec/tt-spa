@@ -1,7 +1,7 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import _ from 'lodash';
 import moment from 'moment';
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
@@ -125,6 +125,30 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
   );
 
+  const contentComponents: {
+    [key in CalculatorProfileGrouptype]: ReactElement;
+  } = useMemo(
+    () => ({
+      [CalculatorProfileGrouptype.Common]: <>{commonInfo}</>,
+      [CalculatorProfileGrouptype.Connection]: (
+        <ConnectionInfo
+          connection={connection}
+          isConnected={isConnected || false}
+        />
+      ),
+      [CalculatorProfileGrouptype.Nodes]: (
+        <RelatedNodesList nodes={nodes || []} />
+      ),
+      [CalculatorProfileGrouptype.Related]: (
+        <RelatedDevicesList pipeDevices={relatedDevices} />
+      ),
+      [CalculatorProfileGrouptype.Documents]: <></>,
+    }),
+    [calculator]
+  );
+
+  const component = contentComponents[currentGrouptype];
+
   return (
     <div>
       <GoBack />
@@ -146,36 +170,19 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           setGrouptype(grouptype as CalculatorProfileGrouptype)
         }
       >
-        <TabPane tab="Общие данные" key={CalculatorProfileGrouptype.Common}>
-          {commonInfo}
-        </TabPane>
-
+        <TabPane tab="Общие данные" key={CalculatorProfileGrouptype.Common} />
         <TabPane
           tab="Настройки соединения"
           key={CalculatorProfileGrouptype.Connection}
-        >
-          <ConnectionInfo
-            connection={connection}
-            isConnected={isConnected || false}
-          />
-        </TabPane>
-
-        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes}>
-          <RelatedNodesList nodes={nodes || []} />
-        </TabPane>
-
+        />
+        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes} />
         <TabPane
           tab="Подключенные приборы"
           key={CalculatorProfileGrouptype.Related}
-        >
-          <RelatedDevicesList pipeDevices={relatedDevices} />
-        </TabPane>
-
-        <TabPane
-          tab="Документы"
-          key={CalculatorProfileGrouptype.Documents}
-        ></TabPane>
+        />
+        <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
       </TabsSC>
+      {component}
     </div>
   );
 };
