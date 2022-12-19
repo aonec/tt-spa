@@ -88,8 +88,6 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
           </>
         )}
         <PageTitle>2. Основная информация </PageTitle>
-
-        <PageTitle>2. Основная информация </PageTitle>
         <GridContainer>
           <FieldDescrition>Домоуправление</FieldDescrition>
           <Field>{houseManagrmentName || '-'}</Field>
