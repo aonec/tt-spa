@@ -43,7 +43,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   const deviceAddress = housingMeteringDevice?.address?.address?.mainAddress;
   const deviceModel = housingMeteringDevice?.model;
   const deviceNumber = housingMeteringDevice?.serialNumber;
-  const isActive = housingMeteringDevice?.isActive;
+  const isActive = !Boolean(housingMeteringDevice?.closingDate);
   const resource = housingMeteringDevice?.resource;
 
   return (

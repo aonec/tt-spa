@@ -24,6 +24,7 @@ export const CheckHousingMeteringDeviceForm: FC<CheckHousingMeteringDeviceFormPr
     errors,
     setFieldValue,
   } = useFormik<CheckHousingMeteringDeviceFormTypes>({
+    validateOnChange: false,
     initialValues: {
       deviceId: deviceId,
       lastCheckingDate: null,
