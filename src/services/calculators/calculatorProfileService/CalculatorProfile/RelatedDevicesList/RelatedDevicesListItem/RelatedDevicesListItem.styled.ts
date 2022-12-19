@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  display: flex;
+  display: grid;
+
   align-items: center;
-  justify-content: space-between;
+  grid-template-columns: 2fr 1fr 2fr;
   width: 100%;
 
   padding: 16px;
@@ -19,6 +20,7 @@ export const DeviceLink = styled(Link)`
 `;
 
 export const DeviceModelText = styled.div`
+  font-weight: 500;
   color: #272f5a;
 `;
 

@@ -1,5 +1,7 @@
+import IsActive, { IsActiveBool } from '01/tt-components/IsActive';
 import { Tooltip } from 'antd';
 import React, { FC } from 'react';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import {
   DeviceInformation,
   DeviceLink,
@@ -10,7 +12,7 @@ import { RelatedDevicesListItemProps } from './RelatedDevicesListItem.types';
 
 export const RelatedDevicesListItem: FC<RelatedDevicesListItemProps> = ({
   device,
-  nodeNumber
+  nodeNumber,
 }) => {
   const { id, model, serialNumber, isActive, hub } = device;
   return (
@@ -21,6 +23,7 @@ export const RelatedDevicesListItem: FC<RelatedDevicesListItemProps> = ({
           <div>({serialNumber})</div>
         </DeviceLink>
       </Tooltip>
+      <DeviceStatus isActive={isActive} />
       <DeviceInformation>
         <div>Ввод: {hub?.entryNumber || '-'}</div>
         <div>Узел: {nodeNumber}</div>
