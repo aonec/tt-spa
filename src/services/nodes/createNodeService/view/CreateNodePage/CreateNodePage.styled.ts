@@ -21,3 +21,7 @@ export const AddressWrapper = styled.div`
   font-weight: 500;
   font-size: 14px;
 `;
+
+export const HeaderWrapper = styled.div`
+  padding: 25px 0 5px;
+`;

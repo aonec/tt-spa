@@ -28,9 +28,7 @@ import {
 } from '../../tasksProfileService.types';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { AddressSearchContainer } from 'services/addressSearchService';
-import {
-  SearchFieldType,
-} from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 
@@ -277,9 +275,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
           >
             <Option value={''}>Все</Option>
             {perpetrators &&
-              perpetrators.map(({ id, name }) => (
+              perpetrators.map(({ id, firstName, lastName }) => (
                 <Option key={id} value={id}>
-                  {name}
+                  {lastName} {firstName}
                 </Option>
               ))}
           </SelectSC>

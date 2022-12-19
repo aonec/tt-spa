@@ -7,14 +7,12 @@ import {
   CalculatorProfile,
   Contractor,
   EditCalculator,
-  EditNode,
   ErrorPage,
   HousingProfile,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
   MetersPage,
-  NodeProfile,
   Registration,
   Settings,
   UserProfile,
@@ -46,6 +44,7 @@ import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
+import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 
 const { gates } = objectProfileService;
 
@@ -171,8 +170,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
-                  component={NodeProfile}
+                  path="/nodes/:nodeId/:section?"
+                  component={NodeProfileContainer}
                   exact
                 />
 

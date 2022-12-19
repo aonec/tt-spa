@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const TooltipBlock = styled.div<{ value: number }>`
   display: inline-block;
@@ -32,7 +32,7 @@ export const Pointer = styled.div<{ value: number }>`
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 12px 6px 0 6px;
+  border-width: 8px 6px 0 6px;
   border-color: var(--main-100) transparent transparent transparent;
   transform: translate(-50%, 0)
     ${({ value }) => (value >= 0 ? 'scale(1, 1)' : 'scale(1,-1)')};

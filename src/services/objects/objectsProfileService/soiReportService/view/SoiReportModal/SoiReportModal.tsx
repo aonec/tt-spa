@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { BagIcon, CityIcon } from 'ui-kit/icons';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { ActionButton } from 'ui-kit/shared_components/ActionButton';
-import { SoiReportType } from '../../soiReportService.model.types';
+import { SoiReportType } from '../../soiReportService.types';
 import { SoiReportForm } from './SoiReportForm';
 import { CREATE_SOI_REPORT_FORM_ID } from './SoiReportModal.constants';
 import { ActionButtonsWrapper } from './SoiReportModal.styled';
