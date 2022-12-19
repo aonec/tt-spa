@@ -1,3 +1,4 @@
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, forward, guard, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -122,6 +123,10 @@ $searchState
     PageNumber: 1,
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
+  .on($existingCities, (prev, cities) => ({
+    ...prev,
+    City: cities?.length ? cities[cities.length - 1] : undefined,
+  }))
   .reset(clearFilters);
 
 forward({
