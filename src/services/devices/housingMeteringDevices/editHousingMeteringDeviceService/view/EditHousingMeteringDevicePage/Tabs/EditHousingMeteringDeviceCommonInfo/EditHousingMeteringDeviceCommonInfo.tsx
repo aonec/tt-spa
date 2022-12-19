@@ -226,7 +226,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
           Отмена
         </Button>
         <Button type="default" sidePadding={10} onClick={() => handleSubmit()}>
-          Создать
+          Сохранить
         </Button>
       </Footer>
     </Wrapper>

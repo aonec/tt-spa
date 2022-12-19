@@ -31,7 +31,7 @@ export const CommentText = styled.textarea`
   font: inherit;
   border: none;
   width: 100%;
-  height: 300px;
+  height: 70px;
   overflow: none;
   resize: none;
 

@@ -120,23 +120,16 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
 
           <MockComponent>
             <TasksWrapper>
-              <Tasks>Задачи: {housingMeteringDeviceTasks?.items?.length}</Tasks>
+              <Tasks>Задачи: {housingMeteringDeviceTasks?.items?.length || 0}</Tasks>
 
-              {
-                // housingMeteringDeviceTasks?.items?.length
-                1 ? (
-                  <LinkSC to={`/tasks/list/`} target="_blank">
-                    {'Перейти >'}
-                  </LinkSC>
-                ) : (
-                  ''
-                )
-              }
+              {housingMeteringDeviceTasks?.items?.length ? (
+                <LinkSC to={`/tasks/list/`} target="_blank">
+                  {'Перейти >'}
+                </LinkSC>
+              ) : (
+                ''
+              )}
             </TasksWrapper>
-          </MockComponent>
-
-          <MockComponent>
-            <h3>Документы</h3>
           </MockComponent>
         </RightBlock>
       </PageGridContainer>
