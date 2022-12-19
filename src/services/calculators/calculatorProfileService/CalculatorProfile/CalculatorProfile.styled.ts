@@ -30,3 +30,14 @@ export const AddressLinkWrapper = styled(Link)`
   color: #272f5a;
   font-weight: 500;
 `;
+
+export const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+`;
+
+export const Content = styled.div`
+  width: 100%;
+`;

@@ -13,6 +13,8 @@ import { CalculatorProfileGrouptype } from '../calculatorProfileService.constant
 import {
   AdditionalInfoWrapper,
   AddressLinkWrapper,
+  Content,
+  ContentWrapper,
   HeaderTitleWrapper,
   HeaderWrapper,
   TabsSC,
@@ -182,7 +184,12 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
         <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
       </TabsSC>
-      {component}
+      <ContentWrapper>
+        <Content>{component}</Content>
+        <div>
+          
+        </div>
+      </ContentWrapper>
     </div>
   );
 };
