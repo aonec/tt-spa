@@ -13,6 +13,8 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
 
+  const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
+
   const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
   const housingMeteringDeviceTasks = useStore(
     outputs.$housingMeteringDeviceTask
@@ -21,8 +23,6 @@ export const HousingMeteringDeviceProfileContainer = () => {
   const currentTab = useStore(outputs.$currentTab);
 
   const pending = useStore(outputs.$pending);
-
-  console.log(pending);
 
   return (
     <>
@@ -34,6 +34,7 @@ export const HousingMeteringDeviceProfileContainer = () => {
           currentTab={currentTab}
           handleChangeTab={handleChangeTab}
           housingMeteringDeviceTasks={housingMeteringDeviceTasks}
+          handleCheckModalOpen={() => handleCheckModalOpen()}
         />
       </WithLoader>
     </>

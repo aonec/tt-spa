@@ -184,7 +184,10 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
             value={values.lastCheckingDate}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add('year', 4));
+              setFieldValue(
+                'futureCheckingDate',
+                date ? moment(date).add(4, 'year') : ''
+              );
             }}
             placeholder="Выберите"
             format="DD.MM.YYYY"

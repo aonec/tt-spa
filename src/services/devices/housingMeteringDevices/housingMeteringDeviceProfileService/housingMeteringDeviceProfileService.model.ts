@@ -1,18 +1,21 @@
 import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
-import { editHousingMeteringDeviceService } from '../editHousingMeteringDeviceService';
 import {
   getDeviceTasks,
   getHousingMeteringDevice,
 } from './housingMeteringDeviceProfileService.api';
 import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
+import { checkHousingMeteringDeviceService } from '../checkHousingMeteringDeviceService';
 
 const domain = createDomain('housingMeteringDeviceProfileService');
 
 const handleChangeTab = domain.createEvent<HousingProfileTabs>();
 
 const handleHousingMeteringDeviceUpdate = domain.createEvent();
+
+const handleCheckDateUpdate =
+  checkHousingMeteringDeviceService.inputs.handleUpdateDevice;
 
 const FetchHousingMeteringDeviceGate = createGate<{ deviceId: number }>();
 
@@ -56,7 +59,7 @@ sample({
 
 sample({
   source: $housingMeteringDevice,
-  clock: handleHousingMeteringDeviceUpdate,
+  clock: [handleHousingMeteringDeviceUpdate, handleCheckDateUpdate],
   fn: (device) => Number(device?.id),
   target: fetchHousingMeteringDeviceFx,
 });
@@ -64,7 +67,12 @@ sample({
 const $pending = fetchHousingMeteringDeviceFx.pending;
 
 export const housingMeteringDeviceProfileService = {
-  inputs: { handleChangeTab, handleHousingMeteringDeviceUpdate },
+  inputs: {
+    handleChangeTab,
+    handleHousingMeteringDeviceUpdate,
+    handleCheckModalOpen:
+      checkHousingMeteringDeviceService.inputs.handleOpenModal,
+  },
   outputs: {
     $housingMeteringDevice,
     $currentTab,
