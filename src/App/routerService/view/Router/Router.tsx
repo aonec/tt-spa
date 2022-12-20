@@ -44,6 +44,7 @@ import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
+import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 
 const { gates } = objectProfileService;
@@ -196,8 +197,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/housingMeteringDevices/:deviceId/edit_odpu/"
-                  component={EditODPU}
+                  path="/housingMeteringDevices/:deviceId/edit"
+                  component={EditHousingMeteringDeviceContainer}
                   exact
                 />
 

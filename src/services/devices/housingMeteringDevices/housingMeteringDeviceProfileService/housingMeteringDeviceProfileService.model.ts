@@ -1,6 +1,7 @@
-import { createDomain, forward, sample } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
+import { editHousingMeteringDeviceService } from '../editHousingMeteringDeviceService';
 import {
   getDeviceTasks,
   getHousingMeteringDevice,
@@ -11,7 +12,9 @@ const domain = createDomain('housingMeteringDeviceProfileService');
 
 const handleChangeTab = domain.createEvent<HousingProfileTabs>();
 
-const FetchHousingMeteringDeviceGate = createGate<{ deviceId: string }>();
+const handleHousingMeteringDeviceUpdate = domain.createEvent();
+
+const FetchHousingMeteringDeviceGate = createGate<{ deviceId: number }>();
 
 const fetchHousingMeteringDeviceFx = domain.createEffect<
   number,
@@ -22,12 +25,6 @@ const fetchHousingMeteringDeviceTasksFx = domain.createEffect<
   number,
   TasksPagedList
 >(getDeviceTasks);
-
-sample({
-  clock: FetchHousingMeteringDeviceGate.open,
-  fn: (data) => Number(data.deviceId),
-  target: [fetchHousingMeteringDeviceFx, fetchHousingMeteringDeviceTasksFx],
-});
 
 const $housingMeteringDevice = domain
   .createStore<PipeHousingMeteringDeviceResponse | null>(null)
@@ -41,8 +38,38 @@ const $currentTab = domain
   .createStore<HousingProfileTabs>(HousingProfileTabs.CommonInfo)
   .on(handleChangeTab, (_, tab) => tab);
 
+sample({
+  source: FetchHousingMeteringDeviceGate.state,
+  clock: guard({
+    source: combine(
+      $housingMeteringDevice,
+      FetchHousingMeteringDeviceGate.state
+    ),
+    clock: FetchHousingMeteringDeviceGate.open,
+    filter: ([device, { deviceId }]) => {
+      return Boolean(deviceId) && deviceId !== device?.id;
+    },
+  }),
+  fn: ({ deviceId }) => Number(deviceId),
+  target: fetchHousingMeteringDeviceFx,
+});
+
+sample({
+  source: $housingMeteringDevice,
+  clock: handleHousingMeteringDeviceUpdate,
+  fn: (device) => Number(device?.id),
+  target: fetchHousingMeteringDeviceFx,
+});
+
+const $pending = fetchHousingMeteringDeviceFx.pending;
+
 export const housingMeteringDeviceProfileService = {
-  inputs: { handleChangeTab },
-  outputs: { $housingMeteringDevice, $currentTab, $housingMeteringDeviceTask },
+  inputs: { handleChangeTab, handleHousingMeteringDeviceUpdate },
+  outputs: {
+    $housingMeteringDevice,
+    $currentTab,
+    $housingMeteringDeviceTask,
+    $pending,
+  },
   gates: { FetchHousingMeteringDeviceGate },
 };

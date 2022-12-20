@@ -4252,6 +4252,7 @@ export interface PipeHousingMeteringDeviceConnectionResponse {
 
   /** @format int32 */
   nodeId: number | null;
+  node: PipeHousingMeteringDeviceNodeResponse | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection | null;
@@ -4298,6 +4299,14 @@ export interface PipeHousingMeteringDeviceListResponse {
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   hub: PipeHousingMeteringDeviceHubConnectionResponse | null;
   diameter: string | null;
+}
+
+export interface PipeHousingMeteringDeviceNodeResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
 }
 
 export interface PipeHousingMeteringDeviceResponse {
