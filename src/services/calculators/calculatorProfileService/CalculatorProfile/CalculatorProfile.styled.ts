@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { CalculatorIcon } from 'ui-kit/icons';
 import { Tabs } from 'ui-kit/Tabs';
 
 export const HeaderTitleWrapper = styled.div`
@@ -40,4 +41,9 @@ export const ContentWrapper = styled.div`
 
 export const Content = styled.div`
   width: 100%;
+`;
+
+export const CalculatorIconSC = styled(CalculatorIcon)`
+  width: 24px;
+  height: 16px;
 `;

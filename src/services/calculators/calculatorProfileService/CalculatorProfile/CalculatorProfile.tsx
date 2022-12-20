@@ -6,6 +6,7 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
+import { Tabs } from 'ui-kit/Tabs';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
@@ -14,6 +15,7 @@ import {
   AddressLinkWrapper,
   Content,
   ContentWrapper,
+  CalculatorIconSC,
   HeaderTitleWrapper,
   HeaderWrapper,
   TabsSC,
@@ -23,7 +25,7 @@ import { ConnectionInfo } from './ConnectionInfo';
 import { RelatedDevicesList } from './RelatedDevicesList';
 import { RelatedNodesList } from './RelatedNodesList';
 
-const { TabPane } = TabsSC;
+const { TabPane } = Tabs;
 
 export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
@@ -154,16 +156,13 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     <div>
       <GoBack />
       <HeaderWrapper>
-        <CalculatorIcon width={24} height={16} />
+        <CalculatorIconSC />
         <HeaderTitleWrapper>
           <PageHeader title={headerTitle} contextMenu={menuButtons} />
         </HeaderTitleWrapper>
       </HeaderWrapper>
       <AdditionalInfoWrapper>
-        <HeaderInfoString>
-          <>{getHousingStockAddress(address, true)}</>
-          <></>
-        </HeaderInfoString>
+        <>{getHousingStockAddress(address, true)}</>
       </AdditionalInfoWrapper>
       <TabsSC
         activeKey={currentGrouptype}
