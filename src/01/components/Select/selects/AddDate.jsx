@@ -1,13 +1,5 @@
 import React from 'react';
-
-import { ConfigProvider, DatePicker, Space } from 'antd';
-
-import styles from './antd.module.scss';
-import { NavLink } from 'react-router-dom';
-import {
-  addDate,
-  dataReducer,
-} from '../../../_pages/TaskProfile/hooks/usePanel';
+import { DatePicker, Space } from 'antd';
 import 'moment/locale/ru';
 
 const AddDate = ({ getData = () => {} }) => {

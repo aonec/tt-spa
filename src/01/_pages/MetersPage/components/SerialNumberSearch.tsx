@@ -1,6 +1,5 @@
 import axios from '01/axios';
 import { Loader } from '01/components';
-import ActiveLine from '01/components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -13,6 +12,7 @@ import React from 'react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 
 interface Props {
   setSearchContext: (context: 1 | 2) => void;
@@ -76,7 +76,7 @@ export const SerialNumberSearch: React.FC<Props> = ({
         <Flex>
           <DeviceDataString device={device} />
           <Space />
-          <ActiveLine
+          <DeviceStatus
             isActive={device.closingDate === null}
             closingReason={device.closingReason}
           />

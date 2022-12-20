@@ -1,5 +1,3 @@
-import GroupReport from '01/features/groupReport';
-import { setGroupStatus } from '01/features/groupReport/models/groupReportReducer';
 import { useAppDispatch } from '01/Redux/store';
 import { useEvent, useStore } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
@@ -29,7 +27,6 @@ export const ObjectsProfileContainer = () => {
   );
 
   const dispatch = useAppDispatch();
-  const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
 
   const handleOpenChooseResourceDisconnectionModal = useEvent(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal
@@ -55,11 +52,9 @@ export const ObjectsProfileContainer = () => {
       <CreateResourceDisconnectionContainer />
       <ChooseTypeOfResourceDisconnectionModalContainer />
       <FeedFlowBackReportContainer />
-      <GroupReport />
       <ObjectsProfile
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
-        handleExportGroupReport={handleExportGroupReport}
         handleOpenChooseResourceDisconnectionModal={() =>
           handleOpenChooseResourceDisconnectionModal()
         }

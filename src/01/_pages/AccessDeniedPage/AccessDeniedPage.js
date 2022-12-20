@@ -1,6 +1,4 @@
 import React from 'react';
-import { ButtonForDenied } from '../../r_comp';
-
 import './AccessDeniedPage.css';
 import { Button } from 'ui-kit/Button';
 
