@@ -148,8 +148,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   component={EmployeeProfileContainer}
                 />
 
-                <Route path="/devices/(\\d+)" component={Devices} exact />
-
                 <Route
                   path={[
                     '/calculators/:deviceId/(connection|related|nodes|documents)?',
