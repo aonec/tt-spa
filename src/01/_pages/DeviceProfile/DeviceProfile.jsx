@@ -1,16 +1,12 @@
-import { Route, useParams, useLocation, useRouteMatch } from 'react-router-dom';
+import { Route, useParams, useLocation } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import {
   getInfo,
-  getObjectOfDevice,
   getODPUTasks,
-  getRelatedDevices,
-  getTypeODPU,
   getCalculatorResources,
   getCalculator,
-  getPagination,
 } from '01/_api/device_page';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
