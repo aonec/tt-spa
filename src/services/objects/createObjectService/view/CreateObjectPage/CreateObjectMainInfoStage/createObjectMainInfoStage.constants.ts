@@ -7,9 +7,24 @@ import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({
   houseManagement: yup.string().nullable().required('Обязательное поле'),
-  objectCategotry: yup.string().nullable().required('Обязательное поле'),
-  livingHouseType: yup.string().nullable(),
-  nonResidentialHouseType: yup.string().nullable(),
+  objectCategory: yup.string().nullable().required('Обязательное поле'),
+
+  livingHouseType: yup
+    .string()
+    .nullable()
+    .when('objectCategory', {
+      is: EHouseCategory.Living,
+      then: yup.string().required('Обязательное поле'),
+    }),
+
+  nonResidentialHouseType: yup
+    .string()
+    .nullable()
+    .when('objectCategory', {
+      is: EHouseCategory.NonResidential,
+      then: yup.string().required('Обязательное поле'),
+    }),
+
   heatingStationId: yup.string().nullable().required('Обязательное поле'),
 });
 

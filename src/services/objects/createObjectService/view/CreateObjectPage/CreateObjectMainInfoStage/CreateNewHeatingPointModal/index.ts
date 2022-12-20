@@ -1,1 +1,0 @@
-export { CreateNewHeatingPointModal } from './CreateNewHeatingPointModal'

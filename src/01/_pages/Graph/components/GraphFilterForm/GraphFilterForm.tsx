@@ -17,6 +17,7 @@ import {
   GraphFilter,
   OpenedFilter,
   RangeWrapper,
+  ButtonSC,
 } from './GraphFilterForm.styled';
 import { SelectSC } from '01/shared/ui/Fields';
 import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
@@ -97,7 +98,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
       {!isActive ? (
         <ClosedFilterWrapper>
           <Tooltip title="Настройка параметров">
-            <Button
+            <ButtonSC
               onClick={() => openModal()}
               icon={<IconTT icon="searchFilter" />}
               style={{ marginRight: 16 }}
@@ -117,7 +118,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
           <Form>
             <FormBody>
               <Tooltip title="Настройка параметров">
-                <Button
+                <ButtonSC
                   onClick={() => setIsActive((state) => !state)}
                   style={{ marginBottom: 8 }}
                   icon={<IconTT icon="searchFilter" />}

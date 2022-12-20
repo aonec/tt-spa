@@ -6,4 +6,6 @@ export type ObjectsProfileProps = {
   searchType?: SearchType;
   openSoiReportModal: () => void;
   handleCreateObject: () => void;
+  isAdministrator: boolean;
+  openFeedFlowBackReportModal: () => void;
 };

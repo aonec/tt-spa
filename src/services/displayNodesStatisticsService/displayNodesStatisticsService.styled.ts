@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 export const Title = styled.div`
   font-size: 24px;
   color: #272f5a;
+  margin: 12px 0 32px;
 `;
 
 export const PageWrapper = styled.div`

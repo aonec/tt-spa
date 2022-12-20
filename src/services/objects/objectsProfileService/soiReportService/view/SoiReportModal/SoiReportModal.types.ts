@@ -3,7 +3,7 @@ import { TreeSelectElement } from 'services/resources/createResourceDisconnectio
 import {
   CreateSoiReportRequestPayload,
   SoiReportType,
-} from '../../soiReportService.model.types';
+} from '../../soiReportService.types';
 
 export type SoiReportModalProps = {
   isModalOpen: boolean;
