@@ -1,7 +1,6 @@
 import { DevicesByAddressInterface } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import {
   HouseAddress,
-  HousingStockAddressResponse,
   HousingStockListResponse,
   HousingStockShortResponse,
 } from 'myApi';
