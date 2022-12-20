@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import styled from 'styled-components';
 
 export const GraphFilter = styled.div`
@@ -77,3 +78,8 @@ export const ClosedFilterWrapper = styled.div`
   padding-top: 16;
   width: 100%;
 `;
+
+export const ButtonSC = styled(Button)`
+  border-radius: 4px;
+`;
+

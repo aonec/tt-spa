@@ -2,11 +2,17 @@ import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { CreateHeatingStationContainer } from '../heatingStations/createHeatingStationService';
+import { EditHeatingStationContainer } from '../heatingStations/editHeatingStationService';
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
 
 const { inputs, outputs, gates } = createObjectService;
-const { HouseManagementsFetchGate, PageCloseGate } = gates;
+const {
+  HouseManagementsFetchGate,
+  PageCloseGate,
+  HeatingStationsFetchGate,
+} = gates;
 
 export const CreateObjectContainer = () => {
   const existingCities = useStore(addressSearchService.outputs.cities);
@@ -25,6 +31,16 @@ export const CreateObjectContainer = () => {
   const openPreviewModal = useEvent(inputs.openPreviewModal);
   const closePreviewModal = useEvent(inputs.closePreviewModal);
 
+  const openCreateHeatingStationModal = useEvent(
+    inputs.handleHeatindStationModalOpen
+  );
+
+  const openEditHeatingStationModal = useEvent(
+    inputs.openEditHeatingStationModal
+  );
+
+  const heatingStationCapture = useEvent(inputs.heatingStationCapture);
+
   const goBackStage = useEvent(inputs.goBackStage);
 
   const history = useHistory();
@@ -42,6 +58,9 @@ export const CreateObjectContainer = () => {
     <>
       <PageCloseGate />
       <HouseManagementsFetchGate />
+      <HeatingStationsFetchGate />
+      <CreateHeatingStationContainer />
+      <EditHeatingStationContainer />
       <CreateObjectPage
         existingCities={existingCities}
         existingStreets={existingStreets}
@@ -56,6 +75,9 @@ export const CreateObjectContainer = () => {
         isPreviewModalOpen={isPreviewModalOpen}
         openPreviewModal={() => openPreviewModal()}
         closePreviewModal={() => closePreviewModal()}
+        openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
+        openEditHeatingStationModal={() => openEditHeatingStationModal()}
+        heatingStationCapture={heatingStationCapture}
       />
     </>
   );

@@ -10,7 +10,7 @@ import {
   CreateSoiReportRequestPayload,
   GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
-} from './soiReportService.model.types';
+} from './soiReportService.types';
 
 export const getSoiReport = async (
   params: CreateSoiReportRequestPayload

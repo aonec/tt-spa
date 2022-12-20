@@ -13,7 +13,7 @@ const formatDate = (timeStamp: string): Date => {
 };
 
 export const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
-  const { datum, x, y,measure } = props;
+  const { datum, x, y, measure } = props;
   return (
     <g style={{ pointerEvents: 'none' }}>
       <foreignObject
