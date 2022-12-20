@@ -1,3 +1,4 @@
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { combine, createDomain, forward, guard, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -46,7 +47,14 @@ const $housingStock = domain
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(clearAddress);
 
-const $searchState = domain.createStore<GetTasksListRequestPayload>({});
+const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
+
+const $searchState = domain
+  .createStore<GetTasksListRequestPayload>({})
+  .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
+    ...prev,
+    PipeNodeId: Number(pipeNodeId),
+  }));
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 const $isExtendedSearchOpen = domain.createStore(false);
@@ -115,6 +123,10 @@ $searchState
     PageNumber: 1,
   }))
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
+  .on($existingCities, (prev, cities) => ({
+    ...prev,
+    City: cities?.length ? cities[cities.length - 1] : undefined,
+  }))
   .reset(clearFilters);
 
 forward({
@@ -133,16 +145,18 @@ sample({
 split({
   source: guard({
     clock: FiltersGate.state,
-    filter: ({ apartmentId, housingStockId }) =>
-      Boolean(apartmentId) || Boolean(housingStockId),
+    filter: ({ apartmentId, housingStockId, pipeNodeId }) =>
+      [apartmentId, housingStockId, pipeNodeId].some(Boolean),
   }),
   match: {
     housingStock: (ids) => Boolean(ids.housingStockId),
     apartmentId: (ids) => Boolean(ids.apartmentId),
+    pipeNodeId: (ids) => Boolean(ids.pipeNodeId),
   },
   cases: {
     apartmentId: getApartmentFx,
     housingStock: getHousingStockFx,
+    pipeNodeId: setPipeNodeId,
   },
 });
 

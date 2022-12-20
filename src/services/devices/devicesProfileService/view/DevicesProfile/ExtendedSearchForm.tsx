@@ -5,20 +5,17 @@ import {
   StyledRangePicker,
   StyledContainerThreeItems,
   StyledSlider,
-  LabelCS,
   StyledFormThreeRows,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import {
-  FormItem,
-  SelectSC,
-} from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { SelectSC } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
 
@@ -80,8 +77,7 @@ export const ExtendedSearchForm: FC<{
         ]}
       />
       <StyledContainerThreeItems>
-        <FormItem>
-          <LabelCS>Тип ресурса: </LabelCS>
+        <FormItem label="Тип ресурса">
           <SelectSC
             id="Resource"
             value={values['Filter.Resource']}
@@ -96,8 +92,7 @@ export const ExtendedSearchForm: FC<{
           </SelectSC>
         </FormItem>
 
-        <FormItem>
-          <LabelCS>Статус Узла: </LabelCS>
+        <FormItem label="Статус Узла">
           <SelectSC
             id="NodeStatus"
             placeholder="Любой статус"
@@ -111,8 +106,7 @@ export const ExtendedSearchForm: FC<{
             <Option value="Prepared">Подговлен к сдаче</Option>
           </SelectSC>
         </FormItem>
-        <FormItem>
-          <LabelCS>Истекает дата поверки: </LabelCS>
+        <FormItem label="Истекает дата поверки">
           <SelectSC
             id="expirationDate"
             placeholder="Все"
@@ -129,8 +123,7 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
-        <FormItem>
-          <LabelCS>Диаметр трубы, мм: </LabelCS>
+        <FormItem label="Диаметр трубы, мм">
           <StyledSlider
             getTooltipPopupContainer={(triggerNode) =>
               triggerNode.parentNode as HTMLElement
@@ -145,8 +138,7 @@ export const ExtendedSearchForm: FC<{
             onChange={handleChangeRange}
           />
         </FormItem>
-        <FormItem>
-          <LabelCS>Период действия акта допуска: </LabelCS>
+        <FormItem label="Период действия акта допуска">
           <ConfigProvider>
             <StyledRangePicker
               value={[
@@ -175,8 +167,7 @@ export const ExtendedSearchForm: FC<{
             />
           </ConfigProvider>
         </FormItem>
-        <FormItem>
-          <LabelCS>Сортировать по: </LabelCS>
+        <FormItem label="Сортировать по">
           <SelectSC
             id="sortBy"
             placeholder="Улица"
