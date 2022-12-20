@@ -11,11 +11,15 @@ import {
   Wrapper,
 } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
+import { additionalAddressesString } from 'utils/additionalAddressesString';
+import { Tooltip } from 'antd';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
     pipeNode?.nodeStatus?.value &&
     NodeStatusIconsDictionary[pipeNode?.nodeStatus?.value];
+
+  const additionalAdress = additionalAddressesString(pipeNode.address);
 
   return (
     <CommonInfo
@@ -23,10 +27,12 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
         {
           key: 'Адрес',
           value: (
-            <AddressWrapper to={`/objects/profile/${pipeNode?.address?.id}`}>
-              {pipeNode?.address &&
-                getHousingStockAddress(pipeNode?.address, true)}
-            </AddressWrapper>
+            <Tooltip title={additionalAdress}>
+              <AddressWrapper to={`/objects/profile/${pipeNode?.address?.id}`}>
+                {pipeNode?.address &&
+                  getHousingStockAddress(pipeNode?.address, true)}
+              </AddressWrapper>
+            </Tooltip>
           ),
         },
         {

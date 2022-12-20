@@ -16,13 +16,13 @@ import {
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
-import { FormItem } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { useDebounce } from '01/hooks/useDebounce';
+import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
 

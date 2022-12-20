@@ -5,11 +5,11 @@ import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
 import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import {
-  FormItem,
   SelectSC,
   StyledContainerThreeItemsMainTypes,
   StyledFormTwoRows,
 } from './SearchTasks.styled';
+import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
 
@@ -21,8 +21,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
   return (
     <StyledFormTwoRows id="searchForm">
       <StyledContainerFourItems>
-        <FormItem>
-          <label>Город: </label>
+        <FormItem label="Город">
           <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
@@ -33,8 +32,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
           />
         </FormItem>
 
-        <FormItem>
-          <label>Улица: </label>
+        <FormItem label="Улица">
           <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
@@ -45,8 +43,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
           />
         </FormItem>
 
-        <FormItem>
-          <label>Дом: </label>
+        <FormItem label="Дом">
           <InputSC
             onChange={(value) =>
               setFieldValue(
@@ -60,8 +57,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
           />
         </FormItem>
 
-        <FormItem>
-          <label>Корпус: </label>
+        <FormItem label="Корпус">
           <InputSC
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
@@ -73,8 +69,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
         </FormItem>
       </StyledContainerFourItems>
       <StyledContainerThreeItemsMainTypes>
-        <FormItem>
-          <label>Номер задачи: </label>
+        <FormItem label="Номер задачи">
           <InputSC
             width={'100%'}
             placeholder="Номер задачи"
@@ -85,8 +80,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             name="TaskId"
           />
         </FormItem>
-        <FormItem>
-          <label>Тип задачи: </label>
+        <FormItem label="Тип задачи">
           <SelectSC
             id="TaskType"
             placeholder="Тип задачи"
@@ -103,8 +97,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
               ))}
           </SelectSC>
         </FormItem>
-        <FormItem>
-          <label>Статус Задачи: </label>
+        <FormItem label="Статус Задачи">
           <SelectSC
             placeholder="Статус Задачи"
             value={values?.ClosingStatuses}
