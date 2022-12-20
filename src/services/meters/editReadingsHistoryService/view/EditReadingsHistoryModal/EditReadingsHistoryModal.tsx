@@ -3,9 +3,7 @@ import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/
 import moment from 'moment';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
-import { BufferedReadingValues } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.types';
 import {
-  getBufferedValuesFromReading,
   getRateNum,
 } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 import { ChevronIcon } from 'ui-kit/icons';

@@ -4,13 +4,11 @@ import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import { translateMountPlace } from '../../../../../utils/translateMountPlace';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceOnTaskResponse,
 } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
