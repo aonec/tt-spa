@@ -102,7 +102,7 @@ export const Menu = (showPopupHandler) => {
       <List id="edit-button__list">
         <NavLink
           className={styles.menu}
-          to={`/housingMeteringDevices/${deviceId}/edit_odpu`}
+          to={`/housingMeteringDevices/${deviceId}/edit`}
         >
           <ListItem>Редактировать ОДПУ</ListItem>
         </NavLink>

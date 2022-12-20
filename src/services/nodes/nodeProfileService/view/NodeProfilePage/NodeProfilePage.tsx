@@ -12,6 +12,7 @@ import {
   Wrapper,
   HeaderWrapper,
   HeaderInfoStringWrapper,
+  AdditionalAddress,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
@@ -27,12 +28,16 @@ import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatistics
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from '01/tt-components/NodeConnection';
+import { ENodeCommercialAccountStatus } from 'myApi';
+import qs from 'query-string';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
   pipeNode,
   section = PipeNodeProfileSection.Common,
   handleChangeTab,
+  handleEditNode,
+  openRegisterNodeOnCommercialAccountingModal,
 }) => {
   const address = pipeNode?.address?.address;
 
@@ -78,6 +83,9 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     pipeNode?.calculator === null ||
     pipeNode?.calculator?.isConnected === false;
 
+  const isNodeRegistered =
+    pipeNode?.nodeStatus?.value === ENodeCommercialAccountStatus.Registered;
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -95,7 +103,18 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 </Title>
               }
               contextMenu={{
-                menuButtons: [],
+                menuButtons: [
+                  {
+                    title: 'Редактировать узел',
+                    onClick: handleEditNode,
+                  },
+                  {
+                    title: isNodeRegistered
+                      ? 'Снять узел с коммерческого учета'
+                      : 'Поставить узел на коммерческий учет',
+                    onClick: openRegisterNodeOnCommercialAccountingModal,
+                  },
+                ],
               }}
             />
           </HeaderWrapper>
@@ -104,7 +123,12 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               <div>{address?.mainAddress?.city}</div>
               <div>
                 {address?.mainAddress &&
-                  getHousingStockItemAddress(address?.mainAddress)}
+                  getHousingStockItemAddress(address?.mainAddress)}{' '}
+                {address?.additionalAddresses?.map((address) => (
+                  <AdditionalAddress>
+                    {getHousingStockItemAddress(address)}
+                  </AdditionalAddress>
+                ))}
               </div>
             </HeaderInfoString>
           </HeaderInfoStringWrapper>
@@ -153,7 +177,10 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               />
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
-                link={`/tasks`}
+                link={qs.stringifyUrl({
+                  url: '/tasks/list/Observing',
+                  query: { pipeNodeId: pipeNode.id },
+                })}
                 showLink={Boolean(pipeNode.numberOfTasks)}
               />
             </div>

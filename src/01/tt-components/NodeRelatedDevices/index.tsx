@@ -75,7 +75,7 @@ export const NodeRelatedDevices = ({
         <EditOptions>
           {edit ? (
             <Link
-              to={`/housingMeteringDevices/${id}/edit_odpu`}
+              to={`/housingMeteringDevices/${id}/edit`}
               title="Редактирование ОДПУ"
               style={{ display: 'inline-flex', width: 'min-content' }}
             >

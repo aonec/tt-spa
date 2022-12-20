@@ -60,6 +60,7 @@ import { ReactComponent as ArrowRightLongIcon } from './svg/arrowRightLong.svg';
 import { ReactComponent as ClosedEyeIcon } from './svg/closedEye.svg';
 import { ReactComponent as CitySmallIcon } from './svg/citySmall.svg';
 import { ReactComponent as NoConnectionIcon } from './svg/noConnection.svg';
+import { ReactComponent as PipeIcon } from './svg/pipe.svg';
 
 export {
   FinishIcon,
@@ -123,5 +124,6 @@ export {
   ArrowRightLongIcon,
   ClosedEyeIcon,
   CitySmallIcon,
-  NoConnectionIcon
+  NoConnectionIcon,
+  PipeIcon,
 };

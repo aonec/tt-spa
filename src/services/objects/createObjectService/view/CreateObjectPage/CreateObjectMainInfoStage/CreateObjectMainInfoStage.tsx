@@ -11,6 +11,7 @@ import {
   Footer,
   GridContainer,
   InputTypeDisplayingDiv,
+  PencilIconSC,
   RightButtonBlock,
   Title,
   Wrapper,
@@ -38,10 +39,14 @@ import {
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
+import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
 
 const {
   inputs: { handleHeatingStationCreated },
 } = createHeatingStationService;
+const {
+  inputs: { handleHeatingStationEdited },
+} = editHeatingStationService;
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -51,6 +56,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   createObjectData,
   heatingStations,
   openCreateHeatingStationModal,
+  openEditHeatingStationModal,
+  heatingStationCapture,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -84,6 +91,13 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
     () =>
       handleHeatingStationCreated.watch((newHeatingStationData) =>
         setFieldValue('heatingStationId', newHeatingStationData?.id)
+      ),
+    []
+  );
+  useEffect(
+    () =>
+      handleHeatingStationEdited.watch((editedHeatingStationData) =>
+        setFieldValue('heatingStationId', editedHeatingStationData?.id)
       ),
     []
   );
@@ -224,6 +238,13 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 <Title>{selectedHeatingStation?.name}</Title>
               </FlexStart>
               <FlexEnd>
+                <PencilIconSC
+                  onClick={() => {
+                    openEditHeatingStationModal();
+                    selectedHeatingStation &&
+                      heatingStationCapture(selectedHeatingStation);
+                  }}
+                />
                 <CloseIconSC
                   onClick={() => {
                     setFieldValue('heatingStationId', null);
