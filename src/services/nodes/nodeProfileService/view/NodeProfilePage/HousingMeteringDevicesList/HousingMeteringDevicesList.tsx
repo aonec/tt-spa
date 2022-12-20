@@ -13,6 +13,7 @@ export const HousingMeteringDevicesList: FC<HousingMeteringDevicesListProps> = (
         <CommunicationPipeListItem
           resource={resource}
           pipe={pipe as CommunicationPipePayload}
+          key={pipe.id}
         />
       ))}
     </div>

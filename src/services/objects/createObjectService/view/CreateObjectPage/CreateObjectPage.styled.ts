@@ -39,5 +39,3 @@ export const BlockTitle = styled.div`
   letter-spacing: 0em;
   user-select: none;
 `;
-
-

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, merge } from 'effector';
 import { nodeService } from '../../displayNode/models';
 import {
   registerPipeNode,
@@ -11,12 +11,10 @@ import {
   unsetNodeCommercialRegistrationRequestPayload,
 } from './nodeCommercialRegistrationService.types';
 
-const domain = createDomain(
-  'nodeCommercialRegistrationService'
-);
+const domain = createDomain('nodeCommercialRegistrationService');
 
 const $isModalOpen = domain.createStore<boolean>(false);
-const $doneData = domain.createStore<boolean>(false)
+const $doneData = domain.createStore<boolean>(false);
 
 const openModal = domain.createEvent();
 const closeModal = domain.createEvent();
@@ -32,7 +30,6 @@ const unregistrationFx = domain.createEffect<
   void,
   Error
 >(unsetPipeNode);
-
 
 const registerNodeOnCommercialAccounting = domain.createEvent<NodeCommercialRegistrationRequestPayload>();
 const unsetNodeOnCommercialAccounting = domain.createEvent<unsetNodeCommercialRegistrationRequestPayload>();
@@ -63,7 +60,7 @@ $isModalOpen.on(openModal, () => true).on(closeModal, () => false);
 
 forward({
   from: [registrationFx.doneData, unregistrationFx.doneData],
-  to: [nodeService.inputs.refetchNode, closeModal]
+  to: [nodeService.inputs.refetchNode, closeModal],
 });
 
 forward({
@@ -76,16 +73,22 @@ forward({
   to: unregistrationFx,
 });
 
+const handleStatusChanged = merge([
+  registrationFx.doneData,
+  unregistrationFx.doneData,
+]);
+
 export const nodeCommercialRegistrationService = {
   inputs: {
     registerNodeOnCommercialAccounting,
     openModal,
     closeModal,
     unsetNodeOnCommercialAccounting,
+    handleStatusChanged,
   },
   outputs: {
     $isModalOpen,
     $isLoading,
-    $doneData
+    $doneData,
   },
 };

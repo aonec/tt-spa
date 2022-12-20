@@ -54,10 +54,7 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
       {isLoading && <Skeleton active />}
       {!isLoading && (
         <NodesGroupsWrapper>
-          {!nodesGroups.length && (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          )}
-          {nodesGroups.length &&
+          {nodesGroups.length ? (
             nodesGroups.map(([key, nodes]) => {
               return (
                 <NodesGroup
@@ -68,7 +65,10 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
                   openDevicesListModal={openDevicesListModal}
                 />
               );
-            })}
+            })
+          ) : (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          )}
         </NodesGroupsWrapper>
       )}
     </Wrapper>
