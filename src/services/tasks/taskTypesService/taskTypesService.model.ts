@@ -3,16 +3,14 @@ import { createGate } from 'effector-react';
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
+  OrganizationUserListResponse,
+  OrganizationUserListResponsePagedList,
 } from 'myApi';
 import {
   getHousingManagements,
   getPerpetratorIds,
   getTaskTypes,
 } from './taskTypesService.api';
-import {
-  perpetratorItemsProps,
-  perpetratorProps,
-} from './taskTypesService.types';
 
 export const $taskTypes = createStore<
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null
@@ -22,8 +20,8 @@ export const $housingManagments = createStore<
   GuidStringDictionaryItem[] | null
 >(null);
 
-export const $perpetratorIdStore = createStore<perpetratorItemsProps[] | null>(
-  null
+export const $perpetratorIdStore = createStore<OrganizationUserListResponse[]>(
+  []
 );
 
 const fetchTaskTypesFx = createEffect<
@@ -36,9 +34,10 @@ const fetchHousingManagments = createEffect<
   GuidStringDictionaryItem[] | null
 >(getHousingManagements);
 
-const fetchPerpetratorIds = createEffect<void, perpetratorItemsProps[] | null>(
-  getPerpetratorIds
-);
+const fetchPerpetratorIds = createEffect<
+  void,
+  OrganizationUserListResponsePagedList
+>(getPerpetratorIds);
 
 export const TaskTypesGate = createGate();
 
@@ -54,5 +53,5 @@ $housingManagments.on(
 );
 $perpetratorIdStore.on(
   fetchPerpetratorIds.doneData,
-  (_, perpetrators) => perpetrators
+  (_, perpetrators) => perpetrators.items || []
 );

@@ -7,14 +7,12 @@ import {
   CalculatorProfile,
   Contractor,
   EditCalculator,
-  EditNode,
   ErrorPage,
   HousingProfile,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
   MetersPage,
-  NodeProfile,
   Registration,
   Settings,
   UserProfile,
@@ -47,6 +45,7 @@ import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileS
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
 import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
+import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 
 const { gates } = objectProfileService;
 
@@ -174,14 +173,14 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
-                  component={NodeProfile}
+                  path="/nodes/:nodeId/:section?"
+                  component={NodeProfileContainer}
                   exact
                 />
 
                 <Route
                   path={['/housingMeteringDevices/:deviceId/']}
-                  component={HousingMeteringDeviceProfileContainer} //HousingProfile
+                  component={HousingMeteringDeviceProfileContainer} 
                   exact
                 />
 
