@@ -5,6 +5,8 @@ export type NodeProfilePageProps = {
   isLoading: boolean;
   section?: PipeNodeProfileSection;
   handleChangeTab: (section: PipeNodeProfileSection) => void;
+  handleEditNode: () => void;
+  openRegisterNodeOnCommercialAccountingModal: () => void;
 };
 
 export enum PipeNodeProfileSection {
