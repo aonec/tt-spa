@@ -1,4 +1,6 @@
 @import '../../styles/fonts/fonts.css';
+$white: #ffffff;
+$blue: #189ee9;
 
 :root {
   --main: 39, 47, 90;
@@ -236,4 +238,24 @@ sup {
 
 .ant-input-disabled {
   color: #272f5acc !important;
+}
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    padding: 0;
+    margin: 0;
+
+    .ant-dropdown-menu-item {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 32px;
+      padding: 8px 24px;
+
+      &:hover {
+        background: $blue;
+        color: $white;
+      }
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import ModalCommonReport from '01/_pages/ObjectProfile/components/Modals/CommonReport';
+// import ModalCommonReport from '01/_pages/ObjectProfile/components/Modals/CommonReport';
 import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { useState } from 'react';
@@ -23,11 +23,11 @@ export const ObjectProfileContainer = () => {
   return (
     <>
       <ObjectProfileIdGate objectId={Number(housingStockId)} />
-      <ModalCommonReport
+      {/* <ModalCommonReport
         visible={commonReport}
         setVisible={setCommonReport}
         object={housingStock}
-      />
+      /> */}
       {isLoading && <Skeleton active />}
       {!isLoading && housingStock && (
         <ObjectProfile
