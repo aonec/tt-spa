@@ -31,7 +31,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     (elem) => elem.id === createObjectData?.houseManagement
   )?.name;
 
-  const objectCategory = createObjectData?.objectCategotry;
+  const objectCategory = createObjectData?.objectCategory;
 
   const preparedLivingType =
     createObjectData?.livingHouseType &&
@@ -70,11 +70,6 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
                     ул. {elem.street},
                     <SpacesHouseNumber>{elem.house}</SpacesHouseNumber>
                     {elem.corpus ? `к. ${elem.corpus} ` : ''}
-                    {elem.index ? (
-                      <SpacedIndex>({elem?.index})</SpacedIndex>
-                    ) : (
-                      ''
-                    )}
                   </FieldForAdditionalAddresses>
                 ))}
               </GridContainerForAdditionalAddresses>
@@ -93,7 +88,6 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
           </>
         )}
         <PageTitle>2. Основная информация </PageTitle>
-
         <GridContainer>
           <FieldDescrition>Домоуправление</FieldDescrition>
           <Field>{houseManagrmentName || '-'}</Field>

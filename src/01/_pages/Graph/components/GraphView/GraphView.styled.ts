@@ -14,6 +14,7 @@ export const horizontalAxisStyle = {
 };
 
 export const verticalAxisStyle = {
+  parent: { width: '100%' },
   axis: { stroke: 'none' },
   ticks: { stroke: 'none' },
   tickLabels: { fill: 'var(--main-70)' },

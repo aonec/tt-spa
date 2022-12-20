@@ -2,11 +2,11 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
+  HeatingStationResponse,
   HeatingStationResponsePagedList,
   HouseManagementResponse,
 } from 'myApi';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
-import { HeatingPoint } from './NewHeatingPointForm/NewHeatingPointForm.types';
 
 export type CreateObjectMainInfoStageProps = {
   houseManagements: HouseManagementResponse[] | null;
@@ -15,11 +15,14 @@ export type CreateObjectMainInfoStageProps = {
   handleSubmitCreateObject: (payload: ObjectCreateSubmitData) => void;
   createObjectData: ObjectCreateSubmitData | null;
   heatingStations: HeatingStationResponsePagedList | null;
+  openCreateHeatingStationModal: () => void;
+  openEditHeatingStationModal: () => void
+  heatingStationCapture: (payload: HeatingStationResponse) => void
 };
 
 export type ObjectMainInfoValues = {
   houseManagement: string | null;
-  objectCategotry: EHouseCategory | null;
+  objectCategory: EHouseCategory | null;
   livingHouseType: ELivingHouseType | null;
   nonResidentialHouseType: ENonResidentialHouseType | null;
   heatingStationId: string | null;

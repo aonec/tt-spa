@@ -1,4 +1,3 @@
-import { sendServiceZoneFx } from '01/features/serviceZones/addServiceZone/models';
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -9,6 +8,7 @@ import {
   PipeNodeResponse,
   UpdatePipeNodeRequest,
 } from 'myApi';
+import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
   fetchNode,
   fetchPipeNodeMagistrals,
@@ -84,7 +84,7 @@ guard({
 });
 
 forward({
-  from: sendServiceZoneFx.doneData,
+  from: createNodeServiceZoneService.inputs.createNodeServiceZoneFx.doneData,
   to: getNodeZonesFx,
 });
 

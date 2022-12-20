@@ -1,18 +1,11 @@
 import styled from 'styled-components';
-import {
-  StyledContainerThreeItems,
-} from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { StyledContainerThreeItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import { Select } from 'antd';
 
 export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 4fr 4fr;
   gap: 16px;
-`;
-
-export const FormItem = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 export const StyledContainerThreeItemsMainTypes = styled(
@@ -32,6 +25,13 @@ export const StyledContainerAdressSection = styled.div`
 export const StyledTooltiContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 6px;
+
+  label {
+    color: #272f5ab2;
+    font-weight: 500;
+    font-size: 14px;
+  }
 `;
 
 export const OverFlowSelectSC = styled(Select)<{ isShadow?: boolean }>`

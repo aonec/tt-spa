@@ -22,8 +22,6 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const pending = useStore(outputs.$pending);
 
-  console.log(pending);
-
   return (
     <>
       <FetchHousingMeteringDeviceGate deviceId={Number(deviceId)} />

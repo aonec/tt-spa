@@ -21,25 +21,32 @@ export const InfoWrapper = styled.div`
   font-weight: 500;
 `;
 
-export const MagistralLabel = styled.span`
-  margin-left: 8px;
-  opacity: 0.8;
-  font-weight: 400;
-`;
-
 export const PipeNumber = styled.span`
   font-weight: 500;
   font-size: 16px;
   color: #272f5a;
 `;
 
-export const DiameterLabel = styled.span`
-  opacity: 0.8;
-  font-weight: 400;
-`;
-
 export const RighContentWrapper = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
+`;
+
+export const DevicesAmount = styled.div`
+  color: #272f5ab2;
+  font-weight: 400;
+  font-size: 16px;
+`;
+
+export const PipeIconWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+export const PipeInfo = styled.div`
+  margin-top: 4px;
+  color: #272f5ab2;
+  font-weight: 400;
+  font-size: 12px;
 `;
