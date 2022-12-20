@@ -15,8 +15,8 @@ const domain = createDomain('createHeatingStationService');
 
 const handleCreateHeatingStation = domain.createEvent<HeatingStation>();
 
-const handleOpenModal = domain.createEvent<void>();
-const handleCloseModal = domain.createEvent<void>();
+const handleOpenModal = domain.createEvent();
+const handleCloseModal = domain.createEvent();
 
 const createHeatingStationFx = domain.createEffect<
   AddHeatingStationRequest,
@@ -63,10 +63,6 @@ forward({
 
 const $existingCities = addressSearchService.outputs.cities;
 const $existingStreets = addressSearchService.outputs.streets;
-
-const $newHeatingStationData = domain
-  .createStore<HeatingStationResponse | null>(null)
-  .on(createHeatingStationFx.doneData, (_, data) => data);
 
 const $isModalOpen = domain
   .createStore<boolean>(false)

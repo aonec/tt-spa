@@ -41,7 +41,7 @@ export const Header = ({
     {
       title: 'Редактировать ОДПУ',
       cb: () => {
-        push(`/housingMeteringDevices/${device.id}/edit_odpu`);
+        push(`/housingMeteringDevices/${device.id}/edit`);
       },
       show: show('HousingMeteringDeviceUpdate'),
       color: 'default',
