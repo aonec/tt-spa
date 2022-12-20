@@ -1,9 +1,9 @@
-import { devicesAmountTexts } from './CommunicationPipeListItem.constants';
+import { devicesCountTexts } from './CommunicationPipeListItem.constants';
 
-export function getDevicesAmountText(devicesLength: number) {
+export function getDevicesCountText(devicesLength: number) {
   const nodesLengthLastDigit = devicesLength % 10;
 
-  const devicesText = devicesAmountTexts.find(({ digits }) =>
+  const devicesText = devicesCountTexts.find(({ digits }) =>
     digits.includes(nodesLengthLastDigit)
   )?.text;
 

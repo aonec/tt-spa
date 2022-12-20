@@ -1,4 +1,4 @@
-export const devicesAmountTexts = [
+export const devicesCountTexts = [
   {
     digits: [1],
     text: 'прибор',

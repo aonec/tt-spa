@@ -15,7 +15,7 @@ import {
 } from './CommunicationPipeListItem.types';
 import { MeteringDeviceListItem } from './MeteringDeviceListItem';
 import { PipeIcon } from 'ui-kit/icons';
-import { getDevicesAmountText } from './CommunicationPipeListItem.utils';
+import { getDevicesCountText } from './CommunicationPipeListItem.utils';
 import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
 
 export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
@@ -26,9 +26,9 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const devicesAmount = pipe.devices?.length || 0;
+  const devicesCount = pipe.devices?.length || 0;
 
-  const devicesAmountText = getDevicesAmountText(devicesAmount);
+  const devicesCountText = getDevicesCountText(devicesCount);
 
   return (
     <Wrapper>
@@ -45,7 +45,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
         </PipeIconWrapper>
         <RighContentWrapper>
           <DevicesAmount>
-            {devicesAmount} {devicesAmountText}
+            {devicesCount} {devicesCountText}
           </DevicesAmount>
           <ListOpeningChevron
             isOpen={isOpen}
@@ -62,6 +62,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
             <MeteringDeviceListItem
               device={device}
               resource={resource}
+              key={device.serialNumber}
               handleDeleteDevice={
                 handleDeleteDevice && (() => handleDeleteDevice(pipe.id, index))
               }
