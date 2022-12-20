@@ -3,13 +3,16 @@ import _ from 'lodash';
 import moment from 'moment';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
+import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
+import { CalculatorDocumentsList } from './CalculatorDocumentsList';
 import {
   AdditionalInfoWrapper,
   AddressLinkWrapper,
@@ -46,6 +49,8 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     isConnected,
     nodes,
   } = calculator;
+
+  const numberOfTasks = 4;
 
   const relatedDevices = useMemo(
     () =>
@@ -144,7 +149,9 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       [CalculatorProfileGrouptype.Related]: (
         <RelatedDevicesList pipeDevices={relatedDevices} />
       ),
-      [CalculatorProfileGrouptype.Documents]: <></>,
+      [CalculatorProfileGrouptype.Documents]: (
+        <CalculatorDocumentsList documents={[]} />
+      ),
     }),
     [calculator]
   );
@@ -187,7 +194,11 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       <ContentWrapper>
         <Content>{component}</Content>
         <div>
-          
+          <LinkCard
+            text={`Задачи: ${numberOfTasks}`}
+            showLink={Boolean(numberOfTasks)}
+            link={'/tasks'}
+          />
         </div>
       </ContentWrapper>
     </div>
