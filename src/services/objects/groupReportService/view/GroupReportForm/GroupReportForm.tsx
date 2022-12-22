@@ -11,10 +11,11 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import moment from 'moment';
-import { RowWrapper } from './GroupReportForm.styled';
+import { RowWrapper, SelectSC } from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { EReportType } from 'myApi';
+import { LabeledValue } from 'antd/lib/select';
 
 export const GroupReportForm: FC<GroupReportFormProps> = ({
   formId,
@@ -41,27 +42,50 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       }),
   });
 
+  const groupReportsOptions = useMemo(
+    () =>
+      (groupReports || []).reduce((acc, elem) => {
+        if (!elem.houseManagementId) {
+          return acc;
+        }
+        return [
+          ...acc,
+          {
+            value: elem.houseManagementId,
+            key: elem.houseManagementId,
+            label: elem.title || '',
+          },
+        ];
+      }, [] as LabeledValue[]),
+    [groupReports]
+  );
+
+  const nodeResourceTypesOptions = useMemo(
+    () =>
+      (nodeResourceTypes || []).reduce((acc, elem) => {
+        if (!elem.key) {
+          return acc;
+        }
+        return [
+          ...acc,
+          {
+            value: elem.key,
+            key: elem.key,
+            label: elem.value || '',
+          },
+        ];
+      }, [] as LabeledValue[]),
+    [nodeResourceTypes]
+  );
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Группа">
         <Select
           value={values.HouseManagementId}
           onChange={(value) => setFieldValue('HouseManagementId', value)}
-        >
-          {(groupReports || []).map((elem) => {
-            if (!elem.houseManagementId) {
-              return null;
-            }
-            return (
-              <Select.Option
-                value={elem.houseManagementId}
-                key={elem.houseManagementId}
-              >
-                {elem.title}
-              </Select.Option>
-            );
-          })}
-        </Select>
+          options={groupReportsOptions}
+        />
       </FormItem>
       <FormItem label="Название отчёта">
         <Input
@@ -71,22 +95,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       </FormItem>
       <RowWrapper>
         <FormItem label="Ресурс">
-          <Select
+          <SelectSC
             value={values.NodeResourceTypes}
             onChange={(value) => setFieldValue('NodeResourceTypes', value)}
             mode="multiple"
-          >
-            {(nodeResourceTypes || []).map((elem) => {
-              if (!elem.key) {
-                return null;
-              }
-              return (
-                <Select.Option value={elem.key} key={elem.key}>
-                  {elem.value || ''}
-                </Select.Option>
-              );
-            })}
-          </Select>
+            options={nodeResourceTypesOptions}
+          />
         </FormItem>
 
         <FormItem label="Категория узлов">
