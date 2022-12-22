@@ -6,7 +6,7 @@ import {
   EResourceType,
 } from 'myApi';
 
-export type GroupReportRequestPayload = {
+export type GroupReportRequestPayload = RegularUnloadSubscription & {
   To: string;
   From: string;
   Name: string;
@@ -15,9 +15,12 @@ export type GroupReportRequestPayload = {
   ReportType: EReportType;
 
   NodeStatus?: ENodeCommercialAccountStatus;
+  DelayedEmailTarget?: string;
+};
+
+export type RegularUnloadSubscription = {
   'Subscription.Email'?: string;
   'Subscription.ContractorIds'?: number[];
   'Subscription.TriggerAt'?: string;
   'Subscription.Type'?: EEmailSubscriptionType;
-  DelayedEmailTarget?: string;
 };

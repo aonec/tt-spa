@@ -9,6 +9,7 @@ export const RadioGroupSC = styled(Group)`
   gap: 8px;
   label {
     color: #272f5ae5;
+    font-size: 16px;
   }
 `;
 

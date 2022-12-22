@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { GroupReportFormProps } from './GroupReportForm.types';
-import { Form } from 'antd';
+import { Divider, Form } from 'antd';
 import { GroupReportRequestPayload } from '../../groupReportService.types';
 import { useFormik } from 'formik';
 import {
@@ -14,15 +14,22 @@ import moment from 'moment';
 import { RowWrapper, SelectSC } from './GroupReportForm.styled';
 import { GroupReportDatesSelect } from './GroupReportDatesSelect';
 import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.styled';
-import { EReportType } from 'myApi';
+import { EEmailSubscriptionType, EReportType } from 'myApi';
 import { LabeledValue } from 'antd/lib/select';
+import { RegularUnloading } from './RegularUnloading';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const GroupReportForm: FC<GroupReportFormProps> = ({
   formId,
   handleDownload,
   reportFilters,
 }) => {
-  const { groupReports, nodeResourceTypes, nodeStatuses } = reportFilters;
+  const {
+    groupReports,
+    nodeResourceTypes,
+    nodeStatuses,
+    contractors,
+  } = reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik<
     Partial<GroupReportRequestPayload>
@@ -78,6 +85,24 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     [nodeResourceTypes]
   );
 
+  const handleChangeContractorIds = useCallback(
+    (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
+    [setFieldValue]
+  );
+  const handleChangeEmail = useCallback(
+    (email?: string) => setFieldValue("['Subscription.Email']", email),
+    [setFieldValue]
+  );
+  const handleChangeSubsType = useCallback(
+    (type?: EEmailSubscriptionType) =>
+      setFieldValue("['Subscription.Type']", type),
+    [setFieldValue]
+  );
+  const handleThriggerAt = useCallback(
+    (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
+    [values]
+  );
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Группа">
@@ -86,6 +111,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           onChange={(value) => setFieldValue('HouseManagementId', value)}
           options={groupReportsOptions}
         />
+        <ErrorMessage>{errors.HouseManagementId}</ErrorMessage>
       </FormItem>
       <FormItem label="Название отчёта">
         <Input
@@ -101,6 +127,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
             mode="multiple"
             options={nodeResourceTypesOptions}
           />
+          <ErrorMessage>{errors.NodeResourceTypes}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Категория узлов">
@@ -143,6 +170,21 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           />
         </FormItem>
       </RowWrapper>
+      <Divider type="horizontal" />
+
+      <RegularUnloading
+        handleChangeContractorIds={handleChangeContractorIds}
+        handleChangeEmail={handleChangeEmail}
+        handleChangeSubsType={handleChangeSubsType}
+        handleThriggerAt={handleThriggerAt}
+        contractors={contractors || []}
+        values={{
+          'Subscription.ContractorIds': values['Subscription.ContractorIds'],
+          'Subscription.Email': values['Subscription.Email'],
+          'Subscription.TriggerAt': values['Subscription.TriggerAt'],
+          'Subscription.Type': values['Subscription.Type'],
+        }}
+      />
     </Form>
   );
 };

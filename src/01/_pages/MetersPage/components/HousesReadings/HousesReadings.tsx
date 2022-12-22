@@ -10,13 +10,3 @@ const initialState = {
 };
 
 export type HouseSearchType = typeof initialState;
-
-const HouseReadings = () => {
-  return (
-    <div>
-      <Objects isReadings />
-    </div>
-  );
-};
-
-export default HouseReadings;
