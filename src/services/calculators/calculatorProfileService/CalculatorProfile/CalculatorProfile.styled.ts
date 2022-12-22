@@ -32,6 +32,17 @@ export const AddressLinkWrapper = styled(Link)`
   font-weight: 500;
 `;
 
+export const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+`;
+
+export const Content = styled.div`
+  width: 100%;
+`;
+
 export const CalculatorIconSC = styled(CalculatorIcon)`
   width: 24px;
   height: 16px;

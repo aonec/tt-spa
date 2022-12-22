@@ -1,6 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import moment from 'moment';
-import React, { FC, useMemo } from 'react';
+import _ from 'lodash';
+import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
@@ -13,12 +13,17 @@ import { CalculatorProfileGrouptype } from '../calculatorProfileService.constant
 import {
   AdditionalInfoWrapper,
   AddressLinkWrapper,
+  Content,
+  ContentWrapper,
   CalculatorIconSC,
   HeaderTitleWrapper,
   HeaderWrapper,
   TabsSC,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
+import { ConnectionInfo } from './ConnectionInfo';
+import { RelatedDevicesList } from './RelatedDevicesList';
+import { RelatedNodesList } from './RelatedNodesList';
 
 const { TabPane } = Tabs;
 
@@ -39,8 +44,25 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     address,
     lastCheckingDate,
     futureCheckingDate,
+    isConnected,
+    nodes,
   } = calculator;
-  const { ipV4, deviceAddress, port } = connection || {};
+
+  const relatedDevices = useMemo(
+    () =>
+      (nodes || [])
+        .map((node) => {
+          const { communicationPipes, number } = node;
+
+          const devices = (communicationPipes || [])
+            .map((pipe) => pipe.devices || [])
+            .flat();
+
+          return { devices, nodeNumber: number };
+        })
+        .flat(),
+    [nodes]
+  );
 
   const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
     model,
@@ -81,19 +103,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [calculator]
   );
 
-  const connectionInfo = useMemo(
-    () => (
-      <CommonInfo
-        items={[
-          { key: 'IP адрес вычислителя', value: ipV4 },
-          { key: 'Порт', value: port },
-          { key: 'Адрес прибора', value: deviceAddress },
-        ]}
-      />
-    ),
-    [connection]
-  );
-
   const menuButtons = useMemo(
     () => ({
       menuButtons: [
@@ -119,6 +128,30 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
   );
 
+  const contentComponents: {
+    [key in CalculatorProfileGrouptype]: ReactElement;
+  } = useMemo(
+    () => ({
+      [CalculatorProfileGrouptype.Common]: <>{commonInfo}</>,
+      [CalculatorProfileGrouptype.Connection]: (
+        <ConnectionInfo
+          connection={connection}
+          isConnected={isConnected || false}
+        />
+      ),
+      [CalculatorProfileGrouptype.Nodes]: (
+        <RelatedNodesList nodes={nodes || []} />
+      ),
+      [CalculatorProfileGrouptype.Related]: (
+        <RelatedDevicesList pipeDevices={relatedDevices} />
+      ),
+      [CalculatorProfileGrouptype.Documents]: <></>,
+    }),
+    [calculator]
+  );
+
+  const component = contentComponents[currentGrouptype];
+
   return (
     <div>
       <GoBack />
@@ -137,29 +170,22 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           setGrouptype(grouptype as CalculatorProfileGrouptype)
         }
       >
-        <TabPane tab="Общие данные" key={CalculatorProfileGrouptype.Common}>
-          {commonInfo}
-        </TabPane>
-
+        <TabPane tab="Общие данные" key={CalculatorProfileGrouptype.Common} />
         <TabPane
           tab="Настройки соединения"
           key={CalculatorProfileGrouptype.Connection}
-        >
-          {connectionInfo}
-        </TabPane>
-
-        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes}></TabPane>
-
+        />
+        <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes} />
         <TabPane
           tab="Подключенные приборы"
           key={CalculatorProfileGrouptype.Related}
-        ></TabPane>
-
-        <TabPane
-          tab="Документы"
-          key={CalculatorProfileGrouptype.Documents}
-        ></TabPane>
+        />
+        <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
       </TabsSC>
+      <ContentWrapper>
+        <Content>{component}</Content>
+        <div></div>
+      </ContentWrapper>
     </div>
   );
 };
