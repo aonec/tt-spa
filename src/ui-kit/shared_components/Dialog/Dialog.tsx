@@ -1,8 +1,8 @@
 import { Loader } from '01/components';
-import { ButtonTT } from '01/tt-components';
 import React, { FC } from 'react';
+import { Button } from 'ui-kit/Button';
 import { DialogText, StyledDialog, TitleText } from './Dialog.styled';
-import { BtnType, DialogProps } from './Dialog.types';
+import { DialogProps } from './Dialog.types';
 
 export const Dialog: FC<DialogProps> = ({
   isLoading,
@@ -14,6 +14,7 @@ export const Dialog: FC<DialogProps> = ({
   isOpen,
   type,
   description,
+  footer,
 }) => {
   const btnText = submitText || 'Подтвердить';
 
@@ -25,25 +26,22 @@ export const Dialog: FC<DialogProps> = ({
           <DialogText>{description}</DialogText>
         </>
       }
+      style={{ zIndex: 1001 }}
       visible={isOpen}
       onOk={onSubmit}
       onCancel={onCancel}
       width={800}
       footer={
-        <>
-          <ButtonTT color={'white'} key="back" onClick={onCancel}>
-            {cancelText || 'Отмена'}
-          </ButtonTT>
-          <ButtonTT
-            color={BtnType[type]}
-            key="submit"
-            type="submit"
-            onClick={onSubmit}
-            disabled={isLoading}
-          >
-            {isLoading ? <Loader show /> : btnText}
-          </ButtonTT>
-        </>
+        footer || (
+          <>
+            <Button type="ghost" key="back" onClick={onCancel}>
+              {cancelText || 'Отмена'}
+            </Button>
+            <Button onClick={onSubmit} disabled={isLoading} type={type}>
+              {isLoading ? <Loader show /> : btnText}
+            </Button>
+          </>
+        )
       }
     />
   );

@@ -113,7 +113,7 @@ guard({
 });
 
 forward({
-  from: [downloadGroupReportFx.doneData, getReportFiltersFx.doneData],
+  from: [downloadGroupReportFx.doneData, getGroupReportFx.doneData],
   to: closeModal,
 });
 
