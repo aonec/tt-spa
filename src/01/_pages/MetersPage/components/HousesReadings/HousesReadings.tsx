@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Objects } from '../../../Objects';
-
 const initialState = {
   city: '' as string,
   Street: '' as string,
