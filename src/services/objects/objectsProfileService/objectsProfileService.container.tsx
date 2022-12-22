@@ -1,4 +1,3 @@
-import GroupReport from '01/features/groupReport';
 import { setGroupStatus } from '01/features/groupReport/models/groupReportReducer';
 import { useAppDispatch } from '01/Redux/store';
 import { useEvent, useStore } from 'effector-react';
@@ -10,6 +9,10 @@ import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportSe
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
+import {
+  GroupReportContainer,
+  groupReportService,
+} from '../groupReportService';
 import { objectsProfileService } from './objectsProfileService.model';
 import { SearchType } from './objectsProfileService.types';
 import { SoiReportContainer } from './soiReportService';
@@ -28,8 +31,7 @@ export const ObjectsProfileContainer = () => {
     inputs.openFeedFlowBackReportModal
   );
 
-  const dispatch = useAppDispatch();
-  const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
+  const handleExportGroupReport = useEvent(groupReportService.inputs.openModal);
 
   const handleOpenChooseResourceDisconnectionModal = useEvent(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal
@@ -55,11 +57,11 @@ export const ObjectsProfileContainer = () => {
       <CreateResourceDisconnectionContainer />
       <ChooseTypeOfResourceDisconnectionModalContainer />
       <FeedFlowBackReportContainer />
-      <GroupReport />
+      <GroupReportContainer />
       <ObjectsProfile
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
-        handleExportGroupReport={handleExportGroupReport}
+        handleExportGroupReport={()=>handleExportGroupReport()}
         handleOpenChooseResourceDisconnectionModal={() =>
           handleOpenChooseResourceDisconnectionModal()
         }
