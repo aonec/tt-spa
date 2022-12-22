@@ -7,4 +7,5 @@ export type CalculatorProfileProps = {
   setGrouptype: (grouptype: CalculatorProfileGrouptype) => void;
   handleOpenCloseCalculatorModal: (payload: CalculatorResponse) => void;
   handleOpenCheckCalculatorModal: (payload: CalculatorResponse) => void;
+  handleOpenConsumptionReportModal: () => void;
 };
