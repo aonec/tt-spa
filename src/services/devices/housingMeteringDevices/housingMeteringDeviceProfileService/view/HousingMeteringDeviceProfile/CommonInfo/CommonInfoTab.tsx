@@ -4,21 +4,30 @@ import { EMagistralType } from 'myApi';
 import React, { FC } from 'react';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { Address, Wrapper } from './CommonInfoTab.styled';
+import { Address } from './CommonInfoTab.styled';
 import { CommonInfoProps } from './CommonInfoTab.types';
 
 export const CommonInfoTab: FC<CommonInfoProps> = ({
   housingMeteringDevice,
 }) => {
-  const address =
-    housingMeteringDevice?.address?.address?.mainAddress &&
-    getHousingStockAddress(housingMeteringDevice.address, true);
+  const address = housingMeteringDevice?.address?.address?.mainAddress;
+
+  const addressString =
+    housingMeteringDevice?.address &&
+    getHousingStockAddress(housingMeteringDevice?.address, true);
 
   const magistral = housingMeteringDevice?.hubConnection?.hub
     ?.magistral as EMagistralType;
 
   const items = [
-    { key: 'Адрес', value: <Address>{address}</Address> },
+    {
+      key: 'Адрес',
+      value: (
+        <Address to={`/objects/profile/${address?.id}`}>
+          {addressString}
+        </Address>
+      ),
+    },
     {
       key: 'Диаметр прибора',
       value: housingMeteringDevice?.diameter
@@ -43,9 +52,5 @@ export const CommonInfoTab: FC<CommonInfoProps> = ({
     },
   ];
 
-  return (
-    <Wrapper>
-      <CommonInfo items={items} />
-    </Wrapper>
-  );
+  return <CommonInfo items={items} />;
 };
