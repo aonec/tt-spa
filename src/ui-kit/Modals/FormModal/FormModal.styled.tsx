@@ -14,6 +14,7 @@ export const Footer = styled.div`
   align-items: center;
   padding-right: 32px;
   font-weight: 700;
+  gap: 16px;
 `;
 
 export const StyledModal = styled(Modal)`
