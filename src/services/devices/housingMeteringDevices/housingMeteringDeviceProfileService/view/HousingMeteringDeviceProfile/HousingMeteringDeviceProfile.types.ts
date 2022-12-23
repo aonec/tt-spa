@@ -9,4 +9,5 @@ export type HousingMeteringDeviceProfileProps = {
   housingMeteringDeviceTasks: TasksPagedList | null;
   handleCheckModalOpen: () => void;
   handleDeviceClosingModalOpen: () => void;
+  tasksPending: boolean;
 };

@@ -1,7 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CommentPanel } from 'ui-kit/shared_components/CommentPanel';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
@@ -16,18 +15,16 @@ import {
   DeviceModel,
   DeviceNumber,
   DeviceTitle,
-  LinkSC,
-  MockComponent,
   PageGridContainer,
   PageTitle,
   RightBlock,
-  Tasks,
-  TasksWrapper,
   Wrapper,
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
 import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import qs from 'query-string';
 
 export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps> = ({
   deviceId,
@@ -37,6 +34,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   housingMeteringDeviceTasks,
   handleCheckModalOpen,
   handleDeviceClosingModalOpen,
+  tasksPending,
 }) => {
   const { push } = useHistory();
 
@@ -45,6 +43,8 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   const deviceNumber = housingMeteringDevice?.serialNumber;
   const isActive = !Boolean(housingMeteringDevice?.closingDate);
   const resource = housingMeteringDevice?.resource;
+
+  const tasksCount = housingMeteringDeviceTasks?.items?.length || 0;
 
   return (
     <>
@@ -131,21 +131,31 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           {currentTab === HousingProfileTabs.Documents && <Documents />}
 
           <RightBlock>
-            <MockComponent>
+            {/* <MockComponent>
               <TasksWrapper>
                 <Tasks>
-                  Задачи: {housingMeteringDeviceTasks?.items?.length || 0}
+                  {`Задачи: `}
+                  {tasksPending && <Loader show />}
+                  {!tasksPending && tasksCount}
                 </Tasks>
 
                 {housingMeteringDeviceTasks?.items?.length ? (
-                  <LinkSC to={`/tasks/list/`} target="_blank">
+                  <LinkSC to={`/tasks/list/Observing`} target="_blank">
                     {'Перейти >'}
                   </LinkSC>
                 ) : (
                   ''
                 )}
               </TasksWrapper>
-            </MockComponent>
+            </MockComponent> */}
+            <LinkCard
+              text={`Задачи: ${tasksCount}`}
+              link={qs.stringifyUrl({
+                url: '/tasks/list/Observing',
+                query: { housingMeteringDeviceId: housingMeteringDevice?.id },
+              })}
+              showLink={Boolean(tasksCount)}
+            />
           </RightBlock>
         </PageGridContainer>
       </Wrapper>

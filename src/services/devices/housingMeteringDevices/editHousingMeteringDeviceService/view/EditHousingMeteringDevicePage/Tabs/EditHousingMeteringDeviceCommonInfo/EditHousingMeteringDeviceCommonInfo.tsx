@@ -78,7 +78,6 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
             magistral: values.magistral as EMagistralType,
           },
         };
-        console.log(form);
         handleSubmitForm({
           deviceId: Number(deviceId),
           request: form,

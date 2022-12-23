@@ -1,10 +1,9 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, createDomain, forward, guard, sample, split } from 'effector';
+import { createDomain, forward, guard, sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
   ESecuredIdentityRoleName,
-  ETaskEngineeringElement,
   HousingStockResponse,
   TaskGroupingFilter,
   TasksPagedList,
@@ -48,12 +47,19 @@ const $housingStock = domain
   .reset(clearAddress);
 
 const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
+const setHousingMeteringDeviceId = domain.createEvent<{
+  housingMeteringDeviceId: string;
+}>();
 
 const $searchState = domain
   .createStore<GetTasksListRequestPayload>({})
   .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
     ...prev,
     PipeNodeId: Number(pipeNodeId),
+  }))
+  .on(setHousingMeteringDeviceId, (prev, { housingMeteringDeviceId }) => ({
+    ...prev,
+    DeviceId: Number(housingMeteringDeviceId),
   }));
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
@@ -145,18 +151,27 @@ sample({
 split({
   source: guard({
     clock: FiltersGate.state,
-    filter: ({ apartmentId, housingStockId, pipeNodeId }) =>
-      [apartmentId, housingStockId, pipeNodeId].some(Boolean),
+    filter: ({
+      apartmentId,
+      housingStockId,
+      pipeNodeId,
+      housingMeteringDeviceId,
+    }) =>
+      [apartmentId, housingStockId, pipeNodeId, housingMeteringDeviceId].some(
+        Boolean
+      ),
   }),
   match: {
     housingStock: (ids) => Boolean(ids.housingStockId),
     apartmentId: (ids) => Boolean(ids.apartmentId),
     pipeNodeId: (ids) => Boolean(ids.pipeNodeId),
+    housingMeteringDeviceId: (ids) => Boolean(ids.housingMeteringDeviceId),
   },
   cases: {
     apartmentId: getApartmentFx,
     housingStock: getHousingStockFx,
     pipeNodeId: setPipeNodeId,
+    housingMeteringDeviceId: setHousingMeteringDeviceId,
   },
 });
 

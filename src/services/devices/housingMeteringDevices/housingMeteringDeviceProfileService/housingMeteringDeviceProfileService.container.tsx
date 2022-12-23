@@ -28,6 +28,8 @@ export const HousingMeteringDeviceProfileContainer = () => {
 
   const pending = useStore(outputs.$pending);
 
+  const tasksPending = useStore(outputs.$tasksPending);
+
   return (
     <>
       <FetchHousingMeteringDeviceGate deviceId={Number(deviceId)} />
@@ -40,6 +42,7 @@ export const HousingMeteringDeviceProfileContainer = () => {
           housingMeteringDeviceTasks={housingMeteringDeviceTasks}
           handleCheckModalOpen={() => handleCheckModalOpen()}
           handleDeviceClosingModalOpen={() => handleDeviceClosingModalOpen()}
+          tasksPending={tasksPending}
         />
       </WithLoader>
     </>

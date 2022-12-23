@@ -1,4 +1,4 @@
-import { combine, createDomain, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
 import {
@@ -59,6 +59,12 @@ sample({
 });
 
 sample({
+  clock: FetchHousingMeteringDeviceGate.open,
+  fn: ({ deviceId }) => Number(deviceId),
+  target: fetchHousingMeteringDeviceTasksFx,
+});
+
+sample({
   source: $housingMeteringDevice,
   clock: [handleHousingMeteringDeviceUpdate, handleCheckDateUpdate],
   fn: (device) => Number(device?.id),
@@ -66,6 +72,8 @@ sample({
 });
 
 const $pending = fetchHousingMeteringDeviceFx.pending;
+
+const $tasksPending = fetchHousingMeteringDeviceTasksFx.pending;
 
 export const housingMeteringDeviceProfileService = {
   inputs: {
@@ -81,6 +89,7 @@ export const housingMeteringDeviceProfileService = {
     $currentTab,
     $housingMeteringDeviceTask,
     $pending,
+    $tasksPending,
   },
   gates: { FetchHousingMeteringDeviceGate },
 };
