@@ -173,7 +173,7 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
             Суточная
           </Radio>
           <Radio value="hourly">Часовая</Radio>
-          <Radio value="Monthly">Месячная</Radio>
+          <Radio value="monthly">Месячная</Radio>
         </Radio.Group>
       </FormItem>
     </Form>
