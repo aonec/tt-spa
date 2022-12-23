@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { CalculatorIcon, WarningIcon } from 'ui-kit/icons';
+import { CalculatorIcon } from 'ui-kit/icons';
 import {
   CalculatorItem,
   Name,
@@ -22,7 +22,6 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
             <Name>{hubConnection?.calculatorModel || 'Вычислитель'}</Name>
             <Serial>{` (${hubConnection?.calculatorSerialNumber})`}</Serial>
           </NameWrap>
-          <WarningIcon />
         </CalculatorItem>
       </NavLink>
     </Wrapper>

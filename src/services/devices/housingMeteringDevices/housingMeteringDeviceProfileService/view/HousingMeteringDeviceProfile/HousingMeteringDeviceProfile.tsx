@@ -34,7 +34,6 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   housingMeteringDeviceTasks,
   handleCheckModalOpen,
   handleDeviceClosingModalOpen,
-  tasksPending,
 }) => {
   const { push } = useHistory();
 
@@ -131,23 +130,6 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           {currentTab === HousingProfileTabs.Documents && <Documents />}
 
           <RightBlock>
-            {/* <MockComponent>
-              <TasksWrapper>
-                <Tasks>
-                  {`Задачи: `}
-                  {tasksPending && <Loader show />}
-                  {!tasksPending && tasksCount}
-                </Tasks>
-
-                {housingMeteringDeviceTasks?.items?.length ? (
-                  <LinkSC to={`/tasks/list/Observing`} target="_blank">
-                    {'Перейти >'}
-                  </LinkSC>
-                ) : (
-                  ''
-                )}
-              </TasksWrapper>
-            </MockComponent> */}
             <LinkCard
               text={`Задачи: ${tasksCount}`}
               link={qs.stringifyUrl({
