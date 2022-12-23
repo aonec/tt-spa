@@ -19,7 +19,7 @@ export const getDatePeriod = (
     ];
   }
   if (archiveType === ArchiveType.LastSevenDays) {
-    period = [moment().subtract(7, 'days').startOf('week'), moment()];
+    period = [moment().subtract(7, 'day'), moment()];
   }
 
   if (!period[0] || !period[1]) return null;
