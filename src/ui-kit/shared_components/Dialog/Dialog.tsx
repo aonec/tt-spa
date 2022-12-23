@@ -15,6 +15,7 @@ export const Dialog: FC<DialogProps> = ({
   type,
   description,
   footer,
+  zIndex,
 }) => {
   const btnText = submitText || 'Подтвердить';
 
@@ -30,6 +31,7 @@ export const Dialog: FC<DialogProps> = ({
       onOk={onSubmit}
       onCancel={onCancel}
       width={800}
+      zIndex={zIndex}
       footer={
         footer || (
           <>

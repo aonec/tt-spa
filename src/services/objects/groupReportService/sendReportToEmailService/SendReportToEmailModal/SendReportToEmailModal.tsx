@@ -24,6 +24,7 @@ export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({
       onCancel={() => handleClose()}
       onSubmit={() => submitEmail()}
       type="default"
+      zIndex={1001}
       description={
         <>
           <p>

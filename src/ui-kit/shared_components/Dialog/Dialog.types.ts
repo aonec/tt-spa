@@ -12,4 +12,5 @@ export type DialogProps = {
   isLoading?: boolean;
   description?: ReactNode;
   footer?: ReactNode;
+  zIndex?: number;
 };
