@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import { EReportType, GroupReportFormResponse } from 'myApi';
@@ -25,7 +25,9 @@ const $isOpen = domain
   .on(openModal, () => true)
   .on(closeModal, () => false);
 
-const getReportFiltersFx = domain.createEffect(fetchFilters);
+const getReportFiltersFx = domain.createEffect<void, GroupReportFormResponse>(
+  fetchFilters
+);
 const $reportFilters = domain
   .createStore<GroupReportFormResponse | null>(null)
   .on(getReportFiltersFx.doneData, (_, filter) => filter);
@@ -48,7 +50,11 @@ const $downloadReportPayload = domain.createStore<GroupReportRequestPayload | nu
 );
 
 const $isFiltersLoading = getReportFiltersFx.pending;
-const $isDownloading = downloadGroupReportFx.pending;
+const $isDownloading = combine(
+  downloadGroupReportFx.pending,
+  getGroupReportFx.pending,
+  (...isLoading) => isLoading.includes(true)
+);
 
 const GroupReportGate = createGate();
 

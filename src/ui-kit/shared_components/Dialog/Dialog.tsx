@@ -26,7 +26,6 @@ export const Dialog: FC<DialogProps> = ({
           <DialogText>{description}</DialogText>
         </>
       }
-      style={{ zIndex: 1001 }}
       visible={isOpen}
       onOk={onSubmit}
       onCancel={onCancel}
