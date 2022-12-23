@@ -6,5 +6,7 @@ export type HousingMeteringDeviceProfileProps = {
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
   currentTab: HousingProfileTabs;
   handleChangeTab: (payload: HousingProfileTabs) => void;
-  housingMeteringDeviceTasks: TasksPagedList | null
+  housingMeteringDeviceTasks: TasksPagedList | null;
+  handleCheckModalOpen: () => void;
+  handleDeviceClosingModalOpen: () => void;
 };
