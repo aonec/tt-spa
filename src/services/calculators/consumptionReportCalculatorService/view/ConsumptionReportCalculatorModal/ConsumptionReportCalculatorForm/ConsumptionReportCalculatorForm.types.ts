@@ -1,8 +1,10 @@
 import { CalculatorResponse } from 'myApi';
+import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 
 export type ConsumptionReportCalculatorFormProps = {
   formId: string;
   calculator: CalculatorResponse | null;
+  handleSubmitForm: (payload: GetCalculatorReportParams) => void
 };
 
 export enum ArchiveType {

@@ -13,12 +13,15 @@ export const ConsumptionReportCalculatorContainer: FC<ConsumptionReportCalculato
 
   const handleModalClosed = useEvent(inputs.handleModalClose);
 
+  const handleSubmit = useEvent(inputs.handleSubmit);
+
   return (
     <>
       <ConsumptionReportCalculatorModal
         isModalOpen={isModalOpen}
         handleModalClosed={() => handleModalClosed()}
         calculator={calculator}
+        handleSubmit={handleSubmit}
       />
     </>
   );

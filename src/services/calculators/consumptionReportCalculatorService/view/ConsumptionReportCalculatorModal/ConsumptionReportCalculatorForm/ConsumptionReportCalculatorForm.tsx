@@ -30,10 +30,12 @@ import { RangePicker } from 'ui-kit/RangePicker';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 
 export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorFormProps> = ({
   formId,
   calculator,
+  handleSubmitForm,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
   const reportName = `${calculator?.model}_${address?.street}_${address?.number}`;
@@ -64,9 +66,9 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
 
       const { From, To } = period;
 
-      const params = {
+      const params: GetCalculatorReportParams = {
         Name: data.reportName,
-        NodeId: data.nodeId,
+        NodeId: data.nodeId || undefined,
         ReportType: data.detail as EReportType,
         From: From,
         To: To,
@@ -74,6 +76,8 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
           ? EReportFormat.Rso
           : EReportFormat.Consumption,
       };
+
+      handleSubmitForm(params);
     },
   });
 

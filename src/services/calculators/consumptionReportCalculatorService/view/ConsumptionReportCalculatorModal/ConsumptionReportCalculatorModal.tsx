@@ -10,6 +10,7 @@ export const ConsumptionReportCalculatorModal: FC<ConsumptionReportCalculatorMod
   handleModalClosed,
   isModalOpen,
   calculator,
+  handleSubmit,
 }) => {
   const isSono = calculator?.infoId === 10;
 
@@ -20,7 +21,13 @@ export const ConsumptionReportCalculatorModal: FC<ConsumptionReportCalculatorMod
       onCancel={handleModalClosed}
       form={
         <>
-          {!isSono && <ConsumptionReportCalculatorForm formId={formId} calculator={calculator} />}
+          {!isSono && (
+            <ConsumptionReportCalculatorForm
+              formId={formId}
+              calculator={calculator}
+              handleSubmitForm={handleSubmit}
+            />
+          )}
           {isSono && <SonoReportCalculatorForm formId={formId} />}
         </>
       }
