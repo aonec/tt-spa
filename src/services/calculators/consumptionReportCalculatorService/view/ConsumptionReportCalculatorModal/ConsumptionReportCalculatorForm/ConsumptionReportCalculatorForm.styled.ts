@@ -12,5 +12,14 @@ export const StyledTab = styled.div`
 export const StyledRadioGroup = styled(Radio.Group)`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+`;
+
+export const MarginTop = styled.div`
+  margin-top: 10px;
+`;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;

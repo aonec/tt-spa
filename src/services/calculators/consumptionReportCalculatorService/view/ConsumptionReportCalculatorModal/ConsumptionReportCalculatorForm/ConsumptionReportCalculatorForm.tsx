@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
 import {
+  GridContainer,
+  MarginTop,
   StyledRadioGroup,
   StyledTab,
 } from './ConsumptionReportCalculatorForm.styled';
-import { ConsumptionReportCalculatorFormProps } from './ConsumptionReportCalculatorForm.types';
-import { Form, Radio } from 'antd';
+import {
+  ArchiveType,
+  ConsumptionReportCalculatorFormProps,
+  DatePeriod,
+} from './ConsumptionReportCalculatorForm.types';
+import { Checkbox, Form, Radio } from 'antd';
 import { Tabs } from 'ui-kit/Tabs';
 import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import _ from 'lodash';
@@ -16,12 +22,14 @@ import {
 } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { useFormik } from 'formik';
-import moment from 'moment';
 import * as yup from 'yup';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
+import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorFormProps> = ({
   formId,
@@ -36,10 +44,9 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
 
   const { errors, values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
-      period: 'lastSevenDays',
-      detail: 'daily',
-      begin: moment().startOf('month'),
-      end: moment(),
+      archiveType: ArchiveType.StartOfMonth,
+      period: [null, null] as DatePeriod,
+      detail: EReportType.Daily,
       nodeId: null,
       customPeriodDisabled: true,
       withNS: false,
@@ -51,21 +58,22 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
       nodeId: yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: (data) => {
-      const begin = data.begin.startOf('day').format('YYYY-MM-DD HH:mm:ss');
-      const end = data.end.endOf('day').format('YYYY-MM-DD HH:mm:ss');
+      const period = getDatePeriod(values.archiveType, values.period);
+
+      if (!period) return;
+
+      const { From, To } = period;
+
       const params = {
         Name: data.reportName,
         NodeId: data.nodeId,
         ReportType: data.detail as EReportType,
-        From: begin,
-        To: end,
+        From: From,
+        To: To,
         ReportFormat: data.withNS
           ? EReportFormat.Rso
           : EReportFormat.Consumption,
       };
-
-      console.log(data);
-      console.log(params);
     },
   });
 
@@ -137,45 +145,67 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
           placeholder="Выберите узел"
           options={options}
         />
+        <ErrorMessage>{errors.nodeId}</ErrorMessage>
       </FormItem>
 
-      <FormItem label="Период">
-        <StyledRadioGroup
-          defaultValue="currentMonth"
-          size="large"
-          onChange={(event) => {}}
-        >
-          <Radio value="lastSevenDays">Последние 7 дней</Radio>
-          <Radio value="currentMonth" checked>
-            С начала месяца
-          </Radio>
-          <Radio value="previousMonth">За прошлый месяц</Radio>
-          <Radio value="customPeriod">Произвольный период</Radio>
-        </StyledRadioGroup>
+      <GridContainer>
+        <FormItem label="Период">
+          <StyledRadioGroup
+            value={values.archiveType}
+            onChange={(value) => {
+              const archiveType = value.target.value;
+              setFieldValue('archiveType', archiveType);
+            }}
+          >
+            <Radio value={ArchiveType.LastSevenDays}>Последние 7 дней</Radio>
+            <Radio value={ArchiveType.StartOfMonth} checked>
+              С начала месяца
+            </Radio>
+            <Radio value={ArchiveType.PreviousMonth}>За прошлый месяц</Radio>
+            <Radio value={ArchiveType.AnyPeriod}>Произвольный период</Radio>
+          </StyledRadioGroup>
 
-        <RangePicker
-          format="DD.MM.YYYY"
-          allowClear={false}
-          onChange={() => {}}
-          disabled={values.customPeriodDisabled}
-        />
-      </FormItem>
+          <MarginTop>
+            <RangePicker
+              placeholder={['Дата начала', 'Дата окончания']}
+              format="DD.MM.YYYY"
+              disabled={values.archiveType !== ArchiveType.AnyPeriod}
+              value={values.period}
+              onChange={(value) => {
+                if (!value) {
+                  setFieldValue('period', [null, null]);
+                  return;
+                }
 
-      <FormItem label="Детализация отчета" style={{ width: '50%' }}>
-        <Radio.Group
-          defaultValue="daily"
-          size="large"
-          onChange={(event) => {
-            setFieldValue('detail', event.target.value);
-          }}
-        >
-          <Radio value="daily" checked>
-            Суточная
-          </Radio>
-          <Radio value="hourly">Часовая</Radio>
-          <Radio value="monthly">Месячная</Radio>
-        </Radio.Group>
-      </FormItem>
+                setFieldValue('period', value);
+              }}
+            />
+          </MarginTop>
+        </FormItem>
+
+        <FormItem label="Детализация отчёта">
+          <StyledRadioGroup
+            defaultValue={EReportType.Daily}
+            onChange={(event) => {
+              setFieldValue('detail', event.target.value);
+            }}
+          >
+            <Radio value={EReportType.Hourly}>Часовая</Radio>
+            <Radio value={EReportType.Daily} checked>
+              Суточная
+            </Radio>
+            <Radio value={EReportType.Monthly}>Месячная</Radio>
+          </StyledRadioGroup>
+        </FormItem>
+      </GridContainer>
+
+      <SpaceLine />
+      <Checkbox
+        checked={values.withNS}
+        onChange={(value) => setFieldValue('withNS', value.target.checked)}
+      >
+        Выгрузка отчета с кодами НС
+      </Checkbox>
     </Form>
   );
 };

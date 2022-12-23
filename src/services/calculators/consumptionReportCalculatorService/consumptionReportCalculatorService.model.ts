@@ -7,6 +7,8 @@ const domain = createDomain('consumptionReportCalculatorService');
 const handleModalOpen = domain.createEvent();
 const handleModalClose = domain.createEvent();
 
+const handleSubmit = domain.createEvent();
+
 const fetchReportFx = domain.createEffect<GetCalculatorReportParams, void>(
   getReport
 );
