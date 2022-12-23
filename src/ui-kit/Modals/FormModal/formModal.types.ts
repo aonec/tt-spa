@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { ModalProps } from 'antd/es/modal';
+import { ButtonStyleType } from 'ui-kit/Button/Button.types';
 
 export interface FormModalProps {
   innerModalProps?: ModalProps;
@@ -18,4 +19,5 @@ export interface FormModalProps {
   formId: string;
   form: ReactNode;
   description?: string;
+  submitButtonType?: ButtonStyleType;
 }

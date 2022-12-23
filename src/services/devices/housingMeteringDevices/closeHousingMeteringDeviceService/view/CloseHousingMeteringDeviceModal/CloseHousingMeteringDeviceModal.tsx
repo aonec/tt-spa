@@ -21,7 +21,7 @@ export const CloseHousingMeteringDeviceModal: FC<CloseHousingMeteringDeviceModal
       visible={isModalOpen}
       onCancel={handleModalClose}
       submitBtnText="Снять прибор с учета"
-      submitButtonType="red"
+      submitButtonType="danger"
       form={
         <CloseHousingMeteringDeviceForm
           deviceId={deviceId}
