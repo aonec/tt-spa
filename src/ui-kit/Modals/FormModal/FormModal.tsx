@@ -25,6 +25,7 @@ export const FormModal: React.FC<FormModalProps> = ({
   formId,
   form,
   description,
+  submitButtonType,
 }) => {
   const onSubmitButtonClick = () => {
     if (onSubmit) {
@@ -43,6 +44,7 @@ export const FormModal: React.FC<FormModalProps> = ({
       key="submit"
       onClick={onSubmitButtonClick}
       disabled={loading || disabled}
+      type={submitButtonType}
     >
       {loading ? <Loader show /> : submitBtnText}
     </Button>
