@@ -32,7 +32,7 @@ export const CloseCalculatorContainer = () => {
     <FormModal
       title={`Вы действительно хотите снять ${model} (${serialNumber}) с учета?`}
       submitBtnText="Снять прибор с учета"
-      submitButtonType="red"
+      submitButtonType=""
       onCancel={()=>handleCloseModal()}
       visible={isOpen}
       formId={formId}

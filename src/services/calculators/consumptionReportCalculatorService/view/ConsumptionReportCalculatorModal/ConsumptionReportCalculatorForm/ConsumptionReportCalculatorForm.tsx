@@ -21,7 +21,7 @@ import * as yup from 'yup';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { DatePicker } from 'ui-kit/DatePicker';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorFormProps> = ({
   formId,
@@ -159,6 +159,22 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
           onChange={() => {}}
           disabled={values.customPeriodDisabled}
         />
+      </FormItem>
+
+      <FormItem label="Детализация отчета" style={{ width: '50%' }}>
+        <Radio.Group
+          defaultValue="daily"
+          size="large"
+          onChange={(event) => {
+            setFieldValue('detail', event.target.value);
+          }}
+        >
+          <Radio value="daily" checked>
+            Суточная
+          </Radio>
+          <Radio value="hourly">Часовая</Radio>
+          <Radio value="Monthly">Месячная</Radio>
+        </Radio.Group>
       </FormItem>
     </Form>
   );
