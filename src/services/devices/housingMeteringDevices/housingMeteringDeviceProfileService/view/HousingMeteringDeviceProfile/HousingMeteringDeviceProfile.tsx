@@ -131,8 +131,6 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           {currentTab === HousingProfileTabs.Documents && <Documents />}
 
           <RightBlock>
-            <CommentPanel />
-
             <MockComponent>
               <TasksWrapper>
                 <Tasks>
