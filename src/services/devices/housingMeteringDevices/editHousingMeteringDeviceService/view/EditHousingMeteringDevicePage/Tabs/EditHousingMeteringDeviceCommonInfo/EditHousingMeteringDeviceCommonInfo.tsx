@@ -95,6 +95,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
 
       <FormItem label="Тип прибора">
         <Select
+          disabled
           placeholder="Выберите из списка"
           onChange={(value) =>
             setFieldValue('housingMeteringDeviceType', value)
