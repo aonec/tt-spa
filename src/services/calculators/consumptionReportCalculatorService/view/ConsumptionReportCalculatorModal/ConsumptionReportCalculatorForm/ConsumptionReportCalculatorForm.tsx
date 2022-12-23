@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
-import { StyledTab } from './ConsumptionReportCalculatorForm.styled';
+import {
+  StyledRadioGroup,
+  StyledTab,
+} from './ConsumptionReportCalculatorForm.styled';
 import { ConsumptionReportCalculatorFormProps } from './ConsumptionReportCalculatorForm.types';
-import { Form } from 'antd';
+import { Form, Radio } from 'antd';
 import { Tabs } from 'ui-kit/Tabs';
 import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import _ from 'lodash';
@@ -18,6 +21,7 @@ import * as yup from 'yup';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorFormProps> = ({
   formId,
@@ -93,7 +97,10 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <Tabs
-        onChange={(value) => setFieldValue('currentResourceType', value)}
+        onChange={(value) => {
+          setFieldValue('currentResourceType', value);
+          setFieldValue('nodeId', null);
+        }}
         activeKey={values.currentResourceType}
       >
         {resources &&
@@ -129,6 +136,28 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
           value={values.nodeId || undefined}
           placeholder="Выберите узел"
           options={options}
+        />
+      </FormItem>
+
+      <FormItem label="Период">
+        <StyledRadioGroup
+          defaultValue="currentMonth"
+          size="large"
+          onChange={(event) => {}}
+        >
+          <Radio value="lastSevenDays">Последние 7 дней</Radio>
+          <Radio value="currentMonth" checked>
+            С начала месяца
+          </Radio>
+          <Radio value="previousMonth">За прошлый месяц</Radio>
+          <Radio value="customPeriod">Произвольный период</Radio>
+        </StyledRadioGroup>
+
+        <RangePicker
+          format="DD.MM.YYYY"
+          allowClear={false}
+          onChange={() => {}}
+          disabled={values.customPeriodDisabled}
         />
       </FormItem>
     </Form>
