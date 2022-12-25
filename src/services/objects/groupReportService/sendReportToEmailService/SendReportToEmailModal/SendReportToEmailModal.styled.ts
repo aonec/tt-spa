@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const FooterWrapper = styled.div`
   width: 100%;
@@ -13,15 +13,6 @@ export const ButtonsWrapper = styled.div`
   gap: 16px;
 `;
 
-export const EmailTextWrapper = styled.span`
-  font-weight: 500;
-  margin-left: 2px;
-`;
-
 export const TextWrapper = styled.div`
   display: flex;
-`;
-
-export const Description = styled.p`
-  margin-top: 8px;
 `;

@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
+import { SendReportToEmailDescription } from './SendReportToEmailDescription';
 import {
   ButtonsWrapper,
-  Description,
-  EmailTextWrapper,
   FooterWrapper,
 } from './SendReportToEmailModal.styled';
 import { SendReportToEmailModalProps } from './SendReportToEmailModal.types';
@@ -25,18 +24,7 @@ export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({
       onSubmit={() => submitEmail()}
       type="default"
       zIndex={1001}
-      description={
-        <>
-          <p>
-            Объём данных слишком большой для прямого скачивания. Мы отправим вам
-            архив с отчётом на почту, которую вы указали при регистрации
-            <EmailTextWrapper>{defaultEmail}</EmailTextWrapper>
-          </p>
-          <Description>
-            Вы можете указать другую почту для получения отчёта.
-          </Description>
-        </>
-      }
+      description={<SendReportToEmailDescription email={defaultEmail} />}
       footer={
         <FooterWrapper>
           <Button type="ghost" key="back" onClick={() => handleClose()}>
