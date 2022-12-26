@@ -28,6 +28,7 @@ import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/Grap
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
 import moment from 'moment';
+import { TaskPoint } from '../TaskPoint';
 
 const minDelta = 0.01;
 const width = 730;
@@ -118,43 +119,29 @@ export const GraphView: React.FC<GraphViewProps> = ({
               },
             }}
           />
+
           <VictoryPortal>
             <VictoryScatter
               data={taskStatistics.map((elem) => ({
-                x: moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') +1,
+                x:
+                  moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') +
+                  1,
                 y: maxValue * 0.9,
                 amount: (elem.value || []).length,
+                isEmergency:
+                  (elem.value || []).filter((elem) => elem.isEmergency)
+                    .length !== 0,
               }))}
               sortKey="x"
-              size={8}
               labels={({ datum }) => datum.amount}
+              dataComponent={<TaskPoint />}
               labelComponent={<VictoryLabel dy={5} />}
               style={{
-                data: { fill: '#272F5A' },
                 labels: { fill: 'white', fontSize: '10px' },
               }}
             />
           </VictoryPortal>
-          {taskStatistics.map((elem) => {
-            const x =
-              moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') + 1;
-            return (
-              <VictoryLine
-                data={[
-                  { x, y: 0 },
-                  { x, y: maxValue * 0.9 },
-                ]}
-                style={{
-                  data: {
-                    stroke: '#DCDEE4',
-                    strokeWidth: 1.5,
-                    borderStyle: 'dashed',
-                    strokeDasharray: 5,
-                  },
-                }}
-              />
-            );
-          })}
+
           <VictoryArea
             name="graph"
             sortKey="time"
