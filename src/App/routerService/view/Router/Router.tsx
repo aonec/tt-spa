@@ -4,17 +4,14 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  CalculatorProfile,
   Contractor,
   EditCalculator,
   ErrorPage,
-  HousingProfile,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
   MetersPage,
   Registration,
-  Settings,
   UserProfile,
 } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
@@ -30,7 +27,6 @@ import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import Devices from '01/_pages/ObjectProfile/components/Devices';
-import EditODPU from '01/_pages/EditHousingMeteringDevice';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
@@ -47,6 +43,7 @@ import { CalculatorProfileContainer } from 'services/calculators/calculatorProfi
 import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
 import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
+import { CompanyProfileContainer } from 'services/company/companyProfileService';
 
 const { gates } = objectProfileService;
 
@@ -58,7 +55,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
     : '/tasks/';
   return (
     <Wrapper>
-      <Switch>
+      <Switch>``
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => 'logout'} />
         <Route path="/error/" render={() => <ErrorPage />} />
@@ -143,8 +140,14 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                   <EditManagingFirmUserPage />
                 </Route>
-                <Route path="/companyProfile/:section?" component={Settings} />
-                <Route path="/companyProfile/staff/:id" component={Settings} />
+                <Route
+                  path="/companyProfile/:section?"
+                  component={CompanyProfileContainer}
+                />
+                {/* <Route
+                  path="/companyProfile/staff/:id"
+                  component={CompanyProfileContainer}
+                /> */}
 
                 <Route
                   path="/userProfile/:id"
@@ -179,7 +182,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path={['/housingMeteringDevices/:deviceId/']}
-                  component={HousingMeteringDeviceProfileContainer} 
+                  component={HousingMeteringDeviceProfileContainer}
                   exact
                 />
 

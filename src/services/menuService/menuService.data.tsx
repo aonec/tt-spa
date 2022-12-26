@@ -50,7 +50,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: 'Профиль компании',
-    path: '/companyProfile',
+    path: '/companyProfile/commonInfo',
     icon: CompanyProfileIcon,
     type: MenuType.CompanyProfile,
   },
