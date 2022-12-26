@@ -28,8 +28,6 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
 
   const handleRangeTypeChange = useCallback(
     (range: GroupReportRangeOptions) => {
-      setCurrentRange(range);
-
       if (range === GroupReportRangeOptions.ThisMonth) {
         return setValue({
           From: moment().startOf('month').format(),
@@ -55,7 +53,10 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
       <RadioGroupSC
         options={radioOptions}
         value={currentRange}
-        onChange={(e) => handleRangeTypeChange(e.target.value)}
+        onChange={(e) => {
+          setCurrentRange(e.target.value);
+          handleRangeTypeChange(e.target.value);
+        }}
       />
       <DatePickerWrapper>
         <label>Выберите дату</label>
@@ -70,7 +71,10 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
           format="DD.MM.YYYY"
           value={[moment(value.From), moment(value.To)]}
           onChange={(range) => {
-            if (!range) {
+            if (
+              !range ||
+              currentRange !== GroupReportRangeOptions.CustomRange
+            ) {
               return null;
             }
             const [From, To] = range;

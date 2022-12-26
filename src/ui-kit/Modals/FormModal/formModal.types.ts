@@ -16,7 +16,7 @@ export interface FormModalProps {
   customCancelButton?(): void;
   disabled?: boolean;
   submitButtonType?: 'blue' | 'red';
-  formId: string;
+  formId?: string;
   form: ReactNode;
   description?: string;
 }

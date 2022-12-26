@@ -4,7 +4,9 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { groupReportFormId } from './groupReportService.constants';
 import { groupReportService } from './groupReportService.model';
+import { SendReportToEmailContainer } from './sendReportToEmailService';
 import { GroupReportForm } from './view/GroupReportForm';
+import './groupReportService.relations';
 
 const { inputs, outputs, gates } = groupReportService;
 const { GroupReportGate } = gates;
@@ -16,11 +18,12 @@ export const GroupReportContainer = () => {
   const isDownloading = useStore(outputs.$isDownloading);
 
   const handleCloseModal = useEvent(inputs.closeModal);
-  const downloadReport = useEvent(inputs.donwloadGroupReport);
+  const downloadReport = useEvent(inputs.setGroupReportPayload);
 
   return (
     <>
       <GroupReportGate />
+      <SendReportToEmailContainer />
       <FormModal
         title="Выгрузить групповой отчёт"
         formId={groupReportFormId}
