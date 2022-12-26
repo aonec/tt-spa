@@ -121,7 +121,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
           <VictoryPortal>
             <VictoryScatter
               data={taskStatistics.map((elem) => ({
-                x: moment(elem.key).diff(moment(ticksData[0]), 'h'),
+                x: moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') +1,
                 y: maxValue * 0.9,
                 amount: (elem.value || []).length,
               }))}
@@ -136,7 +136,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
             />
           </VictoryPortal>
           {taskStatistics.map((elem) => {
-            const x = moment(elem.key).diff(moment(ticksData[0]), 'h');
+            const x =
+              moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') + 1;
             return (
               <VictoryLine
                 data={[
