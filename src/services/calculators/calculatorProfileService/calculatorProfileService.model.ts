@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import { CalculatorResponse } from 'myApi';
 import { fetchCalculator } from './calculatorProfileService.api';
 import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
+import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';
 
 const domain = createDomain('calculatorProfileService');
 
@@ -48,6 +49,8 @@ export const calculatorProfileService = {
   inputs: {
     setCalculatorGrouptype,
     refetchCalculator,
+    handleConsumptionReportModalOpen:
+      consumptionReportCalculatorService.inputs.handleModalOpen,
   },
   outputs: {
     $calculator,

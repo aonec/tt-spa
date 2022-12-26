@@ -12,6 +12,7 @@ import {
 } from '../closeCalculatorService';
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
+import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
 
 const { gates, inputs, outputs } = calculatorProfileService;
 const { CalculatorIdGate } = gates;
@@ -30,12 +31,16 @@ export const CalculatorProfileContainer = () => {
   const handleOpenCheckCalculatorModal = useEvent(
     checkCalculatorService.inputs.openModal
   );
+  const handleOpenConsumptionReportModal = useEvent(
+    inputs.handleConsumptionReportModalOpen
+  );
 
   return (
     <>
       <CalculatorIdGate id={Number(deviceId)} />
       <CheckCalculatorContainer />
       <CloseCalculatorContainer />
+      <ConsumptionReportCalculatorContainer calculator={calculator} />
       <WithLoader isLoading={isLoading}>
         {calculator && (
           <CalculatorProfile
@@ -44,6 +49,9 @@ export const CalculatorProfileContainer = () => {
             setGrouptype={setGrouptype}
             handleOpenCloseCalculatorModal={handleOpenCloseCalculatorModal}
             handleOpenCheckCalculatorModal={handleOpenCheckCalculatorModal}
+            handleOpenConsumptionReportModal={() =>
+              handleOpenConsumptionReportModal()
+            }
           />
         )}
       </WithLoader>
