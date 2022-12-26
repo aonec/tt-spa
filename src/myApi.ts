@@ -545,7 +545,7 @@ export interface CalculatorIntoNodeResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -581,7 +581,7 @@ export interface CalculatorListResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean;
+  hasActiveTasks: boolean;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -648,7 +648,7 @@ export interface CalculatorResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -988,6 +988,7 @@ export interface CreateElectricNodeRequest {
   /** @format int32 */
   number?: number;
   nodeStatus?: ENodeCommercialAccountStatus;
+  commercialStatus?: ENodeCommercialAccountStatus | null;
 
   /** @format int32 */
   nodeServiceZoneId?: number;
@@ -1156,6 +1157,7 @@ export interface CreatePipeNodeRequest {
   /** @format int32 */
   number?: number;
   nodeStatus?: ENodeCommercialAccountStatus;
+  commercialStatus?: ENodeCommercialAccountStatus | null;
 
   /** @format int32 */
   nodeServiceZoneId?: number;
@@ -1271,6 +1273,12 @@ export interface DateTimeDoubleDictionaryItem {
 
   /** @format double */
   value?: number;
+}
+
+export interface DateTimeTaskStatisticsItemArrayDictionaryItem {
+  /** @format date-time */
+  key?: string;
+  value?: TaskStatisticsItem[] | null;
 }
 
 export interface DisableNodeWorkingRangeRequest {
@@ -1589,6 +1597,11 @@ export interface ENodeCommercialAccountStatusNullableStringDictionaryItem {
 export enum ENodeNetworkDeviceType {
   Calculator = "Calculator",
   Counter = "Counter",
+}
+
+export enum ENodeRegistrationType {
+  Commercial = "Commercial",
+  Technical = "Technical",
 }
 
 export enum ENodeType {
@@ -1943,7 +1956,7 @@ export interface ElectricHousingMeteringDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -1984,6 +1997,8 @@ export interface ElectricNodeResponse {
   /** @format int32 */
   number: number;
   nodeStatus: NodeCommercialStatusResponse | null;
+  registrationType: ENodeRegistrationType;
+  commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
 
@@ -2549,7 +2564,7 @@ export interface HousingMeteringDeviceIncludingReadingsResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -2823,6 +2838,7 @@ export interface HousingStockListResponse {
   numberOfApartments: number;
   houseManagement: HouseManagementResponse | null;
   address: HousingStockAddressResponse | null;
+  managementFirm: ManagementFirmLiteResponse | null;
 }
 
 export interface HousingStockListResponsePagedList {
@@ -3051,7 +3067,7 @@ export interface IndividualDeviceListItemResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean;
+  hasActiveTasks: boolean;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -3202,7 +3218,7 @@ export interface IndividualDeviceOnTaskResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -3383,7 +3399,7 @@ export interface IndividualDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -3471,7 +3487,7 @@ export interface IndividualDeviceWithExpiredCheckingDateResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -3705,6 +3721,16 @@ export interface ManagementFirmFiltersConfigurationResponse {
   pipeDiameters: number[] | null;
 }
 
+export interface ManagementFirmLiteResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+  information: string | null;
+  email: string | null;
+  workingTime: string | null;
+}
+
 export interface MeasurableIntervalResponse {
   /** @format double */
   maxValue: number | null;
@@ -3807,7 +3833,7 @@ export interface MeteringDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -3917,6 +3943,9 @@ export interface NodeOnHousingStockResponse {
 
   /** @format int32 */
   number: number;
+
+  /** @format int32 */
+  entryNumber: number | null;
   status: ENodeCommercialAccountStatus;
   resource: EResourceType;
   type: ENodeType;
@@ -4255,6 +4284,13 @@ export interface PipeHousingMeteringDeviceConnectionResponse {
   node: PipeHousingMeteringDeviceNodeResponse | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
+
+  /** @format date-time */
+  lastCheckingDate: string | null;
+
+  /** @format date-time */
+  futureCheckingDate: string | null;
+  isActive: boolean | null;
   calculatorConnection: MeteringDeviceConnection | null;
 }
 
@@ -4288,7 +4324,7 @@ export interface PipeHousingMeteringDeviceListResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean;
+  hasActiveTasks: boolean;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -4335,7 +4371,7 @@ export interface PipeHousingMeteringDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   closingReason: EClosingReason;
-  isActive: boolean | null;
+  hasActiveTasks: boolean | null;
 
   /** @format int32 */
   bitDepth: number | null;
@@ -4379,6 +4415,7 @@ export interface PipeNodeIntoCalculatorResponse {
   /** @format int32 */
   number: number;
   nodeStatus: NodeCommercialStatusResponse | null;
+  commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
   heatingSeason: PipeNodeHeatingSeasonListResponse | null;
@@ -4408,6 +4445,8 @@ export interface PipeNodeResponse {
   /** @format int32 */
   number: number;
   nodeStatus: NodeCommercialStatusResponse | null;
+  registrationType: ENodeRegistrationType;
+  commercialStatus: NodeCommercialStatusResponse | null;
   resource: EResourceType;
   nodeServiceZone: NodeServiceZoneResponse | null;
 
@@ -4478,6 +4517,14 @@ export interface ProblemDetails {
   status?: number | null;
   detail?: string | null;
   instance?: string | null;
+}
+
+export interface RefreshOrganizationApiKeyRequest {
+  canWrite?: boolean;
+  name?: string | null;
+
+  /** @format int32 */
+  organizationId?: number;
 }
 
 export interface RefreshResponse {
@@ -5404,6 +5451,21 @@ export interface TaskResponse {
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
+}
+
+export interface TaskStatisticsItem {
+  /** @format int32 */
+  id?: number;
+  isEmergency?: boolean;
+  isClosed?: boolean;
+}
+
+export interface TaskStatisticsResponse {
+  tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
+}
+
+export interface TaskStatisticsResponseSuccessApiResponse {
+  successResponse: TaskStatisticsResponse | null;
 }
 
 export interface TasksPagedList {
@@ -7105,6 +7167,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsRefreshOrganizationApiKeyCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/RefreshOrganizationApiKey
+     * @secure
+     */
+    dataMigrationsRefreshOrganizationApiKeyCreate: (
+      data: RefreshOrganizationApiKeyRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/RefreshOrganizationApiKey`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -9753,6 +9837,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Address.HouseCategory"?: EHouseCategory;
         Resource?: EResourceType;
         NodeStatus?: ENodeCommercialAccountStatus;
+        RegistrationType?: ENodeRegistrationType;
+        CommercialStatus?: ENodeCommercialAccountStatus;
         "DevicesFilter.ExpiresCheckingDateAt"?: EExpiresCheckingDateAt;
         "DevicesFilter.Model"?: string;
         "DevicesFilter.Question"?: string;
@@ -9894,6 +9980,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<ArchivesDataModel, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/Statistics`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesTaskStatisticsDetail
+     * @summary ReportRead
+     * @request GET:/api/Nodes/{nodeId}/TaskStatistics
+     * @secure
+     */
+    nodesTaskStatisticsDetail: (
+      nodeId: number,
+      query?: { ReportType?: EReportType; From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<TaskStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/TaskStatistics`,
         method: "GET",
         query: query,
         secure: true,
@@ -10778,27 +10887,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
-     * @name ReportsArchivesList
-     * @summary ReportRead
-     * @request GET:/api/Reports/Archives
-     * @secure
-     */
-    reportsArchivesList: (
-      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/Archives`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
-     *
-     * @tags Reports
      * @name ReportsReportDataList
      * @summary ReportRead
      * @request GET:/api/Reports/ReportData
@@ -11174,11 +11262,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор</li>
+     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li>
      *
      * @tags Reports
      * @name ReportsFeedBackFlowTemperatureReportList
-     * @summary ReadingReportForAdministrator
+     * @summary FeedBackFlowTemperatureReportCreate
      * @request GET:/api/Reports/FeedBackFlowTemperatureReport
      * @secure
      */

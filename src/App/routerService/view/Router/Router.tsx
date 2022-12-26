@@ -42,6 +42,7 @@ import { EditApartmentProfileContainer } from 'services/apartments/editApartment
 import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
+import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
 import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
 import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
@@ -150,10 +151,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path={[
-                    '/calculators/:deviceId/(connection|related|nodes|documents)?',
-                  ]}
-                  component={CalculatorProfile}
+                  path={['/calculators/:deviceId']}
+                  component={CalculatorProfileContainer}
                   exact
                 />
 
