@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 export * from './Login';
-export * from './ObjectProfile';
-export * from './DeviceProfile';
 export * from './MetersPage';
 export * from './ErrorPage';
 export * from './AccessDeniedPage';
