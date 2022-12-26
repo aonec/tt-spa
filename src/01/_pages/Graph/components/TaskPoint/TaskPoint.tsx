@@ -1,11 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { TaskPointProps } from './TaskPoint.types';
 
 export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
+  const isAllActive = datum?.isAllActive;
+
+  const style = useMemo(() => {
+    const fill = isAllActive ? '' : '#272F5A';
+    const border = isAllActive ? '#272F5A' : '';
+    return { fill };
+  }, [isAllActive]);
+
   if (!scale || !datum) {
     return null;
   }
-  const { x, y, isEmergency } = datum;
+  const {  isEmergency, x, y } = datum;
 
   const xPos = scale.x(x);
   const yPos = scale.y(y);
@@ -20,13 +28,13 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
         stroke={'#DCDEE4'}
         stroke-dasharray="5"
       />
-      <circle cx={xPos} cy={yPos} r={8} style={{ fill: '#272F5A' }} />
+      <circle cx={xPos} cy={yPos} r={8} style={{ border: '1px solid red' }} />
       {isEmergency && (
         <circle
           cx={xPos + 8 * Math.sin(Math.PI / 4)}
           cy={yPos - 8 * Math.sin(Math.PI / 4)}
           r={3}
-          style={{ fill: 'red' }}
+          style={{ fill: '#FC525B' }}
         />
       )}
     </g>

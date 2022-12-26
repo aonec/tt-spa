@@ -3,6 +3,7 @@ export type TaskPointProps = {
     x: number;
     y: number;
     isEmergency: boolean;
+    isAllActive: boolean;
   };
   scale?: {
     y: (y: number) => number;

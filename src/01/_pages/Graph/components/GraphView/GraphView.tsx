@@ -120,27 +120,25 @@ export const GraphView: React.FC<GraphViewProps> = ({
             }}
           />
 
-          <VictoryPortal>
-            <VictoryScatter
-              data={taskStatistics.map((elem) => ({
-                x:
-                  moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') +
-                  1,
-                y: maxValue * 0.9,
-                amount: (elem.value || []).length,
-                isEmergency:
-                  (elem.value || []).filter((elem) => elem.isEmergency)
-                    .length !== 0,
-              }))}
-              sortKey="x"
-              labels={({ datum }) => datum.amount}
-              dataComponent={<TaskPoint />}
-              labelComponent={<VictoryLabel dy={5} />}
-              style={{
-                labels: { fill: 'white', fontSize: '10px' },
-              }}
-            />
-          </VictoryPortal>
+          <VictoryScatter
+            data={taskStatistics.map((elem) => ({
+              x: moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') + 1,
+              y: maxValue * 0.9,
+              amount: (elem.value || []).length,
+              isEmergency:
+                (elem.value || []).filter((elem) => elem.isEmergency).length !==
+                0,
+              isAllActive:
+                (elem.value || []).filter((elem) => elem.isClosed).length === 0,
+            }))}
+            sortKey="x"
+            labels={({ datum }) => datum.amount}
+            dataComponent={<TaskPoint />}
+            labelComponent={<VictoryLabel dy={5} />}
+            style={{
+              labels: { fill: 'white', fontSize: '10px' },
+            }}
+          />
 
           <VictoryArea
             name="graph"
