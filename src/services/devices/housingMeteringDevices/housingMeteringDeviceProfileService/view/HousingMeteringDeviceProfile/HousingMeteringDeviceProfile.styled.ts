@@ -36,17 +36,6 @@ export const PageGridContainer = styled.div`
 
 export const RightBlock = styled.div``;
 
-export const MockComponent = styled.div`
-  width: 312px;
-  background: #ffffff;
-  border: 1px solid #f3f5f6;
-  box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
-    0px 8px 16px rgba(78, 93, 146, 0.08);
-  border-radius: 4px;
-  padding: 14px;
-  margin: 10px;
-`;
-
 export const TasksWrapper = styled.div`
   display: flex;
   align-items: center;

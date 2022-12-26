@@ -40,6 +40,7 @@ export type FiltersGatePayload = {
   apartmentId: string | null;
   housingStockId: string | null;
   pipeNodeId: string | null;
+  housingMeteringDeviceId: string | null;
 };
 
 export const EngineeringElementLookUp: {

@@ -78,7 +78,6 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
             magistral: values.magistral as EMagistralType,
           },
         };
-        console.log(form);
         handleSubmitForm({
           deviceId: Number(deviceId),
           request: form,
@@ -96,6 +95,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
 
       <FormItem label="Тип прибора">
         <Select
+          disabled
           placeholder="Выберите из списка"
           onChange={(value) =>
             setFieldValue('housingMeteringDeviceType', value)
@@ -184,7 +184,10 @@ export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCo
             value={values.lastCheckingDate}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add('year', 4));
+              setFieldValue(
+                'futureCheckingDate',
+                date ? moment(date).add(4, 'year') : ''
+              );
             }}
             placeholder="Выберите"
             format="DD.MM.YYYY"

@@ -26,6 +26,7 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
   deviceId,
 }) => {
   const address = housingMeteringDevice?.address?.address?.mainAddress;
+  const isActive = !Boolean(housingMeteringDevice?.closingDate);
 
   const history = useHistory();
   const onCancel = () => history.goBack();
@@ -48,10 +49,7 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
               <div>
                 Узел {housingMeteringDevice?.hubConnection?.node?.number}
               </div>
-              {housingMeteringDevice?.isActive !== undefined &&
-                housingMeteringDevice?.isActive !== null && (
-                  <DeviceStatus isActive={housingMeteringDevice?.isActive} />
-                )}
+              <DeviceStatus isActive={isActive} />
             </HeaderInfoString>
           </PageTitle>
         }
