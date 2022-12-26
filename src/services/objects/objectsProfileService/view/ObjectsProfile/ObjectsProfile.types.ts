@@ -7,4 +7,5 @@ export type ObjectsProfileProps = {
   handleCreateObject: () => void;
   isAdministrator: boolean;
   openFeedFlowBackReportModal: () => void;
+  handleExportGroupReport: () => void;
 };
