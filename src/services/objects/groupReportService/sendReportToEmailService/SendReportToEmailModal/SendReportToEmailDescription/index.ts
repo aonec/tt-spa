@@ -1,0 +1,1 @@
+export { SendReportToEmailDescription } from './SendReportToEmailDescription'
