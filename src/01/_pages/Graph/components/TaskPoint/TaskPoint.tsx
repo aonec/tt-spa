@@ -1,19 +1,29 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { TaskPointProps } from './TaskPoint.types';
 
+const radius = 8;
+
 export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
   const isAllActive = datum?.isAllActive;
 
   const style = useMemo(() => {
-    const fill = isAllActive ? '' : '#272F5A';
-    const border = isAllActive ? '#272F5A' : '';
-    return { fill };
+    const fill = isAllActive ? 'white' : '#272F5A';
+    const stroke = isAllActive ? '#272F5A' : '';
+    const strokeWidth = isAllActive ? '1' : '';
+
+    return { fill, stroke, strokeWidth };
+  }, [isAllActive]);
+
+  const textStyle = useMemo(() => {
+    const fill = isAllActive ? '#272F5A' : '#fff';
+    const fontSize = '10px';
+    return { fill, fontSize };
   }, [isAllActive]);
 
   if (!scale || !datum) {
     return null;
   }
-  const {  isEmergency, x, y } = datum;
+  const { isEmergency, x, y, amount } = datum;
 
   const xPos = scale.x(x);
   const yPos = scale.y(y);
@@ -28,11 +38,14 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
         stroke={'#DCDEE4'}
         stroke-dasharray="5"
       />
-      <circle cx={xPos} cy={yPos} r={8} style={{ border: '1px solid red' }} />
+      <circle cx={xPos} cy={yPos} r={radius} style={style} />
+      <text x={xPos} y={yPos} dx={-3} dy={3} style={textStyle}>
+        {amount}
+      </text>
       {isEmergency && (
         <circle
-          cx={xPos + 8 * Math.sin(Math.PI / 4)}
-          cy={yPos - 8 * Math.sin(Math.PI / 4)}
+          cx={xPos + radius * Math.sin(Math.PI / 4)}
+          cy={yPos - radius * Math.sin(Math.PI / 4)}
           r={3}
           style={{ fill: '#FC525B' }}
         />

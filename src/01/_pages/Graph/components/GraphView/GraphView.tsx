@@ -132,12 +132,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
                 (elem.value || []).filter((elem) => elem.isClosed).length === 0,
             }))}
             sortKey="x"
-            labels={({ datum }) => datum.amount}
             dataComponent={<TaskPoint />}
-            labelComponent={<VictoryLabel dy={5} />}
-            style={{
-              labels: { fill: 'white', fontSize: '10px' },
-            }}
           />
 
           <VictoryArea
