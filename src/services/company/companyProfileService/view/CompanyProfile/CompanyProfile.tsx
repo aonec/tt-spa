@@ -10,7 +10,10 @@ import { CommonInfoTab } from './Tabs/CommonInfoTab';
 import { Staff } from './Tabs/Staff';
 import { Contractors } from './Tabs/Contractors';
 
-export const CompanyProfile: FC<CompanyProfileProps> = ({}) => {
+export const CompanyProfile: FC<CompanyProfileProps> = ({
+  currentManagingFirm,
+  staffList,
+}) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
 
@@ -23,12 +26,16 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({}) => {
             {
               title: 'Добавить контрагента',
               onClick: () => {},
-              hidden: CompanyProfileSection.Contractors === section,
+              hidden:
+                CompanyProfileSection.Staff === section ||
+                CompanyProfileSection.CommonInfo === section,
             },
             {
               title: 'Добавить сотрудника',
               onClick: () => {},
-              hidden: CompanyProfileSection.Staff === section,
+              hidden:
+                CompanyProfileSection.Contractors === section ||
+                CompanyProfileSection.CommonInfo === section,
             },
           ],
         }}
@@ -51,10 +58,10 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({}) => {
       </Tabs>
 
       <Route path="/companyProfile/commonInfo" exact>
-        <CommonInfoTab />
+        <CommonInfoTab currentManagingFirm={currentManagingFirm} />
       </Route>
       <Route path="/companyProfile/staff" exact>
-        <Staff />
+        <Staff staffList={staffList} />
       </Route>
       <Route path="/companyProfile/contractors" exact>
         <Contractors />

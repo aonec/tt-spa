@@ -2,8 +2,32 @@ import React, { FC } from 'react';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { TabTitle, Wrapper } from './CommonInfoTab.styled';
+import { HouseAddress } from 'myApi';
 
-export const CommonInfoTab: FC<CommonInfoTabProps> = ({}) => {
+export const CommonInfoTab: FC<CommonInfoTabProps> = ({
+  currentManagingFirm,
+}) => {
+  const getHousingStockAddress = (address: HouseAddress | null) => {
+    if (!address) return null;
+
+    const { city, houseCorpus, street, houseNumber } = address || {};
+
+    const cityText = city ? `${city}` : '';
+    const streetText = street ? `, ${street}` : '';
+    const houseNumberText = houseNumber ? `, ${houseNumber}` : '';
+    const corpusText = houseCorpus ? `, корпус ${houseCorpus}` : '';
+
+    return `${cityText}${streetText}${houseNumberText}${corpusText}`;
+  };
+
+  const name = currentManagingFirm?.name;
+  const address =
+    currentManagingFirm?.address &&
+    getHousingStockAddress(currentManagingFirm?.address);
+  const email = currentManagingFirm?.email;
+  const cellPhone = currentManagingFirm?.phoneNumber;
+  const timeZone = currentManagingFirm?.workingTime;
+
   return (
     <Wrapper>
       <TabTitle>Информация о компании</TabTitle>
@@ -11,23 +35,23 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({}) => {
         items={[
           {
             key: 'Название',
-            value: '',
+            value: name,
           },
           {
             key: 'Адрес',
-            value: '',
+            value: address,
           },
           {
             key: 'Электронная почта',
-            value: '',
+            value: email,
           },
           {
             key: 'Контактный телефон ',
-            value: '',
+            value: cellPhone,
           },
           {
             key: 'Часовой пояс',
-            value: '',
+            value: timeZone,
           },
         ]}
       />
