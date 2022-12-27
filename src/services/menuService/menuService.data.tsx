@@ -10,6 +10,7 @@ import {
   TasksIcon,
 } from 'ui-kit/icons';
 import { MenuFiltrationConfig, MenuItem, MenuType } from './menuService.types';
+import { MeterSection } from 'services/meters/metersService/metersService.types';
 
 export const menuItems: MenuItem[] = [
   {
@@ -56,23 +57,23 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: 'Ввод показаний',
-    path: '/meters',
+    path: `/meters/${MeterSection.Apartments}`,
     icon: DocumentIcon,
     type: MenuType.Meters,
     sub: [
       {
         title: 'По квартирам',
-        path: '/meters/apartments',
+        path: `/meters/${MeterSection.Apartments}`,
         type: MenuType.MetersApartments,
       },
       {
         title: 'По домам',
-        path: '/meters/houses',
+        path: `/meters/${MeterSection.Houses}`,
         type: MenuType.MetersApartments,
       },
       {
         title: 'По узлам учёта',
-        path: '/meters/accountingNodes',
+        path: `/meters/${MeterSection.AccountingNodes}`,
         type: MenuType.MetersApartments,
       },
     ],

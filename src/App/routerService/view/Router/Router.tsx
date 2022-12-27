@@ -46,6 +46,7 @@ import { CalculatorProfileContainer } from 'services/calculators/calculatorProfi
 import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
 import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
+import { MetersContainer } from 'services/meters/metersService';
 
 const { gates } = objectProfileService;
 
@@ -176,7 +177,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path={['/housingMeteringDevices/:deviceId/']}
-                  component={HousingMeteringDeviceProfileContainer} 
+                  component={HousingMeteringDeviceProfileContainer}
                   exact
                 />
 
@@ -212,10 +213,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Redirect from="/meters/" to="/meters/apartments" exact />
 
-                <Route
-                  path="/meters/(apartments|houses|accountingNodes)"
-                  component={MetersPage}
-                />
+                <Route path="/meters/:section" component={MetersContainer} />
 
                 <Route
                   path="/nodeArchive/:nodeId"
@@ -224,7 +222,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/settings/:section"
+                  path="/settings/:section/:id?"
                   component={SettingsPageContainer}
                   exact
                 />
