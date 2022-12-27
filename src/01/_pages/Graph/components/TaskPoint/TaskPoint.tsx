@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { TaskPointProps } from './TaskPoint.types';
 
-const radius = 8;
+const radius = 10;
 
 export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
   const isAllActive = datum?.isAllActive;
@@ -16,7 +16,7 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
 
   const textStyle = useMemo(() => {
     const fill = isAllActive ? '#272F5A' : '#fff';
-    const fontSize = '10px';
+    const fontSize = '11px';
     return { fill, fontSize };
   }, [isAllActive]);
 
@@ -39,14 +39,14 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
         stroke-dasharray="5"
       />
       <circle cx={xPos} cy={yPos} r={radius} style={style} />
-      <text x={xPos} y={yPos} dx={-3} dy={3} style={textStyle}>
+      <text x={xPos} y={yPos} dx={-3} dy={4} style={textStyle}>
         {amount}
       </text>
       {isEmergency && (
         <circle
           cx={xPos + radius * Math.sin(Math.PI / 4)}
           cy={yPos - radius * Math.sin(Math.PI / 4)}
-          r={3}
+          r={4}
           style={{ fill: '#FC525B' }}
         />
       )}
