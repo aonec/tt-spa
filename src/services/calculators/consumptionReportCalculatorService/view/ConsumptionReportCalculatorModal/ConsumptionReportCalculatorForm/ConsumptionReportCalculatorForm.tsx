@@ -198,7 +198,6 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
             <Radio value={EReportType.Daily} checked>
               Суточная
             </Radio>
-            <Radio value={EReportType.Monthly}>Месячная</Radio>
           </StyledRadioGroup>
         </FormItem>
       </GridContainer>
