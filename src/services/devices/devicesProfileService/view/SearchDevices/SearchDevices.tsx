@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
-import { Form, Select } from 'antd';
+import { Select } from 'antd';
 import _ from 'lodash';
 import {
   FlexCenterRow,
@@ -21,7 +21,6 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { useDebounce } from '01/hooks/useDebounce';
 import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
@@ -39,10 +38,6 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
-  const debouncedFilterChange = _.debounce(() => submitForm(), 1000, {
-    
-  });
-
   const handleChangeRange = useCallback(
     (value: [number, number]) => {
       const firstIndex = diameters.findIndex((elem) => elem === value[0]);
@@ -52,9 +47,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
         "['Filter.PipeDiameters']",
         diameters.slice(firstIndex, secondIndex)
       );
-      debouncedFilterChange();
     },
-    [setFieldValue, diameters, debouncedFilterChange]
+    [setFieldValue, diameters]
   );
 
   const rangeValues: [number, number] = useMemo(() => {
