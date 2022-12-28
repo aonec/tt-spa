@@ -10,7 +10,9 @@ import { Button } from 'ui-kit/Button';
 import { useHistory, useParams } from 'react-router-dom';
 import { Loader } from '01/_components/Loader';
 import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
+import { usePhoneMask } from 'hooks/usePhoneMask';
 import { Select } from 'ui-kit/Select';
+import * as yup from 'yup';
 
 export const EditEmployee: FC<EditEmployeeProps> = ({
   submitHandler,
@@ -25,6 +27,11 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
   const history = useHistory();
   const onCancel = () => history.push('/companyProfile/staff');
 
+  const phoneMask = usePhoneMask();
+
+  const preparedRoleTypes = employeeData?.roles?.map((elem) => elem.key || '');
+  const firmCompetencesId = employeeData?.competences?.map((elem) => elem.id);
+
   const { handleSubmit, errors, setFieldValue, values } = useFormik({
     initialValues: {
       email: employeeData?.email || null,
@@ -32,21 +39,40 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
       lastName: employeeData?.lastName || null,
       middleName: employeeData?.middleName || null,
       cellphone: employeeData?.cellphone || null,
-      roleTypes: employeeData?.roles || null,
-      firmCompetences: employeeData?.competences || null,
+      roleTypes: preparedRoleTypes || null,
+      firmCompetencesId: firmCompetencesId || null,
       userId: userId,
     },
-    validationSchema: {},
     enableReinitialize: true,
+    validationSchema: yup.object().shape({
+      firstName: yup
+        .string()
+        .nullable()
+        .min(2, 'Минимум два символа')
+        .required('Обязательное поле'),
+      lastName: yup
+        .string()
+        .nullable()
+        .min(2, 'Минимум два символа')
+        .required('Обязательное поле'),
+    }),
+    validateOnChange: false,
     onSubmit: (data) => {
       const userId = data.userId;
-      const form: OrganizationUserUpdateRequest = {};
+      const form: OrganizationUserUpdateRequest = {
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        middleName: data.middleName,
+        cellphone: data.cellphone,
+        roleTypes: data.roleTypes as ESecuredIdentityRoleName[] | null,
+        competenceIds: data.firmCompetencesId,
+      };
 
       submitHandler({ userId: userId, form: form });
     },
   });
 
-  console.log(values.roleTypes);
   return (
     <>
       <GoBack />
@@ -61,7 +87,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             value={values.lastName || undefined}
             onChange={(value) => setFieldValue('lastName', value.target.value)}
           />
-          <ErrorMessage></ErrorMessage>
+          <ErrorMessage>{errors.lastName}</ErrorMessage>
         </FormItem>
         <FormItem label="Имя">
           <Input
@@ -71,7 +97,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             value={values.firstName || undefined}
             onChange={(value) => setFieldValue('firstName', value.target.value)}
           />
-          <ErrorMessage></ErrorMessage>
+          <ErrorMessage>{errors.firstName}</ErrorMessage>
         </FormItem>
         <FormItem label="Отчество">
           <Input
@@ -97,10 +123,19 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         <FormItem label="Контактный телефон">
           <Input
             name="cellphone"
-            type="number"
+            type="tel"
             placeholder="Введите"
-            value={values.cellphone || undefined}
-            onChange={(value) => setFieldValue('cellphone', value.target.value)}
+            value={
+              values.cellphone && values.cellphone?.length > 8
+                ? phoneMask.maskValue(values.cellphone || '') || undefined
+                : values.cellphone || undefined
+            }
+            onChange={(value) =>
+              setFieldValue(
+                'cellphone',
+                phoneMask.unmaskedValue(value.target.value)
+              )
+            }
           />
           <ErrorMessage></ErrorMessage>
         </FormItem>
@@ -109,9 +144,12 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
           <Select
             mode="multiple"
             placeholder="Выберите"
-            onChange={(value) => setFieldValue('roleTypes', value)}
+            onChange={(value) => {
+              setFieldValue('roleTypes', value);
+            }}
+            value={values.roleTypes || undefined}
           >
-            {multipleSelectionUserRoles?.map((elem) => (
+            {multipleSelectionUserRoles?.map((elem, i) => (
               <Select.Option value={elem.value || ''} key={elem.value}>
                 {elem.label}
               </Select.Option>
@@ -123,7 +161,8 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
           <Select
             mode="multiple"
             placeholder="Выберите"
-            onChange={(value) => setFieldValue('firmCompetences', value)}
+            onChange={(value) => setFieldValue('firmCompetencesId', value)}
+            value={values.firmCompetencesId || undefined}
           >
             {multipleSelectionCompetences?.map((elem) => (
               <Select.Option value={elem.value} key={elem.value}>

@@ -1,6 +1,7 @@
 import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import { ESecuredIdentityRoleNameStringDictionaryItem } from 'myApi';
+import { fetchUserRoles } from './rolesService.api';
 
 const domain = createDomain('rolesService');
 
@@ -9,7 +10,7 @@ const UserRolesGate = createGate();
 const fetchUserRolesFx = domain.createEffect<
   void,
   ESecuredIdentityRoleNameStringDictionaryItem[] | null
->();
+>(fetchUserRoles);
 
 const $userRoles = domain
   .createStore<ESecuredIdentityRoleNameStringDictionaryItem[] | null>(null)
