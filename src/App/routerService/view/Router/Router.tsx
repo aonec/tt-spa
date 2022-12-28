@@ -25,7 +25,6 @@ import {
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 import Devices from '01/_pages/ObjectProfile/components/Devices';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
@@ -44,6 +43,7 @@ import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingM
 import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
+import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 
 const { gates } = objectProfileService;
 
@@ -138,17 +138,14 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route path="/companyProfile/editManagingFirmUser/:id" exact>
-                  <EditManagingFirmUserPage />
+                  <EditEmployeeContainer />
                 </Route>
+
                 <Route
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
-                {/* <Route
-                  path="/companyProfile/staff/:id"
-                  component={CompanyProfileContainer}
-                /> */}
-
+            
                 <Route
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
