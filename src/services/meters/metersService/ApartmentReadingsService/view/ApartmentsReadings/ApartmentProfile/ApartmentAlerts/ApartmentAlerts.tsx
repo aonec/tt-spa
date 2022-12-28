@@ -10,7 +10,7 @@ import { Alert } from '01/shared/ui/Alert/Alert';
 import moment from 'moment';
 
 export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({ apartment }) => {
-  const isPaused = apartment?.status === EApartmentStatus.Pause;
+  const isPaused = apartment.status === EApartmentStatus.Pause;
 
   const pausedAlert = isPaused && (
     <ApartmentAlertWrapper>

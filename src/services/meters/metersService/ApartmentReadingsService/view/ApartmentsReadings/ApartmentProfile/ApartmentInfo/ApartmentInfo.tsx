@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
+import { useHistory } from 'react-router-dom';
+import { Tooltip } from 'antd';
 import {
   AccountOpeningDate,
   Address,
@@ -30,14 +32,20 @@ import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
-import { Tooltip } from 'antd';
+import { EApartmentStatus } from 'myApi';
 
 const { inputs, outputs } = apartmentInfoService;
 
 export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   apartment,
   handleUpdateApartment,
+  handlePauseApartment,
+  handleCancelPauseApartment,
 }) => {
+  const history = useHistory();
+
+  const isPaused = apartment.status === EApartmentStatus.Pause;
+
   const initialHomeownerId = apartment.homeownerAccounts?.[0]?.id;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -101,7 +109,37 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
             ))}
           </PersonalNumbersWrapper>
         </AddressWrapper>
-        <ContextMenuButton size="small" />
+        <ContextMenuButton
+          size="small"
+          menuButtons={[
+            {
+              title: 'Поставить на паузу',
+              hidden: isPaused,
+              onClick: handlePauseApartment,
+            },
+            {
+              title: 'Снять с паузы',
+              hidden: !isPaused,
+              onClick: handleCancelPauseApartment,
+            },
+            {
+              title: 'Изменить лицевой счет',
+              // show: isSeniorOperator,
+              // onClick: () => openEditPersonalNumberTypeModal(),
+              onClick: () => {},
+            },
+            {
+              title: 'Добавить новый прибор',
+              onClick: () =>
+                history.push(`/apartment/${apartment.id}/addIndividualDevice`),
+            },
+            {
+              title: 'Выдать справку',
+              // onClick: () => getIssueCertificateButtonClicked(),
+              onClick: () => {},
+            },
+          ]}
+        />
       </Header>
       <InfoPanel>
         <BaseInfoWrapper>

@@ -4,4 +4,6 @@ import { UpdateApartmentRequestPayload } from 'services/meters/metersService/Apa
 export type ApartmentInfoProps = {
   apartment: ApartmentResponse;
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
+  handlePauseApartment: () => void;
+  handleCancelPauseApartment: () => void;
 };

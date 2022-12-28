@@ -8,6 +8,11 @@ import {
 } from './ApartmentReadingsService.types';
 import { getApartment, putApartment } from './ApartmentReadingsService.api';
 import { message } from 'antd';
+import {
+  pauseApartmentButtonClicked,
+  cancelPauseApartmentButtonClicked,
+  pauseApartmentStatusFx,
+} from '01/features/apartments/pauseApartment/models';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -47,11 +52,14 @@ forward({
 
 sample({
   source: ApartmentGate.state.map(({ id }) => ({ ApartmentId: id })),
-  clock: guard({
-    source: $apartment,
-    clock: ApartmentGate.open,
-    filter: (apartment, { id }) => Boolean(id && !apartment),
-  }),
+  clock: [
+    guard({
+      source: $apartment,
+      clock: ApartmentGate.open,
+      filter: (apartment, { id }) => Boolean(id && !apartment),
+    }),
+    pauseApartmentStatusFx.doneData,
+  ],
   target: fetchApartmentFx,
 });
 
@@ -69,6 +77,8 @@ export const apartmentReadingsService = {
     setSearchMode,
     handleSearchApartment,
     handleUpdateApartment,
+    handlePauseApartment: pauseApartmentButtonClicked,
+    handleCancelPauseApartment: cancelPauseApartmentButtonClicked,
   },
   outputs: { $searchMode, $apartment, $isLoadingApartment },
   gates: { ApartmentGate },

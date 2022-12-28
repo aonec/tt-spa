@@ -11,6 +11,8 @@ export type ApartmentsReadingsProps = {
   isLoadingApartment: boolean;
   apartment: ApartmentResponse | null;
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
+  handlePauseApartment: () => void;
+  handleCancelPauseApartment: () => void;
 };
 
 export enum SearchMode {

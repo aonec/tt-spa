@@ -17,6 +17,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   apartment,
   handleSearchApartment,
   handleUpdateApartment,
+  handlePauseApartment,
+  handleCancelPauseApartment,
 }) => {
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -78,6 +80,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             <ApartmentInfo
               apartment={apartment}
               handleUpdateApartment={handleUpdateApartment}
+              handlePauseApartment={handlePauseApartment}
+              handleCancelPauseApartment={handleCancelPauseApartment}
             />
             <ApartmentAlerts apartment={apartment} />
             <ReadingsWrapper>

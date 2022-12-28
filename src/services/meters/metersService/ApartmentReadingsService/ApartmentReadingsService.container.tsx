@@ -3,6 +3,7 @@ import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
+import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 
 const { inputs, outputs, gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -14,6 +15,10 @@ export const ApartmentReadingsContainer = () => {
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
   const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
+  const handlePauseApartment = useEvent(inputs.handlePauseApartment);
+  const handleCancelPauseApartment = useEvent(
+    inputs.handleCancelPauseApartment
+  );
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
@@ -32,6 +37,7 @@ export const ApartmentReadingsContainer = () => {
   return (
     <>
       <ApartmentGate id={apartmentId} />
+      {apartment?.id && <PauseApartmentModal apartmentId={apartment.id} />}
       <ApartmentsReadings
         setSearchMode={setSearchMode}
         searchMode={searchMode}
@@ -39,6 +45,8 @@ export const ApartmentReadingsContainer = () => {
         isLoadingApartment={isLoadingApartment}
         apartment={apartment}
         handleUpdateApartment={handleUpdateApartment}
+        handlePauseApartment={() => handlePauseApartment()}
+        handleCancelPauseApartment={() => handleCancelPauseApartment()}
       />
     </>
   );

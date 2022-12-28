@@ -9,4 +9,6 @@ export type ApartmentProfileProps = {
   isLoadingApartment: boolean;
   apartment: ApartmentResponse | null;
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
+  handlePauseApartment: () => void;
+  handleCancelPauseApartment: () => void;
 };
