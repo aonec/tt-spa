@@ -1,4 +1,5 @@
 import { EOrderByRule } from 'myApi';
+import { ApartmentUpdateRequest } from 'myApi';
 
 export type GetApartmentsRequestPayload = {
   ApartmentId?: number;
@@ -15,4 +16,8 @@ export type GetApartmentsRequestPayload = {
   OrderBy?: EOrderByRule;
   Skip?: number;
   Take?: number;
+};
+
+export type UpdateApartmentRequestPayload = ApartmentUpdateRequest & {
+  apartmentId: number;
 };

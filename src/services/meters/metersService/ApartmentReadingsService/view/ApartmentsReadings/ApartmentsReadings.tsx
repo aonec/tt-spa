@@ -14,6 +14,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   handleSearchApartment,
   isLoadingApartment,
   apartment,
+  handleUpdateApartment,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -21,6 +22,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         handleSearchApartment={handleSearchApartment}
         isLoadingApartment={isLoadingApartment}
         apartment={apartment}
+        handleUpdateApartment={handleUpdateApartment}
       />
     ),
     [SearchMode.SerialNumber]: <DevicesSearch />,

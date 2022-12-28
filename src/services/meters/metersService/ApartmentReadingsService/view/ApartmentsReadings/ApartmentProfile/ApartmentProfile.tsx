@@ -15,6 +15,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   isLoadingApartment,
   apartment,
   handleSearchApartment,
+  handleUpdateApartment,
 }) => {
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -73,7 +74,10 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         {!apartment && <TypeAddressToStart />}
         {apartment && (
           <ContentWrapper>
-            <ApartmentInfo apartment={apartment} />
+            <ApartmentInfo
+              apartment={apartment}
+              handleUpdateApartment={handleUpdateApartment}
+            />
             <ApartmentIndividualDevicesMetersContainer
               apartmentId={apartment.id}
             />

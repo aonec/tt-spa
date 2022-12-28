@@ -13,6 +13,7 @@ export const ApartmentReadingsContainer = () => {
 
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
+  const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
@@ -37,6 +38,7 @@ export const ApartmentReadingsContainer = () => {
         handleSearchApartment={handleSearchApartment}
         isLoadingApartment={isLoadingApartment}
         apartment={apartment}
+        handleUpdateApartment={handleUpdateApartment}
       />
     </>
   );

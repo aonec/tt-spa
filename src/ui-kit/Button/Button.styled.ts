@@ -10,7 +10,7 @@ const buttonBackgroundColorsDictionary: { [key in ButtonStyleType]: string } = {
 const buttonShadowColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee940',
   danger: '#ff454540',
-  ghost: '#efefef',
+  ghost: 'rgba(0,0,0,.08)',
 };
 
 const buttonFontColorsDictionary: { [key in ButtonStyleType]: string } = {
