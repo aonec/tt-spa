@@ -54,7 +54,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
     : '/tasks/';
   return (
     <Wrapper>
-      <Switch>``
+      <Switch>
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => 'logout'} />
         <Route path="/error/" render={() => <ErrorPage />} />
@@ -143,10 +143,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
-                {/* <Route
-                  path="/companyProfile/staff/:id"
-                  component={CompanyProfileContainer}
-                /> */}
 
                 <Route
                   path="/userProfile/:id"
