@@ -33,6 +33,7 @@ import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { EApartmentStatus } from 'myApi';
+import confirm from 'antd/lib/modal/confirm';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -85,6 +86,18 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     (homeowner) => homeowner.id === activeHomeowner
   );
 
+  const cancelPauseApartment = () =>
+    confirm({
+      title: 'Вы действительно хотите снять эту квартиру с паузы?',
+      okText: 'Снять с паузы',
+      cancelText: 'Отмена',
+      onOk: async () => {
+        handleCancelPauseApartment();
+
+        await new Promise((res) => setTimeout(res, 200));
+      },
+    });
+
   return (
     <div>
       <Header>
@@ -120,7 +133,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
             {
               title: 'Снять с паузы',
               hidden: !isPaused,
-              onClick: handleCancelPauseApartment,
+              onClick: cancelPauseApartment,
             },
             {
               title: 'Изменить лицевой счет',
