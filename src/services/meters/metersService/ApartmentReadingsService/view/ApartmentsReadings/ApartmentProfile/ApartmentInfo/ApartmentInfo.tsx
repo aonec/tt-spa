@@ -22,7 +22,6 @@ import {
   PersonalNumberPanel,
   PersonalNumbersWrapper,
   TextareaSC,
-  Wrapper,
 } from './ApartmentInfo.styled';
 import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
@@ -79,7 +78,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   );
 
   return (
-    <Wrapper>
+    <div>
       <Header>
         <AddressWrapper>
           <ChevronWraper>
@@ -188,6 +187,6 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
           </ExtraInfoWrapper>
         )}
       </InfoPanel>
-    </Wrapper>
+    </div>
   );
 };
