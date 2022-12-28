@@ -127,7 +127,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <InputSC
       placeholder="Л/С или ФИО"
       value={values.question}
-      onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
+      onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}
       ref={refs[index]}
       onClick={() => {
         clearFields(index);

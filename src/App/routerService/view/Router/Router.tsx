@@ -211,9 +211,10 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
-                <Redirect from="/meters/" to="/meters/apartments" exact />
-
-                <Route path="/meters/:section" component={MetersContainer} />
+                <Route
+                  path="/meters/:section/:id?"
+                  component={MetersContainer}
+                />
 
                 <Route
                   path="/nodeArchive/:nodeId"

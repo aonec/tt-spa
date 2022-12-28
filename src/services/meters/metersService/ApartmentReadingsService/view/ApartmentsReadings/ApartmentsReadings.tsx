@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { ContentWrapper, Wrapper } from './ApartmentsReadings.styled';
 import {
   ApartmentsReadingsProps,
@@ -11,13 +11,22 @@ import { DevicesSearch } from './DevicesSearch';
 export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   searchMode,
   setSearchMode,
+  handleSearchApartment,
+  isLoadingApartment,
+  apartment,
 }) => {
-  const componentsDictionary: { [key in SearchMode]: FC } = {
-    [SearchMode.Apartment]: ApartmentProfile,
-    [SearchMode.SerialNumber]: DevicesSearch,
+  const componentsDictionary: { [key in SearchMode]: ReactNode } = {
+    [SearchMode.Apartment]: (
+      <ApartmentProfile
+        handleSearchApartment={handleSearchApartment}
+        isLoadingApartment={isLoadingApartment}
+        apartment={apartment}
+      />
+    ),
+    [SearchMode.SerialNumber]: <DevicesSearch />,
   };
 
-  const Component = componentsDictionary[searchMode];
+  const component = componentsDictionary[searchMode];
 
   return (
     <Wrapper>
@@ -28,9 +37,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         <Radio value={SearchMode.Apartment}>Поиск по адресу</Radio>
         <Radio value={SearchMode.SerialNumber}>Поиск по серийному номеру</Radio>
       </Radio.Group>
-      <ContentWrapper>
-        <Component />
-      </ContentWrapper>
+      <ContentWrapper>{component}</ContentWrapper>
     </Wrapper>
   );
 };

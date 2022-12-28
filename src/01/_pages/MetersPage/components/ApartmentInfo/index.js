@@ -10,7 +10,6 @@ import { ReactComponent as EditIcon } from './icons/Edit.svg';
 import TextArea from 'antd/lib/input/TextArea';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import axios from '01/axios';
-import { formQueryString } from '01/utils/formQueryString';
 import {
   $apartment,
   ApartmentGate,
