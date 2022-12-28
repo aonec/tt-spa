@@ -1,8 +1,8 @@
-import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
+import { ESecuredIdentityRoleName, OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
 
 export type EditEmployeeProps = {
   isPending: boolean;
-  onSubmit: (payload: {
+  submitHandler: (payload: {
     userId: number;
     form: OrganizationUserUpdateRequest;
   }) => void;
@@ -19,4 +19,5 @@ export type EditEmployeeProps = {
         value: ESecuredIdentityRoleName | undefined;
       }[]
     | undefined;
+  employeeData: OrganizationUserResponse | null;
 };

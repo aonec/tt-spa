@@ -2,17 +2,21 @@ import React, { FC } from 'react';
 import { StaffProps } from './Staff.types';
 import { StaffItem } from './StaffItem';
 import { companyProfileService } from 'services/company/companyProfileService/companyProfileService.model';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { LoaderWrapper } from '../../CompanyProfile.styled';
 
 const { gates } = companyProfileService;
 const { FetchingStaffGate } = gates;
 
-export const Staff: FC<StaffProps> = ({ staffList }) => {
+export const Staff: FC<StaffProps> = ({ staffList, fetchStaffPending }) => {
   return (
     <>
       <FetchingStaffGate />
-      {staffList?.items?.map((staff) => (
-        <StaffItem staff={staff} />
-      ))}
+      <LoaderWrapper>
+        <WithLoader isLoading={fetchStaffPending} />
+      </LoaderWrapper>
+      {!fetchStaffPending &&
+        staffList?.items?.map((staff) => <StaffItem staff={staff} />)}
     </>
   );
 };

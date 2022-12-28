@@ -40,8 +40,10 @@ forward({
 
 forward({ from: FetchingStaffGate.open, to: fetchStaffFx });
 
+const $fetchStaffPending = fetchStaffFx.pending;
+
 export const companyProfileService = {
   inputs: {},
-  outputs: { $currentManagingFirm, $staffList },
+  outputs: { $currentManagingFirm, $staffList, $fetchStaffPending },
   gates: { FetchingCurrentManagingFirmGate, FetchingStaffGate },
 };

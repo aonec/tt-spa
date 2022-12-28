@@ -3,6 +3,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { employeeProfileService } from './employeeProfileService.model';
 import { EmployeeProfile } from './view/EmployeeProfile';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { LoaderWrapper } from './view/EmployeeProfile/EmployeeProfile.styled';
 
 export const EmployeeProfileContainer = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,10 +13,15 @@ export const EmployeeProfileContainer = () => {
   const { FetchUserDataGate } = gates;
   const userData = useStore(outputs.$userData);
 
+  const employeeDataPending = useStore(outputs.$employeeDataPending);
+
   return (
     <>
       <FetchUserDataGate id={id} />
-      <EmployeeProfile userData={userData} />
+      <LoaderWrapper>
+        <WithLoader isLoading={employeeDataPending} />
+      </LoaderWrapper>
+      {!employeeDataPending && <EmployeeProfile userData={userData} />}
     </>
   );
 };

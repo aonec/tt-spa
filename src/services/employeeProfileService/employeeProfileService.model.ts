@@ -12,18 +12,21 @@ const fetchUserDataFx = domain.createEffect<
   OrganizationUserResponse | null
 >(getUserData);
 
+const $userData = domain
+  .createStore<OrganizationUserResponse | null>(null)
+  .reset(FetchUserDataGate.close)
+  .on(fetchUserDataFx.doneData, (_, data) => data);
+
 sample({
   clock: FetchUserDataGate.open,
   fn: ({ id }) => id,
   target: fetchUserDataFx,
 });
 
-const $userData = domain
-  .createStore<OrganizationUserResponse | null>(null)
-  .on(fetchUserDataFx.doneData, (_, data) => data);
+const $employeeDataPending = fetchUserDataFx.pending;
 
 export const employeeProfileService = {
   inputs: {},
-  outputs: { $userData },
+  outputs: { $userData, $employeeDataPending },
   gates: { FetchUserDataGate },
 };

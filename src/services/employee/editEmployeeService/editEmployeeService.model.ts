@@ -3,6 +3,7 @@ import { editEmployee } from './editEmployeeService.api';
 import { OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
+import { employeeProfileService } from 'services/employeeProfileService';
 
 const domain = createDomain('editEmployeeService');
 
@@ -29,9 +30,12 @@ export const editEmployeeService = {
     $pending,
     $competencesCatalog: competencesService.outputs.$competencesCatalog,
     $userRoles: rolesService.outputs.$userRoles,
+    $employeeData: employeeProfileService.outputs.$userData,
+    $employeeDataPending: employeeProfileService.outputs.$employeeDataPending,
   },
   gates: {
     CompetencesGate: competencesService.gates.CompetencesGate,
     UserRolesGate: rolesService.gates.UserRolesGate,
+    FetchEmployeeDataGate: employeeProfileService.gates.FetchUserDataGate,
   },
 };
