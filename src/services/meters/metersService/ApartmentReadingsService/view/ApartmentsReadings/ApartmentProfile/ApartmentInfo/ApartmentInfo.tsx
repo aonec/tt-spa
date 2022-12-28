@@ -27,10 +27,11 @@ import {
 import { ApartmentInfoProps } from './ApartmentInfo.types';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
-import { BriefcaseIcon, HouseIcon } from 'ui-kit/icons';
+import { BriefcaseIcon, CrownIcon, HouseIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
+import { Tooltip } from 'antd';
 
 const { inputs, outputs } = apartmentInfoService;
 
@@ -91,7 +92,12 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 isActive={activeHomeowner === homeowner.id}
                 onClick={() => setActiveHomeowner(homeowner.id)}
               >
-                {homeowner.personalAccountNumber}
+                <div>{homeowner.personalAccountNumber}</div>
+                {homeowner.isMainPersonalAccountNumber && (
+                  <Tooltip title="Основной собственник">
+                    <CrownIcon />
+                  </Tooltip>
+                )}
               </PersonalNumberPanel>
             ))}
           </PersonalNumbersWrapper>

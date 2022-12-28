@@ -67,6 +67,12 @@ export const PersonalNumberPanel = styled.div<{ isActive: boolean }>`
   &:hover {
     ${({ isActive }) => !isActive && 'background: #189ee933;'}
   }
+
+  svg {
+    path {
+      ${({ isActive }) => isActive && 'fill: white;'}
+    }
+  }
 `;
 
 export const InfoPanel = styled.div`
