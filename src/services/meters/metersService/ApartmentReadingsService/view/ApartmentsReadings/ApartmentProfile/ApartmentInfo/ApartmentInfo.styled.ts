@@ -69,6 +69,8 @@ export const PersonalNumberPanel = styled.div<{ isActive: boolean }>`
   }
 
   svg {
+    transform: translateY(-1px);
+
     path {
       ${({ isActive }) => isActive && 'fill: white;'}
     }
