@@ -10,6 +10,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import {
+  commercialNodeStatuses,
   nodeResources,
   nodeStatuses,
   validationSchema,
@@ -58,6 +59,7 @@ export const CommonData: FC<CommonDataProps> = ({
         requestPayload.endCommercialAccountingDate
       ),
       documents: [] as Document[],
+      commercialStatus: requestPayload.commercialStatus || null,
     },
     validationSchema,
     validateOnChange: false,
@@ -65,18 +67,21 @@ export const CommonData: FC<CommonDataProps> = ({
       const {
         resource,
         number,
-        nodeStatus,
+        commercialStatus,
         nodeServiceZoneId,
         startCommercialAccountingDate,
         endCommercialAccountingDate,
+        nodeStatus,
       } = values;
 
-      if (!resource || !number || !nodeStatus || !nodeServiceZoneId) return;
+      if (!resource || !number || !commercialStatus || !nodeServiceZoneId)
+        return;
 
       updateRequestPayload({
         resource,
         number: Number(number),
-        nodeStatus,
+        nodeStatus: nodeStatus || undefined,
+        commercialStatus,
         nodeServiceZoneId,
         startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
           true
@@ -117,6 +122,20 @@ export const CommonData: FC<CommonDataProps> = ({
           </Select>
           <ErrorMessage>{errors.resource}</ErrorMessage>
         </FormItem>
+        <FormItem label="Тип узла">
+          <Select
+            placeholder="Выберите"
+            value={values.commercialStatus || undefined}
+            onChange={(value) => setFieldValue('commercialStatus', value)}
+          >
+            {commercialNodeStatuses.map(({ value, text }) => (
+              <Select.Option key={value} value={value}>
+                <div>{text}</div>
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>{errors.commercialStatus}</ErrorMessage>
+        </FormItem>
         <FormItem label="Номер узла">
           <Input
             placeholder="Введите"
@@ -149,25 +168,26 @@ export const CommonData: FC<CommonDataProps> = ({
           </LinkButton>
         </CreateNewZoneButtonWrapper>
       </SecondLineWrapper>
-      <FormItem label="Коммерческий учет показателей приборов">
-        <Select
-          placeholder="Выберите"
-          value={values.nodeStatus || undefined}
-          onChange={(value) => setFieldValue('nodeStatus', value)}
-        >
-          {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
-            <Select.Option key={nodeStatus} value={nodeStatus}>
-              <SelectOptionWithIconWrapper>
-                <Icon />
-                <div>{text}</div>
-              </SelectOptionWithIconWrapper>
-            </Select.Option>
-          ))}
-        </Select>
-        <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
-      </FormItem>
-      {values.nodeStatus &&
-        values.nodeStatus !== ENodeCommercialAccountStatus.NotRegistered && (
+      {values.commercialStatus && values.commercialStatus !== 'Technical' && (
+        <>
+          <FormItem label="Статус узла">
+            <Select
+              placeholder="Выберите"
+              value={values.nodeStatus || undefined}
+              onChange={(value) => setFieldValue('nodeStatus', value)}
+            >
+              {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
+                <Select.Option key={nodeStatus} value={nodeStatus}>
+                  <SelectOptionWithIconWrapper>
+                    <Icon />
+                    <div>{text}</div>
+                  </SelectOptionWithIconWrapper>
+                </Select.Option>
+              ))}
+            </Select>
+            <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
+          </FormItem>
+
           <ThirdLineWrapper>
             <FormItem label="Дата начала действия акта-допуска">
               <DatePicker
@@ -190,16 +210,18 @@ export const CommonData: FC<CommonDataProps> = ({
               />
             </FormItem>
           </ThirdLineWrapper>
-        )}
-      <FilesUploaderWrapper>
-        <DocumentsUploadContainer
-          label="Добавьте акт-допуска"
-          documents={values.documents}
-          uniqId="edit-apartment-act-form"
-          onChange={(documents) => setFieldValue('documents', documents)}
-          max={1}
-        />
-      </FilesUploaderWrapper>
+
+          <FilesUploaderWrapper>
+            <DocumentsUploadContainer
+              label="Добавьте акт-допуска"
+              documents={values.documents}
+              uniqId="edit-apartment-act-form"
+              onChange={(documents) => setFieldValue('documents', documents)}
+              max={1}
+            />
+          </FilesUploaderWrapper>
+        </>
+      )}
       <Footer>
         <Button type="ghost" onClick={goPrevStep}>
           Назад
