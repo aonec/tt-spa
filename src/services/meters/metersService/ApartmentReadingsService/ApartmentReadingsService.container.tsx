@@ -25,8 +25,6 @@ export const ApartmentReadingsContainer = () => {
   const apartment = useStore(outputs.$apartment);
 
   useEffect(() => {
-    console.log(id, apartment?.id);
-
     if (id && Number(id) === apartment?.id) return;
 
     history.push(`/meters/apartments/${apartment?.id || ''}`);
