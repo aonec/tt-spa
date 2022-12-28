@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useEvent, useStore } from 'effector-react';
 import {
+  AccountOpeningDate,
   Address,
   AddressWrapper,
   BaseInfoWrapper,
@@ -8,6 +10,8 @@ import {
   Comment,
   CommentFooter,
   CommentHeader,
+  ExtraInfoText,
+  ExtraInfoWrapper,
   FirmWrapper,
   FirmsLine,
   Header,
@@ -25,6 +29,10 @@ import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { BriefcaseIcon, HouseIcon } from 'ui-kit/icons';
 import { Button } from 'ui-kit/Button';
+import moment from 'moment';
+import { apartmentInfoService } from './ApartmentInfo.model';
+
+const { inputs, outputs } = apartmentInfoService;
 
 export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   apartment,
@@ -32,10 +40,13 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 }) => {
   const initialHomeownerId = apartment.homeownerAccounts?.[0]?.id;
 
-  const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [activeHomeowner, setActiveHomeowner] = useState(initialHomeownerId);
   const [comment, setComment] = useState(apartment.comment);
+
+  const togglePanel = useEvent(inputs.togglePanel);
+
+  const isPanelOpen = useStore(outputs.$isPanelOpen);
 
   const addressString = getApartmentAddressString(apartment);
 
@@ -51,25 +62,29 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   };
 
   const handleSaveComment = () => {
-    handleUpdateApartment({ apartmentId: apartment.id, comment });
     setIsEditing(false);
+
+    if (comment === apartment.comment) return;
+
+    handleUpdateApartment({ apartmentId: apartment.id, comment });
   };
 
   useEffect(() => {
     setComment(apartment.comment);
   }, [apartment.comment]);
 
+  const selectedHomeowner = apartment.homeownerAccounts?.find(
+    (homeowner) => homeowner.id === activeHomeowner
+  );
+
   return (
     <Wrapper>
       <Header>
         <AddressWrapper>
           <ChevronWraper>
-            <ChevronIconSC
-              isOpen={isOpen}
-              onClick={() => setIsOpen((prev) => !prev)}
-            />
+            <ChevronIconSC isOpen={isPanelOpen} onClick={() => togglePanel()} />
           </ChevronWraper>
-          <Address>{addressString}</Address>
+          <Address onClick={() => togglePanel()}>{addressString}</Address>
           <PersonalNumbersWrapper>
             {apartment.homeownerAccounts?.map((homeowner) => (
               <PersonalNumberPanel
@@ -113,7 +128,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               />
             </CommentHeader>
             {!isEditing && (
-              <Comment onClick={handleEditComment}>{apartment.comment}</Comment>
+              <Comment onClick={handleEditComment}>
+                {apartment.comment || 'Нет комментария'}
+              </Comment>
             )}
             {isEditing && (
               <TextareaSC
@@ -138,6 +155,32 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
             )}
           </div>
         </BaseInfoWrapper>
+        {isPanelOpen && (
+          <ExtraInfoWrapper>
+            <div>
+              <InfoPanelLabel>Собственник</InfoPanelLabel>
+              <ExtraInfoText>{selectedHomeowner?.name}</ExtraInfoText>
+            </div>
+            <div>
+              <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
+              <ExtraInfoText>
+                {selectedHomeowner?.personalAccountNumber}{' '}
+                <AccountOpeningDate>
+                  (открыт с{' '}
+                  {moment(selectedHomeowner?.openAt).format('DD.MM.YYYY')})
+                </AccountOpeningDate>
+              </ExtraInfoText>
+            </div>
+            <div>
+              <InfoPanelLabel>Платежный код</InfoPanelLabel>
+              <ExtraInfoText>{selectedHomeowner?.paymentCode}</ExtraInfoText>
+            </div>
+            <div>
+              <InfoPanelLabel>Телефон</InfoPanelLabel>
+              <ExtraInfoText>{selectedHomeowner?.phoneNumber}</ExtraInfoText>
+            </div>
+          </ExtraInfoWrapper>
+        )}
       </InfoPanel>
     </Wrapper>
   );

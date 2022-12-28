@@ -22,6 +22,12 @@ export const Address = styled.div`
   color: #272f5a;
   font-weight: 500;
   font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    color: #272f5acc;
+  }
 `;
 
 export const ChevronWraper = styled.div`
@@ -147,4 +153,24 @@ export const CommentFooter = styled.div`
 
 export const PencilIconSC = styled(PencilIcon)`
   cursor: pointer;
+`;
+
+export const ExtraInfoWrapper = styled.div`
+  margin-top: 12px;
+  border-top: 1px solid #dcdee4;
+  padding-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 16px;
+`;
+
+export const ExtraInfoText = styled.div`
+  color: #272f5a;
+  font-weight: 600;
+  font-size: 12px;
+`;
+
+export const AccountOpeningDate = styled.span`
+  color: rgba(39, 47, 90, 0.9);
+  font-weight: 400;
 `;
