@@ -62,10 +62,10 @@ sample({
     personalNumberEditForm.$values,
     (
       homeowner,
-      { personalAccountNumber, paymentCode, name, phoneNumber, openAt }
+      { personalAccountNumber, paymentCode, name, phoneNumber, openAt, isMainAccountingNumber }
     ) => ({
       id: homeowner?.id,
-      data: { personalAccountNumber, paymentCode, name, phoneNumber, openAt },
+      data: { personalAccountNumber, paymentCode, name, phoneNumber, openAt, isMainAccountingNumber },
     })
   ),
   clock: editHomeownerSaveButtonClicked,
