@@ -29,6 +29,7 @@ import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
 import moment from 'moment';
 import { TaskPoint } from '../TaskPoint';
+import { getTaskXPos } from './GraphView.utils';
 
 const minDelta = 0.01;
 const width = 730;
@@ -122,7 +123,11 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
           <VictoryScatter
             data={taskStatistics.map((elem) => ({
-              x: moment(elem.key).utc(true).diff(moment(ticksData[0]), 'h') + 1,
+              x: getTaskXPos({
+                currentData: elem?.key,
+                minData: ticksData[0],
+                reportType,
+              }),
               y: maxValue * 0.9,
               amount: (elem.value || []).length,
               isEmergency:

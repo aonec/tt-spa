@@ -22,3 +22,9 @@ export type PreparedArchiveValues = {
   time: string;
   value: number;
 };
+
+export type GetTaskXPosPayload = {
+  minData: string;
+  currentData?: string;
+  reportType: ReportType;
+};
