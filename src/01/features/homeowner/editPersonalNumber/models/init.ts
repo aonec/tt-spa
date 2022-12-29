@@ -69,10 +69,10 @@ $editRequestStatus
 
 sample({
   source: combine(
-    $homeowner,
+    HomeownerGate.state,
     personalNumberEditForm.$values,
     (
-      homeowner,
+      gateState,
       {
         personalAccountNumber,
         paymentCode,
@@ -82,7 +82,7 @@ sample({
         isMainAccountingNumber,
       }
     ) => ({
-      id: homeowner?.id,
+      id: gateState?.id,
       data: {
         personalAccountNumber,
         paymentCode,
@@ -115,11 +115,11 @@ sample({
   clock: closeHomeownerAccountForm.formValidated,
   source: combine(
     closeHomeownerAccountForm.$values,
-    $homeowner,
-    (form, homeowner) =>
+    HomeownerGate.state,
+    (form, gateState) =>
       ({
-        ClosedAt: moment(form?.closedAt!).toISOString(true),
-        HomeownerAccountId: homeowner?.id!,
+        ClosedAt: moment(form?.closedAt).toISOString(true),
+        HomeownerAccountId: gateState?.id,
       } as any)
   ),
   target: closeHomeownerAccountFx,
