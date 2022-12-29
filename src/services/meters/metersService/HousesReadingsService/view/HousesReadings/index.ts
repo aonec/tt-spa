@@ -1,0 +1,1 @@
+export { HousesReadings } from './HousesReadings'
