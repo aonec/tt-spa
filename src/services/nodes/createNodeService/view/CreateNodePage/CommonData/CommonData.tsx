@@ -28,7 +28,7 @@ import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
 import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { getInitialDateFieldValue } from './CommonData.utils';
+import { getInitialDateFieldValue, getNodeStatus } from './CommonData.utils';
 import { ENodeRegistrationType } from 'myApi';
 
 const { inputs } = createNodeServiceZoneService;
@@ -50,7 +50,7 @@ export const CommonData: FC<CommonDataProps> = ({
     initialValues: {
       resource: requestPayload.resource || null,
       number: requestPayload.number ? String(requestPayload.number) : '',
-      nodeStatus: requestPayload.nodeStatus || null,
+      nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
       nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
       startCommercialAccountingDate: getInitialDateFieldValue(
         requestPayload.startCommercialAccountingDate
@@ -71,15 +71,13 @@ export const CommonData: FC<CommonDataProps> = ({
         nodeServiceZoneId,
         startCommercialAccountingDate,
         endCommercialAccountingDate,
-        nodeStatus,
       } = values;
 
-      if (!resource || !number || !nodeStatus || !nodeServiceZoneId) return;
+      if (!resource || !number || !nodeServiceZoneId) return;
 
       updateRequestPayload({
         resource,
         number: Number(number),
-        nodeStatus,
         commercialStatus,
         nodeServiceZoneId,
         startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
