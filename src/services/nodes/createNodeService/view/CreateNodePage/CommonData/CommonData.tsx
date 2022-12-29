@@ -123,7 +123,12 @@ export const CommonData: FC<CommonDataProps> = ({
           <Select
             placeholder="Выберите"
             value={values.nodeStatus || undefined}
-            onChange={(value) => setFieldValue('nodeStatus', value)}
+            onChange={(value) => {
+              setFieldValue('nodeStatus', value);
+              if (value === ENodeRegistrationType.Technical) {
+                setFieldValue('commercialStatus', null);
+              }
+            }}
           >
             {Object.entries(nodeStatuses).map(([value, text]) => (
               <Select.Option key={value} value={value}>
