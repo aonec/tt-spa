@@ -1,4 +1,8 @@
-import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
+import {
+  ENodeCommercialAccountStatus,
+  ENodeRegistrationType,
+  EResourceType,
+} from 'myApi';
 import {
   NodeStatusIconsDictionary,
   NodeStatusTextDictionary,
@@ -21,7 +25,7 @@ export const nodeResources: NodeResourcesList = [
   },
 ];
 
-export const nodeStatuses: NodeStatusesList = Object.values(
+export const commercialNodeStatuses: NodeStatusesList = Object.values(
   ENodeCommercialAccountStatus
 ).map((nodeStatus) => ({
   nodeStatus,
@@ -31,26 +35,18 @@ export const nodeStatuses: NodeStatusesList = Object.values(
 
 export const validationSchema = Yup.object().shape({
   resource: Yup.string().nullable().required('Это поле обязательное'),
-  commercialStatus: Yup.string().nullable().required('Это поле обязательное'),
+  nodeStatus: Yup.string().nullable().required('Это поле обязательное'),
   nodeServiceZoneId: Yup.string().nullable().required('Это поле обязательное'),
   number: Yup.string().required('Это поле обязательное'),
-  nodeStatus: Yup.string()
+  commercialStatus: Yup.string()
     .nullable()
-    .when('commercialStatus', {
+    .when('nodeStatus', {
       is: 'Commercial',
       then: Yup.string().required('Это поле обязательное'),
     }),
 });
 
-export const commercialNodeStatuses = [
-  {
-    value: 'Commercial',
-    text: 'Коммерческий',
-  },
-  {
-    value: 'Technical',
-    text: 'Технический',
-  },
-];
-
-// NodeRegistrationType
+export const nodeStatuses = {
+  [ENodeRegistrationType.Commercial]: 'Коммерческий',
+  [ENodeRegistrationType.Technical]: 'Технический',
+};
