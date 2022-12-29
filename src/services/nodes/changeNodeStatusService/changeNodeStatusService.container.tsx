@@ -12,12 +12,21 @@ export const ChangeNodeStatusContainer = () => {
   const node = useStore(outputs.$node);
 
   const closeModal = useEvent(inputs.closeModal);
+  const handleChangeNodeStatus = useEvent(inputs.changeNodeStatus);
 
   return (
     <FormModal
       title="Изменение статуса узла"
       submitBtnText="Изменить статус"
-      form={node && <ChangeNodeStatusForm node={node} />}
+      form={
+        node && (
+          <ChangeNodeStatusForm
+            node={node}
+            formId={formId}
+            handleChangeNodeStatus={() => handleChangeNodeStatus()}
+          />
+        )
+      }
       visible={isOpen}
       onCancel={() => closeModal()}
       formId={formId}
