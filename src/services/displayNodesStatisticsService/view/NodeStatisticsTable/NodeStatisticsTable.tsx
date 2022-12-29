@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, { FC, useCallback, useMemo, useState } from 'react';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
   NODE_STATISTICS_PAGE_SIZE,
   ReportEndTimeFormat,
@@ -25,10 +26,10 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
 
   const timeConstructor = useCallback(
     (date: string) => {
-      const startDateStr = moment(date)
+      const startDateStr = moment(date).utc(false)
         .startOf(ReportTimeType[reportType])
         .format(ReportStartTimeFormat[reportType]);
-      const endDateStr = moment(date)
+      const endDateStr = moment(date).utc(false)
         .endOf(ReportTimeType[reportType])
         .format(ReportEndTimeFormat[reportType]);
       return `${startDateStr} - ${endDateStr}`;

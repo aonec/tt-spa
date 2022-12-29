@@ -2,10 +2,8 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import _ from 'lodash';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CalculatorIcon } from 'ui-kit/icons';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { Tabs } from 'ui-kit/Tabs';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
@@ -33,6 +31,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   setGrouptype,
   handleOpenCloseCalculatorModal,
   handleOpenCheckCalculatorModal,
+  handleOpenConsumptionReportModal,
 }) => {
   const history = useHistory();
 
@@ -116,7 +115,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         },
         {
           title: 'Выгрузить отчёт об общедомовом потреблении',
-          onClick: () => void null,
+          onClick: () => handleOpenConsumptionReportModal(),
         },
         {
           title: 'Снять вычислитель с учёта',

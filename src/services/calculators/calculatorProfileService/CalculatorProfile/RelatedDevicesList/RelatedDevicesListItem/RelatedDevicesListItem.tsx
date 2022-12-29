@@ -14,7 +14,9 @@ export const RelatedDevicesListItem: FC<RelatedDevicesListItemProps> = ({
   device,
   nodeNumber,
 }) => {
-  const { id, model, serialNumber, isActive, hub } = device;
+  const { id, model, serialNumber, hub, closingDate } = device;
+  const isActive = closingDate === null;
+
   return (
     <Wrapper>
       <Tooltip title={`${model} (${serialNumber})`}>

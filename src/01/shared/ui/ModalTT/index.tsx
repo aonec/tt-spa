@@ -6,7 +6,7 @@ import {
   StyledModal,
 } from '01/shared/ui/Modal/Modal';
 import { ButtonTT } from '01/tt-components';
-import { Loader } from '01/components';
+import { Loader } from '01/_components/Loader';
 
 interface Props {
   width?: number;

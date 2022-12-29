@@ -25,7 +25,6 @@ import {
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import Devices from '01/_pages/ObjectProfile/components/Devices';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
@@ -55,7 +54,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
     : '/tasks/';
   return (
     <Wrapper>
-      <Switch>``
+      <Switch>
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => 'logout'} />
         <Route path="/error/" render={() => <ErrorPage />} />
@@ -150,8 +149,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
                 />
-
-                <Route path="/devices/(\\d+)" component={Devices} exact />
 
                 <Route
                   path={['/calculators/:deviceId']}
