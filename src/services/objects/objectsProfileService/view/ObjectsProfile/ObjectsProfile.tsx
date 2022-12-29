@@ -26,12 +26,13 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   handleCreateObject,
   isAdministrator,
   openFeedFlowBackReportModal,
+  handleExportGroupReport,
 }) => {
   const menuButtons = useMemo(
     () => [
       {
         title: 'Выгрузка группового отчёта',
-        onClick: () => {},
+        onClick: handleExportGroupReport,
       },
       {
         title: 'Выгрузить отчёт по СОИ',
