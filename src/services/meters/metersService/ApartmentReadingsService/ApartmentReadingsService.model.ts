@@ -57,7 +57,7 @@ sample({
   clock: [
     guard({
       source: $apartment,
-      clock: ApartmentGate.open,
+      clock: ApartmentGate.state,
       filter: (apartment, { id }) => Boolean(id && !apartment),
     }),
     pauseApartmentStatusFx.doneData,

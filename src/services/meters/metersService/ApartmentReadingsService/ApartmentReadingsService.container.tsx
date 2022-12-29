@@ -6,8 +6,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 
-const { inputs, outputs, gates } = apartmentReadingsService;
-const { ApartmentGate } = gates;
+const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
   const history = useHistory();
@@ -29,7 +28,7 @@ export const ApartmentReadingsContainer = () => {
   const apartment = useStore(outputs.$apartment);
 
   useEffect(() => {
-    if (id && Number(id) === apartment?.id) return;
+    if (Number(id) === apartment?.id) return;
 
     history.push(`/meters/apartments/${apartment?.id || ''}`);
   }, [apartment, id]);
@@ -38,7 +37,6 @@ export const ApartmentReadingsContainer = () => {
 
   return (
     <>
-      <ApartmentGate id={apartmentId} />
       {apartment?.id && <PauseApartmentModal apartmentId={apartment.id} />}
       {apartment && <SelectEditPersonalNumberTypeModal apartment={apartment} />}
       <ApartmentsReadings

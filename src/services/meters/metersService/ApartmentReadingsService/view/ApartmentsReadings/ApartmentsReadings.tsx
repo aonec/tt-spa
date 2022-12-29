@@ -31,7 +31,11 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         openEditPersonalNumberModal={openEditPersonalNumberModal}
       />
     ),
-    [SearchMode.SerialNumber]: <DevicesSearch />,
+    [SearchMode.SerialNumber]: (
+      <DevicesSearch
+        handleClickDevice={() => setSearchMode(SearchMode.Apartment)}
+      />
+    ),
   };
 
   const component = componentsDictionary[searchMode];

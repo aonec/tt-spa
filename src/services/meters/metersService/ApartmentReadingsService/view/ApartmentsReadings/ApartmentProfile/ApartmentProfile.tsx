@@ -11,6 +11,11 @@ import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
+import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
+import { useParams } from 'react-router-dom';
+
+const { gates } = apartmentReadingsService;
+const { ApartmentGate } = gates;
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   isLoadingApartment,
@@ -21,6 +26,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   handleCancelPauseApartment,
   openEditPersonalNumberModal,
 }) => {
+  const { id } = useParams<{ id: string }>();
+
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
       const {
@@ -51,49 +58,52 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   const homeowner = apartment?.homeownerAccounts?.[0];
 
   return (
-    <div>
-      <AddressSearchContainer
-        fields={[
-          SearchFieldType.City,
-          SearchFieldType.Street,
-          SearchFieldType.House,
-          SearchFieldType.Apartment,
-          SearchFieldType.Question,
-        ]}
-        customTemplate={[
-          { fieldType: SearchFieldType.Street, templateValue: '0.7fr' },
-        ]}
-        handleSubmit={handleSubmit}
-        initialValues={
-          address && {
-            city: address.city || undefined,
-            street: address.street || undefined,
-            house: address.number || undefined,
-            apartment: apartment?.apartmentNumber || undefined,
-            question: homeowner?.name || undefined,
+    <>
+      <ApartmentGate id={Number(id)} />
+      <div>
+        <AddressSearchContainer
+          fields={[
+            SearchFieldType.City,
+            SearchFieldType.Street,
+            SearchFieldType.House,
+            SearchFieldType.Apartment,
+            SearchFieldType.Question,
+          ]}
+          customTemplate={[
+            { fieldType: SearchFieldType.Street, templateValue: '0.7fr' },
+          ]}
+          handleSubmit={handleSubmit}
+          initialValues={
+            address && {
+              city: address.city || undefined,
+              street: address.street || undefined,
+              house: address.number || undefined,
+              apartment: apartment?.apartmentNumber || undefined,
+              question: homeowner?.name || undefined,
+            }
           }
-        }
-      />
-      <WithLoader isLoading={isLoadingApartment}>
-        {!apartment && <TypeAddressToStart />}
-        {apartment && (
-          <ContentWrapper>
-            <ApartmentInfo
-              apartment={apartment}
-              handleUpdateApartment={handleUpdateApartment}
-              handlePauseApartment={handlePauseApartment}
-              handleCancelPauseApartment={handleCancelPauseApartment}
-              openEditPersonalNumberModal={openEditPersonalNumberModal}
-            />
-            <ApartmentAlerts apartment={apartment} />
-            <ReadingsWrapper>
-              <ApartmentIndividualDevicesMetersContainer
-                apartmentId={apartment.id}
+        />
+        <WithLoader isLoading={isLoadingApartment}>
+          {!apartment && <TypeAddressToStart />}
+          {apartment && (
+            <ContentWrapper>
+              <ApartmentInfo
+                apartment={apartment}
+                handleUpdateApartment={handleUpdateApartment}
+                handlePauseApartment={handlePauseApartment}
+                handleCancelPauseApartment={handleCancelPauseApartment}
+                openEditPersonalNumberModal={openEditPersonalNumberModal}
               />
-            </ReadingsWrapper>
-          </ContentWrapper>
-        )}
-      </WithLoader>
-    </div>
+              <ApartmentAlerts apartment={apartment} />
+              <ReadingsWrapper>
+                <ApartmentIndividualDevicesMetersContainer
+                  apartmentId={apartment.id}
+                />
+              </ReadingsWrapper>
+            </ContentWrapper>
+          )}
+        </WithLoader>
+      </div>
+    </>
   );
 };
