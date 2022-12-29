@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const Title = styled.div`
-  margin-top: 10px 0 5px;
+  margin: 16px 0 16px;
   font-weight: 500;
   color: rgba(39, 47, 90, 1);
   font-size: 20px;

@@ -20,7 +20,7 @@ export const HouseReadingsHeader: React.FC<HouseReadingsHeaderProps> = ({
       <div onClick={onClickIncrease} style={{ cursor: 'pointer' }}>
         <b>{!isPreviousArrowDisabled && '<'}</b>
       </div>
-      <div>{sliderIndex && getPreviousReadingsMonth(sliderIndex)}</div>
+      <div>{getPreviousReadingsMonth(sliderIndex || 0)}</div>
       <div onClick={onClickDecrease} style={{ cursor: 'pointer' }}>
         <b>{!isNextArrowDisabled && '>'}</b>
       </div>

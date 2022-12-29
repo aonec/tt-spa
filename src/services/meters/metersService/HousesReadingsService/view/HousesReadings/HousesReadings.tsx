@@ -32,11 +32,13 @@ import { TopButton } from './TopButton';
 import { HouseBanner } from './HouseBanner';
 import { HouseReadingsHeader } from './HouseReadingsHeader';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { Wrapper } from './HousesReadings.styled';
+import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 
 const { outputs, inputs } = managementFirmConsumptionRatesService;
 
 export const HousesReadings: FC<HousesReadingsProps> = () => {
-  let { id: housingStockId } = useParams<{
+  const { id: housingStockId } = useParams<{
     id: string;
   }>();
 
@@ -81,19 +83,19 @@ export const HousesReadings: FC<HousesReadingsProps> = () => {
 
   const deviceElems = devices.map(renderDevice);
 
-  const elementRef = useRef();
+  const elementRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
+
+  function onScrollDown() {
+    if (pendingDevices) return;
+
+    const scrollHeight = document.body.scrollHeight - window.screen.height;
+
+    if (window.scrollY > scrollHeight - 200) {
+      fetchNextPageOfIndividualDevices();
+    }
+  }
 
   useEffect(() => {
-    function onScrollDown() {
-      if (pendingDevices) return;
-
-      const scrollHeight = document.body.scrollHeight - window.screen.height;
-
-      if (window.scrollY > scrollHeight - 200) {
-        fetchNextPageOfIndividualDevices();
-      }
-    }
-
     window.addEventListener('scroll', onScrollDown, true);
 
     return () => {
@@ -103,41 +105,46 @@ export const HousesReadings: FC<HousesReadingsProps> = () => {
 
   return (
     <>
-      <HousingStockFilter />
-      <div id="individual-devices-on-home-tabs" ref={elementRef as any}>
-        <TopButton />
-        <CancelSwitchInputGate />
-        <ConfirmReadingValueModal />
-        <ReadingsHistoryModal />
-        <HousingStockGate id={Number(housingStockId)} />
-        <PagedIndividualDevicesGate
-          HousingStockId={Number(housingStockId)}
-          Resource={EResourceType.Electricity}
-        />
-        {house && <HouseBanner house={house} />}
-        {!!deviceElems.length && (
-          <HouseReadingsHeader sliderProps={sliderProps} />
-        )}
-        {devices?.map(renderDevice)}
-        <Space />
-        {!isAllDevicesDone && (
-          <ButtonTT
-            disabled={pendingDevices}
-            color="blue"
-            onClick={() => fetchNextPageOfIndividualDevices()}
-          >
-            {pendingDevices ? (
-              <Flex>
-                <Loader show />
-                <Space w={8} />
-                Загрузка
-              </Flex>
-            ) : (
-              'Загрузить приборы'
+      <HousingStockGate id={Number(housingStockId)} />
+      <Wrapper id="individual-devices-on-home-tabs" ref={elementRef}>
+        <HousingStockFilter />
+        {housingStockId && (
+          <div>
+            <PagedIndividualDevicesGate
+              HousingStockId={Number(housingStockId)}
+              Resource={EResourceType.Electricity}
+            />
+            <CancelSwitchInputGate />
+            <ConfirmReadingValueModal />
+            <ReadingsHistoryModal />
+            <TopButton />
+            {house && <HouseBanner house={house} />}
+            {!!deviceElems.length && (
+              <HouseReadingsHeader sliderProps={sliderProps} />
             )}
-          </ButtonTT>
+            {devices?.map(renderDevice)}
+            <Space />
+            {!isAllDevicesDone && house && (
+              <ButtonTT
+                disabled={pendingDevices}
+                color="blue"
+                onClick={() => fetchNextPageOfIndividualDevices()}
+              >
+                {pendingDevices ? (
+                  <Flex>
+                    <Loader show />
+                    <Space w={8} />
+                    Загрузка
+                  </Flex>
+                ) : (
+                  'Загрузить приборы'
+                )}
+              </ButtonTT>
+            )}
+          </div>
         )}
-      </div>
+        {!housingStockId && <TypeAddressToStart />}
+      </Wrapper>
     </>
   );
 };
