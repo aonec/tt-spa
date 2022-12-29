@@ -1,13 +1,13 @@
 import { ENodeCommercialAccountStatus, PipeNodeResponse } from 'myApi';
 
 export type ChangeNodeStatusFormProps = {
-  node: PipeNodeResponse;
+  initialValues?: PipeNodeResponse;
   formId: string;
   handleChangeNodeStatus: () => void;
 };
 
 export type ChangeNodeStatusFormik = {
-  commercialStatus: ENodeCommercialAccountStatus;
+  commercialStatus: ENodeCommercialAccountStatus | null;
   date: string;
   documentId: string | null;
 };

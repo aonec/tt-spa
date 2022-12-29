@@ -27,7 +27,7 @@ import {
 export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   formId,
   handleChangeNodeStatus,
-  node,
+  initialValues,
 }) => {
   const [documents, setDocuments] = useState<Document[]>([]);
 
@@ -38,9 +38,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
     errors,
   } = useFormik<ChangeNodeStatusFormik>({
     initialValues: {
-      commercialStatus:
-        node.commercialStatus?.value ||
-        ENodeCommercialAccountStatus.NotRegistered,
+      commercialStatus: initialValues?.commercialStatus?.value || null,
       date: moment().format('YYYY-MM-DD'),
       documentId: null,
     },
@@ -56,7 +54,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
         <FormItem label="Статус узла">
           <Select
             placeholder="Выберите"
-            value={values.commercialStatus}
+            value={values.commercialStatus || undefined}
             onChange={(value) => setFieldValue('commercialStatus', value)}
           >
             {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
@@ -70,7 +68,13 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
           </Select>
           <ErrorMessage>{errors.commercialStatus}</ErrorMessage>
         </FormItem>
-        <FormItem label={NodeStatusDateLabel[values.commercialStatus]}>
+        <FormItem
+          label={
+            values.commercialStatus
+              ? NodeStatusDateLabel[values.commercialStatus]
+              : 'Дата'
+          }
+        >
           <DatePicker
             placeholder="Выберите дату"
             format="DD.MM.YYYY"
