@@ -1,14 +1,20 @@
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { ENodeCommercialAccountStatus } from 'myApi';
-import React, { FC } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { nodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.contstants';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
-import { validationSchema } from './ChangeNodeStatusForm.constants';
+import {
+  DocumentUploaderLabels,
+  NodeStatusDateLabel,
+  validationSchema,
+} from './ChangeNodeStatusForm.constants';
 import {
   GroupWrapper,
   SelectOptionWithIconWrapper,
@@ -23,16 +29,20 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   handleChangeNodeStatus,
   node,
 }) => {
+  const [documents, setDocuments] = useState<Document[]>([]);
+
   const {
     handleSubmit,
     values,
     setFieldValue,
+    errors,
   } = useFormik<ChangeNodeStatusFormik>({
     initialValues: {
       commercialStatus:
         node.commercialStatus?.value ||
         ENodeCommercialAccountStatus.NotRegistered,
       date: moment().format('YYYY-MM-DD'),
+      documentId: null,
     },
     validationSchema,
     validateOnChange: false,
@@ -58,8 +68,9 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.commercialStatus}</ErrorMessage>
         </FormItem>
-        <FormItem label="Дата смены статуса">
+        <FormItem label={NodeStatusDateLabel[values.commercialStatus]}>
           <DatePicker
             placeholder="Выберите дату"
             format="DD.MM.YYYY"
@@ -67,9 +78,29 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
             onChange={(date) =>
               setFieldValue('date', date?.format('YYYY-MM-DD'))
             }
+            allowClear={false}
           />
         </FormItem>
       </GroupWrapper>
+
+      {(values.commercialStatus ===
+        ENodeCommercialAccountStatus.NotRegistered ||
+        values.commercialStatus ===
+          ENodeCommercialAccountStatus.Registered) && (
+        <>
+          <DocumentsUploadContainer
+            documents={documents}
+            uniqId="change-node-status-document"
+            onChange={(files) => {
+              setDocuments(files);
+              setFieldValue('documentId', files[0]?.id);
+            }}
+            max={1}
+            label={DocumentUploaderLabels[values.commercialStatus]}
+          />
+          <ErrorMessage>{errors.documentId}</ErrorMessage>
+        </>
+      )}
     </Form>
   );
 };

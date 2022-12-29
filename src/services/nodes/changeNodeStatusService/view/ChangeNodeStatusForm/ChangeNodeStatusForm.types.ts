@@ -9,4 +9,5 @@ export type ChangeNodeStatusFormProps = {
 export type ChangeNodeStatusFormik = {
   commercialStatus: ENodeCommercialAccountStatus;
   date: string;
+  documentId: string | null;
 };
