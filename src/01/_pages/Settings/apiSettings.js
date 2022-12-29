@@ -4,8 +4,7 @@ import axios from '../../axios';
 
 export async function getCurrentManagingFirm() {
   try {
-    const res = await axios.get('Organizations/current');
-    return res;
+    return await axios.get('Organizations/current');
   } catch (error) {
     throw {
       resource: 'firm',
