@@ -22,7 +22,6 @@ import {
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
-import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { fetchApartmentFx } from '01/features/apartments/displayApartment/models';
 import { HomeownerGate } from '../../displayHomeowner/models/index';
