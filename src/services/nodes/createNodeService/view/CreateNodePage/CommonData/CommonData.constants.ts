@@ -41,7 +41,7 @@ export const validationSchema = Yup.object().shape({
   commercialStatus: Yup.string()
     .nullable()
     .when('nodeStatus', {
-      is: 'Commercial',
+      is: ENodeRegistrationType.Commercial,
       then: Yup.string().required('Это поле обязательное'),
     }),
 });
