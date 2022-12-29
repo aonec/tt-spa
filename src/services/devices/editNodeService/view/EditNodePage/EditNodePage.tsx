@@ -7,6 +7,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
+import { NodeRegistrationTypeLookup } from './EditNodePage.constants';
 import { ContentWrapper } from './EditNodePage.styled';
 import {
   AddressWrapper,
@@ -29,7 +30,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   refetchNode,
   updateNode,
 }) => {
-  const { number, address, resource, commercialStatus } = node;
+  const { number, address, resource, registrationType } = node;
 
   const formId = 'edit-node-page';
 
@@ -45,7 +46,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
       <AddressWrapper to={`/objects/profile/${address?.id}`}>
         <HeaderInfoString>
           <>{getHousingStockAddress(address, true)}</>
-          <></>
+          <>{NodeRegistrationTypeLookup[registrationType]}</>
         </HeaderInfoString>
       </AddressWrapper>
 
