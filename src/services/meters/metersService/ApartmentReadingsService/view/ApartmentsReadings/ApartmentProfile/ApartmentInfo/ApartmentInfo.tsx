@@ -89,18 +89,6 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     (homeowner) => homeowner.id === activeHomeowner
   );
 
-  const cancelPauseApartment = () =>
-    confirm({
-      title: 'Вы действительно хотите снять эту квартиру с паузы?',
-      okText: 'Снять с паузы',
-      cancelText: 'Отмена',
-      onOk: async () => {
-        handleCancelPauseApartment();
-
-        await new Promise((res) => setTimeout(res, 200));
-      },
-    });
-
   const filteredHomeowners = apartment.homeownerAccounts?.filter(
     (homeowner) => !homeowner.closedAt
   );
@@ -150,7 +138,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               {
                 title: 'Снять с паузы',
                 hidden: !isPaused,
-                onClick: cancelPauseApartment,
+                onClick: handleCancelPauseApartment,
               },
               {
                 title: 'Изменить лицевой счет',

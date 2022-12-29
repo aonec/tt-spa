@@ -13,6 +13,7 @@ import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
 import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
 import { useParams } from 'react-router-dom';
+import confirm from 'antd/lib/modal/confirm';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -57,6 +58,18 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
 
   const homeowner = apartment?.homeownerAccounts?.[0];
 
+  const cancelPauseApartment = () =>
+    confirm({
+      title: 'Вы действительно хотите снять эту квартиру с паузы?',
+      okText: 'Снять с паузы',
+      cancelText: 'Отмена',
+      onOk: async () => {
+        handleCancelPauseApartment();
+
+        await new Promise((res) => setTimeout(res, 200));
+      },
+    });
+
   return (
     <>
       <ApartmentGate id={Number(id)} />
@@ -91,10 +104,13 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 apartment={apartment}
                 handleUpdateApartment={handleUpdateApartment}
                 handlePauseApartment={handlePauseApartment}
-                handleCancelPauseApartment={handleCancelPauseApartment}
+                handleCancelPauseApartment={cancelPauseApartment}
                 openEditPersonalNumberModal={openEditPersonalNumberModal}
               />
-              <ApartmentAlerts apartment={apartment} />
+              <ApartmentAlerts
+                apartment={apartment}
+                handleCancelPauseApartment={cancelPauseApartment}
+              />
               <ReadingsWrapper>
                 <ApartmentIndividualDevicesMetersContainer
                   apartmentId={apartment.id}
