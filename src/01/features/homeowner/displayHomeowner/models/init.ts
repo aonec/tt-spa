@@ -10,8 +10,8 @@ fetchHomeownerFx.use(getHomeownerAccount);
 
 $homeowner.on(fetchHomeownerFx.doneData, (_, homeowner) => homeowner);
 
-sample({
-  source: HomeownerGate.state.map(({ id }) => id),
-  clock: [HomeownerGate.state, HomeownerGate.open],
-  target: fetchHomeownerFx,
-});
+// sample({
+//   source: HomeownerGate.state.map(({ id }) => id),
+//   clock: [HomeownerGate.state, HomeownerGate.open],
+//   target: fetchHomeownerFx,
+// });

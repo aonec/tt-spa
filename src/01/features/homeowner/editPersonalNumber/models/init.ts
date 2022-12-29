@@ -24,6 +24,8 @@ import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
 import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
+import { fetchApartmentFx } from '01/features/apartments/displayApartment/models';
+import { HomeownerGate } from '../../displayHomeowner/models/index';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -33,22 +35,31 @@ $isSelectEditPersonalNumberTypeModalOpen
   .on(openEditPersonalNumberTypeModal, () => true)
   .reset(closeEditPersonalNumberTypeModal);
 
-fetchHomeownerFx.doneData.watch(
-  ({ name, phoneNumber, personalAccountNumber, paymentCode, openAt }) => {
+sample({
+  clock: fetchApartmentFx.doneData,
+  source: HomeownerGate.state,
+  fn: (gateState, data) => {
     const isAutocomplete = AutoCompleteFormGate.state.getState().autocomplete;
 
-    if (!isAutocomplete) return;
+    if (!isAutocomplete) return {};
 
-    personalNumberEditForm.setForm({
-      name,
-      phoneNumber,
-      personalAccountNumber,
-      paymentCode,
-      isMainAccountingNumber: false,
-      openAt,
-    } as any);
-  }
-);
+    const currentAccount = data.homeownerAccounts?.find(
+      (account) => account.id === gateState.id
+    );
+
+    const form = {
+      name: currentAccount?.name,
+      phoneNumber: currentAccount?.phoneNumber,
+      personalAccountNumber: currentAccount?.personalAccountNumber,
+      paymentCode: currentAccount?.paymentCode,
+      isMainAccountingNumber: currentAccount?.isMainPersonalAccountNumber,
+      openAt: currentAccount?.openAt,
+    };
+
+    return form;
+  },
+  target: personalNumberEditForm.setForm,
+});
 
 $editRequestStatus.on(setEditRequestStatus, (_, status) => status);
 
@@ -62,10 +73,24 @@ sample({
     personalNumberEditForm.$values,
     (
       homeowner,
-      { personalAccountNumber, paymentCode, name, phoneNumber, openAt, isMainAccountingNumber }
+      {
+        personalAccountNumber,
+        paymentCode,
+        name,
+        phoneNumber,
+        openAt,
+        isMainAccountingNumber,
+      }
     ) => ({
       id: homeowner?.id,
-      data: { personalAccountNumber, paymentCode, name, phoneNumber, openAt, isMainAccountingNumber },
+      data: {
+        personalAccountNumber,
+        paymentCode,
+        name,
+        phoneNumber,
+        openAt,
+        IsMainOnApartment: isMainAccountingNumber,
+      },
     })
   ),
   clock: editHomeownerSaveButtonClicked,
