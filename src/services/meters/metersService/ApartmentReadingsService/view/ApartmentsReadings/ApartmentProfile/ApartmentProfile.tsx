@@ -19,6 +19,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   handleUpdateApartment,
   handlePauseApartment,
   handleCancelPauseApartment,
+  openEditPersonalNumberModal,
 }) => {
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -82,6 +83,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               handleUpdateApartment={handleUpdateApartment}
               handlePauseApartment={handlePauseApartment}
               handleCancelPauseApartment={handleCancelPauseApartment}
+              openEditPersonalNumberModal={openEditPersonalNumberModal}
             />
             <ApartmentAlerts apartment={apartment} />
             <ReadingsWrapper>

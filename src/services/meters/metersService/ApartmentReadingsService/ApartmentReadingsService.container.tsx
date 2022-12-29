@@ -4,6 +4,7 @@ import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
+import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 
 const { inputs, outputs, gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;
@@ -18,6 +19,9 @@ export const ApartmentReadingsContainer = () => {
   const handlePauseApartment = useEvent(inputs.handlePauseApartment);
   const handleCancelPauseApartment = useEvent(
     inputs.handleCancelPauseApartment
+  );
+  const openEditPersonalNumberModal = useEvent(
+    inputs.openEditPersonalNumberModal
   );
 
   const searchMode = useStore(outputs.$searchMode);
@@ -36,6 +40,7 @@ export const ApartmentReadingsContainer = () => {
     <>
       <ApartmentGate id={apartmentId} />
       {apartment?.id && <PauseApartmentModal apartmentId={apartment.id} />}
+      {apartment && <SelectEditPersonalNumberTypeModal apartment={apartment} />}
       <ApartmentsReadings
         setSearchMode={setSearchMode}
         searchMode={searchMode}
@@ -45,6 +50,7 @@ export const ApartmentReadingsContainer = () => {
         handleUpdateApartment={handleUpdateApartment}
         handlePauseApartment={() => handlePauseApartment()}
         handleCancelPauseApartment={() => handleCancelPauseApartment()}
+        openEditPersonalNumberModal={() => openEditPersonalNumberModal()}
       />
     </>
   );

@@ -17,6 +17,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   handleUpdateApartment,
   handlePauseApartment,
   handleCancelPauseApartment,
+  openEditPersonalNumberModal,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -27,6 +28,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         handleUpdateApartment={handleUpdateApartment}
         handlePauseApartment={handlePauseApartment}
         handleCancelPauseApartment={handleCancelPauseApartment}
+        openEditPersonalNumberModal={openEditPersonalNumberModal}
       />
     ),
     [SearchMode.SerialNumber]: <DevicesSearch />,

@@ -1,28 +1,29 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
+import { useHistory } from 'react-router';
+import styled from 'styled-components';
 import {
   $isSelectEditPersonalNumberTypeModalOpen,
   closeEditPersonalNumberTypeModal,
 } from '../models';
-import styled from 'styled-components';
 import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from '../icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { $apartment } from '01/features/apartments/displayApartment/models';
 import { ReactComponent as MainIcon } from './icons/main.svg';
-import { useHistory, useParams } from 'react-router';
+import { Props } from './SelectEditPersonalNumberTypeModal.types';
 
-export const SelectEditPersonalNumberTypeModal: React.FC = () => {
+export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
+  apartment,
+}) => {
   const isOpen = useStore($isSelectEditPersonalNumberTypeModalOpen);
 
   const [selectedType, setSelectedType] = useState<SelectItem | null>(null);
   const [homeownerId, setHomeownerId] = useState<number | null>(null);
   const history = useHistory();
-  const { id } = useParams<{ id: string }>();
 
-  const apartment = useStore($apartment);
+  const id = apartment.id;
 
   const selects: SelectItem[] = [
     {

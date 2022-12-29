@@ -13,6 +13,7 @@ import {
   cancelPauseApartmentButtonClicked,
   pauseApartmentStatusFx,
 } from '01/features/apartments/pauseApartment/models';
+import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -39,7 +40,8 @@ const $apartment = domain
   .on(
     [fetchApartmentFx.doneData, updateApartmentFx.doneData],
     (_, apartment) => apartment
-  );
+  )
+  .reset(ApartmentGate.close);
 
 const $searchMode = domain
   .createStore(SearchMode.Apartment)
@@ -79,6 +81,7 @@ export const apartmentReadingsService = {
     handleUpdateApartment,
     handlePauseApartment: pauseApartmentButtonClicked,
     handleCancelPauseApartment: cancelPauseApartmentButtonClicked,
+    openEditPersonalNumberModal: openEditPersonalNumberTypeModal,
   },
   outputs: { $searchMode, $apartment, $isLoadingApartment },
   gates: { ApartmentGate },
