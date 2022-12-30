@@ -3,6 +3,9 @@ import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { useManagingFirmConsumptionRates } from 'services/meters/managementFirmConsumptionRatesService';
+import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 
 const { inputs, outputs, gates } = housesReadingsService;
 const { HousingStockGate, InspectorGate } = gates;
@@ -14,9 +17,27 @@ export const HousesReadingsContainer = () => {
 
   const housingStock = useStore(outputs.$housingStock);
   const isLoadingHousingStock = useStore(outputs.$isLoadingHousingStock);
-  const inspector = useStore(outputs.$inspector)
+  const inspector = useStore(outputs.$inspector);
+  const individualDevicesList = useStore(outputs.$individualDevices);
+  const isLoadingIndividualDevices = useStore(
+    outputs.$isLoadingIndividualDevices
+  );
+  const consumptionRates = useStore(outputs.$consumptionRates);
 
   const handleSearchHousingStock = useEvent(inputs.handleSearchHousingStock);
+  const loadNextPageOfIndividualDevicesList = useEvent(
+    inputs.loadNextPageOfIndividualDevicesList
+  );
+  const loadConsumptionRates = useEvent(
+    inputs.loadManagemenFirmConsumptionRates
+  );
+  const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
+
+  const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
+    consumptionRates,
+    loadConsumptionRates,
+    housingStock?.managingFirmId
+  );
 
   return (
     <>
@@ -24,11 +45,20 @@ export const HousesReadingsContainer = () => {
       {housingStock?.inspectorId && (
         <InspectorGate id={housingStock.inspectorId} />
       )}
+      <ReadingsHistoryModal />
+      <ConfirmReadingValueModal />
       <HousesReadingsPage
         housingStock={housingStock}
         handleSearchHousingStock={handleSearchHousingStock}
         isLoadingHousingStock={isLoadingHousingStock}
         inspector={inspector}
+        individualDevicesList={individualDevicesList}
+        loadNextPageOfIndividualDevicesList={() =>
+          loadNextPageOfIndividualDevicesList()
+        }
+        isLoadingIndividualDevices={isLoadingIndividualDevices}
+        managementFirmConsumptionRates={managementFirmConsumptionRates}
+        openReadingsHistoryModal={openReadingsHistoryModal}
       />
     </>
   );

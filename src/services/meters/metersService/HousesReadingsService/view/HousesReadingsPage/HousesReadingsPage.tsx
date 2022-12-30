@@ -1,22 +1,33 @@
 import React, { FC } from 'react';
-import { Wrapper } from './HousesReadingsPage.styled';
+import {
+  IndividualDevicesListWrapper,
+  Wrapper,
+} from './HousesReadingsPage.styled';
 import { HousesReadingsPageProps } from './HousesReadingsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { HousingStockInfoPanel } from './HousingStockInfoPanel';
+import { IndividualDevicesList } from './IndividualDevicesList';
+import { TopButton } from '../HousesReadings/TopButton';
 
 export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   housingStock,
   handleSearchHousingStock,
   isLoadingHousingStock,
   inspector,
+  individualDevicesList,
+  loadNextPageOfIndividualDevicesList,
+  isLoadingIndividualDevices: isLoadingIndividualDevices,
+  managementFirmConsumptionRates,
+  openReadingsHistoryModal,
 }) => {
   const address = housingStock?.address?.mainAddress;
 
   return (
     <Wrapper>
+      <TopButton />
       <AddressSearchContainer
         fields={[
           SearchFieldType.City,
@@ -46,6 +57,17 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
               housingStock={housingStock}
               inspector={inspector}
             />
+            <IndividualDevicesListWrapper>
+              <IndividualDevicesList
+                individualDevicesList={individualDevicesList}
+                loadNextPageOfIndividualDevicesList={
+                  loadNextPageOfIndividualDevicesList
+                }
+                isLoadingIndividualDevices={isLoadingIndividualDevices}
+                managementFirmConsumptionRates={managementFirmConsumptionRates}
+                openReadingsHistoryModal={openReadingsHistoryModal}
+              />
+            </IndividualDevicesListWrapper>
           </>
         )}
       </WithLoader>

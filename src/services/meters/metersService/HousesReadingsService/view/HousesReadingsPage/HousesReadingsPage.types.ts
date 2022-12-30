@@ -1,4 +1,9 @@
-import { HousingStockResponse, InspectorResponse } from 'myApi';
+import {
+  HousingStockResponse,
+  IndividualDeviceListItemResponse,
+  InspectorResponse,
+} from 'myApi';
+import { ConsumptionRatesDictionary } from 'services/meters/managementFirmConsumptionRatesService/managementFirmConsumptionRatesService.types';
 import { GetHousingStocksListRequestPayload } from '../../HousesReadingsService.types';
 
 export type HousesReadingsPageProps = {
@@ -8,4 +13,9 @@ export type HousesReadingsPageProps = {
   ) => void;
   isLoadingHousingStock: boolean;
   inspector: InspectorResponse | null;
+  individualDevicesList: IndividualDeviceListItemResponse[];
+  loadNextPageOfIndividualDevicesList: () => void;
+  isLoadingIndividualDevices: boolean;
+  managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
+  openReadingsHistoryModal: (deviceId: number) => void;
 };

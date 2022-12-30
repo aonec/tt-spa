@@ -12,6 +12,7 @@ import { Params } from './apartmentIndividualDevicesMetersService.types';
 import {
   EditReadingsHistoryContainer,
 } from '../editReadingsHistoryService';
+import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 
 const {
   inputs,
@@ -53,6 +54,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   return (
     <>
       {id && <IndividualDevicesGate ApartmentId={Number(id)} />}
+      <CurrentManagingFirmUserGate />
       <ReadingsHistoryModal />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />

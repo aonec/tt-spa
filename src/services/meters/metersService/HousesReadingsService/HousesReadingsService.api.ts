@@ -2,8 +2,13 @@ import { axios } from '01/axios';
 import {
   GetHousingStocksListRequestPayload,
   GetHousingStocksRequestPayload,
+  GetIndividualDevicesListRequestPayload,
 } from './HousesReadingsService.types';
-import { HousingStockListResponsePagedList, HousingStockResponse } from 'myApi';
+import {
+  HousingStockListResponsePagedList,
+  HousingStockResponse,
+  IndividualDeviceListItemResponsePagedList,
+} from 'myApi';
 
 const getHousingStockId = async (
   params: GetHousingStocksListRequestPayload
@@ -32,3 +37,8 @@ export const getHousingStock = async ({
 
   return await axios.get(`HousingStocks/${id}`);
 };
+
+export const getIndividualDevicesList = (
+  params: GetIndividualDevicesListRequestPayload
+): Promise<IndividualDeviceListItemResponsePagedList> =>
+  axios.get('IndividualDevices', { params });
