@@ -2,7 +2,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { EDocumentType, ENodeCommercialAccountStatus } from 'myApi';
 import React, { FC, useCallback, useState } from 'react';
 import { nodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.contstants';
 import { DatePicker } from 'ui-kit/DatePicker';
@@ -147,6 +147,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
             }}
             max={1}
             label={DocumentUploaderLabels[values.commercialStatus]}
+            type={EDocumentType.NodeAdmissionAct}
           />
           <ErrorMessage>{errors.documentId}</ErrorMessage>
         </>
