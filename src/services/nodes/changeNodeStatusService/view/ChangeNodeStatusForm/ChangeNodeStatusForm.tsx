@@ -77,7 +77,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
-      <GroupWrapper>
+      <GroupWrapper isSeveralDates={isSeveralDates}>
         <FormItem label="Статус узла">
           <Select
             placeholder="Выберите"
@@ -96,41 +96,39 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
           <ErrorMessage>{errors.commercialStatus}</ErrorMessage>
         </FormItem>
 
-        <DatePickersWrapper>
-          <FormItem
-            label={
-              values.commercialStatus
-                ? NodeStatusDateLabel[values.commercialStatus]
-                : 'Дата'
+        <FormItem
+          label={
+            values.commercialStatus
+              ? NodeStatusDateLabel[values.commercialStatus]
+              : 'Дата'
+          }
+        >
+          <DatePicker
+            placeholder="Выберите дату"
+            format="DD.MM.YYYY"
+            value={getDatePickerValue(values.firstDate)}
+            onChange={(date) =>
+              setFieldValue('firstDate', date?.format('YYYY-MM-DD'))
             }
-          >
+            allowClear={false}
+          />
+          <ErrorMessage>{errors.firstDate}</ErrorMessage>
+        </FormItem>
+
+        {isSeveralDates && (
+          <FormItem label={'Дата окончания действия'}>
             <DatePicker
               placeholder="Выберите дату"
               format="DD.MM.YYYY"
-              value={getDatePickerValue(values.firstDate)}
+              value={getDatePickerValue(values.secondDate)}
               onChange={(date) =>
-                setFieldValue('firstDate', date?.format('YYYY-MM-DD'))
+                setFieldValue('secondDate', date?.format('YYYY-MM-DD'))
               }
               allowClear={false}
             />
-            <ErrorMessage>{errors.firstDate}</ErrorMessage>
+            <ErrorMessage>{errors.secondDate}</ErrorMessage>
           </FormItem>
-
-          {isSeveralDates && (
-            <FormItem label={'Дата окончания действия'}>
-              <DatePicker
-                placeholder="Выберите дату"
-                format="DD.MM.YYYY"
-                value={getDatePickerValue(values.secondDate)}
-                onChange={(date) =>
-                  setFieldValue('secondDate', date?.format('YYYY-MM-DD'))
-                }
-                allowClear={false}
-              />
-              <ErrorMessage>{errors.secondDate}</ErrorMessage>
-            </FormItem>
-          )}
-        </DatePickersWrapper>
+        )}
       </GroupWrapper>
 
       {(values.commercialStatus ===
