@@ -13,6 +13,13 @@ export const validationSchema = Yup.object().shape({
         ].includes(status),
       then: Yup.string().nullable().required('Это поле обязательное'),
     }),
+  firstDate: Yup.string().nullable().required('Это поле обязательное'),
+  secondDate: Yup.string()
+    .nullable()
+    .when('commercialStatus', {
+      is: ENodeCommercialAccountStatus.Registered,
+      then: Yup.string().nullable().required('Это поле обязательное'),
+    }),
 });
 
 export const DocumentUploaderLabels = {

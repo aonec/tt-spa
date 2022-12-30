@@ -1,9 +1,9 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
+import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
-import moment from 'moment';
 import { ENodeCommercialAccountStatus } from 'myApi';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { nodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.contstants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
@@ -16,6 +16,7 @@ import {
   validationSchema,
 } from './ChangeNodeStatusForm.constants';
 import {
+  DatePickersWrapper,
   GroupWrapper,
   SelectOptionWithIconWrapper,
 } from './ChangeNodeStatusForm.styled';
@@ -39,14 +40,40 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   } = useFormik<ChangeNodeStatusFormik>({
     initialValues: {
       commercialStatus: initialValues?.commercialStatus?.value || null,
-      date: moment().format('YYYY-MM-DD'),
       documentId: null,
+      firstDate: null,
+      secondDate: null,
     },
     validationSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: handleChangeNodeStatus,
+    onSubmit: (values) => {
+      const { commercialStatus, documentId, firstDate, secondDate } = values;
+
+      if (!commercialStatus || !firstDate) {
+        return;
+      }
+
+      handleChangeNodeStatus({
+        commercialStatus,
+        documentId: documentId || undefined,
+        firstDate,
+        secondDate: secondDate || undefined,
+      });
+    },
   });
+
+  const changeCommercialStatus = useCallback(
+    (value: SelectValue) => {
+      setFieldValue('commercialStatus', value);
+      setFieldValue('secondDate', null);
+      setFieldValue('documentId', null);
+    },
+    [setFieldValue]
+  );
+
+  const isSeveralDates =
+    values.commercialStatus === ENodeCommercialAccountStatus.Registered;
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -55,7 +82,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
           <Select
             placeholder="Выберите"
             value={values.commercialStatus || undefined}
-            onChange={(value) => setFieldValue('commercialStatus', value)}
+            onChange={changeCommercialStatus}
           >
             {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
               <Select.Option key={nodeStatus} value={nodeStatus}>
@@ -68,23 +95,42 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
           </Select>
           <ErrorMessage>{errors.commercialStatus}</ErrorMessage>
         </FormItem>
-        <FormItem
-          label={
-            values.commercialStatus
-              ? NodeStatusDateLabel[values.commercialStatus]
-              : 'Дата'
-          }
-        >
-          <DatePicker
-            placeholder="Выберите дату"
-            format="DD.MM.YYYY"
-            value={getDatePickerValue(values.date)}
-            onChange={(date) =>
-              setFieldValue('date', date?.format('YYYY-MM-DD'))
+
+        <DatePickersWrapper>
+          <FormItem
+            label={
+              values.commercialStatus
+                ? NodeStatusDateLabel[values.commercialStatus]
+                : 'Дата'
             }
-            allowClear={false}
-          />
-        </FormItem>
+          >
+            <DatePicker
+              placeholder="Выберите дату"
+              format="DD.MM.YYYY"
+              value={getDatePickerValue(values.firstDate)}
+              onChange={(date) =>
+                setFieldValue('firstDate', date?.format('YYYY-MM-DD'))
+              }
+              allowClear={false}
+            />
+            <ErrorMessage>{errors.firstDate}</ErrorMessage>
+          </FormItem>
+
+          {isSeveralDates && (
+            <FormItem label={'Дата окончания действия'}>
+              <DatePicker
+                placeholder="Выберите дату"
+                format="DD.MM.YYYY"
+                value={getDatePickerValue(values.secondDate)}
+                onChange={(date) =>
+                  setFieldValue('secondDate', date?.format('YYYY-MM-DD'))
+                }
+                allowClear={false}
+              />
+              <ErrorMessage>{errors.secondDate}</ErrorMessage>
+            </FormItem>
+          )}
+        </DatePickersWrapper>
       </GroupWrapper>
 
       {(values.commercialStatus ===

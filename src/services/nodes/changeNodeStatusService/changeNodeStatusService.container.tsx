@@ -23,7 +23,7 @@ export const ChangeNodeStatusContainer = () => {
           <ChangeNodeStatusForm
             initialValues={node}
             formId={formId}
-            handleChangeNodeStatus={() => handleChangeNodeStatus()}
+            handleChangeNodeStatus={handleChangeNodeStatus}
           />
         )
       }
