@@ -60,6 +60,9 @@ const $individualDevicesPageNumber = domain
   .on(fetchIndividualDevicesFx.doneData, (pageNumber) => pageNumber + 1)
   .reset(HousingStockGate.close, $housingStock);
 
+$individualDevicesPageNumber.watch(console.log);
+loadNextPageOfIndividualDevicesList.watch(() => console.log("runs"));
+
 guard({
   clock: handleSearchHousingStock,
   filter: ({ City, Street, HousingStockNumber }) => {
@@ -78,7 +81,17 @@ guard({
 
 sample({
   clock: guard({
-    clock: loadNextPageOfIndividualDevicesList,
+    clock: guard({
+      source: combine($individualDevices, $individualDevicesPagedList, fetchIndividualDevicesFx.pending),
+      clock: loadNextPageOfIndividualDevicesList,
+      filter: ([individualDevices, pagedData, isLoading]) => {
+        if (isLoading) return false;
+
+        if (!pagedData?.totalItems) return true;
+
+        return individualDevices.length < pagedData.totalItems;
+      },
+    }),
     source: combine($individualDevicesPageNumber, $housingStock),
     filter: (
       data: [number, HousingStockResponse | null]
