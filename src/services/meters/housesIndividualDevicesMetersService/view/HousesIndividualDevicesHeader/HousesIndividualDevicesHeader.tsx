@@ -25,8 +25,12 @@ export const HousesIndividualDevicesHeader: FC<HousesIndividualDevicesHeaderProp
           <ChevronIcon />
         </ArrowContainer>
         <div>{prevReadingMonth}</div>
-        <ArrowContainer onClick={downSliderIndex} isDisabled={!isCanDown}>
-          <ChevronIcon className="right-chevron" />
+        <ArrowContainer
+          isRight
+          onClick={downSliderIndex}
+          isDisabled={!isCanDown}
+        >
+          <ChevronIcon />
         </ArrowContainer>
       </MonthSliderWrapper>
       <CurrentMonth>{currentReadingMonth}</CurrentMonth>

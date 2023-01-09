@@ -1,3 +1,4 @@
+import { individualDeviceMetersInputService } from 'services/meters/individualDeviceMetersInputService';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
@@ -53,15 +54,24 @@ const $individualDevices = domain
   .on(fetchIndividualDevicesFx.doneData, (prev, { items }) =>
     items ? [...prev, ...items] : prev
   )
-  .reset(HousingStockGate.close, $housingStock);
+  .reset(HousingStockGate.close, $housingStock)
+  .on(
+    individualDeviceMetersInputService.inputs.uploadMeterFx.done,
+    (prev, { params, result: readingResponse }) => {
+      return prev.map((device) => {
+        if (device.id !== params.meter.deviceId) return device;
+
+        const deviceReadings = device.readings || [];
+
+        return { ...device, readings: [...deviceReadings, readingResponse] };
+      });
+    }
+  );
 
 const $individualDevicesPageNumber = domain
   .createStore(1)
   .on(fetchIndividualDevicesFx.doneData, (pageNumber) => pageNumber + 1)
   .reset(HousingStockGate.close, $housingStock);
-
-$individualDevicesPageNumber.watch(console.log);
-loadNextPageOfIndividualDevicesList.watch(() => console.log('runs'));
 
 guard({
   clock: handleSearchHousingStock,

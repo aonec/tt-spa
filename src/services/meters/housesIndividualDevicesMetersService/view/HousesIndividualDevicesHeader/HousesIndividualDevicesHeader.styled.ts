@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   align-items: center;
   height: 48px;
   padding: 0 16px;
-  color: rgba(39, 47, 90, 0.9); ;
+  color: rgba(39, 47, 90, 0.9);
 `;
 
 export const MonthSliderWrapper = styled.div`
@@ -18,19 +18,19 @@ export const MonthSliderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .right-chevron {
-    transform: rotate(180deg);
-  }
 `;
 
-export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
+export const ArrowContainer = styled.div<{
+  isDisabled: boolean;
+  isRight?: boolean;
+}>`
   min-width: 10px;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  ${({ isDisabled }) => !isDisabled && 'cursor: pointer;'}
+  ${({ isRight }) => (isRight ? 'transform: rotate(180deg);' : '')}
+  ${({ isDisabled }) => (!isDisabled ? 'cursor: pointer;' : '')}
 
   svg path {
     opacity: ${({ isDisabled }) => (isDisabled ? 0.4 : 1)};
