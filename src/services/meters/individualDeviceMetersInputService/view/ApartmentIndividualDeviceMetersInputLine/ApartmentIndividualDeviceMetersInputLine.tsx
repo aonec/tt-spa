@@ -13,6 +13,7 @@ import {
 } from './ApartmentIndividualDeviceMetersInputLine.styled';
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 
 export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDeviceMetersInputLineProps> = ({
   device,
@@ -103,15 +104,15 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
           <div className="consumption-value" key={index}>
             {value}
           </div>
-        ))}
+        )) || '-'}
       </ConsumptionWrapper>
-      <div></div>
       <Tooltip title="История показаний" className="device-option">
         <HistoryIcon
           onClick={openReadingsHistoryModal}
           style={{ cursor: 'pointer' }}
         />
       </Tooltip>
+      <ContextMenuButton size="small" />
     </Wrapper>
   );
 };
