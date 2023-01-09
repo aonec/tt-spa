@@ -23,6 +23,7 @@ export const HousesReadingsContainer = () => {
     outputs.$isLoadingIndividualDevices
   );
   const consumptionRates = useStore(outputs.$consumptionRates);
+  const isAllDevicesLoaded = useStore(outputs.$isAllDevicesLoaded);
 
   const handleSearchHousingStock = useEvent(inputs.handleSearchHousingStock);
   const loadNextPageOfIndividualDevicesList = useEvent(
@@ -77,6 +78,7 @@ export const HousesReadingsContainer = () => {
         isLoadingIndividualDevices={isLoadingIndividualDevices}
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         openReadingsHistoryModal={openReadingsHistoryModal}
+        isAllDevicesLoaded={isAllDevicesLoaded}
       />
     </>
   );

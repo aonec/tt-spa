@@ -61,7 +61,7 @@ const $individualDevicesPageNumber = domain
   .reset(HousingStockGate.close, $housingStock);
 
 $individualDevicesPageNumber.watch(console.log);
-loadNextPageOfIndividualDevicesList.watch(() => console.log("runs"));
+loadNextPageOfIndividualDevicesList.watch(() => console.log('runs'));
 
 guard({
   clock: handleSearchHousingStock,
@@ -82,7 +82,11 @@ guard({
 sample({
   clock: guard({
     clock: guard({
-      source: combine($individualDevices, $individualDevicesPagedList, fetchIndividualDevicesFx.pending),
+      source: combine(
+        $individualDevices,
+        $individualDevicesPagedList,
+        fetchIndividualDevicesFx.pending
+      ),
       clock: loadNextPageOfIndividualDevicesList,
       filter: ([individualDevices, pagedData, isLoading]) => {
         if (isLoading) return false;
@@ -117,6 +121,13 @@ const $isLoadingHousingStock = fetchHousingStockFx.pending;
 
 const $isLoadingIndividualDevices = fetchIndividualDevicesFx.pending;
 
+const $isAllDevicesLoaded = combine(
+  $individualDevicesPagedList,
+  $individualDevices,
+  (data, devices) =>
+    typeof data?.totalItems === 'number' && data.totalItems === devices.length
+);
+
 export const housesReadingsService = {
   inputs: {
     handleSearchHousingStock,
@@ -131,7 +142,7 @@ export const housesReadingsService = {
     $isLoadingHousingStock,
     $inspector,
     $individualDevices,
-    $individualDevicesPagedList,
+    $isAllDevicesLoaded,
     $isLoadingIndividualDevices,
     $consumptionRates:
       managementFirmConsumptionRatesService.outputs.$consumptionRates,

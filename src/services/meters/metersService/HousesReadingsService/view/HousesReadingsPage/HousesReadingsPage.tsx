@@ -10,7 +10,7 @@ import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { HousingStockInfoPanel } from './HousingStockInfoPanel';
 import { IndividualDevicesList } from './IndividualDevicesList';
-import { TopButton } from '../HousesReadings/TopButton';
+import { TopButton } from './IndividualDevicesList/TopButton';
 
 export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   housingStock,
@@ -22,12 +22,13 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   isLoadingIndividualDevices: isLoadingIndividualDevices,
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
+  isAllDevicesLoaded,
 }) => {
   const address = housingStock?.address?.mainAddress;
 
   return (
     <Wrapper>
-      <TopButton />
+      {Boolean(individualDevicesList.length) && <TopButton />}
       <AddressSearchContainer
         fields={[
           SearchFieldType.City,
@@ -66,6 +67,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
                 isLoadingIndividualDevices={isLoadingIndividualDevices}
                 managementFirmConsumptionRates={managementFirmConsumptionRates}
                 openReadingsHistoryModal={openReadingsHistoryModal}
+                isAllDevicesLoaded={isAllDevicesLoaded}
               />
             </IndividualDevicesListWrapper>
           </>

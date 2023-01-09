@@ -12,6 +12,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   isLoadingIndividualDevices,
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
+  isAllDevicesLoaded,
 }) => {
   return (
     <div>
@@ -29,7 +30,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
         )
       )}
       {isLoadingIndividualDevices && <Skeleton active />}
-      {!isLoadingIndividualDevices && (
+      {!isLoadingIndividualDevices && !isAllDevicesLoaded && (
         <LoadButtonWrapper>
           <Button onClick={loadNextPageOfIndividualDevicesList}>
             Загрузить приборы

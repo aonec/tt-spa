@@ -7,4 +7,5 @@ export type IndividualDevicesListProps = {
   isLoadingIndividualDevices: boolean;
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   openReadingsHistoryModal: (deviceId: number) => void;
+  isAllDevicesLoaded: boolean;
 };
