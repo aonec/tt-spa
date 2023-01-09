@@ -138,6 +138,8 @@ const $isAllDevicesLoaded = combine(
     typeof data?.totalItems === 'number' && data.totalItems === devices.length
 );
 
+const handleHousingStockLoaded = fetchHousingStockFx.doneData;
+
 export const housesReadingsService = {
   inputs: {
     handleSearchHousingStock,
@@ -146,6 +148,7 @@ export const housesReadingsService = {
       managementFirmConsumptionRatesService.inputs
         .loadManagemenFirmConsumptionRates,
     openReadingsHistoryModal,
+    handleHousingStockLoaded,
   },
   outputs: {
     $housingStock,

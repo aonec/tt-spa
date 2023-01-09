@@ -28,10 +28,12 @@ export const ApartmentReadingsContainer = () => {
   const apartment = useStore(outputs.$apartment);
 
   useEffect(() => {
-    if (Number(id) === apartment?.id) return;
+    return inputs.handleApartmentLoaded.watch((apartment) => {
+      if (!apartment) return;
 
-    history.push(`/meters/apartments/${apartment?.id || ''}`);
-  }, [apartment, id]);
+      history.push(`/meters/apartments/${apartment.id}`);
+    }).unsubscribe;
+  }, []);
 
   const apartmentId = Number(id) || undefined;
 

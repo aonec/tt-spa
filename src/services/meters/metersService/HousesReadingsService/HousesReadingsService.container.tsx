@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useEvent, useStore } from 'effector-react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { HousesReadingsPage } from './view/HousesReadingsPage';
 import { housesReadingsService } from './HousesReadingsService.model';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
@@ -12,6 +12,7 @@ const { HousingStockGate, InspectorGate } = gates;
 
 export const HousesReadingsContainer = () => {
   const { id } = useParams<{ id?: string }>();
+  const history = useHistory();
 
   const housingStockId = Number(id) || null;
 
@@ -56,6 +57,14 @@ export const HousesReadingsContainer = () => {
     return () => {
       window.removeEventListener('scroll', onScrollDown, true);
     };
+  }, []);
+
+  useEffect(() => {
+    return inputs.handleHousingStockLoaded.watch((housingStock) => {
+      if (!housingStock) return;
+
+      history.push(`/meters/houses/${housingStock.id}`);
+    }).unsubscribe;
   }, []);
 
   return (
