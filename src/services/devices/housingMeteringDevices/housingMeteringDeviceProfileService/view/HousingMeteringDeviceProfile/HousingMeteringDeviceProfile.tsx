@@ -17,6 +17,7 @@ import {
   DeviceTitle,
   PageGridContainer,
   PageTitle,
+  ResourceIconWrapper,
   RightBlock,
   Wrapper,
 } from './HousingMeteringDeviceProfile.styled';
@@ -61,7 +62,9 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           title={
             <PageTitle>
               <DeviceTitle>
-                {resource && <ResourceIconLookup resource={resource} />}
+                <ResourceIconWrapper>
+                  {resource && <ResourceIconLookup resource={resource} />}
+                </ResourceIconWrapper>
                 <DeviceModel>{deviceModel}</DeviceModel>
                 <DeviceNumber>{`(${deviceNumber})`}</DeviceNumber>
               </DeviceTitle>

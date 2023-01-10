@@ -1,7 +1,7 @@
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeNodeResponse } from 'myApi';
-import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService/nodeCommercialRegistrationService.models';
+import { changeNodeStatusService } from '../changeNodeStatusService';
 import { getPipeNode } from './nodeProfileService.api';
 
 const domain = createDomain('nodeProfileService');
@@ -24,7 +24,7 @@ forward({
 
 sample({
   source: PipeNodeGate.state.map(({ pipeNodeId }) => pipeNodeId),
-  clock: nodeCommercialRegistrationService.inputs.handleStatusChanged,
+  clock: changeNodeStatusService.inputs.changeNodeStatusFx.doneData,
   target: fetchPipeNodeFx,
 });
 
@@ -32,8 +32,8 @@ const $isLoading = fetchPipeNodeFx.pending;
 
 export const nodeProfileService = {
   inputs: {
-    openRegisterNodeOnCommercialAccountingModal:
-      nodeCommercialRegistrationService.inputs.openModal,
+    openChangeNodeStatusModal:
+      changeNodeStatusService.inputs.openModal,
   },
   outputs: {
     $pipeNode,
