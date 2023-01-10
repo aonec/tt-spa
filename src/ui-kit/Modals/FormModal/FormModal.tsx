@@ -31,14 +31,10 @@ export const FormModal: React.FC<FormModalProps> = ({
     if (onSubmit) {
       onSubmit();
     }
-    if (formId) {
-      const formNode = document.getElementById(
-        formId
-      ) as HTMLFormElement | null;
+    const formNode = document.getElementById(formId) as HTMLFormElement | null;
 
-      if (formNode?.requestSubmit) {
-        formNode.requestSubmit();
-      }
+    if (formNode?.requestSubmit) {
+      formNode.requestSubmit();
     }
   };
 
