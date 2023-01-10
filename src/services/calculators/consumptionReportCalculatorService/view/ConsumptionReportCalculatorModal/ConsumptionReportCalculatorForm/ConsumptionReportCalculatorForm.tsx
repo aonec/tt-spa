@@ -36,6 +36,7 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
   formId,
   calculator,
   handleSubmitForm,
+  isSono,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
   const reportName = `${calculator?.model}_${address?.street}_${address?.number}`;
@@ -44,12 +45,14 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
   const nodeGroups = _.groupBy(nodesList, 'resource');
   const resources = Object.keys(nodeGroups) as EResourceType[];
 
+  const nodeIdForSono = calculator?.nodes && calculator.nodes[0].id;
+
   const { errors, values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
-      archiveType: ArchiveType.StartOfMonth,
+      archiveType: isSono ? ArchiveType.AnyPeriod : ArchiveType.StartOfMonth,
       period: [null, null] as DatePeriod,
-      detail: EReportType.Daily,
-      nodeId: null,
+      detail: isSono ? EReportType.Monthly : EReportType.Daily,
+      nodeId: isSono ? nodeIdForSono : null,
       customPeriodDisabled: true,
       withNS: false,
       currentResourceType: resources[0],
@@ -143,72 +146,126 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
       </FormItem>
 
       <FormItem label="Узел">
-        <Select
-          onChange={(value) => setFieldValue('nodeId', value)}
-          value={values.nodeId || undefined}
-          placeholder="Выберите узел"
-          options={options}
-        />
-        <ErrorMessage>{errors.nodeId}</ErrorMessage>
+        {!isSono && (
+          <>
+            <Select
+              onChange={(value) => setFieldValue('nodeId', value)}
+              value={values.nodeId || undefined}
+              placeholder="Выберите узел"
+              options={options}
+            />
+            <ErrorMessage>{errors.nodeId}</ErrorMessage>
+          </>
+        )}
+        {isSono && <Input value="Sono" disabled />}
       </FormItem>
 
       <GridContainer>
-        <FormItem label="Период">
-          <StyledRadioGroup
-            value={values.archiveType}
-            onChange={(value) => {
-              const archiveType = value.target.value;
-              setFieldValue('archiveType', archiveType);
-            }}
-          >
-            <Radio value={ArchiveType.LastSevenDays}>Последние 7 дней</Radio>
-            <Radio value={ArchiveType.StartOfMonth} checked>
-              С начала месяца
-            </Radio>
-            <Radio value={ArchiveType.PreviousMonth}>За прошлый месяц</Radio>
-            <Radio value={ArchiveType.AnyPeriod}>Произвольный период</Radio>
-          </StyledRadioGroup>
-
-          <MarginTop>
-            <RangePicker
-              placeholder={['Дата начала', 'Дата окончания']}
-              format="DD.MM.YYYY"
-              disabled={values.archiveType !== ArchiveType.AnyPeriod}
-              value={values.period}
+        {!isSono && (
+          <FormItem label="Период">
+            <StyledRadioGroup
+              value={values.archiveType}
               onChange={(value) => {
-                if (!value) {
-                  setFieldValue('period', [null, null]);
-                  return;
-                }
-
-                setFieldValue('period', value);
+                const archiveType = value.target.value;
+                setFieldValue('archiveType', archiveType);
               }}
-            />
-          </MarginTop>
-        </FormItem>
+            >
+              <Radio value={ArchiveType.LastSevenDays}>Последние 7 дней</Radio>
+              <Radio value={ArchiveType.StartOfMonth} checked>
+                С начала месяца
+              </Radio>
+              <Radio value={ArchiveType.PreviousMonth}>За прошлый месяц</Radio>
+              <Radio value={ArchiveType.AnyPeriod}>Произвольный период</Radio>
+            </StyledRadioGroup>
+
+            <MarginTop>
+              <RangePicker
+                placeholder={['Дата начала', 'Дата окончания']}
+                format="DD.MM.YYYY"
+                disabled={values.archiveType !== ArchiveType.AnyPeriod}
+                value={values.period}
+                onChange={(value) => {
+                  if (!value) {
+                    setFieldValue('period', [null, null]);
+                    return;
+                  }
+
+                  setFieldValue('period', value);
+                }}
+              />
+            </MarginTop>
+          </FormItem>
+        )}
+        {isSono && (
+          <FormItem label="Период">
+            <StyledRadioGroup
+              value={values.archiveType}
+              onChange={(value) => {
+                const archiveType = value.target.value;
+                setFieldValue('archiveType', archiveType);
+              }}
+            >
+              <Radio value={ArchiveType.PreviousMonth}>За прошлый месяц</Radio>
+              <Radio value={ArchiveType.AnyPeriod} checked>
+                Произвольный период
+              </Radio>
+            </StyledRadioGroup>
+
+            <MarginTop>
+              <RangePicker
+                picker="month"
+                format="MM.YYYY"
+                placeholder={['Дата начала', 'Дата окончания']}
+                disabled={values.archiveType !== ArchiveType.AnyPeriod}
+                value={values.period}
+                onChange={(value) => {
+                  if (!value) {
+                    setFieldValue('period', [null, null]);
+                    return;
+                  }
+
+                  setFieldValue('period', value);
+                }}
+              />
+            </MarginTop>
+          </FormItem>
+        )}
 
         <FormItem label="Детализация отчёта">
           <StyledRadioGroup
-            defaultValue={EReportType.Daily}
+            defaultValue={isSono ? EReportType.Monthly : EReportType.Daily}
             onChange={(event) => {
               setFieldValue('detail', event.target.value);
             }}
           >
-            <Radio value={EReportType.Hourly}>Часовая</Radio>
-            <Radio value={EReportType.Daily} checked>
-              Суточная
-            </Radio>
+            {!isSono && (
+              <>
+                <Radio value={EReportType.Hourly}>Часовая</Radio>
+                <Radio value={EReportType.Daily} checked>
+                  Суточная
+                </Radio>
+              </>
+            )}
+            {isSono && (
+              <Radio value={EReportType.Monthly} checked>
+                Месячная
+              </Radio>
+            )}
           </StyledRadioGroup>
         </FormItem>
       </GridContainer>
 
-      <SpaceLine />
-      <Checkbox
-        checked={values.withNS}
-        onChange={(value) => setFieldValue('withNS', value.target.checked)}
-      >
-        Выгрузка отчета с кодами НС
-      </Checkbox>
+      {!isSono && (
+        <>
+          <SpaceLine />
+          <Checkbox
+            checked={values.withNS}
+            onChange={(value) => setFieldValue('withNS', value.target.checked)}
+          >
+            Выгрузка отчета с кодами НС
+          </Checkbox>
+        </>
+      )}
     </Form>
   );
 };

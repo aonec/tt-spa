@@ -4,7 +4,8 @@ import { GetCalculatorReportParams } from 'services/calculators/consumptionRepor
 export type ConsumptionReportCalculatorFormProps = {
   formId: string;
   calculator: CalculatorResponse | null;
-  handleSubmitForm: (payload: GetCalculatorReportParams) => void
+  handleSubmitForm: (payload: GetCalculatorReportParams) => void;
+  isSono?: boolean;
 };
 
 export enum ArchiveType {
