@@ -987,7 +987,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   number?: number;
-  nodeStatus?: ENodeCommercialAccountStatus;
+  nodeStatus?: ENodeCommercialAccountStatus | null;
   commercialStatus?: ENodeCommercialAccountStatus | null;
 
   /** @format int32 */
@@ -1156,7 +1156,7 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   number?: number;
-  nodeStatus?: ENodeCommercialAccountStatus;
+  nodeStatus?: ENodeCommercialAccountStatus | null;
   commercialStatus?: ENodeCommercialAccountStatus | null;
 
   /** @format int32 */
@@ -3979,6 +3979,25 @@ export interface NodeServiceZoneResponseSuccessApiResponse {
   successResponse: NodeServiceZoneResponse | null;
 }
 
+export interface NodeSetCommercialStatusRequest {
+  commercialStatus?: ENodeCommercialAccountStatus;
+
+  /** @format date-time */
+  commercialAccountingDeregistrationDate?: string | null;
+
+  /** @format date-time */
+  commercialStatusChangingDate?: string | null;
+
+  /** @format int32 */
+  documentId?: number | null;
+
+  /** @format date-time */
+  startCommercialAccountingDate?: string | null;
+
+  /** @format date-time */
+  endCommercialAccountingDate?: string | null;
+}
+
 export interface NodeSetNotRegisteredRequest {
   /** @format int32 */
   documentId?: number | null;
@@ -3996,6 +4015,11 @@ export interface NodeSetRegisteredRequest {
 
   /** @format date-time */
   endCommercialAccountingDate?: string;
+}
+
+export interface NodeSetRegistrationTypeRequest {
+  registrationType?: ENodeRegistrationType;
+  commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
 }
 
 export interface NodesPagedList {
@@ -10691,21 +10715,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
-     * @name PipeNodesSetRegisteredStatusCreate
-     * @summary NodeUpdate
-     * @request POST:/api/PipeNodes/{pipeNodeId}/SetRegisteredStatus
+     * @name PipeNodesSetCommercialStatusCreate
+     * @summary NodeRead
+     * @request POST:/api/PipeNodes/{pipeNodeId}/SetCommercialStatus
      * @secure
      */
-    pipeNodesSetRegisteredStatusCreate: (
+    pipeNodesSetCommercialStatusCreate: (
       pipeNodeId: number,
-      data: NodeSetRegisteredRequest,
+      data: NodeSetCommercialStatusRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/PipeNodes/${pipeNodeId}/SetRegisteredStatus`,
+      this.request<any, ErrorApiResponse>({
+        path: `/api/PipeNodes/${pipeNodeId}/SetCommercialStatus`,
         method: "POST",
         body: data,
         secure: true,
@@ -10714,21 +10738,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
-     * @name PipeNodesSetNotRegisteredStatusCreate
-     * @summary NodeUpdate
-     * @request POST:/api/PipeNodes/{pipeNodeId}/SetNotRegisteredStatus
+     * @name PipeNodesSetRegistrationTypeCreate
+     * @summary NodeRead
+     * @request POST:/api/PipeNodes/{pipeNodeId}/SetRegistrationType
      * @secure
      */
-    pipeNodesSetNotRegisteredStatusCreate: (
+    pipeNodesSetRegistrationTypeCreate: (
       pipeNodeId: number,
-      data: NodeSetNotRegisteredRequest,
+      data: NodeSetRegistrationTypeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/PipeNodes/${pipeNodeId}/SetNotRegisteredStatus`,
+      this.request<any, ErrorApiResponse>({
+        path: `/api/PipeNodes/${pipeNodeId}/SetRegistrationType`,
         method: "POST",
         body: data,
         secure: true,

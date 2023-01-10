@@ -6,7 +6,7 @@ export type NodeProfilePageProps = {
   section?: PipeNodeProfileSection;
   handleChangeTab: (section: PipeNodeProfileSection) => void;
   handleEditNode: () => void;
-  openRegisterNodeOnCommercialAccountingModal: () => void;
+  openChangeNodeStatusModal: (node: PipeNodeResponse) => void;
 };
 
 export enum PipeNodeProfileSection {
