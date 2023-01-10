@@ -479,6 +479,27 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
   value4?: number | null;
 }
 
+export interface CalculatorCommentBaseRequest {
+  text?: string | null;
+}
+
+export interface CalculatorCommentResponse {
+  /** @format int32 */
+  id: number;
+  text: string | null;
+
+  /** @format date-time */
+  lastModifiedDateTime: string;
+
+  /** @format date-time */
+  creationDateTime: string;
+  lastModifiedUser: LastModifiedUserResponse | null;
+}
+
+export interface CalculatorCommentResponseSuccessApiResponse {
+  successResponse: CalculatorCommentResponse | null;
+}
+
 export interface CalculatorFilterResponse {
   nodeStatuses: ENodeCommercialAccountStatusNullableStringDictionaryItem[] | null;
   houseCategories: EHouseCategoryStringDictionaryItem[] | null;
@@ -590,9 +611,13 @@ export interface CalculatorListResponse {
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
-  hasTasks: boolean | null;
   address: HousingStockShortResponse | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
+  documents: DocumentLiteResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+  comment: CalculatorCommentResponse | null;
 }
 
 export interface CalculatorListResponsePagedList {
@@ -662,6 +687,11 @@ export interface CalculatorResponse {
   /** @format int32 */
   infoId: number | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
+  documents: DocumentResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+  comment: string | null;
 }
 
 export interface CalculatorResponseSuccessApiResponse {
@@ -987,7 +1017,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 export interface CreateElectricNodeRequest {
   /** @format int32 */
   number?: number;
-  nodeStatus?: ENodeCommercialAccountStatus;
+  nodeStatus?: ENodeCommercialAccountStatus | null;
   commercialStatus?: ENodeCommercialAccountStatus | null;
 
   /** @format int32 */
@@ -1156,7 +1186,7 @@ export interface CreatePipeHousingMeteringDeviceRequest {
 export interface CreatePipeNodeRequest {
   /** @format int32 */
   number?: number;
-  nodeStatus?: ENodeCommercialAccountStatus;
+  nodeStatus?: ENodeCommercialAccountStatus | null;
   commercialStatus?: ENodeCommercialAccountStatus | null;
 
   /** @format int32 */
@@ -2516,8 +2546,6 @@ export interface HousingByFilterResponseSuccessApiResponse {
 }
 
 export interface HousingMeteringDeviceAddCommentRequest {
-  /** @format int32 */
-  deviceId?: number;
   text?: string | null;
 }
 
@@ -2774,7 +2802,7 @@ export interface HousingStockCreateRequest {
   coordinates?: Point | null;
 
   /** @format uuid */
-  houseManagementId: string;
+  houseManagementId?: string | null;
   houseCategory: EHouseCategory;
   livingHouseType?: ELivingHouseType | null;
   nonResidentialHouseType?: ENonResidentialHouseType | null;
@@ -3979,6 +4007,25 @@ export interface NodeServiceZoneResponseSuccessApiResponse {
   successResponse: NodeServiceZoneResponse | null;
 }
 
+export interface NodeSetCommercialStatusRequest {
+  commercialStatus?: ENodeCommercialAccountStatus;
+
+  /** @format date-time */
+  commercialAccountingDeregistrationDate?: string | null;
+
+  /** @format date-time */
+  commercialStatusChangingDate?: string | null;
+
+  /** @format int32 */
+  documentId?: number | null;
+
+  /** @format date-time */
+  startCommercialAccountingDate?: string | null;
+
+  /** @format date-time */
+  endCommercialAccountingDate?: string | null;
+}
+
 export interface NodeSetNotRegisteredRequest {
   /** @format int32 */
   documentId?: number | null;
@@ -3996,6 +4043,11 @@ export interface NodeSetRegisteredRequest {
 
   /** @format date-time */
   endCommercialAccountingDate?: string;
+}
+
+export interface NodeSetRegistrationTypeRequest {
+  registrationType?: ENodeRegistrationType;
+  commercialStatusRequest?: NodeSetCommercialStatusRequest | null;
 }
 
 export interface NodesPagedList {
@@ -6659,6 +6711,63 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsCommentCreate
+     * @summary CalculatorUpdate
+     * @request POST:/api/Calculators/{deviceId}/comment
+     * @secure
+     */
+    calculatorsCommentCreate: (deviceId: number, data: CalculatorCommentBaseRequest, params: RequestParams = {}) =>
+      this.request<CalculatorCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Calculators/${deviceId}/comment`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsCommentUpdate
+     * @summary CalculatorUpdate
+     * @request PUT:/api/Calculators/{deviceId}/comment
+     * @secure
+     */
+    calculatorsCommentUpdate: (deviceId: number, data: CalculatorCommentBaseRequest, params: RequestParams = {}) =>
+      this.request<CalculatorCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Calculators/${deviceId}/comment`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsCommentDelete
+     * @summary CalculatorUpdate
+     * @request DELETE:/api/Calculators/{deviceId}/comment
+     * @secure
+     */
+    calculatorsCommentDelete: (deviceId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Calculators/${deviceId}/comment`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
 
@@ -10691,21 +10800,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
-     * @name PipeNodesSetRegisteredStatusCreate
-     * @summary NodeUpdate
-     * @request POST:/api/PipeNodes/{pipeNodeId}/SetRegisteredStatus
+     * @name PipeNodesSetCommercialStatusCreate
+     * @summary NodeRead
+     * @request POST:/api/PipeNodes/{pipeNodeId}/SetCommercialStatus
      * @secure
      */
-    pipeNodesSetRegisteredStatusCreate: (
+    pipeNodesSetCommercialStatusCreate: (
       pipeNodeId: number,
-      data: NodeSetRegisteredRequest,
+      data: NodeSetCommercialStatusRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/PipeNodes/${pipeNodeId}/SetRegisteredStatus`,
+      this.request<any, ErrorApiResponse>({
+        path: `/api/PipeNodes/${pipeNodeId}/SetCommercialStatus`,
         method: "POST",
         body: data,
         secure: true,
@@ -10714,21 +10823,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
-     * @name PipeNodesSetNotRegisteredStatusCreate
-     * @summary NodeUpdate
-     * @request POST:/api/PipeNodes/{pipeNodeId}/SetNotRegisteredStatus
+     * @name PipeNodesSetRegistrationTypeCreate
+     * @summary NodeRead
+     * @request POST:/api/PipeNodes/{pipeNodeId}/SetRegistrationType
      * @secure
      */
-    pipeNodesSetNotRegisteredStatusCreate: (
+    pipeNodesSetRegistrationTypeCreate: (
       pipeNodeId: number,
-      data: NodeSetNotRegisteredRequest,
+      data: NodeSetRegistrationTypeRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/PipeNodes/${pipeNodeId}/SetNotRegisteredStatus`,
+      this.request<any, ErrorApiResponse>({
+        path: `/api/PipeNodes/${pipeNodeId}/SetRegistrationType`,
         method: "POST",
         body: data,
         secure: true,
