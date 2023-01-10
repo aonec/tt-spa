@@ -37,7 +37,7 @@ type ParamsType = {
   id: string;
 };
 
-const HousesDevices: React.FC = () => {
+export const HousesDevices: React.FC = () => {
   let { id: housingStockId }: ParamsType = useParams();
 
   const devices = useStore($pagedIndividualDevices);

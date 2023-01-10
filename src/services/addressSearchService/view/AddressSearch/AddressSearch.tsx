@@ -123,6 +123,23 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     />
   );
 
+  const questionSearch = (index: number, isDisabled?: boolean) => (
+    <InputSC
+      placeholder="Л/С или ФИО"
+      value={values.question}
+      onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}
+      ref={refs[index]}
+      onClick={() => {
+        clearFields(index);
+      }}
+      onKeyDown={(e) => {
+        fromEnter(handleSubmit)(e);
+        keyDownEnterGuardedHandler(index)(e);
+      }}
+      disabled={isDisabled}
+    />
+  );
+
   const fieldsLookup: {
     [key: string]: (index: number, isDisabled?: boolean) => ReactElement;
   } = {
@@ -131,6 +148,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     [SearchFieldType.House]: homeNumberSearch,
     [SearchFieldType.Corpus]: corpusSearch,
     [SearchFieldType.Apartment]: apartmentSearch,
+    [SearchFieldType.Question]: questionSearch,
   };
 
   const searchFields = fields.map((fieldType, index) => {
