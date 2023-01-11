@@ -8,13 +8,17 @@ const { FetchingCurrentManagingFirmGate } = gates;
 
 export const CompanyProfileContainer = () => {
   const currentManagingFirm = useStore(outputs.$currentManagingFirm);
-
+  const fetchStaffPending = useStore(outputs.$fetchStaffPending);
   const staffList = useStore(outputs.$staffList);
 
   return (
     <>
       <FetchingCurrentManagingFirmGate />
-      <CompanyProfile currentManagingFirm={currentManagingFirm} staffList={staffList}/>
+      <CompanyProfile
+        currentManagingFirm={currentManagingFirm}
+        staffList={staffList}
+        fetchStaffPending={fetchStaffPending}
+      />
     </>
   );
 };
