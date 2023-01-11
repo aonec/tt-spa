@@ -4,7 +4,7 @@ import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
 import { EDocumentType, ENodeCommercialAccountStatus } from 'myApi';
 import React, { FC, useCallback, useState } from 'react';
-import { nodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.contstants';
+import { commercialNodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
@@ -84,7 +84,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
             value={values.commercialStatus || undefined}
             onChange={changeCommercialStatus}
           >
-            {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
+            {commercialNodeStatuses.map(({ nodeStatus, text, Icon }) => (
               <Select.Option key={nodeStatus} value={nodeStatus}>
                 <SelectOptionWithIconWrapper>
                   <Icon />
