@@ -19,7 +19,7 @@ import { ErrorMessage } from '01/features/contractors/addContractors';
 interface Props {
   type?: 'switch' | 'edit' | 'split';
   form?: any;
-  isMainPersonalAccountNumber?: boolean | undefined;
+  isMainPersonalAccountNumber?: boolean;
 }
 
 export const PersonalNumberEditForm: React.FC<Props> = ({
