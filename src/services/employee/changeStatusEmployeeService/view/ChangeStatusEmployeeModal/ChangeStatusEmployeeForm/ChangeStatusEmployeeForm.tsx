@@ -27,7 +27,7 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <GridContainer>
-        <FormItem label="Тип">
+        <FormItem label="Текущий статус">
           <Select
             placeholder="Выберите из списка"
             value={values.type || undefined}
@@ -35,7 +35,7 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
           >
             {Object.values(EOrganizationUserWorkingStatusType).map((e) => (
               <Select.Option value={e} key={e}>
-                {OrganizationUserWorkingStatusDictionary[e]}
+                e {OrganizationUserWorkingStatusDictionary[e]}
               </Select.Option>
             ))}
           </Select>
