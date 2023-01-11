@@ -66,6 +66,11 @@ $editRequestStatus
   .on(editHomeownerAccountEffect.doneData, () => 'done')
   .on(editHomeownerAccountEffect.failData, () => 'failed');
 
+forward({
+  from: editHomeownerSaveButtonClicked,
+  to: personalNumberEditForm.submit,
+});
+
 sample({
   source: combine(
     HomeownerGate.state,
@@ -92,7 +97,7 @@ sample({
       },
     })
   ),
-  clock: editHomeownerSaveButtonClicked,
+  clock: personalNumberEditForm.formValidated,
   target: editHomeownerAccountEffect as any,
 });
 
