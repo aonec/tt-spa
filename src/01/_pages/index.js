@@ -5,7 +5,6 @@ export * from './MetersPage';
 export * from './ErrorPage';
 export * from './AccessDeniedPage';
 export * from './EditCalculator';
-export * from './CalculatorProfile';
 export * from './HousingProfile';
 export * from './Settings';
 export * from './UserProfile';

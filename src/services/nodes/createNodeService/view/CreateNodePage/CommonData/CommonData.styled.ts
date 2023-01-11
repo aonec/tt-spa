@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const FirstLineWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 0.3fr;
+  grid-template-columns: 1fr 0.6fr 0.3fr;
   grid-gap: 16px;
 `;
 

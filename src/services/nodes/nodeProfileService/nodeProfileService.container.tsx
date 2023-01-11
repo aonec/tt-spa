@@ -1,7 +1,7 @@
-import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { ChangeNodeStatusContainer } from '../changeNodeStatusService';
 import { nodeProfileService } from './nodeProfileService.model';
 import { NodeProfilePage } from './view/NodeProfilePage';
 import { PipeNodeProfileSection } from './view/NodeProfilePage/NodeProfilePage.types';
@@ -20,9 +20,7 @@ export const NodeProfileContainer = () => {
   const pipeNode = useStore(outputs.$pipeNode);
   const isLoading = useStore(outputs.$isLoading);
 
-  const openRegisterNodeOnCommercialAccountingModal = useEvent(
-    inputs.openRegisterNodeOnCommercialAccountingModal
-  );
+  const openChangeNodeStatusModal = useEvent(inputs.openChangeNodeStatusModal);
 
   const handleChangeTab = (section: PipeNodeProfileSection) =>
     history.push(`/nodes/${nodeId}/${section}`);
@@ -32,21 +30,14 @@ export const NodeProfileContainer = () => {
   return (
     <>
       <PipeNodeGate pipeNodeId={Number(nodeId)} />
-      {pipeNode && (
-        <RegisterNodeOnCommercialAccountingModalContainer
-          nodeStatus={pipeNode.nodeStatus?.value}
-          resource={pipeNode.resource}
-        />
-      )}
+      <ChangeNodeStatusContainer />
       <NodeProfilePage
         isLoading={isLoading}
         pipeNode={pipeNode}
         section={section}
         handleChangeTab={handleChangeTab}
         handleEditNode={handleEditNode}
-        openRegisterNodeOnCommercialAccountingModal={() =>
-          openRegisterNodeOnCommercialAccountingModal()
-        }
+        openChangeNodeStatusModal={openChangeNodeStatusModal}
       />
     </>
   );

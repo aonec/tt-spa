@@ -12,15 +12,14 @@ import {
   InfoWrapper,
   ResourceText,
   SelectWrapper,
-  SwitchTextWrapper,
-  SwitchWrapper,
   Wrapper,
+  ZoneWrapper,
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus, UpdatePipeNodeRequest } from 'myApi';
+import { UpdatePipeNodeRequest } from 'myApi';
 import moment from 'moment';
-import { Form, Switch } from 'antd';
+import { Form } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { useHistory } from 'react-router-dom';
 
@@ -40,9 +39,6 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   const lastCommercialAccountingDate = node.lastCommercialAccountingDate
     ? moment(node.lastCommercialAccountingDate)
     : undefined;
-
-  const isChecked =
-    node.nodeStatus?.value !== ENodeCommercialAccountStatus.NotRegistered;
 
   const {
     values,
@@ -69,21 +65,21 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   return (
     <Wrapper>
       <Form id={formId} onSubmitCapture={handleSubmit}>
-        <FormItem label="Тип ресурса" className="resource">
-          <Select
-            placeholder="Выберите тип ресурса"
-            value={node.resource}
-            disabled
-          >
-            <Select.Option value={node.resource}>
-              <SelectWrapper>
-                <ResourceIconLookup resource={node.resource} />
-                <ResourceText>{ResourceLookUp[node.resource]}</ResourceText>
-              </SelectWrapper>
-            </Select.Option>
-          </Select>
-        </FormItem>
         <InfoWrapper>
+          <FormItem label="Тип ресурса" className="resource">
+            <Select
+              placeholder="Выберите тип ресурса"
+              value={node.resource}
+              disabled
+            >
+              <Select.Option value={node.resource}>
+                <SelectWrapper>
+                  <ResourceIconLookup resource={node.resource} />
+                  <ResourceText>{ResourceLookUp[node.resource]}</ResourceText>
+                </SelectWrapper>
+              </Select.Option>
+            </Select>
+          </FormItem>
           <FormItem label="Номер узла">
             <Input
               placeholder="Номер узла"
@@ -92,26 +88,9 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
               type="number"
             />
           </FormItem>
-
-          <FormItem label="Статус узла">
-            <Select value={node.nodeStatus?.value} disabled>
-              <Select.Option value={ENodeCommercialAccountStatus.Registered}>
-                Сдан на коммерческий учет
-              </Select.Option>
-              <Select.Option value={ENodeCommercialAccountStatus.NotRegistered}>
-                Не на коммерческом учете
-              </Select.Option>
-              <Select.Option value={ENodeCommercialAccountStatus.OnReview}>
-                На утверждении
-              </Select.Option>
-              <Select.Option value={ENodeCommercialAccountStatus.Prepared}>
-                Подговлен к сдаче
-              </Select.Option>
-            </Select>
-          </FormItem>
         </InfoWrapper>
         <FormItem label="Зона">
-          <InfoWrapper>
+          <ZoneWrapper>
             <Select
               value={values.nodeServiceZoneId || undefined}
               onChange={(chosenInputId) =>
@@ -123,15 +102,8 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
             <AddZoneText onClick={() => openAddNewZonesModal()}>
               + Добавить новую зону
             </AddZoneText>
-          </InfoWrapper>
+          </ZoneWrapper>
         </FormItem>
-
-        <SwitchWrapper>
-          <Switch disabled checked={isChecked} />
-          <SwitchTextWrapper>
-            Коммерческий учет показателей приборов
-          </SwitchTextWrapper>
-        </SwitchWrapper>
 
         <FormItem label="Дата начала действия акта-допуска">
           <DatePicker
