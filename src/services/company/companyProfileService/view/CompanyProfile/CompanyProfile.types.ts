@@ -7,6 +7,7 @@ export type CompanyProfileProps = {
   currentManagingFirm: OrganizationResponse | null;
   staffList: OrganizationUserListResponsePagedList | null;
   fetchStaffPending: boolean;
+  handleOpenStatusChangeModal: () => void;
 };
 
 export enum CompanyProfileSection {

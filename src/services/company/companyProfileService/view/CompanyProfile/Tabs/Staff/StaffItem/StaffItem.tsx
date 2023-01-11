@@ -8,7 +8,10 @@ import { MenuButtonTT } from '01/tt-components';
 import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { Tooltip } from 'antd';
 
-export const StaffItem: FC<StaffItemProps> = ({ staff }) => {
+export const StaffItem: FC<StaffItemProps> = ({
+  staff,
+  handleOpenStatusChangeModal,
+}) => {
   const history = useHistory();
   const phoneMask = usePhoneMask();
 
@@ -49,7 +52,7 @@ export const StaffItem: FC<StaffItemProps> = ({ staff }) => {
           },
           {
             title: 'Изменить статус',
-            cb: () => {},
+            cb: () => handleOpenStatusChangeModal(),
             show: true,
             color: 'default',
             clickable: true,

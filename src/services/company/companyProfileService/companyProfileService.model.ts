@@ -9,6 +9,7 @@ import {
   OrganizationUserListResponsePagedList,
 } from 'myApi';
 import { createGate } from 'effector-react';
+import { changeStatusEmployeeService } from 'services/employee/changeStatusEmployeeService';
 
 const domain = createDomain('companyProfileService');
 
@@ -43,7 +44,10 @@ forward({ from: FetchingStaffGate.open, to: fetchStaffFx });
 const $fetchStaffPending = fetchStaffFx.pending;
 
 export const companyProfileService = {
-  inputs: {},
+  inputs: {
+    handleOpenStatusChangeModal:
+      changeStatusEmployeeService.inputs.handleOpenModal,
+  },
   outputs: { $currentManagingFirm, $staffList, $fetchStaffPending },
   gates: { FetchingCurrentManagingFirmGate, FetchingStaffGate },
 };
