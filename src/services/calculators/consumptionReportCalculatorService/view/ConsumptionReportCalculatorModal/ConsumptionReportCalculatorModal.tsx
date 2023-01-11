@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { ConsumptionReportCalculatorModalProps } from './ConsumptionReportCalculatorModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { ConsumptionReportCalculatorForm } from './ConsumptionReportCalculatorForm/ConsumptionReportCalculatorForm';
-import { SonoReportCalculatorForm } from './SonoReportCalculatorForm/SonoReportCalculatorForm';
 
 const formId = 'consumption-report-calculator-modal';
 
@@ -20,16 +19,12 @@ export const ConsumptionReportCalculatorModal: FC<ConsumptionReportCalculatorMod
       visible={isModalOpen}
       onCancel={handleModalClosed}
       form={
-        <>
-          {!isSono && (
-            <ConsumptionReportCalculatorForm
-              formId={formId}
-              calculator={calculator}
-              handleSubmitForm={handleSubmit}
-            />
-          )}
-          {isSono && <SonoReportCalculatorForm formId={formId} />}
-        </>
+          <ConsumptionReportCalculatorForm
+            formId={formId}
+            calculator={calculator}
+            handleSubmitForm={handleSubmit}
+            isSono={isSono}
+          />
       }
       formId={formId}
       submitBtnText="Выгрузить"

@@ -4,17 +4,14 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  CalculatorProfile,
   Contractor,
   EditCalculator,
   ErrorPage,
-  HousingProfile,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
   MetersPage,
   Registration,
-  Settings,
   UserProfile,
 } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
@@ -29,7 +26,6 @@ import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
 import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import EditODPU from '01/_pages/EditHousingMeteringDevice';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
@@ -47,6 +43,7 @@ import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingM
 import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
+import { CompanyProfileContainer } from 'services/company/companyProfileService';
 
 const { gates } = objectProfileService;
 
@@ -143,8 +140,10 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route path="/companyProfile/editManagingFirmUser/:id" exact>
                   <EditManagingFirmUserPage />
                 </Route>
-                <Route path="/companyProfile/:section?" component={Settings} />
-                <Route path="/companyProfile/staff/:id" component={Settings} />
+                <Route
+                  path="/companyProfile/:section?"
+                  component={CompanyProfileContainer}
+                />
 
                 <Route
                   path="/userProfile/:id"

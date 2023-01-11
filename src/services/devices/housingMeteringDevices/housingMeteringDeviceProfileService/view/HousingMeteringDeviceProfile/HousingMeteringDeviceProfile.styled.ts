@@ -18,7 +18,7 @@ export const DeviceModel = styled.div`
   font-weight: 300;
   font-size: 32px;
   line-height: 48px;
-  margin: 0px 12px;
+  margin: 0px 8px;
 `;
 
 export const DeviceNumber = styled.div`
@@ -51,4 +51,14 @@ export const Tasks = styled.div`
 
 export const LinkSC = styled(Link)`
   color: #189ee9;
+`;
+
+export const ResourceIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 24px;
+    width: 24px;
+  }
 `;

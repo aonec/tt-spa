@@ -35,6 +35,10 @@ export const ObjectsProfileContainer = () => {
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal
   );
 
+  const handleOpenGroupreportModal = useEvent(
+    groupReportService.inputs.openModal
+  );
+
   const handleCreateObject = () => history.push('/objects/create');
 
   const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
@@ -59,13 +63,14 @@ export const ObjectsProfileContainer = () => {
       <ObjectsProfile
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
-        handleExportGroupReport={()=>handleExportGroupReport()}
+        handleExportGroupReport={() => handleExportGroupReport()}
         handleOpenChooseResourceDisconnectionModal={() =>
           handleOpenChooseResourceDisconnectionModal()
         }
         handleCreateObject={handleCreateObject}
         isAdministrator={isAdministrator}
         openFeedFlowBackReportModal={() => openFeedFlowBackReportModal()}
+        handleOpenGroupreportModal={() => handleOpenGroupreportModal()}
       />
     </>
   );
