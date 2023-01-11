@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { ContentWrapper } from './ApartmentProfile.styled';
+import { ContentWrapper, ReadingsWrapper } from './ApartmentProfile.styled';
 import { ApartmentProfileProps } from './ApartmentProfile.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import {
@@ -10,11 +10,15 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { ApartmentInfo } from './ApartmentInfo';
+import { ApartmentAlerts } from './ApartmentAlerts';
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   isLoadingApartment,
   apartment,
   handleSearchApartment,
+  handleUpdateApartment,
+  handlePauseApartment,
+  handleCancelPauseApartment,
 }) => {
   const handleSubmit = useCallback(
     (values: AddressSearchValues) => {
@@ -73,10 +77,18 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         {!apartment && <TypeAddressToStart />}
         {apartment && (
           <ContentWrapper>
-            <ApartmentInfo apartment={apartment} />
-            <ApartmentIndividualDevicesMetersContainer
-              apartmentId={apartment.id}
+            <ApartmentInfo
+              apartment={apartment}
+              handleUpdateApartment={handleUpdateApartment}
+              handlePauseApartment={handlePauseApartment}
+              handleCancelPauseApartment={handleCancelPauseApartment}
             />
+            <ApartmentAlerts apartment={apartment} />
+            <ReadingsWrapper>
+              <ApartmentIndividualDevicesMetersContainer
+                apartmentId={apartment.id}
+              />
+            </ReadingsWrapper>
           </ContentWrapper>
         )}
       </WithLoader>

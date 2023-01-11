@@ -3,14 +3,11 @@ import { Alert } from '01/shared/ui/Alert/Alert';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Spaces, Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { DatePickerTT } from '01/tt-components';
-import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EApartmentStatus } from 'myApi';
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { FC, useEffect } from 'react';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
@@ -19,17 +16,20 @@ import {
 } from '../displayProblemDevices/models';
 import {
   $isPauseApartmentModalVisible,
+  PauseApartmentGate,
   pauseApartmentForm,
   pauseApartmentModalCancelButtonClicked,
   pauseApartmentStatusFx,
 } from './models';
+import { FormItem } from 'ui-kit/FormItem';
+import { DatePicker } from 'ui-kit/DatePicker';
 
-export const PauseApartmentModal = () => {
+export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
+  apartmentId,
+}) => {
   const visible = useStore($isPauseApartmentModalVisible);
   const pendingRequest = useStore(pauseApartmentStatusFx.pending);
   const { fields, submit } = useForm(pauseApartmentForm);
-
-  const { id: apartmentId } = useParams<{ id: string }>();
 
   useEffect(() => {
     fields.apartmentId.onChange(Number(apartmentId));
@@ -37,7 +37,7 @@ export const PauseApartmentModal = () => {
 
   const form = (
     <Grid>
-      <Form.Item label="Дата начала" style={{ width: '100%' }}>
+      <FormItem label="Дата начала">
         <DatePicker
           allowClear
           value={
@@ -54,8 +54,8 @@ export const PauseApartmentModal = () => {
             required: 'Это поле обязательное',
           })}
         </ErrorMessage>
-      </Form.Item>
-      <Form.Item label="Дата окончания" style={{ width: '100%' }}>
+      </FormItem>
+      <FormItem label="Дата окончания">
         <DatePicker
           allowClear
           value={fields.toDate.value ? moment(fields.toDate.value) : undefined}
@@ -72,10 +72,10 @@ export const PauseApartmentModal = () => {
             required: 'Это поле обязательное',
           })}
         </ErrorMessage>
-      </Form.Item>
+      </FormItem>
     </Grid>
   );
-  const { id } = useParams<{ id: string }>();
+
   const problemDevices = useStore($problemDevices);
 
   const gatePayload = useMemo(
@@ -88,43 +88,47 @@ export const PauseApartmentModal = () => {
   );
 
   return (
-    <ModalTT
-      saveBtnText="Поставить на паузу"
-      visible={visible}
-      title="Постановка квартиры на паузу"
-      onCancel={pauseApartmentModalCancelButtonClicked}
-      onSubmit={submit}
-      loading={pendingRequest}
-    >
-      <ProblemDevicesGate
-        apartmentId={Number(id)}
-        requestPayload={gatePayload}
-      />
-      <Spaces>
-        <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
-
-        {problemDevices?.map((elem) => (
-          <>
-            <Alert>
-              {moment(elem.futureCheckingDate).format('DD.MM.YYYY')} выходит
-              срок поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
-            </Alert>
-            {<Space />}
-          </>
-        ))}
-
-        {form}
-      </Spaces>
-      <FilesUploadWrap>
-        <FilesUpload
-          filesInit={fields.documents.value}
-          uniqId={`pause-apartment`}
-          text="Добавьте заявление абонента о постановке квартиры на паузу"
-          onChange={fields.documents.onChange}
-          type="ApartmentStoppingStatement"
+    <>
+      <PauseApartmentGate id={apartmentId} />
+      <ModalTT
+        saveBtnText="Поставить на паузу"
+        visible={visible}
+        title="Постановка квартиры на паузу"
+        onCancel={pauseApartmentModalCancelButtonClicked}
+        onSubmit={submit}
+        loading={pendingRequest}
+      >
+        <ProblemDevicesGate
+          apartmentId={apartmentId}
+          requestPayload={gatePayload}
         />
-      </FilesUploadWrap>
-    </ModalTT>
+        <Spaces>
+          <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
+
+          {problemDevices?.map((elem) => (
+            <>
+              <Alert>
+                {moment(elem.futureCheckingDate).format('DD.MM.YYYY')} выходит
+                срок поверки у прибора <b> {elem.model}</b> ({elem.serialNumber}
+                )
+              </Alert>
+              {<Space />}
+            </>
+          ))}
+
+          {form}
+        </Spaces>
+        <FilesUploadWrap>
+          <FilesUpload
+            filesInit={fields.documents.value}
+            uniqId={`pause-apartment`}
+            text="Добавьте заявление абонента о постановке квартиры на паузу"
+            onChange={fields.documents.onChange}
+            type="ApartmentStoppingStatement"
+          />
+        </FilesUploadWrap>
+      </ModalTT>
+    </>
   );
 };
 
@@ -135,9 +139,5 @@ const FilesUploadWrap = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-`;
-
-const DatePicker = styled(DatePickerTT)`
-  border-radius: 4px;
+  grid-gap: 16px;
 `;

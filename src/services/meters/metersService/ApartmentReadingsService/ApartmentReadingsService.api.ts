@@ -1,6 +1,9 @@
 import { axios } from '01/axios';
 import { ApartmentListResponsePagedList, ApartmentResponse } from 'myApi';
-import { GetApartmentsRequestPayload } from './ApartmentReadingsService.types';
+import {
+  GetApartmentsRequestPayload,
+  UpdateApartmentRequestPayload,
+} from './ApartmentReadingsService.types';
 
 const getApartmentId = async (
   params: Omit<GetApartmentsRequestPayload, 'ApartmentId'>
@@ -31,3 +34,9 @@ export const getApartment = async ({
 
   return apartment;
 };
+
+export const putApartment = ({
+  apartmentId,
+  ...data
+}: UpdateApartmentRequestPayload): Promise<ApartmentResponse> =>
+  axios.put(`Apartments/${apartmentId}`, data);

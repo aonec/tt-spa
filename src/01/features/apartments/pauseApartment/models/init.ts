@@ -4,6 +4,7 @@ import {
   refetchApartment,
 } from './../../displayApartment/models/index';
 import {
+  PauseApartmentGate,
   cancelPauseApartmentButtonClicked,
   pauseApartmentForm,
   pauseApartmentModalCancelButtonClicked,
@@ -65,18 +66,15 @@ sample({
 });
 
 sample({
-  source: combine(
-    ApartmentGate.state as any,
-    pauseApartmentForm.$values as any,
-    ({ id: apartmentId }: { id: number }): GetProblemDevicesRequestPayload => ({
-      apartmentId,
-      requestPayload: {
-        fromDate: null,
-        toDate: null,
-        status: EApartmentStatus.Ok,
-      },
-    })
-  ),
+  source: PauseApartmentGate.state,
   clock: cancelPauseApartmentButtonClicked,
-  target: pauseApartmentStatusFx as any,
+  fn: (source) => ({
+    apartmentId: source.id,
+    requestPayload: {
+      fromDate: null,
+      toDate: null,
+      status: EApartmentStatus.Ok,
+    },
+  }),
+  target: pauseApartmentStatusFx,
 });
