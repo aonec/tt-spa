@@ -14,7 +14,6 @@ import {
   PersonalNumberFormGate,
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
-import { useHistory, useParams } from 'react-router';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 
 interface Props {

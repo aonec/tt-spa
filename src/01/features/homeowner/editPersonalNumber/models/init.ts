@@ -22,8 +22,9 @@ import {
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
-import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
+import { fetchApartmentFx } from '01/features/apartments/displayApartment/models';
+import { HomeownerGate } from '../../displayHomeowner/models/index';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -33,22 +34,31 @@ $isSelectEditPersonalNumberTypeModalOpen
   .on(openEditPersonalNumberTypeModal, () => true)
   .reset(closeEditPersonalNumberTypeModal);
 
-fetchHomeownerFx.doneData.watch(
-  ({ name, phoneNumber, personalAccountNumber, paymentCode, openAt }) => {
+sample({
+  clock: fetchApartmentFx.doneData,
+  source: HomeownerGate.state,
+  fn: (gateState, data) => {
     const isAutocomplete = AutoCompleteFormGate.state.getState().autocomplete;
 
-    if (!isAutocomplete) return;
+    if (!isAutocomplete) return {};
 
-    personalNumberEditForm.setForm({
-      name,
-      phoneNumber,
-      personalAccountNumber,
-      paymentCode,
-      isMainAccountingNumber: false,
-      openAt,
-    } as any);
-  }
-);
+    const currentAccount = data.homeownerAccounts?.find(
+      (account) => account.id === gateState.id
+    );
+
+    const form = {
+      name: currentAccount?.name,
+      phoneNumber: currentAccount?.phoneNumber,
+      personalAccountNumber: currentAccount?.personalAccountNumber,
+      paymentCode: currentAccount?.paymentCode,
+      isMainAccountingNumber: currentAccount?.isMainPersonalAccountNumber,
+      openAt: currentAccount?.openAt,
+    };
+
+    return form;
+  },
+  target: personalNumberEditForm.setForm,
+});
 
 $editRequestStatus.on(setEditRequestStatus, (_, status) => status);
 
@@ -58,14 +68,28 @@ $editRequestStatus
 
 sample({
   source: combine(
-    $homeowner,
+    HomeownerGate.state,
     personalNumberEditForm.$values,
     (
-      homeowner,
-      { personalAccountNumber, paymentCode, name, phoneNumber, openAt }
+      gateState,
+      {
+        personalAccountNumber,
+        paymentCode,
+        name,
+        phoneNumber,
+        openAt,
+        isMainAccountingNumber,
+      }
     ) => ({
-      id: homeowner?.id,
-      data: { personalAccountNumber, paymentCode, name, phoneNumber, openAt },
+      id: gateState?.id,
+      data: {
+        personalAccountNumber,
+        paymentCode,
+        name,
+        phoneNumber,
+        openAt,
+        IsMainOnApartment: isMainAccountingNumber,
+      },
     })
   ),
   clock: editHomeownerSaveButtonClicked,
@@ -90,11 +114,11 @@ sample({
   clock: closeHomeownerAccountForm.formValidated,
   source: combine(
     closeHomeownerAccountForm.$values,
-    $homeowner,
-    (form, homeowner) =>
+    HomeownerGate.state,
+    (form, gateState) =>
       ({
-        ClosedAt: moment(form?.closedAt!).toISOString(true),
-        HomeownerAccountId: homeowner?.id!,
+        ClosedAt: moment(form?.closedAt).toISOString(true),
+        HomeownerAccountId: gateState?.id,
       } as any)
   ),
   target: closeHomeownerAccountFx,
