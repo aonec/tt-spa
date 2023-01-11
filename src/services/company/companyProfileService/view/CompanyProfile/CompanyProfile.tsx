@@ -13,6 +13,7 @@ import { Contractors } from './Tabs/Contractors';
 export const CompanyProfile: FC<CompanyProfileProps> = ({
   currentManagingFirm,
   staffList,
+  fetchStaffPending,
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -61,7 +62,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         <CommonInfoTab currentManagingFirm={currentManagingFirm} />
       </Route>
       <Route path="/companyProfile/staff" exact>
-        <Staff staffList={staffList} />
+        <Staff staffList={staffList} fetchStaffPending={fetchStaffPending} />
       </Route>
       <Route path="/companyProfile/contractors" exact>
         <Contractors />

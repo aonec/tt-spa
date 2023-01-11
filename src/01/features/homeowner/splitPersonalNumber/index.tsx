@@ -8,7 +8,7 @@ import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { $homeowner, HomeownerGate } from '../displayHomeowner/models';
+import { HomeownerGate } from '../displayHomeowner/models';
 import { PersonaNumberActionPage } from '../editPersonalNumber/components/PersonalNumberActionPage';
 import { PersonalNumberEditForm } from '../editPersonalNumber/components/PersonalNumberEditForm';
 import { NewApartmentForm } from './components/NewApartmentForm';
@@ -24,20 +24,24 @@ import {
   transferDevicesForm,
 } from './models';
 import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExistingApartment';
+import { $apartment } from '01/features/apartments/displayApartment/models';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{
     homeownerId: string;
     id: string;
   }>();
-  const homeowner = useStore($homeowner);
+  const homeowner = useStore($apartment)?.homeownerAccounts?.find(
+    (account) => account.id === homeownerId
+  );
+
   const stage = useStore($splitPersonalNumberStageNumber);
 
   const stages = [
     <>
       <StyledSelect
         disabled
-        value={homeowner?.personalAccountNumber!}
+        value={homeowner?.personalAccountNumber || undefined}
         style={{ width: '50%' }}
       />
       <SpaceLine />

@@ -1,5 +1,8 @@
-import { OrganizationUserListResponse, OrganizationUserListResponsePagedList } from 'myApi';
+import {
+  OrganizationUserListResponsePagedList,
+} from 'myApi';
 
 export type StaffProps = {
-  staffList: OrganizationUserListResponsePagedList | null
+  staffList: OrganizationUserListResponsePagedList | null;
+  fetchStaffPending: boolean;
 };

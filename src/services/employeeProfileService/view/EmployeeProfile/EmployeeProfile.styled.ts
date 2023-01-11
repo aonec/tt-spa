@@ -51,7 +51,7 @@ export const FieldHousingStocksNumber = styled.div`
 `;
 
 export const Margin = styled.div`
-  margin: 30px 0px 0px 0px;
+  margin: 20px 0px 20px 0px;
 `;
 
 export const СompetenceDiv = styled.div`
@@ -69,4 +69,8 @@ export const CompetenciesContainer = styled.div`
   display: flex;
   aling-items: center;
   margin-bottom: 22px;
+`;
+
+export const LoaderWrapper = styled.div`
+  width: 600px;
 `;

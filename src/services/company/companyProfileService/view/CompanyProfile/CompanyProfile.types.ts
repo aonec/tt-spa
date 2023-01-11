@@ -1,8 +1,12 @@
-import { OrganizationResponse, OrganizationUserListResponse, OrganizationUserListResponsePagedList } from 'myApi';
+import {
+  OrganizationResponse,
+  OrganizationUserListResponsePagedList,
+} from 'myApi';
 
 export type CompanyProfileProps = {
   currentManagingFirm: OrganizationResponse | null;
-  staffList: OrganizationUserListResponsePagedList | null
+  staffList: OrganizationUserListResponsePagedList | null;
+  fetchStaffPending: boolean;
 };
 
 export enum CompanyProfileSection {
