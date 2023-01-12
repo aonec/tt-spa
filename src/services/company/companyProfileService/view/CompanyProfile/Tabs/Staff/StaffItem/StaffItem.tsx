@@ -11,6 +11,7 @@ import { Tooltip } from 'antd';
 export const StaffItem: FC<StaffItemProps> = ({
   staff,
   handleOpenStatusChangeModal,
+  handleCatchEmployeeStatusData,
 }) => {
   const history = useHistory();
   const phoneMask = usePhoneMask();
@@ -52,7 +53,10 @@ export const StaffItem: FC<StaffItemProps> = ({
           },
           {
             title: 'Изменить статус',
-            cb: () => handleOpenStatusChangeModal(),
+            cb: () => {
+              handleOpenStatusChangeModal();
+              handleCatchEmployeeStatusData({ id, status });
+            },
             show: true,
             color: 'default',
             clickable: true,

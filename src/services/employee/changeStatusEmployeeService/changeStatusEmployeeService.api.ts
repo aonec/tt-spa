@@ -7,4 +7,4 @@ import {
 export const postEmloyeeStatus = (
   data: AddOrganizationUserWorkingStatusRequest
 ): Promise<OrganizationUserWorkingStatusResponse | null> =>
-  axios.post('AddOrganizationUserWorkingStatusRequest', data);
+  axios.post('OrganizationUserWorkingStatuses', data);

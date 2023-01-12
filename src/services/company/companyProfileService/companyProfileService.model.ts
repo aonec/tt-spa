@@ -47,6 +47,8 @@ export const companyProfileService = {
   inputs: {
     handleOpenStatusChangeModal:
       changeStatusEmployeeService.inputs.handleOpenModal,
+      handleCatchEmployeeStatusData:
+      changeStatusEmployeeService.inputs.handleCatchEmployeeStatusData,
   },
   outputs: { $currentManagingFirm, $staffList, $fetchStaffPending },
   gates: { FetchingCurrentManagingFirmGate, FetchingStaffGate },

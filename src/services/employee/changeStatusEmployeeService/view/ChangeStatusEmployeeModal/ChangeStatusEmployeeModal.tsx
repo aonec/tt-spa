@@ -8,13 +8,21 @@ const formId = 'new-heating-station-form';
 export const ChangeStatusEmployeeModal: FC<ChangeStatusEmployeeModalProps> = ({
   handleCloseModal,
   isModalOpen,
+  handleUpdateStatus,
+  employeeStatus,
 }) => {
   return (
     <FormModal
       title="Статус сотрудника"
       visible={isModalOpen}
       onCancel={handleCloseModal}
-      form={<ChangeStatusEmployeeForm formId={formId} />}
+      form={
+        <ChangeStatusEmployeeForm
+          formId={formId}
+          handleUpdateStatus={handleUpdateStatus}
+          employeeStatus={employeeStatus}
+        />
+      }
       formId={formId}
     />
   );

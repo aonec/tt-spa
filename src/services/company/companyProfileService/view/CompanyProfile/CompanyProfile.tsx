@@ -15,6 +15,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   staffList,
   fetchStaffPending,
   handleOpenStatusChangeModal,
+  handleCatchEmployeeStatusData,
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -67,6 +68,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           staffList={staffList}
           fetchStaffPending={fetchStaffPending}
           handleOpenStatusChangeModal={handleOpenStatusChangeModal}
+          handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
         />
       </Route>
       <Route path="/companyProfile/contractors" exact>

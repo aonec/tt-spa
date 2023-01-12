@@ -1,6 +1,7 @@
 import {
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
+  UserStatusResponse,
 } from 'myApi';
 
 export type CompanyProfileProps = {
@@ -8,6 +9,7 @@ export type CompanyProfileProps = {
   staffList: OrganizationUserListResponsePagedList | null;
   fetchStaffPending: boolean;
   handleOpenStatusChangeModal: () => void;
+  handleCatchEmployeeStatusData: (payload: { id: number; status: UserStatusResponse | null }) => void;
 };
 
 export enum CompanyProfileSection {

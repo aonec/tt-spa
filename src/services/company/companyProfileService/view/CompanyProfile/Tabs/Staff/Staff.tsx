@@ -13,6 +13,7 @@ export const Staff: FC<StaffProps> = ({
   staffList,
   fetchStaffPending,
   handleOpenStatusChangeModal,
+  handleCatchEmployeeStatusData,
 }) => {
   return (
     <>
@@ -25,6 +26,7 @@ export const Staff: FC<StaffProps> = ({
           <StaffItem
             staff={staff}
             handleOpenStatusChangeModal={handleOpenStatusChangeModal}
+            handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
           />
         ))}
       <ChangeStatusEmployeeContainer />
