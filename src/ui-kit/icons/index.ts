@@ -61,6 +61,8 @@ import { ReactComponent as ClosedEyeIcon } from './svg/closedEye.svg';
 import { ReactComponent as CitySmallIcon } from './svg/citySmall.svg';
 import { ReactComponent as NoConnectionIcon } from './svg/noConnection.svg';
 import { ReactComponent as PipeIcon } from './svg/pipe.svg';
+import { ReactComponent as BriefcaseIcon } from './svg/briefcase.svg';
+import { ReactComponent as HouseIcon } from './svg/house.svg';
 
 export {
   FinishIcon,
@@ -126,4 +128,6 @@ export {
   CitySmallIcon,
   NoConnectionIcon,
   PipeIcon,
+  HouseIcon,
+  BriefcaseIcon,
 };

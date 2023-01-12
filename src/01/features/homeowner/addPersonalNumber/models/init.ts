@@ -17,7 +17,14 @@ sample({
     personalNumberEditForm.$values,
     $apartment,
     (
-      { personalAccountNumber, name, paymentCode, phoneNumber, openAt },
+      {
+        personalAccountNumber,
+        name,
+        paymentCode,
+        phoneNumber,
+        openAt,
+        isMainAccountingNumber,
+      },
       apartment
     ) => {
       const data: HomeownerAccountCreateServiceModel = {
@@ -27,6 +34,7 @@ sample({
         openAt: String(openAt),
         personalAccountNumber,
         apartmentId: apartment?.id,
+        isMainOnApartment: isMainAccountingNumber,
       };
 
       return data;

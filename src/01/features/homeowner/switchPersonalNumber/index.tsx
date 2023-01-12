@@ -15,13 +15,18 @@ import {
 } from './models';
 import { message, Steps } from 'antd';
 import styled from 'styled-components';
+import { $apartment } from '01/features/apartments/displayApartment/models';
 
 export const SwitchPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
-  const homeowner = useStore($homeowner);
+  const apartment = useStore($apartment);
   const pendingSwitch = useStore(switchPersonalNumberFx.pending);
   const status = useStore($switchRequestStatus);
   const history = useHistory();
+
+  const personalAccountNumber = apartment?.homeownerAccounts?.find(
+    (account) => account.id === homeownerId
+  )?.personalAccountNumber;
 
   useEffect(() => {
     if (!status) return;
@@ -48,7 +53,7 @@ export const SwitchPersonalNumberPage = () => {
       >
         <StyledSelect
           disabled
-          value={homeowner?.personalAccountNumber!}
+          value={personalAccountNumber || undefined}
           style={{ width: '50%' }}
         />
         <SpaceLine />
