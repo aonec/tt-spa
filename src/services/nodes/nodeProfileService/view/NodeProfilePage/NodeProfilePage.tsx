@@ -38,6 +38,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   handleChangeTab,
   handleEditNode,
   openChangeNodeStatusModal,
+  openChangeNodeTypeModal,
 }) => {
   const address = pipeNode?.address?.address;
 
@@ -112,6 +113,11 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                     title: 'Сменить статус узла',
                     onClick: () => openChangeNodeStatusModal(pipeNode),
                     hidden: !isNodeCommercial,
+                  },
+                  {
+                    title: 'Изменить тип узла',
+                    onClick: () => openChangeNodeTypeModal(pipeNode),
+                    color: 'danger',
                   },
                 ],
               }}

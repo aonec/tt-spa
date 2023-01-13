@@ -8,6 +8,7 @@ import {
   ChangeNodeStatusFormPayload,
   ChangeNodeStatusPayload,
 } from './changeNodeStatusService.types';
+import { getChangeNodeStatusPayload } from './changeNodeStatusService.utils';
 
 const domain = createDomain('changeNodeStatusService');
 
@@ -47,35 +48,10 @@ sample({
     filter: Boolean,
   }),
   clock: changeNodeStatus,
-  fn: (nodeId, payload) => {
-    const { commercialStatus, documentId, firstDate, secondDate } = payload;
-    if (
-      commercialStatus === ENodeCommercialAccountStatus.OnReview ||
-      commercialStatus === ENodeCommercialAccountStatus.Prepared
-    ) {
-      return {
-        commercialStatusChangingDate: firstDate,
-        nodeId,
-        commercialStatus,
-      };
-    }
-
-    if (commercialStatus === ENodeCommercialAccountStatus.NotRegistered) {
-      return {
-        commercialAccountingDeregistrationDate: firstDate,
-        nodeId,
-        commercialStatus,
-        documentId,
-      };
-    }
-    return {
-      nodeId,
-      commercialStatus,
-      documentId,
-      startCommercialAccountingDate: firstDate,
-      endCommercialAccountingDate: secondDate,
-    };
-  },
+  fn: (nodeId, payload) => ({
+    nodeId,
+    ...getChangeNodeStatusPayload(payload),
+  }),
   target: changeNodeStatusFx,
 });
 
