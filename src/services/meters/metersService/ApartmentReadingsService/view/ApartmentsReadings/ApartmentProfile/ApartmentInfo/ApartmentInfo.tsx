@@ -99,6 +99,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;
 
+  const accountingOpeningDate = `открыт с ${moment(
+    selectedHomeowner?.openAt
+  ).format('DD.MM.YYYY')}`;
+
   return (
     <>
       {activeHomeowner && (
@@ -173,7 +177,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <div>{houseManagementName}</div>
               </FirmWrapper>
               <FirmsLine>
-                <ManagementFirmInfo></ManagementFirmInfo>
+                <ManagementFirmInfo>{houseManagementInfo}</ManagementFirmInfo>
               </FirmsLine>
               <FirmWrapper>
                 <BriefcaseIcon />
@@ -227,10 +231,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
                 <ExtraInfoText>
                   {selectedHomeowner?.personalAccountNumber}{' '}
-                  <AccountOpeningDate>
-                    (открыт с{' '}
-                    {moment(selectedHomeowner?.openAt).format('DD.MM.YYYY')})
-                  </AccountOpeningDate>
+                  <AccountOpeningDate>{accountingOpeningDate}</AccountOpeningDate>
                 </ExtraInfoText>
               </div>
               <div>
