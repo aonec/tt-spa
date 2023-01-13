@@ -14,7 +14,12 @@ export const CompanyProfileContainer = () => {
   const handleOpenStatusChangeModal = useEvent(
     inputs.handleOpenStatusChangeModal
   );
-  const handleCatchEmployeeStatusData = useEvent(inputs.handleCatchEmployeeStatusData);
+  const handleOpenDeleteModal = useEvent(inputs.handleOpenDeleteModal);
+  const handleCatchEmployeeStatusData = useEvent(
+    inputs.handleCatchEmployeeStatusData
+  );
+  const handleCatchEmployeeId = useEvent(inputs.handleCatchEmployeeId);
+
   return (
     <>
       <FetchingCurrentManagingFirmGate />
@@ -23,7 +28,9 @@ export const CompanyProfileContainer = () => {
         staffList={staffList}
         fetchStaffPending={fetchStaffPending}
         handleOpenStatusChangeModal={() => handleOpenStatusChangeModal()}
+        handleOpenDeleteModal={() => handleOpenDeleteModal()}
         handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
+        handleCatchEmployeeId={handleCatchEmployeeId}
       />
     </>
   );

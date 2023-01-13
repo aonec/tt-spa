@@ -12,6 +12,8 @@ export const StaffItem: FC<StaffItemProps> = ({
   staff,
   handleOpenStatusChangeModal,
   handleCatchEmployeeStatusData,
+  handleOpenDeleteModal,
+  handleCatchEmployeeId,
 }) => {
   const history = useHistory();
   const phoneMask = usePhoneMask();
@@ -71,7 +73,10 @@ export const StaffItem: FC<StaffItemProps> = ({
           },
           {
             title: 'Удалить сотрудника',
-            cb: () => {},
+            cb: () => {
+              handleOpenDeleteModal();
+              handleCatchEmployeeId(id);
+            },
             show: true,
             color: 'red',
             clickable: true,

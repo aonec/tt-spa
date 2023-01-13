@@ -5,6 +5,8 @@ import {
   OrganizationUserWorkingStatusResponse,
   UserStatusResponse,
 } from 'myApi';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('changeStatusEmployeeService');
 
@@ -20,8 +22,11 @@ const handleUpdateStatus = domain.createEvent<AddOrganizationUserWorkingStatusRe
 
 const updateStatusFx = domain.createEffect<
   AddOrganizationUserWorkingStatusRequest,
-  OrganizationUserWorkingStatusResponse | null
+  OrganizationUserWorkingStatusResponse | null,
+  EffectFailDataAxiosError
 >(postEmloyeeStatus);
+
+const successUpdateStatus = updateStatusFx.doneData;
 
 const $isModalOpen = domain
   .createStore<boolean>(false)
@@ -37,12 +42,19 @@ forward({
   to: updateStatusFx,
 });
 
+updateStatusFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+successUpdateStatus.watch(() => message.success('Статус изменен!'));
+
 export const changeStatusEmployeeService = {
   inputs: {
     handleOpenModal,
     handleCloseModal,
     handleUpdateStatus,
     handleCatchEmployeeStatusData,
+    successUpdateStatus
   },
   outputs: { $isModalOpen, $employeeStatus },
 };

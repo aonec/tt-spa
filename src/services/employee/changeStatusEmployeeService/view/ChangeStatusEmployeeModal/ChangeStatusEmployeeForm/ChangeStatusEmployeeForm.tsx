@@ -3,7 +3,6 @@ import { GridContainer } from './ChangeStatusEmployeeForm.styled';
 import { ChangeStatusEmployeeFormProps } from './ChangeStatusEmployeeForm.types';
 import { Form } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
-import { Select } from 'ui-kit/Select';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -11,6 +10,7 @@ import { EOrganizationUserWorkingStatusType } from 'myApi';
 import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { DatePeriod } from 'services/objects/objectProfileService/consolidatedReportService/view/ConsolidatedReportForm/ConsolidatedReportForm.types';
+import { Select } from '01/shared/ui/Select';
 
 export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
   formId,
@@ -40,11 +40,6 @@ export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
     validateOnChange: false,
     validationSchema: yup.object({
       type: yup.string().nullable().required('Выберите Статус'),
-
-      period: yup.array().when('type', {
-        is: !EOrganizationUserWorkingStatusType.Working,
-        then: yup.array().required('Обязательное поле'),
-      }),
     }),
   });
 
