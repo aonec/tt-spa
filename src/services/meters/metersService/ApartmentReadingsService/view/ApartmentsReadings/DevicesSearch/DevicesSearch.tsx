@@ -13,13 +13,14 @@ import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
 import { CancelTokenSource } from 'axios';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,
 }) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [
     cancelTokenSource,
     setCancelTokenSource,
@@ -33,7 +34,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       setCancelTokenSource(null);
     }
 
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       const newCancelToken = axios.CancelToken.source();
@@ -52,7 +53,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
 
       setDevices(res.items);
     } catch (error) {}
-    setLoading(false);
+    setIsLoading(false);
   }
 
   const onKeyDownHandler = (e: any) => {
@@ -95,17 +96,9 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
         placeholder="Серийный номер прибора"
         onKeyDown={onKeyDownHandler}
       />
-
-      <Space />
-
-      {loading ? (
-        <Flex style={{ justifyContent: 'center' }}>
-          <Loader show size={32} />
-        </Flex>
-      ) : (
-        devices?.map(renderDevice)
-      )}
-      <Space />
+      <WithLoader isLoading={isLoading}>
+        {devices?.map(renderDevice)}
+      </WithLoader>
     </>
   );
 };

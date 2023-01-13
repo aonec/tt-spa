@@ -93,6 +93,12 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
     (homeowner) => !homeowner.closedAt
   );
 
+  const houseManagement = housingStock?.houseManagement;
+
+  const houseManagementName = `Домоуправление «${houseManagement?.name}»`;
+
+  const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;
+
   return (
     <>
       {activeHomeowner && (
@@ -164,16 +170,10 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               <InfoPanelLabel>Oбслуживающая организация</InfoPanelLabel>
               <FirmWrapper>
                 <HouseIcon />
-                <div>
-                  Домоуправление «{housingStock?.houseManagement?.name}»
-                </div>
+                <div>{houseManagementName}</div>
               </FirmWrapper>
               <FirmsLine>
-                <ManagementFirmInfo>
-                  {housingStock?.houseManagement?.phone}
-                  {'; '}
-                  {housingStock?.houseManagement?.comment}
-                </ManagementFirmInfo>
+                <ManagementFirmInfo></ManagementFirmInfo>
               </FirmsLine>
               <FirmWrapper>
                 <BriefcaseIcon />
