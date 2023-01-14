@@ -6,6 +6,7 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { LoaderWrapper } from '../../CompanyProfile.styled';
 import { ChangeStatusEmployeeContainer } from 'services/employee/changeStatusEmployeeService';
 import { DeleteEmployeeContainer } from 'services/employee/deleteEmployeeService';
+import { CreateEmployeeContainer } from 'services/employee/createEmployeeService';
 
 const { gates } = companyProfileService;
 const { FetchingStaffGate } = gates;
@@ -36,6 +37,7 @@ export const Staff: FC<StaffProps> = ({
         ))}
       <ChangeStatusEmployeeContainer />
       <DeleteEmployeeContainer />
+      <CreateEmployeeContainer />
     </>
   );
 };

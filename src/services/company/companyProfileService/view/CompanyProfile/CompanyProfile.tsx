@@ -18,6 +18,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   handleCatchEmployeeStatusData,
   handleOpenDeleteModal,
   handleCatchEmployeeId,
+  handleOpenCreateEmployeeModal,
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -37,7 +38,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
             },
             {
               title: 'Добавить сотрудника',
-              onClick: () => {},
+              onClick: () => handleOpenCreateEmployeeModal(),
               hidden:
                 CompanyProfileSection.Contractors === section ||
                 CompanyProfileSection.CommonInfo === section,
