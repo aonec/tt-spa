@@ -20,6 +20,7 @@ const FetchingStaffGate = createGate();
 const successDeleteEmployee = deleteEmployeeService.inputs.successDelete;
 const successUpdateStatus =
   changeStatusEmployeeService.inputs.successUpdateStatus;
+const successCreateEmloyee = createEmployeeService.inputs.createEmloyeeSuccess;
 
 const fetchCurrentManagingFirmFx = domain.createEffect<
   void,
@@ -45,7 +46,12 @@ forward({
 });
 
 forward({
-  from: [FetchingStaffGate.open, successDeleteEmployee, successUpdateStatus],
+  from: [
+    FetchingStaffGate.open,
+    successDeleteEmployee,
+    successUpdateStatus,
+    successCreateEmloyee,
+  ],
   to: fetchStaffFx,
 });
 

@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName } from 'myApi';
+import { ESecuredIdentityRoleName, OrganizationUserCreateRequest } from 'myApi';
 
 export type CreateEmployeeFormProps = {
   formId: string;
@@ -14,4 +14,5 @@ export type CreateEmployeeFormProps = {
         value: ESecuredIdentityRoleName | undefined;
       }[]
     | null;
+  handleCreateEmloyee: (payload: OrganizationUserCreateRequest) => void;
 };

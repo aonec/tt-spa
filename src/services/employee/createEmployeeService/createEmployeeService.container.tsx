@@ -13,6 +13,7 @@ export const CreateEmployeeContainer = () => {
   const userRoles = useStore(outputs.$userRoles);
 
   const handleCloseModal = useEvent(inputs.handleCloseModal);
+  const handleCreateEmloyee = useEvent(inputs.handleCreateEmloyee);
 
   const multipleSelectionCompetences =
     competences &&
@@ -37,6 +38,7 @@ export const CreateEmployeeContainer = () => {
         handleCloseModal={() => handleCloseModal()}
         multipleSelectionCompetences={multipleSelectionCompetences}
         multipleSelectionUserRoles={multipleSelectionUserRoles}
+        handleCreateEmloyee={handleCreateEmloyee}
       />
     </>
   );

@@ -9,11 +9,13 @@ import { Input } from 'ui-kit/Input';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
   formId,
   multipleSelectionCompetences,
   multipleSelectionUserRoles,
+  handleCreateEmloyee,
 }) => {
   const phoneMask = usePhoneMask();
 
@@ -24,20 +26,26 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
       lastName: null,
       middleName: null,
       cellphone: '',
-      department: null,
-      position: null,
       number: null,
-      password: null,
       roleTypes: null,
       competenceIds: [],
     },
-    enableReinitialize: true,
     onSubmit: (data) => {
-      const payload = {};
+      handleCreateEmloyee(data);
     },
     validateOnChange: false,
-    validationSchema: yup.object({
-      type: yup.string().nullable().required('Выберите Статус'),
+    validationSchema: yup.object().shape({
+      firstName: yup
+        .string()
+        .nullable()
+        .min(2, 'Минимум два символа')
+        .required('Обязательное поле'),
+      lastName: yup
+        .string()
+        .nullable()
+        .min(2, 'Минимум два символа')
+        .required('Обязательное поле'),
+      email: yup.string().nullable().required('Обязательное поле'),
     }),
   });
 
@@ -52,6 +60,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
               setFieldValue('lastName', value.target.value);
             }}
           />
+          <ErrorMessage>{errors.lastName}</ErrorMessage>
         </FormItem>
         <FormItem label="Имя">
           <Input
@@ -61,6 +70,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
               setFieldValue('firstName', value.target.value);
             }}
           />
+          <ErrorMessage>{errors.firstName}</ErrorMessage>
         </FormItem>
         <FormItem label="Отчество">
           <Input
@@ -82,6 +92,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
               setFieldValue('email', value.target.value);
             }}
           />
+          <ErrorMessage>{errors.email}</ErrorMessage>
         </FormItem>
         <FormItem label="Контактный телефон">
           <Input

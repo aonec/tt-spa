@@ -10,6 +10,7 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({
   isModalOpen,
   multipleSelectionCompetences,
   multipleSelectionUserRoles,
+  handleCreateEmloyee,
 }) => {
   return (
     <FormModal
@@ -23,6 +24,7 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({
           formId={formId}
           multipleSelectionCompetences={multipleSelectionCompetences}
           multipleSelectionUserRoles={multipleSelectionUserRoles}
+          handleCreateEmloyee={handleCreateEmloyee}
         />
       }
     />
