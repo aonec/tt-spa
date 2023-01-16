@@ -31,6 +31,10 @@ export const CompanyProfileContainer = () => {
     inputs.handleOpenDeleteContractorModal
   );
   const catchContractorId = useEvent(inputs.catchContractorId);
+  const handleOpenEditContractorModal = useEvent(
+    inputs.handleOpenEditContractorModal
+  );
+  const catchContractorData = useEvent(inputs.catchContractorData);
 
   return (
     <>
@@ -51,6 +55,8 @@ export const CompanyProfileContainer = () => {
           handleOpenDeleteContractorModal()
         }
         catchContractorId={catchContractorId}
+        handleOpenEditContractorModal={() => handleOpenEditContractorModal()}
+        catchContractorData={catchContractorData}
       />
     </>
   );

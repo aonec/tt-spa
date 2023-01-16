@@ -15,6 +15,7 @@ import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';
 import { createEmployeeService } from 'services/employee/createEmployeeService';
 import { addContractorService } from 'services/contractors/addContractorService';
 import { deleteContractorService } from 'services/contractors/deleteContractorService';
+import { editContractorService } from 'services/contractors/editContractorService';
 
 const domain = createDomain('companyProfileService');
 
@@ -97,6 +98,8 @@ export const companyProfileService = {
     handleOpenDeleteContractorModal:
       deleteContractorService.inputs.handleOpenModal,
     catchContractorId: deleteContractorService.inputs.catchContractorId,
+    handleOpenEditContractorModal: editContractorService.inputs.handleOpenModal,
+    catchContractorData: editContractorService.inputs.catchContractorData,
   },
   outputs: {
     $currentManagingFirm,

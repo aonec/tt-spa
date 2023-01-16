@@ -8,6 +8,8 @@ export const ContractorItem: FC<ContractorItemProps> = ({
   contractor,
   catchContractorId,
   handleOpenDeleteContractorModal,
+  handleOpenEditContractorModal,
+  catchContractorData,
 }) => {
   const phone = usePhoneMask();
 
@@ -23,7 +25,15 @@ export const ContractorItem: FC<ContractorItemProps> = ({
         menuButtonArr={[
           {
             title: 'Редактировать информацию о подрядчике',
-            cb: () => {},
+            cb: () => {
+              catchContractorData({
+                id: contractor.id,
+                name: contractor.name,
+                email: contractor.email,
+                cellphone: contractor.cellphone,
+              });
+              handleOpenEditContractorModal();
+            },
             show: true,
             color: 'default',
             clickable: true,

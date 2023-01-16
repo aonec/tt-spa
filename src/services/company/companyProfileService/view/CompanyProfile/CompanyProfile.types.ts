@@ -4,6 +4,7 @@ import {
   OrganizationUserListResponsePagedList,
   UserStatusResponse,
 } from 'myApi';
+import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type CompanyProfileProps = {
   currentManagingFirm: OrganizationResponse | null;
@@ -22,6 +23,8 @@ export type CompanyProfileProps = {
   handleOpenAddContractorModal: () => void;
   handleOpenDeleteContractorModal: () => void;
   catchContractorId: (payload: { id: number; name: string | null }) => void;
+  handleOpenEditContractorModal: () => void;
+  catchContractorData: (payload: ContractorDataType) => void;
 };
 
 export enum CompanyProfileSection {

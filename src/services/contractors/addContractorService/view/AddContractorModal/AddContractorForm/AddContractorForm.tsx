@@ -12,17 +12,23 @@ import { GridContainer } from './AddContractorForm.styled';
 export const AddContractorForm: FC<AddContractorFormProps> = ({
   formId,
   handleAddcontractor,
+  contractorData,
+  handleEditcontractor,
 }) => {
   const phoneMask = usePhoneMask();
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
     initialValues: {
-      name: null,
-      email: null,
-      cellphone: null || '',
+      name: contractorData?.name || null,
+      email: contractorData?.email || null,
+      cellphone: contractorData?.cellphone || null || '',
     },
     onSubmit: (data) => {
-      handleAddcontractor(data);
+      handleAddcontractor && handleAddcontractor(data);
+
+      handleEditcontractor &&
+        contractorData &&
+        handleEditcontractor({ contractorId: contractorData.id, data });
     },
     validateOnChange: false,
     validationSchema: yup.object().shape({
@@ -52,7 +58,6 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
             value={values.email || undefined}
             onChange={(value) => setFieldValue('email', value.target.value)}
           />
-          <ErrorMessage>{errors.email}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Контактный телефон">
@@ -72,7 +77,6 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
               )
             }
           />
-          <ErrorMessage>{errors.cellphone}</ErrorMessage>
         </FormItem>
       </GridContainer>
     </Form>
