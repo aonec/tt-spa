@@ -14,6 +14,7 @@ import { changeStatusEmployeeService } from 'services/employee/changeStatusEmplo
 import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';
 import { createEmployeeService } from 'services/employee/createEmployeeService';
 import { addContractorService } from 'services/contractors/addContractorService';
+import { deleteContractorService } from 'services/contractors/deleteContractorService';
 
 const domain = createDomain('companyProfileService');
 
@@ -26,6 +27,8 @@ const successUpdateStatus =
   changeStatusEmployeeService.inputs.successUpdateStatus;
 const successCreateEmloyee = createEmployeeService.inputs.createEmloyeeSuccess;
 const successAddContractor = addContractorService.inputs.addContractorSuccess;
+const successDeleteContractor =
+  deleteContractorService.inputs.deleteContractorSuccess;
 
 const fetchCurrentManagingFirmFx = domain.createEffect<
   void,
@@ -70,7 +73,11 @@ forward({
 });
 
 forward({
-  from: [FetchingContractorsGate.open, successAddContractor],
+  from: [
+    FetchingContractorsGate.open,
+    successAddContractor,
+    successDeleteContractor,
+  ],
   to: fetchContractorsFx,
 });
 
@@ -87,6 +94,9 @@ export const companyProfileService = {
     handleCatchEmployeeId: deleteEmployeeService.inputs.handleCatchEmployeeId,
     handleOpenCreateEmployeeModal: createEmployeeService.inputs.handleOpenModal,
     handleOpenAddContractorModal: addContractorService.inputs.handleOpenModal,
+    handleOpenDeleteContractorModal:
+      deleteContractorService.inputs.handleOpenModal,
+    catchContractorId: deleteContractorService.inputs.catchContractorId,
   },
   outputs: {
     $currentManagingFirm,

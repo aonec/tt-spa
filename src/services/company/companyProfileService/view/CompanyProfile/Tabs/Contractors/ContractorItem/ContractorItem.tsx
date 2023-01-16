@@ -4,7 +4,11 @@ import { ContractorItemProps } from './ContractorItem.types';
 import { MenuButtonTT, Name } from '01/tt-components';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 
-export const ContractorItem: FC<ContractorItemProps> = ({ contractor }) => {
+export const ContractorItem: FC<ContractorItemProps> = ({
+  contractor,
+  catchContractorId,
+  handleOpenDeleteContractorModal,
+}) => {
   const phone = usePhoneMask();
 
   return (
@@ -26,7 +30,10 @@ export const ContractorItem: FC<ContractorItemProps> = ({ contractor }) => {
           },
           {
             title: 'Удалить подрячика',
-            cb: () => {},
+            cb: () => {
+              catchContractorId({ id: contractor.id, name: contractor.name });
+              handleOpenDeleteContractorModal();
+            },
             show: true,
             color: 'red',
             clickable: true,

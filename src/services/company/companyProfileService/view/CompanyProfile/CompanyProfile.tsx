@@ -22,6 +22,8 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   conractorsList,
   fetchContractorsPending,
   handleOpenAddContractorModal,
+  catchContractorId,
+  handleOpenDeleteContractorModal,
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -83,6 +85,8 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         <Contractors
           conractorsList={conractorsList}
           fetchContractorsPending={fetchContractorsPending}
+          catchContractorId={catchContractorId}
+          handleOpenDeleteContractorModal={handleOpenDeleteContractorModal}
         />
       </Route>
     </>

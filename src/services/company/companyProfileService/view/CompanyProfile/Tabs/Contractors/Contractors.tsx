@@ -5,6 +5,7 @@ import { companyProfileService } from 'services/company/companyProfileService/co
 import { LoaderWrapper } from '../../CompanyProfile.styled';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { AddContractorContainer } from 'services/contractors/addContractorService';
+import { DeleteContractorContainer } from 'services/contractors/deleteContractorService';
 
 const { gates } = companyProfileService;
 const { FetchingContractorsGate } = gates;
@@ -12,6 +13,8 @@ const { FetchingContractorsGate } = gates;
 export const Contractors: FC<ContractorsProps> = ({
   conractorsList,
   fetchContractorsPending,
+  catchContractorId,
+  handleOpenDeleteContractorModal,
 }) => {
   return (
     <>
@@ -23,10 +26,15 @@ export const Contractors: FC<ContractorsProps> = ({
       {!fetchContractorsPending &&
         conractorsList?.items &&
         conractorsList.items.map((contractor) => (
-          <ContractorItem contractor={contractor} />
+          <ContractorItem
+            contractor={contractor}
+            catchContractorId={catchContractorId}
+            handleOpenDeleteContractorModal={handleOpenDeleteContractorModal}
+          />
         ))}
 
       <AddContractorContainer />
+      <DeleteContractorContainer />
     </>
   );
 };

@@ -20,6 +20,8 @@ export type CompanyProfileProps = {
   conractorsList: ContractorListResponsePagedList | null;
   fetchContractorsPending: boolean;
   handleOpenAddContractorModal: () => void;
+  handleOpenDeleteContractorModal: () => void;
+  catchContractorId: (payload: { id: number; name: string | null }) => void;
 };
 
 export enum CompanyProfileSection {
