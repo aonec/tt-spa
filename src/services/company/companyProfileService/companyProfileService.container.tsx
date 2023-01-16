@@ -10,6 +10,8 @@ export const CompanyProfileContainer = () => {
   const currentManagingFirm = useStore(outputs.$currentManagingFirm);
   const fetchStaffPending = useStore(outputs.$fetchStaffPending);
   const staffList = useStore(outputs.$staffList);
+  const conractorsList = useStore(outputs.$contractorsList);
+  const fetchContractorsPending = useStore(outputs.$fetchContractorsPending);
 
   const handleOpenStatusChangeModal = useEvent(
     inputs.handleOpenStatusChangeModal
@@ -35,6 +37,8 @@ export const CompanyProfileContainer = () => {
         handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
         handleCatchEmployeeId={handleCatchEmployeeId}
         handleOpenCreateEmployeeModal={() => handleOpenCreateEmployeeModal()}
+        conractorsList={conractorsList}
+        fetchContractorsPending={fetchContractorsPending}
       />
     </>
   );

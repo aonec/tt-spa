@@ -1,4 +1,5 @@
 import {
+  ContractorListResponsePagedList,
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
   UserStatusResponse,
@@ -16,6 +17,8 @@ export type CompanyProfileProps = {
   handleOpenDeleteModal: () => void;
   handleCatchEmployeeId: (payload: number) => void;
   handleOpenCreateEmployeeModal: () => void;
+  conractorsList: ContractorListResponsePagedList | null;
+  fetchContractorsPending: boolean;
 };
 
 export enum CompanyProfileSection {

@@ -73,6 +73,7 @@ forward({
 });
 
 const $fetchStaffPending = fetchStaffFx.pending;
+const $fetchContractorsPending = fetchContractorsFx.pending;
 
 export const companyProfileService = {
   inputs: {
@@ -89,6 +90,7 @@ export const companyProfileService = {
     $staffList,
     $fetchStaffPending,
     $contractorsList,
+    $fetchContractorsPending,
   },
   gates: {
     FetchingCurrentManagingFirmGate,
