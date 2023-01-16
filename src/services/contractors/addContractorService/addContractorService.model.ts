@@ -17,17 +17,18 @@ const addContractorFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postContractor);
 
+const addContractorSuccess = addContractorFx.doneData;
+
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleOpenModal, () => true)
-  .on(handleCloseModal, () => false);
+  .on(handleCloseModal, () => false)
+  .reset(addContractorSuccess);
 
 forward({
   from: handleAddcontractor,
   to: addContractorFx,
 });
-
-const addContractorSuccess = addContractorFx.doneData;
 
 addContractorFx.failData.watch((error) =>
   message.error(error.response.data.error.Text)

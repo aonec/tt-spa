@@ -25,6 +25,7 @@ const successDeleteEmployee = deleteEmployeeService.inputs.successDelete;
 const successUpdateStatus =
   changeStatusEmployeeService.inputs.successUpdateStatus;
 const successCreateEmloyee = createEmployeeService.inputs.createEmloyeeSuccess;
+const successAddContractor = addContractorService.inputs.addContractorSuccess;
 
 const fetchCurrentManagingFirmFx = domain.createEffect<
   void,
@@ -69,7 +70,7 @@ forward({
 });
 
 forward({
-  from: FetchingContractorsGate.open,
+  from: [FetchingContractorsGate.open, successAddContractor],
   to: fetchContractorsFx,
 });
 

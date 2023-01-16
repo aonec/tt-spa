@@ -3,6 +3,7 @@ import { AddContractorFormProps } from './AddContractorForm.types';
 import { Form } from 'antd';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
 import { FormItem } from 'ui-kit/FormItem';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
@@ -24,6 +25,13 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
       handleAddcontractor(data);
     },
     validateOnChange: false,
+    validationSchema: yup.object().shape({
+      name: yup
+        .string()
+        .nullable()
+        .min(2, 'Минимум два символа')
+        .required('Обязательное поле'),
+    }),
   });
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
