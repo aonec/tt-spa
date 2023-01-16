@@ -3,6 +3,7 @@ import {
   CompanyProfileIcon,
   DeviceIcon,
   DocumentIcon,
+  ListIcon,
   ObjectsIcon,
   ReportsIcon,
   SettingsIcon,
@@ -28,7 +29,7 @@ export const menuItems: MenuItem[] = [
   {
     title: 'Журнал актов',
     path: '/actsJournal',
-    icon: StatisticIcon,
+    icon: ListIcon,
     type: MenuType.ActsJournal,
   },
   {

@@ -10,7 +10,6 @@ import {
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
-  MetersPage,
   Registration,
   UserProfile,
 } from '01/_pages';
@@ -28,7 +27,6 @@ import { EditElectricNodeContainer } from 'services/devices/editElectricNodeServ
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
-import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { EditNodeContainer } from 'services/devices/editNodeService';
@@ -44,6 +42,7 @@ import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
+import { ReportsContainer } from 'services/reportsService';
 
 const { gates } = objectProfileService;
 
@@ -145,7 +144,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
-            
+
                 <Route
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
@@ -248,7 +247,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   <StatisticsPage />
                 </Route>
 
-                <Route path="/reports" component={ReportsPageContainer} exact />
+                <Route path="/reports" component={ReportsContainer} exact />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>
