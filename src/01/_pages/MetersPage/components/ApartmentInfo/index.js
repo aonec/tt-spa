@@ -1,14 +1,14 @@
 /* eslint-disable */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Icon, Loader } from '01/components';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import styled from 'styled-components';
+import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import { ReactComponent as EditIcon } from './icons/Edit.svg';
 import TextArea from 'antd/lib/input/TextArea';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Icon, Loader } from '01/components';
 import axios from '01/axios';
 import {
   $apartment,
