@@ -19,6 +19,7 @@ export type CompanyProfileProps = {
   handleOpenCreateEmployeeModal: () => void;
   conractorsList: ContractorListResponsePagedList | null;
   fetchContractorsPending: boolean;
+  handleOpenAddContractorModal: () => void;
 };
 
 export enum CompanyProfileSection {

@@ -13,6 +13,7 @@ import { createGate } from 'effector-react';
 import { changeStatusEmployeeService } from 'services/employee/changeStatusEmployeeService';
 import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';
 import { createEmployeeService } from 'services/employee/createEmployeeService';
+import { addContractorService } from 'services/contractors/addContractorService';
 
 const domain = createDomain('companyProfileService');
 
@@ -84,6 +85,7 @@ export const companyProfileService = {
     handleOpenDeleteModal: deleteEmployeeService.inputs.handleOpenModal,
     handleCatchEmployeeId: deleteEmployeeService.inputs.handleCatchEmployeeId,
     handleOpenCreateEmployeeModal: createEmployeeService.inputs.handleOpenModal,
+    handleOpenAddContractorModal: addContractorService.inputs.handleOpenModal,
   },
   outputs: {
     $currentManagingFirm,

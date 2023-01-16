@@ -20,7 +20,8 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
   handleCatchEmployeeId,
   handleOpenCreateEmployeeModal,
   conractorsList,
-  fetchContractorsPending
+  fetchContractorsPending,
+  handleOpenAddContractorModal,
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -33,7 +34,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           menuButtons: [
             {
               title: 'Добавить контрагента',
-              onClick: () => {},
+              onClick: () => handleOpenAddContractorModal(),
               hidden:
                 CompanyProfileSection.Staff === section ||
                 CompanyProfileSection.CommonInfo === section,
@@ -79,7 +80,10 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         />
       </Route>
       <Route path="/companyProfile/contractors" exact>
-        <Contractors conractorsList={conractorsList} fetchContractorsPending={fetchContractorsPending} />
+        <Contractors
+          conractorsList={conractorsList}
+          fetchContractorsPending={fetchContractorsPending}
+        />
       </Route>
     </>
   );

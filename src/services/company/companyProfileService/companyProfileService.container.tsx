@@ -24,6 +24,9 @@ export const CompanyProfileContainer = () => {
   const handleOpenCreateEmployeeModal = useEvent(
     inputs.handleOpenCreateEmployeeModal
   );
+  const handleOpenAddContractorModal = useEvent(
+    inputs.handleOpenAddContractorModal
+  );
 
   return (
     <>
@@ -39,6 +42,7 @@ export const CompanyProfileContainer = () => {
         handleOpenCreateEmployeeModal={() => handleOpenCreateEmployeeModal()}
         conractorsList={conractorsList}
         fetchContractorsPending={fetchContractorsPending}
+        handleOpenAddContractorModal={() => handleOpenAddContractorModal()}
       />
     </>
   );
