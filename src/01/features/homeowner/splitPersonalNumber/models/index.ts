@@ -3,8 +3,6 @@ import { createForm } from 'effector-forms/dist';
 import { createGate } from 'effector-react';
 import { HomeownerAccountSplitRequest } from 'myApi';
 
-
-
 export const splitPersonalNumberFx = createEffect<
   HomeownerAccountSplitRequest,
   void
