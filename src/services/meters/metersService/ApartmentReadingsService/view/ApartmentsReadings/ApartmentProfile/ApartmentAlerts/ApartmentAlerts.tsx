@@ -102,22 +102,28 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
   );
 
   const apartmentHomeownerAcconutChangeAlerts = recentlyModifiedApartmentPersonalAccounts?.map(
-    (homeownerAccount) => (
-      <ApartmentAlertWrapper key={homeownerAccount.id}>
-        <Alert type="info">
-          <AlertContent>
-            <div>
-              Добавлен новый номер лицевого счёта квартиры{' '}
-              {homeownerAccount.personalAccountNumber} ({homeownerAccount.name})
-            </div>
-            <HomeownerAccountChangeDate>
-              Дата изменения:{' '}
-              {moment(homeownerAccount.openAtFact).format('DD.MM.YYYY')}
-            </HomeownerAccountChangeDate>
-          </AlertContent>
-        </Alert>
-      </ApartmentAlertWrapper>
-    )
+    (homeownerAccount) => {
+      const changeDateInfo = `Дата изменения: ${moment(
+        homeownerAccount?.openAtFact
+      ).format('DD.MM.YYYY')}`;
+
+      return (
+        <ApartmentAlertWrapper key={homeownerAccount.id}>
+          <Alert type="info">
+            <AlertContent>
+              <div>
+                Добавлен новый номер лицевого счёта квартиры{' '}
+                {homeownerAccount.personalAccountNumber} (
+                {homeownerAccount.name})
+              </div>
+              <HomeownerAccountChangeDate>
+                {changeDateInfo}
+              </HomeownerAccountChangeDate>
+            </AlertContent>
+          </Alert>
+        </ApartmentAlertWrapper>
+      );
+    }
   );
 
   return (
