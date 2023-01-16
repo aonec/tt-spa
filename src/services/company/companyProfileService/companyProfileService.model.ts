@@ -1,9 +1,11 @@
 import { createDomain, forward } from 'effector';
 import {
+  getContractors,
   getCurrentManagingFirm,
   getManagingFirmUsers,
 } from './companyProfileService.api';
 import {
+  ContractorListResponsePagedList,
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
 } from 'myApi';
@@ -16,6 +18,7 @@ const domain = createDomain('companyProfileService');
 
 const FetchingCurrentManagingFirmGate = createGate();
 const FetchingStaffGate = createGate();
+const FetchingContractorsGate = createGate();
 
 const successDeleteEmployee = deleteEmployeeService.inputs.successDelete;
 const successUpdateStatus =
@@ -32,6 +35,11 @@ const fetchStaffFx = domain.createEffect<
   OrganizationUserListResponsePagedList | null
 >(getManagingFirmUsers);
 
+const fetchContractorsFx = domain.createEffect<
+  void,
+  ContractorListResponsePagedList | null
+>(getContractors);
+
 const $currentManagingFirm = domain
   .createStore<OrganizationResponse | null>(null)
   .on(fetchCurrentManagingFirmFx.doneData, (_, data) => data);
@@ -39,6 +47,10 @@ const $currentManagingFirm = domain
 const $staffList = domain
   .createStore<OrganizationUserListResponsePagedList | null>(null)
   .on(fetchStaffFx.doneData, (_, data) => data);
+
+const $contractorsList = domain
+  .createStore<ContractorListResponsePagedList | null>(null)
+  .on(fetchContractorsFx.doneData, (_, data) => data);
 
 forward({
   from: FetchingCurrentManagingFirmGate.open,
@@ -55,6 +67,11 @@ forward({
   to: fetchStaffFx,
 });
 
+forward({
+  from: FetchingContractorsGate.open,
+  to: fetchContractorsFx,
+});
+
 const $fetchStaffPending = fetchStaffFx.pending;
 
 export const companyProfileService = {
@@ -67,6 +84,15 @@ export const companyProfileService = {
     handleCatchEmployeeId: deleteEmployeeService.inputs.handleCatchEmployeeId,
     handleOpenCreateEmployeeModal: createEmployeeService.inputs.handleOpenModal,
   },
-  outputs: { $currentManagingFirm, $staffList, $fetchStaffPending },
-  gates: { FetchingCurrentManagingFirmGate, FetchingStaffGate },
+  outputs: {
+    $currentManagingFirm,
+    $staffList,
+    $fetchStaffPending,
+    $contractorsList,
+  },
+  gates: {
+    FetchingCurrentManagingFirmGate,
+    FetchingStaffGate,
+    FetchingContractorsGate,
+  },
 };
