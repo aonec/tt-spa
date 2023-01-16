@@ -40,14 +40,10 @@ forward({
 });
 
 const payload = combine(
-  pauseApartmentForm.$values as any,
-  (values: {
-    fromDate: string;
-    toDate: string;
-    documents: FileData[];
-    apartmentId: number;
-  }): GetProblemDevicesRequestPayload => ({
-    apartmentId: values.apartmentId,
+  PauseApartmentGate.state,
+  pauseApartmentForm.$values,
+  ({ id }, values) => ({
+    apartmentId: id,
     requestPayload: {
       fromDate: moment(values.fromDate).format('YYYY-MM-DD'),
       toDate: moment(values.toDate).format('YYYY-MM-DD'),

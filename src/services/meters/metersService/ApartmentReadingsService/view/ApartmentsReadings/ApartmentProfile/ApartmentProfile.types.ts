@@ -11,4 +11,5 @@ export type ApartmentProfileProps = {
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
+  openEditPersonalNumberModal: () => void;
 };

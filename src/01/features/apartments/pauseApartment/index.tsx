@@ -31,10 +31,6 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
   const pendingRequest = useStore(pauseApartmentStatusFx.pending);
   const { fields, submit } = useForm(pauseApartmentForm);
 
-  useEffect(() => {
-    fields.apartmentId.onChange(Number(apartmentId));
-  }, [apartmentId]);
-
   const form = (
     <Grid>
       <FormItem label="Дата начала">

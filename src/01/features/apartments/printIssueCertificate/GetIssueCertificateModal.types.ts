@@ -1,6 +1,6 @@
 import { ApartmentResponse } from 'myApi';
 
-export type ApartmentAlertsProps = {
+export type GetIssueCertificateModalProps = {
   apartment: ApartmentResponse;
-  handleCancelPauseApartment: () => void;
+  homeownerId: string;
 };
