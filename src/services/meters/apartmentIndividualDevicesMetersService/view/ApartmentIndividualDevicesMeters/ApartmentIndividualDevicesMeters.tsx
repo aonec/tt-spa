@@ -2,7 +2,7 @@ import { Checkbox, Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { IndividualDeviceMetersInputContainer } from 'services/meters/individualDeviceMetersInputService';
 import { ChevronIcon } from 'ui-kit/icons';
-import { previousReadingIndexLimit } from '../../apartmentIndividualDevicesMetersService.constants';
+import { PREVIOUS_READING_INDEX_LIMIT } from '../../apartmentIndividualDevicesMetersService.constants';
 import { getReadingsMonthByShift } from '../../apartmentIndividualDevicesMetersService.utils';
 import {
   ArrowContainer,
@@ -36,7 +36,7 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
   );
   const currentReadingMonth = useMemo(() => getReadingsMonthByShift(-1), []);
 
-  const isCanUp = useMemo(() => sliderIndex < previousReadingIndexLimit, [
+  const isCanUp = useMemo(() => sliderIndex < PREVIOUS_READING_INDEX_LIMIT, [
     sliderIndex,
   ]);
   const isCanDown = useMemo(() => sliderIndex > 0, [sliderIndex]);

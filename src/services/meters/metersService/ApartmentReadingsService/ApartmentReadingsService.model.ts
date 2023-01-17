@@ -74,6 +74,8 @@ updateApartmentFx.doneData.watch(() => message.success('Сохранено ус�
 
 const $isLoadingApartment = fetchApartmentFx.pending;
 
+const handleApartmentLoaded = updateApartmentFx.doneData;
+
 export const apartmentReadingsService = {
   inputs: {
     setSearchMode,
@@ -82,6 +84,7 @@ export const apartmentReadingsService = {
     handlePauseApartment: pauseApartmentButtonClicked,
     handleCancelPauseApartment: cancelPauseApartmentButtonClicked,
     openEditPersonalNumberModal: openEditPersonalNumberTypeModal,
+    handleApartmentLoaded,
   },
   outputs: { $searchMode, $apartment, $isLoadingApartment },
   gates: { ApartmentGate },
