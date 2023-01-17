@@ -1,3 +1,4 @@
+import { EResourceType } from './../../../myApi';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
@@ -18,6 +19,7 @@ import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersServic
 import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { BufferedReadingValues } from './view/MetersInputsBlock/MetersInputsBlock.types';
 import { round } from 'utils/round';
+import { ResourceConsumptionGraphColorsMeasure } from 'services/resources/resourceConsumptionService/view/ResourceConsumptionGraph/ResourceConsumptionGraph.constants';
 
 export function getPreparedReadingsDictionary(
   readings: IndividualDeviceReadingsResponse[]
@@ -219,6 +221,6 @@ export function getReadingValueKey(index: number) {
   return `value${index + 1}` as keyof ReadingLite;
 }
 
-export function getMeasurementUnit(resource: any) {
-  return resource === 'Electricity' ? 'кВтч' : 'м³';
+export function getMeasurementUnit(resource: EResourceType) {
+  return ResourceConsumptionGraphColorsMeasure[resource];
 }
