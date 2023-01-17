@@ -479,6 +479,27 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
   value4?: number | null;
 }
 
+export interface CalculatorCommentBaseRequest {
+  text?: string | null;
+}
+
+export interface CalculatorCommentResponse {
+  /** @format int32 */
+  id: number;
+  text: string | null;
+
+  /** @format date-time */
+  lastModifiedDateTime: string;
+
+  /** @format date-time */
+  creationDateTime: string;
+  lastModifiedUser: LastModifiedUserResponse | null;
+}
+
+export interface CalculatorCommentResponseSuccessApiResponse {
+  successResponse: CalculatorCommentResponse | null;
+}
+
 export interface CalculatorFilterResponse {
   nodeStatuses: ENodeCommercialAccountStatusNullableStringDictionaryItem[] | null;
   houseCategories: EHouseCategoryStringDictionaryItem[] | null;
@@ -590,9 +611,13 @@ export interface CalculatorListResponse {
   scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
-  hasTasks: boolean | null;
   address: HousingStockShortResponse | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
+  documents: DocumentLiteResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+  comment: CalculatorCommentResponse | null;
 }
 
 export interface CalculatorListResponsePagedList {
@@ -662,6 +687,11 @@ export interface CalculatorResponse {
   /** @format int32 */
   infoId: number | null;
   nodes: PipeNodeIntoCalculatorResponse[] | null;
+  documents: DocumentResponse[] | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+  comment: string | null;
 }
 
 export interface CalculatorResponseSuccessApiResponse {
@@ -1478,7 +1508,6 @@ export enum EIndividualDeviceReadingsSource {
   Ttm = "Ttm",
   GosUslugi = "GosUslugi",
   Bank = "Bank",
-  Sputnik = "Sputnik",
   Duplicated = "Duplicated",
   Erc = "Erc",
   TtmFromErc = "TtmFromErc",
@@ -2130,11 +2159,6 @@ export interface GuidStringDictionaryItem {
   value?: string | null;
 }
 
-export interface GuidSuccessApiResponse {
-  /** @format uuid */
-  successResponse: string;
-}
-
 export interface HeatingSeasonAdjustmentResponse {
   /** @format uuid */
   heatingSeasonId: string;
@@ -2516,8 +2540,6 @@ export interface HousingByFilterResponseSuccessApiResponse {
 }
 
 export interface HousingMeteringDeviceAddCommentRequest {
-  /** @format int32 */
-  deviceId?: number;
   text?: string | null;
 }
 
@@ -2774,7 +2796,7 @@ export interface HousingStockCreateRequest {
   coordinates?: Point | null;
 
   /** @format uuid */
-  houseManagementId: string;
+  houseManagementId?: string | null;
   houseCategory: EHouseCategory;
   livingHouseType?: ELivingHouseType | null;
   nonResidentialHouseType?: ENonResidentialHouseType | null;
@@ -6690,6 +6712,63 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
      *
      * @tags Calculators
+     * @name CalculatorsCommentCreate
+     * @summary CalculatorUpdate
+     * @request POST:/api/Calculators/{deviceId}/comment
+     * @secure
+     */
+    calculatorsCommentCreate: (deviceId: number, data: CalculatorCommentBaseRequest, params: RequestParams = {}) =>
+      this.request<CalculatorCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Calculators/${deviceId}/comment`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsCommentUpdate
+     * @summary CalculatorUpdate
+     * @request PUT:/api/Calculators/{deviceId}/comment
+     * @secure
+     */
+    calculatorsCommentUpdate: (deviceId: number, data: CalculatorCommentBaseRequest, params: RequestParams = {}) =>
+      this.request<CalculatorCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Calculators/${deviceId}/comment`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsCommentDelete
+     * @summary CalculatorUpdate
+     * @request DELETE:/api/Calculators/{deviceId}/comment
+     * @secure
+     */
+    calculatorsCommentDelete: (deviceId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Calculators/${deviceId}/comment`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li>
+     *
+     * @tags Calculators
      * @name CalculatorsSwitchCreate
      * @summary CalculatorSwitch
      * @request POST:/api/Calculators/switch
@@ -8449,28 +8528,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<HousingStockFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/filters`,
         method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags HousingStocks
-     * @name HousingStocksGetFiasIdList
-     * @summary HousingStocksRead
-     * @request GET:/api/HousingStocks/GetFiasId
-     * @secure
-     */
-    housingStocksGetFiasIdList: (
-      query: { Region: string; Area: string; City: string; Street: string; HouseNumber: string; HouseCorpus?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<GuidSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/HousingStocks/GetFiasId`,
-        method: "GET",
-        query: query,
         secure: true,
         format: "json",
         ...params,
