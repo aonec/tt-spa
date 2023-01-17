@@ -15,6 +15,7 @@ export type CompanyProfileProps = {
   }) => void;
   handleOpenDeleteModal: () => void;
   handleCatchEmployeeId: (payload: number) => void;
+  handleOpenCreateEmployeeModal: () => void;
 };
 
 export enum CompanyProfileSection {
