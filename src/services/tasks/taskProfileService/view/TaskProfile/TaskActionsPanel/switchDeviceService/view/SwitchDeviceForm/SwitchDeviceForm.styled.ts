@@ -23,6 +23,6 @@ export const DevicePipeInfoWrapper = styled.div`
 
 export const DeviceCheckingDatesWrapper = styled.div`
   display: grid;
-  grid-gap: 0 15px;
+  grid-gap: 0 14px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 `;

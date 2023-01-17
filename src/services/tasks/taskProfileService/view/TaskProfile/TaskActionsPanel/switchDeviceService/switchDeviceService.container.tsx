@@ -5,21 +5,25 @@ import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { switchDeviceService } from './switchDeviceService.model';
 import { SwitchDeviceForm } from './view/SwitchDeviceForm';
 
-const { outputs, gates } = switchDeviceService;
-const { DevicePipeGate } = gates;
+const { outputs } = switchDeviceService;
 
 export const SwitchDeviceContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
   const device = useStore(outputs.$device);
-  const devicePipe = useStore(outputs.$devicePipe);
+
+  const isCalculator = device?.type === 'Calculator';
 
   const handleChangeSwitchDevicePayload = useCallback(
     (payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>) => {
       if (!device) return;
 
+      const key = isCalculator
+        ? 'housingMeteringDeviceSwitch'
+        : 'housingMeteringDeviceSwitch';
+
       handleChange({
-        housingMeteringDeviceSwitch: { ...payload, deviceId: device.id },
+        [key]: { ...payload, deviceId: device.id },
       });
     },
     [device, handleChange]
@@ -28,13 +32,10 @@ export const SwitchDeviceContainer: FC<ActionComponentProps> = ({
   if (!device) return null;
 
   return (
-    <>
-      {device && <DevicePipeGate deviceId={device.id} />}
-      <SwitchDeviceForm
-        device={device}
-        devicePipe={devicePipe}
-        handleChangeSwitchDevicePayload={handleChangeSwitchDevicePayload}
-      />
-    </>
+    <SwitchDeviceForm
+      device={device}
+      handleChangeSwitchDevicePayload={handleChangeSwitchDevicePayload}
+      isCalculator={isCalculator}
+    />
   );
 };

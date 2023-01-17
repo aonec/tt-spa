@@ -1,15 +1,14 @@
 import {
   MeteringDeviceResponse,
-  PipeHousingMeteringDeviceResponse,
   SwitchHousingMeteringDeviceRequest,
 } from 'myApi';
 
 export type SwitchDeviceFormProps = {
   device: MeteringDeviceResponse;
-  devicePipe: PipeHousingMeteringDeviceResponse | null;
   handleChangeSwitchDevicePayload: (
     payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>
   ) => void;
+  isCalculator: boolean;
 };
 
 export type SwitchDeviceFormValues = {

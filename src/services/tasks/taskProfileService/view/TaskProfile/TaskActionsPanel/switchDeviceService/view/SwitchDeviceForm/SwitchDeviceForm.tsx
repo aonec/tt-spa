@@ -1,18 +1,16 @@
 import { useFormik } from 'formik';
 import { EResourceType } from 'myApi';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { resourceNamesLookup } from 'utils/resourceNamesLookup';
-import { DevicePipeMagistralDictionary } from './SwitchDeviceForm.constants';
 import {
   DeviceInfoWrapper,
   ResourceOptionWrapper,
   ResourceOptionNameWrapper,
-  DevicePipeInfoWrapper,
   DeviceCheckingDatesWrapper,
 } from './SwitchDeviceForm.styled';
 import {
@@ -22,8 +20,8 @@ import {
 
 export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   device,
-  devicePipe,
   handleChangeSwitchDevicePayload,
+  isCalculator,
 }) => {
   const {
     values,
@@ -43,9 +41,9 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   useEffect(() => {
     handleChangeSwitchDevicePayload({
       ...values,
-      lastCheckingDate: values.lastCheckingDate?.toISOString(),
-      futureCheckingDate: values.futureCheckingDate?.toISOString(),
-      openingDate: values.openingDate?.toISOString(),
+      lastCheckingDate: values.lastCheckingDate?.format("YYYY-MM-DD"),
+      futureCheckingDate: values.futureCheckingDate?.format("YYYY-MM-DD"),
+      openingDate: values.openingDate?.format("YYYY-MM-DD"),
     });
   }, [values]);
 
@@ -54,35 +52,29 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
 
     setFieldValue(
       'futureCheckingDate',
-      values.lastCheckingDate?.add('year', 3)
+      values.lastCheckingDate?.add(4, 'year')
     );
   }, [values.lastCheckingDate]);
-
-  const magistral = useMemo(() => {
-    const magistralType = devicePipe?.hubConnection?.hub?.magistral;
-
-    if (!magistralType) return '';
-
-    return DevicePipeMagistralDictionary[magistralType];
-  }, []);
 
   return (
     <div>
       <DeviceInfoWrapper>
-        <FormItem label="Тип ресурса">
-          <Select disabled value={device.resource || undefined}>
-            {Object.values(EResourceType).map((resource) => (
-              <Select.Option value={resource} key={resource}>
-                <ResourceOptionWrapper>
-                  <ResourceIconLookup resource={resource} />
-                  <ResourceOptionNameWrapper>
-                    {resourceNamesLookup[resource]}
-                  </ResourceOptionNameWrapper>
-                </ResourceOptionWrapper>
-              </Select.Option>
-            ))}
-          </Select>
-        </FormItem>
+        {!isCalculator && (
+          <FormItem label="Тип ресурса">
+            <Select disabled value={device.resource || undefined}>
+              {Object.values(EResourceType).map((resource) => (
+                <Select.Option value={resource} key={resource}>
+                  <ResourceOptionWrapper>
+                    <ResourceIconLookup resource={resource} />
+                    <ResourceOptionNameWrapper>
+                      {resourceNamesLookup[resource]}
+                    </ResourceOptionNameWrapper>
+                  </ResourceOptionWrapper>
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+        )}
         <FormItem label="Тип прибора">
           <Input
             value={device.typeName || ''}
@@ -90,6 +82,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
             placeholder="Введите тип прибора"
           />
         </FormItem>
+        {isCalculator && <div />}
         <FormItem label="Серийный номер">
           <Input
             name="serialNumber"
@@ -107,32 +100,6 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
           />
         </FormItem>
       </DeviceInfoWrapper>
-      <DevicePipeInfoWrapper>
-        <FormItem label="Диаметр прибора, мм">
-          <Input
-            disabled
-            value={device.diameter || ''}
-            placeholder="Введите диаметр прибора"
-          />
-        </FormItem>
-        <FormItem label="Номер трубы">
-          <Input
-            disabled
-            placeholder="Введите номер трубы"
-            value={devicePipe?.hubConnection?.hub?.pipeNumber || ''}
-          />
-        </FormItem>
-        <FormItem label="Магистраль">
-          <Input disabled placeholder="Введите магистраль" value={magistral} />
-        </FormItem>
-        <FormItem label="Номер ввода">
-          <Input
-            disabled
-            placeholder="Введите номер ввода"
-            value={devicePipe?.hubConnection?.hub?.entryNumber || ''}
-          />
-        </FormItem>
-      </DevicePipeInfoWrapper>
       <DeviceCheckingDatesWrapper>
         <FormItem label="Дата поверки прибора">
           <DatePicker
