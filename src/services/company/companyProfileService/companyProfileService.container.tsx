@@ -19,6 +19,9 @@ export const CompanyProfileContainer = () => {
     inputs.handleCatchEmployeeStatusData
   );
   const handleCatchEmployeeId = useEvent(inputs.handleCatchEmployeeId);
+  const handleOpenCreateEmployeeModal = useEvent(
+    inputs.handleOpenCreateEmployeeModal
+  );
 
   return (
     <>
@@ -31,6 +34,7 @@ export const CompanyProfileContainer = () => {
         handleOpenDeleteModal={() => handleOpenDeleteModal()}
         handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
         handleCatchEmployeeId={handleCatchEmployeeId}
+        handleOpenCreateEmployeeModal={() => handleOpenCreateEmployeeModal()}
       />
     </>
   );

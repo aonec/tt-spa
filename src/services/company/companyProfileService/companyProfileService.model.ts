@@ -10,6 +10,7 @@ import {
 import { createGate } from 'effector-react';
 import { changeStatusEmployeeService } from 'services/employee/changeStatusEmployeeService';
 import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';
+import { createEmployeeService } from 'services/employee/createEmployeeService';
 
 const domain = createDomain('companyProfileService');
 
@@ -19,6 +20,7 @@ const FetchingStaffGate = createGate();
 const successDeleteEmployee = deleteEmployeeService.inputs.successDelete;
 const successUpdateStatus =
   changeStatusEmployeeService.inputs.successUpdateStatus;
+const successCreateEmloyee = createEmployeeService.inputs.createEmloyeeSuccess;
 
 const fetchCurrentManagingFirmFx = domain.createEffect<
   void,
@@ -44,7 +46,12 @@ forward({
 });
 
 forward({
-  from: [FetchingStaffGate.open, successDeleteEmployee, successUpdateStatus],
+  from: [
+    FetchingStaffGate.open,
+    successDeleteEmployee,
+    successUpdateStatus,
+    successCreateEmloyee,
+  ],
   to: fetchStaffFx,
 });
 
@@ -58,6 +65,7 @@ export const companyProfileService = {
       changeStatusEmployeeService.inputs.handleCatchEmployeeStatusData,
     handleOpenDeleteModal: deleteEmployeeService.inputs.handleOpenModal,
     handleCatchEmployeeId: deleteEmployeeService.inputs.handleCatchEmployeeId,
+    handleOpenCreateEmployeeModal: createEmployeeService.inputs.handleOpenModal,
   },
   outputs: { $currentManagingFirm, $staffList, $fetchStaffPending },
   gates: { FetchingCurrentManagingFirmGate, FetchingStaffGate },

@@ -23,8 +23,15 @@ import {
   СompetenceDiv,
 } from './EmployeeProfile.styled';
 import { EmployeeProfileProps } from './EmployeeProfile.types';
+import { useHistory } from 'react-router-dom';
 
-export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
+export const EmployeeProfile: FC<EmployeeProfileProps> = ({
+  userData,
+  handleOpenChangeStatusModal,
+  handleOpenDeleteEmployeeModal,
+}) => {
+  const history = useHistory();
+
   const userInitials = `${userData?.firstName || ''} ${
     userData?.middleName || ''
   } ${userData?.lastName || ''}`;
@@ -58,15 +65,21 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
         title={userInitials}
         contextMenu={{
           menuButtons: [
-            { title: 'Изменить стутус', onClick: () => {} },
+            {
+              title: 'Изменить статус',
+              onClick: () => handleOpenChangeStatusModal(),
+            },
             {
               title: 'Редактировать информацию о сотруднике',
-              onClick: () => {},
+              onClick: () =>
+                history.push(
+                  `/companyProfile/editManagingFirmUser/${userData?.id}`
+                ),
             },
             {
               title: 'Удалить сотрудника',
               color: 'danger',
-              onClick: () => {},
+              onClick: () => handleOpenDeleteEmployeeModal(),
             },
           ],
         }}
