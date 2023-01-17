@@ -32,7 +32,8 @@ const $isModalOpen = domain
 
 const $contractorData = domain
   .createStore<ContractorDataType | null>(null)
-  .on(catchContractorData, (_, data) => data);
+  .on(catchContractorData, (_, data) => data)
+  .reset(editContractorSuccess);
 
 forward({
   from: handleEditcontractor,
