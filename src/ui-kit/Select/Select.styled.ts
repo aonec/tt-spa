@@ -2,7 +2,7 @@ import { Select as AntSelect } from 'antd';
 import styled from 'styled-components';
 
 export const Select = styled(AntSelect)`
-  height: 48px;
+  min-height: 48px;
 
   .ant-select-selection-item-content {
     line-height: initial;

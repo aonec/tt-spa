@@ -1,11 +1,9 @@
+import { useStore } from 'effector-react';
+import React, { FC, useRef } from 'react';
+import ReactToPrint from 'react-to-print';
 import { Loader } from '01/components';
-import { $currentPersonalNumberId } from '01/features/homeowner/displayHomeowner/models';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { ButtonTT } from '01/tt-components';
-import { useStore } from 'effector-react';
-import React, { useRef } from 'react';
-import ReactToPrint from 'react-to-print';
-import { $apartment } from '../displayApartment/models';
 import { Certificate } from './Certificate';
 import {
   $homeownerCertificatre,
@@ -14,16 +12,17 @@ import {
   HomeownerCerificateGate,
   fetchHomeownerCertificate,
 } from './models';
+import { GetIssueCertificateModalProps } from './GetIssueCertificateModal.types';
 
-export const GetIssueCertificateModal = () => {
+export const GetIssueCertificateModal: FC<GetIssueCertificateModalProps> = ({
+  apartment,
+  homeownerId,
+}) => {
   const visible = useStore($isPrintIssueCertificateModalOpen);
-  const apartment = useStore($apartment);
 
   const homeownerCertificate = useStore($homeownerCertificatre);
   const pendingCertificate = useStore(fetchHomeownerCertificate.pending);
   const certificateRef = useRef();
-
-  const homeownerId = useStore($currentPersonalNumberId);
 
   if (!apartment?.homeownerAccounts?.length) return <></>;
 

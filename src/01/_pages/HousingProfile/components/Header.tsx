@@ -10,10 +10,7 @@ import {
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
 import { Tooltip } from 'antd';
 import { fullAddressesString } from 'utils/additionalAddressesString';
-import {
-  AdditionalAddress,
-  MainAddressWrapper,
-} from '01/_pages/CalculatorProfile/components/Header.styled';
+import { AdditionalAddress, MainAddressWrapper } from './RelatedDevices.styled';
 
 interface HousingMeteringDeviceInterface {
   device: PipeHousingMeteringDeviceResponse;
@@ -41,7 +38,7 @@ export const Header = ({
     {
       title: 'Редактировать ОДПУ',
       cb: () => {
-        push(`/housingMeteringDevices/${device.id}/edit_odpu`);
+        push(`/housingMeteringDevices/${device.id}/edit`);
       },
       show: show('HousingMeteringDeviceUpdate'),
       color: 'default',

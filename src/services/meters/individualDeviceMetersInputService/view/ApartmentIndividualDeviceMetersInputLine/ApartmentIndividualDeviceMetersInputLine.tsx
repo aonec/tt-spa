@@ -13,6 +13,8 @@ import {
 } from './ApartmentIndividualDeviceMetersInputLine.styled';
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { useHistory } from 'react-router-dom';
 
 export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDeviceMetersInputLineProps> = ({
   device,
@@ -25,6 +27,8 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
 }) => {
+  const history = useHistory();
+
   const isDeviceClosed = useMemo(() => {
     return Boolean(device.closingDate);
   }, [device]);
@@ -103,15 +107,35 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
           <div className="consumption-value" key={index}>
             {value}
           </div>
-        ))}
+        )) || '-'}
       </ConsumptionWrapper>
-      <div></div>
       <Tooltip title="История показаний" className="device-option">
         <HistoryIcon
           onClick={openReadingsHistoryModal}
           style={{ cursor: 'pointer' }}
         />
       </Tooltip>
+      <ContextMenuButton
+        size="small"
+        menuButtons={[
+          {
+            title: 'Перейти к вводу показаний по квартире',
+            onClick: () =>
+              history.push(`/meters/apartments/${device.apartmentId}`),
+          },
+          {
+            title: 'Перейти в профиль квартиры',
+            onClick: () => history.push(`/apartments/${device.apartmentId}`),
+          },
+          {
+            title: 'Заменить прибор',
+            onClick: () =>
+              history.push(
+                `/apartment/${device.apartmentId}/individualDevice/${device.id}/switch`
+              ),
+          },
+        ]}
+      />
     </Wrapper>
   );
 };

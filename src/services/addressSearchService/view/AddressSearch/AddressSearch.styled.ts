@@ -16,6 +16,7 @@ function getGridTemplateByFields(
     [SearchFieldType.House]: '0.3fr',
     [SearchFieldType.Corpus]: '0.3fr',
     [SearchFieldType.Apartment]: '0.3fr',
+    [SearchFieldType.Question]: '0.4fr',
     ...customTemplateObject,
   };
 

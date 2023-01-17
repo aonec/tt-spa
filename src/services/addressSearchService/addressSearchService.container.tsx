@@ -34,6 +34,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       house: '',
       corpus: '',
       apartment: '',
+      question: '',
     },
     enableReinitialize: true,
     onSubmit,

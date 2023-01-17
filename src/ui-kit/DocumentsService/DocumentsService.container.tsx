@@ -17,6 +17,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   documents,
   onChange,
   label,
+  type,
   componentType = DocumentsUploadComponentType.DragAndDrop,
 }) => {
   if (!documents) {
@@ -36,7 +37,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
         <DragAndDrop
           disabled={isLoading}
           accept={accept}
-          fileHandler={(files) => handleFile(files[0])}
+          fileHandler={(files) => handleFile(files[0], type)}
           uniqId={uniqId}
           text={label}
           style={{
@@ -54,7 +55,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     </div>
   ) : (
     <DocumentsLineUpload
-      fileHandler={(files) => handleFile(files[0])}
+      fileHandler={(files) => handleFile(files[0], type)}
       isLoading={isLoading}
       removeDocument={removeDocument}
       documents={documents}

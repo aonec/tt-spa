@@ -8,10 +8,10 @@ import {
 } from '../../../tt-components/localBases';
 import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import { Subtitle } from '../../../_components/Headers';
-import { AdditionalAddressDescription } from '01/_pages/CalculatorProfile/components/Header.styled';
 import { Tooltip } from 'antd';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
+import { AdditionalAddressDescription } from './RelatedDevices.styled';
 
 interface InformationInterface {
   device: PipeHousingMeteringDeviceResponse;

@@ -50,6 +50,7 @@ import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import _ from 'lodash';
+import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
 
 interface Props {
   isModal?: boolean;
@@ -172,6 +173,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       );
     };
 
+    const measurementUnit =
+      device?.resource && getMeasurementUnit(device?.resource);
+
     const readingsInputs = reading ? (
       <RenderReadingFields
         rateNum={rateNum}
@@ -179,7 +183,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         status={uploadingReadingsStatuses[`${month}.${year}`]}
         editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
-        suffix={device?.measurableUnitString}
+        suffix={measurementUnit}
         removed={reading.isRemoved}
         onChange={(value, index) =>
           setFieldValue(value, {
@@ -202,14 +206,14 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             () => '' as any
           )
         }
-        suffix={device?.measurableUnitString}
+        suffix={measurementUnit}
       />
     );
 
     const consumption = reading && (
       <RenderReadingFields
         rateNum={rateNum}
-        suffix={device?.measurableUnitString}
+        suffix={measurementUnit}
         values={getReadingValues('consumption') || []}
         consumption
       />
@@ -218,7 +222,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     const averageConsumption = reading && (
       <RenderReadingFields
         rateNum={rateNum}
-        suffix={device?.measurableUnitString}
+        suffix={measurementUnit}
         values={getReadingValues('averageConsumption') || []}
         consumption
       />
@@ -237,7 +241,10 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
     const actualHomeownerAccount = _.last(apartment?.homeownerAccounts);
 
-    const recentlyReplacedAccount = getRecentlyReplacedAccount(apartment?.homeownerAccounts || [], actualHomeownerAccount)
+    const recentlyReplacedAccount = getRecentlyReplacedAccount(
+      apartment?.homeownerAccounts || [],
+      actualHomeownerAccount
+    );
 
     const accountLastChangeYear = moment(actualHomeownerAccount?.openAt).year();
     const accountLastChangeMonth = moment(actualHomeownerAccount?.openAt)

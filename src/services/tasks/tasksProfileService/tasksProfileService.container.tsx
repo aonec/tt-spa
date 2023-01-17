@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
@@ -44,15 +44,22 @@ export const TasksProfileContainer = () => {
   const clearFilters = useEvent(inputs.clearFilters);
   const clearAddress = useEvent(inputs.clearAddress);
 
-  const { apartmentId, housingStockId, pipeNodeId } = queryString.parse(
-    window.location.search
-  );
+  const {
+    apartmentId,
+    housingStockId,
+    pipeNodeId,
+    housingMeteringDeviceId,
+  } = queryString.parse(window.location.search);
 
   const preparedApartmentId = prepareQueryStringParam(apartmentId);
 
   const preparedHousingStockId = prepareQueryStringParam(housingStockId);
 
   const preparedPipeNodeId = prepareQueryStringParam(pipeNodeId);
+
+  const preparedHousingMeteringDeviceId = prepareQueryStringParam(
+    housingMeteringDeviceId
+  );
 
   useEffect(() => {
     closeExtendedSearch();
@@ -112,13 +119,17 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      {[preparedApartmentId, preparedHousingStockId, preparedPipeNodeId].some(
-        Boolean
-      ) && (
+      {[
+        preparedApartmentId,
+        preparedHousingStockId,
+        preparedPipeNodeId,
+        housingMeteringDeviceId,
+      ].some(Boolean) && (
         <ApartmentIdGate
           apartmentId={preparedApartmentId}
           housingStockId={preparedHousingStockId}
           pipeNodeId={preparedPipeNodeId}
+          housingMeteringDeviceId={preparedHousingMeteringDeviceId}
         />
       )}
       <TaskTypesGate />

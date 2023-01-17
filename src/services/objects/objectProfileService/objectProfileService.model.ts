@@ -11,6 +11,7 @@ import {
 } from './objectProfileService.api';
 import { ObjectProfileGrouptype } from './objectProfileService.constants';
 import { tasksProfileService } from '../../tasks/tasksProfileService';
+import { consolidatedReportService } from './consolidatedReportService';
 
 const domain = createDomain('objectProfileService');
 
@@ -52,7 +53,7 @@ const setCurrentGroutype = domain.createEvent<ObjectProfileGrouptype>();
 
 const $currentGrouptype = domain
   .createStore<ObjectProfileGrouptype>(ObjectProfileGrouptype.Common)
-  .on(setCurrentGroutype, (_, grouptype) => grouptype)
+  .on(setCurrentGroutype, (_, grouptype) => grouptype);
 
 const $isLoading = getHousingStockFx.pending;
 
@@ -72,6 +73,8 @@ forward({
 export const objectProfileService = {
   inputs: {
     setCurrentGroutype,
+    openConsolidatedReportModal:
+      consolidatedReportService.inputs.openConsolidatedReportModal,
   },
   outputs: {
     $housingStock,

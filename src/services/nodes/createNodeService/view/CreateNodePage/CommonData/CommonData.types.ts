@@ -1,6 +1,7 @@
 import {
   CreatePipeNodeRequest,
   ENodeCommercialAccountStatus,
+  ENodeRegistrationType,
   EResourceType,
   NodeServiceZoneListResponse,
 } from 'myApi';

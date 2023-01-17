@@ -1,15 +1,14 @@
+import { createForm } from 'effector-forms';
+import { createStore, createEffect, createEvent } from 'effector';
+import moment from 'moment';
+import { createGate } from 'effector-react';
+import { IndividualDeviceWithExpiredCheckingDateListResponse } from 'myApi';
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { SetApartmentStatusRequest } from './../../../../_api/apartments.types';
-import { IndividualDeviceWithExpiredCheckingDateListResponse } from './../../../../../myApi';
-import { createForm } from 'effector-forms';
-import {
-  createStore,
-  createEffect,
-  createEvent,
-} from 'effector';
-import moment from 'moment';
 
 export const $isPauseApartmentModalVisible = createStore(false);
+
+export const PauseApartmentGate = createGate<{ id: number }>();
 
 export const pauseApartmentForm = createForm({
   fields: {
@@ -33,9 +32,6 @@ export const pauseApartmentForm = createForm({
     },
     documents: {
       init: [] as FileData[],
-    },
-    apartmentId: {
-      init: null as number | null,
     },
   },
 });
