@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   z-index: 5;
 `;
 
-export const Botton = styled.div`
+export const Button = styled.div`
   width: 40px;
   height: 40px;
   display: flex;

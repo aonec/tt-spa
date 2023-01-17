@@ -9,7 +9,7 @@ import {
   IndividualDeviceListItemResponsePagedList,
 } from 'myApi';
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
-import { previousReadingIndexLimit } from './apartmentIndividualDevicesMetersService.constants';
+import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
 import { $apartment } from '01/features/apartments/displayApartment/models';
@@ -88,7 +88,7 @@ $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
 
 $sliderIndex
   .on(upSliderIndex, (index) => {
-    if (index === previousReadingIndexLimit) return index;
+    if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
     return ++index;
   })

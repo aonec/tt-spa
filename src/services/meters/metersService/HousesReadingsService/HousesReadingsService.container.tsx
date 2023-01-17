@@ -52,10 +52,10 @@ export const HousesReadingsContainer = () => {
       }
     };
 
-    window.addEventListener('scroll', onScrollDown, true);
+    window.addEventListener('scroll', onScrollDown);
 
     return () => {
-      window.removeEventListener('scroll', onScrollDown, true);
+      window.removeEventListener('scroll', onScrollDown);
     };
   }, []);
 

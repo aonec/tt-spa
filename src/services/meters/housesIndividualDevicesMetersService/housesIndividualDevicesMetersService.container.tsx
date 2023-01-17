@@ -3,7 +3,7 @@ import { HousesIndividualDevicesMetersContainerProps } from './housesIndividualD
 import { IndividualDeviceMetersInputContainer } from '../individualDeviceMetersInputService';
 import { HousesIndividualDevicesHeader } from './view/HousesIndividualDevicesHeader';
 import { getReadingsMonthByShift } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
-import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
+import { PREVIOUS_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 
 export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesMetersContainerProps> = ({
   individualDevicesList,
@@ -12,14 +12,14 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
 }) => {
   const [sliderIndex, setSliderIndex] = useState(0);
 
-  const isCanUp = sliderIndex < previousReadingIndexLimit;
+  const isCanUp = sliderIndex < PREVIOUS_READING_INDEX_LIMIT;
   const isCanDown = sliderIndex > 0;
 
   const upSliderIndex = () => isCanUp && setSliderIndex((prev) => prev + 1);
   const downSliderIndex = () => isCanDown && setSliderIndex((prev) => prev - 1);
 
   const prevReadingMonth = getReadingsMonthByShift(sliderIndex);
-  const currentReadingMonth = useMemo(() => getReadingsMonthByShift(-1), []);
+  const currentReadingMonth = getReadingsMonthByShift(-1);
 
   return (
     <>
@@ -33,6 +33,7 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
       />
       {individualDevicesList.map((device, index) => (
         <IndividualDeviceMetersInputContainer
+          key={device.id}
           devices={individualDevicesList}
           device={device}
           sliderIndex={sliderIndex}
