@@ -13,17 +13,16 @@ import { Contractors } from './Tabs/Contractors';
 export const CompanyProfile: FC<CompanyProfileProps> = ({
   currentManagingFirm,
   staffList,
-  fetchStaffPending,
+  isLoadingStaff,
   handleOpenStatusChangeModal,
   handleCatchEmployeeStatusData,
   handleOpenDeleteModal,
   handleCatchEmployeeId,
   handleOpenCreateEmployeeModal,
   conractorsList,
-  fetchContractorsPending,
+  isLoadingContractors,
   handleOpenAddContractorModal,
   catchContractorId,
-  handleOpenDeleteContractorModal,
   handleOpenEditContractorModal,
   catchContractorData,
 }) => {
@@ -76,7 +75,7 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
       <Route path="/companyProfile/staff" exact>
         <Staff
           staffList={staffList}
-          fetchStaffPending={fetchStaffPending}
+          isLoadingStaff={isLoadingStaff}
           handleOpenStatusChangeModal={handleOpenStatusChangeModal}
           handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
           handleOpenDeleteModal={handleOpenDeleteModal}
@@ -86,9 +85,8 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
       <Route path="/companyProfile/contractors" exact>
         <Contractors
           conractorsList={conractorsList}
-          fetchContractorsPending={fetchContractorsPending}
+          isLoadingContractors={isLoadingContractors}
           catchContractorId={catchContractorId}
-          handleOpenDeleteContractorModal={handleOpenDeleteContractorModal}
           handleOpenEditContractorModal={handleOpenEditContractorModal}
           catchContractorData={catchContractorData}
         />

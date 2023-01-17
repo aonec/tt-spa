@@ -9,7 +9,7 @@ import { ContractorDataType } from 'services/contractors/editContractorService/e
 export type CompanyProfileProps = {
   currentManagingFirm: OrganizationResponse | null;
   staffList: OrganizationUserListResponsePagedList | null;
-  fetchStaffPending: boolean;
+  isLoadingStaff: boolean;
   handleOpenStatusChangeModal: () => void;
   handleCatchEmployeeStatusData: (payload: {
     id: number;
@@ -19,9 +19,8 @@ export type CompanyProfileProps = {
   handleCatchEmployeeId: (payload: number) => void;
   handleOpenCreateEmployeeModal: () => void;
   conractorsList: ContractorListResponsePagedList | null;
-  fetchContractorsPending: boolean;
+  isLoadingContractors: boolean;
   handleOpenAddContractorModal: () => void;
-  handleOpenDeleteContractorModal: () => void;
   catchContractorId: (payload: { id: number; name: string | null }) => void;
   handleOpenEditContractorModal: () => void;
   catchContractorData: (payload: ContractorDataType) => void;

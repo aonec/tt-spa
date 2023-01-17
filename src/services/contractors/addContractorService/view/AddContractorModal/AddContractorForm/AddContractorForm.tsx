@@ -39,6 +39,7 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
         .required('Обязательное поле'),
     }),
   });
+  
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Название организации">

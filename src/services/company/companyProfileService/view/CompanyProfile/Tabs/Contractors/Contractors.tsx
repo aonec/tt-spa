@@ -13,9 +13,8 @@ const { FetchingContractorsGate } = gates;
 
 export const Contractors: FC<ContractorsProps> = ({
   conractorsList,
-  fetchContractorsPending,
+  isLoadingContractors,
   catchContractorId,
-  handleOpenDeleteContractorModal,
   handleOpenEditContractorModal,
   catchContractorData,
 }) => {
@@ -23,16 +22,15 @@ export const Contractors: FC<ContractorsProps> = ({
     <>
       <FetchingContractorsGate />
       <LoaderWrapper>
-        <WithLoader isLoading={fetchContractorsPending} />
+        <WithLoader isLoading={isLoadingContractors} />
       </LoaderWrapper>
 
-      {!fetchContractorsPending &&
+      {!isLoadingContractors &&
         conractorsList?.items &&
         conractorsList.items.map((contractor) => (
           <ContractorItem
             contractor={contractor}
             catchContractorId={catchContractorId}
-            handleOpenDeleteContractorModal={handleOpenDeleteContractorModal}
             handleOpenEditContractorModal={handleOpenEditContractorModal}
             catchContractorData={catchContractorData}
           />

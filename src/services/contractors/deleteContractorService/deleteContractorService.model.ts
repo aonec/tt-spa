@@ -6,7 +6,6 @@ import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('deleteContractorService');
 
-const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
 
 const catchContractorId = domain.createEvent<{
@@ -24,16 +23,17 @@ const deleteContractorFx = domain.createEffect<
 
 const deleteContractorSuccess = deleteContractorFx.doneData;
 
-const $isModalOpen = domain
-  .createStore<boolean>(false)
-  .on(handleOpenModal, () => true)
-  .on(handleCloseModal, () => false)
-  .reset(deleteContractorSuccess);
-
 const $contractorData = domain
   .createStore<{ id: number; name: string | null } | null>(null)
   .on(catchContractorId, (_, data) => data)
-  .reset(deleteContractorSuccess);
+  .reset(handleCloseModal);
+
+forward({
+  from: deleteContractorSuccess,
+  to: handleCloseModal,
+});
+
+const $isModalOpen = $contractorData.map(Boolean);
 
 guard({
   clock: handleDeleteContractor,
@@ -57,7 +57,6 @@ export const deleteContractorService = {
   inputs: {
     handleDeleteContractor,
     handleCloseModal,
-    handleOpenModal,
     catchContractorId,
     deleteContractorSuccess,
   },

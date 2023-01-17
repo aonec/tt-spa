@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
-import { Contacts, Wrapper } from './ContractorItem.styled';
+import { Contacts, Name, Wrapper } from './ContractorItem.styled';
 import { ContractorItemProps } from './ContractorItem.types';
-import { MenuButtonTT, Name } from '01/tt-components';
 import { usePhoneMask } from 'hooks/usePhoneMask';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 
 export const ContractorItem: FC<ContractorItemProps> = ({
   contractor,
   catchContractorId,
-  handleOpenDeleteContractorModal,
   handleOpenEditContractorModal,
   catchContractorData,
 }) => {
@@ -21,11 +20,11 @@ export const ContractorItem: FC<ContractorItemProps> = ({
         {(contractor.cellphone && phone.maskValue(contractor.cellphone)) ||
           'Не указано'}
       </Contacts>
-      <MenuButtonTT
-        menuButtonArr={[
+      <ContextMenuButton
+        menuButtons={[
           {
             title: 'Редактировать информацию о подрядчике',
-            cb: () => {
+            onClick: () => {
               catchContractorData({
                 id: contractor.id,
                 name: contractor.name,
@@ -34,19 +33,14 @@ export const ContractorItem: FC<ContractorItemProps> = ({
               });
               handleOpenEditContractorModal();
             },
-            show: true,
             color: 'default',
-            clickable: true,
           },
           {
             title: 'Удалить подрячика',
-            cb: () => {
+            onClick: () => {
               catchContractorId({ id: contractor.id, name: contractor.name });
-              handleOpenDeleteContractorModal();
             },
-            show: true,
-            color: 'red',
-            clickable: true,
+            color: 'danger',
           },
         ]}
       />

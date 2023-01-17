@@ -86,7 +86,7 @@ forward({
 });
 
 const $fetchStaffPending = fetchStaffFx.pending;
-const $fetchContractorsPending = fetchContractorsFx.pending;
+const $isLoadingContractors = fetchContractorsFx.pending;
 
 export const companyProfileService = {
   inputs: {
@@ -98,8 +98,6 @@ export const companyProfileService = {
     handleCatchEmployeeId: deleteEmployeeService.inputs.handleCatchEmployeeId,
     handleOpenCreateEmployeeModal: createEmployeeService.inputs.handleOpenModal,
     handleOpenAddContractorModal: addContractorService.inputs.handleOpenModal,
-    handleOpenDeleteContractorModal:
-      deleteContractorService.inputs.handleOpenModal,
     catchContractorId: deleteContractorService.inputs.catchContractorId,
     handleOpenEditContractorModal: editContractorService.inputs.handleOpenModal,
     catchContractorData: editContractorService.inputs.catchContractorData,
@@ -109,7 +107,7 @@ export const companyProfileService = {
     $staffList,
     $fetchStaffPending,
     $contractorsList,
-    $fetchContractorsPending,
+    $isLoadingContractors,
   },
   gates: {
     FetchingCurrentManagingFirmGate,

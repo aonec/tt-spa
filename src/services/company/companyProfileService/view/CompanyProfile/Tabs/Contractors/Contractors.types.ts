@@ -3,9 +3,8 @@ import { ContractorDataType } from 'services/contractors/editContractorService/e
 
 export type ContractorsProps = {
   conractorsList: ContractorListResponsePagedList | null;
-  fetchContractorsPending: boolean;
+  isLoadingContractors: boolean;
   catchContractorId: (payload: { id: number; name: string | null }) => void;
-  handleOpenDeleteContractorModal: () => void;
   handleOpenEditContractorModal: () => void;
   catchContractorData: (payload: ContractorDataType) => void;
 };

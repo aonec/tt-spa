@@ -1,6 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { ContractorCreateRequest, ContractorResponse } from 'myApi';
-import { postContractor } from './addContractorService.api';
+import { createContractor } from './addContractorService.api';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
@@ -15,7 +15,7 @@ const addContractorFx = domain.createEffect<
   ContractorCreateRequest,
   ContractorResponse,
   EffectFailDataAxiosError
->(postContractor);
+>(createContractor);
 
 const addContractorSuccess = addContractorFx.doneData;
 
