@@ -1,4 +1,4 @@
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, forward, guard, sample } from 'effector';
 import { patchContractor } from './editContractorService.api';
 import { ContractorResponse, ContractorUpdateRequest } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
@@ -34,22 +34,10 @@ const $contractorData = domain
   .createStore<ContractorDataType | null>(null)
   .on(catchContractorData, (_, data) => data);
 
-// guard({
-//   clock: handleEditcontractor,
-//   source: sample({
-//     source:$contractorData ,
-//     fn: () =>{} ,
-//   })
-//   filter: (id): id is number => Boolean(id),
-//   target: editContractorFx,
-// });
-
-// sample({
-//   clock:handleEditcontractor ,
-//   source:$contractorData ,
-//   fn:(sourceData, clockData) => { return {contractorId: sourceData?.id, } } ,
-//   target:editContractorFx ,
-// })
+forward({
+  from: handleEditcontractor,
+  to: editContractorFx,
+});
 
 editContractorFx.failData.watch((error) =>
   message.error(error.response.data.error.Text)
@@ -65,6 +53,7 @@ export const editContractorService = {
     handleCloseModal,
     catchContractorData,
     handleEditcontractor,
+    editContractorSuccess,
   },
   outputs: { $isModalOpen, $contractorData },
 };
