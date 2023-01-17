@@ -13,6 +13,7 @@ export type ApartmentsReadingsProps = {
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
+  openEditPersonalNumberModal: () => void;
 };
 
 export enum SearchMode {

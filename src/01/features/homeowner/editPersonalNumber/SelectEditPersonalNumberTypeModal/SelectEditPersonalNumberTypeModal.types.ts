@@ -1,6 +1,5 @@
 import { ApartmentResponse } from 'myApi';
 
-export type ApartmentAlertsProps = {
+export type Props = {
   apartment: ApartmentResponse;
-  handleCancelPauseApartment: () => void;
 };
