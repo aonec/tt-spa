@@ -29,13 +29,13 @@ export const ApartmentReadingsContainer = () => {
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
+      console.log(apartment);
+
       if (!apartment) return;
 
       history.push(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
   }, []);
-
-  const apartmentId = Number(id) || undefined;
 
   return (
     <>
