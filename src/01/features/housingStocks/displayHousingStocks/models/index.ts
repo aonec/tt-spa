@@ -12,5 +12,5 @@ export const filterFieldHasBeenChanged = createEvent<GetHousingStockParams>();
 
 export const fetchHousingStocksFx = createEffect<
   GetHousingStockParams,
-  HousingStockListResponse[]
+  HousingStockListResponse[] | null
 >();

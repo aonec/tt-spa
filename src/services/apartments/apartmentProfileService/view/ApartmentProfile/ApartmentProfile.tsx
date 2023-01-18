@@ -95,7 +95,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
     [ApartmentSection.Testimony]: apartment && (
       <ApartmentIndividualDevicesMetersContainer
         maxWidth={860}
-        apartmentId={apartment.id}
+        apartment={apartment}
         editable={false}
       />
     ),

@@ -10,7 +10,6 @@ const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
   const history = useHistory();
-  const { id } = useParams<{ id?: string }>();
 
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
@@ -28,12 +27,12 @@ export const ApartmentReadingsContainer = () => {
   const apartment = useStore(outputs.$apartment);
 
   useEffect(() => {
-    if (Number(id) === apartment?.id) return;
+    return inputs.handleApartmentLoaded.watch((apartment) => {
+      if (!apartment) return;
 
-    history.push(`/meters/apartments/${apartment?.id || ''}`);
-  }, [apartment, id]);
-
-  const apartmentId = Number(id) || undefined;
+      history.push(`/meters/apartments/${apartment.id}`);
+    }).unsubscribe;
+  }, []);
 
   return (
     <>
