@@ -24,8 +24,8 @@ export const getDatePeriod = (
 
   if (!period[0] || !period[1]) return null;
 
-  const From = period[0].startOf('day').toISOString();
-  const To = period[1].endOf('day').toISOString();
+  const From = period[0].startOf('day').format('YYYY-MM-DDTHH:mm:ss');
+  const To = period[1].endOf('day').format('YYYY-MM-DDTHH:mm:ss');
 
   return { From, To };
 };

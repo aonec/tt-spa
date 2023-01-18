@@ -49,7 +49,17 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const isPaused = apartment.status === EApartmentStatus.Pause;
 
-  const initialHomeownerId = apartment.homeownerAccounts?.[0]?.id;
+  const filteredHomeowners = apartment.homeownerAccounts
+    ?.filter((homeowner) => !homeowner.closedAt)
+    .sort((a, b) => {
+      if (b.isMainPersonalAccountNumber) return 1;
+
+      if (a.isMainPersonalAccountNumber) return -1;
+
+      return 0;
+    });
+
+  const initialHomeownerId = filteredHomeowners?.[0]?.id;
 
   const [isEditing, setIsEditing] = useState(false);
   const [activeHomeowner, setActiveHomeowner] = useState(initialHomeownerId);
@@ -87,10 +97,6 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
 
   const selectedHomeowner = apartment.homeownerAccounts?.find(
     (homeowner) => homeowner.id === activeHomeowner
-  );
-
-  const filteredHomeowners = apartment.homeownerAccounts?.filter(
-    (homeowner) => !homeowner.closedAt
   );
 
   const houseManagement = housingStock?.houseManagement;
@@ -231,7 +237,9 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <InfoPanelLabel>Лицевой счет</InfoPanelLabel>
                 <ExtraInfoText>
                   {selectedHomeowner?.personalAccountNumber}{' '}
-                  <AccountOpeningDate>{accountingOpeningDate}</AccountOpeningDate>
+                  <AccountOpeningDate>
+                    {accountingOpeningDate}
+                  </AccountOpeningDate>
                 </ExtraInfoText>
               </div>
               <div>
