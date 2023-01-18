@@ -233,6 +233,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       uploadingMetersStatuses={uploadingMetersStatuses}
       previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
       editable={editable}
+      apartmentId={device.apartmentId}
     />
   );
 };

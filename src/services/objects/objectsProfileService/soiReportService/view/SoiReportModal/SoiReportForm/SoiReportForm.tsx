@@ -20,6 +20,7 @@ import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 export const SoiReportForm: FC<SoiReportFormProps> = ({
   soiReportType,
@@ -59,7 +60,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             ? ESoiReportPeriod.Year
             : ESoiReportPeriod.Month,
         Year: date.year(),
-        Month: date.month(),
+        Month: date.month() + 1,
       });
     },
   });
@@ -122,22 +123,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
           </FormItem>
         )}
         <FormItem label="Тип ресурса">
-          <Select
-            placeholder="Выберите тип ресурса"
-            value={values.Resource || undefined}
+          <ResourceSelect
+            resource={values.Resource}
             onChange={(value) => setFieldValue('Resource', value || null)}
-          >
-            {Object.values(EResourceType).map((resource) => (
-              <Select.Option key={resource} value={resource}>
-                <ResourceOptionWrapper>
-                  <ResourceIconLookup resource={resource} />
-                  <ResourceNameWrapper>
-                    {resourcesNamesLookup[resource]}
-                  </ResourceNameWrapper>
-                </ResourceOptionWrapper>
-              </Select.Option>
-            ))}
-          </Select>
+          />
         </FormItem>
         <FormItem label="Норматив на 1 человека">
           <Input

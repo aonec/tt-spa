@@ -10,7 +10,6 @@ const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
   const history = useHistory();
-  const { id } = useParams<{ id?: string }>();
 
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
@@ -34,8 +33,6 @@ export const ApartmentReadingsContainer = () => {
       history.push(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
   }, []);
-
-  const apartmentId = Number(id) || undefined;
 
   return (
     <>

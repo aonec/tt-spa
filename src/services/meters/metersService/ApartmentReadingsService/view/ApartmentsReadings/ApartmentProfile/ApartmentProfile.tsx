@@ -113,7 +113,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               />
               <ReadingsWrapper>
                 <ApartmentIndividualDevicesMetersContainer
-                  apartmentId={apartment.id}
+                  apartment={apartment}
                 />
               </ReadingsWrapper>
             </ContentWrapper>
