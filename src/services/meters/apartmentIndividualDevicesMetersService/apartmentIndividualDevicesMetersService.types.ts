@@ -1,7 +1,12 @@
-import { EIndividualDeviceOrderRule, EOrderByRule, EResourceType } from 'myApi';
+import {
+  EIndividualDeviceOrderRule,
+  EOrderByRule,
+  EResourceType,
+  ApartmentResponse,
+} from 'myApi';
 
 export type Params = {
-  apartmentId?: number;
+  apartment?: ApartmentResponse;
   maxWidth?: number;
   editable?: boolean;
 };
