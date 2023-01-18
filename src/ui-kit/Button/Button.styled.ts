@@ -86,6 +86,12 @@ export const Wrapper = styled.div<{
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  svg {
+    path {
+      fill: ${({ type }) => buttonFontColorsDictionary[type]};
+    }
+  }
 `;
 
 export const IconWrapper = styled.div`
