@@ -192,11 +192,7 @@ guard({
         pushStagePayloadValidationsArray.find((elem) => {
           const isTaskTypeIntersection = elem.taskType === taskType;
 
-          const isActionsIntersection =
-            elem.actionType &&
-            task?.currentStage?.actions?.includes(elem.actionType);
-
-          return isTaskTypeIntersection || isActionsIntersection;
+          return isTaskTypeIntersection;
         })?.schema;
 
       try {

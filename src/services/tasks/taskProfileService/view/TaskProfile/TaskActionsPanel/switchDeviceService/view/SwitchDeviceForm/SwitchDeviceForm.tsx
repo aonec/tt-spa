@@ -17,11 +17,13 @@ import {
   SwitchDeviceFormProps,
   SwitchDeviceFormValues,
 } from './SwitchDeviceForm.types';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   device,
   handleChangeSwitchDevicePayload,
   isCalculator,
+  calculatorInfos,
 }) => {
   const {
     values,
@@ -34,6 +36,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       openingDate: null,
       model: '',
       serialNumber: '',
+      calculatorInfoId: null,
     },
     onSubmit: () => {},
   });
@@ -41,9 +44,9 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   useEffect(() => {
     handleChangeSwitchDevicePayload({
       ...values,
-      lastCheckingDate: values.lastCheckingDate?.format("YYYY-MM-DD"),
-      futureCheckingDate: values.futureCheckingDate?.format("YYYY-MM-DD"),
-      openingDate: values.openingDate?.format("YYYY-MM-DD"),
+      lastCheckingDate: values.lastCheckingDate?.format('YYYY-MM-DD'),
+      futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
+      openingDate: values.openingDate?.format('YYYY-MM-DD'),
     });
   }, [values]);
 
@@ -56,23 +59,22 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
     );
   }, [values.lastCheckingDate]);
 
+  useEffect(() => {
+    if (!values.calculatorInfoId) return;
+
+    const model =
+      calculatorInfos.find(({ id }) => id === values.calculatorInfoId)?.model ||
+      '';
+
+    setFieldValue('model', model);
+  }, [values.calculatorInfoId]);
+
   return (
     <div>
       <DeviceInfoWrapper>
         {!isCalculator && (
           <FormItem label="Тип ресурса">
-            <Select disabled value={device.resource || undefined}>
-              {Object.values(EResourceType).map((resource) => (
-                <Select.Option value={resource} key={resource}>
-                  <ResourceOptionWrapper>
-                    <ResourceIconLookup resource={resource} />
-                    <ResourceOptionNameWrapper>
-                      {resourceNamesLookup[resource]}
-                    </ResourceOptionNameWrapper>
-                  </ResourceOptionWrapper>
-                </Select.Option>
-              ))}
-            </Select>
+            <ResourceSelect disabled resource={device.resource} />
           </FormItem>
         )}
         <FormItem label="Тип прибора">
@@ -92,12 +94,27 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
           />
         </FormItem>
         <FormItem label="Модель прибора">
-          <Input
-            name="model"
-            value={values.model}
-            onChange={handleChange}
-            placeholder="Введите название"
-          />
+          {!isCalculator && (
+            <Input
+              name="model"
+              value={values.model}
+              onChange={handleChange}
+              placeholder="Введите название"
+            />
+          )}
+          {isCalculator && (
+            <Select
+              placeholder="Выберите"
+              value={values.calculatorInfoId || undefined}
+              onChange={(id) => setFieldValue('calculatorInfoId', id)}
+            >
+              {calculatorInfos.map(({ id, model }) => (
+                <Select.Option key={id} value={id}>
+                  {model}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
         </FormItem>
       </DeviceInfoWrapper>
       <DeviceCheckingDatesWrapper>

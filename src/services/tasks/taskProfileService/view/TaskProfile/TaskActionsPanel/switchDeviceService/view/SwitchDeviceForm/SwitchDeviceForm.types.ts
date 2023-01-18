@@ -2,6 +2,7 @@ import {
   MeteringDeviceResponse,
   SwitchHousingMeteringDeviceRequest,
 } from 'myApi';
+import { CalculatorInfoItem } from '01/features/carlculators/calculatorsInfo/models/types';
 
 export type SwitchDeviceFormProps = {
   device: MeteringDeviceResponse;
@@ -9,6 +10,7 @@ export type SwitchDeviceFormProps = {
     payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>
   ) => void;
   isCalculator: boolean;
+  calculatorInfos: CalculatorInfoItem[];
 };
 
 export type SwitchDeviceFormValues = {
@@ -17,4 +19,5 @@ export type SwitchDeviceFormValues = {
   openingDate: null | moment.Moment;
   model: '';
   serialNumber: '';
+  calculatorInfoId: number | null;
 };
