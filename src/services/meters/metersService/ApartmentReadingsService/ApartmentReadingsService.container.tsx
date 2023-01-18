@@ -10,7 +10,6 @@ const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
   const history = useHistory();
-  const { id } = useParams<{ id?: string }>();
 
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
@@ -29,8 +28,6 @@ export const ApartmentReadingsContainer = () => {
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
-      console.log(apartment);
-
       if (!apartment) return;
 
       history.push(`/meters/apartments/${apartment.id}`);
