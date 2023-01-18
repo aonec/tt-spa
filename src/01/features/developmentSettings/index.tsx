@@ -14,6 +14,8 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Button } from 'ui-kit/Button';
 import { SettingsIcon } from 'ui-kit/icons';
 import { baseURL } from '01/axios';
+import moment from 'moment';
+import styled from 'styled-components';
 
 export const DevSettingsModal = () => {
   const visible = useStore($isDevSettingsModalOpen);
@@ -43,6 +45,13 @@ export const DevSettingsModal = () => {
           </Button>
         </Flex>
       </Form.Item>
+      <Badge>TT frontend team {moment().format('YYYY')} [ver: 1.0.2]</Badge>
     </ModalTT>
   );
 };
+
+const Badge = styled.div`
+  margin-top: 24px;
+  color: #9a9fac;
+  font-size: 13px;
+`;
