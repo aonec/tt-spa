@@ -74,7 +74,7 @@ updateApartmentFx.doneData.watch(() => message.success('Сохранено ус�
 
 const $isLoadingApartment = fetchApartmentFx.pending;
 
-const handleApartmentLoaded = updateApartmentFx.doneData;
+const handleApartmentLoaded = fetchApartmentFx.doneData;
 
 export const apartmentReadingsService = {
   inputs: {
