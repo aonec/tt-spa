@@ -8,10 +8,12 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { NodesInfo } from './NodesInfo';
 import { Button } from 'ui-kit/Button';
 import { UpdateCalculatorRequest } from 'myApi';
 import moment from 'moment';
+import _ from 'lodash';
+import { ItemInterface, items } from '01/tt-components/localBases';
+import { NodesInfo } from './NodesInfo';
 
 export const EditMainInfo: FC<EditMainInfoProps> = ({
   calculator,
@@ -26,14 +28,24 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     entryNumber: node.communicationPipes?.[0].entryNumber || null,
   }));
 
-  const { values, setFieldValue, errors } = useFormik<UpdateCalculatorRequest>({
+  const getCurrentInfoId = calculator?.model
+    ? _.find<ItemInterface>(items, { label: calculator?.model })
+    : undefined;
+
+  const {
+    values,
+    setFieldValue,
+    errors,
+    handleSubmit,
+  } = useFormik<UpdateCalculatorRequest>({
     initialValues: {
       serialNumber: calculator?.serialNumber,
-      infoId: calculator?.infoId,
+      infoId: getCurrentInfoId?.value || null,
       lastCheckingDate: calculator?.lastCheckingDate,
       futureCheckingDate: calculator?.futureCheckingDate,
     },
     validationSchema: yup.object().shape({
+      serialNumber: yup.string().required('Это поле обязательно'),
       currentCheckingDate: yup.string().required('Это поле обязательно'),
       futureCheckingDate: yup.string().required('Это поле обязательно'),
     }),
@@ -65,11 +77,13 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
             setFieldValue('serialNumber', value.target.value);
           }}
         />
+        <ErrorMessage>{errors.serialNumber}</ErrorMessage>
       </FormItem>
 
       <GridContainer>
         <FormItem label="Дата поверки прибора">
           <DatePicker
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
               setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
@@ -81,6 +95,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
         </FormItem>
         <FormItem label="Дата следующей поверки прибора">
           <DatePicker
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('futureCheckingDate', date);
             }}
@@ -97,7 +112,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
         <Button type="ghost" onClick={onCancel}>
           Отмена
         </Button>
-        <Button>Сохранить</Button>
+        <Button onClick={() => handleSubmit()}>Сохранить</Button>
       </Footer>
     </Wrapper>
   );

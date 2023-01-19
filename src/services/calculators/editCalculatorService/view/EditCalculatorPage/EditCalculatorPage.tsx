@@ -16,13 +16,14 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { Tabs } from 'ui-kit/Tabs';
-import { EditConnectionContainer } from './Tabs/editConnectionService';
-import { EditMainInfoContainer } from './Tabs/editMainInfoService';
+import { EditMainInfo } from './Tabs/EditMainInfo';
+import { EditConnection } from './Tabs/EditConnection';
 
 export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   calculator,
   currentTab,
   handleChangeTab,
+  calculatorTypesSelectItems,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
@@ -64,11 +65,13 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
       </Tabs>
 
       {currentTab === EditCalculatorTabs.CommonInfo && (
-        <EditMainInfoContainer calculator={calculator} onCancel={onCancel} />
+        <EditMainInfo
+          calculator={calculator}
+          onCancel={onCancel}
+          calculatorTypesSelectItems={calculatorTypesSelectItems}
+        />
       )}
-      {currentTab === EditCalculatorTabs.Connection && (
-        <EditConnectionContainer />
-      )}
+      {currentTab === EditCalculatorTabs.Connection && <EditConnection />}
       {currentTab === EditCalculatorTabs.Documents && (
         <h3>Раздел в разработке</h3>
       )}

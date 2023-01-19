@@ -1,6 +1,10 @@
 import { createDomain } from 'effector';
 import { EditCalculatorTabs } from './view/EditCalculatorPage/EditCalculatorPage.types';
 import { calculatorProfileService } from '../calculatorProfileService';
+import {
+  $calculatorTypesSelectItems,
+  CalculatorInfosGate,
+} from '01/features/carlculators/calculatorsInfo/models';
 
 const domain = createDomain('editCalculatorService');
 
@@ -15,6 +19,10 @@ export const editCalculatorService = {
   outputs: {
     $calculator: calculatorProfileService.outputs.$calculator,
     $currentTab,
+    $calculatorTypesSelectItems,
   },
-  gates: {},
+  gates: {
+    CalculatorInfosGate,
+    CalculatorIdGate: calculatorProfileService.gates.CalculatorIdGate,
+  },
 };
