@@ -58,10 +58,6 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     return getExistingReading(preparedReadings, sliderIndex, 'prev');
   }, [device.readings, sliderIndex]);
 
-  useEffect(() => {
-    clearStatuses();
-  }, [device.id]);
-
   const {
     previousReading,
     currentReading,
