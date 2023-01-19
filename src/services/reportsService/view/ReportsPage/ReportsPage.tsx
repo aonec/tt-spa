@@ -17,7 +17,7 @@ import { reportsSelectItems } from './ReportsPage.constants';
 export const ReportsPage: FC<ReportsPageProps> = ({}) => {
   const reportsListRef = useRef<HTMLDivElement>(null);
 
-  const [scrollX, setScrollX] = useState<number | null>(null);
+  const [scrollX, setScrollX] = useState<number>(0);
 
   useEffect(() => {
     if (!reportsListRef.current) return;
@@ -44,8 +44,8 @@ export const ReportsPage: FC<ReportsPageProps> = ({}) => {
 
   console.log(scrollX);
 
-  const isShowLeftScrollButton = Boolean(scrollX && scrollX > 20);
-  const isShowRightScrollButton = Boolean(scrollX && scrollX < 290);
+  const isShowLeftScrollButton = scrollX > 15;
+  const isShowRightScrollButton = scrollX < 290;
 
   return (
     <Wrapper>
