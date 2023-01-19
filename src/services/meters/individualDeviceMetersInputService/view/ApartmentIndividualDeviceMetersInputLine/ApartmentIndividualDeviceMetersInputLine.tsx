@@ -14,7 +14,6 @@ import {
 import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndividualDeviceMetersInputLine.types';
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import { useHistory } from 'react-router-dom';
 
 export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDeviceMetersInputLineProps> = ({
   device,
@@ -27,11 +26,8 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
 }) => {
-  const history = useHistory();
 
-  const isDeviceClosed = useMemo(() => {
-    return Boolean(device.closingDate);
-  }, [device]);
+  const isDeviceClosed = Boolean(device.closingDate);
 
   const previousReadingTooltipTitle = useMemo(
     () =>
@@ -44,7 +40,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
     [previousReadingByCurrentSliderIndex, device]
   );
 
-  const rateNum = useMemo(() => getRateNum(device.rateType), [device]);
+  const rateNum = getRateNum(device.rateType);
 
   const consumptionValues = useMemo(() => {
     if (!previousReading || !currentReading) return null;
@@ -115,27 +111,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
           style={{ cursor: 'pointer' }}
         />
       </Tooltip>
-      <ContextMenuButton
-        size="small"
-        menuButtons={[
-          {
-            title: 'Перейти к вводу показаний по квартире',
-            onClick: () =>
-              history.push(`/meters/apartments/${device.apartmentId}`),
-          },
-          {
-            title: 'Перейти в профиль квартиры',
-            onClick: () => history.push(`/apartments/${device.apartmentId}`),
-          },
-          {
-            title: 'Заменить прибор',
-            onClick: () =>
-              history.push(
-                `/apartment/${device.apartmentId}/individualDevice/${device.id}/switch`
-              ),
-          },
-        ]}
-      />
+      <ContextMenuButton size="small" />
     </Wrapper>
   );
 };

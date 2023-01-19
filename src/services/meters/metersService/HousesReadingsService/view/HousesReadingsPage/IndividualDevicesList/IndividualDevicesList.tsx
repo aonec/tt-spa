@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
 import { LoadButtonWrapper } from './IndividualDevicesList.styled';
 import { IndividualDevicesListProps } from './IndividualDevicesList.types';
-import { Skeleton } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { HousesIndividualDevicesMetersContainer } from 'services/meters/housesIndividualDevicesMetersService';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   individualDevicesList,
@@ -21,10 +19,12 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         openReadingsHistoryModal={openReadingsHistoryModal}
       />
-      <WithLoader isLoading={isLoadingIndividualDevices} />
-      {!isLoadingIndividualDevices && !isAllDevicesLoaded && (
+      {!isAllDevicesLoaded && (
         <LoadButtonWrapper>
-          <Button onClick={loadNextPageOfIndividualDevicesList}>
+          <Button
+            onClick={loadNextPageOfIndividualDevicesList}
+            isLoading={isLoadingIndividualDevices}
+          >
             Загрузить приборы
           </Button>
         </LoadButtonWrapper>
