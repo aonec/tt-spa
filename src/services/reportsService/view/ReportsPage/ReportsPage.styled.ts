@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { ChevronIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
-  width: 960px;
+  max-width: 1200px;
 `;
 
 export const Title = styled.div`
@@ -12,6 +13,11 @@ export const Title = styled.div`
 `;
 
 export const ReportBlocksWrapper = styled.div`
+  position: relative;
+`;
+
+export const ReportsList = styled.div`
+  scroll-behavior: smooth;
   padding: 16px;
   display: flex;
   gap: 16px;
@@ -59,4 +65,37 @@ export const ReportName = styled.div`
   font-size: 14px;
   color: #272f5a;
   margin-top: 8px;
+`;
+
+export const ScrollButton = styled.div<{ isRight?: boolean }>`
+  position: absolute;
+  top: calc(50% - 21px);
+  transform: translateX(${({ isRight }) => (isRight ? '21px' : '-21px')});
+  right: ${({ isRight }) => (isRight ? '0' : 'none')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff44;
+  backdrop-filter: blur(4px);
+  border: 1px solid #dcdee4;
+  width: 42px;
+  height: 42px;
+  z-index: 2;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    box-shadow: 0px 4px 6px rgba(78, 93, 146, 0.1);
+    background: #ffffff;
+    svg {
+      path {
+        fill: #189ee9;
+      }
+    }
+  }
+`;
+
+export const ChevronIconSC = styled(ChevronIcon)<{ isRight?: boolean }>`
+  ${({ isRight }) => isRight && 'transform: rotate(180deg);'}
 `;
