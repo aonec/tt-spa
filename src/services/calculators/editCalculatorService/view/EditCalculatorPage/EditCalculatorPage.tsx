@@ -64,7 +64,7 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
       </Tabs>
 
       {currentTab === EditCalculatorTabs.CommonInfo && (
-        <EditMainInfoContainer />
+        <EditMainInfoContainer calculator={calculator} onCancel={onCancel} />
       )}
       {currentTab === EditCalculatorTabs.Connection && (
         <EditConnectionContainer />

@@ -1,6 +1,6 @@
 import { CalculatorResponse } from 'myApi';
 
-export type EditMainInfoProps = {
+export type EditMainInfoContainerProps = {
   calculator: CalculatorResponse | null;
   onCancel: () => void;
 };

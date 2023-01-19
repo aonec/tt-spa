@@ -14,10 +14,10 @@ export const EditCalculatorContainer = () => {
   const currentTab = useStore(outputs.$currentTab);
   const calculator = useStore(outputs.$calculator);
 
-  const { calculatorId } = useParams<{ calculatorId: string }>();
+  const { deviceId } = useParams<{ deviceId: string }>();
   return (
     <>
-      <CalculatorIdGate id={Number(calculatorId)} />
+      <CalculatorIdGate id={Number(deviceId)} />
       <EditCalculatorPage
         calculator={calculator}
         currentTab={currentTab}

@@ -5,12 +5,10 @@ import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
   Contractor,
-  EditCalculator,
   ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
-  MetersPage,
   Registration,
   UserProfile,
 } from '01/_pages';
@@ -44,6 +42,7 @@ import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
+import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
 
 const { gates } = objectProfileService;
 
@@ -145,7 +144,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
-            
+
                 <Route
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
@@ -159,7 +158,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path="/calculators/:deviceId/edit"
-                  component={EditCalculator}
+                  component={EditCalculatorContainer}
                   exact
                 />
 
