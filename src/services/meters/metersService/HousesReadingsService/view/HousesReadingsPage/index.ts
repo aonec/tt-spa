@@ -1,0 +1,1 @@
+export { HousesReadingsPage } from './HousesReadingsPage'

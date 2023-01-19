@@ -5,7 +5,6 @@ export const SubMenuItemWrapper = styled(NavLink)`
   display: flex;
   align-items: center;
   height: 35px;
-  margin-top: 5px;
   padding: 0 15px 0 38px;
   color: #272f5a;
   border-left: 3px solid #00000000;

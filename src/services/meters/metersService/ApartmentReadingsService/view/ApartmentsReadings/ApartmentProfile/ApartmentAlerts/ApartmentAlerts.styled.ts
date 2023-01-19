@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ArrowRight } from 'react-bootstrap-icons';
 
 export const ApartmentAlertWrapper = styled.div`
   margin-top: 16px;
@@ -8,6 +9,15 @@ export const AlertLink = styled.div`
   display: flex;
   align-items: center;
   color: #fc525b;
+  transition: 0.2s;
+
+  &:hover {
+    color: red;
+
+    .arrow-right {
+      transform: translateX(2px);
+    }
+  }
 `;
 
 export const AlertContent = styled.div`
@@ -17,4 +27,13 @@ export const AlertContent = styled.div`
   width: 100%;
 
   cursor: pointer;
+`;
+
+export const ArrowRightSC = styled(ArrowRight)`
+  margin-left: 6px;
+  transition: 0.2s;
+`;
+
+export const HomeownerAccountChangeDate = styled.div`
+  color: #272f5ab2;
 `;

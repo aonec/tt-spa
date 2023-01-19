@@ -21,4 +21,5 @@ export type IndividualDeviceMetersInputLineProps = {
     | null
     | undefined;
   editable?: boolean;
+  apartmentId: number;
 };

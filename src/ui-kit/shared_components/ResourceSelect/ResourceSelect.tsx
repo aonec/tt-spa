@@ -23,6 +23,7 @@ export const ResourceSelect: FC<ResourceSelectProps> = ({
         onChange && onChange((value || null) as EResourceType | null)
       }
       disabled={disabled}
+      placeholder="Выберите"
     >
       {resources.map((resource) => (
         <Select.Option key={resource} value={resource}>
