@@ -91,6 +91,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDev
         inputIndex={inputIndex}
         isDisabled={isDeviceClosed}
         status={uploadingMetersStatuses[-1]}
+        disableAutoFocus
         tooltip={
           (!previousReading &&
             !currentReading &&

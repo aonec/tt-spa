@@ -1,11 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import { HousesIndividualDevicesMetersContainerProps } from './housesIndividualDevicesMetersService.types';
 import { HousesIndividualDevicesHeader } from './view/HousesIndividualDevicesHeader';
 import { getReadingsMonthByShift } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
 import { PREVIOUS_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
-import { FixedSizeList } from 'react-window';
+import {
+  VariableSizeList as List,
+  ListOnItemsRenderedProps,
+} from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { IndividualDeviceMetersInputContainer } from '../individualDeviceMetersInputService';
+import { EIndividualDeviceRateType } from 'myApi';
 
 export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesMetersContainerProps> = ({
   individualDevicesList,
@@ -25,22 +29,11 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
   const prevReadingMonth = getReadingsMonthByShift(sliderIndex);
   const currentReadingMonth = getReadingsMonthByShift(-1);
 
-  const renderDevice = ({ key, index }: any) => {
-    const device = individualDevicesList[index];
+  const hasNextPage = allDevicesLength === individualDevicesList.length;
 
-    return (
-      <IndividualDeviceMetersInputContainer
-        key={key}
-        devices={individualDevicesList}
-        device={device}
-        sliderIndex={sliderIndex}
-        openReadingsHistoryModal={openReadingsHistoryModal}
-        managementFirmConsumptionRates={managementFirmConsumptionRates}
-        deviceIndex={index}
-        isHousingStocksReadingInputs
-      />
-    );
-  };
+  const itemCount = hasNextPage
+    ? individualDevicesList.length + 1
+    : individualDevicesList.length;
 
   if (!allDevicesLength) return null;
 
@@ -56,22 +49,70 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
       />
       <InfiniteLoader
         isItemLoaded={(index) => index < individualDevicesList.length}
-        itemCount={allDevicesLength}
+        itemCount={itemCount}
         loadMoreItems={loadNextPageOfIndividualDevicesList}
       >
         {({ onItemsRendered, ref }) => (
-          <FixedSizeList
+          <List
+            style={{
+              overflowX: 'hidden',
+            }}
+            // className="no-scrollbars"
             height={500}
-            width={500}
-            itemCount={allDevicesLength}
-            itemSize={120}
+            width={960}
+            itemCount={itemCount}
+            itemSize={(index) => {
+              const device = individualDevicesList[index];
+
+              if (!device) return 0;
+
+              if (device.rateType === EIndividualDeviceRateType.OneZone) {
+                return 80;
+              } else if (
+                device.rateType === EIndividualDeviceRateType.TwoZone
+              ) {
+                return 98;
+              } else {
+                return 116;
+              }
+            }}
+            useIsScrolling
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {renderDevice}
-          </FixedSizeList>
+            {(params) => {
+              const { index, style } = params;
+              const device = individualDevicesList[index];
+
+              if (!device) return null;
+
+              const deviceIndex = individualDevicesList.findIndex(
+                ({ id }) => device.id === id
+              );
+
+              console.log(index, deviceIndex);
+
+              return (
+                <div key={device.id} style={style}>
+                  <IndividualDeviceMetersInputContainer
+                    devices={individualDevicesList}
+                    device={device}
+                    sliderIndex={sliderIndex}
+                    openReadingsHistoryModal={openReadingsHistoryModal}
+                    managementFirmConsumptionRates={
+                      managementFirmConsumptionRates
+                    }
+                    deviceIndex={deviceIndex}
+                    isHousingStocksReadingInputs
+                  />
+                </div>
+              );
+            }}
+          </List>
         )}
       </InfiniteLoader>
     </>
   );
 };
+
+// 80 98 116

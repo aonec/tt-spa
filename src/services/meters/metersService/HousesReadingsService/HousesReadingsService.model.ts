@@ -117,7 +117,7 @@ sample({
     IsOpened: true,
     OrderRule: EIndividualDeviceOrderRule.ApartmentNumber,
     PageNumber: pageNumber,
-    PageSize: 700,
+    PageSize: 25,
   }),
   target: fetchIndividualDevicesFx,
 });
