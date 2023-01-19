@@ -54,19 +54,19 @@ const $individualDevices = domain
   .on(fetchIndividualDevicesFx.doneData, (prev, { items }) =>
     items ? [...prev, ...items] : prev
   )
-  .reset(HousingStockGate.close, $housingStock)
-  .on(
-    individualDeviceMetersInputService.inputs.uploadMeterFx.done,
-    (prev, { params, result: readingResponse }) => {
-      return prev.map((device) => {
-        if (device.id !== params.meter.deviceId) return device;
+  .reset(HousingStockGate.close, $housingStock);
+// .on(
+//   individualDeviceMetersInputService.inputs.uploadMeterFx.done,
+//   (prev, { params, result: readingResponse }) => {
+//     return prev.map((device) => {
+//       if (device.id !== params.meter.deviceId) return device;
 
-        const deviceReadings = device.readings || [];
+//       const deviceReadings = device.readings || [];
 
-        return { ...device, readings: [...deviceReadings, readingResponse] };
-      });
-    }
-  );
+//       return { ...device, readings: [...deviceReadings, readingResponse] };
+//     });
+//   }
+// );
 
 const $individualDevicesPageNumber = domain
   .createStore(1)
@@ -117,7 +117,7 @@ sample({
     IsOpened: true,
     OrderRule: EIndividualDeviceOrderRule.ApartmentNumber,
     PageNumber: pageNumber,
-    PageSize: 25,
+    PageSize: 700,
   }),
   target: fetchIndividualDevicesFx,
 });
@@ -159,6 +159,7 @@ export const housesReadingsService = {
     $isLoadingIndividualDevices,
     $consumptionRates:
       managementFirmConsumptionRatesService.outputs.$consumptionRates,
+    $individualDevicesPagedList,
   },
   gates: {
     HousingStockGate,

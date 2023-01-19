@@ -8,4 +8,5 @@ export type IndividualDevicesListProps = {
   managementFirmConsumptionRates: ConsumptionRatesDictionary | null;
   openReadingsHistoryModal: (deviceId: number) => void;
   isAllDevicesLoaded: boolean;
+  allDevicesLength?: number;
 };

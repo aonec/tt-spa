@@ -11,6 +11,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
   isAllDevicesLoaded,
+  allDevicesLength,
 }) => {
   return (
     <div>
@@ -18,6 +19,8 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
         individualDevicesList={individualDevicesList}
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         openReadingsHistoryModal={openReadingsHistoryModal}
+        loadNextPageOfIndividualDevicesList={loadNextPageOfIndividualDevicesList}
+        allDevicesLength={allDevicesLength}
       />
       {!isAllDevicesLoaded && (
         <LoadButtonWrapper>

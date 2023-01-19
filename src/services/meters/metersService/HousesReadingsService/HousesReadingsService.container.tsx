@@ -25,6 +25,7 @@ export const HousesReadingsContainer = () => {
   );
   const consumptionRates = useStore(outputs.$consumptionRates);
   const isAllDevicesLoaded = useStore(outputs.$isAllDevicesLoaded);
+  const pagedList = useStore(outputs.$individualDevicesPagedList);
 
   const handleSearchHousingStock = useEvent(inputs.handleSearchHousingStock);
   const loadNextPageOfIndividualDevicesList = useEvent(
@@ -42,30 +43,14 @@ export const HousesReadingsContainer = () => {
   );
 
   useEffect(() => {
-    const onScrollDown = () => {
-      if (isLoadingIndividualDevices) return;
-
-      const scrollHeight = document.body.scrollHeight - window.screen.height;
-
-      if (window.scrollY > scrollHeight - 200) {
-        loadNextPageOfIndividualDevicesList();
-      }
-    };
-
-    window.addEventListener('scroll', onScrollDown, true);
-
-    return () => {
-      window.removeEventListener('scroll', onScrollDown, true);
-    };
-  }, []);
-
-  useEffect(() => {
     return inputs.handleHousingStockLoaded.watch((housingStock) => {
       if (!housingStock) return;
 
       history.push(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
   }, []);
+
+  const allDevicesLength = pagedList?.totalItems;
 
   return (
     <>
@@ -88,6 +73,7 @@ export const HousesReadingsContainer = () => {
         managementFirmConsumptionRates={managementFirmConsumptionRates}
         openReadingsHistoryModal={openReadingsHistoryModal}
         isAllDevicesLoaded={isAllDevicesLoaded}
+        allDevicesLength={allDevicesLength}
       />
     </>
   );

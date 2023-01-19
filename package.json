@@ -61,7 +61,7 @@
     "react-thunk": "^1.0.0",
     "react-to-print": "^2.13.0",
     "react-uuid": "^1.0.2",
-    "react-virtualized": "^9.22.3",
+    "react-window": "^1.8.8",
     "react-yandex-maps": "^4.6.0",
     "react-yandex-metrika": "^2.6.0",
     "redux": "^4.0.5",
@@ -103,6 +103,8 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.13.12",
+    "@types/react-window": "^1.8.5",
+    "@types/react-window-infinite-loader": "^1.0.6",
     "@types/styled-components": "^5.1.7",
     "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.0",
