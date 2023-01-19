@@ -19,6 +19,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
   calculator,
   onCancel,
   calculatorTypesSelectItems,
+  onSubmit,
 }) => {
   const nodes = calculator?.nodes;
   const nodesTinyData = nodes?.map((node) => ({
@@ -44,15 +45,17 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
       lastCheckingDate: calculator?.lastCheckingDate,
       futureCheckingDate: calculator?.futureCheckingDate,
     },
-    validationSchema: yup.object().shape({
-      serialNumber: yup.string().required('Это поле обязательно'),
-      currentCheckingDate: yup.string().required('Это поле обязательно'),
-      futureCheckingDate: yup.string().required('Это поле обязательно'),
-    }),
+    // validationSchema: yup.object().shape({
+    //   serialNumber: yup.string().required('Это поле обязательно'),
+    //   currentCheckingDate: yup.string().required('Это поле обязательно'),
+    //   futureCheckingDate: yup.string().required('Это поле обязательно'),
+    // }),
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
-    onSubmit: () => {},
+    onSubmit: (data) => {
+      onSubmit(data);
+    },
   });
 
   return (

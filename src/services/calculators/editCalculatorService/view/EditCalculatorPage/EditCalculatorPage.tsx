@@ -24,6 +24,7 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   currentTab,
   handleChangeTab,
   calculatorTypesSelectItems,
+  handleSubmit,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
@@ -69,6 +70,7 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
           calculator={calculator}
           onCancel={onCancel}
           calculatorTypesSelectItems={calculatorTypesSelectItems}
+          onSubmit={handleSubmit}
         />
       )}
       {currentTab === EditCalculatorTabs.Connection && <EditConnection />}

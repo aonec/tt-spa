@@ -5,10 +5,11 @@ import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 
 const { inputs, outputs, gates } = editCalculatorService;
-const { CalculatorIdGate, CalculatorInfosGate } = gates;
+const { CalculatorIdGate, CalculatorInfosGate, SaveDeviceIdGate } = gates;
 
 export const EditCalculatorContainer = () => {
   const handleChangeTab = useEvent(inputs.handleChangeTab);
+  const handleSubmit = useEvent(inputs.handleSubmit);
 
   const currentTab = useStore(outputs.$currentTab);
   const calculator = useStore(outputs.$calculator);
@@ -21,12 +22,14 @@ export const EditCalculatorContainer = () => {
   return (
     <>
       <CalculatorIdGate id={Number(deviceId)} />
+      <SaveDeviceIdGate deviceId={Number(deviceId)} />
       <CalculatorInfosGate />
       <EditCalculatorPage
         calculator={calculator}
         currentTab={currentTab}
         handleChangeTab={handleChangeTab}
         calculatorTypesSelectItems={calculatorTypesSelectItems}
+        handleSubmit={handleSubmit}
       />
     </>
   );
