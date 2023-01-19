@@ -59,13 +59,13 @@ export const NodesGroup: FC<NodesGroupProps> = ({
 
   return (
     <Wrapper>
-      <Header>
+      <Header onClick={() => setIsOpen((isOpen) => !isOpen)}>
         <GroupInfo />
         <GroupInfoWrapper>
           <GroupAmountText>
             {nodes.length} {systemText} учета
           </GroupAmountText>
-          <ChevronWrapper onClick={() => setIsOpen((isOpen) => !isOpen)}>
+          <ChevronWrapper >
             <ChevronSC isOpen={isOpen} />
           </ChevronWrapper>
         </GroupInfoWrapper>
