@@ -42,8 +42,6 @@ export const ReportsPage: FC<ReportsPageProps> = ({}) => {
   const onClickLeft = () => scroll(-280);
   const onClickRight = () => scroll(280);
 
-  console.log(scrollX);
-
   const isShowLeftScrollButton = scrollX > 15;
   const isShowRightScrollButton = scrollX < 290;
 
