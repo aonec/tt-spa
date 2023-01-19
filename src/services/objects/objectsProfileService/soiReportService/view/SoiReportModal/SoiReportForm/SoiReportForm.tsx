@@ -47,7 +47,9 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         ? Number(values.NormativePerPerson)
         : null;
 
-      const date = moment(values.Date).set('day', 15);
+      const date = values.Date;
+
+      console.log(date);
 
       createSoiReport({
         ReportName: values.ReportName,
@@ -60,7 +62,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             ? ESoiReportPeriod.Year
             : ESoiReportPeriod.Month,
         Year: date.year(),
-        Month: date.month() + 1,
+        Month: Number(date.format('MM')),
       });
     },
   });
