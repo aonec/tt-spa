@@ -7,9 +7,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
 import { usePhoneMask } from 'hooks/usePhoneMask';
-import { Select } from 'ui-kit/Select';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
   formId,
@@ -115,8 +115,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
       </GridContainer>
       <GridContainer>
         <FormItem label="Роль в системе">
-          <Select
-            mode="multiple"
+          <SelectMultiple
             placeholder="Выберите"
             onChange={(value) => {
               setFieldValue('roleTypes', value);
@@ -124,11 +123,11 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
             value={values.roleTypes || undefined}
           >
             {multipleSelectionUserRoles?.map((elem, i) => (
-              <Select.Option value={elem.value || ''} key={elem.value}>
+              <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
                 {elem.label}
-              </Select.Option>
+              </SelectMultiple.Option>
             ))}
-          </Select>
+          </SelectMultiple>
         </FormItem>
         <FormItem label="Дата начала работы">
           <DatePicker
@@ -139,18 +138,17 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
         </FormItem>
       </GridContainer>
       <FormItem label="Компетенции">
-        <Select
-          mode="multiple"
+        <SelectMultiple
           placeholder="Выберите"
           onChange={(value) => setFieldValue('competenceIds', value)}
           value={values.competenceIds || undefined}
         >
           {multipleSelectionCompetences?.map((elem) => (
-            <Select.Option value={elem.value} key={elem.value}>
+            <SelectMultiple.Option value={elem.value} key={elem.value}>
               {elem.label}
-            </Select.Option>
+            </SelectMultiple.Option>
           ))}
-        </Select>
+        </SelectMultiple>
       </FormItem>
     </Form>
   );
