@@ -275,7 +275,6 @@ export interface ApartmentCreateRequest {
 
   /** @format int32 */
   normativeNumberOfLiving?: number | null;
-  mainHomeownerAccountNumber?: string | null;
   comment?: string | null;
 
   /** @format int32 */
@@ -283,6 +282,7 @@ export interface ApartmentCreateRequest {
 
   /** @format int32 */
   hotWaterRiserCount?: number | null;
+  homeownerAccount: HomeownerAccountCreateUnattachedRequest;
 }
 
 export interface ApartmentListResponse {
@@ -437,6 +437,7 @@ export enum ArchivesDataGroupType {
   Undefined = "Undefined",
   Volume = "Volume",
   TemperatureOut = "TemperatureOut",
+  Energy = "Energy",
 }
 
 export interface ArchivesDataGroupValue {
@@ -2467,7 +2468,6 @@ export interface HomeownerAccountResponseSuccessApiResponse {
 export interface HomeownerAccountSplitRequest {
   accountForClosing: HomeownerAccountCloseRequest;
   homeownerAccountForSplittedApartment: HomeownerAccountCreateRequest;
-  newHomeownerAccount: HomeownerAccountCreateUnattachedRequest;
   individualDeviceIdsForSwitch?: number[] | null;
   useExistingApartment: boolean;
   newApartment: ApartmentCreateRequest;
