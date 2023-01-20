@@ -9,6 +9,7 @@ import { putCalculator } from './editCalculatorService.api';
 import { EffectFailDataAxiosError } from 'types';
 import { MeteringDeviceResponse, UpdateCalculatorRequest } from 'myApi';
 import { createGate } from 'effector-react';
+import { message } from 'antd';
 
 const domain = createDomain('editCalculatorService');
 
@@ -37,8 +38,18 @@ sample({
   target: editCalculatorFx,
 });
 
+const editCalculatorSuccess = editCalculatorFx.doneData;
+
+editCalculatorFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text)
+);
+
+editCalculatorSuccess.watch(() =>
+  message.success('Вычислитель успешно обновлён!')
+);
+
 export const editCalculatorService = {
-  inputs: { handleChangeTab, handleSubmit },
+  inputs: { handleChangeTab, handleSubmit, editCalculatorSuccess },
   outputs: {
     $calculator: calculatorProfileService.outputs.$calculator,
     $currentTab,

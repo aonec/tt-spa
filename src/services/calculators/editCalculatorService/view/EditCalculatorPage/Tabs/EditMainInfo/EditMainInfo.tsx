@@ -26,7 +26,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     number: node.number,
     id: node.id,
     resource: node.resource,
-    entryNumber: node.communicationPipes?.[0].entryNumber || null,
+    entryNumber: node.communicationPipes?.[0]?.entryNumber || null,
   }));
 
   const getCurrentInfoId = calculator?.model
@@ -45,11 +45,11 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
       lastCheckingDate: calculator?.lastCheckingDate,
       futureCheckingDate: calculator?.futureCheckingDate,
     },
-    // validationSchema: yup.object().shape({
-    //   serialNumber: yup.string().required('Это поле обязательно'),
-    //   currentCheckingDate: yup.string().required('Это поле обязательно'),
-    //   futureCheckingDate: yup.string().required('Это поле обязательно'),
-    // }),
+    validationSchema: yup.object().shape({
+      serialNumber: yup.string().required('Это поле обязательно'),
+      lastCheckingDate: yup.string().required('Это поле обязательно'),
+      futureCheckingDate: yup.string().required('Это поле обязательно'),
+    }),
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
@@ -88,8 +88,14 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
           <DatePicker
             allowClear={false}
             onChange={(date) => {
-              setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
+              setFieldValue(
+                'lastCheckingDate',
+                moment(date).format('YYYY-MM-DDTHH:mm:ss')
+              );
+              setFieldValue(
+                'futureCheckingDate',
+                moment(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss')
+              );
             }}
             value={moment(values.lastCheckingDate)}
             format="DD.MM.YYYY"
@@ -100,7 +106,10 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
           <DatePicker
             allowClear={false}
             onChange={(date) => {
-              setFieldValue('futureCheckingDate', date);
+              setFieldValue(
+                'futureCheckingDate',
+                moment(date).format('YYYY-MM-DDTHH:mm:ss')
+              );
             }}
             value={moment(values.futureCheckingDate)}
             format="DD.MM.YYYY"
