@@ -7,6 +7,7 @@ export type EditCalculatorPageProps = {
   handleChangeTab: (payload: EditCalculatorTabs) => void;
   calculatorTypesSelectItems: ItemInterface[];
   handleSubmit: (payload: UpdateCalculatorRequest) => void;
+  isCalculatorLoading: boolean;
 };
 
 export enum EditCalculatorTabs {

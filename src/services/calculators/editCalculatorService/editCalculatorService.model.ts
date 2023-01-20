@@ -52,6 +52,7 @@ export const editCalculatorService = {
   inputs: { handleChangeTab, handleSubmit, editCalculatorSuccess },
   outputs: {
     $calculator: calculatorProfileService.outputs.$calculator,
+    $isLoading: calculatorProfileService.outputs.$isLoading,
     $currentTab,
     $calculatorTypesSelectItems,
   },

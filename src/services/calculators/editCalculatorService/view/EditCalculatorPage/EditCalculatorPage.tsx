@@ -3,6 +3,7 @@ import {
   CalculatorModel,
   CalculatorNumber,
   CalculatorTitle,
+  LoaderWrapper,
   PageTitle,
   Wrapper,
 } from './EditCalculatorPage.styled';
@@ -18,6 +19,7 @@ import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { Tabs } from 'ui-kit/Tabs';
 import { EditMainInfo } from './Tabs/EditMainInfo';
 import { EditConnection } from './Tabs/EditConnection';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   calculator,
@@ -25,6 +27,7 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   handleChangeTab,
   calculatorTypesSelectItems,
   handleSubmit,
+  isCalculatorLoading,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
@@ -35,47 +38,56 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
     <Wrapper>
       <GoBack />
 
-      <PageHeader
-        title={
-          <PageTitle>
-            <CalculatorTitle>
-              <CalculatorModel>{calculator?.model}</CalculatorModel>
-              <CalculatorNumber>{`(${calculator?.serialNumber}). Редактирование`}</CalculatorNumber>
-            </CalculatorTitle>
+      <LoaderWrapper>
+        <WithLoader isLoading={isCalculatorLoading} />
+      </LoaderWrapper>
 
-            <HeaderInfoString>
-              {address?.city}
-              {address && getHousingStockItemAddress(address)}
-            </HeaderInfoString>
-          </PageTitle>
-        }
-      />
+      {!isCalculatorLoading && (
+        <>
+          <PageHeader
+            title={
+              <PageTitle>
+                <CalculatorTitle>
+                  <CalculatorModel>{calculator?.model}</CalculatorModel>
+                  <CalculatorNumber>{`(${calculator?.serialNumber}). Редактирование`}</CalculatorNumber>
+                </CalculatorTitle>
 
-      <Tabs
-        onChange={(value) => {
-          handleChangeTab(value as EditCalculatorTabs);
-        }}
-        activeKey={currentTab}
-      >
-        <Tabs.TabPane tab="Общие данные" key={EditCalculatorTabs.CommonInfo} />
-        <Tabs.TabPane
-          tab="Настройки соединения"
-          key={EditCalculatorTabs.Connection}
-        />
-        <Tabs.TabPane tab="Документы" key={EditCalculatorTabs.Documents} />
-      </Tabs>
-
-      {currentTab === EditCalculatorTabs.CommonInfo && (
-        <EditMainInfo
-          calculator={calculator}
-          onCancel={onCancel}
-          calculatorTypesSelectItems={calculatorTypesSelectItems}
-          onSubmit={handleSubmit}
-        />
-      )}
-      {currentTab === EditCalculatorTabs.Connection && <EditConnection />}
-      {currentTab === EditCalculatorTabs.Documents && (
-        <h3>Раздел в разработке</h3>
+                <HeaderInfoString>
+                  {address?.city}
+                  {address && getHousingStockItemAddress(address)}
+                </HeaderInfoString>
+              </PageTitle>
+            }
+          />
+          <Tabs
+            onChange={(value) => {
+              handleChangeTab(value as EditCalculatorTabs);
+            }}
+            activeKey={currentTab}
+          >
+            <Tabs.TabPane
+              tab="Общие данные"
+              key={EditCalculatorTabs.CommonInfo}
+            />
+            <Tabs.TabPane
+              tab="Настройки соединения"
+              key={EditCalculatorTabs.Connection}
+            />
+            <Tabs.TabPane tab="Документы" key={EditCalculatorTabs.Documents} />
+          </Tabs>
+          {currentTab === EditCalculatorTabs.CommonInfo && (
+            <EditMainInfo
+              calculator={calculator}
+              onCancel={onCancel}
+              calculatorTypesSelectItems={calculatorTypesSelectItems}
+              onSubmit={handleSubmit}
+            />
+          )}
+          {currentTab === EditCalculatorTabs.Connection && <EditConnection />}
+          {currentTab === EditCalculatorTabs.Documents && (
+            <h3>Раздел в разработке</h3>
+          )}
+        </>
       )}
     </Wrapper>
   );

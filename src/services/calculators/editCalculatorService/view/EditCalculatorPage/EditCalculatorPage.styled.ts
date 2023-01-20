@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
 
+export const LoaderWrapper = styled.div`
+  width: 680px;
+`;
+
 export const PageTitle = styled.div`
   margin-top: 12px;
   margin-bottom: 20px;

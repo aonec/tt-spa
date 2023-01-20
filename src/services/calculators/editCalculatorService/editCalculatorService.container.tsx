@@ -13,6 +13,7 @@ export const EditCalculatorContainer = () => {
 
   const currentTab = useStore(outputs.$currentTab);
   const calculator = useStore(outputs.$calculator);
+  const isCalculatorLoading = useStore(outputs.$isLoading);
 
   const { deviceId } = useParams<{ deviceId: string }>();
 
@@ -41,6 +42,7 @@ export const EditCalculatorContainer = () => {
         handleChangeTab={handleChangeTab}
         calculatorTypesSelectItems={calculatorTypesSelectItems}
         handleSubmit={handleSubmit}
+        isCalculatorLoading={isCalculatorLoading}
       />
     </>
   );
