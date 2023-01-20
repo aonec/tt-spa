@@ -1,10 +1,9 @@
-import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
-import { Link, useHistory } from 'react-router-dom';
-import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
+import { Link } from 'react-router-dom';
 import { Loader } from '../../components';
 import { magistrals } from '../localBases';
 import { Tooltip } from 'antd';
@@ -15,10 +14,7 @@ interface NodesInterface {
   close?: boolean;
 }
 
-export const NodeRelatedDevices = ({
-  node,
-  edit = false,
-}: NodesInterface) => {
+export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
   if (!node) {
     return <Loader show size={32} />;
   }
