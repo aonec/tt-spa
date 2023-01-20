@@ -83,7 +83,13 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
               onSubmit={handleSubmit}
             />
           )}
-          {currentTab === EditCalculatorTabs.Connection && <EditConnection />}
+          {currentTab === EditCalculatorTabs.Connection && (
+            <EditConnection
+              calculator={calculator}
+              onCancel={onCancel}
+              onSubmit={handleSubmit}
+            />
+          )}
           {currentTab === EditCalculatorTabs.Documents && (
             <h3>Раздел в разработке</h3>
           )}
