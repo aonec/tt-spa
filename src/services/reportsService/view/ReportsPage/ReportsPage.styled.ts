@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
@@ -29,7 +30,7 @@ export const ReportsList = styled.div`
   }
 `;
 
-export const ReportBlock = styled.div`
+export const ReportBlock = styled(Link)`
   min-width: 280px;
   height: 104px;
   background: white;

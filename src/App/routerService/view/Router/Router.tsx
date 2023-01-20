@@ -41,6 +41,7 @@ import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 import { ReportsContainer } from 'services/reportsService';
+import { ReportViewContainer } from 'services/reportsService/reportViewService';
 
 const { gates } = objectProfileService;
 
@@ -234,6 +235,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsContainer} exact />
+                
+                <Route
+                  path="/reports/:reportType"
+                  component={ReportViewContainer}
+                  exact
+                />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>

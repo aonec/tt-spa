@@ -1,10 +1,16 @@
-import { EReportName } from 'myApi';
 import { ReactNode } from 'react';
 
 export type ReportsPageProps = {};
 
 export type ReportSelectItem = {
-  name: string;
   icon: ReactNode;
-  reportName: EReportName;
+  reportType: ReportType;
 };
+
+export enum ReportType {
+  IndividualDevices = 'IndividualDevices',
+  ActsJournal = 'ActsJournal',
+  HousingDevices = 'HousingDevices',
+  Homeowners = 'Homeowners',
+  Employee = 'Employee',
+}

@@ -12,7 +12,10 @@ import {
 import { ReportsPageProps } from './ReportsPage.types';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { ReportsListContainer } from '01/features/reports/reportsListService';
-import { reportsSelectItems } from './ReportsPage.constants';
+import {
+  ReportNamesDictionary,
+  reportsSelectItems,
+} from './ReportsPage.constants';
 
 export const ReportsPage: FC<ReportsPageProps> = ({}) => {
   const reportsListRef = useRef<HTMLDivElement>(null);
@@ -61,10 +64,10 @@ export const ReportsPage: FC<ReportsPageProps> = ({}) => {
           </ScrollButton>
         )}
         <ReportsList ref={reportsListRef}>
-          {reportsSelectItems.map(({ name, icon, reportName }) => (
-            <ReportBlock key={reportName}>
+          {reportsSelectItems.map(({ icon, reportType }) => (
+            <ReportBlock key={reportType} to={`/reports/${reportType}`}>
               {icon}
-              <ReportName>{name}</ReportName>
+              <ReportName>{ReportNamesDictionary[reportType]}</ReportName>
             </ReportBlock>
           ))}
         </ReportsList>

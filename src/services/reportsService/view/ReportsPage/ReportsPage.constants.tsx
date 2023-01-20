@@ -1,32 +1,43 @@
 import React from 'react';
 import { ReportSelectItem } from './ReportsPage.types';
-import { CalculatorIcon, DeviceIcon, ListIcon, PersonIcon, UserIcon } from 'ui-kit/icons';
-import { EReportName } from 'myApi';
+import {
+  CalculatorIcon,
+  DeviceIcon,
+  ListIcon,
+  PersonIcon,
+  UserIcon,
+} from 'ui-kit/icons';
+import { ReportType } from './ReportsPage.types';
+
+export const ReportNamesDictionary: {
+  [key in ReportType]: string;
+} = {
+  [ReportType.IndividualDevices]: 'Отчёт по ИПУ',
+  [ReportType.ActsJournal]: 'Отчёты по журналу акта',
+  [ReportType.HousingDevices]: 'Отчёт по общедомовым приборам',
+  [ReportType.Homeowners]: 'Отчёт по собственникам',
+  [ReportType.Employee]: 'Отчёт по сотрудникам',
+};
 
 export const reportsSelectItems: ReportSelectItem[] = [
   {
-    name: 'Отчёт по ИПУ',
     icon: <DeviceIcon />,
-    reportName: EReportName.ClosedDevicesReport,
+    reportType: ReportType.IndividualDevices,
   },
   {
-    name: 'Отчёты по журналу акта',
     icon: <ListIcon />,
-    reportName: EReportName.HouseManagementsReport,
+    reportType: ReportType.ActsJournal,
   },
   {
-    name: 'Отчёт по общедомовым приборам',
     icon: <CalculatorIcon />,
-    reportName: EReportName.ClosedDevicesReport,
+    reportType: ReportType.HousingDevices,
   },
   {
-    name: 'Отчёт по собственникам',
     icon: <PersonIcon />,
-    reportName: EReportName.ClosedDevicesReport,
+    reportType: ReportType.Homeowners,
   },
   {
-    name: 'Отчёт по сотрудникам',
     icon: <UserIcon />,
-    reportName: EReportName.ClosedDevicesReport,
+    reportType: ReportType.Employee,
   },
 ];
