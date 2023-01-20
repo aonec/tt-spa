@@ -13,6 +13,7 @@ import { ReportsPageProps } from './ReportsPage.types';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { ReportsListContainer } from '01/features/reports/reportsListService';
 import {
+  ReportIconsDictionary,
   ReportNamesDictionary,
   reportsSelectItems,
 } from './ReportsPage.constants';
@@ -64,9 +65,9 @@ export const ReportsPage: FC<ReportsPageProps> = ({}) => {
           </ScrollButton>
         )}
         <ReportsList ref={reportsListRef}>
-          {reportsSelectItems.map(({ icon, reportType }) => (
+          {reportsSelectItems.map((reportType) => (
             <ReportBlock key={reportType} to={`/reports/${reportType}`}>
-              {icon}
+              {ReportIconsDictionary[reportType]}
               <ReportName>{ReportNamesDictionary[reportType]}</ReportName>
             </ReportBlock>
           ))}

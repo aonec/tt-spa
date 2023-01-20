@@ -1,5 +1,4 @@
-import React from 'react';
-import { ReportSelectItem } from './ReportsPage.types';
+import React, { ReactNode } from 'react';
 import {
   CalculatorIcon,
   DeviceIcon,
@@ -19,25 +18,14 @@ export const ReportNamesDictionary: {
   [ReportType.Employee]: 'Отчёт по сотрудникам',
 };
 
-export const reportsSelectItems: ReportSelectItem[] = [
-  {
-    icon: <DeviceIcon />,
-    reportType: ReportType.IndividualDevices,
-  },
-  {
-    icon: <ListIcon />,
-    reportType: ReportType.ActsJournal,
-  },
-  {
-    icon: <CalculatorIcon />,
-    reportType: ReportType.HousingDevices,
-  },
-  {
-    icon: <PersonIcon />,
-    reportType: ReportType.Homeowners,
-  },
-  {
-    icon: <UserIcon />,
-    reportType: ReportType.Employee,
-  },
-];
+export const ReportIconsDictionary: {
+  [key in ReportType]: ReactNode;
+} = {
+  [ReportType.IndividualDevices]: <DeviceIcon />,
+  [ReportType.ActsJournal]: <ListIcon />,
+  [ReportType.HousingDevices]: <CalculatorIcon />,
+  [ReportType.Homeowners]: <PersonIcon />,
+  [ReportType.Employee]: <UserIcon />,
+};
+
+export const reportsSelectItems: ReportType[] = Object.values(ReportType);

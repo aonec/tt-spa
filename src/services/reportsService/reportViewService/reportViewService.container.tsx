@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
-import { ReportNamesDictionary } from '../view/ReportsPage/ReportsPage.constants';
+import { ReportViewPage } from './view/ReportViewPage';
 
 export const ReportViewContainer = () => {
   const { reportType } = useParams<{ reportType: ReportType }>();
 
-  return <>{ReportNamesDictionary[reportType]}</>;
+  if (!reportType) return null;
+
+  return <ReportViewPage reportType={reportType} />;
 };
