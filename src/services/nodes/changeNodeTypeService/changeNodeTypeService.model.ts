@@ -1,6 +1,6 @@
 import { nodeService } from '01/features/nodes/displayNode/models';
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { createDomain, forward, guard } from 'effector';
 import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeNodeType } from './changeNodeTypeService.api';
@@ -23,7 +23,10 @@ const $changeNodeTypePayload = $node
   .map<Partial<ChangeNodeTypePayload>>((node) => ({
     nodeId: node?.id,
   }))
-  .on(setNodeTypePayload, (oldData, newData) => ({ ...oldData, ...newData }));
+  .on(setNodeTypePayload, (oldData, data) => ({
+    ...data,
+    nodeId: oldData.nodeId,
+  }));
 
 const changeNodeTypeFx = domain.createEffect<
   ChangeNodeTypePayload,
@@ -47,11 +50,7 @@ forward({
 guard({
   clock: $changeNodeTypePayload,
   filter: (payload): payload is ChangeNodeTypePayload =>
-    Boolean(
-      payload.nodeId &&
-        payload.registrationType &&
-        payload.commercialStatusRequest
-    ),
+    Boolean(payload.nodeId && payload.registrationType),
   target: changeNodeTypeFx,
 });
 

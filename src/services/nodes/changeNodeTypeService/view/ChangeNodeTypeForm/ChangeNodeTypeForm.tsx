@@ -1,7 +1,11 @@
 import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { ENodeRegistrationType, NodeSetRegistrationTypeRequest } from 'myApi';
+import {
+  ENodeRegistrationType,
+  NodeSetRegistrationTypeRequest,
+  NodeSetTechnicalTypeRequest,
+} from 'myApi';
 import React, { FC, useEffect, useRef } from 'react';
 import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
@@ -27,15 +31,18 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
       registrationType: node.registrationType,
     },
     validationSchema,
+    validateOnBlur: true,
+    validateOnChange: true,
     validateOnMount: true,
     onSubmit: (values) => {
-      const { commercialStatusRequest, registrationType } = values;
+      const {
+        commercialStatusRequest,
+        registrationType,
+        technicalTypeRequest,
+      } = values;
 
-      if (
-        registrationType === ENodeRegistrationType.Commercial &&
-        !commercialStatusRequest
-      ) {
-        return;
+      if (registrationType === ENodeRegistrationType.Technical) {
+        return setNodeTypePaylaod({ registrationType, technicalTypeRequest });
       }
       setNodeTypePaylaod({ registrationType, commercialStatusRequest });
     },
@@ -43,10 +50,13 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
 
   useEffect(() => {
     setFieldValue('commercialStatusRequest', undefined);
+    setFieldValue('technicalTypeRequest', undefined);
   }, [values.registrationType]);
 
   const isTechnical =
     values.registrationType === ENodeRegistrationType.Technical;
+
+  const technicalTypeRequestErrors = (errors.technicalTypeRequest as unknown) as NodeSetTechnicalTypeRequest;
 
   return (
     <>
@@ -79,27 +89,37 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
                 placeholder="Выберите дату"
                 format="DD.MM.YYYY"
                 value={getDatePickerValue(
-                  values.commercialStatusRequest
+                  values.technicalTypeRequest
                     ?.commercialAccountingDeregistrationDate
                 )}
                 onChange={(date) =>
                   setFieldValue(
-                    'commercialStatusRequest.commercialAccountingDeregistrationDate',
+                    'technicalTypeRequest.commercialAccountingDeregistrationDate',
                     date?.format('YYYY-MM-DD')
                   )
                 }
                 allowClear={false}
               />
+              <ErrorMessage>
+                {
+                  technicalTypeRequestErrors?.commercialAccountingDeregistrationDate
+                }
+              </ErrorMessage>
             </FormItem>
           )}
         </GroupWrapper>
         {isTechnical && (
-          <ChangeNodeStatusDocument
-            label="Добавьте акт снятия с коммерческого учёта"
-            handleChange={(id) =>
-              setFieldValue('commercialStatusRequest.documentId', id)
-            }
-          />
+          <>
+            <ChangeNodeStatusDocument
+              label="Добавьте акт снятия с коммерческого учёта"
+              handleChange={(id) =>
+                setFieldValue('technicalTypeRequest.documentId', id)
+              }
+            />
+            <ErrorMessage>
+              {technicalTypeRequestErrors?.documentId}
+            </ErrorMessage>
+          </>
         )}
       </Form>
 
