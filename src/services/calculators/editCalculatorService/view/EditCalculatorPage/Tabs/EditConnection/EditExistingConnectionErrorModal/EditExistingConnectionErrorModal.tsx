@@ -11,7 +11,6 @@ export const EditExistingConnectionErrorModal: FC<EditExistingConnectionErrorMod
   sameConnectionCalculator,
   handleCloseModal,
   isModalOpen,
-  clearCalculatorStore,
 }) => {
   return (
     <>
@@ -29,8 +28,6 @@ export const EditExistingConnectionErrorModal: FC<EditExistingConnectionErrorMod
         form={
           <EditExistingConnectionErrorForm
             sameConnectionCalculator={sameConnectionCalculator}
-            handleCloseModal={handleCloseModal}
-            clearCalculatorStore={clearCalculatorStore}
           />
         }
         formId={formId}

@@ -6,13 +6,12 @@ import { useHistory, useParams } from 'react-router-dom';
 import { MeteringDeviceResponse } from 'myApi';
 
 const { inputs, outputs, gates } = editCalculatorService;
-const { CalculatorIdGate, CalculatorInfosGate, SaveDeviceIdGate } = gates;
+const { CalculatorInfosGate, SaveDeviceIdGate } = gates;
 
 export const EditCalculatorContainer = () => {
   const handleChangeTab = useEvent(inputs.handleChangeTab);
   const handleSubmit = useEvent(inputs.handleSubmit);
   const handleCloseModal = useEvent(inputs.handleCloseModal);
-  const clearCalculatorStore = useEvent(inputs.clearCalculatorStore);
   const handleFecthCalculator = useEvent(inputs.handleFecthCalculator);
 
   const currentTab = useStore(outputs.$currentTab);
@@ -45,7 +44,6 @@ export const EditCalculatorContainer = () => {
 
   return (
     <>
-      <CalculatorIdGate id={Number(deviceId)} />
       <SaveDeviceIdGate deviceId={Number(deviceId)} />
       <CalculatorInfosGate />
       <EditCalculatorPage
@@ -58,7 +56,6 @@ export const EditCalculatorContainer = () => {
         sameConnectionCalculator={sameConnectionCalculator}
         handleCloseModal={() => handleCloseModal()}
         isModalOpen={isModalOpen}
-        clearCalculatorStore={() => clearCalculatorStore()}
       />
     </>
   );

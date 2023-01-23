@@ -7,5 +7,4 @@ export type EditConnectionProps = {
   sameConnectionCalculator: CalculatorResponse | null;
   handleCloseModal: () => void;
   isModalOpen: boolean;
-  clearCalculatorStore: () => void;
 };

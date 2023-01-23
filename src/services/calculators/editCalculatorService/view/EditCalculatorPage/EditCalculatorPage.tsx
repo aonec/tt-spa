@@ -31,7 +31,6 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   sameConnectionCalculator,
   handleCloseModal,
   isModalOpen,
-  clearCalculatorStore,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
@@ -95,7 +94,6 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
               sameConnectionCalculator={sameConnectionCalculator}
               handleCloseModal={handleCloseModal}
               isModalOpen={isModalOpen}
-              clearCalculatorStore={clearCalculatorStore}
             />
           )}
           {currentTab === EditCalculatorTabs.Documents && (

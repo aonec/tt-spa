@@ -11,7 +11,6 @@ export type EditCalculatorPageProps = {
   sameConnectionCalculator: CalculatorResponse | null;
   handleCloseModal: () => void;
   isModalOpen: boolean;
-  clearCalculatorStore: () => void;
 };
 
 export enum EditCalculatorTabs {

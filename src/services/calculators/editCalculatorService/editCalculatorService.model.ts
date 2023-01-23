@@ -27,7 +27,6 @@ const handleSubmit = domain.createEvent<UpdateCalculatorRequest>();
 const handleAlreadyExistingConnection = domain.createEvent<{ id: number }>();
 const handleExisingConnectionError = domain.createEvent();
 const handleCloseModal = domain.createEvent();
-const clearCalculatorStore = calculatorProfileService.inputs.clearStore;
 
 const SaveDeviceIdGate = createGate<{ deviceId: number }>();
 
@@ -97,7 +96,6 @@ export const editCalculatorService = {
     editCalculatorSuccess,
     handleAlreadyExistingConnection,
     handleCloseModal,
-    clearCalculatorStore,
     handleFecthCalculator:
       calculatorProfileService.inputs.handleFecthCalculator,
   },
@@ -111,7 +109,6 @@ export const editCalculatorService = {
   },
   gates: {
     CalculatorInfosGate,
-    CalculatorIdGate: calculatorProfileService.gates.CalculatorIdGate,
     SaveDeviceIdGate,
   },
 };

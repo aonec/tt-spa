@@ -7,14 +7,10 @@ import {
   Wrapper,
 } from './EditExistingConnectionErrorForm.styled';
 import { EditExistingConnectionErrorFormProps } from './EditExistingConnectionErrorForm.types';
-import { useHistory } from 'react-router-dom';
 
 export const EditExistingConnectionErrorForm: FC<EditExistingConnectionErrorFormProps> = ({
   sameConnectionCalculator,
-  handleCloseModal,
-  clearCalculatorStore,
 }) => {
-  const history = useHistory();
 
   return (
     <Wrapper>
@@ -25,12 +21,8 @@ export const EditExistingConnectionErrorForm: FC<EditExistingConnectionErrorForm
 
       <CalculatorBlock>
         <Model
-          onClick={() => {
-            sameConnectionCalculator?.id &&
-              history.push(`/calculators/${sameConnectionCalculator?.id}/edit`);
-            handleCloseModal();
-            clearCalculatorStore();
-          }}
+          href={`/calculators/${sameConnectionCalculator?.id}`}
+          target="_blank"
         >
           {sameConnectionCalculator?.model || 'Модель не указана'}
         </Model>

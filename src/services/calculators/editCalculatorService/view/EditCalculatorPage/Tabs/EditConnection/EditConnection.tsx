@@ -19,22 +19,16 @@ export const EditConnection: FC<EditConnectionProps> = ({
   sameConnectionCalculator,
   handleCloseModal,
   isModalOpen,
-  clearCalculatorStore,
 }) => {
   const connection = calculator?.connection;
 
-  const {
-    values,
-    setFieldValue,
-    errors,
-    handleSubmit,
-  } = useFormik<UpdateCalculatorRequest>({
+  const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
       connection: {
         ipV4: connection?.ipV4,
-        port: connection?.port,
-        deviceAddress: connection?.deviceAddress,
-      } as MeteringDeviceConnection,
+        port: String(connection?.port),
+        deviceAddress: String(connection?.deviceAddress),
+      },
       isConnected: calculator?.isConnected || undefined,
     },
     validationSchema: yup.object().shape({
@@ -48,13 +42,24 @@ export const EditConnection: FC<EditConnectionProps> = ({
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
-      onSubmit(data);
+      const { connection, isConnected } = data;
+
+      const convertedData: UpdateCalculatorRequest = {
+        isConnected,
+        connection: {
+          ipV4: connection?.ipV4,
+          port: Number(connection?.port),
+          deviceAddress: Number(connection?.deviceAddress),
+        } as MeteringDeviceConnection,
+      };
+
+      onSubmit(convertedData);
     },
   });
 
-  const err = errors.connection;
-
-  console.log(err);
+  const err = (errors.connection as unknown) as
+    | { ipV4?: string; port?: string; deviceAddress?: string }
+    | undefined;
 
   return (
     <>
@@ -62,7 +67,6 @@ export const EditConnection: FC<EditConnectionProps> = ({
         isModalOpen={isModalOpen}
         sameConnectionCalculator={sameConnectionCalculator}
         handleCloseModal={handleCloseModal}
-        clearCalculatorStore={clearCalculatorStore}
       />
 
       <Wrapper>
@@ -89,7 +93,7 @@ export const EditConnection: FC<EditConnectionProps> = ({
               });
             }}
           />
-          <ErrorMessage>{}</ErrorMessage>
+          <ErrorMessage>{err?.ipV4}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Порт">
@@ -100,11 +104,11 @@ export const EditConnection: FC<EditConnectionProps> = ({
             onChange={(value) => {
               setFieldValue('connection', {
                 ...values.connection,
-                port: Number(value.target.value),
+                port: value.target.value,
               });
             }}
           />
-          <ErrorMessage>{}</ErrorMessage>
+          <ErrorMessage>{err?.port}</ErrorMessage>
         </FormItem>
 
         <FormItem label="Адрес прибора">
@@ -119,6 +123,7 @@ export const EditConnection: FC<EditConnectionProps> = ({
               });
             }}
           />
+          <ErrorMessage>{err?.deviceAddress}</ErrorMessage>
         </FormItem>
 
         <Footer>

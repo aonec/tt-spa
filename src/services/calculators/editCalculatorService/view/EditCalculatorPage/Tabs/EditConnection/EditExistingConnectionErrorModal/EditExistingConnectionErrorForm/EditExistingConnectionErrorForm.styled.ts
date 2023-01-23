@@ -15,7 +15,7 @@ export const CalculatorBlock = styled.div`
   margin-top: 16px;
 `;
 
-export const Model = styled.div`
+export const Model = styled.a`
   color: rgba(39, 47, 90, 1);
   font-weight: 400;
   font-size: 24px;
