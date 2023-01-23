@@ -26,7 +26,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({
     getHousingStockAddress(currentManagingFirm?.address);
   const email = currentManagingFirm?.email;
   const cellPhone = currentManagingFirm?.phoneNumber;
-  const timeZone = currentManagingFirm?.workingTime;
+  // const timeZone = currentManagingFirm?.workingTime;
 
   return (
     <Wrapper>
@@ -49,10 +49,10 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({
             key: 'Контактный телефон ',
             value: cellPhone,
           },
-          {
-            key: 'Часовой пояс',
-            value: timeZone,
-          },
+          // {
+          //   key: 'Часовой пояс',
+          //   value: timeZone,
+          // },
         ]}
       />
     </Wrapper>

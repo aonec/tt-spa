@@ -4,15 +4,12 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  Contractor,
   EditCalculator,
   ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
-  MetersPage,
   Registration,
-  UserProfile,
 } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
@@ -145,7 +142,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
-            
+
                 <Route
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
@@ -178,18 +175,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route
                   path={['/housingMeteringDevices/:deviceId/']}
                   component={HousingMeteringDeviceProfileContainer}
-                  exact
-                />
-
-                <Route
-                  path={['/user/:userId', '/user/staff/:userId']}
-                  component={UserProfile}
-                  exact
-                />
-
-                <Route
-                  path={['/user/:userId', '/user/contractor/:userId']}
-                  component={Contractor}
                   exact
                 />
 
@@ -238,6 +223,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   to="/statistics/subscribersConsumption/houses"
                   exact
                 />
+
                 <Redirect
                   from="/statistics/subscribersConsumption"
                   to="/statistics/subscribersConsumption/houses"
@@ -249,6 +235,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsPageContainer} exact />
+
+                <Redirect from="/meters" to="/meters/apartments" exact />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>
