@@ -142,7 +142,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
-            
+
                 <Route
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
@@ -223,6 +223,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   to="/statistics/subscribersConsumption/houses"
                   exact
                 />
+
                 <Redirect
                   from="/statistics/subscribersConsumption"
                   to="/statistics/subscribersConsumption/houses"
@@ -234,6 +235,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsPageContainer} exact />
+
+                <Redirect from="/meters" to="/meters/apartments" exact />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>
