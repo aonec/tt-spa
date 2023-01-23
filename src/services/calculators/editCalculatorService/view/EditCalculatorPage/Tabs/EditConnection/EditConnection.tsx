@@ -25,9 +25,9 @@ export const EditConnection: FC<EditConnectionProps> = ({
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
       connection: {
-        ipV4: connection?.ipV4,
-        port: String(connection?.port),
-        deviceAddress: String(connection?.deviceAddress),
+        ipV4: connection?.ipV4 ? connection.ipV4.trim() : null,
+        port: String(connection?.port).trim(),
+        deviceAddress: String(connection?.deviceAddress).trim(),
       },
       isConnected: calculator?.isConnected || undefined,
     },
@@ -47,7 +47,7 @@ export const EditConnection: FC<EditConnectionProps> = ({
       const convertedData: UpdateCalculatorRequest = {
         isConnected,
         connection: {
-          ipV4: connection?.ipV4,
+          ipV4: connection?.ipV4?.trim(),
           port: Number(connection?.port),
           deviceAddress: Number(connection?.deviceAddress),
         } as MeteringDeviceConnection,
