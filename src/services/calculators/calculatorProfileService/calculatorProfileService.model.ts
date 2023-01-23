@@ -9,6 +9,7 @@ const domain = createDomain('calculatorProfileService');
 
 const clearStore = domain.createEvent();
 const refetchCalculator = domain.createEvent();
+const handleFecthCalculator = domain.createEvent<number>();
 
 const setCalculatorGrouptype = domain.createEvent<CalculatorProfileGrouptype>();
 const $currentCalculatorGrouptype = domain
@@ -34,6 +35,11 @@ sample({
   target: getCalculatorFx,
 });
 
+forward({
+  from: handleFecthCalculator,
+  to: getCalculatorFx,
+});
+
 sample({
   source: CalculatorIdGate.open.map(({ id }) => id),
   clock: refetchCalculator,
@@ -49,6 +55,8 @@ export const calculatorProfileService = {
   inputs: {
     setCalculatorGrouptype,
     refetchCalculator,
+    clearStore,
+    handleFecthCalculator,
     handleConsumptionReportModalOpen:
       consumptionReportCalculatorService.inputs.handleModalOpen,
   },

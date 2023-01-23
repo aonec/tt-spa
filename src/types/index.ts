@@ -48,7 +48,11 @@ export type EffectFailDataAxiosError = {
       error: {
         Message: string;
         Text: string;
+        Data: {
+          Id: string;
+        };
       };
     };
+    status: number;
   };
 };

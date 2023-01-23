@@ -28,6 +28,10 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
   calculatorTypesSelectItems,
   handleSubmit,
   isCalculatorLoading,
+  sameConnectionCalculator,
+  handleCloseModal,
+  isModalOpen,
+  clearCalculatorStore,
 }) => {
   const address = calculator?.address?.address?.mainAddress;
 
@@ -88,6 +92,10 @@ export const EditCalculatorPage: FC<EditCalculatorPageProps> = ({
               calculator={calculator}
               onCancel={onCancel}
               onSubmit={handleSubmit}
+              sameConnectionCalculator={sameConnectionCalculator}
+              handleCloseModal={handleCloseModal}
+              isModalOpen={isModalOpen}
+              clearCalculatorStore={clearCalculatorStore}
             />
           )}
           {currentTab === EditCalculatorTabs.Documents && (

@@ -8,6 +8,10 @@ export type EditCalculatorPageProps = {
   calculatorTypesSelectItems: ItemInterface[];
   handleSubmit: (payload: UpdateCalculatorRequest) => void;
   isCalculatorLoading: boolean;
+  sameConnectionCalculator: CalculatorResponse | null;
+  handleCloseModal: () => void;
+  isModalOpen: boolean;
+  clearCalculatorStore: () => void;
 };
 
 export enum EditCalculatorTabs {
