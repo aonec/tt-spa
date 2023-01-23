@@ -33,9 +33,6 @@ export const pauseApartmentForm = createForm({
     documents: {
       init: [] as FileData[],
     },
-    apartmentId: {
-      init: null as number | null,
-    },
   },
 });
 

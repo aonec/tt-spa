@@ -11,8 +11,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Loader } from '01/_components/Loader';
 import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
 import { usePhoneMask } from 'hooks/usePhoneMask';
-import { Select } from 'ui-kit/Select';
 import * as yup from 'yup';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 export const EditEmployee: FC<EditEmployeeProps> = ({
   submitHandler,
@@ -141,8 +141,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         </FormItem>
 
         <FormItem label="Роль в системе">
-          <Select
-            mode="multiple"
+          <SelectMultiple
             placeholder="Выберите"
             onChange={(value) => {
               setFieldValue('roleTypes', value);
@@ -150,26 +149,25 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             value={values.roleTypes || undefined}
           >
             {multipleSelectionUserRoles?.map((elem, i) => (
-              <Select.Option value={elem.value || ''} key={elem.value}>
+              <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
                 {elem.label}
-              </Select.Option>
+              </SelectMultiple.Option>
             ))}
-          </Select>
+          </SelectMultiple>
         </FormItem>
 
         <FormItem label="Компетенции">
-          <Select
-            mode="multiple"
+          <SelectMultiple
             placeholder="Выберите"
             onChange={(value) => setFieldValue('firmCompetencesId', value)}
             value={values.firmCompetencesId || undefined}
           >
             {multipleSelectionCompetences?.map((elem) => (
-              <Select.Option value={elem.value} key={elem.value}>
+              <SelectMultiple.Option value={elem.value} key={elem.value}>
                 {elem.label}
-              </Select.Option>
+              </SelectMultiple.Option>
             ))}
-          </Select>
+          </SelectMultiple>
         </FormItem>
 
         <Footer>

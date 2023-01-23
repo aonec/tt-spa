@@ -13,7 +13,18 @@ import { Contractors } from './Tabs/Contractors';
 export const CompanyProfile: FC<CompanyProfileProps> = ({
   currentManagingFirm,
   staffList,
-  fetchStaffPending,
+  isLoadingStaff,
+  handleOpenStatusChangeModal,
+  handleCatchEmployeeStatusData,
+  handleOpenDeleteModal,
+  handleCatchEmployeeId,
+  handleOpenCreateEmployeeModal,
+  conractorsList,
+  isLoadingContractors,
+  handleOpenAddContractorModal,
+  catchContractorId,
+  handleOpenEditContractorModal,
+  catchContractorData,
 }) => {
   const history = useHistory();
   const { section } = useParams<{ section: CompanyProfileSection }>();
@@ -26,14 +37,14 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
           menuButtons: [
             {
               title: 'Добавить контрагента',
-              onClick: () => {},
+              onClick: () => handleOpenAddContractorModal(),
               hidden:
                 CompanyProfileSection.Staff === section ||
                 CompanyProfileSection.CommonInfo === section,
             },
             {
               title: 'Добавить сотрудника',
-              onClick: () => {},
+              onClick: () => handleOpenCreateEmployeeModal(),
               hidden:
                 CompanyProfileSection.Contractors === section ||
                 CompanyProfileSection.CommonInfo === section,
@@ -62,10 +73,23 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         <CommonInfoTab currentManagingFirm={currentManagingFirm} />
       </Route>
       <Route path="/companyProfile/staff" exact>
-        <Staff staffList={staffList} fetchStaffPending={fetchStaffPending} />
+        <Staff
+          staffList={staffList}
+          isLoadingStaff={isLoadingStaff}
+          handleOpenStatusChangeModal={handleOpenStatusChangeModal}
+          handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}
+          handleOpenDeleteModal={handleOpenDeleteModal}
+          handleCatchEmployeeId={handleCatchEmployeeId}
+        />
       </Route>
       <Route path="/companyProfile/contractors" exact>
-        <Contractors />
+        <Contractors
+          conractorsList={conractorsList}
+          isLoadingContractors={isLoadingContractors}
+          catchContractorId={catchContractorId}
+          handleOpenEditContractorModal={handleOpenEditContractorModal}
+          catchContractorData={catchContractorData}
+        />
       </Route>
     </>
   );

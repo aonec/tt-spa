@@ -2,6 +2,8 @@ import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { OrganizationUserResponse } from 'myApi';
 import { getUserData } from './employeeProfileService.api';
+import { changeStatusEmployeeService } from 'services/employee/changeStatusEmployeeService';
+import { deleteEmployeeService } from 'services/employee/deleteEmployeeService';
 
 const domain = createDomain('employeeProfileService');
 
@@ -26,7 +28,11 @@ sample({
 const $employeeDataPending = fetchUserDataFx.pending;
 
 export const employeeProfileService = {
-  inputs: {},
+  inputs: {
+    handleOpenChangeStatusModal:
+      changeStatusEmployeeService.inputs.handleOpenModal,
+    handleOpenDeleteEmployeeModal: deleteEmployeeService.inputs.handleOpenModal,
+  },
   outputs: { $userData, $employeeDataPending },
   gates: { FetchUserDataGate },
 };

@@ -133,7 +133,8 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
           <SelectSC
             placeholder="Выберите из списка"
             value={selectedHouseManagement || undefined}
-            onChange={(id) => setHouseManagement(String(id))}
+            onChange={(id) => setHouseManagement(id ? String(id) : null)}
+            allowClear
           >
             {houseManagements.map((management) => {
               if (!management.name) {

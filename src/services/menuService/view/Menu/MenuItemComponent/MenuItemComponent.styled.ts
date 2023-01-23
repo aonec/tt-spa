@@ -13,7 +13,7 @@ export const MenuItemWrapper = styled(NavLink)`
   display: flex;
   align-items: center;
   height: 35px;
-  margin-top: 15px;
+  margin-top: 12px;
   padding: 0 15px;
   color: #272f5a;
   border-left: 3px solid #00000000;

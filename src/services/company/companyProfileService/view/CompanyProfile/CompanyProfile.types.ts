@@ -1,12 +1,29 @@
 import {
+  ContractorListResponsePagedList,
   OrganizationResponse,
   OrganizationUserListResponsePagedList,
+  UserStatusResponse,
 } from 'myApi';
+import { ContractorDataType } from 'services/contractors/editContractorService/editContractorService.types';
 
 export type CompanyProfileProps = {
   currentManagingFirm: OrganizationResponse | null;
   staffList: OrganizationUserListResponsePagedList | null;
-  fetchStaffPending: boolean;
+  isLoadingStaff: boolean;
+  handleOpenStatusChangeModal: () => void;
+  handleCatchEmployeeStatusData: (payload: {
+    id: number;
+    status: UserStatusResponse | null;
+  }) => void;
+  handleOpenDeleteModal: () => void;
+  handleCatchEmployeeId: (payload: number) => void;
+  handleOpenCreateEmployeeModal: () => void;
+  conractorsList: ContractorListResponsePagedList | null;
+  isLoadingContractors: boolean;
+  handleOpenAddContractorModal: () => void;
+  catchContractorId: (payload: { id: number; name: string | null }) => void;
+  handleOpenEditContractorModal: () => void;
+  catchContractorData: (payload: ContractorDataType) => void;
 };
 
 export enum CompanyProfileSection {

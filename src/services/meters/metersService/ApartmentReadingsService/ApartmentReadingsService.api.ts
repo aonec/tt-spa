@@ -10,7 +10,7 @@ const getApartmentId = async (
 ) => {
   const apartments: ApartmentListResponsePagedList | null = await axios.get(
     'Apartments',
-    { params }
+    { params: { ...params, PageSize: 1, PageNumber: 1 } }
   );
 
   const apartmentItem = apartments?.items?.[0];
@@ -27,6 +27,8 @@ export const getApartment = async ({
   ...params
 }: GetApartmentsRequestPayload): Promise<ApartmentResponse | null> => {
   const id = ApartmentId || (await getApartmentId(params));
+
+  if (!id) return null;
 
   const apartment: ApartmentResponse | null = await axios.get(
     `/Apartments/${id}`
