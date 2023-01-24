@@ -41,6 +41,7 @@ import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
+import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
 
 const { gates } = objectProfileService;
 
@@ -215,6 +216,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route
                   path="/adminSettings/:section"
                   component={SettingsPageContainer}
+                  exact
+                />
+                <Route
+                  path="/adminSettings/operatingRanges/Standart"
+                  component={StandartWorkingRangeContainer}
                   exact
                 />
 
