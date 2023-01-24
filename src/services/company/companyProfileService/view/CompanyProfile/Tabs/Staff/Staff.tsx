@@ -13,7 +13,7 @@ const { FetchingStaffGate } = gates;
 
 export const Staff: FC<StaffProps> = ({
   staffList,
-  fetchStaffPending,
+  isLoadingStaff,
   handleOpenStatusChangeModal,
   handleCatchEmployeeStatusData,
   handleOpenDeleteModal,
@@ -23,9 +23,9 @@ export const Staff: FC<StaffProps> = ({
     <>
       <FetchingStaffGate />
       <LoaderWrapper>
-        <WithLoader isLoading={fetchStaffPending} />
+        <WithLoader isLoading={isLoadingStaff} />
       </LoaderWrapper>
-      {!fetchStaffPending &&
+      {!isLoadingStaff &&
         staffList?.items?.map((staff) => (
           <StaffItem
             staff={staff}

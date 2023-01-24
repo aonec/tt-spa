@@ -4,9 +4,9 @@ import { StaffItemProps } from './StaffItem.types';
 import { useHistory } from 'react-router-dom';
 import { usePhoneMask } from '01/features/staff/addStaff/utils';
 import { sortUserRoles } from '../Staff.utils';
-import { MenuButtonTT } from '01/tt-components';
 import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { Tooltip } from 'antd';
+import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 
 export const StaffItem: FC<StaffItemProps> = ({
   staff,
@@ -44,42 +44,34 @@ export const StaffItem: FC<StaffItemProps> = ({
         {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
       </Cellphone>
       {status?.type && <StaffStatus status={status?.type} />}
-      <MenuButtonTT
-        menuButtonArr={[
+      <ContextMenuButton
+        menuButtons={[
           {
             title: 'Открыть профиль сотрудника',
-            cb: () => history.push(`/userProfile/${id}`),
-            show: true,
+            onClick: () => history.push(`/userProfile/${id}`),
             color: 'default',
-            clickable: true,
           },
           {
             title: 'Изменить статус',
-            cb: () => {
+            onClick: () => {
               handleOpenStatusChangeModal();
               handleCatchEmployeeStatusData({ id, status });
             },
-            show: true,
             color: 'default',
-            clickable: true,
           },
           {
             title: 'Редактировать информацию о сотруднике',
-            cb: () =>
+            onClick: () =>
               history.push(`/companyProfile/editManagingFirmUser/${id}`),
-            show: true,
             color: 'default',
-            clickable: true,
           },
           {
             title: 'Удалить сотрудника',
-            cb: () => {
+            onClick: () => {
               handleOpenDeleteModal();
               handleCatchEmployeeId(id);
             },
-            show: true,
-            color: 'red',
-            clickable: true,
+            color: 'danger',
           },
         ]}
       />

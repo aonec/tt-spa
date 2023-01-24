@@ -1,9 +1,10 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { HousesIndividualDevicesMetersContainerProps } from './housesIndividualDevicesMetersService.types';
 import { IndividualDeviceMetersInputContainer } from '../individualDeviceMetersInputService';
 import { HousesIndividualDevicesHeader } from './view/HousesIndividualDevicesHeader';
 import { getReadingsMonthByShift } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.utils';
 import { PREVIOUS_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
+import { IndividualDeviceListItemResponse } from 'myApi';
 
 export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesMetersContainerProps> = ({
   individualDevicesList,
@@ -21,6 +22,22 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
   const prevReadingMonth = getReadingsMonthByShift(sliderIndex);
   const currentReadingMonth = getReadingsMonthByShift(-1);
 
+  const renderDevice = (
+    device: IndividualDeviceListItemResponse,
+    index: number
+  ) => (
+    <IndividualDeviceMetersInputContainer
+      key={device.id}
+      devices={individualDevicesList}
+      device={device}
+      sliderIndex={sliderIndex}
+      openReadingsHistoryModal={openReadingsHistoryModal}
+      managementFirmConsumptionRates={managementFirmConsumptionRates}
+      deviceIndex={index}
+      isHousingStocksReadingInputs
+    />
+  );
+
   return (
     <>
       <HousesIndividualDevicesHeader
@@ -31,18 +48,7 @@ export const HousesIndividualDevicesMetersContainer: FC<HousesIndividualDevicesM
         isCanUp={isCanUp}
         isCanDown={isCanDown}
       />
-      {individualDevicesList.map((device, index) => (
-        <IndividualDeviceMetersInputContainer
-          key={device.id}
-          devices={individualDevicesList}
-          device={device}
-          sliderIndex={sliderIndex}
-          openReadingsHistoryModal={openReadingsHistoryModal}
-          managementFirmConsumptionRates={managementFirmConsumptionRates}
-          deviceIndex={index}
-          isHousingStocksReadingInputs
-        />
-      ))}
+      {individualDevicesList.map(renderDevice)}
     </>
   );
 };

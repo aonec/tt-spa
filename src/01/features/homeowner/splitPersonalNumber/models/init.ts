@@ -117,6 +117,7 @@ sample({
       const newApartment = {
         housingStockId: apartment?.housingStock?.id,
         number: newApartmentHomeownerAccount.apartmentNumber,
+        homeownerAccount: newHomeownerAccount,
       };
 
       const individualDeviceIdsForSwitch = [
@@ -126,7 +127,6 @@ sample({
       return {
         accountForClosing,
         homeownerAccountForSplittedApartment,
-        newHomeownerAccount,
         individualDeviceIdsForSwitch,
         newApartment,
       };
