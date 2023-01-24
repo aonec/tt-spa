@@ -14,6 +14,8 @@ export type ApartmentsReadingsProps = {
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
   openEditPersonalNumberModal: () => void;
+  setSelectedHomeownerName: (payload: string) => void;
+  selectedHomeownerName: string | null;
 };
 
 export enum SearchMode {
