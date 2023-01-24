@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  EditCalculator,
   ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
@@ -42,6 +41,7 @@ import { CompanyProfileContainer } from 'services/company/companyProfileService'
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 import { ReportsContainer } from 'services/reportsService';
 import { ReportViewContainer } from 'services/reportsService/reportViewService';
+import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
 
 const { gates } = objectProfileService;
 
@@ -157,7 +157,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path="/calculators/:deviceId/edit"
-                  component={EditCalculator}
+                  component={EditCalculatorContainer}
                   exact
                 />
 
@@ -224,6 +224,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   to="/statistics/subscribersConsumption/houses"
                   exact
                 />
+
                 <Redirect
                   from="/statistics/subscribersConsumption"
                   to="/statistics/subscribersConsumption/houses"
@@ -235,12 +236,14 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsContainer} exact />
-                
+
                 <Route
                   path="/reports/:reportType"
                   component={ReportViewContainer}
                   exact
                 />
+
+                <Redirect from="/meters" to="/meters/apartments" exact />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>

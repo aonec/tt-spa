@@ -1,7 +1,8 @@
 import { SelectItem } from '01/tt-components/localBases';
-import { createDomain } from 'effector';
+import { Store, createDomain } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorInfoListResponse } from 'myApi';
+import { CalculatorInfoItem } from './types';
 
 const calculatorInfosDomain = createDomain('calculatorInfos');
 
@@ -16,8 +17,10 @@ export const fetchCalculatorTypesFx = calculatorInfosDomain.createEffect<
 
 export const CalculatorInfosGate = createGate();
 
-export const $calculatorTypesSelectItems = $calculatorTypes.map<SelectItem[]>(
-  (types) =>
+export const $calculatorTypesSelectItems: Store<
+  CalculatorInfoItem[]
+> = $calculatorTypes.map<SelectItem[]>(
+  (types): CalculatorInfoItem[] =>
     types?.map((type) => ({
       id: type.id,
       value: type.id,

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 
-export const devUrl = 'https://staging.transparent-technology.ru/api/';
+export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
 export const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
