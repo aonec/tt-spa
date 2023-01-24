@@ -4,7 +4,7 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  EditCalculator,
+  Contractor,
   ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
@@ -41,6 +41,7 @@ import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
+import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
 
 const { gates } = objectProfileService;
 
@@ -156,7 +157,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 <Route
                   path="/calculators/:deviceId/edit"
-                  component={EditCalculator}
+                  component={EditCalculatorContainer}
                   exact
                 />
 
