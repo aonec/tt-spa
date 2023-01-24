@@ -68,7 +68,6 @@
     "sinon": "^10.0.0",
     "string-similarity": "^4.0.4",
     "styled-components": "^5.2.0",
-    "svg-sprite-loader": "^5.0.0",
     "swagger-typescript-api": "^6.1.1",
     "typescript": "^3.9.7",
     "uuid": "^8.3.2",
