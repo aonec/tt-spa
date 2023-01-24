@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  Contractor,
   ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
