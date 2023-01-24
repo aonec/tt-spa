@@ -10,7 +10,6 @@ import {
   IndividualDeviceEdit,
   Login,
   Registration,
-  UserProfile,
 } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
@@ -181,18 +180,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path={['/user/:userId', '/user/staff/:userId']}
-                  component={UserProfile}
-                  exact
-                />
-
-                <Route
-                  path={['/user/:userId', '/user/contractor/:userId']}
-                  component={Contractor}
-                  exact
-                />
-
-                <Route
                   path="/housingMeteringDevices/:deviceId/edit"
                   component={EditHousingMeteringDeviceContainer}
                   exact
@@ -237,6 +224,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   to="/statistics/subscribersConsumption/houses"
                   exact
                 />
+
                 <Redirect
                   from="/statistics/subscribersConsumption"
                   to="/statistics/subscribersConsumption/houses"
@@ -248,6 +236,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsPageContainer} exact />
+
+                <Redirect from="/meters" to="/meters/apartments" exact />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>

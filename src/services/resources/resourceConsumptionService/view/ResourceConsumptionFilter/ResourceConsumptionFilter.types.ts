@@ -9,8 +9,8 @@ export type ResourceConsumptionFilterProps = {
   setFilter: (filter: GetConsumptionDataFilter) => void;
   filter: Partial<ConsumptionDataFilter> | null;
   streetsList: AddressWithSearchString[];
-  selectedHouseManagement: string;
-  setHouseManagement: (houseManagement: string) => void;
+  selectedHouseManagement: string | null;
+  setHouseManagement: (houseManagement: string | null) => void;
   houseManagements: PreparedHouseManagements[];
   handleClearData: () => void;
   handleClearFilter: () => void;
