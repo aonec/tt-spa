@@ -21,7 +21,6 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/react-virtualized": "^9.21.14",
     "@types/redux-saga": "^0.10.5",
-    "@types/uuid": "^8.3.0",
     "@types/victory": "^33.1.4",
     "antd": "^4.7.0",
     "axios": "^0.21.1",
@@ -58,7 +57,6 @@
     "react-test-render": "^1.1.2",
     "react-thunk": "^1.0.0",
     "react-to-print": "^2.13.0",
-    "react-uuid": "^1.0.2",
     "react-virtualized": "^9.22.3",
     "react-yandex-maps": "^4.6.0",
     "react-yandex-metrika": "^2.6.0",
@@ -70,7 +68,6 @@
     "styled-components": "^5.2.0",
     "swagger-typescript-api": "^6.1.1",
     "typescript": "^3.9.7",
-    "uuid": "^8.3.2",
     "victory": "^35.4.6",
     "yup": "^0.29.3"
   },
