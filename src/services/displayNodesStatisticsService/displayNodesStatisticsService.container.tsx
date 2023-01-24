@@ -5,7 +5,11 @@ import { useEvent, useStore } from 'effector-react';
 import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
-import { PageWrapper, Title, Wrapper } from './displayNodesStatisticsService.styled';
+import {
+  PageWrapper,
+  Title,
+  Wrapper,
+} from './displayNodesStatisticsService.styled';
 import { DisplayNodesStatisticsContainerProps } from './displayNodesStatisticsService.types';
 import { GraphEmptyData } from './view/GraphEmptyData';
 import { NodeStatisticsTable } from './view/NodeStatisticsTable';
@@ -21,6 +25,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
   const graphType = useStore(outputs.$graphType);
   const archiveData = useStore(outputs.$archiveReadings);
   const isLoading = useStore(outputs.$isLoading);
+  const taskStatistics = useStore(outputs.$taskStatistics);
 
   const setGraphType = useEvent(inputs.setGraphType);
   const setArchiveFilter = useEvent(inputs.setArchiveFilter);
@@ -61,6 +66,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
                   graphParam={graphType}
                   data={archiveData}
                   reportType={currentArhiveFilter.ReportType}
+                  taskStatistics={taskStatistics}
                 />
               </Wrapper>
               <NodeStatisticsTable

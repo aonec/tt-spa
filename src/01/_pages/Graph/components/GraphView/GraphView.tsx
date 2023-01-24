@@ -6,6 +6,8 @@ import {
   VictoryArea,
   VictoryLine,
   VictoryLabel,
+  VictoryScatter,
+  VictoryPortal,
 } from 'victory';
 import React from 'react';
 import 'antd/es/date-picker/style/index';
@@ -25,6 +27,9 @@ import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
+import moment from 'moment';
+import { TaskPoint } from '../TaskPoint';
+import { getTaskXPos } from './GraphView.utils';
 
 const minDelta = 0.01;
 const width = 730;
@@ -34,6 +39,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   graphParam,
   data,
   reportType,
+  taskStatistics,
 }) => {
   const { resource, data: readingsData, averageDeltaMass } = data;
   const isAverageLineRendered = renderForHeatAndDeltaMass(
@@ -75,6 +81,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
     <>
       <GraphWrapper>
         <Gradient resource={resource as ResourceType} />
+
         <VictoryChart
           domain={{ y: [minValue, maxValue] }}
           width={width}
@@ -113,6 +120,26 @@ export const GraphView: React.FC<GraphViewProps> = ({
               },
             }}
           />
+
+          <VictoryScatter
+            data={taskStatistics.map((elem) => ({
+              x: getTaskXPos({
+                currentData: elem?.key,
+                minData: ticksData[0],
+                reportType,
+              }),
+              y: maxValue * 0.9,
+              amount: (elem.value || []).length,
+              isEmergency:
+                (elem.value || []).filter((elem) => elem.isEmergency).length !==
+                0,
+              isAllActive:
+                (elem.value || []).filter((elem) => elem.isClosed).length === 0,
+            }))}
+            sortKey="x"
+            dataComponent={<TaskPoint />}
+          />
+
           <VictoryArea
             name="graph"
             sortKey="time"
