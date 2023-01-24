@@ -26,6 +26,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   handlePauseApartment,
   handleCancelPauseApartment,
   openEditPersonalNumberModal,
+  setSelectedHomeownerName,
+  selectedHomeownerName,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -55,8 +57,6 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   );
 
   const address = apartment?.housingStock?.address?.mainAddress;
-
-  const homeowner = apartment?.homeownerAccounts?.[0];
 
   const cancelPauseApartment = () =>
     confirm({
@@ -92,7 +92,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               street: address.street || undefined,
               house: address.number || undefined,
               apartment: apartment?.apartmentNumber || undefined,
-              question: homeowner?.name || undefined,
+              question: selectedHomeownerName || undefined,
             }
           }
         />
@@ -106,6 +106,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 handlePauseApartment={handlePauseApartment}
                 handleCancelPauseApartment={cancelPauseApartment}
                 openEditPersonalNumberModal={openEditPersonalNumberModal}
+                setSelectedHomeownerName={setSelectedHomeownerName}
               />
               <ApartmentAlerts
                 apartment={apartment}

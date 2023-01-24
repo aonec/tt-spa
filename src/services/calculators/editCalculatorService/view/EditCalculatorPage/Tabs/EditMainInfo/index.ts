@@ -1,0 +1,1 @@
+export { EditMainInfo } from './EditMainInfo'

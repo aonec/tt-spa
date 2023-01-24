@@ -6681,7 +6681,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     calculatorsDetail: (deviceId: number, params: RequestParams = {}) =>
       this.request<CalculatorResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Calculators/${deviceId}`,
+        path: `/api`,
         method: "GET",
         secure: true,
         format: "json",
