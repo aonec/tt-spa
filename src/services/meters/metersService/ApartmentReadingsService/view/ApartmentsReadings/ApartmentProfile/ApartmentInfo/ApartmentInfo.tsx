@@ -44,6 +44,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   handlePauseApartment,
   handleCancelPauseApartment,
   openEditPersonalNumberModal,
+  setSelectedHomeownerName,
 }) => {
   const history = useHistory();
 
@@ -98,6 +99,11 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   const selectedHomeowner = apartment.homeownerAccounts?.find(
     (homeowner) => homeowner.id === activeHomeowner
   );
+
+  useEffect(() => {
+    selectedHomeowner?.name &&
+      setSelectedHomeownerName(selectedHomeowner?.name);
+  }, [activeHomeowner]);
 
   const houseManagement = housingStock?.houseManagement;
 
