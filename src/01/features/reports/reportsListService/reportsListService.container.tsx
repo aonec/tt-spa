@@ -5,7 +5,6 @@ import { PAGE_SIZE } from './reportsListService.constants';
 import { reportsListService } from './reportsListService.model';
 import { ReportStatusType } from './reportsListService.types';
 import { ReportsList } from './view/ReportsList';
-import { SearchReports } from './view/SearchReports';
 
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
@@ -36,7 +35,6 @@ export const ReportsListContainer = () => {
   return (
     <>
       <ReportsHistoryGate />
-      <SearchReports reportName={reportName} setReportName={setReportName} />
       <Tabs
         activeKey={
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived

@@ -1,20 +1,14 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceType, ESoiReportPeriod } from 'myApi';
-import React, { FC } from 'react';
-import { resourcesNamesLookup } from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
-import {
-  ResourceNameWrapper,
-  ResourceOptionWrapper,
-} from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.styled';
+import { ESoiReportPeriod } from 'myApi';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { SoiReportType } from '../../../soiReportService.types';
 import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
