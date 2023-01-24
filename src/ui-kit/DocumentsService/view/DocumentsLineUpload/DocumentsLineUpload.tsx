@@ -1,5 +1,9 @@
 import React, { FC, useCallback } from 'react';
+import { saveAs } from 'file-saver';
+
 import { Button } from 'ui-kit/Button';
+import { UploadIcon } from 'ui-kit/icons';
+
 import {
   DocumentItemWrapper,
   DocumentSkeleton,
@@ -9,9 +13,7 @@ import {
   Wrapper,
 } from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
-import { saveAs } from 'file-saver';
 import { DocumentResponse } from 'myApi';
-import { UploadIcon } from 'ui-kit/icons';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,

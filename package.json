@@ -11,7 +11,6 @@
     "@testing-library/react-hooks": "^5.1.1",
     "@testing-library/user-event": "^13.1.1",
     "@types/axios": "^0.14.0",
-    "@types/file-saver": "^2.0.3",
     "@types/jest": "^26.0.16",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.10",
@@ -103,6 +102,7 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.13.12",
+    "@types/file-saver": "^2.0.5",
     "@types/styled-components": "^5.1.7",
     "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.0",
