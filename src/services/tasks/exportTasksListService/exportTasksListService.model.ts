@@ -31,6 +31,16 @@ exportTasksListFx.done.watch(() =>
   message.success('Список задач успешно выгружен!')
 );
 
+exportTasksListFx.failData.watch(async (e) => {
+  const data = JSON.parse(
+    await ((e.response.data as unknown) as {
+      text: () => Promise<string>;
+    }).text()
+  );
+
+  message.error(data.error.Text);
+});
+
 export const exportTasksListService = {
   inputs: {
     exportTasksList,
