@@ -1,6 +1,8 @@
-import qs from 'qs';
-import axiosWithHeaders from '../axiosWithHeaders';
+import { stringify } from 'query-string';
+
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+
+import axiosWithHeaders from '../axiosWithHeaders';
 
 export const requestDevicesReport = async (
   query?: CalculatorsListRequestPayload
@@ -14,7 +16,7 @@ export const requestDevicesReport = async (
     }
   > = {
     params: query,
-    paramsSerializer: (params) => qs.stringify(params),
+    paramsSerializer: (params) => stringify(params || {}),
     responseType: 'blob',
   };
 
