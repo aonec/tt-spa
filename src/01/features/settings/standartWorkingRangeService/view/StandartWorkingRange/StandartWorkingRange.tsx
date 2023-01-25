@@ -1,62 +1,100 @@
-import React, { FC, useState } from 'react';
-import { Margin, Wrapper } from './StandartWorkingRange.styled';
+import React, { FC, useEffect } from 'react';
 import {
-  StandartWorkingRangeProps,
-  WorkingRangeTabs,
-} from './StandartWorkingRange.types';
-import { TabsItemInterface } from '01/tt-components/interfaces';
+  ErrorBlockGrid,
+  ErrorFieldName,
+  FieldGrid,
+  FieldName,
+  LoaderWrapper,
+  Margin,
+  Padding,
+  RangeBlockGrid,
+  RangeFieldName,
+  Symbol,
+  Value,
+  Wrapper,
+} from './StandartWorkingRange.styled';
+import { StandartWorkingRangeProps } from './StandartWorkingRange.types';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Tabs } from 'ui-kit/Tabs';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { useFormik } from 'formik';
-import { ENodeWorkingRangeSeason } from 'myApi';
+import {
+  ENodeWorkingRangeSeason,
+  ENodeWorkingRangeType,
+  EResourceType,
+} from 'myApi';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
-export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({}) => {
-  const [currentTab, setTab] = useState<ENodeWorkingRangeSeason>(
-    ENodeWorkingRangeSeason.HeatingSeason
+export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
+  handleOnSearchDataChange,
+  standartWorkingRange,
+  isLoading,
+}) => {
+  const allowableError =
+    standartWorkingRange &&
+    standartWorkingRange.nodeWorkingRanges?.find(
+      (range) =>
+        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError
+    );
+
+  const criticalError = standartWorkingRange?.nodeWorkingRanges?.find(
+    (range) =>
+      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError
   );
 
-  const tabItems: Array<TabsItemInterface> = [
-    {
-      title: 'Отопительный сезон',
-      key: WorkingRangeTabs.HeatingSeason,
-      cb: () => setTab(ENodeWorkingRangeSeason.HeatingSeason),
-    },
-    {
-      title: 'Межотопительный сезон',
-      key: WorkingRangeTabs.InterHeating,
-      cb: () => setTab(ENodeWorkingRangeSeason.InterHeating),
-    },
-  ];
+  const massOfFeedFlowMagistral =
+    standartWorkingRange &&
+    standartWorkingRange.nodeWorkingRanges?.find(
+      (range) =>
+        range.nodeWorkingRangeType ===
+        ENodeWorkingRangeType.MassOfFeedFlowMagistral
+    );
 
-  const { values, handleSubmit, setFieldValue, errors } = useFormik({
+  const massOfFeedBackFlowMagistral =
+    standartWorkingRange &&
+    standartWorkingRange.nodeWorkingRanges?.find(
+      (range) =>
+        range.nodeWorkingRangeType ===
+        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral
+    );
+
+  const deltaMassOfMagistral =
+    standartWorkingRange &&
+    standartWorkingRange.nodeWorkingRanges?.find(
+      (range) =>
+        range.nodeWorkingRangeType ===
+        ENodeWorkingRangeType.DeltaMassOfMagistral
+    );
+
+  const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
-      nodeResourceType: null,
-      season: null,
+      nodeResourceType: EResourceType.ColdWaterSupply,
+      season: ENodeWorkingRangeSeason.HeatingSeason,
     },
     enableReinitialize: true,
-    onSubmit: () => {},
-    validateOnChange: false,
+    onSubmit: (data) => {
+      handleOnSearchDataChange(data);
+    },
   });
+
+  useEffect(() => {
+    console.log(standartWorkingRange);
+  }, [standartWorkingRange]);
 
   return (
     <Wrapper>
       <Margin>
         <GoBack />
       </Margin>
-      <PageHeader
-        title="Стандартные рабочие диапазоны"
-        contextMenu={{
-          menuButtons: [],
-        }}
-      />
+      <PageHeader title="Стандартные рабочие диапазоны" />
       <Margin>
         <Tabs
           onChange={(value) => {
-            setTab(value as ENodeWorkingRangeSeason);
+            setFieldValue('season', value);
+            handleSubmit();
           }}
-          activeKey={currentTab}
+          activeKey={values.season}
         >
           <Tabs.TabPane
             tab="Отопительный сезон"
@@ -69,7 +107,84 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({}) => {
         </Tabs>
       </Margin>
 
-      <ResourceSelect resource={values.nodeResourceType} onChange={() => {}} />
+      <Padding>
+        <ResourceSelect
+          resource={values.nodeResourceType}
+          onChange={(value) => {
+            setFieldValue('nodeResourceType', value);
+            handleSubmit();
+          }}
+        />
+      </Padding>
+
+      {isLoading && (
+        <LoaderWrapper>
+          <WithLoader isLoading={isLoading} />
+        </LoaderWrapper>
+      )}
+
+      {!isLoading && (
+        <>
+          <ErrorBlockGrid>
+            <div>
+              <FieldGrid>
+                <ErrorFieldName>
+                  Допустимое значение погрешностей
+                </ErrorFieldName>
+                <Value>{allowableError?.min}</Value>
+                <Value>{allowableError?.max}</Value>
+              </FieldGrid>
+              <FieldGrid>
+                <ErrorFieldName>Критичное значение погрешностей</ErrorFieldName>
+                <Value>{criticalError?.min}</Value>
+                <Value>{criticalError?.max}</Value>
+              </FieldGrid>
+            </div>
+            <div></div>
+          </ErrorBlockGrid>
+
+          <RangeBlockGrid>
+            <div>
+              <FieldGrid>
+                <RangeFieldName>
+                  <Symbol>M1</Symbol>
+                  <FieldName>
+                    Масса подающей магистрали (
+                    {massOfFeedFlowMagistral?.measureUnit})
+                  </FieldName>
+                </RangeFieldName>
+                <Value>{massOfFeedFlowMagistral?.min || 9}</Value>
+                <Value>{massOfFeedFlowMagistral?.max || 10}</Value>
+              </FieldGrid>
+
+              <FieldGrid>
+                <RangeFieldName>
+                  <Symbol>M2</Symbol>
+                  <FieldName>
+                    Масса подающей магистрали (
+                    {massOfFeedBackFlowMagistral?.measureUnit})
+                  </FieldName>
+                </RangeFieldName>
+                <Value>{massOfFeedBackFlowMagistral?.min || 9}</Value>
+                <Value>{massOfFeedBackFlowMagistral?.max || 10}</Value>
+              </FieldGrid>
+
+              <FieldGrid>
+                <RangeFieldName>
+                  <Symbol>ΔM</Symbol>
+                  <FieldName>
+                    Масса подающей магистрали (
+                    {deltaMassOfMagistral?.measureUnit})
+                  </FieldName>
+                </RangeFieldName>
+                <Value>{deltaMassOfMagistral?.min || 9}</Value>
+                <Value>{deltaMassOfMagistral?.max || 10}</Value>
+              </FieldGrid>
+            </div>
+            <div></div>
+          </RangeBlockGrid>
+        </>
+      )}
     </Wrapper>
   );
 };

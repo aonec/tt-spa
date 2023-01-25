@@ -1,6 +1,14 @@
-export type StandartWorkingRangeProps = {};
+import {
+  AllNodeWorkingRangeResponse,
+  ENodeWorkingRangeSeason,
+  EResourceType,
+} from 'myApi';
 
-export enum WorkingRangeTabs {
-  HeatingSeason = 'HeatingSeason',
-  InterHeating = 'InterHeating',
-}
+export type StandartWorkingRangeProps = {
+  standartWorkingRange: AllNodeWorkingRangeResponse | null;
+  handleOnSearchDataChange: (payload: {
+    nodeResourceType: EResourceType;
+    season: ENodeWorkingRangeSeason;
+  }) => void;
+  isLoading: boolean;
+};
