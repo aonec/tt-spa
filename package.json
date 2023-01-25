@@ -50,7 +50,6 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "5.2.0",
     "react-scripts": "^3.4.3",
-    "react-tagsinput": "^3.19.0",
     "react-to-print": "^2.13.0",
     "redux": "^4.0.5",
     "string-similarity": "^4.0.4",
