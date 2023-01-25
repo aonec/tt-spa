@@ -56,7 +56,6 @@
     "react-test-render": "^1.1.2",
     "react-to-print": "^2.13.0",
     "react-virtualized": "^9.22.3",
-    "react-yandex-maps": "^4.6.0",
     "redux": "^4.0.5",
     "string-similarity": "^4.0.4",
     "styled-components": "^5.2.0",
