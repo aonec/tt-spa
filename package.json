@@ -26,7 +26,6 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "date-fns": "^2.16.1",
-    "date-fns-tz": "^1.1.1",
     "downloadjs": "^1.4.7",
     "effector": "^21.8.11",
     "effector-forms": "^0.0.21",
