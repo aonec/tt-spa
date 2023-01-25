@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
-    "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.10",
     "@types/qs": "^6.9.6",
     "@types/react": "^17.0.0",
@@ -72,6 +71,7 @@
   "devDependencies": {
     "@babel/helper-define-map": "^7.13.12",
     "@types/file-saver": "^2.0.5",
+    "@types/lodash": "^4.14.191",
     "@types/styled-components": "^5.1.7",
     "@types/yup": "^0.29.11",
     "eslint": "^7.22.0",
