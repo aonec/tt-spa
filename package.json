@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
-    "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.10",
     "@types/qs": "^6.9.6",
