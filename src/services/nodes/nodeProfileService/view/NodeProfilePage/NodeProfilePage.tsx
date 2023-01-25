@@ -1,10 +1,21 @@
 import React, { FC, ReactNode, useMemo } from 'react';
+import { stringifyUrl } from 'query-string';
 import { Empty } from 'antd';
+
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { Tabs } from 'ui-kit/Tabs';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { PageHeader } from '01/shared/ui/PageHeader';
+import { NodeConnection } from '01/tt-components/NodeConnection';
+import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
+import { ENodeRegistrationType } from 'myApi';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
+import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
+
 import {
   Title,
   ContentWrapper,
@@ -19,17 +30,8 @@ import {
   PipeNodeProfileSection,
 } from './NodeProfilePage.types';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
-import { Tabs } from 'ui-kit/Tabs';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { CommonInfoTab } from './CommonInfoTab';
-import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
-import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
-import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
-import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
-import { NodeConnection } from '01/tt-components/NodeConnection';
-import { ENodeRegistrationType } from 'myApi';
-import qs from 'query-string';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -176,7 +178,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               />
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
-                link={qs.stringifyUrl({
+                link={stringifyUrl({
                   url: '/tasks/list/Observing',
                   query: { pipeNodeId: pipeNode.id },
                 })}

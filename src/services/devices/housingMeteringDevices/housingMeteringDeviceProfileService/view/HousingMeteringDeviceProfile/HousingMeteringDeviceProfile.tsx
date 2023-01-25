@@ -1,12 +1,18 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
+import { stringifyUrl } from 'query-string';
+
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Tabs } from 'ui-kit/Tabs';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
+import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
+import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';
+
 import { HousingProfileTabs } from '../../housingMeteringDeviceProfileService.types';
 import { CommonInfoTab } from './CommonInfo/CommonInfoTab';
 import { ConnectionSettings } from './ConnectionSettings';
@@ -22,10 +28,6 @@ import {
   Wrapper,
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
-import { CheckHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/checkHousingMeteringDeviceService';
-import { CloseHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/closeHousingMeteringDeviceService';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
-import qs from 'query-string';
 
 export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps> = ({
   deviceId,
@@ -135,7 +137,7 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
           <RightBlock>
             <LinkCard
               text={`Задачи: ${tasksCount}`}
-              link={qs.stringifyUrl({
+              link={stringifyUrl({
                 url: '/tasks/list/Observing',
                 query: { housingMeteringDeviceId: housingMeteringDevice?.id },
               })}
