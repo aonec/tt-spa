@@ -24,7 +24,6 @@
     "@types/victory": "^33.1.4",
     "antd": "^4.7.0",
     "axios": "^0.21.1",
-    "bootstrap": "^4.5.2",
     "date-fns": "^2.16.1",
     "downloadjs": "^1.4.7",
     "effector": "^21.8.11",
