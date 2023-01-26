@@ -1,7 +1,6 @@
-import { nodeService } from '01/features/nodes/displayNode/models';
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import { ENodeCommercialAccountStatus, PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
 import {

@@ -6,7 +6,7 @@ import {
   NodeSetRegistrationTypeRequest,
   NodeSetTechnicalTypeRequest,
 } from 'myApi';
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
 import { NodeRegistrationTypeLookup } from 'services/devices/editNodeService/view/EditNodePage/EditNodePage.constants';
@@ -24,11 +24,23 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
   node,
   setNodeTypePaylaod,
 }) => {
+  const registrationType = useMemo(() => {
+    let registrationType = node.registrationType;
+
+    if (registrationType === ENodeRegistrationType.Commercial) {
+      registrationType = ENodeRegistrationType.Technical;
+    } else {
+      registrationType = ENodeRegistrationType.Commercial;
+    }
+
+    return registrationType;
+  }, [node]);
+
   const { values, handleSubmit, setFieldValue, errors } = useFormik<
     Partial<NodeSetRegistrationTypeRequest>
   >({
     initialValues: {
-      registrationType: node.registrationType,
+      registrationType,
     },
     validationSchema,
     validateOnBlur: true,
@@ -48,11 +60,6 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
     },
   });
 
-  useEffect(() => {
-    setFieldValue('commercialStatusRequest', undefined);
-    setFieldValue('technicalTypeRequest', undefined);
-  }, [values.registrationType]);
-
   const isTechnical =
     values.registrationType === ENodeRegistrationType.Technical;
 
@@ -69,8 +76,8 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
           <FormItem label="Тип узла">
             <Select
               placeholder="Выберите"
-              onChange={(value) => setFieldValue('registrationType', value)}
               value={values.registrationType}
+              disabled
             >
               {Object.entries(NodeRegistrationTypeLookup).map(
                 ([key, value]) => (
