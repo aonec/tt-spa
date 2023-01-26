@@ -25,7 +25,10 @@ forward({
 
 sample({
   source: PipeNodeGate.state.map(({ pipeNodeId }) => pipeNodeId),
-  clock: changeNodeStatusService.inputs.changeNodeStatusFx.doneData,
+  clock: [
+    changeNodeStatusService.inputs.changeNodeStatusFx.doneData,
+    changeNodeTypeService.inputs.changeNodeTypeFx.doneData,
+  ],
   target: fetchPipeNodeFx,
 });
 

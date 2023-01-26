@@ -44,7 +44,7 @@ changeNodeTypeFx.failData.watch((error) =>
 
 forward({
   from: changeNodeTypeFx.doneData,
-  to: [nodeService.inputs.refetchNode, closeModal],
+  to: closeModal,
 });
 
 guard({
@@ -59,6 +59,7 @@ export const changeNodeTypeService = {
     closeModal,
     openModal,
     setNodeTypePayload,
+    changeNodeTypeFx,
   },
   outputs: {
     $isOpen,

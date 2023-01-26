@@ -39,7 +39,7 @@ changeNodeStatusFx.failData.watch((error) =>
 
 forward({
   from: changeNodeStatusFx.doneData,
-  to: [nodeService.inputs.refetchNode, closeModal],
+  to: closeModal,
 });
 
 sample({
