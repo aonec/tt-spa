@@ -78,9 +78,8 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     },
   });
 
-  useEffect(() => {
-    console.log(standartWorkingRange);
-  }, [standartWorkingRange]);
+  const isElectricity =
+    (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
 
   return (
     <Wrapper>
@@ -123,7 +122,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
         </LoaderWrapper>
       )}
 
-      {!isLoading && (
+      {!isLoading && !isElectricity && (
         <>
           <ErrorBlockGrid>
             <div>
@@ -145,41 +144,47 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
 
           <RangeBlockGrid>
             <div>
-              <FieldGrid>
-                <RangeFieldName>
-                  <Symbol>M1</Symbol>
-                  <FieldName>
-                    Масса подающей магистрали (
-                    {massOfFeedFlowMagistral?.measureUnit})
-                  </FieldName>
-                </RangeFieldName>
-                <Value>{massOfFeedFlowMagistral?.min || 9}</Value>
-                <Value>{massOfFeedFlowMagistral?.max || 10}</Value>
-              </FieldGrid>
+              {massOfFeedFlowMagistral && (
+                <FieldGrid>
+                  <RangeFieldName>
+                    <Symbol>M1</Symbol>
+                    <FieldName>
+                      Масса подающей магистрали (
+                      {massOfFeedFlowMagistral?.measureUnit})
+                    </FieldName>
+                  </RangeFieldName>
+                  <Value>{massOfFeedFlowMagistral?.min || 9}</Value>
+                  <Value>{massOfFeedFlowMagistral?.max || 10}</Value>
+                </FieldGrid>
+              )}
 
-              <FieldGrid>
-                <RangeFieldName>
-                  <Symbol>M2</Symbol>
-                  <FieldName>
-                    Масса подающей магистрали (
-                    {massOfFeedBackFlowMagistral?.measureUnit})
-                  </FieldName>
-                </RangeFieldName>
-                <Value>{massOfFeedBackFlowMagistral?.min || 9}</Value>
-                <Value>{massOfFeedBackFlowMagistral?.max || 10}</Value>
-              </FieldGrid>
+              {massOfFeedBackFlowMagistral && (
+                <FieldGrid>
+                  <RangeFieldName>
+                    <Symbol>M2</Symbol>
+                    <FieldName>
+                      Масса подающей магистрали (
+                      {massOfFeedBackFlowMagistral?.measureUnit})
+                    </FieldName>
+                  </RangeFieldName>
+                  <Value>{massOfFeedBackFlowMagistral?.min || 9}</Value>
+                  <Value>{massOfFeedBackFlowMagistral?.max || 10}</Value>
+                </FieldGrid>
+              )}
 
-              <FieldGrid>
-                <RangeFieldName>
-                  <Symbol>ΔM</Symbol>
-                  <FieldName>
-                    Масса подающей магистрали (
-                    {deltaMassOfMagistral?.measureUnit})
-                  </FieldName>
-                </RangeFieldName>
-                <Value>{deltaMassOfMagistral?.min || 9}</Value>
-                <Value>{deltaMassOfMagistral?.max || 10}</Value>
-              </FieldGrid>
+              {deltaMassOfMagistral && (
+                <FieldGrid>
+                  <RangeFieldName>
+                    <Symbol>ΔM</Symbol>
+                    <FieldName>
+                      Масса подающей магистрали (
+                      {deltaMassOfMagistral?.measureUnit})
+                    </FieldName>
+                  </RangeFieldName>
+                  <Value>{deltaMassOfMagistral?.min || 9}</Value>
+                  <Value>{deltaMassOfMagistral?.max || 10}</Value>
+                </FieldGrid>
+              )}
             </div>
             <div></div>
           </RangeBlockGrid>
