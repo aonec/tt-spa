@@ -7,6 +7,7 @@ export type NodeProfilePageProps = {
   handleChangeTab: (section: PipeNodeProfileSection) => void;
   handleEditNode: () => void;
   openChangeNodeStatusModal: (node: PipeNodeResponse) => void;
+  openChangeNodeTypeModal: (node: PipeNodeResponse) => void;
 };
 
 export enum PipeNodeProfileSection {

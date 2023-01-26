@@ -24,7 +24,6 @@ import { EditElectricNodeContainer } from 'services/devices/editElectricNodeServ
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
-import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { EditNodeContainer } from 'services/devices/editNodeService';
@@ -40,8 +39,11 @@ import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
+import { ReportsContainer } from 'services/reportsService';
+import { ReportViewContainer } from 'services/reportsService/reportViewService';
 import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
 import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
+import { ReportsPageContainer } from '01/features/reports';
 
 const { gates } = objectProfileService;
 
@@ -241,6 +243,12 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsPageContainer} exact />
+
+                <Route
+                  path="/reports/:reportType"
+                  component={ReportViewContainer}
+                  exact
+                />
 
                 <Redirect from="/meters" to="/meters/apartments" exact />
               </Switch>

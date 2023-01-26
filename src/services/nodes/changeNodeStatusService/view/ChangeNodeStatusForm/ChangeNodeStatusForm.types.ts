@@ -3,7 +3,7 @@ import { ChangeNodeStatusFormPayload } from '../../changeNodeStatusService.types
 
 export type ChangeNodeStatusFormProps = {
   initialValues?: PipeNodeResponse;
-  formId: string;
+  formId?: string;
   handleChangeNodeStatus: (payload: ChangeNodeStatusFormPayload) => void;
 };
 

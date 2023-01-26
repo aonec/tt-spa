@@ -38,7 +38,7 @@ const buttonSizesDictionary: {
     fontSize: 16,
   },
   small: {
-    height: 30,
+    height: 32,
     padding: 14,
     fontSize: 13,
   },

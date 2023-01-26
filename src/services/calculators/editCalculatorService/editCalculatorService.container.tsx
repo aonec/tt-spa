@@ -3,17 +3,22 @@ import { EditCalculatorPage } from './view/EditCalculatorPage';
 import { editCalculatorService } from './editCalculatorService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
+import { MeteringDeviceResponse } from 'myApi';
 
 const { inputs, outputs, gates } = editCalculatorService;
-const { CalculatorIdGate, CalculatorInfosGate, SaveDeviceIdGate } = gates;
+const { CalculatorInfosGate, SaveDeviceIdGate } = gates;
 
 export const EditCalculatorContainer = () => {
   const handleChangeTab = useEvent(inputs.handleChangeTab);
   const handleSubmit = useEvent(inputs.handleSubmit);
+  const handleCloseModal = useEvent(inputs.handleCloseModal);
+  const handleFecthCalculator = useEvent(inputs.handleFecthCalculator);
 
   const currentTab = useStore(outputs.$currentTab);
   const calculator = useStore(outputs.$calculator);
   const isCalculatorLoading = useStore(outputs.$isLoading);
+  const sameConnectionCalculator = useStore(outputs.$sameConnectionCalculator);
+  const isModalOpen = useStore(outputs.$isModalOpen);
 
   const { deviceId } = useParams<{ deviceId: string }>();
 
@@ -24,16 +29,21 @@ export const EditCalculatorContainer = () => {
   );
 
   useEffect(() => {
-    return inputs.editCalculatorSuccess.watch((data) => {
-      if (data?.id) {
-        history.push(`/calculators/${data.id}`);
+    return inputs.editCalculatorSuccess.watch(
+      (data: MeteringDeviceResponse | null) => {
+        if (data?.id) {
+          history.push(`/calculators/${data.id}`);
+        }
       }
-    }).unsubscribe;
+    ).unsubscribe;
   }, []);
+
+  useEffect(() => {
+    handleFecthCalculator(Number(deviceId));
+  }, [deviceId]);
 
   return (
     <>
-      <CalculatorIdGate id={Number(deviceId)} />
       <SaveDeviceIdGate deviceId={Number(deviceId)} />
       <CalculatorInfosGate />
       <EditCalculatorPage
@@ -43,6 +53,9 @@ export const EditCalculatorContainer = () => {
         calculatorTypesSelectItems={calculatorTypesSelectItems}
         handleSubmit={handleSubmit}
         isCalculatorLoading={isCalculatorLoading}
+        sameConnectionCalculator={sameConnectionCalculator}
+        handleCloseModal={() => handleCloseModal()}
+        isModalOpen={isModalOpen}
       />
     </>
   );

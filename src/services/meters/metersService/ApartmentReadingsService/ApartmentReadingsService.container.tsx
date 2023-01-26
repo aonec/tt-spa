@@ -21,10 +21,12 @@ export const ApartmentReadingsContainer = () => {
   const openEditPersonalNumberModal = useEvent(
     inputs.openEditPersonalNumberModal
   );
+  const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
   const apartment = useStore(outputs.$apartment);
+  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName)
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
@@ -48,6 +50,8 @@ export const ApartmentReadingsContainer = () => {
         handlePauseApartment={() => handlePauseApartment()}
         handleCancelPauseApartment={() => handleCancelPauseApartment()}
         openEditPersonalNumberModal={() => openEditPersonalNumberModal()}
+        setSelectedHomeownerName={setSelectedHomeownerName}
+        selectedHomeownerName={selectedHomeownerName}
       />
     </>
   );

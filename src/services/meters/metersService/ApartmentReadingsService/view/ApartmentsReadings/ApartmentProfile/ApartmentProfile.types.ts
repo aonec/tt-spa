@@ -12,4 +12,6 @@ export type ApartmentProfileProps = {
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
   openEditPersonalNumberModal: () => void;
+  setSelectedHomeownerName: (payload: string) => void;
+  selectedHomeownerName: string | null;
 };
