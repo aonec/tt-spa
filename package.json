@@ -25,14 +25,13 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
-    "node-sass": "^4.14.1",
     "query-string": "^6.13.8",
     "react": "^17.0.1",
     "react-bootstrap-icons": "^1.5.0",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "5.2.0",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^5.0.1",
     "react-to-print": "^2.13.0",
     "redux": "^4.0.5",
     "string-similarity": "^4.0.4",
@@ -51,7 +50,9 @@
     "prettify": "yarn prettier --write ."
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app"
+    ]
   },
   "browserslist": {
     "production": [
@@ -71,6 +72,7 @@
     "@types/lodash": "^4.14.191",
     "@types/styled-components": "^5.1.7",
     "@types/yup": "^0.29.11",
+    "sass": "^1.57.1",
     "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^8.1.0",
