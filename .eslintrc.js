@@ -15,7 +15,7 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: 'module',
   },
-  plugins: ['react', 'prettier'],
+  plugins: ['prettier'],
   rules: {
     'prettier/prettier': 'off',
   },
