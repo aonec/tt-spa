@@ -10,6 +10,7 @@ import { ResourceDisablingScheduleContainer } from '../../resourcesDisablingSche
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
+import { WorkingRangeTab } from '../../WorkingRangeTab';
 
 const { TabPane } = Tabs;
 
@@ -46,9 +47,14 @@ export const SettingsPage: FC<SettingsPageProps> = ({
   const settingsComponent = useMemo(() => {
     if (adminSettings) {
       return (
-        <TabPane tab="График отключения ресурсов" key="disabledResources">
-          <ResourceDisablingScheduleContainer />
-        </TabPane>
+        <>
+          <TabPane tab="График отключения ресурсов" key="disabledResources">
+            <ResourceDisablingScheduleContainer />
+          </TabPane>
+          <TabPane tab="Рабочие диапазоны узлов" key="operatingRanges">
+            <WorkingRangeTab />
+          </TabPane>
+        </>
       );
     }
     return (
@@ -65,7 +71,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({
     <>
       <InspectorAddressesResetModalContainer />
       <CreateResourceDisconnectionContainer />
-      <ChooseTypeOfResourceDisconnectionModalContainer/>
+      <ChooseTypeOfResourceDisconnectionModalContainer />
 
       <PageHeader
         title="Настройки"

@@ -3,20 +3,20 @@ import { Form } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
 import { EDocumentType, ENodeCommercialAccountStatus } from 'myApi';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { commercialNodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
+import { ChangeNodeStatusDocument } from '../ChangeNodeStatusDocument';
 import {
   DocumentUploaderLabels,
   NodeStatusDateLabel,
   validationSchema,
 } from './ChangeNodeStatusForm.constants';
 import {
-  DatePickersWrapper,
   GroupWrapper,
   SelectOptionWithIconWrapper,
 } from './ChangeNodeStatusForm.styled';
@@ -30,8 +30,6 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   handleChangeNodeStatus,
   initialValues,
 }) => {
-  const [documents, setDocuments] = useState<Document[]>([]);
-
   const {
     handleSubmit,
     values,
@@ -71,6 +69,12 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
     },
     [setFieldValue]
   );
+
+  useEffect(() => {
+    if (!formId) {
+      handleSubmit();
+    }
+  }, [values]);
 
   const isSeveralDates =
     values.commercialStatus === ENodeCommercialAccountStatus.Registered;
@@ -136,16 +140,9 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
         values.commercialStatus ===
           ENodeCommercialAccountStatus.Registered) && (
         <>
-          <DocumentsUploadContainer
-            documents={documents}
-            uniqId="change-node-status-document"
-            onChange={(files) => {
-              setDocuments(files);
-              setFieldValue('documentId', files[0]?.id);
-            }}
-            max={1}
+          <ChangeNodeStatusDocument
             label={DocumentUploaderLabels[values.commercialStatus]}
-            type={EDocumentType.NodeAdmissionAct}
+            handleChange={(id) => setFieldValue('documentId', id)}
           />
           <ErrorMessage>{errors.documentId}</ErrorMessage>
         </>

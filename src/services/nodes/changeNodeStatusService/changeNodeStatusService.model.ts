@@ -1,13 +1,13 @@
-import { nodeService } from '01/features/nodes/displayNode/models';
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import { ENodeCommercialAccountStatus, PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
 import {
   ChangeNodeStatusFormPayload,
   ChangeNodeStatusPayload,
 } from './changeNodeStatusService.types';
+import { getChangeNodeStatusPayload } from './changeNodeStatusService.utils';
 
 const domain = createDomain('changeNodeStatusService');
 
@@ -38,7 +38,7 @@ changeNodeStatusFx.failData.watch((error) =>
 
 forward({
   from: changeNodeStatusFx.doneData,
-  to: [nodeService.inputs.refetchNode, closeModal],
+  to: closeModal,
 });
 
 sample({
@@ -47,35 +47,10 @@ sample({
     filter: Boolean,
   }),
   clock: changeNodeStatus,
-  fn: (nodeId, payload) => {
-    const { commercialStatus, documentId, firstDate, secondDate } = payload;
-    if (
-      commercialStatus === ENodeCommercialAccountStatus.OnReview ||
-      commercialStatus === ENodeCommercialAccountStatus.Prepared
-    ) {
-      return {
-        commercialStatusChangingDate: firstDate,
-        nodeId,
-        commercialStatus,
-      };
-    }
-
-    if (commercialStatus === ENodeCommercialAccountStatus.NotRegistered) {
-      return {
-        commercialAccountingDeregistrationDate: firstDate,
-        nodeId,
-        commercialStatus,
-        documentId,
-      };
-    }
-    return {
-      nodeId,
-      commercialStatus,
-      documentId,
-      startCommercialAccountingDate: firstDate,
-      endCommercialAccountingDate: secondDate,
-    };
-  },
+  fn: (nodeId, payload) => ({
+    nodeId,
+    ...getChangeNodeStatusPayload(payload),
+  }),
   target: changeNodeStatusFx,
 });
 

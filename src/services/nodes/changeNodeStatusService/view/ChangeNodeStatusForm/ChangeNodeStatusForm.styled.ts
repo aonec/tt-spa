@@ -13,16 +13,8 @@ export const GroupWrapper = styled.div<{ isSeveralDates: boolean }>`
   grid-template-columns: 1.3fr ${({ isSeveralDates }) =>
       isSeveralDates ? '1fr 1fr' : '1fr'};
   grid-gap: 16px;
-`;
 
-export const DatePickersWrapper = styled.div`
-  width: 100%;
-
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-
-  .ant-form-item {
-    width: 100%;
+  .ant-select-selector {
+    height: 48px !important;
   }
 `;
