@@ -9,7 +9,6 @@ import {
 } from 'ui-kit/icons';
 import {
   Icons,
-  PipeNodeConfigIconLookupProps,
   ResourceIconLookupProps,
 } from './ResourceIconLookup.types';
 
