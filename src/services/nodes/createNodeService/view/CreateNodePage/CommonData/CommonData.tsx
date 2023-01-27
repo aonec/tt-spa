@@ -48,7 +48,7 @@ export const CommonData: FC<CommonDataProps> = ({
     handleSubmit,
   } = useFormik({
     initialValues: {
-      resource: requestPayload.resource || null,
+      // resource: requestPayload.resource || null,
       number: requestPayload.number ? String(requestPayload.number) : '',
       nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
       nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
@@ -65,7 +65,7 @@ export const CommonData: FC<CommonDataProps> = ({
     validateOnChange: false,
     onSubmit: (values) => {
       const {
-        resource,
+        // resource,
         number,
         commercialStatus,
         nodeServiceZoneId,
@@ -73,10 +73,10 @@ export const CommonData: FC<CommonDataProps> = ({
         endCommercialAccountingDate,
       } = values;
 
-      if (!resource || !number || !nodeServiceZoneId) return;
+      if (!number || !nodeServiceZoneId) return;
 
       updateRequestPayload({
-        resource,
+        // resource,
         number: Number(number),
         commercialStatus,
         nodeServiceZoneId,
@@ -103,7 +103,7 @@ export const CommonData: FC<CommonDataProps> = ({
       <Title>Общие данные об узле</Title>
       <FirstLineWrapper>
         <FormItem label="Ресурс">
-          <Select
+          {/* <Select
             placeholder="Выберите"
             value={values.resource || undefined}
             onChange={(value) => setFieldValue('resource', value)}
@@ -117,7 +117,7 @@ export const CommonData: FC<CommonDataProps> = ({
               </Select.Option>
             ))}
           </Select>
-          <ErrorMessage>{errors.resource}</ErrorMessage>
+          <ErrorMessage>{errors.resource}</ErrorMessage> */}
         </FormItem>
         <FormItem label="Тип узла">
           <Select
