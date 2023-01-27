@@ -1,4 +1,4 @@
-import { EActResourceType, EPipeNodeConfig, EResourceType } from 'myApi';
+import { EActResourceType, EResourceType } from 'myApi';
 import React, { FC } from 'react';
 import {
   AllResourcesIcon,
@@ -26,25 +26,6 @@ export const ResourceIconLookup: FC<ResourceIconLookupProps> = ({
   style,
 }) => {
   const Icon = resourceIconLookup[resource];
-
-  if (!Icon) return null;
-
-  return <Icon style={style} />;
-};
-
-export const pipeNodeConfigIconLookup: Icons = {
-  [EPipeNodeConfig.ColdWaterSupply]: ColdWaterSupplyIcon,
-  [EPipeNodeConfig.HotWaterSupplyNoBackflow]: HotWaterSupplyIcon,
-  [EResourceType.Electricity]: ElectricityIcon,
-  [EActResourceType.All]: AllResourcesIcon,
-  [EActResourceType.Heat]: HeatIcon,
-};
-
-export const PipeNodeConfigIconLookup: FC<PipeNodeConfigIconLookupProps> = ({
-  config,
-  style,
-}) => {
-  const Icon = resourceIconLookup[config];
 
   if (!Icon) return null;
 

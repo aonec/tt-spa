@@ -6,11 +6,6 @@ export type ResourceIconLookupProps = {
   style?: CSSProperties;
 };
 
-export type PipeNodeConfigIconLookupProps = {
-  config: EPipeNodeConfig;
-  style?: CSSProperties;
-};
-
 export type Icons = {
   [key: string]: React.FunctionComponent<
     React.SVGProps<SVGSVGElement> & {
