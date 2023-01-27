@@ -8,9 +8,6 @@ export const SearchNodeArchiveFiltersContainer = () => {
   const handleSubmit = useEvent(searchNodeArchiveFilters.inputs.applyFilters);
 
   return (
-    <SearchNodeArchiveFilters
-      handleSubmit={handleSubmit}
-      loading={loading}
-    />
+    <SearchNodeArchiveFilters handleSubmit={handleSubmit} loading={loading} />
   );
 };

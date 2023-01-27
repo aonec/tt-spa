@@ -1,1 +1,1 @@
-export { ChangeStatusEmployeeModal } from './ChangeStatusEmployeeModal'
+export { ChangeStatusEmployeeModal } from './ChangeStatusEmployeeModal';

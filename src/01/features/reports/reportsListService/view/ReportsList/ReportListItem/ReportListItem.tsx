@@ -20,7 +20,7 @@ export const ReportListItem: FC<ReportListItemProps> = ({
 
         return { ...acc, [lowerCaseKey]: value };
       },
-      {}
+      {},
     );
 
     return {

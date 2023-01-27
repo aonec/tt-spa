@@ -4,6 +4,6 @@ export type AddCommunicationPipeModalProps = {
   isOpen: boolean;
   closeAddPipeModal: () => void;
   handleAddCommunicationPipe: (
-    communicationPipe: CommunicationPipePayload
+    communicationPipe: CommunicationPipePayload,
   ) => void;
 };

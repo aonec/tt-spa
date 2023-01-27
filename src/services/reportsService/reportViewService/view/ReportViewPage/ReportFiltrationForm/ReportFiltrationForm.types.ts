@@ -1,3 +1,1 @@
-export type ReportFiltrationFormProps = {
-  
-};
+export type ReportFiltrationFormProps = {};

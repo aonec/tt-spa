@@ -18,7 +18,7 @@ const $currentCalculatorGrouptype = domain
   .reset(clearStore);
 
 const getCalculatorFx = domain.createEffect<number, CalculatorResponse>(
-  fetchCalculator
+  fetchCalculator,
 );
 
 const $calculator = domain

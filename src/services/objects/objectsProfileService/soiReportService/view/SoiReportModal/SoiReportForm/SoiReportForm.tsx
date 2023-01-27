@@ -25,41 +25,36 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
   preparedAddresses,
   createSoiReport,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    handleChange,
-    setFieldValue,
-    errors,
-  } = useFormik({
-    initialValues: formInitialValues,
-    validationSchema,
-    onSubmit: (values) => {
-      if (!values.Period || !values.Date) return;
+  const { values, handleSubmit, handleChange, setFieldValue, errors } =
+    useFormik({
+      initialValues: formInitialValues,
+      validationSchema,
+      onSubmit: (values) => {
+        if (!values.Period || !values.Date) return;
 
-      const normativePerPerson = values.NormativePerPerson
-        ? Number(values.NormativePerPerson)
-        : null;
+        const normativePerPerson = values.NormativePerPerson
+          ? Number(values.NormativePerPerson)
+          : null;
 
-      const date = values.Date;
+        const date = values.Date;
 
-      console.log(date);
+        console.log(date);
 
-      createSoiReport({
-        ReportName: values.ReportName,
-        HouseManagementId: values.HouseManagementId || undefined,
-        HousingStockId: values.HousingStockId || undefined,
-        Resource: values.Resource || undefined,
-        NormativePerPerson: normativePerPerson || undefined,
-        Period:
-          values.Period === 'year'
-            ? ESoiReportPeriod.Year
-            : ESoiReportPeriod.Month,
-        Year: date.year(),
-        Month: Number(date.format('MM')),
-      });
-    },
-  });
+        createSoiReport({
+          ReportName: values.ReportName,
+          HouseManagementId: values.HouseManagementId || undefined,
+          HousingStockId: values.HousingStockId || undefined,
+          Resource: values.Resource || undefined,
+          NormativePerPerson: normativePerPerson || undefined,
+          Period:
+            values.Period === 'year'
+              ? ESoiReportPeriod.Year
+              : ESoiReportPeriod.Month,
+          Year: date.year(),
+          Month: Number(date.format('MM')),
+        });
+      },
+    });
 
   return (
     <Form id={CREATE_SOI_REPORT_FORM_ID} onSubmitCapture={handleSubmit}>

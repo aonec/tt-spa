@@ -41,7 +41,7 @@ sample({
           deviceId: device?.id,
           readingDate: reading?.readingDate,
           uploadTime: reading?.readingDateTime,
-        }
+        },
       };
 
       return {
@@ -50,7 +50,7 @@ sample({
           ? payloadForEtraCheck
           : payloadForFinal,
       };
-    }
+    },
   ),
   clock: completeStage,
   target: pushStageFx as any,

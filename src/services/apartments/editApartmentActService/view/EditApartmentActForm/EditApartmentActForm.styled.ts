@@ -19,4 +19,4 @@ export const SelectSC = styled.div`
 
 export const DatePickerSC = styled(DatePicker)`
   width: auto !important;
-`
+`;

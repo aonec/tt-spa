@@ -1,1 +1,1 @@
-export { SelectResourcePanel } from './SelectResourcePanel'
+export { SelectResourcePanel } from './SelectResourcePanel';

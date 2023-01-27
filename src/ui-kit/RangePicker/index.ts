@@ -1,1 +1,1 @@
-export { RangePicker } from './RangePicker.styled'
+export { RangePicker } from './RangePicker.styled';

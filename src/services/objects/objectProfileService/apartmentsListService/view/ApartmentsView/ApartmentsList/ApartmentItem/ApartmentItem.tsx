@@ -21,7 +21,7 @@ export const ApartmentItem: FC<ApartmentItemProps> = ({
 
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
   const isTasksOnApartmentExist = Boolean(
-    apartment.tasksState !== ETasksState.NoTasks
+    apartment.tasksState !== ETasksState.NoTasks,
   );
 
   return (

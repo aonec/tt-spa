@@ -1,1 +1,1 @@
-export { SendReportToEmailModal } from './SendReportToEmailModal'
+export { SendReportToEmailModal } from './SendReportToEmailModal';

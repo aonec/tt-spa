@@ -20,7 +20,9 @@ import {
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
 
-export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
+export const CreateObjectAdditionalInfoStage: FC<
+  CreateObjectAdditionalInfoStageProps
+> = ({
   goBackStage,
   onPageCancel,
   handleSubmitCreateObject,

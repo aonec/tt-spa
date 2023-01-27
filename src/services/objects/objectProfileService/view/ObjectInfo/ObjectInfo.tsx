@@ -24,7 +24,7 @@ export const ObjectInfo: FC<ObjectInfoProps> = ({ housingStock }) => {
           </>
         );
       }),
-    [requiredFields]
+    [requiredFields],
   );
 
   return <Wrapper>{fields}</Wrapper>;

@@ -1,1 +1,1 @@
-export { DatePicker } from './DatePicker.styled'
+export { DatePicker } from './DatePicker.styled';

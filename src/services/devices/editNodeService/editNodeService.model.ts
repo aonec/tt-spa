@@ -38,7 +38,7 @@ const $editNodeGrouptype = domain
   .reset(clearStore);
 
 const getNodeZonesFx = domain.createEffect<void, NodeServiceZoneListResponse>(
-  fetchServiceZones
+  fetchServiceZones,
 );
 const $nodeZones = domain
   .createStore<NodeServiceZoneResponse[]>([])

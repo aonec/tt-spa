@@ -4,7 +4,7 @@ import moment from 'moment';
 import { ExportSubscribersConsumptionPayload } from './exportSubscribersConsumptionService.types';
 
 export const downloadSubscribersConsumption = async (
-  payload: ExportSubscribersConsumptionPayload
+  payload: ExportSubscribersConsumptionPayload,
 ) => {
   const { params, fileName } = payload;
   const res: string = await axios.get(`SubscriberStatistics/Export`, {

@@ -1,5 +1,3 @@
- 
-
 import axios from '01/axios';
 
 export async function uploadFile(file, type = 'AdditionalMaterials') {

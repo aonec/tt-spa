@@ -1,1 +1,1 @@
-export { EditCommonDataForm } from './EditCommonDataForm'
+export { EditCommonDataForm } from './EditCommonDataForm';

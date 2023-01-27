@@ -14,7 +14,7 @@ const $isOpenModal = domain
   .reset(closeModal);
 
 const updateDocumentsFx = domain.createEffect<UpdateDocumentPayload, void>(
-  fetchUpdateDocuments
+  fetchUpdateDocuments,
 );
 const updateDocuments = domain.createEvent<DocumentLiteResponse[]>();
 

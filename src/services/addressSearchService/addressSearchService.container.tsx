@@ -23,22 +23,19 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   onChange,
 }) => {
   const { outputs } = addressSearchService;
-  const {
-    values,
-    handleSubmit,
-    setFieldValue,
-  } = useFormik<AddressSearchValues>({
-    initialValues: initialValues || {
-      city: '',
-      street: '',
-      house: '',
-      corpus: '',
-      apartment: '',
-      question: '',
-    },
-    enableReinitialize: true,
-    onSubmit,
-  });
+  const { values, handleSubmit, setFieldValue } =
+    useFormik<AddressSearchValues>({
+      initialValues: initialValues || {
+        city: '',
+        street: '',
+        house: '',
+        corpus: '',
+        apartment: '',
+        question: '',
+      },
+      enableReinitialize: true,
+      onSubmit,
+    });
 
   const cities = useStore(outputs.cities);
   const streets = useStore(outputs.streets);
@@ -52,7 +49,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         }
         return true;
       }),
-    [hasCorpuses, fields]
+    [hasCorpuses, fields],
   );
 
   useEffect(() => {

@@ -28,7 +28,7 @@ export type ExtendedSearchTypes = {
   setFieldValue: (
     field: string,
     value: any,
-    shouldValidate?: boolean | undefined
+    shouldValidate?: boolean | undefined,
   ) => Promise<void> | Promise<FormikErrors<GetTasksListRequestPayload>>;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;

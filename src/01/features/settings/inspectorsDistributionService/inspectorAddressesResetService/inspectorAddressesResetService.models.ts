@@ -5,7 +5,7 @@ import { InspectorResponse } from 'myApi';
 import { resetInspectorHousingStocksAddresses } from './inspectorAddressesResetService.api';
 
 const inspectorAddressesResetServiceDomain = createDomain(
-  'inspectorAddressesResetService'
+  'inspectorAddressesResetService',
 );
 
 const $isModalOpen = inspectorAddressesResetServiceDomain.createStore(false);

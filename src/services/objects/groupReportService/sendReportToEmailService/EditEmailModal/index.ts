@@ -1,1 +1,1 @@
-export { EditEmailModal } from './EditEmailModal'
+export { EditEmailModal } from './EditEmailModal';

@@ -14,5 +14,5 @@ export const HomeownerGate = createGate<{ id: string }>();
 export const setCurrentPersonalNumberId = createEvent<string>();
 export const $currentPersonalNumberId = createStore<string>('').on(
   setCurrentPersonalNumberId,
-  (_, id) => id
+  (_, id) => id,
 );

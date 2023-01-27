@@ -1,1 +1,1 @@
-export { DisconnectionAddressesModalTitle } from './DisconnectionAddressesModalTitle'
+export { DisconnectionAddressesModalTitle } from './DisconnectionAddressesModalTitle';

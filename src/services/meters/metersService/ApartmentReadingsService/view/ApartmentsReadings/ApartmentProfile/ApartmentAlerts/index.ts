@@ -1,1 +1,1 @@
-export { ApartmentAlerts } from './ApartmentAlerts'
+export { ApartmentAlerts } from './ApartmentAlerts';

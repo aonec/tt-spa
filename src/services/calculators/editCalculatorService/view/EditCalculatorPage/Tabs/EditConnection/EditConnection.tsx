@@ -57,7 +57,7 @@ export const EditConnection: FC<EditConnectionProps> = ({
     },
   });
 
-  const err = (errors.connection as unknown) as
+  const err = errors.connection as unknown as
     | { ipV4?: string; port?: string; deviceAddress?: string }
     | undefined;
 

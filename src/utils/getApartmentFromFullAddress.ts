@@ -2,7 +2,7 @@ import { FullAddressResponse } from 'myApi';
 
 export const getApartmentFromFullAddress = (
   address: FullAddressResponse | null,
-  isCityNeeded?: boolean
+  isCityNeeded?: boolean,
 ) => {
   if (!address) return null;
 

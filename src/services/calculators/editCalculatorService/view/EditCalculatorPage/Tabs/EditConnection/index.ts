@@ -1,1 +1,1 @@
-export { EditConnection } from './EditConnection'
+export { EditConnection } from './EditConnection';

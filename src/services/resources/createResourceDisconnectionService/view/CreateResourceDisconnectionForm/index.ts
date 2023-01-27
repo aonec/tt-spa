@@ -1,1 +1,1 @@
-export { CreateResourceDisconnectionForm } from './CreateResourceDisconnectionForm'
+export { CreateResourceDisconnectionForm } from './CreateResourceDisconnectionForm';

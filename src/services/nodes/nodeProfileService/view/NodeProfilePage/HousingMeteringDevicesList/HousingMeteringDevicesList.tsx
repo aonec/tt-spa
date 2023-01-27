@@ -3,10 +3,9 @@ import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDevice
 import { CommunicationPipeListItem } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { HousingMeteringDevicesListProps } from './HousingMeteringDevicesList.types';
 
-export const HousingMeteringDevicesList: FC<HousingMeteringDevicesListProps> = ({
-  communicationPipes,
-  resource,
-}) => {
+export const HousingMeteringDevicesList: FC<
+  HousingMeteringDevicesListProps
+> = ({ communicationPipes, resource }) => {
   return (
     <div>
       {communicationPipes.map((pipe) => (

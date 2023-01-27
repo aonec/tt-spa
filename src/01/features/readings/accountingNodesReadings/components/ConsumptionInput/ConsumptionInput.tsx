@@ -21,9 +21,10 @@ export const ConsumptionInput: React.FC<Props> = ({
   const [value, setValue] = useState(reading.nonResidentialRoomConsumption);
   const [status, setStatus] = useState<RequestStatusShared>();
 
-  useEffect(() => setValue(reading.nonResidentialRoomConsumption), [
-    reading.nonResidentialRoomConsumption,
-  ]);
+  useEffect(
+    () => setValue(reading.nonResidentialRoomConsumption),
+    [reading.nonResidentialRoomConsumption],
+  );
 
   async function saveConsumption() {
     setStatus('pending');

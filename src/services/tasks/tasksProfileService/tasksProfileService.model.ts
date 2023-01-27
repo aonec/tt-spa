@@ -88,7 +88,7 @@ const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   const isSpectator =
     rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
     rolesKeys.includes(
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     );
 
   return isSpectator;
@@ -98,7 +98,7 @@ const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
   const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator
+    ESecuredIdentityRoleName.Administrator,
   );
 
   return isAdministrator;
@@ -158,7 +158,7 @@ split({
       housingMeteringDeviceId,
     }) =>
       [apartmentId, housingStockId, pipeNodeId, housingMeteringDeviceId].some(
-        Boolean
+        Boolean,
       ),
   }),
   match: {

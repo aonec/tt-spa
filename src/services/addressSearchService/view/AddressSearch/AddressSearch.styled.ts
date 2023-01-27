@@ -3,11 +3,11 @@ import { CustomTemplateType, SearchFieldType } from './AddressSearch.types';
 
 function getGridTemplateByFields(
   fields: SearchFieldType[],
-  customTemplate?: CustomTemplateType
+  customTemplate?: CustomTemplateType,
 ) {
   const customTemplateObject = customTemplate?.reduce(
     (acc, elem) => ({ ...acc, [elem.fieldType]: elem.templateValue }),
-    {}
+    {},
   );
 
   const templates = {

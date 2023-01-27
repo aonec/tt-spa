@@ -2,10 +2,7 @@ import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { SendReportToEmailDescription } from './SendReportToEmailDescription';
-import {
-  ButtonsWrapper,
-  FooterWrapper,
-} from './SendReportToEmailModal.styled';
+import { ButtonsWrapper, FooterWrapper } from './SendReportToEmailModal.styled';
 import { SendReportToEmailModalProps } from './SendReportToEmailModal.types';
 
 export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({

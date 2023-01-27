@@ -6,12 +6,12 @@ import {
 } from 'myApi';
 
 export const fetchHousingStock = (
-  HousingStockId: number
+  HousingStockId: number,
 ): Promise<HousingStockResponse> =>
   axios.get(`HousingStocks/${HousingStockId}`);
 
 export const fetchResourceDisconnectionOnHousingStock = (
-  HousingStockId: number
+  HousingStockId: number,
 ): Promise<ResourceDisconnectingResponsePagedList> =>
   axios.get('ResourceDisconnecting', {
     params: { HousingStockId, Status: EResourceDisconnectingStatus.Active },

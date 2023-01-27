@@ -52,7 +52,7 @@ export const CorrectionReadingsPanel = () => {
 
         if (errorMessage) message.error(errorMessage);
       }).unsubscribe,
-    []
+    [],
   );
 
   useEffect(
@@ -60,7 +60,7 @@ export const CorrectionReadingsPanel = () => {
       pushStageFx.done.watch(() => {
         message.success('Задача успешно обновлена');
       }).unsubscribe,
-    []
+    [],
   );
 
   if (!task?.individualDevices) return null;
@@ -97,7 +97,7 @@ export const CorrectionReadingsPanel = () => {
     getReadingValuesArray(
       problemReading as IndividualDeviceReadingsItemHistoryResponse,
       'value',
-      rateNum
+      rateNum,
     );
 
   const editTaskInfo = (
@@ -120,7 +120,7 @@ export const CorrectionReadingsPanel = () => {
 
   const readingValues = getArrayByCountRange(
     rateNum,
-    (count) => (fields.readingValue.value as any)[`value${count}`]
+    (count) => (fields.readingValue.value as any)[`value${count}`],
   );
 
   const isReadOnly = !task?.isPerpetrator;
@@ -162,7 +162,7 @@ export const CorrectionReadingsPanel = () => {
         checked={fields.needSeniorOperatorCheck.value}
         onClick={() =>
           fields.needSeniorOperatorCheck.onChange(
-            !fields.needSeniorOperatorCheck.value
+            !fields.needSeniorOperatorCheck.value,
           )
         }
       >

@@ -97,7 +97,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   }, [apartment.comment]);
 
   const selectedHomeowner = apartment.homeownerAccounts?.find(
-    (homeowner) => homeowner.id === activeHomeowner
+    (homeowner) => homeowner.id === activeHomeowner,
   );
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;
 
   const accountingOpeningDate = `открыт с ${moment(
-    selectedHomeowner?.openAt
+    selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
   return (
@@ -170,7 +170,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 title: 'Добавить новый прибор',
                 onClick: () =>
                   history.push(
-                    `/apartment/${apartment.id}/addIndividualDevice`
+                    `/apartment/${apartment.id}/addIndividualDevice`,
                   ),
               },
               {

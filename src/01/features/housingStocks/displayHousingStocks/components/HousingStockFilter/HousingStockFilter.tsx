@@ -68,7 +68,7 @@ export const HousingStockFilter = () => {
 
   const { match: streetMatch, options } = useAutocomplete(
     filterFields.Street,
-    existingStreets
+    existingStreets,
   );
 
   const cities = useStore($existingCities);

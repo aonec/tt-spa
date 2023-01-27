@@ -45,7 +45,7 @@ export const HousesDevices: React.FC = () => {
 
   const consumptionRates = useStore(outputs.$consumptionRates);
   const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates
+    inputs.loadManagemenFirmConsumptionRates,
   );
 
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
@@ -59,14 +59,14 @@ export const HousesDevices: React.FC = () => {
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
-    house?.managingFirmId
+    house?.managingFirmId,
   );
 
   const handleOpenReadingsHistoryModal = useEvent(openReadingsHistoryModal);
 
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
-    index: number
+    index: number,
   ) => (
     <IndividualDeviceMetersInputContainer
       devices={devices}

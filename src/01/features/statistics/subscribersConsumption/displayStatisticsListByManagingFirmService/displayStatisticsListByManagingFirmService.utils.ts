@@ -1,7 +1,7 @@
 import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFirmService.types';
 
 export const prepareFilterBeforeSenging = (
-  filter: SubscriberStatisticsFilter
+  filter: SubscriberStatisticsFilter,
 ) => {
   const {
     ColdWaterSupply,

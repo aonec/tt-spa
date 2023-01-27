@@ -9,19 +9,19 @@ import {
 } from './displayNodeArchiveService.types';
 
 const displayNodeArchiveServiceDomain = createDomain(
-  'displayNodeArchiveService'
+  'displayNodeArchiveService',
 );
 
-const $nodeArchiveData = displayNodeArchiveServiceDomain.createStore<NodeArchiveData | null>(
-  null
-);
+const $nodeArchiveData =
+  displayNodeArchiveServiceDomain.createStore<NodeArchiveData | null>(null);
 
 const fetchNodeArchiveDataFx = displayNodeArchiveServiceDomain.createEffect<
   GetNodeArchiveDataRequestParams,
   NodeArchiveData
 >(getNodeArchiveData);
 
-const loadNodeArchiveData = displayNodeArchiveServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
+const loadNodeArchiveData =
+  displayNodeArchiveServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
 
 const $loading = fetchNodeArchiveDataFx.pending;
 

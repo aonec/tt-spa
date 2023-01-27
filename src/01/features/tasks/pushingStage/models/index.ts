@@ -6,4 +6,4 @@ export interface PushStageParams {
   payload: StagePushRequest;
 }
 
-export const pushStageFx = createEffect<PushStageParams, void>(); 
+export const pushStageFx = createEffect<PushStageParams, void>();

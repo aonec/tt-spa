@@ -19,10 +19,11 @@ export const getHousingManagements = async (): Promise<
   GuidStringDictionaryItem[] | null
 > => {
   const res = await axios.get<any, HousingStockFilterResponse>(
-    '/HousingStocks/filters'
+    '/HousingStocks/filters',
   );
   return res?.houseManagements;
 };
 
-export const getPerpetratorIds = (): Promise<OrganizationUserListResponsePagedList> =>
-  axios.get('OrganizationUsers');
+export const getPerpetratorIds =
+  (): Promise<OrganizationUserListResponsePagedList> =>
+    axios.get('OrganizationUsers');

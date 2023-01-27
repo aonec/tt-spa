@@ -65,7 +65,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
           <GroupAmountText>
             {nodes.length} {systemText} учета
           </GroupAmountText>
-          <ChevronWrapper >
+          <ChevronWrapper>
             <ChevronSC isOpen={isOpen} />
           </ChevronWrapper>
         </GroupInfoWrapper>

@@ -5,6 +5,6 @@ import {
 } from 'myApi';
 
 export const postEmloyeeStatus = (
-  data: AddOrganizationUserWorkingStatusRequest
+  data: AddOrganizationUserWorkingStatusRequest,
 ): Promise<OrganizationUserWorkingStatusResponse | null> =>
   axios.post('OrganizationUserWorkingStatuses', data);

@@ -24,7 +24,8 @@ const $devices = $pagedList.map((list) => list?.items || []);
 const changePageNumber = domain.createEvent<number>();
 const $totalItems = $pagedList.map((list) => list?.totalItems || 0);
 
-const setFilter = domain.createEvent<IndividualDeviceSearchbySerialNumberPayload>();
+const setFilter =
+  domain.createEvent<IndividualDeviceSearchbySerialNumberPayload>();
 const $searchPayload = domain
   .createStore<IndividualDeviceSearchbySerialNumberPayload>({
     SerialNumber: '',

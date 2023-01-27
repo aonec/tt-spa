@@ -1,1 +1,1 @@
-export { DevicesList } from './DevicesList'
+export { DevicesList } from './DevicesList';

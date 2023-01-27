@@ -23,7 +23,8 @@ const $fileName = domain
   .createStore<string>('')
   .on(setFileName, (_, name) => name);
 
-const setSubscriberStatisticsFilter = domain.createEvent<SubscriberStatisticsForm | null>();
+const setSubscriberStatisticsFilter =
+  domain.createEvent<SubscriberStatisticsForm | null>();
 const $subscriberStatisticsFilter = domain
   .createStore<SubscriberStatisticsForm | null>(null)
   .on(setSubscriberStatisticsFilter, (_, filter) => filter);
@@ -48,7 +49,7 @@ sample({
         HousingStockId,
       });
       return { fileName, params: { ...preparedFilter } };
-    }
+    },
   ),
   clock: exportStatistic,
   target: exportStatiscticFx,

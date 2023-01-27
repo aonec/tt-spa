@@ -60,7 +60,7 @@ sample({
   source: combine(
     editManagingUserInfoForm.$values,
     $managingFirmUser.map((user) => user?.id),
-    (values: OrganizationUserUpdateRequest, id) => ({ ...values, id })
+    (values: OrganizationUserUpdateRequest, id) => ({ ...values, id }),
   ),
   clock: editManagingUserInfoForm.formValidated,
   target: editManagingUserInfoFx as any,

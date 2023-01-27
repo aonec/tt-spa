@@ -1,1 +1,1 @@
-export { InvisibleContextMenuButton } from './InvisibleContextMenuButton'
+export { InvisibleContextMenuButton } from './InvisibleContextMenuButton';

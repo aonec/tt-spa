@@ -6,4 +6,3 @@ export function declOfNum(number: number, words: string[]) {
 
   return `${number} ${words[ending]}`;
 }
-

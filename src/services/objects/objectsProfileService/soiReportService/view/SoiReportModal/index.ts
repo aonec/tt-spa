@@ -1,1 +1,1 @@
-export { SoiReportModal } from './SoiReportModal'
+export { SoiReportModal } from './SoiReportModal';

@@ -27,7 +27,7 @@ export const CloseDevices: FC<CloseDevicesProps> = ({
       </Header>
       {devices?.map((device) => {
         const selectedDevicePayload = selectedDevices.find(
-          ({ id }) => id === device.id
+          ({ id }) => id === device.id,
         );
 
         const isSelected = Boolean(selectedDevicePayload);

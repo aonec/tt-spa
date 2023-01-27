@@ -4,7 +4,9 @@ import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { CreateResourceDisconnectionForm } from '../CreateResourceDisconnectionForm';
 import { CreateResourceDisconnectionModalProps } from './CreateResourceDisconnectionModal.types';
 
-export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionModalProps> = ({
+export const CreateResourceDisconnectionModal: FC<
+  CreateResourceDisconnectionModalProps
+> = ({
   isOpen,
   handleClose,
   handleCreateResourceDisconnection,
@@ -19,7 +21,7 @@ export const CreateResourceDisconnectionModal: FC<CreateResourceDisconnectionMod
   handleUpdateDocument,
   setTypeOfAddress,
   typeOfAddress,
-  isHousingStocksLoading
+  isHousingStocksLoading,
 }) => {
   const buttonPlaceholder = isEdit
     ? 'Сохранить изменения'

@@ -4,7 +4,7 @@ import { inspectorHousingStockService } from './inspectorHousingStockService.mod
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfo,
-  (prev, newUpdate) => [...prev, { ...newUpdate, status: 'loading' }]
+  (prev, newUpdate) => [...prev, { ...newUpdate, status: 'loading' }],
 );
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
@@ -17,7 +17,7 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
 
       return { ...elem, status: 'failed' };
     });
-  }
+  },
 );
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
@@ -25,11 +25,11 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
     .doneData,
   (prev, data) => {
     return prev.filter((elem) => elem.housingStockId !== data?.id);
-  }
+  },
 );
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.reset(
-  displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList
+  displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList,
 );
 
 displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
@@ -49,7 +49,7 @@ displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
     });
 
     return updatedHousingStocks;
-  }
+  },
 );
 
 sample({

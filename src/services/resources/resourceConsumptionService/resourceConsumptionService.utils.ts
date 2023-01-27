@@ -7,7 +7,7 @@ import {
 import { getFilledArray } from 'utils/getFilledArray';
 
 export const prepareDataForConsumptionGraph = (
-  dataArr: DateTimeDoubleDictionaryItem[]
+  dataArr: DateTimeDoubleDictionaryItem[],
 ) => {
   if (!dataArr.length) {
     return [];
@@ -33,7 +33,7 @@ export const prepareDataForConsumptionGraph = (
 };
 
 export const getAddressSearchData = (
-  data: StreetWithHousingStockNumbersResponse[] | null
+  data: StreetWithHousingStockNumbersResponse[] | null,
 ) =>
   _.uniqBy(
     (data || []).reduce((acc, elem) => {
@@ -45,5 +45,5 @@ export const getAddressSearchData = (
 
       return [...acc, ...addresses];
     }, [] as { id: number; addressString: string }[]),
-    'addressString'
+    'addressString',
   );

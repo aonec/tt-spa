@@ -3,7 +3,7 @@ import { HeatingStationResponse } from 'myApi';
 import { requestParams } from './editHeatingStationService.types';
 
 export const editHeatingStation = (
-  params: requestParams
+  params: requestParams,
 ): Promise<HeatingStationResponse | null> => {
   return axios.put(`HeatingStation/${params.id}`, params.data);
 };

@@ -4,9 +4,9 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { SetNextStageDeadlineDatepickerProps } from './SetNextStageDeadlineDatepicker.types';
 
-export const SetNextStageDeadlineDatepicker: FC<SetNextStageDeadlineDatepickerProps> = ({
-  handleDateChange,
-}) => {
+export const SetNextStageDeadlineDatepicker: FC<
+  SetNextStageDeadlineDatepickerProps
+> = ({ handleDateChange }) => {
   const [date, setDate] = useState<moment.Moment | null>(null);
 
   useEffect(() => {

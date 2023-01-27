@@ -26,13 +26,13 @@ export const CalculatorProfileContainer = () => {
 
   const setGrouptype = useEvent(inputs.setCalculatorGrouptype);
   const handleOpenCloseCalculatorModal = useEvent(
-    closeCalculatorService.inputs.openModal
+    closeCalculatorService.inputs.openModal,
   );
   const handleOpenCheckCalculatorModal = useEvent(
-    checkCalculatorService.inputs.openModal
+    checkCalculatorService.inputs.openModal,
   );
   const handleOpenConsumptionReportModal = useEvent(
-    inputs.handleConsumptionReportModalOpen
+    inputs.handleConsumptionReportModalOpen,
   );
 
   return (

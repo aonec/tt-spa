@@ -14,9 +14,8 @@ export const setSplitPersonalNumberStage = createEvent<number>();
 
 export const $checkedExistingApartmentId = createStore<number | null>(null);
 
-export const $isConfirmExistingApartmentModalOpen = $checkedExistingApartmentId.map(
-  Boolean
-);
+export const $isConfirmExistingApartmentModalOpen =
+  $checkedExistingApartmentId.map(Boolean);
 
 export const closeConfirmExistingApartmentModal = createEvent();
 

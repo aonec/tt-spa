@@ -10,7 +10,7 @@ fetchIndividualDeviceNamesFx.use(getIndividualDevicesModels);
 
 $individualDevicesNames.on(
   fetchIndividualDeviceNamesFx.doneData,
-  (_, value) => value
+  (_, value) => value,
 );
 
 guard({

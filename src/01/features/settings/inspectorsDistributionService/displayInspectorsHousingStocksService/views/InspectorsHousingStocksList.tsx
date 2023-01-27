@@ -5,7 +5,9 @@ import { HousingStockItem } from '../inspectorHousingStockService/views/HousingS
 import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
 import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
 
-export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> = ({
+export const InspectorsHousingStocksList: FC<
+  InspectorsHosuingsStocksListProps
+> = ({
   housingStocks,
   inspectors,
   days,
@@ -21,7 +23,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
 
   const list = housingStocks?.map((housingStock) => {
     const update = updateInfo.find(
-      (elem) => elem.housingStockId === housingStock.housingStockId
+      (elem) => elem.housingStockId === housingStock.housingStockId,
     );
     return (
       <HousingStockItem

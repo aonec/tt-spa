@@ -5,7 +5,8 @@ import { postHomeownerAccount } from './createHomeownerService.api';
 
 const domain = createDomain('createHomeownerService');
 
-const handleCreateHomeowner = domain.createEvent<HomeownerAccountCreateServiceModel>();
+const handleCreateHomeowner =
+  domain.createEvent<HomeownerAccountCreateServiceModel>();
 
 const createHomeownerFx = domain.createEffect(postHomeownerAccount);
 

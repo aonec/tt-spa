@@ -32,7 +32,7 @@ export const SplitPersonalNumber = () => {
     id: string;
   }>();
   const homeowner = useStore($apartment)?.homeownerAccounts?.find(
-    (account) => account.id === homeownerId
+    (account) => account.id === homeownerId,
   );
 
   const stage = useStore($splitPersonalNumberStageNumber);

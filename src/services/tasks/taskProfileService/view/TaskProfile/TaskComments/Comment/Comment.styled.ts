@@ -18,7 +18,7 @@ export const IconWrapper = styled.div`
   justify-content: center;
 
   border-color: #f3f5f6;
-  background-color: #f3f5f6; ;
+  background-color: #f3f5f6;
 `;
 
 export const TimeWrapper = styled.div`

@@ -39,7 +39,7 @@ guard({
 });
 
 deleteEmployeeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 successDelete.watch(() => message.success('Сотрудник удалён!'));

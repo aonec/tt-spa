@@ -40,18 +40,15 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
     ? moment(node.lastCommercialAccountingDate)
     : undefined;
 
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-  } = useFormik<UpdatePipeNodeRequest>({
-    initialValues: {
-      nodeServiceZoneId: node.nodeServiceZone?.id,
-      number: node.number,
-    },
-    enableReinitialize: true,
-    onSubmit: (values) => updateNode(values),
-  });
+  const { values, setFieldValue, handleSubmit } =
+    useFormik<UpdatePipeNodeRequest>({
+      initialValues: {
+        nodeServiceZoneId: node.nodeServiceZone?.id,
+        number: node.number,
+      },
+      enableReinitialize: true,
+      onSubmit: (values) => updateNode(values),
+    });
 
   const selectZonesOptions = useMemo(
     () =>
@@ -59,7 +56,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         value: zone.id,
         label: zone.name,
       })),
-    [nodeZones]
+    [nodeZones],
   );
 
   return (

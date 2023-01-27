@@ -8,7 +8,7 @@ export const getCalculatorInfos = async (): Promise<
   CalculatorInfoListResponse[] | null
 > => {
   const res: CalculatorInfoListWrappedResponse = await axios.get(
-    'CalculatorInfos'
+    'CalculatorInfos',
   );
 
   return res.items;

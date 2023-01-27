@@ -6,13 +6,13 @@ import { ReassingInspectorModal } from './views/ReassingInspectorModal';
 export const ReassingInspectorModalContainer = () => {
   const isOpen = useStore(inspectorReassignmentService.outputs.$isModalOpen);
   const inspectorsList = useStore(
-    inspectorReassignmentService.outputs.$inspectorsList
+    inspectorReassignmentService.outputs.$inspectorsList,
   );
   const isLoading = useStore(inspectorReassignmentService.outputs.$isLoading);
 
   const handleClose = useEvent(inspectorReassignmentService.inputs.closeModal);
   const handleSave = useEvent(
-    inspectorReassignmentService.inputs.saveInspectorReassing
+    inspectorReassignmentService.inputs.saveInspectorReassing,
   );
 
   const form = inspectorReassignmentService.form.reassingmentInspectorsForm;

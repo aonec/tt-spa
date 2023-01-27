@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
 export function useUpPage() {
-  const [intervalNumber, setIntervalNumber] = useState<NodeJS.Timeout | null>(null);
+  const [intervalNumber, setIntervalNumber] = useState<NodeJS.Timeout | null>(
+    null,
+  );
 
   return {
     fastUp() {

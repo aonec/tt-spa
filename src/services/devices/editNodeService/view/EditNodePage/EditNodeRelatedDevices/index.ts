@@ -1,1 +1,1 @@
-export { EditNodeRelatedDevices } from './EditNodeRelatedDevices'
+export { EditNodeRelatedDevices } from './EditNodeRelatedDevices';

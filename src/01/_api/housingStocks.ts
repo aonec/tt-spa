@@ -19,7 +19,7 @@ export const getHousingStocks = async (params: GetHousingStockParams) => {
     const queryString = formQueryString(params);
 
     const res: { items: HousingStockListResponse[] } = await axios.get(
-      `HousingStocks${queryString}`
+      `HousingStocks${queryString}`,
     );
 
     return res?.items;
@@ -29,7 +29,7 @@ export const getHousingStocks = async (params: GetHousingStockParams) => {
 };
 
 export const getHousingStock = async (
-  id: number
+  id: number,
 ): Promise<HousingStockResponse> => {
   return await axios.get(`HousingStocks/${id}`);
 };
@@ -42,7 +42,7 @@ export const doesApartmentExist = async ({
   apartmentNumber: string;
 }): Promise<number | null> => {
   const res: any = await axios.get(
-    `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`
+    `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
   );
 
   if (typeof res === 'number') return res;
@@ -62,13 +62,13 @@ export interface GetExistingHousingStockParams {
 }
 
 export const getExistingHousingStockNumbers = (
-  params: GetExistingHousingStockParams
+  params: GetExistingHousingStockParams,
 ): Promise<NumberIdResponse[] | null> =>
   axios.get(`HousingStocks/ExistingHousingStockNumber`, {
     params,
   });
 
 export const getExistingApartmentNumbers = (
-  housingStockId: number
+  housingStockId: number,
 ): Promise<NumberIdResponse[] | null> =>
   axios.get(`HousingStocks/${housingStockId}/ExistingApartmentNumber`);

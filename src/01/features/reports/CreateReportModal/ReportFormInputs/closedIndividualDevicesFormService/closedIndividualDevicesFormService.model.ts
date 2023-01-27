@@ -64,7 +64,7 @@ const $houseManagementList = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(
     fetchHouseManagementsFx.doneData,
-    (_, HouseManagements) => HouseManagements
+    (_, HouseManagements) => HouseManagements,
   );
 
 export const closedIndividualDevicesFormService = {

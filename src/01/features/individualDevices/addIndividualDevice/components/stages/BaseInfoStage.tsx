@@ -174,7 +174,7 @@ export const BaseInfoStage = () => {
   );
 
   const eventFetchSerialNumberForCheck = useEvent(
-    handleFetchSerialNumberForCheck
+    handleFetchSerialNumberForCheck,
   );
   const serialNumberForChecking = useStore($serialNumberForChecking);
 
@@ -200,9 +200,8 @@ export const BaseInfoStage = () => {
 
               if (!value) return;
 
-              const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
-                value
-              );
+              const { bitDepth, scaleFactor } =
+                getBitDepthAndScaleFactor(value);
 
               fields.bitDepth.onChange(bitDepth);
               fields.scaleFactor.onChange(scaleFactor);

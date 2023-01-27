@@ -12,7 +12,7 @@ export const PersonalNumbersList: FC<PersonalNumbersListProps> = ({
       apartments.map((apartment) => (
         <PersonalNumberItem key={apartment.id} apartment={apartment} />
       )),
-    [apartments]
+    [apartments],
   );
 
   if (isLoading) {

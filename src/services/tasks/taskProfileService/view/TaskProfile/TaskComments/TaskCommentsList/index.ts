@@ -1,1 +1,1 @@
-export { TaskCommentsList } from './TaskCommentsList'
+export { TaskCommentsList } from './TaskCommentsList';

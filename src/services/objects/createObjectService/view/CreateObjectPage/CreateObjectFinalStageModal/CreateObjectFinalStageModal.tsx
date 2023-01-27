@@ -4,7 +4,9 @@ import { Wrapper } from './CreateObjectFinalStageModal.styled';
 import { CreateObjectFinalStageModalProps } from './CreateObjectFinalStageModal.types';
 import { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm/CreateObjectFinalStageForm';
 
-export const CreateObjectFinalStageModal: FC<CreateObjectFinalStageModalProps> = ({
+export const CreateObjectFinalStageModal: FC<
+  CreateObjectFinalStageModalProps
+> = ({
   createObjectData,
   houseManagements,
   handlePostCreateObject,

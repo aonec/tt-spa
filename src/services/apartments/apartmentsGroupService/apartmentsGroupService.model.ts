@@ -7,7 +7,6 @@ const apartmentId = domain
   .createStore<number | null>(null)
   .on(setApartmentId, (_, id) => id);
 
-
 export const apartmentsGroupService = {
   inputs: { setApartmentId },
   outputs: { apartmentId },

@@ -8,7 +8,7 @@ type TickComponentProps = VictoryAxisProps & {
 export const TickComponent = (props: TickComponentProps) => {
   const { y1 } = props;
   let y2;
-  
+
   if (!y1) {
     return null;
   }

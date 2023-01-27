@@ -1,1 +1,1 @@
-export { AddContractorForm } from './AddContractorForm'
+export { AddContractorForm } from './AddContractorForm';

@@ -21,9 +21,11 @@ import {
 
 const domain = createDomain('individualDevicesViewByAddressService');
 
-const setIndividualDeviceSearchRequestPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
+const setIndividualDeviceSearchRequestPayload =
+  domain.createEvent<SearchIndividualDevicesRequestPayload>();
 
-const updateSearchPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
+const updateSearchPayload =
+  domain.createEvent<SearchIndividualDevicesRequestPayload>();
 
 const IndividualDevicesSearchGate = createGate();
 
@@ -62,8 +64,8 @@ const $pageNumber = domain
   .on(setPageNumber, (_, pageNumber) => pageNumber)
   .reset($individualDeviceSearchRequestPayload);
 
-const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
-  (values) => {
+const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload | null> =
+  $individualDeviceSearchRequestPayload.map((values) => {
     if (!(values?.City && values?.Street && values?.HouseNumber)) return null;
 
     const payload: GetHousingByFilterRequestPayload = {
@@ -74,8 +76,7 @@ const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload
     };
 
     return payload;
-  }
-);
+  });
 
 guard({
   clock: $getHousingsByFilterRequestPayload,
@@ -84,32 +85,34 @@ guard({
   target: fetchHousingsByFilter,
 });
 
-const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesApartments | null> = combine(
-  $individualDeviceSearchRequestPayload,
-  $housingsByFilter,
-  $pageNumber
-).map(([searchPayload, housingsByFilter, pageNumber]) => {
-  const housingStockId = housingsByFilter?.current?.id;
+const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesApartments | null> =
+  combine(
+    $individualDeviceSearchRequestPayload,
+    $housingsByFilter,
+    $pageNumber,
+  ).map(([searchPayload, housingsByFilter, pageNumber]) => {
+    const housingStockId = housingsByFilter?.current?.id;
 
-  if (!housingStockId) return null;
+    if (!housingStockId) return null;
 
-  const payload: GetIndividualDevicesApartments = {
-    HousingStockId: housingStockId,
-    ApartmentNumber: searchPayload?.Apartment || undefined,
-    'DeviceFilter.Resource': searchPayload?.Resource || undefined,
-    'DeviceFilter.Model': searchPayload?.Model,
-    'DeviceFilter.ClosingReason': searchPayload?.ClosingReason || undefined,
-    'DeviceFilter.MountPlace': searchPayload?.MountPlace || undefined,
-    'DeviceFilter.ApartmentStatus': searchPayload?.ApartmentStatus || undefined,
-    'DeviceFilter.ExpiresCheckingDateAt':
-      searchPayload?.ExpiresCheckingDateAt || undefined,
-    'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
-    PageNumber: pageNumber,
-    PageSize: APARTMENTS_LIST_PAGE_SIZE,
-  };
+    const payload: GetIndividualDevicesApartments = {
+      HousingStockId: housingStockId,
+      ApartmentNumber: searchPayload?.Apartment || undefined,
+      'DeviceFilter.Resource': searchPayload?.Resource || undefined,
+      'DeviceFilter.Model': searchPayload?.Model,
+      'DeviceFilter.ClosingReason': searchPayload?.ClosingReason || undefined,
+      'DeviceFilter.MountPlace': searchPayload?.MountPlace || undefined,
+      'DeviceFilter.ApartmentStatus':
+        searchPayload?.ApartmentStatus || undefined,
+      'DeviceFilter.ExpiresCheckingDateAt':
+        searchPayload?.ExpiresCheckingDateAt || undefined,
+      'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
+      PageNumber: pageNumber,
+      PageSize: APARTMENTS_LIST_PAGE_SIZE,
+    };
 
-  return payload;
-});
+    return payload;
+  });
 
 guard({
   clock: $getIndividualDevicesApartmentsRequestPayload,

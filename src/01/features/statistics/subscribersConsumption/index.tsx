@@ -15,7 +15,7 @@ export const SubscribersConsumption = () => {
 
   const currentUser = useStore(currentUserService.outputs.$currentUser);
   const isHousingStockHasCorpuses = Boolean(
-    currentUser?.organization?.filtersConfiguration?.hasHousingStockCorpuses
+    currentUser?.organization?.filtersConfiguration?.hasHousingStockCorpuses,
   );
 
   const subscribersConsumptionListComponentsLookup: {

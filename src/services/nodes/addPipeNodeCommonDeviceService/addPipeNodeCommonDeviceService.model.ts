@@ -5,7 +5,8 @@ import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.ty
 
 const domain = createDomain('addPipeNodeCommonDeviceService');
 
-const updateCommonDeviceRequestPayload = domain.createEvent<CreateCommonDevicePartitial>();
+const updateCommonDeviceRequestPayload =
+  domain.createEvent<CreateCommonDevicePartitial>();
 
 const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
@@ -18,7 +19,8 @@ const closeAddPipeModal = domain.createEvent();
 
 const handleFormComplete = domain.createEvent();
 
-const handleMeteringDeviceCreated = domain.createEvent<CreateCommonDevicePartitial>();
+const handleMeteringDeviceCreated =
+  domain.createEvent<CreateCommonDevicePartitial>();
 
 const $requestPayload = domain
   .createStore<CreateCommonDevicePartitial>({})

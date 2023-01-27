@@ -20,18 +20,21 @@ export function useSwitchMagnetSeal(device: IndividualDeviceResponse) {
 
   useEffect(() => setMagnetSeal(getMagnetSeal), [device]);
 
-  const getOnChange = <T>(
-    name:
-      | 'magneticSealInstallationDate'
-      | 'magneticSealTypeName'
-      | 'isInstalled'
-  ) => (value: T) => setMagnetSeal((prev) => ({ ...prev, [name]: value }));
+  const getOnChange =
+    <T>(
+      name:
+        | 'magneticSealInstallationDate'
+        | 'magneticSealTypeName'
+        | 'isInstalled',
+    ) =>
+    (value: T) =>
+      setMagnetSeal((prev) => ({ ...prev, [name]: value }));
 
   async function saveMagnetSeal() {
     try {
       await axios.post(
         `IndividualDevices/${device.id}/SetMagneticSeal`,
-        magnetSeal
+        magnetSeal,
       );
     } catch (e) {}
   }
@@ -40,7 +43,7 @@ export function useSwitchMagnetSeal(device: IndividualDeviceResponse) {
     magnetSeal,
     onChange: {
       magneticSealInstallationDate: getOnChange<string>(
-        'magneticSealInstallationDate'
+        'magneticSealInstallationDate',
       ),
       magneticSealTypeName: getOnChange<string>('magneticSealTypeName'),
       isInstalled: getOnChange<boolean>('isInstalled'),

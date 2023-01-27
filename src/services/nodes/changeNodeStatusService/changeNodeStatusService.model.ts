@@ -29,11 +29,11 @@ const changeNodeStatusFx = domain.createEffect<
 >(fetchChangeCommercialStatus);
 
 changeNodeStatusFx.doneData.watch(() =>
-  message.success('Статус успешно изменён')
+  message.success('Статус успешно изменён'),
 );
 
 changeNodeStatusFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 forward({

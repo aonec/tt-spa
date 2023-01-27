@@ -7,7 +7,7 @@ import _ from 'lodash';
 const domain = createDomain('currentUserService');
 
 const fetchCurrentUserFx = domain.createEffect<void, OrganizationUserResponse>(
-  getCurrentUser
+  getCurrentUser,
 );
 const $currentUser = domain
   .createStore<OrganizationUserResponse | null>(null)
@@ -15,7 +15,7 @@ const $currentUser = domain
 
 const $hasCorpuses = $currentUser.map(
   (user) =>
-    user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false
+    user?.organization?.filtersConfiguration?.hasHousingStockCorpuses || false,
 );
 
 const $diametersConfig = $currentUser.map((user) => {
@@ -55,7 +55,7 @@ export const currentUserService = {
     $isLoading,
     $hasCorpuses,
     $diametersConfig,
-    $currentUserRoles
+    $currentUserRoles,
   },
   gates: {
     CurrentUserGate,

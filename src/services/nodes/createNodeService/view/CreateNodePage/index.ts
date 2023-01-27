@@ -1,1 +1,1 @@
-export { CreateNodePage } from './CreateNodePage'
+export { CreateNodePage } from './CreateNodePage';

@@ -30,22 +30,21 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
   const recentlyReplacedAccounts = homeownerAccounts.filter(
     (account) =>
       account.replacedByAccount &&
-      moment().diff(moment(account.closedAt), 'month') < 3
+      moment().diff(moment(account.closedAt), 'month') < 3,
   );
 
   const openedHomeownerAccounts = useMemo(
     () => homeownerAccounts.filter((account) => !account.closedAt),
-    [homeownerAccounts]
+    [homeownerAccounts],
   );
 
   const recentlyEditedAccounts = openedHomeownerAccounts.filter(
     (account) =>
-      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3
+      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3,
   );
 
-  const recentlyModifiedApartmentPersonalAccounts = openedHomeownerAccounts.filter(
-    checkIsHomeownerAccountRecentlyModified
-  );
+  const recentlyModifiedApartmentPersonalAccounts =
+    openedHomeownerAccounts.filter(checkIsHomeownerAccountRecentlyModified);
 
   const pausedAlert = isPaused && (
     <ApartmentAlertWrapper>
@@ -90,7 +89,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
           recentlyReplacedAccount={account}
         />
       )),
-    [recentlyReplacedAccounts]
+    [recentlyReplacedAccounts],
   );
 
   const editedAccountsAlert = useMemo(
@@ -98,13 +97,13 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
       recentlyEditedAccounts.map((account) => (
         <EditedAccountsAlert key={account.id} recentlyEditedAccount={account} />
       )),
-    [recentlyEditedAccounts]
+    [recentlyEditedAccounts],
   );
 
-  const apartmentHomeownerAcconutChangeAlerts = recentlyModifiedApartmentPersonalAccounts?.map(
-    (homeownerAccount) => {
+  const apartmentHomeownerAcconutChangeAlerts =
+    recentlyModifiedApartmentPersonalAccounts?.map((homeownerAccount) => {
       const changeDateInfo = `Дата изменения: ${moment(
-        homeownerAccount?.openAtFact
+        homeownerAccount?.openAtFact,
       ).format('DD.MM.YYYY')}`;
 
       return (
@@ -123,8 +122,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
           </Alert>
         </ApartmentAlertWrapper>
       );
-    }
-  );
+    });
 
   return (
     <div>

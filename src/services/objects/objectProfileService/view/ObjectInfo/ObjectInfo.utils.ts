@@ -3,7 +3,7 @@ import { HousingStockResponse } from 'myApi';
 import { ObjectInfoRowField } from './ObjectInfo.constants';
 
 export const getObjectInfoFields = (
-  object: HousingStockResponse
+  object: HousingStockResponse,
 ): { [key in ObjectInfoRowField]: string | number | null } => {
   const {
     address,

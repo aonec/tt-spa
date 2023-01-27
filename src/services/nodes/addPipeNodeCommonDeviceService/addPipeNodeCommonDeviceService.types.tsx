@@ -8,7 +8,7 @@ export type Props = {
   resource: EResourceType;
   communicationPipes: CommunicationPipePayload[];
   handleAddCommunicationPipe: (
-    communicationPipe: CommunicationPipePayload
+    communicationPipe: CommunicationPipePayload,
   ) => void;
 };
 

@@ -29,7 +29,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
     PreparedHousingMeteringDeviceReadings[]
   >([]);
   const [oldDeviceReadings, setOldDeviceReadings] = useState(
-    oldDeviceInitialReadings
+    oldDeviceInitialReadings,
   );
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   useEffect(() => {
     const preparedNewDeviceReadings = prepareReadingsToFormik(
       newDeviceReadings,
-      newDeviceInitialReadings
+      newDeviceInitialReadings,
     );
     onChangeNewReadings(preparedNewDeviceReadings);
   }, [newDeviceReadings]);
@@ -48,18 +48,18 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   useEffect(() => {
     const preparedOldDeviceReadings = prepareReadingsToFormik(
       oldDeviceReadings,
-      oldDeviceInitialReadings
+      oldDeviceInitialReadings,
     );
     onChangeOldReadings(preparedOldDeviceReadings);
   }, [oldDeviceReadings]);
 
   const handleChangeOldDeviceReadings = useCallback(
     ({ readings }) => setOldDeviceReadings(readings),
-    [setOldDeviceReadings]
+    [setOldDeviceReadings],
   );
   const handleChangeNewDeviceReadings = useCallback(
     ({ readings }) => setNewDeviceReadings(readings),
-    [setNewDeviceReadings]
+    [setNewDeviceReadings],
   );
 
   return (

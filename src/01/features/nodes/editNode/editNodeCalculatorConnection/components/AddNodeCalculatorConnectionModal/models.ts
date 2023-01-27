@@ -6,13 +6,14 @@ import axios from '../../../../../../axios';
 
 const addNodeCalculatorConnection = createDomain('addNodeCalculatorConnection');
 
-export const $isAddNodeCalculatorConnectionModalOpen = addNodeCalculatorConnection.createStore(
-  false
-);
+export const $isAddNodeCalculatorConnectionModalOpen =
+  addNodeCalculatorConnection.createStore(false);
 
-const openAddNodeCalculatorConnectionModal = addNodeCalculatorConnection.createEvent();
+const openAddNodeCalculatorConnectionModal =
+  addNodeCalculatorConnection.createEvent();
 
-const closeAddNodeCalculatorConnectionModal = addNodeCalculatorConnection.createEvent();
+const closeAddNodeCalculatorConnectionModal =
+  addNodeCalculatorConnection.createEvent();
 
 const addNodeCalculatorConnectionForm = createForm({
   fields: {
@@ -69,7 +70,8 @@ sample({
   target: saveNodeCalculatorConnectionFx,
 });
 
-export type AddNodeCalculatorConnectionForm = typeof addNodeCalculatorConnectionForm;
+export type AddNodeCalculatorConnectionForm =
+  typeof addNodeCalculatorConnectionForm;
 
 export const addNodeCalculatorService = {
   inputs: {
@@ -84,11 +86,11 @@ export const addNodeCalculatorService = {
 };
 
 saveNodeCalculatorConnectionFx.doneData.watch(() =>
-  message.success('Вычислитель успешно подключен!')
+  message.success('Вычислитель успешно подключен!'),
 );
 
 saveNodeCalculatorConnectionFx.failData.watch(() =>
-  message.error('Ошибка подключения вычислителя')
+  message.error('Ошибка подключения вычислителя'),
 );
 
 forward({

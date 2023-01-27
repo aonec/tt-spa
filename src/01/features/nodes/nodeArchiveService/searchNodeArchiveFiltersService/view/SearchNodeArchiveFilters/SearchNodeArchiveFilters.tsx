@@ -21,27 +21,23 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
   loading,
   handleSubmit,
 }) => {
-  const {
-    values,
-    setFieldValue,
-    resetForm,
-    submitForm,
-  } = useFormik<FormValues>({
-    initialValues: {
-      from: null,
-      to: null,
-      type: EReportType.Daily,
-    },
-    onSubmit: ({ from, to, type }) => {
-      const toDate = to?.endOf('day').toISOString(true);
+  const { values, setFieldValue, resetForm, submitForm } =
+    useFormik<FormValues>({
+      initialValues: {
+        from: null,
+        to: null,
+        type: EReportType.Daily,
+      },
+      onSubmit: ({ from, to, type }) => {
+        const toDate = to?.endOf('day').toISOString(true);
 
-      handleSubmit({
-        from: from?.toISOString(true),
-        to: toDate,
-        type,
-      });
-    },
-  });
+        handleSubmit({
+          from: from?.toISOString(true),
+          to: toDate,
+          type,
+        });
+      },
+    });
 
   return (
     <Wrap>

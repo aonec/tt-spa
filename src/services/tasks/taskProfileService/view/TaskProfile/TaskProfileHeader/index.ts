@@ -1,1 +1,1 @@
-export { TaskProfileHeader } from './TaskProfileHeader'
+export { TaskProfileHeader } from './TaskProfileHeader';

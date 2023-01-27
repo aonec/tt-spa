@@ -1,1 +1,1 @@
-export { ReportViewPage } from './ReportViewPage'
+export { ReportViewPage } from './ReportViewPage';

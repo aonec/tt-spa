@@ -10,5 +10,5 @@ export type EditHeatingStationModalProps = {
   handleCloseModal: () => void;
   existingCities: string[] | null;
   existingStreets: string[];
-  openedHeatingStationData: HeatingStationResponse | null
+  openedHeatingStationData: HeatingStationResponse | null;
 };

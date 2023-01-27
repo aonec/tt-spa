@@ -36,7 +36,7 @@ sample({
     if (!potentialNextStageId) return null;
 
     const nextStage = task.stages?.find(
-      (elem) => elem.id === potentialNextStageId
+      (elem) => elem.id === potentialNextStageId,
     );
 
     if (!nextStage) return null;

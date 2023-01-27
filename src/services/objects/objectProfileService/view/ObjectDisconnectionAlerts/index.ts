@@ -1,1 +1,1 @@
-export { ObjectDisconnectionAlerts } from './ObjectDisconnectionAlerts'
+export { ObjectDisconnectionAlerts } from './ObjectDisconnectionAlerts';

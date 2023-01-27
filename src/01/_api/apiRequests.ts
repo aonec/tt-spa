@@ -55,7 +55,7 @@ export async function getNode(id: number) {
 export async function getNodeTasks(id: number) {
   try {
     const res = await axios.get<any, TasksPagedList>(
-      `Tasks?GroupType=2&NodeId=${id}`
+      `Tasks?GroupType=2&NodeId=${id}`,
     );
     const { items } = res;
     return items;
@@ -70,7 +70,7 @@ export async function getNodeTasks(id: number) {
 export async function getIndividualDevice(id: number) {
   try {
     const res = await axios.get<any, IndividualDeviceResponse>(
-      `IndividualDevices/${id}`
+      `IndividualDevices/${id}`,
     );
     return res;
   } catch (error) {
@@ -84,7 +84,7 @@ export async function getIndividualDevice(id: number) {
 export async function getIndividualDeviceTasks(id: number) {
   try {
     const res = await axios.get<any, TasksPagedList>(
-      `Tasks?GroupType=2&DeviceId=${id}`
+      `Tasks?GroupType=2&DeviceId=${id}`,
     );
     const { items } = res;
     return items;
@@ -111,7 +111,7 @@ export async function getCalculator(id: number) {
 export async function getHousingStock(housingStockId: number) {
   try {
     const res: HousingStockResponse = await axios.get(
-      `HousingStocks/${housingStockId}`
+      `HousingStocks/${housingStockId}`,
     );
     return res;
   } catch (error) {
@@ -125,7 +125,7 @@ export async function getHousingStock(housingStockId: number) {
 export async function getHousingStockCalculators(id: number) {
   try {
     const res: CalculatorListResponse[] | null = await axios.get(
-      `HousingStocks/${id}/Calculators`
+      `HousingStocks/${id}/Calculators`,
     );
     return res;
   } catch (error) {
@@ -165,7 +165,7 @@ export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
 
 export async function putIndividualDevice(
   deviceId: number,
-  form: UpdateIndividualDeviceRequest
+  form: UpdateIndividualDeviceRequest,
 ) {
   try {
     const res = await axios.put(`IndividualDevices/${deviceId}`, form);

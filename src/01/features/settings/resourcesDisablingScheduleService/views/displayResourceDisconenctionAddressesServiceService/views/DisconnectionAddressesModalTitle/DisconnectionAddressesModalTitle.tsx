@@ -12,9 +12,9 @@ import {
 } from './DisconnectionAddressesModalTitle.styled';
 import { DisconnectionAddressesModalTitleProps } from './DisconnectionAddressesModalTitle.types';
 
-export const DisconnectionAddressesModalTitle: FC<DisconnectionAddressesModalTitleProps> = ({
-  disconnection,
-}) => {
+export const DisconnectionAddressesModalTitle: FC<
+  DisconnectionAddressesModalTitleProps
+> = ({ disconnection }) => {
   const { startDate, endDate, resource, disconnectingType } = disconnection;
 
   const startDateString = moment(startDate).format('DD.MM.YYYY');

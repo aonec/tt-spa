@@ -14,14 +14,14 @@ export type CreateResourceDisconnectionModalProps = {
   isOpen: boolean;
   handleClose: () => void;
   handleCreateResourceDisconnection: (
-    payload: ResourceDisconnectingCreateRequest
+    payload: ResourceDisconnectingCreateRequest,
   ) => void;
   isInterHeatingSeason: boolean;
   isEdit: boolean;
   isDisconnectionLoading: boolean;
   resourceDisconnection: ResourceDisconnectingResponse | null;
   handleEditResourceDisconnection: (
-    payload: ResourceDisconnectingUpdateRequest
+    payload: ResourceDisconnectingUpdateRequest,
   ) => void;
   handleUpdateDocument: (id: number) => void;
   setTypeOfAddress: (type: EAddressDetails) => void;

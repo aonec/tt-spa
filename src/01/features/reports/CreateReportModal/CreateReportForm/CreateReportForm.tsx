@@ -15,7 +15,7 @@ interface Props {
 export const CreateReportForm: FC<Props> = ({ type, setType }) => {
   const handleChange = useCallback(
     (value: SelectValue) => value && setType(value as ReportType),
-    [setType]
+    [setType],
   );
   return (
     <>

@@ -1,11 +1,7 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import {
-  StyledAutocomplete,
-  InputSC,
-  SelectSC,
-} from '01/shared/ui/Fields';
+import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Form, Select } from 'antd';
@@ -13,7 +9,9 @@ import React, { FC } from 'react';
 import { ExtendedSearchWrap, Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
 
-export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProps> = ({
+export const SearchInspectorsHousingStocks: FC<
+  SearchInspectorsHousingStocksProps
+> = ({
   form,
   cities,
   existingStreets,
@@ -30,7 +28,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
 
   const { match: streetMatch, options } = useAutocomplete(
     street,
-    existingStreets
+    existingStreets,
   );
 
   const {
@@ -133,8 +131,8 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               onKeyDown={(e) => {
                 fromEnter(() =>
                   form.fields.Street.onChange(
-                    form.fields.Street.value ? streetMatch : ''
-                  )
+                    form.fields.Street.value ? streetMatch : '',
+                  ),
                 )(e);
                 keyDownEnterGuardedHandler(1)(e);
                 fromEnter(handleSearch)(e);

@@ -1,14 +1,14 @@
 import { HousingStockShortResponse } from 'myApi';
 
 export const fullAddressesString = (
-  address: HousingStockShortResponse | null
+  address: HousingStockShortResponse | null,
 ) => {
   const additionalAddresses = address?.address?.additionalAddresses || [];
 
   const mainAddress = address?.address?.mainAddress;
   const corpusText = mainAddress?.corpus ? `, к.${mainAddress.corpus}` : '';
   const mainAddressText = `${mainAddress?.city} ${String.fromCharCode(
-    8226
+    8226,
   )} ${`ул. ${mainAddress?.street}`}, ${mainAddress?.number}${corpusText}`;
 
   const additionalAddressesText = additionalAddresses
@@ -26,7 +26,7 @@ export const fullAddressesString = (
 };
 
 export const additionalAddressesString = (
-  address: HousingStockShortResponse | null
+  address: HousingStockShortResponse | null,
 ) => {
   const additionalAddresses = address?.address?.additionalAddresses || [];
 
@@ -34,7 +34,7 @@ export const additionalAddressesString = (
     .map((elem, i) => {
       if (i === 0) {
         return `${address?.address?.mainAddress?.city} ${String.fromCharCode(
-          8226
+          8226,
         )} ${`ул. ${address?.address?.mainAddress?.street}`}, ${
           address?.address?.mainAddress?.number
         }${

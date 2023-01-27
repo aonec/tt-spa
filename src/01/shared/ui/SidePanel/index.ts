@@ -1,1 +1,1 @@
-export { SidePanel } from './SidePanel'
+export { SidePanel } from './SidePanel';

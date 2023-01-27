@@ -6,9 +6,9 @@ import {
 import { SubscribersStaticsByManagingFirmProps } from './SubscribersStatisticsByManagingFirm.types';
 import { SubscribersStaticsByManagingFirmItem } from './SubscribersStatisticsItem';
 
-export const SubscribersStaticsByManagingFirm: FC<SubscribersStaticsByManagingFirmProps> = ({
-  apartmentsStatistic,
-}) => {
+export const SubscribersStaticsByManagingFirm: FC<
+  SubscribersStaticsByManagingFirmProps
+> = ({ apartmentsStatistic }) => {
   const list = useMemo(
     () =>
       apartmentsStatistic.map((statistic) => (
@@ -17,7 +17,7 @@ export const SubscribersStaticsByManagingFirm: FC<SubscribersStaticsByManagingFi
           key={statistic.apartmentId}
         />
       )),
-    [apartmentsStatistic]
+    [apartmentsStatistic],
   );
 
   return (

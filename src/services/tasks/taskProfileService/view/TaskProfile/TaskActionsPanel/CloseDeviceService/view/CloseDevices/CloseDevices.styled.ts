@@ -29,6 +29,6 @@ export const DeviceInfoStrokeWrap = styled.div`
   margin-left: 25px;
 `;
 
-export const DatePickerWrapper  = styled.div`
+export const DatePickerWrapper = styled.div`
   width: 250px;
 `;

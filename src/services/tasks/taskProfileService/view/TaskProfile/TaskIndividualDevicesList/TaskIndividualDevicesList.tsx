@@ -24,7 +24,7 @@ export const TaskIndividualDevicesList: FC<TaskIndividualDevicesListProps> = ({
           key={device.id}
         />
       )),
-    [devices]
+    [devices],
   );
 
   return (

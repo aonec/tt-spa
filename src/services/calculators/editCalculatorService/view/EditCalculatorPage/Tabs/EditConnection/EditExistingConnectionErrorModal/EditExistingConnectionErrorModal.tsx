@@ -7,11 +7,9 @@ import { FooterSc } from './EditExistingConnectionErrorModal.styled';
 
 const formId = 'edit-existing-connection-error-modal';
 
-export const EditExistingConnectionErrorModal: FC<EditExistingConnectionErrorModalProps> = ({
-  sameConnectionCalculator,
-  handleCloseModal,
-  isModalOpen,
-}) => {
+export const EditExistingConnectionErrorModal: FC<
+  EditExistingConnectionErrorModalProps
+> = ({ sameConnectionCalculator, handleCloseModal, isModalOpen }) => {
   return (
     <>
       <FormModal

@@ -4,7 +4,7 @@ import { useStore } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useEffect } from 'react';
-import { $homeowner, HomeownerGate } from '../displayHomeowner/models';
+import { HomeownerGate } from '../displayHomeowner/models';
 import { PersonaNumberActionPage } from '../editPersonalNumber/components/PersonalNumberActionPage';
 import { PersonalNumberEditForm } from '../editPersonalNumber/components/PersonalNumberEditForm';
 import {
@@ -13,7 +13,7 @@ import {
   switchPersonalNumber,
   switchPersonalNumberFx,
 } from './models';
-import { message, Steps } from 'antd';
+import { message } from 'antd';
 import styled from 'styled-components';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 
@@ -25,7 +25,7 @@ export const SwitchPersonalNumberPage = () => {
   const history = useHistory();
 
   const personalAccountNumber = apartment?.homeownerAccounts?.find(
-    (account) => account.id === homeownerId
+    (account) => account.id === homeownerId,
   )?.personalAccountNumber;
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export const SwitchPersonalNumberPage = () => {
     }
 
     setSwitchRequestStatus(null);
-  }, [status]);
+  }, [status, history]);
 
   return (
     <Wrap>
@@ -62,6 +62,5 @@ export const SwitchPersonalNumberPage = () => {
     </Wrap>
   );
 };
-const Step = Steps.Step;
 
 const Wrap = styled.div``;

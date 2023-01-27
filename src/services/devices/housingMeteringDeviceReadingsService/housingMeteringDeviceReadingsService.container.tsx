@@ -9,11 +9,9 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 const { inputs, outputs, gates } = housingMeteringDeviceReadingsService;
 const { NodeIdGate, NodeResourceGate } = gates;
 
-export const HousingMeteringDeviceReadingsContainer: FC<HousingMeteringDeviceReadingsContainerProps> = ({
-  nodeId,
-  resource,
-  deviceIds,
-}) => {
+export const HousingMeteringDeviceReadingsContainer: FC<
+  HousingMeteringDeviceReadingsContainerProps
+> = ({ nodeId, resource, deviceIds }) => {
   const readings = useStore(outputs.$readings);
   const isColdWater = useStore(outputs.$isColdWater);
   const isLoading = useStore(outputs.$isLoading);

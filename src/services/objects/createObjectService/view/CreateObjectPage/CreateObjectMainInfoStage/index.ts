@@ -1,1 +1,1 @@
-export { CreateObjectMainInfoStage } from './CreateObjectMainInfoStage'
+export { CreateObjectMainInfoStage } from './CreateObjectMainInfoStage';

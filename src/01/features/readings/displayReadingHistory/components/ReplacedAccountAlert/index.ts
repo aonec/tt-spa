@@ -1,1 +1,1 @@
-export { ReplacedAccountAlert } from './ReplacedAccountAlert'
+export { ReplacedAccountAlert } from './ReplacedAccountAlert';

@@ -1,1 +1,1 @@
-export { DeviceStep } from './DeviceStep'
+export { DeviceStep } from './DeviceStep';

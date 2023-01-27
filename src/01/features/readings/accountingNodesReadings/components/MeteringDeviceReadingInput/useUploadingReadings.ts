@@ -13,13 +13,13 @@ interface Params {
   refetch: () => void;
   deviceId: number;
   prevValue?: number;
-  monthIndex:number;
+  monthIndex: number;
 }
 
 export function useUploadingReadings(params: Params) {
   const { meteringDeviceReading, refetch, deviceId, prevValue } = params;
   const [value, setValue] = useState<string>(
-    getReadingValue(meteringDeviceReading?.value)
+    getReadingValue(meteringDeviceReading?.value),
   );
 
   const [status, setStatus] = useState<RequestStatusShared>(null);
@@ -27,9 +27,10 @@ export function useUploadingReadings(params: Params) {
   const edited =
     Boolean(value) && String(value) !== String(meteringDeviceReading?.value);
 
-  useEffect(() => setValue(getReadingValue(meteringDeviceReading?.value)), [
-    meteringDeviceReading,
-  ]);
+  useEffect(
+    () => setValue(getReadingValue(meteringDeviceReading?.value)),
+    [meteringDeviceReading],
+  );
 
   async function saveReading() {
     if (!edited) return;

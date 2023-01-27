@@ -1,1 +1,1 @@
-export { ObjectProfile } from './ObjectProfile'
+export { ObjectProfile } from './ObjectProfile';

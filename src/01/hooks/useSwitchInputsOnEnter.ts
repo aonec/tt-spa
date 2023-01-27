@@ -9,7 +9,7 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
     if (e.key !== 'Enter' && !isForced) return;
 
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      `[data-reading-input="current"]`
+      `[data-reading-input="current"]`,
     );
 
     const nextNode = inputList[index + 1];
@@ -19,9 +19,8 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
 
       const firstNode = inputList[0];
 
-      const neededInputNode: any = firstNode?.getElementsByClassName(
-        'ant-input'
-      )[0];
+      const neededInputNode: any =
+        firstNode?.getElementsByClassName('ant-input')[0];
 
       neededInputNode && neededInputNode.focus && neededInputNode.focus();
       return;

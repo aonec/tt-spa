@@ -1,1 +1,1 @@
-export { ApartmentCellItem } from './ApartmentCellItem'
+export { ApartmentCellItem } from './ApartmentCellItem';

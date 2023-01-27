@@ -5,13 +5,13 @@ import {
 } from '../../../../../myApi';
 
 export const groupDevicesByObjects = (
-  devices: CalculatorListResponse[]
+  devices: CalculatorListResponse[],
 ): DevicesByAddressInterface[] => {
   const devicesByAddresses = Object.values(
     groupBy(devices, (value) => {
       const address = value.address?.address?.mainAddress;
       return `${address?.street} ${address?.housingStockId}`;
-    })
+    }),
   ).map((devices) => ({
     devices,
     address: devices[0].address?.address,

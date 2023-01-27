@@ -2,7 +2,7 @@ import { getHousuingStocks } from 'services/objects/displayObjectsListService/di
 import { GetHousingStocksRequestPayload } from 'services/objects/displayObjectsListService/displayObjectsListService.types';
 
 export const getHousingStock = async (
-  values: GetHousingStocksRequestPayload
+  values: GetHousingStocksRequestPayload,
 ) => {
   const housingStocks = await getHousuingStocks(values);
 

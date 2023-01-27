@@ -1,1 +1,1 @@
-export { EditEmployee } from './EditEmployee'
+export { EditEmployee } from './EditEmployee';

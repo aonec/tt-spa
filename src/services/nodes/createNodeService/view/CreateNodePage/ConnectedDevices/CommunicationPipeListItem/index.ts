@@ -1,1 +1,1 @@
-export { CommunicationPipeListItem } from './CommunicationPipeListItem'
+export { CommunicationPipeListItem } from './CommunicationPipeListItem';

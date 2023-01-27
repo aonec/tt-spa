@@ -1,1 +1,1 @@
-export { ClosedIndividualDevicesForm } from './ClosedIndividualDevicesForm'
+export { ClosedIndividualDevicesForm } from './ClosedIndividualDevicesForm';

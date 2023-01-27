@@ -34,25 +34,21 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   selectedResourceType,
   clearForm,
 }) => {
-  const {
-    values,
-    submitForm,
-    setFieldValue,
-    resetForm,
-  } = useFormik<AddNewActFormT>({
-    initialValues: {
-      actJobDate: '',
-      registryNumber: '',
-    },
-    onSubmit: (formValues) => {
-      const actType = selectedActType;
-      const actResourceType = selectedResourceType;
+  const { values, submitForm, setFieldValue, resetForm } =
+    useFormik<AddNewActFormT>({
+      initialValues: {
+        actJobDate: '',
+        registryNumber: '',
+      },
+      onSubmit: (formValues) => {
+        const actType = selectedActType;
+        const actResourceType = selectedResourceType;
 
-      if (actType && actResourceType) {
-        addNewAct({ ...formValues, actType, actResourceType });
-      }
-    },
-  });
+        if (actType && actResourceType) {
+          addNewAct({ ...formValues, actType, actResourceType });
+        }
+      },
+    });
 
   const {
     keyDownEnterGuardedHandler,
@@ -72,15 +68,15 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         message.success('Акт успешно добавлен');
         resetForm();
       }).unsubscribe,
-    []
+    [],
   );
 
   useEffect(
     () =>
       createApartmentActFx.fail.watch(() =>
-        message.error('Ошибка при добавлении акта')
+        message.error('Ошибка при добавлении акта'),
       ).unsubscribe,
-    []
+    [],
   );
 
   const handleEnterOnRegistryNumberInput = useMemo(() => {

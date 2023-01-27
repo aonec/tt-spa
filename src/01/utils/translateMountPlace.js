@@ -1,5 +1,3 @@
- 
-
 export const translateMountPlace = (mountPlace) => {
   switch (mountPlace) {
     case 'Toilet':

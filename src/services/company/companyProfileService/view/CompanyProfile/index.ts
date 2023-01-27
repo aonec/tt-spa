@@ -1,1 +1,1 @@
-export { CompanyProfile } from './CompanyProfile'
+export { CompanyProfile } from './CompanyProfile';

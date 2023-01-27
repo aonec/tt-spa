@@ -11,7 +11,7 @@ export const getHousingStockAddress = (
     | DevicesByAddressInterface
     | HousingStockShortResponse
     | null,
-  isCityNeeded?: boolean
+  isCityNeeded?: boolean,
 ) => {
   if (!housingStock) return null;
 

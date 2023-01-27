@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IndividualDeviceReadingsYearHistoryResponse } from '../../../../../myApi';
 export function useOpenedYears(
-  years: IndividualDeviceReadingsYearHistoryResponse[]
+  years: IndividualDeviceReadingsYearHistoryResponse[],
 ) {
   const [openedYears, setOpenedYears] = useState<
     { year: number; openedMonths: number[]; open: boolean }[]
@@ -14,19 +14,21 @@ export function useOpenedYears(
           year: elem.year,
           open: true,
           openedMonths: [],
-        })) || []
+        })) || [],
       ),
-    [years.map((elem) => elem.year).join()]
+    [years.map((elem) => elem.year).join()],
   );
 
   const openYear = (year: number) =>
     setOpenedYears((prev) =>
-      prev.map((elem) => (elem.year === year ? { ...elem, open: true } : elem))
+      prev.map((elem) => (elem.year === year ? { ...elem, open: true } : elem)),
     );
 
   const closeYear = (year: number) =>
     setOpenedYears((prev) =>
-      prev.map((elem) => (elem.year === year ? { ...elem, open: false } : elem))
+      prev.map((elem) =>
+        elem.year === year ? { ...elem, open: false } : elem,
+      ),
     );
 
   const isYearOpen = (year: number) =>
@@ -37,8 +39,8 @@ export function useOpenedYears(
       prev.map((elem) =>
         elem.year === year
           ? { ...elem, openedMonths: [...elem.openedMonths, month] }
-          : elem
-      )
+          : elem,
+      ),
     );
 
   const closeMonth = (year: number, month: number) =>
@@ -49,15 +51,15 @@ export function useOpenedYears(
               ...elem,
               openedMonths: elem.openedMonths.filter((elem) => elem !== month),
             }
-          : elem
-      )
+          : elem,
+      ),
     );
 
   const isMonthOpen = (year: number, month: number) =>
     Boolean(
       openedYears
         .find((elem) => elem.year === year)
-        ?.openedMonths.find((elem) => elem === month)
+        ?.openedMonths.find((elem) => elem === month),
     );
 
   return {

@@ -3,7 +3,7 @@ import { createEffect, createStore } from 'effector';
 import { createGate } from 'effector-react';
 
 export const $individualDevice = createStore<IndividualDeviceResponse | null>(
-  null
+  null,
 );
 
 export const fetchIndividualDeviceFx = createEffect<

@@ -53,7 +53,7 @@ export const CheckFormValuesModal = () => {
 
   const device = useStore($individualDevice);
   const type = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+    SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
   const isCheck = type === 'check';
 
@@ -116,7 +116,7 @@ export const CheckFormValuesModal = () => {
   ];
 
   const files: (FileData & RemoveFile)[] = toArray<FileData>(
-    fields.documentsIds.value
+    fields.documentsIds.value,
   )
     .filter((elem) => elem?.fileResponse)
     .map((elem) => ({
@@ -256,7 +256,7 @@ function getResourceName(resource: EResourceType | null) {
 
 function getMountPlaceById(
   id: number | null,
-  places: IndividualDeviceMountPlaceListResponse[] | null
+  places: IndividualDeviceMountPlaceListResponse[] | null,
 ): string | null {
   if (!id || !places) return null;
 
@@ -275,7 +275,7 @@ function getDate(dateString: string | null) {
 
 export function toArray<T>(
   obj: object,
-  setName: boolean = true
+  setName: boolean = true,
 ): (T & { __name__?: string })[] {
   const arr = Object.keys(obj).map((name) => {
     const value = (obj as any)[name];

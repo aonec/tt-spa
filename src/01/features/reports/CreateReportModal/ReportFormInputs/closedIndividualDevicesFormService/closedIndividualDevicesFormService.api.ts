@@ -5,9 +5,10 @@ import {
   StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
 
-export const getAdresses = (): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
-  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers');
-};
+export const getAdresses =
+  (): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
+    return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers');
+  };
 
 export const getOrganizations = (): Promise<OrganizationResponsePagedList> => {
   return axios.get('Organizations');

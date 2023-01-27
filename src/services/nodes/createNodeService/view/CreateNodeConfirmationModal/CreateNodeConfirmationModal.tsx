@@ -27,7 +27,9 @@ import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSyst
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 
-export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> = ({
+export const CreateNodeConfirmationModal: FC<
+  CreateNodeConfirmationModalProps
+> = ({
   isOpen,
   handleClose,
   housingStock,

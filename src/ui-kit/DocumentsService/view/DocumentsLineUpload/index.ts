@@ -1,1 +1,1 @@
-export { DocumentsLineUpload } from './DocumentsLineUpload'
+export { DocumentsLineUpload } from './DocumentsLineUpload';

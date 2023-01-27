@@ -74,9 +74,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
   const pendingSplitRequest = useStore(splitPersonalNumberFx.pending);
 
   const getLinkOnApartmentProfile = () =>
-    apartment
-      ? `/apartments/${apartment?.id}`
-      : '';
+    apartment ? `/apartments/${apartment?.id}` : '';
 
   const isApartmentHasDevices = Boolean(devices?.length);
   const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);

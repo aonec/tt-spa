@@ -1,1 +1,1 @@
-export { PersonalNumbersList } from './PersonalNumbersList'
+export { PersonalNumbersList } from './PersonalNumbersList';

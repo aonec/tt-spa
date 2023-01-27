@@ -1,1 +1,1 @@
-export { HousingStockInfoPanel } from './HousingStockInfoPanel'
+export { HousingStockInfoPanel } from './HousingStockInfoPanel';

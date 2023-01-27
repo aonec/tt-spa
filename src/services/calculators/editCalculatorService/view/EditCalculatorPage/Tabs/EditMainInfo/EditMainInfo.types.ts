@@ -5,5 +5,5 @@ export type EditMainInfoProps = {
   calculator: CalculatorResponse | null;
   onCancel: () => void;
   calculatorTypesSelectItems: ItemInterface[];
-  onSubmit: (payload: UpdateCalculatorRequest) => void
+  onSubmit: (payload: UpdateCalculatorRequest) => void;
 };

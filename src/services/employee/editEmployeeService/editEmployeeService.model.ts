@@ -28,11 +28,11 @@ forward({ from: handleSubmit, to: updateEmployeeFx });
 const $pending = updateEmployeeFx.pending;
 
 updateEmployeeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 updateEmployeeFx.doneData.watch(() =>
-  message.success('Информация успешно обновлена!')
+  message.success('Информация успешно обновлена!'),
 );
 
 export const editEmployeeService = {

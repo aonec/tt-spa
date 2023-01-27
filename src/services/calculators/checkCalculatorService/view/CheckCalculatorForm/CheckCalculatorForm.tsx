@@ -14,24 +14,20 @@ export const CheckCalculatorForm: FC<CheckCalculatorFormProps> = ({
   formId,
   handleCheckCalculator,
 }) => {
-  const {
-    values,
-    setFieldValue,
-    submitForm,
-    errors,
-  } = useFormik<CheckCalculatorFormik>({
-    initialValues: {
-      currentCheckingDate: moment().format(),
-      futureCheckingDate: moment().add(4, 'year').format(),
-    },
-    validationSchema: yup.object().shape({
-      currentCheckingDate: yup.string().required('Это поле обязательно'),
-      futureCheckingDate: yup.string().required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: handleCheckCalculator,
-  });
+  const { values, setFieldValue, submitForm, errors } =
+    useFormik<CheckCalculatorFormik>({
+      initialValues: {
+        currentCheckingDate: moment().format(),
+        futureCheckingDate: moment().add(4, 'year').format(),
+      },
+      validationSchema: yup.object().shape({
+        currentCheckingDate: yup.string().required('Это поле обязательно'),
+        futureCheckingDate: yup.string().required('Это поле обязательно'),
+      }),
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: handleCheckCalculator,
+    });
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>

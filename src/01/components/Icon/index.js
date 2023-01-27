@@ -1,3 +1,1 @@
- 
-
 export { Icon } from './Icon';

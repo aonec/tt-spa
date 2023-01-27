@@ -1,1 +1,1 @@
-export { SelectResource } from './SelectResource'
+export { SelectResource } from './SelectResource';

@@ -1,7 +1,5 @@
 import { createGate } from 'effector-react';
-import {
-  CalculatorIntoHousingStockResponse,
-} from '../../../../myApi';
+import { CalculatorIntoHousingStockResponse } from '../../../../myApi';
 import { createDomain, forward, sample } from 'effector';
 import { createCalcuatorService } from '../../nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 import { getCalculatorsList } from './calculatorsIntoHousingStockService.api';

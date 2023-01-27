@@ -13,7 +13,7 @@ import {
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 
 export const fetchConsumptionsForTwoMonth = async (
-  params: ConsumptionDataFilter
+  params: ConsumptionDataFilter,
 ): Promise<ConsumptionDataForTwoMonth> => {
   const prevMonth = moment(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
@@ -24,50 +24,50 @@ export const fetchConsumptionsForTwoMonth = async (
 
   const currentMonthData = await fetchConsumptionsForMonth(params);
   const prevMonthData = await fetchConsumptionsForMonth(
-    paramsForPrevMonthRequest
+    paramsForPrevMonthRequest,
   );
 
   return { currentMonthData, prevMonthData };
 };
 
 export const fetchConsumptionsForMonth = async (
-  params: ConsumptionDataFilter
+  params: ConsumptionDataFilter,
 ): Promise<MonthConsumptionData> => {
   const housingMonthData = await fetchHousingConsumptionData(params);
 
   const normativeAndSubscriberData = await fetchNormativeConsumptionData(
-    params
+    params,
   );
 
   return {
     housing: prepareDataForConsumptionGraph(
-      housingMonthData.housingConsumption || []
+      housingMonthData.housingConsumption || [],
     ),
     normative: prepareDataForConsumptionGraph(
-      normativeAndSubscriberData.normativeConsumption || []
+      normativeAndSubscriberData.normativeConsumption || [],
     ),
     subscriber: prepareDataForConsumptionGraph(
-      normativeAndSubscriberData.subscriberConsumption || []
+      normativeAndSubscriberData.subscriberConsumption || [],
     ),
   };
 };
 
 export const fetchHousingConsumptionData = (
-  params: ConsumptionDataFilter
+  params: ConsumptionDataFilter,
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
   axios.get('PipeNodes/DataForHousingConsumptionPlot', { params });
 
 export const fetchNormativeConsumptionData = (
-  params: ConsumptionDataFilter
+  params: ConsumptionDataFilter,
 ): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
   axios.get(
     'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
-    { params }
+    { params },
   );
 
 export const fetchAddresses = (): Promise<
   HouseManagementWithStreetsResponse[]
 > =>
   axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement'
+    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
   );

@@ -1,1 +1,1 @@
-export { MeteringDeviceListItem } from './MeteringDeviceListItem'
+export { MeteringDeviceListItem } from './MeteringDeviceListItem';

@@ -1,1 +1,1 @@
-export { SelectMultiple } from './SelectMultiple.styled'
+export { SelectMultiple } from './SelectMultiple.styled';

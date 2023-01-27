@@ -62,15 +62,15 @@ export const AddressIdSearch: FC<Props> = (props) => {
 
   const { match: streetMatch, bestMatch: bestStreetMatch } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   const loading = useStore(
     combine(
       fetchExistingStreets.pending,
       fetchApartmentSearchIdFx.pending,
-      (...pendings) => pendings.some(Boolean)
-    )
+      (...pendings) => pendings.some(Boolean),
+    ),
   );
 
   const isActive = (ref: any) => ref.current === document.activeElement;
@@ -105,7 +105,7 @@ export const AddressIdSearch: FC<Props> = (props) => {
     <SearchWrap
       temp="12px 0.8fr 0.35fr 0.3fr"
       focused={[firstInputRef, ...refs].some(
-        (elem) => elem.current === document.activeElement
+        (elem) => elem.current === document.activeElement,
       )}
       isSuccess={isSuccess}
       error={error}

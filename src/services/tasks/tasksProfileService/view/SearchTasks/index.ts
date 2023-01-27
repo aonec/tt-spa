@@ -1,1 +1,1 @@
-export { SearchTasks } from './SearchTasks'
+export { SearchTasks } from './SearchTasks';

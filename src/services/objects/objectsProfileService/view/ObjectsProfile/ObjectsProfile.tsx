@@ -56,7 +56,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       handleOpenChooseResourceDisconnectionModal,
       handleCreateObject,
       openFeedFlowBackReportModal,
-    ]
+    ],
   );
 
   const objectsProfileComponent = useMemo(() => {

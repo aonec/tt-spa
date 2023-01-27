@@ -1,3 +1,1 @@
-export type CommentPanelProps = {
-  
-};
+export type CommentPanelProps = {};

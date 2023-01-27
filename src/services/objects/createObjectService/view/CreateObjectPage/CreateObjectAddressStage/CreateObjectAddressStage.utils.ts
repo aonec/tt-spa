@@ -1,8 +1,8 @@
-import { countSimilarityPoints } from "utils/countSimilarityPoints";
+import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 
 export function getPreparedStreetsOptions(
   addressSearch: string,
-  streets: string[]
+  streets: string[],
 ) {
   return streets
     .sort((a, b) => {

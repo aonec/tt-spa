@@ -1,1 +1,1 @@
-export { SelectedEntityPanel } from './SelectedEntityPanel'
+export { SelectedEntityPanel } from './SelectedEntityPanel';

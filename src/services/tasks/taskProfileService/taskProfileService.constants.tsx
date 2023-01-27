@@ -15,7 +15,7 @@ export const pushStagePayloadValidationsArray = [
           .required(
             `Поле "${
               completionLabelsDictionary[EManagingFirmTaskType.PipeRupture]
-            }" обязательное`
+            }" обязательное`,
           ),
         comment: yup.string().when('type', {
           is: (value) => Boolean(value),

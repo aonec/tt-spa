@@ -26,17 +26,17 @@ export const ObjectsProfileContainer = () => {
   const openSoiReportModal = useEvent(inputs.openSoiReportModal);
 
   const openFeedFlowBackReportModal = useEvent(
-    inputs.openFeedFlowBackReportModal
+    inputs.openFeedFlowBackReportModal,
   );
 
   const handleExportGroupReport = useEvent(groupReportService.inputs.openModal);
 
   const handleOpenChooseResourceDisconnectionModal = useEvent(
-    chooseTypeOfResourceDisconnectionModalService.inputs.openModal
+    chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
   );
 
   const handleOpenGroupreportModal = useEvent(
-    groupReportService.inputs.openModal
+    groupReportService.inputs.openModal,
   );
 
   const handleCreateObject = () => history.push('/objects/create');

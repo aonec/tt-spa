@@ -18,7 +18,8 @@ const handleCatchEmployeeStatusData = domain.createEvent<{
   status: UserStatusResponse | null;
 }>();
 
-const handleUpdateStatus = domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
+const handleUpdateStatus =
+  domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
 
 const updateStatusFx = domain.createEffect<
   AddOrganizationUserWorkingStatusRequest,
@@ -43,7 +44,7 @@ forward({
 });
 
 updateStatusFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 successUpdateStatus.watch(() => message.success('Статус изменен!'));
@@ -54,7 +55,7 @@ export const changeStatusEmployeeService = {
     handleCloseModal,
     handleUpdateStatus,
     handleCatchEmployeeStatusData,
-    successUpdateStatus
+    successUpdateStatus,
   },
   outputs: { $isModalOpen, $employeeStatus },
 };

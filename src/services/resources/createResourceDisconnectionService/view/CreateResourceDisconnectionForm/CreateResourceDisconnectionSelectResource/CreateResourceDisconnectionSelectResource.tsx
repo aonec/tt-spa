@@ -7,13 +7,9 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { ResourceOptionWrapper } from './CreateResourceDisconnectionSelectResource.styled';
 import { CreateResourceDisconnectionSelectResourceProps } from './CreateResourceDisconnectionSelectResource.types';
 
-export const CreateResourceDisconnectionSelectResource: FC<CreateResourceDisconnectionSelectResourceProps> = ({
-  disabled,
-  resourceTypes,
-  currentValue,
-  errorText,
-  setFieldValue,
-}) => {
+export const CreateResourceDisconnectionSelectResource: FC<
+  CreateResourceDisconnectionSelectResourceProps
+> = ({ disabled, resourceTypes, currentValue, errorText, setFieldValue }) => {
   return (
     <FormItem label="Тип ресурса">
       <Select

@@ -5,9 +5,10 @@ import { postCloseHomeownerApartment } from './closeHomeownerAccountService.api'
 
 const domain = createDomain('closeHomeownerAccountService');
 
-const handleCloseHomeownerAccount = domain.createEvent<
-  Omit<HomeownerAccountCloseRequest, 'homeownerAccountId'>
->();
+const handleCloseHomeownerAccount =
+  domain.createEvent<
+    Omit<HomeownerAccountCloseRequest, 'homeownerAccountId'>
+  >();
 
 const closeHomeownerAccountFx = domain.createEffect<
   HomeownerAccountCloseRequest,
@@ -46,7 +47,7 @@ export const closeHomeownerAccountService = {
   inputs: {
     closeClosingHomeownerModal,
     handleCloseHomeownerAccount,
-    openClosingHomeownerModal
+    openClosingHomeownerModal,
   },
   outputs: {
     $isModalOpen,

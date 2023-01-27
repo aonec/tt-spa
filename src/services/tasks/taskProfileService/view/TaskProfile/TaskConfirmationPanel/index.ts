@@ -1,1 +1,1 @@
-export { TaskConfirmationPanel } from './TaskConfirmationPanel'
+export { TaskConfirmationPanel } from './TaskConfirmationPanel';

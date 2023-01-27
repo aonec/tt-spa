@@ -44,7 +44,7 @@ export const CommonDataStep: FC<CommonDataStepProps> = ({
       !(
         resource === EResourceType.ColdWaterSupply &&
         elem === EHousingMeteringDeviceType.TemperatureSensor
-      )
+      ),
   );
 
   return (

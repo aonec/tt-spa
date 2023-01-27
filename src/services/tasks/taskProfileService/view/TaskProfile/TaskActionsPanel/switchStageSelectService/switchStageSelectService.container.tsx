@@ -20,7 +20,7 @@ export const SwitchStageSelectContainer: FC<ActionComponentProps> = ({
     (nextStageId: number) => {
       handleChange({ nextStageId });
     },
-    [handleChange]
+    [handleChange],
   );
 
   return (

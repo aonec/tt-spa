@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import { OrganizationUserListResponse } from 'myApi';
 
 export const $staffList = createStore<OrganizationUserListResponse[] | null>(
-  null
+  null,
 );
 
 export const $isFetchingStaffFailed = createStore(false);

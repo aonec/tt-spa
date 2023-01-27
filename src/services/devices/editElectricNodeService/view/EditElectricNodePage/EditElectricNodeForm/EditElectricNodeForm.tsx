@@ -30,35 +30,31 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
   isLoading,
   handleUpdateElectricHousingMeteringDevice,
 }) => {
-  const {
-    values,
-    submitForm,
-    handleChange,
-    setFieldValue,
-  } = useFormik<UpdateElectricHousingMeteringDevice>({
-    initialValues: {
-      model: device.model || '',
-      installationDate: device.openingDate || '',
-      stateVerificationYear: String(device.stateVerificationYear),
-      nextStateVerificationYear: String(device.nextStateVerificationYear),
-      stateVerificationQuarter: device.stateVerificationQuarter,
-      stateVerificationIntervalYears: device.stateVerificationIntervalYears,
-    },
-    enableReinitialize: true,
-    onSubmit: (values) =>
-      handleUpdateElectricHousingMeteringDevice({
-        device: {
-          ...values,
-          installationDate: values.installationDate || null,
-          stateVerificationYear: Number(values.stateVerificationYear),
-          nextStateVerificationYear: Number(values.nextStateVerificationYear),
-          stateVerificationIntervalYears: Number(
-            values.stateVerificationIntervalYears
-          ),
-        },
-        id: device.id,
-      }),
-  });
+  const { values, submitForm, handleChange, setFieldValue } =
+    useFormik<UpdateElectricHousingMeteringDevice>({
+      initialValues: {
+        model: device.model || '',
+        installationDate: device.openingDate || '',
+        stateVerificationYear: String(device.stateVerificationYear),
+        nextStateVerificationYear: String(device.nextStateVerificationYear),
+        stateVerificationQuarter: device.stateVerificationQuarter,
+        stateVerificationIntervalYears: device.stateVerificationIntervalYears,
+      },
+      enableReinitialize: true,
+      onSubmit: (values) =>
+        handleUpdateElectricHousingMeteringDevice({
+          device: {
+            ...values,
+            installationDate: values.installationDate || null,
+            stateVerificationYear: Number(values.stateVerificationYear),
+            nextStateVerificationYear: Number(values.nextStateVerificationYear),
+            stateVerificationIntervalYears: Number(
+              values.stateVerificationIntervalYears,
+            ),
+          },
+          id: device.id,
+        }),
+    });
 
   const { city, corpus, number, street } =
     device.address?.address?.mainAddress || {};

@@ -76,18 +76,18 @@ forward({
 $isCreateIndividualDeviceSuccess
   .on(
     [checkIndividualDeviceFx.doneData, createIndividualDeviceFx.doneData],
-    () => true
+    () => true,
   )
   .reset(resetCreationRequestStatus);
 
 forward({
   from: fetchIndividualDeviceFx.doneData.map(
     (
-      device
+      device,
     ): (SwitchIndividualDeviceReadingsCreateRequest & { id: number })[] =>
       device?.readings?.map(
         (
-          elem
+          elem,
         ): SwitchIndividualDeviceReadingsCreateRequest & { id: number } => ({
           id: elem.id,
           value1: Number(elem.value1),
@@ -95,8 +95,8 @@ forward({
           value3: Number(elem.value3),
           value4: Number(elem.value4),
           readingDate: elem.readingDateTime,
-        })
-      ) || []
+        }),
+      ) || [],
   ),
   to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
 });
@@ -104,7 +104,7 @@ forward({
 forward({
   from: fetchIndividualDeviceFx.doneData.map((values) => {
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
-      values.resource
+      values.resource,
     );
 
     const type = SwitchIndividualDeviceGate.state
@@ -141,7 +141,7 @@ sample({
   source: combine(
     $individualDeviceMountPlaces,
     addIndividualDeviceForm.fields.mountPlaceId.$value,
-    (places, name) => places?.find((elem) => elem.name === name)?.id || null
+    (places, name) => places?.find((elem) => elem.name === name)?.id || null,
   ),
   clock: fetchIndividualDeviceFxMountPlacesFx.doneData,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
@@ -149,7 +149,7 @@ sample({
 
 export const clearEmptyValueFields = (
   reading: SwitchIndividualDeviceReadingsCreateRequest,
-  rateNum: number
+  rateNum: number,
 ): SwitchIndividualDeviceReadingsCreateRequest => {
   const clearValues = getArrayByCountRange(rateNum, (index) => ({
     [`value${index}`]: Number((reading as any)[`value${index}`]),
@@ -159,7 +159,7 @@ export const clearEmptyValueFields = (
 };
 
 const upMonthInReading = (
-  reading: SwitchIndividualDeviceReadingsCreateRequest
+  reading: SwitchIndividualDeviceReadingsCreateRequest,
 ) => {
   const readingDate = moment(reading.readingDate);
 
@@ -208,14 +208,14 @@ guard({
           getChangedReadings(
             device?.readings!,
             values.oldDeviceReadings,
-            device?.rateType!
+            device?.rateType!,
           ),
           upMonthInReading,
           (elem) =>
             clearEmptyValueFields(
               elem,
-              getIndividualDeviceRateNumByName(device?.rateType!)
-            )
+              getIndividualDeviceRateNumByName(device?.rateType!),
+            ),
         ),
         newDeviceReadings: mapArray(
           values.newDeviceReadings,
@@ -223,15 +223,15 @@ guard({
           (elem) =>
             clearEmptyValueFields(
               elem,
-              getIndividualDeviceRateNumByName(values.rateType)
-            )
+              getIndividualDeviceRateNumByName(values.rateType),
+            ),
         ),
         sealInstallationDate: values.sealInstallationDate,
         sealNumber: values.sealNumber,
         oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
         isPolling: values.isPolling,
       };
-    }
+    },
   ),
   filter: Boolean,
   clock: confirmCreationNewDeviceButtonClicked,
@@ -248,7 +248,7 @@ export function getChangedReadings(
   currentReadings: (SwitchIndividualDeviceReadingsCreateRequest & {
     id?: number;
   })[],
-  deviceRateType: EIndividualDeviceRateType
+  deviceRateType: EIndividualDeviceRateType,
 ) {
   const rateNum = getIndividualDeviceRateNumByName(deviceRateType);
 
@@ -256,19 +256,19 @@ export function getChangedReadings(
     if (!newReading.id) return true;
 
     const neededPrevReading = prevReadings.find(
-      (prevReading) => prevReading.id === newReading.id
+      (prevReading) => prevReading.id === newReading.id,
     );
 
     if (!neededPrevReading) return true;
 
     const oldDeviceReadingValues: string[] = getReadingValuesArray(
       clearEmptyValueFields(neededPrevReading as any, rateNum),
-      rateNum
+      rateNum,
     )?.value as string[];
 
     const formOldDeviceValues: string[] = getReadingValuesArray(
       clearEmptyValueFields(newReading as any, rateNum),
-      rateNum
+      rateNum,
     )?.value as string[];
 
     if (compareArrays(oldDeviceReadingValues, formOldDeviceValues))
@@ -284,7 +284,7 @@ export const compareArrays = <T>(array1: T[], array2: T[]) =>
   array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
 
 export const getSerialNumberAfterString = (
-  type: 'switch' | 'check' | 'reopen'
+  type: 'switch' | 'check' | 'reopen',
 ) => {
   return {
     switch: '',
@@ -294,7 +294,7 @@ export const getSerialNumberAfterString = (
 };
 
 const getSerialNumberForCheck = (
-  serialNumber: string
+  serialNumber: string,
 ): Promise<IndividualDeviceListResponseFromDevicePagePagedList> =>
   axios.get('devices/individual', {
     params: {
@@ -314,10 +314,9 @@ forward({
   to: fetchSerialNumberForCheckFx,
 });
 
-export const $serialNumberForChecking = createStore<IndividualDeviceListResponseFromDevicePagePagedList | null>(
-  null
-)
-  .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
-  .reset(fetchSerialNumberForCheckFx);
+export const $serialNumberForChecking =
+  createStore<IndividualDeviceListResponseFromDevicePagePagedList | null>(null)
+    .on(fetchSerialNumberForCheckFx.doneData, (_, data) => data)
+    .reset(fetchSerialNumberForCheckFx);
 
 export const $isFetchSerialNumberLoading = fetchSerialNumberForCheckFx.pending;

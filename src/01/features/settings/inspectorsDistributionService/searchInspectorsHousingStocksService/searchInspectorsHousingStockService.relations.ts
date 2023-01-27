@@ -5,7 +5,7 @@ import { searchInspectorsHousingStockService } from './searchInspectorsHousingSt
 
 forward({
   from: fetchExistingCities.doneData.map((cities) =>
-    cities ? cities[cities.length - 1] : ''
+    cities ? cities[cities.length - 1] : '',
   ),
   to: searchInspectorsHousingStockService.forms.searchForm.fields.City.set,
 });
@@ -13,7 +13,7 @@ forward({
 searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen
   .on(
     searchInspectorsHousingStockService.inputs.extendedSearchOpened,
-    () => true
+    () => true,
   )
   .reset(searchInspectorsHousingStockService.inputs.extendedSearchClosed);
 

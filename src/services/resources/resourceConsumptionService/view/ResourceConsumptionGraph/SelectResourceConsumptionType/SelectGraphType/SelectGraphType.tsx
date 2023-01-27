@@ -15,7 +15,7 @@ export const SelectGraphType: FC<SelectGraphTypeProps> = ({
   const setChecked = useCallback(
     (key: ResourceConsumptionGraphType, newChecked: boolean) =>
       handleSetChecked({ ...checked, [key]: newChecked }),
-    [checked, handleSetChecked]
+    [checked, handleSetChecked],
   );
 
   return (

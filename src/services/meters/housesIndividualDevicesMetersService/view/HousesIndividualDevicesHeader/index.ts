@@ -1,1 +1,1 @@
-export { HousesIndividualDevicesHeader } from './HousesIndividualDevicesHeader'
+export { HousesIndividualDevicesHeader } from './HousesIndividualDevicesHeader';

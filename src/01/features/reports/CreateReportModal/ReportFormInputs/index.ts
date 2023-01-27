@@ -1,1 +1,1 @@
-export {ReportFormInputsContainer} from "./ReportFormInputsContainer"
+export { ReportFormInputsContainer } from './ReportFormInputsContainer';

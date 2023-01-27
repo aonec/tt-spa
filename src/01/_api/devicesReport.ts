@@ -5,7 +5,7 @@ import { CalculatorsListRequestPayload } from '01/features/carlculators/calculat
 import axiosWithHeaders from '../axiosWithHeaders';
 
 export const requestDevicesReport = async (
-  query?: CalculatorsListRequestPayload
+  query?: CalculatorsListRequestPayload,
 ): Promise<File | null> => {
   const config: Partial<
     {
@@ -24,7 +24,7 @@ export const requestDevicesReport = async (
 };
 
 export const downloadDevicesReport = (
-  query?: CalculatorsListRequestPayload
+  query?: CalculatorsListRequestPayload,
 ) => {
   return requestDevicesReport(query).then((response: any) => {
     const fileNameWithJunk = response.headers['content-disposition'].split(';');

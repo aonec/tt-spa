@@ -11,7 +11,7 @@ const domain = createDomain('editApartmentProfileService');
 const handleUpdateApartment = domain.createEvent<PutApartment>();
 
 const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
-  getApartment
+  getApartment,
 );
 
 const refetchAaprtment = domain.createEvent();
@@ -28,7 +28,7 @@ const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
     [fetchApartmentFx.doneData, updateApartmentFx.doneData],
-    (_, apartment) => apartment
+    (_, apartment) => apartment,
   )
   .reset(ApartmentGate.close);
 
@@ -62,7 +62,7 @@ const $tabSection = domain
 updateApartmentFx.doneData.watch(() => message.success('Данные обновлены'));
 
 updateApartmentFx.failData.watch((e) =>
-  message.error(e.response.data.error.Text)
+  message.error(e.response.data.error.Text),
 );
 
 export const editApartmentProfileService = {

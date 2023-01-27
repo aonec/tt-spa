@@ -9,5 +9,5 @@ export type CreateNodeFormPayload = Omit<
 };
 
 export type UpdateNodeFormPayloadCallback = (
-  payload: CreateNodeFormPayload
+  payload: CreateNodeFormPayload,
 ) => void;

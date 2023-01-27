@@ -1,1 +1,1 @@
-export { HousingStocksListItem } from './HousingStocksListItem'
+export { HousingStocksListItem } from './HousingStocksListItem';

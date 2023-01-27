@@ -3,10 +3,11 @@ import { displayNodeArchiveService } from '../displayNodeArchiveService';
 import { LoadNodeArchiveDataPayload } from '../displayNodeArchiveService/displayNodeArchiveService.types';
 
 const searchNodeArchiveFiltersServiceDomain = createDomain(
-  'searchNodeArchiveFiltersService'
+  'searchNodeArchiveFiltersService',
 );
 
-const applyFilters = searchNodeArchiveFiltersServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
+const applyFilters =
+  searchNodeArchiveFiltersServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
 
 export const searchNodeArchiveFilters = {
   inputs: {

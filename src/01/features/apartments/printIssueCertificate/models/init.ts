@@ -17,7 +17,7 @@ $isPrintIssueCertificateModalOpen
 
 $homeownerCertificatre.on(
   fetchHomeownerCertificate.doneData,
-  (_, certificate) => certificate
+  (_, certificate) => certificate,
 );
 
 guard({

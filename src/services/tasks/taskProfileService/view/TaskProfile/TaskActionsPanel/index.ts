@@ -1,1 +1,1 @@
-export { TaskActionsPanel } from './TaskActionsPanel'
+export { TaskActionsPanel } from './TaskActionsPanel';

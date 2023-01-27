@@ -6,7 +6,7 @@ import { SettingsPage } from './views/SettingsPage';
 
 export const SettingsPageContainer = () => {
   const handleReassingInspector = useEvent(
-    settingsService.inputs.reassingInspector
+    settingsService.inputs.reassingInspector,
   );
 
   return (

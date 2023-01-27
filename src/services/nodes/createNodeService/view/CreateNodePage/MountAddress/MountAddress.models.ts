@@ -18,14 +18,14 @@ const $housingStockListItem = domain
   .createStore<HousingStockListResponse | null>(null)
   .on(
     fetchHousingStockFx.doneData,
-    (prev, housingStock) => housingStock || prev
+    (prev, housingStock) => housingStock || prev,
   )
   .reset(createNodeService.gates.CreateNodeGate.close);
 
 const $isLoading = fetchHousingStockFx.pending;
 
 fetchHousingStockFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 fetchHousingStockFx.doneData.watch((housingStock) => {

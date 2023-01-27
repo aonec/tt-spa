@@ -19,7 +19,7 @@ interface Props {
 export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
 
-  const address = getApartmentFromFullAddress(device?.address|| null, false);
+  const address = getApartmentFromFullAddress(device?.address || null, false);
 
   const checkingDates = useDeviceCheckingDates();
 
@@ -56,7 +56,7 @@ export function useDeviceCheckingDates() {
   return (
     device &&
     `${moment(device.lastCheckingDate).format('DD.MM.YYYY')} — ${moment(
-      device.futureCheckingDate
+      device.futureCheckingDate,
     ).format('DD.MM.YYYY')}`
   );
 }

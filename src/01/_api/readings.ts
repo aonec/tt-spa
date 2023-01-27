@@ -6,12 +6,12 @@ import {
 import axios from '01/axios';
 
 export const getReadingsHistory = (
-  deviceId: number
+  deviceId: number,
 ): Promise<IndividualDeviceReadingsHistoryResponse> => {
   return axios.get(`IndividualDevices/${deviceId}/readingsHistory`);
 };
 
 export const createReading = async (
-  requestPayload: IndividualDeviceReadingsCreateRequest
+  requestPayload: IndividualDeviceReadingsCreateRequest,
 ): Promise<IndividualDeviceReadingsCreateListResponse> =>
   axios.post(`IndividualDeviceReadings/createLite`, requestPayload);

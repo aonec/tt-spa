@@ -41,7 +41,7 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
       }
       handleSubmit(values);
     },
-    [initialDocument, documents, handleSubmit, handleDeleteAct]
+    [initialDocument, documents, handleSubmit, handleDeleteAct],
   );
 
   const {

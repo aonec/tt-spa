@@ -1,4 +1,4 @@
-import { ContractorCreateRequest } from "myApi";
+import { ContractorCreateRequest } from 'myApi';
 
 export type AddContractorModalProps = {
   isModalOpen: boolean;

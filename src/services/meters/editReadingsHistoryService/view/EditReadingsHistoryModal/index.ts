@@ -1,1 +1,1 @@
-export { EditReadingsHistoryModal } from './EditReadingsHistoryModal'
+export { EditReadingsHistoryModal } from './EditReadingsHistoryModal';

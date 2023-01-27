@@ -1,1 +1,1 @@
-export { SelectGraphType } from './SelectGraphType'
+export { SelectGraphType } from './SelectGraphType';

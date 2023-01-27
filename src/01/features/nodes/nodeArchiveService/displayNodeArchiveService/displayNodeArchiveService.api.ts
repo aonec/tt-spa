@@ -5,5 +5,5 @@ import {
 } from './displayNodeArchiveService.types';
 
 export const getNodeArchiveData = (
-  params: GetNodeArchiveDataRequestParams
+  params: GetNodeArchiveDataRequestParams,
 ): Promise<NodeArchiveData> => axios.get('Reports/ReportData', { params });

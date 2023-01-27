@@ -17,10 +17,10 @@ export const EmployeeProfileContainer = () => {
 
   const employeeDataPending = useStore(outputs.$employeeDataPending);
   const handleOpenChangeStatusModal = useEvent(
-    inputs.handleOpenChangeStatusModal
+    inputs.handleOpenChangeStatusModal,
   );
   const handleOpenDeleteEmployeeModal = useEvent(
-    inputs.handleOpenDeleteEmployeeModal
+    inputs.handleOpenDeleteEmployeeModal,
   );
 
   return (

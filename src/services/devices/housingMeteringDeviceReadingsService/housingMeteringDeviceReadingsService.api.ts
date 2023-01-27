@@ -6,10 +6,11 @@ import {
 } from 'myApi';
 
 export const fetchHousingMeteringDeviceReadings = (
-  nodeId: number
+  nodeId: number,
 ): Promise<GetHousingMeteringDeviceReadingsResponse> =>
   axios.get('HousingMeteringDeviceReadings', { params: { nodeId } });
 
 export const createHousingMeteringDeviceReading = (
-  reading: CreateHousingMeteringDeviceReadingsRequest
-): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> => axios.post('HousingMeteringDeviceReadings', reading);
+  reading: CreateHousingMeteringDeviceReadingsRequest,
+): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> =>
+  axios.post('HousingMeteringDeviceReadings', reading);

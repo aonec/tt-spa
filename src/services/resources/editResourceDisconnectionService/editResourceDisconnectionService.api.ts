@@ -6,7 +6,7 @@ import {
 } from './editResourceDisconnectionService.types';
 
 export const fetchResourceDisconnection = (
-  id: string
+  id: string,
 ): Promise<ResourceDisconnectingResponse> =>
   axios.get(`ResourceDisconnecting/${id}`);
 
@@ -17,8 +17,8 @@ export const fetchEditResourceDisconnection = ({
   axios.post(`ResourceDisconnecting/${id}`, payload);
 
 export const fetchUpdateResourceDisconnectingDocument = (
-  payload: UpdateDocumentPayload
+  payload: UpdateDocumentPayload,
 ): Promise<void> =>
   axios.post(
-    `ResourceDisconnecting/${payload.id}/AddDocument/${payload.documentId}`
+    `ResourceDisconnecting/${payload.id}/AddDocument/${payload.documentId}`,
   );

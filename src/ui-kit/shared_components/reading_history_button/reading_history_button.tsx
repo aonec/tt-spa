@@ -8,4 +8,3 @@ export const ReadingsHistoryButton = ({ deviceId }: { deviceId: number }) => (
     onClick={() => openReadingsHistoryModal(deviceId)}
   />
 );
- 

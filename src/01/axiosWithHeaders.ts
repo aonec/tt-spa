@@ -12,7 +12,6 @@ axiosWithHeaders.interceptors.request.use((req) => {
   if (req.baseURL === 'http://84.201.132.164:8080/api') {
     delete req.headers.Authorization;
   } else {
-
     req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
   }
 
@@ -63,7 +62,7 @@ axiosWithHeaders.interceptors.response.use(
           () => {
             localStorage.clear();
             window.location.replace('/login');
-          }
+          },
         );
       });
     }
@@ -75,7 +74,7 @@ axiosWithHeaders.interceptors.response.use(
     //       window.location.replace('/error/');
     //   }
     return Promise.reject(error);
-  }
+  },
 );
 
 // utils

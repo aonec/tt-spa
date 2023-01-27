@@ -20,7 +20,7 @@ const $actsList = domain.createStore<ApartmentActResponse[]>([]);
 const $actsFilter = domain.createStore<ActsFilter>({} as ActsFilter);
 
 const fetchActsListFx = domain.createEffect<number, ApartmentActResponse[]>(
-  getapartmentActsList
+  getapartmentActsList,
 );
 
 const ApartmentActsListGate = createGate<{ apartmentId: number }>();
@@ -43,17 +43,17 @@ const $filteredActsList = combine($actsList, $actsFilter, (acts, filters) => {
   const hasActResources = filters.resources?.length;
 
   let filteredActs = acts.sort((first, second) =>
-    moment(second.actJobDate).diff(moment(first.actJobDate))
+    moment(second.actJobDate).diff(moment(first.actJobDate)),
   );
 
   if (hasActTypes) {
     filteredActs = filteredActs.filter((act) =>
-      filters.actTypes.includes(act.actType)
+      filters.actTypes.includes(act.actType),
     );
   }
   if (hasActResources) {
     filteredActs = filteredActs.filter((act) =>
-      filters.resources.includes(act.actResourceType)
+      filters.resources.includes(act.actResourceType),
     );
   }
 

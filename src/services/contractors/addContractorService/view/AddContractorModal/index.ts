@@ -1,1 +1,1 @@
-export { AddContractorModal } from './AddContractorModal'
+export { AddContractorModal } from './AddContractorModal';

@@ -21,7 +21,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
 
       fileHandler(files);
     },
-    [fileHandler, disabled]
+    [fileHandler, disabled],
   );
 
   const handleDragOver = useCallback(
@@ -29,7 +29,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
       event.preventDefault();
       event.stopPropagation();
     },
-    []
+    [],
   );
 
   const handleDrop = useCallback(
@@ -38,14 +38,14 @@ export const DragAndDrop: React.FC<Props> = (props) => {
       event.stopPropagation();
       handleFile(event.dataTransfer.files);
     },
-    [handleFile]
+    [handleFile],
   );
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) handleFile(event.target.files);
     },
-    [handleFile]
+    [handleFile],
   );
 
   return (

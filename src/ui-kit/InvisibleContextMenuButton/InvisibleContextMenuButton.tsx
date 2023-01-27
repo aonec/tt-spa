@@ -10,10 +10,9 @@ import {
   InvisibleContextMenuButtonProps,
 } from './InvisibleContextMenuButton.types';
 
-export const InvisibleContextMenuButton: FC<InvisibleContextMenuButtonProps> = ({
-  disabled,
-  menuButtons,
-}) => {
+export const InvisibleContextMenuButton: FC<
+  InvisibleContextMenuButtonProps
+> = ({ disabled, menuButtons }) => {
   const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
   const [isFocused, setIsFocused] = useState(false);
 

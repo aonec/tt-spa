@@ -42,12 +42,12 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
 
   const handleChangeODPU = useCallback(
     () => history.push(`/changeODPU/${counter?.id}`),
-    []
+    [],
   );
 
   const handleEditODPU = useCallback(
     () => history.push(`/electricNode/${counter?.id}/edit`),
-    []
+    [],
   );
 
   const readingsInput = () => (

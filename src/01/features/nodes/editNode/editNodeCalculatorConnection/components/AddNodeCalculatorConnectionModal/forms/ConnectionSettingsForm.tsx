@@ -10,7 +10,7 @@ import { addNodeCalculatorService } from '../models';
 
 export const ConnectionSettingsForm = () => {
   const { fields } = useForm(
-    addNodeCalculatorService.inputs.connectionSettingsForm
+    addNodeCalculatorService.inputs.connectionSettingsForm,
   );
 
   return (

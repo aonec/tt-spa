@@ -64,7 +64,7 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
         ? EOrderByRule.Ascending
         : value === EOrderByRule.Ascending
         ? EOrderByRule.Descending
-        : null
+        : null,
     );
   }
 

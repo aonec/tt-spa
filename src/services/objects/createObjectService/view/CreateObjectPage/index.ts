@@ -1,1 +1,1 @@
-export { CreateObjectPage } from './CreateObjectPage'
+export { CreateObjectPage } from './CreateObjectPage';

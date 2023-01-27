@@ -18,15 +18,8 @@ export const StaffItem: FC<StaffItemProps> = ({
   const history = useHistory();
   const phoneMask = usePhoneMask();
 
-  const {
-    firstName,
-    lastName,
-    middleName,
-    roles,
-    id,
-    cellphone,
-    status,
-  } = staff;
+  const { firstName, lastName, middleName, roles, id, cellphone, status } =
+    staff;
 
   const sortedRoles = sortUserRoles(roles || []);
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');

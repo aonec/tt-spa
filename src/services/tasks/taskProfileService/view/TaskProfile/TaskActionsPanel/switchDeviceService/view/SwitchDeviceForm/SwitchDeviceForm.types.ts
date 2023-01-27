@@ -7,7 +7,7 @@ import { CalculatorInfoItem } from '01/features/carlculators/calculatorsInfo/mod
 export type SwitchDeviceFormProps = {
   device: MeteringDeviceResponse;
   handleChangeSwitchDevicePayload: (
-    payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>
+    payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>,
   ) => void;
   isCalculator: boolean;
   calculatorInfos: CalculatorInfoItem[];

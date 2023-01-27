@@ -32,4 +32,4 @@ export const addressSearchForm = createForm({
   },
 });
 
-export const $error = createStore<boolean>(false)
+export const $error = createStore<boolean>(false);

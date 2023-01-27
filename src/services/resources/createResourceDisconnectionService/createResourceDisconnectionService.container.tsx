@@ -25,34 +25,34 @@ export const CreateResourceDisconnectionContainer = () => {
   const typeOfAddress = useStore(outputs.$typeOfAddress);
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
   const housingStockWithHeatingStations = useStore(
-    outputs.$housingStockWithHeatingStations
+    outputs.$housingStockWithHeatingStations,
   );
   const housingStockWithHouseManagements = useStore(
-    outputs.$housingStockWithHouseManagements
+    outputs.$housingStockWithHouseManagements,
   );
   const isHousingStocksLoading = useStore(outputs.$isHousingStocksLoading);
 
   const isInterHeatingSeason = useStore(
-    chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason
+    chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
   );
   const isEdit = useStore(editResourceDisconnectionService.outputs.$isEdit);
   const resourceDisconnection = useStore(
-    editResourceDisconnectionService.outputs.$resourceDisconnection
+    editResourceDisconnectionService.outputs.$resourceDisconnection,
   );
   const isDisconnectionLoading = useStore(
-    editResourceDisconnectionService.outputs.$isDisconectionLoading
+    editResourceDisconnectionService.outputs.$isDisconectionLoading,
   );
 
   const setTypeOfAddress = useEvent(inputs.setTypeOfAddress);
   const handleCloseModal = useEvent(inputs.closeModal);
   const handleCreateResourceDisconnection = useEvent(
-    inputs.createResourceDisconnection
+    inputs.createResourceDisconnection,
   );
   const handleEditResourceDisconnection = useEvent(
-    editResourceDisconnectionService.inputs.editResourceDisconnection
+    editResourceDisconnectionService.inputs.editResourceDisconnection,
   );
   const handleUpdateDocument = useEvent(
-    editResourceDisconnectionService.inputs.updateDocument
+    editResourceDisconnectionService.inputs.updateDocument,
   );
 
   const preparedExistingHousingStocks = useMemo(() => {

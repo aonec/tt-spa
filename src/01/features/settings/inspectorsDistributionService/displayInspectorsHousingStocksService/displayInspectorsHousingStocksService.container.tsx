@@ -7,19 +7,19 @@ import { range } from 'lodash';
 
 export const InspectorsHousingStocksListContainer: FC = () => {
   const housingStocks = useStore(
-    displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList
+    displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList,
   );
   const loading = useStore(
-    displayInspectorsHousingStocksService.outputs.$loading
+    displayInspectorsHousingStocksService.outputs.$loading,
   );
 
   const inspectors = useStore(inspectorHousingStockService.outputs.$inspectors);
   const updateInfo = useStore(
-    inspectorHousingStockService.outputs.$currentHousingStockUpdates
+    inspectorHousingStockService.outputs.$currentHousingStockUpdates,
   );
 
   const updateHousingStock = useEvent(
-    inspectorHousingStockService.inputs.updateHousingStockInspectorInfo
+    inspectorHousingStockService.inputs.updateHousingStockInspectorInfo,
   );
 
   const days = range(15, 26, 1);

@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Select, Tooltip } from 'antd';
-import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
@@ -34,20 +33,16 @@ import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
 
-export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
-  setFieldValue,
-  values,
-  taskTypes,
-  housingManagments,
-  perpetrators,
-}) => {
+export const ToExecutionTasksExtendedSearchForm: React.FC<
+  ExtendedSearchTypes
+> = ({ setFieldValue, values, taskTypes, housingManagments, perpetrators }) => {
   const isIndividualDevice = values.EngineeringElement === 'IndividualDevice';
 
   const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
 
   const taskCategories: taskCategotiesProps = {
     All: Object.keys(
-      EManagingFirmTaskFilterType
+      EManagingFirmTaskFilterType,
     ) as Partial<EManagingFirmTaskFilterType>[],
     Node: [
       EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
@@ -76,11 +71,17 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     if (!TaskCategory.includes(values?.TaskType)) {
       setFieldValue('TaskType', null);
     }
-  }, [values.EngineeringElement]);
+  }, [
+    values.EngineeringElement,
+    TaskCategory,
+    setFieldValue,
+    values.ApartmentNumber,
+    values?.TaskType,
+  ]);
 
   const isValueExists = values?.EngineeringElement
     ? Object.values(
-        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
+        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps],
       )
     : [];
 
@@ -91,7 +92,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
       (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
         if (!el.key) return true;
         return isValueExists.includes(el.key);
-      }
+      },
     );
   }, [values?.EngineeringElement, taskTypes]);
 

@@ -53,7 +53,7 @@ interface EditManagingFirmUserPageUrlParams {
 
 const useRedirectAfterSuccessRequest = (
   isSuccessUpdated: boolean | null,
-  path: string
+  path: string,
 ) => {
   const history = useHistory();
   useEffect(() => {
@@ -78,7 +78,7 @@ export const EditManagingFirmUserPage = () => {
   const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
   const isFailedFetchFormData = useStore($isFetchingFormDataFailed);
   const isFailedEditUserInfo = useStore(
-    $isEditingManagingFirmUserInfoRequestFailed
+    $isEditingManagingFirmUserInfoRequestFailed,
   );
 
   const { fields, submit } = useForm(editManagingUserInfoForm);

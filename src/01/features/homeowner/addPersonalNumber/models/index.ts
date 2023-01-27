@@ -9,8 +9,7 @@ export const addPersonalNumberFx = createEffect<
 
 export const addPersonalNmberSaveButtonClicked = createEvent();
 
-export const $addPersonalNumberRequestStatus = createStore<RequestStatusShared>(
-  null
-);
+export const $addPersonalNumberRequestStatus =
+  createStore<RequestStatusShared>(null);
 
 export const setAddPersonalNumberStatus = createEvent<RequestStatusShared>();

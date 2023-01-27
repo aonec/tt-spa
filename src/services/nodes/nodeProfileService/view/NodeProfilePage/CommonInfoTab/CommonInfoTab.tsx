@@ -75,7 +75,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           value:
             pipeNode?.futureCommercialAccountingDate &&
             moment(pipeNode?.futureCommercialAccountingDate).format(
-              'DD.MM.YYYY'
+              'DD.MM.YYYY',
             ),
         },
       ]}

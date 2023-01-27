@@ -1,5 +1,3 @@
- 
-
 import React from 'react';
 import tabsObj from '01/tabs.json';
 import { useRouteMatch } from 'react-router-dom';

@@ -7,10 +7,10 @@ import { useForm } from 'effector-forms/dist';
 export const CheckNodeModalContainer = () => {
   const visible = useStore(checkNodeService.outputs.$isCheckNodeModalOpen);
   const isEditOpen = useStore(
-    checkNodeService.outputs.$isEditNodeCheckModalOpen
+    checkNodeService.outputs.$isEditNodeCheckModalOpen,
   );
   const editPayload = useStore(
-    checkNodeService.outputs.$editNodeCheckModalPayload
+    checkNodeService.outputs.$editNodeCheckModalPayload,
   );
   const loading = useStore(checkNodeService.outputs.$loading);
 

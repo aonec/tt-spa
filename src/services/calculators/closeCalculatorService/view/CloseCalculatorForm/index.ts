@@ -1,1 +1,1 @@
-export { CloseCalculatorForm } from './CloseCalculatorForm'
+export { CloseCalculatorForm } from './CloseCalculatorForm';

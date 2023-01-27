@@ -7,13 +7,10 @@ import {
   SearchApartmentsPayload,
 } from './displayApartmentsListService.types';
 
-const domain = createDomain(
-  'displayApartmentsListService'
-);
+const domain = createDomain('displayApartmentsListService');
 
-const $apartmentsPagedList = domain.store<ApartmentListResponsePagedList | null>(
-  null
-);
+const $apartmentsPagedList =
+  domain.store<ApartmentListResponsePagedList | null>(null);
 
 const $apartmentsList = $apartmentsPagedList.map((data) => data?.items || []);
 const $pagedInfo = $apartmentsPagedList.map((data) => ({
@@ -29,9 +26,8 @@ const fetchApartmentsFx = domain.createEffect<
 
 const searchApartments = domain.createEvent<SearchApartmentsPayload>();
 
-const $searchApartmentsPayload = domain.createStore<SearchApartmentsPayload | null>(
-  null
-);
+const $searchApartmentsPayload =
+  domain.createStore<SearchApartmentsPayload | null>(null);
 
 const $isLoading = fetchApartmentsFx.pending;
 

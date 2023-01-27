@@ -22,12 +22,12 @@ export const DocumentItem: FC<DocumentItemProps> = ({
 }) => {
   const documentDate = useMemo(
     () => getTimeStringByUTC(document.uploadingTime),
-    [document.uploadingTime]
+    [document.uploadingTime],
   );
 
   const handleRemoveDocument = useCallback(
     () => removeDocument && removeDocument(document.id),
-    [document.id, removeDocument]
+    [document.id, removeDocument],
   );
 
   const handleSaveDocument = useCallback(() => {

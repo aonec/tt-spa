@@ -1,1 +1,1 @@
-export { WorkingRangeTab } from './WorkingRangeTab'
+export { WorkingRangeTab } from './WorkingRangeTab';

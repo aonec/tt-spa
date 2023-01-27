@@ -5,8 +5,10 @@ import { setNextStageDeadlineService } from './setNextStageDeadlineService.model
 
 export const IndividualDeviceCheckInfoContainer = () => {
   const deniedPermissionsCount = useStore(
-    setNextStageDeadlineService.outputs.$deniedPermissionsCount
+    setNextStageDeadlineService.outputs.$deniedPermissionsCount,
   );
 
-  return <SetNextStageDeadline deniedPermissionsCount={deniedPermissionsCount} />;
+  return (
+    <SetNextStageDeadline deniedPermissionsCount={deniedPermissionsCount} />
+  );
 };

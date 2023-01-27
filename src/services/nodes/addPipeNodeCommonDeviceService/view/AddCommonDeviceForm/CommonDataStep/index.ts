@@ -1,1 +1,1 @@
-export { CommonDataStep } from './CommonDataStep'
+export { CommonDataStep } from './CommonDataStep';

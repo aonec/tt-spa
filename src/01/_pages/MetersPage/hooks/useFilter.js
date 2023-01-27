@@ -1,5 +1,3 @@
- 
-
 import axios from '01/axios';
 import React from 'react';
 import { useHistory } from 'react-router';
@@ -46,7 +44,7 @@ export function useAutocomplete(street, streets, optionsNumber = 1) {
     typeof street === 'string' && Array.isArray(streets)
       ? stringSimilarity.findBestMatch(
           street,
-          typeof streets[0] === 'string' ? streets : ['']
+          typeof streets[0] === 'string' ? streets : [''],
         )
       : null;
 
@@ -59,7 +57,7 @@ export function useAutocomplete(street, streets, optionsNumber = 1) {
     const wordsInStreetName = formatedStreetString.split(' ');
 
     return wordsInStreetName.some((elem) =>
-      elem.startsWith(formatedSearchString)
+      elem.startsWith(formatedSearchString),
     );
   });
 
@@ -67,9 +65,8 @@ export function useAutocomplete(street, streets, optionsNumber = 1) {
     const formatedSearchString = street.toUpperCase();
     const formatedStreetString = value.target.toUpperCase();
 
-    const isRequestStringSimilarToStreet = formatedStreetString.includes(
-      formatedSearchString
-    );
+    const isRequestStringSimilarToStreet =
+      formatedStreetString.includes(formatedSearchString);
 
     return isRequestStringSimilarToStreet;
   });
@@ -189,7 +186,7 @@ export const useFilter = () => {
         onKeyDown: enterKeyDownHandler(
           () =>
             bestMatch &&
-            dispatch({ type: 'change', payload: { street: bestMatch } })
+            dispatch({ type: 'change', payload: { street: bestMatch } }),
         ),
         options: options,
       },

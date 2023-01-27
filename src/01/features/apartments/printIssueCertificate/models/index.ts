@@ -2,9 +2,8 @@ import { createGate } from 'effector-react';
 import { HomeownerCertificateResponse } from './../../../../../myApi';
 import { createStore, createEvent, createEffect } from 'effector';
 
-export const $homeownerCertificatre = createStore<HomeownerCertificateResponse | null>(
-  null
-);
+export const $homeownerCertificatre =
+  createStore<HomeownerCertificateResponse | null>(null);
 export const $isPrintIssueCertificateModalOpen = createStore(false);
 
 export const getIssueCertificateButtonClicked = createEvent();

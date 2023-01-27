@@ -1,1 +1,1 @@
-export { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip'
+export { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';

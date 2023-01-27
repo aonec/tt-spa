@@ -1,1 +1,1 @@
-export { AddCommonDeviceForm } from './AddCommonDeviceForm'
+export { AddCommonDeviceForm } from './AddCommonDeviceForm';

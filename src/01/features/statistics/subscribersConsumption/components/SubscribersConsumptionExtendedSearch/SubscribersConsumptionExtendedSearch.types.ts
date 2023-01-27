@@ -4,6 +4,6 @@ export type SubscribersConsumptionExtendedSearchProps = {
   values: SubscriberStatisticsFormik;
   setFieldValue: (
     name: string,
-    value?: number | null | boolean | string
+    value?: number | null | boolean | string,
   ) => void;
 };

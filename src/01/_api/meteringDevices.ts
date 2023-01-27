@@ -12,7 +12,7 @@ export interface GetMeteringDevicesModelsRequest {
 }
 
 export const getIndividualDevicesModels = async (
-  data: GetMeteringDevicesModelsRequest
+  data: GetMeteringDevicesModelsRequest,
 ): Promise<string[]> => {
   const queryString = formQueryString({
     Type: EMeteringDeviceType.Individual,

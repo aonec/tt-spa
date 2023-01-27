@@ -33,7 +33,7 @@ export const TasksProfileContainer = () => {
   const housingStock = useStore(outputs.$housingStock);
 
   const handleExportTasksList = useEvent(
-    exportTasksListService.inputs.exportTasksList
+    exportTasksListService.inputs.exportTasksList,
   );
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
@@ -44,12 +44,8 @@ export const TasksProfileContainer = () => {
   const clearFilters = useEvent(inputs.clearFilters);
   const clearAddress = useEvent(inputs.clearAddress);
 
-  const {
-    apartmentId,
-    housingStockId,
-    pipeNodeId,
-    housingMeteringDeviceId,
-  } = queryString.parse(window.location.search);
+  const { apartmentId, housingStockId, pipeNodeId, housingMeteringDeviceId } =
+    queryString.parse(window.location.search);
 
   const preparedApartmentId = prepareQueryStringParam(apartmentId);
 
@@ -58,7 +54,7 @@ export const TasksProfileContainer = () => {
   const preparedPipeNodeId = prepareQueryStringParam(pipeNodeId);
 
   const preparedHousingMeteringDeviceId = prepareQueryStringParam(
-    housingMeteringDeviceId
+    housingMeteringDeviceId,
   );
 
   useEffect(() => {
@@ -94,7 +90,7 @@ export const TasksProfileContainer = () => {
   const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
     () => prepareData(pagedTasks?.items || [], grouptype),
-    [pagedTasks?.items]
+    [pagedTasks?.items],
   );
 
   useEffect(() => {

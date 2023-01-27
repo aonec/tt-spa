@@ -50,7 +50,7 @@ export const ApartmentActsList = () => {
     const resourceIcon = <ResourceIconLookup resource={act.actResourceType} />;
 
     const resourceName = actResources?.find(
-      (elem) => elem.key === act.actResourceType
+      (elem) => elem.key === act.actResourceType,
     )?.value;
 
     const actAddress = getApartmentFromFullAddress(act.apartment, false);

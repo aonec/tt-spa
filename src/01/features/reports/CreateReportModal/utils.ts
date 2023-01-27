@@ -1,4 +1,3 @@
-
 export function downloadURI(uri: string, name: string, isZipped?: boolean) {
   const link = document.createElement('a');
 

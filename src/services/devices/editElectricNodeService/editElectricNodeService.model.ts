@@ -9,9 +9,8 @@ import { EditElectricNodePayload } from './editElectricNodeService.types';
 
 const domain = createDomain('editElectricNodeService');
 
-const $electricNode = domain.createStore<ElectricHousingMeteringDeviceResponse | null>(
-  null
-);
+const $electricNode =
+  domain.createStore<ElectricHousingMeteringDeviceResponse | null>(null);
 const getElectricNode = domain.createEffect<
   number,
   ElectricHousingMeteringDeviceResponse
@@ -19,10 +18,9 @@ const getElectricNode = domain.createEffect<
 const refetchElectricNode = domain.createEvent<number>();
 
 const updateDevice = domain.createEvent<EditElectricNodePayload>();
-const updateDeviceFx = domain.createEffect<
-EditElectricNodePayload,
-  void
->(updateElectricHousingMeteringDevice);
+const updateDeviceFx = domain.createEffect<EditElectricNodePayload, void>(
+  updateElectricHousingMeteringDevice,
+);
 
 $electricNode.on(getElectricNode.doneData, (_, node) => node);
 

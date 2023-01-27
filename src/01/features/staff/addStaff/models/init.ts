@@ -1,8 +1,6 @@
 import { addStaff } from '01/_api/staff';
 import { forward } from 'effector';
-import {
-  refetchStaff,
-} from '../../displayStaff/models';
+import { refetchStaff } from '../../displayStaff/models';
 import {
   $isAddStaffModalVisible,
   addStaffButtonClicked,
@@ -22,7 +20,7 @@ $isAddStaffFailed
   .reset(
     addStaffModalCloseButtonClicked,
     addStaffModalButtonClicked,
-    addStaffForm.submit
+    addStaffForm.submit,
   );
 
 forward({

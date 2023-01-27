@@ -1,1 +1,1 @@
-export { GroupReportForm } from './GroupReportForm'
+export { GroupReportForm } from './GroupReportForm';

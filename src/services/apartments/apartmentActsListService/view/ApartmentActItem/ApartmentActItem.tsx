@@ -25,18 +25,12 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   saveFile,
   actTypes,
 }) => {
-  const {
-    actJobDate,
-    id,
-    actType,
-    actResourceType,
-    registryNumber,
-    document,
-  } = act;
+  const { actJobDate, id, actType, actResourceType, registryNumber, document } =
+    act;
 
   const actTypeText = useMemo(
     () => actTypes?.find(({ key }) => key === actType)?.value || actType,
-    [actType, actTypes]
+    [actType, actTypes],
   );
 
   const documentName = document?.name || (

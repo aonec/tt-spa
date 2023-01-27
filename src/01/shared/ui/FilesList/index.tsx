@@ -31,9 +31,9 @@ export const FilesList: React.FC<Props> = ({
           id: file.id,
           fileResponse: file,
           status: 'done',
-        })
+        }),
       ) || [],
-    [initialFiles]
+    [initialFiles],
   );
 
   const filesToRender = [...(files || []), ...initialFilesData];
@@ -134,8 +134,7 @@ export const FilesList: React.FC<Props> = ({
   return <FilesWrap>{filesToRender.map(renderFile)}</FilesWrap>;
 };
 
-const getFormattedDate = (date: string) =>
-  getTimeStringByUTC(date);
+const getFormattedDate = (date: string) => getTimeStringByUTC(date);
 
 const ControlPanelWrap = styled.div`
   width: 33px;

@@ -15,7 +15,7 @@ $isFetchingHousingStocksFailed
 
 $housingStocks.on(
   fetchHousingStocksFx.doneData,
-  (_, housingStocks) => housingStocks
+  (_, housingStocks) => housingStocks,
 );
 
 forward({

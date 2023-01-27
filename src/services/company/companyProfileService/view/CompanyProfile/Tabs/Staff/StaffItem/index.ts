@@ -1,1 +1,1 @@
-export { StaffItem } from './StaffItem'
+export { StaffItem } from './StaffItem';

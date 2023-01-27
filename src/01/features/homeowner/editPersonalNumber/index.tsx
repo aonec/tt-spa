@@ -23,9 +23,10 @@ export const EditHomeownerPersonalNumberPage = () => {
   const history = useHistory();
 
   const isMainPersonalAccountNumber = useStore(
-    $apartment
-  )?.homeownerAccounts?.find((account) => account.id === homeownerId)
-    ?.isMainPersonalAccountNumber;
+    $apartment,
+  )?.homeownerAccounts?.find(
+    (account) => account.id === homeownerId,
+  )?.isMainPersonalAccountNumber;
 
   useEffect(() => {
     if (!status) return;
@@ -46,13 +47,16 @@ export const EditHomeownerPersonalNumberPage = () => {
     <>
       <CloseHomeownerAccountModal />
       <AutoCompleteFormGate autocomplete />
-      <HomeownerGate id={homeownerId} />  
+      <HomeownerGate id={homeownerId} />
       <PersonaNumberActionPage
         loading={loading}
         title="Редактирование лицевого счета"
         onSaveHandler={editHomeownerSaveButtonClicked}
       >
-        <PersonalNumberEditForm type="edit" isMainPersonalAccountNumber={isMainPersonalAccountNumber}/>
+        <PersonalNumberEditForm
+          type="edit"
+          isMainPersonalAccountNumber={isMainPersonalAccountNumber}
+        />
       </PersonaNumberActionPage>
     </>
   );

@@ -1,1 +1,1 @@
-export { ManagingFirmSearch } from './ManagingFirmSearch'
+export { ManagingFirmSearch } from './ManagingFirmSearch';

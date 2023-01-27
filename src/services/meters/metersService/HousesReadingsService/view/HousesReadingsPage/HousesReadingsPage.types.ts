@@ -9,7 +9,7 @@ import { GetHousingStocksListRequestPayload } from '../../HousesReadingsService.
 export type HousesReadingsPageProps = {
   housingStock: HousingStockResponse | null;
   handleSearchHousingStock: (
-    payload: GetHousingStocksListRequestPayload
+    payload: GetHousingStocksListRequestPayload,
   ) => void;
   isLoadingHousingStock: boolean;
   inspector: InspectorResponse | null;

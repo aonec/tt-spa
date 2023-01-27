@@ -29,10 +29,10 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
   const selectManagingFirm = useEvent(inputs.selectManagingFirm);
   const selectHousingStock = useEvent(inputs.selectHousingStock);
   const handleOpenModal = useEvent(
-    exportSubscribersConsumptionService.inputs.openModal
+    exportSubscribersConsumptionService.inputs.openModal,
   );
   const setFileName = useEvent(
-    exportSubscribersConsumptionService.inputs.setFileName
+    exportSubscribersConsumptionService.inputs.setFileName,
   );
 
   return (

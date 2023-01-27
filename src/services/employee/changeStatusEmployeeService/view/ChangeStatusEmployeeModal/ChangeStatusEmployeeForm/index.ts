@@ -1,1 +1,1 @@
-export { ChangeStatusEmployeeForm } from './ChangeStatusEmployeeForm'
+export { ChangeStatusEmployeeForm } from './ChangeStatusEmployeeForm';

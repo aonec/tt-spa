@@ -30,7 +30,7 @@ forward({
 });
 
 exportFeedBackFlowReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 const $isLoading = exportFeedBackFlowReportFx.pending;

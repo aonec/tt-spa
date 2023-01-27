@@ -9,7 +9,7 @@ export function getRateNum(rateType: EIndividualDeviceRateType) {
 }
 
 export function getBufferedValuesFromReading(
-  reading?: IndividualDeviceReadingsResponse
+  reading?: IndividualDeviceReadingsResponse,
 ): BufferedReadingValues {
   const { value1, value2, value3 } = reading || {};
 

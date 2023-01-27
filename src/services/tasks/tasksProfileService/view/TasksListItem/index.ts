@@ -1,1 +1,1 @@
-export { TasksListItem } from './TasksListItem'
+export { TasksListItem } from './TasksListItem';

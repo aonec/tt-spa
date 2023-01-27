@@ -1,1 +1,1 @@
-export { ApartmentsSearch } from './ApartmentsSearch'
+export { ApartmentsSearch } from './ApartmentsSearch';

@@ -1,1 +1,1 @@
-export { CheckCalculatorForm } from './CheckCalculatorForm'
+export { CheckCalculatorForm } from './CheckCalculatorForm';

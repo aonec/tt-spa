@@ -1,1 +1,1 @@
-export { EditExistingConnectionErrorModal } from './EditExistingConnectionErrorModal'
+export { EditExistingConnectionErrorModal } from './EditExistingConnectionErrorModal';

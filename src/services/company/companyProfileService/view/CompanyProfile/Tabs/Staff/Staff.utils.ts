@@ -21,7 +21,7 @@ const UserRolesPriorityDictionary: {
 };
 
 export const sortUserRoles = (
-  roles: ESecuredIdentityRoleNameStringDictionaryItem[]
+  roles: ESecuredIdentityRoleNameStringDictionaryItem[],
 ) => {
   return roles.sort((a, b) => {
     const roleA = a.key;

@@ -22,14 +22,14 @@ import { round } from 'utils/round';
 import { ResourceConsumptionGraphColorsMeasure } from 'services/resources/resourceConsumptionService/view/ResourceConsumptionGraph/ResourceConsumptionGraph.constants';
 
 export function getPreparedReadingsDictionary(
-  readings: IndividualDeviceReadingsResponse[]
+  readings: IndividualDeviceReadingsResponse[],
 ): PreparedReadingsData {
   return readings.reduce((acc, elem) => {
     const dateFormat = 'YYYY-MM';
 
     const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
     const readingMonthDate = moment(
-      moment(elem.readingDateTime).format(dateFormat)
+      moment(elem.readingDateTime).format(dateFormat),
     );
 
     if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
@@ -57,7 +57,7 @@ export function validateReadings(
   rateNum: number,
   createMeterPayload: MeterInputUploadReadingPayload,
   consumptionRate: ConsumptionRateResponse | null,
-  readings: PreparedReadingsData
+  readings: PreparedReadingsData,
 ): ValidationReadingsResult {
   const previousReading = getExistingReading(readings, meterIndex, 'prev');
   const nextReading = getExistingReading(readings, meterIndex, 'next');
@@ -78,7 +78,7 @@ export function validateReadings(
     rateNum,
     uploadingReadingLite,
     previousReadingLite,
-    nextReadingLite
+    nextReadingLite,
   );
 
   if (readingsCompareResult) return readingsCompareResult;
@@ -90,7 +90,7 @@ export function validateReadings(
       previousReadingLite,
       uploadingReadingLite,
       consumptionRate,
-      rateNum
+      rateNum,
     );
 
   if (checkReadingLimitsResult) return checkReadingLimitsResult;
@@ -101,14 +101,14 @@ export function validateReadings(
 function checkIsAllValuesEmpty(reading: ReadingLite, rateNum: number) {
   return getFilledArray(
     rateNum,
-    (index) => reading[getReadingValueKey(index)]
+    (index) => reading[getReadingValueKey(index)],
   ).every((value) => value === null);
 }
 
 export function getExistingReading(
   readings: PreparedReadingsData,
   index: number,
-  type: 'next' | 'prev'
+  type: 'next' | 'prev',
 ) {
   const nextIndex = () => (type === 'next' ? index-- : index++);
 
@@ -130,7 +130,7 @@ function checkReadingLimits(
   prevReading: ReadingLite,
   nextReading: ReadingLite,
   consumptionRate: ConsumptionRateResponse,
-  rateNum: number
+  rateNum: number,
 ): ValidationReadingsResult | undefined {
   return getFilledArray(rateNum, (index) => ({
     nextReading: nextReading[getReadingValueKey(index)] || 0,
@@ -159,7 +159,7 @@ function compareReadings(
   rateNum: number,
   uploadingReading: ReadingLite,
   prevReading?: ReadingLite,
-  nextReading?: ReadingLite
+  nextReading?: ReadingLite,
 ): ValidationReadingsResult | undefined {
   const preparedReadingsCompareArray = getFilledArray(rateNum, (index) => {
     const valueKey = getReadingValueKey(index);
@@ -192,7 +192,7 @@ function compareReadings(
 
       return [...acc, { ...result, diff: round(result.compareDiff || 0, 3) }];
     },
-    [] as ValidationReadingsResult[]
+    [] as ValidationReadingsResult[],
   );
 
   return compareResult[0];
@@ -203,7 +203,7 @@ export function getReadingLite(
     | IndividualDeviceReadingsResponse
     | MeterInputUploadReadingPayload
     | BufferedReadingValues,
-  rateNum: number
+  rateNum: number,
 ): ReadingLite {
   return getFilledArray(rateNum, (index) => {
     const valueKey = getReadingValueKey(index);
@@ -213,7 +213,7 @@ export function getReadingLite(
     return value || value === 0 ? Number(value) : null;
   }).reduce(
     (acc, elem, index) => ({ ...acc, [getReadingValueKey(index)]: elem }),
-    {} as ReadingLite
+    {} as ReadingLite,
   );
 }
 

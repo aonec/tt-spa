@@ -55,7 +55,7 @@ const $sameConnectionCalculator = domain
   .createStore<CalculatorResponse | null>(null)
   .on(
     getSameConnectionCalculatorFx.doneData,
-    (_, calculatorData) => calculatorData
+    (_, calculatorData) => calculatorData,
   );
 
 sample({
@@ -82,11 +82,11 @@ sample({
 });
 
 editCalculatorFailData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 editCalculatorSuccess.watch(() =>
-  message.success('Вычислитель успешно обновлён!')
+  message.success('Вычислитель успешно обновлён!'),
 );
 
 export const editCalculatorService = {

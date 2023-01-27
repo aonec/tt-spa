@@ -23,7 +23,7 @@ forward({
 });
 
 downloadConsolidatedReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 const $isModalOpen = domain

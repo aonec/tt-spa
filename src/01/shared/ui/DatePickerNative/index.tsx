@@ -33,7 +33,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
       onKeyDown,
       inputData,
     },
-    ref
+    ref,
   ) => {
     const [innerValue, setInnerValue] = useState<any>();
     const value = moment(incomingValue).toISOString(true);
@@ -78,7 +78,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
         type="date"
       />
     );
-  }
+  },
 );
 
 const InputSC = styled.input<{

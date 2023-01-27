@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const StyledContainerThreeItemsMainTypes = styled(
-  StyledContainerThreeItems
+  StyledContainerThreeItems,
 )`
   margin-top: 10px;
   grid-template-columns: 4fr 4fr 4fr;

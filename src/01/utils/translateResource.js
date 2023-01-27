@@ -1,5 +1,3 @@
- 
-
 export const translateResource = (resource) => {
   switch (resource) {
     case 'HotWaterSupply':

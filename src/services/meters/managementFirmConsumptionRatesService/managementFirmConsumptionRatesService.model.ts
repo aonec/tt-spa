@@ -5,9 +5,8 @@ import { createDomain, guard, sample } from 'effector';
 
 const domain = createDomain('managementFirmConsumptionRatesService');
 
-const $consumptionRates = domain.createStore<MangingFirmsConsumptionRatesDictionary>(
-  {}
-);
+const $consumptionRates =
+  domain.createStore<MangingFirmsConsumptionRatesDictionary>({});
 
 const fetchConsumptionRatesFx = domain.createEffect<
   number,
@@ -21,7 +20,7 @@ $consumptionRates.on(
   (prev, { params: managementFirmId, result }) => ({
     ...prev,
     [managementFirmId]: result,
-  })
+  }),
 );
 
 sample({

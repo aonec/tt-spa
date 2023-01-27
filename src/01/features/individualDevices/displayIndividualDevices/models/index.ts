@@ -22,7 +22,8 @@ export const fetchNextPageOfIndividualDevicesFx = createEffect<
   { items: IndividualDeviceListItemResponse[]; total: number }
 >();
 
-export const PagedIndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
+export const PagedIndividualDevicesGate =
+  createGate<GetIndividualDeviceRequestParams>();
 
 export const fetchIndividualDevicesFx = createEffect<
   GetIndividualDeviceRequestParams,
@@ -31,7 +32,8 @@ export const fetchIndividualDevicesFx = createEffect<
 
 export const $totalPagedElems = createStore<null | number>(null);
 
-export const IndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
+export const IndividualDevicesGate =
+  createGate<GetIndividualDeviceRequestParams>();
 
 export const refetchIndividualDevices = createEvent();
 
@@ -43,5 +45,5 @@ export const resetIndividualDevices = createEvent();
 export const $isAllDevicesDone = combine(
   $pagedIndividualDevices,
   $totalPagedElems,
-  (devices, total) => (devices.length ? devices.length === total : null)
+  (devices, total) => (devices.length ? devices.length === total : null),
 );

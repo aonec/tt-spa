@@ -107,7 +107,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value)
+                phoneMask.unmaskedValue(value.target.value),
               )
             }
           />

@@ -18,9 +18,7 @@ const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   return (
     <>
       {house.inspectorId && <InspectorGate id={house.inspectorId} />}
-      <Title>
-        {getHousingStockAddress(house)}
-      </Title>
+      <Title>{getHousingStockAddress(house)}</Title>
       <Wrap>
         <Flex>
           <Block

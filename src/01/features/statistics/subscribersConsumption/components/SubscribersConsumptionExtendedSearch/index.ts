@@ -1,1 +1,1 @@
-export { SubscribersConsumptionExtendedSearch } from './SubscribersConsumptionExtendedSearch'
+export { SubscribersConsumptionExtendedSearch } from './SubscribersConsumptionExtendedSearch';

@@ -31,7 +31,7 @@ export const CloseDevicesContainer: FC<CloseDevicesContainerProps> = ({
         if (elem.id !== id) return elem;
 
         return { ...elem, closingDate };
-      })
+      }),
     );
   };
 
@@ -45,7 +45,7 @@ export const CloseDevicesContainer: FC<CloseDevicesContainerProps> = ({
   }, [selectedDevices]);
 
   const individualDevices = useStore(
-    closeDeviceService.outputs.$individualDevices
+    closeDeviceService.outputs.$individualDevices,
   );
 
   return (

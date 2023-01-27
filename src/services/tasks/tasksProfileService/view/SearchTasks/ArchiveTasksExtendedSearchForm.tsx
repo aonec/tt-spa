@@ -48,7 +48,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
-                value.target.value
+                value.target.value,
               )
             }
             value=""

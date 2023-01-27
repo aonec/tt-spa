@@ -10,7 +10,7 @@ fetchCurrentManagingFirmUser.use(getCurrentManagingFirmUser);
 
 $currentManagingFirmUser.on(
   fetchCurrentManagingFirmUser.doneData,
-  (_, user) => user
+  (_, user) => user,
 );
 
 guard({

@@ -4,7 +4,7 @@ import { createForm } from 'effector-forms/dist';
 import { NumberIdResponse } from 'myApi';
 
 export const $existingApartmentNumbers = createStore<NumberIdResponse[] | null>(
-  null
+  null,
 );
 
 export const fetchExistingApartmentNumbersFx = createEffect<
@@ -38,4 +38,3 @@ export const addressSearchForm = createForm({
     },
   },
 });
-

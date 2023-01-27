@@ -9,19 +9,22 @@ import {
 } from './inspectorHousingStockService.types';
 
 const inspectorHousingStockServiceDomain = createDomain(
-  'inspectorHousingStockService'
+  'inspectorHousingStockService',
 );
 
-const $currentHousingStockUpdates = inspectorHousingStockServiceDomain.createStore<
-  CurrentHousingStockUpdate[]
->([]);
+const $currentHousingStockUpdates =
+  inspectorHousingStockServiceDomain.createStore<CurrentHousingStockUpdate[]>(
+    [],
+  );
 
-const updateHousingStockInspectorInfoFx = inspectorHousingStockServiceDomain.createEffect<
-  PatchHousingStockInspectorInfoPayload,
-  HousingStockResponse | null
->(patchHousingStockInspectorInfo);
+const updateHousingStockInspectorInfoFx =
+  inspectorHousingStockServiceDomain.createEffect<
+    PatchHousingStockInspectorInfoPayload,
+    HousingStockResponse | null
+  >(patchHousingStockInspectorInfo);
 
-const updateHousingStockInspectorInfo = inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
+const updateHousingStockInspectorInfo =
+  inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
 
 export const inspectorHousingStockService = {
   inputs: {

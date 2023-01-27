@@ -36,7 +36,7 @@ export const SearchForm = () => {
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   function onSendHandler() {

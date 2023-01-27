@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
   const next = (index: number) => {
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      `[data-reading-input="${name}"]`
+      `[data-reading-input="${name}"]`,
     );
 
     const nextNode = inputList[index + 1];

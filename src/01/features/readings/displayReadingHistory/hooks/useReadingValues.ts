@@ -18,10 +18,8 @@ import _ from 'lodash/fp';
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
 export function useReadingHistoryValues() {
-  const [
-    bufferedValues,
-    setBufferedValues,
-  ] = useState<IndividualDeviceReadingsHistoryResponse | null>();
+  const [bufferedValues, setBufferedValues] =
+    useState<IndividualDeviceReadingsHistoryResponse | null>();
 
   const params = useParams<{ deviceId: string }>();
 
@@ -59,14 +57,14 @@ export function useReadingHistoryValues() {
     ])(initialValues);
 
     const yearIndex = _.findIndex({ year: address.year })(
-      bufferedValues?.yearReadings
+      bufferedValues?.yearReadings,
     );
     const monthIndex = _.findIndex({ month: address.month })(
-      bufferedValues?.yearReadings?.[yearIndex].monthReadings
+      bufferedValues?.yearReadings?.[yearIndex].monthReadings,
     );
     const readingIndex = _.findIndex({ id: address.id })(
       bufferedValues?.yearReadings?.[yearIndex].monthReadings?.[monthIndex]
-        .readings
+        .readings,
     );
     const setInitValue = _.assoc(
       [
@@ -77,7 +75,7 @@ export function useReadingHistoryValues() {
         'readings',
         `${readingIndex}`,
       ],
-      initialValue
+      initialValue,
     );
 
     setBufferedValues((prev) => prev && setInitValue(prev));
@@ -85,7 +83,7 @@ export function useReadingHistoryValues() {
 
   const setFieldValue = (
     value: string,
-    address: { year: number; month: number; id: number | null; index: number }
+    address: { year: number; month: number; id: number | null; index: number },
   ) => {
     setBufferedValues((prev) => ({
       ...prev,
@@ -103,13 +101,13 @@ export function useReadingHistoryValues() {
                             month.readings?.map((elem) =>
                               elem.id === address.id
                                 ? { ...elem, [`value${address.index}`]: value }
-                                : elem
+                                : elem,
                             ) || [],
                         }
-                      : month
+                      : month,
                   ) || [],
               }
-            : year
+            : year,
         ) || [],
     }));
   };

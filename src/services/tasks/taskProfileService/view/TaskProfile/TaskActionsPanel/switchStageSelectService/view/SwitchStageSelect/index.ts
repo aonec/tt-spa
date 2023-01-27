@@ -1,1 +1,1 @@
-export { SwitchStageSelect } from './SwitchStageSelect'
+export { SwitchStageSelect } from './SwitchStageSelect';

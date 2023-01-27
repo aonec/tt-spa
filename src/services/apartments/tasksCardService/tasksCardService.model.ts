@@ -1,7 +1,7 @@
 import { tasksProfileService } from 'services/tasks/tasksProfileService';
 
 const $isAdministrator = tasksProfileService.outputs.$isAdministrator.map(
-  (isAdministrator) => isAdministrator
+  (isAdministrator) => isAdministrator,
 );
 
 export const tasksCardService = {

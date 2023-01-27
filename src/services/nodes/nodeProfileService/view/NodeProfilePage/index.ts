@@ -1,1 +1,1 @@
-export { NodeProfilePage } from './NodeProfilePage'
+export { NodeProfilePage } from './NodeProfilePage';

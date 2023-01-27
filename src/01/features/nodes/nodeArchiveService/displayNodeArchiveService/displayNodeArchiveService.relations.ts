@@ -5,11 +5,11 @@ import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 displayNodeArchiveService.outputs.$nodeArchiveData
   .on(
     displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.doneData,
-    (_, data) => data
+    (_, data) => data,
   )
   .reset(
     displayNodeArchiveService.inputs.NodeArchiveGate.close,
-    displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.fail
+    displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.fail,
   );
 
 sample({

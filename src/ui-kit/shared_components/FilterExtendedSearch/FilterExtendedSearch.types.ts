@@ -1,7 +1,7 @@
 export type FilterExtendedSearchProps<T> = {
   handleUpdate: (payload: T[]) => void;
   allowedFilters: SearchFilterType<T>[] | null;
-  selectedFilters: T[]
+  selectedFilters: T[];
 };
 
 export type SearchFilterType<T> = {
@@ -10,5 +10,5 @@ export type SearchFilterType<T> = {
 };
 
 export type Filter<T> = {
-    selectedFilters: T[];
-}
+  selectedFilters: T[];
+};

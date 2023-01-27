@@ -30,11 +30,11 @@ const $isModalOpen = domain
 forward({ from: handleCreateEmloyee, to: createEmloyeeFx });
 
 createEmloyeeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 createEmloyeeSuccess.watch(() =>
-  message.success('Сотрудник успешно добавлен!')
+  message.success('Сотрудник успешно добавлен!'),
 );
 
 export const createEmployeeService = {

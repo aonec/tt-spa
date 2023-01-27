@@ -16,7 +16,9 @@ export const EditApartmentProfileContainer = () => {
   const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
   const tabSection = useStore(outputs.$tabSection);
-  const isUpdatingApartmentLoading = useStore(outputs.$isUpdatingApartmentLoading);
+  const isUpdatingApartmentLoading = useStore(
+    outputs.$isUpdatingApartmentLoading,
+  );
 
   return (
     <>

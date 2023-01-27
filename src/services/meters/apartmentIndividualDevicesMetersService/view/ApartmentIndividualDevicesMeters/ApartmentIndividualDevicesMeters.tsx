@@ -12,7 +12,9 @@ import {
 } from './ApartmentIndividualDevicesMeters.styled';
 import { ApartmentIndividualDevicesMetersProps } from './ApartmentIndividualDevicesMeters.types';
 
-export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMetersProps> = ({
+export const ApartmentIndividualDevicesMeters: FC<
+  ApartmentIndividualDevicesMetersProps
+> = ({
   individualDevicesList,
   isLoading,
   closedDevicesCount,
@@ -32,13 +34,14 @@ export const ApartmentIndividualDevicesMeters: FC<ApartmentIndividualDevicesMete
 
   const prevReadingMonth = useMemo(
     (): string => getReadingsMonthByShift(sliderIndex),
-    [sliderIndex]
+    [sliderIndex],
   );
   const currentReadingMonth = useMemo(() => getReadingsMonthByShift(-1), []);
 
-  const isCanUp = useMemo(() => sliderIndex < PREVIOUS_READING_INDEX_LIMIT, [
-    sliderIndex,
-  ]);
+  const isCanUp = useMemo(
+    () => sliderIndex < PREVIOUS_READING_INDEX_LIMIT,
+    [sliderIndex],
+  );
   const isCanDown = useMemo(() => sliderIndex > 0, [sliderIndex]);
 
   return (

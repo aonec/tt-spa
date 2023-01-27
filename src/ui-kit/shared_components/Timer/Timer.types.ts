@@ -1,4 +1,4 @@
-import { Timeline } from "../TimeLine/TimeLine.types";
+import { Timeline } from '../TimeLine/TimeLine.types';
 
 export type TimerProps = {
   timer: Timer;

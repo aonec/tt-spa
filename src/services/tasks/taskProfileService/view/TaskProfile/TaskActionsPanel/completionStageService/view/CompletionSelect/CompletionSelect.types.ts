@@ -1,5 +1,5 @@
 import {
-    EManagingFirmTaskType,
+  EManagingFirmTaskType,
   ETaskConfirmationType,
   ETaskConfirmationTypeStringDictionaryItem,
 } from 'myApi';
@@ -7,5 +7,5 @@ import {
 export type CompletionSelectProps = {
   taskConfirmationTypes?: ETaskConfirmationTypeStringDictionaryItem[] | null;
   handleChangeConfirmation: (confirmationType: ETaskConfirmationType) => void;
-  taskType?: EManagingFirmTaskType
+  taskType?: EManagingFirmTaskType;
 };

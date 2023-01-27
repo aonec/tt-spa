@@ -3,15 +3,16 @@ import { createForm } from 'effector-forms';
 import { GetInspectorsHousingStocksRequestParams } from '../displayInspectorsHousingStocksService/types';
 
 const searchInspectorsHousingStockServiceDomain = createDomain(
-  'searchInspectorsHousingStockService'
+  'searchInspectorsHousingStockService',
 );
 
-const $isExtendedSearchOpen = searchInspectorsHousingStockServiceDomain.createStore(
-  false
-);
+const $isExtendedSearchOpen =
+  searchInspectorsHousingStockServiceDomain.createStore(false);
 
-const extendedSearchOpened = searchInspectorsHousingStockServiceDomain.createEvent();
-const extendedSearchClosed = searchInspectorsHousingStockServiceDomain.createEvent();
+const extendedSearchOpened =
+  searchInspectorsHousingStockServiceDomain.createEvent();
+const extendedSearchClosed =
+  searchInspectorsHousingStockServiceDomain.createEvent();
 
 const searchForm = createForm({
   fields: {
@@ -33,11 +34,14 @@ const searchForm = createForm({
   },
 });
 
-const clearExtendedSearch = searchInspectorsHousingStockServiceDomain.createEvent();
+const clearExtendedSearch =
+  searchInspectorsHousingStockServiceDomain.createEvent();
 
-const startSearchInspectorsHousingStocks = searchInspectorsHousingStockServiceDomain.createEvent<GetInspectorsHousingStocksRequestParams>();
+const startSearchInspectorsHousingStocks =
+  searchInspectorsHousingStockServiceDomain.createEvent<GetInspectorsHousingStocksRequestParams>();
 
-const applyExtendedFilters = searchInspectorsHousingStockServiceDomain.createEvent();
+const applyExtendedFilters =
+  searchInspectorsHousingStockServiceDomain.createEvent();
 
 export const searchInspectorsHousingStockService = {
   forms: {

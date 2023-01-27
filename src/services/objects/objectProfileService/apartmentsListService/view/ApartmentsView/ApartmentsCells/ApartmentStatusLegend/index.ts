@@ -1,1 +1,1 @@
-export { ApartmentStatusLegend } from './ApartmentStatusLegend'
+export { ApartmentStatusLegend } from './ApartmentStatusLegend';

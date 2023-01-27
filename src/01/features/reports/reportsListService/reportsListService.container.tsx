@@ -11,7 +11,7 @@ const { ReportsHistoryGate } = gates;
 
 export const ReportsListContainer = () => {
   const reportsHistoryListPagedData = useStore(
-    outputs.$reportsHistoryPagedData
+    outputs.$reportsHistoryPagedData,
   );
   const isLoading = useStore(outputs.$isLoading);
   const pageNumber = useStore(outputs.$pageNumber);
@@ -39,9 +39,7 @@ export const ReportsListContainer = () => {
         activeKey={
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived
         }
-        onChange={(key) =>
-          setIsShowActual(key === ReportStatusType.Actual)
-        }
+        onChange={(key) => setIsShowActual(key === ReportStatusType.Actual)}
       >
         <Tabs.TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
         <Tabs.TabPane

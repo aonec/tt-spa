@@ -42,39 +42,33 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     ? filter.From
     : moment().startOf('month').utcOffset(0, true).format();
 
-  const {
-    values,
-    setFieldValue,
-    submitForm,
-    resetForm,
-    errors,
-    setValues,
-  } = useFormik<GetHousingConsumptionDataFormik>({
-    initialValues: {
-      HousingStockId: filter?.HousingStockId || null,
-      currentAddress: filter?.currentAddress || null,
-      AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
-      additionalAddress: filter?.additionalAddress || null,
-      From: initialDate,
-    },
-    validationSchema: resourceConsumptionFilterValidationSchema,
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: (values) => {
-      const { HousingStockId, AdditionalHousingStockId } = values;
+  const { values, setFieldValue, submitForm, resetForm, errors, setValues } =
+    useFormik<GetHousingConsumptionDataFormik>({
+      initialValues: {
+        HousingStockId: filter?.HousingStockId || null,
+        currentAddress: filter?.currentAddress || null,
+        AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
+        additionalAddress: filter?.additionalAddress || null,
+        From: initialDate,
+      },
+      validationSchema: resourceConsumptionFilterValidationSchema,
+      enableReinitialize: true,
+      validateOnChange: false,
+      validateOnBlur: false,
+      onSubmit: (values) => {
+        const { HousingStockId, AdditionalHousingStockId } = values;
 
-      if (!HousingStockId) {
-        return;
-      }
+        if (!HousingStockId) {
+          return;
+        }
 
-      if (!AdditionalHousingStockId) {
-        handleClearAdditionalAddress();
-      }
+        if (!AdditionalHousingStockId) {
+          handleClearAdditionalAddress();
+        }
 
-      setFilter({ ...values, HousingStockId });
-    },
-  });
+        setFilter({ ...values, HousingStockId });
+      },
+    });
 
   useEffect(() => {
     setValues({
@@ -104,7 +98,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
               onChange={(date) =>
                 setFieldValue(
                   'From',
-                  date?.startOf('month').utcOffset(0, true).format()
+                  date?.startOf('month').utcOffset(0, true).format(),
                 )
               }
               picker="month"

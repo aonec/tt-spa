@@ -186,9 +186,8 @@ export const StyledMeteringDeviceReadingInput = Input;
 
 export const useSwitchOnEnter = (dataAttr: string) => {
   const onKeyDown = (index: number) => {
-    const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      dataAttr
-    );
+    const inputList: NodeListOf<HTMLInputElement> =
+      document.querySelectorAll(dataAttr);
 
     const nextNode = inputList[index + 1];
 

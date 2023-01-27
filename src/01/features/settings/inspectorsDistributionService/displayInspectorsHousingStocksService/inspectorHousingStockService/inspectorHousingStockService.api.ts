@@ -3,10 +3,10 @@ import { HousingStockResponse } from 'myApi';
 import { PatchHousingStockInspectorInfoPayload } from './inspectorHousingStockService.types';
 
 export const patchHousingStockInspectorInfo = async (
-  payload: PatchHousingStockInspectorInfoPayload
+  payload: PatchHousingStockInspectorInfoPayload,
 ): Promise<HousingStockResponse | null> => {
   return axios.patch(
     `HousingStocks/${payload.housingStockId}/inspector`,
-    payload.data
+    payload.data,
   );
 };

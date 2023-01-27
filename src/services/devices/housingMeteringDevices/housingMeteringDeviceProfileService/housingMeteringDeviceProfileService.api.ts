@@ -3,7 +3,7 @@ import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   return await axios.get<number, PipeHousingMeteringDeviceResponse>(
-    `PipeHousingMeteringDevices/${id}`
+    `PipeHousingMeteringDevices/${id}`,
   );
 }
 

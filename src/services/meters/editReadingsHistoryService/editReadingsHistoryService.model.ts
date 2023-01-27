@@ -69,11 +69,11 @@ forward({
 });
 
 editReadingsHistoryFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 editReadingsHistoryFx.doneData.watch(() =>
-  message.success('Показание успешно сохранено')
+  message.success('Показание успешно сохранено'),
 );
 
 export const editReadingsHistoryService = {

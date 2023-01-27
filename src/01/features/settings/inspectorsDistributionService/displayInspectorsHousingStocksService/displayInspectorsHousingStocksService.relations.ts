@@ -5,14 +5,12 @@ import { displayInspectorsHousingStocksService } from './displayInspectorsHousin
 displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   displayInspectorsHousingStocksService.inputs
     .fetchInspectorsHousingStocksListFx.doneData,
-  (_, list) => list
+  (_, list) => list,
 );
 
 forward({
-  from:
-    searchInspectorsHousingStockService.inputs
-      .startSearchInspectorsHousingStocks,
-  to:
-    displayInspectorsHousingStocksService.inputs
-      .fetchInspectorsHousingStocksListFx,
+  from: searchInspectorsHousingStockService.inputs
+    .startSearchInspectorsHousingStocks,
+  to: displayInspectorsHousingStocksService.inputs
+    .fetchInspectorsHousingStocksListFx,
 });

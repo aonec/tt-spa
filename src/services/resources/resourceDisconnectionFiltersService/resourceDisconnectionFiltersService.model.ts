@@ -5,9 +5,8 @@ import { fetchResourceDisconnectionFilters } from './resourceDisconnectionFilter
 
 const domain = createDomain('resourceDisconnectionFiltersService');
 
-const $resourceDisconnectionFilters = domain.createStore<ResourceDisconnectingFilterResponse | null>(
-  null
-);
+const $resourceDisconnectionFilters =
+  domain.createStore<ResourceDisconnectingFilterResponse | null>(null);
 const getResourceDisconnectionFiltersFx = domain.createEffect<
   void,
   ResourceDisconnectingFilterResponse
@@ -15,7 +14,7 @@ const getResourceDisconnectionFiltersFx = domain.createEffect<
 
 $resourceDisconnectionFilters.on(
   getResourceDisconnectionFiltersFx.doneData,
-  (_, filters) => filters
+  (_, filters) => filters,
 );
 
 const ResourceDisconnectigFiltersGate = createGate();

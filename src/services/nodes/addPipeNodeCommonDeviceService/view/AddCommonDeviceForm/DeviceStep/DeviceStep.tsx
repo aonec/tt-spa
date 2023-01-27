@@ -31,45 +31,40 @@ export const DeviceStep: FC<DeviceStepProps> = ({
   updateRequestPayload,
   formId,
 }) => {
-  const {
-    values,
-    setFieldValue,
-    handleChange,
-    errors,
-    handleSubmit,
-  } = useFormik({
-    initialValues: {
-      model: requestPayload.model,
-      serialNumber: requestPayload.serialNumber,
-      lastCheckingDate: getInitialDateFieldValue(
-        requestPayload.lastCheckingDate
-      ),
-      futureCheckingDate: getInitialDateFieldValue(
-        requestPayload.futureCheckingDate
-      ),
-      pipeId: requestPayload.pipeId || null,
-    },
-    validationSchema,
-    enableReinitialize: true,
-    validateOnChange: false,
-    onSubmit: (values) => {
-      if (!values.pipeId) return;
+  const { values, setFieldValue, handleChange, errors, handleSubmit } =
+    useFormik({
+      initialValues: {
+        model: requestPayload.model,
+        serialNumber: requestPayload.serialNumber,
+        lastCheckingDate: getInitialDateFieldValue(
+          requestPayload.lastCheckingDate,
+        ),
+        futureCheckingDate: getInitialDateFieldValue(
+          requestPayload.futureCheckingDate,
+        ),
+        pipeId: requestPayload.pipeId || null,
+      },
+      validationSchema,
+      enableReinitialize: true,
+      validateOnChange: false,
+      onSubmit: (values) => {
+        if (!values.pipeId) return;
 
-      updateRequestPayload({
-        model: values.model,
-        serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.format('YYYY-MM-DD'),
-        futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
-        pipeId: values.pipeId,
-      });
-    },
-  });
+        updateRequestPayload({
+          model: values.model,
+          serialNumber: values.serialNumber,
+          lastCheckingDate: values.lastCheckingDate?.format('YYYY-MM-DD'),
+          futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
+          pipeId: values.pipeId,
+        });
+      },
+    });
 
   useEffect(
     () =>
       inputs.handleCreatePipe.watch((id) => setFieldValue('pipeId', id))
         .unsubscribe,
-    []
+    [],
   );
 
   return (

@@ -1,1 +1,1 @@
-export { SelectResourceConsumptionType } from './SelectResourceConsumptionType'
+export { SelectResourceConsumptionType } from './SelectResourceConsumptionType';

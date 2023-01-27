@@ -1,1 +1,1 @@
-import "./inspectorHousingStockService.relations"
+import './inspectorHousingStockService.relations';

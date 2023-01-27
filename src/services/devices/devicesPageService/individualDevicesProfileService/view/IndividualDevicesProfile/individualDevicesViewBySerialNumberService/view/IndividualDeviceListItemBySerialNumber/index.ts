@@ -1,1 +1,1 @@
-export { IndividualDeviceListItemBySerialNumber } from './ListItemBySerialNumber'
+export { IndividualDeviceListItemBySerialNumber } from './ListItemBySerialNumber';

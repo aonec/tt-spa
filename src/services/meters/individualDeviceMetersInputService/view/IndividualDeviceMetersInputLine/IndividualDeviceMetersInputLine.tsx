@@ -25,7 +25,9 @@ import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/Met
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 
-export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
+export const IndividualDeviceMetersInputLine: FC<
+  IndividualDeviceMetersInputLineProps
+> = ({
   device,
   sliderIndex,
   openReadingsHistoryModal,
@@ -42,11 +44,11 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
+    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened,
   );
 
   const openEditReadingsHistoryModal = useEvent(
-    editReadingsHistoryService.inputs.openModal
+    editReadingsHistoryService.inputs.openModal,
   );
 
   const managementFirmUser = useStore($currentManagingFirmUser);
@@ -58,10 +60,10 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       Boolean(managementFirmUser?.roles) &&
       Boolean(
         managementFirmUser?.roles?.find(
-          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator
-        )
+          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator,
+        ),
       ),
-    [managementFirmUser]
+    [managementFirmUser],
   );
 
   const menuButtonArr: ContextMenuElement[] = useMemo(
@@ -120,7 +122,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       isDeviceClosed,
       managementFirmUser,
       openEditReadingsHistoryModal,
-    ]
+    ],
   );
 
   const previousReadingTooltipTitle = useMemo(
@@ -129,9 +131,9 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       getPreviousMeterTooltipTitle(
         previousReadingByCurrentSliderIndex,
         getRateNum(device.rateType),
-        getMeasurementUnit(device.resource)
+        getMeasurementUnit(device.resource),
       ),
-    [previousReadingByCurrentSliderIndex, device]
+    [previousReadingByCurrentSliderIndex, device],
   );
 
   return (
@@ -175,7 +177,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
           <StarIcon
             onClick={() =>
               history.push(
-                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`
+                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`,
               )
             }
             style={{ cursor: 'pointer' }}

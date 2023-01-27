@@ -11,14 +11,8 @@ import {
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
-  const {
-    id,
-    address,
-    creationTime,
-    apartment,
-    creationReason,
-    perpetrator,
-  } = task;
+  const { id, address, creationTime, apartment, creationReason, perpetrator } =
+    task;
 
   const apartmentId = apartment?.id;
   const housingStockId = task.housingStockId;

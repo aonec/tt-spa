@@ -23,7 +23,7 @@ sample({
       ApartmentNumber: apartment,
     })),
     searchForm.fields.city.$value,
-    (values, city) => ({ ...values, City: city })
+    (values, city) => ({ ...values, City: city }),
   ),
   clock: onExitAddressSearchForm,
   target: fetchApartmentSearchIdFx as any,

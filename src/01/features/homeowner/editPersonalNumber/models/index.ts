@@ -91,9 +91,8 @@ export const closeHomeownerAccountFx = createEffect<
   void
 >();
 
-export const $closeHomeownerRequestStatus = createStore<RequestStatusShared>(
-  null
-);
+export const $closeHomeownerRequestStatus =
+  createStore<RequestStatusShared>(null);
 
 export const resetCloseHomeownerRequestStatus = createEvent();
 

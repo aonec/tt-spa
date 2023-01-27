@@ -26,7 +26,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
 
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
-    onChange
+    onChange,
   );
 
   const isMaxDocuments = documents.length >= max;

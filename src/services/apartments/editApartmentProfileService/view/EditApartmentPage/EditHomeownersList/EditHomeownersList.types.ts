@@ -1,4 +1,4 @@
-import { HomeownerAccountListResponse } from "myApi";
+import { HomeownerAccountListResponse } from 'myApi';
 
 export type EditHomeownersListProps = {
   homeowners: HomeownerAccountListResponse[];

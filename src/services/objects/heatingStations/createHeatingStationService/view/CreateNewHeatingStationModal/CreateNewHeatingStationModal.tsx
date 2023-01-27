@@ -5,7 +5,9 @@ import { NewHeatingStationForm } from '../../../NewHeatingStationForm';
 
 const formId = 'create-new-heating-point-form';
 
-export const CreateNewHeatingStationModal: FC<CreateNewHeatingStationModalProps> = ({
+export const CreateNewHeatingStationModal: FC<
+  CreateNewHeatingStationModalProps
+> = ({
   handleCreateHeatingStation,
   isModalOpen,
   handleCloseModal,

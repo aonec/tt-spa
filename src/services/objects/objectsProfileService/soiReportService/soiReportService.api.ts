@@ -13,7 +13,7 @@ import {
 } from './soiReportService.types';
 
 export const getSoiReport = async (
-  params: CreateSoiReportRequestPayload
+  params: CreateSoiReportRequestPayload,
 ): Promise<void> => {
   const res: string = await axios.get('Reports/SoiReport', {
     params: omit(params, ['ReportName']),
@@ -22,19 +22,16 @@ export const getSoiReport = async (
 
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(
-    url,
-    `${params.ReportName}_${params.Month}.${params.Year}`
-  );
+  downloadURI(url, `${params.ReportName}_${params.Month}.${params.Year}`);
 };
 
 export const getHouseManagements = (
-  params: GetHouseManagementsRequestPayload
+  params: GetHouseManagementsRequestPayload,
 ): Promise<HouseManagementResponse[]> =>
   axios.get('HouseManagements', { params });
 
 export const getAdresses = (
-  payload: GetAddressesRequestPayload
+  payload: GetAddressesRequestPayload,
 ): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,

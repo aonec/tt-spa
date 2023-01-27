@@ -24,15 +24,13 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-      <Wrapper>
-        <DeviceTitleWrapper>
+    <Wrapper>
+      <DeviceTitleWrapper>
         <GroupWrapper>
           <IndividualDeviceInfo device={device} />
         </GroupWrapper>
         <GroupWrapper>
-          <LinkSC
-            to={`/apartments/${apartmentId}/testimony`}
-          >
+          <LinkSC to={`/apartments/${apartmentId}/testimony`}>
             Перейти в профиль
           </LinkSC>
           <ReadingsHistoryButtonWrapper>
@@ -43,8 +41,8 @@ export const DevicesListItem: FC<DevicesListItemProps> = ({
             <ArrowSC />
           </ChevronWrapper>
         </GroupWrapper>
-        </DeviceTitleWrapper>
-        {isOpen && <DeviceInfo device={device} />}
-      </Wrapper>
+      </DeviceTitleWrapper>
+      {isOpen && <DeviceInfo device={device} />}
+    </Wrapper>
   );
 };

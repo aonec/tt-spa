@@ -1,1 +1,1 @@
-export { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal'
+export { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';

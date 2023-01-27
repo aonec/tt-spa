@@ -53,13 +53,13 @@ export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
       () =>
         Number(
           apartment?.homeownerAccounts?.find(
-            (elem) => elem.isMainPersonalAccountNumber
-          )?.id
+            (elem) => elem.isMainPersonalAccountNumber,
+          )?.id,
         ) ||
         Number(
-          apartment?.homeownerAccounts && apartment?.homeownerAccounts[0]?.id
+          apartment?.homeownerAccounts && apartment?.homeownerAccounts[0]?.id,
         ) ||
-        null
+        null,
     );
   }, [selectedType, apartment]);
 
@@ -87,12 +87,12 @@ export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
   const SelectedTypeIcon = selectedType?.icon || (() => <></>);
 
   const selectedHomeowner = apartment?.homeownerAccounts?.find(
-    (elem) => Number(elem.id) === homeownerId
+    (elem) => Number(elem.id) === homeownerId,
   );
   const homeownerAccounts = apartment?.homeownerAccounts || [];
   const openedHomeownerAccounts = useMemo(
     () => homeownerAccounts.filter((account) => !account.closedAt),
-    [homeownerAccounts]
+    [homeownerAccounts],
   );
   const selectHomeownerAccount = (
     <StyledSelect
@@ -131,7 +131,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
       onSubmit={() => {
         closeEditPersonalNumberTypeModal();
         history.push(
-          `/apartment/${id}/homeowners/${homeownerId}/${selectedType?.route}`
+          `/apartment/${id}/homeowners/${homeownerId}/${selectedType?.route}`,
         );
       }}
       disabled={Boolean(selectedType && !homeownerId)}

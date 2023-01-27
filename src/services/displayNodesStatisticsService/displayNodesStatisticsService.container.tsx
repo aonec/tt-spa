@@ -5,7 +5,11 @@ import { useEvent, useStore } from 'effector-react';
 import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { displayNodesStatisticsService } from './displayNodesStatisticsService.model';
-import { PageWrapper, Title, Wrapper } from './displayNodesStatisticsService.styled';
+import {
+  PageWrapper,
+  Title,
+  Wrapper,
+} from './displayNodesStatisticsService.styled';
 import { DisplayNodesStatisticsContainerProps } from './displayNodesStatisticsService.types';
 import { GraphEmptyData } from './view/GraphEmptyData';
 import { NodeStatisticsTable } from './view/NodeStatisticsTable';
@@ -13,10 +17,9 @@ import { NodeStatisticsTable } from './view/NodeStatisticsTable';
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
 
-export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainerProps> = ({
-  nodeId,
-  pipeCount,
-}) => {
+export const DisplayNodesStatisticsContainer: FC<
+  DisplayNodesStatisticsContainerProps
+> = ({ nodeId, pipeCount }) => {
   const currentArhiveFilter = useStore(outputs.$archiveFilter);
   const graphType = useStore(outputs.$graphType);
   const archiveData = useStore(outputs.$archiveReadings);
@@ -35,7 +38,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
         }
         return [...acc, header];
       }, [] as string[]),
-    [archive]
+    [archive],
   );
 
   const archiveReadingExist = archive.length !== 0;

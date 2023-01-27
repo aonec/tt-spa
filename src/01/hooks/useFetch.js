@@ -1,6 +1,3 @@
- 
-
-import React from 'react';
 import axios from 'axios';
 import { middleError, middleSuccess, middleRequest } from '01/middleware';
 
@@ -16,25 +13,3 @@ axios.interceptors.request.use(middleRequest);
 axios.interceptors.response.use(middleSuccess, middleError);
 
 export default axios;
-
-// ++++++++++++++++ hook
-export const useFetch = ({ config }, dispatch) => {
-  const { key, ...rest } = config;
-  const { token, cancel } = axios.CancelToken.source();
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios({ ...rest, cancelToken: token });
-        if (res.auth) {
-          dispatch({ type: 'auth', payload: res.data });
-        }
-        dispatch({ type: 'success', payload: res.data });
-      } catch (err) {
-        dispatch({ type: 'error', payload: err });
-      }
-    };
-    config && fetchData();
-  }, [config?.url ?? null]);
-
-  React.useEffect(() => () => cancel(), [key]);
-};

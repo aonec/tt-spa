@@ -4,7 +4,7 @@ import { axios } from '01/axios';
 import { ApartmentActResponse, DocumentResponse } from 'myApi';
 
 export const getapartmentActsList = async (
-  apartmentId: number
+  apartmentId: number,
 ): Promise<ApartmentActResponse[]> =>
   axios.get(`Apartments/${apartmentId}/Acts`);
 

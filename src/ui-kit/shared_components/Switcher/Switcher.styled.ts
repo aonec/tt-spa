@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
 export const SwitcherWrapper = styled.div`

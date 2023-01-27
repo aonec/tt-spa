@@ -1,1 +1,1 @@
-export { ResourceConsumptionProfile } from './ResourceConsumptionProfile'
+export { ResourceConsumptionProfile } from './ResourceConsumptionProfile';

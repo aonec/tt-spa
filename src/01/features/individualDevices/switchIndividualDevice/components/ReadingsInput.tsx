@@ -20,7 +20,7 @@ import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateN
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
   onChange?: (
-    readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[]
+    readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[],
   ) => void;
   title: string;
   device: DataStringDevice;
@@ -37,7 +37,7 @@ export const ReadingsInput: React.FC<Props> = ({
   const defaultValues = device.rateType
     ? getArrayByCountRange(
         getIndividualDeviceRateNumByName(device.rateType),
-        () => ''
+        () => '',
       )
     : [''];
 
@@ -47,11 +47,11 @@ export const ReadingsInput: React.FC<Props> = ({
 
   const previousReading = getReadingValuesArray(
     preparedReadingsArrWithEmpties[sliderIndex] as any,
-    rateNum
+    rateNum,
   );
 
   const readingByCurrentMonth = readings.find((elem) =>
-    compareDates(elem.readingDate, moment().toISOString(true))
+    compareDates(elem.readingDate, moment().toISOString(true)),
   );
 
   const currentReading = readingByCurrentMonth
@@ -70,7 +70,7 @@ export const ReadingsInput: React.FC<Props> = ({
     const { value, index, isNew, isPrevious, readingDate } = props;
 
     const newReadingDateByMonth = getNewReadingDate(
-      isPrevious ? sliderIndex : -1
+      isPrevious ? sliderIndex : -1,
     );
 
     if (isNew) {
@@ -154,11 +154,11 @@ export const ReadingsInput: React.FC<Props> = ({
 
 const isReadingEmpty = (
   reading: SwitchIndividualDeviceReadingsCreateRequest,
-  rateNum: number
+  rateNum: number,
 ) =>
   getReadingValuesArray(reading, rateNum)?.value?.reduce(
     (acc, elem) => acc || Boolean(elem),
-    false
+    false,
   );
 
 const compareDates = (date1: string, date2: string) =>
@@ -181,14 +181,14 @@ function getNewReadingValuesByIndex(value: string, index: number) {
 }
 
 const getReadingsArrayWithEmpties = (
-  readings: SwitchIndividualDeviceReadingsCreateRequest[]
+  readings: SwitchIndividualDeviceReadingsCreateRequest[],
 ) => {
   return readings.reduce((acc, elem) => {
     const dateFormat = 'YYYY-MM';
 
     const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
     const readingMonthDate = moment(
-      moment(elem.readingDate).format(dateFormat)
+      moment(elem.readingDate).format(dateFormat),
     );
 
     if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
@@ -205,7 +205,7 @@ export const getReadingValuesArray = (
   reading?:
     | IndividualDeviceReadingsResponse
     | SwitchIndividualDeviceReadingsCreateRequest,
-  rateNum?: number
+  rateNum?: number,
 ) => {
   if (!reading || !rateNum) return null;
 

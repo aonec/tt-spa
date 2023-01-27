@@ -20,14 +20,14 @@ interface FileUploader {
 
 export function useFilesUpload(
   onChange?: (files: FileData[]) => void,
-  type?: string
+  type?: string,
 ): FileUploader {
   const [files, setFiles] = useState<FileData[]>([]);
   const pendingProcessing = files.some((elem) => elem.status === 'pending');
 
   const rewriteFile = (id: number, callback: (file: FileData) => FileData) => {
     setFiles((prev) =>
-      rewriteArrayElem(prev, (file) => file.id === id, callback)
+      rewriteArrayElem(prev, (file) => file.id === id, callback),
     );
   };
 
@@ -101,5 +101,5 @@ export function useFilesUpload(
 const rewriteArrayElem = <T>(
   prev: T[],
   checker: (elem: T) => boolean,
-  getNewElem: (elem: T) => T
+  getNewElem: (elem: T) => T,
 ): T[] => prev.map((elem) => (checker(elem) ? getNewElem(elem) : elem));

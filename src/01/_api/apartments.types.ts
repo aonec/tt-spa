@@ -1,4 +1,4 @@
-import { ApartmentStatusSetRequest } from "myApi";
+import { ApartmentStatusSetRequest } from 'myApi';
 
 export interface SetApartmentStatusRequest {
   apartmentId: number;

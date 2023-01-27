@@ -37,7 +37,7 @@ sample({
   clock: guard({
     source: combine(
       $apartmentsPagedList,
-      ApartmentsListGate.state.map(({ housingStockId }) => housingStockId)
+      ApartmentsListGate.state.map(({ housingStockId }) => housingStockId),
     ),
     clock: ApartmentsListGate.open,
     filter: ([apartmentsPagedList, housingStockId]) => {

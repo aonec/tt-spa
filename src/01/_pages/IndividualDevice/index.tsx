@@ -20,14 +20,16 @@ const { TabPane } = TabsSC;
 export const IndividualDevice = () => {
   const { deviceId } = useParams();
   const [grouptype, setGrouptype] = useState<IndividualDeviceGrouptype>(
-    IndividualDeviceGrouptype.info
+    IndividualDeviceGrouptype.info,
   );
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
 
   const [deregister, setDeregister] = useState(false);
-  const { data: tasks, status: tasksStatus, run: tasksRun } = useAsync<
-    TaskListResponse[] | null
-  >();
+  const {
+    data: tasks,
+    status: tasksStatus,
+    run: tasksRun,
+  } = useAsync<TaskListResponse[] | null>();
 
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));

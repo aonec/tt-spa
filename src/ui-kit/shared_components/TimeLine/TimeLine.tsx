@@ -1,8 +1,13 @@
 import React, { FC } from 'react';
-import { Line, TimeLineSC, TimeLineWrapper, TimeWrapper } from './TimeLine.styled';
+import {
+  Line,
+  TimeLineSC,
+  TimeLineWrapper,
+  TimeWrapper,
+} from './TimeLine.styled';
 import { TimeLineProps } from './TimeLine.types';
 
-export const TimeLine: FC<TimeLineProps> = ({timeline}) => {
+export const TimeLine: FC<TimeLineProps> = ({ timeline }) => {
   return (
     <TimeLineWrapper>
       <TimeLineSC>

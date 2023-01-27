@@ -25,7 +25,7 @@ sample({
         openAt,
         isMainAccountingNumber,
       },
-      apartment
+      apartment,
     ) => {
       const data: HomeownerAccountCreateServiceModel = {
         name,
@@ -38,7 +38,7 @@ sample({
       };
 
       return data;
-    }
+    },
   ),
   clock: addPersonalNmberSaveButtonClicked,
   target: addPersonalNumberFx,

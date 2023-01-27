@@ -28,10 +28,10 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
 
-  const openModal = useCallback(() => handleOpenModal(id), [
-    handleOpenModal,
-    id,
-  ]);
+  const openModal = useCallback(
+    () => handleOpenModal(id),
+    [handleOpenModal, id],
+  );
 
   const addressString = getHousingStockAddress(housingStock);
   const isCurrentHousingStockSelected = selectedHousingStock === id;

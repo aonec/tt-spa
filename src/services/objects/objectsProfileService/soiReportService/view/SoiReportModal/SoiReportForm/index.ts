@@ -1,1 +1,1 @@
-export { SoiReportForm } from './SoiReportForm'
+export { SoiReportForm } from './SoiReportForm';

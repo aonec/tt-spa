@@ -1,1 +1,1 @@
-export { DeleteEmployeeModal } from './DeleteEmployeeModal'
+export { DeleteEmployeeModal } from './DeleteEmployeeModal';

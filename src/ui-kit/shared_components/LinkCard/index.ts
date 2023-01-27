@@ -1,1 +1,1 @@
-export { LinkCard } from './LinkCard'
+export { LinkCard } from './LinkCard';

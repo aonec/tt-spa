@@ -10,7 +10,7 @@ const IndividualDevicesIds = createGate<{ devicesIds: number[] }>();
 const toggleBlock = domain.createEvent<number>();
 
 const fetchIndividualDevicesList = domain.createEffect(
-  getIndividualDevicesList
+  getIndividualDevicesList,
 );
 
 const $individualDevicesList = domain

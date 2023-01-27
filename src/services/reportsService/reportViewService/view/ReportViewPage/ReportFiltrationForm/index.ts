@@ -1,1 +1,1 @@
-export { ReportFiltrationForm } from './ReportFiltrationForm'
+export { ReportFiltrationForm } from './ReportFiltrationForm';

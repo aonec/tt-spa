@@ -1,1 +1,1 @@
-export { CompletionSelect } from './CompletionSelect'
+export { CompletionSelect } from './CompletionSelect';

@@ -9,7 +9,7 @@ const { ResourceConsumptionGate } = gates;
 export const ResourceConsumptionContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const resourceConsumptionFilter = useStore(
-    outputs.$resourceConsumptionFilter
+    outputs.$resourceConsumptionFilter,
   );
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
   const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
@@ -32,7 +32,7 @@ export const ResourceConsumptionContainer = () => {
         id: houseManagement.id,
         name: houseManagement.name,
       })),
-    [houseManagements]
+    [houseManagements],
   );
 
   return (

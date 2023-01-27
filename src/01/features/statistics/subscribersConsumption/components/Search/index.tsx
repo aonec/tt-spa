@@ -49,30 +49,26 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
   const isExcluded =
     moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
 
-  const {
-    values,
-    setFieldValue,
-    resetForm,
-    submitForm,
-  } = useFormik<SubscriberStatisticsFormik>({
-    initialValues: {
-      ColdWaterSupply: filter?.ColdWaterSupply,
-      Electricity: filter?.Electricity,
-      HotWaterSupply: filter?.HotWaterSupply,
-      ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
-      ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
-      ElectricitySupplyConsumptionFrom:
-        filter?.ElectricitySupplyConsumptionFrom,
-      ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
-      HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
-      HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
-      ExcludeApartments: isExcluded,
-    },
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      setFilter(values);
-    },
-  });
+  const { values, setFieldValue, resetForm, submitForm } =
+    useFormik<SubscriberStatisticsFormik>({
+      initialValues: {
+        ColdWaterSupply: filter?.ColdWaterSupply,
+        Electricity: filter?.Electricity,
+        HotWaterSupply: filter?.HotWaterSupply,
+        ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
+        ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
+        ElectricitySupplyConsumptionFrom:
+          filter?.ElectricitySupplyConsumptionFrom,
+        ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
+        HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
+        HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+        ExcludeApartments: isExcluded,
+      },
+      enableReinitialize: true,
+      onSubmit: (values) => {
+        setFilter(values);
+      },
+    });
 
   const {
     keyDownEnterGuardedHandler,
@@ -81,7 +77,7 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   function onSendHandler() {
@@ -108,7 +104,7 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             PageSize: 1,
             PageNumber: 1,
           },
-        }
+        },
       );
 
       if (!res.items) return;

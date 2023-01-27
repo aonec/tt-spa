@@ -1,1 +1,1 @@
-export { Segmented } from './Segmented'
+export { Segmented } from './Segmented';

@@ -1,1 +1,1 @@
-export { CommonData } from './CommonData'
+export { CommonData } from './CommonData';

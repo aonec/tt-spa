@@ -41,7 +41,7 @@ const $postStaffStatusPayload = combine(
     type,
     startDate,
     endDate,
-  })
+  }),
 );
 
 sample({

@@ -14,7 +14,7 @@ export const CreateHeatingStationContainer = () => {
   const handleCloseModal = useEvent(inputs.handleCloseModal);
 
   const handleCreateHeatingStation = useEvent(
-    inputs.handleCreateHeatingStation
+    inputs.handleCreateHeatingStation,
   );
 
   return (

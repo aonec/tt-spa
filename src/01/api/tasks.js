@@ -1,5 +1,3 @@
- 
-
 const url = 'tasks';
 
 export const tasks = {
