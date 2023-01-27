@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 import React from 'react';
 import tabsObj from '01/tabs.json';
