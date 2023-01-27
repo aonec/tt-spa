@@ -1,10 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { LineWrapper } from './CommonDataStep.styled';
 import { CommonDataStepProps } from './CommonDataStep.types';
-import { EHousingMeteringDeviceType, EResourceType } from 'myApi';
+import {
+  EHousingMeteringDeviceType,
+  EPipeNodeConfig,
+  EResourceType,
+} from 'myApi';
 import {
   HousingMeteringDeviceDictionary,
   validationSchema,
@@ -12,9 +16,10 @@ import {
 import { useFormik } from 'formik';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
+import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 
 export const CommonDataStep: FC<CommonDataStepProps> = ({
-  resource,
+  configuration,
   updateRequestPayload,
   formId,
   requestPayload,
@@ -42,10 +47,14 @@ export const CommonDataStep: FC<CommonDataStepProps> = ({
   ].filter(
     (elem) =>
       !(
-        resource === EResourceType.ColdWaterSupply &&
+        configuration === EPipeNodeConfig.ColdWaterSupply &&
         elem === EHousingMeteringDeviceType.TemperatureSensor
       )
   );
+
+  const resource = useMemo(() => resourceFromConfig[configuration], [
+    configuration,
+  ]);
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>

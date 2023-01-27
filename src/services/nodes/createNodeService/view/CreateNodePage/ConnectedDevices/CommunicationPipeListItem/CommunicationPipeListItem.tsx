@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { MagistralsDisctionary } from 'dictionaries';
 import {
   DevicesAmount,
@@ -17,10 +17,11 @@ import { MeteringDeviceListItem } from './MeteringDeviceListItem';
 import { PipeIcon } from 'ui-kit/icons';
 import { getDevicesCountText } from './CommunicationPipeListItem.utils';
 import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
+import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 
 export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   pipe,
-  resource,
+  configuration,
   handleDeletePipe,
   handleDeleteDevice,
 }) => {
@@ -29,6 +30,10 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   const devicesCount = pipe.devices?.length || 0;
 
   const devicesCountText = getDevicesCountText(devicesCount);
+
+  const resource = useMemo(() => resourceFromConfig[configuration], [
+    configuration,
+  ]);
 
   return (
     <Wrapper>

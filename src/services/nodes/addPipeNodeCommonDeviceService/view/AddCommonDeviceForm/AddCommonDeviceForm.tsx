@@ -10,7 +10,7 @@ const { TabPane } = Tabs;
 
 export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
   currentFormStep,
-  resource,
+  configuration,
   updateRequestPayload,
   formId,
   requestPayload,
@@ -22,7 +22,7 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
     0: (
       <CommonDataStep
         formId={formId}
-        resource={resource}
+        configuration={configuration}
         updateRequestPayload={updateRequestPayload}
         requestPayload={requestPayload}
       />

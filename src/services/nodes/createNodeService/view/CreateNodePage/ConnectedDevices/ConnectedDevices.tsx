@@ -32,7 +32,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     CommunicationPipePayload[]
   >([]);
 
-  // const { resource } = requestPayload;
+  const { configuration } = requestPayload;
 
   const handleAddCommunicationPipe = (
     communicationPipe: CommunicationPipePayload
@@ -96,13 +96,13 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
 
   return (
     <>
-      {/* {resource && (
+      {configuration && (
         <AddPipeNodeCommonDeviceContainer
           handleAddCommunicationPipe={handleAddCommunicationPipe}
-          resource={resource}
+          configuration={configuration}
           communicationPipes={communicationPipes}
         />
-      )} */}
+      )}
       <div>
         <Title>Подключенные приборы</Title>
         {!communicationPipes.length && (
@@ -114,11 +114,11 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
             <SpaceLine noTop />
           </>
         )}
-        {/* {Boolean(communicationPipes.length) && resource && (
+        {Boolean(communicationPipes.length) && configuration && (
           <CommunicationPipesListWrapper>
             {communicationPipes.map((pipe) => (
               <CommunicationPipeListItem
-                resource={resource}
+                configuration={configuration}
                 key={pipe.id}
                 pipe={pipe}
                 handleDeletePipe={handleDeletePipe}
@@ -126,7 +126,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
               />
             ))}
           </CommunicationPipesListWrapper>
-        )} */}
+        )}
         <LinkButton onClick={() => openAddCommonDeviceModal()}>
           + Добавить прибор
         </LinkButton>

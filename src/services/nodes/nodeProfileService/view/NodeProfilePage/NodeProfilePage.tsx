@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useMemo } from 'react';
 import { stringifyUrl } from 'query-string';
-import { Empty } from 'antd';
+import { Empty, Tooltip } from 'antd';
 
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
@@ -24,6 +24,8 @@ import {
   HeaderWrapper,
   HeaderInfoStringWrapper,
   AdditionalAddress,
+  IncorrectConfigurationIconSC,
+  NodeNumberWrapper,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
@@ -32,6 +34,7 @@ import {
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
+import { IncorrectConfigurationIcon } from 'ui-kit/icons';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -89,6 +92,10 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   const isNodeCommercial =
     pipeNode?.registrationType === ENodeRegistrationType.Commercial;
 
+  const isIncorrectConfig =
+    pipeNode?.validationResult?.errors?.length !== 0 ||
+    pipeNode?.validationResult?.warnings?.length !== 0;
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -102,7 +109,14 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                     resource={pipeNode.resource}
                     style={{ transform: 'scale(1.2)' }}
                   />
-                  <div>Узел {pipeNode.number}</div>
+                  <NodeNumberWrapper>
+                    Узел {pipeNode.number}
+                    {isIncorrectConfig && (
+                      <Tooltip title="Проверьте конфигурацию узла">
+                        <IncorrectConfigurationIconSC />
+                      </Tooltip>
+                    )}
+                  </NodeNumberWrapper>
                 </Title>
               }
               contextMenu={{

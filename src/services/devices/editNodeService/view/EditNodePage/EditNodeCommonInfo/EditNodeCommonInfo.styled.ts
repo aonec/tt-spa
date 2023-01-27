@@ -1,14 +1,6 @@
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
 
-export const Wrapper = styled.div`
-  width: 560px;
-
-  .resource {
-    width: 100%;
-  }
-`;
-
 export const InfoWrapper = styled.div`
   display: grid;
   align-items: center;

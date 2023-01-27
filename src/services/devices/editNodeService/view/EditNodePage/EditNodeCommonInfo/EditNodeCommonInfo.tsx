@@ -12,7 +12,6 @@ import {
   InfoWrapper,
   ResourceText,
   SelectWrapper,
-  Wrapper,
   ZoneWrapper,
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
@@ -63,7 +62,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   );
 
   return (
-    <Wrapper>
+    <>
       <Form id={formId} onSubmitCapture={handleSubmit}>
         <InfoWrapper>
           <FormItem label="Тип ресурса" className="resource">
@@ -133,6 +132,6 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
 
         <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
       </FooterWrapper>
-    </Wrapper>
+    </>
   );
 };
