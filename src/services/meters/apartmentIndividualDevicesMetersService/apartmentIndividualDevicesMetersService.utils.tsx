@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 export const firstLetterToUpperCase = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1);

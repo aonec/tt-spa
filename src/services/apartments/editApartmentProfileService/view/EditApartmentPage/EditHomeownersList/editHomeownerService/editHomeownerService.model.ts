@@ -1,18 +1,13 @@
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { createDomain, forward } from 'effector';
-import {
-  EditHomeownerFormPayload,
-  EditHomeownerRequestPayload,
-} from './editHomeownerService.types';
+import { EditHomeownerFormPayload, EditHomeownerRequestPayload } from './editHomeownerService.types';
 import { putHomeowner } from './editHomeownerService.api';
 
 const domain = createDomain('editHomeownerService');
 
 const handleEditHomeowner = domain.createEvent<EditHomeownerRequestPayload>();
 
-const editHomeownerFx = domain.createEffect<EditHomeownerRequestPayload, void>(
-  putHomeowner,
-);
+const editHomeownerFx = domain.createEffect<EditHomeownerRequestPayload, void>(putHomeowner);
 
 const openEditHomeownerModal = domain.createEvent<EditHomeownerFormPayload>();
 const closeEditHomeownerModal = domain.createEvent();
@@ -45,6 +40,6 @@ export const editHomeownerService = {
   outputs: {
     $isModalOpen,
     $isLoading,
-    $housingStockPayload,
+    $housingStockPayload
   },
 };

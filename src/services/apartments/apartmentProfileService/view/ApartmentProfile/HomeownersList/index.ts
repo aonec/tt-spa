@@ -1,1 +1,1 @@
-export { HomeownersList } from './HomeownersList';
+export { HomeownersList } from './HomeownersList'

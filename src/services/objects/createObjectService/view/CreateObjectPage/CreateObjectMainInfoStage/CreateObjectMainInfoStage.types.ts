@@ -16,8 +16,8 @@ export type CreateObjectMainInfoStageProps = {
   createObjectData: ObjectCreateSubmitData | null;
   heatingStations: HeatingStationResponsePagedList | null;
   openCreateHeatingStationModal: () => void;
-  openEditHeatingStationModal: () => void;
-  heatingStationCapture: (payload: HeatingStationResponse) => void;
+  openEditHeatingStationModal: () => void
+  heatingStationCapture: (payload: HeatingStationResponse) => void
 };
 
 export type ObjectMainInfoValues = {

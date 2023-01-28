@@ -44,10 +44,10 @@ export const ExtendedSearchForm: FC<{
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
       setFieldValue(
         "['Filter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex),
+        diameters.slice(firstIndex, secondIndex)
       );
     },
-    [diameters, setFieldValue],
+    [diameters, setFieldValue]
   );
 
   return (
@@ -145,7 +145,7 @@ export const ExtendedSearchForm: FC<{
                 values['Filter.CommercialDateRange.From']
                   ? moment(
                       values['Filter.CommercialDateRange.From'],
-                      dateFormat,
+                      dateFormat
                     )
                   : null,
                 values['Filter.CommercialDateRange.To']
@@ -155,11 +155,11 @@ export const ExtendedSearchForm: FC<{
               onChange={(value: RangeValue): void => {
                 setFieldValue(
                   "['Filter.CommercialDateRange.From']",
-                  value?.length && value[0]?.format('YYYY-MM-DD'),
+                  value?.length && value[0]?.format('YYYY-MM-DD')
                 );
                 setFieldValue(
                   "['Filter.CommercialDateRange.To']",
-                  value?.length && value[1]?.format('YYYY-MM-DD'),
+                  value?.length && value[1]?.format('YYYY-MM-DD')
                 );
               }}
               size="middle"

@@ -21,7 +21,7 @@ const saveFileFx = domain.createEffect<DocumentResponse, void>(fetchSaveFile);
 
 $acts.on(
   getPreviousActs.doneData,
-  (_, actsPagedList) => actsPagedList.items || [],
+  (_, actsPagedList) => actsPagedList.items || []
 );
 
 const ActsCardGate = createGate<{ apartmentId: number }>();

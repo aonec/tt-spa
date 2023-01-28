@@ -3,5 +3,5 @@ import { Wrapper } from './Documents.styled';
 import { DocumentsProps } from './Documents.types';
 
 export const Documents: FC<DocumentsProps> = ({}) => {
-  return <Wrapper>Раздел появится в будущем</Wrapper>;
+  return <Wrapper>Раздел появится в будущем</Wrapper>
 };

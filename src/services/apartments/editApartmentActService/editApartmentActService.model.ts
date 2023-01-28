@@ -24,18 +24,18 @@ $isModalOpen.on(openModal, () => true).reset(closeModal);
 
 const deleteActDocument = domain.createEvent();
 const deleteActDocumentFx = domain.createEffect<number, void>(
-  fetchDeleteActDocument,
+  fetchDeleteActDocument
 );
 
 const editAct = domain.createEvent<EditActFormPayload>();
 const editActFx = domain.createEffect<EditActRequestPayload, void>(
-  updateApartmentAct,
+  updateApartmentAct
 );
 
 const $editActIsLoading = combine(
   editActFx.pending,
   deleteActDocumentFx.pending,
-  (...loading) => loading.includes(true),
+  (...loading) => loading.includes(true)
 );
 
 forward({

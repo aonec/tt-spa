@@ -18,7 +18,7 @@ export const ObjectProfileContainer = () => {
 
   const setCurrentGrouptype = useEvent(inputs.setCurrentGroutype);
   const openConsolidatedReportModal = useEvent(
-    inputs.openConsolidatedReportModal,
+    inputs.openConsolidatedReportModal
   );
 
   return (

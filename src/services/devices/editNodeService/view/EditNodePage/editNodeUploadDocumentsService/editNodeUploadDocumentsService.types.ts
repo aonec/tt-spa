@@ -1,4 +1,5 @@
 export type UpdateDocumentPayload = {
-  nodeId: number;
-  documentsIds: number[];
-};
+    nodeId: number;
+    documentsIds: number[];
+  };
+  

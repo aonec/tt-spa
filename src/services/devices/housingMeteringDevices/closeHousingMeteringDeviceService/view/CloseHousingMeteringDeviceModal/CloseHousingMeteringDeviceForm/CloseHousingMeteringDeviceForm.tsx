@@ -13,9 +13,11 @@ import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 
 const uniqId = 'close-housing-metering-device-form';
 
-export const CloseHousingMeteringDeviceForm: FC<
-  CloseHousingMeteringDeviceFormProps
-> = ({ deviceId, formId, handleOnSubmit }) => {
+export const CloseHousingMeteringDeviceForm: FC<CloseHousingMeteringDeviceFormProps> = ({
+  deviceId,
+  formId,
+  handleOnSubmit,
+}) => {
   const { handleSubmit, values, errors, setFieldValue } = useFormik({
     initialValues: {
       deviceId: deviceId,

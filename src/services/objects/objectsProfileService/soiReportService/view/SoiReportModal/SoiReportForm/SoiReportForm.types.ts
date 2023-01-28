@@ -1,9 +1,6 @@
 import { HouseManagementResponse } from 'myApi';
 import { TreeSelectElement } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
-import {
-  CreateSoiReportRequestPayload,
-  SoiReportType,
-} from '../../../soiReportService.types';
+import { CreateSoiReportRequestPayload, SoiReportType } from '../../../soiReportService.types';
 
 export type SoiReportFormProps = {
   soiReportType: SoiReportType;

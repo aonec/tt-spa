@@ -3,7 +3,9 @@ import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/
 import moment from 'moment';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
-import { getRateNum } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
+import {
+  getRateNum,
+} from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 import { ChevronIcon } from 'ui-kit/icons';
 import { ReadingDateFormat } from '../../editReadingsHistoryService.constants';
 import {
@@ -32,7 +34,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
 
   const isCanUp = useMemo(
     () => moment().startOf('month').diff(readingDate, 'month') !== 0,
-    [readingDate],
+    [readingDate]
   );
 
   const upMonth = useCallback(() => {

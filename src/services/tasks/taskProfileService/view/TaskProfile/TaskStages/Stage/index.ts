@@ -1,1 +1,1 @@
-export { Stage } from './Stage';
+export { Stage } from './Stage'

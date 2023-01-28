@@ -28,7 +28,7 @@ export const StatisticsList: React.FC = () => {
   const isApartmentsExist = apartmentList.length !== 0;
 
   const filter = useStore(
-    subscribersConsumptionService.outputs.$subscriberStatisticsFilter,
+    subscribersConsumptionService.outputs.$subscriberStatisticsFilter
   );
 
   const renderApartment = ({

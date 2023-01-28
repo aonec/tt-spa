@@ -25,9 +25,7 @@ import {
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 
-export const IndividualDevicesExtendedSearch: FC<
-  IndividualDevicesExtendedSearchProps
-> = ({
+export const IndividualDevicesExtendedSearch: FC<IndividualDevicesExtendedSearchProps> = ({
   children,
   devicesSearchType,
   handleApply,
@@ -37,12 +35,15 @@ export const IndividualDevicesExtendedSearch: FC<
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { values, setFieldValue, handleSubmit } =
-    useFormik<SearchIndividualDevicesParams>({
-      initialValues: filters,
-      onSubmit: handleApply,
-      enableReinitialize: true,
-    });
+  const {
+    values,
+    setFieldValue,
+    handleSubmit,
+  } = useFormik<SearchIndividualDevicesParams>({
+    initialValues: filters,
+    onSubmit: handleApply,
+    enableReinitialize: true,
+  });
 
   return (
     <ExtendedSearch
@@ -183,7 +184,7 @@ export const IndividualDevicesExtendedSearch: FC<
                     <SelectSC key={closingReason} value={closingReason}>
                       {text}
                     </SelectSC>
-                  ),
+                  )
                 )}
               </SelectSC>
             </FormItem>
@@ -201,7 +202,7 @@ export const IndividualDevicesExtendedSearch: FC<
                     <SelectSC key={key} value={key}>
                       {value}
                     </SelectSC>
-                  ),
+                  )
                 )}
               </SelectSC>
             </FormItem>

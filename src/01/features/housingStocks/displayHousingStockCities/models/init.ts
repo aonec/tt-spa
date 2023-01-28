@@ -15,7 +15,7 @@ $existingCities.on(fetchExistingCities.doneData, (_, cities) => cities);
 $selectedCity
   .on(setSelectedCity, (_, city) => city)
   .on(fetchExistingCities.doneData, (_, cities) =>
-    cities ? cities[cities.length - 1] : _,
+    cities ? cities[cities.length - 1] : _
   );
 
 sample({

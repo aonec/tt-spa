@@ -1,1 +1,1 @@
-export { HeaderInfoString } from './HeaderInfoString';
+export { HeaderInfoString } from './HeaderInfoString'

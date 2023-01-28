@@ -5,30 +5,28 @@ import { HousingStockFilterResponse } from 'myApi';
 import { getHosuingStockFilters } from './displayHosuingStockFiltersService.api';
 
 const displayHosuingStockFiltersServiceDomain = createDomain(
-  'displayHosuingStockFiltersServiceDomain',
+  'displayHosuingStockFiltersServiceDomain'
 );
 
-const $hosuingStockfilters =
-  displayHosuingStockFiltersServiceDomain.createStore<HousingStockFilterResponse | null>(
-    null,
-  );
+const $hosuingStockfilters = displayHosuingStockFiltersServiceDomain.createStore<HousingStockFilterResponse | null>(
+  null
+);
 
 const $hosuingManagementList = $hosuingStockfilters.map((filters) => {
   const houseManagements = filters?.houseManagements || [];
 
   const sortedHouseManagements = _.sortBy(
     houseManagements,
-    (houseManagement) => houseManagement.value,
+    (houseManagement) => houseManagement.value
   );
 
   return sortedHouseManagements;
 });
 
-const fetchHosuingStockFiltersFx =
-  displayHosuingStockFiltersServiceDomain.createEffect<
-    void,
-    HousingStockFilterResponse
-  >(getHosuingStockFilters);
+const fetchHosuingStockFiltersFx = displayHosuingStockFiltersServiceDomain.createEffect<
+  void,
+  HousingStockFilterResponse
+>(getHosuingStockFilters);
 
 const $loading = fetchHosuingStockFiltersFx.pending;
 

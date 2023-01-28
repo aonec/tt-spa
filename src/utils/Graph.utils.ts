@@ -3,7 +3,7 @@ import { maxBy, minBy } from 'lodash';
 
 export function getMinAndMax<T>(
   data: (T & { value: number })[],
-  minDelta: number,
+  minDelta: number
 ) {
   const minElementValue = minBy(data, (obj) => obj.value)?.value || 0;
   const maxElementValue = maxBy(data, (obj) => obj.value)?.value || 0;

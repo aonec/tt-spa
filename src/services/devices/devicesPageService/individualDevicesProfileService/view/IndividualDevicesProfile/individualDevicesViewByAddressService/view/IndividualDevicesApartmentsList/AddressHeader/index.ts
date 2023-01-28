@@ -1,1 +1,1 @@
-export { AddressHeader } from './AddressHeader';
+export { AddressHeader } from './AddressHeader'

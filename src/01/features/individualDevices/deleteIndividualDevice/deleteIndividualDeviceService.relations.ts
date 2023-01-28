@@ -6,23 +6,23 @@ import { refetchIndividualDevices } from '../displayIndividualDevices/models';
 deleteIndividualDeviceService.outputs.$currentIndividualDevice
   .on(
     deleteIndividualDeviceService.inputs.deleteDeviceModalOpened,
-    (_, device) => device,
+    (_, device) => device
   )
   .reset(
     deleteIndividualDeviceService.inputs.deleteDeviceModalClosed,
-    deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx.doneData,
+    deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx.doneData
   );
 
 deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx.doneData.watch(
-  () => message.success('Прибор успшно удален!'),
+  () => message.success('Прибор успшно удален!')
 );
 deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx.failData.watch(
-  () => message.error('Ошибка удаления прибора'),
+  () => message.error('Ошибка удаления прибора')
 );
 
 guard({
   source: deleteIndividualDeviceService.outputs.$currentIndividualDevice.map(
-    (device) => device?.id,
+    (device) => device?.id
   ),
   clock: deleteIndividualDeviceService.inputs.acceptDeleteDevice,
   filter: (id): id is number => typeof id === 'number',

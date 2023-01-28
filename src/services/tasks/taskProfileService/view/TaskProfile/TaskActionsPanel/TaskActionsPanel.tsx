@@ -23,15 +23,18 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   isLoading,
   handleChangePushStagePayload,
 }) => {
-  const { halfSizeActions, fullSizeActions, bottomActions } =
-    useTaskPanelActions(actions);
+  const {
+    halfSizeActions,
+    fullSizeActions,
+    bottomActions,
+  } = useTaskPanelActions(actions);
 
   const renderTaskAction = ({ Component, type }: TaskActionsComponent) => (
     <Component handleChange={handleChangePushStagePayload} type={type} />
   );
 
   const actionInfoComponents = taskActionInfoComponents.filter(
-    (elem) => elem.taskType === taskType && actions.includes(elem.action),
+    (elem) => elem.taskType === taskType && actions.includes(elem.action)
   );
 
   return (

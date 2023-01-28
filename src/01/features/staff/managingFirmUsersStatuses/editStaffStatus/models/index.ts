@@ -10,7 +10,7 @@ import { createEffect, createStore, createEvent } from 'effector';
 export const $editStaffStatusUserId = createStore<number | null>(null);
 export const $isEditStaffStatusRequestFailed = createStore(false);
 export const $isEditStaffStatusModalVisible = $editStaffStatusUserId.map(
-  (id) => id !== null,
+  (id) => id !== null
 );
 
 const isNotNull = (value: any) => value !== null;
@@ -47,8 +47,7 @@ export const editStaffStatusForm = createForm({
   },
 });
 
-export const editStaffStatusButtonClicked =
-  createEvent<OrganizationUserResponse>();
+export const editStaffStatusButtonClicked = createEvent<OrganizationUserResponse>();
 export const editStaffStatusCancelButtonClicked = createEvent();
 export const editStaffStatusConfirmButtonClicked = createEvent();
 

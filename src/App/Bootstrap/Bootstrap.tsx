@@ -7,8 +7,8 @@ export const Bootstrap: FC = ({ children }) => {
   const AppProvider = useApp();
 
   return (
-    <AppProvider>
-      <ConfigProvider locale={ruRu}>{children}</ConfigProvider>
-    </AppProvider>
+      <AppProvider>
+        <ConfigProvider locale={ruRu}>{children}</ConfigProvider>
+      </AppProvider>
   );
 };

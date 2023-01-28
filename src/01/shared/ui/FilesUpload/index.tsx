@@ -27,7 +27,7 @@ export const FilesUpload: React.FC<Props> = (props) => {
 
   const { files, addFile, removeFile, clearFiles } = useFilesUpload(
     onChange,
-    type,
+    type
   );
 
   useEffect(() => {

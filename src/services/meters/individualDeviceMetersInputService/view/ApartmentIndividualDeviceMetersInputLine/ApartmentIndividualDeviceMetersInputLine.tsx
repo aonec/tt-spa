@@ -15,9 +15,7 @@ import { ApartmentIndividualDeviceMetersInputLineProps } from './ApartmentIndivi
 import { getReadingValuesArray } from './ApartmentIndividualDeviceMetersInputLine.utils';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 
-export const ApartmentIndividualDeviceMetersInputLine: FC<
-  ApartmentIndividualDeviceMetersInputLineProps
-> = ({
+export const ApartmentIndividualDeviceMetersInputLine: FC<ApartmentIndividualDeviceMetersInputLineProps> = ({
   device,
   sliderIndex,
   openReadingsHistoryModal,
@@ -28,6 +26,7 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
 }) => {
+
   const isDeviceClosed = Boolean(device.closingDate);
 
   const previousReadingTooltipTitle = useMemo(
@@ -36,9 +35,9 @@ export const ApartmentIndividualDeviceMetersInputLine: FC<
       getPreviousMeterTooltipTitle(
         previousReadingByCurrentSliderIndex,
         getRateNum(device.rateType),
-        getMeasurementUnit(device.resource),
+        getMeasurementUnit(device.resource)
       ),
-    [previousReadingByCurrentSliderIndex, device],
+    [previousReadingByCurrentSliderIndex, device]
   );
 
   const rateNum = getRateNum(device.rateType);

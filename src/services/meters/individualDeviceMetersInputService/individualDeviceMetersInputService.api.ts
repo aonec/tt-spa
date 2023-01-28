@@ -5,7 +5,7 @@ import {
 } from 'myApi';
 
 export const uploadReading = (
-  reading: IndividualDeviceReadingsCreateRequest,
+  reading: IndividualDeviceReadingsCreateRequest
 ): Promise<IndividualDeviceReadingsResponse> =>
   axios.post('IndividualDeviceReadings/createLite', reading);
 

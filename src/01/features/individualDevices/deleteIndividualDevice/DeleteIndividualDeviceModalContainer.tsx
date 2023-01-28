@@ -6,15 +6,15 @@ import { DeleteIndividualDeviceModal } from './views/DeleteIndividualDeviceModal
 export const DeleteIndividualDeviceModalContainer = () => {
   const visible = useStore(deleteIndividualDeviceService.outputs.$isModalOpen);
   const device = useStore(
-    deleteIndividualDeviceService.outputs.$currentIndividualDevice,
+    deleteIndividualDeviceService.outputs.$currentIndividualDevice
   );
   const loading = useStore(deleteIndividualDeviceService.outputs.$loading);
 
   const handleClose = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed,
+    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed
   );
   const handleDelete = useEvent(
-    deleteIndividualDeviceService.inputs.acceptDeleteDevice,
+    deleteIndividualDeviceService.inputs.acceptDeleteDevice
   );
 
   return (

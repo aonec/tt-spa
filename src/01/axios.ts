@@ -56,11 +56,13 @@ axios.interceptors.response.use(
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axios.post('/auth/refreshToken').then(() => {
-            setIsRefreshRunning(false);
+          axios.post('/auth/refreshToken').then(
+            () => {
+              setIsRefreshRunning(false);
 
-            return resolve(axios(config));
-          });
+              return resolve(axios(config));
+            }
+          );
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {
@@ -73,7 +75,7 @@ axios.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  },
+  }
 );
 
 function saveToLocalStorage(name: string, data: string) {

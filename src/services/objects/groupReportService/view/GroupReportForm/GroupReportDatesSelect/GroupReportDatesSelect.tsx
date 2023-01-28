@@ -16,14 +16,14 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
   setValue,
 }) => {
   const [currentRange, setCurrentRange] = useState<GroupReportRangeOptions>(
-    GroupReportRangeOptions.ThisMonth,
+    GroupReportRangeOptions.ThisMonth
   );
 
   const radioOptions = Object.entries(GroupReportRangeLookup).map(
     ([value, label]) => ({
       value,
       label,
-    }),
+    })
   );
 
   const handleRangeTypeChange = useCallback(
@@ -41,7 +41,7 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
         });
       }
     },
-    [setValue],
+    [setValue]
   );
 
   useEffect(() => {

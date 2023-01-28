@@ -21,7 +21,7 @@ import { DocumentsStage } from './stages/DocumentsStage';
 export const CreateIndividualDeviceForm = () => {
   const stageNumber = useStore($creationDeviceStage);
   const individualDeviceCreationRequestStatus = useStore(
-    $isCreateIndividualDeviceSuccess,
+    $isCreateIndividualDeviceSuccess
   );
 
   const { id } = useParams<{ id: string }>();

@@ -113,7 +113,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           return null;
         });
       }),
-    [consumptionData, resource, checked, selectedAddresses],
+    [consumptionData, resource, checked, selectedAddresses]
   );
 
   useEffect(() => {
@@ -145,7 +145,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       ...Object.values(currentMonthData),
       ...Object.values(prevMonthData),
       ...Object.values(additionalConsumptionData || {}),
-    ].map(prepareData),
+    ].map(prepareData)
   );
 
   return (

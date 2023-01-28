@@ -1,1 +1,1 @@
-export { ApartmentActItem } from './ApartmentActItem';
+export { ApartmentActItem } from './ApartmentActItem'

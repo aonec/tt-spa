@@ -4,6 +4,6 @@ import { ArchivesDataModel } from 'myApi';
 import { FetchArchiveReadingsPayload } from './displayNodesStatisticsService.types';
 
 export const requestNodeReadings = async (
-  params: FetchArchiveReadingsPayload,
+  params: FetchArchiveReadingsPayload
 ): Promise<ArchivesDataModel> =>
   axios.get(`Nodes/${params.nodeId}/Statistics`, { params });

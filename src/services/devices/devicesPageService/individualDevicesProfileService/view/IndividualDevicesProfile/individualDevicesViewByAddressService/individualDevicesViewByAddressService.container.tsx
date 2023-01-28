@@ -13,20 +13,20 @@ const { IndividualDevicesSearchGate } = gates;
 export const IndividualDevicesViewByAddressContainer = () => {
   const housingsByFilter = useStore(outputs.$housingsByFilter);
   const isHousingsByFilterLoading = useStore(
-    outputs.$isHousingsByFilterLoading,
+    outputs.$isHousingsByFilterLoading
   );
   const individualDevicesApartmentsPagedData = useStore(
-    outputs.$individualDevicesApartmentsPagedData,
+    outputs.$individualDevicesApartmentsPagedData
   );
   const isIndividualDevicesApartmentsLoading = useStore(
-    outputs.$isIndividualDevicesApartmentsLoading,
+    outputs.$isIndividualDevicesApartmentsLoading
   );
   const filters = useStore(outputs.$individualDeviceSearchRequestPayload);
   const pageNumber = useStore(outputs.$pageNumber);
   const mountPlaces = useStore(outputs.$mountPlaces);
 
   const setIndividualDeviceSearchRequestPayload = useEvent(
-    inputs.setIndividualDeviceSearchRequestPayload,
+    inputs.setIndividualDeviceSearchRequestPayload
   );
   const updateSearchPayload = useEvent(inputs.updateSearchPayload);
   const clearSearchPayload = useEvent(inputs.clearSearchPayload);

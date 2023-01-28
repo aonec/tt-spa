@@ -17,7 +17,7 @@ const $newDeviceInitialReadings = $oldReadings.map((readings) =>
     text: elem.text,
     value: null,
     nonResidentialRoomConsumption: null,
-  })),
+  }))
 );
 
 const getOldReadings = domain.createEffect<

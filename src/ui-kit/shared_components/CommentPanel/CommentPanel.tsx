@@ -15,7 +15,7 @@ import {
 import { PencilIconSC } from 'ui-kit/shared_components/SelectedEntityPanel/SelectedEntityPanel.styled';
 import { CommentPanelProps } from './CommentPanel.types';
 
-export const CommentPanel: FC<CommentPanelProps> = () => {
+export const CommentPanel: FC<CommentPanelProps> = ({}) => {
   const text =
     ' Прибор иногда выходит из строя и сбиваются настройки соединения. Прошу коллег быть с ним более внимательными';
   const userName = 'Филиппов А.А.';

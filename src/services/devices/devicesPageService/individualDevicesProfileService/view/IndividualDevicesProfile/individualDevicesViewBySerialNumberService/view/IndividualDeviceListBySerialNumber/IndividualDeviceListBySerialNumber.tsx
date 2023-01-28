@@ -3,9 +3,9 @@ import { IndividualDeviceListItemBySerialNumber } from '../IndividualDeviceListI
 import { Wrapper } from './IndividualDeviceListBySerialNumber.styled';
 import { IndividualDeviceListBySerialNumberProps } from './IndividualDeviceListBySerialNumber.types';
 
-export const IndividualDeviceListBySerialNumber: FC<
-  IndividualDeviceListBySerialNumberProps
-> = ({ devices }) => {
+export const IndividualDeviceListBySerialNumber: FC<IndividualDeviceListBySerialNumberProps> = ({
+  devices,
+}) => {
   const list = devices.map((device) => (
     <IndividualDeviceListItemBySerialNumber key={device.id} device={device} />
   ));

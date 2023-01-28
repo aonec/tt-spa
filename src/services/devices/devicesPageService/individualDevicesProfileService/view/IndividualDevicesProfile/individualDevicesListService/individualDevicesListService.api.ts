@@ -2,7 +2,7 @@ import { axios } from '01/axios';
 import { IndividualDeviceResponseFromDevicePage } from 'myApi';
 
 const getIndividualDevice = (
-  deviceId: number,
+  deviceId: number
 ): Promise<IndividualDeviceResponseFromDevicePage> =>
   axios.get(`Devices/Individual/${deviceId}`);
 

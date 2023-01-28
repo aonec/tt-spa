@@ -1,1 +1,1 @@
-export { CompletionComment } from './CompletionComment';
+export { CompletionComment } from './CompletionComment'

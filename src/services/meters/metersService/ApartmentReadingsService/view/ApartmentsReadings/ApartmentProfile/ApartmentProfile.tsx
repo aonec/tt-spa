@@ -53,7 +53,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
         Question: question,
       });
     },
-    [handleSearchApartment],
+    [handleSearchApartment]
   );
 
   const address = apartment?.housingStock?.address?.mainAddress;

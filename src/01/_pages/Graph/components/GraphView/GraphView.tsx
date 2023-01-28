@@ -38,11 +38,11 @@ export const GraphView: React.FC<GraphViewProps> = ({
   const { resource, data: readingsData, averageDeltaMass } = data;
   const isAverageLineRendered = renderForHeatAndDeltaMass(
     resource as ResourceType,
-    graphParam,
+    graphParam
   );
 
   const requiredArchiveValues = (readingsData || []).find(
-    (reading) => reading.header === graphParam,
+    (reading) => reading.header === graphParam
   );
 
   const archiveValues = requiredArchiveValues?.data;

@@ -22,8 +22,7 @@ const handleEditHeatingStation = domain.createEvent<{
 const handleOpenModal = domain.createEvent();
 const handleCloseModal = domain.createEvent();
 
-const currentHeatingStatitonDataCapture =
-  domain.createEvent<HeatingStationResponse>();
+const currentHeatingStatitonDataCapture = domain.createEvent<HeatingStationResponse>();
 
 const editHeatingStationFx = domain.createEffect<
   requestParams,
@@ -61,7 +60,7 @@ guard({
 });
 
 editHeatingStationFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 forward({

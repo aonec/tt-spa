@@ -19,6 +19,7 @@ export const NodeConnection = ({
   onEdit,
   onRemoveConnection,
 }: ConnectionInterface) => {
+
   const { calculator } = node;
 
   if (!calculator) return null;
@@ -67,13 +68,7 @@ export const NodeConnection = ({
       <Flex style={{ justifyContent: 'flex-end' }}>
         {edit ? (
           <>
-            {onEdit && (
-              <IconTT
-                icon="edit"
-                style={{ marginLeft: 8, cursor: 'pointer' }}
-                onClick={onEdit}
-              />
-            )}
+            {onEdit && <IconTT icon="edit" style={{ marginLeft: 8, cursor: 'pointer' }} onClick={onEdit} />}
 
             {!onEdit && (
               <Link
@@ -81,10 +76,7 @@ export const NodeConnection = ({
                 style={{ display: 'inline-flex', width: 'fit-content' }}
                 title="Редактирование Вычислителя"
               >
-                <IconTT
-                  icon="edit"
-                  style={{ marginLeft: 8, cursor: 'pointer' }}
-                />
+                <IconTT icon="edit" style={{ marginLeft: 8, cursor: 'pointer' }} />
               </Link>
             )}
 
@@ -93,6 +85,7 @@ export const NodeConnection = ({
               style={{ marginLeft: 8, cursor: 'pointer' }}
               onClick={onRemoveConnection}
             />
+
           </>
         ) : null}
       </Flex>

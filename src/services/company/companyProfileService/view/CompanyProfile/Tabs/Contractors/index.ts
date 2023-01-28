@@ -1,1 +1,1 @@
-export { Contractors } from './Contractors';
+export { Contractors } from './Contractors'

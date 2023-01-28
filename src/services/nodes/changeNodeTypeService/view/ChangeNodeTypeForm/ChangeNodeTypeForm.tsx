@@ -63,8 +63,7 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
   const isTechnical =
     values.registrationType === ENodeRegistrationType.Technical;
 
-  const technicalTypeRequestErrors =
-    errors.technicalTypeRequest as unknown as NodeSetTechnicalTypeRequest;
+  const technicalTypeRequestErrors = (errors.technicalTypeRequest as unknown) as NodeSetTechnicalTypeRequest;
 
   return (
     <>
@@ -85,7 +84,7 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
                   <Select.Option key={key} value={key}>
                     {value}
                   </Select.Option>
-                ),
+                )
               )}
             </Select>
             <ErrorMessage>{errors.registrationType}</ErrorMessage>
@@ -98,12 +97,12 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
                 format="DD.MM.YYYY"
                 value={getDatePickerValue(
                   values.technicalTypeRequest
-                    ?.commercialAccountingDeregistrationDate,
+                    ?.commercialAccountingDeregistrationDate
                 )}
                 onChange={(date) =>
                   setFieldValue(
                     'technicalTypeRequest.commercialAccountingDeregistrationDate',
-                    date?.format('YYYY-MM-DD'),
+                    date?.format('YYYY-MM-DD')
                   )
                 }
                 allowClear={false}
@@ -136,7 +135,7 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
           handleChangeNodeStatus={(values) =>
             setFieldValue(
               'commercialStatusRequest',
-              getChangeNodeStatusPayload(values),
+              getChangeNodeStatusPayload(values)
             )
           }
         />

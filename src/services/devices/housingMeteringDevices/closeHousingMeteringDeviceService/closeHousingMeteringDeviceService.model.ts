@@ -18,7 +18,7 @@ const closeHousingMeteringDeviceFx = domain.createEffect<
 >(closeDevice);
 
 closeHousingMeteringDeviceFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 closeHousingMeteringDeviceFx.doneData.watch(() => {

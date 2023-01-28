@@ -1,3 +1,5 @@
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
+
 export type InvisibleContextMenuButtonProps = {
   menuButtons?: ContextMenuElement[];
   disabled?: boolean;

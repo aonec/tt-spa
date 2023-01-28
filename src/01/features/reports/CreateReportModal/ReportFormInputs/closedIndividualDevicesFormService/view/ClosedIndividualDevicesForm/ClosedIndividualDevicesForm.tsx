@@ -18,9 +18,7 @@ import {
   unloadingTypesForLabelDictionary,
 } from './ClosedIndividualDevicesFormService.constants';
 
-export const ClosedIndividualDevicesForm: FC<
-  ClosedIndividualDevicesFormProps
-> = ({
+export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> = ({
   unloadSelectType,
   setUnloadSelectType,
   preparedAddresses,

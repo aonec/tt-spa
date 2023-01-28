@@ -85,7 +85,7 @@ export const MountAddress: FC<MountAddressProps> = ({
 
   const prparedStreetsOptions = getPreparedStreetsOptions(
     values.street,
-    existingStreets,
+    existingStreets
   );
 
   return (

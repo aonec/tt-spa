@@ -138,9 +138,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               activeKey={tabSection}
               onChange={(activeKey) =>
                 history.push(
-                  `/apartments/${apartment.id}/${
-                    activeKey as ApartmentSection
-                  }`,
+                  `/apartments/${apartment.id}/${activeKey as ApartmentSection}`
                 )
               }
             >

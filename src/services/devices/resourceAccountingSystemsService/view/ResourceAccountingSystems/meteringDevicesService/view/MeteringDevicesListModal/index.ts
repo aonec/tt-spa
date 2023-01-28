@@ -1,1 +1,1 @@
-export { MeteringDevicesListModal } from './MeteringDevicesListModal';
+export { MeteringDevicesListModal } from './MeteringDevicesListModal'

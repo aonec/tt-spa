@@ -1,1 +1,3 @@
-export type EditHousingMeteringDeviceDocumentsProps = {};
+export type EditHousingMeteringDeviceDocumentsProps = {
+  
+};

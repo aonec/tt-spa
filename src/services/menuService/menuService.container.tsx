@@ -23,7 +23,7 @@ export const MenuContainer = () => {
       menuItems,
       privates,
       hidden,
-      userRoles.map((elem) => elem.key!),
+      userRoles.map((elem) => elem.key!)
     );
   }, [userRoles]);
 

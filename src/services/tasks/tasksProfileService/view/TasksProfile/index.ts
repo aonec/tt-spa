@@ -1,1 +1,1 @@
-export { TasksProfile } from './TasksProfile';
+export { TasksProfile } from './TasksProfile'

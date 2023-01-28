@@ -7,18 +7,18 @@ import { getApartments } from './displayPersonalNumbersListService.api';
 
 const domain = createDomain('displayPersonalNumbersListService');
 
-const $apartmentsListPage =
-  domain.createStore<ApartmentListResponsePagedList | null>(null);
+const $apartmentsListPage = domain.createStore<ApartmentListResponsePagedList | null>(
+  null
+);
 const $apartments = $apartmentsListPage.map(
-  (apartmentsResponse) => apartmentsResponse?.items || [],
+  (apartmentsResponse) => apartmentsResponse?.items || []
 );
 const $filters = domain.createStore<GetApartmentsListRequestPayload | null>(
-  null,
+  null
 );
 
 const setPageNumber = domain.createEvent<number>();
-const searchPersonalNumbers =
-  domain.createEvent<GetApartmentsListRequestPayload>();
+const searchPersonalNumbers = domain.createEvent<GetApartmentsListRequestPayload>();
 const getApartmentsListByPersonalNumber = domain.createEffect<
   GetApartmentsListRequestPayload,
   ApartmentListResponsePagedList
@@ -33,7 +33,7 @@ const SearchPersonalNumberGate = createGate();
 $apartmentsListPage
   .on(
     getApartmentsListByPersonalNumber.doneData,
-    (_, apartmentsResponse) => apartmentsResponse || [],
+    (_, apartmentsResponse) => apartmentsResponse || []
   )
   .reset(clearStores);
 

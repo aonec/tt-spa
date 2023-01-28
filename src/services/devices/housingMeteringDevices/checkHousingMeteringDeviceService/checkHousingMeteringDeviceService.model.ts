@@ -20,7 +20,7 @@ const editCheckDateFx = domain.createEffect<
 >(postCheckDevice);
 
 editCheckDateFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 editCheckDateFx.doneData.watch(() => {
@@ -40,11 +40,6 @@ const $isModalOpen = domain
   .on(handleCloseModal, () => false);
 
 export const checkHousingMeteringDeviceService = {
-  inputs: {
-    handleOpenModal,
-    handleCloseModal,
-    handleOnSubmit,
-    handleUpdateDevice,
-  },
+  inputs: { handleOpenModal, handleCloseModal, handleOnSubmit, handleUpdateDevice },
   outputs: { $isModalOpen },
 };

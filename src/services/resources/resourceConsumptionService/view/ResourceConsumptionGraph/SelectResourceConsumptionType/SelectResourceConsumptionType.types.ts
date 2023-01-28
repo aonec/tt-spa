@@ -8,7 +8,7 @@ export type SelectResourceConsumptionTypeProps = {
   disabled: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   checked: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setCheckedGraphTypes: (
-    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
+    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
   ) => void;
   resource?: EResourceType;
   isAdditionalAddress: boolean;

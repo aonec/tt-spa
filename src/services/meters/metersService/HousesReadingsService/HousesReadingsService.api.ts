@@ -11,13 +11,13 @@ import {
 } from 'myApi';
 
 const getHousingStockId = async (
-  params: GetHousingStocksListRequestPayload,
+  params: GetHousingStocksListRequestPayload
 ): Promise<number | null> => {
   const res: HousingStockListResponsePagedList | null = await axios.get(
     'HousingStocks',
     {
       params: { ...params, PageSize: 1, PageNumber: 1 },
-    },
+    }
   );
 
   const housingStockListItem = res?.items?.[0];
@@ -39,6 +39,6 @@ export const getHousingStock = async ({
 };
 
 export const getIndividualDevicesList = (
-  params: GetIndividualDevicesListRequestPayload,
+  params: GetIndividualDevicesListRequestPayload
 ): Promise<IndividualDeviceListItemResponsePagedList> =>
   axios.get('IndividualDevices', { params });

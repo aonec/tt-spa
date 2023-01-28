@@ -7,16 +7,16 @@ export const InspectorAddressesResetModalContainer: FC = () => {
   const isOpen = useStore(inspectorAddressesResetService.outputs.$isModalOpen);
   const loading = useStore(inspectorAddressesResetService.outputs.$loading);
   const inspectorsList = useStore(
-    inspectorAddressesResetService.outputs.$inspectorsList,
+    inspectorAddressesResetService.outputs.$inspectorsList
   );
 
   const form = inspectorAddressesResetService.form;
 
   const handleClose = useEvent(
-    inspectorAddressesResetService.inputs.closeModal,
+    inspectorAddressesResetService.inputs.closeModal
   );
   const handleResetAddress = useEvent(
-    inspectorAddressesResetService.inputs.resetAddresses,
+    inspectorAddressesResetService.inputs.resetAddresses
   );
 
   return (

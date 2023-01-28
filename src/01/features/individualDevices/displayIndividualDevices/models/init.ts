@@ -41,7 +41,7 @@ guard({
 guard({
   source: IndividualDevicesGate.state.map((elem) => elem),
   clock: refetchIndividualDevices,
-  filter: (params) => Object.values(params).length !== 0,
+  filter: (params)=> Object.values(params).length !== 0,
   target: fetchIndividualDevicesFx,
 });
 
@@ -53,7 +53,7 @@ sample({
   clock: guard({
     source: combine(
       $isAllDevicesDone,
-      fetchNextPageOfIndividualDevicesFx.pending,
+      fetchNextPageOfIndividualDevicesFx.pending
     ),
     clock: fetchNextPageOfIndividualDevices,
     filter: ([isAllDone, pending]) => !(pending || isAllDone),
@@ -67,7 +67,7 @@ sample({
       PageSize: 25,
       OrderRule: 'ApartmentNumber',
       IsOpened: true,
-    }),
+    })
   ),
   target: [fetchNextPageOfIndividualDevicesFx],
 });
@@ -83,14 +83,14 @@ forward({
 
 $totalPagedElems.on(
   fetchNextPageOfIndividualDevicesFx.doneData,
-  (_, { total }) => total,
+  (_, { total }) => total
 );
 
 $pagedIndividualDevices
   .on(PagedIndividualDevicesGate.close, () => [])
   .on(
     fetchNextPageOfIndividualDevicesFx.doneData,
-    (prevElems, { items: nextElems }) => [...prevElems, ...nextElems],
+    (prevElems, { items: nextElems }) => [...prevElems, ...nextElems]
   )
   .reset(HousingStockGate.state);
 
@@ -109,7 +109,7 @@ $pagedIndividualDevices
           readings: [...filteredReadings, result],
         };
       });
-    },
+    }
   )
   .on(
     individualDeviceMetersInputService.inputs.deleteMeterFx.done,
@@ -121,5 +121,5 @@ $pagedIndividualDevices
           ...device,
           readings: device.readings?.filter(({ id }) => id !== meterId) || [],
         };
-      }),
+      })
   );

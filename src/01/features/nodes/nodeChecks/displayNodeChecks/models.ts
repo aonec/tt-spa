@@ -16,7 +16,7 @@ const fetchNodeChecksFx = displayNodeChecksDomain.createEffect<
   NodeCheckResponse[] | null
 >(async (payload) => {
   const res: NodeCheckResponsePagedList = await axios.get(
-    `Nodes/${payload.NodeId}/Checks`,
+    `Nodes/${payload.NodeId}/Checks`
   );
 
   return res?.items;

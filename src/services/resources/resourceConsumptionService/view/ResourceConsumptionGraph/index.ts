@@ -1,1 +1,1 @@
-export { ResourceConsumptionGraph } from './ResourceConsumptionGraph';
+export { ResourceConsumptionGraph } from './ResourceConsumptionGraph'

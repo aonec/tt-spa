@@ -1,1 +1,1 @@
-export { CheckHousingMeteringDeviceModal } from './CheckHousingMeteringDeviceModal';
+export { CheckHousingMeteringDeviceModal } from './CheckHousingMeteringDeviceModal'

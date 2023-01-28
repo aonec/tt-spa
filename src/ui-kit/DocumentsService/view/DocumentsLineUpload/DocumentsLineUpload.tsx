@@ -31,7 +31,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
     (url?: string | null, name?: string | null) => {
       if (url && name) saveAs(url, name);
     },
-    [],
+    []
   );
 
   const handleFile = useCallback(
@@ -40,14 +40,14 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
 
       fileHandler(files);
     },
-    [fileHandler, isLoading],
+    [fileHandler, isLoading]
   );
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) handleFile(event.target.files);
     },
-    [handleFile],
+    [handleFile]
   );
 
   return (

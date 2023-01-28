@@ -19,7 +19,7 @@ export const CompletionStageContainer: FC<ActionComponentProps> = ({
   const payload = useStore(taskProfileService.outputs.$pushStageRequestPayload);
 
   function handleChangeConfirmationType(
-    confirmationType: ETaskConfirmationType,
+    confirmationType: ETaskConfirmationType
   ) {
     handleChange((prev) => ({
       ...prev,

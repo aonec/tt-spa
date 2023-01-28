@@ -11,13 +11,13 @@ export async function putCalculator(params: {
 }): Promise<MeteringDeviceResponse | null> {
   const res: MeteringDeviceResponse = await axios.put(
     `Calculators/${params.deviceId}`,
-    params.form,
+    params.form
   );
   return res;
 }
 
 export const getAlreadyExistingConnectionCalculator = (
-  deviceId: number,
+  deviceId: number
 ): Promise<CalculatorResponse | null> => {
   return axios.get(`/Calculators/${deviceId}`);
 };

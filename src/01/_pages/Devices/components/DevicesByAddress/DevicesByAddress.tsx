@@ -32,7 +32,7 @@ export const DevicesByAddress: FC<DevicesByAddressPropsInterface> = ({
         'Filter.Address.Corpus': address.houseCorpus || undefined,
       });
     },
-    [setAddress, devicesSearchType, setDevicesSearchType],
+    [setAddress, devicesSearchType, setDevicesSearchType]
   );
 
   const deviceElems = addressDevicesGroup.devices?.map((device) => (

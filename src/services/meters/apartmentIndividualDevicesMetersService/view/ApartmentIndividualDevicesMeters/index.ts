@@ -1,1 +1,1 @@
-export { ApartmentIndividualDevicesMeters } from './ApartmentIndividualDevicesMeters';
+export { ApartmentIndividualDevicesMeters } from './ApartmentIndividualDevicesMeters'

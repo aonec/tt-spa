@@ -37,12 +37,12 @@ forward({
 
 const $currentTab = domain
   .createStore<EditHousingMeteringDeviceTabs>(
-    EditHousingMeteringDeviceTabs.CommonInfo,
+    EditHousingMeteringDeviceTabs.CommonInfo
   )
   .on(handleChangeTab, (_, tab) => tab);
 
 editHousingMeteringDeviceFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 editHousingMeteringDeviceFx.doneData.watch(() => {

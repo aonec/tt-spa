@@ -2,7 +2,7 @@ import { ENodeCommercialAccountStatus } from 'myApi';
 import { ChangeNodeStatusFormPayload } from './changeNodeStatusService.types';
 
 export const getChangeNodeStatusPayload = (
-  payload: ChangeNodeStatusFormPayload,
+  payload: ChangeNodeStatusFormPayload
 ) => {
   const { commercialStatus, documentId, firstDate, secondDate } = payload;
   if (

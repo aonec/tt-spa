@@ -1,1 +1,1 @@
-export { EditHomeownersList } from './EditHomeownersList';
+export { EditHomeownersList } from './EditHomeownersList'

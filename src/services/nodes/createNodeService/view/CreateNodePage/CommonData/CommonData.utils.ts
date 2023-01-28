@@ -8,7 +8,7 @@ export const getInitialDateFieldValue = (date?: string | null) => {
 };
 
 export const getNodeStatus = (
-  commercialStatus?: ENodeCommercialAccountStatus | null,
+  commercialStatus?: ENodeCommercialAccountStatus | null
 ) => {
   if (commercialStatus === undefined) {
     return null;

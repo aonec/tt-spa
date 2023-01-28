@@ -99,7 +99,7 @@ forward({
 });
 
 createSoiReportFx.failData.watch((e) =>
-  message.error(e.response.data.error.Text),
+  message.error(e.response.data.error.Text)
 );
 
 const $isCreateReportLoading = createSoiReportFx.pending;

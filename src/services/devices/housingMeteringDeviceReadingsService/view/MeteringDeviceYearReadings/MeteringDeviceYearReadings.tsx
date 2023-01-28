@@ -4,9 +4,13 @@ import { MeteringDeviceMonthReading } from '../MeteringDeviceMonthReading';
 import { ArrowSC, Year } from './MeteringDeviceYearReadings.styled';
 import { MeteringDeviceYearReadingsProps } from './MeteringDeviceYearReadings.types';
 
-export const MeteringDeviceYearReadings: FC<
-  MeteringDeviceYearReadingsProps
-> = ({ yearRreadings, year, isColdWater, createReading, allReadings }) => {
+export const MeteringDeviceYearReadings: FC<MeteringDeviceYearReadingsProps> = ({
+  yearRreadings,
+  year,
+  isColdWater,
+  createReading,
+  allReadings,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const list = useMemo(
@@ -23,7 +27,7 @@ export const MeteringDeviceYearReadings: FC<
           />
         );
       }),
-    [yearRreadings, allReadings, isColdWater],
+    [yearRreadings, allReadings, isColdWater]
   );
 
   return (

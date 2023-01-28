@@ -3,6 +3,7 @@ import { CalculatorsListRequestPayload } from '01/features/carlculators/calculat
 import { CalculatorListResponsePagedList } from 'myApi';
 
 export const getCalculatorsList = (
-  payload: CalculatorsListRequestPayload,
-): Promise<CalculatorListResponsePagedList> =>
-  axios.get('Calculators', { params: payload });
+    payload: CalculatorsListRequestPayload
+  ): Promise<CalculatorListResponsePagedList> =>
+    axios.get('Calculators', { params: payload });
+  

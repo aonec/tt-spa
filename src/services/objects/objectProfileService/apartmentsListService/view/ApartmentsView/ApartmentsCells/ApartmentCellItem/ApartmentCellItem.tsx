@@ -25,7 +25,7 @@ export const ApartmentCellItem: FC<ApartmentCellItemProps> = ({
 }) => {
   const isApartmentOnPause = apartment.status === EApartmentStatus.Pause;
   const isTasksOnApartmentExist = Boolean(
-    apartment.tasksState !== ETasksState.NoTasks,
+    apartment.tasksState !== ETasksState.NoTasks
   );
 
   const additionalHomeownersCount = (apartment?.homeownersCount || 1) - 1;

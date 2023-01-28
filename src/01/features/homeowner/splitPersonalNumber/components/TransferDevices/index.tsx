@@ -22,7 +22,7 @@ export const TransferDevices = () => {
 
     if (hasDevice) {
       fields.individualDeviceIdsForSwitch.onChange(
-        fields.individualDeviceIdsForSwitch.value.filter((elem) => elem !== id),
+        fields.individualDeviceIdsForSwitch.value.filter((elem) => elem !== id)
       );
     } else {
       fields.individualDeviceIdsForSwitch.onChange([
@@ -35,7 +35,7 @@ export const TransferDevices = () => {
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
     index: number,
-    isSelected: boolean,
+    isSelected: boolean
   ) => (
     <Device
       key={index}
@@ -63,13 +63,14 @@ export const TransferDevices = () => {
 
   return (
     <Wrap>
-      {devices.map((value, index) =>
-        renderDevice(
-          value,
-          index,
-          fields.individualDeviceIdsForSwitch.value.includes(value.id),
-        ),
-      )}
+      {devices
+        .map((value, index) =>
+          renderDevice(
+            value,
+            index,
+            fields.individualDeviceIdsForSwitch.value.includes(value.id)
+          )
+        )}
     </Wrap>
   );
 };
@@ -81,7 +82,7 @@ export const Wrap = styled.div`
 
 export const renderDevice = (
   device: IndividualDeviceListItemResponse,
-  index: number,
+  index: number
 ) => (
   <Device key={index}>
     <Flex>

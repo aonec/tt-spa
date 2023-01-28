@@ -20,13 +20,15 @@ export const ResourceAccountingSystems: FC<ResourceAccountingSystemsProps> = ({
   isLoading,
   openDevicesListModal,
 }) => {
-  const [segmentName, setSegmentName] =
-    useState<ResourceAccountingSystemsSegment>('resource');
+  const [
+    segmentName,
+    setSegmentName,
+  ] = useState<ResourceAccountingSystemsSegment>('resource');
 
-  const nodesGroups = useMemo(
-    () => getNodesGroups(nodes || [], segmentName),
-    [nodes, segmentName],
-  );
+  const nodesGroups = useMemo(() => getNodesGroups(nodes || [], segmentName), [
+    nodes,
+    segmentName,
+  ]);
 
   return (
     <Wrapper>

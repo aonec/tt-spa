@@ -46,11 +46,11 @@ guard({
 });
 
 deleteContractorFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 deleteContractorSuccess.watch(() =>
-  message.success('Подрядчик успешно удален!'),
+  message.success('Подрядчик успешно удален!')
 );
 
 export const deleteContractorService = {

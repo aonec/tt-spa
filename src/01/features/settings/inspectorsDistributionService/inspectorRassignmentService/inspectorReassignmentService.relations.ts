@@ -37,9 +37,9 @@ forward({
 });
 
 inspectorReassignmentService.inputs.reassingInspectorsFx.doneData.watch(() =>
-  message.success('Адреса успешно переназначены!'),
+  message.success('Адреса успешно переназначены!')
 );
 
 inspectorReassignmentService.inputs.reassingInspectorsFx.failData.watch(() =>
-  message.error('Ошибка переназначения адресов'),
+  message.error('Ошибка переназначения адресов')
 );

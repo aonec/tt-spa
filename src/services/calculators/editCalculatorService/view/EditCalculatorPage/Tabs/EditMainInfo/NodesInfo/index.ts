@@ -1,1 +1,1 @@
-export { NodesInfo } from './NodesInfo';
+export { NodesInfo } from './NodesInfo'

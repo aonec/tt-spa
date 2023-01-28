@@ -24,7 +24,7 @@ export const SwitchOrCompleteContainer: FC<ActionComponentProps> = ({
         nextStageId: checked ? finalStage?.id : undefined,
       });
     },
-    [nextStages, handleChange],
+    [nextStages, handleChange]
   );
 
   return (

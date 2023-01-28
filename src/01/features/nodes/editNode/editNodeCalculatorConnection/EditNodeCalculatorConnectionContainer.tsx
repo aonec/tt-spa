@@ -19,10 +19,10 @@ export const EditNodeCalculatorConnectionContainer = () => {
   const loading = useStore(nodeService.outputs.$loading);
 
   const handleOpenConfirmModal = useEvent(
-    RemoveNodeCalculatorConnectionService.inputs.openConfirmationModal,
+    RemoveNodeCalculatorConnectionService.inputs.openConfirmationModal
   );
   const handleEdit = useEvent(
-    addNodeCalculatorService.inputs.openAddNodeCalculatorConnectionModal,
+    addNodeCalculatorService.inputs.openAddNodeCalculatorConnectionModal
   );
 
   const showCalculator = Boolean(node?.calculator);

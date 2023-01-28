@@ -4,7 +4,7 @@ export function getSystemText(nodesLength: number) {
   const nodesLengthLastDigit = nodesLength % 10;
 
   const systemText = systemsAmountTexts.find(({ digits }) =>
-    digits.includes(nodesLengthLastDigit),
+    digits.includes(nodesLengthLastDigit)
   )?.text;
 
   return systemText;

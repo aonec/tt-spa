@@ -20,9 +20,9 @@ export const ChangeODPUContainer = () => {
   useEffect(
     () =>
       inputs.switchHousingMeteringDeviceFx.doneData.watch(() =>
-        history.goBack(),
+        history.goBack()
       ).unsubscribe,
-    [],
+    []
   );
 
   return (

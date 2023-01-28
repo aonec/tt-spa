@@ -24,10 +24,9 @@ import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
 
-const $resourceTypes =
-  resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
-    (store) => store?.resourceTypes || [],
-  );
+const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
+  (store) => store?.resourceTypes || []
+);
 const $disconnectingTypes = combine(
   chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
   resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters,
@@ -39,13 +38,13 @@ const $disconnectingTypes = combine(
     }
     if (isInterHeatingSeason) {
       return types.filter(
-        (type) => type.key === EResourceDisconnectingType.InterHeatingSeason,
+        (type) => type.key === EResourceDisconnectingType.InterHeatingSeason
       );
     }
     return types.filter(
-      (type) => type.key !== EResourceDisconnectingType.InterHeatingSeason,
+      (type) => type.key !== EResourceDisconnectingType.InterHeatingSeason
     );
-  },
+  }
 );
 
 const openModal = domain.createEvent();
@@ -73,7 +72,7 @@ const $existingHousingStocks = domain
   .createStore<StreetWithHousingStockNumbersResponse[]>([])
   .on(
     getExistingHousingStocksFx.doneData,
-    (_, housingStocks) => housingStocks.items || [],
+    (_, housingStocks) => housingStocks.items || []
   )
   .reset(clearHousingStocks);
 
@@ -101,11 +100,10 @@ const $isHousingStocksLoading = combine(
   getHouseManagementsFx.pending,
   getHeatingStationFx.pending,
   getExistingHousingStocksFx.pending,
-  (...isLoading) => isLoading.includes(true),
+  (...isLoading) => isLoading.includes(true)
 );
 
-const createResourceDisconnection =
-  domain.createEvent<ResourceDisconnectingCreateRequest>();
+const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingCreateRequest,
   void,
@@ -160,12 +158,13 @@ split({
 
 forward({
   from: createResourceDisconnectionFx.doneData,
-  to: resourceDisablingScheduleServiceService.inputs
-    .refetchResourceDisconnections,
+  to:
+    resourceDisablingScheduleServiceService.inputs
+      .refetchResourceDisconnections,
 });
 
 createResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 export const createResourceDisconnectionService = {

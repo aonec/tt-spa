@@ -4,7 +4,7 @@ import { InspectorResponse } from 'myApi';
 import { getInspectors } from './displayInspectorsService.api';
 
 const displayInspectorsServiceDomain = createDomain(
-  'displayInspectorsServiceDomain',
+  'displayInspectorsServiceDomain'
 );
 
 const $inspectorsList = displayInspectorsServiceDomain.createStore<

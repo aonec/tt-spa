@@ -1,1 +1,1 @@
-export { IndividualDevicesProfile } from './IndividualDevicesProfile';
+export { IndividualDevicesProfile } from './IndividualDevicesProfile'

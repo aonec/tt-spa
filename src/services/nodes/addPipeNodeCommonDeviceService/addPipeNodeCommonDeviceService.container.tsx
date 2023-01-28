@@ -23,7 +23,7 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
 
   const close = useEvent(inputs.closeAddCommonDeviceModal);
   const updateRequestPayload = useEvent(
-    inputs.updateCommonDeviceRequestPayload,
+    inputs.updateCommonDeviceRequestPayload
   );
   const goPrevStep = useEvent(inputs.goPrevStep);
   const openAddPipeModal = useEvent(inputs.openAddPipeModal);

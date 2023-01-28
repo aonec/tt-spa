@@ -1,1 +1,1 @@
-export { TaskPipeNodeInfo } from './TaskPipeNodeInfo';
+export { TaskPipeNodeInfo } from './TaskPipeNodeInfo'

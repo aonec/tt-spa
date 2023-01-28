@@ -1,1 +1,1 @@
-export { ConsolidatedReportForm } from './ConsolidatedReportForm';
+export { ConsolidatedReportForm } from './ConsolidatedReportForm'

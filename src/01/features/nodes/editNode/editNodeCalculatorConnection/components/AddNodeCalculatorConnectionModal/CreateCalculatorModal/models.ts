@@ -68,14 +68,14 @@ sample({
     nodeService.outputs.$node,
     baseInfoAddNodeCalculatorConnectionForm.$values,
     addNodeCalculatorService.inputs.connectionSettingsForm.$values,
-    CreateCalculatorGate.state,
+    CreateCalculatorGate.state
   ),
   clock: saveButtonClicked,
   fn: ([
     node,
     { serialNumber, lastCheckingDate, futureCheckingDate, infoId },
     { isConnected, ipV4, port, deviceAddress },
-    gateState,
+    gateState
   ]) => ({
     housingStockId: node?.housingStockId || gateState?.housingStockId,
     infoId,
@@ -103,7 +103,7 @@ forward({
 });
 
 createCalculatorFx.doneData.watch(() =>
-  message.success('Вычислитель успешно создан!'),
+  message.success('Вычислитель успешно создан!')
 );
 
 createCalculatorFx.failData.watch((e) => {

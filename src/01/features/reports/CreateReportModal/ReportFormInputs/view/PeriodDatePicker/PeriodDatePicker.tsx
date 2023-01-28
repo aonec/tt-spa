@@ -15,7 +15,7 @@ export const PeriodDatePicker: FC<Props> = ({ date, onChange, format }) => {
     (value: moment.Moment | null) => {
       value && onChange(value);
     },
-    [onChange],
+    [onChange]
   );
   return (
     <FormItem label="Период">

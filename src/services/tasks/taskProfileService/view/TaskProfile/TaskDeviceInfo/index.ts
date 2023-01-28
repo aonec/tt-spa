@@ -1,1 +1,1 @@
-export { TaskDeviceInfo } from './TaskDeviceInfo';
+export { TaskDeviceInfo } from './TaskDeviceInfo'

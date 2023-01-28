@@ -13,7 +13,7 @@ export const switchDeviceValidationSchema = yup.object().shape({
       .string()
       .nullable()
       .test('test-date', 'Поле "Дата поверки прибора" обязателное', (value) =>
-        Boolean(value),
+        Boolean(value)
       ),
     futureCheckingDate: yup
       .string()
@@ -21,13 +21,13 @@ export const switchDeviceValidationSchema = yup.object().shape({
       .test(
         'test-date',
         'Поле "Дата следующей поверки прибора" обязателное',
-        (value) => Boolean(value),
+        (value) => Boolean(value)
       ),
     openingDate: yup
       .string()
       .nullable()
       .test('test-date', 'Поле "Дата установки прибора" обязателное', (value) =>
-        Boolean(value),
+        Boolean(value)
       ),
   }),
 });

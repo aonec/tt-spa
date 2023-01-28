@@ -1,8 +1,5 @@
 import { CalculatorIntoHousingStockResponse } from 'myApi';
-import {
-  CreateNodeFormPayload,
-  UpdateNodeFormPayloadCallback,
-} from 'services/nodes/createNodeService/createNodeService.types';
+import { CreateNodeFormPayload, UpdateNodeFormPayloadCallback } from 'services/nodes/createNodeService/createNodeService.types';
 
 export type ConnectionSettingsProps = {
   goPrevStep: () => void;

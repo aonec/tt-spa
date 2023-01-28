@@ -6,14 +6,14 @@ import { CheckHousingMeteringDeviceContainerProps } from './checkHousingMetering
 
 const { inputs, outputs } = checkHousingMeteringDeviceService;
 
-export const CheckHousingMeteringDeviceContainer: FC<
-  CheckHousingMeteringDeviceContainerProps
-> = ({ housingMeteringDevice }) => {
+export const CheckHousingMeteringDeviceContainer: FC<CheckHousingMeteringDeviceContainerProps> = ({
+  housingMeteringDevice,
+}) => {
   const isModalOpen = useStore(outputs.$isModalOpen);
 
   const handleModalClose = useEvent(inputs.handleCloseModal);
 
-  const handleOnSubmit = useEvent(inputs.handleOnSubmit);
+  const handleOnSubmit = useEvent(inputs.handleOnSubmit)
   return (
     <>
       <CheckHousingMeteringDeviceModal

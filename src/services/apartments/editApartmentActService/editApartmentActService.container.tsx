@@ -28,7 +28,7 @@ export const EditApartmentActModalContainer = () => {
         initialValues={initialValues}
       />
     ),
-    [initialValues],
+    [initialValues]
   );
   return (
     <FormModal

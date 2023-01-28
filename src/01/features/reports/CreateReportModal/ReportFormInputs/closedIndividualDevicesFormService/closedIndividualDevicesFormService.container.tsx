@@ -24,6 +24,7 @@ export const ClosedIndividualDevicesFormContainer = () => {
     isSelectableStreetNode: false,
   });
 
+
   return (
     <ClosedIndividualDevicesForm
       unloadSelectType={unloadSelectType}

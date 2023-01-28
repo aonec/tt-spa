@@ -32,7 +32,7 @@ export const CloseIndividualDeviceModal = () => {
 
   const { addFile, removeFile, pendingProcessing } = useFilesUpload(
     fields.documentIds.onChange,
-    'DeviceClosingAct',
+    'DeviceClosingAct'
   );
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);

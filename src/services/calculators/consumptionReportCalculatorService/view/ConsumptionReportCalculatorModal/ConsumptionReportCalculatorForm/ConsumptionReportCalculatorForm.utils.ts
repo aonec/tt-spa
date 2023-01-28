@@ -6,7 +6,7 @@ import {
 
 export const getDatePeriod = (
   archiveType: ArchiveType,
-  period: DatePeriod,
+  period: DatePeriod
 ): { From: string; To: string } | null => {
   if (archiveType === ArchiveType.StartOfMonth) {
     period = [moment().startOf('month'), moment()];

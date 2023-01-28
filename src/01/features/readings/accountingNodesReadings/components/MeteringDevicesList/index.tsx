@@ -63,7 +63,7 @@ export const MeteringDevicesList = () => {
             key={index}
           />
         ))}
-        <MeteringDeviceReadingsSumPanel sum={sum} />
+        <MeteringDeviceReadingsSumPanel sum={sum}/>
         <MeteringDevicesListIsOpen />
       </>
     );

@@ -26,7 +26,7 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
         },
       }));
     },
-    [handleChange],
+    [handleChange]
   );
 
   const handleMessageChange = useCallback(
@@ -39,7 +39,7 @@ export const EmailNotifyContainer: FC<ActionComponentProps> = ({
         },
       }));
     },
-    [handleChange],
+    [handleChange]
   );
 
   const components: {

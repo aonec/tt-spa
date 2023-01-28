@@ -1,1 +1,1 @@
-export { ChangeNodeTypeForm } from './ChangeNodeTypeForm';
+export { ChangeNodeTypeForm } from './ChangeNodeTypeForm'

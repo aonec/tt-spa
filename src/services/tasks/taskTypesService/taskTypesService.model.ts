@@ -21,7 +21,7 @@ export const $housingManagments = createStore<
 >(null);
 
 export const $perpetratorIdStore = createStore<OrganizationUserListResponse[]>(
-  [],
+  []
 );
 
 const fetchTaskTypesFx = createEffect<
@@ -49,9 +49,9 @@ forward({
 $taskTypes.on(fetchTaskTypesFx.doneData, (_, types) => types);
 $housingManagments.on(
   fetchHousingManagments.doneData,
-  (_, managments) => managments,
+  (_, managments) => managments
 );
 $perpetratorIdStore.on(
   fetchPerpetratorIds.doneData,
-  (_, perpetrators) => perpetrators.items || [],
+  (_, perpetrators) => perpetrators.items || []
 );

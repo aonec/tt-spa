@@ -32,9 +32,12 @@ import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 
-export const ConsumptionReportCalculatorForm: FC<
-  ConsumptionReportCalculatorFormProps
-> = ({ formId, calculator, handleSubmitForm, isSono }) => {
+export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorFormProps> = ({
+  formId,
+  calculator,
+  handleSubmitForm,
+  isSono,
+}) => {
   const address = calculator?.address?.address?.mainAddress;
   const reportName = `${calculator?.model}_${address?.street}_${address?.number}`;
 
@@ -92,9 +95,9 @@ export const ConsumptionReportCalculatorForm: FC<
         return devices?.filter(
           (device) =>
             device.housingMeteringDeviceType ===
-            EHousingMeteringDeviceType.FlowMeter,
+            EHousingMeteringDeviceType.FlowMeter
         );
-      }),
+      })
     );
 
     const devicesString = devicesList

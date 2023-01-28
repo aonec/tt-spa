@@ -1,1 +1,1 @@
-export { CreateResourceDisconnectionSelectResource } from './CreateResourceDisconnectionSelectResource';
+export { CreateResourceDisconnectionSelectResource } from './CreateResourceDisconnectionSelectResource'

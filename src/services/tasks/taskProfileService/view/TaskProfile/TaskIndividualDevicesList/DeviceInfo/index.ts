@@ -1,1 +1,1 @@
-export { DeviceInfo } from './DeviceInfo';
+export { DeviceInfo } from './DeviceInfo'

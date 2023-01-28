@@ -36,42 +36,46 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   createObjectData,
   handleSubmitCreateObject,
 }) => {
-  const { values, handleSubmit, setFieldValue, errors } =
-    useFormik<ObjectAddressValues>({
-      initialValues: {
-        city: createObjectData?.city || null,
-        street: createObjectData?.street || '',
-        house: createObjectData?.house || null,
-        corpus: createObjectData?.corpus || null,
-        index: createObjectData?.index || null,
-        additionalAddresses: createObjectData?.additionalAddresses || [],
-      },
-      enableReinitialize: true,
-      onSubmit: (data) => {
-        handleSubmitCreateObject(data);
-      },
-      validateOnChange: false,
-      validationSchema,
-    });
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    errors,
+  } = useFormik<ObjectAddressValues>({
+    initialValues: {
+      city: createObjectData?.city || null,
+      street: createObjectData?.street || '',
+      house: createObjectData?.house || null,
+      corpus: createObjectData?.corpus || null,
+      index: createObjectData?.index || null,
+      additionalAddresses: createObjectData?.additionalAddresses || [],
+    },
+    enableReinitialize: true,
+    onSubmit: (data) => {
+      handleSubmitCreateObject(data);
+    },
+    validateOnChange: false,
+    validationSchema,
+  });
 
   const additionalAddressesFieldOnChange = (
     index: number,
     fieldName: string,
-    value: string,
+    value: string
   ) =>
     setFieldValue(
       'additionalAddresses',
       values.additionalAddresses.map((el, i) => {
         if (index !== i) return el;
         return { ...el, [fieldName]: value };
-      }),
+      })
     );
 
   const addressSearch = values.street;
 
   const preparedExistingStreets = getPreparedStreetsOptions(
     addressSearch,
-    existingStreets || [],
+    existingStreets || []
   );
 
   return (
@@ -156,7 +160,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                     additionalAddressesFieldOnChange(
                       index,
                       'street',
-                      value as string,
+                      value as string
                     )
                   }
                   value={elem.street}
@@ -173,7 +177,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                       additionalAddressesFieldOnChange(
                         index,
                         'house',
-                        value.target.value as string,
+                        value.target.value as string
                       )
                     }
                   />
@@ -187,7 +191,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
                       additionalAddressesFieldOnChange(
                         index,
                         'corpus',
-                        value.target.value as string,
+                        value.target.value as string
                       )
                     }
                   />
@@ -199,7 +203,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               onClick={() =>
                 setFieldValue(
                   'additionalAddresses',
-                  values.additionalAddresses.filter((el, i) => index !== i),
+                  values.additionalAddresses.filter((el, i) => index !== i)
                 )
               }
             >

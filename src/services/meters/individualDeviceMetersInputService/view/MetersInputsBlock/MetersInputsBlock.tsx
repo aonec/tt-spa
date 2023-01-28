@@ -58,8 +58,10 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     setStatus(uploadingStatus || null);
   }, [uploadingStatus, sliderIndex]);
 
-  const [bufferedReadingValues, setBufferedReadingValues] =
-    useState<BufferedReadingValues>(getBufferedValuesFromReading(reading));
+  const [
+    bufferedReadingValues,
+    setBufferedReadingValues,
+  ] = useState<BufferedReadingValues>(getBufferedValuesFromReading(reading));
 
   useEffect(() => {
     setBufferedReadingValues(getBufferedValuesFromReading(reading));
@@ -67,26 +69,25 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
   const rateNum = useMemo(() => getRateNum(rateType), [rateType]);
 
-  const dataString = useMemo(
-    () => (isPrevious ? 'previuos' : 'current'),
-    [isPrevious],
-  );
+  const dataString = useMemo(() => (isPrevious ? 'previuos' : 'current'), [
+    isPrevious,
+  ]);
 
   const nextInput = useSwitchInputOnEnter(
     dataString,
-    !isPrevious && inputIndex === 0,
+    !isPrevious && inputIndex === 0
   );
 
   const handleReadingInputFocus = useCallback(
     (e?: FocusEvent<HTMLInputElement>) => {
       e?.target?.select();
     },
-    [],
+    []
   );
 
   const setFailed = useCallback(
     () => setStatus(MetersInputBlockStatus.Failed),
-    [],
+    []
   );
 
   const inputDataAttr = useMemo(() => {
@@ -102,7 +103,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         [e.target.name]: e.target.value,
       }));
     },
-    [setBufferedReadingValues],
+    [setBufferedReadingValues]
   );
 
   const { sourceIcon, sourceName } = useMemo(() => {
@@ -132,7 +133,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         .then(() => next())
         .catch(() => setStatus(MetersInputBlockStatus.Failed));
     },
-    [bufferedReadingValues, rateNum, sliderIndex, handleUploadReading, reading],
+    [bufferedReadingValues, rateNum, sliderIndex, handleUploadReading, reading]
   );
 
   const handleTriggerInput = useCallback(
@@ -145,7 +146,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       const isValuesChanged = Object.values(bufferedReadingValues).some(
         (value, index) =>
-          value !== initialReadingValues[getBufferedValuesValueKey(index)],
+          value !== initialReadingValues[getBufferedValuesValueKey(index)]
       );
 
       const isLastIndex = rateNum === index + 1;
@@ -154,7 +155,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       uploadReading(next);
     },
-    [nextInput, handleUploadReading],
+    [nextInput, handleUploadReading]
   );
 
   const inputsArray = useMemo(
@@ -195,7 +196,7 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
       inputIndex,
       inputDataAttr,
       status,
-    ],
+    ]
   );
   const readingDate = useMemo(() => {
     const readingDate = reading?.entryDate;

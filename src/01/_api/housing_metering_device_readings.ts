@@ -6,11 +6,11 @@ import {
 } from '../../myApi';
 
 export const postReading = (
-  query: CreateHousingMeteringDeviceReadingsRequest,
+  query: CreateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
   axios.post('housingMeteringDeviceReadings/CreateOrUpdateLast', query);
 
 export const updateReading = (
-  query: UpdateHousingMeteringDeviceReadingsRequest,
+  query: UpdateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
   axios.put('HousingMeteringDeviceReadings', query);

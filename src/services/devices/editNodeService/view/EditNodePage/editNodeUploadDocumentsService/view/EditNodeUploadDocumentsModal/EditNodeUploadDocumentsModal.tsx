@@ -4,9 +4,11 @@ import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
 import { EditNodeUploadDocumentsModalProps } from './EditNodeUploadDocumentsModal.types';
 
-export const EditNodeUploadDocumentsModal: FC<
-  EditNodeUploadDocumentsModalProps
-> = ({ closeModal, isOpen, onSubmit }) => {
+export const EditNodeUploadDocumentsModal: FC<EditNodeUploadDocumentsModalProps> = ({
+  closeModal,
+  isOpen,
+  onSubmit,
+}) => {
   const [docs, setDocuments] = useState<DocumentLiteResponse[]>([]);
 
   return (

@@ -6,4 +6,5 @@ export type TaskCommentsProps = {
   handleSetComment: (comment: string) => void;
   isPerpetrator: boolean;
   commentText: string;
+
 };

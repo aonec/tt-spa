@@ -27,7 +27,7 @@ export function validateReadings(
   newValues: (number | null)[],
   rateNum: number,
   resource: EResourceType,
-  limits?: ConsumptionRatesDictionary | null,
+  limits?: ConsumptionRatesDictionary | null
 ) {
   const limit = limits && limits[resource]?.maximumConsumptionRate;
 
@@ -63,14 +63,14 @@ export function validateReadings(
         ],
       };
     },
-    { validated: true, limit } as CorrectReadingValuesValidationResult,
+    { validated: true, limit } as CorrectReadingValuesValidationResult
   );
 
   return res;
 }
 
 export function getActiveReadings(
-  readings?: IndividualDeviceReadingsItemHistoryResponse[] | null,
+  readings?: IndividualDeviceReadingsItemHistoryResponse[] | null
 ) {
   if (!readings) return null;
 
@@ -81,17 +81,17 @@ export function confirmReading(
   { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
   onSubmit: () => void,
   onCancel: () => void,
-  device: IndividualDeviceResponse,
+  device: IndividualDeviceResponse
 ) {
   const valueWarning = valuesValidationResults?.find((elem) =>
-    Boolean(elem.type),
+    Boolean(elem.type)
   );
 
   const unit = getMeasurementUnit(device.resource);
 
   if (valueWarning?.type === 'down') {
     const failedValidateReading = valuesValidationResults?.find(
-      (elem) => !elem.validated,
+      (elem) => !elem.validated
     );
 
     openConfirmReadingModal({
@@ -115,7 +115,7 @@ export function confirmReading(
       valueWarning?.type === 'up'
         ? `Расход ${round(
             valueWarning.difference,
-            3,
+            3
           )}${unit}, больше чем лимит ${limit}${unit}`
         : ''
     }`,
@@ -126,10 +126,11 @@ export function confirmReading(
 
 export function getPreviousReadingByHistory(
   readingsHistoryRaw: IndividualDeviceReadingsHistoryResponse,
-  address: { year: number; month: number },
+  address: { year: number; month: number }
 ): IndividualDeviceReadingsItemHistoryResponse | null {
-  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse =
-    _.cloneDeep(readingsHistoryRaw);
+  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = _.cloneDeep(
+    readingsHistoryRaw
+  );
   const yearReadings = readingsHistoryClone?.yearReadings || [];
   const readingsHistoryCleared = yearReadings
     .map((yearReading) => {
@@ -137,7 +138,7 @@ export function getPreviousReadingByHistory(
 
       return monthReadings.map((monthReading) => {
         const activeReading = monthReading.readings?.find(
-          (reading) => !reading.isArchived && !reading.isRemoved,
+          (reading) => !reading.isArchived && !reading.isRemoved
         );
 
         return {
@@ -155,7 +156,7 @@ export function getPreviousReadingByHistory(
       readingsHistoryElement?.year === address.year
         ? index
         : acc,
-    null as number | null,
+    null as number | null
   );
 
   if (typeof currentIndex !== 'number') return null;
@@ -170,7 +171,7 @@ export function getPreviousReadingByHistory(
 
 export const getRecentlyReplacedAccount = (
   homeownerAccounts: HomeownerAccountListResponse[],
-  actualHomeownerAccount?: HomeownerAccountListResponse,
+  actualHomeownerAccount?: HomeownerAccountListResponse
 ) => {
   if (homeownerAccounts.length <= 1) return null;
 

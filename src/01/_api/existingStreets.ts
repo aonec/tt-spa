@@ -14,7 +14,7 @@ export type GetExistingSteetRequestParams = Params;
 
 export const getExistingStreets = async (params: Params): Promise<string[]> => {
   const res: { items: string[] } = await axios.get(
-    `HousingStocks/ExistingStreets${formQueryString(params)}`,
+    `HousingStocks/ExistingStreets${formQueryString(params)}`
   );
 
   return res.items;

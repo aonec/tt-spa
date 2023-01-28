@@ -29,7 +29,7 @@ export const Button: FC<ButtonProps> = (props) => {
         return onClick(e);
       }
     },
-    [onClick, disabled],
+    [onClick, disabled]
   );
 
   return (

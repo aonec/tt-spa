@@ -55,7 +55,7 @@ export type MeterInputUploadReadingPayload = Omit<
 export type UploadReading = (
   readingPayload: MeterInputUploadReadingPayload,
   isPrevious?: boolean,
-  setFailed?: () => void,
+  setFailed?: () => void
 ) => Promise<void>;
 
 export type UploadMeterPayload = {

@@ -1,1 +1,1 @@
-export { ConsumptionReportCalculatorModal } from './ConsumptionReportCalculatorModal';
+export { ConsumptionReportCalculatorModal } from './ConsumptionReportCalculatorModal'

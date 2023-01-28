@@ -51,28 +51,26 @@ export const ModalTT: React.FC<Props> = (props) => {
       return null;
     }
     if (!footer) {
-      return (
-        <Footer>
+      return <Footer>
+        <ButtonTT
+          color={'white'}
+          key="back"
+          onClick={customCancelButton || onCancel}
+        >
+          {cancelBtnText}
+        </ButtonTT>
+        {customSubmit || (
           <ButtonTT
-            color={'white'}
-            key="back"
-            onClick={customCancelButton || onCancel}
+            color={saveButtonType || 'blue'}
+            key="submit"
+            type="submit"
+            onClick={onSubmit}
+            disabled={loading || disabled}
           >
-            {cancelBtnText}
+            {loading ? <Loader show /> : text}
           </ButtonTT>
-          {customSubmit || (
-            <ButtonTT
-              color={saveButtonType || 'blue'}
-              key="submit"
-              type="submit"
-              onClick={onSubmit}
-              disabled={loading || disabled}
-            >
-              {loading ? <Loader show /> : text}
-            </ButtonTT>
-          )}
-        </Footer>
-      );
+        )}
+      </Footer>;
     }
     return footer;
   }, [

@@ -5,15 +5,15 @@ import { getApartment } from './Filter.api';
 
 export function useFilters() {
   const history = useHistory();
-
+  
   const [searchState, setSearchState] = useState<GetApartmentRequestPayload>(
-    {},
-  );
+    {}
+    );
 
   const syncSearchState = useCallback(
     (values: GetApartmentRequestPayload) =>
       setSearchState((prev) => ({ ...prev, ...values })),
-    [],
+    []
   );
 
   const handleSubmit = useCallback(async () => {

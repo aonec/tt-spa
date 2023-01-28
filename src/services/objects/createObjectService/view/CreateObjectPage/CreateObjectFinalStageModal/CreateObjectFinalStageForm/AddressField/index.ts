@@ -1,1 +1,1 @@
-export { AddressField } from './AddressField';
+export { AddressField } from './AddressField'

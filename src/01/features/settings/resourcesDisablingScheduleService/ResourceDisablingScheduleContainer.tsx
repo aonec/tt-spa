@@ -17,10 +17,7 @@ import {
   deleteResourceDisconnectionService,
 } from 'services/resources/deleteResourceDisconnectionService';
 import { editResourceDisconnectionService } from 'services/resources/editResourceDisconnectionService';
-import {
-  DisplayResourceDisconenctionAddressesServiceContainer,
-  displayResourceDisconenctionAddressesServiceService,
-} from './views/displayResourceDisconenctionAddressesServiceService';
+import { DisplayResourceDisconenctionAddressesServiceContainer, displayResourceDisconenctionAddressesServiceService } from './views/displayResourceDisconenctionAddressesServiceService';
 
 const { inputs, outputs, gates } = resourceDisablingScheduleServiceService;
 
@@ -35,16 +32,16 @@ export const ResourceDisablingScheduleContainer = () => {
   const applyFilters = useEvent(inputs.applyFilters);
   const setPage = useEvent(inputs.setPage);
   const openCompleteDisconnectionModal = useEvent(
-    completeResourceDisconnectionService.inputs.openModal,
+    completeResourceDisconnectionService.inputs.openModal
   );
   const openDeleteDisconnectionModal = useEvent(
-    deleteResourceDisconnectionService.inputs.openModal,
+    deleteResourceDisconnectionService.inputs.openModal
   );
   const openEditDisconnectionModal = useEvent(
-    editResourceDisconnectionService.inputs.openEditModal,
+    editResourceDisconnectionService.inputs.openEditModal
   );
   const openDissconectionAddressesModal = useEvent(
-    displayResourceDisconenctionAddressesServiceService.inputs.openModal,
+    displayResourceDisconenctionAddressesServiceService.inputs.openModal
   );
 
   return (

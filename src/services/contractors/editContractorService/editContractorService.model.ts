@@ -41,11 +41,11 @@ forward({
 });
 
 editContractorFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 editContractorSuccess.watch(() =>
-  message.success('Подрядчик успешно изменён!'),
+  message.success('Подрядчик успешно изменён!')
 );
 
 export const editContractorService = {

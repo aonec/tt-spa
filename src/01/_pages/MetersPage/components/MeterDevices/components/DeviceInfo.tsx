@@ -32,10 +32,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
       </DeviceLink>
       <ApartmentInfo>
-        <DeviceStatus
-          isActive={isActive}
-          closingReason={device.closingReason}
-        />
+        <DeviceStatus isActive={isActive} closingReason={device.closingReason} />
         <DateLine
           lastCheckingDate={device.lastCheckingDate}
           futureCheckingDate={device.futureCheckingDate}

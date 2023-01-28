@@ -1,11 +1,16 @@
 import { useFormik } from 'formik';
+import { EResourceType } from 'myApi';
 import React, { FC, useEffect } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import {
   DeviceInfoWrapper,
+  ResourceOptionWrapper,
+  ResourceOptionNameWrapper,
   DeviceCheckingDatesWrapper,
 } from './SwitchDeviceForm.styled';
 import {
@@ -20,18 +25,21 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
   isCalculator,
   calculatorInfos,
 }) => {
-  const { values, handleChange, setFieldValue } =
-    useFormik<SwitchDeviceFormValues>({
-      initialValues: {
-        lastCheckingDate: null,
-        futureCheckingDate: null,
-        openingDate: null,
-        model: '',
-        serialNumber: '',
-        calculatorInfoId: null,
-      },
-      onSubmit: () => {},
-    });
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+  } = useFormik<SwitchDeviceFormValues>({
+    initialValues: {
+      lastCheckingDate: null,
+      futureCheckingDate: null,
+      openingDate: null,
+      model: '',
+      serialNumber: '',
+      calculatorInfoId: null,
+    },
+    onSubmit: () => {},
+  });
 
   useEffect(() => {
     handleChangeSwitchDevicePayload({
@@ -40,16 +48,16 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
       openingDate: values.openingDate?.format('YYYY-MM-DD'),
     });
-  }, [values, handleChangeSwitchDevicePayload]);
+  }, [values]);
 
   useEffect(() => {
     if (!values.lastCheckingDate) return;
 
     setFieldValue(
       'futureCheckingDate',
-      values.lastCheckingDate?.add(4, 'year'),
+      values.lastCheckingDate?.add(4, 'year')
     );
-  }, [values.lastCheckingDate, setFieldValue]);
+  }, [values.lastCheckingDate]);
 
   useEffect(() => {
     if (!values.calculatorInfoId) return;
@@ -59,7 +67,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       '';
 
     setFieldValue('model', model);
-  }, [values.calculatorInfoId, setFieldValue, calculatorInfos]);
+  }, [values.calculatorInfoId]);
 
   return (
     <div>

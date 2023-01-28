@@ -1,1 +1,1 @@
-export { ResourceSelect } from './ResourceSelect';
+export { ResourceSelect } from './ResourceSelect'

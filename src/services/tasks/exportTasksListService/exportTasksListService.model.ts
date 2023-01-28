@@ -28,16 +28,14 @@ sample({
 exportTasksList.watch(() => message.info('Выгрузка задач...'));
 
 exportTasksListFx.done.watch(() =>
-  message.success('Список задач успешно выгружен!'),
+  message.success('Список задач успешно выгружен!')
 );
 
 exportTasksListFx.failData.watch(async (e) => {
   const data = JSON.parse(
-    await (
-      e.response.data as unknown as {
-        text: () => Promise<string>;
-      }
-    ).text(),
+    await ((e.response.data as unknown) as {
+      text: () => Promise<string>;
+    }).text()
   );
 
   message.error(data.error.Text);

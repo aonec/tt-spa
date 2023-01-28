@@ -31,10 +31,12 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
 
   const fixedReading = device?.fixedReading;
 
-  const [bufferedReadingValues, setBufferedReadingValues] =
-    useState<BufferedReadingValues>(
-      getBufferedValuesFromReading(fixedReading || undefined),
-    );
+  const [
+    bufferedReadingValues,
+    setBufferedReadingValues,
+  ] = useState<BufferedReadingValues>(
+    getBufferedValuesFromReading(fixedReading || undefined)
+  );
 
   useEffect(() => {
     if (bufferedReadingValues) handleReadingChange(bufferedReadingValues);
@@ -49,7 +51,7 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
     problemReading &&
     getReadingValuesArray(
       problemReading as IndividualDeviceReadingsItemHistoryResponse,
-      rateNum,
+      rateNum
     );
 
   if (!device) return null;
@@ -72,7 +74,7 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
   );
 
   const handleChangeReadingValues = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setBufferedReadingValues((prev) => ({
       ...prev,

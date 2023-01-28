@@ -34,13 +34,13 @@ export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
 
   const preparedUploadingTime = getTimeStringByUTC(
     uploadingTime,
-    'DD.MM.YYYY, HH:mm:ss',
+    'DD.MM.YYYY, HH:mm:ss'
   );
 
-  const deleteDocument = useCallback(
-    () => handleDeleteDocument(id),
-    [handleDeleteDocument, id],
-  );
+  const deleteDocument = useCallback(() => handleDeleteDocument(id), [
+    handleDeleteDocument,
+    id,
+  ]);
 
   return (
     <Wrapper>

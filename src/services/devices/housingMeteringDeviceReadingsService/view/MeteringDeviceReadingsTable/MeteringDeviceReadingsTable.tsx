@@ -7,12 +7,15 @@ import { MeteringDeviceReadingsTableHeader } from '../MeteringDeviceReadingsTabl
 import { MeteringDeviceYearReadings } from '../MeteringDeviceYearReadings';
 import { MeteringDeviceReadingsTableProps } from './MeteringDeviceReadingsTable.types';
 
-export const MeteringDeviceReadingsTable: FC<
-  MeteringDeviceReadingsTableProps
-> = ({ isColdWater, readings, createReading, deviceIds }) => {
+export const MeteringDeviceReadingsTable: FC<MeteringDeviceReadingsTableProps> = ({
+  isColdWater,
+  readings,
+  createReading,
+  deviceIds,
+}) => {
   const preparedReadings = useMemo(
     () => groupWithEmptyReadings(readings, deviceIds),
-    [readings, deviceIds],
+    [readings, deviceIds]
   );
 
   const isDevicesExist = preparedReadings.length !== 0;

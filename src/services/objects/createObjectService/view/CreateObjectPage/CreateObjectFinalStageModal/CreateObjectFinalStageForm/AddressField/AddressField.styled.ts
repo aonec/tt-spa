@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const SpacedIndex = styled.span`
   padding: 0px 10px;

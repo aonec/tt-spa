@@ -1,1 +1,1 @@
-export { DocumentsStep } from './DocumentsStep';
+export { DocumentsStep } from './DocumentsStep'

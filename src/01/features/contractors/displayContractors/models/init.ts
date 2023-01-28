@@ -7,14 +7,16 @@ import {
 } from './index';
 import { forward, guard } from 'effector';
 
-getContractorsFx.use(requestContractors);
+getContractorsFx.use(
+  requestContractors
+);
 
 $isFetchingContractorsFailed
   .on(getContractorsFx.failData, () => true)
   .reset(getContractorsFx);
 
 $contractors.on(getContractorsFx.doneData, (contractors, response) =>
-  contractors ? [...contractors, ...response.items] : response.items,
+  contractors ? [...contractors, ...response.items] : response.items
 );
 
 forward({

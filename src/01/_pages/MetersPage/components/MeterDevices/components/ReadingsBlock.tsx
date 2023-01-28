@@ -138,7 +138,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   useEffect(() => {
     if (lineIndex === 0 && isCurrent) {
       const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-        `[data-reading-input="current"]`,
+        `[data-reading-input="current"]`
       );
 
       const node = inputList[lineIndex];

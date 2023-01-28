@@ -1,1 +1,1 @@
-export { GraphEmptyData } from './GraphEmptyData';
+export { GraphEmptyData } from './GraphEmptyData'

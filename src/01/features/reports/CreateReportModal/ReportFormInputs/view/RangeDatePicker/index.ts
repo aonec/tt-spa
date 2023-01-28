@@ -1,1 +1,1 @@
-export { RangeDatePicker } from './RangeDatePicker';
+export { RangeDatePicker } from './RangeDatePicker'

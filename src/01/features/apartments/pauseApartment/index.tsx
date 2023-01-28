@@ -80,7 +80,7 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
       fromDate: fields.fromDate.value,
       toDate: fields.toDate.value,
     }),
-    [EApartmentStatus.Pause, fields.fromDate.value, fields.toDate.value],
+    [EApartmentStatus.Pause, fields.fromDate.value, fields.toDate.value]
   );
 
   return (

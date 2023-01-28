@@ -7,24 +7,25 @@ import {
 export function useManagingFirmConsumptionRates(
   consumptionRates: MangingFirmsConsumptionRatesDictionary,
   loadConsumptionRates: (payload: number) => number,
-  managementFirmId?: number | null,
+  managementFirmId?: number | null
 ) {
-  const managementFirmConsumptionRates: ConsumptionRatesDictionary | null =
-    useMemo(() => {
-      if (!managementFirmId) return null;
+  const managementFirmConsumptionRates:
+    | ConsumptionRatesDictionary
+    | null = useMemo(() => {
+    if (!managementFirmId) return null;
 
-      const consumptionRatesArray = consumptionRates[managementFirmId];
+    const consumptionRatesArray = consumptionRates[managementFirmId];
 
-      if (!consumptionRatesArray) return null;
+    if (!consumptionRatesArray) return null;
 
-      return consumptionRatesArray.reduce(
-        (acc, elem) => ({
-          ...acc,
-          [elem.key!.toString()]: elem.value,
-        }),
-        {} as ConsumptionRatesDictionary,
-      );
-    }, [consumptionRates, managementFirmId]);
+    return consumptionRatesArray.reduce(
+      (acc, elem) => ({
+        ...acc,
+        [elem.key!.toString()]: elem.value,
+      }),
+      {} as ConsumptionRatesDictionary
+    );
+  }, [consumptionRates, managementFirmId]);
 
   useEffect(() => {
     if (managementFirmId) loadConsumptionRates(managementFirmId);

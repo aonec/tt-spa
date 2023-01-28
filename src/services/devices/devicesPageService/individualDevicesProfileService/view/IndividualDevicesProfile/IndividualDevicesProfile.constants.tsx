@@ -6,7 +6,6 @@ import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPa
 export const IndividualDevicesViewComponents: {
   [key in DevicesSearchType]: FC;
 } = {
-  [DevicesSearchType.SearialNumber]:
-    IndividualDevicesViewBySerialNumberContainer,
+  [DevicesSearchType.SearialNumber]: IndividualDevicesViewBySerialNumberContainer,
   [DevicesSearchType.Address]: IndividualDevicesViewByAddressContainer,
 };

@@ -9,7 +9,7 @@ const $node = nodeDomain.createStore<PipeNodeResponse | null>(null);
 const $readings = nodeDomain.createStore<boolean>(false);
 
 const fetchNodeFx = nodeDomain.createEffect<number, PipeNodeResponse>((id) =>
-  axios.get(`PipeNodes/${id}`),
+  axios.get(`PipeNodes/${id}`)
 );
 
 const NodeGate = createGate<{ id: number }>();
@@ -19,7 +19,7 @@ const refetchNode = nodeDomain.createEvent();
 $readings.on(
   fetchNodeFx.doneData,
   (_, node) =>
-    node?.calculator === null || node?.calculator?.isConnected === false,
+    node?.calculator === null || node?.calculator?.isConnected === false
 );
 
 $node.on(fetchNodeFx.doneData, (_, node) => node).reset(NodeGate.close);

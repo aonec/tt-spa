@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { request } from 'services/api';
@@ -9,8 +10,8 @@ export const useGETPerpetratorsAndContractors = () => {
       .all([request('OrganizationUsers'), request('Contractors')])
       .then(
         axios.spread((p, c) =>
-          setData({ perpetrators: p.items, contractors: c.items }),
-        ),
+          setData({ perpetrators: p.items, contractors: c.items })
+        )
       );
   }, []);
 

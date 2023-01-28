@@ -10,12 +10,12 @@ fetchIndividualDeviceFxMountPlacesFx.use(getIndividualDeviceMountPlaces);
 
 $individualDeviceMountPlaces.on(
   fetchIndividualDeviceFxMountPlacesFx.doneData,
-  (_, places) => places,
+  (_, places) => places
 );
 
 sample({
   source: IndividualDeviceMountPlacesGate.state.map(
-    (params) => params.apartmentId,
+    (params) => params.apartmentId
   ),
   clock: IndividualDeviceMountPlacesGate.state,
   target: fetchIndividualDeviceFxMountPlacesFx,

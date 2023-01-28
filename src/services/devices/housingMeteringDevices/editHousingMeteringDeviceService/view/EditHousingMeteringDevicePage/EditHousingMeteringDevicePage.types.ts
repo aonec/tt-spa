@@ -12,5 +12,5 @@ export type EditHousingMeteringDevicePageProps = {
     deviceId: number;
     request: UpdatePipeHousingMeteringDeviceRequest;
   }) => void;
-  deviceId: string;
+  deviceId: string
 };

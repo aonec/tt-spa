@@ -1,1 +1,1 @@
-export { SendReportToEmailDescription } from './SendReportToEmailDescription';
+export { SendReportToEmailDescription } from './SendReportToEmailDescription'

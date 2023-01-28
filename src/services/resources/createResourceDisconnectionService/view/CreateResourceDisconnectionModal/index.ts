@@ -1,1 +1,1 @@
-export { CreateResourceDisconnectionModal } from './CreateResourceDisconnectionModal';
+export { CreateResourceDisconnectionModal } from './CreateResourceDisconnectionModal'

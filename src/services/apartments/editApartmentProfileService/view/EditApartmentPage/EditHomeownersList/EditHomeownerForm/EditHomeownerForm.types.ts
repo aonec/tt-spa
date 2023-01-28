@@ -7,4 +7,4 @@ export type EditHomeownerFormProps = {
   initialValues?: EditHomeownerPayload;
 };
 
-export type EditHomeownerPayload = typeof formInitialValues;
+export type EditHomeownerPayload = typeof formInitialValues

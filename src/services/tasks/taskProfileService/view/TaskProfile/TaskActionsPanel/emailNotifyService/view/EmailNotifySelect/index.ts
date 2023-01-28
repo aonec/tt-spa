@@ -1,1 +1,1 @@
-export { EmailNotifySelect } from './EmailNotifySelect';
+export { EmailNotifySelect } from './EmailNotifySelect'

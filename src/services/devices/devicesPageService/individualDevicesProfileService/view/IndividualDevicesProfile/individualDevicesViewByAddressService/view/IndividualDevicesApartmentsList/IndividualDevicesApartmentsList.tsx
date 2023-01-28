@@ -5,9 +5,7 @@ import { IndividualDevicesApartmentItem } from './IndividualDevicesApartmentItem
 import { ListWrapper, Wrapper } from './IndividualDevicesApartmentsList.styled';
 import { IndividualDevicesApartmentsListProps } from './IndividualDevicesApartmentsList.types';
 
-export const IndividualDevicesApartmentsList: FC<
-  IndividualDevicesApartmentsListProps
-> = ({
+export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsListProps> = ({
   housingsByFilter,
   isLoading,
   individualDevicesApartmentsList,

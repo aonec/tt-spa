@@ -19,7 +19,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
 
   const additionalAddressesString = useMemo(() => {
     const additionalAddresses = housingStock.address?.additionalAddresses || [];
-
+    
     return additionalAddresses
       .map((elem) => `${elem.street}, ${elem.number}`)
       .join('; ');

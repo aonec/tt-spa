@@ -33,9 +33,9 @@ forward({
 });
 
 inspectorAddressesResetService.inputs.resetAddressesFx.doneData.watch(() =>
-  message.success('Адреса успешно сброшены!'),
+  message.success('Адреса успешно сброшены!')
 );
 
 inspectorAddressesResetService.inputs.resetAddressesFx.failData.watch(() =>
-  message.error('Ошибка сброса адресов'),
+  message.error('Ошибка сброса адресов')
 );

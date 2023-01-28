@@ -6,7 +6,7 @@ import { Document } from './DocumentsService.types';
 
 export function useDocumentsUpload(
   documents: Document[],
-  onChange: (documents: Document[]) => void,
+  onChange: (documents: Document[]) => void
 ) {
   const [isLoading, setIsLoading] = useState(false);
 

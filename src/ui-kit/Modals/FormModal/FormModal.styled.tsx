@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Modal } from 'antd';
 
 export const ModalText = styled.p`
@@ -40,6 +40,7 @@ export const StyledModal = styled(Modal)`
     margin-left: 16px;
   }
 `;
+
 
 export const Header = styled.h1`
   font-size: 32px;

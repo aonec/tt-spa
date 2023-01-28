@@ -6,15 +6,14 @@ import { getReadingValueKey } from '../../individualDeviceMetersInputService.uti
 export function getPreviousMeterTooltipTitle(
   reading: IndividualDeviceReadingsResponse,
   rateNum: number,
-  unit: string,
+  unit: string
 ) {
   const valuesString = getFilledArray(
     rateNum,
-    (index) => reading[getReadingValueKey(index)],
+    (index) => reading[getReadingValueKey(index)]
   )
     .map(
-      (elem, index) =>
-        `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`,
+      (elem, index) => `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
     )
     .join(', ');
 

@@ -1,1 +1,1 @@
-export { EditMainInfo } from './EditMainInfo';
+export { EditMainInfo } from './EditMainInfo'

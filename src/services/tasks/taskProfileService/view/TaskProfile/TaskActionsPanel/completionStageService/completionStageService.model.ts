@@ -3,7 +3,7 @@ import { taskProfileService } from 'services/tasks/taskProfileService/taskProfil
 export const completionStageService = {
   outputs: {
     $taskConfirmationTypes: taskProfileService.outputs.$task.map(
-      (task) => task?.allowableConfirmationTypes,
+      (task) => task?.allowableConfirmationTypes
     ),
     $taskType: taskProfileService.outputs.$task.map((task) => task?.type),
   },

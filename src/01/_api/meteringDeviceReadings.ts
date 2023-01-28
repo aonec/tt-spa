@@ -6,7 +6,7 @@ import {
 } from 'myApi';
 
 export async function getMeteringDeviceReadings(
-  nodeId: number,
+  nodeId: number
 ): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse[]> {
   const res: any = await axios.get('HousingMeteringDeviceReadings', {
     params: { nodeId },
@@ -16,25 +16,25 @@ export async function getMeteringDeviceReadings(
 }
 
 export async function postMeteringDeviceReading(
-  payload: CreateHousingMeteringDeviceReadingsRequest,
+  payload: CreateHousingMeteringDeviceReadingsRequest
 ) {
   return await axios.post('HousingMeteringDeviceReadings', payload);
 }
 
 export async function putMeteringDeviceReading(
-  payload: UpdateHousingMeteringDeviceReadingsRequest,
+  payload: UpdateHousingMeteringDeviceReadingsRequest
 ) {
   return await axios.put('HousingMeteringDeviceReadings', payload);
 }
 
 export async function createOrUpdateLast(
-  payload: CreateHousingMeteringDeviceReadingsRequest,
+  payload: CreateHousingMeteringDeviceReadingsRequest
 ) {
   return await axios.post('HousingMeteringDeviceReadings', payload);
 }
 
 export async function updateHousingMeteringDeviceReading(
-  payload: UpdateHousingMeteringDeviceReadingsRequest,
+  payload: UpdateHousingMeteringDeviceReadingsRequest
 ) {
   return await axios.put('HousingMeteringDeviceReadings', payload);
 }

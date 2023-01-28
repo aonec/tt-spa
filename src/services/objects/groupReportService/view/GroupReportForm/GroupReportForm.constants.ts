@@ -10,7 +10,7 @@ export const validationSchema = Yup.object().shape({
     .oneOf(Object.values(EReportType))
     .required('Это поле обязательное'),
   NodeResourceTypes: Yup.array<EResourceType>(
-    Yup.mixed<EResourceType>().oneOf(Object.values(EResourceType)),
+    Yup.mixed<EResourceType>().oneOf(Object.values(EResourceType))
   ).required('Это поле обязательное'),
 
   DelayedEmailTarget: Yup.string(),
@@ -18,7 +18,7 @@ export const validationSchema = Yup.object().shape({
   'Subscription.Email': Yup.string().email(),
   'Subscription.TriggerAt': Yup.string(),
   'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(
-    Object.values(EEmailSubscriptionType),
+    Object.values(EEmailSubscriptionType)
   ),
   'Subscription.ContractorIds': Yup.array(Yup.number()),
 });

@@ -24,7 +24,7 @@ export const DevicesList: FC<DevicesListProps> = ({
       setAddress={setAddress}
       housingsByFilter={housingsByFilter.find(
         (housing) =>
-          housing.current?.id === addressDevicesGroup.devices[0].address?.id,
+          housing.current?.id === addressDevicesGroup.devices[0].address?.id
       )}
       devicesSearchType={devicesSearchType}
       setDevicesSearchType={setDevicesSearchType}

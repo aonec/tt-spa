@@ -20,7 +20,7 @@ const $isModalOpen = $calculatorInfo.map(Boolean);
 
 const checkCalculator = domain.createEvent<CheckCalculatorFormik>();
 const checkCalculatorFx = domain.createEffect<CheckDeviceRequest, void>(
-  fetchCloseCalculator,
+  fetchCloseCalculator
 );
 
 sample({

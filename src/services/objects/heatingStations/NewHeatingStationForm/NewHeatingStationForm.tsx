@@ -32,36 +32,39 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
   handleEditHeatingStation,
   openedHeatingStationData,
 }) => {
-  const { values, handleSubmit, setFieldValue, errors } =
-    useFormik<HeatingStation>({
-      initialValues: {
-        isThermalChamber:
-          (openedHeatingStationData?.isThermalChamber
-            ? HeatingStationType.ThermalChamber
-            : HeatingStationType.CentralHeatingStation) || null,
-        name: openedHeatingStationData?.name || null,
-        address: {
-          city: openedHeatingStationData?.address?.city || null,
-          street: openedHeatingStationData?.address?.street || '',
-          number: openedHeatingStationData?.address?.housingStockNumber || null,
-        },
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    errors,
+  } = useFormik<HeatingStation>({
+    initialValues: {
+      isThermalChamber: (openedHeatingStationData?.isThermalChamber
+        ? HeatingStationType.ThermalChamber
+        : HeatingStationType.CentralHeatingStation) || null,
+      name: openedHeatingStationData?.name || null,
+      address: {
+        city: openedHeatingStationData?.address?.city || null,
+        street: openedHeatingStationData?.address?.street || '',
+        number: openedHeatingStationData?.address?.housingStockNumber || null,
       },
-      enableReinitialize: true,
-      onSubmit: (data) => {
-        handleCreateHeatingStation && handleCreateHeatingStation(data);
-        handleEditHeatingStation &&
-          openedHeatingStationData?.id &&
-          handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
-      },
-      validateOnChange: false,
-      validationSchema,
-    });
+    },
+    enableReinitialize: true,
+    onSubmit: (data) => {
+      handleCreateHeatingStation && handleCreateHeatingStation(data);
+      handleEditHeatingStation &&
+        openedHeatingStationData?.id &&
+        handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
+    },
+    validateOnChange: false,
+    validationSchema,
+  });
 
   const addressSearch = values.address.street;
 
   const preparedExistingStreets = getPreparedStreetsOptions(
     addressSearch,
-    existingStreets || [],
+    existingStreets || []
   );
 
   return (

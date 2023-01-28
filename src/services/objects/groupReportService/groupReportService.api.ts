@@ -20,7 +20,7 @@ export const downloadGroupReportRequest = async ({
 };
 
 export const fetchGroupReport = (
-  params: Omit<GroupReportRequestPayload, 'Name'>,
+  params: Omit<GroupReportRequestPayload, 'Name'>
 ): Promise<string> =>
   axios.get('Reports/GroupReport', {
     params,

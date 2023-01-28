@@ -1,1 +1,1 @@
-export { TaskBaseInfo } from './TaskBaseInfo';
+export { TaskBaseInfo } from './TaskBaseInfo'

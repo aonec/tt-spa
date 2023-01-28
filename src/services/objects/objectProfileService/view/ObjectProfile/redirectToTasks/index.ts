@@ -1,1 +1,1 @@
-export { RedirectToTasksContainer } from './redirectToTasks.container';
+export { RedirectToTasksContainer } from './redirectToTasks.container'

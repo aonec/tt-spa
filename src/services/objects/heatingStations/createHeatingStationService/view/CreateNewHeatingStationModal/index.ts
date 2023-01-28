@@ -1,1 +1,1 @@
-export { CreateNewHeatingStationModal } from './CreateNewHeatingStationModal';
+export { CreateNewHeatingStationModal } from './CreateNewHeatingStationModal'

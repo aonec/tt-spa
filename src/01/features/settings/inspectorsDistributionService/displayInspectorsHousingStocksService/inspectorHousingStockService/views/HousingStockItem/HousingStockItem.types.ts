@@ -10,7 +10,7 @@ export type HousingStockItemProps = {
   inspectors: InspectorResponse[] | null;
   days: number[];
   updateHousingStock: (
-    updatedData: UpdateInspectorOnHousingStockRequest,
+    updatedData: UpdateInspectorOnHousingStockRequest
   ) => void;
   updateInfo?: CurrentHousingStockUpdate;
 };

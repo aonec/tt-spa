@@ -40,8 +40,8 @@ export const getProblemDevices = async ({
     devices: IndividualDeviceWithExpiredCheckingDateResponse[];
   } = await axios.get(
     `Apartments/${apartmentId}/SetStatusProblemDevices${formQueryString(
-      requestPayload,
-    )}`,
+      requestPayload
+    )}`
   );
 
   return res.devices;
@@ -49,7 +49,7 @@ export const getProblemDevices = async ({
 
 export const getApartmentCheckDocuments = async (apartmentId: number) => {
   const res: ApartmentCheckResponsePagedList = await axios.get(
-    `Apartments/${apartmentId}/ApartmentChecks`,
+    `Apartments/${apartmentId}/ApartmentChecks`
   );
 
   return res.items;
@@ -64,7 +64,7 @@ export const checkApartment = ({
 }): Promise<void> => axios.post(`Apartments/${apartmentId}/AddCheck`, data);
 
 export const findApartmentId = (
-  payload: FindApartmentIdQueryPayload,
+  payload: FindApartmentIdQueryPayload
 ): Promise<number | null> =>
   axios.get('Apartments/FindApartmentId', { params: payload });
 

@@ -1,1 +1,1 @@
-export { ListOpeningChevron } from './ListOpeningChevron';
+export { ListOpeningChevron } from './ListOpeningChevron'

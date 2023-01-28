@@ -1,1 +1,1 @@
-export { EditNodeCommonInfo } from './EditNodeCommonInfo';
+export { EditNodeCommonInfo } from './EditNodeCommonInfo'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { SegmentItem, SegmentTitle, Wrapper } from './Segmented.styled';
 import { SegmentedProps } from './Segmented.types';
 

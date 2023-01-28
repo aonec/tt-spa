@@ -1,7 +1,7 @@
 import { ApartmentAddress, HomeownerAccount } from 'myApi';
 
 export const getApartmentAddressForList = (
-  apartment: ApartmentAddress | null | undefined,
+  apartment: ApartmentAddress | null | undefined
 ) => {
   if (!apartment) {
     return null;
@@ -25,7 +25,7 @@ export const getHomeownerName = (homeowners: HomeownerAccount[]) => {
     };
   }
   const mainHomeowner = homeowners.find(
-    (homeowner) => homeowner.isMain === true,
+    (homeowner) => homeowner.isMain === true
   );
   if (mainHomeowner) {
     return {

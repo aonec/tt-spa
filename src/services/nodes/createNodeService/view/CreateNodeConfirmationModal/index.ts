@@ -1,1 +1,1 @@
-export { CreateNodeConfirmationModal } from './CreateNodeConfirmationModal';
+export { CreateNodeConfirmationModal } from './CreateNodeConfirmationModal'

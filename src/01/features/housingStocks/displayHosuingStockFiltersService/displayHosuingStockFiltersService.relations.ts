@@ -5,10 +5,10 @@ displayHousingStockFiltersService.outputs.$hosuingStockfilters
   .on(
     displayHousingStockFiltersService.inputs.fetchHosuingStockFiltersFx
       .doneData,
-    (_, filters) => filters,
+    (_, filters) => filters
   )
   .reset(
-    displayHousingStockFiltersService.inputs.HousingStockFiltersGate.close,
+    displayHousingStockFiltersService.inputs.HousingStockFiltersGate.close
   );
 
 forward({

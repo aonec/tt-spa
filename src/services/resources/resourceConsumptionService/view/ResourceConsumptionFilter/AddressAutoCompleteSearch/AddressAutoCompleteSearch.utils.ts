@@ -3,15 +3,15 @@ import { countSimilarityPoints } from 'utils/countSimilarityPoints';
 
 export const prepareOptionsForAutoComplete = (
   streets: AddressWithSearchString[],
-  addressSearch: string,
+  addressSearch: string
 ) => {
   const similarOptions =
     streets.filter((elem) =>
-      Boolean(countSimilarityPoints(addressSearch, elem.addressString)),
+      Boolean(countSimilarityPoints(addressSearch, elem.addressString))
     ) || [];
 
   const sortedOptionsBySimilarity = similarOptions.sort((a, b) =>
-    sortOptionsBySimilarity(a, b, addressSearch),
+    sortOptionsBySimilarity(a, b, addressSearch)
   );
 
   return sortedOptionsBySimilarity.map((street) => ({
@@ -22,7 +22,7 @@ export const prepareOptionsForAutoComplete = (
 const sortOptionsBySimilarity = (
   a: AddressWithSearchString,
   b: AddressWithSearchString,
-  addressSearch: string,
+  addressSearch: string
 ) => {
   const aPoints = countSimilarityPoints(addressSearch, a.addressString);
   const bPoints = countSimilarityPoints(addressSearch, b.addressString);

@@ -31,7 +31,7 @@ export const CreateNodeContainer = () => {
   const goPrevStep = useEvent(inputs.goPrevStep);
   const openCreateCalculatorModal = useEvent(inputs.openCreateCalculatorModal);
   const openCreateNodeServiceZoneModal = useEvent(
-    inputs.openCreateNodeServiceZoneModal,
+    inputs.openCreateNodeServiceZoneModal
   );
   const openConfiramtionModal = useEvent(inputs.openConfiramtionModal);
   const closeConfiramtionModal = useEvent(inputs.closeConfiramtionModal);
@@ -39,7 +39,7 @@ export const CreateNodeContainer = () => {
 
   useEffect(() => {
     return inputs.handlePipeNodeCreated.watch((node) =>
-      history.push(`/nodes/${node.id}`),
+      history.push(`/nodes/${node.id}`)
     );
   }, []);
 

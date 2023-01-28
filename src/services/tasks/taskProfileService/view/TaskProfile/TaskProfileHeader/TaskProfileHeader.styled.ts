@@ -24,7 +24,7 @@ export const InfoWrapper = styled.div`
 
   color: #272f5ae5;
   margin-top: 8px;
-  min-height: 16px;
+  min-height:16px;
 `;
 
 export const TimerRowWrapper = styled.div`

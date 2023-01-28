@@ -19,7 +19,7 @@ export const CloseHomeownerAccountContainer = () => {
 
   const handleCloseModal = useEvent(inputs.closeClosingHomeownerModal);
   const handleCloseHomeownerAccount = useEvent(
-    inputs.handleCloseHomeownerAccount,
+    inputs.handleCloseHomeownerAccount
   );
 
   const handleSubmit = () => {

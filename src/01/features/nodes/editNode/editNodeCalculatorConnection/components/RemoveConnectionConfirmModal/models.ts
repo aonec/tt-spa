@@ -9,8 +9,9 @@ import {
 
 const removeNodeCalculatorConnectionDomain = createDomain();
 
-const $isConfirmModalOpen =
-  removeNodeCalculatorConnectionDomain.createStore(false);
+const $isConfirmModalOpen = removeNodeCalculatorConnectionDomain.createStore(
+  false
+);
 
 const removeConnectionFx = removeNodeCalculatorConnectionDomain.createEffect<
   UpdatePipeNodeRequest & { nodeId: number },
@@ -19,14 +20,11 @@ const removeConnectionFx = removeNodeCalculatorConnectionDomain.createEffect<
   axios.put(`PipeNodes/${payload.nodeId}`, payload);
 });
 
-const openConfirmationModal =
-  removeNodeCalculatorConnectionDomain.createEvent();
+const openConfirmationModal = removeNodeCalculatorConnectionDomain.createEvent();
 
-const closeConfirmationModal =
-  removeNodeCalculatorConnectionDomain.createEvent();
+const closeConfirmationModal = removeNodeCalculatorConnectionDomain.createEvent();
 
-const removeConnectionButtonClicked =
-  removeNodeCalculatorConnectionDomain.createEvent();
+const removeConnectionButtonClicked = removeNodeCalculatorConnectionDomain.createEvent();
 
 $isConfirmModalOpen
   .on(openConfirmationModal, () => true)
@@ -67,5 +65,5 @@ export const inputs = {
 
 export const RemoveNodeCalculatorConnectionService = {
   inputs,
-  outputs,
-};
+  outputs
+}

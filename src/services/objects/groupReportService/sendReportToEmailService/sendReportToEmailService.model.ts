@@ -26,7 +26,7 @@ const $defaultEmail = domain.createStore('').on(setEmail, (_, email) => email);
 
 sample({
   source: currentUserService.outputs.$currentUser.map(
-    (user) => user?.email || '',
+    (user) => user?.email || ''
   ),
   clock: openModal,
   target: setEmail,

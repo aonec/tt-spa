@@ -5,13 +5,13 @@ import { createCalcuatorService } from './models';
 
 export const CreateCalculatorModalContainer = () => {
   const isOpen = useStore(
-    createCalcuatorService.outputs.$isCreateCalculatorModalOpen,
+    createCalcuatorService.outputs.$isCreateCalculatorModalOpen
   );
   const stage = useStore(createCalcuatorService.outputs.$stage);
   const onNextStage = useEvent(createCalcuatorService.inputs.nextStage);
   const onPreviousStage = useEvent(createCalcuatorService.inputs.previousStage);
   const loading = useStore(createCalcuatorService.outputs.$loading);
-  const onSave = useEvent(createCalcuatorService.inputs.saveButtonClicked);
+  const onSave = useEvent(createCalcuatorService.inputs.saveButtonClicked)
 
   return (
     <CreateCalculatorModal

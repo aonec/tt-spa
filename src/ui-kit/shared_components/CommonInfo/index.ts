@@ -1,1 +1,1 @@
-export { CommonInfo } from './CommonInfo';
+export { CommonInfo } from './CommonInfo'

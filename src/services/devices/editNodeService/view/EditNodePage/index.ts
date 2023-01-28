@@ -1,1 +1,1 @@
-export { EditNodePage } from './EditNodePage';
+export { EditNodePage } from './EditNodePage'

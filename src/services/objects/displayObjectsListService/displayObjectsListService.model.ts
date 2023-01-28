@@ -9,8 +9,9 @@ import {
 
 const domain = createDomain('displayObjectsListService');
 
-const $housingStocks =
-  domain.createStore<HousingStockListResponsePagedList | null>(null);
+const $housingStocks = domain.createStore<HousingStockListResponsePagedList | null>(
+  null
+);
 
 const fetchHousingStocksFx = domain.createEffect<
   GetHousingStocksRequestPayload,
@@ -20,7 +21,7 @@ const fetchHousingStocksFx = domain.createEffect<
 const $isLoading = fetchHousingStocksFx.pending;
 
 const $searchPayload = domain.createStore<SearchHousingStocksPayload | null>(
-  null,
+  null
 );
 
 const searchHosuingStocks = domain.createEvent<SearchHousingStocksPayload>();

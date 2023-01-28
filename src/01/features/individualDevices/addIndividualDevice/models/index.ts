@@ -11,7 +11,7 @@ import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateN
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
-  null,
+  null
 );
 export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 

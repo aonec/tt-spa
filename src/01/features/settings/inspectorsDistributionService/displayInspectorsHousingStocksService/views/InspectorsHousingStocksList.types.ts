@@ -10,7 +10,7 @@ export type InspectorsHosuingsStocksListProps = {
   days: number[];
   loading: boolean;
   updateHousingStock: (
-    updatedData: PatchHousingStockInspectorInfoPayload,
+    updatedData: PatchHousingStockInspectorInfoPayload
   ) => void;
   updateInfo: CurrentHousingStockUpdate[];
 };

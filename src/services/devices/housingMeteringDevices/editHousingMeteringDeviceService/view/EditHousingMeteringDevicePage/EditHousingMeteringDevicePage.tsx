@@ -18,9 +18,7 @@ import { EditHousingMeteringDevicePageProps } from './EditHousingMeteringDeviceP
 import { EditHousingMeteringDeviceCommonInfo } from './Tabs/EditHousingMeteringDeviceCommonInfo';
 import { EditHousingMeteringDeviceDocuments } from './Tabs/EditHousingMeteringDeviceDocuments';
 
-export const EditHousingMeteringDevicePage: FC<
-  EditHousingMeteringDevicePageProps
-> = ({
+export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProps> = ({
   currentTab,
   handleChangeTab,
   housingMeteringDevice,

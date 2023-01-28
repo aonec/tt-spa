@@ -1,1 +1,1 @@
-export { ChangeODPUReadingsInputs } from './ChangeODPUReadingsInputs';
+export { ChangeODPUReadingsInputs } from './ChangeODPUReadingsInputs'

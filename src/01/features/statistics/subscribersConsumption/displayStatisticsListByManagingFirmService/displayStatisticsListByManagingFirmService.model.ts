@@ -38,8 +38,7 @@ const $selectedManagingFirm = domain
   .createStore<string>('')
   .on(selectManagingFirm, (_, managingFirm) => managingFirm);
 
-const setSubscriberStatisticsFilter =
-  domain.createEvent<SubscriberStatisticsForm>();
+const setSubscriberStatisticsFilter = domain.createEvent<SubscriberStatisticsForm>();
 const $subscriberStatisticsFilter = domain
   .createStore<SubscriberStatisticsForm | null>(null)
   .on(setSubscriberStatisticsFilter, (_, filter) => filter);
@@ -74,14 +73,14 @@ const $housingStocks = domain
     getStatisticFx.done,
     (
       housingStocks,
-      { params: { HousingStockId }, result: apartmentsStatistic },
+      { params: { HousingStockId }, result: apartmentsStatistic }
     ) =>
       housingStocks.map((housingStock) => {
         if (housingStock.id !== HousingStockId) {
           return housingStock;
         }
         return { ...housingStock, apartmentsStatistic };
-      }),
+      })
   );
 
 const StatiscticsPageGate = createGate();
@@ -112,7 +111,7 @@ sample({
         return { HousingStockId };
       }
       return { ...filter, HousingStockId };
-    },
+    }
   ),
   fn: (filter) => prepareFilterBeforeSenging(filter),
   target: getStatisticFx,

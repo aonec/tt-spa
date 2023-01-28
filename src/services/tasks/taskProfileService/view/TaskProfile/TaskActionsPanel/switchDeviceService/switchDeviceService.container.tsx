@@ -32,7 +32,7 @@ export const SwitchDeviceContainer: FC<ActionComponentProps> = ({
         },
       });
     },
-    [device, handleChange],
+    [device, handleChange]
   );
 
   if (!device) return null;

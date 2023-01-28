@@ -1,3 +1,3 @@
 export type GoBackTypes = {
-  path?: string;
-};
+    path?: string;
+}

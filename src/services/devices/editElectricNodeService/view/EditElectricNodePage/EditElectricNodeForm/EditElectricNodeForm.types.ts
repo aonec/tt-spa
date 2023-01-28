@@ -6,6 +6,7 @@ export type EditElectricNodeFormProps = {
   device: ElectricHousingMeteringDeviceResponse;
   isLoading: boolean;
   handleUpdateElectricHousingMeteringDevice: (
-    payload: EditElectricNodePayload,
+    payload: EditElectricNodePayload
   ) => void;
 };
+

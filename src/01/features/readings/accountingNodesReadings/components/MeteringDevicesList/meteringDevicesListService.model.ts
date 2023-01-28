@@ -21,10 +21,10 @@ const $sumOfReadings = $readingsList.map((readings) =>
           currentReading.value -
           previousExistingReading.value +
           nonResidentialRoomConsumption,
-        3,
+        3
       );
     return round(sum + nonResidentialRoomConsumption, 3);
-  }, 0),
+  }, 0)
 );
 const updateNodeReadings = domain.createEvent<UpdateNodeReadingsPayload>();
 const clearReadingsList = domain.createEvent();

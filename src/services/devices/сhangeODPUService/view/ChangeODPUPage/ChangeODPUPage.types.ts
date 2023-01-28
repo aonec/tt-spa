@@ -9,3 +9,5 @@ export type ChangeODPUPageProps = {
   isLoadingSwitch: boolean;
   handleSwitchDevice: (payload: SwitchElectricHousingDeviceRequest) => void;
 };
+
+

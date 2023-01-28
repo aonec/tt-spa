@@ -3,7 +3,7 @@ import { HousingStockListResponsePagedList } from 'myApi';
 import { GetHousingStocksRequestPayload } from './displayObjectsListService.types';
 
 export const getHousuingStocks = (
-  params: GetHousingStocksRequestPayload,
+  params: GetHousingStocksRequestPayload
 ): Promise<HousingStockListResponsePagedList> => {
   return axios.get('HousingStocks', { params });
 };

@@ -63,5 +63,5 @@ export const ActionButton = memo(
         {TextLookup[type]}
       </Wrapper>
     );
-  },
+  }
 );

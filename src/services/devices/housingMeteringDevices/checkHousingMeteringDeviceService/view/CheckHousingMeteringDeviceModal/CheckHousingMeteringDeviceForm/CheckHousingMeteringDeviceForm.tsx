@@ -13,36 +13,39 @@ import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Form } from 'antd';
 
-export const CheckHousingMeteringDeviceForm: FC<
-  CheckHousingMeteringDeviceFormProps
-> = ({ deviceId, formId, handleOnSubmit }) => {
-  const { handleSubmit, values, errors, setFieldValue } =
-    useFormik<CheckHousingMeteringDeviceFormTypes>({
-      validateOnChange: false,
-      initialValues: {
-        deviceId: deviceId,
-        lastCheckingDate: null,
-        futureCheckingDate: null,
-      },
-      validationSchema: yup.object({
-        deviceId: yup.number().required('Не передан идентификатор устройства'),
-        lastCheckingDate: yup.string().nullable().required('Обязательное поле'),
-        futureCheckingDate: yup
-          .string()
-          .nullable()
-          .required('Обязательное поле'),
-      }),
-      onSubmit: () => {
-        if (values.lastCheckingDate && values.futureCheckingDate) {
-          const form: CheckDeviceRequest = {
-            deviceId: values.deviceId,
-            currentCheckingDate: values.lastCheckingDate.toISOString(true),
-            futureCheckingDate: values.futureCheckingDate.toISOString(true),
-          };
-          handleOnSubmit(form);
-        }
-      },
-    });
+export const CheckHousingMeteringDeviceForm: FC<CheckHousingMeteringDeviceFormProps> = ({
+  deviceId,
+  formId,
+  handleOnSubmit,
+}) => {
+  const {
+    handleSubmit,
+    values,
+    errors,
+    setFieldValue,
+  } = useFormik<CheckHousingMeteringDeviceFormTypes>({
+    validateOnChange: false,
+    initialValues: {
+      deviceId: deviceId,
+      lastCheckingDate: null,
+      futureCheckingDate: null,
+    },
+    validationSchema: yup.object({
+      deviceId: yup.number().required('Не передан идентификатор устройства'),
+      lastCheckingDate: yup.string().nullable().required('Обязательное поле'),
+      futureCheckingDate: yup.string().nullable().required('Обязательное поле'),
+    }),
+    onSubmit: () => {
+      if (values.lastCheckingDate && values.futureCheckingDate) {
+        const form: CheckDeviceRequest = {
+          deviceId: values.deviceId,
+          currentCheckingDate: values.lastCheckingDate.toISOString(true),
+          futureCheckingDate: values.futureCheckingDate.toISOString(true),
+        };
+        handleOnSubmit(form);
+      }
+    },
+  });
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <GridContainer>
@@ -53,7 +56,7 @@ export const CheckHousingMeteringDeviceForm: FC<
               setFieldValue('lastCheckingDate', date);
               setFieldValue(
                 'futureCheckingDate',
-                date ? moment(date).add(4, 'year') : '',
+                date ? moment(date).add(4, 'year') : ''
               );
             }}
             placeholder="Выберите"

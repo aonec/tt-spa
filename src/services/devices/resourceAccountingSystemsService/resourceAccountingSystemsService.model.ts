@@ -20,7 +20,7 @@ const $nodes = domain
     if (!nodes) return [];
 
     return sortNodes(
-      nodes.filter((node) => node.resource !== EResourceType.Electricity),
+      nodes.filter((node) => node.resource !== EResourceType.Electricity)
     );
   })
   .reset(NodesGate.close);

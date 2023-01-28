@@ -1,8 +1,11 @@
-import { ApartmentListResponse, ApartmentResponse } from 'myApi';
+import {
+  ApartmentListResponse,
+  ApartmentResponse,
+} from 'myApi';
 
 export const getApartmentAddressString = (
   apartment: ApartmentResponse | ApartmentListResponse | null,
-  isCityNeeded?: boolean,
+  isCityNeeded?: boolean
 ) => {
   if (!apartment) return null;
 

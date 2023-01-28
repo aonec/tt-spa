@@ -24,13 +24,13 @@ export const SelectSwitchDeviceTypeModal = ({
 }) => {
   const history = useHistory();
 
-  const [selectedSwitchType, setSelectedSwitchType] =
-    useState<SwitchType | null>(null);
+  const [
+    selectedSwitchType,
+    setSelectedSwitchType,
+  ] = useState<SwitchType | null>(null);
 
   const next = (to: SwitchType) => () =>
-    history.push(
-      `/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`,
-    );
+    history.push(`/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`);
 
   const setSwitchType = (to: SwitchType) => () =>
     to === selectedSwitchType

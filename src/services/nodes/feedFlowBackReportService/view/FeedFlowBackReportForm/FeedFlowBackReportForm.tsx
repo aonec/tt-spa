@@ -23,30 +23,35 @@ export const FeedFlowBackReportForm: FC<FeedFlowBackReportFormProps> = ({
   formId,
   handleExportReport,
 }) => {
-  const { values, handleChange, setFieldValue, handleSubmit, errors } =
-    useFormik({
-      initialValues: {
-        name: `Сводный_отчёт_по_обратной_магистрали_${moment().format(
-          'DD.MM.YYYY',
-        )}`,
-        city: null as null | string,
-        houseMangementId: null as null | string,
-        temperature: '',
-      },
-      onSubmit: (values) => {
-        if (!values.name || !values.houseMangementId || !values.temperature) {
-          return;
-        }
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+    handleSubmit,
+    errors,
+  } = useFormik({
+    initialValues: {
+      name: `Сводный_отчёт_по_обратной_магистрали_${moment().format(
+        'DD.MM.YYYY'
+      )}`,
+      city: null as null | string,
+      houseMangementId: null as null | string,
+      temperature: '',
+    },
+    onSubmit: (values) => {
+      if (!values.name || !values.houseMangementId || !values.temperature) {
+        return;
+      }
 
-        handleExportReport({
-          Name: values.name,
-          HouseManagementId: values.houseMangementId,
-          OutdoorTemperature: Number(values.temperature),
-        });
-      },
-      validationSchema,
-      validateOnChange: false,
-    });
+      handleExportReport({
+        Name: values.name,
+        HouseManagementId: values.houseMangementId,
+        OutdoorTemperature: Number(values.temperature),
+      });
+    },
+    validationSchema,
+    validateOnChange: false,
+  });
 
   return (
     <>

@@ -6,7 +6,7 @@ export function usePhoneMask() {
     IMask.createMask({
       mask: '8 000 000 00-00',
       max: 9,
-    }),
+    })
   );
 
   return {

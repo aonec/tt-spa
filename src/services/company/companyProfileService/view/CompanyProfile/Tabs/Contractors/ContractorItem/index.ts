@@ -1,1 +1,1 @@
-export { ContractorItem } from './ContractorItem';
+export { ContractorItem } from './ContractorItem'

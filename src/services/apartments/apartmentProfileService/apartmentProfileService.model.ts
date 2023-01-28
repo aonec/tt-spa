@@ -6,7 +6,7 @@ import { getApartment } from './apartmentProfileService.api';
 const domain = createDomain('apartmentProfileService');
 
 const fetchApartmentFx = domain.createEffect<number, ApartmentResponse>(
-  getApartment,
+  getApartment
 );
 
 const ApartmentGate = createGate<{ apartmentId: number }>();

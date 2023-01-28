@@ -1,1 +1,1 @@
-export { EditElectricNodeForm } from './EditElectricNodeForm';
+export { EditElectricNodeForm } from './EditElectricNodeForm'

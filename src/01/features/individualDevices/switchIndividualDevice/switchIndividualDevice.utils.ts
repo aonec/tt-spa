@@ -4,7 +4,7 @@ import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
 export const getPreparedReadingsOfIndividualDevice = (
   item: SwitchIndividualDeviceReadingsCreateRequest & {
     id?: number;
-  },
+  }
 ) => {
   const { readingDate, value1, value2, value3, value4 } = item;
 

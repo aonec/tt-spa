@@ -1,1 +1,1 @@
-export { ResourceConsumptionFilter } from './ResourceConsumptionFilter';
+export { ResourceConsumptionFilter } from './ResourceConsumptionFilter'

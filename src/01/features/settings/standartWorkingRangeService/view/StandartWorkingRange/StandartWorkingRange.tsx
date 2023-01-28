@@ -35,12 +35,12 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange &&
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
-        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError,
+        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError
     );
 
   const criticalError = standartWorkingRange?.nodeWorkingRanges?.find(
     (range) =>
-      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError,
+      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError
   );
 
   const massOfFeedFlowMagistral =
@@ -48,7 +48,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedFlowMagistral,
+        ENodeWorkingRangeType.MassOfFeedFlowMagistral
     );
 
   const massOfFeedBackFlowMagistral =
@@ -56,7 +56,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral,
+        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral
     );
 
   const deltaMassOfMagistral =
@@ -64,7 +64,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.DeltaMassOfMagistral,
+        ENodeWorkingRangeType.DeltaMassOfMagistral
     );
 
   const { values, handleSubmit, setFieldValue } = useFormik({

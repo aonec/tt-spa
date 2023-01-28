@@ -20,18 +20,17 @@ const clearDisconnectionId = domain.createEvent();
 
 const updateDocument = domain.createEvent<number>();
 const updateDocumentFx = domain.createEffect<UpdateDocumentPayload, void>(
-  fetchUpdateResourceDisconnectingDocument,
+  fetchUpdateResourceDisconnectingDocument
 );
 
-const editResourceDisconnection =
-  domain.createEvent<ResourceDisconnectingUpdateRequest>();
+const editResourceDisconnection = domain.createEvent<ResourceDisconnectingUpdateRequest>();
 const editResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingUpdatePayload,
   void
 >(fetchEditResourceDisconnection);
 
 const getResourceDisconnectionFx = domain.createEffect(
-  fetchResourceDisconnection,
+  fetchResourceDisconnection
 );
 
 const $editedResourceDisconnectionId = domain
@@ -50,8 +49,7 @@ const $resourceDisconnection = domain
 
 const $isDisconectionLoading = getResourceDisconnectionFx.pending;
 
-const setEditResourceDisconnectionPayload =
-  domain.createEvent<ResourceDisconnectingUpdatePayload>();
+const setEditResourceDisconnectionPayload = domain.createEvent<ResourceDisconnectingUpdatePayload>();
 const $editResourceDisconnectionPayload = domain
   .createStore<ResourceDisconnectingUpdatePayload | null>(null)
   .on(setEditResourceDisconnectionPayload, (_, data) => {

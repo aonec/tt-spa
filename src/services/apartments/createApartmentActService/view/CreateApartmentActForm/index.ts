@@ -1,1 +1,1 @@
-export { CreateApartmentActForm } from './CreateApartmentActForm';
+export { CreateApartmentActForm } from './CreateApartmentActForm'

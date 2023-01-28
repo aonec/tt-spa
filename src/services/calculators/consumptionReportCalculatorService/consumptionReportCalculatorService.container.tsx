@@ -6,9 +6,9 @@ import { ConsumptionReportCalculatorServiceContainerProps } from './consumptionR
 
 const { inputs, outputs } = consumptionReportCalculatorService;
 
-export const ConsumptionReportCalculatorContainer: FC<
-  ConsumptionReportCalculatorServiceContainerProps
-> = ({ calculator }) => {
+export const ConsumptionReportCalculatorContainer: FC<ConsumptionReportCalculatorServiceContainerProps> = ({
+  calculator,
+}) => {
   const isModalOpen = useStore(outputs.$isModalOpen);
 
   const handleModalClosed = useEvent(inputs.handleModalClose);

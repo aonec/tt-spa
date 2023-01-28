@@ -60,13 +60,13 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           return { devices, nodeNumber: number };
         })
         .flat(),
-    [nodes],
+    [nodes]
   );
 
-  const headerTitle = useMemo(
-    () => `${model} (${serialNumber})`,
-    [model, serialNumber],
-  );
+  const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
+    model,
+    serialNumber,
+  ]);
 
   const commonInfo = useMemo(
     () => (
@@ -99,7 +99,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         ]}
       />
     ),
-    [calculator],
+    [calculator]
   );
 
   const menuButtons = useMemo(
@@ -124,7 +124,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         },
       ],
     }),
-    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal],
+    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
   );
 
   const contentComponents: {
@@ -146,7 +146,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       ),
       [CalculatorProfileGrouptype.Documents]: <></>,
     }),
-    [calculator],
+    [calculator]
   );
 
   const component = contentComponents[currentGrouptype];

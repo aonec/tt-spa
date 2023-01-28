@@ -1,1 +1,1 @@
-export { SwitchDeviceForm } from './SwitchDeviceForm';
+export { SwitchDeviceForm } from './SwitchDeviceForm'

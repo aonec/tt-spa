@@ -15,7 +15,7 @@ $isModalOpen.on(openModal, () => true).reset(closeModal);
 
 const createAct = domain.createEvent<CreateActFormPayload>();
 const createActFx = domain.createEffect<AddApartmentActRequest, void>(
-  postApartmentAct,
+  postApartmentAct
 );
 
 const $createActIsLoading = createActFx.pending;

@@ -24,7 +24,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   editable,
 }) => {
   const individualDevicesList = useStore(
-    outputs.$filteredIndividualDevicesList,
+    outputs.$filteredIndividualDevicesList
   );
   const isLoading = useStore(outputs.$isLoading);
   const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
@@ -41,7 +41,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
-    apartment?.housingStock?.managingFirmId,
+    apartment?.housingStock?.managingFirmId
   );
 
   const apartmentId = apartment?.id;

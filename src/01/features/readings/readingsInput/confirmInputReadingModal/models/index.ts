@@ -10,11 +10,12 @@ interface Payload {
 
 export const $onConfirmReadingInputCallback = createStore<Payload | null>(null);
 
-export const $isConfirmReadingInputModalOpen =
-  $onConfirmReadingInputCallback.map(Boolean);
+export const $isConfirmReadingInputModalOpen = $onConfirmReadingInputCallback.map(
+  Boolean
+);
 
 export const $confirmModalTitle = $onConfirmReadingInputCallback.map(
-  (state) => state?.title,
+  (state) => state?.title
 );
 
 export const openConfirmReadingModal = createEvent<Payload>();

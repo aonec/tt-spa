@@ -3,6 +3,6 @@ import { ReportRequestHistoryPagedList } from 'myApi';
 import { GetReportsHistoryListRequestPayload } from './reportsListService.types';
 
 export const getReportsHistoryList = (
-  payload: GetReportsHistoryListRequestPayload,
+  payload: GetReportsHistoryListRequestPayload
 ): Promise<ReportRequestHistoryPagedList> =>
   axios.get('Reports/ReportRequestsHistory', { params: payload });

@@ -1,3 +1,5 @@
+ 
+
 import axios from '01/axios';
 import { message } from 'antd';
 import {
@@ -33,12 +35,13 @@ export async function getTask(id) {
       },
       stages: {
         items: stages.map((...rest) =>
-          changeItemStage(...rest, userOperatingStatus === 'Executor'),
+          changeItemStage(...rest, userOperatingStatus === 'Executor')
         ),
       },
       device: createDevice(res.device),
     };
-  } catch (error) {}
+  } catch (error) {
+  }
 }
 
 export async function moveStage(id = '', move = '', data = {}) {
@@ -49,7 +52,7 @@ export async function moveStage(id = '', move = '', data = {}) {
       return { isReplace: true };
     }
     const items = stages.map((...rest) =>
-      changeItemStage(...rest, userOperatingStatus === 'Executor'),
+      changeItemStage(...rest, userOperatingStatus === 'Executor')
     );
     return {
       ...res,

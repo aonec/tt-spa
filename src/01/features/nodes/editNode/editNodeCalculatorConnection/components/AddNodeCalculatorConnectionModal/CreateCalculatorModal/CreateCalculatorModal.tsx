@@ -30,7 +30,7 @@ export const CreateCalculatorModal: FC<Props> = ({
   onNextStage,
   onPreviousStage,
   onSave,
-  loading,
+  loading
 }) => {
   const calculatorTypes = useStore($calculatorTypesSelectItems);
 

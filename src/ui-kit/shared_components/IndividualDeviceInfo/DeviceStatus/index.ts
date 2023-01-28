@@ -1,1 +1,1 @@
-export { DeviceStatus } from './DeviceStatus';
+export { DeviceStatus } from './DeviceStatus'

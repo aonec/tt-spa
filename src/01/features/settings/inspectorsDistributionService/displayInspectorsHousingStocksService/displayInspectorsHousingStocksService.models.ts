@@ -4,24 +4,21 @@ import { getInspectorsHousingStocks } from './displayInspectorsHousingStocksServ
 import { GetInspectorsHousingStocksRequestParams } from './types';
 
 const displayInspectorsHousingStocksServiceDomain = createDomain(
-  'displayInspectorsHousingStocksService',
+  'displayInspectorsHousingStocksService'
 );
 
-const $inspectorsHousingStocksList =
-  displayInspectorsHousingStocksServiceDomain.createStore<
-    InspectorOnHousingStockResponse[] | null
-  >(null);
+const $inspectorsHousingStocksList = displayInspectorsHousingStocksServiceDomain.createStore<
+  InspectorOnHousingStockResponse[] | null
+>(null);
 
-const fetchInspectorsHousingStocksListFx =
-  displayInspectorsHousingStocksServiceDomain.createEffect<
-    GetInspectorsHousingStocksRequestParams,
-    InspectorOnHousingStockResponse[] | null
-  >(getInspectorsHousingStocks);
+const fetchInspectorsHousingStocksListFx = displayInspectorsHousingStocksServiceDomain.createEffect<
+  GetInspectorsHousingStocksRequestParams,
+  InspectorOnHousingStockResponse[] | null
+>(getInspectorsHousingStocks);
 
 const $loading = fetchInspectorsHousingStocksListFx.pending;
 
-const handleGetInspectorsHousingStocks =
-  displayInspectorsHousingStocksServiceDomain.createEvent<GetInspectorsHousingStocksRequestParams>();
+const handleGetInspectorsHousingStocks = displayInspectorsHousingStocksServiceDomain.createEvent<GetInspectorsHousingStocksRequestParams>();
 
 export const displayInspectorsHousingStocksService = {
   inputs: {

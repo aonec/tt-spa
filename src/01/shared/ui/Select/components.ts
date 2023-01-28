@@ -18,7 +18,7 @@ export const StyledSelect = styled(Select)`
   .ant-select-arrow {
     padding: 0 28px !important;
   }
-
+  
   .ant-select-item {
     margin: 0 !important;
     padding: 0 !important;

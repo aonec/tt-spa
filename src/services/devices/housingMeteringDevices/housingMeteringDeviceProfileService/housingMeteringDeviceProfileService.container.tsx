@@ -16,12 +16,12 @@ export const HousingMeteringDeviceProfileContainer = () => {
   const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
 
   const handleDeviceClosingModalOpen = useEvent(
-    inputs.handleDeviceClosingModalOpen,
+    inputs.handleDeviceClosingModalOpen
   );
 
   const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
   const housingMeteringDeviceTasks = useStore(
-    outputs.$housingMeteringDeviceTask,
+    outputs.$housingMeteringDeviceTask
   );
 
   const currentTab = useStore(outputs.$currentTab);

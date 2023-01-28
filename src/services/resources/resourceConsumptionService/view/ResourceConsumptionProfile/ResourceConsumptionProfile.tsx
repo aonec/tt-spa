@@ -13,9 +13,7 @@ import {
 } from './ResourceConsumptionProfile.types';
 import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
 
-export const ResourceConsumptionProfile: FC<
-  ResourceConsumptionProfileProps
-> = ({
+export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = ({
   isLoading,
   resourceConsumptionFilter,
   setResource,
@@ -35,7 +33,7 @@ export const ResourceConsumptionProfile: FC<
   const { ResourceType } = resourceConsumptionFilter || {};
 
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
-    initialSelectedAddresses,
+    initialSelectedAddresses
   );
 
   useEffect(() => {
@@ -48,8 +46,7 @@ export const ResourceConsumptionProfile: FC<
     }
     return {
       ...housingConsumptionData,
-      [ResourceConsumptionGraphDataType.additionalAddress]:
-        additionalConsumptionData,
+      [ResourceConsumptionGraphDataType.additionalAddress]: additionalConsumptionData,
     };
   }, [housingConsumptionData, additionalConsumptionData]);
 
@@ -72,7 +69,7 @@ export const ResourceConsumptionProfile: FC<
           />
           {housingConsumptionData &&
             Boolean(
-              housingConsumptionData?.currentMonthData.housing.length,
+              housingConsumptionData?.currentMonthData.housing.length
             ) && (
               <SelectResourceConsumptionType
                 disabled={getDisabledGraphTypes(housingConsumptionData)}

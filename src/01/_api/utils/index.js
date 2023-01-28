@@ -1,3 +1,5 @@
+ 
+
 import moment from 'moment';
 
 function formatTime(time = null) {
@@ -105,8 +107,13 @@ export function createDevice(device) {
 }
 
 export function changeItemStage(item, i, arr, uos) {
-  const { status, type, closingTime, expectedCompletionTime, perpetrator } =
-    item;
+  const {
+    status,
+    type,
+    closingTime,
+    expectedCompletionTime,
+    perpetrator,
+  } = item;
 
   const diff =
     closingTime !== null

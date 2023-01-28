@@ -17,7 +17,7 @@ const headerTitles = {
 
 export const CreateIndividualDeviceFormHeader: React.FC = () => {
   const type = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type),
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
   );
 
   return (

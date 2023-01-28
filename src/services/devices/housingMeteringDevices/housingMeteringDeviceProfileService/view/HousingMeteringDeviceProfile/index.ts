@@ -1,1 +1,1 @@
-export { HousingMeteringDeviceProfile } from './HousingMeteringDeviceProfile';
+export { HousingMeteringDeviceProfile } from './HousingMeteringDeviceProfile'

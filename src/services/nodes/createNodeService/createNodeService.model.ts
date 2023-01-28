@@ -30,7 +30,7 @@ const createPipeNodeFx = domain.createEffect<
 >(postPipeNode);
 
 const fetchHousingStockFx = domain.createEffect<number, HousingStockResponse>(
-  getHousingStock,
+  getHousingStock
 );
 
 const handleSubmitForm = domain.createEvent();
@@ -85,7 +85,7 @@ const $calculatorsList = domain
         model: newCalculator.model,
         calculatorInfoId: null,
       },
-    ],
+    ]
   )
   .reset(CreateNodeGate.close);
 
@@ -150,7 +150,7 @@ const $selectedCalculator = combine(
   $calculatorsList,
   ({ calculatorId }, calculatorsList) =>
     calculatorsList?.find((calculator) => calculator.id === calculatorId) ||
-    null,
+    null
 );
 
 const $selectedServiceZone = combine(
@@ -158,8 +158,8 @@ const $selectedServiceZone = combine(
   $nodeServiceZones,
   ({ nodeServiceZoneId }, serviceZones) =>
     serviceZones?.nodeServiceZones?.find(
-      (serviceZone) => serviceZone.id === nodeServiceZoneId,
-    ) || null,
+      (serviceZone) => serviceZone.id === nodeServiceZoneId
+    ) || null
 );
 
 const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
@@ -167,7 +167,7 @@ const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
 const handlePipeNodeCreated = createPipeNodeFx.doneData;
 
 createPipeNodeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 createPipeNodeFx.doneData.watch(() => message.success('Узел успешно создан!'));

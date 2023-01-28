@@ -8,9 +8,13 @@ import React, { FC } from 'react';
 import { Value } from './ResourceConsumptionGraphTooltip.styled';
 import { ResourceConsumptionGraphTooltipProps } from './ResourceConsumptionGraphTooltip.types';
 
-export const ResourceConsumptionGraphTooltip: FC<
-  ResourceConsumptionGraphTooltipProps
-> = ({ x, y, datum, startOfMonth, measure }) => {
+export const ResourceConsumptionGraphTooltip: FC<ResourceConsumptionGraphTooltipProps> = ({
+  x,
+  y,
+  datum,
+  startOfMonth,
+  measure,
+}) => {
   const key = Number(datum?.key || 0);
   const value = datum?.value || 0;
 

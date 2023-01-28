@@ -24,8 +24,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   handleDownload,
   reportFilters,
 }) => {
-  const { groupReports, nodeResourceTypes, nodeStatuses, contractors } =
-    reportFilters;
+  const {
+    groupReports,
+    nodeResourceTypes,
+    nodeStatuses,
+    contractors,
+  } = reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik<
     Partial<GroupReportRequestPayload>
@@ -60,7 +64,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           },
         ];
       }, [] as LabeledValue[]),
-    [groupReports],
+    [groupReports]
   );
 
   const nodeResourceTypesOptions = useMemo(
@@ -78,25 +82,25 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           },
         ];
       }, [] as LabeledValue[]),
-    [nodeResourceTypes],
+    [nodeResourceTypes]
   );
 
   const handleChangeContractorIds = useCallback(
     (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
-    [setFieldValue],
+    [setFieldValue]
   );
   const handleChangeEmail = useCallback(
     (email?: string) => setFieldValue("['Subscription.Email']", email),
-    [setFieldValue],
+    [setFieldValue]
   );
   const handleChangeSubsType = useCallback(
     (type?: EEmailSubscriptionType) =>
       setFieldValue("['Subscription.Type']", type),
-    [setFieldValue],
+    [setFieldValue]
   );
   const handleThriggerAt = useCallback(
     (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
-    [values],
+    [values]
   );
 
   return (

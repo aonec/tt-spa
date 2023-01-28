@@ -17,30 +17,37 @@ import {
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
 
-export const IndividualDevicesViewBySerialNumberSearch: FC<
-  IndividualDevicesViewBySerialNumberSearchProps
-> = ({ filter, setFilter, clearSearchPayload, mountPlaces }) => {
+export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesViewBySerialNumberSearchProps> = ({
+  filter,
+  setFilter,
+  clearSearchPayload,
+  mountPlaces,
+}) => {
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
-  const { values, setFieldValue, handleSubmit, setValues } =
-    useFormik<IndividualDeviceSearchbySerialNumberPayload>({
-      initialValues: {
-        SerialNumber: filter.SerialNumber,
-        ApartmentStatus: filter.ApartmentStatus || null,
-        Resource: filter.Resource || null,
-        IsAlsoClosing: filter.IsAlsoClosing,
-        Model: filter.Model || '',
-        MountPlace: filter.MountPlace || '',
-        ClosingReason: filter.ClosingReason || null,
-        ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
-        City: filter.City || '',
-        HouseCorpus: filter.HouseCorpus || '',
-        HouseNumber: filter.HouseNumber || '',
-        Street: filter.Street || '',
-      },
-      enableReinitialize: true,
-      onSubmit: setFilter,
-    });
+  const {
+    values,
+    setFieldValue,
+    handleSubmit,
+    setValues,
+  } = useFormik<IndividualDeviceSearchbySerialNumberPayload>({
+    initialValues: {
+      SerialNumber: filter.SerialNumber,
+      ApartmentStatus: filter.ApartmentStatus || null,
+      Resource: filter.Resource || null,
+      IsAlsoClosing: filter.IsAlsoClosing,
+      Model: filter.Model || '',
+      MountPlace: filter.MountPlace || '',
+      ClosingReason: filter.ClosingReason || null,
+      ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
+      City: filter.City || '',
+      HouseCorpus: filter.HouseCorpus || '',
+      HouseNumber: filter.HouseNumber || '',
+      Street: filter.Street || '',
+    },
+    enableReinitialize: true,
+    onSubmit: setFilter,
+  });
 
   const handleEnter = useCallback(
     (index: number) =>
@@ -48,7 +55,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
         next(index);
         handleSubmit();
       }),
-    [next, handleSubmit],
+    [next, handleSubmit]
   );
 
   return (

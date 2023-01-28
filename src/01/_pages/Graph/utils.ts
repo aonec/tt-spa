@@ -9,7 +9,7 @@ export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
   const millisecondsInHour = 60 * 1000;
   const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
+    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour
   );
   return date;
 };
@@ -45,7 +45,7 @@ export const sortArchiveArray = (archiveArr: PreparedArchiveValues[]) => {
 };
 
 const formHourlyTicks = (
-  archiveArr: PreparedArchiveValues[],
+  archiveArr: PreparedArchiveValues[]
 ): PreparedArchiveValues[] => {
   if (archiveArr.length <= 24) return archiveArr;
 
@@ -58,14 +58,14 @@ const formHourlyTicks = (
 };
 
 const formDailyTicks = (
-  archiveArr: PreparedArchiveValues[],
+  archiveArr: PreparedArchiveValues[]
 ): PreparedArchiveValues[] => {
   if (archiveArr.length <= 14) return archiveArr;
   const sortedArchive = sortArchiveArray(archiveArr);
 
   const length = sortedArchive.length;
   const multipleFives = sortedArchive.filter((entry) =>
-    isDayMultiplyFive(entry.time),
+    isDayMultiplyFive(entry.time)
   );
   const delta1 =
     getDayFromTimeStamp(multipleFives[0].time) -
@@ -86,7 +86,7 @@ const formDailyTicks = (
 
 export const formTicks = (
   archiveArr: PreparedArchiveValues[],
-  reportType: ReportType,
+  reportType: ReportType
 ): PreparedArchiveValues[] => {
   switch (reportType) {
     case 'hourly':
@@ -101,7 +101,7 @@ export const formTicks = (
 export const getTickFormat = (
   archiveArrLength: number,
   reportType: ReportType,
-  x: string,
+  x: string
 ) => {
   if (reportType === 'daily') {
     return format(formatDate(x), 'dd.MM');

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const StreetGroupWrapper = styled.div`
   padding-bottom: 15px;

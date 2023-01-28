@@ -14,7 +14,10 @@ const getRealHouseNumber = (houseNumber: string) => {
   return houseNumber;
 };
 
-export const sortObjects = (a: ObjectInterface, b: ObjectInterface): number => {
+export const sortObjects = (
+  a: ObjectInterface,
+  b : ObjectInterface
+): number => {
   if (a.numberOfTasks === b.numberOfTasks) {
     if (a.street === b.street) {
       return +getRealHouseNumber(a.number) - +getRealHouseNumber(b.number) < 0

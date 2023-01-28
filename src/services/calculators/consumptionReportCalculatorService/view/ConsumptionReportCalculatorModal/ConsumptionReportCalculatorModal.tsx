@@ -5,9 +5,12 @@ import { ConsumptionReportCalculatorForm } from './ConsumptionReportCalculatorFo
 
 const formId = 'consumption-report-calculator-modal';
 
-export const ConsumptionReportCalculatorModal: FC<
-  ConsumptionReportCalculatorModalProps
-> = ({ handleModalClosed, isModalOpen, calculator, handleSubmit }) => {
+export const ConsumptionReportCalculatorModal: FC<ConsumptionReportCalculatorModalProps> = ({
+  handleModalClosed,
+  isModalOpen,
+  calculator,
+  handleSubmit,
+}) => {
   const isSono = calculator?.infoId === 10;
 
   return (
@@ -16,12 +19,12 @@ export const ConsumptionReportCalculatorModal: FC<
       visible={isModalOpen}
       onCancel={handleModalClosed}
       form={
-        <ConsumptionReportCalculatorForm
-          formId={formId}
-          calculator={calculator}
-          handleSubmitForm={handleSubmit}
-          isSono={isSono}
-        />
+          <ConsumptionReportCalculatorForm
+            formId={formId}
+            calculator={calculator}
+            handleSubmitForm={handleSubmit}
+            isSono={isSono}
+          />
       }
       formId={formId}
       submitBtnText="Выгрузить"

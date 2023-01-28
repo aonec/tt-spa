@@ -1,1 +1,1 @@
-export { ConnectedDevices } from './ConnectedDevices';
+export { ConnectedDevices } from './ConnectedDevices'

@@ -23,7 +23,7 @@ export const EditNodeContainer = () => {
 
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
   const openAddNewZonesModal = useEvent(
-    createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
+    createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal
   );
 
   const refetchNode = useEvent(inputs.refetchNode);

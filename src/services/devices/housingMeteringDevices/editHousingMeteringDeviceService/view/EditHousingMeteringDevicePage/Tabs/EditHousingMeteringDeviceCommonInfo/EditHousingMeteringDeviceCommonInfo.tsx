@@ -25,9 +25,12 @@ import {
   EditHousingMeteringDeviceCommonInfoProps,
 } from './EditHousingMeteringDeviceCommonInfo.types';
 
-export const EditHousingMeteringDeviceCommonInfo: FC<
-  EditHousingMeteringDeviceCommonInfoProps
-> = ({ housingMeteringDevice, handleSubmitForm, deviceId, onCancel }) => {
+export const EditHousingMeteringDeviceCommonInfo: FC<EditHousingMeteringDeviceCommonInfoProps> = ({
+  housingMeteringDevice,
+  handleSubmitForm,
+  deviceId,
+  onCancel,
+}) => {
   const initialValues = {
     resource: housingMeteringDevice?.resource || null,
     housingMeteringDeviceType:
@@ -52,34 +55,37 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
       housingMeteringDevice?.address?.address?.mainAddress?.corpus || null,
   };
 
-  const { values, handleSubmit, setFieldValue, errors } =
-    useFormik<EditHousingMeteringDeviceCommonInfoFormTypes>({
-      initialValues,
-      enableReinitialize: true,
-      onSubmit: () => {
-        {
-          const form: UpdatePipeHousingMeteringDeviceRequest = {
-            serialNumber: values.serialNumber,
-            lastCheckingDate: values.lastCheckingDate?.toISOString(true),
-            futureCheckingDate: values.futureCheckingDate?.toISOString(true),
-            housingMeteringDeviceType:
-              values.housingMeteringDeviceType as EHousingMeteringDeviceType,
-            resource: values.resource,
-            model: values.model,
-            pipe: {
-              diameter: Number(values.diameter),
-              pipeNumber: Number(values.pipeNumber),
-              magistral: values.magistral as EMagistralType,
-            },
-          };
-          handleSubmitForm({
-            deviceId: Number(deviceId),
-            request: form,
-          });
-        }
-      },
-      validateOnChange: false,
-    });
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    errors,
+  } = useFormik<EditHousingMeteringDeviceCommonInfoFormTypes>({
+    initialValues,
+    enableReinitialize: true,
+    onSubmit: () => {
+      {
+        const form: UpdatePipeHousingMeteringDeviceRequest = {
+          serialNumber: values.serialNumber,
+          lastCheckingDate: values.lastCheckingDate?.toISOString(true),
+          futureCheckingDate: values.futureCheckingDate?.toISOString(true),
+          housingMeteringDeviceType: values.housingMeteringDeviceType as EHousingMeteringDeviceType,
+          resource: values.resource,
+          model: values.model,
+          pipe: {
+            diameter: Number(values.diameter),
+            pipeNumber: Number(values.pipeNumber),
+            magistral: values.magistral as EMagistralType,
+          },
+        };
+        handleSubmitForm({
+          deviceId: Number(deviceId),
+          request: form,
+        });
+      }
+    },
+    validateOnChange: false,
+  });
 
   return (
     <Wrapper>
@@ -180,7 +186,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
               setFieldValue('lastCheckingDate', date);
               setFieldValue(
                 'futureCheckingDate',
-                date ? moment(date).add(4, 'year') : '',
+                date ? moment(date).add(4, 'year') : ''
               );
             }}
             placeholder="Выберите"

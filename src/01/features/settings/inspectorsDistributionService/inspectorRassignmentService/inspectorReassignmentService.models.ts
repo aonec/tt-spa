@@ -5,7 +5,7 @@ import { reassingHousingStockInspector } from './inspectorReassignmentService.ap
 import { PatchInspectorPayload } from './inspectorReassignmentService.types';
 
 const inspectorReassignmentServiceDomain = createDomain(
-  'inspectorrRassignmentService',
+  'inspectorrRassignmentService'
 );
 
 const $isModalOpen = inspectorReassignmentServiceDomain.createStore(false);

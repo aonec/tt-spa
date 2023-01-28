@@ -26,7 +26,7 @@ export const nodeResources: NodeResourcesList = [
 ];
 
 export const commercialNodeStatuses: NodeStatusesList = Object.values(
-  ENodeCommercialAccountStatus,
+  ENodeCommercialAccountStatus
 ).map((nodeStatus) => ({
   nodeStatus,
   text: NodeStatusTextDictionary[nodeStatus],

@@ -18,7 +18,7 @@ export const Comment: FC<CommentProps> = ({ handleCommentChange }) => {
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
-    [setText],
+    [setText]
   );
 
   return (

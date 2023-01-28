@@ -7,7 +7,7 @@ const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
   const millisecondsInHour = 60 * 1000;
   const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
+    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour
   );
   return date;
 };

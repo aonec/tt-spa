@@ -1,1 +1,1 @@
-export { AddPerpetratorSelect } from './AddPerpetratorSelect';
+export { AddPerpetratorSelect } from './AddPerpetratorSelect'

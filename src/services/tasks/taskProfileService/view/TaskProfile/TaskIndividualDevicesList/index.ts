@@ -1,1 +1,1 @@
-export { TaskIndividualDevicesList } from './TaskIndividualDevicesList';
+export { TaskIndividualDevicesList } from './TaskIndividualDevicesList'

@@ -17,7 +17,7 @@ $closingIndividualDevice
   .on(closingIndividualDeviceButtonClicked, (_, id) => id)
   .reset(
     closeClosingIndividualDeviceModalButtonClicked,
-    closeIndividualDeviceFx.doneData,
+    closeIndividualDeviceFx.doneData
   );
 
 forward({
@@ -46,7 +46,7 @@ sample({
     (props, device) => ({
       ...props,
       deviceId: device?.id!,
-    }),
+    })
   ),
   clock: closeIndividualDeviceForm.formValidated,
   target: closeIndividualDeviceFx as any,

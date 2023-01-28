@@ -1,3 +1,3 @@
 export type WithLoaderProps = {
-  isLoading: boolean;
+    isLoading: boolean;
 };

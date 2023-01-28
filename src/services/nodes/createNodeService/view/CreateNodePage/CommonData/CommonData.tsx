@@ -40,55 +40,62 @@ export const CommonData: FC<CommonDataProps> = ({
   requestPayload,
   updateRequestPayload,
 }) => {
-  const { values, handleChange, setFieldValue, errors, handleSubmit } =
-    useFormik({
-      initialValues: {
-        resource: requestPayload.resource || null,
-        number: requestPayload.number ? String(requestPayload.number) : '',
-        nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
-        nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
-        startCommercialAccountingDate: getInitialDateFieldValue(
-          requestPayload.startCommercialAccountingDate,
-        ),
-        endCommercialAccountingDate: getInitialDateFieldValue(
-          requestPayload.endCommercialAccountingDate,
-        ),
-        documents: [] as Document[],
-        commercialStatus: requestPayload.commercialStatus || null,
-      },
-      validationSchema,
-      validateOnChange: false,
-      onSubmit: (values) => {
-        const {
-          resource,
-          number,
-          commercialStatus,
-          nodeServiceZoneId,
-          startCommercialAccountingDate,
-          endCommercialAccountingDate,
-        } = values;
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+    errors,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      resource: requestPayload.resource || null,
+      number: requestPayload.number ? String(requestPayload.number) : '',
+      nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
+      nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
+      startCommercialAccountingDate: getInitialDateFieldValue(
+        requestPayload.startCommercialAccountingDate
+      ),
+      endCommercialAccountingDate: getInitialDateFieldValue(
+        requestPayload.endCommercialAccountingDate
+      ),
+      documents: [] as Document[],
+      commercialStatus: requestPayload.commercialStatus || null,
+    },
+    validationSchema,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      const {
+        resource,
+        number,
+        commercialStatus,
+        nodeServiceZoneId,
+        startCommercialAccountingDate,
+        endCommercialAccountingDate,
+      } = values;
 
-        if (!resource || !number || !nodeServiceZoneId) return;
+      if (!resource || !number || !nodeServiceZoneId) return;
 
-        updateRequestPayload({
-          resource,
-          number: Number(number),
-          commercialStatus,
-          nodeServiceZoneId,
-          startCommercialAccountingDate:
-            startCommercialAccountingDate?.toISOString(true),
-          endCommercialAccountingDate:
-            endCommercialAccountingDate?.toISOString(true),
-        });
-      },
-    });
+      updateRequestPayload({
+        resource,
+        number: Number(number),
+        commercialStatus,
+        nodeServiceZoneId,
+        startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
+          true
+        ),
+        endCommercialAccountingDate: endCommercialAccountingDate?.toISOString(
+          true
+        ),
+      });
+    },
+  });
 
   useEffect(
     () =>
       inputs.handleServiceZoneCreated.watch((nodeServiceZone) =>
-        setFieldValue('nodeServiceZoneId', nodeServiceZone.id),
+        setFieldValue('nodeServiceZoneId', nodeServiceZone.id)
       ).unsubscribe,
-    [],
+    []
   );
 
   return (

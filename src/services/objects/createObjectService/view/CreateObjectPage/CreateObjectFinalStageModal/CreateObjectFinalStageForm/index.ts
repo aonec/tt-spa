@@ -1,1 +1,1 @@
-export { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm';
+export { CreateObjectFinalStageForm } from './CreateObjectFinalStageForm'

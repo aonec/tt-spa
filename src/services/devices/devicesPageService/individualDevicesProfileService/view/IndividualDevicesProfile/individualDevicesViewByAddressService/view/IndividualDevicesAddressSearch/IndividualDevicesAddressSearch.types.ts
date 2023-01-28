@@ -3,7 +3,7 @@ import { SearchIndividualDevicesRequestPayload } from '../../individualDevicesVi
 
 export type IndividualDevicesAddressSearchProps = {
   setIndividualDeviceSearchRequestPayload: (
-    payload: SearchIndividualDevicesRequestPayload,
+    payload: SearchIndividualDevicesRequestPayload
   ) => void;
   filters: SearchIndividualDevicesRequestPayload;
   clearSearchPayload: () => void;

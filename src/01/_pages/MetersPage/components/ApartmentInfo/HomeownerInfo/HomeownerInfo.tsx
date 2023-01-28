@@ -25,18 +25,23 @@ export const HomeownerInfo: FC<HomeownerInfoProps> = ({
   }
 
   const homeowner = homeownerAccounts.find(
-    (account) => account.id === currentPersonalNumberId,
+    (account) => account.id === currentPersonalNumberId
   );
   if (!homeowner) {
     return null;
   }
 
   const previousHomeowner = homeownerAccounts.find(
-    (account) => account.replacedByAccount?.id === homeowner.id,
+    (account) => account.replacedByAccount?.id === homeowner.id
   );
 
-  const { name, personalAccountNumber, openAt, paymentCode, phoneNumber } =
-    homeowner;
+  const {
+    name,
+    personalAccountNumber,
+    openAt,
+    paymentCode,
+    phoneNumber,
+  } = homeowner;
 
   const preparedDate = moment(openAt).format('DD.MM.YYYY');
 

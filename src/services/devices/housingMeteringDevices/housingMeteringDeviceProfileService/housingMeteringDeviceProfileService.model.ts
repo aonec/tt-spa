@@ -47,7 +47,7 @@ sample({
   clock: guard({
     source: combine(
       $housingMeteringDevice,
-      FetchHousingMeteringDeviceGate.state,
+      FetchHousingMeteringDeviceGate.state
     ),
     clock: FetchHousingMeteringDeviceGate.open,
     filter: ([device, { deviceId }]) => {

@@ -8,13 +8,13 @@ import { ResourceAccountingSystemsSegment } from './ResourceAccountingSystems.ty
 
 export function getNodesGroups(
   nodes: NodeOnHousingStockResponse[],
-  segmentName: ResourceAccountingSystemsSegment,
+  segmentName: ResourceAccountingSystemsSegment
 ): [string, NodeOnHousingStockResponse[]][] {
   return Object.entries(
     _.groupBy(nodes, (node) =>
       segmentName === 'resource'
         ? node.resource
-        : node.networkDevice?.id || NO_CALCULATOR_KEY,
-    ),
+        : node.networkDevice?.id || NO_CALCULATOR_KEY
+    )
   );
 }

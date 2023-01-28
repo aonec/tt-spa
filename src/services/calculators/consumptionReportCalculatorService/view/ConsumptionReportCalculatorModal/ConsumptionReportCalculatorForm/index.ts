@@ -1,1 +1,1 @@
-export { ConsumptionReportCalculatorForm } from './ConsumptionReportCalculatorForm';
+export { ConsumptionReportCalculatorForm } from './ConsumptionReportCalculatorForm'

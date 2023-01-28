@@ -21,8 +21,7 @@ const getHousingMeteringDeviceReadingsFx = domain.createEffect<
   GetHousingMeteringDeviceReadingsResponse
 >(fetchHousingMeteringDeviceReadings);
 
-const createReading =
-  domain.createEvent<CreateHousingMeteringDeviceReadingsRequest>();
+const createReading = domain.createEvent<CreateHousingMeteringDeviceReadingsRequest>();
 const createReadingFx = domain.createEffect<
   CreateHousingMeteringDeviceReadingsRequest,
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
@@ -35,8 +34,8 @@ const $readings = domain
   .createStore<HousingMeteringDeviceReadingsIncludingPlacementResponse[]>([])
   .on(getHousingMeteringDeviceReadingsFx.doneData, (_, response) =>
     (response.items || []).filter(
-      (reading) => !reading.isArchived && !reading.isRemoved,
-    ),
+      (reading) => !reading.isArchived && !reading.isRemoved
+    )
   )
   .reset(clearStore);
 
@@ -77,13 +76,13 @@ forward({
 });
 
 createReadingFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 createReadingFx.done.watch(({ params }) =>
   message.success(
-    `Показание за ${moment(params.readingDate).format('MMMM YYYY')} сохранено!`,
-  ),
+    `Показание за ${moment(params.readingDate).format('MMMM YYYY')} сохранено!`
+  )
 );
 
 export const housingMeteringDeviceReadingsService = {

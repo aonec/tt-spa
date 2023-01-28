@@ -29,7 +29,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
         value: String(elem.id),
         label: elem.title,
       })),
-    [contractors],
+    [contractors]
   );
 
   useEffect(() => {

@@ -49,7 +49,7 @@ forward({
 });
 
 completeResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 export const completeResourceDisconnectionService = {

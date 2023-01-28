@@ -10,7 +10,7 @@ const domain = createDomain('nodeProfileService');
 const PipeNodeGate = createGate<{ pipeNodeId: number }>();
 
 const fetchPipeNodeFx = domain.createEffect<number, PipeNodeResponse>(
-  getPipeNode,
+  getPipeNode
 );
 
 const $pipeNode = domain

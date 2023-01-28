@@ -10,7 +10,7 @@ export type SearchDevicesProps = {
   setFieldValue: (
     field: string,
     value: any,
-    shouldValidate?: boolean | undefined,
+    shouldValidate?: boolean | undefined
   ) => void;
   values: CalculatorsListRequestPayload;
   diametersConfig: DiamtersConfig;

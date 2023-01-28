@@ -22,7 +22,10 @@ export const CloseCalculatorContainer = () => {
   const formId = 'close-calculator-form';
 
   const form = (
-    <CloseCalculatorForm handleSubmit={handleCloseCalculator} formId={formId} />
+    <CloseCalculatorForm
+      handleSubmit={handleCloseCalculator}
+      formId={formId}
+    />
   );
 
   return (
@@ -30,7 +33,7 @@ export const CloseCalculatorContainer = () => {
       title={`Вы действительно хотите снять ${model} (${serialNumber}) с учета?`}
       submitBtnText="Снять прибор с учета"
       submitButtonType="danger"
-      onCancel={() => handleCloseModal()}
+      onCancel={()=>handleCloseModal()}
       visible={isOpen}
       formId={formId}
       form={form}

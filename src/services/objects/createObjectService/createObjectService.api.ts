@@ -14,19 +14,18 @@ export const getHouseManagements = (): Promise<
   return axios.get('HouseManagements');
 };
 
-export const getHeatingStations =
-  (): Promise<HeatingStationResponsePagedList | null> => {
-    return axios.get('HeatingStation');
-  };
+export const getHeatingStations = (): Promise<HeatingStationResponsePagedList | null> => {
+  return axios.get('HeatingStation');
+};
 
 export const postHeatingStation = (
-  requestPayload: AddHeatingStationRequest,
+  requestPayload: AddHeatingStationRequest
 ): Promise<HeatingStationResponse | null> => {
   return axios.post('HeatingStation', requestPayload);
 };
 
 export const postCreateObject = (
-  requestPayload: HousingStockCreateRequest,
+  requestPayload: HousingStockCreateRequest
 ): Promise<HousingStockResponse | null> => {
   return axios.post('HousingStocks', requestPayload);
 };

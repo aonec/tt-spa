@@ -30,7 +30,7 @@ export const AccountingNodesFilter = () => {
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
-    existingStreets,
+    existingStreets
   );
 
   function onSendHandler() {
@@ -99,8 +99,12 @@ export function useOnEnterSwitch(amount: number, difference?: number) {
   const refs = getArrayByCountRange(amount, useRef) as any[];
 
   const lastRef = refs[refs.length - 1];
-  const refWithoutDisabled = refs.slice(0, (amount -= difference || 0));
+  const refWithoutDisabled = refs.slice(
+    0,
+    (amount -= difference || 0)
+  );
 
+  
   function onEnterHandler(index: number) {
     try {
       if (refs[index]?.current) refs[index]?.current?.blur();

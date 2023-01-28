@@ -1,1 +1,1 @@
-export { PersonalNumbersSearch } from './PersonalNumbersSearch';
+export { PersonalNumbersSearch } from './PersonalNumbersSearch'

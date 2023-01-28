@@ -41,12 +41,12 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
           key={act.id}
         />
       )),
-    [acts, actTypes],
+    [acts, actTypes]
   );
 
-  const resources = Object.entries(actResourceNamesLookup).map(
-    ([key, value]) => ({ key: key as EActResourceType, value }),
-  );
+  const resources = Object.entries(
+    actResourceNamesLookup
+  ).map(([key, value]) => ({ key: key as EActResourceType, value }));
 
   return (
     <>

@@ -2,14 +2,13 @@ import { fromEnter } from '01/shared/ui/DatePickerNative';
 import React, { FC } from 'react';
 import { InputSC } from './MeteringDeviceMonthReadingInput.styled';
 import { MeteringDeviceMonthReadingInputProps } from './MeteringDeviceMonthReadingInput.types';
-import {
-  getInputValue,
-  getReadingValue,
-} from './MeteringDeviceMonthReadingInput.utils';
+import { getInputValue, getReadingValue } from './MeteringDeviceMonthReadingInput.utils';
 
-export const MeteringDeviceMonthReadingInput: FC<
-  MeteringDeviceMonthReadingInputProps
-> = ({ reading, setFieldValue, createReading }) => {
+export const MeteringDeviceMonthReadingInput: FC<MeteringDeviceMonthReadingInputProps> = ({
+  reading,
+  setFieldValue,
+  createReading,
+}) => {
   return (
     <InputSC
       size="small"
@@ -19,7 +18,7 @@ export const MeteringDeviceMonthReadingInput: FC<
         createReading({
           ...reading,
           value: Number(reading.value),
-        }),
+        })
       )}
       type="number"
       onChange={(e) =>

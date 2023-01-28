@@ -16,27 +16,27 @@ export const SearchInspectorsHousingStocksContainer = () => {
   const cities = useStore($existingCities);
   const existingStreets = useStore($existingStreets);
   const isExtendedSearchOpen = useStore(
-    searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen,
+    searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen
   );
   const inspectors = useStore(displayInspectorsService.outputs.$inspectorsList);
   const housingManagementList = useStore(
-    displayHousingStockFiltersService.outputs.$hosuingManagementList,
+    displayHousingStockFiltersService.outputs.$hosuingManagementList
   );
 
   const handelExtendedSearchOpen = useEvent(
-    searchInspectorsHousingStockService.inputs.extendedSearchOpened,
+    searchInspectorsHousingStockService.inputs.extendedSearchOpened
   );
   const handleExtendedSearchClose = useEvent(
-    searchInspectorsHousingStockService.inputs.extendedSearchClosed,
+    searchInspectorsHousingStockService.inputs.extendedSearchClosed
   );
   const handleStartSearch = useEvent(
-    searchInspectorsHousingStockService.forms.searchForm.submit,
+    searchInspectorsHousingStockService.forms.searchForm.submit
   );
   const handleClearExtendedSearchValues = useEvent(
-    searchInspectorsHousingStockService.inputs.clearExtendedSearch,
+    searchInspectorsHousingStockService.inputs.clearExtendedSearch
   );
   const handleApplyFilters = useEvent(
-    searchInspectorsHousingStockService.inputs.applyExtendedFilters,
+    searchInspectorsHousingStockService.inputs.applyExtendedFilters
   );
 
   const { InspectorsGate } = displayInspectorsService.inputs;

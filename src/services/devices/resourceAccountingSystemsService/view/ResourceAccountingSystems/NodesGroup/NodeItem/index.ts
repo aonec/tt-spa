@@ -1,1 +1,1 @@
-export { NodeItem } from './NodeItem';
+export { NodeItem } from './NodeItem'

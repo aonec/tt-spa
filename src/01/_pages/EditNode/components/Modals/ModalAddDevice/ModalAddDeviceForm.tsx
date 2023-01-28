@@ -63,7 +63,7 @@ const ModalAddDeviceForm = ({
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
-    validationSchemaFlowMeter,
+    validationSchemaFlowMeter
   );
 
   const tabItems: Array<TabsItemInterface> = [
@@ -118,7 +118,7 @@ const ModalAddDeviceForm = ({
     communicationPipes?.map((communicationPipe) => {
       const { devices } = communicationPipe;
       return devices;
-    }),
+    })
   );
 
   const initialValues = {
@@ -172,14 +172,14 @@ const ModalAddDeviceForm = ({
         refetchNode();
       })
       .catch((failedResponse: EffectFailDataAxiosError) =>
-        message.error(failedResponse.response.data.error.Text),
+        message.error(failedResponse.response.data.error.Text)
       );
   };
 
   function handleBeforeSubmit(errors: any) {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors,
+      errors
     );
     if (hasError) {
       setTab(errorTab);
@@ -259,7 +259,7 @@ const ModalAddDeviceForm = ({
                       value === 'FlowMeter'
                         ? setValidationSchema(validationSchemaFlowMeter)
                         : setValidationSchema(
-                            validationSchemaTemperatureSensor,
+                            validationSchemaTemperatureSensor
                           );
                       value !== 'FlowMeter' &&
                         setFieldValue('diameter', undefined);
@@ -394,13 +394,13 @@ const ModalAddDeviceForm = ({
                     onChange={(_, dateStr) => {
                       setFieldValue(
                         'lastCheckingDate',
-                        moment(dateStr, 'DD.MM.YYYY').toISOString(true),
+                        moment(dateStr, 'DD.MM.YYYY').toISOString(true)
                       );
                       setFieldValue(
                         'futureCheckingDate',
                         moment(dateStr, 'DD.MM.YYYY')
                           .add(4, 'years')
-                          .toISOString(),
+                          .toISOString()
                       );
                     }}
                   />

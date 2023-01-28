@@ -6,9 +6,7 @@ import { FormWrap } from './components';
 import { InspectorAddressesResetModalProps } from './types';
 import { Select } from '01/shared/ui/Select';
 
-export const InspectorAddressesResetModal: FC<
-  InspectorAddressesResetModalProps
-> = ({
+export const InspectorAddressesResetModal: FC<InspectorAddressesResetModalProps> = ({
   isOpen,
   handleClose,
   handleResetAddress,

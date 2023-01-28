@@ -20,11 +20,12 @@ export const ffInit = <T>(init?: T) => ({
   init: ff<T>(init),
 });
 
-export const $apartmentActsPaged =
-  createStore<ApartmentActResponsePagedList | null>(null);
+export const $apartmentActsPaged = createStore<ApartmentActResponsePagedList | null>(
+  null
+);
 
 export const $apartmentActs = $apartmentActsPaged.map(
-  (pagedData) => pagedData?.items,
+  (pagedData) => pagedData?.items
 );
 
 export const $actJournalPageNumber = createStore(1);
@@ -84,6 +85,7 @@ export const searchForm = createForm({
     AddressOrderBy: ffInit<EOrderByRule>(),
   },
 });
+
 
 export const createApartmentAct = createEvent<CreateApartmentActPayload>();
 export const createApartmentActFx = createEffect<

@@ -31,11 +31,11 @@ forward({
 });
 
 addContractorFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 addContractorSuccess.watch(() =>
-  message.success('Подрядчик успешно добавлен!'),
+  message.success('Подрядчик успешно добавлен!')
 );
 
 export const addContractorService = {

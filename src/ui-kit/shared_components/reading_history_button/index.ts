@@ -1,1 +1,1 @@
-export { ReadingsHistoryButton } from './reading_history_button';
+export { ReadingsHistoryButton } from './reading_history_button'

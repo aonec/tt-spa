@@ -1,1 +1,1 @@
-export { IndividualDevicesExtendedSearch } from './IndividualDevicesExtendedSearch';
+export { IndividualDevicesExtendedSearch } from './IndividualDevicesExtendedSearch'

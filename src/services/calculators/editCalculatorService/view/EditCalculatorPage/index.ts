@@ -1,1 +1,1 @@
-export { EditCalculatorPage } from './EditCalculatorPage';
+export { EditCalculatorPage } from './EditCalculatorPage'

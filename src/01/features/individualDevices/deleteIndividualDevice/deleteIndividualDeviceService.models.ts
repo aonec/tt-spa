@@ -4,18 +4,16 @@ import { apartmentIndividualDevicesMetersService } from 'services/meters/apartme
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
 const deleteIndividualDeviceDomain = createDomain(
-  'deleteIndividualDeviceService',
+  'deleteIndividualDeviceService'
 );
 
-const $currentIndividualDevice =
-  deleteIndividualDeviceDomain.createStore<IndividualDeviceListItemResponse | null>(
-    null,
-  );
+const $currentIndividualDevice = deleteIndividualDeviceDomain.createStore<IndividualDeviceListItemResponse | null>(
+  null
+);
 
 const $isModalOpen = $currentIndividualDevice.map(Boolean);
 
-const deleteDeviceModalOpened =
-  deleteIndividualDeviceDomain.createEvent<IndividualDeviceListItemResponse>();
+const deleteDeviceModalOpened = deleteIndividualDeviceDomain.createEvent<IndividualDeviceListItemResponse>();
 const deleteDeviceModalClosed = deleteIndividualDeviceDomain.createEvent();
 
 const acceptDeleteDevice = deleteIndividualDeviceDomain.createEvent();

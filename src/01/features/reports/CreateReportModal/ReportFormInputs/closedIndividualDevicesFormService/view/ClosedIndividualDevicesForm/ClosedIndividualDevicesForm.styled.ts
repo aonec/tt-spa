@@ -5,3 +5,5 @@ export const ExportTypeSelectWrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
 `;
+
+

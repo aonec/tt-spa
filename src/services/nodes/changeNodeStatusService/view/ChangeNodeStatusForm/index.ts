@@ -1,1 +1,1 @@
-export { ChangeNodeStatusForm } from './ChangeNodeStatusForm';
+export { ChangeNodeStatusForm } from './ChangeNodeStatusForm'

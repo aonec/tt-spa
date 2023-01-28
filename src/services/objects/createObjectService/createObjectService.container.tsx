@@ -8,8 +8,11 @@ import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
 
 const { inputs, outputs, gates } = createObjectService;
-const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
-  gates;
+const {
+  HouseManagementsFetchGate,
+  PageCloseGate,
+  HeatingStationsFetchGate,
+} = gates;
 
 export const CreateObjectContainer = () => {
   const existingCities = useStore(addressSearchService.outputs.cities);
@@ -29,11 +32,11 @@ export const CreateObjectContainer = () => {
   const closePreviewModal = useEvent(inputs.closePreviewModal);
 
   const openCreateHeatingStationModal = useEvent(
-    inputs.handleHeatindStationModalOpen,
+    inputs.handleHeatindStationModalOpen
   );
 
   const openEditHeatingStationModal = useEvent(
-    inputs.openEditHeatingStationModal,
+    inputs.openEditHeatingStationModal
   );
 
   const heatingStationCapture = useEvent(inputs.heatingStationCapture);

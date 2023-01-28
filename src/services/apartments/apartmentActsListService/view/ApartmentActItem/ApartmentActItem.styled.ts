@@ -38,7 +38,7 @@ export const ActNumber = styled.div`
   text-overflow: ellipsis;
 
   max-width: 130px;
-`;
+`
 
 export const DocumentType = styled.div`
   display: flex;

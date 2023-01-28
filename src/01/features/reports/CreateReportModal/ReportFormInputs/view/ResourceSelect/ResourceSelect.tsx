@@ -14,7 +14,7 @@ export const ResourceSelect: FC<ResourceSelectProps> = ({
       <Select
         value={resources}
         onChange={(resources) => {
-          onChange([...(resources as EResourceType[])]);
+          onChange([...resources as EResourceType[]]);
         }}
         placeholder="Выберите из списка"
         mode="multiple"

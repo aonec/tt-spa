@@ -4,7 +4,7 @@ import moment from 'moment';
 import { ExportTasksListRequestPayload } from './exportTasksListService.types';
 
 export const downloadTasksList = async (
-  params: ExportTasksListRequestPayload,
+  params: ExportTasksListRequestPayload
 ) => {
   try {
     const res: string = await axios.get(`Tasks/ExportLite`, {

@@ -1,1 +1,1 @@
-export { EditContractorModal } from './EditContractorModal';
+export { EditContractorModal } from './EditContractorModal'

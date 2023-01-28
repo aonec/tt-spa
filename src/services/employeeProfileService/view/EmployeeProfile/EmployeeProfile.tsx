@@ -73,7 +73,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
               title: 'Редактировать информацию о сотруднике',
               onClick: () =>
                 history.push(
-                  `/companyProfile/editManagingFirmUser/${userData?.id}`,
+                  `/companyProfile/editManagingFirmUser/${userData?.id}`
                 ),
             },
             {

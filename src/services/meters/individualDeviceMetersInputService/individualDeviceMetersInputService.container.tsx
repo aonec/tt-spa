@@ -24,9 +24,7 @@ import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 
 const { outputs, inputs } = individualDeviceMetersInputService;
 
-export const IndividualDeviceMetersInputContainer: FC<
-  IndividualDeviceMetersInputContainerProps
-> = ({
+export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInputContainerProps> = ({
   deviceIndex,
   device,
   sliderIndex,
@@ -37,12 +35,12 @@ export const IndividualDeviceMetersInputContainer: FC<
   editable,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
-    outputs.$uploadingMetersStatuses,
+    outputs.$uploadingMetersStatuses
   );
 
   const uploadingMetersStatuses = useMemo(
     () => uploadingMetersDevicesStatuses[device.id] || {},
-    [device.id, uploadingMetersDevicesStatuses],
+    [device.id, uploadingMetersDevicesStatuses]
   );
 
   const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
@@ -60,34 +58,36 @@ export const IndividualDeviceMetersInputContainer: FC<
     return getExistingReading(preparedReadings, sliderIndex, 'prev');
   }, [device.readings, sliderIndex]);
 
-  const { previousReading, currentReading, preparedReadingsData } =
-    useMemo(() => {
-      const preparedReadingsData = getPreparedReadingsDictionary(
-        device.readings || [],
-      );
+  const {
+    previousReading,
+    currentReading,
+    preparedReadingsData,
+  } = useMemo(() => {
+    const preparedReadingsData = getPreparedReadingsDictionary(
+      device.readings || []
+    );
 
-      const previousReading: IndividualDeviceReadingsResponse | undefined =
-        preparedReadingsData[sliderIndex];
-      const currentReading: IndividualDeviceReadingsResponse | undefined =
-        preparedReadingsData[-1];
+    const previousReading: IndividualDeviceReadingsResponse | undefined =
+      preparedReadingsData[sliderIndex];
+    const currentReading: IndividualDeviceReadingsResponse | undefined =
+      preparedReadingsData[-1];
 
-      return { previousReading, currentReading, preparedReadingsData };
-    }, [device.readings, sliderIndex]);
+    return { previousReading, currentReading, preparedReadingsData };
+  }, [device.readings, sliderIndex]);
 
   const openReadingsHistoryModal = useCallback(
     () => openReadingsHistoryModalById(device.id),
-    [openReadingsHistoryModalById, device.id],
+    [openReadingsHistoryModalById, device.id]
   );
 
-  const inputIndex = useMemo(
-    () => getInputIndex(deviceIndex, devices),
-    [deviceIndex, devices],
-  );
+  const inputIndex = useMemo(() => getInputIndex(deviceIndex, devices), [
+    deviceIndex,
+    devices,
+  ]);
 
-  const deviceRateNum = useMemo(
-    () => getRateNum(device.rateType),
-    [device.rateType],
-  );
+  const deviceRateNum = useMemo(() => getRateNum(device.rateType), [
+    device.rateType,
+  ]);
 
   const unit = getMeasurementUnit(device.resource);
 
@@ -105,7 +105,7 @@ export const IndividualDeviceMetersInputContainer: FC<
           deviceRateNum,
           readingPayload,
           consumptionRate,
-          preparedReadingsData,
+          preparedReadingsData
         );
 
         const reject = () => {
@@ -129,7 +129,7 @@ export const IndividualDeviceMetersInputContainer: FC<
           const meterId = readingPayload.meterId;
 
           const readingMonth = moment(readingPayload.readingDate).format(
-            'MMMM',
+            'MMMM'
           );
 
           openConfirmReadingModal({
@@ -208,7 +208,7 @@ export const IndividualDeviceMetersInputContainer: FC<
         }
       });
     },
-    [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex],
+    [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
   );
 
   const ReadingLineComponent = useMemo(() => {

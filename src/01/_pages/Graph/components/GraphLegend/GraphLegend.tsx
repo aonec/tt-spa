@@ -21,7 +21,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
   const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
   const isDeltaMass = renderForHeatAndDeltaMass(
     resource as ResourceType,
-    graphParam,
+    graphParam
   );
 
   const renderAccuracyLegendLine = () => {
@@ -48,7 +48,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
       return null;
     }
     const absoluteDelta = Number(
-      Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1),
+      Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
     );
 
     return (

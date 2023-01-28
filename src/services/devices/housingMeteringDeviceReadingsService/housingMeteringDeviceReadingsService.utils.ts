@@ -11,16 +11,17 @@ import { SortedMeteringDeviceReading } from './housingMeteringDeviceReadingsServ
 
 export const groupWithEmptyReadings = (
   allReadings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
-  deviceIds: { [key in EMagistralType]: number | null },
+  deviceIds: { [key in EMagistralType]: number | null }
 ) => {
   const sortedReadingsDictionary = _.groupBy(allReadings, (reading) => {
     const readingDate = moment(reading.readingDate);
     return `${readingDate.format('YYYY')} ${readingDate.format('MMMM')}`;
   });
 
-  const sortedReadingsDates = Object.keys(sortedReadingsDictionary).sort(
-    (first, second) =>
-      moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month'),
+  const sortedReadingsDates = Object.keys(
+    sortedReadingsDictionary
+  ).sort((first, second) =>
+    moment(first, 'YYYY MMMM').diff(moment(second, 'YYYY MMMM'), 'month')
   );
 
   const { FeedBackFlow: feedBackFlowId, FeedFlow: feedFlowId } = deviceIds;
@@ -37,7 +38,7 @@ export const groupWithEmptyReadings = (
 
   const diff = moment(firstReadingDate, 'YYYY MMMM').diff(
     moment().add(1, 'month'),
-    'month',
+    'month'
   );
 
   const readingsWithEmpty = getFilledArray(Math.abs(diff) + 1, (index) => {
@@ -89,18 +90,18 @@ const groupReadings = (
     year: string;
     month: string;
     readings: SortedMeteringDeviceReading[];
-  }[],
+  }[]
 ) => {
   const groupedReadingsByYear = _.groupBy(
     yearReadings,
-    (readings) => readings.year,
+    (readings) => readings.year
   );
 
   const groupedReadingsByMonth = Object.entries(groupedReadingsByYear).map(
     ([year, yearReadings]) => ({
       year,
       readings: _.reverse(yearReadings),
-    }),
+    })
   );
 
   return _.reverse(groupedReadingsByMonth);
@@ -118,11 +119,11 @@ export const getDeviceIds = (node: PipeNodeResponse) => {
 
   const feedFlowDevice = feedFlowDevices.find(
     (device) =>
-      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter,
+      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter
   );
   const feedBackFlowDevice = feedBackFlowDevices.find(
     (device) =>
-      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter,
+      device.housingMeteringDeviceType === EHousingMeteringDeviceType.FlowMeter
   );
 
   return {

@@ -1,1 +1,1 @@
-export { CalculatorProfile } from './CalculatorProfile';
+export { CalculatorProfile } from './CalculatorProfile'

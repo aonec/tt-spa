@@ -1,3 +1,5 @@
+ 
+
 import axios from 'axios';
 const sr = 'successResponse';
 const isAuth = (str = '') => str.match(/login/gi);

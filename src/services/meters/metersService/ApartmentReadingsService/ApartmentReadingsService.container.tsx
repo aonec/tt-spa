@@ -16,17 +16,17 @@ export const ApartmentReadingsContainer = () => {
   const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
   const handlePauseApartment = useEvent(inputs.handlePauseApartment);
   const handleCancelPauseApartment = useEvent(
-    inputs.handleCancelPauseApartment,
+    inputs.handleCancelPauseApartment
   );
   const openEditPersonalNumberModal = useEvent(
-    inputs.openEditPersonalNumberModal,
+    inputs.openEditPersonalNumberModal
   );
   const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
   const apartment = useStore(outputs.$apartment);
-  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
+  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName)
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {

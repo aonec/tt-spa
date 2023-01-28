@@ -13,7 +13,7 @@ export const ResourceSelect: FC<ResourceSelectProps> = ({
   onChange,
 }) => {
   const resources = Object.values(EResourceType).filter(
-    (resource) => !exclude.includes(resource),
+    (resource) => !exclude.includes(resource)
   );
 
   return (

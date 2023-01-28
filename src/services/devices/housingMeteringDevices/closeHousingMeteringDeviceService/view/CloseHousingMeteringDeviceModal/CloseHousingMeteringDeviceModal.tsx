@@ -5,9 +5,7 @@ import { CloseHousingMeteringDeviceForm } from './CloseHousingMeteringDeviceForm
 
 const formId = 'close-housing-metering-device-modal';
 
-export const CloseHousingMeteringDeviceModal: FC<
-  CloseHousingMeteringDeviceModalProps
-> = ({
+export const CloseHousingMeteringDeviceModal: FC<CloseHousingMeteringDeviceModalProps> = ({
   housingMeteringDevice,
   handleModalClose,
   handleOnSubmit,

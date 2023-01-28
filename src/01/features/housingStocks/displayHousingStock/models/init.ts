@@ -15,7 +15,7 @@ sample({
     source: combine(
       $housingStock,
       HousingStockGate.state.map((state) => state.id),
-      (house, id) => ({ house, id }),
+      (house, id) => ({ house, id })
     ),
     clock: HousingStockGate.state,
     filter: ({ house, id }) => Boolean(id) && house?.id !== id,

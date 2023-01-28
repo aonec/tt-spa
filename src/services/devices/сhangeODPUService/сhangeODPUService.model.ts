@@ -15,8 +15,9 @@ const domain = createDomain('changeODPUService');
 
 const OldDeviceIdGate = createGate<{ oldDeviceId: number }>();
 
-const $oldDevice =
-  domain.createStore<ElectricHousingMeteringDeviceResponse | null>(null);
+const $oldDevice = domain.createStore<ElectricHousingMeteringDeviceResponse | null>(
+  null
+);
 
 const getHousingMeteringDeviceFx = domain.createEffect<
   number,
@@ -29,8 +30,7 @@ const switchHousingMeteringDeviceFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postSwitchHousingMeteringDevice);
 
-const switchHousingMeteringDevice =
-  domain.createEvent<SwitchElectricHousingDeviceRequest>();
+const switchHousingMeteringDevice = domain.createEvent<SwitchElectricHousingDeviceRequest>();
 
 const $isLoadingDevice = getHousingMeteringDeviceFx.pending;
 const $isLoadingSwitch = switchHousingMeteringDeviceFx.pending;
@@ -48,11 +48,11 @@ forward({
 });
 
 switchHousingMeteringDeviceFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 switchHousingMeteringDeviceFx.doneData.watch(() =>
-  message.success('Прибор успешно заменен'),
+  message.success('Прибор успешно заменен')
 );
 
 export const сhangeODPUService = {

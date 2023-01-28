@@ -1,4 +1,8 @@
-import { CreateNodeCheckRequest, ECheckType, ENodeCheckType } from 'myApi';
+import {
+  CreateNodeCheckRequest,
+  ECheckType,
+  ENodeCheckType,
+} from 'myApi';
 import { createForm } from 'effector-forms';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';
@@ -42,12 +46,12 @@ export interface EditNodeCheckPayload {
   registryNumber: string;
 }
 
-const $editNodeCheckModalPayload =
-  checkNodeDomain.createStore<EditNodeCheckPayload | null>(null);
+const $editNodeCheckModalPayload = checkNodeDomain.createStore<EditNodeCheckPayload | null>(
+  null
+);
 const $isEditNodeCheckModalOpen = $editNodeCheckModalPayload.map(Boolean);
 
-const openEditNodeCheckModal =
-  checkNodeDomain.createEvent<EditNodeCheckPayload>();
+const openEditNodeCheckModal = checkNodeDomain.createEvent<EditNodeCheckPayload>();
 
 const editNodeCheckFx = checkNodeDomain.createEffect<
   { data: EditNodeCheckPayload; nodeId: number; nodeCheckId: number },
@@ -126,7 +130,7 @@ export const checkNodeService = {
     $loading: combine(
       checkNodeFx.pending,
       editNodeCheckFx.pending,
-      (...loadings) => loadings.some(Boolean),
+      (...loadings) => loadings.some(Boolean)
     ),
   },
   forms: {
@@ -135,35 +139,35 @@ export const checkNodeService = {
 };
 
 checkNodeFx.use((payload) =>
-  axios.post(`Nodes/${payload.nodeId}/Checks`, payload.data),
+  axios.post(`Nodes/${payload.nodeId}/Checks`, payload.data)
 );
 editNodeCheckFx.use((payload) =>
   axios.put(
     `Nodes/${payload.nodeId}/Checks/${payload.nodeCheckId}`,
-    payload.data,
-  ),
+    payload.data
+  )
 );
 removeNodeCheckFx.use((payload) =>
-  axios.delete(`Nodes/${payload.nodeId}/Checks/${payload.checkId}`),
+  axios.delete(`Nodes/${payload.nodeId}/Checks/${payload.checkId}`)
 );
 
 checkNodeFx.doneData.watch(() =>
-  message.success('Проверка успешно добавлена!'),
+  message.success('Проверка успешно добавлена!')
 );
 checkNodeFx.failData.watch(() =>
-  message.error('Ошибка при добавлении проверки'),
+  message.error('Ошибка при добавлении проверки')
 );
 editNodeCheckFx.doneData.watch(() =>
-  message.success('Проверка успешно сохранена!'),
+  message.success('Проверка успешно сохранена!')
 );
 editNodeCheckFx.failData.watch(() =>
-  message.error('Ошибка при сохранении проверки'),
+  message.error('Ошибка при сохранении проверки')
 );
 removeNodeCheckFx.doneData.watch(() =>
-  message.success('Проверка успешно удалена!'),
+  message.success('Проверка успешно удалена!')
 );
 removeNodeCheckFx.failData.watch(() =>
-  message.error('Ошибка при удалении проверки'),
+  message.error('Ошибка при удалении проверки')
 );
 
 $isCheckNodeModalOpen
@@ -181,7 +185,7 @@ sample({
         checkingDate: moment(values.checkingDate).format('YYYY-MM-DD'),
         documentId: values.documentIds.map((elem) => elem.fileResponse?.id)[0],
       },
-    }),
+    })
   ),
   clock: guard({
     source: $isCheckNodeModalOpen,
@@ -200,7 +204,7 @@ sample({
       nodeId,
       nodeCheckId: payload?.id!,
       data,
-    }),
+    })
   ),
   fn: ({ nodeId, nodeCheckId, data }) => ({
     nodeId,
@@ -241,7 +245,7 @@ $editNodeCheckModalPayload
   })
   .reset(closeCheckNodeModal)
   .on(clearPayloadFile, (payload) =>
-    payload ? { ...payload, checkingAct: null } : null,
+    payload ? { ...payload, checkingAct: null } : null
   );
 
 sample({

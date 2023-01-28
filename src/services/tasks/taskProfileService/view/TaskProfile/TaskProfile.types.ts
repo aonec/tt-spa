@@ -14,7 +14,7 @@ export type TaskProfileProps = {
   documents: DocumentResponse[];
   pushStage: () => void;
   handleChangePushStagePayload: (
-    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest),
+    payload: StagePushRequest | ((prev: StagePushRequest) => StagePushRequest)
   ) => void;
   isPushStageLoading: boolean;
   handleRevertStage: () => void;

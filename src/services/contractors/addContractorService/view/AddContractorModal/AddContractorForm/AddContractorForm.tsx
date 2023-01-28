@@ -39,7 +39,7 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
         .required('Обязательное поле'),
     }),
   });
-
+  
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Название организации">
@@ -74,7 +74,7 @@ export const AddContractorForm: FC<AddContractorFormProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value),
+                phoneMask.unmaskedValue(value.target.value)
               )
             }
           />

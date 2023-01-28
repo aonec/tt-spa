@@ -17,7 +17,7 @@ export const AddPerpetratorContainer: FC<ActionComponentProps> = ({
     (userId: number | null) => {
       if (userId) handleChange({ nextPerpetratorId: userId });
     },
-    [handleChange],
+    [handleChange]
   );
 
   return (

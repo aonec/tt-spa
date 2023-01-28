@@ -58,7 +58,9 @@ export const NodeItem: FC<NodeItemProps> = ({
         <>
           <NodeInfoWrapper>
             <ResourceIconWrapper>
-              <ResourceIconLookup resource={node.resource} />
+              <ResourceIconLookup
+                resource={node.resource}
+              />
             </ResourceIconWrapper>
             <NodeInfo>{nodeInfo}</NodeInfo>
           </NodeInfoWrapper>

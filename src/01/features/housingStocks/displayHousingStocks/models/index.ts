@@ -3,7 +3,7 @@ import { createStore, createEffect, createEvent } from 'effector';
 import { GetHousingStockParams } from '01/_api/housingStocks';
 
 export const $housingStocks = createStore<HousingStockListResponse[] | null>(
-  null,
+  null
 );
 
 export const $isFetchingHousingStocksFailed = createStore(false);

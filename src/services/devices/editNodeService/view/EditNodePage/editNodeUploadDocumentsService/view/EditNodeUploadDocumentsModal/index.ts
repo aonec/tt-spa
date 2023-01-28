@@ -1,1 +1,1 @@
-export { EditNodeUploadDocumentsModal } from './EditNodeUploadDocumentsModal';
+export { EditNodeUploadDocumentsModal } from './EditNodeUploadDocumentsModal'

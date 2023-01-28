@@ -8,25 +8,28 @@ import { FormHeader } from '../Header';
 export const DocumentsStage = () => {
   const { fields } = useForm(addIndividualDeviceForm);
 
-  const { completedWorks, devicePassport, deviceCheck } =
-    fields.documentsIds.value;
+  const {
+    completedWorks,
+    devicePassport,
+    deviceCheck,
+  } = fields.documentsIds.value;
 
-  const setFile =
-    (name: 'completedWorks' | 'devicePassport' | 'deviceCheck') =>
-    (files: FileData[]) => {
-      if (files.length === 0) return;
+  const setFile = (
+    name: 'completedWorks' | 'devicePassport' | 'deviceCheck'
+  ) => (files: FileData[]) => {
+    if (files.length === 0) return;
 
-      const isFilesListEmpty = files.length === 0;
+    const isFilesListEmpty = files.length === 0;
 
-      const neededFile = isFilesListEmpty
-        ? null
-        : files[0] || fields.documentsIds.value[name];
+    const neededFile = isFilesListEmpty
+      ? null
+      : files[0] || fields.documentsIds.value[name];
 
-      fields.documentsIds.onChange({
-        ...fields.documentsIds.value,
-        [name]: neededFile,
-      });
-    };
+    fields.documentsIds.onChange({
+      ...fields.documentsIds.value,
+      [name]: neededFile,
+    });
+  };
 
   return (
     <>

@@ -1,1 +1,1 @@
-export { NodesGroup } from './NodesGroup';
+export { NodesGroup } from './NodesGroup'

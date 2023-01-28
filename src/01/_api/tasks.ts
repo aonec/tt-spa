@@ -33,7 +33,7 @@ export const getTask = (id: number): Promise<TaskResponse> =>
   axios.get(`Tasks/${id}`);
 
 export const getNextStages = async (
-  taskId: number,
+  taskId: number
 ): Promise<StageListResponse[] | null> => {
   const res: any = await axios.get(`Tasks/${taskId}/NextStages`);
 

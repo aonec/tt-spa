@@ -43,7 +43,7 @@ sample({
     if (!isAutocomplete) return {};
 
     const currentAccount = data.homeownerAccounts?.find(
-      (account) => account.id === gateState.id,
+      (account) => account.id === gateState.id
     );
 
     const form = {
@@ -84,7 +84,7 @@ sample({
         phoneNumber,
         openAt,
         isMainAccountingNumber,
-      },
+      }
     ) => ({
       id: gateState?.id,
       data: {
@@ -95,7 +95,7 @@ sample({
         openAt,
         IsMainOnApartment: isMainAccountingNumber,
       },
-    }),
+    })
   ),
   clock: personalNumberEditForm.formValidated,
   target: editHomeownerAccountEffect as any,
@@ -124,7 +124,7 @@ sample({
       ({
         ClosedAt: moment(form?.closedAt).toISOString(true),
         HomeownerAccountId: gateState?.id,
-      } as any),
+      } as any)
   ),
   target: closeHomeownerAccountFx,
 });

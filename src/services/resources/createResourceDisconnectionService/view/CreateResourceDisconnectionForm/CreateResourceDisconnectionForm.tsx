@@ -43,9 +43,7 @@ import {
 } from './CreateresourceDisconnectionForm.utils';
 import { CreateResourceDisconnectionSelectResource } from './CreateResourceDisconnectionSelectResource';
 
-export const CreateResourceDisconnectionForm: FC<
-  CreateResourceDisconnectionFormProps
-> = ({
+export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
   formId,
   handleCreateResourceDisconnection,
   treeData,
@@ -76,7 +74,7 @@ export const CreateResourceDisconnectionForm: FC<
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {
       const preparedHousingStockIds = formValues.housingStockIds.filter(
-        (elem) => elem !== -1,
+        (elem) => elem !== -1
       );
       const resource = formValues.resource;
       const disconnectingType = formValues.disconnectingType;
@@ -120,33 +118,38 @@ export const CreateResourceDisconnectionForm: FC<
       handleCreateResourceDisconnection,
       handleEditResourceDisconnection,
       isEdit,
-    ],
+    ]
   );
 
-  const { values, submitForm, setFieldValue, handleChange, errors } =
-    useFormik<CreateResourceDisconnectionFormTypes>({
-      initialValues,
-      validationSchema: createResourceDisconnectionValidationSchema,
-      enableReinitialize: true,
-      validateOnChange: false,
-      validateOnBlur: false,
-      onSubmit: handleSubmitFormik,
-    });
+  const {
+    values,
+    submitForm,
+    setFieldValue,
+    handleChange,
+    errors,
+  } = useFormik<CreateResourceDisconnectionFormTypes>({
+    initialValues,
+    validationSchema: createResourceDisconnectionValidationSchema,
+    enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: handleSubmitFormik,
+  });
 
   const isAllPrevious = useRef(false);
   const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
 
-  const allHousingStocks = useMemo(
-    () => getAllHousingStocks(treeData),
-    [treeData],
-  );
+  const allHousingStocks = useMemo(() => getAllHousingStocks(treeData), [
+    treeData,
+  ]);
 
   const handleChangeHousingStocks = useCallback(
     (selectedAddresses: TreeSelectValue) => {
       const selectedAddressesArray = [selectedAddresses].flat();
 
-      const allHousingStocksVariantClicked =
-        selectedAddressesArray.includes(-1);
+      const allHousingStocksVariantClicked = selectedAddressesArray.includes(
+        -1
+      );
       const allHousingStocksChosen =
         selectedAddressesArray.length === allHousingStocks.length &&
         !isAllPrevious.current;
@@ -167,10 +170,10 @@ export const CreateResourceDisconnectionForm: FC<
 
       setFieldValue(
         'housingStockIds',
-        selectedAddressesArray.filter((elem) => elem !== -1),
+        selectedAddressesArray.filter((elem) => elem !== -1)
       );
     },
-    [allHousingStocks],
+    [allHousingStocks]
   );
 
   const housingStocksPlaceholderText = isAllHousingStocksSelected
@@ -183,7 +186,7 @@ export const CreateResourceDisconnectionForm: FC<
         {housingStocksPlaceholderText}
       </TagPlaceholder>
     ),
-    [housingStocksPlaceholderText],
+    [housingStocksPlaceholderText]
   );
 
   const preparedEndHours = prepareEndHours(values.startHour);
@@ -196,7 +199,7 @@ export const CreateResourceDisconnectionForm: FC<
       }
       return endDate.startOf('day').diff(startDate, 'day') < 0;
     },
-    [values.startDate],
+    [values.startDate]
   );
 
   useEffect(() => {
@@ -215,7 +218,7 @@ export const CreateResourceDisconnectionForm: FC<
     }
     const housingStocks = resourceDisconnection.housingStocks || [];
     const housingStockIds = housingStocks.map(
-      (housingstock) => housingstock.id,
+      (housingstock) => housingstock.id
     );
 
     handleChangeHousingStocks(housingStockIds);
@@ -237,7 +240,7 @@ export const CreateResourceDisconnectionForm: FC<
       setFieldValue('resource', EResourceType.Heat);
       setFieldValue(
         'disconnectingType',
-        EResourceDisconnectingType.InterHeatingSeason,
+        EResourceDisconnectingType.InterHeatingSeason
       );
     }
   }, [isInterHeatingSeason, setFieldValue]);

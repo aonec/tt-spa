@@ -41,11 +41,11 @@ const changeNodeTypeFx = domain.createEffect<
 >(fetchChangeNodeType);
 
 changeNodeTypeFx.doneData.watch(() =>
-  message.success('Статус успешно изменён'),
+  message.success('Статус успешно изменён')
 );
 
 changeNodeTypeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+  message.error(error.response.data.error.Text)
 );
 
 guard({
@@ -65,7 +65,7 @@ guard({
     Boolean(
       payload.nodeId &&
         payload.registrationType &&
-        (payload.technicalTypeRequest || payload.commercialStatusRequest),
+        (payload.technicalTypeRequest || payload.commercialStatusRequest)
     ),
   target: changeNodeTypeFx,
 });

@@ -27,7 +27,7 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
 
 export const getSourceName = (
   source: EIndividualDeviceReadingsSource,
-  userName: string | null = '',
+  userName: string | null = ''
 ) => {
   const name = {
     [EIndividualDeviceReadingsSource.Archive]: 'Архив',

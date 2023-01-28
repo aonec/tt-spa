@@ -133,7 +133,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value),
+                phoneMask.unmaskedValue(value.target.value)
               )
             }
           />

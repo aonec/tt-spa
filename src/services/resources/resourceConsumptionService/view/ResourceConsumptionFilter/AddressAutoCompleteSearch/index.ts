@@ -1,1 +1,1 @@
-export { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch';
+export { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch'

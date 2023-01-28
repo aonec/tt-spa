@@ -18,12 +18,16 @@ interface Props {
   setSearchContext: (context: 1 | 2) => void;
 }
 
-export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
+export const SerialNumberSearch: React.FC<Props> = ({
+  setSearchContext,
+}) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
   const [loading, setLoading] = useState(false);
-  const [cancelTokenSource, setCancelTokenSource] =
-    useState<CancelTokenSource | null>(null);
+  const [
+    cancelTokenSource,
+    setCancelTokenSource,
+  ] = useState<CancelTokenSource | null>(null);
 
   async function fetchDevices() {
     if (!serialNumber) return;
@@ -61,7 +65,7 @@ export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
 
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
-    index: number,
+    index: number
   ) => (
     <NavLink
       to={`/meters/apartments/${device.apartmentId}`}

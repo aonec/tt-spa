@@ -1,1 +1,1 @@
-export { ChangeNodeStatusDocument } from './ChangeNodeStatusDocument';
+export { ChangeNodeStatusDocument } from './ChangeNodeStatusDocument'

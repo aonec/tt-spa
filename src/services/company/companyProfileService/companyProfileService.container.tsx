@@ -14,22 +14,22 @@ export const CompanyProfileContainer = () => {
   const isLoadingContractors = useStore(outputs.$isLoadingContractors);
 
   const handleOpenStatusChangeModal = useEvent(
-    inputs.handleOpenStatusChangeModal,
+    inputs.handleOpenStatusChangeModal
   );
   const handleOpenDeleteModal = useEvent(inputs.handleOpenDeleteModal);
   const handleCatchEmployeeStatusData = useEvent(
-    inputs.handleCatchEmployeeStatusData,
+    inputs.handleCatchEmployeeStatusData
   );
   const handleCatchEmployeeId = useEvent(inputs.handleCatchEmployeeId);
   const handleOpenCreateEmployeeModal = useEvent(
-    inputs.handleOpenCreateEmployeeModal,
+    inputs.handleOpenCreateEmployeeModal
   );
   const handleOpenAddContractorModal = useEvent(
-    inputs.handleOpenAddContractorModal,
+    inputs.handleOpenAddContractorModal
   );
   const catchContractorId = useEvent(inputs.catchContractorId);
   const handleOpenEditContractorModal = useEvent(
-    inputs.handleOpenEditContractorModal,
+    inputs.handleOpenEditContractorModal
   );
   const catchContractorData = useEvent(inputs.catchContractorData);
 

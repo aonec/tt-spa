@@ -45,10 +45,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
       setFieldValue(
         "['Filter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex),
+        diameters.slice(firstIndex, secondIndex)
       );
     },
-    [setFieldValue, diameters],
+    [setFieldValue, diameters]
   );
 
   const rangeValues: [number, number] = useMemo(() => {
@@ -79,7 +79,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             onChange={(key, value) =>
               setFieldValue(
                 `['Filter.Address.${SearchDevicesFormikFieldsLookup[key]}']`,
-                value,
+                value
               )
             }
             handleSubmit={() => submitForm()}

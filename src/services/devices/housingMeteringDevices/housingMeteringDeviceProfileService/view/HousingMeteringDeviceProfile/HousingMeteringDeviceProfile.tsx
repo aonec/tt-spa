@@ -29,9 +29,7 @@ import {
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 
-export const HousingMeteringDeviceProfile: FC<
-  HousingMeteringDeviceProfileProps
-> = ({
+export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps> = ({
   deviceId,
   housingMeteringDevice,
   currentTab,

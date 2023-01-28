@@ -8,7 +8,7 @@ import {
   ApartmentAlertWrapper,
   HomeownerAccountChangeDate,
 } from './ReplacedAccountAlert.styled';
-import { ReplacedAccountAlertProps } from './ReplacedAccountAlert.types';
+import { ReplacedAccountAlertProps} from './ReplacedAccountAlert.types';
 
 export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   recentlyReplacedAccount,
@@ -17,7 +17,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
     return null;
   }
   const closedDate = moment(recentlyReplacedAccount.closedAt).format(
-    'DD.MM.YYYY',
+    'DD.MM.YYYY'
   );
 
   return (
@@ -35,7 +35,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
             </AccountNumberWrapper>
           </AlertTextWrapper>
           <HomeownerAccountChangeDate>
-            Дата изменения: {closedDate}
+          Дата изменения: {closedDate}
           </HomeownerAccountChangeDate>
         </AlertContent>
       </Alert>

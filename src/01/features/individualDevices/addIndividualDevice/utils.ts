@@ -10,7 +10,9 @@ export function getAddress(apartment: ApartmentResponse | null) {
   } д. ${house?.number}, кв. ${apartment.apartmentNumber}`;
 }
 
-export function getBitDepthAndScaleFactor(resource: EResourceType): {
+export function getBitDepthAndScaleFactor(
+  resource: EResourceType
+): {
   bitDepth: number;
   scaleFactor: number;
 } {

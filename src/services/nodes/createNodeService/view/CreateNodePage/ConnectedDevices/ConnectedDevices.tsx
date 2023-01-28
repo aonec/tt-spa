@@ -35,7 +35,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   const { resource } = requestPayload;
 
   const handleAddCommunicationPipe = (
-    communicationPipe: CommunicationPipePayload,
+    communicationPipe: CommunicationPipePayload
   ) => {
     setCommunicationPipes((prev) => [...prev, communicationPipe]);
   };
@@ -45,7 +45,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
 
     const newDevice = omit(
       device,
-      'pipeId',
+      'pipeId'
     ) as CreatePipeHousingMeteringDeviceInNodeRequest;
 
     setCommunicationPipes((pipes) =>
@@ -58,13 +58,13 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           ...pipe,
           devices: [...pipeDevices, newDevice],
         };
-      }),
+      })
     );
   };
 
   useEffect(
     () => inputs.handleMeteringDeviceCreated.watch(handleAddDevice).unsubscribe,
-    [],
+    []
   );
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           ...pipe,
           devices: pipe.devices?.filter((_, index) => index !== deviceIndex),
         };
-      }),
+      })
     );
   };
 

@@ -21,7 +21,7 @@ const $isModalOpen = $resourceDisconnectionId.map(Boolean);
 
 const deleteResourceDisconnection = domain.createEvent();
 const deleteResourceDisconnectionFx = domain.createEffect<string, void>(
-  fetchDeleteResourceDisconnecting,
+  fetchDeleteResourceDisconnecting
 );
 const $deleteResourceDisconnectionIsLoading =
   deleteResourceDisconnectionFx.pending;

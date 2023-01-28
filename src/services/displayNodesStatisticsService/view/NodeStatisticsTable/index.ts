@@ -1,1 +1,1 @@
-export { NodeStatisticsTable } from './NodeStatisticsTable';
+export { NodeStatisticsTable } from './NodeStatisticsTable'

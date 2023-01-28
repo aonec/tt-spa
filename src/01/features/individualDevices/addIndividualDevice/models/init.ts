@@ -67,11 +67,9 @@ sample({
       documentsIds: toArray<FileData>(values.documentsIds, false)
         .filter((elem) => elem?.fileResponse)
         .map((elem) => elem.fileResponse?.id!),
-      startupReadings:
-        values.startupReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
-      defaultReadings:
-        values.defaultReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
-    }),
+      startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+      defaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+    })
   ),
   clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,

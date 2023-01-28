@@ -19,7 +19,10 @@ export const AccessDeniedPage = () => (
       </a>
       В письме не забудьте указать ссылку на страницу.
     </p>
-    <Button className="access-denied__button" onClick={buttonHandler}>
+    <Button
+      className="access-denied__button"
+      onClick={buttonHandler}
+    >
       <span>Вернуться к работе</span>
     </Button>
     <img className="access-denied__image" src={require('./403.svg')} />

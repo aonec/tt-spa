@@ -1,3 +1,5 @@
+ 
+
 import React from 'react';
 export function useStorageData() {
   React.useEffect(() => () => sessionStorage.removeItem('data'), []);

@@ -1,4 +1,4 @@
-export enum IndividualDeviceGrouptype {
-  info = 'info',
-  documents = 'documents',
+export enum IndividualDeviceGrouptype  {
+    info ='info',
+    documents = 'documents'
 }

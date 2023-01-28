@@ -1,1 +1,1 @@
-export { StandartWorkingRange } from './StandartWorkingRange';
+export { StandartWorkingRange } from './StandartWorkingRange'

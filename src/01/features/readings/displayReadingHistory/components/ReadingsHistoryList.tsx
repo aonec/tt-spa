@@ -76,13 +76,13 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
   const consumptionRates = useStore(outputs.$consumptionRates);
   const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates,
+    inputs.loadManagemenFirmConsumptionRates
   );
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
-    device?.managementFirmId,
+    device?.managementFirmId
   );
 
   const {
@@ -115,13 +115,13 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
 
     const getReadingValues = (
-      type: 'value' | 'consumption' | 'averageConsumption',
+      type: 'value' | 'consumption' | 'averageConsumption'
     ) =>
       reading &&
       getReadingValuesArray(
         reading,
         type,
-        getIndividualDeviceRateNumByName(device?.rateType!),
+        getIndividualDeviceRateNumByName(device?.rateType!)
       );
 
     const createReading = (values: (number | null)[]) => {
@@ -133,7 +133,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       uploadReading({
         ...getReadingValuesObject(
           values,
-          getIndividualDeviceRateNumByName(device?.rateType!),
+          getIndividualDeviceRateNumByName(device?.rateType!)
         ),
         deviceId: device?.id,
         readingDate,
@@ -153,12 +153,12 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
       const validationResult = validateReadings(
         getReadingValuesArray(prevReading, 'value', rateNum!).map((elem) =>
-          typeof elem === 'string' ? Number(elem) : elem,
+          typeof elem === 'string' ? Number(elem) : elem
         ),
         values,
         rateNum!,
         device?.resource!,
-        managementFirmConsumptionRates,
+        managementFirmConsumptionRates
       );
 
       if (!validationResult || validationResult.validated) {
@@ -169,7 +169,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         validationResult,
         () => createReading(values),
         () => resetValue({ year, month, id: reading?.id || null }),
-        device,
+        device
       );
     };
 
@@ -203,7 +203,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           getReadingValues('value') ||
           getArrayByCountRange(
             getIndividualDeviceRateNumByName(device?.rateType! || 0),
-            () => '' as any,
+            () => '' as any
           )
         }
         suffix={measurementUnit}
@@ -243,7 +243,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
     const recentlyReplacedAccount = getRecentlyReplacedAccount(
       apartment?.homeownerAccounts || [],
-      actualHomeownerAccount,
+      actualHomeownerAccount
     );
 
     const accountLastChangeYear = moment(actualHomeownerAccount?.openAt).year();
@@ -326,7 +326,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
                 year,
                 readingsLength: readings.length,
                 isHasArchived: readings.some((elem) => elem.isArchived),
-              }),
+              })
             )}
       </>
     );
@@ -355,7 +355,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               prevReading:
                 getActiveReadings(monthReadings[index + 1]?.readings) ||
                 getActiveReadings(prevMonths && prevMonths[0]?.readings),
-            }),
+            })
           )}
       </>
     );
@@ -376,7 +376,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           prevMonths:
             values?.yearReadings &&
             values?.yearReadings[index + 1]?.monthReadings,
-        }),
+        })
       )}
     </Wrapper>
   );

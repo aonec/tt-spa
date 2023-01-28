@@ -15,27 +15,32 @@ import _ from 'lodash';
 
 const { Option } = Select;
 
-export const DisablingResourcesSearch: React.FC<
-  DisablingResourcesSearchProps
-> = ({ applyFilters, cities, filters }) => {
+export const DisablingResourcesSearch: React.FC<DisablingResourcesSearchProps> = ({
+  applyFilters,
+  cities,
+  filters,
+}) => {
   const city: string | undefined = _.get(cities, ['0'], undefined);
 
-  const { values, handleSubmit, setFieldValue } =
-    useFormik<DisablingResourcesProps>({
-      initialValues: {
-        City: filters?.City || city,
-        Resource: filters?.Resource,
-        DisconnectingType: filters?.DisconnectingType,
-        OrderRule: filters?.OrderRule,
-        HousingStockId: filters?.HousingStockId,
-        Status: filters?.Status,
-        PageNumber: filters?.PageNumber,
-        PageSize: filters?.PageSize,
-        OrderBy: filters?.OrderBy,
-      },
-      enableReinitialize: true,
-      onSubmit: applyFilters,
-    });
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik<DisablingResourcesProps>({
+    initialValues: {
+      City: filters?.City || city,
+      Resource: filters?.Resource,
+      DisconnectingType: filters?.DisconnectingType,
+      OrderRule: filters?.OrderRule,
+      HousingStockId: filters?.HousingStockId,
+      Status: filters?.Status,
+      PageNumber: filters?.PageNumber,
+      PageSize: filters?.PageSize,
+      OrderBy: filters?.OrderBy,
+    },
+    enableReinitialize: true,
+    onSubmit: applyFilters,
+  });
 
   return (
     <StyledDisablingResourcesSearchHeader>
@@ -88,11 +93,7 @@ export const DisablingResourcesSearch: React.FC<
           {Object.keys(EResourceDisconnectingType).map((el) => {
             return (
               <Option value={el}>
-                {
-                  ResourceDisconnectingClassLookUp[
-                    el as EResourceDisconnectingType
-                  ]
-                }{' '}
+                {ResourceDisconnectingClassLookUp[el as EResourceDisconnectingType]}{' '}
               </Option>
             );
           })}

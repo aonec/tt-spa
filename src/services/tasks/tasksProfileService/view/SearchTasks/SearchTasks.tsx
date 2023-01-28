@@ -30,36 +30,40 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   housingManagments,
   perpetrators,
 }) => {
-  const { values, handleSubmit, setFieldValue, resetForm } =
-    useFormik<GetTasksListRequestPayload>({
-      initialValues: {
-        TaskType: currentFilter?.TaskType || null,
-        TaskId: currentFilter?.TaskId,
-        TargetType: currentFilter?.TargetType,
-        GroupType: currentFilter?.GroupType,
-        HouseManagementId: currentFilter?.HouseManagementId,
-        DeviceId: currentFilter?.DeviceId,
-        HousingStockId: currentFilter?.HousingStockId,
-        HasChanged: currentFilter?.HasChanged,
-        PipeNodeId: currentFilter?.PipeNodeId,
-        ClosingStatuses: currentFilter?.ClosingStatuses,
-        ApplicationCompetenceId: currentFilter?.ApplicationCompetenceId,
-        TimeStatus: currentFilter?.TimeStatus,
-        PerpetratorId: currentFilter?.PerpetratorId,
-        Resource: currentFilter?.Resource,
-        EngineeringElement: currentFilter?.EngineeringElement,
-        City: currentFilter?.City || '',
-        Street: currentFilter?.Street,
-        HousingStockNumber: currentFilter?.HousingStockNumber,
-        Corpus: currentFilter?.Corpus,
-        ApartmentNumber: currentFilter?.ApartmentNumber,
-        PageNumber: currentFilter?.PageNumber,
-        PageSize: currentFilter?.PageSize,
-        OrderBy: currentFilter?.OrderBy,
-      },
-      enableReinitialize: true,
-      onSubmit,
-    });
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+    resetForm,
+  } = useFormik<GetTasksListRequestPayload>({
+    initialValues: {
+      TaskType: currentFilter?.TaskType || null,
+      TaskId: currentFilter?.TaskId,
+      TargetType: currentFilter?.TargetType,
+      GroupType: currentFilter?.GroupType,
+      HouseManagementId: currentFilter?.HouseManagementId,
+      DeviceId: currentFilter?.DeviceId,
+      HousingStockId: currentFilter?.HousingStockId,
+      HasChanged: currentFilter?.HasChanged,
+      PipeNodeId: currentFilter?.PipeNodeId,
+      ClosingStatuses: currentFilter?.ClosingStatuses,
+      ApplicationCompetenceId: currentFilter?.ApplicationCompetenceId,
+      TimeStatus: currentFilter?.TimeStatus,
+      PerpetratorId: currentFilter?.PerpetratorId,
+      Resource: currentFilter?.Resource,
+      EngineeringElement: currentFilter?.EngineeringElement,
+      City: currentFilter?.City || '',
+      Street: currentFilter?.Street,
+      HousingStockNumber: currentFilter?.HousingStockNumber,
+      Corpus: currentFilter?.Corpus,
+      ApartmentNumber: currentFilter?.ApartmentNumber,
+      PageNumber: currentFilter?.PageNumber,
+      PageSize: currentFilter?.PageSize,
+      OrderBy: currentFilter?.OrderBy,
+    },
+    enableReinitialize: true,
+    onSubmit,
+  });
 
   const lastGroupTypeRef = useRef<TaskGroupingFilter | undefined>(undefined);
 
@@ -67,7 +71,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     (e: ChangeEvent<HTMLInputElement>) => {
       setFieldValue(e.target.name, e.target.value);
     },
-    [setFieldValue],
+    [setFieldValue]
   );
   const handleKeyDown = useCallback(
     fromEnter((e) => {
@@ -75,7 +79,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       setFieldValue(e.target.name, e.target.value);
       handleSubmit();
     }),
-    [setFieldValue, handleSubmit],
+    [setFieldValue, handleSubmit]
   );
   const clearInput = useCallback(() => {
     setFieldValue('TaskId', '');

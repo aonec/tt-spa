@@ -1,1 +1,1 @@
-export { ConnectionInfo } from './ConnectionInfo';
+export { ConnectionInfo } from './ConnectionInfo'

@@ -11,7 +11,7 @@ displayInspectorsService.outputs.$inspectorsList
       const filteredInspectors = sortBy(inspectors, 'fullName');
 
       return filteredInspectors;
-    },
+    }
   )
   .reset(displayInspectorsService.inputs.InspectorsGate.close);
 

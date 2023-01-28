@@ -10,11 +10,11 @@ export interface MeteringDeviceReading
 
 export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   const [readings, setReadings] = useState<MeteringDeviceReading[] | null>(
-    null,
+    null
   );
 
   const updateReadings = useEvent(
-    meteringDeviceReadingsService.inputs.updateNodeReadings,
+    meteringDeviceReadingsService.inputs.updateNodeReadings
   );
 
   const previousExistingReading = getPreviousExistingReading(readings || []);
@@ -24,7 +24,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
       id,
       value: {
         currentReading: getCurrentReading(
-          readings?.filter(({ id }) => id) || [],
+          readings?.filter(({ id }) => id) || []
         ),
         previousExistingReading,
       },
@@ -49,7 +49,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   useEffect(() => void fetchMeteringDeviceReadings(), [id]);
 
   const preparedPreviousReadingsArray = getReadingsArrayWithEmpties(
-    readings || [],
+    readings || []
   );
   return {
     refetch: fetchMeteringDeviceReadings,
@@ -63,7 +63,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
 }
 const getPreviousExistingReading = (readings: MeteringDeviceReading[]) => {
   const sortReadings = readings.sort((firstReading, secondReading) =>
-    moment(firstReading.readingDate).diff(moment(secondReading.readingDate)),
+    moment(firstReading.readingDate).diff(moment(secondReading.readingDate))
   );
   return sortReadings[sortReadings.length - 2];
 };
@@ -87,7 +87,7 @@ const getReadingsArrayWithEmpties = (readings: MeteringDeviceReading[]) => {
 
     const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
     const readingMonthDate = moment(
-      moment(elem.readingDate).format(dateFormat),
+      moment(elem.readingDate).format(dateFormat)
     );
 
     if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;

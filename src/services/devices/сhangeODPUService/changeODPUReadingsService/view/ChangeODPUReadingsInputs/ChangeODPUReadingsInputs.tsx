@@ -40,7 +40,7 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         title: ' ',
       },
     ],
-    [color],
+    [color]
   );
 
   const handleChange = useCallback(
@@ -55,8 +55,7 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
         readings: oldReadings.map((elem) => {
           if (elem.id !== id) return elem;
           if (newValues.value === undefined) {
-            const nonResidentialRoomConsumption =
-              newValues.nonResidentialRoomConsumption!;
+            const nonResidentialRoomConsumption = newValues.nonResidentialRoomConsumption!;
             return { ...elem, nonResidentialRoomConsumption };
           }
           const value = newValues.value;
@@ -64,12 +63,12 @@ export const ChangeODPUReadingsInputs: FC<ChangeODPUReadingsInputsProps> = ({
           return { ...elem, value };
         }),
       }),
-    [oldReadings, onChange],
+    [oldReadings, onChange]
   );
 
   const handleChangeValue = useCallback(
     ({ values, id }) => handleChange({ newValues: values, id: String(id) }),
-    [handleChange],
+    [handleChange]
   );
 
   return (

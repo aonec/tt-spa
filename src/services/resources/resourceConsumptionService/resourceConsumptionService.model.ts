@@ -48,18 +48,18 @@ const $addressesList = combine(
     if (!selectedHouseManagement) {
       const streets = houseManagements.reduce(
         (acc, houseManagement) => [...acc, ...(houseManagement.streets || [])],
-        [] as StreetWithHousingStockNumbersResponse[],
+        [] as StreetWithHousingStockNumbersResponse[]
       );
 
       return getAddressSearchData(streets);
     }
 
     const requiredHouseManagements = houseManagements.find(
-      (houseManagement) => houseManagement.id === selectedHouseManagement,
+      (houseManagement) => houseManagement.id === selectedHouseManagement
     );
 
     return getAddressSearchData(requiredHouseManagements?.streets || []);
-  },
+  }
 );
 
 const setFilter = domain.createEvent<GetConsumptionDataFilter>();
@@ -100,11 +100,10 @@ const $additionalConsumption = domain
   .reset(clearData)
   .reset(clearAdditionalAddress);
 
-const setSelectedGraphTypes =
-  domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
+const setSelectedGraphTypes = domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
 const $selectedGraphTypes = domain
   .createStore<BooleanTypesOfResourceConsumptionGraphForTwoMonth>(
-    initialSelectedGraphTypes,
+    initialSelectedGraphTypes
   )
   .on(setSelectedGraphTypes, (_, selected) => selected)
   .reset(clearData);
@@ -123,7 +122,7 @@ guard({
       filter?.From &&
         filter?.To &&
         filter?.HousingStockId &&
-        filter?.ResourceType,
+        filter?.ResourceType
     ),
   target: getAdditionalConsumptionFx,
 });
@@ -135,7 +134,7 @@ guard({
       filter?.From &&
         filter?.To &&
         filter?.HousingStockId &&
-        filter?.ResourceType,
+        filter?.ResourceType
     ),
   target: getHousingConsumptionFx,
 });

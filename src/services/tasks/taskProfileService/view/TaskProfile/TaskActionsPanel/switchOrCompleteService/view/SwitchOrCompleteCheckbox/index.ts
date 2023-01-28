@@ -1,1 +1,1 @@
-export { SwitchOrCompleteCheckbox } from './SwitchOrCompleteCheckbox';
+export { SwitchOrCompleteCheckbox } from './SwitchOrCompleteCheckbox'

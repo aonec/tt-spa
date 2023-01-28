@@ -11,7 +11,7 @@ guard({
         return null;
       }
       return { ...payload, DelayedEmailTarget };
-    },
+    }
   ),
   clock: sendReportToEmailService.inputs.submitEmail,
   filter: Boolean,

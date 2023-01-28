@@ -8,7 +8,7 @@ import { getFilledArray } from 'utils/getFilledArray';
 import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
 
 export const prepareData = (
-  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
+  readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 ) => {
   const dateFormat = 'YYYY-MM';
   const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
@@ -16,7 +16,7 @@ export const prepareData = (
     const text = firstLetterToUpperCase(
       moment(currentMonthDate)
         .subtract(index - 1, 'month')
-        .format('MMMM'),
+        .format('MMMM')
     );
 
     return {
@@ -31,7 +31,7 @@ export const prepareData = (
   return readings
     .reduce((acc, currentReading) => {
       const readingMonthDate = moment(
-        moment(currentReading.readingDate).format(dateFormat),
+        moment(currentReading.readingDate).format(dateFormat)
       );
 
       const diff = currentMonthDate.diff(readingMonthDate, 'months');
@@ -42,7 +42,7 @@ export const prepareData = (
       const id = currentReading.id;
       const currentReadingValue = String(currentReading.value);
       const currentNonResidentialRoomConsumption = String(
-        currentReading.nonResidentialRoomConsumption,
+        currentReading.nonResidentialRoomConsumption
       );
       const currentReadingDate = currentReading.readingDate;
       acc[diff] = {
@@ -55,13 +55,13 @@ export const prepareData = (
       return acc;
     }, preparedArray as PreparedHousingMeteringDeviceReadings[])
     .sort((firstReading, secondReading) =>
-      moment(secondReading.readingDate).diff(firstReading.readingDate),
+      moment(secondReading.readingDate).diff(firstReading.readingDate)
     );
 };
 
 export const prepareReadingsToFormik = (
   readings: PreparedHousingMeteringDeviceReadings[],
-  oldReadings: PreparedHousingMeteringDeviceReadings[],
+  oldReadings: PreparedHousingMeteringDeviceReadings[]
 ): SwitchHousingDeviceReadingsCreateRequest[] =>
   readings.reduce((acc, elem, index) => {
     const readingValue = elem.value || oldReadings[index].value;
@@ -83,7 +83,7 @@ export const prepareReadingsToFormik = (
         value: Number(readingValue),
         readingDate: elem.readingDate,
         nonResidentialRoomConsumption: Number(
-          readingNonResidentialRoomConsumption,
+          readingNonResidentialRoomConsumption
         ),
       },
     ];

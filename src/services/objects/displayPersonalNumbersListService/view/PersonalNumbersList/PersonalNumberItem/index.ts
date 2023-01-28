@@ -1,1 +1,1 @@
-export { PersonalNumberItem } from './PersonalNumberItem';
+export { PersonalNumberItem } from './PersonalNumberItem'

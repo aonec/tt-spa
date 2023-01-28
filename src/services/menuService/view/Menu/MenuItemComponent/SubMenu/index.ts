@@ -1,1 +1,1 @@
-export { SubMenu } from './SubMenu';
+export { SubMenu } from './SubMenu'

@@ -5,9 +5,9 @@ import {
 } from './SendReportToEmailDescription.styled';
 import { SendReportToEmailDescriptionProps } from './SendReportToEmailDescription.types';
 
-export const SendReportToEmailDescription: FC<
-  SendReportToEmailDescriptionProps
-> = ({ email }) => {
+export const SendReportToEmailDescription: FC<SendReportToEmailDescriptionProps> = ({
+  email,
+}) => {
   return (
     <>
       <p>

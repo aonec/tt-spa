@@ -25,8 +25,7 @@ const domain = createDomain('housesReadingsService');
 
 const HousingStockGate = createGate<{ housingStockId: number | null }>();
 
-const handleSearchHousingStock =
-  domain.createEvent<GetHousingStocksListRequestPayload>();
+const handleSearchHousingStock = domain.createEvent<GetHousingStocksListRequestPayload>();
 
 const loadNextPageOfIndividualDevicesList = domain.createEvent();
 
@@ -53,7 +52,7 @@ const $individualDevicesPagedList = domain
 const $individualDevices = domain
   .createStore<IndividualDeviceListItemResponse[]>([])
   .on(fetchIndividualDevicesFx.doneData, (prev, { items }) =>
-    items ? [...prev, ...items] : prev,
+    items ? [...prev, ...items] : prev
   )
   .reset(HousingStockGate.close, $housingStock)
   .on(
@@ -66,7 +65,7 @@ const $individualDevices = domain
 
         return { ...device, readings: [...deviceReadings, readingResponse] };
       });
-    },
+    }
   );
 
 const $individualDevicesPageNumber = domain
@@ -96,7 +95,7 @@ sample({
       source: combine(
         $individualDevices,
         $individualDevicesPagedList,
-        fetchIndividualDevicesFx.pending,
+        fetchIndividualDevicesFx.pending
       ),
       clock: loadNextPageOfIndividualDevicesList,
       filter: ([individualDevices, pagedData, isLoading]) => {
@@ -109,7 +108,7 @@ sample({
     }),
     source: combine($individualDevicesPageNumber, $housingStock),
     filter: (
-      data: [number, HousingStockResponse | null],
+      data: [number, HousingStockResponse | null]
     ): data is [number, HousingStockResponse] => Boolean(data[1]),
   }),
   fn: ([pageNumber, housingStock]) => ({
@@ -136,7 +135,7 @@ const $isAllDevicesLoaded = combine(
   $individualDevicesPagedList,
   $individualDevices,
   (data, devices) =>
-    typeof data?.totalItems === 'number' && data.totalItems === devices.length,
+    typeof data?.totalItems === 'number' && data.totalItems === devices.length
 );
 
 const handleHousingStockLoaded = fetchHousingStockFx.doneData;

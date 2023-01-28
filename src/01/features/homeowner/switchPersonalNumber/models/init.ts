@@ -18,6 +18,7 @@ $switchRequestStatus
   .on(switchPersonalNumberFx.doneData, () => 'done')
   .on(switchPersonalNumberFx.failData, () => 'failed');
 
+
 sample({
   clock: switchPersonalNumber,
   source: combine(
@@ -34,7 +35,7 @@ sample({
         openAt,
         isMainAccountingNumber,
       },
-      apartment,
+      apartment
     ) => {
       return {
         ReplaceableAccountId: gatestate?.id,
@@ -48,7 +49,7 @@ sample({
           IsMainOnApartment: isMainAccountingNumber,
         },
       };
-    },
+    }
   ),
   target: switchPersonalNumberFx as any,
 });
