@@ -1,4 +1,3 @@
-import { ModalText } from '01/shared/ui/Modal/Modal';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';

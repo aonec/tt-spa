@@ -1,8 +1,4 @@
-import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
-import {
-  ApartmentGate,
-  refetchApartment,
-} from './../../displayApartment/models/index';
+import { refetchApartment } from './../../displayApartment/models/index';
 import {
   PauseApartmentGate,
   cancelPauseApartmentButtonClicked,
@@ -14,7 +10,6 @@ import { $isPauseApartmentModalVisible, pauseApartmentButtonClicked } from '.';
 import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
-import { FileData } from '01/hooks/useFilesUpload';
 import moment from 'moment';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
@@ -23,7 +18,7 @@ $isPauseApartmentModalVisible
   .on(pauseApartmentButtonClicked, () => true)
   .reset(
     pauseApartmentModalCancelButtonClicked,
-    pauseApartmentStatusFx.doneData
+    pauseApartmentStatusFx.doneData,
   );
 
 forward({
@@ -52,7 +47,7 @@ const payload = combine(
         .filter((elem) => elem.fileResponse)
         .map((elem) => elem.fileResponse?.id!),
     },
-  })
+  }),
 );
 
 sample({

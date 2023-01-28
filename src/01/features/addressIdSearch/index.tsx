@@ -5,7 +5,7 @@ import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { combine } from 'effector';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { CheckLg, XLg } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
@@ -34,11 +34,9 @@ export const AddressIdSearch: FC<Props> = (props) => {
   const { onExit, firstInputRef } = props;
   const error = useStore($error);
 
-  const [counter, setCounter] = useState(0);
-
   const fetchedApartmentId = useStore($apartmentSearchId);
 
-  const { fields, submit } = useForm(addressSearchForm);
+  const { fields } = useForm(addressSearchForm);
   const fieldsArray = [fields.street, fields.house, fields.apartment];
 
   const existingStreets = useStore($existingStreets);
@@ -60,17 +58,17 @@ export const AddressIdSearch: FC<Props> = (props) => {
   const clearValuesOnFocusCallback = (index: number) => () =>
     clearValuesOnFocus(index);
 
-  const { match: streetMatch, bestMatch: bestStreetMatch } = useAutocomplete(
+  const { bestMatch: bestStreetMatch } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   const loading = useStore(
     combine(
       fetchExistingStreets.pending,
       fetchApartmentSearchIdFx.pending,
-      (...pendings) => pendings.some(Boolean)
-    )
+      (...pendings) => pendings.some(Boolean),
+    ),
   );
 
   const isActive = (ref: any) => ref.current === document.activeElement;
@@ -105,7 +103,7 @@ export const AddressIdSearch: FC<Props> = (props) => {
     <SearchWrap
       temp="12px 0.8fr 0.35fr 0.3fr"
       focused={[firstInputRef, ...refs].some(
-        (elem) => elem.current === document.activeElement
+        (elem) => elem.current === document.activeElement,
       )}
       isSuccess={isSuccess}
       error={error}

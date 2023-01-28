@@ -16,11 +16,6 @@ const $competencesCatalog = domain
   .createStore<ManagementFirmCompetenceResponse[] | null>(null)
   .on(fetchCompetencesFx.doneData, (_, competences) => competences);
 
-const $isFetchingCompetencesFailed = domain
-  .createStore(false)
-  .on(fetchCompetencesFx.failData, () => true)
-  .reset(fetchCompetencesFx.doneData);
-
 forward({
   from: guard({
     clock: CompetencesGate.open,

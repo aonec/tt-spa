@@ -1,7 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { getReport } from './consumptionReportCalculatorService.api';
 import { GetCalculatorReportParams } from './consumptionReportCalculatorService.types';
-import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
 const domain = createDomain('consumptionReportCalculatorService');

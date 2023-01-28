@@ -4,7 +4,6 @@ import { DevicesSearchProps } from './DevicesSearch.types';
 import { NavLink } from 'react-router-dom';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import axios from '01/axios';
-import { Loader } from '01/components';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -21,10 +20,8 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
   const [isLoading, setIsLoading] = useState(false);
-  const [
-    cancelTokenSource,
-    setCancelTokenSource,
-  ] = useState<CancelTokenSource | null>(null);
+  const [cancelTokenSource, setCancelTokenSource] =
+    useState<CancelTokenSource | null>(null);
 
   async function fetchDevices() {
     if (!serialNumber) return;
@@ -62,7 +59,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
 
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
-    index: number
+    index: number,
   ) => (
     <NavLink
       to={`/meters/apartments/${device.apartmentId}`}

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Wrapper } from './RelatedDevicesList.styled';
 import { RelatedDevicesListProps } from './RelatedDevicesList.types';
 import { RelatedDevicesListItem } from './RelatedDevicesListItem';
 

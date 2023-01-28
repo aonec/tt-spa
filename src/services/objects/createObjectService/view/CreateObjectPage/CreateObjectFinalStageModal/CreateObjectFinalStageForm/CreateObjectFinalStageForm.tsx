@@ -8,7 +8,6 @@ import {
   GridContainer,
   GridContainerForAdditionalAddresses,
   PageTitle,
-  SpacedIndex,
   SpacesHouseNumber,
   Wrapper,
 } from './CreateObjectFinalStageForm.styled';
@@ -21,14 +20,11 @@ import {
 import { ElevatorDictionary } from '../CreateObjectFinalStageModal.constants';
 import { AddressField } from './AddressField';
 
-export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = ({
-  formId,
-  createObjectData,
-  houseManagements,
-  heatingStations,
-}) => {
+export const CreateObjectFinalStageForm: FC<
+  CreateObjectFinalStageFormProps
+> = ({ formId, createObjectData, houseManagements, heatingStations }) => {
   const houseManagrmentName = houseManagements?.find(
-    (elem) => elem.id === createObjectData?.houseManagement
+    (elem) => elem.id === createObjectData?.houseManagement,
   )?.name;
 
   const objectCategory = createObjectData?.objectCategory;
@@ -44,7 +40,7 @@ export const CreateObjectFinalStageForm: FC<CreateObjectFinalStageFormProps> = (
     ];
 
   const heatingStation = heatingStations?.items?.find(
-    (elem) => elem.id === createObjectData?.heatingStationId
+    (elem) => elem.id === createObjectData?.heatingStationId,
   );
 
   return (
