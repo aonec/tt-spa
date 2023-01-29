@@ -136,13 +136,13 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
                 <ErrorFieldName>
                   Допустимое значение погрешностей
                 </ErrorFieldName>
-                <Value>{allowableError?.min}</Value>
-                <Value>{allowableError?.max}</Value>
+                <Value>{allowableError?.min || '—'}</Value>
+                <Value>{allowableError?.max || '—'}</Value>
               </FieldGrid>
               <FieldGrid>
                 <ErrorFieldName>Критичное значение погрешностей</ErrorFieldName>
-                <Value>{criticalError?.min}</Value>
-                <Value>{criticalError?.max}</Value>
+                <Value>{criticalError?.min || '—'}</Value>
+                <Value>{criticalError?.max || '—'}</Value>
               </FieldGrid>
             </div>
             <div></div>
@@ -156,11 +156,11 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
                     <Symbol>M1</Symbol>
                     <FieldName>
                       Масса подающей магистрали (
-                      {massOfFeedFlowMagistral?.measureUnit})
+                      {massOfFeedFlowMagistral?.measureUnit || '—'})
                     </FieldName>
                   </RangeFieldName>
-                  <Value>{massOfFeedFlowMagistral?.min || 9}</Value>
-                  <Value>{massOfFeedFlowMagistral?.max || 10}</Value>
+                  <Value>{massOfFeedFlowMagistral?.min || '—'}</Value>
+                  <Value>{massOfFeedFlowMagistral?.max || '—'}</Value>
                 </FieldGrid>
               )}
 
@@ -170,11 +170,11 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
                     <Symbol>M2</Symbol>
                     <FieldName>
                       Масса подающей магистрали (
-                      {massOfFeedBackFlowMagistral?.measureUnit})
+                      {massOfFeedBackFlowMagistral?.measureUnit || '—'})
                     </FieldName>
                   </RangeFieldName>
-                  <Value>{massOfFeedBackFlowMagistral?.min || 9}</Value>
-                  <Value>{massOfFeedBackFlowMagistral?.max || 10}</Value>
+                  <Value>{massOfFeedBackFlowMagistral?.min || '—'}</Value>
+                  <Value>{massOfFeedBackFlowMagistral?.max || '—'}</Value>
                 </FieldGrid>
               )}
 
@@ -184,11 +184,11 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
                     <Symbol>ΔM</Symbol>
                     <FieldName>
                       Масса подающей магистрали (
-                      {deltaMassOfMagistral?.measureUnit})
+                      {deltaMassOfMagistral?.measureUnit || '—'})
                     </FieldName>
                   </RangeFieldName>
-                  <Value>{deltaMassOfMagistral?.min || 9}</Value>
-                  <Value>{deltaMassOfMagistral?.max || 10}</Value>
+                  <Value>{deltaMassOfMagistral?.min || '—'}</Value>
+                  <Value>{deltaMassOfMagistral?.max || '—'}</Value>
                 </FieldGrid>
               )}
             </div>

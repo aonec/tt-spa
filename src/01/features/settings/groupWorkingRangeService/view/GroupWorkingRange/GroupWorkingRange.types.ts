@@ -2,6 +2,7 @@ import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
+  HouseManagementResponse,
 } from 'myApi';
 
 export type GroupWorkingRangeProps = {
@@ -12,4 +13,5 @@ export type GroupWorkingRangeProps = {
     houseManagementId: string;
   }) => void;
   isLoading: boolean;
+  houseManagements: HouseManagementResponse[];
 };

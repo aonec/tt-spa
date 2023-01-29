@@ -3,6 +3,7 @@ import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
+  HouseManagementResponse,
 } from 'myApi';
 
 export const getGroupWorkingRange = (query: {
@@ -15,3 +16,6 @@ export const getGroupWorkingRange = (query: {
     { params: query }
   );
 };
+
+export const fetchHouseManagements = (): Promise<HouseManagementResponse[]> =>
+  axios.get('HouseManagements');
