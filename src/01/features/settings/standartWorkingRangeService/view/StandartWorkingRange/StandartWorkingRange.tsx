@@ -6,9 +6,9 @@ import {
   FieldName,
   LoaderWrapper,
   Margin,
-  Padding,
   RangeBlockGrid,
   RangeFieldName,
+  ResourceSelectWrapper,
   Symbol,
   Value,
   Wrapper,
@@ -78,6 +78,13 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     },
   });
 
+  useEffect(() => {
+    handleOnSearchDataChange({
+      nodeResourceType: values.nodeResourceType,
+      season: values.season,
+    });
+  }, []);
+
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
 
@@ -105,8 +112,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
           />
         </Tabs>
       </Margin>
-
-      <Padding>
+      <ResourceSelectWrapper>
         <ResourceSelect
           resource={values.nodeResourceType}
           onChange={(value) => {
@@ -114,7 +120,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
             handleSubmit();
           }}
         />
-      </Padding>
+      </ResourceSelectWrapper>
 
       {isLoading && (
         <LoaderWrapper>

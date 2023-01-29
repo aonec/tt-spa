@@ -1,12 +1,10 @@
 import styled from 'styled-components';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 export const Wrapper = styled.div``;
 
 export const Margin = styled.div`
   margin: 12px 0px 16px 0px;
-`;
-export const Padding = styled.div`
-  padding: 0px 10px 0px 10px;
 `;
 
 export const ErrorBlockGrid = styled.div`
@@ -70,4 +68,13 @@ export const FieldName = styled.div`
 
 export const LoaderWrapper = styled.div`
   max-width: 700px;
+`;
+
+export const ResourceSelectWrapper = styled.div`
+  padding: 0px 10px 0px 10px;
+  width: 260px;
+
+  .ant-select {
+    width: 100%;
+  }
 `;
