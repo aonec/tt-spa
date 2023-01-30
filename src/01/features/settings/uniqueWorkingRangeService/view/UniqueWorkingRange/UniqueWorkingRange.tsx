@@ -10,12 +10,11 @@ import {
   RangeBlockGrid,
   RangeFieldName,
   ResourceSelectWrapper,
-  SelectWide,
   Symbol,
   Value,
   Wrapper,
-} from './GroupWorkingRange.styled';
-import { GroupWorkingRangeProps } from './GroupWorkingRange.types';
+} from './UniqueWorkingRange.styled';
+import { UniqueWorkingRangeProps } from './UniqueWorkingRange.types';
 import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
@@ -27,45 +26,43 @@ import { PageHeader } from '01/shared/ui/PageHeader';
 import { Tabs } from 'ui-kit/Tabs';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { Select } from 'ui-kit/Select';
 
-export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
-  groupWorkingRange,
+export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
   handleOnSearchDataChange,
+  housingStockUniqueWorkingRange,
   isLoading,
-  houseManagements,
 }) => {
   const allowableError =
-    groupWorkingRange &&
-    groupWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError
     );
 
-  const criticalError = groupWorkingRange?.nodeWorkingRanges?.find(
+  const criticalError = housingStockUniqueWorkingRange?.nodeWorkingRanges?.find(
     (range) =>
       range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError
   );
 
   const massOfFeedFlowMagistral =
-    groupWorkingRange &&
-    groupWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
         ENodeWorkingRangeType.MassOfFeedFlowMagistral
     );
 
   const massOfFeedBackFlowMagistral =
-    groupWorkingRange &&
-    groupWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
         ENodeWorkingRangeType.MassOfFeedBackFlowMagistral
     );
 
   const deltaMassOfMagistral =
-    groupWorkingRange &&
-    groupWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
         ENodeWorkingRangeType.DeltaMassOfMagistral
@@ -75,7 +72,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
     initialValues: {
       nodeResourceType: EResourceType.ColdWaterSupply,
       season: ENodeWorkingRangeSeason.HeatingSeason,
-      houseManagementId: '',
+      housingStockId: 0,
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -92,7 +89,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
       <Margin>
         <GoBack />
       </Margin>
-      <PageHeader title="Групповые рабочие диапазоны" />
+      <PageHeader title="Уникальные рабочие диапазоны" />
       <Margin>
         <Tabs
           onChange={(value) => {
@@ -122,22 +119,6 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
             }}
           />
         </ResourceSelectWrapper>
-
-        <SelectWide
-          onChange={(value) => {
-            setFieldValue('houseManagementId', value);
-            handleSubmit();
-          }}
-          placeholder="Вебирете"
-        >
-          {houseManagements.map((management) => {
-            return (
-              <Select.Option key={management.id} value={management.id}>
-                Домоуправление "{management.name}"
-              </Select.Option>
-            );
-          })}
-        </SelectWide>
       </FilterBlock>
 
       {isLoading && (
