@@ -168,7 +168,6 @@ export const AddressIdSearch: FC<Props> = (props) => {
               onExit && onExit();
               onExitAddressSearchForm();
             })(e);
-            setCounter((prev) => prev + 1);
           }}
           placeholder="Кв."
           ref={apartmentNumberRef}
