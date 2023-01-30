@@ -28,9 +28,8 @@ export const ZoneWrapper = styled.div`
 `;
 
 export const ResourceText = styled.div`
-  margin-left: 8px;
   display: flex;
-  align-items: centerF;
+  align-items: center;
 `;
 
 export const SelectWrapper = styled.div`
