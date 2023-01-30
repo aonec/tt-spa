@@ -1,44 +1,88 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { TrashIconSC } from 'ui-kit/DocumentsService/view/DocumentsLineUpload/DocumentsLineUpload.styled';
 import { UserIcon } from 'ui-kit/icons';
 import {
   CommentComponent,
   CommentDate,
+  CommentFooter,
   CommentHeader,
   CommentInfo,
   CommentText,
   CommentTitle,
   IconSubstrate,
   RightButtonsBlock,
+  TextareaSC,
   UserName,
 } from './CommentPanel.styled';
 import { PencilIconSC } from 'ui-kit/shared_components/SelectedEntityPanel/SelectedEntityPanel.styled';
 import { CommentPanelProps } from './CommentPanel.types';
+import moment from 'moment';
+import { Button } from 'ui-kit/Button';
 
-export const CommentPanel: FC<CommentPanelProps> = ({}) => {
-  const text =
-    ' Прибор иногда выходит из строя и сбиваются настройки соединения. Прошу коллег быть с ним более внимательными';
-  const userName = 'Филиппов А.А.';
-  const commentDate = '12.08.2019 10:36';
+export const CommentPanel: FC<CommentPanelProps> = ({
+  commentDate,
+  author,
+  comment,
+  onEdit,
+  onRemove,
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newComment, setNewComment] = useState(comment);
 
   return (
     <CommentComponent>
       <CommentHeader>
         <CommentTitle>Комментарий</CommentTitle>
         <RightButtonsBlock>
-          <PencilIconSC />
-          <TrashIconSC />
+          {!isEditing && <PencilIconSC onClick={() => setIsEditing(true)} />}
+          <TrashIconSC onClick={() => onRemove()} />
         </RightButtonsBlock>
       </CommentHeader>
 
-      <CommentText>{text}</CommentText>
+      <div>
+        {!isEditing && (
+          <CommentText>{newComment || 'Нет комментариев'}</CommentText>
+        )}
+        {isEditing && (
+          <>
+            <TextareaSC
+              value={newComment || ''}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Введите комментарий"
+            />
+            <CommentFooter>
+              <Button
+                type="ghost"
+                size="small"
+                onClick={() => {
+                  setNewComment(comment);
+                  setIsEditing(false);
+                }}
+              >
+                Отмена
+              </Button>
+              <Button
+                size="small"
+                onClick={() => {
+                  setIsEditing(false);
+                  onEdit(newComment || '');
+                }}
+              >
+                Сохранить
+              </Button>
+            </CommentFooter>
+          </>
+        )}
+      </div>
 
       <CommentInfo>
         <IconSubstrate>
           <UserIcon />
         </IconSubstrate>
-        <UserName>{userName}</UserName>
-        <CommentDate>{commentDate} </CommentDate>
+        <UserName>{author}</UserName>
+        <CommentDate>
+          {moment(commentDate).format('DD.MM.YYYY HH:mm')}
+        </CommentDate>
       </CommentInfo>
     </CommentComponent>
   );

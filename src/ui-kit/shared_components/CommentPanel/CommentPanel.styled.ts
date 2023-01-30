@@ -1,7 +1,10 @@
 import styled from 'styled-components';
+import { Input } from 'ui-kit/Input';
 
 export const CommentComponent = styled.div`
-  width: 312px;
+  min-width: 312px;
+  width: 100%;
+
   height: max-content;
   background: #ffffff;
   border: 1px solid #f3f5f6;
@@ -9,7 +12,6 @@ export const CommentComponent = styled.div`
     0px 8px 16px rgba(78, 93, 146, 0.08);
   border-radius: 4px;
   padding: 14px;
-  margin: 10px;
 `;
 
 export const CommentHeader = styled.div`
@@ -27,13 +29,11 @@ export const CommentTitle = styled.div`
 
 export const RightButtonsBlock = styled.div``;
 
-export const CommentText = styled.textarea`
+export const CommentText = styled.div`
   font: inherit;
   border: none;
   width: 100%;
-  height: 70px;
   overflow: none;
-  resize: none;
 
   font-weight: 400;
   font-size: 14px;
@@ -71,4 +71,17 @@ export const IconSubstrate = styled.div`
   height: 30px;
   align-items: center;
   justify-content: center;
+`;
+
+export const TextareaSC = styled(Input.TextArea)`
+  border: 1px solid #189ee9;
+  border-radius: 4px;
+  margin-top: 12px;
+`;
+
+export const CommentFooter = styled.div`
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 `;

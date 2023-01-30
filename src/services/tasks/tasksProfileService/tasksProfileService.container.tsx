@@ -49,6 +49,7 @@ export const TasksProfileContainer = () => {
     housingStockId,
     pipeNodeId,
     housingMeteringDeviceId,
+    calculatorId,
   } = queryString.parse(window.location.search);
 
   const preparedApartmentId = prepareQueryStringParam(apartmentId);
@@ -57,8 +58,8 @@ export const TasksProfileContainer = () => {
 
   const preparedPipeNodeId = prepareQueryStringParam(pipeNodeId);
 
-  const preparedHousingMeteringDeviceId = prepareQueryStringParam(
-    housingMeteringDeviceId
+  const preparedDeviceId = prepareQueryStringParam(
+    housingMeteringDeviceId || calculatorId
   );
 
   useEffect(() => {
@@ -124,12 +125,13 @@ export const TasksProfileContainer = () => {
         preparedHousingStockId,
         preparedPipeNodeId,
         housingMeteringDeviceId,
+        calculatorId,
       ].some(Boolean) && (
         <ApartmentIdGate
           apartmentId={preparedApartmentId}
           housingStockId={preparedHousingStockId}
           pipeNodeId={preparedPipeNodeId}
-          housingMeteringDeviceId={preparedHousingMeteringDeviceId}
+          deviceId={preparedDeviceId}
         />
       )}
       <TaskTypesGate />

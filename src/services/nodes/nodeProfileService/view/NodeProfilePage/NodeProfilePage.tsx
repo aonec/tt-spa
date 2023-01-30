@@ -132,7 +132,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 {address?.mainAddress &&
                   getHousingStockItemAddress(address?.mainAddress)}{' '}
                 {address?.additionalAddresses?.map((address) => (
-                  <AdditionalAddress>
+                  <AdditionalAddress key={address.id}>
                     {getHousingStockItemAddress(address)}
                   </AdditionalAddress>
                 ))}

@@ -65,7 +65,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
           <GroupAmountText>
             {nodes.length} {systemText} учета
           </GroupAmountText>
-          <ChevronWrapper >
+          <ChevronWrapper>
             <ChevronSC isOpen={isOpen} />
           </ChevronWrapper>
         </GroupInfoWrapper>
@@ -77,6 +77,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
               node={node}
               segmentName={segmentName}
               openDevicesListModal={openDevicesListModal}
+              key={node.id}
             />
           ))}
         </div>
