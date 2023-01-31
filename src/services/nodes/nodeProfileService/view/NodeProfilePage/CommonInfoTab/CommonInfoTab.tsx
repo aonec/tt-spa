@@ -11,6 +11,7 @@ import { additionalAddressesString } from 'utils/additionalAddressesString';
 import { Tooltip } from 'antd';
 import { NodeRegistrationTypeLookup } from './CommonInfoTab.constants';
 import { ENodeRegistrationType } from 'myApi';
+import { configNamesLookup } from 'utils/configNamesLookup';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
@@ -40,11 +41,10 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           value: pipeNode?.nodeServiceZone?.name,
         },
         {
-          key: 'Ресурс',
-          value: pipeNode?.resource && (
+          key: 'Конфигурация узла',
+          value: pipeNode.configuration && (
             <NodeStatusWrapper>
-              <ResourceIconLookup resource={pipeNode.resource} />
-              <div>{resourceNamesLookup[pipeNode.resource]}</div>
+              <div>{configNamesLookup[pipeNode.configuration]}</div>
             </NodeStatusWrapper>
           ),
         },

@@ -1,3 +1,4 @@
+import { EPipeNodeConfig, EResourceType } from 'myApi';
 import { devicesCountTexts } from './CommunicationPipeListItem.constants';
 
 export function getDevicesCountText(devicesLength: number) {

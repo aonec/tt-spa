@@ -26,6 +26,9 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
+import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
+import { nodeConfigurations } from '../CreateNodePage/CommonData/CommonData.constants';
+import { configNamesLookup } from 'utils/configNamesLookup';
 
 export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> = ({
   isOpen,
@@ -114,11 +117,13 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
         <CommonInfo
           items={[
             {
-              key: 'Тип ресурса',
-              value: requestPayload.resource && (
+              key: 'Конфигурация',
+              value: requestPayload?.configuration && (
                 <NodeResourceInfo>
-                  <ResourceIconLookup resource={requestPayload.resource} />
-                  <div>{ResourceNamesDictionary[requestPayload.resource]}</div>
+                  <ResourceIconLookup
+                    resource={resourceFromConfig[requestPayload.configuration]}
+                  />
+                  <div>{configNamesLookup[requestPayload.configuration]}</div>
                 </NodeResourceInfo>
               ),
             },
@@ -141,10 +146,10 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
       <StepWrapper>
         <StepTitle>3. Подключенные приборы</StepTitle>
         <div>
-          {requestPayload.resource &&
+          {requestPayload.configuration &&
             requestPayload.communicationPipes?.map((pipe) => (
               <CommunicationPipeListItem
-                resource={requestPayload.resource!}
+                configuration={requestPayload.configuration!}
                 key={pipe.id}
                 pipe={pipe}
               />

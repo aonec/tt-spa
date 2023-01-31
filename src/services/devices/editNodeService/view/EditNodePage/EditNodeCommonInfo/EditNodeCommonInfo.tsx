@@ -12,7 +12,6 @@ import {
   InfoWrapper,
   ResourceText,
   SelectWrapper,
-  Wrapper,
   ZoneWrapper,
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
@@ -22,6 +21,7 @@ import moment from 'moment';
 import { Form } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { useHistory } from 'react-router-dom';
+import { configNamesLookup } from 'utils/configNamesLookup';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
@@ -60,20 +60,17 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   );
 
   return (
-    <Wrapper>
+    <>
       <Form id={formId} onSubmitCapture={handleSubmit}>
         <InfoWrapper>
-          <FormItem label="Тип ресурса" className="resource">
+          <FormItem label="Конфигурация" className="resource">
             <Select
-              placeholder="Выберите тип ресурса"
+              placeholder="Выберите конфигурацию"
               value={node.resource}
               disabled
             >
-              <Select.Option value={node.resource}>
-                <SelectWrapper>
-                  <ResourceIconLookup resource={node.resource} />
-                  <ResourceText>{ResourceLookUp[node.resource]}</ResourceText>
-                </SelectWrapper>
+              <Select.Option value={node.configuration}>
+                  <ResourceText>{configNamesLookup[node.configuration]}</ResourceText>
               </Select.Option>
             </Select>
           </FormItem>
@@ -130,6 +127,6 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
 
         <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
       </FooterWrapper>
-    </Wrapper>
+    </>
   );
 };
