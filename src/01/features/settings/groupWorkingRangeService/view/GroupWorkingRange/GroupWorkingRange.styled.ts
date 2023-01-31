@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+import { Select } from 'ui-kit/Select';
 
 export const Wrapper = styled.div``;
 
@@ -77,4 +77,18 @@ export const ResourceSelectWrapper = styled.div`
   .ant-select {
     width: 100%;
   }
+`;
+export const FilterBlock = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .ant-select {
+    width: 100%;
+  }
+`;
+
+export const SelectWide = styled(Select)`
+  min-width: 300px;
+  max-width: 550px;
 `;
