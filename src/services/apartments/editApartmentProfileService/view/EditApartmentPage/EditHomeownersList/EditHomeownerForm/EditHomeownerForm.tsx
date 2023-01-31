@@ -36,9 +36,8 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
         personalAccountNumber: values.personalAccountNumber,
         name: values.name,
         phoneNumber: values.phoneNumber,
-        paymentCode: values.paymentCode,
         personType: values.personType || undefined,
-        openAt: values.openAt?.toISOString(),
+        openAt: values.openAt?.toISOString()!,
         isMainOnApartment: values.isMainOnApartment,
       });
     },

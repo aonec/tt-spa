@@ -115,10 +115,10 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
           items={[
             {
               key: 'Тип ресурса',
-              value: requestPayload.resource && (
+              value: requestPayload && (
                 <NodeResourceInfo>
-                  <ResourceIconLookup resource={requestPayload.resource} />
-                  <div>{ResourceNamesDictionary[requestPayload.resource]}</div>
+                  {/* <ResourceIconLookup resource={requestPayload.configuration} />
+                  <div>{ResourceNamesDictionary[requestPayload.resource]}</div> */}
                 </NodeResourceInfo>
               ),
             },
@@ -141,14 +141,14 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
       <StepWrapper>
         <StepTitle>3. Подключенные приборы</StepTitle>
         <div>
-          {requestPayload.resource &&
+          {/* {requestPayload.resource &&
             requestPayload.communicationPipes?.map((pipe) => (
               <CommunicationPipeListItem
                 resource={requestPayload.resource!}
                 key={pipe.id}
                 pipe={pipe}
               />
-            ))}
+            ))} */}
           {!requestPayload.communicationPipes?.length && (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
