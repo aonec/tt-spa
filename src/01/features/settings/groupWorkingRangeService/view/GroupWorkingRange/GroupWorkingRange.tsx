@@ -9,11 +9,8 @@ import {
   Margin,
   RangeBlockGrid,
   RangeFieldName,
-  ResourceSelectWrapper,
-  SelectWide,
   Symbol,
   Value,
-  Wrapper,
 } from './GroupWorkingRange.styled';
 import { GroupWorkingRangeProps } from './GroupWorkingRange.types';
 import {
@@ -25,9 +22,10 @@ import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Tabs } from 'ui-kit/Tabs';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Select } from 'ui-kit/Select';
+import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+import { SelectSC } from '01/shared/ui/Fields';
 
 export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
   groupWorkingRange,
@@ -88,7 +86,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
 
   return (
-    <Wrapper>
+    <>
       <Margin>
         <GoBack />
       </Margin>
@@ -113,22 +111,22 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
       </Margin>
 
       <FilterBlock>
-        <ResourceSelectWrapper>
-          <ResourceSelect
-            resource={values.nodeResourceType}
-            onChange={(value) => {
-              setFieldValue('nodeResourceType', value);
-              handleSubmit();
-            }}
-          />
-        </ResourceSelectWrapper>
+        <ResourceSelectSC
+          isShadow={false}
+          resource={values.nodeResourceType}
+          onChange={(value) => {
+            setFieldValue('nodeResourceType', value);
+            handleSubmit();
+          }}
+        />
 
-        <SelectWide
+        <SelectSC
+          isShadow={false}
           onChange={(value) => {
             setFieldValue('houseManagementId', value);
             handleSubmit();
           }}
-          placeholder="Вебирете"
+          placeholder="Выберите"
         >
           {houseManagements.map((management) => {
             return (
@@ -137,7 +135,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
               </Select.Option>
             );
           })}
-        </SelectWide>
+        </SelectSC>
       </FilterBlock>
 
       {isLoading && (
@@ -214,6 +212,6 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
           </RangeBlockGrid>
         </>
       )}
-    </Wrapper>
+    </>
   );
 };

@@ -153,13 +153,13 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         />
 
         <SelectSC
+          placeholder="Выберите город"
           isShadow={false}
           value={selectedCity || undefined}
           onChange={(city) => {
             setSelectedCity(city as string);
             setFieldValue('nodeId', null);
           }}
-          placeholder="Выберите город"
         >
           {existingCities?.map((city) => (
             <SelectSC.Option key={city} value={city}>
@@ -169,7 +169,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         </SelectSC>
 
         <TreeSelectSC
-          placeholder="Выберите город"
+          placeholder="Выберите улицу"
           value={values.housingStockId || undefined}
           onChange={(value) => {
             setFieldValue('housingStockId', value || null);
@@ -183,13 +183,13 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         />
 
         <SelectSC
+          placeholder="Выберите узел"
           isShadow={false}
           value={values.nodeId || undefined}
           onChange={(nodeId) => {
             setFieldValue('nodeId', nodeId);
             handleSubmit();
           }}
-          placeholder="Выберите узел"
         >
           {preparedNodes?.map((node) => (
             <SelectSC.Option key={node.value} value={node.value}>

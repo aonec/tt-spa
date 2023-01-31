@@ -69,6 +69,8 @@ export const LoaderWrapper = styled.div`
 `;
 
 export const FilterBlock = styled.div`
+  padding: 0px 10px 0px 10px;
+
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 2fr;
   grid-gap: 16px;
