@@ -128,7 +128,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
             setFieldValue('houseManagementId', value);
             handleSubmit();
           }}
-          placeholder="Вебирете"
+          placeholder="Выберите"
         >
           {houseManagements.map((management) => {
             return (
