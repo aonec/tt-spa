@@ -131,7 +131,6 @@ export const AddressSearch: FC<Props> = (props) => {
             fromEnter(() => {
               fields.street.onChange(streetMatch);
               loadExistingHousingStockNumbers();
-              setCounter((prev) => prev + 1);
             })(e);
           }}
           placeholder="Улица"
@@ -155,7 +154,6 @@ export const AddressSearch: FC<Props> = (props) => {
             fromEnter(() => {
               fields.house.onChange(bestHousingStockMatch);
               loadExistingApartmentNumbers();
-              setCounter((prev) => prev + 1);
             })(e);
           }}
           placeholder="Дом"
@@ -181,7 +179,6 @@ export const AddressSearch: FC<Props> = (props) => {
               fields.apartment.onChange(bestApartmentNumberMatch);
             })(e);
             fromEnter(() => onExit && onExit())(e);
-            setCounter((prev) => prev + 1);
           }}
           placeholder="Кв."
           ref={apartmentNumberRef}
