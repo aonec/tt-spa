@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { TrashIconSC } from 'ui-kit/DocumentsService/view/DocumentsLineUpload/DocumentsLineUpload.styled';
 import { UserIcon } from 'ui-kit/icons';
 import {
+  AddCommentWrapper,
   CommentComponent,
   CommentDate,
   CommentFooter,
@@ -22,26 +23,41 @@ import { Button } from 'ui-kit/Button';
 export const CommentPanel: FC<CommentPanelProps> = ({
   commentDate,
   author,
-  comment,
+  oldCommentText,
   onEdit,
   onRemove,
 }) => {
+  const isCommentExist = oldCommentText !== null;
+
+  const [newComment, setNewComment] = useState(oldCommentText);
   const [isEditing, setIsEditing] = useState(false);
-  const [newComment, setNewComment] = useState(comment);
 
   return (
     <CommentComponent>
       <CommentHeader>
         <CommentTitle>Комментарий</CommentTitle>
         <RightButtonsBlock>
-          {!isEditing && <PencilIconSC onClick={() => setIsEditing(true)} />}
-          <TrashIconSC onClick={() => onRemove()} />
+          {!isEditing && (
+            <>
+              {isCommentExist && (
+                <>
+                  <PencilIconSC onClick={() => setIsEditing(true)} />
+                  <TrashIconSC onClick={() => onRemove()} />
+                </>
+              )}
+              {!isCommentExist && (
+                <AddCommentWrapper onClick={() => setIsEditing(true)}>
+                  + Добавить
+                </AddCommentWrapper>
+              )}
+            </>
+          )}
         </RightButtonsBlock>
       </CommentHeader>
 
       <div>
-        {!isEditing && (
-          <CommentText>{newComment || 'Нет комментариев'}</CommentText>
+        {!isEditing && isCommentExist && (
+          <CommentText>{newComment}</CommentText>
         )}
         {isEditing && (
           <>
@@ -55,7 +71,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
                 type="ghost"
                 size="small"
                 onClick={() => {
-                  setNewComment(comment);
+                  setNewComment(oldCommentText);
                   setIsEditing(false);
                 }}
               >
@@ -75,15 +91,17 @@ export const CommentPanel: FC<CommentPanelProps> = ({
         )}
       </div>
 
-      <CommentInfo>
-        <IconSubstrate>
-          <UserIcon />
-        </IconSubstrate>
-        <UserName>{author}</UserName>
-        <CommentDate>
-          {moment(commentDate).format('DD.MM.YYYY HH:mm')}
-        </CommentDate>
-      </CommentInfo>
+      {isCommentExist && (
+        <CommentInfo>
+          <IconSubstrate>
+            <UserIcon />
+          </IconSubstrate>
+          <UserName>{author}</UserName>
+          <CommentDate>
+            {moment(commentDate).format('DD.MM.YYYY HH:mm')}
+          </CommentDate>
+        </CommentInfo>
+      )}
     </CommentComponent>
   );
 };

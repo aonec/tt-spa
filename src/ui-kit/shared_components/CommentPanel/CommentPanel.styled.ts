@@ -85,3 +85,8 @@ export const CommentFooter = styled.div`
   justify-content: flex-end;
   gap: 8px;
 `;
+
+export const AddCommentWrapper = styled.div`
+  color: #189ee9;
+  cursor: pointer;
+`;

@@ -194,7 +194,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       <ContentWrapper>
         <Content>{component}</Content>
         <PanelsWrapper>
-          <CalculatorCommentContainer comment={comment || ''}  calculatorId={id}/>
+          <CalculatorCommentContainer comment={comment}  calculatorId={id}/>
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
             link={stringifyUrl({

@@ -11,18 +11,32 @@ export const CalculatorCommentContainer: FC<CalculatorCommentContainerProps> = (
   comment,
   calculatorId,
 }) => {
+  const { lastModifiedDateTime, lastModifiedUser } = comment || {};
+
   const handleRemoveComment = useEvent(inputs.removeComment);
+  const handleCreateComment = useEvent(inputs.createComment);
+  const handleEditComment = useEvent(inputs.editComment);
+
+  const isCommentExist = Boolean(comment);
 
   return (
     <>
       <CalculatorIdGate calculatorId={calculatorId} />
       <CommentPanel
-        comment={comment}
-        author=""
-        commentDate=""
-        onEdit={console.log}
+        oldCommentText={comment ? comment?.text : null}
+        author={
+          lastModifiedUser
+            ? `${lastModifiedUser?.lastName} ${lastModifiedUser?.firstName}`
+            : undefined
+        }
+        commentDate={lastModifiedDateTime}
+        onEdit={(text) => {
+          if (isCommentExist) {
+            return handleEditComment(text);
+          }
+          return handleCreateComment(text);
+        }}
         onRemove={() => handleRemoveComment()}
-
       />
     </>
   );
