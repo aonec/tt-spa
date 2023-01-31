@@ -12,7 +12,7 @@ const { inputs, outputs } = addPipeNodeCommonDeviceService;
 const formId = 'add-common-device-form';
 
 export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
-  resource,
+  configuration,
   communicationPipes,
   handleAddCommunicationPipe,
 }) => {
@@ -56,7 +56,7 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
             <AddCommonDeviceForm
               updateRequestPayload={updateRequestPayload}
               formId={formId}
-              resource={resource}
+              configuration={configuration}
               currentFormStep={currentFormStep}
               requestPayload={requestPayload}
               openAddPipeModal={() => openAddPipeModal()}

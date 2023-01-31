@@ -1,7 +1,6 @@
-import { CommunicationPipeResponse } from 'myApi';
-import { EResourceType } from 'myApi';
+import { CommunicationPipeResponse, EPipeNodeConfig } from 'myApi';
 
 export type HousingMeteringDevicesListProps = {
   communicationPipes: CommunicationPipeResponse[];
-  resource: EResourceType;
+  configuration: EPipeNodeConfig;
 };

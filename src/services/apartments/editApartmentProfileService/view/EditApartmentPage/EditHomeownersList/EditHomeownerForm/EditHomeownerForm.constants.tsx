@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { PersonType } from 'myApi';
+import { EPersonType } from 'myApi';
 import * as Yup from 'yup';
 
 export const formInitialValues = {
@@ -7,7 +7,7 @@ export const formInitialValues = {
   name: '',
   phoneNumber: '',
   paymentCode: '',
-  personType: null as null | PersonType,
+  personType: null as null | EPersonType,
   openAt: null as null | moment.Moment,
   isMainOnApartment: false,
 };
