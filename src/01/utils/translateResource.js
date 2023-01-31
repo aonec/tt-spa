@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 export const translateResource = (resource) => {
   switch (resource) {
