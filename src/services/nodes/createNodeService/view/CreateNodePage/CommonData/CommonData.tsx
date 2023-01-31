@@ -6,13 +6,12 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import {
   commercialNodeStatuses,
-  nodeResources,
   nodeStatuses,
+  nodeConfigurations,
   validationSchema,
 } from './CommonData.constants';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
@@ -48,7 +47,7 @@ export const CommonData: FC<CommonDataProps> = ({
     handleSubmit,
   } = useFormik({
     initialValues: {
-      // resource: requestPayload.resource || null,
+      configuration: requestPayload.configuration || null,
       number: requestPayload.number ? String(requestPayload.number) : '',
       nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
       nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
@@ -65,7 +64,7 @@ export const CommonData: FC<CommonDataProps> = ({
     validateOnChange: false,
     onSubmit: (values) => {
       const {
-        // resource,
+        configuration,
         number,
         commercialStatus,
         nodeServiceZoneId,
@@ -73,10 +72,10 @@ export const CommonData: FC<CommonDataProps> = ({
         endCommercialAccountingDate,
       } = values;
 
-      if (!number || !nodeServiceZoneId) return;
+      if (!number || !nodeServiceZoneId || !configuration) return;
 
       updateRequestPayload({
-        // resource,
+        configuration,
         number: Number(number),
         commercialStatus,
         nodeServiceZoneId,
@@ -102,22 +101,21 @@ export const CommonData: FC<CommonDataProps> = ({
     <div>
       <Title>Общие данные об узле</Title>
       <FirstLineWrapper>
-        <FormItem label="Ресурс">
-          {/* <Select
+        <FormItem label="Конфигурация">
+          <Select
             placeholder="Выберите"
-            value={values.resource || undefined}
-            onChange={(value) => setFieldValue('resource', value)}
+            value={values.configuration || undefined}
+            onChange={(value) => setFieldValue('configuration', value)}
           >
-            {nodeResources.map(({ resource, text }) => (
-              <Select.Option key={resource} value={resource}>
+            {nodeConfigurations.map(({ configuration, text }) => (
+              <Select.Option key={configuration} value={configuration}>
                 <SelectOptionWithIconWrapper>
-                  <ResourceIconLookup resource={resource} />
                   <div>{text}</div>
                 </SelectOptionWithIconWrapper>
               </Select.Option>
             ))}
           </Select>
-          <ErrorMessage>{errors.resource}</ErrorMessage> */}
+          <ErrorMessage>{errors.configuration}</ErrorMessage>
         </FormItem>
         <FormItem label="Тип узла">
           <Select
