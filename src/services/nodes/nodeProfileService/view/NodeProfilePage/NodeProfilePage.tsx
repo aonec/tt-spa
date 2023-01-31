@@ -34,7 +34,6 @@ import {
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
-import { IncorrectConfigurationIcon } from 'ui-kit/icons';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -70,7 +69,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
       [PipeNodeProfileSection.Connection]: <NodeConnection node={pipeNode} />,
       [PipeNodeProfileSection.Related]: (
         <HousingMeteringDevicesList
-          resource={pipeNode.resource}
+          configuration={pipeNode.configuration}
           communicationPipes={pipeNode.communicationPipes || []}
         />
       ),
