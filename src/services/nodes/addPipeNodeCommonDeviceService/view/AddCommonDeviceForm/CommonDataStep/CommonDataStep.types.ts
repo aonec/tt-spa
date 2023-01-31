@@ -1,8 +1,8 @@
-import { EResourceType } from 'myApi';
+import { EPipeNodeConfig } from 'myApi';
 import { CreateCommonDevicePartitial } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 
 export type CommonDataStepProps = {
-  resource: EResourceType;
+  configuration: EPipeNodeConfig;
   formId: string;
   updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   requestPayload: CreateCommonDevicePartitial;

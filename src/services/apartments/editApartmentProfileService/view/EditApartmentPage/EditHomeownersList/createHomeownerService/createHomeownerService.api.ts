@@ -1,6 +1,6 @@
 import { axios } from '01/axios';
-import { HomeownerAccountCreateServiceModel } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'myApi';
 
 export const postHomeownerAccount = (
-  payload: HomeownerAccountCreateServiceModel
+  payload: HomeownerAccountCreateRequest
 ): Promise<void> => axios.post('HomeownerAccounts', payload);

@@ -1,4 +1,4 @@
-import { EActResourceType, EResourceType } from 'myApi';
+import { EActResourceType, EPipeNodeConfig, EResourceType } from 'myApi';
 import { CSSProperties } from 'react';
 
 export type ResourceIconLookupProps = {
@@ -13,3 +13,4 @@ export type Icons = {
     }
   >;
 };
+

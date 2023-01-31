@@ -1,11 +1,11 @@
 import { createDomain, forward } from 'effector';
-import { HomeownerAccountCreateServiceModel } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'myApi';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
 
 const domain = createDomain('createHomeownerService');
 
-const handleCreateHomeowner = domain.createEvent<HomeownerAccountCreateServiceModel>();
+const handleCreateHomeowner = domain.createEvent<HomeownerAccountCreateRequest>();
 
 const createHomeownerFx = domain.createEffect(postHomeownerAccount);
 

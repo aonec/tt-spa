@@ -1,9 +1,9 @@
-import { HomeownerAccountCreateServiceModel } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'myApi';
 import { formInitialValues } from './EditHomeownerForm.constants';
 
 export type EditHomeownerFormProps = {
   formId: string;
-  handleSubmit: (data: HomeownerAccountCreateServiceModel) => void;
+  handleSubmit: (data: HomeownerAccountCreateRequest) => void;
   initialValues?: EditHomeownerPayload;
 };
 
