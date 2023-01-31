@@ -3,7 +3,10 @@ import {
   AllNodeWorkingRangeResponse,
   ENodeWorkingRangeSeason,
   EResourceType,
+  NodeOnHousingStockResponse,
+  StreetWithHousingStockNumbersResponsePagedList,
 } from 'myApi';
+import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.types';
 
 export const getHousingStockUniqueWorkingRange = (query: {
   nodeResourceType: EResourceType;
@@ -22,4 +25,18 @@ export const getNodeUniqueWorkingRange = (query: {
   return axios.get(`NodeWorkingRange/Node/${query.nodeId}`, {
     params: query,
   });
+};
+
+export const getAdresses = (
+  payload: GetAddressesRequestPayload
+): Promise<StreetWithHousingStockNumbersResponsePagedList | null> => {
+  return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
+    params: payload,
+  });
+};
+
+export const getNodes = (
+  housingStockId: number
+): Promise<NodeOnHousingStockResponse[] | null> => {
+  return axios.get(`HousingStocks/${housingStockId}/Nodes`);
 };

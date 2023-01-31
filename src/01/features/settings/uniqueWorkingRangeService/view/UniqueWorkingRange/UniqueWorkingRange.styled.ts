@@ -1,7 +1,5 @@
+import { TreeSelect } from 'antd';
 import styled from 'styled-components';
-import { Select } from 'ui-kit/Select';
-
-export const Wrapper = styled.div``;
 
 export const Margin = styled.div`
   margin: 12px 0px 16px 0px;
@@ -70,25 +68,14 @@ export const LoaderWrapper = styled.div`
   max-width: 700px;
 `;
 
-export const ResourceSelectWrapper = styled.div`
-  padding: 0px 10px 0px 10px;
-  width: 260px;
-
-  .ant-select {
-    width: 100%;
-  }
-`;
 export const FilterBlock = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  .ant-select {
-    width: 100%;
-  }
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr;
+  grid-gap: 16px;
 `;
 
-export const SelectWide = styled(Select)`
-  min-width: 300px;
-  max-width: 550px;
+export const TreeSelectSC = styled(TreeSelect)`
+  .ant-select-selector {
+    border-radius: 4px !important;
+  }
 `;
