@@ -5,6 +5,7 @@ import {
   SwitchIndividualDeviceReadingsCreateRequest,
   EClosingReason,
   SwitchIndividualDeviceRequest,
+  IndividualDeviceResponse,
 } from './../../../../../myApi';
 import {
   createEvent,
@@ -24,7 +25,7 @@ import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
-  null
+  null,
 );
 export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 
@@ -137,8 +138,11 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  SwitchIndividualDeviceRequest,
-  void
+  {
+    deviceId: number;
+    requestPayload: SwitchIndividualDeviceRequest;
+  },
+  IndividualDeviceResponse | null
 >();
 
 export const checkIndividualDeviceFx = createEffect<
@@ -151,7 +155,7 @@ export const SwitchIndividualDeviceGate = createGate<{
 }>();
 
 export const $typeOfIndividualDeviceForm = SwitchIndividualDeviceGate.state.map(
-  ({ type }) => type
+  ({ type }) => type,
 );
 
 guard({
@@ -178,17 +182,11 @@ guard({
 
       const readingsAfterCheck = newDeviceReadings.length
         ? newDeviceReadings.reduce((acc, readings) => {
-            const {
-              readingDate,
-              value1,
-              value2,
-              value3,
-              value4,
-              id,
-            } = readings;
+            const { readingDate, value1, value2, value3, value4, id } =
+              readings;
 
             const oldReadings = oldDeviceReadings.find(
-              (reading) => reading?.id === id
+              (reading) => reading?.id === id,
             );
 
             if (!oldReadings) {
@@ -222,7 +220,7 @@ guard({
         readingsAfterCheck,
         deviceId: device.id,
       };
-    }
+    },
   ),
   clock: confirmCreationNewDeviceButtonClicked,
   filter: Boolean,

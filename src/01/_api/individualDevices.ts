@@ -49,10 +49,14 @@ export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
   device: SwitchIndividualDeviceRequest;
 }
 
-export const switchIndividualDevice = async (
-  requestPayload: SwitchIndividualDeviceRequest,
-): Promise<IndividualDeviceResponse | null> => {
-  return await axios.post('IndividualDevices/switch', requestPayload);
+export const switchIndividualDevice = async (request: {
+  deviceId: number;
+  requestPayload: SwitchIndividualDeviceRequest;
+}): Promise<IndividualDeviceResponse | null> => {
+  return await axios.post(
+    `IndividualDevices/${request.deviceId}/switch`,
+    request.requestPayload,
+  );
 };
 
 export const checkIndividualDevice = (
