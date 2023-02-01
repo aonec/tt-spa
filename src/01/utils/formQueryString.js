@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 export const formQueryString = (searchState) => {
   const queryArray = [];

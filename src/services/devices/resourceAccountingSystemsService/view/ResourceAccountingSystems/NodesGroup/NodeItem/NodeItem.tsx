@@ -7,6 +7,7 @@ import { CalculatorInfo } from '../CalculatorInfo';
 import {
   BaseNodeInfo,
   DeviceIconWrapper,
+  IncorrectConfigurationIconSC,
   NoCalculatorTextWrapper,
   NodeInfo,
   NodeInfoWrapper,
@@ -25,10 +26,17 @@ export const NodeItem: FC<NodeItemProps> = ({
   openDevicesListModal,
 }) => {
   const content = useMemo(() => {
+    const isIncorrectConfig =
+      node?.pipeNodeValidationStatus?.validationResult?.errors?.length!== 0 ||
+      node?.pipeNodeValidationStatus?.validationResult?.warnings?.length !== 0;
+
     const nodeInfo = (
       <BaseNodeInfo>
         <Link to={`/nodes/${node.id}`}>
-          <NodeName>Узел {node.number}</NodeName>
+          <NodeName>
+            Узел {node.number}
+            {isIncorrectConfig && <IncorrectConfigurationIconSC />}
+          </NodeName>
           <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
             {node.serviceZone?.name || 'Зона не указана'}
           </NodeServiceZone>
@@ -58,9 +66,7 @@ export const NodeItem: FC<NodeItemProps> = ({
         <>
           <NodeInfoWrapper>
             <ResourceIconWrapper>
-              <ResourceIconLookup
-                resource={node.resource}
-              />
+              <ResourceIconLookup resource={node.resource} />
             </ResourceIconWrapper>
             <NodeInfo>{nodeInfo}</NodeInfo>
           </NodeInfoWrapper>

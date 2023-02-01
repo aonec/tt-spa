@@ -13,12 +13,14 @@ const ModalCalculatorDeregisterForm = ({
   device,
   setVisible,
 }: any) => {
+  const [form] = Form.useForm();
+
   if (!device) {
     return null;
   }
+
   const { model, serialNumber, id } = device;
 
-  const [form] = Form.useForm();
   const { getFieldValue } = form;
 
   const initialValues = {

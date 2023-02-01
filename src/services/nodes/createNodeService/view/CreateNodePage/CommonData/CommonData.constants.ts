@@ -1,6 +1,7 @@
 import {
   ENodeCommercialAccountStatus,
   ENodeRegistrationType,
+  EPipeNodeConfig,
   EResourceType,
 } from 'myApi';
 import {
@@ -10,18 +11,26 @@ import {
 import { NodeResourcesList, NodeStatusesList } from './CommonData.types';
 import * as Yup from 'yup';
 
-export const nodeResources: NodeResourcesList = [
+export const nodeConfigurations: NodeResourcesList = [
   {
-    resource: EResourceType.ColdWaterSupply,
+    configuration: EPipeNodeConfig.ColdWaterSupply,
     text: 'ХВС',
   },
   {
-    resource: EResourceType.HotWaterSupply,
-    text: 'ГВС',
+    configuration: EPipeNodeConfig.HeatNoRecharge,
+    text: 'Тепло без подпитки',
   },
   {
-    resource: EResourceType.Heat,
-    text: 'Тепло',
+    configuration: EPipeNodeConfig.HeatWithRecharge,
+    text: 'Тепло с подпиткой',
+  },
+  {
+    configuration: EPipeNodeConfig.HotWaterSupplyNoBackflow,
+    text: 'ГВС без обратной магистрали',
+  },
+  {
+    configuration: EPipeNodeConfig.HotWaterSupplyWithBackflow,
+    text: 'ГВС с обратной магистралью',
   },
 ];
 
@@ -34,7 +43,7 @@ export const commercialNodeStatuses: NodeStatusesList = Object.values(
 }));
 
 export const validationSchema = Yup.object().shape({
-  resource: Yup.string().nullable().required('Это поле обязательное'),
+  configuration: Yup.string().nullable().required('Это поле обязательное'),
   nodeStatus: Yup.string().nullable().required('Это поле обязательное'),
   nodeServiceZoneId: Yup.string().nullable().required('Это поле обязательное'),
   number: Yup.string().required('Это поле обязательное'),

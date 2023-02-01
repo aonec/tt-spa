@@ -18,7 +18,9 @@
     "formik": "^2.2.0",
     "formik-antd": "^2.0.1",
     "fs": "^0.0.1-security",
+    "husky": "^8.0.3",
     "imask": "^6.0.7",
+    "lint-staged": "^13.1.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
@@ -41,12 +43,22 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios",
-    "prettify": "yarn prettier --write ."
+    "updateTypes": "npx swagger-typescript-api -p https://staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios"
   },
   "eslintConfig": {
     "extends": [
-      "react-app"
+      "react-app",
+      "prettier"
+    ]
+  },
+  "husky": {
+    "hooks": {
+     "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
     ]
   },
   "browserslist": {
@@ -67,21 +79,8 @@
     "@types/lodash": "^4.14.191",
     "@types/styled-components": "^5.1.7",
     "@types/yup": "^0.29.11",
-    "sass": "^1.57.1",
-    "eslint": "^7.22.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.21.4",
-    "eslint-plugin-react-hooks": "^4.1.2",
-    "prettier": "^2.2.1"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 2,
-    "semi": true,
-    "singleQuote": true
+    "eslint-config-prettier": "^8.6.0",
+    "prettier": "^2.8.3",
+    "sass": "^1.57.1"
   }
 }
