@@ -20,13 +20,27 @@ import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { Button } from 'ui-kit/Button';
 import { Empty } from 'antd';
 
+const formId = 'report-form-id';
+
 export const ReportViewPage: FC<ReportViewPageProps> = ({
   reportType,
   existingCities,
   houseManagements,
-  addressesWithHouseManagements
+  addressesWithHouseManagements,
+  filtrationValues,
+  setFiltrationValues,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
+
+  const handleApply = () => {
+    const form = document.forms.namedItem(formId);
+
+    if (!form) return;
+
+    form.requestSubmit();
+
+    setIsOpen(false);
+  };
 
   return (
     <Wrapper>
@@ -46,12 +60,15 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           isOpen={isOpen}
           handleOpen={() => setIsOpen(true)}
           handleClose={() => setIsOpen(false)}
-          handleApply={() => setIsOpen(false)}
+          handleApply={handleApply}
           extendedSearchContent={
             <ReportFiltrationForm
               existingCities={existingCities}
               houseManagements={houseManagements}
               addressesWithHouseManagements={addressesWithHouseManagements}
+              filtrationValues={filtrationValues}
+              formId={formId}
+              setFiltrationValues={setFiltrationValues}
             />
           }
         >

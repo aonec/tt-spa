@@ -10,12 +10,12 @@ export const ReportOptionsDictionary: {
   [key in EIndividualDeviceReportOption]: string;
 } = {
   [EIndividualDeviceReportOption.ClosedDeviceOnOneOfRisers]:
-    'Закрытые на одном из стояков',
-  [EIndividualDeviceReportOption.ClosedDevices]: 'Закрытые приборы',
+    'Отчет по закрытым приборам',
+  [EIndividualDeviceReportOption.ClosedDevices]: 'Отчет по закрытым приборам',
   [EIndividualDeviceReportOption.DeviceCheckingDateExpiration]:
-    'Дата выхода поверки прибора',
+    'Отчет по выходу поверки приборов',
   [EIndividualDeviceReportOption.InvalidCheckingDates]:
-    'Некорректные даты поверок',
+    'Некорректные даты повероки приборов',
   [EIndividualDeviceReportOption.SkippedReadingOnOneOfRisers]:
-    'Пропущенное показание на одном из стояков',
+    'Отчет по пропущенным показаниям',
 };

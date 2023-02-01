@@ -7,6 +7,7 @@ import {
 import { getAddressesWithHouseManagements } from './reportViewService.api';
 import { HouseManagementWithStreetsResponse } from 'myApi';
 import { createGate } from 'effector-react';
+import { ReportFiltrationFormValues } from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
 const domain = createDomain('reportViewService');
 
@@ -17,10 +18,24 @@ const fetchAddressesWithHouseManagementsFx = domain.createEffect<
   HouseManagementWithStreetsResponse[]
 >(getAddressesWithHouseManagements);
 
+const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
+
 const $addressesWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(fetchAddressesWithHouseManagementsFx.doneData, (_, data) => data)
   .reset(AddressesWithHouseManagementsGate.close);
+
+const $filtrationValues = domain
+  .createStore<ReportFiltrationFormValues>({
+    city: null,
+    houseManagement: null,
+    housingStockId: null,
+    resource: null,
+    reportOption: null,
+    from: null,
+    to: null,
+  })
+  .on(setFiltrationValues, (_, values) => values);
 
 forward({
   from: AddressesWithHouseManagementsGate.open,
@@ -28,11 +43,14 @@ forward({
 });
 
 export const reportViewService = {
-  inputs: {},
+  inputs: {
+    setFiltrationValues,
+  },
   outputs: {
     $existingCities,
     $houseManagements: houseManagementsService.outputs.$houseManagements,
     $addressesWithHouseManagements,
+    $filtrationValues,
   },
   gates: {
     ExistingCitiesGate,

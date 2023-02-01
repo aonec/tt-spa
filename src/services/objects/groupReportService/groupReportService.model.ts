@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import { EReportType, GroupReportFormResponse } from 'myApi';

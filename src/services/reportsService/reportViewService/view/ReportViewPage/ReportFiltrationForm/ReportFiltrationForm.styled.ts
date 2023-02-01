@@ -11,3 +11,8 @@ export const ResourceOption = styled.div`
   align-items: center;
   gap: 8px;
 `;
+
+export const PeriodPickerWrapprer = styled.div`
+  margin-left: 24px;
+  margin-top: 4px;
+`;
