@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -19,7 +20,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-export const ModelWrapper = styled.div`
+export const ModelWrapper = styled(Link)`
   cursor: pointer;
 
   &:hover {
