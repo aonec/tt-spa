@@ -1,9 +1,18 @@
 import React, { FC } from 'react';
 import { RelatedNodesListProps } from './RelatedNodesList.types';
-import { RelatedNodesListItem } from './RelatedNodesListItem';
+import { NodeItem } from './NodeItem';
+import { MeteringDevicesContainer } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 
-export const RelatedNodesList: FC<RelatedNodesListProps> = ({ nodes }) => {
-  const list = nodes.map((node) => <RelatedNodesListItem node={node} />);
-
-  return <>{list}</>;
+export const RelatedNodesList: FC<RelatedNodesListProps> = ({
+  nodes,
+  openDevicesListModal,
+}) => {
+  return (
+    <>
+      <MeteringDevicesContainer />
+      {nodes?.map((node) => (
+        <NodeItem node={node} openDevicesListModal={openDevicesListModal} />
+      ))}
+    </>
+  );
 };

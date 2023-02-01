@@ -11,15 +11,20 @@ import {
   Wrapper,
 } from './MeteringDeviceListItem.styled';
 import { MeteringDeviceListItemProps } from './MeteringDeviceListItem.types';
+import { useHistory } from 'react-router-dom';
 
 export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
   device,
 }) => {
+  const history = useHistory();
+
   return (
     <Wrapper>
       <BaseInfo>
-        <Model>{device.model}</Model>
-        <SerialNumber>({device.serialNumber})</SerialNumber>
+        <div onClick={() => history.push(`housingMeteringDevices/${device}`)}>
+          <Model>{device.model}</Model>
+          <SerialNumber>({device.serialNumber})</SerialNumber>
+        </div>
         {device.hasActiveTasks && (
           <WarningIconWrapper>
             <WarningIcon />
