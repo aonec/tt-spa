@@ -6,6 +6,7 @@ import {
   AdditionalInfo,
   BaseInfo,
   Model,
+  ModelWrapper,
   SerialNumber,
   WarningIconWrapper,
   Wrapper,
@@ -21,10 +22,12 @@ export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
   return (
     <Wrapper>
       <BaseInfo>
-        <div onClick={() => history.push(`housingMeteringDevices/${device}`)}>
+        <ModelWrapper
+          onClick={() => history.push(`/housingMeteringDevices/${device.id}`)}
+        >
           <Model>{device.model}</Model>
           <SerialNumber>({device.serialNumber})</SerialNumber>
-        </div>
+        </ModelWrapper>
         {device.hasActiveTasks && (
           <WarningIconWrapper>
             <WarningIcon />

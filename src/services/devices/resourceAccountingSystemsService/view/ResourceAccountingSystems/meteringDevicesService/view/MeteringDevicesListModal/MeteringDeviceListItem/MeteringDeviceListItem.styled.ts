@@ -19,6 +19,16 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
+export const ModelWrapper = styled.div`
+  cursor: pointer;
+
+  &:hover {
+    span {
+       color: #189EE9;
+    }
+  }
+`;
+
 export const Model = styled.span`
   color: #272f5a;
   font-size: 16px;
@@ -44,4 +54,5 @@ export const BaseInfo = styled.div`
 
 export const WarningIconWrapper = styled.div`
   margin-left: 10px;
+  display: flex;
 `;
