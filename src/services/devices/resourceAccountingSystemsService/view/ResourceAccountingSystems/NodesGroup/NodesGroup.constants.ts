@@ -7,13 +7,14 @@ export const ResourceNamesDictionary: { [key in EResourceType]: string } = {
   [EResourceType.Heat]: 'Теплоснабжение',
 };
 
-export const ResourceShortNamesDictionary: { [key in EResourceType]: string } = {
+export const ResourceShortNamesDictionary: {
+  [key in EResourceType]: string;
+} = {
   [EResourceType.ColdWaterSupply]: 'ХВС',
   [EResourceType.HotWaterSupply]: 'ГВС',
   [EResourceType.Electricity]: 'ЭЭ',
   [EResourceType.Heat]: 'Тепло',
 };
-
 
 export const systemsAmountTexts = [
   {

@@ -31,8 +31,9 @@ export type ReportFiltrationFormValues = {
   city: null | string;
   houseManagement: null | string;
   housingStockId: null | number;
-  resource: null | EResourceType;
+  resources: EResourceType[];
   reportOption: null | EIndividualDeviceReportOption;
   from: null | moment.Moment;
   to: null | moment.Moment;
+  reportDatePeriod: null | ReportDatePeriod;
 };

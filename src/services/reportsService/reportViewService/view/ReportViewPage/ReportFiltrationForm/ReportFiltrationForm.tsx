@@ -19,9 +19,12 @@ import { getAddresses } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { EIndividualDeviceReportOption, EResourceType } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { ResourceShortNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
-import { ReportOptionsDictionary } from 'dictionaries';
+import {
+  ReportOptionsDictionary,
+  ResourceShortNamesDictionary,
+} from 'dictionaries';
 import { RangePicker } from 'ui-kit/RangePicker';
+import { ReportPeriodDictionary } from './ReportFiltrationForm.constants';
 
 const { gates } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -48,7 +51,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
 
   const addresses = getAddresses(
     addressesWithHouseManagements,
-    values.houseManagement
+    values.houseManagement,
   );
 
   return (
@@ -108,8 +111,8 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Ресурс">
             <SelectMultiple
               placeholder="Выбраны все ресурсы"
-              value={values.resource || undefined}
-              onChange={(value) => setFieldValue('resource', value)}
+              value={values.resources || undefined}
+              onChange={(value) => setFieldValue('resources', value)}
             >
               {Object.values(EResourceType).map((resource) => (
                 <SelectMultiple.Option key={resource} value={resource}>
@@ -132,33 +135,32 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   <Select.Option key={reportOption} value={reportOption}>
                     {ReportOptionsDictionary[reportOption]}
                   </Select.Option>
-                )
+                ),
               )}
             </Select>
           </FormItem>
         </Wrapper>
         <FormItem label="Период">
-          <Radio.Group>
+          <Radio.Group
+            value={values.reportDatePeriod}
+            onChange={(event) =>
+              setFieldValue('reportDatePeriod', event.target.value)
+            }
+          >
             <Space direction="vertical">
-              <Radio value={ReportDatePeriod.LastDay}>Последние сутки</Radio>
-              <Radio value={ReportDatePeriod.LastSevenDays}>
-                Последние 7 дней
-              </Radio>
-              <Radio value={ReportDatePeriod.FromStartOfMonth}>
-                С начала месяца
-              </Radio>
-              <Radio value={ReportDatePeriod.PreviousMonth}>
-                За прошлый месяц
-              </Radio>
-              <Radio value={ReportDatePeriod.AnyPeriod}>
-                Произвольный период
-              </Radio>
+              {Object.values(ReportDatePeriod).map((period) => (
+                <Radio key={period} value={period}>
+                  {ReportPeriodDictionary[period]}
+                </Radio>
+              ))}
             </Space>
           </Radio.Group>
         </FormItem>
         <PeriodPickerWrapprer>
           <RangePicker
+            disabled={values.reportDatePeriod !== ReportDatePeriod.AnyPeriod}
             value={[values.from, values.to]}
+            format="DD.MM.YYYY"
             onChange={(dates) => {
               setFieldValue('from', dates?.[0]);
               setFieldValue('to', dates?.[1]);

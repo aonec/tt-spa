@@ -1,4 +1,4 @@
-import { EIndividualDeviceReportOption, EMagistralType } from 'myApi';
+import { EIndividualDeviceReportOption, EMagistralType, EResourceType } from 'myApi';
 
 export const MagistralsDisctionary: { [key in EMagistralType]: string } = {
   [EMagistralType.FeedFlow]: 'Подающая',
@@ -18,4 +18,13 @@ export const ReportOptionsDictionary: {
     'Некорректные даты повероки приборов',
   [EIndividualDeviceReportOption.SkippedReadingOnOneOfRisers]:
     'Отчет по пропущенным показаниям',
+};
+
+export const ResourceShortNamesDictionary: {
+  [key in EResourceType]: string;
+} = {
+  [EResourceType.ColdWaterSupply]: 'ХВС',
+  [EResourceType.HotWaterSupply]: 'ГВС',
+  [EResourceType.Electricity]: 'ЭЭ',
+  [EResourceType.Heat]: 'Тепло',
 };

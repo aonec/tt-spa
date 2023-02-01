@@ -30,10 +30,11 @@ const $filtrationValues = domain
     city: null,
     houseManagement: null,
     housingStockId: null,
-    resource: null,
+    resources: [],
     reportOption: null,
     from: null,
     to: null,
+    reportDatePeriod: null,
   })
   .on(setFiltrationValues, (_, values) => values);
 

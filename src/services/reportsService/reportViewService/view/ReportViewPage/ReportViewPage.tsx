@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { Empty } from 'antd';
 import {
   ExtendedSearchWrapper,
   FiltrationInfoItem,
@@ -18,7 +19,7 @@ import {
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { Button } from 'ui-kit/Button';
-import { Empty } from 'antd';
+import { getFiltersList } from './ReportViewPage.utils';
 
 const formId = 'report-form-id';
 
@@ -41,6 +42,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
 
     setIsOpen(false);
   };
+
+  const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
 
   return (
     <Wrapper>
@@ -74,7 +77,13 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
         >
           <FiltrationInfoWrapper>
             <FiltrationInfoList>
-              <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
+              {Boolean(filtersViewArray.length) &&
+                filtersViewArray.map((text) => (
+                  <FiltrationInfoItem key={text}>{text}</FiltrationInfoItem>
+                ))}
+              {!filtersViewArray.length && (
+                <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
+              )}
             </FiltrationInfoList>
             <Button size="small" sidePadding={16}>
               Скачать отчет
