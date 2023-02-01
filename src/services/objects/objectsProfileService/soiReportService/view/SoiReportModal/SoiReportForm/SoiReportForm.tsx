@@ -1,25 +1,20 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import React, { FC } from 'react';
 import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceType, ESoiReportPeriod } from 'myApi';
-import React, { FC } from 'react';
-import { resourcesNamesLookup } from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.constants';
-import {
-  ResourceNameWrapper,
-  ResourceOptionWrapper,
-} from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/IndividualDevicesExtendedSearch/IndividualDevicesExtendedSearch.styled';
+import { ESoiReportPeriod } from 'myApi';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { SoiReportType } from '../../../soiReportService.types';
 import { CREATE_SOI_REPORT_FORM_ID } from '../SoiReportModal.constants';
 import { formInitialValues, validationSchema } from './SoiReportForm.constants';
 import { FormGrid } from './SoiReportForm.styled';
 import { SoiReportFormProps } from './SoiReportForm.types';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 export const SoiReportForm: FC<SoiReportFormProps> = ({
   soiReportType,
@@ -46,7 +41,9 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
         ? Number(values.NormativePerPerson)
         : null;
 
-      const date = moment(values.Date).set('day', 15);
+      const date = values.Date;
+
+      console.log(date);
 
       createSoiReport({
         ReportName: values.ReportName,
@@ -59,7 +56,7 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
             ? ESoiReportPeriod.Year
             : ESoiReportPeriod.Month,
         Year: date.year(),
-        Month: date.month(),
+        Month: Number(date.format('MM')),
       });
     },
   });
@@ -122,22 +119,10 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
           </FormItem>
         )}
         <FormItem label="Тип ресурса">
-          <Select
-            placeholder="Выберите тип ресурса"
-            value={values.Resource || undefined}
+          <ResourceSelect
+            resource={values.Resource}
             onChange={(value) => setFieldValue('Resource', value || null)}
-          >
-            {Object.values(EResourceType).map((resource) => (
-              <Select.Option key={resource} value={resource}>
-                <ResourceOptionWrapper>
-                  <ResourceIconLookup resource={resource} />
-                  <ResourceNameWrapper>
-                    {resourcesNamesLookup[resource]}
-                  </ResourceNameWrapper>
-                </ResourceOptionWrapper>
-              </Select.Option>
-            ))}
-          </Select>
+          />
         </FormItem>
         <FormItem label="Норматив на 1 человека">
           <Input

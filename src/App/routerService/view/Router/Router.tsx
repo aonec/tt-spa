@@ -4,19 +4,11 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  CalculatorProfile,
-  Contractor,
-  EditCalculator,
   ErrorPage,
-  HousingProfile,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
-  MetersPage,
-  NodeProfile,
   Registration,
-  Settings,
-  UserProfile,
 } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
@@ -29,13 +21,9 @@ import {
 import { DevicesPageContainer } from 'services/devices/devicesPageService';
 import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
-import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
-import Devices from '01/_pages/ObjectProfile/components/Devices';
-import EditODPU from '01/_pages/EditHousingMeteringDevice';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
-import { ReportsPageContainer } from '01/features/reports';
 import { Panel } from 'App/Panel';
 import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { EditNodeContainer } from 'services/devices/editNodeService';
@@ -44,6 +32,19 @@ import { EditApartmentProfileContainer } from 'services/apartments/editApartment
 import { EmployeeProfileContainer } from 'services/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
+import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
+import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
+import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
+import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
+import { MetersContainer } from 'services/meters/metersService';
+import { CompanyProfileContainer } from 'services/company/companyProfileService';
+import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
+import { ReportsContainer } from 'services/reportsService';
+import { ReportViewContainer } from 'services/reportsService/reportViewService';
+import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
+import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
+import { ReportsPageContainer } from '01/features/reports';
+import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
 
 const { gates } = objectProfileService;
 
@@ -138,29 +139,28 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route path="/companyProfile/editManagingFirmUser/:id" exact>
-                  <EditManagingFirmUserPage />
+                  <EditEmployeeContainer />
                 </Route>
-                <Route path="/companyProfile/:section?" component={Settings} />
-                <Route path="/companyProfile/staff/:id" component={Settings} />
+
+                <Route
+                  path="/companyProfile/:section?"
+                  component={CompanyProfileContainer}
+                />
 
                 <Route
                   path="/userProfile/:id"
                   component={EmployeeProfileContainer}
                 />
 
-                <Route path="/devices/(\\d+)" component={Devices} exact />
-
                 <Route
-                  path={[
-                    '/calculators/:deviceId/(connection|related|nodes|documents)?',
-                  ]}
-                  component={CalculatorProfile}
+                  path={['/calculators/:deviceId']}
+                  component={CalculatorProfileContainer}
                   exact
                 />
 
                 <Route
                   path="/calculators/:deviceId/edit"
-                  component={EditCalculator}
+                  component={EditCalculatorContainer}
                   exact
                 />
 
@@ -171,32 +171,20 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
-                  component={NodeProfile}
+                  path="/nodes/:nodeId/:section?"
+                  component={NodeProfileContainer}
                   exact
                 />
 
                 <Route
                   path={['/housingMeteringDevices/:deviceId/']}
-                  component={HousingProfile}
+                  component={HousingMeteringDeviceProfileContainer}
                   exact
                 />
 
                 <Route
-                  path={['/user/:userId', '/user/staff/:userId']}
-                  component={UserProfile}
-                  exact
-                />
-
-                <Route
-                  path={['/user/:userId', '/user/contractor/:userId']}
-                  component={Contractor}
-                  exact
-                />
-
-                <Route
-                  path="/housingMeteringDevices/:deviceId/edit_odpu/"
-                  component={EditODPU}
+                  path="/housingMeteringDevices/:deviceId/edit"
+                  component={EditHousingMeteringDeviceContainer}
                   exact
                 />
 
@@ -212,11 +200,9 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
-                <Redirect from="/meters/" to="/meters/apartments" exact />
-
                 <Route
-                  path="/meters/(apartments|houses|accountingNodes)"
-                  component={MetersPage}
+                  path="/meters/:section/:id?"
+                  component={MetersContainer}
                 />
 
                 <Route
@@ -226,7 +212,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Route
-                  path="/settings/:section"
+                  path="/settings/:section/:id?"
                   component={SettingsPageContainer}
                   exact
                 />
@@ -236,11 +222,23 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   exact
                 />
 
+                <Route
+                  path="/adminSettings/operatingRanges/Standart"
+                  component={StandartWorkingRangeContainer}
+                  exact
+                />
+                <Route
+                  path="/adminSettings/operatingRanges/Group"
+                  component={GroupWorkingRangeContainer}
+                  exact
+                />
+
                 <Redirect
                   from="/statistics/"
                   to="/statistics/subscribersConsumption/houses"
                   exact
                 />
+
                 <Redirect
                   from="/statistics/subscribersConsumption"
                   to="/statistics/subscribersConsumption/houses"
@@ -252,6 +250,14 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 </Route>
 
                 <Route path="/reports" component={ReportsPageContainer} exact />
+
+                <Route
+                  path="/reports/:reportType"
+                  component={ReportViewContainer}
+                  exact
+                />
+
+                <Redirect from="/meters" to="/meters/apartments" exact />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>

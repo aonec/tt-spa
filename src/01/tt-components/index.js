@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 // export * from './Title';
 export * from './Label';
@@ -29,5 +29,4 @@ export * from './GridTT';
 export * from './EditButtonTT';
 export * from './MultiSelectTT';
 export * from './SwitchTT';
-export * from './Loader';
 export * from './Tabs';

@@ -1,4 +1,3 @@
-import ActiveLine from '01/components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { $individualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -12,6 +11,7 @@ import { IndividualDeviceListItemResponse } from 'myApi';
 import React from 'react';
 import styled from 'styled-components';
 import { transferDevicesForm } from '../../models';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 
 export const TransferDevices = () => {
   const devices = useStore($individualDevices);
@@ -47,7 +47,7 @@ export const TransferDevices = () => {
         <Space />
         <DeviceDataString device={device} />
         <Space />
-        <ActiveLine
+        <DeviceStatus
           isActive={device.closingDate === null}
           closingReason={device.closingReason}
         />
@@ -88,7 +88,7 @@ export const renderDevice = (
     <Flex>
       <DeviceDataString device={device} />
       <Space />
-      <ActiveLine
+      <DeviceStatus
         isActive={device.closingDate === null}
         closingReason={device.closingReason}
       />

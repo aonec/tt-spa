@@ -148,3 +148,7 @@ const ColorLookup = {
   [EStageTimeStatus.RunningOut]: 'var(--warning)',
   [EStageTimeStatus.Expired]: 'var(--error)',
 };
+
+export const prepareQueryStringParam = (param: string | string[] | null) => {
+  return Array.isArray(param) ? param[0] : param;
+};

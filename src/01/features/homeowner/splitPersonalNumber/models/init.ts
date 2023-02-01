@@ -17,7 +17,7 @@ import {
 } from '.';
 import { combine, forward, guard, sample } from 'effector';
 import { splitHomeownerAccount } from '01/_api/homeowners';
-import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
+import { HomeownerGate, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { doesApartmentExist } from '01/_api/housingStocks';
@@ -64,12 +64,22 @@ sample({
   target: saveSplitPersonalNumberForm,
 });
 
-forward({
-  from: fetchHomeownerFx.doneData.map(({ phoneNumber, name }) => ({
-    phoneNumber: phoneNumber || '',
-    name: name || '',
-  })),
-  to: homeownerAccountForSplittedApartmentForm.setForm,
+sample({
+  source: combine($apartment, HomeownerGate.state, (apartment, gateState) => {
+    const source = { apartment, gateState };
+    return source;
+  }),
+  fn: (source) => {
+    const homeownerAccount = source.apartment?.homeownerAccounts?.find(
+      (account) => account.id === source.gateState.id
+    );
+    const form = {
+      phoneNumber: homeownerAccount?.phoneNumber || '',
+      name: homeownerAccount?.name || '',
+    };
+    return form;
+  },
+  target: homeownerAccountForSplittedApartmentForm.setForm,
 });
 
 sample({
@@ -77,17 +87,17 @@ sample({
     homeownerAccountForSplittedApartmentForm.$values,
     newApartmentPersonalNumberForm.$values,
     transferDevicesForm.$values,
-    $homeowner,
+    HomeownerGate.state,
     $apartment,
     (
       splittedApartmentHomeownerAccount,
       newApartmentHomeownerAccount,
       transferedDevices,
-      homeowner,
+      gateState,
       apartment
     ) => {
       const accountForClosing = {
-        HomeownerAccountId: homeowner?.id!,
+        HomeownerAccountId: gateState.id,
         closedAt: moment().toISOString(true),
       };
 
@@ -107,6 +117,7 @@ sample({
       const newApartment = {
         housingStockId: apartment?.housingStock?.id,
         number: newApartmentHomeownerAccount.apartmentNumber,
+        homeownerAccount: newHomeownerAccount,
       };
 
       const individualDeviceIdsForSwitch = [
@@ -116,7 +127,6 @@ sample({
       return {
         accountForClosing,
         homeownerAccountForSplittedApartment,
-        newHomeownerAccount,
         individualDeviceIdsForSwitch,
         newApartment,
       };

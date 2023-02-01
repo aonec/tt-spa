@@ -1,4 +1,3 @@
-/* eslint-disable */
 
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';

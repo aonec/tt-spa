@@ -20,13 +20,13 @@ const objectListComponentsLookup: { [key: string]: FC } = {
 };
 
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
-  handleExportGroupReport,
   handleOpenChooseResourceDisconnectionModal,
   searchType,
   openSoiReportModal,
   handleCreateObject,
   isAdministrator,
-  openFeedFlowBackReportModal
+  openFeedFlowBackReportModal,
+  handleExportGroupReport,
 }) => {
   const menuButtons = useMemo(
     () => [
@@ -52,7 +52,11 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         hidden: !isAdministrator,
       },
     ],
-    [handleExportGroupReport, handleOpenChooseResourceDisconnectionModal]
+    [
+      handleOpenChooseResourceDisconnectionModal,
+      handleCreateObject,
+      openFeedFlowBackReportModal,
+    ]
   );
 
   const objectsProfileComponent = useMemo(() => {

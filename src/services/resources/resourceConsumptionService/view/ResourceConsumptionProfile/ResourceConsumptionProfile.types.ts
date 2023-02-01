@@ -17,8 +17,8 @@ export type ResourceConsumptionProfileProps = {
   setResource: (resource: EResourceType) => void;
   housingConsumptionData: ConsumptionDataForTwoMonth | null;
   streetsList: AddressWithSearchString[];
-  selectedHouseManagement: string;
-  setHouseManagement: (houseManagement: string) => void;
+  selectedHouseManagement: string | null;
+  setHouseManagement: (houseManagement: string | null) => void;
   houseManagements: PreparedHouseManagements[];
   handleClearData: () => void;
   handleClearFilter: () => void;

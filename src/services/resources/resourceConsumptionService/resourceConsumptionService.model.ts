@@ -1,7 +1,11 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, HouseManagementWithStreetsResponse } from 'myApi';
+import {
+  EResourceType,
+  HouseManagementWithStreetsResponse,
+  StreetWithHousingStockNumbersResponse,
+} from 'myApi';
 import {
   fetchAddresses,
   fetchConsumptionsForMonth,
@@ -26,9 +30,10 @@ const getAddressesFx = domain.createEffect<
   HouseManagementWithStreetsResponse[]
 >(fetchAddresses);
 
-const selectHouseManagememt = domain.createEvent<string>();
+const selectHouseManagememt = domain.createEvent<string | null>();
+
 const $selectedHouseManagement = domain
-  .createStore<string>('')
+  .createStore<string | null>(null)
   .on(selectHouseManagememt, (_, id) => id)
   .reset(getAddressesFx.doneData);
 
@@ -40,6 +45,15 @@ const $addressesList = combine(
   $houseManagements,
   $selectedHouseManagement,
   (houseManagements, selectedHouseManagement) => {
+    if (!selectedHouseManagement) {
+      const streets = houseManagements.reduce(
+        (acc, houseManagement) => [...acc, ...(houseManagement.streets || [])],
+        [] as StreetWithHousingStockNumbersResponse[]
+      );
+
+      return getAddressSearchData(streets);
+    }
+
     const requiredHouseManagements = houseManagements.find(
       (houseManagement) => houseManagement.id === selectedHouseManagement
     );

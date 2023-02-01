@@ -7,14 +7,14 @@ export const HeaderWrapper = styled.div`
   align-items: center;
 
   color: #272f5ab2;
-  margin-top: 16px;
+  margin-top: 32px;
   margin-bottom: 8px;
 `;
 
 export const AddressWrapper = styled(Link)`
   color: #272f5ae5;
   font-weight: 500;
-  margin-top: 8px;
+  line-height: 26px;
 `;
 
 export const ResourceIconWrapper = styled.div`
@@ -41,4 +41,20 @@ export const TabsSC = styled(Tabs)`
 
 export const ContentWrapper = styled.div`
   max-width: 820px;
+`;
+
+export const CommonInfoWrapper = styled.div`
+  width: 560px;
+`;
+
+export const ErrorContentWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+`;
+
+export const LinkText = styled.div`
+  color: #fc525b;
+  font-weight: 500;
+
+  cursor: pointer;
 `;

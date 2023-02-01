@@ -1,12 +1,20 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
+import { Alert } from '01/shared/ui/Alert';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
-import { ContentWrapper } from './EditNodePage.styled';
+import { NodeRegistrationTypeLookup } from './EditNodePage.constants';
+import {
+  CommonInfoWrapper,
+  ContentWrapper,
+  ErrorContentWrapper,
+  LinkText,
+} from './EditNodePage.styled';
 import {
   AddressWrapper,
   HeaderWrapper,
@@ -28,9 +36,13 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   refetchNode,
   updateNode,
 }) => {
-  const { number, address, resource } = node;
+  const { number, address, resource, registrationType } = node;
 
   const formId = 'edit-node-page';
+
+  const isIncorrectConfig =
+    node?.validationResult?.errors?.length !== 0 ||
+    node?.validationResult?.warnings?.length !== 0;
 
   return (
     <>
@@ -42,7 +54,10 @@ export const EditNodePage: FC<EditNodePageProps> = ({
         <PageHeader title={`Узел ${number}. Редактирование`} />
       </HeaderWrapper>
       <AddressWrapper to={`/objects/profile/${address?.id}`}>
-        {getHousingStockAddress(address, true)}
+        <HeaderInfoString>
+          <>{getHousingStockAddress(address, true)}</>
+          <>{NodeRegistrationTypeLookup[registrationType]}</>
+        </HeaderInfoString>
       </AddressWrapper>
 
       <TabsSC
@@ -50,13 +65,31 @@ export const EditNodePage: FC<EditNodePageProps> = ({
         onChange={(grouptype) => setGrouptype(grouptype as NodeEditGrouptype)}
       >
         <TabPane tab="Общая информация" key={NodeEditGrouptype.CommonInfo}>
-          <EditNodeCommonInfo
-            node={node}
-            openAddNewZonesModal={openAddNewZonesModal}
-            nodeZones={nodeZones}
-            formId={formId}
-            updateNode={updateNode}
-          />
+          <CommonInfoWrapper>
+            {isIncorrectConfig && (
+              <Alert type="incorrect" color="FC525B">
+                <ErrorContentWrapper>
+                  <span>
+                    Данные с вычислителя не обрабатываются, так как узел не
+                    соответвует выбранной конфигурации. Добавьте недостающий
+                    прибор во вкладке “Подключенные приборы”
+                  </span>
+                  <LinkText
+                    onClick={() => setGrouptype(NodeEditGrouptype.Devices)}
+                  >
+                    Перейти
+                  </LinkText>
+                </ErrorContentWrapper>
+              </Alert>
+            )}
+            <EditNodeCommonInfo
+              node={node}
+              openAddNewZonesModal={openAddNewZonesModal}
+              nodeZones={nodeZones}
+              formId={formId}
+              updateNode={updateNode}
+            />
+          </CommonInfoWrapper>
         </TabPane>
 
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>

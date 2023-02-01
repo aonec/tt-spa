@@ -15,11 +15,17 @@ export interface GetHousingStockParams {
 }
 
 export const getHousingStocks = async (params: GetHousingStockParams) => {
-  const queryString = formQueryString(params);
-  const res: { items: HousingStockListResponse[] } = await axios.get(
-    `HousingStocks${queryString}`
-  );
-  return res?.items;
+  try {
+    const queryString = formQueryString(params);
+
+    const res: { items: HousingStockListResponse[] } = await axios.get(
+      `HousingStocks${queryString}`
+    );
+
+    return res?.items;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const getHousingStock = async (

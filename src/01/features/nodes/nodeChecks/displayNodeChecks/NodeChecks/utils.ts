@@ -1,7 +1,8 @@
-import axios from '01/axios';
-import { message } from 'antd';
-import { DocumentResponse, ECheckType, ENodeCheckType } from 'myApi';
 import { saveAs } from 'file-saver';
+import { message } from 'antd';
+
+import axios from '01/axios';
+import { DocumentResponse, ENodeCheckType } from 'myApi';
 
 export const CheckingActDocumentType = {
   [ENodeCheckType.PlannedCheck]: 'Плановая',

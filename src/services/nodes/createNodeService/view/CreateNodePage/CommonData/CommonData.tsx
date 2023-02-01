@@ -6,14 +6,14 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
 import {
-  nodeResources,
+  commercialNodeStatuses,
   nodeStatuses,
+  nodeConfigurations,
   validationSchema,
-} from './CommonData.contstants';
+} from './CommonData.constants';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
   CreateNewZoneButtonWrapper,
@@ -25,10 +25,10 @@ import {
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
-import { ENodeCommercialAccountStatus } from 'myApi';
 import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { getInitialDateFieldValue } from './CommonData.utils';
+import { getInitialDateFieldValue, getNodeStatus } from './CommonData.utils';
+import { ENodeRegistrationType } from 'myApi';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -47,9 +47,9 @@ export const CommonData: FC<CommonDataProps> = ({
     handleSubmit,
   } = useFormik({
     initialValues: {
-      resource: requestPayload.resource || null,
+      configuration: requestPayload.configuration || null,
       number: requestPayload.number ? String(requestPayload.number) : '',
-      nodeStatus: requestPayload.nodeStatus || null,
+      nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
       nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
       startCommercialAccountingDate: getInitialDateFieldValue(
         requestPayload.startCommercialAccountingDate
@@ -58,25 +58,26 @@ export const CommonData: FC<CommonDataProps> = ({
         requestPayload.endCommercialAccountingDate
       ),
       documents: [] as Document[],
+      commercialStatus: requestPayload.commercialStatus || null,
     },
     validationSchema,
     validateOnChange: false,
     onSubmit: (values) => {
       const {
-        resource,
+        configuration,
         number,
-        nodeStatus,
+        commercialStatus,
         nodeServiceZoneId,
         startCommercialAccountingDate,
         endCommercialAccountingDate,
       } = values;
 
-      if (!resource || !number || !nodeStatus || !nodeServiceZoneId) return;
+      if (!number || !nodeServiceZoneId || !configuration) return;
 
       updateRequestPayload({
-        resource,
+        configuration,
         number: Number(number),
-        nodeStatus,
+        commercialStatus,
         nodeServiceZoneId,
         startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
           true
@@ -100,22 +101,40 @@ export const CommonData: FC<CommonDataProps> = ({
     <div>
       <Title>Общие данные об узле</Title>
       <FirstLineWrapper>
-        <FormItem label="Ресурс">
+        <FormItem label="Конфигурация">
           <Select
             placeholder="Выберите"
-            value={values.resource || undefined}
-            onChange={(value) => setFieldValue('resource', value)}
+            value={values.configuration || undefined}
+            onChange={(value) => setFieldValue('configuration', value)}
           >
-            {nodeResources.map(({ resource, text }) => (
-              <Select.Option key={resource} value={resource}>
+            {nodeConfigurations.map(({ configuration, text }) => (
+              <Select.Option key={configuration} value={configuration}>
                 <SelectOptionWithIconWrapper>
-                  <ResourceIconLookup resource={resource} />
                   <div>{text}</div>
                 </SelectOptionWithIconWrapper>
               </Select.Option>
             ))}
           </Select>
-          <ErrorMessage>{errors.resource}</ErrorMessage>
+          <ErrorMessage>{errors.configuration}</ErrorMessage>
+        </FormItem>
+        <FormItem label="Тип узла">
+          <Select
+            placeholder="Выберите"
+            value={values.nodeStatus || undefined}
+            onChange={(value) => {
+              setFieldValue('nodeStatus', value);
+              if (value === ENodeRegistrationType.Technical) {
+                setFieldValue('commercialStatus', null);
+              }
+            }}
+          >
+            {Object.entries(nodeStatuses).map(([value, text]) => (
+              <Select.Option key={value} value={value}>
+                <div>{text}</div>
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
         </FormItem>
         <FormItem label="Номер узла">
           <Input
@@ -149,57 +168,61 @@ export const CommonData: FC<CommonDataProps> = ({
           </LinkButton>
         </CreateNewZoneButtonWrapper>
       </SecondLineWrapper>
-      <FormItem label="Коммерческий учет показателей приборов">
-        <Select
-          placeholder="Выберите"
-          value={values.nodeStatus || undefined}
-          onChange={(value) => setFieldValue('nodeStatus', value)}
-        >
-          {nodeStatuses.map(({ nodeStatus, text, Icon }) => (
-            <Select.Option key={nodeStatus} value={nodeStatus}>
-              <SelectOptionWithIconWrapper>
-                <Icon />
-                <div>{text}</div>
-              </SelectOptionWithIconWrapper>
-            </Select.Option>
-          ))}
-        </Select>
-        <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
-      </FormItem>
       {values.nodeStatus &&
-        values.nodeStatus !== ENodeCommercialAccountStatus.NotRegistered && (
-          <ThirdLineWrapper>
-            <FormItem label="Дата начала действия акта-допуска">
-              <DatePicker
-                value={values.startCommercialAccountingDate || undefined}
-                onChange={(value) =>
-                  setFieldValue('startCommercialAccountingDate', value)
-                }
-                format="DD.MM.YYYY"
-                placeholder="Введите дату"
-              />
+        values.nodeStatus !== ENodeRegistrationType.Technical && (
+          <>
+            <FormItem label="Статус узла">
+              <Select
+                placeholder="Выберите"
+                value={values.commercialStatus || undefined}
+                onChange={(value) => setFieldValue('commercialStatus', value)}
+              >
+                {commercialNodeStatuses.map(({ nodeStatus, text, Icon }) => (
+                  <Select.Option key={nodeStatus} value={nodeStatus}>
+                    <SelectOptionWithIconWrapper>
+                      <Icon />
+                      <div>{text}</div>
+                    </SelectOptionWithIconWrapper>
+                  </Select.Option>
+                ))}
+              </Select>
+              <ErrorMessage>{errors.commercialStatus}</ErrorMessage>
             </FormItem>
-            <FormItem label="Дата окончания действия акта-допуска">
-              <DatePicker
-                value={values.endCommercialAccountingDate || undefined}
-                onChange={(value) =>
-                  setFieldValue('endCommercialAccountingDate', value)
-                }
-                format="DD.MM.YYYY"
-                placeholder="Введите дату"
+
+            <ThirdLineWrapper>
+              <FormItem label="Дата начала действия акта-допуска">
+                <DatePicker
+                  value={values.startCommercialAccountingDate || undefined}
+                  onChange={(value) =>
+                    setFieldValue('startCommercialAccountingDate', value)
+                  }
+                  format="DD.MM.YYYY"
+                  placeholder="Введите дату"
+                />
+              </FormItem>
+              <FormItem label="Дата окончания действия акта-допуска">
+                <DatePicker
+                  value={values.endCommercialAccountingDate || undefined}
+                  onChange={(value) =>
+                    setFieldValue('endCommercialAccountingDate', value)
+                  }
+                  format="DD.MM.YYYY"
+                  placeholder="Введите дату"
+                />
+              </FormItem>
+            </ThirdLineWrapper>
+
+            <FilesUploaderWrapper>
+              <DocumentsUploadContainer
+                label="Добавьте акт-допуска"
+                documents={values.documents}
+                uniqId="edit-apartment-act-form"
+                onChange={(documents) => setFieldValue('documents', documents)}
+                max={1}
               />
-            </FormItem>
-          </ThirdLineWrapper>
+            </FilesUploaderWrapper>
+          </>
         )}
-      <FilesUploaderWrapper>
-        <DocumentsUploadContainer
-          label="Добавьте акт-допуска"
-          documents={values.documents}
-          uniqId="edit-apartment-act-form"
-          onChange={(documents) => setFieldValue('documents', documents)}
-          max={1}
-        />
-      </FilesUploaderWrapper>
       <Footer>
         <Button type="ghost" onClick={goPrevStep}>
           Назад

@@ -9,9 +9,8 @@ import { apartmentIndividualDevicesMetersService } from './apartmentIndividualDe
 import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevicesMeters';
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { Params } from './apartmentIndividualDevicesMetersService.types';
-import {
-  EditReadingsHistoryContainer,
-} from '../editReadingsHistoryService';
+import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
+import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 
 const {
   inputs,
@@ -20,14 +19,10 @@ const {
 } = apartmentIndividualDevicesMetersService;
 
 export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
-  apartmentId,
+  apartment,
   maxWidth,
   editable,
 }) => {
-  const { id: apartmentIdFromParams } = useParams<{ id: string }>();
-
-  const id = apartmentId || apartmentIdFromParams;
-
   const individualDevicesList = useStore(
     outputs.$filteredIndividualDevicesList
   );
@@ -36,7 +31,6 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   const closedDevicesCount = useStore(outputs.$closedDevicesCount);
   const sliderIndex = useStore(outputs.$sliderIndex);
   const consumptionRates = useStore(outputs.$consumptionRates);
-  const apartment = useStore(outputs.$apartment);
 
   const setIsShowClosedDevices = useEvent(inputs.setIsShowClosedDevices);
   const upSliderIndex = useEvent(inputs.upSliderIndex);
@@ -50,9 +44,14 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
     apartment?.housingStock?.managingFirmId
   );
 
+  const apartmentId = apartment?.id;
+
   return (
     <>
-      {id && <IndividualDevicesGate ApartmentId={Number(id)} />}
+      {apartmentId && (
+        <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
+      )}
+      <CurrentManagingFirmUserGate />
       <ReadingsHistoryModal />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />

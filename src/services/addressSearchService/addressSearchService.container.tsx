@@ -34,6 +34,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       house: '',
       corpus: '',
       apartment: '',
+      question: '',
     },
     enableReinitialize: true,
     onSubmit,
@@ -58,6 +59,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     if (!cities?.length || initialValues?.city) return;
 
     setFieldValue('city', last(cities));
+
     if (onChange) onChange('city', last(cities) || '');
   }, [cities, initialValues]);
 

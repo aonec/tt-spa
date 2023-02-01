@@ -23,7 +23,7 @@ import {
 } from './EditHomeownersList.styled';
 import { EditHomeownersListProps } from './EditHomeownersList.types';
 import moment from 'moment';
-import { PersonType } from 'myApi';
+import { EPersonType } from 'myApi';
 import { EditHomeownerFormPayload } from './editHomeownerService/editHomeownerService.types';
 import {
   CloseHomeownerAccountContainer,
@@ -61,7 +61,7 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
               name: homeowner.name || '',
               phoneNumber: homeowner.phoneNumber || '',
               paymentCode: homeowner.paymentCode || '',
-              personType: String(homeowner.personType) as PersonType,
+              personType: String(homeowner.personType) as EPersonType,
               openAt: moment(homeowner.openAt),
               isMainOnApartment: homeowner.isMainPersonalAccountNumber,
             };

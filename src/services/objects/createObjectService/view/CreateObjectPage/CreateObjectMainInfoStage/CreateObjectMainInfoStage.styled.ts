@@ -59,7 +59,7 @@ export const CloseIconSC = styled(CloseIcon)`
   }
 `;
 
-export const PencilIconSc = styled(PencilIcon)`
+export const PencilIconSC = styled(PencilIcon)`
   cursor: pointer;
   margin: 0px 4px;
   transition: 0.15s;

@@ -36,7 +36,9 @@ export const getProblemDevices = async ({
 }: GetProblemDevicesRequestPayload): Promise<
   IndividualDeviceWithExpiredCheckingDateResponse[]
 > => {
-  const res: any = await axios.get(
+  const res: {
+    devices: IndividualDeviceWithExpiredCheckingDateResponse[];
+  } = await axios.get(
     `Apartments/${apartmentId}/SetStatusProblemDevices${formQueryString(
       requestPayload
     )}`

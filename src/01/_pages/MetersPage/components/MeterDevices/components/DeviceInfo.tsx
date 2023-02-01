@@ -1,18 +1,16 @@
 import React from 'react';
-import ActiveLine from '../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import { translateMountPlace } from '../../../../../utils/translateMountPlace';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
 import {
   IndividualDeviceListItemResponse,
   IndividualDeviceOnTaskResponse,
 } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse | IndividualDeviceOnTaskResponse;
@@ -34,7 +32,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
       </DeviceLink>
       <ApartmentInfo>
-        <ActiveLine isActive={isActive} closingReason={device.closingReason} />
+        <DeviceStatus isActive={isActive} closingReason={device.closingReason} />
         <DateLine
           lastCheckingDate={device.lastCheckingDate}
           futureCheckingDate={device.futureCheckingDate}

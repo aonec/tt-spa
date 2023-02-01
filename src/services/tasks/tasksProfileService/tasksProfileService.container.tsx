@@ -1,22 +1,21 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useParams } from 'react-router-dom';
 import { ETaskEngineeringElement, TaskGroupingFilter } from 'myApi';
 import { exportTasksListService } from '../exportTasksListService';
 import { TaskTypesGate } from '../taskTypesService/taskTypesService.model';
 import { tasksProfileService } from './tasksProfileService.model';
-import { getAddressObject, prepareData } from './tasksProfileService.utils';
+import {
+  getAddressObject,
+  prepareData,
+  prepareQueryStringParam,
+} from './tasksProfileService.utils';
 import { TaskType } from './view/TasksListItem/TasksListItem.types';
 import { TasksProfile } from './view/TasksProfile';
-import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
-import {
-  $existingCities,
-  ExistingCitiesGate,
-} from '01/features/housingStocks/displayHousingStockCities/models';
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import queryString from 'query-string';
 
 const { inputs, outputs, gates } = tasksProfileService;
-const { outputs: adresses } = addressSearchService;
 const { ApartmentIdGate } = gates;
 
 export const TasksProfileContainer = () => {
@@ -45,17 +44,22 @@ export const TasksProfileContainer = () => {
   const clearFilters = useEvent(inputs.clearFilters);
   const clearAddress = useEvent(inputs.clearAddress);
 
-  const { apartmentId, housingStockId } = queryString.parse(
-    window.location.search
+  const {
+    apartmentId,
+    housingStockId,
+    pipeNodeId,
+    housingMeteringDeviceId,
+  } = queryString.parse(window.location.search);
+
+  const preparedApartmentId = prepareQueryStringParam(apartmentId);
+
+  const preparedHousingStockId = prepareQueryStringParam(housingStockId);
+
+  const preparedPipeNodeId = prepareQueryStringParam(pipeNodeId);
+
+  const preparedHousingMeteringDeviceId = prepareQueryStringParam(
+    housingMeteringDeviceId
   );
-
-  const preparedApartmentId = Array.isArray(apartmentId)
-    ? apartmentId[0]
-    : apartmentId;
-
-  const preparedHousingStockId = Array.isArray(housingStockId)
-    ? housingStockId[0]
-    : housingStockId;
 
   useEffect(() => {
     closeExtendedSearch();
@@ -115,10 +119,17 @@ export const TasksProfileContainer = () => {
 
   return (
     <>
-      {(preparedApartmentId || preparedHousingStockId) && (
+      {[
+        preparedApartmentId,
+        preparedHousingStockId,
+        preparedPipeNodeId,
+        housingMeteringDeviceId,
+      ].some(Boolean) && (
         <ApartmentIdGate
           apartmentId={preparedApartmentId}
           housingStockId={preparedHousingStockId}
+          pipeNodeId={preparedPipeNodeId}
+          housingMeteringDeviceId={preparedHousingMeteringDeviceId}
         />
       )}
       <TaskTypesGate />

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { TaskDocumentsListProps } from './TaskDocumentsList.types';
 import { TaskDocumentsListItem } from './TaskDocumentsListItem';
 

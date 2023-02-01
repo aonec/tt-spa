@@ -31,6 +31,7 @@ export const subscribersConsumptionFindForm = createForm({
     city: { init: '' },
     street: { init: '' },
     house: { init: '' },
+    corpus: { init: '' },
   },
 });
 

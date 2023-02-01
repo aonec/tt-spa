@@ -8,4 +8,6 @@ $isDevSettingsModalOpen
 
 devSettingsForm.fields.devUrl.$value.watch((url) => {
   axios.defaults.baseURL = url;
+
+  if (url) localStorage.setItem('dev-api-url', url);
 });

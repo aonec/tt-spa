@@ -185,6 +185,3 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
 };
 
 export default ReadingsBlock;
-
-export const getMeasurementUnit = (resource: any) =>
-  resource === 'Electricity' ? 'кВтч' : 'м³';

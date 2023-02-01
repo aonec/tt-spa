@@ -58,10 +58,6 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     return getExistingReading(preparedReadings, sliderIndex, 'prev');
   }, [device.readings, sliderIndex]);
 
-  useEffect(() => {
-    clearStatuses();
-  }, [device.id]);
-
   const {
     previousReading,
     currentReading,
@@ -233,6 +229,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
       uploadingMetersStatuses={uploadingMetersStatuses}
       previousReadingByCurrentSliderIndex={previousReadingByCurrentSliderIndex}
       editable={editable}
+      apartmentId={device.apartmentId}
     />
   );
 };
