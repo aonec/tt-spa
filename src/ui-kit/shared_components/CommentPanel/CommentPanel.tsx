@@ -42,7 +42,12 @@ export const CommentPanel: FC<CommentPanelProps> = ({
               {isCommentExist && (
                 <>
                   <PencilIconSC onClick={() => setIsEditing(true)} />
-                  <TrashIconSC onClick={() => onRemove()} />
+                  <TrashIconSC
+                    onClick={() => {
+                      setNewComment('');
+                      onRemove();
+                    }}
+                  />
                 </>
               )}
               {!isCommentExist && (

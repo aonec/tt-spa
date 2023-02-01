@@ -1,5 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
 import _ from 'lodash';
+import { EDocumentType } from 'myApi';
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -24,6 +25,7 @@ import {
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
+import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedDevicesList } from './RelatedDevicesList';
 import { RelatedNodesList } from './RelatedNodesList';
@@ -68,7 +70,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           return { devices, nodeNumber: number };
         })
         .flat(),
-    [nodes]
+    [nodes],
   );
 
   const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
@@ -107,7 +109,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         ]}
       />
     ),
-    [calculator]
+    [calculator],
   );
 
   const menuButtons = useMemo(
@@ -132,7 +134,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         },
       ],
     }),
-    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
+    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal],
   );
 
   const contentComponents: {
@@ -156,7 +158,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         <NodeDocumentsList documents={documents || []} />
       ),
     }),
-    [calculator]
+    [calculator],
   );
 
   const component = contentComponents[currentGrouptype];
@@ -194,7 +196,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       <ContentWrapper>
         <Content>{component}</Content>
         <PanelsWrapper>
-          <CalculatorCommentContainer comment={comment}  calculatorId={id}/>
+          <CalculatorCommentContainer comment={comment} calculatorId={id} />
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
             link={stringifyUrl({
@@ -202,6 +204,12 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
               query: { calculatorId: id },
             })}
             showLink={Boolean(numberOfTasks)}
+          />
+          <DocumentsPanel
+            handleClick={() =>
+              setGrouptype(CalculatorProfileGrouptype.Documents)
+            }
+            documents={documents || []}
           />
         </PanelsWrapper>
       </ContentWrapper>

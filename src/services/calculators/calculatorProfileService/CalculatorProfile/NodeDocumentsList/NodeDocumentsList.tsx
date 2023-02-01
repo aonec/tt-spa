@@ -1,6 +1,6 @@
 import { Empty } from 'antd';
 import React, { FC } from 'react';
-import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
+import { NodeDocumentsItem } from './NodeDocumentsItem';
 import { ListHeader } from './NodeDocumentsList.styled';
 import { NodeDocumentsListProps } from './NodeDocumentsList.types';
 
@@ -9,20 +9,27 @@ export const NodeDocumentsList: FC<NodeDocumentsListProps> = ({
 }) => {
   const isDocsExist = documents.length !== 0;
 
+  const list = documents.map((document) => (
+    <NodeDocumentsItem document={document} />
+  ));
+
   return (
     <>
-    <ListHeader>
-      <div>Название документа</div>
-      <div>Дата</div>
-
-    </ListHeader>
       {!isDocsExist && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description="Нет докуменов"
         />
       )}
-      {isDocsExist && <DocumentsList documents={documents} isLoading={false} />}
+      {isDocsExist && (
+        <>
+          <ListHeader>
+            <div>Дата</div>
+            <div>Название документа</div>
+          </ListHeader>
+          {list}
+        </>
+      )}
     </>
   );
 };
