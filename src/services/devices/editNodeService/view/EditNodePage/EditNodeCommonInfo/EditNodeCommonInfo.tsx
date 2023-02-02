@@ -69,7 +69,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           <FormItem label="Конфигурация" className="resource">
             <Select
               placeholder="Выберите конфигурацию"
-              value={node.resource}
+              value={node.configuration}
               disabled
             >
               <Select.Option value={node.configuration}>
