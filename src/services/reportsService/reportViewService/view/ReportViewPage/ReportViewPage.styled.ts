@@ -18,6 +18,7 @@ export const FiltrationInfoWrapper = styled.div`
 export const FiltrationInfoList = styled.div`
   display: flex;
   gap: 8px;
+  margin-right: 16px;
 `;
 
 export const FiltrationInfoItem = styled.div`
@@ -30,6 +31,7 @@ export const FiltrationInfoItem = styled.div`
   color: #272f5a;
   font-weight: 400;
   font-size: 16px;
+  white-space: nowrap;
 `;
 
 export const HeaderTitleWrapper = styled.div`
