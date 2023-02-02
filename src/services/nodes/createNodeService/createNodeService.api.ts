@@ -23,3 +23,26 @@ export const getNodeServiceZones = (): Promise<NodeServiceZoneListResponse | nul
 export const postPipeNode = (
   payload: CreatePipeNodeRequest
 ): Promise<PipeNodeResponse> => axios.post('PipeNodes', payload);
+
+// export interface NodeSetCommercialStatusRequest {
+//   commercialStatus?: ENodeCommercialAccountStatus;
+//   commercialAccountingDeregistrationDate?: string | null;
+//   commercialStatusChangingDate?: string | null;
+//   documentId?: number | null;
+//   startCommercialAccountingDate?: string | null;
+//   endCommercialAccountingDate?: string | null;
+// }
+
+// export interface CreatePipeNodeRequest {
+//   number?: number;
+//   nodeStatus?: ENodeCommercialAccountStatus | null;
+//   commercialStatus?: ENodeCommercialAccountStatus | null;
+//   nodeServiceZoneId?: number;
+//   housingStockId?: number;
+//   startCommercialAccountingDate?: string | null;
+//   endCommercialAccountingDate?: string | null;
+//   entryNumber?: number | null;
+//   calculatorId?: number | null;
+//   configuration?: EPipeNodeConfig;
+//   communicationPipes?: CreateCommunicationPipeRequest[] | null;
+// }

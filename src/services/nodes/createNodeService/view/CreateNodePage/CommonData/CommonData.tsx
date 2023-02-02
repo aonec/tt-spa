@@ -29,6 +29,8 @@ import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { getInitialDateFieldValue, getNodeStatus } from './CommonData.utils';
 import { ENodeRegistrationType } from 'myApi';
+import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm';
+import { getChangeNodeStatusPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.utils';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -39,62 +41,55 @@ export const CommonData: FC<CommonDataProps> = ({
   requestPayload,
   updateRequestPayload,
 }) => {
-  const {
-    values,
-    handleChange,
-    setFieldValue,
-    errors,
-    handleSubmit,
-  } = useFormik({
-    initialValues: {
-      configuration: requestPayload.configuration || null,
-      number: requestPayload.number ? String(requestPayload.number) : '',
-      nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
-      nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
-      startCommercialAccountingDate: getInitialDateFieldValue(
-        requestPayload.startCommercialAccountingDate
-      ),
-      endCommercialAccountingDate: getInitialDateFieldValue(
-        requestPayload.endCommercialAccountingDate
-      ),
-      documents: [] as Document[],
-      commercialStatus: requestPayload.commercialStatus || null,
-    },
-    validationSchema,
-    validateOnChange: false,
-    onSubmit: (values) => {
-      const {
-        configuration,
-        number,
-        commercialStatus,
-        nodeServiceZoneId,
-        startCommercialAccountingDate,
-        endCommercialAccountingDate,
-      } = values;
-
-      if (!number || !nodeServiceZoneId || !configuration) return;
-
-      updateRequestPayload({
-        configuration,
-        number: Number(number),
-        commercialStatus,
-        nodeServiceZoneId,
-        startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
-          true
+  const { values, handleChange, setFieldValue, errors, handleSubmit } =
+    useFormik({
+      initialValues: {
+        configuration: requestPayload.configuration || null,
+        number: requestPayload.number ? String(requestPayload.number) : '',
+        nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
+        nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
+        startCommercialAccountingDate: getInitialDateFieldValue(
+          requestPayload.startCommercialAccountingDate,
         ),
-        endCommercialAccountingDate: endCommercialAccountingDate?.toISOString(
-          true
+        endCommercialAccountingDate: getInitialDateFieldValue(
+          requestPayload.endCommercialAccountingDate,
         ),
-      });
-    },
-  });
+        documents: [] as Document[],
+        commercialStatus: requestPayload.commercialStatus || null,
+      },
+      validationSchema,
+      validateOnChange: false,
+      onSubmit: (values) => {
+        const {
+          configuration,
+          number,
+          commercialStatus,
+          nodeServiceZoneId,
+          startCommercialAccountingDate,
+          endCommercialAccountingDate,
+        } = values;
+
+        if (!number || !nodeServiceZoneId || !configuration) return;
+
+        updateRequestPayload({
+          configuration,
+          number: Number(number),
+          nodeServiceZoneId,
+          commercialStatus,
+          startCommercialAccountingDate:
+            startCommercialAccountingDate?.toISOString(true),
+          endCommercialAccountingDate:
+            endCommercialAccountingDate?.toISOString(true),
+        });
+      },
+    });
 
   useEffect(
     () =>
       inputs.handleServiceZoneCreated.watch((nodeServiceZone) =>
-        setFieldValue('nodeServiceZoneId', nodeServiceZone.id)
+        setFieldValue('nodeServiceZoneId', nodeServiceZone.id),
       ).unsubscribe,
-    []
+    [],
   );
 
   return (
@@ -223,6 +218,18 @@ export const CommonData: FC<CommonDataProps> = ({
             </FilesUploaderWrapper>
           </>
         )}
+
+      {/* {values.nodeStatus &&
+        values.nodeStatus !== ENodeRegistrationType.Technical && (
+        <ChangeNodeStatusForm
+          handleChangeNodeStatus={(values) =>
+            setFieldValue(
+              'commercialStatus',
+              getChangeNodeStatusPayload(values),
+            )
+          }
+        />
+      )} */}
       <Footer>
         <Button type="ghost" onClick={goPrevStep}>
           Назад
