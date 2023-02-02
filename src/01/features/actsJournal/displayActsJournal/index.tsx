@@ -1,6 +1,6 @@
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useEvent, useStore } from 'effector-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { AddNewActForm } from './components/AddNewActForm/AddNewActForm';
 import { ApartmentActsList } from './components/ApartmentActsList';
@@ -11,7 +11,6 @@ import {
   $selectedResourceType,
   clearCreationActForms,
   createApartmentAct,
-  createApartmentActFx,
   selectActType,
   selectResourceType,
 } from './models';

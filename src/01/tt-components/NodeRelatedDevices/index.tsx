@@ -32,9 +32,13 @@ export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
   const flattenRelated = _.flatten(related.filter((item) => item !== null));
 
   const result = flattenRelated.map((value: any) => {
-    const { model, serialNumber, closingDate, hub, resource, id } = value;
+    const { model, serialNumber, closingDate, hub, id } = value;
 
-    const { pipeNumber = '', entryNumber = '', magistral = '' } = hub || {
+    const {
+      pipeNumber = '',
+      entryNumber = '',
+      magistral = '',
+    } = hub || {
       pipeNumber: '',
       entryNumber: '',
     };

@@ -1,7 +1,6 @@
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { Checkbox } from 'antd';
-import { IndividualDeviceListItemResponse } from 'myApi';
 import React, { FC } from 'react';
 import {
   DatePickerWrapper,
@@ -27,7 +26,7 @@ export const CloseDevices: FC<CloseDevicesProps> = ({
       </Header>
       {devices?.map((device) => {
         const selectedDevicePayload = selectedDevices.find(
-          ({ id }) => id === device.id
+          ({ id }) => id === device.id,
         );
 
         const isSelected = Boolean(selectedDevicePayload);

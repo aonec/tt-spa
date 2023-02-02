@@ -1,4 +1,3 @@
-import IsActive, { IsActiveBool } from '01/tt-components/IsActive';
 import { Tooltip } from 'antd';
 import React, { FC } from 'react';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';

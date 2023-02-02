@@ -1,4 +1,4 @@
-import { ESecuredIdentityRoleName, ESecuredIdentityRoleNameStringDictionaryItem } from 'myApi';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 export type RouterProps = {
   roles: ESecuredIdentityRoleName[];

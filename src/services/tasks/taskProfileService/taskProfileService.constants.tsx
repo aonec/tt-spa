@@ -1,4 +1,4 @@
-import { EManagingFirmTaskType, EStageActionType } from 'myApi';
+import { EManagingFirmTaskType } from 'myApi';
 import * as yup from 'yup';
 
 export const completionLabelsDictionary: { [key: string]: string } = {
@@ -15,7 +15,7 @@ export const pushStagePayloadValidationsArray = [
           .required(
             `Поле "${
               completionLabelsDictionary[EManagingFirmTaskType.PipeRupture]
-            }" обязательное`
+            }" обязательное`,
           ),
         comment: yup.string().when('type', {
           is: (value) => Boolean(value),

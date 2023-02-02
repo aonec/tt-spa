@@ -1,5 +1,5 @@
 import { $existingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import {
   $selectedHousingsStockId,
   setSelectedHousingStockId,

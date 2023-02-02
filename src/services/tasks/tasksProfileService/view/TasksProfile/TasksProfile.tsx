@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';

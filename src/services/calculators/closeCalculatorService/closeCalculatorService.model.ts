@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { CalculatorResponse, CloseDeviceRequest } from 'myApi';
-import { useHistory } from 'react-router-dom';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './closeCalculatorService.api';
 import { CloseCalculatorFormik } from './closeCalculatorService.types';
@@ -20,7 +19,7 @@ const $isModalOpen = $calculatorInfo.map(Boolean);
 
 const closeCalculator = domain.createEvent<CloseCalculatorFormik>();
 const closeCalculatorFx = domain.createEffect<CloseDeviceRequest, void>(
-  fetchCloseCalculator
+  fetchCloseCalculator,
 );
 
 sample({
