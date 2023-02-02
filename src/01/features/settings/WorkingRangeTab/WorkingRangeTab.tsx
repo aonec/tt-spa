@@ -6,7 +6,7 @@ import {
 } from './WorkingRangeTab.types';
 import { useHistory } from 'react-router-dom';
 
-export const WorkingRangeTab: FC<WorkingRangeTabProps> = ({}) => {
+export const WorkingRangeTab: FC<WorkingRangeTabProps> = () => {
   const history = useHistory();
 
   return (

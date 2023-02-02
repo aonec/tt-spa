@@ -1,4 +1,3 @@
-import { EIndividualDeviceRateType } from 'myApi';
 import styled from 'styled-components';
 
 export const ArrowContainer = styled.div<{ isDisabled: boolean }>`

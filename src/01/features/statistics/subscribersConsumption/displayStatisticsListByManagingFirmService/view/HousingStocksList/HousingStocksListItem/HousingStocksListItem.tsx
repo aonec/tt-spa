@@ -1,7 +1,6 @@
 import Arrow from '01/_components/Arrow/Arrow';
 import { Skeleton, Tooltip } from 'antd';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { DownloadIcon } from 'ui-kit/icons';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { SubscribersStaticsByManagingFirm } from '../SubscribersStatisticsByManagingFirm';
 import {
@@ -28,10 +27,10 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   const [isActive, setIsActive] = useState(false);
   const toggle = () => setIsActive((prev) => !prev);
 
-  const openModal = useCallback(() => handleOpenModal(id), [
-    handleOpenModal,
-    id,
-  ]);
+  const openModal = useCallback(
+    () => handleOpenModal(id),
+    [handleOpenModal, id],
+  );
 
   const addressString = getHousingStockAddress(housingStock);
   const isCurrentHousingStockSelected = selectedHousingStock === id;

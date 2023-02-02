@@ -1,4 +1,3 @@
-import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
@@ -6,7 +5,6 @@ import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import moment from 'moment';
 import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { useHistory } from 'react-router';
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import {
   $consumptionStatistics,
@@ -24,11 +22,10 @@ export const StatisticsList: React.FC = () => {
   const apartmentList = useStore($consumptionStatistics);
 
   const pending = useStore(subscribersConsumptionService.outputs.$isLoading);
-  const history = useHistory();
   const isApartmentsExist = apartmentList.length !== 0;
 
   const filter = useStore(
-    subscribersConsumptionService.outputs.$subscriberStatisticsFilter
+    subscribersConsumptionService.outputs.$subscriberStatisticsFilter,
   );
 
   const renderApartment = ({

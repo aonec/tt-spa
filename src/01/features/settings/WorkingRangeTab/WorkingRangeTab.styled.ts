@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  overflow: visible;
+`;
 
 export const ChevronIconRight = styled(ChevronIcon)`
   transform: rotate(180deg);
@@ -14,8 +16,7 @@ export const ChevronIconRight = styled(ChevronIcon)`
 export const Panel = styled.div`
   padding-left: 32px;
   padding-right: 20px;
-  margin-bottom: 16px;
-  margin-left: 3px;
+  margin: 0 3px 16px;
 
   max-width: 960px;
   height: 48px;
@@ -33,6 +34,7 @@ export const Panel = styled.div`
   justify-content: space-between;
 
   transition: 0.2s;
+  cursor: pointer;
 
   &:hover {
     font-weight: 600;

@@ -15,7 +15,7 @@ import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
 import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
 
-const { inputs, outputs, gates } = meteringDeviceReadingsService;
+const { outputs, gates } = meteringDeviceReadingsService;
 
 export const MeteringDevicesList = () => {
   const pendingNodes = useStore(fetchNodes.pending);
@@ -63,7 +63,7 @@ export const MeteringDevicesList = () => {
             key={index}
           />
         ))}
-        <MeteringDeviceReadingsSumPanel sum={sum}/>
+        <MeteringDeviceReadingsSumPanel sum={sum} />
         <MeteringDevicesListIsOpen />
       </>
     );

@@ -25,6 +25,6 @@ export const AccessDeniedPage = () => (
     >
       <span>Вернуться к работе</span>
     </Button>
-    <img className="access-denied__image" src={require('./403.svg')} />
+    <img className="access-denied__image" alt='' src={require('./403.svg')} />
   </div>
 );

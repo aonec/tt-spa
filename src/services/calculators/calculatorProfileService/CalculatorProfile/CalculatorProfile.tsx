@@ -1,6 +1,4 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import _ from 'lodash';
-import { EDocumentType } from 'myApi';
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -73,10 +71,10 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [nodes],
   );
 
-  const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
-    model,
-    serialNumber,
-  ]);
+  const headerTitle = useMemo(
+    () => `${model} (${serialNumber})`,
+    [model, serialNumber],
+  );
 
   const commonInfo = useMemo(
     () => (

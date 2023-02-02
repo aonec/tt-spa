@@ -1,7 +1,6 @@
 import moment from 'moment';
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { string } from 'yup';
 
 interface Props {
   value?: string | null;
@@ -33,7 +32,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
       onKeyDown,
       inputData,
     },
-    ref
+    ref,
   ) => {
     const [innerValue, setInnerValue] = useState<any>();
     const value = moment(incomingValue).toISOString(true);
@@ -78,7 +77,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
         type="date"
       />
     );
-  }
+  },
 );
 
 const InputSC = styled.input<{

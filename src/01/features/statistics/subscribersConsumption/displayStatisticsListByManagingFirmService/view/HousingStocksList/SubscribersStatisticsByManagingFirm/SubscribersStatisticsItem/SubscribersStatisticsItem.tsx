@@ -12,9 +12,9 @@ import {
 import { SubscribersStaticsByManagingFirmItemProps } from './SubscribersStatisticsItem.types';
 import { prepareSupplyConsumption } from './SubscribersStatisticsItem.utils';
 
-export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagingFirmItemProps> = ({
-  statistic,
-}) => {
+export const SubscribersStaticsByManagingFirmItem: FC<
+  SubscribersStaticsByManagingFirmItemProps
+> = ({ statistic }) => {
   const {
     apartmentNumber,
     coldWaterSupplyConsumption,
@@ -25,7 +25,6 @@ export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagi
     homeownerAccountFullName,
     homeownerAccountPhoneNumber,
     apartmentId,
-    housingStockId,
   } = statistic;
 
   const preparedLastCheckDate = dateLastCheck
@@ -35,13 +34,13 @@ export const SubscribersStaticsByManagingFirmItem: FC<SubscribersStaticsByManagi
     ? getTimeStringByUTC(dateLastTransmissionOfReading, 'DD.MM.YYYY')
     : '-';
   const preparedColdWaterSupplyСonsumption = prepareSupplyConsumption(
-    coldWaterSupplyConsumption
+    coldWaterSupplyConsumption,
   );
   const preparedHotWaterSupplyСonsumption = prepareSupplyConsumption(
-    hotWaterSupplyConsumption
+    hotWaterSupplyConsumption,
   );
   const preparedElectricitySupplyСonsumption = prepareSupplyConsumption(
-    electricitySupplyConsumption
+    electricitySupplyConsumption,
   );
 
   return (

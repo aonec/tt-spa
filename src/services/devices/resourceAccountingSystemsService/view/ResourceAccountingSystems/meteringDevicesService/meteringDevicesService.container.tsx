@@ -1,4 +1,4 @@
-import { useEvent, useStore, useStoreMap } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { meteringDevicesService } from './meteringDevicesService.model';
 import { MeteringDevicesListModal } from './view/MeteringDevicesListModal';

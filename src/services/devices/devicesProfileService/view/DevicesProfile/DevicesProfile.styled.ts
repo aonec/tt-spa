@@ -1,4 +1,4 @@
-import { Slider, Form, DatePicker } from 'antd';
+import { Slider, DatePicker } from 'antd';
 import styled from 'styled-components';
 const { RangePicker } = DatePicker;
 

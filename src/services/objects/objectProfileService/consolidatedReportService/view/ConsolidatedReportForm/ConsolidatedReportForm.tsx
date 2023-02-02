@@ -3,7 +3,6 @@ import { Form, Radio, Space } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
-import moment from 'moment';
 import { EReportType } from 'myApi';
 import {
   ArchiveType,
