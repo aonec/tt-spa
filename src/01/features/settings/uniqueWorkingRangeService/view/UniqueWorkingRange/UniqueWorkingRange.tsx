@@ -4,86 +4,114 @@ import {
   ErrorFieldName,
   FieldGrid,
   FieldName,
+  FilterBlock,
   LoaderWrapper,
   Margin,
   RangeBlockGrid,
   RangeFieldName,
-  ResourceSelectWrapper,
   Symbol,
+  TreeSelectSC,
   Value,
-} from './StandartWorkingRange.styled';
-import { StandartWorkingRangeProps } from './StandartWorkingRange.types';
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Tabs } from 'ui-kit/Tabs';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
-import { useFormik } from 'formik';
+} from './UniqueWorkingRange.styled';
+import {
+  UniqueWorkingRangeProps,
+  UniqueWorkingRangeType,
+} from './UniqueWorkingRange.types';
 import {
   ENodeWorkingRangeSeason,
   ENodeWorkingRangeType,
   EResourceType,
 } from 'myApi';
+import { useFormik } from 'formik';
+import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { PageHeader } from '01/shared/ui/PageHeader';
+import { Tabs } from 'ui-kit/Tabs';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { TreeSelect } from 'antd';
+import { SelectSC } from '01/shared/ui/Fields';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
 
-export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
+export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
   handleOnSearchDataChange,
-  standartWorkingRange,
+  housingStockUniqueWorkingRange,
   isLoading,
+  setSelectedCity,
+  preparedAddresses,
+  existingCities,
+  selectedCity,
+  handleFetchNodes,
+  nodes,
+  handleNodeChoosen,
 }) => {
   const allowableError =
-    standartWorkingRange &&
-    standartWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
-        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError,
+        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError
     );
 
-  const criticalError = standartWorkingRange?.nodeWorkingRanges?.find(
+  const criticalError = housingStockUniqueWorkingRange?.nodeWorkingRanges?.find(
     (range) =>
-      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError,
+      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError
   );
 
   const massOfFeedFlowMagistral =
-    standartWorkingRange &&
-    standartWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedFlowMagistral,
+        ENodeWorkingRangeType.MassOfFeedFlowMagistral
     );
 
   const massOfFeedBackFlowMagistral =
-    standartWorkingRange &&
-    standartWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral,
+        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral
     );
 
   const deltaMassOfMagistral =
-    standartWorkingRange &&
-    standartWorkingRange.nodeWorkingRanges?.find(
+    housingStockUniqueWorkingRange &&
+    housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.DeltaMassOfMagistral,
+        ENodeWorkingRangeType.DeltaMassOfMagistral
     );
 
-  const { values, handleSubmit, setFieldValue } = useFormik({
+  const {
+    values,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik<UniqueWorkingRangeType>({
     initialValues: {
       nodeResourceType: EResourceType.ColdWaterSupply,
       season: ENodeWorkingRangeSeason.HeatingSeason,
+      housingStockId: null,
+      nodeId: null,
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      handleOnSearchDataChange(data);
+      const { housingStockId, nodeId, nodeResourceType, season } = data;
+
+      !nodeId &&
+        housingStockId &&
+        handleOnSearchDataChange({ nodeResourceType, season, housingStockId });
+
+      nodeId && handleNodeChoosen({ season, nodeId });
     },
   });
 
   useEffect(() => {
-    handleOnSearchDataChange({
-      nodeResourceType: values.nodeResourceType,
-      season: values.season,
-    });
-  }, []);
+    values.housingStockId && handleFetchNodes(values.housingStockId);
+  }, [values.housingStockId]);
+
+  const preparedNodes = nodes?.reduce((acc, node) => {
+    if (node.resource === values.nodeResourceType) {
+      return [...acc, { value: node.id, nodeNumber: node.number }];
+    }
+    return acc;
+  }, [] as { value: number; nodeNumber: number }[]);
 
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
@@ -93,7 +121,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
       <Margin>
         <GoBack />
       </Margin>
-      <PageHeader title="Стандартные рабочие диапазоны" />
+      <PageHeader title="Уникальные рабочие диапазоны" />
       <Margin>
         <Tabs
           onChange={(value) => {
@@ -112,16 +140,64 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
           />
         </Tabs>
       </Margin>
-      <ResourceSelectWrapper>
+
+      <FilterBlock>
         <ResourceSelectSC
           isShadow={false}
           resource={values.nodeResourceType}
           onChange={(value) => {
             setFieldValue('nodeResourceType', value);
             handleSubmit();
+            setFieldValue('nodeId', null);
           }}
         />
-      </ResourceSelectWrapper>
+
+        <SelectSC
+          placeholder="Выберите город"
+          isShadow={false}
+          value={selectedCity || undefined}
+          onChange={(city) => {
+            setSelectedCity(city as string);
+            setFieldValue('nodeId', null);
+          }}
+        >
+          {existingCities?.map((city) => (
+            <SelectSC.Option key={city} value={city}>
+              {city}
+            </SelectSC.Option>
+          ))}
+        </SelectSC>
+
+        <TreeSelectSC
+          placeholder="Выберите улицу"
+          value={values.housingStockId || undefined}
+          onChange={(value) => {
+            setFieldValue('housingStockId', value || null);
+            handleSubmit();
+            setFieldValue('nodeId', null);
+          }}
+          showSearch
+          showArrow
+          treeCheckable={false}
+          treeData={preparedAddresses}
+        />
+
+        <SelectSC
+          placeholder="Выберите узел"
+          isShadow={false}
+          value={values.nodeId || undefined}
+          onChange={(nodeId) => {
+            setFieldValue('nodeId', nodeId);
+            handleSubmit();
+          }}
+        >
+          {preparedNodes?.map((node) => (
+            <SelectSC.Option key={node.value} value={node.value}>
+              {`Узел  ${node.nodeNumber}`}
+            </SelectSC.Option>
+          ))}
+        </SelectSC>
+      </FilterBlock>
 
       {isLoading && (
         <LoaderWrapper>

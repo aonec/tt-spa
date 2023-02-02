@@ -44,6 +44,7 @@ import { EditCalculatorContainer } from 'services/calculators/editCalculatorServ
 import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
 import { ReportsPageContainer } from '01/features/reports';
 import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
+import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
 
 const { gates } = objectProfileService;
 
@@ -229,6 +230,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route
                   path="/adminSettings/operatingRanges/Group"
                   component={GroupWorkingRangeContainer}
+                  exact
+                />
+                <Route
+                  path="/adminSettings/operatingRanges/Unique"
+                  component={UniqueWorkingRangeContainer}
                   exact
                 />
 

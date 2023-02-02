@@ -1,3 +1,4 @@
+import { TreeSelect } from 'antd';
 import styled from 'styled-components';
 
 export const Margin = styled.div`
@@ -67,11 +68,16 @@ export const LoaderWrapper = styled.div`
   max-width: 700px;
 `;
 
-export const ResourceSelectWrapper = styled.div`
+export const FilterBlock = styled.div`
   padding: 0px 10px 0px 10px;
-  width: 160px;
 
-  .ant-select {
-    width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr;
+  grid-gap: 16px;
+`;
+
+export const TreeSelectSC = styled(TreeSelect)`
+  .ant-select-selector {
+    border-radius: 4px !important;
   }
 `;
