@@ -5,5 +5,7 @@ export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
 > =>
   axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement'
+    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
   );
+
+export const getIndividualDevicesReport = () => axios.get('');

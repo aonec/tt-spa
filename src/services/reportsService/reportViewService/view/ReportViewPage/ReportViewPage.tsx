@@ -20,6 +20,7 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { Button } from 'ui-kit/Button';
 import { getFiltersList } from './ReportViewPage.utils';
+import { ReportViewTable } from './ReportViewTable';
 
 const formId = 'report-form-id';
 
@@ -97,6 +98,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           description="Выберите фильтры для формирования отчёта"
         />
       )}
+      <ReportViewTable />
     </Wrapper>
   );
 };
