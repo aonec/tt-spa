@@ -32,17 +32,12 @@ export const NodeName = styled.div`
   }
 `;
 
-export const NodeServiceZone = styled.div<{ isZoneExist: boolean }>`
+export const AdditionalInfo = styled.div`
   margin-top: 2px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: rgba(
-    39,
-    47,
-    90,
-    ${({ isZoneExist }) => (isZoneExist ? '0.7' : '0.4')}
-  );
+  color: rgba(39, 47, 90, 0.7);
 `;
 
 export const NodeStatusWrapper = styled.div`
@@ -59,8 +54,8 @@ export const BaseNodeInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 120px;
-  max-width: 120px;
+  width: max-content;
+  gap: 26px;
 `;
 
 export const NodeInfo = styled.div`

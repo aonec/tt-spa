@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import {
+  AdditionalInfo,
   BaseNodeInfo,
   DeviceIconWrapper,
   NodeInfo,
   NodeInfoWrapper,
   NodeName,
-  NodeServiceZone,
   NodeStatusWrapper,
   ResourceIconWrapper,
   Wrapper,
@@ -18,13 +18,12 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { NodeStatus } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus';
 
 export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
+  console.log(node);
   const nodeInfo = (
     <BaseNodeInfo>
       <Link to={`/nodes/${node?.id}`}>
         <NodeName>Узел {node?.number}</NodeName>
-        <NodeServiceZone isZoneExist={Boolean(node?.nodeServiceZone?.name)}>
-          {node?.nodeServiceZone?.name}
-        </NodeServiceZone>
+        <AdditionalInfo>Ввод {node?.communicationPipes?.[0].entryNumber},  {node?.nodeServiceZone?.name}</AdditionalInfo>
       </Link>
       <Tooltip title="Показать приборы">
         <DeviceIconWrapper>
@@ -36,13 +35,13 @@ export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
 
   return (
     <Wrapper>
-        <NodeInfoWrapper>
-          <ResourceIconWrapper>
-            <ResourceIconLookup resource={node?.resource} />
-          </ResourceIconWrapper>
-          <NodeInfo>{nodeInfo}</NodeInfo>
-        </NodeInfoWrapper>
-      
+      <NodeInfoWrapper>
+        <ResourceIconWrapper>
+          <ResourceIconLookup resource={node?.resource} />
+        </ResourceIconWrapper>
+        <NodeInfo>{nodeInfo}</NodeInfo>
+      </NodeInfoWrapper>
+
       <NodeStatusWrapper>
         {node?.nodeStatus?.value && (
           <NodeStatus status={node?.nodeStatus?.value} />
