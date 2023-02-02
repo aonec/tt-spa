@@ -3,10 +3,10 @@ import { Icon } from '01/components/Icon';
 import { LoaderWrapper } from './Loader.styled';
 import { LoaderProps } from './Loader.types';
 
-export const Loader: FC<LoaderProps> = ({ children, show, ...props }) => {
+export const Loader: FC<LoaderProps> = ({ children, show, size, ...props }) => {
   const loader = (
     <LoaderWrapper>
-      <Icon icon="replacement" {...props} />
+      <Icon icon="replacement" {...props} size={Number(size)} />
     </LoaderWrapper>
   );
 
