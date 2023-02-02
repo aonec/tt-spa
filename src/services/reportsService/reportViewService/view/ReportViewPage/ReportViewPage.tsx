@@ -32,6 +32,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   filtrationValues,
   setFiltrationValues,
   isLoadingReport,
+  individualDevicesReportData,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -94,7 +95,10 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
         </ExtendedSearch>
       </ExtendedSearchWrapper>
       <WithLoader isLoading={isLoadingReport}>
-        <ReportViewTable />
+        <ReportViewTable
+          reportType={reportType}
+          individualDevicesReportData={individualDevicesReportData}
+        />
       </WithLoader>
     </Wrapper>
   );
