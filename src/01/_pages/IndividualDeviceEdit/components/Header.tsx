@@ -21,7 +21,7 @@ export const Header = ({ device }: HeaderInterface) => {
   }
   const loading = !device;
   const { address, model, serialNumber, resource, closingDate } = device;
-  const { id, apartmentId } = address || {};
+  const { apartmentId } = address || {};
 
   return (
     <Loader show={loading} size="32">

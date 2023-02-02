@@ -11,7 +11,7 @@ import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EActResourceType, EActType } from 'myApi';
-import React, { ChangeEvent, FC, useCallback, useMemo, useRef } from 'react';
+import React, { ChangeEvent, FC, useMemo } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import {
@@ -34,25 +34,21 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   selectedResourceType,
   clearForm,
 }) => {
-  const {
-    values,
-    submitForm,
-    setFieldValue,
-    resetForm,
-  } = useFormik<AddNewActFormT>({
-    initialValues: {
-      actJobDate: '',
-      registryNumber: '',
-    },
-    onSubmit: (formValues) => {
-      const actType = selectedActType;
-      const actResourceType = selectedResourceType;
+  const { values, submitForm, setFieldValue, resetForm } =
+    useFormik<AddNewActFormT>({
+      initialValues: {
+        actJobDate: '',
+        registryNumber: '',
+      },
+      onSubmit: (formValues) => {
+        const actType = selectedActType;
+        const actResourceType = selectedResourceType;
 
-      if (actType && actResourceType) {
-        addNewAct({ ...formValues, actType, actResourceType });
-      }
-    },
-  });
+        if (actType && actResourceType) {
+          addNewAct({ ...formValues, actType, actResourceType });
+        }
+      },
+    });
 
   const {
     keyDownEnterGuardedHandler,
@@ -62,8 +58,6 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   const actTypes = useStore($actTypes);
   const actResources = useStore($actResources);
 
-  const datePickerRef = useRef(null);
-
   const pendingRequest = useStore(createApartmentActFx.pending);
 
   useEffect(
@@ -72,15 +66,15 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         message.success('Акт успешно добавлен');
         resetForm();
       }).unsubscribe,
-    []
+    [],
   );
 
   useEffect(
     () =>
       createApartmentActFx.fail.watch(() =>
-        message.error('Ошибка при добавлении акта')
+        message.error('Ошибка при добавлении акта'),
       ).unsubscribe,
-    []
+    [],
   );
 
   const handleEnterOnRegistryNumberInput = useMemo(() => {

@@ -1,4 +1,4 @@
-import { createDomain, forward, guard, sample } from 'effector';
+import { createDomain, forward } from 'effector';
 import { patchContractor } from './editContractorService.api';
 import { ContractorResponse, ContractorUpdateRequest } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
@@ -41,11 +41,11 @@ forward({
 });
 
 editContractorFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 editContractorSuccess.watch(() =>
-  message.success('Подрядчик успешно изменён!')
+  message.success('Подрядчик успешно изменён!'),
 );
 
 export const editContractorService = {

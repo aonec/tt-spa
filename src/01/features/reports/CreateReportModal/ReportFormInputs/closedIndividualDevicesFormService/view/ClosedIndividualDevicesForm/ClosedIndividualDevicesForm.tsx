@@ -3,7 +3,7 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { EClosingReason } from 'myApi';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -18,7 +18,9 @@ import {
   unloadingTypesForLabelDictionary,
 } from './ClosedIndividualDevicesFormService.constants';
 
-export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> = ({
+export const ClosedIndividualDevicesForm: FC<
+  ClosedIndividualDevicesFormProps
+> = ({
   unloadSelectType,
   setUnloadSelectType,
   preparedAddresses,

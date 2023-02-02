@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useStore } from 'effector-react';
 import { individualDevicesListService } from './individualDevicesListService.model';
 import { IndividualDevicesListContainerProps } from './individualDevicesListService.types';
@@ -9,11 +9,9 @@ const {
   gates: { IndividualDevicesIds },
 } = individualDevicesListService;
 
-export const IndividualDevicesListContainer: FC<IndividualDevicesListContainerProps> = ({
-  devicesIds,
-  housingStockId,
-  apartmentId,
-}) => {
+export const IndividualDevicesListContainer: FC<
+  IndividualDevicesListContainerProps
+> = ({ devicesIds, housingStockId, apartmentId }) => {
   const isLoading = useStore(outputs.$isLoading);
   const individualDevicesList = useStore(outputs.$individualDevicesList);
 

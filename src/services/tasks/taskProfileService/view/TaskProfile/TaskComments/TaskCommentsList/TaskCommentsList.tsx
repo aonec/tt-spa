@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { Comment } from '../Comment';
 import { Wrapper } from './TaskCommentsList.styled';
 import { TaskCommentsListProps } from './TaskCommentsList.types';

@@ -11,7 +11,6 @@ import {
 } from './ManagingFirmSearch.styled';
 import {
   ManagingFirmSearchProps,
-  SubscriberStatisticsForm,
   SubscriberStatisticsFormik,
 } from './ManagingFirmSearch.types';
 
@@ -30,30 +29,26 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   const isExcluded =
     moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
 
-  const {
-    values,
-    setFieldValue,
-    resetForm,
-    submitForm,
-  } = useFormik<SubscriberStatisticsFormik>({
-    initialValues: {
-      ColdWaterSupply: filter?.ColdWaterSupply || false,
-      Electricity: filter?.Electricity || false,
-      HotWaterSupply: filter?.HotWaterSupply || false,
-      ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
-      ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
-      ElectricitySupplyConsumptionFrom:
-        filter?.ElectricitySupplyConsumptionFrom,
-      ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
-      HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
-      HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
-      DateLastCheckFrom: filter?.DateLastCheckFrom,
-      DateLastCheckTo: filter?.DateLastCheckTo,
-      ExcludeApartments: isExcluded,
-    },
-    enableReinitialize: true,
-    onSubmit: setFilter,
-  });
+  const { values, setFieldValue, resetForm, submitForm } =
+    useFormik<SubscriberStatisticsFormik>({
+      initialValues: {
+        ColdWaterSupply: filter?.ColdWaterSupply || false,
+        Electricity: filter?.Electricity || false,
+        HotWaterSupply: filter?.HotWaterSupply || false,
+        ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
+        ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
+        ElectricitySupplyConsumptionFrom:
+          filter?.ElectricitySupplyConsumptionFrom,
+        ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
+        HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
+        HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+        DateLastCheckFrom: filter?.DateLastCheckFrom,
+        DateLastCheckTo: filter?.DateLastCheckTo,
+        ExcludeApartments: isExcluded,
+      },
+      enableReinitialize: true,
+      onSubmit: setFilter,
+    });
 
   const isManagingFirmSelectDisabled = managingFirms.length === 0;
 

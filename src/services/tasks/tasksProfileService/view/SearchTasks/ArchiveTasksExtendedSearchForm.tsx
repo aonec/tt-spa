@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react';
 import { Select } from 'antd';
-import _ from 'lodash';
 import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes } from './SearchTasks.types';
 import { StyledContainerFourItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
@@ -48,7 +47,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
-                value.target.value
+                value.target.value,
               )
             }
             value=""

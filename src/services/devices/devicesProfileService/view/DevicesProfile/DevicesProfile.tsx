@@ -1,6 +1,5 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useFormik } from 'formik';
-import _ from 'lodash';
 import { searchStateChanged } from '01/features/devicesReport/models';
 import { DevicesListContainer } from 'services/devices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';

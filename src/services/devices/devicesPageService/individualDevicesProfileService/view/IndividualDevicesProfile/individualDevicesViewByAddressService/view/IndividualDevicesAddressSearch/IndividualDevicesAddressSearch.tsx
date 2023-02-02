@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
@@ -13,24 +13,22 @@ import {
 } from './IndividualDevicesAddressSearch.styled';
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 
-export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchProps> = ({
+export const IndividualDevicesAddressSearch: FC<
+  IndividualDevicesAddressSearchProps
+> = ({
   setIndividualDeviceSearchRequestPayload,
   filters,
   clearSearchPayload,
   mountPlaces,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    setValues,
-    setFieldValue,
-  } = useFormik<SearchIndividualDevicesRequestPayload>({
-    initialValues: filters,
-    onSubmit: (values) => {
-      setIndividualDeviceSearchRequestPayload(values);
-    },
-    enableReinitialize: true,
-  });
+  const { values, handleSubmit, setValues, setFieldValue } =
+    useFormik<SearchIndividualDevicesRequestPayload>({
+      initialValues: filters,
+      onSubmit: (values) => {
+        setIndividualDeviceSearchRequestPayload(values);
+      },
+      enableReinitialize: true,
+    });
 
   const submitWrap = async (callback: () => Promise<any>) => {
     await callback();
@@ -73,7 +71,7 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
                   HouseNumber: values.house,
                   HouseCorpus: values.corpus,
                   Apartment: values.apartment,
-                }))
+                })),
               )
             }
             customTemplate={[
@@ -88,7 +86,7 @@ export const IndividualDevicesAddressSearch: FC<IndividualDevicesAddressSearchPr
               checked={values.IsAlsoClosing}
               onChange={(event) =>
                 submitWrap(() =>
-                  setFieldValue('IsAlsoClosing', event.target.checked)
+                  setFieldValue('IsAlsoClosing', event.target.checked),
                 )
               }
             >
