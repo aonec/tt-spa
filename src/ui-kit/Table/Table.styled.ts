@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const Header = styled.div`
   background: #f3f5f6;
   padding: 0 16px;
@@ -13,9 +11,10 @@ export const Header = styled.div`
   font-weight: 400;
   font-size: 12px;
   align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 `;
 
-export const RowWrapper = styled.div`
+export const Row = styled.div`
   padding: 0 16px;
   height: 50px;
   display: grid;
@@ -26,17 +25,4 @@ export const RowWrapper = styled.div`
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
-`;
-
-export const ResourceWrapper = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-
-export const ApartmentNumber = styled.div`
-  font-weight: 700;
-  font-size: 14px;
-  color: #272f5a;
-  margin-bottom: 4px;
 `;
