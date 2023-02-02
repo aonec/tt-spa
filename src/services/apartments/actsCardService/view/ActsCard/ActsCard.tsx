@@ -13,7 +13,6 @@ export const ActsCard: FC<ActsCardProps> = ({
   actTypes,
   handleSaveFile,
   apartmentid,
-  housingStockId,
 }) => {
   const cards = useMemo(
     () =>

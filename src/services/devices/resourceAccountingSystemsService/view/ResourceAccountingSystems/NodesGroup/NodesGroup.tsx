@@ -78,6 +78,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
               node={node}
               segmentName={segmentName}
               openDevicesListModal={openDevicesListModal}
+              key={node.id}
             />
           ))}
         </div>

@@ -716,7 +716,7 @@ export interface CalculatorResponse {
 
   /** @format int32 */
   numberOfTasks: number | null;
-  comment: string | null;
+  comment: CalculatorCommentResponse | null;
 }
 
 export interface CalculatorResponseSuccessApiResponse {

@@ -10,7 +10,6 @@ const { ActsCardGate } = gates;
 
 export const ActsCardContainer: FC<ActsCardContainerProps> = ({
   apartmentId,
-  housingStockId,
 }) => {
   const acts = useStore(outputs.$acts);
   const actTypes = useStore(outputs.$actTypes);
@@ -26,7 +25,6 @@ export const ActsCardContainer: FC<ActsCardContainerProps> = ({
         actTypes={actTypes || []}
         handleSaveFile={handleSaveFile}
         apartmentid={apartmentId}
-        housingStockId={housingStockId}
       />
     </>
   );
