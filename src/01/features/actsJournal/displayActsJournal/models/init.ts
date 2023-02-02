@@ -1,8 +1,6 @@
 import {
   $actJournalPageNumber,
   $apartmentActsPaged,
-  $selectedActType,
-  $selectedResourceType,
   ActJournalGate,
   clearCreationActForms,
   clearFilters,
@@ -15,10 +13,7 @@ import {
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
 import { combine, forward, guard, sample } from 'effector';
-import {
-  fetchApartmentActsFx,
-  searchForm,
-} from '.';
+import { fetchApartmentActsFx, searchForm } from '.';
 import { addressSearchForm } from '01/features/addressIdSearch/models';
 import moment from 'moment';
 import { $apartmentSearchId } from '01/features/addressIdSearch/models';
@@ -42,7 +37,7 @@ sample({
   source: combine(
     searchForm.$values,
     ActJournalGate.state,
-    (formValues, filterSortState) => ({ formValues, filterSortState })
+    (formValues, filterSortState) => ({ formValues, filterSortState }),
   ),
   clock: [
     searchForm.formValidated,
@@ -73,7 +68,7 @@ sample({
 
 forward({
   from: fetchExistingCities.doneData.map(
-    (cities) => (cities && cities[cities.length - 1]) || ''
+    (cities) => (cities && cities[cities.length - 1]) || '',
   ),
   to: searchForm.fields.city.set,
 });

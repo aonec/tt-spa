@@ -1,6 +1,4 @@
 
-import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 // axios.defaults.baseURL = "https://transparent-staging.herokuapp.com/api"
@@ -37,14 +35,3 @@ function refresh(config) {
     .post('Auth/refreshToken', getTokenData())
     .then(() => axios(config));
 }
-
-export const useFetch = (config) => {
-  const [data, setData] = React.useState({ loading: true });
-  const { replace } = useHistory();
-
-  useEffect(() => {
-    axios(config);
-  }, [config]);
-
-  return data;
-};

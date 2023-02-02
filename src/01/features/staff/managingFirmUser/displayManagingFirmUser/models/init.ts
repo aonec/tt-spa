@@ -1,5 +1,5 @@
 import { getManagingFirmUser } from './../../../../../_api/managingFirmUser';
-import { guard, sample, combine } from 'effector';
+import { sample } from 'effector';
 import { fetchManagingFirmUserFx, ManagingFirmUserGate } from './index';
 import { $managingFirmUser } from '.';
 

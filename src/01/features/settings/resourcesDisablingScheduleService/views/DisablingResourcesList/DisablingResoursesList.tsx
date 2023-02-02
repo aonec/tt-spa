@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Divider, Pagination, Skeleton, Space } from 'antd';
+import { Divider, Pagination, Skeleton } from 'antd';
 import {
   GroupWrapper,
   PaginationWrapper,
@@ -15,7 +15,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
   openModal,
   handleOpenCompleteDisconnectionModal,
   handleOpenDeleteDisconnectionModal,
-  handleOpenEditDisconnectionModal
+  handleOpenEditDisconnectionModal,
 }) => {
   const items = resources?.items || [];
 
@@ -38,7 +38,9 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
                 handleOpenDeleteDisconnectionModal={
                   handleOpenDeleteDisconnectionModal
                 }
-                handleOpenEditDisconnectionModal={handleOpenEditDisconnectionModal}
+                handleOpenEditDisconnectionModal={
+                  handleOpenEditDisconnectionModal
+                }
               />
             );
           })}

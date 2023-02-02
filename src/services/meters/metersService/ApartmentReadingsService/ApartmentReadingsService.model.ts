@@ -1,6 +1,6 @@
 import { createDomain, forward, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
+import { ApartmentResponse } from 'myApi';
 import { SearchMode } from './view/ApartmentsReadings/ApartmentsReadings.types';
 import {
   GetApartmentsRequestPayload,
@@ -21,7 +21,8 @@ const setSearchMode = domain.createEvent<SearchMode>();
 
 const handleSearchApartment = domain.createEvent<GetApartmentsRequestPayload>();
 
-const handleUpdateApartment = domain.createEvent<UpdateApartmentRequestPayload>();
+const handleUpdateApartment =
+  domain.createEvent<UpdateApartmentRequestPayload>();
 
 const setSelectedHomeownerName = domain.createEvent<string>();
 
@@ -41,7 +42,7 @@ const $apartment = domain
   .createStore<ApartmentResponse | null>(null)
   .on(
     [fetchApartmentFx.doneData, updateApartmentFx.doneData],
-    (_, apartment) => apartment
+    (_, apartment) => apartment,
   )
   .reset(ApartmentGate.close);
 
@@ -93,6 +94,11 @@ export const apartmentReadingsService = {
     handleApartmentLoaded,
     setSelectedHomeownerName,
   },
-  outputs: { $searchMode, $apartment, $isLoadingApartment, $selectedHomeownerName },
+  outputs: {
+    $searchMode,
+    $apartment,
+    $isLoadingApartment,
+    $selectedHomeownerName,
+  },
   gates: { ApartmentGate },
 };

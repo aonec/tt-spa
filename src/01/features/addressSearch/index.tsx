@@ -5,7 +5,7 @@ import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { combine } from 'effector';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -34,8 +34,6 @@ interface Props {
 export const AddressSearch: FC<Props> = (props) => {
   const { onExit, firstInputRef } = props;
 
-  const [counter, setCounter] = useState(0);
-
   const { fields } = useForm(addressSearchForm);
   const fieldsArray = [fields.street, fields.house, fields.apartment];
 
@@ -62,17 +60,17 @@ export const AddressSearch: FC<Props> = (props) => {
 
   const { match: streetMatch, bestMatch: bestStreetMatch } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   const { bestMatch: bestHousingStockMatch } = useAutocomplete(
     fields.house.value,
-    existingHousngStockNumbers?.map((elem) => elem.number)
+    existingHousngStockNumbers?.map((elem) => elem.number),
   );
 
   const { bestMatch: bestApartmentNumberMatch } = useAutocomplete(
     fields.apartment.value,
-    existingApartmentNumbers?.map((elem) => elem.number)
+    existingApartmentNumbers?.map((elem) => elem.number),
   );
 
   const loading = useStore(
@@ -80,8 +78,8 @@ export const AddressSearch: FC<Props> = (props) => {
       fetchExistingHousingStockNumbers.pending,
       fetchExistingApartmentNumbersFx.pending,
       fetchExistingStreets.pending,
-      (...pendings) => pendings.some(Boolean)
-    )
+      (...pendings) => pendings.some(Boolean),
+    ),
   );
 
   const isActive = (ref: any) => ref.current === document.activeElement;
@@ -114,7 +112,7 @@ export const AddressSearch: FC<Props> = (props) => {
     <SearchWrap
       temp="12px 0.8fr 0.35fr 0.3fr"
       focused={[firstInputRef, ...refs].some(
-        (elem) => elem.current === document.activeElement
+        (elem) => elem.current === document.activeElement,
       )}
     >
       {loading ? <Loader show size={14} /> : <SearchIcon />}
@@ -133,7 +131,6 @@ export const AddressSearch: FC<Props> = (props) => {
             fromEnter(() => {
               fields.street.onChange(streetMatch);
               loadExistingHousingStockNumbers();
-              setCounter((prev) => prev + 1);
             })(e);
           }}
           placeholder="Улица"
@@ -157,7 +154,6 @@ export const AddressSearch: FC<Props> = (props) => {
             fromEnter(() => {
               fields.house.onChange(bestHousingStockMatch);
               loadExistingApartmentNumbers();
-              setCounter((prev) => prev + 1);
             })(e);
           }}
           placeholder="Дом"
@@ -183,7 +179,6 @@ export const AddressSearch: FC<Props> = (props) => {
               fields.apartment.onChange(bestApartmentNumberMatch);
             })(e);
             fromEnter(() => onExit && onExit())(e);
-            setCounter((prev) => prev + 1);
           }}
           placeholder="Кв."
           ref={apartmentNumberRef}

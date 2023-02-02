@@ -1,5 +1,4 @@
 import { getResourceColor } from '01/utils/getResourceColor';
-import _ from 'lodash';
 import { EResourceType } from 'myApi';
 import { getMinAndMax } from 'utils/Graph.utils';
 import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
@@ -8,7 +7,7 @@ import { ResourceConsumptionGraphColors } from './ResourceConsumptionGraph.const
 const minDelta = 0.01;
 
 export function getMinAndMaxForResourceConsumptionGraph<T>(
-  dataArr: (T & { value: number }[])[]
+  dataArr: (T & { value: number }[])[],
 ) {
   return getMinAndMax(dataArr.flat(), minDelta);
 }

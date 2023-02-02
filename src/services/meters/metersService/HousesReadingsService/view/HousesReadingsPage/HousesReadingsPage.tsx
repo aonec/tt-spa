@@ -19,7 +19,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
   inspector,
   individualDevicesList,
   loadNextPageOfIndividualDevicesList,
-  isLoadingIndividualDevices: isLoadingIndividualDevices,
+  isLoadingIndividualDevices,
   managementFirmConsumptionRates,
   openReadingsHistoryModal,
   isAllDevicesLoaded,

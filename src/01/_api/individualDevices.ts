@@ -1,7 +1,6 @@
 import axios from '01/axios';
 import { CheckIndividualDevicePayload } from '01/features/individualDevices/switchIndividualDevice/switchIndividualDevice.types';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
-import _ from 'lodash';
 import {
   CreateIndividualDeviceRequest,
   SwitchIndividualDeviceRequest,

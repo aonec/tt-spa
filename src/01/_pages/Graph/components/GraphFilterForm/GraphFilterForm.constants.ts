@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 export enum RangeOptions {
   LastDay = 'Последние сутки',
   LastWeek = 'Последние 7 дней',

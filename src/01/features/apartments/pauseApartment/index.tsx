@@ -7,7 +7,7 @@ import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EApartmentStatus } from 'myApi';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
@@ -80,7 +80,7 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
       fromDate: fields.fromDate.value,
       toDate: fields.toDate.value,
     }),
-    [EApartmentStatus.Pause, fields.fromDate.value, fields.toDate.value]
+    [EApartmentStatus.Pause, fields.fromDate.value, fields.toDate.value],
   );
 
   return (
