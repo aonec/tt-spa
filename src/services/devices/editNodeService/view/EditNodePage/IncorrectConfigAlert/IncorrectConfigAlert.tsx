@@ -27,7 +27,7 @@ export const IncorrectConfigAlert: FC<IncorrectConfigAlertProps> = ({
           <>
             <WarningsList>
               {validationResultArray.map((warning) => (
-                <li>{warning.value}</li>
+                <li key={warning.value}>{warning.value}</li>
               ))}
             </WarningsList>
             <TextWrapper onClick={() => setIsOpen(false)}>Скрыть</TextWrapper>
