@@ -1,16 +1,5 @@
 import { EResourceType } from 'myApi';
 
-export type ConsumptionDataForTwoMonth = {
-  [ResourceConsumptionGraphDataType.currentMonthData]: MonthConsumptionData;
-  [ResourceConsumptionGraphDataType.prevMonthData]: MonthConsumptionData;
-};
-
-export type MonthConsumptionData = {
-  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
-  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
-};
-
 export type ResourceConsumptionWithNull = {
   value?: number | null;
   key?: string;
@@ -22,11 +11,22 @@ export enum ResourceConsumptionGraphDataType {
   additionalAddress = 'additionalAddress',
 }
 
+export type ConsumptionDataForTwoMonth = {
+  [ResourceConsumptionGraphDataType.currentMonthData]: MonthConsumptionData;
+  [ResourceConsumptionGraphDataType.prevMonthData]: MonthConsumptionData;
+};
+
 export enum ResourceConsumptionGraphType {
   Housing = 'housing',
   Normative = 'normative',
   Subscriber = 'subscriber',
 }
+
+export type MonthConsumptionData = {
+  [ResourceConsumptionGraphType.Housing]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Normative]: ResourceConsumptionWithNull[];
+  [ResourceConsumptionGraphType.Subscriber]: ResourceConsumptionWithNull[];
+};
 
 export type ConsumptionDataFilter = GetConsumptionDataFilter & {
   ResourceType: EResourceType;

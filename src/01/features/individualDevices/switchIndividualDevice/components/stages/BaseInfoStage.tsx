@@ -10,7 +10,7 @@ import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -58,7 +58,7 @@ export const BaseInfoStage = () => {
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
   const type = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+    SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
   const isCheck = type === 'check';
   const isReopen = type === 'reopen';
@@ -86,7 +86,7 @@ export const BaseInfoStage = () => {
         }
         return next(index);
       }),
-    [next]
+    [next],
   );
 
   const getDataAttr = (condition: boolean) => {
@@ -118,7 +118,7 @@ export const BaseInfoStage = () => {
   }, [isCheck, fields.oldDeviceReadings.value]);
 
   const eventFetchSerialNumberForCheck = useEvent(
-    handleFetchSerialNumberForCheck
+    handleFetchSerialNumberForCheck,
   );
   const serialNumberForChecking = useStore($serialNumberForChecking);
 
@@ -139,7 +139,7 @@ export const BaseInfoStage = () => {
             const value = moment(incomingValue);
 
             fields.lastCheckingDate.onChange(
-              value.utcOffset(0, true).toISOString()
+              value.utcOffset(0, true).toISOString(),
             );
 
             const nextCheckingDate = moment(value);
@@ -153,7 +153,7 @@ export const BaseInfoStage = () => {
             nextCheckingDate.set('year', nextYear);
 
             fields.futureCheckingDate.onChange(
-              nextCheckingDate.utcOffset(0, true).toISOString()
+              nextCheckingDate.utcOffset(0, true).toISOString(),
             );
           }}
           value={fields.lastCheckingDate.value}
@@ -171,7 +171,7 @@ export const BaseInfoStage = () => {
           disabled={isReopen}
           onChange={(date) =>
             fields.futureCheckingDate.onChange(
-              moment(date).utcOffset(0, true).toISOString()
+              moment(date).utcOffset(0, true).toISOString(),
             )
           }
           value={fields.futureCheckingDate.value}

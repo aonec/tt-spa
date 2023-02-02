@@ -18,7 +18,7 @@ import {
   reportsSelectItems,
 } from './ReportsPage.constants';
 
-export const ReportsPage: FC<ReportsPageProps> = ({}) => {
+export const ReportsPage: FC<ReportsPageProps> = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
 
   const [scrollX, setScrollX] = useState<number>(0);

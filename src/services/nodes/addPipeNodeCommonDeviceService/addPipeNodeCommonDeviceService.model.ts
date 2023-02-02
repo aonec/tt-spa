@@ -1,11 +1,11 @@
 import { createDomain, forward, guard, sample } from 'effector';
-import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
 import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants';
 import { CreateCommonDevicePartitial } from './addPipeNodeCommonDeviceService.types';
 
 const domain = createDomain('addPipeNodeCommonDeviceService');
 
-const updateCommonDeviceRequestPayload = domain.createEvent<CreateCommonDevicePartitial>();
+const updateCommonDeviceRequestPayload =
+  domain.createEvent<CreateCommonDevicePartitial>();
 
 const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
@@ -18,7 +18,8 @@ const closeAddPipeModal = domain.createEvent();
 
 const handleFormComplete = domain.createEvent();
 
-const handleMeteringDeviceCreated = domain.createEvent<CreateCommonDevicePartitial>();
+const handleMeteringDeviceCreated =
+  domain.createEvent<CreateCommonDevicePartitial>();
 
 const $requestPayload = domain
   .createStore<CreateCommonDevicePartitial>({})

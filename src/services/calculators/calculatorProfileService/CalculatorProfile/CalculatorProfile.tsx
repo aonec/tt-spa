@@ -1,5 +1,4 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import _ from 'lodash';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
@@ -60,13 +59,13 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           return { devices, nodeNumber: number };
         })
         .flat(),
-    [nodes]
+    [nodes],
   );
 
-  const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
-    model,
-    serialNumber,
-  ]);
+  const headerTitle = useMemo(
+    () => `${model} (${serialNumber})`,
+    [model, serialNumber],
+  );
 
   const commonInfo = useMemo(
     () => (
@@ -99,7 +98,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         ]}
       />
     ),
-    [calculator]
+    [calculator],
   );
 
   const menuButtons = useMemo(
@@ -124,7 +123,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         },
       ],
     }),
-    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
+    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal],
   );
 
   const contentComponents: {
@@ -146,7 +145,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       ),
       [CalculatorProfileGrouptype.Documents]: <></>,
     }),
-    [calculator]
+    [calculator],
   );
 
   const component = contentComponents[currentGrouptype];

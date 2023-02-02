@@ -1,6 +1,5 @@
 import {
   EResourceType,
-  MeteringDeviceResponse,
   EIndividualDeviceRateType,
   SwitchIndividualDeviceReadingsCreateRequest,
   EClosingReason,
@@ -19,12 +18,11 @@ import { checkIndividualDevice } from '01/_api/individualDevices';
 import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { createGate } from 'effector-react';
-import moment from 'moment';
 import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
-  null
+  null,
 );
 export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 
@@ -151,7 +149,7 @@ export const SwitchIndividualDeviceGate = createGate<{
 }>();
 
 export const $typeOfIndividualDeviceForm = SwitchIndividualDeviceGate.state.map(
-  ({ type }) => type
+  ({ type }) => type,
 );
 
 guard({
@@ -178,17 +176,10 @@ guard({
 
       const readingsAfterCheck = newDeviceReadings.length
         ? newDeviceReadings.reduce((acc, readings) => {
-            const {
-              readingDate,
-              value1,
-              value2,
-              value3,
-              value4,
-              id,
-            } = readings;
+            const { value1, value2, value3, value4, id } = readings;
 
             const oldReadings = oldDeviceReadings.find(
-              (reading) => reading?.id === id
+              (reading) => reading?.id === id,
             );
 
             if (!oldReadings) {
@@ -222,7 +213,7 @@ guard({
         readingsAfterCheck,
         deviceId: device.id,
       };
-    }
+    },
   ),
   clock: confirmCreationNewDeviceButtonClicked,
   filter: Boolean,

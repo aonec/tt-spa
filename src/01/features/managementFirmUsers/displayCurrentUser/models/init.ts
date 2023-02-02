@@ -3,14 +3,14 @@ import {
   CurrentManagingFirmUserGate,
   fetchCurrentManagingFirmUser,
 } from './index';
-import { forward, guard } from 'effector';
+import { guard } from 'effector';
 import { getCurrentManagingFirmUser } from '01/_api/managingFirmUser';
 
 fetchCurrentManagingFirmUser.use(getCurrentManagingFirmUser);
 
 $currentManagingFirmUser.on(
   fetchCurrentManagingFirmUser.doneData,
-  (_, user) => user
+  (_, user) => user,
 );
 
 guard({

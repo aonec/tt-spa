@@ -18,7 +18,7 @@ export const ErrorPage = () => {
       >
         <span>Вернуться к работе</span>
       </Button>
-      <img className="error-page__image" src={require('./404.svg')} />
+      <img className="error-page__image" alt='' src={require('./404.svg')} />
     </div>
   );
 };
