@@ -1,13 +1,9 @@
 import { createDomain } from 'effector';
 import { groupBy } from 'lodash';
-import {
-  HousingStockShortResponse,
-  ResourceDisconnectingResponse,
-} from 'myApi';
-import { StreetWithHousingStocks } from './displayResourceDisconenctionAddressesServiceService.types';
+import { ResourceDisconnectingResponse } from 'myApi';
 
 const domain = createDomain(
-  'displayResourceDisconenctionAddressesServiceService'
+  'displayResourceDisconenctionAddressesServiceService',
 );
 
 const openModal = domain.createEvent<ResourceDisconnectingResponse>();
@@ -26,7 +22,7 @@ const $addresses = $disconnection
     const housingStocks = disconnecion.housingStocks || [];
     const preparedHousingStocks = groupBy(
       housingStocks,
-      'address.mainAddress.street'
+      'address.mainAddress.street',
     );
     return Object.entries(preparedHousingStocks);
   })

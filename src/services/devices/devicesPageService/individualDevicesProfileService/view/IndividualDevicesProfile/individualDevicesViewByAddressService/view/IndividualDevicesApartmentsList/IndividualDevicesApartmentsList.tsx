@@ -1,11 +1,13 @@
-import { Empty, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { AddressHeader } from './AddressHeader';
 import { IndividualDevicesApartmentItem } from './IndividualDevicesApartmentItem';
 import { ListWrapper, Wrapper } from './IndividualDevicesApartmentsList.styled';
 import { IndividualDevicesApartmentsListProps } from './IndividualDevicesApartmentsList.types';
 
-export const IndividualDevicesApartmentsList: FC<IndividualDevicesApartmentsListProps> = ({
+export const IndividualDevicesApartmentsList: FC<
+  IndividualDevicesApartmentsListProps
+> = ({
   housingsByFilter,
   isLoading,
   individualDevicesApartmentsList,

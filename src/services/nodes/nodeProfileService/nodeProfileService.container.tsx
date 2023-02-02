@@ -2,6 +2,7 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ChangeNodeStatusContainer } from '../changeNodeStatusService';
+import { ChangeNodeTypeContainer } from '../changeNodeTypeService';
 import { nodeProfileService } from './nodeProfileService.model';
 import { NodeProfilePage } from './view/NodeProfilePage';
 import { PipeNodeProfileSection } from './view/NodeProfilePage/NodeProfilePage.types';
@@ -21,6 +22,7 @@ export const NodeProfileContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
 
   const openChangeNodeStatusModal = useEvent(inputs.openChangeNodeStatusModal);
+  const openChangeNodeTypeModal = useEvent(inputs.openChangeNodeTypeModal);
 
   const handleChangeTab = (section: PipeNodeProfileSection) =>
     history.push(`/nodes/${nodeId}/${section}`);
@@ -31,6 +33,7 @@ export const NodeProfileContainer = () => {
     <>
       <PipeNodeGate pipeNodeId={Number(nodeId)} />
       <ChangeNodeStatusContainer />
+      <ChangeNodeTypeContainer />
       <NodeProfilePage
         isLoading={isLoading}
         pipeNode={pipeNode}
@@ -38,6 +41,7 @@ export const NodeProfileContainer = () => {
         handleChangeTab={handleChangeTab}
         handleEditNode={handleEditNode}
         openChangeNodeStatusModal={openChangeNodeStatusModal}
+        openChangeNodeTypeModal={openChangeNodeTypeModal}
       />
     </>
   );

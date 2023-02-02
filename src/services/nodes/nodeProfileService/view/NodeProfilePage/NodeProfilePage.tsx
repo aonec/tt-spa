@@ -1,10 +1,21 @@
 import React, { FC, ReactNode, useMemo } from 'react';
-import { Empty } from 'antd';
+import { stringifyUrl } from 'query-string';
+import { Empty, Tooltip } from 'antd';
+
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { Tabs } from 'ui-kit/Tabs';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { PageHeader } from '01/shared/ui/PageHeader';
+import { NodeConnection } from '01/tt-components/NodeConnection';
+import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
+import { ENodeRegistrationType } from 'myApi';
+import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
+import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
+
 import {
   Title,
   ContentWrapper,
@@ -13,23 +24,16 @@ import {
   HeaderWrapper,
   HeaderInfoStringWrapper,
   AdditionalAddress,
+  IncorrectConfigurationIconSC,
+  NodeNumberWrapper,
 } from './NodeProfilePage.styled';
 import {
   NodeProfilePageProps,
   PipeNodeProfileSection,
 } from './NodeProfilePage.types';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
-import { Tabs } from 'ui-kit/Tabs';
-import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { CommonInfoTab } from './CommonInfoTab';
-import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
-import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
-import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
-import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
-import { NodeConnection } from '01/tt-components/NodeConnection';
-import { ENodeRegistrationType } from 'myApi';
-import qs from 'query-string';
 
 export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   isLoading,
@@ -38,6 +42,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   handleChangeTab,
   handleEditNode,
   openChangeNodeStatusModal,
+  openChangeNodeTypeModal,
 }) => {
   const address = pipeNode?.address?.address;
 
@@ -64,7 +69,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
       [PipeNodeProfileSection.Connection]: <NodeConnection node={pipeNode} />,
       [PipeNodeProfileSection.Related]: (
         <HousingMeteringDevicesList
-          resource={pipeNode.resource}
+          configuration={pipeNode.configuration}
           communicationPipes={pipeNode.communicationPipes || []}
         />
       ),
@@ -86,6 +91,10 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   const isNodeCommercial =
     pipeNode?.registrationType === ENodeRegistrationType.Commercial;
 
+  const isIncorrectConfig =
+    pipeNode?.validationResult?.errors?.length !== 0 ||
+    pipeNode?.validationResult?.warnings?.length !== 0;
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -99,7 +108,14 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                     resource={pipeNode.resource}
                     style={{ transform: 'scale(1.2)' }}
                   />
-                  <div>Узел {pipeNode.number}</div>
+                  <NodeNumberWrapper>
+                    Узел {pipeNode.number}
+                    {isIncorrectConfig && (
+                      <Tooltip title="Проверьте конфигурацию узла">
+                        <IncorrectConfigurationIconSC />
+                      </Tooltip>
+                    )}
+                  </NodeNumberWrapper>
                 </Title>
               }
               contextMenu={{
@@ -112,6 +128,11 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                     title: 'Сменить статус узла',
                     onClick: () => openChangeNodeStatusModal(pipeNode),
                     hidden: !isNodeCommercial,
+                  },
+                  {
+                    title: 'Изменить тип узла',
+                    onClick: () => openChangeNodeTypeModal(pipeNode),
+                    color: 'danger',
                   },
                 ],
               }}
@@ -176,7 +197,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               />
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
-                link={qs.stringifyUrl({
+                link={stringifyUrl({
                   url: '/tasks/list/Observing',
                   query: { pipeNodeId: pipeNode.id },
                 })}

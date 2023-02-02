@@ -7,7 +7,10 @@ import {
   HeatIcon,
   HotWaterSupplyIcon,
 } from 'ui-kit/icons';
-import { Icons, ResourceIconLookupProps } from './ResourceIconLookup.types';
+import {
+  Icons,
+  ResourceIconLookupProps,
+} from './ResourceIconLookup.types';
 
 export const resourceIconLookup: Icons = {
   [EResourceType.ColdWaterSupply]: ColdWaterSupplyIcon,

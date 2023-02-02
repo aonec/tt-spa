@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { OrganizationUserResponse } from 'myApi';
 import { getUserData } from './employeeProfileService.api';

@@ -25,38 +25,32 @@ export const AddCommunicationPipeModal: FC<AddCommunicationPipeModalProps> = ({
 }) => {
   const handleCreatePipe = useEvent(inputs.handleCreatePipe);
 
-  const {
-    values,
-    handleChange,
-    setFieldValue,
-    errors,
-    handleSubmit,
-    resetForm,
-  } = useFormik({
-    initialValues: {
-      number: '',
-      diameter: '',
-      magistral: null as null | EMagistralType,
-    },
-    onSubmit: (values, { resetForm }) => {
-      if (!values.magistral) return;
+  const { values, handleChange, setFieldValue, errors, handleSubmit } =
+    useFormik({
+      initialValues: {
+        number: '',
+        diameter: '',
+        magistral: null as null | EMagistralType,
+      },
+      onSubmit: (values, { resetForm }) => {
+        if (!values.magistral) return;
 
-      const id = Date.now();
+        const id = Date.now();
 
-      handleAddCommunicationPipe({
-        id,
-        number: Number(values.number),
-        diameter: Number(values.diameter),
-        magistral: values.magistral,
-      });
+        handleAddCommunicationPipe({
+          id,
+          number: Number(values.number),
+          diameter: Number(values.diameter),
+          magistral: values.magistral,
+        });
 
-      closeAddPipeModal();
-      resetForm();
-      handleCreatePipe(id);
-    },
-    validateOnChange: false,
-    validationSchema,
-  });
+        closeAddPipeModal();
+        resetForm();
+        handleCreatePipe(id);
+      },
+      validateOnChange: false,
+      validationSchema,
+    });
 
   return (
     <FormModal

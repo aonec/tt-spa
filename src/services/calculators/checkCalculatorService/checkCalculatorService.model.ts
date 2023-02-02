@@ -1,6 +1,5 @@
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
-import moment from 'moment';
 import { CalculatorResponse, CheckDeviceRequest } from 'myApi';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './checkCalculatorService.api';
@@ -20,7 +19,7 @@ const $isModalOpen = $calculatorInfo.map(Boolean);
 
 const checkCalculator = domain.createEvent<CheckCalculatorFormik>();
 const checkCalculatorFx = domain.createEffect<CheckDeviceRequest, void>(
-  fetchCloseCalculator
+  fetchCloseCalculator,
 );
 
 sample({

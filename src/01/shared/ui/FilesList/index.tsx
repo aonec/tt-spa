@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FileIcon } from './file.svg';
 import { ReactComponent as UserIcon } from './user.svg';
-import moment from 'moment';
 import { Flex } from '../Layout/Flex';
 import { MenuButtonTT } from '01/tt-components';
 import { FileData } from '01/hooks/useFilesUpload';
@@ -31,9 +30,9 @@ export const FilesList: React.FC<Props> = ({
           id: file.id,
           fileResponse: file,
           status: 'done',
-        })
+        }),
       ) || [],
-    [initialFiles]
+    [initialFiles],
   );
 
   const filesToRender = [...(files || []), ...initialFilesData];
@@ -134,8 +133,7 @@ export const FilesList: React.FC<Props> = ({
   return <FilesWrap>{filesToRender.map(renderFile)}</FilesWrap>;
 };
 
-const getFormattedDate = (date: string) =>
-  getTimeStringByUTC(date);
+const getFormattedDate = (date: string) => getTimeStringByUTC(date);
 
 const ControlPanelWrap = styled.div`
   width: 33px;

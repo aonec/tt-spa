@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 export const translateMountPlace = (mountPlace) => {
   switch (mountPlace) {

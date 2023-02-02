@@ -1,4 +1,3 @@
-import { SelectValue } from 'antd/lib/select';
 import { IndividualDeviceMountPlaceForFilterResponse } from 'myApi';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';

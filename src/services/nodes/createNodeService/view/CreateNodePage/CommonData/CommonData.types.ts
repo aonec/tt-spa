@@ -1,8 +1,6 @@
 import {
-  CreatePipeNodeRequest,
   ENodeCommercialAccountStatus,
-  ENodeRegistrationType,
-  EResourceType,
+  EPipeNodeConfig,
   NodeServiceZoneListResponse,
 } from 'myApi';
 import { FC } from 'react';
@@ -19,7 +17,10 @@ export type CommonDataProps = {
   requestPayload: CreateNodeFormPayload;
 };
 
-export type NodeResourcesList = { resource: EResourceType; text: string }[];
+export type NodeResourcesList = {
+  configuration: EPipeNodeConfig;
+  text: string;
+}[];
 
 export type NodeStatusesList = {
   nodeStatus: ENodeCommercialAccountStatus;

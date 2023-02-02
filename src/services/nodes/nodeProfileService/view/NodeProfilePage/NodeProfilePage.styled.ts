@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IncorrectConfigurationIcon } from 'ui-kit/icons';
 
 export const TabsWrapper = styled.div`
   margin-top: 16px;
@@ -31,4 +32,14 @@ export const HeaderWrapper = styled.div`
 
 export const HeaderInfoStringWrapper = styled.div`
   margin-top: -5px;
+`;
+
+export const IncorrectConfigurationIconSC = styled(IncorrectConfigurationIcon)`
+  transform: scale(1.6);
+  margin-left: 12px;
+`;
+
+export const NodeNumberWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;

@@ -4,8 +4,8 @@ import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { ApartmentActResponse, EActResourceType } from 'myApi';
-import React, { ReactElement } from 'react';
+import { ApartmentActResponse } from 'myApi';
+import React from 'react';
 import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';
 import { $actTypes } from '../../displayActTypes/models';
@@ -50,7 +50,7 @@ export const ApartmentActsList = () => {
     const resourceIcon = <ResourceIconLookup resource={act.actResourceType} />;
 
     const resourceName = actResources?.find(
-      (elem) => elem.key === act.actResourceType
+      (elem) => elem.key === act.actResourceType,
     )?.value;
 
     const actAddress = getApartmentFromFullAddress(act.apartment, false);

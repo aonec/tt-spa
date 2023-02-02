@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { EResourceType, SwitchHousingDeviceReadingsCreateRequest } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
@@ -57,7 +57,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           stateVerificationYear: Number(values.stateVerificationYear),
           nextStateVerificationYear: Number(values.nextStateVerificationYear),
           stateVerificationIntervalYears: Number(
-            values.stateVerificationIntervalYears
+            values.stateVerificationIntervalYears,
           ),
           oldDeviceClosingReason: values.oldDeviceClosingReason!,
           sealNumber: values.sealNumber,
@@ -66,21 +66,21 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
           newDeviceReadings: values.newDeviceReadings,
         });
       },
-    }
+    },
   );
 
   const handleNewReadingsChange = useCallback(
     (newDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
       setFieldValue('newDeviceReadings', newDeviceReadings);
     },
-    [setFieldValue]
+    [setFieldValue],
   );
 
   const handleOldReadingsChange = useCallback(
     (oldDeviceReadings: SwitchHousingDeviceReadingsCreateRequest[]) => {
       setFieldValue('oldDeviceReadings', oldDeviceReadings);
     },
-    [setFieldValue]
+    [setFieldValue],
   );
 
   return (

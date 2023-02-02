@@ -1,4 +1,4 @@
-import { EReportFormat, EReportType, HousingStockResponse } from 'myApi';
+import { EReportType, HousingStockResponse } from 'myApi';
 
 export type Props = {
   housingStock: HousingStockResponse;

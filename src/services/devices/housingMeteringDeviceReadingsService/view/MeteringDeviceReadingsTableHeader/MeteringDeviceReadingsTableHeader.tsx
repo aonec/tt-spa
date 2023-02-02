@@ -1,10 +1,10 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { Wrapper } from './MeteringDeviceReadingsTableHeader.styled';
 import { MeteringDeviceReadingsTableHeaderProps } from './MeteringDeviceReadingsTableHeader.types';
 
-export const MeteringDeviceReadingsTableHeader: FC<MeteringDeviceReadingsTableHeaderProps> = ({
-  isColdWater,
-}) => {
+export const MeteringDeviceReadingsTableHeader: FC<
+  MeteringDeviceReadingsTableHeaderProps
+> = ({ isColdWater }) => {
   const volumeColumns = () => (
     <>
       <div>V1, м³</div>
