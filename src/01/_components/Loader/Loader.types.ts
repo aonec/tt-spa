@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
 export type LoaderProps = React.SVGProps<SVGSVGElement> & {
-  children: ReactNode;
+  children?: ReactNode;
   show: boolean;
 };
