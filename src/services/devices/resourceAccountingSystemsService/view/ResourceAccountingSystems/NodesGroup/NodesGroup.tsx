@@ -74,10 +74,10 @@ export const NodesGroup: FC<NodesGroupProps> = ({
         <div>
           {nodes.map((node) => (
             <NodeItem
+              key={node.id}
               node={node}
               segmentName={segmentName}
               openDevicesListModal={openDevicesListModal}
-              key={node.id}
             />
           ))}
         </div>

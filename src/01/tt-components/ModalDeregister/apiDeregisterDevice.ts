@@ -6,7 +6,7 @@ export async function deregisterDevice(form: any) {
     const res = await axios.post('MeteringDevices/close', form);
     alert('Вычислитель успешно снят с учета !');
     return res;
-  } catch (error) {
+  } catch (error: any) {
     alert('Что-то пошло не так: попробуйте еще раз');
     throw new Error(error);
   }

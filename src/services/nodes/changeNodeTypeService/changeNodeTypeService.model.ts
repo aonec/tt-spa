@@ -20,10 +20,9 @@ const $isOpen = $node.map((node) => Boolean(node));
 const clearPayload = domain.createEvent();
 
 const setNodeTypePayload = domain.createEvent<NodeSetRegistrationTypeRequest>();
-const $changeNodeTypePayload = $node
-  .map<Partial<ChangeNodeTypePayload>>((node) => ({
-    nodeId: node?.id,
-  }))
+const $changeNodeTypePayload = domain
+  .createStore<Partial<ChangeNodeTypePayload>>({})
+  .on($node, (_, node) => ({ nodeId: node?.id }))
   .on(setNodeTypePayload, (oldData, data) => ({
     ...data,
     nodeId: oldData.nodeId,

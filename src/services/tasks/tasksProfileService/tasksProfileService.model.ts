@@ -29,7 +29,7 @@ const domain = createDomain('tasksProfileService');
 const clearAddress = domain.createEvent();
 
 const getApartmentFx = domain.createEffect<
-  { apartmentId: string },
+  FiltersGatePayload,
   ApartmentResponse
 >(fetchApartment);
 const $apartment = domain
@@ -38,7 +38,7 @@ const $apartment = domain
   .reset(clearAddress);
 
 const getHousingStockFx = domain.createEffect<
-  { housingStockId: string },
+  FiltersGatePayload,
   HousingStockResponse
 >(fetchHousingStock);
 const $housingStock = domain
@@ -88,7 +88,7 @@ const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   const isSpectator =
     rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
     rolesKeys.includes(
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     );
 
   return isSpectator;
@@ -98,7 +98,7 @@ const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
   const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator
+    ESecuredIdentityRoleName.Administrator,
   );
 
   return isAdministrator;
@@ -166,8 +166,8 @@ split({
     deviceId: (ids) => Boolean(ids.deviceId),
   },
   cases: {
-    apartmentId: getApartmentFx,
     housingStock: getHousingStockFx,
+    apartmentId: getApartmentFx,
     pipeNodeId: setPipeNodeId,
     deviceId: setDeviceId,
   },

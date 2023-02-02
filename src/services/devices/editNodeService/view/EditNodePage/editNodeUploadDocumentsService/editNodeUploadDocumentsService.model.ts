@@ -14,12 +14,13 @@ const $isOpenModal = domain
   .reset(closeModal);
 
 const updateDocumentsFx = domain.createEffect<UpdateDocumentPayload, void>(
-  fetchUpdateDocuments
+  fetchUpdateDocuments,
 );
 const updateDocuments = domain.createEvent<DocumentLiteResponse[]>();
 
-const $documents = editNodeService.outputs.$node
-  .map((node) => node?.documents || [])
+const $documents = domain
+  .createStore<DocumentLiteResponse[]>([])
+  .on(editNodeService.outputs.$node, (_, node) => node?.documents || [])
   .on(updateDocuments, (_, documents) => documents);
 
 sample({
