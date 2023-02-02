@@ -7,11 +7,13 @@ import { IndividualDevicesReport } from './IndividualDevicesReport';
 export const ReportViewTable: FC<ReportViewTableProps> = ({
   individualDevicesReportData,
   reportType,
+  city,
 }) => {
   const reportTableComponents: { [key in ReportType]: ReactNode } = {
     [ReportType.IndividualDevices]: (
       <IndividualDevicesReport
         individualDevicesReportData={individualDevicesReportData}
+        city={city}
       />
     ),
     [ReportType.HousingDevices]: null,

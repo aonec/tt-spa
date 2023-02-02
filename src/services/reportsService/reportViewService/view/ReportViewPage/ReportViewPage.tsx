@@ -98,6 +98,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
         <ReportViewTable
           reportType={reportType}
           individualDevicesReportData={individualDevicesReportData}
+          city={filtrationValues.city}
         />
       </WithLoader>
     </Wrapper>

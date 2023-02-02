@@ -4,4 +4,5 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 export type ReportViewTableProps = {
   reportType: ReportType;
   individualDevicesReportData: IndividualDevicesConstructedReportResponse[];
+  city: string | null;
 };
