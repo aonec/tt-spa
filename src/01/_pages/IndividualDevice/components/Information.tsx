@@ -23,7 +23,6 @@ export const Information = ({ device }: InformationInterface) => {
   return (
     <ListWrap>
       <Loader show={loading} size="32">
-        <>
           <ListItem
             title={'Тип ресурса'}
             description={translateResource(resource)}
@@ -45,7 +44,6 @@ export const Information = ({ device }: InformationInterface) => {
             description={hasMagneticSeal ? 'Есть' : 'Нет'}
           />
           {/*<ListItem title={'title'} description={'description'} />*/}
-        </>
       </Loader>
     </ListWrap>
   );

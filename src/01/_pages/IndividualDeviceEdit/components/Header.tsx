@@ -25,7 +25,6 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <>
         <GoBack />
         <HeaderWrap>
           <div>
@@ -50,7 +49,6 @@ export const Header = ({ device }: HeaderInterface) => {
             </div>
           </div>
         </HeaderWrap>
-      </>
     </Loader>
   );
 };
