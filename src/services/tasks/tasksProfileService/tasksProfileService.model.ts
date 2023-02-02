@@ -29,7 +29,7 @@ const domain = createDomain('tasksProfileService');
 const clearAddress = domain.createEvent();
 
 const getApartmentFx = domain.createEffect<
-  { apartmentId: string },
+  FiltersGatePayload,
   ApartmentResponse
 >(fetchApartment);
 const $apartment = domain
@@ -38,7 +38,7 @@ const $apartment = domain
   .reset(clearAddress);
 
 const getHousingStockFx = domain.createEffect<
-  { housingStockId: string },
+  FiltersGatePayload,
   HousingStockResponse
 >(fetchHousingStock);
 const $housingStock = domain
@@ -46,10 +46,8 @@ const $housingStock = domain
   .on(getHousingStockFx.doneData, (_, housingStock) => housingStock)
   .reset(clearAddress);
 
-const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
-const setHousingMeteringDeviceId = domain.createEvent<{
-  housingMeteringDeviceId: string;
-}>();
+const setPipeNodeId = domain.createEvent<FiltersGatePayload>();
+const setHousingMeteringDeviceId = domain.createEvent<FiltersGatePayload>();
 
 const $searchState = domain
   .createStore<GetTasksListRequestPayload>({})
@@ -88,7 +86,7 @@ const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   const isSpectator =
     rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
     rolesKeys.includes(
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     );
 
   return isSpectator;
@@ -98,7 +96,7 @@ const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
   const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator
+    ESecuredIdentityRoleName.Administrator,
   );
 
   return isAdministrator;
@@ -158,18 +156,19 @@ split({
       housingMeteringDeviceId,
     }) =>
       [apartmentId, housingStockId, pipeNodeId, housingMeteringDeviceId].some(
-        Boolean
+        Boolean,
       ),
   }),
   match: {
-    housingStock: (ids) => Boolean(ids.housingStockId),
-    apartmentId: (ids) => Boolean(ids.apartmentId),
-    pipeNodeId: (ids) => Boolean(ids.pipeNodeId),
-    housingMeteringDeviceId: (ids) => Boolean(ids.housingMeteringDeviceId),
+    housingStock: (ids: FiltersGatePayload) => Boolean(ids.housingStockId),
+    apartmentId: (ids: FiltersGatePayload) => Boolean(ids.apartmentId),
+    pipeNodeId: (ids: FiltersGatePayload) => Boolean(ids.pipeNodeId),
+    housingMeteringDeviceId: (ids: FiltersGatePayload) =>
+      Boolean(ids.housingMeteringDeviceId),
   },
   cases: {
-    apartmentId: getApartmentFx,
     housingStock: getHousingStockFx,
+    apartmentId: getApartmentFx,
     pipeNodeId: setPipeNodeId,
     housingMeteringDeviceId: setHousingMeteringDeviceId,
   },

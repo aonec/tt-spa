@@ -25,30 +25,32 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <GoBack />
-      <HeaderWrap>
-        <div>
-          <Title>
-            <Flex>
-              <div style={{ transform: 'translateY(-2px)' }}>
-                <StockIconTT
-                  icon={DeviceIcons[resource]?.icon}
-                  size="24"
-                  dark
-                />
-              </div>
-              <Space w={9} />
-              <div>{`${model} (${serialNumber}). Редактирование`}</div>
-            </Flex>
-          </Title>
-          <div style={{ display: 'flex' }}>
-            <Subtitle to={`/apartments/${apartmentId}`}>
-              {getApartmentFromFullAddress(address, true)}
-            </Subtitle>
-            <IsActive closingDate={closingDate} />
+      <>
+        <GoBack />
+        <HeaderWrap>
+          <div>
+            <Title>
+              <Flex>
+                <div style={{ transform: 'translateY(-2px)' }}>
+                  <StockIconTT
+                    icon={DeviceIcons[resource]?.icon}
+                    size="24"
+                    dark
+                  />
+                </div>
+                <Space w={9} />
+                <div>{`${model} (${serialNumber}). Редактирование`}</div>
+              </Flex>
+            </Title>
+            <div style={{ display: 'flex' }}>
+              <Subtitle to={`/apartments/${apartmentId}`}>
+                {getApartmentFromFullAddress(address, true)}
+              </Subtitle>
+              <IsActive closingDate={closingDate} />
+            </div>
           </div>
-        </div>
-      </HeaderWrap>
+        </HeaderWrap>
+      </>
     </Loader>
   );
 };
