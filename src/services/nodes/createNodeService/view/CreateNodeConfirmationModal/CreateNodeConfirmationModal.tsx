@@ -23,11 +23,9 @@ import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { NodeStatusTextDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
-import { nodeConfigurations } from '../CreateNodePage/CommonData/CommonData.constants';
 import { configNamesLookup } from 'utils/configNamesLookup';
 
 export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> = ({

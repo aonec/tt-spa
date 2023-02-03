@@ -18,7 +18,7 @@ import { IndividualDeviceGrouptype } from './IndividualDevice.types';
 const { TabPane } = TabsSC;
 
 export const IndividualDevice = () => {
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{deviceId:string}>();
   const [grouptype, setGrouptype] = useState<IndividualDeviceGrouptype>(
     IndividualDeviceGrouptype.info,
   );

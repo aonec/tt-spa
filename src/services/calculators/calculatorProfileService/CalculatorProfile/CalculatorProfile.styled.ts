@@ -47,3 +47,9 @@ export const CalculatorIconSC = styled(CalculatorIcon)`
   width: 24px;
   height: 16px;
 `;
+
+export const PanelsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;

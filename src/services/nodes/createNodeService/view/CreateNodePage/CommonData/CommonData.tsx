@@ -11,7 +11,6 @@ import { Footer } from '../CreateNodePage.styled';
 import {
   commercialNodeStatuses,
   nodeStatuses,
-  nodeConfigurations,
   validationSchema,
 } from './CommonData.constants';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
@@ -29,6 +28,7 @@ import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { getInitialDateFieldValue, getNodeStatus } from './CommonData.utils';
 import { ENodeRegistrationType } from 'myApi';
+import { configNamesLookup } from 'utils/configNamesLookup';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -107,7 +107,7 @@ export const CommonData: FC<CommonDataProps> = ({
             value={values.configuration || undefined}
             onChange={(value) => setFieldValue('configuration', value)}
           >
-            {nodeConfigurations.map(({ configuration, text }) => (
+            {Object.entries(configNamesLookup).map(([ configuration, text ]) => (
               <Select.Option key={configuration} value={configuration}>
                 <SelectOptionWithIconWrapper>
                   <div>{text}</div>

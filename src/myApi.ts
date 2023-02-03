@@ -716,7 +716,7 @@ export interface CalculatorResponse {
 
   /** @format int32 */
   numberOfTasks: number | null;
-  comment: string | null;
+  comment: CalculatorCommentResponse | null;
 }
 
 export interface CalculatorResponseSuccessApiResponse {
@@ -767,6 +767,13 @@ export interface CloseDeviceRequest {
   /** @format date-time */
   closingDate?: string | null;
   closingReason?: EClosingReason | null;
+}
+
+export interface CloseIndividualDeviceRequest {
+  /** @format date-time */
+  closingDate?: string | null;
+  closingReason?: EClosingReason | null;
+  documentsIds?: number[] | null;
 }
 
 export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
@@ -5394,8 +5401,6 @@ export interface SwitchIndividualDeviceReadingsCreateRequest {
 }
 
 export interface SwitchIndividualDeviceRequest {
-  /** @format int32 */
-  deviceId: number;
   model: string;
   serialNumber: string;
 
@@ -9643,12 +9648,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags IndividualDevices
      * @name IndividualDevicesCloseCreate
      * @summary IndividualDeviceClose
-     * @request POST:/api/IndividualDevices/close
+     * @request POST:/api/IndividualDevices/{deviceId}/close
      * @secure
      */
-    individualDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesCloseCreate: (deviceId: number, data: CloseIndividualDeviceRequest, params: RequestParams = {}) =>
       this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualDevices/close`,
+        path: `/api/IndividualDevices/${deviceId}/close`,
         method: "POST",
         body: data,
         secure: true,
@@ -9729,12 +9734,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags IndividualDevices
      * @name IndividualDevicesSwitchCreate
      * @summary IndividualDeviceCreate
-     * @request POST:/api/IndividualDevices/switch
+     * @request POST:/api/IndividualDevices/{deviceId}/switch
      * @secure
      */
-    individualDevicesSwitchCreate: (data: SwitchIndividualDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesSwitchCreate: (
+      deviceId: number,
+      data: SwitchIndividualDeviceRequest,
+      params: RequestParams = {},
+    ) =>
       this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualDevices/switch`,
+        path: `/api/IndividualDevices/${deviceId}/switch`,
         method: "POST",
         body: data,
         secure: true,

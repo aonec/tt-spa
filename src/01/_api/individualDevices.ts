@@ -11,14 +11,18 @@ import {
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
-  deviceId: number;
   documentsIds: number[];
-  closingDate: string;
+  closingDate: string | null;
 }
 
-export const closeIndividualDevice = (
-  requestBody: CloseIndividualDeviceRequestBody,
-) => axios.post('IndividualDevices/close', requestBody);
+export const closeIndividualDevice = ({
+  deviceId,
+  requestBody,
+}: {
+  deviceId: number;
+  requestBody: CloseIndividualDeviceRequestBody;
+}): Promise<IndividualDeviceResponse | null> =>
+  axios.post(`api/IndividualDevices/${deviceId}/close`, requestBody);
 
 interface WithMagnetSeal {
   magnetSeal: MagnetSeal;
@@ -44,10 +48,14 @@ export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
   device: SwitchIndividualDeviceRequest;
 }
 
-export const switchIndividualDevice = async (
-  requestPayload: SwitchIndividualDeviceRequest,
-): Promise<void> => {
-  return await axios.post('IndividualDevices/switch', requestPayload);
+export const switchIndividualDevice = async (request: {
+  deviceId: number;
+  requestPayload: SwitchIndividualDeviceRequest;
+}): Promise<IndividualDeviceResponse | null> => {
+  return await axios.post(
+    `IndividualDevices/${request.deviceId}/switch`,
+    request.requestPayload,
+  );
 };
 
 export const checkIndividualDevice = (

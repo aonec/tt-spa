@@ -43,8 +43,6 @@ export const SoiReportForm: FC<SoiReportFormProps> = ({
 
       const date = values.Date;
 
-      console.log(date);
-
       createSoiReport({
         ReportName: values.ReportName,
         HouseManagementId: values.HouseManagementId || undefined,
