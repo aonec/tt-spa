@@ -24,7 +24,7 @@ export const ActsCard: FC<ActsCardProps> = ({
           handleSaveFile={handleSaveFile}
         />
       )),
-    [acts, actTypes]
+    [acts, actTypes, handleSaveFile]
   );
 
   return (

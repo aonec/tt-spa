@@ -13,7 +13,6 @@ import {
   ToExecutionWrapper,
 } from './SearchTasks.styled';
 import {
-  EManagingFirmTaskFilterType,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   EResourceType,
   ETaskEngineeringElement,
@@ -30,6 +29,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 import { FormItem } from 'ui-kit/FormItem';
+import { taskCategories } from './ToExecutionTasksExtendedSearchForm.constants';
 
 const { Option } = Select;
 
@@ -39,24 +39,6 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
   const isIndividualDevice = values.EngineeringElement === 'IndividualDevice';
 
   const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
-
-  const taskCategories: taskCategotiesProps = {
-    All: Object.keys(
-      EManagingFirmTaskFilterType,
-    ) as Partial<EManagingFirmTaskFilterType>[],
-    Node: [
-      EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
-      EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
-      EManagingFirmTaskFilterType.CalculatorLackOfConnection,
-      EManagingFirmTaskFilterType.MeasurementErrorAny,
-    ],
-    IndividualDevice: [
-      EManagingFirmTaskFilterType.IndividualDeviceCheck,
-      EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck,
-      EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings,
-    ],
-    HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
-  };
 
   const TaskCategory =
     taskCategories[
@@ -71,13 +53,19 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
     if (!TaskCategory.includes(values?.TaskType)) {
       setFieldValue('TaskType', null);
     }
-  }, [values.EngineeringElement]);
+  }, [values, setFieldValue, TaskCategory]);
 
-  const isValueExists = values?.EngineeringElement
-    ? Object.values(
-        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps],
-      )
-    : [];
+  const isValueExists = useMemo(
+    () =>
+      values?.EngineeringElement
+        ? Object.values(
+            taskCategories[
+              values?.EngineeringElement as keyof taskCategotiesProps
+            ],
+          )
+        : [],
+    [values],
+  );
 
   const FilteredTaskTypes = useMemo(() => {
     if (!taskTypes) return [];
@@ -88,7 +76,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
         return isValueExists.includes(el.key);
       },
     );
-  }, [values?.EngineeringElement, taskTypes]);
+  }, [taskTypes, isValueExists]);
 
   return (
     <ToExecutionWrapper>

@@ -12,7 +12,7 @@ export const ObjectsListContainer = () => {
 
   const housingStocks = pagedHousingStocks?.items;
 
-  const isNotEmpty = housingStocks?.length || 0 > 0;
+  const isNotEmpty = (housingStocks?.length || 0) > 0;
 
   const handleSearch = useEvent(
     displayObjectsListService.inputs.searchHosuingStocks

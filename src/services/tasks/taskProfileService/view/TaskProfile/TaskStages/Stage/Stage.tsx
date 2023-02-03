@@ -29,7 +29,7 @@ export const Stage: FC<StageProps> = ({
   handleRevertStage,
   isRevertStageLoading,
 }) => {
-  const { number, status, type, name, closingTime, perpetrator } = stage;
+  const { status, name, closingTime, perpetrator } = stage;
 
   const currentUser = useStore(currentUserService.outputs.$currentUser);
 
@@ -38,6 +38,7 @@ export const Stage: FC<StageProps> = ({
     : '-';
 
   const icon = useMemo(() => {
+    const { status, number, type } = stage;
     const inProgress = status === EStageStatus.InProgress;
 
     const icons = [

@@ -21,7 +21,7 @@ import { DocumentsStage } from './stages/DocumentsStage';
 export const CreateIndividualDeviceForm = () => {
   const stageNumber = useStore($creationDeviceStage);
   const individualDeviceCreationRequestStatus = useStore(
-    $isCreateIndividualDeviceSuccess
+    $isCreateIndividualDeviceSuccess,
   );
 
   const { id } = useParams<{ id: string }>();
@@ -32,7 +32,7 @@ export const CreateIndividualDeviceForm = () => {
   const { fields, submit } = useForm(addIndividualDeviceForm);
 
   const type = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+    SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const CreateIndividualDeviceForm = () => {
     history.goBack();
     message.success(`Прибор успешно ${messageText}!`);
     resetCreationRequestStatus();
-  }, [individualDeviceCreationRequestStatus]);
+  }, [individualDeviceCreationRequestStatus, history, type]);
 
   useEffect(() => {
     fields.apartmentId.onChange(Number(id));

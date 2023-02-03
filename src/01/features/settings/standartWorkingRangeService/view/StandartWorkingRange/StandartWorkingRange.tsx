@@ -16,7 +16,6 @@ import { StandartWorkingRangeProps } from './StandartWorkingRange.types';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Tabs } from 'ui-kit/Tabs';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { useFormik } from 'formik';
 import {
   ENodeWorkingRangeSeason,

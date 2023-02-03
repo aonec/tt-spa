@@ -16,11 +16,11 @@ export function FilterExtendedSearch<T>({
       handleUpdate(
         clickPayload.checked
           ? selectedFilters?.filter(
-              (type) => type !== clickPayload.filterField.key
+              (type) => type !== clickPayload.filterField.key,
             )
-          : [...(selectedFilters || []), clickPayload.filterField.key!]
+          : [...(selectedFilters || []), clickPayload.filterField.key!],
       ),
-    [selectedFilters, allowedFilters]
+    [selectedFilters, handleUpdate],
   );
   const handleClearFilter = useCallback(() => handleUpdate([]), [handleUpdate]);
 

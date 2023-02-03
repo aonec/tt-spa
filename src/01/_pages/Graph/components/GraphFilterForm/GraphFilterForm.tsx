@@ -42,7 +42,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
       setArchiveFilter(filter);
       closeModal();
     },
-    [setArchiveFilter, setIsActive],
+    [setArchiveFilter],
   );
 
   const { setFieldValue, values, submitForm, errors } = useFormik<
@@ -91,7 +91,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
     } else if (paramsList[0]) {
       setGraphParam(paramsList[0]);
     }
-  }, [setGraphParam, paramsList]);
+  }, [setGraphParam, paramsList, currentGraphParam]);
 
   return (
     <GraphFilter>

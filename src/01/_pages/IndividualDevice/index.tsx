@@ -18,7 +18,7 @@ import { IndividualDeviceGrouptype } from './IndividualDevice.types';
 const { TabPane } = TabsSC;
 
 export const IndividualDevice = () => {
-  const { deviceId } = useParams<{deviceId:string}>();
+  const { deviceId } = useParams<{ deviceId: string }>();
   const [grouptype, setGrouptype] = useState<IndividualDeviceGrouptype>(
     IndividualDeviceGrouptype.info,
   );
@@ -30,7 +30,7 @@ export const IndividualDevice = () => {
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));
     tasksRun(getIndividualDeviceTasks(Number(deviceId)));
-  }, [deviceId]);
+  }, [deviceId, run, tasksRun]);
 
   if (!device || !tasks) {
     return <Loader size={'32'} show />;
