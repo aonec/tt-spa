@@ -162,7 +162,16 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       uploadReading(next);
     },
-    [nextInput, handleUploadReading],
+    [
+      nextInput,
+      handleUploadReading,
+      bufferedReadingValues,
+      inputIndex,
+      rateNum,
+      reading,
+      uploadReading,
+      handleUploadReading
+    ],
   );
 
   const inputsArray = useMemo(

@@ -57,7 +57,8 @@ export const HousesReadingsContainer = () => {
     return () => {
       window.removeEventListener('scroll', onScrollDown, true);
     };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadNextPageOfIndividualDevicesList, history]);
 
   useEffect(() => {
     return inputs.handleHousingStockLoaded.watch((housingStock) => {
@@ -65,7 +66,7 @@ export const HousesReadingsContainer = () => {
 
       history.push(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
-  }, []);
+  }, [history]);
 
   return (
     <>
