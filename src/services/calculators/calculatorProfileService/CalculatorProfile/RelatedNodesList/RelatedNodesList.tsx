@@ -11,7 +11,11 @@ export const RelatedNodesList: FC<RelatedNodesListProps> = ({
     <>
       <MeteringDevicesContainer />
       {nodes?.map((node) => (
-        <NodeItem node={node} openDevicesListModal={openDevicesListModal} />
+        <NodeItem
+          node={node}
+          openDevicesListModal={openDevicesListModal}
+          key={node.id}
+        />
       ))}
     </>
   );

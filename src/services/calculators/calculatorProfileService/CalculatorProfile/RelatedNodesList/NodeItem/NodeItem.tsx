@@ -18,12 +18,14 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { NodeStatus } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus';
 
 export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
-  console.log(node);
   const nodeInfo = (
     <BaseNodeInfo>
       <Link to={`/nodes/${node?.id}`}>
         <NodeName>Узел {node?.number}</NodeName>
-        <AdditionalInfo>Ввод {node?.communicationPipes?.[0].entryNumber},  {node?.nodeServiceZone?.name}</AdditionalInfo>
+        <AdditionalInfo>
+          Ввод {node?.communicationPipes?.[0].entryNumber},{' '}
+          {node?.nodeServiceZone?.name}
+        </AdditionalInfo>
       </Link>
       <Tooltip title="Показать приборы">
         <DeviceIconWrapper>
