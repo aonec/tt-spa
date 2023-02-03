@@ -6,7 +6,7 @@ import { Select } from 'ui-kit/Select';
 import { SearchIcon } from 'ui-kit/icons';
 import { Radio, Space } from 'antd';
 
-export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({}) => {
+export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = () => {
   return (
     <div>
       <Wrapper>

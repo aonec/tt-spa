@@ -11,7 +11,7 @@ export const HomeownersList: FC<HomeownersListProps> = ({ homeowners }) => {
   return (
     <div>
       {homeowners.map((homeowner) => (
-        <HomeownerWrapper>
+        <HomeownerWrapper key={homeowner.id}>
           <Title icon={<KeysIcon />}>{homeowner.name}</Title>
           <CommonInfoWrapper>
             <CommonInfo
