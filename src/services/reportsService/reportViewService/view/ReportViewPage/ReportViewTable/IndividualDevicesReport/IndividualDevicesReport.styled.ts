@@ -1,4 +1,3 @@
-import { hidden } from './../../../../../../menuService/menuService.data';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -22,4 +21,9 @@ export const PhoneNumber = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+export const ClosingDate = styled.div`
+  margin-top: 4px;
+  font-size: 12px;
 `;

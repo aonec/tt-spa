@@ -9,7 +9,7 @@ export function Table<T>({
 }: PropsWithChildren<TableProps<T>>) {
   const filteredColumns = columns.filter((elem) => !elem.hidden);
 
-  const temp = columns.map((column) => column.size).join(' ');
+  const temp = filteredColumns.map((column) => column.size).join(' ');
 
   return (
     <Wrapper>
