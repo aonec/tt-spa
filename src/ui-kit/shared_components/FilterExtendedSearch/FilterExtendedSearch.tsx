@@ -24,7 +24,7 @@ export function FilterExtendedSearch<T>({
   );
   const handleClearFilter = useCallback(() => handleUpdate([]), [handleUpdate]);
 
-  useEffect(() => handleClearFilter, [handleClearFilter]);
+  useEffect(() => handleClearFilter, []);
   return (
     <FilterButton
       onClear={handleClearFilter}

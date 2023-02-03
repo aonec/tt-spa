@@ -35,7 +35,7 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
   useEffect(() => {
     setNewDeviceReadings(newDeviceInitialReadings);
     setOldDeviceReadings(oldDeviceInitialReadings);
-  }, [oldDeviceInitialReadings]);
+  }, [oldDeviceInitialReadings, newDeviceInitialReadings]);
 
   useEffect(() => {
     const preparedNewDeviceReadings = prepareReadingsToFormik(

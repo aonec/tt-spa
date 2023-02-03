@@ -59,7 +59,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       '';
 
     setFieldValue('model', model);
-  }, [values.calculatorInfoId]);
+  }, [values.calculatorInfoId, setFieldValue, calculatorInfos]);
 
   return (
     <div>

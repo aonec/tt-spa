@@ -27,7 +27,7 @@ export const DisplayNodesStatisticsContainer: FC<
   const setGraphType = useEvent(inputs.setGraphType);
   const setArchiveFilter = useEvent(inputs.setArchiveFilter);
 
-  const archive = archiveData?.data || [];
+  const archive = useMemo(() => archiveData?.data || [], [archiveData]);
   const paramsList = useMemo(
     () =>
       archive.reduce((acc, readings) => {

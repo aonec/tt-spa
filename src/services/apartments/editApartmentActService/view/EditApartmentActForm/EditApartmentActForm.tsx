@@ -72,7 +72,7 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
     if (!initialDocument) return;
 
     setDocuments([initialDocument]);
-  }, [document]);
+  }, [initialDocument]);
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
