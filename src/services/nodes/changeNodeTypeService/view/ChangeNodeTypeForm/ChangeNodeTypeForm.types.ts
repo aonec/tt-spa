@@ -1,7 +1,6 @@
-import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'myApi';
+import { NodeSetRegistrationTypeRequest } from 'myApi';
 
 export type ChangeNodeTypeFormProps = {
   formId: string;
-  node: PipeNodeResponse;
   setNodeTypePaylaod: (payload: NodeSetRegistrationTypeRequest) => void;
 };
