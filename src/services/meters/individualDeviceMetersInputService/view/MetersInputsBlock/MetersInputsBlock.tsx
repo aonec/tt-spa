@@ -164,13 +164,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     },
     [
       nextInput,
-      handleUploadReading,
       bufferedReadingValues,
       inputIndex,
       rateNum,
       reading,
       uploadReading,
-      handleUploadReading
     ],
   );
 

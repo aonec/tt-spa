@@ -41,7 +41,7 @@ export const SwitchPersonalNumberPage = () => {
     }
 
     setSwitchRequestStatus(null);
-  }, [status]);
+  }, [status, history]);
 
   return (
     <Wrap>

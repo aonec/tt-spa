@@ -37,7 +37,7 @@ export const CreateIndividualDeviceForm = () => {
     history.goBack();
     message.success('Прибор успешно создан!');
     resetCreationRequestStatus();
-  }, [individualDeviceCreationRequestStatus]);
+  }, [individualDeviceCreationRequestStatus, history]);
 
   useEffect(() => {
     fields.apartmentId.onChange(Number(id));

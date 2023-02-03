@@ -96,7 +96,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   );
   const handleThriggerAt = useCallback(
     (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
-    [values],
+    [setFieldValue],
   );
 
   return (

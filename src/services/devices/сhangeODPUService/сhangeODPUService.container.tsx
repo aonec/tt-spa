@@ -22,7 +22,7 @@ export const ChangeODPUContainer = () => {
       inputs.switchHousingMeteringDeviceFx.doneData.watch(() =>
         history.goBack()
       ).unsubscribe,
-    []
+    [history]
   );
 
   return (
