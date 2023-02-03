@@ -13,7 +13,7 @@ import {
   switchPersonalNumber,
   switchPersonalNumberFx,
 } from './models';
-import { message, Steps } from 'antd';
+import { message } from 'antd';
 import styled from 'styled-components';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 

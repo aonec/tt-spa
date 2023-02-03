@@ -45,7 +45,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   const [valuesArray, setValuesArray] = useState(preparedValuesArray);
 
-  useEffect(() => setValuesArray(preparedValuesArray), [values]);
+  useEffect(() => setValuesArray(preparedValuesArray), [preparedValuesArray]);
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,

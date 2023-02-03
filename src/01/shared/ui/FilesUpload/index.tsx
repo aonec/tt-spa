@@ -27,12 +27,12 @@ export const FilesUpload: React.FC<Props> = (props) => {
 
   const { files, addFile, removeFile, clearFiles } = useFilesUpload(
     onChange,
-    type
+    type,
   );
 
   useEffect(() => {
     if (filesInit?.length === 0) clearFiles();
-  }, [filesInit?.map((elem) => elem.id).join('')]);
+  }, [filesInit, clearFiles]);
 
   return (
     <Wide>

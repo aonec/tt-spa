@@ -11,7 +11,6 @@ interface Props {
 
 export const SelectTT = styled(Select)<Props>`
   height: 48px;
-   {
     //Select Dropdown
     .ant-select-item {
       margin: 0 !important;
@@ -33,7 +32,6 @@ export const SelectTT = styled(Select)<Props>`
           color: $white;
         }
       }
-    }
 
     .ant-select-selector {
       height: 100% !important;
@@ -68,7 +66,7 @@ export const SelectTT = styled(Select)<Props>`
                   }
 
                 `) ||
-    (size == 'grey' &&
+    (size === 'grey' &&
       css`
         color: rgba(39, 47, 90, 0.6);
       `)};
