@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Select, Tooltip } from 'antd';
-import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
 import {
   ApartmentNumberWrapper,
-  FormItem,
   OverFlowSelectSC,
   SelectSC,
   StyledContainerAdressSection,
@@ -28,28 +26,23 @@ import {
 } from '../../tasksProfileService.types';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { AddressSearchContainer } from 'services/addressSearchService';
-import {
-  SearchFieldType,
-} from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
+import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
 
-export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
-  setFieldValue,
-  values,
-  taskTypes,
-  housingManagments,
-  perpetrators,
-}) => {
+export const ToExecutionTasksExtendedSearchForm: React.FC<
+  ExtendedSearchTypes
+> = ({ setFieldValue, values, taskTypes, housingManagments, perpetrators }) => {
   const isIndividualDevice = values.EngineeringElement === 'IndividualDevice';
 
   const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
 
   const taskCategories: taskCategotiesProps = {
     All: Object.keys(
-      EManagingFirmTaskFilterType
+      EManagingFirmTaskFilterType,
     ) as Partial<EManagingFirmTaskFilterType>[],
     Node: [
       EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
@@ -82,7 +75,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
 
   const isValueExists = values?.EngineeringElement
     ? Object.values(
-        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
+        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps],
       )
     : [];
 
@@ -93,7 +86,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
       (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
         if (!el.key) return true;
         return isValueExists.includes(el.key);
-      }
+      },
     );
   }, [values?.EngineeringElement, taskTypes]);
 
@@ -150,8 +143,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         </ApartmentNumberWrapper>
       </StyledContainerAdressSection>
       <StyledContainerThreeItemsMainTypes>
-        <FormItem>
-          <label>Элемент инженерной сети: </label>
+        <FormItem label="Элемент инженерной сети">
           <SelectSC
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
@@ -170,8 +162,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             })}
           </SelectSC>
         </FormItem>
-        <FormItem>
-          <label>Тип ресурса: </label>
+        <FormItem label="Тип ресурса">
           <SelectSC
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
@@ -192,8 +183,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             })}
           </SelectSC>
         </FormItem>
-        <FormItem>
-          <label>Домоуправление: </label>
+        <FormItem label="Домоуправление">
           <SelectSC
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
@@ -217,8 +207,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
         </FormItem>
       </StyledContainerThreeItemsMainTypes>
       <StyledContainerThreeItemsMainTypes>
-        <FormItem>
-          <label>Статус: </label>
+        <FormItem label="Статус">
           <SelectSC
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
@@ -239,8 +228,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
             })}
           </SelectSC>
         </FormItem>
-        <FormItem>
-          <label>Тип задачи: </label>
+        <FormItem label="Тип задачи">
           <OverFlowSelectSC
             data-reading-input="tasksExtendedSearch"
             id="TaskType"
@@ -259,8 +247,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
               ))}
           </OverFlowSelectSC>
         </FormItem>
-        <FormItem>
-          <label>Исполнитель: </label>
+        <FormItem label="Исполнитель">
           <SelectSC
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
@@ -277,9 +264,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
           >
             <Option value={''}>Все</Option>
             {perpetrators &&
-              perpetrators.map(({ id, name }) => (
+              perpetrators.map(({ id, firstName, lastName }) => (
                 <Option key={id} value={id}>
-                  {name}
+                  {lastName} {firstName}
                 </Option>
               ))}
           </SelectSC>

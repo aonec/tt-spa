@@ -7,8 +7,6 @@
   align-items: center;
   color: #ffffff;
 }
-.access-denied__title {
-}
 
 .access-denied__subtitle {
   padding-top: 16px;
@@ -27,9 +25,11 @@
 
 .access-denied__button {
   margin-top: 24px;
+  z-index: 2;
 }
 
 .access-denied__image {
   margin-top: -100px;
   z-index: 1;
+  position: relative;
 }

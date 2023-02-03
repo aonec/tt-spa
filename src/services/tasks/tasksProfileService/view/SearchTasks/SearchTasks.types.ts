@@ -3,9 +3,9 @@ import {
   EManagingFirmTaskFilterType,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   GuidStringDictionaryItem,
+  OrganizationUserListResponse,
   TaskGroupingFilter,
 } from 'myApi';
-import { perpetratorItemsProps } from 'services/tasks/taskTypesService/taskTypesService.types';
 import { GetTasksListRequestPayload } from '../../tasksProfileService.types';
 
 export type SearchTasksProps = {
@@ -18,7 +18,7 @@ export type SearchTasksProps = {
   clearFilters: () => void;
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
-  perpetrators: perpetratorItemsProps[] | null;
+  perpetrators: OrganizationUserListResponse[] | null;
 };
 
 export const TasksFilterTypeDictionary = {};
@@ -32,7 +32,7 @@ export type ExtendedSearchTypes = {
   ) => Promise<void> | Promise<FormikErrors<GetTasksListRequestPayload>>;
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingManagments?: GuidStringDictionaryItem[] | null;
-  perpetrators?: perpetratorItemsProps[] | null;
+  perpetrators?: OrganizationUserListResponse[] | null;
 };
 
 export type taskCategotiesProps = {

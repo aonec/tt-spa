@@ -1,5 +1,13 @@
 import { Select as AntSelect } from 'antd';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const selectIconStyles = css`
+  svg {
+    transform: translateY(-8px);
+    height: 16px;
+    width: 16px;
+  }
+`;
 
 export const Select = styled(AntSelect)`
   height: 48px;
@@ -21,6 +29,8 @@ export const Select = styled(AntSelect)`
 
   .ant-select-arrow {
     padding: 0 28px !important;
+
+    ${({ suffixIcon }) => suffixIcon && selectIconStyles}
   }
 
   .ant-select-clear {

@@ -24,7 +24,7 @@ export const Header = ({ device }: HeaderInterface) => {
   const loading = !device;
   const { address, model, serialNumber, resource, closingDate } = device;
 
-  const { id, apartmentId } = address || {};
+  const { apartmentId } = address || {};
 
   const menuButtonArr = device
     ? [
@@ -63,27 +63,27 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <GoBack />
-      <HeaderWrap>
-        <div>
-          <Title>
-            <IconTT
-              icon={resource.toLocaleLowerCase()}
-              size="24"
-              style={{ marginRight: 8 }}
-            />
-            {`${model} (${serialNumber})`}
-          </Title>
-          <div style={{ display: 'flex' }}>
-            <Subtitle to={`/apartments/${apartmentId}`}>
-              {getApartmentFromFullAddress(address, true)}
-            </Subtitle>
-            <IsActive closingDate={closingDate} />
+        <GoBack />
+        <HeaderWrap>
+          <div>
+            <Title>
+              <IconTT
+                icon={resource.toLocaleLowerCase()}
+                size="24"
+                style={{ marginRight: 8 }}
+              />
+              {`${model} (${serialNumber})`}
+            </Title>
+            <div style={{ display: 'flex' }}>
+              <Subtitle to={`/apartments/${apartmentId}`}>
+                {getApartmentFromFullAddress(address, true)}
+              </Subtitle>
+              <IsActive closingDate={closingDate} />
+            </div>
           </div>
-        </div>
 
-        <MenuButtonTT menuButtonArr={menuButtonArr} />
-      </HeaderWrap>
+          <MenuButtonTT menuButtonArr={menuButtonArr} />
+        </HeaderWrap>
     </Loader>
   );
 };

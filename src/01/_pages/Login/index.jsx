@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import { Loader } from '01/components';
-
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
@@ -64,14 +62,20 @@ export const Login = () => {
   async function FormSubmitHadler() {
     setLoading(true);
     try {
-      const res = await axios.post('auth/login', { email, password });
+      const preparedEmail = email.trim();
+
+      const res = await axios.post('auth/login', {
+        email: preparedEmail,
+        password,
+      });
+      setLoading(false);
+
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       replace(res.roles.includes('Operator') ? '/meters' : '/tasks');
     } catch (error) {
-      console.log(error);
-      message.error('Корректно введите логин и пароль');
-    } finally {
       setLoading(false);
+
+      message.error('Корректно введите логин и пароль');
     }
   }
 
@@ -116,6 +120,7 @@ export const Login = () => {
                 type={showPass ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => {
+                  if (e.nativeEvent.data === ' ') return;
                   setPassword(e.target.value);
                 }}
               />

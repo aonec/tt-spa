@@ -4,7 +4,6 @@ import { prepareAddressesForTreeSelect } from 'services/resources/createResource
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
 import './closedIndividualDevicesFormService.relations';
-import { UnloadingType } from './closedIndividualDevicesFormService.types';
 
 export const ClosedIndividualDevicesFormContainer = () => {
   const { inputs, outputs } = closedIndividualDevicesFormService;
@@ -23,7 +22,6 @@ export const ClosedIndividualDevicesFormContainer = () => {
     items: addressesPagedList?.items || [],
     isSelectableStreetNode: false,
   });
-
 
   return (
     <ClosedIndividualDevicesForm

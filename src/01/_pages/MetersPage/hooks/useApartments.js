@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 
 export const useApartments = ({ apartments = {} }, { filter = '' }) => {
   const { loading, items = [] } = apartments;

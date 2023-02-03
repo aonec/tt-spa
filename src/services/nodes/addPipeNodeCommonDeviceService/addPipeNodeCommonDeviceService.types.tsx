@@ -1,11 +1,11 @@
 import {
   CreateCommunicationPipeRequest,
   CreatePipeHousingMeteringDeviceInNodeRequest,
-  EResourceType,
+  EPipeNodeConfig,
 } from 'myApi';
 
 export type Props = {
-  resource: EResourceType;
+  configuration: EPipeNodeConfig;
   communicationPipes: CommunicationPipePayload[];
   handleAddCommunicationPipe: (
     communicationPipe: CommunicationPipePayload

@@ -1,9 +1,9 @@
 import { RequestStatusShared } from './../../../readings/displayReadingHistory/hooks/useReadingValues';
 import { createEffect, createEvent, createStore } from 'effector';
-import { HomeownerAccountCreateServiceModel } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'myApi';
 
 export const addPersonalNumberFx = createEffect<
-  HomeownerAccountCreateServiceModel,
+  HomeownerAccountCreateRequest,
   void
 >();
 

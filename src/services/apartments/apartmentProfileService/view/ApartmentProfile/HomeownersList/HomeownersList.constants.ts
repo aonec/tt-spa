@@ -1,6 +1,6 @@
-import { PersonType } from 'myApi';
+import { EPersonType } from 'myApi';
 
-export const PersonTypeDictionary: { [key in PersonType]: string } = {
-  [PersonType.Natural]: 'Физическое лицо',
-  [PersonType.Juristic]: 'Юридическое лицо',
+export const PersonTypeDictionary: { [key in EPersonType]: string } = {
+  [EPersonType.Natural]: 'Физическое лицо',
+  [EPersonType.Juristic]: 'Юридическое лицо',
 };

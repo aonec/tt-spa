@@ -1,9 +1,7 @@
 import moment from 'moment';
 import {
-  ApartmentResponse,
   EStageTimeStatus,
   ETaskClosingStatus,
-  FullAddressResponse,
   HousingStockListResponse,
   HousingStockResponse,
   TaskListResponse,
@@ -13,7 +11,7 @@ import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const getAddressObject = (
-  object: HousingStockListResponse | HousingStockResponse | null
+  object: HousingStockListResponse | HousingStockResponse | null,
 ) => {
   const address = object?.address?.mainAddress;
   const City = address?.city || '';
@@ -77,7 +75,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
     return {
       stage: {
         remainingTime: getFormatedTime(
-          Math.abs(new Date(ext!).valueOf() - Date.now())
+          Math.abs(new Date(ext!).valueOf() - Date.now()),
         ),
         isFailed,
         deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
@@ -104,7 +102,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
   const diffTimeStr = getFormatedTime(Math.abs(diffTime));
 
   const executionTime = getFormatedTime(
-    new Date(finish!).valueOf() - new Date(start!).valueOf()
+    new Date(finish!).valueOf() - new Date(start!).valueOf(),
   );
 
   if (diffTime < 0) {
@@ -147,4 +145,8 @@ const ColorLookup = {
   [EStageTimeStatus.Normal]: 'var(--success)',
   [EStageTimeStatus.RunningOut]: 'var(--warning)',
   [EStageTimeStatus.Expired]: 'var(--error)',
+};
+
+export const prepareQueryStringParam = (param: string | string[] | null) => {
+  return Array.isArray(param) ? param[0] : param;
 };

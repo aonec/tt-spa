@@ -1,3 +1,4 @@
+import { EResourceType } from './../../../myApi';
 import moment from 'moment';
 import {
   IndividualDeviceReadingsResponse,
@@ -14,10 +15,11 @@ import {
   ValidationReadingsResultType,
 } from './individualDeviceMetersInputService.types';
 import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
-import { nextReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
-import { previousReadingIndexLimit } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
+import { NEXT_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
+import { PREVIOUS_READING_INDEX_LIMIT } from '../apartmentIndividualDevicesMetersService/apartmentIndividualDevicesMetersService.constants';
 import { BufferedReadingValues } from './view/MetersInputsBlock/MetersInputsBlock.types';
 import { round } from 'utils/round';
+import { ResourceConsumptionGraphColorsMeasure } from 'services/resources/resourceConsumptionService/view/ResourceConsumptionGraph/ResourceConsumptionGraph.constants';
 
 export function getPreparedReadingsDictionary(
   readings: IndividualDeviceReadingsResponse[]
@@ -113,8 +115,8 @@ export function getExistingReading(
   nextIndex();
 
   while (
-    (type === 'next' && index >= nextReadingIndexLimit) ||
-    (type === 'prev' && index <= previousReadingIndexLimit)
+    (type === 'next' && index >= NEXT_READING_INDEX_LIMIT) ||
+    (type === 'prev' && index <= PREVIOUS_READING_INDEX_LIMIT)
   ) {
     const reading = readings[index];
 
@@ -219,6 +221,6 @@ export function getReadingValueKey(index: number) {
   return `value${index + 1}` as keyof ReadingLite;
 }
 
-export function getMeasurementUnit(resource: any) {
-  return resource === 'Electricity' ? 'кВтч' : 'м³';
+export function getMeasurementUnit(resource: EResourceType) {
+  return ResourceConsumptionGraphColorsMeasure[resource];
 }

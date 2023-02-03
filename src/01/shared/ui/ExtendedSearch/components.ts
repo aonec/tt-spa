@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { CloseIcon } from 'ui-kit/icons';
 
 export const SearchWrap = styled.div`
   display: flex;
@@ -62,8 +63,9 @@ export const Content = styled.div`
 `;
 
 export const Header = styled.div`
-  padding: 10px;
+  padding: 12px;
   display: flex;
+  gap: 12px;
 `;
 
 export const Footer = styled.div`
@@ -81,4 +83,8 @@ export const SearchContentWrap = styled.div`
 export const ExtendedSearchWrap = styled.div`
   margin: 0 5px 10px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const ClearIconSC = styled(CloseIcon)`
+  transform: translateY(2px);
 `;

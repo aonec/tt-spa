@@ -1,28 +1,17 @@
-/* eslint-disable */
+ 
 
 import React from 'react';
-import styled, { css } from 'reshadow/macro';
 import t from 'prop-types';
 import { Icon } from '01/components/Icon';
-
-const style = css`
-  @keyframes spin {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  Icon {
-    animation: spin 1000ms linear infinite;
-    margin: 0 auto;
-  }
-`;
+import { LoaderWrapper } from './Loader.styled';
 
 export const Loader = ({ children = null, show = false, ...props }) => {
-  const loader = styled(style)(<Icon icon="replacement" {...props} />);
+  const loader = (
+    <LoaderWrapper>
+      <Icon icon="replacement" {...props} />
+    </LoaderWrapper>
+  );
+
   return show ? loader : children;
 };
 

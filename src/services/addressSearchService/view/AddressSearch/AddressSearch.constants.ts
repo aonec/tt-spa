@@ -6,4 +6,5 @@ export const SearchFieldsLabels: { [key in SearchFieldType]: string } = {
   [SearchFieldType.House]: 'Дом',
   [SearchFieldType.Corpus]: 'Корпус',
   [SearchFieldType.Apartment]: 'Квартира',
+  [SearchFieldType.Question]: 'Л/C или ФИО',
 };

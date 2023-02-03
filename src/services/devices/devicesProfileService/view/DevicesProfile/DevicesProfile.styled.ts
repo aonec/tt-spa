@@ -1,4 +1,4 @@
-import { Slider, Form, DatePicker } from 'antd';
+import { Slider, DatePicker } from 'antd';
 import styled from 'styled-components';
 const { RangePicker } = DatePicker;
 
@@ -64,13 +64,4 @@ export const HeaderWrapper = styled.div`
 export const HeaderText = styled.h1`
   font-weight: 300;
   margin-bottom: 16;
-`;
-
-export const LabelCS = styled.label`
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: #272f5ab2 !important;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
 `;

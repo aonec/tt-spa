@@ -5,24 +5,21 @@ import { PAGE_SIZE } from './reportsListService.constants';
 import { reportsListService } from './reportsListService.model';
 import { ReportStatusType } from './reportsListService.types';
 import { ReportsList } from './view/ReportsList';
-import { SearchReports } from './view/SearchReports';
 
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
 
 export const ReportsListContainer = () => {
   const reportsHistoryListPagedData = useStore(
-    outputs.$reportsHistoryPagedData
+    outputs.$reportsHistoryPagedData,
   );
   const isLoading = useStore(outputs.$isLoading);
   const pageNumber = useStore(outputs.$pageNumber);
   const isShowActual = useStore(outputs.$isShowActual);
-  const reportName = useStore(outputs.$reportNameText);
 
   const openExistedReport = useEvent(inputs.openExistedReport);
   const setPageNumber = useEvent(inputs.setPageNumber);
   const setIsShowActual = useEvent(inputs.setIsShowActual);
-  const setReportName = useEvent(inputs.setReportNameText);
 
   const archivedReportsCountString = useMemo(() => {
     const archivedReportsCount =
@@ -36,14 +33,11 @@ export const ReportsListContainer = () => {
   return (
     <>
       <ReportsHistoryGate />
-      <SearchReports reportName={reportName} setReportName={setReportName} />
       <Tabs
         activeKey={
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived
         }
-        onChange={(key) =>
-          setIsShowActual(key === ReportStatusType.Actual)
-        }
+        onChange={(key) => setIsShowActual(key === ReportStatusType.Actual)}
       >
         <Tabs.TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
         <Tabs.TabPane

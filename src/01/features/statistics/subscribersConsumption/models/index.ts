@@ -3,7 +3,6 @@ import {
   createEffect,
   createEvent,
   createStore,
-  guard,
   sample,
 } from 'effector';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
@@ -31,13 +30,16 @@ export const subscribersConsumptionFindForm = createForm({
     city: { init: '' },
     street: { init: '' },
     house: { init: '' },
+    corpus: { init: '' },
   },
 });
 
 const setSubscriberStatisticsFilter = createEvent<SubscriberStatisticsForm>();
-const $subscriberStatisticsFilter = createStore<SubscriberStatisticsForm | null>(
-  null
-).on(setSubscriberStatisticsFilter, (_, filter) => filter);
+const $subscriberStatisticsFilter =
+  createStore<SubscriberStatisticsForm | null>(null).on(
+    setSubscriberStatisticsFilter,
+    (_, filter) => filter,
+  );
 
 const $isLoading = fetchConsumptionStatistics.pending;
 
@@ -54,7 +56,7 @@ sample({
         HousingStockId,
       });
       return { ...preparedData };
-    }
+    },
   ),
   target: fetchConsumptionStatistics,
 });

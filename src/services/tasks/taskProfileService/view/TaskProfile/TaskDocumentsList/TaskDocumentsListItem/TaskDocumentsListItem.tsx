@@ -1,4 +1,6 @@
 import React, { FC, useCallback } from 'react';
+import { saveAs } from 'file-saver';
+
 import {
   CalendarIcon,
   DocumentIcon,
@@ -6,6 +8,7 @@ import {
   TrashIcon,
 } from 'ui-kit/icons';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+
 import {
   AuthorWrapper,
   DateWrapper,
@@ -16,7 +19,6 @@ import {
   Wrapper,
 } from './TaskDocumentsListItem.styled';
 import { TaskDocumentsListItemProps } from './TaskDocumentsListItem.types';
-import { saveAs } from "file-saver"
 
 export const TaskDocumentsListItem: FC<TaskDocumentsListItemProps> = ({
   document,

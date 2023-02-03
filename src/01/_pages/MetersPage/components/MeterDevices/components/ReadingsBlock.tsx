@@ -32,12 +32,6 @@ const ReadingLineStyled = styled.div`
   }
 `;
 
-const TarifLabel = styled.span<{ houseReadings: boolean }>`
-  width: 20px;
-  margin-right: 4px;
-  color: rgba(39, 47, 90, 0.32);
-`;
-
 interface DeviceRatesVerticalProps {
   index: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -138,7 +132,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   useEffect(() => {
     if (lineIndex === 0 && isCurrent) {
       const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-        `[data-reading-input="current"]`
+        `[data-reading-input="current"]`,
       );
 
       const node = inputList[lineIndex];
@@ -185,6 +179,3 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
 };
 
 export default ReadingsBlock;
-
-export const getMeasurementUnit = (resource: any) =>
-  resource === 'Electricity' ? 'кВтч' : 'м³';

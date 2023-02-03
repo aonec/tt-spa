@@ -20,9 +20,14 @@ import { ConfirmationAddingExistingPersonalNumber } from '../ConfirmationAddingE
 interface Props {
   type?: 'switch' | 'edit' | 'split';
   form?: any;
+  isMainPersonalAccountNumber?: boolean;
 }
 
-export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
+export const PersonalNumberEditForm: React.FC<Props> = ({
+  type,
+  form,
+  isMainPersonalAccountNumber,
+}) => {
   const { fields } = useForm(form || personalNumberEditForm);
   const isEdit = type === 'edit';
 
@@ -37,6 +42,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
         <DatePickerNative
           value={fields.openAt.value}
           onChange={fields.openAt.onChange}
+          disabled={isEdit}
         />
         <ErrorMessage>
           {fields.openAt.errorText({
@@ -105,6 +111,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
           <Switch
             checked={fields.isMainAccountingNumber.value}
             onChange={fields.isMainAccountingNumber.onChange}
+            disabled={isMainPersonalAccountNumber}
           />
           <Space />
           Основной лицевой счет

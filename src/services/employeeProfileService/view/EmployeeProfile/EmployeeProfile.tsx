@@ -4,7 +4,6 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TabsItemInterface } from '01/tt-components/interfaces';
 import Tabs from '01/tt-components/Tabs';
-import { sortUserRoles } from '01/_pages/Settings/components/Staff.utils';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
@@ -23,8 +22,16 @@ import {
   СompetenceDiv,
 } from './EmployeeProfile.styled';
 import { EmployeeProfileProps } from './EmployeeProfile.types';
+import { useHistory } from 'react-router-dom';
+import { sortUserRoles } from 'services/company/companyProfileService/view/CompanyProfile/Tabs/Staff/Staff.utils';
 
-export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
+export const EmployeeProfile: FC<EmployeeProfileProps> = ({
+  userData,
+  handleOpenChangeStatusModal,
+  handleOpenDeleteEmployeeModal,
+}) => {
+  const history = useHistory();
+
   const userInitials = `${userData?.firstName || ''} ${
     userData?.middleName || ''
   } ${userData?.lastName || ''}`;
@@ -58,15 +65,21 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({ userData }) => {
         title={userInitials}
         contextMenu={{
           menuButtons: [
-            { title: 'Изменить стутус', onClick: () => {} },
+            {
+              title: 'Изменить статус',
+              onClick: () => handleOpenChangeStatusModal(),
+            },
             {
               title: 'Редактировать информацию о сотруднике',
-              onClick: () => {},
+              onClick: () =>
+                history.push(
+                  `/companyProfile/editManagingFirmUser/${userData?.id}`
+                ),
             },
             {
               title: 'Удалить сотрудника',
               color: 'danger',
-              onClick: () => {},
+              onClick: () => handleOpenDeleteEmployeeModal(),
             },
           ],
         }}

@@ -1,5 +1,4 @@
 import {
-  HousingStockShortResponse,
   ResourceDisconnectingResponse,
   ResourceDisconnectingResponsePagedList,
 } from 'myApi';

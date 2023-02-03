@@ -1,4 +1,3 @@
-/* eslint-disable */
 
 export const useTransformTime = (date, closingTime) => {
   if (!date) return {};
