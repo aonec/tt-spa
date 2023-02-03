@@ -14,5 +14,5 @@ export type ReportViewPageProps = {
   filtrationValues: ReportFiltrationFormValues;
   setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
   isLoadingReport: boolean;
-  individualDevicesReportData: IndividualDevicesConstructedReportResponse[];
+  individualDevicesReportData: IndividualDevicesConstructedReportResponse[] | null;
 };

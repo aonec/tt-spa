@@ -58,7 +58,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
         <Wrapper>
           <FormItem label="Город">
             <Select
-              suffixIcon={<SearchIcon />}
               placeholder="Выберите из списка"
               value={values.city || undefined}
               onChange={(value) => setFieldValue('city', value)}
@@ -73,7 +72,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Домоуправление">
             <Select
               value={values.houseManagement || undefined}
-              suffixIcon={<SearchIcon />}
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);

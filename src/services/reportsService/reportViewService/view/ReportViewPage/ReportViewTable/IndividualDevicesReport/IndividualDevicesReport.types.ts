@@ -1,6 +1,12 @@
-import { IndividualDevicesConstructedReportResponse } from 'myApi';
+import {
+  EIndividualDeviceReportOption,
+  IndividualDevicesConstructedReportResponse,
+} from 'myApi';
 
 export type IndividualDevicesReportProps = {
-  individualDevicesReportData: IndividualDevicesConstructedReportResponse[];
+  individualDevicesReportData:
+    | IndividualDevicesConstructedReportResponse[]
+    | null;
   city: string | null;
+  reportOption: EIndividualDeviceReportOption | null;
 };

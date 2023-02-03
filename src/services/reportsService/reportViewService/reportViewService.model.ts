@@ -71,8 +71,9 @@ const $filtrationValues = domain
   .on(setFiltrationValues, (_, values) => values);
 
 const $individualDevicesReportData = domain
-  .createStore<IndividualDevicesConstructedReportResponse[]>([])
-  .on(fetchIndividualDevicesReportFx.doneData, (_, data) => data);
+  .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
+  .on(fetchIndividualDevicesReportFx.doneData, (_, data) => data)
+  .reset(fetchIndividualDevicesReportFx.failData);
 
 const $isReportLoading = combine(
   fetchIndividualDevicesReportFx.pending,
