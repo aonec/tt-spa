@@ -4,6 +4,7 @@ import {
   SwitchIndividualDeviceReadingsCreateRequest,
   EClosingReason,
   SwitchIndividualDeviceRequest,
+  IndividualDeviceResponse,
 } from './../../../../../myApi';
 import {
   createEvent,
@@ -135,8 +136,11 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  SwitchIndividualDeviceRequest,
-  void
+  {
+    deviceId: number;
+    requestPayload: SwitchIndividualDeviceRequest;
+  },
+  IndividualDeviceResponse | null
 >();
 
 export const checkIndividualDeviceFx = createEffect<

@@ -29,7 +29,7 @@ const domain = createDomain('tasksProfileService');
 const clearAddress = domain.createEvent();
 
 const getApartmentFx = domain.createEffect<
-  { apartmentId: string },
+  FiltersGatePayload,
   ApartmentResponse
 >(fetchApartment);
 const $apartment = domain
@@ -38,7 +38,7 @@ const $apartment = domain
   .reset(clearAddress);
 
 const getHousingStockFx = domain.createEffect<
-  { housingStockId: string },
+  FiltersGatePayload,
   HousingStockResponse
 >(fetchHousingStock);
 const $housingStock = domain
@@ -47,8 +47,8 @@ const $housingStock = domain
   .reset(clearAddress);
 
 const setPipeNodeId = domain.createEvent<{ pipeNodeId: string }>();
-const setHousingMeteringDeviceId = domain.createEvent<{
-  housingMeteringDeviceId: string;
+const setDeviceId = domain.createEvent<{
+  deviceId: string;
 }>();
 
 const $searchState = domain
@@ -57,9 +57,9 @@ const $searchState = domain
     ...prev,
     PipeNodeId: Number(pipeNodeId),
   }))
-  .on(setHousingMeteringDeviceId, (prev, { housingMeteringDeviceId }) => ({
+  .on(setDeviceId, (prev, { deviceId }) => ({
     ...prev,
-    DeviceId: Number(housingMeteringDeviceId),
+    DeviceId: Number(deviceId),
   }));
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
@@ -88,7 +88,7 @@ const $isSpectator = currentUserService.outputs.$currentUser.map((user) => {
   const isSpectator =
     rolesKeys.includes(ESecuredIdentityRoleName.ManagingFirmSpectator) ||
     rolesKeys.includes(
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted
+      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     );
 
   return isSpectator;
@@ -98,7 +98,7 @@ const $isAdministrator = currentUserService.outputs.$currentUser.map((user) => {
   const roles = user?.roles || [];
   const rolesKeys = roles.map(({ key }) => key);
   const isAdministrator = rolesKeys.includes(
-    ESecuredIdentityRoleName.Administrator
+    ESecuredIdentityRoleName.Administrator,
   );
 
   return isAdministrator;
@@ -141,37 +141,35 @@ forward({
 });
 
 sample({
+  source: guard({
+    source: $existingCities,
+    filter: (cities) => Boolean(cities),
+  }),
   clock: guard({
     clock: $searchState,
     filter: (filter) => Boolean(filter.GroupType),
   }),
+  fn: (_, filter) => filter,
   target: searchTasksFx,
 });
 
 split({
   source: guard({
     clock: FiltersGate.state,
-    filter: ({
-      apartmentId,
-      housingStockId,
-      pipeNodeId,
-      housingMeteringDeviceId,
-    }) =>
-      [apartmentId, housingStockId, pipeNodeId, housingMeteringDeviceId].some(
-        Boolean
-      ),
+    filter: ({ apartmentId, housingStockId, pipeNodeId, deviceId }) =>
+      [apartmentId, housingStockId, pipeNodeId, deviceId].some(Boolean),
   }),
   match: {
     housingStock: (ids) => Boolean(ids.housingStockId),
     apartmentId: (ids) => Boolean(ids.apartmentId),
     pipeNodeId: (ids) => Boolean(ids.pipeNodeId),
-    housingMeteringDeviceId: (ids) => Boolean(ids.housingMeteringDeviceId),
+    deviceId: (ids) => Boolean(ids.deviceId),
   },
   cases: {
-    apartmentId: getApartmentFx,
     housingStock: getHousingStockFx,
+    apartmentId: getApartmentFx,
     pipeNodeId: setPipeNodeId,
-    housingMeteringDeviceId: setHousingMeteringDeviceId,
+    deviceId: setDeviceId,
   },
 });
 

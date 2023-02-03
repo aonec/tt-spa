@@ -39,7 +39,7 @@ export const TaskProfileContainer = () => {
   const device = task && task.device;
   const nodeId = device?.nodeId;
 
-  const relatedPipeNode = nodeId ? pipeNode : null;
+  const relatedPipeNode = nodeId && !task?.pipeNode ? pipeNode : null;
 
   const isViewerExecutor =
     Boolean(currentUser?.id) && currentUser?.id === task?.perpetrator?.id;

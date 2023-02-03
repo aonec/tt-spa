@@ -1,7 +1,6 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
-import { Alert } from '01/shared/ui/Alert';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -12,8 +11,6 @@ import { NodeRegistrationTypeLookup } from './EditNodePage.constants';
 import {
   CommonInfoWrapper,
   ContentWrapper,
-  ErrorContentWrapper,
-  LinkText,
 } from './EditNodePage.styled';
 import {
   AddressWrapper,
@@ -24,6 +21,7 @@ import {
 import { EditNodePageProps } from './EditNodePage.types';
 import { EditNodeRelatedDevices } from './EditNodeRelatedDevices';
 import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsService';
+import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 const { TabPane } = TabsSC;
 
 export const EditNodePage: FC<EditNodePageProps> = ({
@@ -43,6 +41,14 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   const isIncorrectConfig =
     node?.validationResult?.errors?.length !== 0 ||
     node?.validationResult?.warnings?.length !== 0;
+
+  const validationResultArray = useMemo(() => {
+    const { validationResult } = node;
+    return [
+      ...(validationResult?.errors || []),
+      ...(validationResult?.warnings || []),
+    ];
+  }, [node]);
 
   return (
     <>
@@ -66,22 +72,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
       >
         <TabPane tab="Общая информация" key={NodeEditGrouptype.CommonInfo}>
           <CommonInfoWrapper>
-            {isIncorrectConfig && (
-              <Alert type="incorrect" color="FC525B">
-                <ErrorContentWrapper>
-                  <span>
-                    Данные с вычислителя не обрабатываются, так как узел не
-                    соответвует выбранной конфигурации. Добавьте недостающий
-                    прибор во вкладке “Подключенные приборы”
-                  </span>
-                  <LinkText
-                    onClick={() => setGrouptype(NodeEditGrouptype.Devices)}
-                  >
-                    Перейти
-                  </LinkText>
-                </ErrorContentWrapper>
-              </Alert>
-            )}
+            {isIncorrectConfig && <IncorrectConfigAlert validationResultArray={validationResultArray}/>}
             <EditNodeCommonInfo
               node={node}
               openAddNewZonesModal={openAddNewZonesModal}
