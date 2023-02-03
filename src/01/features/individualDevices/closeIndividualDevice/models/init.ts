@@ -46,12 +46,13 @@ sample({
       documentsIds: values.documentIds.map((file) => file.fileResponse?.id!),
     })),
     $closingIndividualDevice,
-    (props, device) => ({
-      params: {
+    (props, device) => {
+
+      return {
         deviceId: device?.id!,
         requestBody: props as CloseIndividualDeviceRequestBody,
-      },
-    }),
+      };
+    },
   ),
   clock: closeIndividualDeviceForm.formValidated,
   target: closeIndividualDeviceFx as any,
