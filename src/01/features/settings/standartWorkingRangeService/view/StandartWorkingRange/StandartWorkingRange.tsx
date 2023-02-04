@@ -79,10 +79,10 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
 
   useEffect(() => {
     handleOnSearchDataChange({
-      nodeResourceType: values.nodeResourceType,
-      season: values.season,
+      nodeResourceType: EResourceType.ColdWaterSupply,
+      season: ENodeWorkingRangeSeason.HeatingSeason,
     });
-  }, []);
+  }, [handleOnSearchDataChange]);
 
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
