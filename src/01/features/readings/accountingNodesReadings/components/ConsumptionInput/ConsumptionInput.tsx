@@ -16,6 +16,8 @@ export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
   const [value, setValue] = useState(reading.nonResidentialRoomConsumption);
   const [status, setStatus] = useState<RequestStatusShared>();
 
+  console.log(reading);
+
   useEffect(
     () => setValue(reading.nonResidentialRoomConsumption),
     [reading.nonResidentialRoomConsumption],
@@ -24,7 +26,7 @@ export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
   async function saveConsumption() {
     setStatus('pending');
     try {
-      if (!reading.id) throw 'none id';
+      if (!reading.id) throw new Error('none id');
 
       await updateHousingMeteringDeviceReading({
         id: reading.id,

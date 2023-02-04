@@ -31,7 +31,7 @@ export function useFilesUpload(
     );
   };
 
-  useEffect(() => onChange && onChange(files), [files]);
+  useEffect(() => onChange && onChange(files), [files, onChange]);
 
   async function addFile(file: File) {
     const id = new Date().getTime();

@@ -13,7 +13,7 @@ export const SetNextStageDeadlineDatepicker: FC<SetNextStageDeadlineDatepickerPr
     const formattedDate = date?.format('YYYY-MM-DD');
 
     if (formattedDate) handleDateChange(formattedDate);
-  }, [date]);
+  }, [date, handleDateChange]);
 
   return (
     <FormItem label="Дата">

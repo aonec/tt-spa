@@ -235,7 +235,7 @@ export const CreateResourceDisconnectionForm: FC<
         setFieldValue('endHour', values.startHour);
       }
     }
-  }, [values.startHour, setFieldValue]);
+  }, [values.startHour, setFieldValue, values.endHour, isInterHeatingSeason]);
 
   useEffect(() => {
     if (isInterHeatingSeason) {

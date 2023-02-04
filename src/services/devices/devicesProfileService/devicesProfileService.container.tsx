@@ -43,7 +43,7 @@ export const DevicesProfileContainer = () => {
       });
     }
     prevSearchType.current = devicesSearchType;
-  }, [devicesSearchType, setSerialNumber]);
+  }, [devicesSearchType, setSerialNumber, setDevicesProfileFilter]);
 
   return (
     <>
