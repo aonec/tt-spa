@@ -5,16 +5,30 @@ import { ConfirmationAddingExistingPersonalNumberProps } from './ConfirmationAdd
 
 const formId = 'confirm-adding-existing-personal-number';
 
-export const ConfirmationAddingExistingPersonalNumber: FC<ConfirmationAddingExistingPersonalNumberProps> = ({}) => {
+export const ConfirmationAddingExistingPersonalNumber: FC<
+  ConfirmationAddingExistingPersonalNumberProps
+> = ({
+  isConfirmationModalOpen,
+  samePersonalAccountNumderId,
+  confirmationModalClose,
+  handleForced,
+}) => {
   return (
     <FormModal
-      visible={false}
-      onCancel={() => {}}
+      visible={isConfirmationModalOpen}
+      onCancel={() => confirmationModalClose()}
       title="Данный лицевой счет уже существует"
-      onSubmit={() => {}}
+      onSubmit={() => {
+        handleForced();
+        console.log('forced 1');
+      }}
       submitBtnText="Все равно сохранить!"
       formId={formId}
-      form={<ConfirmationAddingExistingPersonalNumberForm />}
+      form={
+        <ConfirmationAddingExistingPersonalNumberForm
+          samePersonalAccountNumderId={samePersonalAccountNumderId}
+        />
+      }
     />
   );
 };

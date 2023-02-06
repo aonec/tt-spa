@@ -1,11 +1,15 @@
 import {
   $addPersonalNumberRequestStatus,
+  $isForced,
+  $samePersonalAccountNumderId,
   addPersonalNmberSaveButtonClicked,
+  handleConfirmationModalClose,
+  onForced,
   setAddPersonalNumberStatus,
 } from './index';
 import { addHomeowner } from './../../../../_api/homeowners';
 import { addPersonalNumberFx } from '.';
-import { combine, sample } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { HomeownerAccountCreateRequest } from 'myApi';
@@ -16,6 +20,7 @@ sample({
   source: combine(
     personalNumberEditForm.$values,
     $apartment,
+    $isForced,
     (
       {
         personalAccountNumber,
@@ -24,7 +29,8 @@ sample({
         openAt,
         isMainAccountingNumber,
       },
-      apartment
+      apartment,
+      isForced,
     ) => {
       const data: HomeownerAccountCreateRequest = {
         name,
@@ -33,16 +39,40 @@ sample({
         personalAccountNumber: personalAccountNumber!,
         apartmentId: apartment?.id!,
         isMainOnApartment: isMainAccountingNumber,
+        isForced: isForced,
       };
 
       return data;
-    }
+    },
   ),
   clock: addPersonalNmberSaveButtonClicked,
   target: addPersonalNumberFx,
+});
+
+forward({
+  from: onForced,
+  to: addPersonalNmberSaveButtonClicked,
 });
 
 $addPersonalNumberRequestStatus
   .on(addPersonalNumberFx.done, () => 'done')
   .on(addPersonalNumberFx.fail, () => 'failed')
   .on(setAddPersonalNumberStatus, (_, status) => status);
+
+$samePersonalAccountNumderId
+  .on(addPersonalNumberFx.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
+
+$isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
+
+$samePersonalAccountNumderId.reset(handleConfirmationModalClose);
+
+forward({
+  from: addPersonalNumberFx.doneData,
+  to: handleConfirmationModalClose,
+});

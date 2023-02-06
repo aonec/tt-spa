@@ -1,11 +1,16 @@
 import React, { FC } from 'react';
-import { Wrapper } from './ConfirmationAddingExistingPersonalNumberForm.styled';
+import { LinkSC } from './ConfirmationAddingExistingPersonalNumberForm.styled';
 import { ConfirmationAddingExistingPersonalNumberFormProps } from './ConfirmationAddingExistingPersonalNumberForm.types';
 
-export const ConfirmationAddingExistingPersonalNumberForm: FC<ConfirmationAddingExistingPersonalNumberFormProps> = ({}) => {
+export const ConfirmationAddingExistingPersonalNumberForm: FC<
+  ConfirmationAddingExistingPersonalNumberFormProps
+> = ({ samePersonalAccountNumderId }) => {
   return (
-    <Wrapper>
-      <h3> Квартира с таким же л\с: </h3>
-    </Wrapper>
+      <LinkSC
+        to={`/meters/apartments/${samePersonalAccountNumderId}`}
+        target="_blank"
+      >
+        Квартира с таким же л\с: {samePersonalAccountNumderId}
+      </LinkSC>
   );
 };

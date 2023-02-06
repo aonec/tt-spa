@@ -1,20 +1,31 @@
 import { message } from 'antd';
 import React from 'react';
 import { useEffect } from 'react';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import { PersonaNumberActionPage } from '../editPersonalNumber/components/PersonalNumberActionPage';
 import { PersonalNumberEditForm } from '../editPersonalNumber/components/PersonalNumberEditForm';
 import {
   $addPersonalNumberRequestStatus,
+  $isConfirmationModalOpen,
+  $samePersonalAccountNumderId,
   addPersonalNmberSaveButtonClicked,
   addPersonalNumberFx,
+  handleConfirmationModalClose,
+  onForced,
   setAddPersonalNumberStatus,
 } from './models';
 import { useHistory } from 'react-router';
+import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 
 export const AddPersonalNumberPage = () => {
   const pendingAdd = useStore(addPersonalNumberFx.pending);
   const status = useStore($addPersonalNumberRequestStatus);
+  const samePersonalAccountNumderId = useStore($samePersonalAccountNumderId);
+  const isConfirmationModalOpen = useStore($isConfirmationModalOpen);
+
+  const confirmationModalClose = useEvent(handleConfirmationModalClose);
+  const handleForced = useEvent(onForced);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -39,6 +50,12 @@ export const AddPersonalNumberPage = () => {
       onSaveHandler={addPersonalNmberSaveButtonClicked}
     >
       <PersonalNumberEditForm />
+      <ConfirmationAddingExistingPersonalNumber
+        isConfirmationModalOpen={isConfirmationModalOpen}
+        samePersonalAccountNumderId={samePersonalAccountNumderId}
+        confirmationModalClose={() => confirmationModalClose()}
+        handleForced={handleForced}
+      />
     </PersonaNumberActionPage>
   );
 };

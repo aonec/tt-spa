@@ -48,8 +48,33 @@ export type EffectFailDataAxiosError = {
       error: {
         Message: string;
         Text: string;
+      };
+    };
+    status: number;
+  };
+};
+export type EffectFailDataAxiosErrorDataId = {
+  response: {
+    data: {
+      error: {
+        Message: string;
+        Text: string;
         Data: {
           Id: string;
+        };
+      };
+    };
+    status: number;
+  };
+};
+export type EffectFailDataAxiosErrorDataApartmentId = {
+  response: {
+    data: {
+      error: {
+        Message: string;
+        Text: string;
+        Data: {
+          ApartmentId: number;
         };
       };
     };
