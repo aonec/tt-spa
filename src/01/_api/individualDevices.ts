@@ -13,6 +13,7 @@ import {
 export interface CloseIndividualDeviceRequestBody {
   documentsIds: number[];
   closingDate: string | null;
+  closingReason: string | null;
 }
 
 export const closeIndividualDevice = (props: {

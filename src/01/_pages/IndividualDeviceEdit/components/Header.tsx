@@ -24,7 +24,7 @@ export const Header = ({ device }: HeaderInterface) => {
   const { apartmentId } = address || {};
 
   return (
-    <Loader show={loading} size="32">
+    <Loader show={loading} size={32}>
         <GoBack />
         <HeaderWrap>
           <div>
