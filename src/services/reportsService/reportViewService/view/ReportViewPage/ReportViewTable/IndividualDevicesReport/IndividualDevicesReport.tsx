@@ -4,7 +4,6 @@ import {
   ClosingDate,
   PhoneNumber,
   ResourceWrapper,
-  Wrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -43,7 +42,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
     : 'Выберите фильтры для формирования отчета';
 
   return (
-    <Wrapper>
+    <>
       {individualDevicesReportData &&
         Boolean(individualDevicesReportData.length) && (
           <Table
@@ -217,6 +216,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           description={emptyComponentDescription}
         />
       )}
-    </Wrapper>
+    </>
   );
 };
