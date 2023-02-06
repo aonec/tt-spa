@@ -22,7 +22,7 @@ export const Information = ({ device }: InformationInterface) => {
 
   return (
     <ListWrap>
-      <Loader show={loading} size="32">
+      <Loader show={loading} size={32}>
           <ListItem
             title={'Тип ресурса'}
             description={translateResource(resource)}
