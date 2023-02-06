@@ -11,8 +11,6 @@ import * as yup from 'yup';
 import { Button } from 'ui-kit/Button';
 import { UpdateCalculatorRequest } from 'myApi';
 import moment from 'moment';
-import _ from 'lodash';
-import { ItemInterface, items } from '01/tt-components/localBases';
 import { NodesInfo } from './NodesInfo';
 
 export const EditMainInfo: FC<EditMainInfoProps> = ({
@@ -29,19 +27,15 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     entryNumber: node.communicationPipes?.[0]?.entryNumber || null,
   }));
 
-  // const getCurrentInfoId = calculator?.model
-  //   ? _.find<ItemInterface>(items, { label: calculator?.model })
-  //   : undefined;
-
-  const getCurrentInfoId = _.find(items, { label: calculator?.model });
-
-  console.log(calculatorTypesSelectItems)
+  const getCurrentInfoId = calculatorTypesSelectItems.find(
+    (calculatorType) => calculatorType.id === calculator?.infoId,
+  )?.id;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<UpdateCalculatorRequest>({
       initialValues: {
         serialNumber: calculator?.serialNumber,
-        infoId: null,
+        infoId: getCurrentInfoId,
         lastCheckingDate: calculator?.lastCheckingDate,
         futureCheckingDate: calculator?.futureCheckingDate,
       },
