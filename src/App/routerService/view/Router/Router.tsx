@@ -44,6 +44,7 @@ import { EditCalculatorContainer } from 'services/calculators/editCalculatorServ
 import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
 import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
 import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
+import { ReportsContainer } from 'services/reportsService';
 
 const { gates } = objectProfileService;
 
