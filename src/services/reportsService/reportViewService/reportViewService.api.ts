@@ -1,10 +1,13 @@
 import {
   ApartmentActsConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
-  HouseManagementWithStreetsResponse
+  HouseManagementWithStreetsResponse,
 } from 'myApi';
 import { axios } from '01/axios';
-import { IndividualDeviceReportRequestPaload } from './reportViewService.types';
+import {
+  ActsJournalReportRequestPayload,
+  IndividualDeviceReportRequestPaload,
+} from './reportViewService.types';
 import queryString from 'query-string';
 
 export const getAddressesWithHouseManagements = (): Promise<
@@ -24,7 +27,7 @@ export const getIndividualDevicesReport = (
 };
 
 export const getActJournalReport = (
-  payload: IndividualDeviceReportRequestPaload,
+  payload: ActsJournalReportRequestPayload,
 ): Promise<ApartmentActsConstructedReportResponse> => {
   return axios.get('Reports/ApartmentActsReport', {
     params: payload,
