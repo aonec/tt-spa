@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { TrashIconSC } from 'ui-kit/DocumentsService/view/DocumentsLineUpload/DocumentsLineUpload.styled';
 import { UserIcon } from 'ui-kit/icons';
 import {
@@ -31,6 +31,19 @@ export const CommentPanel: FC<CommentPanelProps> = ({
 
   const [newComment, setNewComment] = useState(oldCommentText);
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = useCallback(
+    (text: string | null) => {
+      if ((!text || text.length === 0) && oldCommentText) {
+        return onRemove();
+      }
+      if (!text || text.length === 0) {
+        return;
+      }
+      onEdit(text);
+    },
+    [onEdit, onRemove],
+  );
 
   return (
     <CommentComponent>
@@ -86,7 +99,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
                 size="small"
                 onClick={() => {
                   setIsEditing(false);
-                  onEdit(newComment || '');
+                  handleSubmit(newComment);
                 }}
               >
                 Сохранить
