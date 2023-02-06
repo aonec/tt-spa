@@ -15,14 +15,13 @@ export interface CloseIndividualDeviceRequestBody {
   closingDate: string | null;
 }
 
-export const closeIndividualDevice = ({
-  deviceId,
-  requestBody,
-}: {
+export const closeIndividualDevice = (props: {
   deviceId: number;
   requestBody: CloseIndividualDeviceRequestBody;
-}): Promise<IndividualDeviceResponse | null> =>
-  axios.post(`api/IndividualDevices/${deviceId}/close`, requestBody);
+}): Promise<IndividualDeviceResponse | null> => {
+  const { deviceId, requestBody } = props;
+  return axios.post(`IndividualDevices/${deviceId}/close`, requestBody);
+};
 
 interface WithMagnetSeal {
   magnetSeal: MagnetSeal;

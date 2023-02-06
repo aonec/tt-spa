@@ -10,6 +10,7 @@ import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
 
 export const $closingIndividualDevice =
   createStore<IndividualDeviceListItemResponse | null>(null);
+  
 export const $isCloseIndividualDeviceModalOpen =
   $closingIndividualDevice.map(Boolean);
 
