@@ -115,6 +115,7 @@ export const BaseInfoStage = () => {
 
       fields.newDeviceReadings.onChange(oldDeviceReadings);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCheck, fields.oldDeviceReadings.value]);
 
   const eventFetchSerialNumberForCheck = useEvent(

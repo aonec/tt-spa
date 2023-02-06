@@ -41,6 +41,7 @@ export const CreateIndividualDeviceForm = () => {
 
   useEffect(() => {
     fields.apartmentId.onChange(Number(id));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const onCancel = () =>

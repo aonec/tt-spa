@@ -61,6 +61,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
   useEffect(() => {
     fetchApartment();
     fetchDevices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const address = apartment && getApartmentAddressString(apartment);

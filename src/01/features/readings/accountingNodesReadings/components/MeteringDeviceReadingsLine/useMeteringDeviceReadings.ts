@@ -46,6 +46,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     setLoading(false);
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => void fetchMeteringDeviceReadings(), [id]);
 
   const preparedPreviousReadingsArray = getReadingsArrayWithEmpties(
