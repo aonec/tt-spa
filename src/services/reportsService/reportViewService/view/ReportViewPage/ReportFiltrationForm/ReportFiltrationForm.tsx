@@ -13,15 +13,23 @@ import { SearchIcon } from 'ui-kit/icons';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
 import { getAddresses } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
-import { EIndividualDeviceReportOption, EResourceType } from 'myApi';
+import {
+  EClosingReason,
+  EIndividualDeviceReportOption,
+  EResourceType,
+} from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
+  ClosingReasonsDictionary,
   ReportOptionsDictionary,
   ResourceShortNamesDictionary,
 } from 'dictionaries';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { ReportPeriodDictionary } from './ReportFiltrationForm.constants';
-import { ReportDatePeriod, ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
+import {
+  ReportDatePeriod,
+  ReportFiltrationFormValues,
+} from 'services/reportsService/reportViewService/reportViewService.types';
 
 const { gates } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -133,6 +141,24 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                 ),
               )}
             </Select>
+          </FormItem>
+          <FormItem label="Причины закрытия">
+            <SelectMultiple
+              placeholder="Выберите из списка"
+              value={values.closingReasons || undefined}
+              onChange={(value) => setFieldValue('closingReasons', value)}
+            >
+              {[
+                EClosingReason.Manually,
+                EClosingReason.DeviceBroken,
+                EClosingReason.CertificateIssued,
+                EClosingReason.ByLetter,
+              ].map((reportOption) => (
+                <Select.Option key={reportOption} value={reportOption}>
+                  {ClosingReasonsDictionary[reportOption]}
+                </Select.Option>
+              ))}
+            </SelectMultiple>
           </FormItem>
         </Wrapper>
         <FormItem label="Период">

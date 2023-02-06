@@ -22,6 +22,7 @@ export type ReportFiltrationFormValues = {
   from: null | moment.Moment;
   to: null | moment.Moment;
   reportDatePeriod: null | ReportDatePeriod;
+  closingReasons: EClosingReason[]
 };
 
 export type ReportPayload = {

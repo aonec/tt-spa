@@ -67,6 +67,7 @@ const $filtrationValues = domain
     from: null,
     to: null,
     reportDatePeriod: null,
+    closingReasons: [],
   })
   .on(setFiltrationValues, (_, values) => values);
 

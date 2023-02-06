@@ -17,5 +17,6 @@ export const prepareIndividualDevicesReportData = (
     Resources: values.resources,
     From: values.from?.format('YYYY-MM-DD'),
     To: values.to?.format('YYYY-MM-DD'),
+    ClosingReasons: values.closingReasons,
   };
 };
