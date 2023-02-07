@@ -33,6 +33,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       {
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
+        hidden: !isAdministrator,
       },
       {
         title: 'Выгрузить отчёт по СОИ',

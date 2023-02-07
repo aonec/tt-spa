@@ -43,11 +43,11 @@ sample({
   source: combine(
     closeIndividualDeviceForm.$values.map((values) => ({
       closingDate: values.closingDate,
+      closingReason: values.closingReason,
       documentsIds: values.documentIds.map((file) => file.fileResponse?.id!),
     })),
     $closingIndividualDevice,
     (props, device) => {
-
       return {
         deviceId: device?.id!,
         requestBody: props as CloseIndividualDeviceRequestBody,
@@ -55,7 +55,7 @@ sample({
     },
   ),
   clock: closeIndividualDeviceForm.formValidated,
-  target: closeIndividualDeviceFx as any,
+  target: closeIndividualDeviceFx,
 });
 
 $isClosingIndividualDeviceRequstSuccessfull

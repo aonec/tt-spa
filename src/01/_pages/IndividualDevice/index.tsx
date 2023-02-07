@@ -33,7 +33,7 @@ export const IndividualDevice = () => {
   }, [deviceId, run, tasksRun]);
 
   if (!device || !tasks) {
-    return <Loader size={'32'} show />;
+    return <Loader size={32} show />;
   }
 
   return (
@@ -42,7 +42,7 @@ export const IndividualDevice = () => {
         <div style={{ background: 'red' }}>ОШИБКА</div>
       ) : null}
       {status === 'pending' || status === 'idle' ? (
-        <Loader size={'32'} show />
+        <Loader size={32} show />
       ) : null}
       {status === 'resolved' ? (
         <>

@@ -8,6 +8,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
   stages,
   handleRevertStage,
   isRevertStageLoading,
+  isPerpetrator,
 }) => {
   const stagesView = useMemo(
     () =>
@@ -20,13 +21,13 @@ export const TaskStages: FC<TaskStagesProps> = ({
             key={stage.id}
             stage={stage}
             isLast={stage.number === stages.length}
-            canRevertStage={canRevertStage}
+            isShowRevertStageButton={isPerpetrator && canRevertStage}
             handleRevertStage={handleRevertStage}
             isRevertStageLoading={isRevertStageLoading}
           />
         );
       }),
-    [stages, handleRevertStage, isRevertStageLoading],
+    [stages, handleRevertStage, isRevertStageLoading, isPerpetrator],
   );
 
   return (

@@ -62,28 +62,28 @@ export const Header = ({ device }: HeaderInterface) => {
     : null;
 
   return (
-    <Loader show={loading} size="32">
-        <GoBack />
-        <HeaderWrap>
-          <div>
-            <Title>
-              <IconTT
-                icon={resource.toLocaleLowerCase()}
-                size="24"
-                style={{ marginRight: 8 }}
-              />
-              {`${model} (${serialNumber})`}
-            </Title>
-            <div style={{ display: 'flex' }}>
-              <Subtitle to={`/apartments/${apartmentId}`}>
-                {getApartmentFromFullAddress(address, true)}
-              </Subtitle>
-              <IsActive closingDate={closingDate} />
-            </div>
+    <Loader show={loading} size={32}>
+      <GoBack />
+      <HeaderWrap>
+        <div>
+          <Title>
+            <IconTT
+              icon={resource.toLocaleLowerCase()}
+              size="24"
+              style={{ marginRight: 8 }}
+            />
+            {`${model} (${serialNumber})`}
+          </Title>
+          <div style={{ display: 'flex' }}>
+            <Subtitle to={`/apartments/${apartmentId}`}>
+              {getApartmentFromFullAddress(address, true)}
+            </Subtitle>
+            <IsActive closingDate={closingDate} />
           </div>
+        </div>
 
-          <MenuButtonTT menuButtonArr={menuButtonArr} />
-        </HeaderWrap>
+        <MenuButtonTT menuButtonArr={menuButtonArr} />
+      </HeaderWrap>
     </Loader>
   );
 };

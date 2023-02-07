@@ -7,10 +7,9 @@ import { CalculatorCommentContainerProps } from './calculatorCommentService.type
 const { inputs, gates } = calculatorCommentService;
 const { CalculatorIdGate } = gates;
 
-export const CalculatorCommentContainer: FC<CalculatorCommentContainerProps> = ({
-  comment,
-  calculatorId,
-}) => {
+export const CalculatorCommentContainer: FC<
+  CalculatorCommentContainerProps
+> = ({ comment, calculatorId }) => {
   const { lastModifiedDateTime, lastModifiedUser } = comment || {};
 
   const handleRemoveComment = useEvent(inputs.removeComment);

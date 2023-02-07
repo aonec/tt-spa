@@ -47,6 +47,7 @@ export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
       </Wrapper>
       {inputs.map(({ color, inputType, field, title }) => (
         <CustomInput
+          key={field}
           configuration={{ color, inputType, title }}
           onChange={(value) => handleChange({ value, field })}
           value={String(values[sliderIndex]?.[field] || '')}
