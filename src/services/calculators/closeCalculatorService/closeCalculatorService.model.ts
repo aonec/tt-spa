@@ -50,7 +50,9 @@ closeCalculatorFx.failData.watch((error) => {
       'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
     );
   }
-  message.error(error.response.data.error.Text);
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 export const closeCalculatorService = {

@@ -22,14 +22,17 @@ $isDeviceReportModalVisible.on(
     downloadDeviceReportCancelButtonClicked,
     downloadDevicesReportFx.done,
   ]),
-  (x) => !x
+  (x) => !x,
 );
+
 
 guard({
   clock: downloadDeviceReportConfirmButtonClicked,
-  filter: (searchState): searchState is Partial<CalculatorsListRequestPayload> =>
-    searchState !== null,
   source: $devicesSearchState,
+  filter: (
+    searchState,
+  ): searchState is Partial<CalculatorsListRequestPayload> =>
+    searchState !== null,
   target: downloadDevicesReportFx,
 });
 

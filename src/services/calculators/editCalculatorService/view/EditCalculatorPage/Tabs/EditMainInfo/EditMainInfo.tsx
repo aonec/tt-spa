@@ -33,30 +33,26 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     ? _.find<ItemInterface>(items, { label: calculator?.model })
     : undefined;
 
-  const {
-    values,
-    setFieldValue,
-    errors,
-    handleSubmit,
-  } = useFormik<UpdateCalculatorRequest>({
-    initialValues: {
-      serialNumber: calculator?.serialNumber,
-      infoId: getCurrentInfoId?.value || null,
-      lastCheckingDate: calculator?.lastCheckingDate,
-      futureCheckingDate: calculator?.futureCheckingDate,
-    },
-    validationSchema: yup.object().shape({
-      serialNumber: yup.string().required('Это поле обязательно'),
-      lastCheckingDate: yup.string().required('Это поле обязательно'),
-      futureCheckingDate: yup.string().required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      onSubmit(data);
-    },
-  });
+  const { values, setFieldValue, errors, handleSubmit } =
+    useFormik<UpdateCalculatorRequest>({
+      initialValues: {
+        serialNumber: calculator?.serialNumber,
+        infoId: getCurrentInfoId?.value || null,
+        lastCheckingDate: calculator?.lastCheckingDate,
+        futureCheckingDate: calculator?.futureCheckingDate,
+      },
+      validationSchema: yup.object().shape({
+        serialNumber: yup.string().required('Это поле обязательно'),
+        lastCheckingDate: yup.string().required('Это поле обязательно'),
+        futureCheckingDate: yup.string().required('Это поле обязательно'),
+      }),
+      validateOnBlur: false,
+      validateOnChange: false,
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        onSubmit(data);
+      },
+    });
 
   return (
     <Wrapper>
@@ -90,11 +86,11 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
             onChange={(date) => {
               setFieldValue(
                 'lastCheckingDate',
-                moment(date).format('YYYY-MM-DDTHH:mm:ss')
+                moment(date).format('YYYY-MM-DDTHH:mm:ss'),
               );
               setFieldValue(
                 'futureCheckingDate',
-                moment(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss')
+                moment(date).add(4, 'years').format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
             value={moment(values.lastCheckingDate)}
@@ -108,7 +104,7 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
             onChange={(date) => {
               setFieldValue(
                 'futureCheckingDate',
-                moment(date).format('YYYY-MM-DDTHH:mm:ss')
+                moment(date).format('YYYY-MM-DDTHH:mm:ss'),
               );
             }}
             value={moment(values.futureCheckingDate)}
@@ -118,7 +114,9 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
         </FormItem>
       </GridContainer>
 
-      {nodesTinyData?.length && <NodesInfo nodesTinyData={nodesTinyData} />}
+      {nodesTinyData?.length ? (
+        <NodesInfo nodesTinyData={nodesTinyData} />
+      ) : null}
 
       <Footer>
         <Button type="ghost" onClick={onCancel}>
