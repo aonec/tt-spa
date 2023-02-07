@@ -27,7 +27,6 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { Tabs } from 'ui-kit/Tabs';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { TreeSelect } from 'antd';
 import { SelectSC } from '01/shared/ui/Fields';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
 
@@ -104,7 +103,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
   useEffect(() => {
     values.housingStockId && handleFetchNodes(values.housingStockId);
-  }, [values.housingStockId]);
+  }, [values.housingStockId, handleFetchNodes]);
 
   const preparedNodes = nodes?.reduce((acc, node) => {
     if (node.resource === values.nodeResourceType) {

@@ -8,7 +8,7 @@ export const HousingStocksList: FC<HousingStocksListProps> = ({
   statisticIsLoading,
   handleOpenModal,
   selectedHousingStock,
-  setFileName
+  setFileName,
 }) => {
   const list = useMemo(
     () =>
@@ -23,7 +23,14 @@ export const HousingStocksList: FC<HousingStocksListProps> = ({
           setFileName={setFileName}
         />
       )),
-    [housingStocks, statisticIsLoading]
+    [
+      housingStocks,
+      statisticIsLoading,
+      handleOpenModal,
+      selectHousingStock,
+      selectedHousingStock,
+      setFileName,
+    ],
   );
 
   return <div>{list}</div>;

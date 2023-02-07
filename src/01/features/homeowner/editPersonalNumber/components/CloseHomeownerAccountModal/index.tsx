@@ -43,7 +43,7 @@ export const CloseHomeownerAccountModal = () => {
     }
 
     resetCloseHomeownerRequestStatus();
-  }, [status]);
+  }, [status, history]);
 
   const pending = useStore(closeHomeownerAccountFx.pending);
 

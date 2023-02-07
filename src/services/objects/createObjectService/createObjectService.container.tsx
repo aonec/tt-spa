@@ -52,7 +52,7 @@ export const CreateObjectContainer = () => {
         history.push(`/objects/profile/${data.id}`);
       }
     }).unsubscribe;
-  }, []);
+  }, [history]);
 
   return (
     <>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 
@@ -16,17 +16,17 @@ export const ApartmentReadingsContainer = () => {
   const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
   const handlePauseApartment = useEvent(inputs.handlePauseApartment);
   const handleCancelPauseApartment = useEvent(
-    inputs.handleCancelPauseApartment
+    inputs.handleCancelPauseApartment,
   );
   const openEditPersonalNumberModal = useEvent(
-    inputs.openEditPersonalNumberModal
+    inputs.openEditPersonalNumberModal,
   );
   const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
   const apartment = useStore(outputs.$apartment);
-  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName)
+  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
@@ -34,7 +34,7 @@ export const ApartmentReadingsContainer = () => {
 
       history.push(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
-  }, []);
+  }, [history]);
 
   return (
     <>

@@ -72,7 +72,7 @@ export const NodeItem: FC<NodeItemProps> = ({
           </NodeInfoWrapper>
         </>
       );
-  }, [segmentName, node]);
+  }, [segmentName, node, openDevicesListModal]);
 
   return (
     <Wrapper segmentName={segmentName}>

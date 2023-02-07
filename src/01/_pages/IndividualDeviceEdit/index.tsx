@@ -19,7 +19,7 @@ export const IndividualDeviceEdit = () => {
 
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));
-  }, [deviceId]);
+  }, [deviceId, run]);
 
   if (!device) {
     return <Loader size={32} show />;

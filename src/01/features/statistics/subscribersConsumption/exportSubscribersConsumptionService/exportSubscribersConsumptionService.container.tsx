@@ -26,7 +26,7 @@ export const ExportSubscribersConsumptionContainer: FC<ExportSubscribersConsumpt
 
   useEffect(() => {
     setFilter(filter);
-  }, [filter]);
+  }, [filter, setFilter]);
 
   return (
     <ModalTT

@@ -42,7 +42,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
       const date = moment(readingDate, ReadingDateFormat).add(1, 'month');
       setReadingDate(date.format(ReadingDateFormat));
     }
-  }, [setReadingDate, readingDate]);
+  }, [setReadingDate, readingDate, isCanUp]);
 
   const downMonth = useCallback(() => {
     const date = moment(readingDate, ReadingDateFormat).subtract(1, 'month');

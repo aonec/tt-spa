@@ -7,7 +7,6 @@ import { CommonDataStepProps } from './CommonDataStep.types';
 import {
   EHousingMeteringDeviceType,
   EPipeNodeConfig,
-  EResourceType,
 } from 'myApi';
 import {
   HousingMeteringDeviceDictionary,
