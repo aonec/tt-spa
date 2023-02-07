@@ -1,7 +1,4 @@
 import styled from 'styled-components';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
-
-export const Wrapper = styled.div``;
 
 export const Margin = styled.div`
   margin: 12px 0px 16px 0px;
@@ -72,7 +69,7 @@ export const LoaderWrapper = styled.div`
 
 export const ResourceSelectWrapper = styled.div`
   padding: 0px 10px 0px 10px;
-  width: 260px;
+  width: 160px;
 
   .ant-select {
     width: 100%;

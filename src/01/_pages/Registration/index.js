@@ -1,5 +1,3 @@
- 
-
 import React from 'react';
 import { Input, Form } from 'antd';
 import { useFormik } from 'formik';
@@ -27,7 +25,6 @@ export const Registration = () => {
     touched,
     errors,
     handleBlur,
-    setFieldValue,
   } = useFormik({
     initialValues: {
       password: '',
@@ -121,25 +118,3 @@ export const Registration = () => {
 };
 
 export default Registration;
-
-{
-  /* <ButtonTT */
-}
-{
-  /*  type="submit" */
-}
-{
-  /*  color="blue" */
-}
-{
-  /*  style={{ width: '100%' }} */
-}
-{
-  /* > */
-}
-{
-  /*  Вход в систему */
-}
-{
-  /* </ButtonTT> */
-}

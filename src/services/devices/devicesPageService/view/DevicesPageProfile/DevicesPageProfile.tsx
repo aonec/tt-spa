@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Tabs } from 'antd';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import { TabsSC } from './DevicesPageProfile.styled';

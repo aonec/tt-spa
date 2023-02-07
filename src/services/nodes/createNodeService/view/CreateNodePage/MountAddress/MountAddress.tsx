@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
@@ -85,7 +85,7 @@ export const MountAddress: FC<MountAddressProps> = ({
 
   const prparedStreetsOptions = getPreparedStreetsOptions(
     values.street,
-    existingStreets
+    existingStreets,
   );
 
   return (

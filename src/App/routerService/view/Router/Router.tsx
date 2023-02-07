@@ -39,11 +39,12 @@ import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
-import { ReportsContainer } from 'services/reportsService';
 import { ReportViewContainer } from 'services/reportsService/reportViewService';
 import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
 import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
 import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
+import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
+import { ReportsContainer } from 'services/reportsService';
 
 const { gates } = objectProfileService;
 
@@ -229,6 +230,11 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 <Route
                   path="/adminSettings/operatingRanges/Group"
                   component={GroupWorkingRangeContainer}
+                  exact
+                />
+                <Route
+                  path="/adminSettings/operatingRanges/Unique"
+                  component={UniqueWorkingRangeContainer}
                   exact
                 />
 

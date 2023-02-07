@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
 import { useEvent, useStore } from 'effector-react';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
@@ -24,7 +23,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   editable,
 }) => {
   const individualDevicesList = useStore(
-    outputs.$filteredIndividualDevicesList
+    outputs.$filteredIndividualDevicesList,
   );
   const isLoading = useStore(outputs.$isLoading);
   const isShowClosedDevices = useStore(outputs.$isShowClosedIndividualDevices);
@@ -41,7 +40,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
-    apartment?.housingStock?.managingFirmId
+    apartment?.housingStock?.managingFirmId,
   );
 
   const apartmentId = apartment?.id;

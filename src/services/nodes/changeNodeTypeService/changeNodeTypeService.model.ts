@@ -1,10 +1,6 @@
 import { message } from 'antd';
 import { createDomain, forward, guard } from 'effector';
-import {
-  ENodeRegistrationType,
-  NodeSetRegistrationTypeRequest,
-  PipeNodeResponse,
-} from 'myApi';
+import { NodeSetRegistrationTypeRequest, PipeNodeResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeNodeType } from './changeNodeTypeService.api';
 import { ChangeNodeTypePayload } from './changeNodeTypeService.types';
@@ -24,10 +20,9 @@ const $isOpen = $node.map((node) => Boolean(node));
 const clearPayload = domain.createEvent();
 
 const setNodeTypePayload = domain.createEvent<NodeSetRegistrationTypeRequest>();
-const $changeNodeTypePayload = $node
-  .map<Partial<ChangeNodeTypePayload>>((node) => ({
-    nodeId: node?.id,
-  }))
+const $changeNodeTypePayload = domain
+  .createStore<Partial<ChangeNodeTypePayload>>({})
+  .on($node, (_, node) => ({ nodeId: node?.id }))
   .on(setNodeTypePayload, (oldData, data) => ({
     ...data,
     nodeId: oldData.nodeId,
@@ -41,11 +36,11 @@ const changeNodeTypeFx = domain.createEffect<
 >(fetchChangeNodeType);
 
 changeNodeTypeFx.doneData.watch(() =>
-  message.success('Статус успешно изменён')
+  message.success('Статус успешно изменён'),
 );
 
 changeNodeTypeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 guard({
@@ -65,7 +60,7 @@ guard({
     Boolean(
       payload.nodeId &&
         payload.registrationType &&
-        (payload.technicalTypeRequest || payload.commercialStatusRequest)
+        (payload.technicalTypeRequest || payload.commercialStatusRequest),
     ),
   target: changeNodeTypeFx,
 });

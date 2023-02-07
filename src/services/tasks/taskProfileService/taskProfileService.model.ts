@@ -7,6 +7,7 @@ import {
   TaskCommentResponse,
   TaskResponse,
   PipeNodeResponse,
+  DocumentResponse,
 } from 'myApi';
 import { currentUserService } from 'services/currentUserService';
 import { EffectFailDataAxiosError } from 'types';
@@ -113,7 +114,7 @@ const $isPerpetrator = combine(
     }
     const isPerpetrator = stagePerpetrator.id === user.id;
     return isPerpetrator;
-  }
+  },
 );
 
 const openDeleteDocumentModal = domain.createEvent<number>();
@@ -125,10 +126,11 @@ const $deletedDocumentId = domain
 
 const $deleteDocumentModalIsOpen = $deletedDocumentId.map((id) => Boolean(id));
 
-const $documents = $task
-  .map((task) => task?.documents || [])
+const $documents = domain
+  .createStore<DocumentResponse[]>([])
+  .on(getTasksFx.doneData, (_, task) => task.documents || [])
   .on(deleteDocumentFx.done, (documents, { params: documentId }) =>
-    documents.filter((document) => document.id !== documentId)
+    documents.filter((document) => document.id !== documentId),
   );
 
 const $isLoading = getTasksFx.pending;
@@ -221,7 +223,7 @@ guard({
 const $isPushStageLoading = pushStageFx.pending;
 
 pushStageFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 forward({

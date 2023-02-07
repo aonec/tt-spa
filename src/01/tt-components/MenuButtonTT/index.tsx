@@ -2,7 +2,6 @@ import React from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { Loader } from '01/components';
 
 const StyledMenuButton = styled(Button).attrs((props) => ({
@@ -28,13 +27,6 @@ export interface MenuButtonInterface {
   show: boolean;
   color: string;
   clickable?: boolean;
-}
-
-interface Props {
-  menuButtonArr: MenuButtonInterface[] | null;
-  size?: SizeType;
-  loading?: boolean;
-  disabled?: boolean;
 }
 
 export const MenuButtonTT = (props: any) => {

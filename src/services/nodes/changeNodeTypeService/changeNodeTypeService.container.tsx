@@ -9,7 +9,6 @@ const formId = 'change-node-type-form';
 
 export const ChangeNodeTypeContainer = () => {
   const isOpen = useStore(outputs.$isOpen);
-  const node = useStore(outputs.$node);
 
   const closeModal = useEvent(inputs.closeModal);
   const setNodeTypePayload = useEvent(inputs.setNodeTypePayload);
@@ -19,13 +18,10 @@ export const ChangeNodeTypeContainer = () => {
       title="Изменение типа узла"
       submitBtnText="Изменить тип узла"
       form={
-        node && (
-          <ChangeNodeTypeForm
-            formId={formId}
-            node={node}
-            setNodeTypePaylaod={setNodeTypePayload}
-          />
-        )
+        <ChangeNodeTypeForm
+          formId={formId}
+          setNodeTypePaylaod={setNodeTypePayload}
+        />
       }
       visible={isOpen}
       onCancel={() => closeModal()}

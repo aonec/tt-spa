@@ -1,7 +1,6 @@
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
-import styled from 'styled-components';
 import { DatePickerNative } from '../../../../../../../shared/ui/DatePickerNative';
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
 import InputTT from '../../../../../../../tt-components/InputTT';

@@ -6,7 +6,6 @@ import { ArchivesDataModel } from 'myApi';
 import { requestNodeReadings } from './displayNodesStatisticsService.api';
 import {
   ArchiveReadingsFilter,
-  DateRange,
   FetchArchiveReadingsPayload,
 } from './displayNodesStatisticsService.types';
 

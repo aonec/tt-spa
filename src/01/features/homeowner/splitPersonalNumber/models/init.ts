@@ -17,7 +17,7 @@ import {
 } from '.';
 import { combine, forward, guard, sample } from 'effector';
 import { splitHomeownerAccount } from '01/_api/homeowners';
-import { HomeownerGate, fetchHomeownerFx } from '../../displayHomeowner/models';
+import { HomeownerGate } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { doesApartmentExist } from '01/_api/housingStocks';
@@ -45,7 +45,7 @@ forward({
 $splitPersonalNumberStageNumber
   .on(nextSplitPersonalNumberPage, (value) => (value === 3 ? value : value + 1))
   .on(previousSplitPersonalNumberPage, (value) =>
-    value === 1 ? value : value - 1
+    value === 1 ? value : value - 1,
   );
 
 forward({
@@ -71,7 +71,7 @@ sample({
   }),
   fn: (source) => {
     const homeownerAccount = source.apartment?.homeownerAccounts?.find(
-      (account) => account.id === source.gateState.id
+      (account) => account.id === source.gateState.id,
     );
     const form = {
       phoneNumber: homeownerAccount?.phoneNumber || '',
@@ -94,7 +94,7 @@ sample({
       newApartmentHomeownerAccount,
       transferedDevices,
       gateState,
-      apartment
+      apartment,
     ) => {
       const accountForClosing = {
         HomeownerAccountId: gateState.id,
@@ -105,7 +105,7 @@ sample({
         apartmentId: apartment?.id,
         ...splittedApartmentHomeownerAccount,
         openAt: moment(splittedApartmentHomeownerAccount.openAt).toISOString(
-          true
+          true,
         ),
       };
 
@@ -130,7 +130,7 @@ sample({
         individualDeviceIdsForSwitch,
         newApartment,
       };
-    }
+    },
   ),
   clock: splitPersonalNumber,
   fn: (store, clock) =>
@@ -155,7 +155,7 @@ sample({
     (apartment, apartmentNumber) => ({
       housingStockId: apartment?.housingStock?.id!,
       apartmentNumber: apartmentNumber!,
-    })
+    }),
   ),
   target: checkApartmentExistingFx,
 });
