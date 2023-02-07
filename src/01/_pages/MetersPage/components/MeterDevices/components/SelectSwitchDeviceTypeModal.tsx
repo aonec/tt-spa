@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ButtonTT } from '01/tt-components';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Footer as ModalFooter,
   Header as ModalHeader,
@@ -24,13 +24,13 @@ export const SelectSwitchDeviceTypeModal = ({
 }) => {
   const history = useHistory();
 
-  const [
-    selectedSwitchType,
-    setSelectedSwitchType,
-  ] = useState<SwitchType | null>(null);
+  const [selectedSwitchType, setSelectedSwitchType] =
+    useState<SwitchType | null>(null);
 
   const next = (to: SwitchType) => () =>
-    history.push(`/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`);
+    history.push(
+      `/apartment/${apartmentId}/individualDevice/${deviceId}/${to}`,
+    );
 
   const setSwitchType = (to: SwitchType) => () =>
     to === selectedSwitchType

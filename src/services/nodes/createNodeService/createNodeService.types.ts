@@ -1,4 +1,4 @@
-import { CreateCommunicationPipeRequest, CreatePipeNodeRequest } from 'myApi';
+import { CreatePipeNodeRequest } from 'myApi';
 import { CommunicationPipePayload } from '../addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 
 export type CreateNodeFormPayload = Omit<
@@ -9,5 +9,5 @@ export type CreateNodeFormPayload = Omit<
 };
 
 export type UpdateNodeFormPayloadCallback = (
-  payload: CreateNodeFormPayload
+  payload: CreateNodeFormPayload,
 ) => void;

@@ -1,5 +1,4 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { Tabs } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
@@ -26,10 +25,10 @@ export const StatisticsPage = () => {
   const { fields } = useForm(subscribersConsumptionFindForm);
 
   const handleOpenExportStatisticModal = useEvent(
-    exportSubscribersConsumptionService.inputs.openModal
+    exportSubscribersConsumptionService.inputs.openModal,
   );
   const setFileName = useEvent(
-    exportSubscribersConsumptionService.inputs.setFileName
+    exportSubscribersConsumptionService.inputs.setFileName,
   );
 
   const menuButtons = useMemo(() => {

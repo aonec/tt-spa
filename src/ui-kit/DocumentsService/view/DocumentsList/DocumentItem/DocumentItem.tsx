@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React, { FC, useCallback, useMemo } from 'react';
 import { saveDocument } from 'ui-kit/DocumentsService/DocumentsService.api';
 import { DateIcon } from 'ui-kit/icons';
@@ -22,12 +21,12 @@ export const DocumentItem: FC<DocumentItemProps> = ({
 }) => {
   const documentDate = useMemo(
     () => getTimeStringByUTC(document.uploadingTime),
-    [document.uploadingTime]
+    [document.uploadingTime],
   );
 
   const handleRemoveDocument = useCallback(
     () => removeDocument && removeDocument(document.id),
-    [document.id, removeDocument]
+    [document.id, removeDocument],
   );
 
   const handleSaveDocument = useCallback(() => {

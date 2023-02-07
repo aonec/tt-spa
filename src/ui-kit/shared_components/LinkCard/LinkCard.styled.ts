@@ -7,7 +7,8 @@ export const Wrapper = styled.div`
   justify-content: space-between;
 
   padding: 14px 16px;
-  box-shadow: 0 4px 4px rgba(0, 0, 20, 0.16);
+  box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
+    0px 8px 16px rgba(78, 93, 146, 0.08);
   border-radius: 4px;
   width: 100%;
   min-width: 312px;

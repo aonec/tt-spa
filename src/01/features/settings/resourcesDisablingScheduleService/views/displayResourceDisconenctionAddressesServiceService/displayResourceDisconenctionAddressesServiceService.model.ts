@@ -4,10 +4,9 @@ import {
   HousingStockShortResponse,
   ResourceDisconnectingResponse,
 } from 'myApi';
-import { StreetWithHousingStocks } from './displayResourceDisconenctionAddressesServiceService.types';
 
 const domain = createDomain(
-  'displayResourceDisconenctionAddressesServiceService'
+  'displayResourceDisconenctionAddressesServiceService',
 );
 
 const openModal = domain.createEvent<ResourceDisconnectingResponse>();
@@ -18,15 +17,17 @@ const $disconnection = domain
   .on(openModal, (_, disconnection) => disconnection)
   .reset(closeModal);
 
-const $addresses = $disconnection
-  .map((disconnecion) => {
-    if (!disconnecion) {
+const $addresses = domain
+  .createStore<[string, HousingStockShortResponse[]][]>([])
+  .on(openModal, (_, disconnection) => {
+    if (!disconnection) {
       return [];
     }
-    const housingStocks = disconnecion.housingStocks || [];
+
+    const housingStocks = disconnection.housingStocks || [];
     const preparedHousingStocks = groupBy(
       housingStocks,
-      'address.mainAddress.street'
+      'address.mainAddress.street',
     );
     return Object.entries(preparedHousingStocks);
   })

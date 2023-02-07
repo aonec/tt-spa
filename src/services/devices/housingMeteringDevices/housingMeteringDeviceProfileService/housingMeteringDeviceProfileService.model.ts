@@ -1,4 +1,4 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
 import {
@@ -47,7 +47,7 @@ sample({
   clock: guard({
     source: combine(
       $housingMeteringDevice,
-      FetchHousingMeteringDeviceGate.state
+      FetchHousingMeteringDeviceGate.state,
     ),
     clock: FetchHousingMeteringDeviceGate.open,
     filter: ([device, { deviceId }]) => {

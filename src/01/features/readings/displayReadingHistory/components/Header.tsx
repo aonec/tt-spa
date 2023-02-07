@@ -1,15 +1,12 @@
-import { $apartment } from '01/features/apartments/displayApartment/models';
-import { HousingStockAddress } from '01/features/individualDevices/addIndividualDevice/components/HousingStockAddress';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
+import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { IsActiveBool } from '01/tt-components/IsActive';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 
 interface Props {
@@ -19,7 +16,7 @@ interface Props {
 export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
 
-  const address = getApartmentFromFullAddress(device?.address|| null, false);
+  const address = getApartmentFromFullAddress(device?.address || null, false);
 
   const checkingDates = useDeviceCheckingDates();
 
@@ -56,7 +53,7 @@ export function useDeviceCheckingDates() {
   return (
     device &&
     `${moment(device.lastCheckingDate).format('DD.MM.YYYY')} — ${moment(
-      device.futureCheckingDate
+      device.futureCheckingDate,
     ).format('DD.MM.YYYY')}`
   );
 }

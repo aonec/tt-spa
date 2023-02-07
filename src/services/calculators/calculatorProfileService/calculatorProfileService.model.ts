@@ -5,6 +5,7 @@ import { fetchCalculator } from './calculatorProfileService.api';
 import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';
 import { meteringDevicesService } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
+import { calculatorCommentService } from './CalculatorProfile/calculatorCommentService';
 
 const domain = createDomain('calculatorProfileService');
 
@@ -25,6 +26,21 @@ const getCalculatorFx = domain.createEffect<number, CalculatorResponse>(
 const $calculator = domain
   .createStore<CalculatorResponse | null>(null)
   .on(getCalculatorFx.doneData, (_, device) => device)
+  .on(calculatorCommentService.inputs.commentEdited, (calculator, comment) => {
+    if (calculator) {
+      return {
+        ...calculator,
+        comment,
+      };
+    }
+    return null;
+  })
+  .on(calculatorCommentService.inputs.commentDelited, (calculator) => {
+    if (calculator) {
+      return { ...calculator, comment: null };
+    }
+    return null;
+  })
   .reset(clearStore);
 
 const $isLoading = getCalculatorFx.pending;

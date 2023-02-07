@@ -16,11 +16,6 @@ const $userRoles = domain
   .createStore<ESecuredIdentityRoleNameStringDictionaryItem[] | null>(null)
   .on(fetchUserRolesFx.doneData, (_, userRoles) => userRoles);
 
-const $isFetchingUserRolesFailed = domain
-  .createStore(false)
-  .on(fetchUserRolesFx.failData, () => true)
-  .reset(fetchUserRolesFx.doneData);
-
 forward({
   from: guard({
     clock: UserRolesGate.open,
