@@ -33,7 +33,7 @@ fetchReportFx.failData.watch(async (error) => {
   const jsonData = await error.response.data.text();
   const errObject = JSON.parse(jsonData);
 
-  return message.error(errObject.error.Message);
+  return message.error(errObject.error.Text || errObject.error.Message);
 });
 
 const $isModalOpen = domain
