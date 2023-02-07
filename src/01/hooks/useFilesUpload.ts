@@ -1,5 +1,5 @@
 import { uploadFile } from '01/_api/upload';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DocumentResponse } from './../../myApi';
 
 export interface FileData {
@@ -14,24 +14,29 @@ interface FileUploader {
   files: FileData[];
   addFile: (file: File) => Promise<void>;
   removeFile: (id: number) => Promise<void>;
-  clearFiles: () => void;
   pendingProcessing: boolean;
 }
 
 export function useFilesUpload(
   onChange?: (files: FileData[]) => void,
-  type?: string
+  type?: string,
+  filesInit?: FileData[],
 ): FileUploader {
-  const [files, setFiles] = useState<FileData[]>([]);
+  const [files, setFiles] = useState<FileData[]>(filesInit || []);
   const pendingProcessing = files.some((elem) => elem.status === 'pending');
 
   const rewriteFile = (id: number, callback: (file: FileData) => FileData) => {
-    setFiles((prev) =>
-      rewriteArrayElem(prev, (file) => file.id === id, callback)
-    );
-  };
+    setFiles((prev) => {
+      const documents = rewriteArrayElem(
+        prev,
+        (file) => file.id === id,
+        callback,
+      );
 
-  useEffect(() => onChange && onChange(files), [files, onChange]);
+      onChange && onChange(documents);
+      return documents;
+    });
+  };
 
   async function addFile(file: File) {
     const id = new Date().getTime();
@@ -42,7 +47,12 @@ export function useFilesUpload(
       status: 'pending',
     };
 
-    setFiles((prev) => [newFilesListItem, ...prev]);
+    setFiles((prev) => {
+      const documents = [newFilesListItem, ...prev];
+      onChange && onChange(documents);
+
+      return documents;
+    });
 
     try {
       const res = await uploadFile(file, type);
@@ -77,6 +87,7 @@ export function useFilesUpload(
 
       setFiles((prev) => {
         const newFiles = prev.filter((elem) => elem.id !== id);
+        onChange && onChange(newFiles);
 
         return newFiles;
       });
@@ -93,7 +104,6 @@ export function useFilesUpload(
     files,
     addFile,
     removeFile,
-    clearFiles: () => setFiles([]),
     pendingProcessing,
   };
 }
@@ -101,5 +111,5 @@ export function useFilesUpload(
 const rewriteArrayElem = <T>(
   prev: T[],
   checker: (elem: T) => boolean,
-  getNewElem: (elem: T) => T
+  getNewElem: (elem: T) => T,
 ): T[] => prev.map((elem) => (checker(elem) ? getNewElem(elem) : elem));

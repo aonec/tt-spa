@@ -56,7 +56,7 @@ export const BaseInfoStage = () => {
   const modelNames = useStore($individualDevicesNames);
   const contractors = useStore($contractors);
   const device = useStore($individualDevice);
-  const { fields } = useForm(addIndividualDeviceForm);
+  const { fields, set } = useForm(addIndividualDeviceForm);
   const type = useStore(
     SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
@@ -113,10 +113,9 @@ export const BaseInfoStage = () => {
     if (isCheck) {
       const oldDeviceReadings = fields.oldDeviceReadings.value;
 
-      fields.newDeviceReadings.onChange(oldDeviceReadings);
+      set({ newDeviceReadings: oldDeviceReadings });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCheck, fields.oldDeviceReadings.value]);
+  }, [isCheck, fields.oldDeviceReadings.value, set]);
 
   const eventFetchSerialNumberForCheck = useEvent(
     handleFetchSerialNumberForCheck,

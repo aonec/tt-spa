@@ -11,6 +11,7 @@ import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
   addIndividualDeviceForm,
+  ApartmentIdGate,
   resetCreationRequestStatus,
   SwitchIndividualDeviceGate,
   switchStageButtonClicked,
@@ -29,7 +30,7 @@ export const CreateIndividualDeviceForm = () => {
 
   const pages = [<BaseInfoStage />, <DocumentsStage />];
 
-  const { fields, submit } = useForm(addIndividualDeviceForm);
+  const { submit } = useForm(addIndividualDeviceForm);
 
   const type = useStore(
     SwitchIndividualDeviceGate.state.map(({ type }) => type),
@@ -52,31 +53,29 @@ export const CreateIndividualDeviceForm = () => {
     resetCreationRequestStatus();
   }, [individualDeviceCreationRequestStatus, history, type]);
 
-  useEffect(() => {
-    fields.apartmentId.onChange(Number(id));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
   const onCancel = () =>
     stageNumber === 0 ? history.goBack() : switchStageButtonClicked(0);
 
   return (
-    <Wrap>
-      {pages[stageNumber]}
+    <>
+      <ApartmentIdGate apartmentId={Number(id)} />
+      <Wrap>
+        {pages[stageNumber]}
 
-      <Space style={{ height: 20 }} />
+        <Space style={{ height: 20 }} />
 
-      <RightAlign>
-        <Spaces flex>
-          <ButtonTT color="white" onClick={onCancel}>
-            {stageNumber === 0 ? 'Отмена' : 'Назад'}
-          </ButtonTT>
-          <ButtonTT color="blue" onClick={submit}>
-            Далее
-          </ButtonTT>
-        </Spaces>
-      </RightAlign>
-    </Wrap>
+        <RightAlign>
+          <Spaces flex>
+            <ButtonTT color="white" onClick={onCancel}>
+              {stageNumber === 0 ? 'Отмена' : 'Назад'}
+            </ButtonTT>
+            <ButtonTT color="blue" onClick={submit}>
+              Далее
+            </ButtonTT>
+          </Spaces>
+        </RightAlign>
+      </Wrap>
+    </>
   );
 };
 

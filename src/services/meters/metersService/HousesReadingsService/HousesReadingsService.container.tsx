@@ -57,8 +57,7 @@ export const HousesReadingsContainer = () => {
     return () => {
       window.removeEventListener('scroll', onScrollDown, true);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadNextPageOfIndividualDevicesList, history]);
+  }, [loadNextPageOfIndividualDevicesList, history, isLoadingIndividualDevices]);
 
   useEffect(() => {
     return inputs.handleHousingStockLoaded.watch((housingStock) => {

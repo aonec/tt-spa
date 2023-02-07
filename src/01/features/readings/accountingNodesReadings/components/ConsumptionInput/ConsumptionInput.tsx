@@ -16,8 +16,6 @@ export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
   const [value, setValue] = useState(reading.nonResidentialRoomConsumption);
   const [status, setStatus] = useState<RequestStatusShared>();
 
-  console.log(reading);
-
   useEffect(
     () => setValue(reading.nonResidentialRoomConsumption),
     [reading.nonResidentialRoomConsumption],
