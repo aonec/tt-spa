@@ -86,7 +86,7 @@ const $filtrationValues = domain
     actResources: [],
   })
   .on(setFiltrationValues, (_, values) => values)
-  .reset(ReportViewGate.close);
+  // .reset(ReportViewGate.close);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
@@ -133,8 +133,10 @@ guard({
     clock: loadActJournalReport.map(({ values }) => values),
     fn: prepareActJournalReportData,
   }),
-  filter: (payload): payload is ActsJournalReportRequestPayload =>
-    Boolean(payload),
+  filter: (payload): payload is ActsJournalReportRequestPayload => {
+    console.log(payload);
+    return Boolean(payload);
+  },
   target: fetchActJournalReportFx,
 });
 

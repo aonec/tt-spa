@@ -74,7 +74,7 @@ export const prepareActJournalReportData = (
     to: values.to,
   });
 
-  if (!values.housingStockId && !values.housingStockId) return null;
+  if (!values.housingStockId && !values.houseManagement) return null;
 
   return {
     HousingStockId: values.housingStockId || undefined,
