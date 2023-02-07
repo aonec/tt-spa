@@ -171,7 +171,6 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               />
               <ActsCardContainer
                 apartmentId={String(apartment.id)}
-                housingStockId={String(apartment.housingStock?.id)}
               />
             </CardsWrapper>
           </ContentWrapper>

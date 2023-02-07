@@ -56,12 +56,6 @@ export const BaseInfoStage = () => {
     field.onChange(e.target.value);
   };
 
-  const onChangeDateField = (name: string) => (value: moment.Moment | null) => {
-    if (!value || !(fields as any)[name]) return;
-
-    (fields as any)[name].onChange(value.toISOString(true));
-  };
-
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.startupReadings.onChange({
       ...fields.startupReadings.value,
@@ -174,7 +168,7 @@ export const BaseInfoStage = () => {
   );
 
   const eventFetchSerialNumberForCheck = useEvent(
-    handleFetchSerialNumberForCheck
+    handleFetchSerialNumberForCheck,
   );
   const serialNumberForChecking = useStore($serialNumberForChecking);
 
@@ -200,9 +194,8 @@ export const BaseInfoStage = () => {
 
               if (!value) return;
 
-              const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
-                value
-              );
+              const { bitDepth, scaleFactor } =
+                getBitDepthAndScaleFactor(value);
 
               fields.bitDepth.onChange(bitDepth);
               fields.scaleFactor.onChange(scaleFactor);

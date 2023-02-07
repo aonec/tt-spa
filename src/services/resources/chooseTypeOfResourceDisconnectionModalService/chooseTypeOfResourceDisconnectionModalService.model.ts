@@ -15,16 +15,20 @@ const $isModalOpen = domain
 
 const setInterHeatingSeason = domain.createEvent();
 const clearInterHeatingSeason = domain.createEvent();
-const $isInterHeatingSeason = editResourceDisconnectionService.outputs.$resourceDisconnection
-  .map((disconnection) => {
-    if (!disconnection) {
-      return false;
-    }
-    const isInterHeatingSeason =
-      disconnection.disconnectingType?.value ===
-      EResourceDisconnectingType.InterHeatingSeason;
-    return isInterHeatingSeason;
-  })
+const $isInterHeatingSeason = domain
+  .createStore(false)
+  .on(
+    editResourceDisconnectionService.outputs.$resourceDisconnection,
+    (_, disconnection) => {
+      if (!disconnection) {
+        return false;
+      }
+      const isInterHeatingSeason =
+        disconnection.disconnectingType?.value ===
+        EResourceDisconnectingType.InterHeatingSeason;
+      return isInterHeatingSeason;
+    },
+  )
   .on(setInterHeatingSeason, () => true)
   .reset(clearInterHeatingSeason);
 
