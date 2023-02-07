@@ -75,6 +75,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
               filtrationValues={filtrationValues}
               formId={formId}
               setFiltrationValues={setFiltrationValues}
+              reportType={reportType}
             />
           }
         >

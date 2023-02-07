@@ -3,6 +3,7 @@ import {
   HouseManagementWithStreetsResponse,
 } from 'myApi';
 import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
+import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 
 export type ReportFiltrationFormProps = {
   existingCities: string[] | null;
@@ -11,6 +12,7 @@ export type ReportFiltrationFormProps = {
   filtrationValues: ReportFiltrationFormValues;
   formId: string;
   setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
+  reportType: ReportType;
 };
 
 export type Address = {

@@ -1,14 +1,18 @@
 import moment from 'moment';
+import { ApartmentActsConstructedReportResponse } from 'myApi';
 import {
   IndividualDeviceReportRequestPaload,
   ReportDatePeriod,
   ReportFiltrationFormValues,
+  ActsJournalReportRequestPayload,
 } from './reportViewService.types';
 
 const getDatePeriod = (
-  reportDatePeriod: ReportDatePeriod,
+  reportDatePeriod: ReportDatePeriod | null,
   dates: { from: moment.Moment | null; to: moment.Moment | null },
 ) => {
+  if (!reportDatePeriod) return null;
+
   let from = moment(),
     to = moment();
 
@@ -43,12 +47,10 @@ export const prepareIndividualDevicesReportData = (
 ): IndividualDeviceReportRequestPaload | null => {
   if (!values.reportOption) return null;
 
-  const dates =
-    values.reportDatePeriod &&
-    getDatePeriod(values.reportDatePeriod, {
-      from: values.from,
-      to: values.to,
-    });
+  const dates = getDatePeriod(values.reportDatePeriod, {
+    from: values.from,
+    to: values.to,
+  });
 
   return {
     HousingStockId: values.housingStockId || undefined,
@@ -60,5 +62,24 @@ export const prepareIndividualDevicesReportData = (
     From: dates?.from,
     To: dates?.to,
     ClosingReasons: values.closingReasons,
+  };
+};
+
+export const prepareActJournalReportData = (
+  values: ReportFiltrationFormValues,
+): ActsJournalReportRequestPayload => {
+  const dates = getDatePeriod(values.reportDatePeriod, {
+    from: values.from,
+    to: values.to,
+  });
+
+  return {
+    HousingStockId: values.housingStockId || undefined,
+    HouseManagementId: values.housingStockId
+      ? undefined
+      : values.houseManagement || undefined,
+    From: dates?.from,
+    To: dates?.to,
+    Resources: values.actResources,
   };
 };
