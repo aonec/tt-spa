@@ -70,6 +70,8 @@ export const Login = () => {
         email: preparedEmail,
         password,
       });
+      setLoading(false);
+
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       const { redirectUrl } = parse(search);
       if (redirectUrl) {
@@ -78,9 +80,9 @@ export const Login = () => {
 
       replace(res.roles.includes('Operator') ? '/meters' : '/tasks');
     } catch (error) {
-      message.error('Корректно введите логин и пароль');
-    } finally {
       setLoading(false);
+
+      message.error('Корректно введите логин и пароль');
     }
   }
 

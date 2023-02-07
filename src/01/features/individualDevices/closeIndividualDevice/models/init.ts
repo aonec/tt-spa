@@ -1,4 +1,7 @@
-import { closeIndividualDevice } from './../../../../_api/individualDevices';
+import {
+  CloseIndividualDeviceRequestBody,
+  closeIndividualDevice,
+} from './../../../../_api/individualDevices';
 import { forward, sample, combine } from 'effector';
 import {
   closingIndividualDeviceButtonClicked,
@@ -17,7 +20,7 @@ $closingIndividualDevice
   .on(closingIndividualDeviceButtonClicked, (_, id) => id)
   .reset(
     closeClosingIndividualDeviceModalButtonClicked,
-    closeIndividualDeviceFx.doneData
+    closeIndividualDeviceFx.doneData,
   );
 
 forward({
@@ -39,17 +42,20 @@ forward({
 sample({
   source: combine(
     closeIndividualDeviceForm.$values.map((values) => ({
-      ...values,
-      documentIds: values.documentIds.map((file) => file.fileResponse?.id!),
+      closingDate: values.closingDate,
+      closingReason: values.closingReason,
+      documentsIds: values.documentIds.map((file) => file.fileResponse?.id!),
     })),
     $closingIndividualDevice,
-    (props, device) => ({
-      ...props,
-      deviceId: device?.id!,
-    })
+    (props, device) => {
+      return {
+        deviceId: device?.id!,
+        requestBody: props as CloseIndividualDeviceRequestBody,
+      };
+    },
   ),
   clock: closeIndividualDeviceForm.formValidated,
-  target: closeIndividualDeviceFx as any,
+  target: closeIndividualDeviceFx,
 });
 
 $isClosingIndividualDeviceRequstSuccessfull

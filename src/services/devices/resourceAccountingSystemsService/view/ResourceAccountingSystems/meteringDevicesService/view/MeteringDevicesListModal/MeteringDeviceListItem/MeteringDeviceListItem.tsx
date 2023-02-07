@@ -6,6 +6,7 @@ import {
   AdditionalInfo,
   BaseInfo,
   Model,
+  ModelWrapper,
   SerialNumber,
   WarningIconWrapper,
   Wrapper,
@@ -18,8 +19,10 @@ export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
   return (
     <Wrapper>
       <BaseInfo>
-        <Model>{device.model}</Model>
-        <SerialNumber>({device.serialNumber})</SerialNumber>
+        <ModelWrapper to={`/housingMeteringDevices/${device.id}`}>
+          <Model>{device.model}</Model>
+          <SerialNumber>({device.serialNumber})</SerialNumber>
+        </ModelWrapper>
         {device.hasActiveTasks && (
           <WarningIconWrapper>
             <WarningIcon />

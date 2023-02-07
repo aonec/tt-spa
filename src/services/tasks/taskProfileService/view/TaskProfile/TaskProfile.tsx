@@ -131,6 +131,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               handleRevertStage={handleRevertStage}
               stages={stages || []}
               isRevertStageLoading={isRevertStageLoading}
+              isPerpetrator={isPerpetrator}
             />
           </TaskWrapper>
         </>

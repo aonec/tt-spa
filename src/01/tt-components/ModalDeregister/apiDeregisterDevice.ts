@@ -8,7 +8,7 @@ export async function deregisterDevice(form: any) {
     return res;
   } catch (error) {
     alert('Что-то пошло не так: попробуйте еще раз');
-    throw new Error(error);
+    throw error;
   }
 }
 

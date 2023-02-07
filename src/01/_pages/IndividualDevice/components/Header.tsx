@@ -62,7 +62,7 @@ export const Header = ({ device }: HeaderInterface) => {
     : null;
 
   return (
-    <Loader show={loading} size="32">
+    <Loader show={loading} size={32}>
       <GoBack />
       <HeaderWrap>
         <div>
