@@ -4,6 +4,7 @@ import { CalculatorResponse } from 'myApi';
 import { fetchCalculator } from './calculatorProfileService.api';
 import { CalculatorProfileGrouptype } from './calculatorProfileService.constants';
 import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';
+import { meteringDevicesService } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 import { calculatorCommentService } from './CalculatorProfile/calculatorCommentService';
 
 const domain = createDomain('calculatorProfileService');
@@ -67,6 +68,7 @@ forward({
   to: clearStore,
 });
 
+
 export const calculatorProfileService = {
   inputs: {
     setCalculatorGrouptype,
@@ -75,6 +77,7 @@ export const calculatorProfileService = {
     handleFecthCalculator,
     handleConsumptionReportModalOpen:
       consumptionReportCalculatorService.inputs.handleModalOpen,
+    openDevicesListModal: meteringDevicesService.inputs.openDevicesListModal,
   },
   outputs: {
     $calculator,

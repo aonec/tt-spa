@@ -1,5 +1,11 @@
-import { PipeNodeIntoCalculatorResponse } from 'myApi';
+import {
+  NodeOnHousingStockResponse,
+  PipeNodeIntoCalculatorResponse,
+} from 'myApi';
 
 export type RelatedNodesListProps = {
-  nodes: PipeNodeIntoCalculatorResponse[];
+  nodes: PipeNodeIntoCalculatorResponse[] | null;
+  openDevicesListModal: (
+    payload: PipeNodeIntoCalculatorResponse | NodeOnHousingStockResponse,
+  ) => void;
 };

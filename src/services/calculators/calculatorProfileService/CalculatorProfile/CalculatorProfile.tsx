@@ -25,7 +25,6 @@ import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
 import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
-import { RelatedDevicesList } from './RelatedDevicesList';
 import { RelatedNodesList } from './RelatedNodesList';
 
 const { TabPane } = Tabs;
@@ -37,6 +36,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenCloseCalculatorModal,
   handleOpenCheckCalculatorModal,
   handleOpenConsumptionReportModal,
+  openDevicesListModal,
 }) => {
   const history = useHistory();
 
@@ -54,22 +54,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     numberOfTasks,
     comment,
   } = calculator;
-
-  const relatedDevices = useMemo(
-    () =>
-      (nodes || [])
-        .map((node) => {
-          const { communicationPipes, number } = node;
-
-          const devices = (communicationPipes || [])
-            .map((pipe) => pipe.devices || [])
-            .flat();
-
-          return { devices, nodeNumber: number };
-        })
-        .flat(),
-    [nodes],
-  );
 
   const headerTitle = useMemo(
     () => `${model} (${serialNumber})`,
@@ -147,10 +131,10 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
       ),
       [CalculatorProfileGrouptype.Nodes]: (
-        <RelatedNodesList nodes={nodes || []} />
-      ),
-      [CalculatorProfileGrouptype.Related]: (
-        <RelatedDevicesList pipeDevices={relatedDevices} />
+        <RelatedNodesList
+          nodes={nodes}
+          openDevicesListModal={openDevicesListModal}
+        />
       ),
       [CalculatorProfileGrouptype.Documents]: (
         <NodeDocumentsList documents={documents || []} />
@@ -185,10 +169,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           key={CalculatorProfileGrouptype.Connection}
         />
         <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes} />
-        <TabPane
-          tab="Подключенные приборы"
-          key={CalculatorProfileGrouptype.Related}
-        />
         <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
       </TabsSC>
       <ContentWrapper>
