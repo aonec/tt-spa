@@ -2,6 +2,7 @@ import { createDomain, forward } from 'effector';
 import { getReport } from './consumptionReportCalculatorService.api';
 import { GetCalculatorReportParams } from './consumptionReportCalculatorService.types';
 import { message } from 'antd';
+import { BlodResponseErrorType } from 'types';
 
 const domain = createDomain('consumptionReportCalculatorService');
 
@@ -13,7 +14,7 @@ const handleSubmit = domain.createEvent<GetCalculatorReportParams>();
 const fetchReportFx = domain.createEffect<
   GetCalculatorReportParams,
   void,
-  { message: string }
+  BlodResponseErrorType
 >(getReport);
 
 forward({
@@ -21,8 +22,18 @@ forward({
   to: fetchReportFx,
 });
 
-fetchReportFx.failData.watch((error) => {
-  message.error(error.message);
+fetchReportFx.failData.watch(async (error) => {
+  const newErr = { ...error };
+
+  if (newErr.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(errObject.error.Message);
 });
 
 const $isModalOpen = domain
