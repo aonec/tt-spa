@@ -72,9 +72,8 @@ export const Login = () => {
       });
       setLoading(false);
 
-      // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       const { redirectUrl } = parse(search);
-      if (redirectUrl) {
+      if (redirectUrl && redirectUrl !== '/login') {
         return window.location.replace(redirectUrl);
       }
 

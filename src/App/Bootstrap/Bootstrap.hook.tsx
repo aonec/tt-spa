@@ -10,16 +10,12 @@ export function useApp() {
       return;
     }
 
-    const redirectUrl = window.location.pathname;
-    const redirectToLoginUrl =
-      redirectUrl && redirectUrl !== '/login'
-        ? stringifyUrl({ url: '/login', query: { redirectUrl } })
-        : '/login';
-
     const token = localStorage.getItem('token');
     if (!token) {
+      const redirectUrl = window.location.pathname;
+
       localStorage.clear();
-      push(redirectToLoginUrl);
+      push(stringifyUrl({ url: '/login', query: { redirectUrl } }));
     }
   }, [push]);
 }
