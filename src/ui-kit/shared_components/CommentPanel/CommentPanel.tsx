@@ -42,7 +42,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
       }
       onEdit(text);
     },
-    [onEdit, onRemove],
+    [onEdit, onRemove, oldCommentText],
   );
 
   return (

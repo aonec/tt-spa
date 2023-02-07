@@ -45,7 +45,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     model,
     serialNumber,
     address,
-    nodes,
     documents,
     numberOfTasks,
     comment,
@@ -119,14 +118,14 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       handleOpenCloseCalculatorModal,
       calculator,
       history,
-      handleOpenConsumptionReportModal
+      handleOpenConsumptionReportModal,
     ],
   );
 
   const contentComponents: {
     [key in CalculatorProfileGrouptype]: ReactElement;
   } = useMemo(() => {
-    const { documents, nodes,connection,isConnected } = calculator;
+    const { documents, nodes, connection, isConnected } = calculator;
     return {
       [CalculatorProfileGrouptype.Common]: <>{commonInfo}</>,
       [CalculatorProfileGrouptype.Connection]: (
@@ -145,7 +144,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         <NodeDocumentsList documents={documents || []} />
       ),
     };
-  }, [calculator, commonInfo,relatedDevices ]);
+  }, [calculator, commonInfo, openDevicesListModal]);
 
   const component = contentComponents[currentGrouptype];
 
