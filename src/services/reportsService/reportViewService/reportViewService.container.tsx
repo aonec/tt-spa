@@ -24,7 +24,10 @@ export const ReportViewContainer = () => {
   );
   const filtrationValues = useStore(outputs.$filtrationValues);
   const isLoadingReport = useStore(outputs.$isReportLoading);
-  const individualDevicesReportData = useStore(outputs.$individualDevicesReportData)
+  const individualDevicesReportData = useStore(
+    outputs.$individualDevicesReportData,
+  );
+  const actJournalReportData = useStore(outputs.$actJournalReportData);
 
   if (!reportType) return null;
 
@@ -42,6 +45,7 @@ export const ReportViewContainer = () => {
         setFiltrationValues={setFiltrationValues}
         isLoadingReport={isLoadingReport}
         individualDevicesReportData={individualDevicesReportData}
+        actJournalReportData={actJournalReportData}
       />
     </>
   );

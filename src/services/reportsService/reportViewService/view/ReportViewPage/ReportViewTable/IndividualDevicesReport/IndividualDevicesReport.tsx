@@ -41,6 +41,15 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
     ? 'Нет данных'
     : 'Выберите фильтры для формирования отчета';
 
+  if (!individualDevicesReportData?.length) {
+    return (
+      <Empty
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+        description={emptyComponentDescription}
+      />
+    );
+  }
+
   return (
     <>
       {individualDevicesReportData &&
@@ -210,12 +219,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             elements={individualDevicesReportData.slice(0, 50)}
           />
         )}
-      {!individualDevicesReportData?.length && (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description={emptyComponentDescription}
-        />
-      )}
     </>
   );
 };

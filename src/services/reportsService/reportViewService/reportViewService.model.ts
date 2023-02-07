@@ -128,9 +128,13 @@ guard({
   target: fetchIndividualDevicesReportFx,
 });
 
-sample({
-  clock: loadActJournalReport.map(({ values }) => values),
-  fn: prepareActJournalReportData,
+guard({
+  clock: sample({
+    clock: loadActJournalReport.map(({ values }) => values),
+    fn: prepareActJournalReportData,
+  }),
+  filter: (payload): payload is ActsJournalReportRequestPayload =>
+    Boolean(payload),
   target: fetchActJournalReportFx,
 });
 

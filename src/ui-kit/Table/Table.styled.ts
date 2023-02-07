@@ -17,6 +17,7 @@ export const Header = styled.div<{ temp: string }>`
   font-size: 12px;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
 `;
 
 export const Row = styled.div<{ temp: string }>`
@@ -31,4 +32,5 @@ export const Row = styled.div<{ temp: string }>`
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
+  width: 100%;
 `;

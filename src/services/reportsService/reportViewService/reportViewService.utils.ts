@@ -67,11 +67,14 @@ export const prepareIndividualDevicesReportData = (
 
 export const prepareActJournalReportData = (
   values: ReportFiltrationFormValues,
-): ActsJournalReportRequestPayload => {
+): ActsJournalReportRequestPayload | null => {
+  console.log(values)
   const dates = getDatePeriod(values.reportDatePeriod, {
     from: values.from,
     to: values.to,
   });
+
+  if (!values.housingStockId && !values.housingStockId) return null;
 
   return {
     HousingStockId: values.housingStockId || undefined,

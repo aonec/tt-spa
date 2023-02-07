@@ -119,9 +119,9 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Ресурс">
             {!isShowActResourcesSelect && (
               <SelectMultiple
-                placeholder="Выбраны все ресурсы"
-                value={values.actResources || undefined}
-                onChange={(value) => setFieldValue('actResources', value)}
+                placeholder="Выберите"
+                value={values.resources || undefined}
+                onChange={(value) => setFieldValue('resources', value)}
               >
                 {Object.values(EResourceType).map((resource) => (
                   <SelectMultiple.Option key={resource} value={resource}>
@@ -135,9 +135,9 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             )}
             {isShowActResourcesSelect && (
               <SelectMultiple
-                placeholder="Выбраны все ресурсы"
-                value={values.resources || undefined}
-                onChange={(value) => setFieldValue('resources', value)}
+                placeholder="Выберите"
+                value={values.actResources || undefined}
+                onChange={(value) => setFieldValue('actResources', value)}
               >
                 {Object.values(EActResourceType).map((resource) => (
                   <SelectMultiple.Option key={resource} value={resource}>
