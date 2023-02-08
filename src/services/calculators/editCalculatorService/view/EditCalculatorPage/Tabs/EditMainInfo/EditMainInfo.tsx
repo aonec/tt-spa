@@ -112,7 +112,9 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
         </FormItem>
       </GridContainer>
 
-      {nodesTinyData?.length && <NodesInfo nodesTinyData={nodesTinyData} />}
+      {nodesTinyData?.length ? (
+        <NodesInfo nodesTinyData={nodesTinyData} />
+      ) : null}
 
       <Footer>
         <Button type="ghost" onClick={onCancel}>
