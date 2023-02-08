@@ -33,7 +33,6 @@ import { Button } from 'ui-kit/Button';
 import moment from 'moment';
 import { apartmentInfoService } from './ApartmentInfo.model';
 import { EApartmentStatus } from 'myApi';
-import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 
 const { inputs, outputs } = apartmentInfoService;
@@ -97,13 +96,13 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   }, [apartment.comment]);
 
   const selectedHomeowner = apartment.homeownerAccounts?.find(
-    (homeowner) => homeowner.id === activeHomeowner
+    (homeowner) => homeowner.id === activeHomeowner,
   );
 
   useEffect(() => {
     selectedHomeowner?.name &&
       setSelectedHomeownerName(selectedHomeowner?.name);
-  }, [activeHomeowner]);
+  }, [selectedHomeowner, setSelectedHomeownerName]);
 
   const houseManagement = housingStock?.houseManagement;
 
@@ -112,7 +111,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   const houseManagementInfo = `${houseManagement?.phone}; ${houseManagement?.comment}`;
 
   const accountingOpeningDate = `открыт с ${moment(
-    selectedHomeowner?.openAt
+    selectedHomeowner?.openAt,
   ).format('DD.MM.YYYY')}`;
 
   return (
@@ -170,7 +169,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 title: 'Добавить новый прибор',
                 onClick: () =>
                   history.push(
-                    `/apartment/${apartment.id}/addIndividualDevice`
+                    `/apartment/${apartment.id}/addIndividualDevice`,
                   ),
               },
               {

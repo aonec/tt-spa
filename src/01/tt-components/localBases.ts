@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { EHousingMeteringDeviceType, EMagistralType } from '../../myApi';
 
 export interface ItemInterface {

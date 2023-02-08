@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import { IndividualDeviceResponse } from 'myApi';
 import axios from '01/axios';
@@ -10,28 +10,31 @@ export interface MagnetSeal {
 }
 
 export function useSwitchMagnetSeal(device: IndividualDeviceResponse) {
-  const getMagnetSeal = (): MagnetSeal => ({
+  const getMagnetSeal = useMemo(() => ({
     magneticSealInstallationDate: device.magneticSealInstallationDate,
     magneticSealTypeName: device.magneticSealTypeName,
     isInstalled: device.hasMagneticSeal,
-  });
+  }), [device]);
 
   const [magnetSeal, setMagnetSeal] = useState<MagnetSeal>(getMagnetSeal);
 
-  useEffect(() => setMagnetSeal(getMagnetSeal), [device]);
+  useEffect(() => setMagnetSeal(getMagnetSeal), [getMagnetSeal]);
 
-  const getOnChange = <T>(
-    name:
-      | 'magneticSealInstallationDate'
-      | 'magneticSealTypeName'
-      | 'isInstalled'
-  ) => (value: T) => setMagnetSeal((prev) => ({ ...prev, [name]: value }));
+  const getOnChange =
+    <T>(
+      name:
+        | 'magneticSealInstallationDate'
+        | 'magneticSealTypeName'
+        | 'isInstalled',
+    ) =>
+    (value: T) =>
+      setMagnetSeal((prev) => ({ ...prev, [name]: value }));
 
   async function saveMagnetSeal() {
     try {
       await axios.post(
         `IndividualDevices/${device.id}/SetMagneticSeal`,
-        magnetSeal
+        magnetSeal,
       );
     } catch (e) {}
   }
@@ -40,7 +43,7 @@ export function useSwitchMagnetSeal(device: IndividualDeviceResponse) {
     magnetSeal,
     onChange: {
       magneticSealInstallationDate: getOnChange<string>(
-        'magneticSealInstallationDate'
+        'magneticSealInstallationDate',
       ),
       magneticSealTypeName: getOnChange<string>('magneticSealTypeName'),
       isInstalled: getOnChange<boolean>('isInstalled'),

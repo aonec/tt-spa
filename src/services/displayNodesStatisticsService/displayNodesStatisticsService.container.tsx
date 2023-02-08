@@ -1,6 +1,5 @@
 import { GraphFilterForm } from '01/_pages/Graph/components/GraphFilterForm';
 import { GraphView } from '01/_pages/Graph/components/GraphView';
-import { Skeleton } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
@@ -17,10 +16,9 @@ import { NodeStatisticsTable } from './view/NodeStatisticsTable';
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
 
-export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainerProps> = ({
-  nodeId,
-  pipeCount,
-}) => {
+export const DisplayNodesStatisticsContainer: FC<
+  DisplayNodesStatisticsContainerProps
+> = ({ nodeId, pipeCount }) => {
   const currentArhiveFilter = useStore(outputs.$archiveFilter);
   const graphType = useStore(outputs.$graphType);
   const archiveData = useStore(outputs.$archiveReadings);
@@ -30,7 +28,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
   const setGraphType = useEvent(inputs.setGraphType);
   const setArchiveFilter = useEvent(inputs.setArchiveFilter);
 
-  const archive = archiveData?.data || [];
+  const archive = useMemo(() => archiveData?.data || [], [archiveData]);
   const paramsList = useMemo(
     () =>
       archive.reduce((acc, readings) => {
@@ -40,7 +38,7 @@ export const DisplayNodesStatisticsContainer: FC<DisplayNodesStatisticsContainer
         }
         return [...acc, header];
       }, [] as string[]),
-    [archive]
+    [archive],
   );
 
   const archiveReadingExist = archive.length !== 0;

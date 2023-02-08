@@ -51,7 +51,7 @@ export const ObjectsProfileContainer = () => {
     if (!searchType) {
       history.push(`/objects/${SearchType.Houses}`);
     }
-  }, [searchType]);
+  }, [searchType, history]);
 
   return (
     <>

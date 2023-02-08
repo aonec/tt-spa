@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { NodeCheckResponse } from 'myApi';
 import { EditNodeCheckPayload } from '../../checkNode/models';
+import { useParams } from 'react-router-dom';
+import { nodeService } from '01/features/nodes/displayNode/models';
 
 interface Props {
   documents: NodeCheckResponse[] | null;
@@ -18,6 +20,9 @@ interface Props {
 
 export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 2.5fr';
 
+const { gates } = nodeService;
+const { NodeGate } = gates;
+
 export const NodeChecks: FC<Props> = (props) => {
   const {
     documents,
@@ -27,31 +32,37 @@ export const NodeChecks: FC<Props> = (props) => {
     openEditNodeCheckModal,
   } = props;
 
+  const { nodeId } = useParams<{ nodeId: string | undefined }>();
+
   return (
-    <Wrap>
-      <PendingLoader loading={pending}>
-        <Header temp={checkHistoryTemp}>
-          <div>Дата</div>
-          <div>Тип</div>
-          <div>№ акта</div>
-          <div>Заключение</div>
-        </Header>
-        {documents?.map((document) => (
-          <CheckHistoryDocument
-            document={document}
-            removeCheck={removeNodeCheck}
-            openEditCheckModal={openEditNodeCheckModal as any}
-          />
-        ))}
-      </PendingLoader>
-      <Space />
-      <CreateButton
-        className="ant-btn-link"
-        onClick={() => openCheckNodeModal()}
-      >
-        + Создать проверку
-      </CreateButton>
-    </Wrap>
+    <>
+      <NodeGate id={Number(nodeId)} />
+      <Wrap>
+        <PendingLoader loading={pending}>
+          <Header temp={checkHistoryTemp}>
+            <div>Дата</div>
+            <div>Тип</div>
+            <div>№ акта</div>
+            <div>Заключение</div>
+          </Header>
+          {documents?.map((document) => (
+            <CheckHistoryDocument
+              key={document.id}
+              document={document}
+              removeCheck={removeNodeCheck}
+              openEditCheckModal={openEditNodeCheckModal}
+            />
+          ))}
+        </PendingLoader>
+        <Space />
+        <CreateButton
+          className="ant-btn-link"
+          onClick={() => openCheckNodeModal()}
+        >
+          + Создать проверку
+        </CreateButton>
+      </Wrap>
+    </>
   );
 };
 

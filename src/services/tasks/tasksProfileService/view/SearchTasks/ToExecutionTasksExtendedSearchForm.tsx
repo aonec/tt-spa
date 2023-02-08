@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Select, Tooltip } from 'antd';
-import _ from 'lodash';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
@@ -14,7 +13,6 @@ import {
   ToExecutionWrapper,
 } from './SearchTasks.styled';
 import {
-  EManagingFirmTaskFilterType,
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   EResourceType,
   ETaskEngineeringElement,
@@ -31,37 +29,16 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 import { FormItem } from 'ui-kit/FormItem';
+import { taskCategories } from './ToExecutionTasksExtendedSearchForm.constants';
 
 const { Option } = Select;
 
-export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
-  setFieldValue,
-  values,
-  taskTypes,
-  housingManagments,
-  perpetrators,
-}) => {
+export const ToExecutionTasksExtendedSearchForm: React.FC<
+  ExtendedSearchTypes
+> = ({ setFieldValue, values, taskTypes, housingManagments, perpetrators }) => {
   const isIndividualDevice = values.EngineeringElement === 'IndividualDevice';
 
   const next = useSwitchInputOnEnter('tasksExtendedSearch', true);
-
-  const taskCategories: taskCategotiesProps = {
-    All: Object.keys(
-      EManagingFirmTaskFilterType
-    ) as Partial<EManagingFirmTaskFilterType>[],
-    Node: [
-      EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
-      EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
-      EManagingFirmTaskFilterType.CalculatorLackOfConnection,
-      EManagingFirmTaskFilterType.MeasurementErrorAny,
-    ],
-    IndividualDevice: [
-      EManagingFirmTaskFilterType.IndividualDeviceCheck,
-      EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck,
-      EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings,
-    ],
-    HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
-  };
 
   const TaskCategory =
     taskCategories[
@@ -76,13 +53,19 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
     if (!TaskCategory.includes(values?.TaskType)) {
       setFieldValue('TaskType', null);
     }
-  }, [values.EngineeringElement]);
+  }, [values, setFieldValue, TaskCategory]);
 
-  const isValueExists = values?.EngineeringElement
-    ? Object.values(
-        taskCategories[values?.EngineeringElement as keyof taskCategotiesProps]
-      )
-    : [];
+  const isValueExists = useMemo(
+    () =>
+      values?.EngineeringElement
+        ? Object.values(
+            taskCategories[
+              values?.EngineeringElement as keyof taskCategotiesProps
+            ],
+          )
+        : [],
+    [values],
+  );
 
   const FilteredTaskTypes = useMemo(() => {
     if (!taskTypes) return [];
@@ -91,9 +74,9 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> =
       (el: EManagingFirmTaskFilterTypeNullableStringDictionaryItem) => {
         if (!el.key) return true;
         return isValueExists.includes(el.key);
-      }
+      },
     );
-  }, [values?.EngineeringElement, taskTypes]);
+  }, [taskTypes, isValueExists]);
 
   return (
     <ToExecutionWrapper>

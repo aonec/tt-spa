@@ -13,7 +13,6 @@ import {
 } from './displayNodesStatisticsService.api';
 import {
   ArchiveReadingsFilter,
-  DateRange,
   FetchArchiveReadingsPayload,
 } from './displayNodesStatisticsService.types';
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
-import { Button, Form, Radio, Tooltip } from 'antd';
+import { Form, Radio, Tooltip } from 'antd';
 import IconTT from '../../../../tt-components/IconTT';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import {
@@ -42,7 +42,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
       setArchiveFilter(filter);
       closeModal();
     },
-    [setArchiveFilter, setIsActive]
+    [setArchiveFilter],
   );
 
   const { setFieldValue, values, submitForm, errors } = useFormik<
@@ -76,14 +76,14 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
 
   useEffect(() => {
     const isCurrentFieldExist = paramsList.find(
-      (field) => field === currentGraphParam
+      (field) => field === currentGraphParam,
     );
     if (isCurrentFieldExist) {
       return;
     }
 
     const volumeConsumptionField = paramsList.find(
-      (field) => field === 'Расход по объему, м³'
+      (field) => field === 'Расход по объему, м³',
     );
 
     if (volumeConsumptionField) {
@@ -91,7 +91,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
     } else if (paramsList[0]) {
       setGraphParam(paramsList[0]);
     }
-  }, [setGraphParam, paramsList]);
+  }, [setGraphParam, paramsList, currentGraphParam]);
 
   return (
     <GraphFilter>

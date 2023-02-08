@@ -1,5 +1,4 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { PaginationSC } from './displayPersonalNumberListSevice.styled';

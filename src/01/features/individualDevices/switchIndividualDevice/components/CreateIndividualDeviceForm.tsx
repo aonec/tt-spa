@@ -11,6 +11,7 @@ import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
   addIndividualDeviceForm,
+  ApartmentIdGate,
   resetCreationRequestStatus,
   SwitchIndividualDeviceGate,
   switchStageButtonClicked,
@@ -21,7 +22,7 @@ import { DocumentsStage } from './stages/DocumentsStage';
 export const CreateIndividualDeviceForm = () => {
   const stageNumber = useStore($creationDeviceStage);
   const individualDeviceCreationRequestStatus = useStore(
-    $isCreateIndividualDeviceSuccess
+    $isCreateIndividualDeviceSuccess,
   );
 
   const { id } = useParams<{ id: string }>();
@@ -29,10 +30,10 @@ export const CreateIndividualDeviceForm = () => {
 
   const pages = [<BaseInfoStage />, <DocumentsStage />];
 
-  const { fields, submit } = useForm(addIndividualDeviceForm);
+  const { submit } = useForm(addIndividualDeviceForm);
 
   const type = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+    SwitchIndividualDeviceGate.state.map(({ type }) => type),
   );
 
   useEffect(() => {
@@ -50,32 +51,31 @@ export const CreateIndividualDeviceForm = () => {
     history.goBack();
     message.success(`Прибор успешно ${messageText}!`);
     resetCreationRequestStatus();
-  }, [individualDeviceCreationRequestStatus]);
-
-  useEffect(() => {
-    fields.apartmentId.onChange(Number(id));
-  }, [id]);
+  }, [individualDeviceCreationRequestStatus, history, type]);
 
   const onCancel = () =>
     stageNumber === 0 ? history.goBack() : switchStageButtonClicked(0);
 
   return (
-    <Wrap>
-      {pages[stageNumber]}
+    <>
+      <ApartmentIdGate apartmentId={Number(id)} />
+      <Wrap>
+        {pages[stageNumber]}
 
-      <Space style={{ height: 20 }} />
+        <Space style={{ height: 20 }} />
 
-      <RightAlign>
-        <Spaces flex>
-          <ButtonTT color="white" onClick={onCancel}>
-            {stageNumber === 0 ? 'Отмена' : 'Назад'}
-          </ButtonTT>
-          <ButtonTT color="blue" onClick={submit}>
-            Далее
-          </ButtonTT>
-        </Spaces>
-      </RightAlign>
-    </Wrap>
+        <RightAlign>
+          <Spaces flex>
+            <ButtonTT color="white" onClick={onCancel}>
+              {stageNumber === 0 ? 'Отмена' : 'Назад'}
+            </ButtonTT>
+            <ButtonTT color="blue" onClick={submit}>
+              Далее
+            </ButtonTT>
+          </Spaces>
+        </RightAlign>
+      </Wrap>
+    </>
   );
 };
 

@@ -1,17 +1,14 @@
-import React, { FC, useEffect, useMemo } from 'react';
-import { ResourceLookUp } from 'services/tasks/tasksProfileService/tasksProfileService.types';
+import React, { FC, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Input } from 'ui-kit/Input';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   AddZoneText,
   ButtonSC,
   FooterWrapper,
   InfoWrapper,
   ResourceText,
-  SelectWrapper,
   ZoneWrapper,
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
@@ -40,18 +37,15 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
     ? moment(node.lastCommercialAccountingDate)
     : undefined;
 
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-  } = useFormik<UpdatePipeNodeRequest>({
-    initialValues: {
-      nodeServiceZoneId: node.nodeServiceZone?.id,
-      number: node.number,
-    },
-    enableReinitialize: true,
-    onSubmit: (values) => updateNode(values),
-  });
+  const { values, setFieldValue, handleSubmit } =
+    useFormik<UpdatePipeNodeRequest>({
+      initialValues: {
+        nodeServiceZoneId: node.nodeServiceZone?.id,
+        number: node.number,
+      },
+      enableReinitialize: true,
+      onSubmit: (values) => updateNode(values),
+    });
 
   const selectZonesOptions = useMemo(
     () =>
@@ -59,7 +53,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         value: zone.id,
         label: zone.name,
       })),
-    [nodeZones]
+    [nodeZones],
   );
 
   return (
@@ -69,7 +63,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           <FormItem label="Конфигурация" className="resource">
             <Select
               placeholder="Выберите конфигурацию"
-              value={node.resource}
+              value={node.configuration}
               disabled
             >
               <Select.Option value={node.configuration}>

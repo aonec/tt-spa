@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
 import { EReportType, GroupReportFormResponse } from 'myApi';
@@ -26,7 +26,7 @@ const $isOpen = domain
   .on(closeModal, () => false);
 
 const getReportFiltersFx = domain.createEffect<void, GroupReportFormResponse>(
-  fetchFilters
+  fetchFilters,
 );
 const $reportFilters = domain
   .createStore<GroupReportFormResponse | null>(null)
@@ -39,21 +39,19 @@ const downloadGroupReportFx = domain.createEffect<
 
 const getGroupReport = domain.createEvent<GroupReportRequestPayload>();
 const getGroupReportFx = domain.createEffect<GroupReportRequestPayload, string>(
-  fetchGroupReport
+  fetchGroupReport,
 );
 
-const setGroupReportPayload = domain.createEvent<
-  Partial<GroupReportRequestPayload>
->();
-const $downloadReportPayload = domain.createStore<GroupReportRequestPayload | null>(
-  null
-);
+const setGroupReportPayload =
+  domain.createEvent<Partial<GroupReportRequestPayload>>();
+const $downloadReportPayload =
+  domain.createStore<GroupReportRequestPayload | null>(null);
 
 const $isFiltersLoading = getReportFiltersFx.pending;
 const $isDownloading = combine(
   downloadGroupReportFx.pending,
   getGroupReportFx.pending,
-  (...isLoading) => isLoading.includes(true)
+  (...isLoading) => isLoading.includes(true),
 );
 
 const GroupReportGate = createGate();
@@ -67,7 +65,7 @@ guard({
         payload.Name &&
         payload.HouseManagementId &&
         payload.NodeResourceTypes &&
-        payload.ReportType
+        payload.ReportType,
     ),
   target: $downloadReportPayload,
 });
@@ -124,7 +122,7 @@ forward({
 });
 
 downloadGroupReportFx.failData.watch(() =>
-  message.error('Не удалось скачать отчёт')
+  message.error('Не удалось скачать отчёт'),
 );
 
 export const groupReportService = {

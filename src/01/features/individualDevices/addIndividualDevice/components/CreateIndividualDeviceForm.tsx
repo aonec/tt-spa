@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
+  AddIndividualDeviceDate,
   addIndividualDeviceForm,
   checkBeforSavingButtonClicked,
   resetCreationRequestStatus,
@@ -21,7 +22,7 @@ import { DocumentsStage } from './stages/DocumentsStage';
 export const CreateIndividualDeviceForm = () => {
   const stageNumber = useStore($creationDeviceStage);
   const individualDeviceCreationRequestStatus = useStore(
-    $isCreateIndividualDeviceSuccess
+    $isCreateIndividualDeviceSuccess,
   );
 
   const { id } = useParams<{ id: string }>();
@@ -29,7 +30,7 @@ export const CreateIndividualDeviceForm = () => {
 
   const pages = [<BaseInfoStage />, <DocumentsStage />];
 
-  const { fields, submit } = useForm(addIndividualDeviceForm);
+  const { submit } = useForm(addIndividualDeviceForm);
 
   useEffect(() => {
     if (!individualDeviceCreationRequestStatus) return;
@@ -37,35 +38,36 @@ export const CreateIndividualDeviceForm = () => {
     history.goBack();
     message.success('Прибор успешно создан!');
     resetCreationRequestStatus();
-  }, [individualDeviceCreationRequestStatus]);
-
-  useEffect(() => {
-    fields.apartmentId.onChange(Number(id));
-  }, [id]);
+  }, [individualDeviceCreationRequestStatus, history]);
 
   const onCancel = () =>
     stageNumber === 0 ? history.goBack() : switchStageButtonClicked(0);
 
   return (
-    <Wrap>
-      {pages[stageNumber]}
+    <>
+      <AddIndividualDeviceDate id={Number(id)} />
+      <Wrap>
+        {pages[stageNumber]}
 
-      <Space style={{ height: 20 }} />
+        <Space style={{ height: 20 }} />
 
-      <RightAlign>
-        <Spaces flex>
-          <ButtonTT color="white" onClick={onCancel}>
-            {stageNumber === 0 ? 'Отмена' : 'Назад'}
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            onClick={stageNumber === 1 ? checkBeforSavingButtonClicked : submit}
-          >
-            {stageNumber === 1 ? 'Создать прибор' : 'Далее'}
-          </ButtonTT>
-        </Spaces>
-      </RightAlign>
-    </Wrap>
+        <RightAlign>
+          <Spaces flex>
+            <ButtonTT color="white" onClick={onCancel}>
+              {stageNumber === 0 ? 'Отмена' : 'Назад'}
+            </ButtonTT>
+            <ButtonTT
+              color="blue"
+              onClick={
+                stageNumber === 1 ? checkBeforSavingButtonClicked : submit
+              }
+            >
+              {stageNumber === 1 ? 'Создать прибор' : 'Далее'}
+            </ButtonTT>
+          </Spaces>
+        </RightAlign>
+      </Wrap>
+    </>
   );
 };
 

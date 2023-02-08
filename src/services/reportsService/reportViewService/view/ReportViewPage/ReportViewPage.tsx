@@ -18,10 +18,35 @@ import {
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { Button } from 'ui-kit/Button';
-import { Empty } from 'antd';
+import { getFiltersList } from './ReportViewPage.utils';
+import { ReportViewTable } from './ReportViewTable';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
-export const ReportViewPage: FC<ReportViewPageProps> = ({ reportType }) => {
+const formId = 'report-form-id';
+
+export const ReportViewPage: FC<ReportViewPageProps> = ({
+  reportType,
+  existingCities,
+  houseManagements,
+  addressesWithHouseManagements,
+  filtrationValues,
+  setFiltrationValues,
+  isLoadingReport,
+  individualDevicesReportData,
+}) => {
   const [isOpen, setIsOpen] = useState(true);
+
+  const handleApply = () => {
+    const form = document.forms.namedItem(formId);
+
+    if (!form) return;
+
+    form.requestSubmit();
+
+    setIsOpen(false);
+  };
+
+  const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
 
   return (
     <Wrapper>
@@ -41,12 +66,27 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({ reportType }) => {
           isOpen={isOpen}
           handleOpen={() => setIsOpen(true)}
           handleClose={() => setIsOpen(false)}
-          handleApply={() => setIsOpen(false)}
-          extendedSearchContent={<ReportFiltrationForm />}
+          handleApply={handleApply}
+          extendedSearchContent={
+            <ReportFiltrationForm
+              existingCities={existingCities}
+              houseManagements={houseManagements}
+              addressesWithHouseManagements={addressesWithHouseManagements}
+              filtrationValues={filtrationValues}
+              formId={formId}
+              setFiltrationValues={setFiltrationValues}
+            />
+          }
         >
           <FiltrationInfoWrapper>
             <FiltrationInfoList>
-              <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
+              {Boolean(filtersViewArray.length) &&
+                filtersViewArray.map((text) => (
+                  <FiltrationInfoItem key={text}>{text}</FiltrationInfoItem>
+                ))}
+              {!filtersViewArray.length && (
+                <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
+              )}
             </FiltrationInfoList>
             <Button size="small" sidePadding={16}>
               Скачать отчет
@@ -54,12 +94,14 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({ reportType }) => {
           </FiltrationInfoWrapper>
         </ExtendedSearch>
       </ExtendedSearchWrapper>
-      {!isOpen && (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="Выберите фильтры для формирования отчёта"
+      <WithLoader isLoading={isLoadingReport}>
+        <ReportViewTable
+          reportType={reportType}
+          individualDevicesReportData={individualDevicesReportData}
+          city={filtrationValues.city}
+          reportOption={filtrationValues.reportOption}
         />
-      )}
+      </WithLoader>
     </Wrapper>
   );
 };

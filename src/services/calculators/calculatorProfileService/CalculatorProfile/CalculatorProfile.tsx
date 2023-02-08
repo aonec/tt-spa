@@ -1,13 +1,15 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import _ from 'lodash';
+import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { Tabs } from 'ui-kit/Tabs';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
+import { CalculatorCommentContainer } from './calculatorCommentService';
 import {
   AdditionalInfoWrapper,
   AddressLinkWrapper,
@@ -17,10 +19,12 @@ import {
   HeaderTitleWrapper,
   HeaderWrapper,
   TabsSC,
+  PanelsWrapper,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
-import { RelatedDevicesList } from './RelatedDevicesList';
+import { DocumentsPanel } from './DocumentsPanel';
+import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 
 const { TabPane } = Tabs;
@@ -32,6 +36,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenCloseCalculatorModal,
   handleOpenCheckCalculatorModal,
   handleOpenConsumptionReportModal,
+  openDevicesListModal,
 }) => {
   const history = useHistory();
 
@@ -39,34 +44,16 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     id,
     model,
     serialNumber,
-    connection,
     address,
-    lastCheckingDate,
-    futureCheckingDate,
-    isConnected,
-    nodes,
+    documents,
+    numberOfTasks,
+    comment,
   } = calculator;
 
-  const relatedDevices = useMemo(
-    () =>
-      (nodes || [])
-        .map((node) => {
-          const { communicationPipes, number } = node;
-
-          const devices = (communicationPipes || [])
-            .map((pipe) => pipe.devices || [])
-            .flat();
-
-          return { devices, nodeNumber: number };
-        })
-        .flat(),
-    [nodes]
+  const headerTitle = useMemo(
+    () => `${model} (${serialNumber})`,
+    [model, serialNumber],
   );
-
-  const headerTitle = useMemo(() => `${model} (${serialNumber})`, [
-    model,
-    serialNumber,
-  ]);
 
   const commonInfo = useMemo(
     () => (
@@ -76,9 +63,11 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
             key: 'Адрес',
             value: (
               <>
-                {address && (
-                  <AddressLinkWrapper to={`/objects/profile/${address?.id}`}>
-                    {getHousingStockAddress(address, true)}
+                {calculator?.address && (
+                  <AddressLinkWrapper
+                    to={`/objects/profile/${calculator.address?.id}`}
+                  >
+                    {getHousingStockAddress(calculator.address, true)}
                   </AddressLinkWrapper>
                 )}
               </>
@@ -86,20 +75,20 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           },
           {
             key: 'Дата поверки прибора',
-            value: lastCheckingDate
-              ? getTimeStringByUTC(lastCheckingDate, 'DD.MM.YYYY')
+            value: calculator?.lastCheckingDate
+              ? getTimeStringByUTC(calculator.lastCheckingDate, 'DD.MM.YYYY')
               : null,
           },
           {
             key: 'Дата следующей поверки прибора',
-            value: futureCheckingDate
-              ? getTimeStringByUTC(futureCheckingDate, 'DD.MM.YYYY')
+            value: calculator?.futureCheckingDate
+              ? getTimeStringByUTC(calculator.futureCheckingDate, 'DD.MM.YYYY')
               : null,
           },
         ]}
       />
     ),
-    [calculator]
+    [calculator],
   );
 
   const menuButtons = useMemo(
@@ -107,7 +96,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       menuButtons: [
         {
           title: 'Редактировать вычислитель',
-          onClick: () => history.push(`/calculators/${id}/edit`),
+          onClick: () => history.push(`/calculators/${calculator.id}/edit`),
         },
         {
           title: 'Поверить вычислитель',
@@ -124,13 +113,20 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         },
       ],
     }),
-    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal]
+    [
+      handleOpenCheckCalculatorModal,
+      handleOpenCloseCalculatorModal,
+      calculator,
+      history,
+      handleOpenConsumptionReportModal,
+    ],
   );
 
   const contentComponents: {
     [key in CalculatorProfileGrouptype]: ReactElement;
-  } = useMemo(
-    () => ({
+  } = useMemo(() => {
+    const { documents, nodes, connection, isConnected } = calculator;
+    return {
       [CalculatorProfileGrouptype.Common]: <>{commonInfo}</>,
       [CalculatorProfileGrouptype.Connection]: (
         <ConnectionInfo
@@ -139,15 +135,16 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
       ),
       [CalculatorProfileGrouptype.Nodes]: (
-        <RelatedNodesList nodes={nodes || []} />
+        <RelatedNodesList
+          nodes={nodes}
+          openDevicesListModal={openDevicesListModal}
+        />
       ),
-      [CalculatorProfileGrouptype.Related]: (
-        <RelatedDevicesList pipeDevices={relatedDevices} />
+      [CalculatorProfileGrouptype.Documents]: (
+        <NodeDocumentsList documents={documents || []} />
       ),
-      [CalculatorProfileGrouptype.Documents]: <></>,
-    }),
-    [calculator]
-  );
+    };
+  }, [calculator, commonInfo, openDevicesListModal]);
 
   const component = contentComponents[currentGrouptype];
 
@@ -175,15 +172,27 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           key={CalculatorProfileGrouptype.Connection}
         />
         <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes} />
-        <TabPane
-          tab="Подключенные приборы"
-          key={CalculatorProfileGrouptype.Related}
-        />
         <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
       </TabsSC>
       <ContentWrapper>
         <Content>{component}</Content>
-        <div></div>
+        <PanelsWrapper>
+          <CalculatorCommentContainer comment={comment} calculatorId={id} />
+          <LinkCard
+            text={`Задачи: ${numberOfTasks}`}
+            link={stringifyUrl({
+              url: '/tasks/list/Observing',
+              query: { calculatorId: id },
+            })}
+            showLink={Boolean(numberOfTasks)}
+          />
+          <DocumentsPanel
+            handleClick={() =>
+              setGrouptype(CalculatorProfileGrouptype.Documents)
+            }
+            documents={documents || []}
+          />
+        </PanelsWrapper>
       </ContentWrapper>
     </div>
   );

@@ -1,4 +1,4 @@
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { PipeHousingMeteringDeviceResponse, TasksPagedList } from 'myApi';
 import {
@@ -8,6 +8,8 @@ import {
 import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 import { checkHousingMeteringDeviceService } from '../checkHousingMeteringDeviceService';
 import { closeHousingMeteringDeviceService } from '../closeHousingMeteringDeviceService';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('housingMeteringDeviceProfileService');
 
@@ -22,7 +24,8 @@ const FetchHousingMeteringDeviceGate = createGate<{ deviceId: number }>();
 
 const fetchHousingMeteringDeviceFx = domain.createEffect<
   number,
-  PipeHousingMeteringDeviceResponse
+  PipeHousingMeteringDeviceResponse,
+  EffectFailDataAxiosError
 >(getHousingMeteringDevice);
 
 const fetchHousingMeteringDeviceTasksFx = domain.createEffect<
@@ -47,7 +50,7 @@ sample({
   clock: guard({
     source: combine(
       $housingMeteringDevice,
-      FetchHousingMeteringDeviceGate.state
+      FetchHousingMeteringDeviceGate.state,
     ),
     clock: FetchHousingMeteringDeviceGate.open,
     filter: ([device, { deviceId }]) => {
@@ -69,6 +72,17 @@ sample({
   clock: [handleHousingMeteringDeviceUpdate, handleCheckDateUpdate],
   fn: (device) => Number(device?.id),
   target: fetchHousingMeteringDeviceFx,
+});
+
+fetchHousingMeteringDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 const $pending = fetchHousingMeteringDeviceFx.pending;

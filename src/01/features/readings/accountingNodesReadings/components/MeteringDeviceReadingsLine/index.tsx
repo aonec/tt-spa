@@ -3,7 +3,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ElectricNodeResponse } from 'myApi';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -36,18 +36,17 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     previousReading,
     prePreviousReading,
     refetch,
-    preparedPreviousReadingsArray,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
   const history = useHistory();
 
   const handleChangeODPU = useCallback(
     () => history.push(`/changeODPU/${counter?.id}`),
-    []
+    [history, counter?.id],
   );
 
   const handleEditODPU = useCallback(
     () => history.push(`/electricNode/${counter?.id}/edit`),
-    []
+    [history, counter?.id],
   );
 
   const readingsInput = () => (

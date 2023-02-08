@@ -16,26 +16,27 @@ const domain = createDomain('editApartmentActService');
 const openModal = domain.createEvent<ApartmentActResponse>();
 const closeModal = domain.createEvent();
 
-const $act = domain.createStore<ApartmentActResponse | null>(null);
-$act.on(openModal, (_, act) => act).reset(closeModal);
-const $isModalOpen = $act.map(Boolean);
+const $act = domain
+  .createStore<ApartmentActResponse | null>(null)
+  .on(openModal, (_, act) => act)
+  .reset(closeModal);
 
-$isModalOpen.on(openModal, () => true).reset(closeModal);
+const $isModalOpen = $act.map(Boolean);
 
 const deleteActDocument = domain.createEvent();
 const deleteActDocumentFx = domain.createEffect<number, void>(
-  fetchDeleteActDocument
+  fetchDeleteActDocument,
 );
 
 const editAct = domain.createEvent<EditActFormPayload>();
 const editActFx = domain.createEffect<EditActRequestPayload, void>(
-  updateApartmentAct
+  updateApartmentAct,
 );
 
 const $editActIsLoading = combine(
   editActFx.pending,
   deleteActDocumentFx.pending,
-  (...loading) => loading.includes(true)
+  (...loading) => loading.includes(true),
 );
 
 forward({

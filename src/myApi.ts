@@ -716,7 +716,7 @@ export interface CalculatorResponse {
 
   /** @format int32 */
   numberOfTasks: number | null;
-  comment: string | null;
+  comment: CalculatorCommentResponse | null;
 }
 
 export interface CalculatorResponseSuccessApiResponse {
@@ -767,6 +767,16 @@ export interface CloseDeviceRequest {
   /** @format date-time */
   closingDate?: string | null;
   closingReason?: EClosingReason | null;
+}
+
+export interface CloseIndividualDeviceRequest {
+  /** @format int32 */
+  deviceId?: number;
+
+  /** @format date-time */
+  closingDate?: string | null;
+  closingReason?: EClosingReason | null;
+  documentsIds?: number[] | null;
 }
 
 export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
@@ -1816,7 +1826,6 @@ export enum EPipeNodeValidationWarning {
   LackFeedFlowMeter = "LackFeedFlowMeter",
   LackBackFlowMeter = "LackBackFlowMeter",
   LackRechargeFlowMeter = "LackRechargeFlowMeter",
-  ExtraNodeTemperatureSensor = "ExtraNodeTemperatureSensor",
   ExtraFeedTemperatureSensor = "ExtraFeedTemperatureSensor",
   ExtraBackTemperatureSensor = "ExtraBackTemperatureSensor",
   ExtraRechargeTemperatureSensor = "ExtraRechargeTemperatureSensor",
@@ -4648,6 +4657,8 @@ export interface PipeNodeIntoCalculatorResponse {
 }
 
 export interface PipeNodeMeteringDeviceResponse {
+  /** @format int32 */
+  id: number;
   model: string | null;
   serialNumber: string | null;
   hasActiveTasks: boolean;
@@ -4710,14 +4721,6 @@ export interface PipeNodeValidationResultResponse {
 export interface PipeNodeValidationStatusResponse {
   configuration: EPipeNodeConfig;
   validationResult: PipeNodeValidationResultResponse | null;
-}
-
-export interface PipeRuptureDateTimeRangeRequest {
-  /** @format date-time */
-  start: string;
-
-  /** @format date-time */
-  end: string;
 }
 
 export interface PipesListResponse {
@@ -4970,75 +4973,6 @@ export interface ResourceDisconnectingUpdateRequest {
   /** @format date-time */
   endDate?: string | null;
   sender?: string | null;
-}
-
-export enum ResourceType {
-  None = "None",
-  Heat = "Heat",
-  HotWaterSupply = "HotWaterSupply",
-  ColdWaterSupply = "ColdWaterSupply",
-  Electricity = "Electricity",
-}
-
-export interface SamoletArchiveResponse {
-  /** @format date-time */
-  timestamp: string;
-
-  /** @format double */
-  t1: number;
-
-  /** @format double */
-  t2: number;
-
-  /** @format double */
-  td: number;
-
-  /** @format double */
-  v1: number;
-
-  /** @format double */
-  v2: number;
-
-  /** @format double */
-  vd: number;
-
-  /** @format double */
-  p1: number;
-
-  /** @format double */
-  p2: number;
-
-  /** @format double */
-  q: number;
-
-  /** @format double */
-  workingTime: number;
-  hasFaults: boolean;
-}
-
-export interface SamoletCalculatorResponse {
-  serialNumber: string | null;
-  model: string | null;
-  address: string | null;
-  resourceType: string | null;
-  archives: SamoletArchiveResponse[] | null;
-}
-
-export interface SamoletCalculatorResponseIEnumerableSuccessApiResponse {
-  successResponse: SamoletCalculatorResponse[] | null;
-}
-
-export interface SamoletGetAllConnectedResponse {
-  /** @format int32 */
-  id: number;
-  serialNumber: string | null;
-  model: string | null;
-  address: string | null;
-  resources: string[] | null;
-}
-
-export interface SamoletGetAllConnectedResponseListSuccessApiResponse {
-  successResponse: SamoletGetAllConnectedResponse[] | null;
 }
 
 export interface SetMagneticSealRequest {
@@ -5395,7 +5329,7 @@ export interface SwitchIndividualDeviceReadingsCreateRequest {
 
 export interface SwitchIndividualDeviceRequest {
   /** @format int32 */
-  deviceId: number;
+  deviceId?: number;
   model: string;
   serialNumber: string;
 
@@ -9646,9 +9580,31 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/IndividualDevices/close
      * @secure
      */
-    individualDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesCloseCreate: (data: CloseIndividualDeviceRequest, params: RequestParams = {}) =>
       this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/close`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesCloseCreate2
+     * @summary IndividualDeviceClose
+     * @request POST:/api/IndividualDevices/{deviceId}/close
+     * @originalName individualDevicesCloseCreate
+     * @duplicate
+     * @secure
+     */
+    individualDevicesCloseCreate2: (deviceId: number, data: CloseIndividualDeviceRequest, params: RequestParams = {}) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDevices/${deviceId}/close`,
         method: "POST",
         body: data,
         secure: true,
@@ -9735,6 +9691,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     individualDevicesSwitchCreate: (data: SwitchIndividualDeviceRequest, params: RequestParams = {}) =>
       this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/switch`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Сервис ЕРЦ</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesSwitchCreate2
+     * @summary IndividualDeviceCreate
+     * @request POST:/api/IndividualDevices/{deviceId}/switch
+     * @originalName individualDevicesSwitchCreate
+     * @duplicate
+     * @secure
+     */
+    individualDevicesSwitchCreate2: (
+      deviceId: number,
+      data: SwitchIndividualDeviceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDevices/${deviceId}/switch`,
         method: "POST",
         body: data,
         secure: true,
@@ -11162,29 +11144,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
      *
      * @tags PipeNodes
-     * @name PipeNodesSetPipeRuptureCreate
-     * @summary NodeRead
-     * @request POST:/api/PipeNodes/{pipeNodeId}/SetPipeRupture
-     * @secure
-     */
-    pipeNodesSetPipeRuptureCreate: (
-      pipeNodeId: number,
-      data: PipeRuptureDateTimeRangeRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/PipeNodes/${pipeNodeId}/SetPipeRupture`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
-     *
-     * @tags PipeNodes
      * @name PipeNodesMeteringDevicesDetail
      * @summary NodeRead
      * @request GET:/api/PipeNodes/{pipeNodeId}/MeteringDevices
@@ -11586,28 +11545,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsDataForMlExportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/DataForMLExport
-     * @secure
-     */
-    reportsDataForMlExportList: (
-      query?: { CalculatorIds?: number[]; Resource?: EResourceType },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/DataForMLExport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Reports
@@ -11972,44 +11909,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     resourceDisconnectingFiltersList: (params: RequestParams = {}) =>
       this.request<ResourceDisconnectingFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ResourceDisconnecting/filters`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags SamoletIntegration
-     * @name SamoletIntegrationCalculatorsArchivesList
-     * @request GET:/api/SamoletIntegration/CalculatorsArchives
-     * @secure
-     */
-    samoletIntegrationCalculatorsArchivesList: (
-      query: { from: string; to: string; resourceType: ResourceType },
-      params: RequestParams = {},
-    ) =>
-      this.request<SamoletCalculatorResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/SamoletIntegration/CalculatorsArchives`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags SamoletIntegration
-     * @name SamoletIntegrationGetAllConnectedList
-     * @request GET:/api/SamoletIntegration/GetAllConnected
-     * @secure
-     */
-    samoletIntegrationGetAllConnectedList: (params: RequestParams = {}) =>
-      this.request<SamoletGetAllConnectedResponseListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/SamoletIntegration/GetAllConnected`,
         method: "GET",
         secure: true,
         format: "json",

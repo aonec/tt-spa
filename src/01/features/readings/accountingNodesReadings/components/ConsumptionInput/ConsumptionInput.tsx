@@ -1,7 +1,6 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { updateHousingMeteringDeviceReading } from '01/_api/meteringDeviceReadings';
-import moment from 'moment';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyledMeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -13,22 +12,19 @@ interface Props {
   deviceId: number;
 }
 
-export const ConsumptionInput: React.FC<Props> = ({
-  reading,
-  refetch,
-  deviceId,
-}) => {
+export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
   const [value, setValue] = useState(reading.nonResidentialRoomConsumption);
   const [status, setStatus] = useState<RequestStatusShared>();
 
-  useEffect(() => setValue(reading.nonResidentialRoomConsumption), [
-    reading.nonResidentialRoomConsumption,
-  ]);
+  useEffect(
+    () => setValue(reading.nonResidentialRoomConsumption),
+    [reading.nonResidentialRoomConsumption],
+  );
 
   async function saveConsumption() {
     setStatus('pending');
     try {
-      if (!reading.id) throw 'none id';
+      if (!reading.id) throw new Error('none id');
 
       await updateHousingMeteringDeviceReading({
         id: reading.id,

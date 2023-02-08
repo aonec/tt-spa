@@ -18,24 +18,24 @@ import {
   reportsSelectItems,
 } from './ReportsPage.constants';
 
-export const ReportsPage: FC<ReportsPageProps> = ({}) => {
+export const ReportsPage: FC<ReportsPageProps> = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
 
   const [scrollX, setScrollX] = useState<number>(0);
 
   useEffect(() => {
-    if (!reportsListRef.current) return;
+    const node = reportsListRef.current;
+
+    if (!node) return;
 
     const handleScroll = () => {
-      reportsListRef.current?.scrollLeft &&
-        setScrollX(reportsListRef.current.scrollLeft);
+      node.scrollLeft && setScrollX(node.scrollLeft);
     };
 
-    reportsListRef.current.addEventListener('scroll', handleScroll);
+    node.addEventListener('scroll', handleScroll);
 
-    return () =>
-      reportsListRef?.current?.removeEventListener('scroll', handleScroll);
-  }, [reportsListRef.current]);
+    return () => node?.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scroll = (scrollOffset: number) => {
     if (!reportsListRef.current) return;

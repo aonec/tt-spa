@@ -2,7 +2,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
@@ -38,43 +38,41 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
 }) => {
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
-  const initialDate = filter?.From
-    ? filter.From
-    : moment().startOf('month').utcOffset(0, true).format();
+  const initialDate = useMemo(
+    () =>
+      filter?.From
+        ? filter.From
+        : moment().startOf('month').utcOffset(0, true).format(),
+    [filter?.From],
+  );
 
-  const {
-    values,
-    setFieldValue,
-    submitForm,
-    resetForm,
-    errors,
-    setValues,
-  } = useFormik<GetHousingConsumptionDataFormik>({
-    initialValues: {
-      HousingStockId: filter?.HousingStockId || null,
-      currentAddress: filter?.currentAddress || null,
-      AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
-      additionalAddress: filter?.additionalAddress || null,
-      From: initialDate,
-    },
-    validationSchema: resourceConsumptionFilterValidationSchema,
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: (values) => {
-      const { HousingStockId, AdditionalHousingStockId } = values;
+  const { values, setFieldValue, submitForm, resetForm, errors, setValues } =
+    useFormik<GetHousingConsumptionDataFormik>({
+      initialValues: {
+        HousingStockId: filter?.HousingStockId || null,
+        currentAddress: filter?.currentAddress || null,
+        AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
+        additionalAddress: filter?.additionalAddress || null,
+        From: initialDate,
+      },
+      validationSchema: resourceConsumptionFilterValidationSchema,
+      enableReinitialize: true,
+      validateOnChange: false,
+      validateOnBlur: false,
+      onSubmit: (values) => {
+        const { HousingStockId, AdditionalHousingStockId } = values;
 
-      if (!HousingStockId) {
-        return;
-      }
+        if (!HousingStockId) {
+          return;
+        }
 
-      if (!AdditionalHousingStockId) {
-        handleClearAdditionalAddress();
-      }
+        if (!AdditionalHousingStockId) {
+          handleClearAdditionalAddress();
+        }
 
-      setFilter({ ...values, HousingStockId });
-    },
-  });
+        setFilter({ ...values, HousingStockId });
+      },
+    });
 
   useEffect(() => {
     setValues({
@@ -84,14 +82,14 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       HousingStockId: null,
       From: initialDate,
     });
-  }, [streetsList]);
+  }, [streetsList, initialDate, setValues]);
 
   const handleReset = useCallback(() => {
     resetForm();
     setHouseManagement('');
     handleClearData();
     handleClearFilter();
-  }, [resetForm, setHouseManagement]);
+  }, [resetForm, setHouseManagement, handleClearData, handleClearFilter]);
 
   return (
     <Wrapper>
@@ -104,7 +102,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
               onChange={(date) =>
                 setFieldValue(
                   'From',
-                  date?.startOf('month').utcOffset(0, true).format()
+                  date?.startOf('month').utcOffset(0, true).format(),
                 )
               }
               picker="month"

@@ -1,6 +1,6 @@
-import React, { FC, ReactNode, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { stringifyUrl } from 'query-string';
-import { Empty, Tooltip } from 'antd';
+import { Empty, Tooltip, message } from 'antd';
 
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
@@ -95,6 +95,16 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     pipeNode?.validationResult?.errors?.length !== 0 ||
     pipeNode?.validationResult?.warnings?.length !== 0;
 
+  const handleClickChangeNodeType = useCallback(() => {
+    if (
+      pipeNode &&
+      pipeNode?.registrationType !== ENodeRegistrationType.Technical
+    ) {
+      return openChangeNodeTypeModal(pipeNode);
+    }
+    return message.error('Техническийй тип узла нельзя изменить!');
+  }, [pipeNode, openChangeNodeTypeModal]);
+
   return (
     <WithLoader isLoading={isLoading}>
       {pipeNode && (
@@ -131,7 +141,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                   },
                   {
                     title: 'Изменить тип узла',
-                    onClick: () => openChangeNodeTypeModal(pipeNode),
+                    onClick: handleClickChangeNodeType,
                     color: 'danger',
                   },
                 ],
@@ -145,7 +155,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 {address?.mainAddress &&
                   getHousingStockItemAddress(address?.mainAddress)}{' '}
                 {address?.additionalAddresses?.map((address) => (
-                  <AdditionalAddress>
+                  <AdditionalAddress key={address.id}>
                     {getHousingStockItemAddress(address)}
                   </AdditionalAddress>
                 ))}

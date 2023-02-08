@@ -11,13 +11,11 @@ import {
   ResourceSelectWrapper,
   Symbol,
   Value,
-  Wrapper,
 } from './StandartWorkingRange.styled';
 import { StandartWorkingRangeProps } from './StandartWorkingRange.types';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Tabs } from 'ui-kit/Tabs';
-import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { useFormik } from 'formik';
 import {
   ENodeWorkingRangeSeason,
@@ -25,6 +23,7 @@ import {
   EResourceType,
 } from 'myApi';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
 
 export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
   handleOnSearchDataChange,
@@ -35,12 +34,12 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange &&
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
-        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError
+        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError,
     );
 
   const criticalError = standartWorkingRange?.nodeWorkingRanges?.find(
     (range) =>
-      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError
+      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError,
   );
 
   const massOfFeedFlowMagistral =
@@ -48,7 +47,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedFlowMagistral
+        ENodeWorkingRangeType.MassOfFeedFlowMagistral,
     );
 
   const massOfFeedBackFlowMagistral =
@@ -56,7 +55,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral
+        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral,
     );
 
   const deltaMassOfMagistral =
@@ -64,7 +63,7 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
     standartWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.DeltaMassOfMagistral
+        ENodeWorkingRangeType.DeltaMassOfMagistral,
     );
 
   const { values, handleSubmit, setFieldValue } = useFormik({
@@ -80,16 +79,16 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
 
   useEffect(() => {
     handleOnSearchDataChange({
-      nodeResourceType: values.nodeResourceType,
-      season: values.season,
+      nodeResourceType: EResourceType.ColdWaterSupply,
+      season: ENodeWorkingRangeSeason.HeatingSeason,
     });
-  }, []);
+  }, [handleOnSearchDataChange]);
 
   const isElectricity =
     (values.nodeResourceType as EResourceType) === EResourceType.Electricity;
 
   return (
-    <Wrapper>
+    <>
       <Margin>
         <GoBack />
       </Margin>
@@ -113,7 +112,8 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
         </Tabs>
       </Margin>
       <ResourceSelectWrapper>
-        <ResourceSelect
+        <ResourceSelectSC
+          isShadow={false}
           resource={values.nodeResourceType}
           onChange={(value) => {
             setFieldValue('nodeResourceType', value);
@@ -196,6 +196,6 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
           </RangeBlockGrid>
         </>
       )}
-    </Wrapper>
+    </>
   );
 };

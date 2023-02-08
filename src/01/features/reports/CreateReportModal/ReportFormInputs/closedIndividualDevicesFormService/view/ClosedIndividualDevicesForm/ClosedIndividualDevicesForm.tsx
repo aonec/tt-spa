@@ -3,14 +3,17 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { EClosingReason } from 'myApi';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { RangeDatePicker } from '../../../view/RangeDatePicker';
 import { ResourceSelect } from '../../../view/ResourceSelect';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
-import { ExportTypeSelectWrapper } from './ClosedIndividualDevicesForm.styled';
+import {
+  CitySelectWrapper,
+  ExportTypeSelectWrapper,
+} from './ClosedIndividualDevicesForm.styled';
 import { ClosedIndividualDevicesFormProps } from './ClosedIndividualDevicesForm.types';
 import {
   closingReasonsDictionary,
@@ -18,12 +21,17 @@ import {
   unloadingTypesForLabelDictionary,
 } from './ClosedIndividualDevicesFormService.constants';
 
-export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> = ({
+export const ClosedIndividualDevicesForm: FC<
+  ClosedIndividualDevicesFormProps
+> = ({
   unloadSelectType,
   setUnloadSelectType,
   preparedAddresses,
   organizationPagedList,
   houseManagementList,
+  existingCities,
+  selectCity,
+  selectedCity,
 }) => {
   const {
     fields: {
@@ -52,22 +60,44 @@ export const ClosedIndividualDevicesForm: FC<ClosedIndividualDevicesFormProps> =
     },
   } = useForm(form);
 
+  const isCityShow =
+    existingCities.length > 1 && unloadSelectType === UnloadingType.ByAddress;
+
   return (
     <div>
       <ExportTypeSelectWrapper>
-        <FormItem label="Тип выгрузки">
-          <Select
-            placeholder="Выберите из списка"
-            value={unloadSelectType || undefined}
-            onChange={(value) => setUnloadSelectType(value as UnloadingType)}
-          >
-            {Object.entries(unloadingTypesDictionary).map(([key, elem]) => (
-              <Select.Option value={key} key={key}>
-                {elem}
-              </Select.Option>
-            ))}
-          </Select>
-        </FormItem>
+        <CitySelectWrapper showCity={isCityShow}>
+          <FormItem label="Тип выгрузки">
+            <Select
+              placeholder="Выберите из списка"
+              value={unloadSelectType || undefined}
+              onChange={(value) => setUnloadSelectType(value as UnloadingType)}
+            >
+              {Object.entries(unloadingTypesDictionary).map(([key, elem]) => (
+                <Select.Option value={key} key={key}>
+                  {elem}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+
+          {isCityShow && (
+            <FormItem label="Город">
+              <Select
+                placeholder="Выберите из списка"
+                onChange={(type) => selectCity(String(type))}
+                value={selectedCity || undefined}
+              >
+                {existingCities.map((city) => (
+                  <Select.Option key={city} value={city}>
+                    {city}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          )}
+        </CitySelectWrapper>
+
         {unloadSelectType === UnloadingType.ByAddress && (
           <FormItem label={unloadingTypesForLabelDictionary[unloadSelectType]}>
             <TreeSelectSC

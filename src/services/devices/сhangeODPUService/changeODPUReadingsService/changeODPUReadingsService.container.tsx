@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ChangeODPUReadingsService } from './changeODPUReadings.model';
 import { Wrapper } from './changeODPUReadings.styled';
 import { prepareReadingsToFormik } from './changeODPUReadings.utils';
@@ -29,37 +29,37 @@ export const ChangeODPUReadingsContainer: FC<ChangeODPUReadingsProps> = ({
     PreparedHousingMeteringDeviceReadings[]
   >([]);
   const [oldDeviceReadings, setOldDeviceReadings] = useState(
-    oldDeviceInitialReadings
+    oldDeviceInitialReadings,
   );
 
   useEffect(() => {
     setNewDeviceReadings(newDeviceInitialReadings);
     setOldDeviceReadings(oldDeviceInitialReadings);
-  }, [oldDeviceInitialReadings]);
+  }, [oldDeviceInitialReadings, newDeviceInitialReadings]);
 
   useEffect(() => {
     const preparedNewDeviceReadings = prepareReadingsToFormik(
       newDeviceReadings,
-      newDeviceInitialReadings
+      newDeviceInitialReadings,
     );
     onChangeNewReadings(preparedNewDeviceReadings);
-  }, [newDeviceReadings]);
+  }, [newDeviceReadings, newDeviceInitialReadings, onChangeNewReadings]);
 
   useEffect(() => {
     const preparedOldDeviceReadings = prepareReadingsToFormik(
       oldDeviceReadings,
-      oldDeviceInitialReadings
+      oldDeviceInitialReadings,
     );
     onChangeOldReadings(preparedOldDeviceReadings);
-  }, [oldDeviceReadings]);
+  }, [oldDeviceReadings, oldDeviceInitialReadings, onChangeOldReadings]);
 
   const handleChangeOldDeviceReadings = useCallback(
     ({ readings }) => setOldDeviceReadings(readings),
-    [setOldDeviceReadings]
+    [setOldDeviceReadings],
   );
   const handleChangeNewDeviceReadings = useCallback(
     ({ readings }) => setNewDeviceReadings(readings),
-    [setNewDeviceReadings]
+    [setNewDeviceReadings],
   );
 
   return (

@@ -2,11 +2,10 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { useFormik } from 'formik';
-import { EDocumentType, ENodeCommercialAccountStatus } from 'myApi';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ENodeCommercialAccountStatus } from 'myApi';
+import React, { FC, useCallback, useEffect } from 'react';
 import { commercialNodeStatuses } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
@@ -30,22 +29,8 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   handleChangeNodeStatus,
   initialValues,
 }) => {
-  const {
-    handleSubmit,
-    values,
-    setFieldValue,
-    errors,
-  } = useFormik<ChangeNodeStatusFormik>({
-    initialValues: {
-      commercialStatus: initialValues?.commercialStatus?.value || null,
-      documentId: null,
-      firstDate: null,
-      secondDate: null,
-    },
-    validationSchema,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: (values) => {
+  const handleSubmitForm = useCallback(
+    (values: ChangeNodeStatusFormik) => {
       const { commercialStatus, documentId, firstDate, secondDate } = values;
 
       if (!commercialStatus || !firstDate) {
@@ -59,7 +44,22 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
         secondDate: secondDate || undefined,
       });
     },
-  });
+    [handleChangeNodeStatus],
+  );
+
+  const { handleSubmit, values, setFieldValue, errors } =
+    useFormik<ChangeNodeStatusFormik>({
+      initialValues: {
+        commercialStatus: initialValues?.commercialStatus?.value || null,
+        documentId: null,
+        firstDate: null,
+        secondDate: null,
+      },
+      validationSchema,
+      validateOnChange: false,
+      validateOnBlur: false,
+      onSubmit: handleSubmitForm,
+    });
 
   const changeCommercialStatus = useCallback(
     (value: SelectValue) => {
@@ -67,14 +67,14 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
       setFieldValue('secondDate', null);
       setFieldValue('documentId', null);
     },
-    [setFieldValue]
+    [setFieldValue],
   );
 
   useEffect(() => {
     if (!formId) {
-      handleSubmit();
+      handleSubmitForm(values);
     }
-  }, [values]);
+  }, [values, handleSubmitForm, formId]);
 
   const isSeveralDates =
     values.commercialStatus === ENodeCommercialAccountStatus.Registered;

@@ -46,15 +46,3 @@ export const ContentWrapper = styled.div`
 export const CommonInfoWrapper = styled.div`
   width: 560px;
 `;
-
-export const ErrorContentWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-`;
-
-export const LinkText = styled.div`
-  color: #fc525b;
-  font-weight: 500;
-
-  cursor: pointer;
-`;

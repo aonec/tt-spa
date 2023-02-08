@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import { IndividualDeviceReadingsResponse } from 'myApi';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { individualDeviceMetersInputService } from './individualDeviceMetersInputService.model';
 import {
   CompareReadingsStatus,
@@ -24,7 +24,9 @@ import { getRateNum } from './view/MetersInputsBlock/MetersInputsBlock.utils';
 
 const { outputs, inputs } = individualDeviceMetersInputService;
 
-export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInputContainerProps> = ({
+export const IndividualDeviceMetersInputContainer: FC<
+  IndividualDeviceMetersInputContainerProps
+> = ({
   deviceIndex,
   device,
   sliderIndex,
@@ -35,12 +37,12 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   editable,
 }) => {
   const uploadingMetersDevicesStatuses = useStore(
-    outputs.$uploadingMetersStatuses
+    outputs.$uploadingMetersStatuses,
   );
 
   const uploadingMetersStatuses = useMemo(
     () => uploadingMetersDevicesStatuses[device.id] || {},
-    [device.id, uploadingMetersDevicesStatuses]
+    [device.id, uploadingMetersDevicesStatuses],
   );
 
   const openConfirmReadingModal = useEvent(inputs.openConfirmReadingModal);
@@ -48,7 +50,6 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
   const uploadMeter = useEvent(inputs.uploadMeter);
 
   const deleteMeter = useEvent(inputs.deleteMeter);
-  const clearStatuses = useEvent(inputs.clearStatuses);
 
   const previousReadingByCurrentSliderIndex = useMemo(() => {
     if (!device.readings) return;
@@ -58,36 +59,34 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
     return getExistingReading(preparedReadings, sliderIndex, 'prev');
   }, [device.readings, sliderIndex]);
 
-  const {
-    previousReading,
-    currentReading,
-    preparedReadingsData,
-  } = useMemo(() => {
-    const preparedReadingsData = getPreparedReadingsDictionary(
-      device.readings || []
-    );
+  const { previousReading, currentReading, preparedReadingsData } =
+    useMemo(() => {
+      const preparedReadingsData = getPreparedReadingsDictionary(
+        device.readings || [],
+      );
 
-    const previousReading: IndividualDeviceReadingsResponse | undefined =
-      preparedReadingsData[sliderIndex];
-    const currentReading: IndividualDeviceReadingsResponse | undefined =
-      preparedReadingsData[-1];
+      const previousReading: IndividualDeviceReadingsResponse | undefined =
+        preparedReadingsData[sliderIndex];
+      const currentReading: IndividualDeviceReadingsResponse | undefined =
+        preparedReadingsData[-1];
 
-    return { previousReading, currentReading, preparedReadingsData };
-  }, [device.readings, sliderIndex]);
+      return { previousReading, currentReading, preparedReadingsData };
+    }, [device.readings, sliderIndex]);
 
   const openReadingsHistoryModal = useCallback(
     () => openReadingsHistoryModalById(device.id),
-    [openReadingsHistoryModalById, device.id]
+    [openReadingsHistoryModalById, device.id],
   );
 
-  const inputIndex = useMemo(() => getInputIndex(deviceIndex, devices), [
-    deviceIndex,
-    devices,
-  ]);
+  const inputIndex = useMemo(
+    () => getInputIndex(deviceIndex, devices),
+    [deviceIndex, devices],
+  );
 
-  const deviceRateNum = useMemo(() => getRateNum(device.rateType), [
-    device.rateType,
-  ]);
+  const deviceRateNum = useMemo(
+    () => getRateNum(device.rateType),
+    [device.rateType],
+  );
 
   const unit = getMeasurementUnit(device.resource);
 
@@ -105,7 +104,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
           deviceRateNum,
           readingPayload,
           consumptionRate,
-          preparedReadingsData
+          preparedReadingsData,
         );
 
         const reject = () => {
@@ -129,7 +128,7 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
           const meterId = readingPayload.meterId;
 
           const readingMonth = moment(readingPayload.readingDate).format(
-            'MMMM'
+            'MMMM',
           );
 
           openConfirmReadingModal({
@@ -208,7 +207,17 @@ export const IndividualDeviceMetersInputContainer: FC<IndividualDeviceMetersInpu
         }
       });
     },
-    [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex]
+    [
+      consumptionRate,
+      preparedReadingsData,
+      deviceRateNum,
+      sliderIndex,
+      deleteMeter,
+      device,
+      unit,
+      uploadMeter,
+      openConfirmReadingModal,
+    ],
   );
 
   const ReadingLineComponent = useMemo(() => {

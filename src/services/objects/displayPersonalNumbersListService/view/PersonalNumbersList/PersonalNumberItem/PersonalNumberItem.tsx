@@ -21,8 +21,6 @@ export const PersonalNumberItem: FC<PersonalNumberItemProps> = ({
   const homeOwner = apartment.homeownerName;
   const personalAccountNumber = apartment.personalAccountNumber;
 
-  const mainAddress = apartment?.housingStock?.address?.mainAddress;
-
   const numberOfTasks = useMemo(() => {
     return (
       Boolean(apartment.numberOfTasks) && (

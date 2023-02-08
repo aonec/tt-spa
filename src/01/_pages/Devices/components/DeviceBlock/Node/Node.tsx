@@ -1,5 +1,4 @@
 import React from 'react';
-import { CommunicationPipeInterface } from '../../utils/groupDevicesByObjects';
 import { Dates } from '../Dates';
 import {
   DeviceLink,
@@ -9,7 +8,6 @@ import {
 } from '../DeviceBlock';
 import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
-import Icon from '../../../../../tt-components/Icon';
 import { PipeNodeIntoCalculatorResponse } from '../../../../../../myApi';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
@@ -97,17 +95,6 @@ const CommercialAct = styled.div`
   color: var(--main-70);
   padding-left: 48px;
 `;
-interface NodeInterface {
-  calculatorId: number | null;
-  communicationPipes: CommunicationPipeInterface[];
-  futureCommercialAccountingDate: string;
-  id: number;
-  lastCommercialAccountingDate: string;
-  nodeStatus: string;
-  number: number;
-  resource: string;
-  serviceZone: string;
-}
 
 interface Props {
   node: PipeNodeIntoCalculatorResponse;

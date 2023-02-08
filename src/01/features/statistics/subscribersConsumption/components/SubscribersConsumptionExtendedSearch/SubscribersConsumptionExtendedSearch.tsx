@@ -2,7 +2,7 @@ import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { NumberRange } from '01/shared/ui/Fields/NumberRange';
 import { Checkbox } from 'antd';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import {
   DatesWrapper,
   ExcludeApartmentsWrapper,
@@ -12,10 +12,9 @@ import {
 import { SubscribersConsumptionExtendedSearchProps } from './SubscribersConsumptionExtendedSearch.types';
 import { prepareConsumptionForInput } from './SubscribersConsumptionExtendedSearch.utils';
 
-export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExtendedSearchProps> = ({
-  values,
-  setFieldValue,
-}) => {
+export const SubscribersConsumptionExtendedSearch: FC<
+  SubscribersConsumptionExtendedSearchProps
+> = ({ values, setFieldValue }) => {
   const {
     ColdWaterSupply,
     HotWaterSupply,
@@ -39,18 +38,18 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
 
       setFieldValue(
         'DateLastCheckFrom',
-        moment(dateLastCheckFromValue).toISOString()
+        moment(dateLastCheckFromValue).toISOString(),
       );
       setFieldValue('DateLastCheckTo', moment(dateLastCheckTo).toISOString());
     },
-    [setFieldValue]
+    [setFieldValue],
   );
 
   useEffect(() => {
     if (ExcludeApartments) {
       setFieldValue(
         'DateLastCheckFrom',
-        moment().subtract(3, 'month').toISOString()
+        moment().subtract(3, 'month').toISOString(),
       );
       setFieldValue('DateLastCheckTo', moment().toISOString());
     }
@@ -58,7 +57,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
       setFieldValue('DateLastCheckFrom', undefined);
       setFieldValue('DateLastCheckTo', undefined);
     }
-  }, [ExcludeApartments]);
+  }, [ExcludeApartments, setFieldValue]);
 
   return (
     <div>
@@ -151,7 +150,7 @@ export const SubscribersConsumptionExtendedSearch: FC<SubscribersConsumptionExte
           onChange={(value) => {
             setFieldValue(
               'MonthOfLastTransmission',
-              value && value.toISOString(true)
+              value && value.toISOString(true),
             );
           }}
           value={
