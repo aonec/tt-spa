@@ -4,18 +4,23 @@ import { prepareAddressesForTreeSelect } from 'services/resources/createResource
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
 import './closedIndividualDevicesFormService.relations';
+import {
+  $existingCities,
+  ExistingCitiesGate,
+} from '01/features/housingStocks/displayHousingStockCities/models';
 
 export const ClosedIndividualDevicesFormContainer = () => {
   const { inputs, outputs } = closedIndividualDevicesFormService;
 
   const unloadSelectType = useStore(outputs.$unloadSelectType);
+  const selectedCity = useStore(outputs.$selectedCity);
+  const exisitingCities = useStore($existingCities);
 
   const setUnloadSelectType = useEvent(inputs.setUnloadSelectType);
+  const selectCity = useEvent(inputs.selectCity);
 
   const addressesPagedList = useStore(outputs.$addressesPagedList);
-
   const organizationPagedList = useStore(outputs.$organizationPagedList);
-
   const houseManagementList = useStore(outputs.$houseManagementList);
 
   const preparedAddresses = prepareAddressesForTreeSelect({
@@ -24,12 +29,18 @@ export const ClosedIndividualDevicesFormContainer = () => {
   });
 
   return (
-    <ClosedIndividualDevicesForm
-      unloadSelectType={unloadSelectType}
-      setUnloadSelectType={setUnloadSelectType}
-      preparedAddresses={preparedAddresses}
-      organizationPagedList={organizationPagedList}
-      houseManagementList={houseManagementList}
-    />
+    <>
+      <ExistingCitiesGate />
+      <ClosedIndividualDevicesForm
+        unloadSelectType={unloadSelectType}
+        setUnloadSelectType={setUnloadSelectType}
+        preparedAddresses={preparedAddresses}
+        organizationPagedList={organizationPagedList}
+        houseManagementList={houseManagementList}
+        selectedCity={selectedCity}
+        existingCities={exisitingCities || []}
+        selectCity={selectCity}
+      />
+    </>
   );
 };
