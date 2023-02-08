@@ -79,7 +79,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
       inputs.newCalculatorCreated.watch(({ id }) =>
         setFieldValue('calculatorId', id)
       ).unsubscribe,
-    []
+    [setFieldValue]
   );
 
   const isFieldsDisabled =
@@ -89,7 +89,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
     if (values.connectionType && values.connectionType !== connectionType) {
       setConnectionType(values.connectionType);
     }
-  }, [values.connectionType, connectionType]);
+  }, [values.connectionType, connectionType, setConnectionType]);
 
   const handleChangeConnectionType = useCallback(
     async (value: SelectValue) => {

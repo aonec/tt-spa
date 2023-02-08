@@ -7,17 +7,17 @@ import { useForm } from 'effector-forms/dist';
 export const CheckNodeModalContainer = () => {
   const visible = useStore(checkNodeService.outputs.$isCheckNodeModalOpen);
   const isEditOpen = useStore(
-    checkNodeService.outputs.$isEditNodeCheckModalOpen
+    checkNodeService.outputs.$isEditNodeCheckModalOpen,
   );
   const editPayload = useStore(
-    checkNodeService.outputs.$editNodeCheckModalPayload
+    checkNodeService.outputs.$editNodeCheckModalPayload,
   );
   const loading = useStore(checkNodeService.outputs.$loading);
 
   const closeModal = useEvent(checkNodeService.inputs.closeCheckNodeModal);
   const clearPayloadFile = useEvent(checkNodeService.inputs.clearPayloadFile);
 
-  const { fields, submit } = useForm(checkNodeService.forms.checkNodeForm);
+  const { fields, submit, set } = useForm(checkNodeService.forms.checkNodeForm);
 
   return (
     <CheckNodeModal
@@ -29,6 +29,7 @@ export const CheckNodeModalContainer = () => {
       isEditOpen={isEditOpen}
       payload={editPayload}
       clearPayloadFile={() => clearPayloadFile()}
+      setFiles={(documentIds) => set({ documentIds })}
     />
   );
 };

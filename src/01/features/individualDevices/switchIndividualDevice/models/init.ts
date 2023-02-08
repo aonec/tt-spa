@@ -33,6 +33,7 @@ import {
   SwitchIndividualDeviceGate,
   $typeOfIndividualDeviceForm,
   checkIndividualDeviceFx,
+  ApartmentIdGate,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
@@ -54,6 +55,11 @@ createIndividualDeviceFx.use(switchIndividualDevice);
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
   .reset([createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData]);
+
+forward({
+  from: ApartmentIdGate.open.map(({ apartmentId }) => apartmentId),
+  to: addIndividualDeviceForm.fields.apartmentId.onChange,
+});
 
 sample({
   source: $creationDeviceStage.map((): 0 | 1 => 1),

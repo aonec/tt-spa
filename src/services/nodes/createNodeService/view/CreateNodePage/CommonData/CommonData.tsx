@@ -94,7 +94,7 @@ export const CommonData: FC<CommonDataProps> = ({
       inputs.handleServiceZoneCreated.watch((nodeServiceZone) =>
         setFieldValue('nodeServiceZoneId', nodeServiceZone.id)
       ).unsubscribe,
-    []
+    [setFieldValue]
   );
 
   return (

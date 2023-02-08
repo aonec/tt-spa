@@ -25,7 +25,6 @@ import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
 import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
-import { RelatedDevicesList } from './RelatedDevicesList';
 import { RelatedNodesList } from './RelatedNodesList';
 
 const { TabPane } = Tabs;
@@ -37,6 +36,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenCloseCalculatorModal,
   handleOpenCheckCalculatorModal,
   handleOpenConsumptionReportModal,
+  openDevicesListModal,
 }) => {
   const history = useHistory();
 
@@ -44,32 +44,11 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     id,
     model,
     serialNumber,
-    connection,
     address,
-    lastCheckingDate,
-    futureCheckingDate,
-    isConnected,
-    nodes,
     documents,
     numberOfTasks,
     comment,
   } = calculator;
-
-  const relatedDevices = useMemo(
-    () =>
-      (nodes || [])
-        .map((node) => {
-          const { communicationPipes, number } = node;
-
-          const devices = (communicationPipes || [])
-            .map((pipe) => pipe.devices || [])
-            .flat();
-
-          return { devices, nodeNumber: number };
-        })
-        .flat(),
-    [nodes],
-  );
 
   const headerTitle = useMemo(
     () => `${model} (${serialNumber})`,
@@ -84,9 +63,11 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
             key: 'Адрес',
             value: (
               <>
-                {address && (
-                  <AddressLinkWrapper to={`/objects/profile/${address?.id}`}>
-                    {getHousingStockAddress(address, true)}
+                {calculator?.address && (
+                  <AddressLinkWrapper
+                    to={`/objects/profile/${calculator.address?.id}`}
+                  >
+                    {getHousingStockAddress(calculator.address, true)}
                   </AddressLinkWrapper>
                 )}
               </>
@@ -94,14 +75,14 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           },
           {
             key: 'Дата поверки прибора',
-            value: lastCheckingDate
-              ? getTimeStringByUTC(lastCheckingDate, 'DD.MM.YYYY')
+            value: calculator?.lastCheckingDate
+              ? getTimeStringByUTC(calculator.lastCheckingDate, 'DD.MM.YYYY')
               : null,
           },
           {
             key: 'Дата следующей поверки прибора',
-            value: futureCheckingDate
-              ? getTimeStringByUTC(futureCheckingDate, 'DD.MM.YYYY')
+            value: calculator?.futureCheckingDate
+              ? getTimeStringByUTC(calculator.futureCheckingDate, 'DD.MM.YYYY')
               : null,
           },
         ]}
@@ -115,7 +96,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       menuButtons: [
         {
           title: 'Редактировать вычислитель',
-          onClick: () => history.push(`/calculators/${id}/edit`),
+          onClick: () => history.push(`/calculators/${calculator.id}/edit`),
         },
         {
           title: 'Поверить вычислитель',
@@ -132,13 +113,20 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         },
       ],
     }),
-    [handleOpenCheckCalculatorModal, handleOpenCloseCalculatorModal],
+    [
+      handleOpenCheckCalculatorModal,
+      handleOpenCloseCalculatorModal,
+      calculator,
+      history,
+      handleOpenConsumptionReportModal,
+    ],
   );
 
   const contentComponents: {
     [key in CalculatorProfileGrouptype]: ReactElement;
-  } = useMemo(
-    () => ({
+  } = useMemo(() => {
+    const { documents, nodes, connection, isConnected } = calculator;
+    return {
       [CalculatorProfileGrouptype.Common]: <>{commonInfo}</>,
       [CalculatorProfileGrouptype.Connection]: (
         <ConnectionInfo
@@ -147,17 +135,16 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
       ),
       [CalculatorProfileGrouptype.Nodes]: (
-        <RelatedNodesList nodes={nodes || []} />
-      ),
-      [CalculatorProfileGrouptype.Related]: (
-        <RelatedDevicesList pipeDevices={relatedDevices} />
+        <RelatedNodesList
+          nodes={nodes}
+          openDevicesListModal={openDevicesListModal}
+        />
       ),
       [CalculatorProfileGrouptype.Documents]: (
         <NodeDocumentsList documents={documents || []} />
       ),
-    }),
-    [calculator],
-  );
+    };
+  }, [calculator, commonInfo, openDevicesListModal]);
 
   const component = contentComponents[currentGrouptype];
 
@@ -185,10 +172,6 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           key={CalculatorProfileGrouptype.Connection}
         />
         <TabPane tab="Узлы" key={CalculatorProfileGrouptype.Nodes} />
-        <TabPane
-          tab="Подключенные приборы"
-          key={CalculatorProfileGrouptype.Related}
-        />
         <TabPane tab="Документы" key={CalculatorProfileGrouptype.Documents} />
       </TabsSC>
       <ContentWrapper>

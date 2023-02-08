@@ -18,14 +18,13 @@ import { IndividualDeviceListItemProps } from './IndividualDeviceListItem.types'
 
 export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   device,
-  housingStockId,
   apartmentId,
 }) => {
   const history = useHistory();
 
   const handleClickDevice = useCallback(
     () => history.push(`/apartments/${apartmentId}`),
-    [history, housingStockId, apartmentId]
+    [history, apartmentId],
   );
 
   return (

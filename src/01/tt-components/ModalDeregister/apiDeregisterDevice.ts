@@ -11,15 +11,3 @@ export async function deregisterDevice(form: any) {
     throw error;
   }
 }
-
-export async function getCalculator(id: number) {
-  try {
-    const res = await axios.get(`Calculators/${id}`);
-    return res;
-  } catch (error) {
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка запроса Вычислителя',
-    };
-  }
-}

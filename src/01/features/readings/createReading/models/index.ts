@@ -1,3 +1,4 @@
+import { EffectFailDataAxiosError } from 'types';
 import {
   IndividualDeviceReadingsCreateListResponse,
   IndividualDeviceReadingsCreateRequest,
@@ -8,5 +9,6 @@ export const readingFieldButtonClicked = createEvent<IndividualDeviceReadingsCre
 
 export const createReadingFx = createEffect<
   IndividualDeviceReadingsCreateRequest,
-  IndividualDeviceReadingsCreateListResponse
+  IndividualDeviceReadingsCreateListResponse,
+  EffectFailDataAxiosError
 >();

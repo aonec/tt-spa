@@ -1,10 +1,10 @@
 import React from 'react';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
-import { translateResource } from '../../../utils/translateResource';
 import { IndividualDeviceResponse } from '../../../../myApi';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Loader } from '../../../_components/Loader';
+import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 
 interface InformationInterface {
   device: IndividualDeviceResponse;
@@ -25,7 +25,7 @@ export const Information = ({ device }: InformationInterface) => {
       <Loader show={loading} size={32}>
           <ListItem
             title={'Тип ресурса'}
-            description={translateResource(resource)}
+            description={actResourceNamesLookup[resource]}
           />
           <ListItem
             title={'Место установки'}
@@ -68,7 +68,6 @@ const ListItem = ({ title, description }: ListItemInterface) => {
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const StyledListItem = styled.div`
@@ -97,5 +96,4 @@ const StyledListItem = styled.div`
       font-weight: normal;
     }
   }
-}
 `;

@@ -67,6 +67,7 @@ export const CreateResourceDisconnectionContainer = () => {
     existingHousingStocks,
     housingStockWithHeatingStations,
     housingStockWithHouseManagements,
+    typeOfAddress
   ]);
 
   return (

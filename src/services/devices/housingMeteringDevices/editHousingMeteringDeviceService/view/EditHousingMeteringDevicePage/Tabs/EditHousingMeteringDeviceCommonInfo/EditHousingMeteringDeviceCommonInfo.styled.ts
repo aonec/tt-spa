@@ -12,7 +12,7 @@ export const GridContainer = styled.div`
 
 export const Footer = styled.div`
   display: flex;
-  aling-items: center;
+  align-items: center;
   justify-content: flex-end;
   gap: 16px;
   margin-top: 16px;

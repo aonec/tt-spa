@@ -82,14 +82,14 @@ export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
       history.push(`/apartment/${id}/homeowners/${selectedType?.route}`);
       closeEditPersonalNumberTypeModal();
     }
-  }, [selectedType]);
+  }, [selectedType, history, id]);
 
   const SelectedTypeIcon = selectedType?.icon || (() => <></>);
 
   const selectedHomeowner = apartment?.homeownerAccounts?.find(
     (elem) => Number(elem.id) === homeownerId
   );
-  const homeownerAccounts = apartment?.homeownerAccounts || [];
+  const homeownerAccounts = useMemo(()=>apartment?.homeownerAccounts || [], [apartment]);
   const openedHomeownerAccounts = useMemo(
     () => homeownerAccounts.filter((account) => !account.closedAt),
     [homeownerAccounts]

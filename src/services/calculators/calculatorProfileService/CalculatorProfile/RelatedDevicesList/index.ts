@@ -1,1 +1,0 @@
-export { RelatedDevicesList } from './RelatedDevicesList'

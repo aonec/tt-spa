@@ -16,6 +16,7 @@ import {
   confirmCreationNewDeviceButtonClicked,
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
+  AddIndividualDeviceDate,
 } from './index';
 import moment from 'moment';
 
@@ -24,6 +25,11 @@ createIndividualDeviceFx.use(createIndividualDevice);
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
   .reset(createIndividualDeviceFx.doneData);
+
+forward({
+  from: AddIndividualDeviceDate.open.map(({ id }) => id),
+  to: addIndividualDeviceForm.fields.apartmentId.onChange,
+});
 
 sample({
   source: $creationDeviceStage.map((): 0 | 1 => 1),
@@ -67,9 +73,11 @@ sample({
       documentsIds: toArray<FileData>(values.documentsIds, false)
         .filter((elem) => elem?.fileResponse)
         .map((elem) => elem.fileResponse?.id!),
-      startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-      defaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-    })
+      startupReadings:
+        values.startupReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
+      defaultReadings:
+        values.defaultReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
+    }),
   ),
   clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
