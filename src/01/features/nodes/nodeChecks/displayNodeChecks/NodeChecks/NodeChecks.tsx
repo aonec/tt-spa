@@ -47,9 +47,10 @@ export const NodeChecks: FC<Props> = (props) => {
           </Header>
           {documents?.map((document) => (
             <CheckHistoryDocument
+              key={document.id}
               document={document}
               removeCheck={removeNodeCheck}
-              openEditCheckModal={openEditNodeCheckModal as any}
+              openEditCheckModal={openEditNodeCheckModal}
             />
           ))}
         </PendingLoader>
