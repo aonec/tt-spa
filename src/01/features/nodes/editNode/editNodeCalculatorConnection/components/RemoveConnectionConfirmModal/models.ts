@@ -18,7 +18,7 @@ const removeConnectionFx = removeNodeCalculatorConnectionDomain.createEffect<
   void,
   EffectFailDataAxiosError
 >((payload) => {
-  axios.put(`PipeNodes/${payload.nodeId}`, payload);
+  return axios.put(`PipeNodes/${payload.nodeId}`, payload);
 });
 
 const openConfirmationModal =
@@ -56,8 +56,13 @@ removeConnectionFx.doneData.watch(() => {
   message.info('Узел отключен от вычислителя');
 });
 
-removeConnectionFx.failData.watch(() => {
-  message.error('Узел отключен от вычислителя');
+removeConnectionFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(error.response.data.error.Text);
 });
 
 export const outputs = {

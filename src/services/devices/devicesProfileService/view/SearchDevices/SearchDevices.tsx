@@ -23,7 +23,6 @@ import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
-import { Button } from 'ui-kit/Button';
 import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 
 const { Option } = Select;
