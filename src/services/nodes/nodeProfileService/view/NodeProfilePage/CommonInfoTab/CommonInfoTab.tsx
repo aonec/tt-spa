@@ -13,8 +13,8 @@ import { configNamesLookup } from 'utils/configNamesLookup';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
-    pipeNode?.nodeStatus?.value &&
-    NodeStatusIconsDictionary[pipeNode?.nodeStatus?.value];
+    pipeNode?.commercialStatus?.value &&
+    NodeStatusIconsDictionary[pipeNode?.commercialStatus?.value];
 
   const additionalAdress = additionalAddressesString(pipeNode.address);
   const isNodeCommercial =
@@ -56,7 +56,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           value: (
             <NodeStatusWrapper>
               {NodeStatusIcon && <NodeStatusIcon />}
-              <div>{pipeNode?.nodeStatus?.description}</div>
+              <div>{pipeNode?.commercialStatus?.description}</div>
             </NodeStatusWrapper>
           ),
         },
