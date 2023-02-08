@@ -34,6 +34,7 @@ export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
     height: 100% !important;
     padding: 8px 16px !important;
     border-radius: 4px !important;
+    padding: 5px 16px !important;
   }
 
   .ant-select-arrow {

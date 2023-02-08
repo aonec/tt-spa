@@ -1,4 +1,4 @@
-import { ReportDatePeriod } from './ReportFiltrationForm.types';
+import { ReportDatePeriod } from "services/reportsService/reportViewService/reportViewService.types";
 
 export const ReportPeriodDictionary: { [key in ReportDatePeriod]: string } = {
   [ReportDatePeriod.LastDay]: 'Последние сутки',
