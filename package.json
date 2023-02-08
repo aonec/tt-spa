@@ -18,7 +18,6 @@
     "formik": "^2.2.0",
     "formik-antd": "^2.0.1",
     "fs": "^0.0.1-security",
-    "husky": "^8.0.3",
     "imask": "^6.0.7",
     "lint-staged": "^13.1.0",
     "lodash": "^4.17.20",
@@ -43,7 +42,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios"
+    "updateTypes": "npx swagger-typescript-api -p https://staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -80,6 +80,7 @@
     "@types/styled-components": "^5.1.7",
     "@types/yup": "^0.29.11",
     "eslint-config-prettier": "^8.6.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.3",
     "sass": "^1.57.1"
   }
