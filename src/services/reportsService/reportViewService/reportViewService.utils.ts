@@ -68,7 +68,6 @@ export const prepareIndividualDevicesReportData = (
 export const prepareActJournalReportData = (
   values: ReportFiltrationFormValues,
 ): ActsJournalReportRequestPayload | null => {
-  console.log(values)
   const dates = getDatePeriod(values.reportDatePeriod, {
     from: values.from,
     to: values.to,

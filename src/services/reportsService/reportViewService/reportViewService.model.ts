@@ -134,7 +134,6 @@ guard({
     fn: prepareActJournalReportData,
   }),
   filter: (payload): payload is ActsJournalReportRequestPayload => {
-    console.log(payload);
     return Boolean(payload);
   },
   target: fetchActJournalReportFx,
