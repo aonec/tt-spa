@@ -8,10 +8,11 @@ import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { createGate } from 'effector-react';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
-  null
+  null,
 );
 export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 
@@ -127,6 +128,8 @@ export const checkBeforSavingButtonClicked = createEvent();
 export const cancelCheckingButtonClicked = createEvent();
 export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
+
+export const AddIndividualDeviceDate = createGate<{ id: number }>();
 
 export const createIndividualDeviceFx = createEffect<
   CreateIndividualDeviceRequest,

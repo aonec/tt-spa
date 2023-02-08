@@ -40,7 +40,7 @@ export const EditHomeownerPersonalNumberPage = () => {
     }
 
     setEditRequestStatus(null);
-  }, [status]);
+  }, [status, history]);
 
   return (
     <>

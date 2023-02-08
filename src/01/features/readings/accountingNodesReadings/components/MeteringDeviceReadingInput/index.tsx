@@ -6,7 +6,7 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
@@ -185,26 +185,28 @@ const Input = styled.input`
 export const StyledMeteringDeviceReadingInput = Input;
 
 export const useSwitchOnEnter = (dataAttr: string) => {
-  const onKeyDown = (index: number) => {
-    const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      dataAttr
-    );
+  const onKeyDown = useCallback(
+    (index: number) => {
+      const inputList: NodeListOf<HTMLInputElement> =
+        document.querySelectorAll(dataAttr);
 
-    const nextNode = inputList[index + 1];
+      const nextNode = inputList[index + 1];
 
-    if (!nextNode) {
-      const firstNode = inputList[0];
+      if (!nextNode) {
+        const firstNode = inputList[0];
 
-      firstNode?.focus && firstNode.focus();
-      return;
-    }
+        firstNode?.focus && firstNode.focus();
+        return;
+      }
 
-    nextNode?.focus && nextNode.focus();
-  };
+      nextNode?.focus && nextNode.focus();
+    },
+    [dataAttr],
+  );
 
   useEffect(() => {
     onKeyDown(-1);
-  }, []);
+  }, [onKeyDown]);
 
   return { onKeyDown };
 };

@@ -11,7 +11,7 @@ export const AttachDocument: FC<AttachDocumentProps> = ({
 
   useEffect(() => {
     handleDocumentsChange(documents.map((elem) => elem.id));
-  }, [documents]);
+  }, [documents, handleDocumentsChange]);
 
   return (
     <DocumentsUploadContainer

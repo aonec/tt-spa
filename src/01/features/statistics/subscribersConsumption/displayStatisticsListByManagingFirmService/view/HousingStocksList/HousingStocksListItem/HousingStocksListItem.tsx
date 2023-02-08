@@ -67,7 +67,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
       setFileName('');
     }
     openModal();
-  }, [openModal, address]);
+  }, [openModal, address, setFileName]);
 
   useEffect(() => {
     if (!isCurrentHousingStockSelected) {

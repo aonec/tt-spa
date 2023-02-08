@@ -207,7 +207,17 @@ export const IndividualDeviceMetersInputContainer: FC<
         }
       });
     },
-    [consumptionRate, preparedReadingsData, deviceRateNum, sliderIndex],
+    [
+      consumptionRate,
+      preparedReadingsData,
+      deviceRateNum,
+      sliderIndex,
+      deleteMeter,
+      device,
+      unit,
+      uploadMeter,
+      openConfirmReadingModal,
+    ],
   );
 
   const ReadingLineComponent = useMemo(() => {

@@ -27,13 +27,14 @@ export const Stage: FC<StageProps> = ({
   isRevertStageLoading,
   isShowRevertStageButton,
 }) => {
-  const { number, status, type, name, closingTime, perpetrator } = stage;
+  const { status, name, closingTime, perpetrator } = stage;
 
   const preparedClosingTime = closingTime
     ? getTimeStringByUTC(closingTime)
     : '-';
 
   const icon = useMemo(() => {
+    const { status, number, type } = stage;
     const inProgress = status === EStageStatus.InProgress;
 
     const icons = [

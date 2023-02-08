@@ -1,5 +1,5 @@
 import { FilterButton } from '01/features/actsJournal/displayActsJournal/components/filterButton/FIlterButton';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { CheckboxSC } from './FilterExtendedSearch.styled';
 import {
   FilterExtendedSearchProps,
@@ -16,15 +16,14 @@ export function FilterExtendedSearch<T>({
       handleUpdate(
         clickPayload.checked
           ? selectedFilters?.filter(
-              (type) => type !== clickPayload.filterField.key
+              (type) => type !== clickPayload.filterField.key,
             )
-          : [...(selectedFilters || []), clickPayload.filterField.key!]
+          : [...(selectedFilters || []), clickPayload.filterField.key!],
       ),
-    [selectedFilters, allowedFilters]
+    [selectedFilters, handleUpdate],
   );
   const handleClearFilter = useCallback(() => handleUpdate([]), [handleUpdate]);
 
-  useEffect(() => handleClearFilter, []);
   return (
     <FilterButton
       onClear={handleClearFilter}

@@ -9,7 +9,6 @@ export const CustomInput: FC<CustomInputProps> = ({
 }) => {
   const { title, color, inputType } = configuration;
   return (
-    <>
       <>
         {title && <TitleWrapper>{title}</TitleWrapper>}
         <Input
@@ -18,7 +17,6 @@ export const CustomInput: FC<CustomInputProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-      </>
     </>
   );
 };

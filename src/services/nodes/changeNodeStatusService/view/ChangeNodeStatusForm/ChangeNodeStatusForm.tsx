@@ -29,6 +29,24 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   handleChangeNodeStatus,
   initialValues,
 }) => {
+  const handleSubmitForm = useCallback(
+    (values: ChangeNodeStatusFormik) => {
+      const { commercialStatus, documentId, firstDate, secondDate } = values;
+
+      if (!commercialStatus || !firstDate) {
+        return;
+      }
+
+      handleChangeNodeStatus({
+        commercialStatus,
+        documentId: documentId || undefined,
+        firstDate,
+        secondDate: secondDate || undefined,
+      });
+    },
+    [handleChangeNodeStatus],
+  );
+
   const { handleSubmit, values, setFieldValue, errors } =
     useFormik<ChangeNodeStatusFormik>({
       initialValues: {
@@ -40,20 +58,7 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
       validationSchema,
       validateOnChange: false,
       validateOnBlur: false,
-      onSubmit: (values) => {
-        const { commercialStatus, documentId, firstDate, secondDate } = values;
-
-        if (!commercialStatus || !firstDate) {
-          return;
-        }
-
-        handleChangeNodeStatus({
-          commercialStatus,
-          documentId: documentId || undefined,
-          firstDate,
-          secondDate: secondDate || undefined,
-        });
-      },
+      onSubmit: handleSubmitForm,
     });
 
   const changeCommercialStatus = useCallback(
@@ -67,9 +72,9 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
 
   useEffect(() => {
     if (!formId) {
-      handleSubmit();
+      handleSubmitForm(values);
     }
-  }, [values]);
+  }, [values, handleSubmitForm, formId]);
 
   const isSeveralDates =
     values.commercialStatus === ENodeCommercialAccountStatus.Registered;

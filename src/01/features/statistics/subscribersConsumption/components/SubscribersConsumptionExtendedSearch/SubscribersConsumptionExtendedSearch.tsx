@@ -57,7 +57,7 @@ export const SubscribersConsumptionExtendedSearch: FC<
       setFieldValue('DateLastCheckFrom', undefined);
       setFieldValue('DateLastCheckTo', undefined);
     }
-  }, [ExcludeApartments]);
+  }, [ExcludeApartments, setFieldValue]);
 
   return (
     <div>

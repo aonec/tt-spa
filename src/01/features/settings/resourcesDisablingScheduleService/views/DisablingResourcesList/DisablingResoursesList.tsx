@@ -17,7 +17,7 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
   handleOpenDeleteDisconnectionModal,
   handleOpenEditDisconnectionModal,
 }) => {
-  const items = resources?.items || [];
+  const items = useMemo(() => resources?.items || [], [resources]);
 
   const list = useMemo(() => {
     if (loading) {
@@ -56,7 +56,16 @@ export const DisablingResourcesList: React.FC<DisablingListProps> = ({
         </PaginationWrapper>
       </>
     );
-  }, [loading, setPage, openModal, resources]);
+  }, [
+    loading,
+    setPage,
+    openModal,
+    resources,
+    handleOpenCompleteDisconnectionModal,
+    handleOpenEditDisconnectionModal,
+    handleOpenDeleteDisconnectionModal,
+    items,
+  ]);
 
   return (
     <>
