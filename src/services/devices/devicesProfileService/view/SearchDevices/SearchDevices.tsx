@@ -15,7 +15,6 @@ import {
   ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { Icon } from '01/components';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -24,6 +23,7 @@ import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPa
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
 import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
+import { SearchIcon } from 'ui-kit/icons';
 
 const { Option } = Select;
 
@@ -50,13 +50,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
         "['Filter.PipeDiameters']",
         diameters.slice(firstIndex, secondIndex),
       );
+
+      setTimeout(() => submitForm(), 1000);
     },
     [setFieldValue, diameters],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
     const first = _.first(values['Filter.PipeDiameters']);
-
     const last = _.last(values['Filter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
@@ -99,7 +100,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
           className={styles.input}
           value={serialNumber}
           placeholder="Введите серийный номер прибора"
-          prefix={<Icon icon="search" />}
+          prefix={<SearchIcon />}
           onKeyDown={fromEnter(submitForm)}
         />
       </FormItem>
