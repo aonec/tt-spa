@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ApartmentsReadings } from './view/ApartmentsReadings';
 import { apartmentReadingsService } from './ApartmentReadingsService.model';
 import { useEvent, useStore } from 'effector-react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 
@@ -10,6 +10,7 @@ const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
   const history = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
@@ -30,11 +31,11 @@ export const ApartmentReadingsContainer = () => {
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
-      if (!apartment) return;
+      if (!apartment || apartment.id === Number(id)) return;
 
       history.push(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
-  }, [history]);
+  }, [history, id]);
 
   return (
     <>
