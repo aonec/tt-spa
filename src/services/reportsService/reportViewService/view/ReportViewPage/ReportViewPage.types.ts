@@ -1,4 +1,5 @@
 import {
+  ApartmentActsConstructedReportResponse,
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
   IndividualDevicesConstructedReportResponse,
@@ -14,5 +15,8 @@ export type ReportViewPageProps = {
   filtrationValues: ReportFiltrationFormValues;
   setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
   isLoadingReport: boolean;
-  individualDevicesReportData: IndividualDevicesConstructedReportResponse[] | null;
+  individualDevicesReportData:
+    | IndividualDevicesConstructedReportResponse[]
+    | null;
+  actJournalReportData: ApartmentActsConstructedReportResponse | null;
 };

@@ -1,7 +1,13 @@
-import { IndividualDevicesConstructedReportResponse } from './../../../myApi';
+import {
+  ApartmentActsConstructedReportResponse,
+  IndividualDevicesConstructedReportResponse,
+  HouseManagementWithStreetsResponse,
+} from 'myApi';
 import { axios } from '01/axios';
-import { HouseManagementWithStreetsResponse } from 'myApi';
-import { IndividualDeviceReportRequestPaload } from './reportViewService.types';
+import {
+  ActsJournalReportRequestPayload,
+  IndividualDeviceReportRequestPaload,
+} from './reportViewService.types';
 import queryString from 'query-string';
 
 export const getAddressesWithHouseManagements = (): Promise<
@@ -15,6 +21,15 @@ export const getIndividualDevicesReport = (
   payload: IndividualDeviceReportRequestPaload,
 ): Promise<IndividualDevicesConstructedReportResponse[]> => {
   return axios.get('Reports/IndividualDevicesReport', {
+    params: payload,
+    paramsSerializer: queryString.stringify,
+  });
+};
+
+export const getActJournalReport = (
+  payload: ActsJournalReportRequestPayload,
+): Promise<ApartmentActsConstructedReportResponse> => {
+  return axios.get('Reports/ApartmentActsReport', {
     params: payload,
     paramsSerializer: queryString.stringify,
   });

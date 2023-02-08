@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  max-width: 1200px;
-`;
-
 export const ResourceWrapper = styled.div`
   display: flex;
   gap: 8px;

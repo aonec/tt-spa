@@ -20,19 +20,19 @@ export const getActResources = (): Promise<
 > => axios.get('ApartmentActs/ActResourceTypes');
 
 export const getApartmentActs = async (
-  params: ApartmentActPaginationParameters
+  params: ApartmentActPaginationParameters,
 ): Promise<ApartmentActResponsePagedList | null> => {
   const res: ApartmentActResponsePagedList = await axios.get(
     `ApartmentActs?${stringify(params, {
       arrayFormat: 'none',
       skipEmptyString: true,
       skipNull: true,
-    })}`
+    })}`,
   );
 
   return res;
 };
 
 export const addApartmentActs = (
-  payload: AddApartmentActRequest
+  payload: AddApartmentActRequest,
 ): Promise<void> => axios.post('ApartmentActs', payload);

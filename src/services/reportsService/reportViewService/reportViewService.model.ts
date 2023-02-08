@@ -6,9 +6,11 @@ import {
   guard,
   sample,
   split,
+  merge,
 } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  ApartmentActsConstructedReportResponse,
   HouseManagementWithStreetsResponse,
   IndividualDevicesConstructedReportResponse,
 } from 'myApi';
@@ -18,15 +20,20 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import {
+  getActJournalReport,
   getAddressesWithHouseManagements,
   getIndividualDevicesReport,
 } from './reportViewService.api';
 import {
+  ActsJournalReportRequestPayload,
   IndividualDeviceReportRequestPaload,
   ReportFiltrationFormValues,
   ReportPayload,
 } from './reportViewService.types';
-import { prepareIndividualDevicesReportData } from './reportViewService.utils';
+import {
+  prepareActJournalReportData,
+  prepareIndividualDevicesReportData,
+} from './reportViewService.utils';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
@@ -48,7 +55,15 @@ const fetchIndividualDevicesReportFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getIndividualDevicesReport);
 
+const fetchActJournalReportFx = domain.createEffect<
+  ActsJournalReportRequestPayload,
+  ApartmentActsConstructedReportResponse,
+  EffectFailDataAxiosError
+>(getActJournalReport);
+
 const loadIndividualDeviceReport = domain.createEvent<ReportPayload>();
+
+const loadActJournalReport = domain.createEvent<ReportPayload>();
 
 const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
 
@@ -67,18 +82,21 @@ const $filtrationValues = domain
     from: null,
     to: null,
     reportDatePeriod: null,
+    closingReasons: [],
+    actResources: [],
   })
-  .on(setFiltrationValues, (_, values) => values);
+  .on(setFiltrationValues, (_, values) => values)
+  // .reset(ReportViewGate.close);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
   .on(fetchIndividualDevicesReportFx.doneData, (_, data) => data)
-  .reset(fetchIndividualDevicesReportFx.failData);
+  .reset(fetchIndividualDevicesReportFx.failData, ReportViewGate.close);
 
-const $isReportLoading = combine(
-  fetchIndividualDevicesReportFx.pending,
-  (...loadings) => loadings.some(Boolean),
-);
+const $actJournalReportData = domain
+  .createStore<ApartmentActsConstructedReportResponse | null>(null)
+  .on(fetchActJournalReportFx.doneData, (_, data) => data)
+  .reset(ReportViewGate.close);
 
 forward({
   from: AddressesWithHouseManagementsGate.open,
@@ -96,6 +114,7 @@ split({
   match: (data: ReportPayload): ReportType => data.reportType,
   cases: {
     [ReportType.IndividualDevices]: loadIndividualDeviceReport,
+    [ReportType.ActsJournal]: loadActJournalReport,
   },
 });
 
@@ -109,8 +128,26 @@ guard({
   target: fetchIndividualDevicesReportFx,
 });
 
-fetchIndividualDevicesReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
+guard({
+  clock: sample({
+    clock: loadActJournalReport.map(({ values }) => values),
+    fn: prepareActJournalReportData,
+  }),
+  filter: (payload): payload is ActsJournalReportRequestPayload => {
+    return Boolean(payload);
+  },
+  target: fetchActJournalReportFx,
+});
+
+merge([
+  fetchIndividualDevicesReportFx.failData,
+  fetchActJournalReportFx.failData,
+]).watch((error) => message.error(error.response.data.error.Text));
+
+const $isReportLoading = combine(
+  fetchIndividualDevicesReportFx.pending,
+  fetchActJournalReportFx.pending,
+  (...loadings) => loadings.some(Boolean),
 );
 
 export const reportViewService = {
@@ -124,6 +161,7 @@ export const reportViewService = {
     $filtrationValues,
     $individualDevicesReportData,
     $isReportLoading,
+    $actJournalReportData,
   },
   gates: {
     ExistingCitiesGate,
