@@ -13,6 +13,7 @@ import '../editResourceDisconnectionService/editResourceDisconnectionService.rel
 import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.relations';
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;
@@ -25,34 +26,37 @@ export const CreateResourceDisconnectionContainer = () => {
   const typeOfAddress = useStore(outputs.$typeOfAddress);
   const existingHousingStocks = useStore(outputs.$existingHousingStocks);
   const housingStockWithHeatingStations = useStore(
-    outputs.$housingStockWithHeatingStations
+    outputs.$housingStockWithHeatingStations,
   );
   const housingStockWithHouseManagements = useStore(
-    outputs.$housingStockWithHouseManagements
+    outputs.$housingStockWithHouseManagements,
   );
   const isHousingStocksLoading = useStore(outputs.$isHousingStocksLoading);
+  const selectedCity = useStore(outputs.$selectedCity);
 
   const isInterHeatingSeason = useStore(
-    chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason
+    chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
   );
   const isEdit = useStore(editResourceDisconnectionService.outputs.$isEdit);
   const resourceDisconnection = useStore(
-    editResourceDisconnectionService.outputs.$resourceDisconnection
+    editResourceDisconnectionService.outputs.$resourceDisconnection,
   );
   const isDisconnectionLoading = useStore(
-    editResourceDisconnectionService.outputs.$isDisconectionLoading
+    editResourceDisconnectionService.outputs.$isDisconectionLoading,
   );
+  const existingCities = useStore($existingCities);
 
+  const selectCity = useEvent(inputs.selectCity);
   const setTypeOfAddress = useEvent(inputs.setTypeOfAddress);
   const handleCloseModal = useEvent(inputs.closeModal);
   const handleCreateResourceDisconnection = useEvent(
-    inputs.createResourceDisconnection
+    inputs.createResourceDisconnection,
   );
   const handleEditResourceDisconnection = useEvent(
-    editResourceDisconnectionService.inputs.editResourceDisconnection
+    editResourceDisconnectionService.inputs.editResourceDisconnection,
   );
   const handleUpdateDocument = useEvent(
-    editResourceDisconnectionService.inputs.updateDocument
+    editResourceDisconnectionService.inputs.updateDocument,
   );
 
   const preparedExistingHousingStocks = useMemo(() => {
@@ -67,7 +71,7 @@ export const CreateResourceDisconnectionContainer = () => {
     existingHousingStocks,
     housingStockWithHeatingStations,
     housingStockWithHouseManagements,
-    typeOfAddress
+    typeOfAddress,
   ]);
 
   return (
@@ -89,6 +93,9 @@ export const CreateResourceDisconnectionContainer = () => {
         isEdit={isEdit}
         isDisconnectionLoading={isDisconnectionLoading}
         isHousingStocksLoading={isHousingStocksLoading}
+        existingCities={existingCities || []}
+        selectCity={selectCity}
+        selectedCity={selectedCity}
       />
     </>
   );

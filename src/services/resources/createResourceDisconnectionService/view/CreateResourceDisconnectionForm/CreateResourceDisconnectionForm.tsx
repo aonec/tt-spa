@@ -24,6 +24,7 @@ import {
 } from './CreateResourceDisconnectionForm.constants';
 import {
   BaseInfoWrapper,
+  CitySelectWrapper,
   InputSC,
   TagPlaceholder,
   TimeWrapper,
@@ -59,6 +60,9 @@ export const CreateResourceDisconnectionForm: FC<
   setTypeOfAddress,
   typeOfAddress,
   isHousingStocksLoading,
+  existingCities,
+  selectCity,
+  selectedCity,
 }) => {
   const documentInit = useMemo(
     () =>
@@ -140,6 +144,9 @@ export const CreateResourceDisconnectionForm: FC<
 
   const isAllPrevious = useRef(false);
   const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
+
+  const isCityShow =
+    existingCities.length > 1 && typeOfAddress === EAddressDetails.All;
 
   const allHousingStocks = useMemo(
     () => getAllHousingStocks(treeData),
@@ -278,25 +285,45 @@ export const CreateResourceDisconnectionForm: FC<
           </Select>
           <ErrorMessage>{errors.disconnectingType}</ErrorMessage>
         </FormItem>
-        <FormItem label="Детальность адреса">
-          <Select
-            placeholder="Выберите из списка"
-            onChange={(type) => setTypeOfAddress(type as EAddressDetails)}
-            value={typeOfAddress}
-          >
-            {DetailsSelectLookup.map(({ key, value }) => (
-              <Select.Option key={key} value={key}>
-                {value}
-              </Select.Option>
-            ))}
-          </Select>
-        </FormItem>
+
+        <CitySelectWrapper showCity={isCityShow}>
+          <FormItem label="Детальность адреса">
+            <Select
+              placeholder="Выберите из списка"
+              onChange={(type) => setTypeOfAddress(type as EAddressDetails)}
+              value={typeOfAddress}
+            >
+              {DetailsSelectLookup.map(({ key, value }) => (
+                <Select.Option key={key} value={key}>
+                  {value}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+
+          {isCityShow && (
+            <FormItem label="Город">
+              <Select
+                placeholder="Выберите из списка"
+                onChange={(type) => selectCity(String(type))}
+                value={selectedCity || undefined}
+              >
+                {existingCities.map((city) => (
+                  <Select.Option key={city} value={city}>
+                    {city}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          )}
+        </CitySelectWrapper>
+
         <FormItem label="Адрес">
           <TreeSelectSC
             showSearch
             showArrow
             value={values.housingStockIds}
-            disabled={isHousingStocksLoading}
+            disabled={isHousingStocksLoading || (isCityShow && !selectedCity)}
             treeCheckable
             maxTagCount={0}
             maxTagPlaceholder={() => {
