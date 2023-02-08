@@ -147,6 +147,17 @@ guard({
 
 guard({
   clock: sample({
+    clock: loadActJournalReport.map(({ values }) => values),
+    fn: prepareActJournalReportData,
+  }),
+  filter: (payload): payload is ActsJournalReportRequestPayload => {
+    return Boolean(payload);
+  },
+  target: fetchActJournalReportFx,
+});
+
+guard({
+  clock: sample({
     clock: loadHousingMeteringDevicesReport.map(({ values }) => values),
     fn: prepareHousingMeteringDevicesReportData,
   }),

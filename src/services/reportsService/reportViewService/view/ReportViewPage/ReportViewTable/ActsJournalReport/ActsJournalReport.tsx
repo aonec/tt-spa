@@ -10,6 +10,7 @@ import {
   ApartmentNumber,
   ResourceWrapper,
 } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
+import { ActsCountPanel } from './ActsCountPanel';
 import { actsJournalReportService } from './ActsJournalReport.model';
 import { ActDate } from './ActsJournalReport.styled';
 import { ActsJournalReportProps } from './ActsJournalReport.types';
@@ -102,6 +103,9 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
         ]}
         elements={actJournalReportData?.rows?.slice(0, 50) || []}
       />
+      {actJournalReportData.rows && (
+        <ActsCountPanel count={actJournalReportData.rows.length} />
+      )}
     </>
   );
 };
