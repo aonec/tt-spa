@@ -4,6 +4,7 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 import { IndividualDevicesReport } from './IndividualDevicesReport';
 import { Wrapper } from './ReportViewTable.styled';
 import { ActsJournalReport } from './ActsJournalReport';
+import { HousingMeteringDevicesReport } from './HousingMeteringDevicesReport';
 
 export const ReportViewTable: FC<ReportViewTableProps> = ({
   individualDevicesReportData,
@@ -26,7 +27,7 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
         actJournalReportData={actJournalReportData}
       />
     ),
-    [ReportType.HousingDevices]: null,
+    [ReportType.HousingDevices]: <HousingMeteringDevicesReport />,
     [ReportType.Employee]: null,
     [ReportType.Homeowners]: null,
   };

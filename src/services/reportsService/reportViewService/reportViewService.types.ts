@@ -49,3 +49,11 @@ export type ActsJournalReportRequestPayload = {
   From?: string;
   To?: string;
 };
+
+export type HousingMeteringDevicesReportRequestPayload = {
+  HouseManagementId?: string;
+  HousingStockId?: number;
+  Resources?: EResourceType[];
+  From: string;
+  To: string;
+};

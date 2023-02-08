@@ -5,6 +5,7 @@ import {
   ReportDatePeriod,
   ReportFiltrationFormValues,
   ActsJournalReportRequestPayload,
+  HousingMeteringDevicesReportRequestPayload,
 } from './reportViewService.types';
 
 const getDatePeriod = (
@@ -68,7 +69,6 @@ export const prepareIndividualDevicesReportData = (
 export const prepareActJournalReportData = (
   values: ReportFiltrationFormValues,
 ): ActsJournalReportRequestPayload | null => {
-  console.log(values)
   const dates = getDatePeriod(values.reportDatePeriod, {
     from: values.from,
     to: values.to,
@@ -84,5 +84,26 @@ export const prepareActJournalReportData = (
     From: dates?.from,
     To: dates?.to,
     Resources: values.actResources,
+  };
+};
+
+export const prepareHousingMeteringDevicesReportData = (
+  values: ReportFiltrationFormValues,
+): HousingMeteringDevicesReportRequestPayload | null => {
+  const dates = getDatePeriod(values.reportDatePeriod, {
+    from: values.from,
+    to: values.to,
+  });
+
+  if (!dates) return null;
+
+  return {
+    HousingStockId: values.housingStockId || undefined,
+    HouseManagementId: values.housingStockId
+      ? undefined
+      : values.houseManagement || undefined,
+    From: dates.from,
+    To: dates.to,
+    Resources: values.resources,
   };
 };
