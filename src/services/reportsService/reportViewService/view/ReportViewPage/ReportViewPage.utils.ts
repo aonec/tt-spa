@@ -2,12 +2,9 @@ import {
   ResourceShortNamesDictionary,
   ReportOptionsDictionary,
 } from 'dictionaries';
-import {
-  ReportDatePeriod,
-  ReportFiltrationFormValues,
-} from './ReportFiltrationForm/ReportFiltrationForm.types';
 import { HouseManagementResponse, EResourceType } from 'myApi';
 import { ReportPeriodDictionary } from './ReportFiltrationForm/ReportFiltrationForm.constants';
+import { ReportDatePeriod, ReportFiltrationFormValues } from '../../reportViewService.types';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList

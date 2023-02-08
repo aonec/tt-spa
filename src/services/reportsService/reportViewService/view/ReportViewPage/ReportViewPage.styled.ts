@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  width: 100%;
+`;
 
 export const HeaderWrapper = styled.div`
   margin-top: 42px;
@@ -18,6 +20,7 @@ export const FiltrationInfoWrapper = styled.div`
 export const FiltrationInfoList = styled.div`
   display: flex;
   gap: 8px;
+  margin-right: 16px;
 `;
 
 export const FiltrationInfoItem = styled.div`
@@ -25,11 +28,14 @@ export const FiltrationInfoItem = styled.div`
   border-radius: 4px;
   height: 32px;
   padding: 0 8px;
-  display: flex;
-  align-items: center;
   color: #272f5a;
   font-weight: 400;
   font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  line-height: 32px;
 `;
 
 export const HeaderTitleWrapper = styled.div`

@@ -1,5 +1,6 @@
 import { axios } from '01/axios';
 import { downloadURI } from '01/features/reports/CreateReportModal/utils';
+import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { omit } from 'lodash';
 import {
   HouseManagementResponse,
@@ -7,7 +8,6 @@ import {
 } from 'myApi';
 import {
   CreateSoiReportRequestPayload,
-  GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
 } from './soiReportService.types';
 
@@ -30,7 +30,7 @@ export const getHouseManagements = (
   axios.get('HouseManagements', { params });
 
 export const getAdresses = (
-  payload: GetAddressesRequestPayload,
+  payload: GetAddressesWithCityRequestPayload,
 ): Promise<StreetWithHousingStockNumbersResponsePagedList> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,

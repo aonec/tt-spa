@@ -45,8 +45,8 @@ export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
       </NodeInfoWrapper>
 
       <NodeStatusWrapper>
-        {node?.nodeStatus?.value && (
-          <NodeStatus status={node?.nodeStatus?.value} />
+        {node?.commercialStatus?.value && (
+          <NodeStatus status={node?.commercialStatus?.value} />
         )}
       </NodeStatusWrapper>
     </Wrapper>

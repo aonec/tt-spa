@@ -6,11 +6,7 @@ import {
   ResourceOption,
   Wrapper,
 } from './ReportFiltrationForm.styled';
-import {
-  ReportDatePeriod,
-  ReportFiltrationFormProps,
-  ReportFiltrationFormValues,
-} from './ReportFiltrationForm.types';
+import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { SearchIcon } from 'ui-kit/icons';
@@ -25,6 +21,7 @@ import {
 } from 'dictionaries';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { ReportPeriodDictionary } from './ReportFiltrationForm.constants';
+import { ReportDatePeriod, ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
 
 const { gates } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -61,7 +58,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
         <Wrapper>
           <FormItem label="Город">
             <Select
-              suffixIcon={<SearchIcon />}
               placeholder="Выберите из списка"
               value={values.city || undefined}
               onChange={(value) => setFieldValue('city', value)}
@@ -76,7 +72,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Домоуправление">
             <Select
               value={values.houseManagement || undefined}
-              suffixIcon={<SearchIcon />}
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);

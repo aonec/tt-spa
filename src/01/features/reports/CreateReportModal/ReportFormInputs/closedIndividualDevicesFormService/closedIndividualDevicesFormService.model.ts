@@ -1,4 +1,5 @@
-import { createDomain, guard } from 'effector';
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import { createDomain, guard, sample } from 'effector';
 import {
   HouseManagementResponse,
   OrganizationResponsePagedList,
@@ -20,14 +21,34 @@ const $unloadSelectType = domain
   .on(setUnloadSelectType, (_, unloadType) => unloadType);
 
 const fetchAdressesFx = domain.createEffect<
-  void,
+  string,
   StreetWithHousingStockNumbersResponsePagedList
 >(getAdresses);
 
-guard({
-  source: $unloadSelectType,
-  filter: (value) => value === UnloadingType.ByAddress,
+const selectCity = domain.createEvent<string>();
+
+const $selectedCity = domain
+  .createStore<string | null>(null)
+  .on(selectCity, (_, city) => city);
+
+sample({
+  clock: $selectedCity,
+  filter: Boolean,
   target: fetchAdressesFx,
+});
+
+sample({
+  source: sample({
+    source: $existingCities,
+    filter: (cities): cities is string[] =>
+      Boolean(cities && cities.length === 1),
+  }),
+  clock: sample({
+    clock: setUnloadSelectType,
+    filter: (value) => value === UnloadingType.ByAddress,
+  }),
+  fn: (cities) => cities[0],
+  target: selectCity,
 });
 
 const fetchOrganzationFx = domain.createEffect<
@@ -64,15 +85,16 @@ const $houseManagementList = domain
   .createStore<HouseManagementResponse[] | null>(null)
   .on(
     fetchHouseManagementsFx.doneData,
-    (_, HouseManagements) => HouseManagements
+    (_, HouseManagements) => HouseManagements,
   );
 
 export const closedIndividualDevicesFormService = {
-  inputs: { setUnloadSelectType },
+  inputs: { setUnloadSelectType, selectCity },
   outputs: {
     $unloadSelectType,
     $addressesPagedList,
     $organizationPagedList,
     $houseManagementList,
+    $selectedCity,
   },
 };
