@@ -132,7 +132,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
 
                   return Object.values(reading)
                     .filter((readingValue) => typeof readingValue === 'number')
-                    .map((readingValue) => <div>{readingValue}</div>);
+                    .map((readingValue, index) => (
+                      <div key={index}>{readingValue}</div>
+                    ));
                 },
               },
               {
