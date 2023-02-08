@@ -47,7 +47,7 @@ export const TaskProfileHeader: FC<TaskProfileHeaderProps> = ({
       return <ResourceIconLookup resource={iconType} />;
     }
     return <CalculatorIcon />;
-  }, [devices, nodeDevice]);
+  }, [devices, nodeDevice, pipeNode]);
 
   return (
     <Wrapper>

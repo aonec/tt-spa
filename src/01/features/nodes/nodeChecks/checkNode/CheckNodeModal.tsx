@@ -1,4 +1,5 @@
 import { ErrorMessage } from '01/features/contractors/addContractors';
+import { FileData } from '01/hooks/useFilesUpload';
 import { FilesList } from '01/shared/ui/FilesList';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -20,6 +21,7 @@ interface Props {
   pending: boolean;
   closeCheckApartmentModal(): void;
   clearPayloadFile(): void;
+  setFiles: (ids: FileData[]) => void;
 }
 
 export const CheckNodeModal: FC<Props> = ({
@@ -31,6 +33,7 @@ export const CheckNodeModal: FC<Props> = ({
   pending,
   closeCheckApartmentModal,
   clearPayloadFile,
+  setFiles,
 }) => {
   return (
     <>
@@ -111,7 +114,7 @@ export const CheckNodeModal: FC<Props> = ({
             uniqId="check-apartments"
             filesInit={fields.documentIds.value}
             onChange={(value) => {
-              fields.documentIds.onChange(value);
+              setFiles(value);
             }}
             max={1}
           />

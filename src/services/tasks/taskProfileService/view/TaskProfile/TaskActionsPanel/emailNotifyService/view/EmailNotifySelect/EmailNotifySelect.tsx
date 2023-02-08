@@ -17,7 +17,7 @@ export const EmailNotifySelect: FC<EmailNotifySelectProps> = ({
 
   useEffect(() => {
     handleContractorChange(contractorsIds);
-  }, [contractorsIds]);
+  }, [contractorsIds, handleContractorChange]);
 
   const handleChange = useCallback((selectedValues: SelectValue) => {
     if (Array.isArray(selectedValues))

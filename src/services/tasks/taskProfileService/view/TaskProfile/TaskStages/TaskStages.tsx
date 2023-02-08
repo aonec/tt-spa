@@ -27,7 +27,7 @@ export const TaskStages: FC<TaskStagesProps> = ({
           />
         );
       }),
-    [stages],
+    [stages, handleRevertStage, isRevertStageLoading, isPerpetrator],
   );
 
   return (

@@ -118,7 +118,6 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       history,
       onDeleteIndividualDevice,
       isDeviceClosed,
-      managementFirmUser,
       openEditReadingsHistoryModal,
     ]
   );

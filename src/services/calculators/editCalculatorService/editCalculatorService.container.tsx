@@ -25,7 +25,7 @@ export const EditCalculatorContainer = () => {
   const history = useHistory();
 
   const calculatorTypesSelectItems = useStore(
-    outputs.$calculatorTypesSelectItems
+    outputs.$calculatorTypesSelectItems,
   );
 
   useEffect(() => {
@@ -34,13 +34,13 @@ export const EditCalculatorContainer = () => {
         if (data?.id) {
           history.push(`/calculators/${data.id}`);
         }
-      }
+      },
     ).unsubscribe;
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     handleFecthCalculator(Number(deviceId));
-  }, [deviceId]);
+  }, [deviceId, handleFecthCalculator]);
 
   return (
     <>

@@ -43,6 +43,7 @@ export const AddressSearch: FC<Props> = (props) => {
 
   let { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(3);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, homeNumberRef, apartmentNumberRef] = refs;
 
   function onChangeHandler(e: any) {

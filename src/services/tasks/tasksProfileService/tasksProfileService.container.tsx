@@ -33,7 +33,7 @@ export const TasksProfileContainer = () => {
   const housingStock = useStore(outputs.$housingStock);
 
   const handleExportTasksList = useEvent(
-    exportTasksListService.inputs.exportTasksList
+    exportTasksListService.inputs.exportTasksList,
   );
   const handleSearch = useEvent(inputs.searchTasks);
   const changeFiltersByGroupType = useEvent(inputs.changeFiltersByGroupType);
@@ -59,7 +59,7 @@ export const TasksProfileContainer = () => {
   const preparedPipeNodeId = prepareQueryStringParam(pipeNodeId);
 
   const preparedDeviceId = prepareQueryStringParam(
-    housingMeteringDeviceId || calculatorId
+    housingMeteringDeviceId || calculatorId,
   );
 
   useEffect(() => {
@@ -90,12 +90,21 @@ export const TasksProfileContainer = () => {
     }
 
     lastGroupTypeRef.current = grouptype;
-  }, [grouptype, lastGroupTypeRef]);
+  }, [
+    grouptype,
+    lastGroupTypeRef,
+    apartmentId,
+    housingStockId,
+    changeFiltersByGroupType,
+    changeGroupType,
+    clearAddress,
+    closeExtendedSearch,
+  ]);
 
   const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
     () => prepareData(pagedTasks?.items || [], grouptype),
-    [pagedTasks?.items]
+    [pagedTasks?.items, grouptype],
   );
 
   useEffect(() => {
@@ -116,7 +125,7 @@ export const TasksProfileContainer = () => {
         GroupType: grouptype,
       });
     }
-  }, [apartment, housingStock]);
+  }, [apartment, housingStock, handleSearch, grouptype]);
 
   return (
     <>

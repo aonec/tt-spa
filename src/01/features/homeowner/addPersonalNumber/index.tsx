@@ -30,7 +30,7 @@ export const AddPersonalNumberPage = () => {
     }
 
     setAddPersonalNumberStatus(null);
-  }, [status]);
+  }, [status, history]);
 
   return (
     <PersonaNumberActionPage

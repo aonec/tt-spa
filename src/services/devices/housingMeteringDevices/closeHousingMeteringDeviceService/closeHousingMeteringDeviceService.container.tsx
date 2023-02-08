@@ -14,7 +14,7 @@ export const CloseHousingMeteringDeviceContainer: FC<CloseHousingMeteringDeviceS
 
   useEffect(
     () => inputs.onSuccessClose.watch(() => navigate.goBack()).unsubscribe,
-    []
+    [navigate]
   );
 
   const isModalOpen = useStore(outputs.$isModalOpen);

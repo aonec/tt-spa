@@ -12,7 +12,7 @@ export const AddPerpetratorSelect: FC<AddPerpetratorSelectProps> = ({
 
   useEffect(() => {
     handlePerpetratorChange(perpetratorId);
-  }, [perpetratorId]);
+  }, [perpetratorId, handlePerpetratorChange]);
 
   const handleChange = useCallback(
     (value: SelectValue) => {

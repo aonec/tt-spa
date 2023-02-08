@@ -1,5 +1,3 @@
- 
-
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -60,11 +58,14 @@ export const ApartmentInfo = () => {
   const currentPersonalNumberId = useStore($currentPersonalNumberId);
 
   const apartment = useStore($apartment);
-  const homeownerAccounts = apartment?.homeownerAccounts || [];
+  const homeownerAccounts = useMemo(
+    () => apartment?.homeownerAccounts || [],
+    [apartment],
+  );
 
   const openedHomeownerAccounts = useMemo(
     () => homeownerAccounts.filter((account) => !account.closedAt),
-    [homeownerAccounts]
+    [homeownerAccounts],
   );
 
   useEffect(() => {
@@ -78,7 +79,7 @@ export const ApartmentInfo = () => {
   const currentHomeowner =
     openedHomeownerAccounts &&
     openedHomeownerAccounts.find(
-      (account) => account.id === currentPersonalNumberId
+      (account) => account.id === currentPersonalNumberId,
     );
 
   const pending = useStore(fetchApartmentFx.pending);
@@ -88,9 +89,9 @@ export const ApartmentInfo = () => {
   const isSeniorOperator = useMemo(
     () =>
       user?.roles?.find(
-        ({ key }) => key === ESecuredIdentityRoleName.SeniorOperator
+        ({ key }) => key === ESecuredIdentityRoleName.SeniorOperator,
       ),
-    [user]
+    [user],
   );
 
   const cancelPauseApartment = () =>
@@ -111,19 +112,18 @@ export const ApartmentInfo = () => {
 
   const isApartmentTaskExist = Boolean(apartmentTaskId);
 
-  const recentlyModifiedApartmentPersonalAccounts = openedHomeownerAccounts.filter(
-    checkIsHomeownerAccountRecentlyModified
-  );
+  const recentlyModifiedApartmentPersonalAccounts =
+    openedHomeownerAccounts.filter(checkIsHomeownerAccountRecentlyModified);
 
   const recentlyReplacedAccounts = (apartment?.homeownerAccounts || []).filter(
     (account) =>
       account.replacedByAccount &&
-      moment().diff(moment(account.closedAt), 'month') < 3
+      moment().diff(moment(account.closedAt), 'month') < 3,
   );
 
   const recentlyEditedAccounts = openedHomeownerAccounts.filter(
     (account) =>
-      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3
+      account.editedAt && moment().diff(moment(account.editedAt), 'month') < 3,
   );
 
   const menuButtonArray = [
@@ -159,7 +159,7 @@ export const ApartmentInfo = () => {
       recentlyEditedAccounts.map((account) => (
         <EditedAccountsAlert key={account.id} recentlyEditedAccount={account} />
       )),
-    [recentlyEditedAccounts]
+    [recentlyEditedAccounts],
   );
 
   const replacedAccountsAlert = useMemo(
@@ -170,7 +170,7 @@ export const ApartmentInfo = () => {
           recentlyReplacedAccount={account}
         />
       )),
-    [recentlyReplacedAccounts]
+    [recentlyReplacedAccounts],
   );
 
   const pausedAlert = isPaused && (
@@ -212,8 +212,8 @@ export const ApartmentInfo = () => {
     </ApartmentAlertWrapper>
   );
 
-  const apartmentHomeownerAcconutChangeAlerts = recentlyModifiedApartmentPersonalAccounts?.map(
-    (homeownerAccount) => (
+  const apartmentHomeownerAcconutChangeAlerts =
+    recentlyModifiedApartmentPersonalAccounts?.map((homeownerAccount) => (
       <ApartmentAlertWrapper key={homeownerAccount.id}>
         <Alert type="info">
           <AlertContent>
@@ -228,8 +228,7 @@ export const ApartmentInfo = () => {
           </AlertContent>
         </Alert>
       </ApartmentAlertWrapper>
-    )
-  );
+    ));
 
   const houseManagementRender = houseManagement && (
     <div style={{ fontSize: 12, fontWeight: 500 }}>
@@ -307,7 +306,7 @@ export const ApartmentInfo = () => {
                 >
                   {homeowner?.personalAccountNumber}
                 </PersonalNumber>
-              )
+              ),
           )}
         </Flex>
         <MenuButtonWrap>

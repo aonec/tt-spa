@@ -59,7 +59,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
       return <ResourceIconLookup resource={iconType} />;
     }
     return <CalculatorIcon />;
-  }, [device]);
+  }, [devices]);
 
   const pipeNodeInfo = useMemo(() => {
     if (!pipeNode) return null;

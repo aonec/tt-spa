@@ -40,7 +40,7 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
 
   useEffect(() => {
     if (bufferedReadingValues) handleReadingChange(bufferedReadingValues);
-  }, [bufferedReadingValues]);
+  }, [bufferedReadingValues, handleReadingChange]);
 
   const problemReading = device?.invalidReading;
 
