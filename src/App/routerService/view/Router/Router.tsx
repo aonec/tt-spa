@@ -45,6 +45,7 @@ import { StandartWorkingRangeContainer } from '01/features/settings/standartWork
 import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
 import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
 import { ReportsContainer } from 'services/reportsService';
+import { ReportsPageContainer } from '01/features/reports';
 
 const { gates } = objectProfileService;
 
@@ -256,7 +257,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   <StatisticsPage />
                 </Route>
 
-                <Route path="/reports" component={ReportsContainer} exact />
+                <Route path="/reports" component={ReportsPageContainer} exact />
 
                 <Route
                   path="/reports/:reportType"
