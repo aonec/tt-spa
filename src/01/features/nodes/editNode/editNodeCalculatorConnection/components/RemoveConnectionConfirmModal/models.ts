@@ -6,25 +6,29 @@ import {
   outputs as nodeOutputs,
   inputs as nodeInputs,
 } from '../../../../displayNode/models';
+import { EffectFailDataAxiosError } from 'types';
 
 const removeNodeCalculatorConnectionDomain = createDomain();
 
-const $isConfirmModalOpen = removeNodeCalculatorConnectionDomain.createStore(
-  false
-);
+const $isConfirmModalOpen =
+  removeNodeCalculatorConnectionDomain.createStore(false);
 
 const removeConnectionFx = removeNodeCalculatorConnectionDomain.createEffect<
   UpdatePipeNodeRequest & { nodeId: number },
-  void
+  void,
+  EffectFailDataAxiosError
 >((payload) => {
   axios.put(`PipeNodes/${payload.nodeId}`, payload);
 });
 
-const openConfirmationModal = removeNodeCalculatorConnectionDomain.createEvent();
+const openConfirmationModal =
+  removeNodeCalculatorConnectionDomain.createEvent();
 
-const closeConfirmationModal = removeNodeCalculatorConnectionDomain.createEvent();
+const closeConfirmationModal =
+  removeNodeCalculatorConnectionDomain.createEvent();
 
-const removeConnectionButtonClicked = removeNodeCalculatorConnectionDomain.createEvent();
+const removeConnectionButtonClicked =
+  removeNodeCalculatorConnectionDomain.createEvent();
 
 $isConfirmModalOpen
   .on(openConfirmationModal, () => true)
@@ -52,6 +56,10 @@ removeConnectionFx.doneData.watch(() => {
   message.info('Узел отключен от вычислителя');
 });
 
+removeConnectionFx.failData.watch(() => {
+  message.error('Узел отключен от вычислителя');
+});
+
 export const outputs = {
   $isConfirmModalOpen,
   $loading: removeConnectionFx.pending,
@@ -65,5 +73,5 @@ export const inputs = {
 
 export const RemoveNodeCalculatorConnectionService = {
   inputs,
-  outputs
-}
+  outputs,
+};

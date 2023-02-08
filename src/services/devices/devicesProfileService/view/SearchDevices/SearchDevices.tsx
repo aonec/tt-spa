@@ -12,6 +12,7 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
+  ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { Icon } from '01/components';
@@ -22,6 +23,8 @@ import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
+import { Button } from 'ui-kit/Button';
+import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 
 const { Option } = Select;
 
@@ -35,6 +38,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   devicesSearchType,
   serialNumber,
   setSerialNumber,
+  handleClear,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
@@ -45,10 +49,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
       setFieldValue(
         "['Filter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex)
+        diameters.slice(firstIndex, secondIndex),
       );
     },
-    [setFieldValue, diameters]
+    [setFieldValue, diameters],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
@@ -79,7 +83,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             onChange={(key, value) =>
               setFieldValue(
                 `['Filter.Address.${SearchDevicesFormikFieldsLookup[key]}']`,
-                value
+                value,
               )
             }
             handleSubmit={() => submitForm()}
@@ -134,15 +138,24 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 </SelectSC>
               </FlexCenterRow>
             </FormItem>
+            <ResetButton
+              type="ghost"
+              onClick={handleClear}
+              size="small"
+              icon={<ClearIconSC />}
+            >
+              Сбросить
+            </ResetButton>
           </StyledGrid>
 
           <Grid>
             <FormItem>
               <StyledExpirationDate>
                 <StyledLabelSimple htmlFor="expirationDate">
-                  Истекает дата поверки:{' '}
+                  Истекает дата поверки:
                 </StyledLabelSimple>
                 <SelectSC
+                  placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}
                   onChange={(value) =>
