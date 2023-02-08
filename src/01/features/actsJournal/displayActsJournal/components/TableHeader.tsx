@@ -1,5 +1,5 @@
 import { Grid } from '01/shared/ui/Layout/Grid';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
@@ -98,11 +98,14 @@ const TypeDocumentExtendedSearch = () => {
   const actTypes = useStore($actTypes);
   const {
     fields: { allowedActTypes },
+    reset
   } = useForm(expandedFilterForm);
 
   const handleUpdateActTypes = (actTypes: EActType[]) => {
     allowedActTypes.onChange(actTypes);
   };
+
+  useEffect(()=> reset, [reset])
 
   return (
     <FilterExtendedSearch

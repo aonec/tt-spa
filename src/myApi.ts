@@ -4655,6 +4655,8 @@ export interface PipeNodeIntoCalculatorResponse {
 }
 
 export interface PipeNodeMeteringDeviceResponse {
+  /** @format int32 */
+  id: number;
   model: string | null;
   serialNumber: string | null;
   hasActiveTasks: boolean;

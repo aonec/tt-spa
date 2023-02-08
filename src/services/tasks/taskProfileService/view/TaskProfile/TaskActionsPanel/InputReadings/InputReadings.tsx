@@ -32,7 +32,7 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
             deviceId: device.id,
             readingDate,
           };
-        })
+        }),
       );
     }
   }, [task]);
@@ -49,12 +49,12 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
         })),
       });
     }
-  }, [readings]);
+  }, [readings, handleChange]);
 
   const onChangeReading = (
     index: number,
     value: string,
-    valueIndex: number
+    valueIndex: number,
   ) => {
     setReadings((prev) =>
       prev.map((elem, i) =>
@@ -63,8 +63,8 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
               ...elem,
               [`value${valueIndex}`]: value === '' ? '' : Number(value),
             }
-          : elem
-      )
+          : elem,
+      ),
     );
   };
 

@@ -47,7 +47,7 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
       (requiredArchiveReadings || []).sort((first, second) =>
         moment(first.time).diff(moment(second.time)),
       ),
-    [archiveData, graphType],
+    [requiredArchiveReadings],
   );
 
   if (sortedArchiveReadings.length === 0) {

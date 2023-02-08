@@ -40,7 +40,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
       openingDate: values.openingDate?.format('YYYY-MM-DD'),
     });
-  }, [values]);
+  }, [values, handleChangeSwitchDevicePayload]);
 
   useEffect(() => {
     if (!values.lastCheckingDate) return;
@@ -49,7 +49,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       'futureCheckingDate',
       values.lastCheckingDate?.add(4, 'year'),
     );
-  }, [values.lastCheckingDate]);
+  }, [values.lastCheckingDate, setFieldValue]);
 
   useEffect(() => {
     if (!values.calculatorInfoId) return;
@@ -59,7 +59,7 @@ export const SwitchDeviceForm: FC<SwitchDeviceFormProps> = ({
       '';
 
     setFieldValue('model', model);
-  }, [values.calculatorInfoId]);
+  }, [values.calculatorInfoId, setFieldValue, calculatorInfos]);
 
   return (
     <div>

@@ -6,7 +6,7 @@ import {
   NodeSetRegistrationTypeRequest,
   NodeSetTechnicalTypeRequest,
 } from 'myApi';
-import React, { FC, useEffect, useMemo, useRef } from 'react';
+import React, { FC } from 'react';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
 import { NodeRegistrationTypeLookup } from 'services/devices/editNodeService/view/EditNodePage/EditNodePage.constants';
 import { FormItem } from 'ui-kit/FormItem';

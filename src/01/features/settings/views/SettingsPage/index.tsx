@@ -42,7 +42,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({
         onClick: handleReassingInspector,
       },
     ];
-  }, [adminSettings]);
+  }, [adminSettings, handleReassingInspector]);
 
   const settingsComponent = useMemo(() => {
     if (adminSettings) {

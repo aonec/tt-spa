@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -17,6 +18,16 @@ export const Wrapper = styled.div`
   grid-gap: 15px;
   grid-template-columns: 1fr 0.3fr 0.3fr 40px;
   align-items: center;
+`;
+
+export const ModelWrapper = styled(Link)`
+  cursor: pointer;
+
+  &:hover {
+    span {
+       color: #189EE9;
+    }
+  }
 `;
 
 export const Model = styled.span`
@@ -44,4 +55,5 @@ export const BaseInfo = styled.div`
 
 export const WarningIconWrapper = styled.div`
   margin-left: 10px;
+  display: flex;
 `;

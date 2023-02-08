@@ -21,7 +21,6 @@ export const IndividualDevicesListContainer: FC<
       <IndividualDevicesList
         isLoading={isLoading}
         individualDevicesList={individualDevicesList}
-        housingStockId={housingStockId}
         apartmentId={apartmentId}
       />
     </>

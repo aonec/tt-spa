@@ -51,9 +51,11 @@ const { gates } = objectProfileService;
 const { ObjectGroupIsOpen } = gates;
 
 export const Router: FC<RouterProps> = ({ roles }) => {
-  const redirectRoute = roles?.includes(ESecuredIdentityRoleName.Operator)
-    ? '/meters/'
-    : '/tasks/';
+  const redirectRoute = roles.length
+    ? roles?.includes(ESecuredIdentityRoleName.Operator)
+      ? '/meters/'
+      : '/tasks/'
+    : '/login';
   return (
     <Wrapper>
       <Switch>

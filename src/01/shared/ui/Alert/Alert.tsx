@@ -6,7 +6,6 @@ import {
   StopIcon,
   WarningIcon,
 } from 'ui-kit/icons';
-import { Flex } from '../Layout/Flex';
 import { Space } from '../Layout/Space/Space';
 import { IconWrapper } from './Alert.styled';
 
