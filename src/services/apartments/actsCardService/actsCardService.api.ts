@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver';
+
 import { axios } from '01/axios';
 import { ApartmentActResponsePagedList, DocumentResponse } from 'myApi';
 

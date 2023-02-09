@@ -1,13 +1,16 @@
-import { createDomain, guard, sample } from 'effector';
+import { createDomain, guard } from 'effector';
 import {
   NodeOnHousingStockResponse,
+  PipeNodeIntoCalculatorResponse,
   PipeNodeMeteringDeviceResponse,
 } from 'myApi';
 import { getMeteringDevices } from './meteringDevicesService.api';
 
 const domain = createDomain('meteringDevicesService');
 
-const openDevicesListModal = domain.createEvent<NodeOnHousingStockResponse>();
+const openDevicesListModal = domain.createEvent<
+  NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse
+>();
 
 const closeDevicesListModal = domain.createEvent();
 
@@ -19,7 +22,9 @@ const fetchMeteringDevices = domain.createEffect<
 >(getMeteringDevices);
 
 const $pipeNode = domain
-  .createStore<NodeOnHousingStockResponse | null>(null)
+  .createStore<
+    NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse | null
+  >(null)
   .on(openDevicesListModal, (_, node) => node)
   .reset(closeDevicesListModal);
 

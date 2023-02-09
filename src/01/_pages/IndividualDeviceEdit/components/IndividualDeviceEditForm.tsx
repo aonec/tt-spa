@@ -73,7 +73,6 @@ const IndividualDeviceEditForm = ({
     lastCheckingDate,
     futureCheckingDate,
     resource,
-    rateType,
     mountPlace,
     bitDepth,
     scaleFactor,
@@ -119,7 +118,7 @@ const IndividualDeviceEditForm = ({
         sealNumber: values.sealNumber,
         sealInstallationDate: moment(
           values.sealInstallationDate,
-          'DD.MM.YYYY'
+          'DD.MM.YYYY',
         ).toISOString(true),
         mountPlaceId: values.mountPlaceId,
         isPolling: values.isPolling,
@@ -134,7 +133,7 @@ const IndividualDeviceEditForm = ({
               setAlert(true);
               setExistDevice(existDeviceId);
             }
-          }
+          },
         );
 
         history.goBack();
@@ -153,7 +152,7 @@ const IndividualDeviceEditForm = ({
     if (mountPlaceInit) {
       setFieldValue('mountPlaceId', mountPlaceInit?.id);
     }
-  }, [mountPlaceInit]);
+  }, [mountPlaceInit, setFieldValue]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

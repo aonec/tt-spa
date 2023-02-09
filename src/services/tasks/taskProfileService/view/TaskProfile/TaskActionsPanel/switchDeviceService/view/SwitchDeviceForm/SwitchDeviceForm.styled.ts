@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const DeviceInfoWrapper = styled.div`
   display: grid;
-  grid-gap: 0 15px;
+  grid-gap: 0 16px;
   grid-template-columns: 1fr 1fr;
 `;
 
@@ -17,12 +17,12 @@ export const ResourceOptionNameWrapper = styled.div`
 
 export const DevicePipeInfoWrapper = styled.div`
   display: grid;
-  grid-gap: 0 15px;
+  grid-gap: 0 16px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 `;
 
 export const DeviceCheckingDatesWrapper = styled.div`
   display: grid;
-  grid-gap: 0 15px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0 16px;
+  grid-template-columns: 1fr 1fr 1fr;
 `;

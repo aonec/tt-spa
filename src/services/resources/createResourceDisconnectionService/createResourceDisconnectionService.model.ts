@@ -1,7 +1,7 @@
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, createDomain, forward, guard, sample, split } from 'effector';
-import _ from 'lodash/fp';
+import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   ResourceDisconnectingCreateRequest,
   StreetWithHousingStockNumbersResponsePagedList,
@@ -24,9 +24,10 @@ import { EAddressDetails } from './createResourceDisconnectionService.types';
 
 const domain = createDomain('createResourceDisconnectionService');
 
-const $resourceTypes = resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
-  (store) => store?.resourceTypes || []
-);
+const $resourceTypes =
+  resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters.map(
+    (store) => store?.resourceTypes || [],
+  );
 const $disconnectingTypes = combine(
   chooseTypeOfResourceDisconnectionModalService.outputs.$isInterHeatingSeason,
   resourceDisconnectionFiltersService.outputs.$resourceDisconnectionFilters,
@@ -38,13 +39,13 @@ const $disconnectingTypes = combine(
     }
     if (isInterHeatingSeason) {
       return types.filter(
-        (type) => type.key === EResourceDisconnectingType.InterHeatingSeason
+        (type) => type.key === EResourceDisconnectingType.InterHeatingSeason,
       );
     }
     return types.filter(
-      (type) => type.key !== EResourceDisconnectingType.InterHeatingSeason
+      (type) => type.key !== EResourceDisconnectingType.InterHeatingSeason,
     );
-  }
+  },
 );
 
 const openModal = domain.createEvent();
@@ -63,8 +64,15 @@ const $typeOfAddress = domain
   .on(setTypeOfAddress, (_, type) => type)
   .reset(clearTypeOfAddress);
 
+const selectCity = domain.createEvent<string>();
+
+const $selectedCity = domain
+  .createStore<string | null>(null)
+  .on(selectCity, (_, city) => city)
+  .reset(closeModal);
+
 const getExistingHousingStocksFx = domain.createEffect<
-  void,
+  string,
   StreetWithHousingStockNumbersResponsePagedList
 >(fetchExistingHousingStocks);
 
@@ -72,7 +80,7 @@ const $existingHousingStocks = domain
   .createStore<StreetWithHousingStockNumbersResponse[]>([])
   .on(
     getExistingHousingStocksFx.doneData,
-    (_, housingStocks) => housingStocks.items || []
+    (_, housingStocks) => housingStocks.items || [],
   )
   .reset(clearHousingStocks);
 
@@ -100,10 +108,11 @@ const $isHousingStocksLoading = combine(
   getHouseManagementsFx.pending,
   getHeatingStationFx.pending,
   getExistingHousingStocksFx.pending,
-  (...isLoading) => isLoading.includes(true)
+  (...isLoading) => isLoading.includes(true),
 );
 
-const createResourceDisconnection = domain.createEvent<ResourceDisconnectingCreateRequest>();
+const createResourceDisconnection =
+  domain.createEvent<ResourceDisconnectingCreateRequest>();
 const createResourceDisconnectionFx = domain.createEffect<
   ResourceDisconnectingCreateRequest,
   void,
@@ -135,9 +144,21 @@ forward({
   to: [clearHousingStocks, clearTypeOfAddress],
 });
 
-forward({
-  from: openModal,
-  to: getExistingHousingStocksFx,
+sample({
+  clock: $selectedCity,
+  filter: Boolean,
+  target: getExistingHousingStocksFx,
+});
+
+sample({
+  source: sample({
+    source: $existingCities,
+    filter: (cities): cities is string[] =>
+      Boolean(cities && cities.length === 1),
+  }),
+  clock: [openModal],
+  fn: (cities) => cities[0],
+  target: selectCity,
 });
 
 split({
@@ -158,13 +179,12 @@ split({
 
 forward({
   from: createResourceDisconnectionFx.doneData,
-  to:
-    resourceDisablingScheduleServiceService.inputs
-      .refetchResourceDisconnections,
+  to: resourceDisablingScheduleServiceService.inputs
+    .refetchResourceDisconnections,
 });
 
 createResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 export const createResourceDisconnectionService = {
@@ -173,6 +193,7 @@ export const createResourceDisconnectionService = {
     closeModal,
     createResourceDisconnection,
     setTypeOfAddress,
+    selectCity,
   },
   outputs: {
     $isModalOpen,
@@ -183,5 +204,6 @@ export const createResourceDisconnectionService = {
     $housingStockWithHouseManagements,
     $typeOfAddress,
     $isHousingStocksLoading,
+    $selectedCity,
   },
 };

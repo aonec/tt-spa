@@ -1,20 +1,14 @@
 import React, { useMemo } from 'react';
-
-import {
-  Footer,
-  Header,
-  ModalText,
-  StyledModal,
-} from './FormModal.styled';
-import { ButtonTT } from '01/tt-components';
+import { Footer, Header, ModalText, StyledModal } from './FormModal.styled';
 import { Loader } from '01/_components/Loader';
 import { FormModalProps } from './formModal.types';
+import { Button } from 'ui-kit/Button';
 
 const defaultInnerProps = {
   width: 800,
   destroyOnClose: true,
-  centered: true
-}
+  centered: true,
+};
 
 export const FormModal: React.FC<FormModalProps> = ({
   innerModalProps = {},
@@ -27,31 +21,39 @@ export const FormModal: React.FC<FormModalProps> = ({
   customSubmit,
   customFooter,
   disabled,
-  submitButtonType = 'blue',
   cancelBtnText = 'Отмена',
   formId,
   form,
-  description
+  description,
+  submitButtonType,
 }) => {
-  
+  const onSubmitButtonClick = () => {
+    if (onSubmit) {
+      onSubmit();
+    }
+    const formNode = document.getElementById(formId) as HTMLFormElement | null;
+
+    if (formNode?.requestSubmit) {
+      formNode.requestSubmit();
+    }
+  };
+
   const DefaultModalSubmitButton = (
-    <ButtonTT
-      color={submitButtonType}
+    <Button
       key="submit"
-      type="submit"
-      form={formId}
-      onClick={onSubmit}
+      onClick={onSubmitButtonClick}
       disabled={loading || disabled}
+      type={submitButtonType}
     >
       {loading ? <Loader show /> : submitBtnText}
-    </ButtonTT>
+    </Button>
   );
 
   const DefaultModalFooter = (
     <Footer>
-      <ButtonTT color={'white'} key="back" onClick={onCancel}>
+      <Button type="ghost" key="back" onClick={onCancel}>
         {cancelBtnText}
-      </ButtonTT>
+      </Button>
       {customSubmit || DefaultModalSubmitButton}
     </Footer>
   );
@@ -60,7 +62,7 @@ export const FormModal: React.FC<FormModalProps> = ({
     return {
       ...defaultInnerProps,
       ...innerModalProps,
-    }
+    };
   }, [innerModalProps]);
 
   return (

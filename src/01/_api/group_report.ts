@@ -1,11 +1,11 @@
-import { ReadingsStateType } from './houses_readings_page';
+import { stringify } from 'query-string';
+
 import {
   EEmailSubscriptionType,
   ENodeCommercialAccountStatus,
   EResourceType,
 } from '../../myApi';
 import axiosWithHeaders from '../axiosWithHeaders';
-import qs from 'qs';
 
 export const sendGroupReport = async (query?: {
   GroupReportId?: string | null;
@@ -30,7 +30,7 @@ export const sendGroupReport = async (query?: {
     }
   > = {
     params: query,
-    paramsSerializer: (params) => qs.stringify(params),
+    paramsSerializer: (params) => stringify(params || {}),
   };
   if (!query?.NodeStatus) {
     delete query?.NodeStatus;

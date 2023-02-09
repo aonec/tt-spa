@@ -1,7 +1,5 @@
-import { useStore } from 'effector-react';
 import { EStageStatus, EStageType } from 'myApi';
 import React, { FC, useMemo } from 'react';
-import { currentUserService } from 'services/currentUserService';
 import { Button } from 'ui-kit/Button';
 import { ChoiceIcon, FinishIcon, OkIcon } from 'ui-kit/icons';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
@@ -25,19 +23,18 @@ import { StageProps } from './Stage.types';
 export const Stage: FC<StageProps> = ({
   stage,
   isLast,
-  canRevertStage,
   handleRevertStage,
   isRevertStageLoading,
+  isShowRevertStageButton,
 }) => {
-  const { number, status, type, name, closingTime, perpetrator } = stage;
-
-  const currentUser = useStore(currentUserService.outputs.$currentUser);
+  const { status, name, closingTime, perpetrator } = stage;
 
   const preparedClosingTime = closingTime
     ? getTimeStringByUTC(closingTime)
     : '-';
 
   const icon = useMemo(() => {
+    const { status, number, type } = stage;
     const inProgress = status === EStageStatus.InProgress;
 
     const icons = [
@@ -68,9 +65,6 @@ export const Stage: FC<StageProps> = ({
   const circleColor = StageCircleColorLookup[status];
 
   const inProgress = status === EStageStatus.InProgress;
-  const isPerpetrator = perpetrator?.id === currentUser?.id;
-
-  const isShowRevertStageButton = isPerpetrator && canRevertStage;
 
   const isDone = status === EStageStatus.Done;
   const lineIsActive = isDone || inProgress;

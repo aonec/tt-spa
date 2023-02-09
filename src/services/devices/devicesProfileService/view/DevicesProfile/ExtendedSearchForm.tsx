@@ -5,20 +5,17 @@ import {
   StyledRangePicker,
   StyledContainerThreeItems,
   StyledSlider,
-  LabelCS,
   StyledFormThreeRows,
 } from './DevicesProfile.styled';
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import {
-  FormItem,
-  SelectSC,
-} from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
+import { SelectSC } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
+import { FormItem } from 'ui-kit/FormItem';
 
 const { Option } = Select;
 
@@ -39,7 +36,7 @@ export const ExtendedSearchForm: FC<{
     const last = _.last(values['Filter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
-  }, [values]);
+  }, [values, maxValue, minValue]);
 
   const handleChangeRange = useCallback(
     (value: [number, number]) => {
@@ -47,10 +44,10 @@ export const ExtendedSearchForm: FC<{
       const secondIndex = diameters.findIndex((elem) => elem === value[1]) + 1;
       setFieldValue(
         "['Filter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex)
+        diameters.slice(firstIndex, secondIndex),
       );
     },
-    [diameters, setFieldValue]
+    [diameters, setFieldValue],
   );
 
   return (
@@ -80,8 +77,7 @@ export const ExtendedSearchForm: FC<{
         ]}
       />
       <StyledContainerThreeItems>
-        <FormItem>
-          <LabelCS>Тип ресурса: </LabelCS>
+        <FormItem label="Тип ресурса">
           <SelectSC
             id="Resource"
             value={values['Filter.Resource']}
@@ -96,8 +92,7 @@ export const ExtendedSearchForm: FC<{
           </SelectSC>
         </FormItem>
 
-        <FormItem>
-          <LabelCS>Статус Узла: </LabelCS>
+        <FormItem label="Статус Узла">
           <SelectSC
             id="NodeStatus"
             placeholder="Любой статус"
@@ -111,8 +106,7 @@ export const ExtendedSearchForm: FC<{
             <Option value="Prepared">Подговлен к сдаче</Option>
           </SelectSC>
         </FormItem>
-        <FormItem>
-          <LabelCS>Истекает дата поверки: </LabelCS>
+        <FormItem label="Истекает дата поверки">
           <SelectSC
             id="expirationDate"
             placeholder="Все"
@@ -129,8 +123,7 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
-        <FormItem>
-          <LabelCS>Диаметр трубы, мм: </LabelCS>
+        <FormItem label="Диаметр трубы, мм">
           <StyledSlider
             getTooltipPopupContainer={(triggerNode) =>
               triggerNode.parentNode as HTMLElement
@@ -145,15 +138,14 @@ export const ExtendedSearchForm: FC<{
             onChange={handleChangeRange}
           />
         </FormItem>
-        <FormItem>
-          <LabelCS>Период действия акта допуска: </LabelCS>
+        <FormItem label="Период действия акта допуска">
           <ConfigProvider>
             <StyledRangePicker
               value={[
                 values['Filter.CommercialDateRange.From']
                   ? moment(
                       values['Filter.CommercialDateRange.From'],
-                      dateFormat
+                      dateFormat,
                     )
                   : null,
                 values['Filter.CommercialDateRange.To']
@@ -163,11 +155,11 @@ export const ExtendedSearchForm: FC<{
               onChange={(value: RangeValue): void => {
                 setFieldValue(
                   "['Filter.CommercialDateRange.From']",
-                  value?.length && value[0]?.format('YYYY-MM-DD')
+                  value?.length && value[0]?.format('YYYY-MM-DD'),
                 );
                 setFieldValue(
                   "['Filter.CommercialDateRange.To']",
-                  value?.length && value[1]?.format('YYYY-MM-DD')
+                  value?.length && value[1]?.format('YYYY-MM-DD'),
                 );
               }}
               size="middle"
@@ -175,8 +167,7 @@ export const ExtendedSearchForm: FC<{
             />
           </ConfigProvider>
         </FormItem>
-        <FormItem>
-          <LabelCS>Сортировать по: </LabelCS>
+        <FormItem label="Сортировать по">
           <SelectSC
             id="sortBy"
             placeholder="Улица"

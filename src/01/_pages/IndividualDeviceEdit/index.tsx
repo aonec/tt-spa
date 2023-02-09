@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Loader } from '../../components';
 import { useAsync } from '../../hooks/useAsync';
@@ -11,9 +11,7 @@ import Tabs from '../../tt-components/Tabs';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
 
 export const IndividualDeviceEdit = () => {
-  const { push } = useHistory();
   const { deviceId } = useParams<{ deviceId: string }>();
-  const path = `/individualDevices/${deviceId}`;
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
   const [currentTabKey, setTab] = useState('1');
   const [alert, setAlert] = useState(false);
@@ -21,10 +19,10 @@ export const IndividualDeviceEdit = () => {
 
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));
-  }, [deviceId]);
+  }, [deviceId, run]);
 
   if (!device) {
-    return <Loader size={'32'} show />;
+    return <Loader size={32} show />;
   }
   const tabItems: Array<TabsItemInterface> = [
     {
@@ -48,7 +46,7 @@ export const IndividualDeviceEdit = () => {
         <div style={{ background: 'red' }}>ОШИБКА</div>
       ) : null}
       {status === 'pending' || status === 'idle' ? (
-        <Loader size={'32'} show />
+        <Loader size={32} show />
       ) : null}
       {status === 'resolved' ? (
         <>

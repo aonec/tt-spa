@@ -8,7 +8,7 @@ import { addPersonalNumberFx } from '.';
 import { combine, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { HomeownerAccountCreateServiceModel } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'myApi';
 
 addPersonalNumberFx.use(addHomeowner);
 
@@ -17,16 +17,22 @@ sample({
     personalNumberEditForm.$values,
     $apartment,
     (
-      { personalAccountNumber, name, paymentCode, phoneNumber, openAt },
+      {
+        personalAccountNumber,
+        name,
+        phoneNumber,
+        openAt,
+        isMainAccountingNumber,
+      },
       apartment
     ) => {
-      const data: HomeownerAccountCreateServiceModel = {
+      const data: HomeownerAccountCreateRequest = {
         name,
-        paymentCode: String(paymentCode),
         phoneNumber,
         openAt: String(openAt),
-        personalAccountNumber,
-        apartmentId: apartment?.id,
+        personalAccountNumber: personalAccountNumber!,
+        apartmentId: apartment?.id!,
+        isMainOnApartment: isMainAccountingNumber,
       };
 
       return data;

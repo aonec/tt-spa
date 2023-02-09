@@ -2,9 +2,18 @@ import { VictoryTooltip, VictoryTooltipProps } from 'victory';
 import React from 'react';
 
 export const CustomTooltip: React.FC<
-  VictoryTooltipProps & { minValue: number; maxValue: number; height: number }
+  VictoryTooltipProps & {
+    minValue: number;
+    maxValue: number;
+    height: number;
+    datum?: { value: number | null };
+  }
 > = (props) => {
-  const { x, y, active, minValue, maxValue, height } = props;
+  const { x, y, active, minValue, maxValue, height, datum } = props;
+
+  if (datum?.value === null || datum?.value === undefined) {
+    return null;
+  }
 
   const floor = (Math.abs(maxValue) / (maxValue - minValue)) * height;
 

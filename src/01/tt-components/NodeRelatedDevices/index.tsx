@@ -1,10 +1,9 @@
-import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
-import { Link, useHistory } from 'react-router-dom';
-import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
+import { Link } from 'react-router-dom';
 import { Loader } from '../../components';
 import { magistrals } from '../localBases';
 import { Tooltip } from 'antd';
@@ -15,10 +14,7 @@ interface NodesInterface {
   close?: boolean;
 }
 
-export const NodeRelatedDevices = ({
-  node,
-  edit = false,
-}: NodesInterface) => {
+export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
   if (!node) {
     return <Loader show size={32} />;
   }
@@ -36,9 +32,13 @@ export const NodeRelatedDevices = ({
   const flattenRelated = _.flatten(related.filter((item) => item !== null));
 
   const result = flattenRelated.map((value: any) => {
-    const { model, serialNumber, closingDate, hub, resource, id } = value;
+    const { model, serialNumber, closingDate, hub, id } = value;
 
-    const { pipeNumber = '', entryNumber = '', magistral = '' } = hub || {
+    const {
+      pipeNumber = '',
+      entryNumber = '',
+      magistral = '',
+    } = hub || {
       pipeNumber: '',
       entryNumber: '',
     };
@@ -75,7 +75,7 @@ export const NodeRelatedDevices = ({
         <EditOptions>
           {edit ? (
             <Link
-              to={`/housingMeteringDevices/${id}/edit_odpu`}
+              to={`/housingMeteringDevices/${id}/edit`}
               title="Редактирование ОДПУ"
               style={{ display: 'inline-flex', width: 'min-content' }}
             >

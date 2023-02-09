@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IncorrectConfigurationIcon } from 'ui-kit/icons';
 import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystems.types';
 
 export const Wrapper = styled.div<{
@@ -20,6 +21,9 @@ export const Wrapper = styled.div<{
 `;
 
 export const NodeName = styled.div`
+  display: flex;
+  align-items: center;
+
   font-weight: 400;
   font-size: 16px;
   line-height: 18px;
@@ -50,7 +54,7 @@ export const NoCalculatorTextWrapper = styled.div`
 
 export const NodeStatusWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 
 export const NodeInfoWrapper = styled.div`
@@ -82,4 +86,8 @@ export const DeviceIconWrapper = styled.div`
 export const ResourceIconWrapper = styled.div`
   width: 18px;
   transform: translateY(-8px);
+`;
+
+export const IncorrectConfigurationIconSC = styled(IncorrectConfigurationIcon)`
+  margin-left: 6px;
 `;

@@ -6,8 +6,8 @@ import { PipeNodeInfoProps } from './PipeNodeInfo.types';
 export const PipeNodeInfo: FC<PipeNodeInfoProps> = ({ pipeNode }) => {
   return (
     <Wrapper to={`/nodes/${pipeNode?.id}`}>
-      <ResourceIconLookup resource={pipeNode.resource} />
-      <Name>Узел {pipeNode.number}</Name>
+      <ResourceIconLookup resource={pipeNode?.resource} />
+      <Name>Узел {pipeNode?.number}</Name>
     </Wrapper>
   );
 };

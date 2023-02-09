@@ -31,7 +31,7 @@ const uploadMeterFx = domain.createEffect<
 >(({ meter }) => uploadReading(meter));
 
 const deleteMeterFx = domain.createEffect<DeleteMeterPayload, void>(
-  ({ meterId }) => removeReading(meterId)
+  ({ meterId }) => removeReading(meterId),
 );
 
 const uploadMeter = domain.createEvent<UploadMeterPayload>();
@@ -52,7 +52,7 @@ forward({
 });
 
 uploadMeterFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 const clearStatuses = domain.createEvent();
@@ -74,14 +74,14 @@ $uploadingMetersStatuses
           meter: { deviceId },
           sliderIndex,
         },
-      }
+      },
     ) => ({
       ...state,
       [deviceId]: {
         ...(state[deviceId] || {}),
         [sliderIndex]: MetersInputBlockStatus.Done,
       },
-    })
+    }),
   )
   .on(
     uploadMeterFx.fail,
@@ -92,14 +92,14 @@ $uploadingMetersStatuses
           meter: { deviceId },
           sliderIndex,
         },
-      }
+      },
     ) => ({
       ...state,
       [deviceId]: {
         ...(state[deviceId] || {}),
         [sliderIndex]: MetersInputBlockStatus.Failed,
       },
-    })
+    }),
   )
   .reset(clearStatuses);
 
@@ -115,7 +115,7 @@ $devices
         ...device,
         readings: [...filteredReadings, result],
       };
-    })
+    }),
   )
   .on(deleteMeterFx.done, (state, { params: { deviceId, meterId } }) =>
     state.map((device) => {
@@ -125,7 +125,7 @@ $devices
         ...device,
         readings: device.readings?.filter(({ id }) => id !== meterId) || [],
       };
-    })
+    }),
   );
 
 deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
@@ -136,7 +136,7 @@ deleteMeterFx.done.watch(({ params: { deviceId, readingDate } }) => {
   const readingMonth = moment(readingDate).format('MMMM');
 
   message.info(
-    `Показание за ${readingMonth} на приборе ${device.model} (${device.serialNumber}) было удалено`
+    `Показание за ${readingMonth} на приборе ${device.model} (${device.serialNumber}) было удалено`,
   );
 });
 

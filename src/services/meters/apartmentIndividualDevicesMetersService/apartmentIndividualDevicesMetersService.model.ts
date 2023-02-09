@@ -9,16 +9,19 @@ import {
   IndividualDeviceListItemResponsePagedList,
 } from 'myApi';
 import { getIndividualDevices } from './apartmentIndividualDevicesMetersService.api';
-import { previousReadingIndexLimit } from './apartmentIndividualDevicesMetersService.constants';
+import { PREVIOUS_READING_INDEX_LIMIT } from './apartmentIndividualDevicesMetersService.constants';
 import { GetIndividualDevicesParams } from './apartmentIndividualDevicesMetersService.types';
 import { managementFirmConsumptionRatesService } from '../managementFirmConsumptionRatesService';
-import { $apartment } from '01/features/apartments/displayApartment/models';
 
 const domain = createDomain('apartmentIndividualDevicesMetersService');
 
-const $individualDevicesPagedData = domain.createStore<IndividualDeviceListItemResponsePagedList | null>(
-  null
-);
+const $individualDevicesPagedData =
+  domain.createStore<IndividualDeviceListItemResponsePagedList | null>(null);
+
+const fetchIndividualDevicesFx = domain.createEffect<
+  GetIndividualDevicesParams,
+  IndividualDeviceListItemResponsePagedList
+>(getIndividualDevices);
 
 const $isShowClosedIndividualDevices = domain.createStore(false);
 
@@ -29,20 +32,20 @@ const $sliderIndex = domain.createStore(0);
 const upSliderIndex = domain.createEvent();
 const downSliderIndex = domain.createEvent();
 
-const $individualDevicesList = $individualDevicesPagedData.map(
-  (data) => data?.items || []
-);
+const $individualDevicesList = domain
+  .createStore<IndividualDeviceListItemResponse[]>([])
+  .on($individualDevicesPagedData, (_, data) => data?.items || []);
 
 const $filteredIndividualDevicesList = combine(
   $individualDevicesList,
-  $isShowClosedIndividualDevices
+  $isShowClosedIndividualDevices,
 ).map(([devices, isShowClosed]) => {
   if (isShowClosed) {
     return devices;
   }
 
   return devices.filter(
-    (device: IndividualDeviceListItemResponse) => !device.closingDate
+    (device: IndividualDeviceListItemResponse) => !device.closingDate,
   );
 });
 
@@ -52,14 +55,9 @@ const $closedDevicesCount = $individualDevicesPagedData.map((data) => {
   if (!devices) return null;
 
   return devices.filter((device: IndividualDeviceListItemResponse) =>
-    Boolean(device.closingDate)
+    Boolean(device.closingDate),
   ).length;
 });
-
-const fetchIndividualDevicesFx = domain.createEffect<
-  GetIndividualDevicesParams,
-  IndividualDeviceListItemResponsePagedList
->(getIndividualDevices);
 
 const refetchIndividualDevices = domain.createEvent();
 
@@ -69,7 +67,7 @@ const IndividualDevicesGate = createGate<GetIndividualDevicesParams>();
 
 $individualDevicesPagedData.on(
   fetchIndividualDevicesFx.doneData,
-  (_, data) => data
+  (_, data) => data,
 );
 
 guard({
@@ -88,7 +86,7 @@ $isShowClosedIndividualDevices.on(setIsShowClosedDevices, (_, value) => value);
 
 $sliderIndex
   .on(upSliderIndex, (index) => {
-    if (index === previousReadingIndexLimit) return index;
+    if (index === PREVIOUS_READING_INDEX_LIMIT) return index;
 
     return ++index;
   })
@@ -119,7 +117,6 @@ export const apartmentIndividualDevicesMetersService = {
     $individualDevicesPagedData,
     $consumptionRates:
       managementFirmConsumptionRatesService.outputs.$consumptionRates,
-    $apartment,
   },
   gates: { IndividualDevicesGate },
 };

@@ -1,8 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export type CommonInfoProps = {
-    items: {
-        key: string,
-        value: ReactNode
-    }[]
+  items: CommonInfoItem[];
+};
+
+export type CommonInfoItem = {
+  key: string;
+  value: ReactNode;
+  hidden?: boolean;
 };

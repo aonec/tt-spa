@@ -25,7 +25,7 @@ export const DocumentNameText = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  max-width: 240px;
+  max-width: 200px;
   font-weight: 500;
   font-size: 14px;
   margin-left: 8px;

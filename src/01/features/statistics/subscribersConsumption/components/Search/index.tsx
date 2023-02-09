@@ -10,10 +10,7 @@ import {
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import {
-  StyledAutocomplete,
-  SelectSC,
-} from '01/shared/ui/Fields';
+import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
@@ -33,10 +30,15 @@ import { Wrapper } from './Search.styled';
 
 const { inputs, outputs } = subscribersConsumptionService;
 
-export const Search: React.FC = () => {
+export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
+  isHousingStockHasCorpuses,
+}) => {
   const [isExtendedSearchOpen, setIsExtendedSearchOpen] = useState(false);
   const openExtendedSearchOpen = () => setIsExtendedSearchOpen(true);
   const closeExtendedSearchOpen = () => setIsExtendedSearchOpen(false);
+
+  const existingStreets = useStore($existingStreets);
+  const cities = useStore($existingCities);
 
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
 
@@ -74,10 +76,8 @@ export const Search: React.FC = () => {
 
   const {
     keyDownEnterGuardedHandler,
-    refs: [cityRef, streetRef, homeNumberRef],
-  } = useOnEnterSwitch(3);
-
-  const existingStreets = useStore($existingStreets);
+    refs: [cityRef, streetRef, homeNumberRef, corpusRef],
+  } = useOnEnterSwitch(isHousingStockHasCorpuses ? 4 : 3);
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
@@ -92,6 +92,7 @@ export const Search: React.FC = () => {
     const city = fields.city.value;
     const street = fields.street.value;
     const house = fields.house.value;
+    const corpus = fields.corpus.value;
 
     if (!city || !street || !house) return;
 
@@ -103,6 +104,7 @@ export const Search: React.FC = () => {
             City: city,
             Street: street,
             HousingStockNumber: house,
+            Corpus: corpus,
             PageSize: 1,
             PageNumber: 1,
           },
@@ -119,7 +121,9 @@ export const Search: React.FC = () => {
     } catch (error) {}
   }
 
-  const cities = useStore($existingCities);
+  const temp = isHousingStockHasCorpuses
+    ? '0.5fr 1fr 0.2fr 0.2fr'
+    : '0.5fr 1fr 0.2fr';
 
   const baseSearch = (
     <ExtendedSearch
@@ -138,7 +142,7 @@ export const Search: React.FC = () => {
       <>
         <ExistingCitiesGate />
         <ExistingStreetsGate City={fields.city.value} />
-        <Grid temp="0.5fr 1fr 0.2fr" gap="15px">
+        <Grid temp={temp} gap="15px">
           <SelectSC
             onBlur={onFindHandler}
             placeholder="Город"
@@ -181,6 +185,20 @@ export const Search: React.FC = () => {
               keyDownEnterGuardedHandler(2)(e);
             }}
           />
+          {isHousingStockHasCorpuses && (
+            <StyledAutocomplete
+              onBlur={onFindHandler}
+              placeholder="Корпус"
+              value={fields.corpus.value}
+              onChange={fields.corpus.onChange}
+              ref={corpusRef}
+              onClick={() => fields.corpus.onChange('')}
+              onKeyDown={(e) => {
+                fromEnter(onSendHandler)(e);
+                keyDownEnterGuardedHandler(3)(e);
+              }}
+            />
+          )}
         </Grid>
       </>
     </ExtendedSearch>

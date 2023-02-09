@@ -8,18 +8,6 @@ export async function deregisterDevice(form: any) {
     return res;
   } catch (error) {
     alert('Что-то пошло не так: попробуйте еще раз');
-    throw new Error(error);
-  }
-}
-
-export async function getCalculator(id: number) {
-  try {
-    const res = await axios.get(`Calculators/${id}`);
-    return res;
-  } catch (error) {
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка запроса Вычислителя',
-    };
+    throw error;
   }
 }

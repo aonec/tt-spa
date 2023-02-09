@@ -17,7 +17,7 @@ import {
 } from '.';
 import { combine, forward, guard, sample } from 'effector';
 import { splitHomeownerAccount } from '01/_api/homeowners';
-import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
+import { HomeownerGate } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { doesApartmentExist } from '01/_api/housingStocks';
@@ -45,7 +45,7 @@ forward({
 $splitPersonalNumberStageNumber
   .on(nextSplitPersonalNumberPage, (value) => (value === 3 ? value : value + 1))
   .on(previousSplitPersonalNumberPage, (value) =>
-    value === 1 ? value : value - 1
+    value === 1 ? value : value - 1,
   );
 
 forward({
@@ -64,12 +64,22 @@ sample({
   target: saveSplitPersonalNumberForm,
 });
 
-forward({
-  from: fetchHomeownerFx.doneData.map(({ phoneNumber, name }) => ({
-    phoneNumber: phoneNumber || '',
-    name: name || '',
-  })),
-  to: homeownerAccountForSplittedApartmentForm.setForm,
+sample({
+  source: combine($apartment, HomeownerGate.state, (apartment, gateState) => {
+    const source = { apartment, gateState };
+    return source;
+  }),
+  fn: (source) => {
+    const homeownerAccount = source.apartment?.homeownerAccounts?.find(
+      (account) => account.id === source.gateState.id,
+    );
+    const form = {
+      phoneNumber: homeownerAccount?.phoneNumber || '',
+      name: homeownerAccount?.name || '',
+    };
+    return form;
+  },
+  target: homeownerAccountForSplittedApartmentForm.setForm,
 });
 
 sample({
@@ -77,17 +87,17 @@ sample({
     homeownerAccountForSplittedApartmentForm.$values,
     newApartmentPersonalNumberForm.$values,
     transferDevicesForm.$values,
-    $homeowner,
+    HomeownerGate.state,
     $apartment,
     (
       splittedApartmentHomeownerAccount,
       newApartmentHomeownerAccount,
       transferedDevices,
-      homeowner,
-      apartment
+      gateState,
+      apartment,
     ) => {
       const accountForClosing = {
-        HomeownerAccountId: homeowner?.id!,
+        HomeownerAccountId: gateState.id,
         closedAt: moment().toISOString(true),
       };
 
@@ -95,7 +105,7 @@ sample({
         apartmentId: apartment?.id,
         ...splittedApartmentHomeownerAccount,
         openAt: moment(splittedApartmentHomeownerAccount.openAt).toISOString(
-          true
+          true,
         ),
       };
 
@@ -107,6 +117,7 @@ sample({
       const newApartment = {
         housingStockId: apartment?.housingStock?.id,
         number: newApartmentHomeownerAccount.apartmentNumber,
+        homeownerAccount: newHomeownerAccount,
       };
 
       const individualDeviceIdsForSwitch = [
@@ -116,11 +127,10 @@ sample({
       return {
         accountForClosing,
         homeownerAccountForSplittedApartment,
-        newHomeownerAccount,
         individualDeviceIdsForSwitch,
         newApartment,
       };
-    }
+    },
   ),
   clock: splitPersonalNumber,
   fn: (store, clock) =>
@@ -145,7 +155,7 @@ sample({
     (apartment, apartmentNumber) => ({
       housingStockId: apartment?.housingStock?.id!,
       apartmentNumber: apartmentNumber!,
-    })
+    }),
   ),
   target: checkApartmentExistingFx,
 });

@@ -1,39 +1,50 @@
+import React, { FC, useCallback } from 'react';
 import { useStore } from 'effector-react';
 import { SwitchHousingMeteringDeviceRequest } from 'myApi';
-import React, { FC, useCallback } from 'react';
 import { ActionComponentProps } from '../TaskActionsPanel.types';
 import { switchDeviceService } from './switchDeviceService.model';
 import { SwitchDeviceForm } from './view/SwitchDeviceForm';
 
 const { outputs, gates } = switchDeviceService;
-const { DevicePipeGate } = gates;
+const { CalculatorInfosGate } = gates;
 
 export const SwitchDeviceContainer: FC<ActionComponentProps> = ({
   handleChange,
 }) => {
   const device = useStore(outputs.$device);
-  const devicePipe = useStore(outputs.$devicePipe);
+  const calculatorInfos = useStore(outputs.$calculatorInfos);
+
+  const isCalculator = device?.type === 'Calculator';
 
   const handleChangeSwitchDevicePayload = useCallback(
     (payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>) => {
       if (!device) return;
 
+      const key = isCalculator
+        ? 'calculatorSwitch'
+        : 'housingMeteringDeviceSwitch';
+
       handleChange({
-        housingMeteringDeviceSwitch: { ...payload, deviceId: device.id },
+        [key]: {
+          ...payload,
+          deviceId: device.id,
+          connection: device.connection,
+        },
       });
     },
-    [device, handleChange]
+    [device, handleChange, isCalculator]
   );
 
   if (!device) return null;
 
   return (
     <>
-      {device && <DevicePipeGate deviceId={device.id} />}
+      <CalculatorInfosGate />
       <SwitchDeviceForm
         device={device}
-        devicePipe={devicePipe}
         handleChangeSwitchDevicePayload={handleChangeSwitchDevicePayload}
+        isCalculator={isCalculator}
+        calculatorInfos={calculatorInfos}
       />
     </>
   );

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React, { FC } from 'react';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import {
@@ -11,14 +10,8 @@ import {
 import { TaskBaseInfoProps } from './TaskBaseInfo.types';
 
 export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
-  const {
-    id,
-    address,
-    creationTime,
-    apartment,
-    creationReason,
-    perpetrator,
-  } = task;
+  const { id, address, creationTime, apartment, creationReason, perpetrator } =
+    task;
 
   const apartmentId = apartment?.id;
   const housingStockId = task.housingStockId;

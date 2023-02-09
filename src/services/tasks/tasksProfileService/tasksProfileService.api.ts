@@ -1,6 +1,6 @@
 import { axios } from '01/axios';
 import { ApartmentResponse, HousingStockResponse, TasksPagedList } from 'myApi';
-import { GetTasksListRequestPayload } from './tasksProfileService.types';
+import { FiltersGatePayload, GetTasksListRequestPayload } from './tasksProfileService.types';
 
 export const getTasks = (
   filter: GetTasksListRequestPayload | null
@@ -9,13 +9,9 @@ export const getTasks = (
 
 export const fetchApartment = ({
   apartmentId,
-}: {
-  apartmentId: string;
-}): Promise<ApartmentResponse> => axios.get(`Apartments/${apartmentId}`);
+}: FiltersGatePayload): Promise<ApartmentResponse> => axios.get(`Apartments/${apartmentId}`);
 
 export const fetchHousingStock = ({
   housingStockId,
-}: {
-  housingStockId: string;
-}): Promise<HousingStockResponse> =>
+}: FiltersGatePayload): Promise<HousingStockResponse> =>
   axios.get(`HousingStocks/${housingStockId}`);

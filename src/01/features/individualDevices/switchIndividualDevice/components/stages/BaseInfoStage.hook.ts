@@ -1,26 +1,29 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export const useSwitchInputOnEnter = (name: string, focusOnFirst: boolean) => {
-  const next = (index: number) => {
-    const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      `[data-reading-input="${name}"]`
-    );
+  const next = useCallback(
+    (index: number) => {
+      const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+        `[data-reading-input="${name}"]`,
+      );
 
-    const nextNode = inputList[index + 1];
+      const nextNode = inputList[index + 1];
 
-    if (!nextNode) {
-      const firstNode = inputList[0];
+      if (!nextNode) {
+        const firstNode = inputList[0];
 
-      return handleFocus(firstNode);
-    }
-    return handleFocus(nextNode);
-  };
+        return handleFocus(firstNode);
+      }
+      return handleFocus(nextNode);
+    },
+    [name],
+  );
 
   useEffect(() => {
     if (focusOnFirst) {
       next(-1);
     }
-  }, []);
+  }, [focusOnFirst, next]);
 
   return next;
 };

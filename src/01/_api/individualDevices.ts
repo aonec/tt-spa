@@ -1,7 +1,6 @@
 import axios from '01/axios';
 import { CheckIndividualDevicePayload } from '01/features/individualDevices/switchIndividualDevice/switchIndividualDevice.types';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
-import _ from 'lodash';
 import {
   CreateIndividualDeviceRequest,
   SwitchIndividualDeviceRequest,
@@ -12,14 +11,18 @@ import {
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
-  deviceId: number;
   documentsIds: number[];
-  closingDate: string;
+  closingDate: string | null;
+  closingReason: string | null;
 }
 
-export const closeIndividualDevice = (
-  requestBody: CloseIndividualDeviceRequestBody
-) => axios.post('IndividualDevices/close', requestBody);
+export const closeIndividualDevice = (props: {
+  deviceId: number;
+  requestBody: CloseIndividualDeviceRequestBody;
+}): Promise<IndividualDeviceResponse | null> => {
+  const { deviceId, requestBody } = props;
+  return axios.post(`IndividualDevices/${deviceId}/close`, requestBody);
+};
 
 interface WithMagnetSeal {
   magnetSeal: MagnetSeal;
@@ -31,11 +34,11 @@ export interface CreateCreateIndividualDeviceWithMagnetSealRequest
 }
 
 export const createIndividualDevice = async (
-  payload: CreateIndividualDeviceRequest
+  payload: CreateIndividualDeviceRequest,
 ): Promise<MeteringDeviceResponse> => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices',
-    payload
+    payload,
   );
 
   return res;
@@ -45,14 +48,18 @@ export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
   device: SwitchIndividualDeviceRequest;
 }
 
-export const switchIndividualDevice = async (
-  requestPayload: SwitchIndividualDeviceRequest
-): Promise<void> => {
-  return await axios.post('IndividualDevices/switch', requestPayload);
+export const switchIndividualDevice = async (request: {
+  deviceId: number;
+  requestPayload: SwitchIndividualDeviceRequest;
+}): Promise<IndividualDeviceResponse | null> => {
+  return await axios.post(
+    `IndividualDevices/${request.deviceId}/switch`,
+    request.requestPayload,
+  );
 };
 
 export const checkIndividualDevice = (
-  requestPayload: CheckIndividualDevicePayload
+  requestPayload: CheckIndividualDevicePayload,
 ): Promise<void> => {
   const {
     deviceId,
@@ -69,12 +76,12 @@ export const checkIndividualDevice = (
 };
 
 export const getIndividualDevice = async (
-  id: number
+  id: number,
 ): Promise<IndividualDeviceResponse> => {
-  if (!id) throw 'no id';
+  if (!id) throw new Error('no id');
   try {
     const res: IndividualDeviceResponse = await axios.get(
-      `IndividualDevices/${id}`
+      `IndividualDevices/${id}`,
     );
     return res;
   } catch (e) {
@@ -95,11 +102,11 @@ export interface GetIndividualDeviceRequestParams {
 }
 
 export const getIndividualDevices = async (
-  params: GetIndividualDeviceRequestParams
+  params: GetIndividualDeviceRequestParams,
 ) => {
   const res: IndividualDeviceListItemResponsePagedList = await axios.get(
     'IndividualDevices',
-    { params }
+    { params },
   );
 
   return { items: res?.items || [], total: res?.totalItems };

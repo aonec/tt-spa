@@ -24,28 +24,30 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
   const [page, setPage] = useState(1);
 
   const timeConstructor = useCallback(
-    (data: string) => {
-      const startDateStr = moment(data)
+    (date: string) => {
+      const startDateStr = moment(date)
+        .utc(false)
         .startOf(ReportTimeType[reportType])
         .format(ReportStartTimeFormat[reportType]);
-      const endDateStr = moment(data)
+      const endDateStr = moment(date)
+        .utc(false)
         .endOf(ReportTimeType[reportType])
         .format(ReportEndTimeFormat[reportType]);
       return `${startDateStr} - ${endDateStr}`;
     },
-    [reportType]
+    [reportType],
   );
 
   const requiredArchiveReadings = archiveData.find(
-    (reading) => reading.header === graphType
+    (reading) => reading.header === graphType,
   )?.data;
 
   const sortedArchiveReadings = useMemo(
     () =>
       (requiredArchiveReadings || []).sort((first, second) =>
-        moment(first.time).diff(moment(second.time))
+        moment(first.time).diff(moment(second.time)),
       ),
-    [archiveData, graphType]
+    [requiredArchiveReadings],
   );
 
   if (sortedArchiveReadings.length === 0) {
@@ -55,7 +57,7 @@ export const NodeStatisticsTable: FC<NodeStatisticsTableProps> = ({
   const start = (page - 1) * NODE_STATISTICS_PAGE_SIZE;
   const pagedReadings = sortedArchiveReadings.slice(
     start,
-    start + NODE_STATISTICS_PAGE_SIZE
+    start + NODE_STATISTICS_PAGE_SIZE,
   );
 
   const dates = pagedReadings.map((reading) => reading.time);

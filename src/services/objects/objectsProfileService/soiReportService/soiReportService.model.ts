@@ -10,13 +10,13 @@ import {
 } from './soiReportService.api';
 import {
   CreateSoiReportRequestPayload,
-  GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
   SoiReportType,
-} from './soiReportService.model.types';
+} from './soiReportService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 
 const domain = createDomain('soiReportService');
 
@@ -32,7 +32,7 @@ const fetchHouseManagementFx = domain.createEffect<
 >(getHouseManagements);
 
 const fetchAdressesFx = domain.createEffect<
-  GetAddressesRequestPayload,
+  GetAddressesWithCityRequestPayload,
   StreetWithHousingStockNumbersResponsePagedList
 >(getAdresses);
 
@@ -99,7 +99,7 @@ forward({
 });
 
 createSoiReportFx.failData.watch((e) =>
-  message.error(e.response.data.error.Text)
+  message.error(e.response.data.error.Text),
 );
 
 const $isCreateReportLoading = createSoiReportFx.pending;

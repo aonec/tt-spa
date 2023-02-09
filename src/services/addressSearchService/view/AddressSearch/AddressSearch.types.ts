@@ -4,6 +4,7 @@ export enum SearchFieldType {
   House = 'house',
   Corpus = 'corpus',
   Apartment = 'apartment',
+  Question = 'question',
 }
 
 export type AddressSearchValues = {
@@ -12,6 +13,7 @@ export type AddressSearchValues = {
   house?: string;
   corpus?: string;
   apartment?: string;
+  question?: string;
 };
 
 export type CustomTemplateType = {

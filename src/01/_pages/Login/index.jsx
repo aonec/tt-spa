@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { Loader } from '01/components';
-
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
@@ -14,6 +12,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DevSettingsModal } from '01/features/developmentSettings';
 import { openDevSettingsModal } from '01/features/developmentSettings/models';
 import { useIsDev } from '01/hooks/useDev';
+import { parse } from 'query-string';
 
 export const Main = styled.div`
   height: 100vh;
@@ -60,18 +59,29 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
+  const { search } = useLocation();
 
   async function FormSubmitHadler() {
     setLoading(true);
     try {
-      const res = await axios.post('auth/login', { email, password });
-      // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
+      const preparedEmail = email.trim();
+
+      const res = await axios.post('auth/login', {
+        email: preparedEmail,
+        password,
+      });
+      setLoading(false);
+
+      const { redirectUrl } = parse(search);
+      if (redirectUrl && redirectUrl !== '/login') {
+        return window.location.replace(redirectUrl);
+      }
+
       replace(res.roles.includes('Operator') ? '/meters' : '/tasks');
     } catch (error) {
-      console.log(error);
-      message.error('Корректно введите логин и пароль');
-    } finally {
       setLoading(false);
+
+      message.error('Корректно введите логин и пароль');
     }
   }
 
@@ -116,6 +126,7 @@ export const Login = () => {
                 type={showPass ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => {
+                  if (e.nativeEvent.data === ' ') return;
                   setPassword(e.target.value);
                 }}
               />

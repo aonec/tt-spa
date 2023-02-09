@@ -2,7 +2,7 @@ import React, { FC, useMemo, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { message, Tooltip } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
@@ -36,9 +36,9 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   uploadingMetersStatuses,
   previousReadingByCurrentSliderIndex,
   editable = true,
+  apartmentId,
 }) => {
   const history = useHistory();
-  const { id } = useParams<{ id: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDeleteIndividualDevice = useEvent(
@@ -118,7 +118,6 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       history,
       onDeleteIndividualDevice,
       isDeviceClosed,
-      managementFirmUser,
       openEditReadingsHistoryModal,
     ]
   );
@@ -137,6 +136,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   return (
     <Wrapper isDeviceClosed={isDeviceClosed}>
       <SelectSwitchDeviceTypeModal
+        apartmentId={apartmentId}
         show={isModalOpen}
         close={() => setIsModalOpen(false)}
         deviceId={device.id}
@@ -174,7 +174,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
           <StarIcon
             onClick={() =>
               history.push(
-                `/apartment/${id}/individualDevice/${device.id}/reopen`
+                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`
               )
             }
             style={{ cursor: 'pointer' }}

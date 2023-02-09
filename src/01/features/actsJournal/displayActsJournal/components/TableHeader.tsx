@@ -1,22 +1,15 @@
 import { Grid } from '01/shared/ui/Layout/Grid';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { FilterButton } from './filterButton/FIlterButton';
 import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
-import { Checkbox } from 'antd';
 import { $actResources } from '../../displayActResources/models';
 import { ActOrderFieldName, expandedFilterForm, searchForm } from '../models';
 import { useForm } from 'effector-forms/dist';
 import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
 import { ReactComponent as SortIconTop } from './filterButton/assets/sortArrowsTop.svg';
 import { ReactComponent as SortIconBottom } from './filterButton/assets/sortArrowsBottom.svg';
-import {
-  EActResourceType,
-  EActResourceTypeStringDictionaryItem,
-  EActType,
-  EOrderByRule,
-} from 'myApi';
+import { EActResourceType, EActType, EOrderByRule } from 'myApi';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
 
 export const TableHeader = () => {
@@ -64,7 +57,7 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
         ? EOrderByRule.Ascending
         : value === EOrderByRule.Ascending
         ? EOrderByRule.Descending
-        : null
+        : null,
     );
   }
 
@@ -105,11 +98,14 @@ const TypeDocumentExtendedSearch = () => {
   const actTypes = useStore($actTypes);
   const {
     fields: { allowedActTypes },
+    reset
   } = useForm(expandedFilterForm);
 
   const handleUpdateActTypes = (actTypes: EActType[]) => {
     allowedActTypes.onChange(actTypes);
   };
+
+  useEffect(()=> reset, [reset])
 
   return (
     <FilterExtendedSearch

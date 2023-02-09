@@ -29,7 +29,7 @@ export function useManagingFirmConsumptionRates(
 
   useEffect(() => {
     if (managementFirmId) loadConsumptionRates(managementFirmId);
-  }, [managementFirmId]);
+  }, [managementFirmId, loadConsumptionRates]);
 
   return { managementFirmConsumptionRates };
 }

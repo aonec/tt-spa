@@ -4,13 +4,13 @@ import { ButtonSizeType, ButtonStyleType } from './Button.types';
 const buttonBackgroundColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee9',
   danger: '#ff4545',
-  ghost: 'inherit',
+  ghost: 'transparent',
 };
 
 const buttonShadowColorsDictionary: { [key in ButtonStyleType]: string } = {
   default: '#189ee940',
   danger: '#ff454540',
-  ghost: '#efefef',
+  ghost: 'rgba(0,0,0,.08)',
 };
 
 const buttonFontColorsDictionary: { [key in ButtonStyleType]: string } = {
@@ -38,7 +38,7 @@ const buttonSizesDictionary: {
     fontSize: 16,
   },
   small: {
-    height: 30,
+    height: 32,
     padding: 14,
     fontSize: 13,
   },
@@ -85,6 +85,12 @@ export const Wrapper = styled.div<{
   &.tt-button-disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  svg {
+    path {
+      fill: ${({ type }) => buttonFontColorsDictionary[type]};
+    }
   }
 `;
 

@@ -20,22 +20,28 @@ const objectListComponentsLookup: { [key: string]: FC } = {
 };
 
 export const ObjectsProfile: FC<ObjectsProfileProps> = ({
-  handleExportGroupReport,
   handleOpenChooseResourceDisconnectionModal,
   searchType,
   openSoiReportModal,
   handleCreateObject,
   isAdministrator,
+  openFeedFlowBackReportModal,
+  handleExportGroupReport,
 }) => {
   const menuButtons = useMemo(
     () => [
       {
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
+        hidden: !isAdministrator,
       },
       {
         title: 'Выгрузить отчёт по СОИ',
         onClick: openSoiReportModal,
+      },
+      {
+        title: 'Выгрузить отчёт по обратной магистрали',
+        onClick: openFeedFlowBackReportModal,
       },
       {
         title: 'Создать оключение ресурса на объекте',
@@ -47,7 +53,14 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         hidden: !isAdministrator,
       },
     ],
-    [handleExportGroupReport, handleOpenChooseResourceDisconnectionModal]
+    [
+      handleOpenChooseResourceDisconnectionModal,
+      handleCreateObject,
+      openFeedFlowBackReportModal,
+      isAdministrator,
+      openSoiReportModal,
+      handleExportGroupReport
+    ],
   );
 
   const objectsProfileComponent = useMemo(() => {

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { TrashIcon } from 'ui-kit/icons';
-import { EResourceType } from 'myApi';
+import { EPipeNodeConfig } from 'myApi';
 import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 
 export type CommunicationPipeListItemProps = {
   pipe: CommunicationPipePayload;
-  resource: EResourceType;
+  configuration: EPipeNodeConfig;
   handleDeletePipe?: (pipeId: number) => void;
   handleDeleteDevice?: (pipeId: number, deviceIndex: number) => void;
 };

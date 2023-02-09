@@ -18,24 +18,22 @@ import { IndividualDeviceGrouptype } from './IndividualDevice.types';
 const { TabPane } = TabsSC;
 
 export const IndividualDevice = () => {
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{ deviceId: string }>();
   const [grouptype, setGrouptype] = useState<IndividualDeviceGrouptype>(
-    IndividualDeviceGrouptype.info
+    IndividualDeviceGrouptype.info,
   );
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
 
   const [deregister, setDeregister] = useState(false);
-  const { data: tasks, status: tasksStatus, run: tasksRun } = useAsync<
-    TaskListResponse[] | null
-  >();
+  const { data: tasks, run: tasksRun } = useAsync<TaskListResponse[] | null>();
 
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));
     tasksRun(getIndividualDeviceTasks(Number(deviceId)));
-  }, [deviceId]);
+  }, [deviceId, run, tasksRun]);
 
   if (!device || !tasks) {
-    return <Loader size={'32'} show />;
+    return <Loader size={32} show />;
   }
 
   return (
@@ -44,7 +42,7 @@ export const IndividualDevice = () => {
         <div style={{ background: 'red' }}>ОШИБКА</div>
       ) : null}
       {status === 'pending' || status === 'idle' ? (
-        <Loader size={'32'} show />
+        <Loader size={32} show />
       ) : null}
       {status === 'resolved' ? (
         <>

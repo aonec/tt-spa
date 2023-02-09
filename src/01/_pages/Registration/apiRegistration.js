@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { message } from 'antd';
 import axios from '../../axios';
 
@@ -11,9 +9,5 @@ export async function confirmRegistration(form) {
     return res;
   } catch (error) {
     message.error('Произошла ошибка подтверждения пользователя');
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка подтверждения пользователя',
-    };
   }
 }

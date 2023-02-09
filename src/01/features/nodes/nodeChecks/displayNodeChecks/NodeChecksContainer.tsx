@@ -5,8 +5,9 @@ import { CheckNodeModalContainer } from '../checkNode/CheckNodeModalContainer';
 import { checkNodeService } from '../checkNode/models';
 import { nodeChecksService } from './models';
 import { NodeChecks } from './NodeChecks/NodeChecks';
+import { Props } from './types';
 
-export const NodeChecksContainer: React.FC = () => {
+export const NodeChecksContainer: React.FC<Props> = ({ pipeNodeId }) => {
   const nodeChecks = useStore(nodeChecksService.outputs.$nodeChecks);
   const loading = useStore(nodeChecksService.outputs.$loading);
 
@@ -15,19 +16,16 @@ export const NodeChecksContainer: React.FC = () => {
 
   const { nodeId } = params;
 
-
   return (
     <>
-      <NodeChecksGate NodeId={Number(nodeId)} />
+      <NodeChecksGate NodeId={Number(pipeNodeId || nodeId)} />
       <CheckNodeModalContainer />
       <NodeChecks
         documents={nodeChecks}
         pending={loading}
         removeNodeCheck={checkNodeService.inputs.removeNodeCheckEv}
         openCheckNodeModal={checkNodeService.inputs.openCheckNodeModal}
-        openEditNodeCheckModal={
-          checkNodeService.inputs.openEditNodeCheckModal
-        }
+        openEditNodeCheckModal={checkNodeService.inputs.openEditNodeCheckModal}
       />
     </>
   );

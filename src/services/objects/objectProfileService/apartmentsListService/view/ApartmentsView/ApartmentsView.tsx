@@ -1,5 +1,5 @@
 import { Empty, Skeleton } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { CellsIcon, ListIcon } from 'ui-kit/icons';
 import { Segmented } from 'ui-kit/Segmented';
 import { components } from './ApartmentsView.constants';

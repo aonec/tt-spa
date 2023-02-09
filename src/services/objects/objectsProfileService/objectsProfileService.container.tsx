@@ -1,19 +1,22 @@
-import GroupReport from '01/features/groupReport';
-import { setGroupStatus } from '01/features/groupReport/models/groupReportReducer';
-import { useAppDispatch } from '01/Redux/store';
 import { useEvent, useStore } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { currentUserService } from 'services/currentUserService';
+import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
+import {
+  GroupReportContainer,
+  groupReportService,
+} from '../groupReportService';
+import { objectsProfileService } from './objectsProfileService.model';
 import { SearchType } from './objectsProfileService.types';
-import { SoiReportContainer, soiReportService } from './soiReportService';
+import { SoiReportContainer } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
 
-const { inputs } = soiReportService;
+const { inputs } = objectsProfileService;
 
 export const ObjectsProfileContainer = () => {
   const { searchType } = useParams<{ searchType?: SearchType }>();
@@ -22,11 +25,18 @@ export const ObjectsProfileContainer = () => {
 
   const openSoiReportModal = useEvent(inputs.openSoiReportModal);
 
-  const dispatch = useAppDispatch();
-  const handleExportGroupReport = () => dispatch(setGroupStatus('reportForm'));
+  const openFeedFlowBackReportModal = useEvent(
+    inputs.openFeedFlowBackReportModal
+  );
+
+  const handleExportGroupReport = useEvent(groupReportService.inputs.openModal);
 
   const handleOpenChooseResourceDisconnectionModal = useEvent(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal
+  );
+
+  const handleOpenGroupreportModal = useEvent(
+    groupReportService.inputs.openModal
   );
 
   const handleCreateObject = () => history.push('/objects/create');
@@ -41,23 +51,26 @@ export const ObjectsProfileContainer = () => {
     if (!searchType) {
       history.push(`/objects/${SearchType.Houses}`);
     }
-  }, [searchType]);
+  }, [searchType, history]);
 
   return (
     <>
       <SoiReportContainer />
       <CreateResourceDisconnectionContainer />
       <ChooseTypeOfResourceDisconnectionModalContainer />
-      <GroupReport />
+      <FeedFlowBackReportContainer />
+      <GroupReportContainer />
       <ObjectsProfile
         openSoiReportModal={() => openSoiReportModal()}
         searchType={searchType}
-        handleExportGroupReport={handleExportGroupReport}
+        handleExportGroupReport={() => handleExportGroupReport()}
         handleOpenChooseResourceDisconnectionModal={() =>
           handleOpenChooseResourceDisconnectionModal()
         }
         handleCreateObject={handleCreateObject}
         isAdministrator={isAdministrator}
+        openFeedFlowBackReportModal={() => openFeedFlowBackReportModal()}
+        handleOpenGroupreportModal={() => handleOpenGroupreportModal()}
       />
     </>
   );

@@ -1,14 +1,14 @@
-import { ResourceType } from "01/_pages/Graph/components/GraphView/GraphView.types";
+import { ResourceType } from '01/_pages/Graph/components/GraphView/GraphView.types';
 
 export const getResourceColor = (resource: ResourceType): string => {
   switch (resource) {
     case 'HotWaterSupply':
-      return 'var(--hot-water)';
+      return '#ff8c68';
     case 'ColdWaterSupply':
-      return 'var(--cold-water)';
+      return '#79afff';
     case 'Electricity':
-      return 'var(--electro)';
+      return '#e2b104';
     case 'Heat':
-      return 'var(--heat)';
+      return '#9254de';
   }
 };

@@ -7,7 +7,7 @@ import {
 import { $switchRequestStatus } from '.';
 import { combine, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
-import { $homeowner } from '../../displayHomeowner/models';
+import { HomeownerGate } from '../../displayHomeowner/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
 
@@ -18,19 +18,27 @@ $switchRequestStatus
   .on(switchPersonalNumberFx.doneData, () => 'done')
   .on(switchPersonalNumberFx.failData, () => 'failed');
 
+
 sample({
   clock: switchPersonalNumber,
   source: combine(
-    $homeowner,
+    HomeownerGate.state,
     personalNumberEditForm.$values,
     $apartment,
     (
-      homeowner,
-      { personalAccountNumber, paymentCode, name, phoneNumber, openAt },
+      gatestate,
+      {
+        personalAccountNumber,
+        paymentCode,
+        name,
+        phoneNumber,
+        openAt,
+        isMainAccountingNumber,
+      },
       apartment
     ) => {
       return {
-        ReplaceableAccountId: homeowner?.id!,
+        ReplaceableAccountId: gatestate?.id,
         newHomeownerAccount: {
           personalAccountNumber,
           paymentCode,
@@ -38,6 +46,7 @@ sample({
           phoneNumber,
           openAt: moment(openAt).toISOString(true),
           apartmentId: apartment?.id,
+          IsMainOnApartment: isMainAccountingNumber,
         },
       };
     }

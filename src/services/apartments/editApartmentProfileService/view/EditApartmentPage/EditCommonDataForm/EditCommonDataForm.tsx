@@ -1,4 +1,3 @@
-import { Loader } from '01/components';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';

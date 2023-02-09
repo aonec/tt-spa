@@ -1,9 +1,11 @@
-import qs from 'qs';
-import axiosWithHeaders from '../axiosWithHeaders';
+import { stringify } from 'query-string';
+
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
+import axiosWithHeaders from '../axiosWithHeaders';
+
 export const requestDevicesReport = async (
-  query?: CalculatorsListRequestPayload
+  query?: CalculatorsListRequestPayload | null,
 ): Promise<File | null> => {
   const config: Partial<
     {
@@ -14,7 +16,7 @@ export const requestDevicesReport = async (
     }
   > = {
     params: query,
-    paramsSerializer: (params) => qs.stringify(params),
+    paramsSerializer: (params) => stringify(params || {}),
     responseType: 'blob',
   };
 
@@ -22,12 +24,9 @@ export const requestDevicesReport = async (
 };
 
 export const downloadDevicesReport = (
-  query?: CalculatorsListRequestPayload
+  query?: CalculatorsListRequestPayload | null,
 ) => {
   return requestDevicesReport(query).then((response: any) => {
-    const fileNameWithJunk = response.headers['content-disposition'].split(';');
-    const encodedFileName = fileNameWithJunk[2].split("'")[2];
-    const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;

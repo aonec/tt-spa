@@ -10,7 +10,7 @@ export const SwitchOrCompleteCheckbox: FC<SwitchOrCompleteCheckboxProps> = ({ ha
 
   useEffect(() => {
     handleChange(checked)
-  }, [checked]);
+  }, [checked, handleChange]);
 
   return (
     <Wrapper>

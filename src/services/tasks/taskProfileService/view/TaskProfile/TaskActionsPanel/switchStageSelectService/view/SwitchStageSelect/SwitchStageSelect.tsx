@@ -11,7 +11,7 @@ export const SwitchStageSelect: FC<SwitchStageSelectProps> = ({
 
   useEffect(() => {
     if (selectedStage) handleChange(selectedStage);
-  }, [selectedStage]);
+  }, [selectedStage, handleChange]);
 
   return (
     <FormItem label="Действия">

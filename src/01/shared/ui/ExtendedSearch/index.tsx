@@ -1,6 +1,5 @@
-import { ButtonTT } from '01/tt-components';
 import React, { FC } from 'react';
-import { ChevronUp, XLg } from 'react-bootstrap-icons';
+import { ChevronUp } from 'react-bootstrap-icons';
 import { ReactComponent as FilerIcon } from './assets/filter.svg';
 import {
   ExtendedSearchButton,
@@ -12,8 +11,10 @@ import {
   Footer,
   Header,
   DisabledExtendedSearchButton,
+  ClearIconSC,
 } from './components';
 import { ExtendedSearchProps } from './types';
+import { Button } from 'ui-kit/Button';
 
 export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   children,
@@ -32,27 +33,23 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
           <HideExtendedSearchButton onClick={handleClose}>
             <ChevronUp />
           </HideExtendedSearchButton>
-          <ButtonTT
-            style={{ marginLeft: '10px' }}
-            small
-            color="white"
+          <Button
+            type="ghost"
             onClick={handleClear}
+            size="small"
+            icon={<ClearIconSC />}
           >
-            Очистить <XLg />
-          </ButtonTT>
+            Очистить
+          </Button>
         </Header>
         <Content>{extendedSearchContent}</Content>
         <Footer>
-          <ButtonTT color="white" onClick={handleClose}>
+          <Button onClick={handleClose} type="ghost">
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            onClick={handleApply}
-            style={{ marginLeft: '10px' }}
-          >
+          </Button>
+          <Button onClick={handleApply} style={{ marginLeft: '10px' }}>
             Применить фильтры
-          </ButtonTT>
+          </Button>
         </Footer>
       </ExtendedSearchWrap>
     );
