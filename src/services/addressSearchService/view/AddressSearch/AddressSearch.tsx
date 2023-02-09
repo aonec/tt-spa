@@ -49,8 +49,6 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     </SelectSC>
   );
 
-  console.log(values.street);
-
   const streetSearch = (index: number, isDisabled?: boolean) => (
     <StyledAutocomplete
       placeholder="Улица"
