@@ -50,3 +50,37 @@ export const LegendLine = styled.div<{
       resource ? getResourceColor(resource) : color};
   }
 `;
+
+export const LegendCircle = styled.div<{ color: string }>`
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+  background-color: ${({ color }) => color};
+`;
+
+export const LegendCircleWithBorder = styled.div<{ color: string }>`
+  width: 10px;
+  height: 10px;
+
+  border: 3px solid ${({ color }) => color};
+  border-radius: 50%;
+
+  background-color: transparent;
+`;
+
+export const TasksLegendWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  margin-left: 200px;
+`;
+
+export const TaskLegendGroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  color: #272f5ab2;
+`;
