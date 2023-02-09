@@ -1,8 +1,6 @@
+import { NodeStatusTextDictionary } from 'dictionaries';
 import React, { FC } from 'react';
-import {
-  NodeStatusIconsDictionary,
-  NodeStatusTextDictionary,
-} from './NodeStatus.constants';
+import { NodeStatusIconsDictionary } from './NodeStatus.constants';
 import { IconWrapper, TextWrapper, Wrapper } from './NodeStatus.styled';
 import { NodeStatusProps } from './NodeStatus.types';
 

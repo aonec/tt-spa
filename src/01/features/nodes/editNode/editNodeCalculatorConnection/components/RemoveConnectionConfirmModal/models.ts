@@ -39,7 +39,6 @@ sample({
     resource: node?.resource,
     nodeId: node?.id!,
     disconnectFromCalculator: true,
-    // nodeStatus: node?.nodeStatus?.value,
     number: node?.number,
   }),
   target: removeConnectionFx,
