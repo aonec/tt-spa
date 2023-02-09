@@ -8,7 +8,7 @@ import { GetHousingByFilterRequestPayload } from '../devicesPageService/individu
 import queryString from 'query-string';
 
 export const getCalculatorsList = (
-  params: CalculatorsListRequestPayload
+  params: CalculatorsListRequestPayload,
 ): Promise<CalculatorListResponsePagedList> =>
   axios.get(`Calculators`, {
     params,
@@ -17,12 +17,21 @@ export const getCalculatorsList = (
     },
   });
 
-export const getHousingsByFilter = (
-  housingsParams: GetHousingByFilterRequestPayload[]
-): Promise<HousingByFilterResponse[]> =>
+export const getHousingsByFilter = async (
+  housingsParams: GetHousingByFilterRequestPayload[],
+): Promise<(HousingByFilterResponse | null)[]> =>
   Promise.all(housingsParams.map((params) => getHousingByFilter(params)));
 
-const getHousingByFilter = (
-  params: GetHousingByFilterRequestPayload
-): Promise<HousingByFilterResponse> =>
-  axios.get('Devices/Individual/House', { params });
+const getHousingByFilter = async (
+  params: GetHousingByFilterRequestPayload,
+): Promise<HousingByFilterResponse | null> => {
+  try {
+    const res: HousingByFilterResponse = await axios.get(
+      'Devices/Individual/House',
+      { params },
+    );
+    return res;
+  } catch {
+    return null;
+  }
+};
