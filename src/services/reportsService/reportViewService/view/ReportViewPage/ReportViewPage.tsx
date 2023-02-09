@@ -33,7 +33,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   setFiltrationValues,
   isLoadingReport,
   individualDevicesReportData,
-  actJournalReportData
+  actJournalReportData,
+  housingMeteringDevicesReportData,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -103,6 +104,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           actJournalReportData={actJournalReportData}
           city={filtrationValues.city}
           reportOption={filtrationValues.reportOption}
+          housingMeteringDevicesReportData={housingMeteringDevicesReportData}
         />
       </WithLoader>
     </Wrapper>

@@ -12,6 +12,7 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
   city,
   reportOption,
   actJournalReportData,
+  housingMeteringDevicesReportData,
 }) => {
   const reportTableComponents: { [key in ReportType]: ReactNode } = {
     [ReportType.IndividualDevices]: (
@@ -27,7 +28,12 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
         actJournalReportData={actJournalReportData}
       />
     ),
-    [ReportType.HousingDevices]: <HousingMeteringDevicesReport />,
+    [ReportType.HousingDevices]: (
+      <HousingMeteringDevicesReport
+        city={city}
+        housingMeteringDevicesReportData={housingMeteringDevicesReportData}
+      />
+    ),
     [ReportType.Employee]: null,
     [ReportType.Homeowners]: null,
   };
