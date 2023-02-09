@@ -20,7 +20,6 @@ import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { NodeStatusTextDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
@@ -28,7 +27,9 @@ import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 import { configNamesLookup } from 'utils/configNamesLookup';
 
-export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> = ({
+export const CreateNodeConfirmationModal: FC<
+  CreateNodeConfirmationModalProps
+> = ({
   isOpen,
   handleClose,
   housingStock,
@@ -127,12 +128,12 @@ export const CreateNodeConfirmationModal: FC<CreateNodeConfirmationModalProps> =
             },
             { key: 'Номер узла', value: requestPayload.number },
             { key: 'Зона', value: serviceZone.name },
-            {
-              key: 'Коммерческий учет показателей приборов',
-              value: requestPayload.nodeStatus
-                ? NodeStatusTextDictionary[requestPayload.nodeStatus]
-                : '',
-            },
+            // {
+            //   key: 'Коммерческий учет показателей приборов',
+            //   value: requestPayload.nodeStatus
+            //     ? NodeStatusTextDictionary[requestPayload.nodeStatus]
+            //     : '',
+            // },
             {
               key: 'Даты действия акта-допуска',
               value: commercialAccountingDatesString,
