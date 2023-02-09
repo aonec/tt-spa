@@ -61,11 +61,11 @@ export const HousesReadingsContainer = () => {
 
   useEffect(() => {
     return inputs.handleHousingStockLoaded.watch((housingStock) => {
-      if (!housingStock) return;
+      if (!housingStock || Number(id) === housingStock?.id) return;
 
       history.push(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
-  }, [history]);
+  }, [history, id]);
 
   return (
     <>
