@@ -1,16 +1,18 @@
+import queryString from 'query-string';
 import {
   ApartmentActsConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
   HouseManagementWithStreetsResponse,
   HousingDevicesConstructedReportResponse,
+  HomeownersConstructedReportResponse,
 } from 'myApi';
 import { axios } from '01/axios';
 import {
   ActsJournalReportRequestPayload,
+  HomeownersReportRequestPayload,
   HousingMeteringDevicesReportRequestPayload,
   IndividualDeviceReportRequestPaload,
 } from './reportViewService.types';
-import queryString from 'query-string';
 
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
@@ -41,6 +43,15 @@ export const getHousingMeteringDevicesReport = (
   payload: HousingMeteringDevicesReportRequestPayload,
 ): Promise<HousingDevicesConstructedReportResponse[]> => {
   return axios.get('Reports/HousingDevicesReport', {
+    params: payload,
+    paramsSerializer: queryString.stringify,
+  });
+};
+
+export const getHomeownersReport = (
+  payload: HomeownersReportRequestPayload,
+): Promise<HomeownersConstructedReportResponse[]> => {
+  return axios.get('Reports/HomeownersReport', {
     params: payload,
     paramsSerializer: queryString.stringify,
   });

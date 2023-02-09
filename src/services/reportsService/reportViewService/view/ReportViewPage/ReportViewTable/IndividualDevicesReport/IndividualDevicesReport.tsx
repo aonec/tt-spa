@@ -36,15 +36,11 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
 
-  const emptyComponentDescription = individualDevicesReportData
-    ? 'Нет данных'
-    : 'Выберите фильтры для формирования отчета';
-
-  if (!individualDevicesReportData?.length) {
+  if (!individualDevicesReportData) {
     return (
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description={emptyComponentDescription}
+        description={'Выберите фильтры для формирования отчета'}
       />
     );
   }

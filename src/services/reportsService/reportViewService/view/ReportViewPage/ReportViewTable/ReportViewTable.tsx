@@ -5,6 +5,7 @@ import { IndividualDevicesReport } from './IndividualDevicesReport';
 import { Wrapper } from './ReportViewTable.styled';
 import { ActsJournalReport } from './ActsJournalReport';
 import { HousingMeteringDevicesReport } from './HousingMeteringDevicesReport';
+import { HomeownersReport } from './HomeownersReport';
 
 export const ReportViewTable: FC<ReportViewTableProps> = ({
   individualDevicesReportData,
@@ -12,6 +13,7 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
   reportOption,
   actJournalReportData,
   housingMeteringDevicesReportData,
+  homeownersReportData,
 }) => {
   const reportTableComponents: { [key in ReportType]: ReactNode } = {
     [ReportType.IndividualDevices]: (
@@ -28,8 +30,10 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
         housingMeteringDevicesReportData={housingMeteringDevicesReportData}
       />
     ),
+    [ReportType.Homeowners]: (
+      <HomeownersReport homeownersReportData={homeownersReportData} />
+    ),
     [ReportType.Employee]: null,
-    [ReportType.Homeowners]: null,
   };
 
   return <Wrapper>{reportTableComponents[reportType]}</Wrapper>;

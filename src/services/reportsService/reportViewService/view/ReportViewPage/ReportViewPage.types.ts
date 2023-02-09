@@ -1,5 +1,6 @@
 import {
   ApartmentActsConstructedReportResponse,
+  HomeownersConstructedReportResponse,
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
   HousingDevicesConstructedReportResponse,
@@ -23,4 +24,5 @@ export type ReportViewPageProps = {
   housingMeteringDevicesReportData:
     | HousingDevicesConstructedReportResponse[]
     | null;
+  homeownersReportData: HomeownersConstructedReportResponse[] | null;
 };

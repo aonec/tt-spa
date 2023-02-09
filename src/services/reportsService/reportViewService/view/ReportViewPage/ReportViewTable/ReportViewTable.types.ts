@@ -1,6 +1,7 @@
 import {
   ApartmentActsConstructedReportResponse,
   EIndividualDeviceReportOption,
+  HomeownersConstructedReportResponse,
   HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
 } from 'myApi';
@@ -16,6 +17,7 @@ export type ReportViewTableProps = {
   housingMeteringDevicesReportData:
     | HousingDevicesConstructedReportResponse[]
     | null;
+  homeownersReportData: HomeownersConstructedReportResponse[] | null;
 };
 
 export type ReportAddress = {

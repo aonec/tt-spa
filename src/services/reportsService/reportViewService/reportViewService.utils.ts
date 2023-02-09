@@ -5,7 +5,11 @@ import {
   ReportFiltrationFormValues,
   ActsJournalReportRequestPayload,
   HousingMeteringDevicesReportRequestPayload,
+  HomeownersReportRequestPayload,
+  ReportPayload,
 } from './reportViewService.types';
+
+export const getReportPayloadValues = ({ values }: ReportPayload) => values;
 
 const getDatePeriod = (
   reportDatePeriod: ReportDatePeriod | null,
@@ -42,7 +46,16 @@ const getDatePeriod = (
   return { from: from?.format('YYYY-MM-DD'), to: to?.format('YYYY-MM-DD') };
 };
 
-export const prepareIndividualDevicesReportData = (
+const getAddressId = (values: ReportFiltrationFormValues) => {
+  return {
+    HousingStockId: values.housingStockId || undefined,
+    HouseManagementId: values.housingStockId
+      ? undefined
+      : values.houseManagement || undefined,
+  };
+};
+
+export const prepareIndividualDevicesReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): IndividualDeviceReportRequestPaload | null => {
   if (!values.reportOption) return null;
@@ -52,11 +65,11 @@ export const prepareIndividualDevicesReportData = (
     to: values.to,
   });
 
+  const { HouseManagementId, HousingStockId } = getAddressId(values);
+
   return {
-    HousingStockId: values.housingStockId || undefined,
-    HouseManagementId: values.housingStockId
-      ? undefined
-      : values.houseManagement || undefined,
+    HouseManagementId,
+    HousingStockId,
     ReportOption: values.reportOption,
     Resources: values.resources,
     From: dates?.from,
@@ -65,7 +78,7 @@ export const prepareIndividualDevicesReportData = (
   };
 };
 
-export const prepareActJournalReportData = (
+export const prepareActJournalReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): ActsJournalReportRequestPayload | null => {
   const dates = getDatePeriod(values.reportDatePeriod, {
@@ -75,18 +88,18 @@ export const prepareActJournalReportData = (
 
   if (!values.housingStockId && !values.houseManagement) return null;
 
+  const { HouseManagementId, HousingStockId } = getAddressId(values);
+
   return {
-    HousingStockId: values.housingStockId || undefined,
-    HouseManagementId: values.housingStockId
-      ? undefined
-      : values.houseManagement || undefined,
+    HouseManagementId,
+    HousingStockId,
     From: dates?.from,
     To: dates?.to,
     Resources: values.actResources,
   };
 };
 
-export const prepareHousingMeteringDevicesReportData = (
+export const prepareHousingMeteringDevicesReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): HousingMeteringDevicesReportRequestPayload | null => {
   const dates = getDatePeriod(values.reportDatePeriod, {
@@ -96,13 +109,25 @@ export const prepareHousingMeteringDevicesReportData = (
 
   if (!dates) return null;
 
+  const { HouseManagementId, HousingStockId } = getAddressId(values);
+
   return {
-    HousingStockId: values.housingStockId || undefined,
-    HouseManagementId: values.housingStockId
-      ? undefined
-      : values.houseManagement || undefined,
+    HouseManagementId,
+    HousingStockId,
     From: dates.from,
     To: dates.to,
     Resources: values.resources,
+  };
+};
+
+export const prepareHomeownersReportRequestPayload = (
+  values: ReportFiltrationFormValues,
+): HomeownersReportRequestPayload => {
+  const { HouseManagementId, HousingStockId } = getAddressId(values);
+
+  return {
+    HouseManagementId,
+    HousingStockId,
+    ShowOnlyDuplicates: values.showOnlyDuplicates,
   };
 };

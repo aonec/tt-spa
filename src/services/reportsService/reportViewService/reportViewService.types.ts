@@ -25,6 +25,7 @@ export type ReportFiltrationFormValues = {
   to: null | moment.Moment;
   reportDatePeriod: null | ReportDatePeriod;
   closingReasons: EClosingReason[];
+  showOnlyDuplicates: boolean;
 };
 
 export type ReportPayload = {
@@ -56,4 +57,10 @@ export type HousingMeteringDevicesReportRequestPayload = {
   Resources?: EResourceType[];
   From: string;
   To: string;
+};
+
+export type HomeownersReportRequestPayload = {
+  HouseManagementId?: string;
+  HousingStockId?: number;
+  ShowOnlyDuplicates: boolean;
 };

@@ -28,7 +28,10 @@ export const ReportViewContainer = () => {
     outputs.$individualDevicesReportData,
   );
   const actJournalReportData = useStore(outputs.$actJournalReportData);
-  const housingMeteringDevicesReportData = useStore(outputs.$housingMeteringDevicesReportData);
+  const housingMeteringDevicesReportData = useStore(
+    outputs.$housingMeteringDevicesReportData,
+  );
+  const homeownersReportData = useStore(outputs.$homeownersReportData);
 
   if (!reportType) return null;
 
@@ -48,6 +51,7 @@ export const ReportViewContainer = () => {
         individualDevicesReportData={individualDevicesReportData}
         actJournalReportData={actJournalReportData}
         housingMeteringDevicesReportData={housingMeteringDevicesReportData}
+        homeownersReportData={homeownersReportData}
       />
     </>
   );
