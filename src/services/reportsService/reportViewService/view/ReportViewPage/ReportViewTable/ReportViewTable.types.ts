@@ -11,7 +11,6 @@ export type ReportViewTableProps = {
   individualDevicesReportData:
     | IndividualDevicesConstructedReportResponse[]
     | null;
-  city: string | null;
   reportOption: EIndividualDeviceReportOption | null;
   actJournalReportData: ApartmentActsConstructedReportResponse | null;
   housingMeteringDevicesReportData:
@@ -24,5 +23,5 @@ export type ReportAddress = {
   street: string | null;
   houseNumber: string | null;
   corpus: string | null;
-  apartmentNumber: string | null;
+  apartmentNumber?: string | null;
 };

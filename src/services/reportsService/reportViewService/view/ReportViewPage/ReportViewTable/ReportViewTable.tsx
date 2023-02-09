@@ -9,7 +9,6 @@ import { HousingMeteringDevicesReport } from './HousingMeteringDevicesReport';
 export const ReportViewTable: FC<ReportViewTableProps> = ({
   individualDevicesReportData,
   reportType,
-  city,
   reportOption,
   actJournalReportData,
   housingMeteringDevicesReportData,
@@ -18,19 +17,14 @@ export const ReportViewTable: FC<ReportViewTableProps> = ({
     [ReportType.IndividualDevices]: (
       <IndividualDevicesReport
         individualDevicesReportData={individualDevicesReportData}
-        city={city}
         reportOption={reportOption}
       />
     ),
     [ReportType.ActsJournal]: (
-      <ActsJournalReport
-        city={city}
-        actJournalReportData={actJournalReportData}
-      />
+      <ActsJournalReport actJournalReportData={actJournalReportData} />
     ),
     [ReportType.HousingDevices]: (
       <HousingMeteringDevicesReport
-        city={city}
         housingMeteringDevicesReportData={housingMeteringDevicesReportData}
       />
     ),

@@ -19,7 +19,6 @@ import { getReportElemAddress } from '../ReportViewTable.utils';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
-  city,
   reportOption,
 }) => {
   const isDeviceCheckingDateExpirationOption =
@@ -63,7 +62,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             return (
               <div>
                 <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
-                {city && `${city}, `}
                 {addressString}
               </div>
             );

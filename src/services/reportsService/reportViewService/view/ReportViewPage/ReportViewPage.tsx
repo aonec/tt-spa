@@ -102,7 +102,6 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           reportType={reportType}
           individualDevicesReportData={individualDevicesReportData}
           actJournalReportData={actJournalReportData}
-          city={filtrationValues.city}
           reportOption={filtrationValues.reportOption}
           housingMeteringDevicesReportData={housingMeteringDevicesReportData}
         />

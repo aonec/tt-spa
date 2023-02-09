@@ -20,7 +20,6 @@ const { ApartmentActTypesGate } = gates;
 
 export const ActsJournalReport: FC<ActsJournalReportProps> = ({
   actJournalReportData,
-  city,
 }) => {
   const apartmentActTypes = useStore(outputs.$actTypes);
 
@@ -53,7 +52,6 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
               return (
                 <div>
                   <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
-                  {city && `${city}, `}
                   {addressString}
                 </div>
               );

@@ -4,5 +4,4 @@ export type HousingMeteringDevicesReportProps = {
   housingMeteringDevicesReportData:
     | HousingDevicesConstructedReportResponse[]
     | null;
-  city: string | null;
 };
