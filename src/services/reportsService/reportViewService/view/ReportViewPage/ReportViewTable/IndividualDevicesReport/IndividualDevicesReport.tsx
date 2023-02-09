@@ -9,13 +9,13 @@ import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { ResourceShortNamesDictionary } from 'dictionaries';
 import { Table } from 'ui-kit/Table';
-import { last } from 'lodash';
 import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
 } from 'myApi';
 import moment from 'moment';
 import { Empty } from 'antd';
+import { getReportElemAddress } from '../ReportViewTable.utils';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
@@ -57,19 +57,14 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           label: 'Адрес',
           size: '230px',
           render: (elem) => {
-            const addressSplit = elem.address?.split(' ');
-
-            const apartmentNumber = last(addressSplit);
-
-            const address = addressSplit
-              ?.slice(0, addressSplit.length - 1)
-              .join(' ');
+            const { addressString, apartmentNumber } =
+              getReportElemAddress(elem);
 
             return (
               <div>
                 <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
                 {city && `${city}, `}
-                {address}
+                {addressString}
               </div>
             );
           },
@@ -133,7 +128,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
 
             return Object.values(reading)
               .filter((readingValue) => typeof readingValue === 'number')
-              .map((readingValue, index) => <div key={index}>{readingValue}</div>);
+              .map((readingValue, index) => (
+                <div key={index}>{readingValue}</div>
+              ));
           },
         },
         {

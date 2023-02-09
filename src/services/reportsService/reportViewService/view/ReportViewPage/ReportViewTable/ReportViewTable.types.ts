@@ -1,4 +1,9 @@
-import { ApartmentActsConstructedReportResponse, EIndividualDeviceReportOption, HousingDevicesConstructedReportResponse, IndividualDevicesConstructedReportResponse } from 'myApi';
+import {
+  ApartmentActsConstructedReportResponse,
+  EIndividualDeviceReportOption,
+  HousingDevicesConstructedReportResponse,
+  IndividualDevicesConstructedReportResponse,
+} from 'myApi';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 
 export type ReportViewTableProps = {
@@ -12,4 +17,12 @@ export type ReportViewTableProps = {
   housingMeteringDevicesReportData:
     | HousingDevicesConstructedReportResponse[]
     | null;
+};
+
+export type ReportAddress = {
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  corpus: string | null;
+  apartmentNumber: string | null;
 };

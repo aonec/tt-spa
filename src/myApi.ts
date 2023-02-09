@@ -174,12 +174,16 @@ export interface ApartmentActsConstructedReportResponseSuccessApiResponse {
 
 export interface ApartmentActsConstructedReportRowResponse {
   houseManagementName: string | null;
-  address: string | null;
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  corpus: string | null;
+  apartmentNumber: string | null;
 
   /** @format date-time */
   actDate: string;
   registryNumber: string | null;
-  actType: EApartmentActType;
+  actType: EActType;
   resourceType: EActResourceType;
 
   /** @format date-time */
@@ -723,6 +727,39 @@ export interface CalculatorResponse {
 
 export interface CalculatorResponseSuccessApiResponse {
   successResponse: CalculatorResponse | null;
+}
+
+export interface CallCenterWorkingConstructedReportResponse {
+  managingFirm: string | null;
+  houseManagement: string | null;
+
+  /** @format int32 */
+  coldWaterSupplyPlan: number;
+
+  /** @format int32 */
+  coldWaterSupplyValue: number;
+
+  /** @format int32 */
+  hotWaterSupplyPlan: number;
+
+  /** @format int32 */
+  hotWaterSupplyValue: number;
+
+  /** @format int32 */
+  electricityPlan: number;
+
+  /** @format int32 */
+  electricityValue: number;
+
+  /** @format int32 */
+  heatPlan: number;
+
+  /** @format int32 */
+  heatValue: number;
+}
+
+export interface CallCenterWorkingConstructedReportResponseIEnumerableSuccessApiResponse {
+  successResponse: CallCenterWorkingConstructedReportResponse[] | null;
 }
 
 export interface CheckCurrentTransformerRequest {
@@ -1448,16 +1485,6 @@ export interface EActTypeStringDictionaryItem {
 
 export interface EActTypeStringDictionaryItemListSuccessApiResponse {
   successResponse: EActTypeStringDictionaryItem[] | null;
-}
-
-export enum EApartmentActType {
-  PlannedCheck = 'PlannedCheck',
-  UnplannedCheck = 'UnplannedCheck',
-  ResourceDisconnect = 'ResourceDisconnect',
-  ResourceConnect = 'ResourceConnect',
-  HomeownerAccountCertificate = 'HomeownerAccountCertificate',
-  Admission = 'Admission',
-  NonAdmission = 'NonAdmission',
 }
 
 export enum EApartmentStatus {
@@ -2514,6 +2541,7 @@ export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
   newHomeownerAccount: HomeownerAccountCreateRequest;
+  isForced?: boolean;
 }
 
 export interface HomeownerAccountResponse {
@@ -2596,6 +2624,7 @@ export interface HomeownerAccountUpdateRequest {
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
+  isForced?: boolean;
 }
 
 export interface HomeownerCertificateResponse {
@@ -2610,7 +2639,11 @@ export interface HomeownerCertificateResponseSuccessApiResponse {
 
 export interface HomeownersConstructedReportResponse {
   houseManagementName: string | null;
-  address: string | null;
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  corpus: string | null;
+  apartmentNumber: string | null;
   homeownerFullName: string | null;
   homeownerAccountNumber: string | null;
 }
@@ -2624,6 +2657,35 @@ export interface HouseAddress {
   street?: string | null;
   houseNumber?: string | null;
   houseCorpus?: string | null;
+}
+
+export interface HouseManagementConstructedReportResponse {
+  houseManagement: string | null;
+
+  /** @format int32 */
+  housingStocksCount: number;
+
+  /** @format int32 */
+  apartmentsCount: number;
+
+  /** @format int32 */
+  apartmentsWithIMDCount: number;
+
+  /** @format int32 */
+  coldWaterSupplyCount: number;
+
+  /** @format int32 */
+  hotWaterSupplyCount: number;
+
+  /** @format int32 */
+  electricityCount: number;
+
+  /** @format int32 */
+  heatCount: number;
+}
+
+export interface HouseManagementConstructedReportResponseIEnumerableSuccessApiResponse {
+  successResponse: HouseManagementConstructedReportResponse[] | null;
 }
 
 export interface HouseManagementResponse {
@@ -2673,7 +2735,10 @@ export interface HousingDeviceReadingOnRiserResponse {
 
 export interface HousingDevicesConstructedReportResponse {
   houseManagementName: string | null;
-  address: string | null;
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  corpus: string | null;
   model: string | null;
   serialNumber: string | null;
 
@@ -3677,7 +3742,11 @@ export interface IndividualDeviceWithExpiredCheckingDateResponse {
 }
 
 export interface IndividualDevicesConstructedReportResponse {
-  address: string | null;
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  corpus: string | null;
+  apartmentNumber: string | null;
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
@@ -3775,6 +3844,18 @@ export interface InspectorUpdateRequest {
 
   /** @format int32 */
   readoutPlan?: number | null;
+}
+
+export interface InspectorsConstructedReportResponse {
+  name: string | null;
+
+  /** @format int32 */
+  dayPlan: number;
+  counts: number[] | null;
+}
+
+export interface InspectorsConstructedReportResponseIEnumerableSuccessApiResponse {
+  successResponse: InspectorsConstructedReportResponse[] | null;
 }
 
 export interface Int32NullableSuccessApiResponse {
@@ -4270,6 +4351,26 @@ export interface NumberIdResponse {
 
 export interface NumberIdResponseArraySuccessApiResponse {
   successResponse: NumberIdResponse[] | null;
+}
+
+export interface OperatorsConstructedReportResponse {
+  name: string | null;
+
+  /** @format int32 */
+  hotWaterSupplyCount: number;
+
+  /** @format int32 */
+  coldWaterSupplyCount: number;
+
+  /** @format int32 */
+  electricityCount: number;
+
+  /** @format int32 */
+  heatCount: number;
+}
+
+export interface OperatorsConstructedReportResponseIEnumerableSuccessApiResponse {
+  successResponse: OperatorsConstructedReportResponse[] | null;
 }
 
 export enum OrderByRule {
@@ -12054,94 +12155,6 @@ export class Api<
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
-     * @name ReportsOperatorsWorkingReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/OperatorsWorkingReport
-     * @secure
-     */
-    reportsOperatorsWorkingReportList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/OperatorsWorkingReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsInspectorsWorkingReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/InspectorsWorkingReport
-     * @secure
-     */
-    reportsInspectorsWorkingReportList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/InspectorsWorkingReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsCallCenterWorkingReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/CallCenterWorkingReport
-     * @secure
-     */
-    reportsCallCenterWorkingReportList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/CallCenterWorkingReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
-     * @name ReportsHouseManagementsReportList
-     * @summary ReadingReportForOperator
-     * @request GET:/api/Reports/HouseManagementsReport
-     * @secure
-     */
-    reportsHouseManagementsReportList: (
-      query?: { From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, ErrorApiResponse>({
-        path: `/api/Reports/HouseManagementsReport`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags Reports
      * @name ReportsCheckingDatesReportList
      * @summary ReadingReportForOperator
      * @request GET:/api/Reports/CheckingDatesReport
@@ -12392,6 +12405,7 @@ export class Api<
         From?: string;
         To?: string;
         ClosingReasons?: EClosingReason[];
+        WithoutApartmentsWithOpenDevicesByResources?: boolean;
       },
       params: RequestParams = {},
     ) =>
@@ -12491,6 +12505,307 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/Reports/HomeownersReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsIndividualDevicesReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/IndividualDevicesReportXlsx
+     * @secure
+     */
+    reportsIndividualDevicesReportXlsxList: (
+      query: {
+        HouseManagementId?: string;
+        HousingStockId?: number;
+        ReportOption: EIndividualDeviceReportOption;
+        Resources?: EResourceType[];
+        From?: string;
+        To?: string;
+        ClosingReasons?: EClosingReason[];
+        WithoutApartmentsWithOpenDevicesByResources?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/IndividualDevicesReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsApartmentActsReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/ApartmentActsReportXlsx
+     * @secure
+     */
+    reportsApartmentActsReportXlsxList: (
+      query?: {
+        HouseManagementId?: string;
+        HousingStockId?: number;
+        Resources?: EActResourceType[];
+        From?: string;
+        To?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/ApartmentActsReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsHousingDevicesReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HousingDevicesReportXlsx
+     * @secure
+     */
+    reportsHousingDevicesReportXlsxList: (
+      query: {
+        HouseManagementId?: string;
+        HousingStockId?: number;
+        Resources?: EResourceType[];
+        From: string;
+        To: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/HousingDevicesReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsHomeownersReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HomeownersReportXlsx
+     * @secure
+     */
+    reportsHomeownersReportXlsxList: (
+      query: {
+        HouseManagementId?: string;
+        HousingStockId?: number;
+        ShowOnlyDuplicates: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/HomeownersReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsOperatorsWorkingReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/OperatorsWorkingReport
+     * @secure
+     */
+    reportsOperatorsWorkingReportList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        OperatorsConstructedReportResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Reports/OperatorsWorkingReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsInspectorsWorkingReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/InspectorsWorkingReport
+     * @secure
+     */
+    reportsInspectorsWorkingReportList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        InspectorsConstructedReportResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Reports/InspectorsWorkingReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsCallCenterWorkingReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/CallCenterWorkingReport
+     * @secure
+     */
+    reportsCallCenterWorkingReportList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        CallCenterWorkingConstructedReportResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Reports/CallCenterWorkingReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsHouseManagementsReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HouseManagementsReport
+     * @secure
+     */
+    reportsHouseManagementsReportList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        HouseManagementConstructedReportResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Reports/HouseManagementsReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsOperatorsWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/OperatorsWorkingReportXlsx
+     * @secure
+     */
+    reportsOperatorsWorkingReportXlsxList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/OperatorsWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsInspectorsWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/InspectorsWorkingReportXlsx
+     * @secure
+     */
+    reportsInspectorsWorkingReportXlsxList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/InspectorsWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsCallCenterWorkingReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/CallCenterWorkingReportXlsx
+     * @secure
+     */
+    reportsCallCenterWorkingReportXlsxList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/CallCenterWorkingReportXlsx`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Reports
+     * @name ReportsHouseManagementsReportXlsxList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/HouseManagementsReportXlsx
+     * @secure
+     */
+    reportsHouseManagementsReportXlsxList: (
+      query?: { From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/HouseManagementsReportXlsx`,
         method: 'GET',
         query: query,
         secure: true,
