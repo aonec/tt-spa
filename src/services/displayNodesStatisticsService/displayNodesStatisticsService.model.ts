@@ -14,6 +14,7 @@ import {
 import {
   ArchiveReadingsFilter,
   FetchArchiveReadingsPayload,
+  TasksStatisticPayload,
 } from './displayNodesStatisticsService.types';
 
 const domain = createDomain('displayNodesStatisticsService');
@@ -49,7 +50,7 @@ const $archiveReadings = domain
   .reset(clearStores);
 
 const getTaskStatisticsFx = domain.createEffect<
-  DateRange,
+  TasksStatisticPayload,
   TaskStatisticsResponse
 >(requestTaskStatistics);
 const $taskStatistics = domain

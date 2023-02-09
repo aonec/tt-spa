@@ -7,7 +7,6 @@ import {
   VictoryLine,
   VictoryLabel,
   VictoryScatter,
-  VictoryPortal,
 } from 'victory';
 import React from 'react';
 import 'antd/es/date-picker/style/index';
@@ -27,7 +26,6 @@ import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
-import moment from 'moment';
 import { TaskPoint } from '../TaskPoint';
 import { getTaskXPos } from './GraphView.utils';
 
