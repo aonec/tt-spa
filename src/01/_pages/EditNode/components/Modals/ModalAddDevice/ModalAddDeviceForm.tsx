@@ -103,7 +103,7 @@ const ModalAddDeviceForm = ({
   const {
     futureCommercialAccountingDate,
     lastCommercialAccountingDate,
-    nodeStatus,
+    // nodeStatus,
     number,
     resource,
     communicationPipes,
@@ -142,7 +142,7 @@ const ModalAddDeviceForm = ({
     pipeNumber: null,
     magistral: magistrals[0]?.key,
     number,
-    nodeStatus: nodeStatus?.value,
+    // nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
     isSensorAllowed: true,
   };
