@@ -14,6 +14,7 @@ import {
 } from './groupReportService.constants';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import { sendReportToEmailService } from './sendReportToEmailService';
+import { BlodResponseErrorType } from 'types';
 
 const domain = createDomain('groupReportService');
 
@@ -34,7 +35,8 @@ const $reportFilters = domain
 
 const downloadGroupReportFx = domain.createEffect<
   GroupReportRequestPayload,
-  void
+  void,
+  BlodResponseErrorType
 >(downloadGroupReportRequest);
 
 const getGroupReport = domain.createEvent<GroupReportRequestPayload>();
@@ -121,9 +123,14 @@ forward({
   to: closeModal,
 });
 
-downloadGroupReportFx.failData.watch(() =>
-  message.error('Не удалось скачать отчёт'),
-);
+downloadGroupReportFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error('Не удалось скачать отчёт');
+});
 
 export const groupReportService = {
   inputs: {
