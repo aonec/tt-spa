@@ -7,7 +7,7 @@ export const LegendWrapper = styled.div`
   width: 100%;
   position: absolute;
   left: 75px;
-  bottom: 0px;
+  bottom: -30px;
 
   .ant-tooltip-inner {
     border-radius: 4px;
@@ -69,12 +69,10 @@ export const LegendCircleWithBorder = styled.div<{ color: string }>`
   background-color: transparent;
 `;
 
-export const TasksLegendWrapper = styled.div`
+export const LegendColumnWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  margin-left: 200px;
 `;
 
 export const TaskLegendGroupWrapper = styled.div`
