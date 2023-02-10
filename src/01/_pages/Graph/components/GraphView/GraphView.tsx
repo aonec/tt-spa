@@ -27,7 +27,7 @@ import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/Grap
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
 import { TaskPoint } from '../TaskPoint';
-import { getTaskXPos } from './GraphView.utils';
+import { getPreparedData } from './GraphView.utils';
 
 const minDelta = 0.01;
 const height = 350;
@@ -137,25 +137,14 @@ export const GraphView: React.FC<GraphViewProps> = ({
           />
 
           <VictoryScatter
-            data={taskStatistics.map((tasksByDate) => ({
-              x: getTaskXPos({
-                currentData: tasksByDate?.key,
-                minData: ticksData[0],
+            data={taskStatistics.map((tasksByDate) =>
+              getPreparedData({
+                tasksByDate,
                 reportType,
+                maxValue,
+                minData: ticksData[0],
               }),
-              y: maxValue * 0.9,
-              amount: (tasksByDate.value || []).length,
-              isEmergency:
-                (tasksByDate.value || []).filter((elem) => elem.isEmergency)
-                  .length !== 0,
-              isAllActive:
-                (tasksByDate.value || []).filter((elem) => elem.isClosed)
-                  .length === 0,
-              tasksInfo: (tasksByDate?.value || []).map((task) => ({
-                id: task.id,
-                title: task.creationReason,
-              })),
-            }))}
+            )}
             sortKey="x"
             dataComponent={<TaskPoint />}
           />
