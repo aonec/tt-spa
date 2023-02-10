@@ -40,7 +40,7 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
           </div>
         }
       >
-        <g>
+        <g cursor="pointer">
           <circle
             cx={xPos}
             cy={yPos}
