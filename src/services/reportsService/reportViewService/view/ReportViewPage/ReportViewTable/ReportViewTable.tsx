@@ -4,31 +4,36 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 import { IndividualDevicesReport } from './IndividualDevicesReport';
 import { Wrapper } from './ReportViewTable.styled';
 import { ActsJournalReport } from './ActsJournalReport';
+import { HousingMeteringDevicesReport } from './HousingMeteringDevicesReport';
+import { HomeownersReport } from './HomeownersReport';
 
 export const ReportViewTable: FC<ReportViewTableProps> = ({
   individualDevicesReportData,
   reportType,
-  city,
   reportOption,
   actJournalReportData,
+  housingMeteringDevicesReportData,
+  homeownersReportData,
 }) => {
   const reportTableComponents: { [key in ReportType]: ReactNode } = {
     [ReportType.IndividualDevices]: (
       <IndividualDevicesReport
         individualDevicesReportData={individualDevicesReportData}
-        city={city}
         reportOption={reportOption}
       />
     ),
     [ReportType.ActsJournal]: (
-      <ActsJournalReport
-        city={city}
-        actJournalReportData={actJournalReportData}
+      <ActsJournalReport actJournalReportData={actJournalReportData} />
+    ),
+    [ReportType.HousingDevices]: (
+      <HousingMeteringDevicesReport
+        housingMeteringDevicesReportData={housingMeteringDevicesReportData}
       />
     ),
-    [ReportType.HousingDevices]: null,
+    [ReportType.Homeowners]: (
+      <HomeownersReport homeownersReportData={homeownersReportData} />
+    ),
     [ReportType.Employee]: null,
-    [ReportType.Homeowners]: null,
   };
 
   return <Wrapper>{reportTableComponents[reportType]}</Wrapper>;

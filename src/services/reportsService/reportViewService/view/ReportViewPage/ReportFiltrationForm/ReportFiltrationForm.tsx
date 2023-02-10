@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Form, Radio, Space } from 'antd';
+import { Checkbox, Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import {
   PeriodPickerWrapprer,
@@ -60,6 +60,11 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
     values.houseManagement,
   );
 
+  const isHomeownersReport = reportType === ReportType.Homeowners;
+
+  const isShowResourcesField = !isHomeownersReport;
+  const isShowDatePeriodPicker = !isHomeownersReport;
+
   const isShowReportOptionSelect = reportType === ReportType.IndividualDevices;
 
   const isShowActResourcesSelect = reportType === ReportType.ActsJournal;
@@ -116,40 +121,42 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               ))}
             </Select>
           </FormItem>
-          <FormItem label="Ресурс">
-            {!isShowActResourcesSelect && (
-              <SelectMultiple
-                placeholder="Выберите"
-                value={values.resources || undefined}
-                onChange={(value) => setFieldValue('resources', value)}
-              >
-                {Object.values(EResourceType).map((resource) => (
-                  <SelectMultiple.Option key={resource} value={resource}>
-                    <ResourceOption>
-                      <ResourceIconLookup resource={resource} />
-                      <div>{ResourceShortNamesDictionary[resource]}</div>
-                    </ResourceOption>
-                  </SelectMultiple.Option>
-                ))}
-              </SelectMultiple>
-            )}
-            {isShowActResourcesSelect && (
-              <SelectMultiple
-                placeholder="Выберите"
-                value={values.actResources || undefined}
-                onChange={(value) => setFieldValue('actResources', value)}
-              >
-                {Object.values(EActResourceType).map((resource) => (
-                  <SelectMultiple.Option key={resource} value={resource}>
-                    <ResourceOption>
-                      <ResourceIconLookup resource={resource} />
-                      <div>{actResourceNamesLookup[resource]}</div>
-                    </ResourceOption>
-                  </SelectMultiple.Option>
-                ))}
-              </SelectMultiple>
-            )}
-          </FormItem>
+          {isShowResourcesField && (
+            <FormItem label="Ресурс">
+              {!isShowActResourcesSelect && (
+                <SelectMultiple
+                  placeholder="Выберите"
+                  value={values.resources || undefined}
+                  onChange={(value) => setFieldValue('resources', value)}
+                >
+                  {Object.values(EResourceType).map((resource) => (
+                    <SelectMultiple.Option key={resource} value={resource}>
+                      <ResourceOption>
+                        <ResourceIconLookup resource={resource} />
+                        <div>{ResourceShortNamesDictionary[resource]}</div>
+                      </ResourceOption>
+                    </SelectMultiple.Option>
+                  ))}
+                </SelectMultiple>
+              )}
+              {isShowActResourcesSelect && (
+                <SelectMultiple
+                  placeholder="Выберите"
+                  value={values.actResources || undefined}
+                  onChange={(value) => setFieldValue('actResources', value)}
+                >
+                  {Object.values(EActResourceType).map((resource) => (
+                    <SelectMultiple.Option key={resource} value={resource}>
+                      <ResourceOption>
+                        <ResourceIconLookup resource={resource} />
+                        <div>{actResourceNamesLookup[resource]}</div>
+                      </ResourceOption>
+                    </SelectMultiple.Option>
+                  ))}
+                </SelectMultiple>
+              )}
+            </FormItem>
+          )}
           {isShowReportOptionSelect && (
             <>
               <FormItem label="Вид отчета">
@@ -187,34 +194,52 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               </FormItem>
             </>
           )}
+          {isHomeownersReport && (
+            <FormItem label="Вид отчета по собственникам">
+              <Checkbox
+                checked={values.showOnlyDuplicates}
+                onChange={(e) =>
+                  setFieldValue('showOnlyDuplicates', e.target.checked)
+                }
+              >
+                Задвоенные лицевые счета
+              </Checkbox>
+            </FormItem>
+          )}
         </Wrapper>
-        <FormItem label="Период">
-          <Radio.Group
-            value={values.reportDatePeriod}
-            onChange={(event) =>
-              setFieldValue('reportDatePeriod', event.target.value)
-            }
-          >
-            <Space direction="vertical">
-              {Object.values(ReportDatePeriod).map((period) => (
-                <Radio key={period} value={period}>
-                  {ReportPeriodDictionary[period]}
-                </Radio>
-              ))}
-            </Space>
-          </Radio.Group>
-        </FormItem>
-        <PeriodPickerWrapprer>
-          <RangePicker
-            disabled={values.reportDatePeriod !== ReportDatePeriod.AnyPeriod}
-            value={[values.from, values.to]}
-            format="DD.MM.YYYY"
-            onChange={(dates) => {
-              setFieldValue('from', dates?.[0]);
-              setFieldValue('to', dates?.[1]);
-            }}
-          />
-        </PeriodPickerWrapprer>
+        {isShowDatePeriodPicker && (
+          <>
+            <FormItem label="Период">
+              <Radio.Group
+                value={values.reportDatePeriod}
+                onChange={(event) =>
+                  setFieldValue('reportDatePeriod', event.target.value)
+                }
+              >
+                <Space direction="vertical">
+                  {Object.values(ReportDatePeriod).map((period) => (
+                    <Radio key={period} value={period}>
+                      {ReportPeriodDictionary[period]}
+                    </Radio>
+                  ))}
+                </Space>
+              </Radio.Group>
+            </FormItem>
+            <PeriodPickerWrapprer>
+              <RangePicker
+                disabled={
+                  values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
+                }
+                value={[values.from, values.to]}
+                format="DD.MM.YYYY"
+                onChange={(dates) => {
+                  setFieldValue('from', dates?.[0]);
+                  setFieldValue('to', dates?.[1]);
+                }}
+              />
+            </PeriodPickerWrapprer>
+          </>
+        )}
       </div>
     </Form>
   );
