@@ -137,19 +137,24 @@ export const GraphView: React.FC<GraphViewProps> = ({
           />
 
           <VictoryScatter
-            data={taskStatistics.map((elem) => ({
+            data={taskStatistics.map((tasksByDate) => ({
               x: getTaskXPos({
-                currentData: elem?.key,
+                currentData: tasksByDate?.key,
                 minData: ticksData[0],
                 reportType,
               }),
               y: maxValue * 0.9,
-              amount: (elem.value || []).length,
+              amount: (tasksByDate.value || []).length,
               isEmergency:
-                (elem.value || []).filter((elem) => elem.isEmergency).length !==
-                0,
+                (tasksByDate.value || []).filter((elem) => elem.isEmergency)
+                  .length !== 0,
               isAllActive:
-                (elem.value || []).filter((elem) => elem.isClosed).length === 0,
+                (tasksByDate.value || []).filter((elem) => elem.isClosed)
+                  .length === 0,
+              tasksInfo: (tasksByDate?.value || []).map((task) => ({
+                id: task.id,
+                title: 'Привет',
+              })),
             }))}
             sortKey="x"
             dataComponent={<TaskPoint />}

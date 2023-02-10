@@ -5,6 +5,7 @@ export type TaskPointProps = {
     isEmergency: boolean;
     isAllActive: boolean;
     amount: number;
+    tasksInfo: { id: number; title: string }[];
   };
   scale?: {
     y: (y: number) => number;
