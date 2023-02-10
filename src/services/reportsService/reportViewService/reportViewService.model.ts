@@ -118,6 +118,7 @@ const $filtrationValues = domain
     closingReasons: [],
     actResources: [],
     showOnlyDuplicates: false,
+    withoutApartmentsWithOpenDevicesByResources: false,
   })
   .on(setFiltrationValues, (_, values) => values)
   .reset(ReportViewGate.close, clearFiltrationValues);

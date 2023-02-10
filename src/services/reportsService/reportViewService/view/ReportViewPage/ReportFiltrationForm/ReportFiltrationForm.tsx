@@ -65,9 +65,17 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   const isShowResourcesField = !isHomeownersReport;
   const isShowDatePeriodPicker = !isHomeownersReport;
 
-  const isShowReportOptionSelect = reportType === ReportType.IndividualDevices;
-
   const isShowActResourcesSelect = reportType === ReportType.ActsJournal;
+
+  const isIndividualDevicesReport = reportType === ReportType.IndividualDevices;
+
+  const isShowReportOptionSelect = isIndividualDevicesReport;
+
+  const isClosedDevicesReport =
+    values.reportOption === EIndividualDeviceReportOption.ClosedDevices;
+
+  const isShowApartmentsWithOpenDevicesCheckbox =
+    isIndividualDevicesReport && isClosedDevicesReport;
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -206,40 +214,55 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               </Checkbox>
             </FormItem>
           )}
-        </Wrapper>
-        {isShowDatePeriodPicker && (
-          <>
-            <FormItem label="Период">
-              <Radio.Group
-                value={values.reportDatePeriod}
-                onChange={(event) =>
-                  setFieldValue('reportDatePeriod', event.target.value)
+          {isShowDatePeriodPicker && (
+            <div>
+              <FormItem label="Период">
+                <Radio.Group
+                  value={values.reportDatePeriod}
+                  onChange={(event) =>
+                    setFieldValue('reportDatePeriod', event.target.value)
+                  }
+                >
+                  <Space direction="vertical">
+                    {Object.values(ReportDatePeriod).map((period) => (
+                      <Radio key={period} value={period}>
+                        {ReportPeriodDictionary[period]}
+                      </Radio>
+                    ))}
+                  </Space>
+                </Radio.Group>
+              </FormItem>
+              <PeriodPickerWrapprer>
+                <RangePicker
+                  disabled={
+                    values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
+                  }
+                  value={[values.from, values.to]}
+                  format="DD.MM.YYYY"
+                  onChange={(dates) => {
+                    setFieldValue('from', dates?.[0]);
+                    setFieldValue('to', dates?.[1]);
+                  }}
+                />
+              </PeriodPickerWrapprer>
+            </div>
+          )}
+          {isShowApartmentsWithOpenDevicesCheckbox && (
+            <FormItem>
+              <Checkbox
+                checked={values.withoutApartmentsWithOpenDevicesByResources}
+                onChange={(e) =>
+                  setFieldValue(
+                    'withoutApartmentsWithOpenDevicesByResources',
+                    e.target.checked,
+                  )
                 }
               >
-                <Space direction="vertical">
-                  {Object.values(ReportDatePeriod).map((period) => (
-                    <Radio key={period} value={period}>
-                      {ReportPeriodDictionary[period]}
-                    </Radio>
-                  ))}
-                </Space>
-              </Radio.Group>
+                Исключить квартиры с открытыми ИПУ по ресурсу
+              </Checkbox>
             </FormItem>
-            <PeriodPickerWrapprer>
-              <RangePicker
-                disabled={
-                  values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
-                }
-                value={[values.from, values.to]}
-                format="DD.MM.YYYY"
-                onChange={(dates) => {
-                  setFieldValue('from', dates?.[0]);
-                  setFieldValue('to', dates?.[1]);
-                }}
-              />
-            </PeriodPickerWrapprer>
-          </>
-        )}
+          )}
+        </Wrapper>
       </div>
     </Form>
   );
