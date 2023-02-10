@@ -2,12 +2,19 @@ import { createDomain, forward } from 'effector';
 import { HomeownerAccountCreateRequest } from 'myApi';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('createHomeownerService');
 
-const handleCreateHomeowner = domain.createEvent<HomeownerAccountCreateRequest>();
+const handleCreateHomeowner =
+  domain.createEvent<HomeownerAccountCreateRequest>();
 
-const createHomeownerFx = domain.createEffect(postHomeownerAccount);
+const createHomeownerFx = domain.createEffect<
+  HomeownerAccountCreateRequest,
+  void,
+  EffectFailDataAxiosError
+>(postHomeownerAccount);
 
 const openCreateHomeownerModal = domain.createEvent();
 const closeCreateHomeownerModal = domain.createEvent();
@@ -25,6 +32,17 @@ forward({
 forward({
   from: createHomeownerFx.doneData,
   to: editApartmentProfileService.inputs.refetchAaprtment,
+});
+
+createHomeownerFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 const $isLoading = createHomeownerFx.pending;

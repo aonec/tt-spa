@@ -14,14 +14,14 @@ import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
 export function useReadingHistoryValues() {
-  const [
-    bufferedValues,
-    setBufferedValues,
-  ] = useState<IndividualDeviceReadingsHistoryResponse | null>();
+  const [bufferedValues, setBufferedValues] =
+    useState<IndividualDeviceReadingsHistoryResponse | null>();
 
   const params = useParams<{ deviceId: string }>();
 
@@ -59,14 +59,14 @@ export function useReadingHistoryValues() {
     ])(initialValues);
 
     const yearIndex = _.findIndex({ year: address.year })(
-      bufferedValues?.yearReadings
+      bufferedValues?.yearReadings,
     );
     const monthIndex = _.findIndex({ month: address.month })(
-      bufferedValues?.yearReadings?.[yearIndex].monthReadings
+      bufferedValues?.yearReadings?.[yearIndex].monthReadings,
     );
     const readingIndex = _.findIndex({ id: address.id })(
       bufferedValues?.yearReadings?.[yearIndex].monthReadings?.[monthIndex]
-        .readings
+        .readings,
     );
     const setInitValue = _.assoc(
       [
@@ -77,7 +77,7 @@ export function useReadingHistoryValues() {
         'readings',
         `${readingIndex}`,
       ],
-      initialValue
+      initialValue,
     );
 
     setBufferedValues((prev) => prev && setInitValue(prev));
@@ -85,7 +85,7 @@ export function useReadingHistoryValues() {
 
   const setFieldValue = (
     value: string,
-    address: { year: number; month: number; id: number | null; index: number }
+    address: { year: number; month: number; id: number | null; index: number },
   ) => {
     setBufferedValues((prev) => ({
       ...prev,
@@ -103,13 +103,13 @@ export function useReadingHistoryValues() {
                             month.readings?.map((elem) =>
                               elem.id === address.id
                                 ? { ...elem, [`value${address.index}`]: value }
-                                : elem
+                                : elem,
                             ) || [],
                         }
-                      : month
+                      : month,
                   ) || [],
               }
-            : year
+            : year,
         ) || [],
     }));
   };
@@ -130,7 +130,19 @@ export function useReadingHistoryValues() {
         ...prev,
         [dateString]: 'done',
       }));
-    } catch (e) {
+    } catch (err) {
+      if (
+        (err as unknown as EffectFailDataAxiosError).response.status === 403
+      ) {
+        message.error(
+          'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+        );
+      } else {
+        message.error(
+          (err as unknown as EffectFailDataAxiosError).response.data.error.Text,
+        );
+      }
+
       setUploadingReadingsStatuses((prev) => ({
         ...prev,
         [dateString]: 'failed',
