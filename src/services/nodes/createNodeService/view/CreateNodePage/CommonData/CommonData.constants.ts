@@ -1,10 +1,8 @@
 import { ENodeCommercialAccountStatus, ENodeRegistrationType } from 'myApi';
-import {
-  NodeStatusIconsDictionary,
-  NodeStatusTextDictionary,
-} from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
+import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { NodeStatusesList } from './CommonData.types';
 import * as Yup from 'yup';
+import { NodeStatusTextDictionary } from 'dictionaries';
 
 export const commercialNodeStatuses: NodeStatusesList = Object.values(
   ENodeCommercialAccountStatus,
