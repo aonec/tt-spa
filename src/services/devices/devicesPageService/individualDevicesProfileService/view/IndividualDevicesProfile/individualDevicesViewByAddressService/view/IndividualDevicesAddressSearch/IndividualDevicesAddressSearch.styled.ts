@@ -14,4 +14,5 @@ export const SearchInputsWrapper = styled.div`
   margin-left: 15px;
   display: flex;
   align-items: center;
+  gap: 16px;
 `;

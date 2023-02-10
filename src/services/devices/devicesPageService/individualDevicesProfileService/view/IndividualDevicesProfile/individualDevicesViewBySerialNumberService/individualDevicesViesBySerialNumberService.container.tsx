@@ -13,7 +13,6 @@ import { IndividualDevicesViewBySerialNumberSearch } from './view/SerialNumberSe
 const { inputs, outputs } = individualDevicesViewBySerialNumberService;
 
 export const IndividualDevicesViewBySerialNumberContainer = () => {
-  
   const filter = useStore(outputs.$searchPayload);
   const devices = useStore(outputs.$devices);
   const totalItems = useStore(outputs.$totalItems);

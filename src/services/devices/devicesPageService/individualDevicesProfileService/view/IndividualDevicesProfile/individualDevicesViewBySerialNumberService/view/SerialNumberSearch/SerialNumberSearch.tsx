@@ -24,7 +24,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
 > = ({ filter, setFilter, clearSearchPayload, mountPlaces }) => {
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
-  const { values, setFieldValue, handleSubmit, setValues } =
+  const { values, setFieldValue, handleSubmit, setValues, resetForm } =
     useFormik<IndividualDeviceSearchbySerialNumberPayload>({
       initialValues: {
         SerialNumber: filter.SerialNumber,
@@ -124,7 +124,10 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
           </CheckboxSC>
           <ResetButton
             type="ghost"
-            // onClick={handleClear}
+            onClick={() => {
+              clearSearchPayload();
+              resetForm();
+            }}
             size="small"
             icon={<ClearIconSC />}
           >
