@@ -8,4 +8,6 @@ export type ExtendedSearchProps = {
   handleClear?: () => void;
   extendedSearchContent?: ReactElement;
   disabled?: boolean;
+  isShowClearButton?: boolean;
+  title?: string;
 };
