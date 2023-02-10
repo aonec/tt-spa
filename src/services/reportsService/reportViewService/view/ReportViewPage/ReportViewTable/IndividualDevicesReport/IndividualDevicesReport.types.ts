@@ -7,6 +7,5 @@ export type IndividualDevicesReportProps = {
   individualDevicesReportData:
     | IndividualDevicesConstructedReportResponse[]
     | null;
-  city: string | null;
   reportOption: EIndividualDeviceReportOption | null;
 };

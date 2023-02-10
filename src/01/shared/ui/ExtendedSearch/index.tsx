@@ -47,9 +47,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
           <Button onClick={handleClose} type="ghost">
             Отмена
           </Button>
-          <Button onClick={handleApply} style={{ marginLeft: '10px' }}>
-            Применить фильтры
-          </Button>
+          <Button onClick={handleApply}>Применить фильтры</Button>
         </Footer>
       </ExtendedSearchWrap>
     );
