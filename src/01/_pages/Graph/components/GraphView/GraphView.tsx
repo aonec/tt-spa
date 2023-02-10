@@ -76,7 +76,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   };
 
   return (
-    <>
+    <div>
       <GraphWrapper>
         <Gradient resource={resource as ResourceType} />
 
@@ -181,6 +181,6 @@ export const GraphView: React.FC<GraphViewProps> = ({
         graphParam={graphParam}
         isTasksExist={taskStatistics.length !== 0}
       />
-    </>
+    </div>
   );
 };

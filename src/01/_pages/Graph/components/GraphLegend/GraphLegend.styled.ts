@@ -7,7 +7,6 @@ export const LegendWrapper = styled.div`
   width: 100%;
   position: absolute;
   left: 75px;
-  bottom: -30px;
 
   .ant-tooltip-inner {
     border-radius: 4px;
