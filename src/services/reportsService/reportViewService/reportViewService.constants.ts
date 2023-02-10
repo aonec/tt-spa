@@ -17,7 +17,9 @@ export const DownloadReportUrlsDictionary: { [key in ReportType]: string } = {
 };
 
 export const PrepareReportRequestFunctionsDictionary: {
-  [key in ReportType]: (values: ReportFiltrationFormValues) => object | null;
+  [key in ReportType]: (
+    values: ReportFiltrationFormValues,
+  ) => { From?: string | null; To?: string | null } | null;
 } = {
   [ReportType.ActsJournal]: prepareActJournalReportRequestPayload,
   [ReportType.Employee]: prepareEmployeeReportRequestPayload,

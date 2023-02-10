@@ -15,7 +15,11 @@ import {
   ReportPayload,
 } from './reportViewService.types';
 import { downloadURI } from 'utils/downloadByURL';
-import { DownloadReportUrlsDictionary } from './reportViewService.constants';
+import {
+  DownloadReportUrlsDictionary,
+  PrepareReportRequestFunctionsDictionary,
+} from './reportViewService.constants';
+import { ReportNamesDictionary } from '../view/ReportsPage/ReportsPage.constants';
 
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
@@ -64,9 +68,14 @@ export const downloadReportFile = async ({
   reportType,
   values,
 }: ReportPayload) => {
+  const prepareFunction = PrepareReportRequestFunctionsDictionary[reportType];
+
+  const payload = prepareFunction(values);
+
   const res: string = await axios.get(
     DownloadReportUrlsDictionary[reportType],
     {
+      params: payload,
       responseType: 'blob',
       paramsSerializer: (params) => {
         return queryString.stringify(params);
@@ -76,9 +85,12 @@ export const downloadReportFile = async ({
 
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(
-    url,
-    'Отчет по кому-то',
-    // ZippedReports.includes(type),
-  );
+  const reportDatesString =
+    payload?.From && payload.To && `${payload.From}—${payload.To}`;
+
+  const reportNameString = `${ReportNamesDictionary[reportType]}${
+    reportDatesString ? `_${reportDatesString}` : ''
+  }`;
+
+  downloadURI(url, reportNameString);
 };

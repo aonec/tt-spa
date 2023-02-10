@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
   ExtendedSearchWrapper,
   FiltrationInfoItem,
@@ -36,10 +36,12 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   actJournalReportData,
   housingMeteringDevicesReportData,
   homeownersReportData,
+  downloadReport,
+  isReportFileDownloading,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     const form = document.forms.namedItem(formId);
 
     if (!form) return;
@@ -47,7 +49,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
     form.requestSubmit();
 
     setIsOpen(false);
-  };
+  }, [setIsOpen]);
 
   const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
 
@@ -92,7 +94,12 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
                 <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
               )}
             </FiltrationInfoList>
-            <Button size="small" sidePadding={16}>
+            <Button
+              size="small"
+              sidePadding={16}
+              onClick={downloadReport}
+              isLoading={isReportFileDownloading}
+            >
               Скачать отчет
             </Button>
           </FiltrationInfoWrapper>

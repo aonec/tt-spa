@@ -122,8 +122,10 @@ export const prepareHousingMeteringDevicesReportRequestPayload = (
 
 export const prepareHomeownersReportRequestPayload = (
   values: ReportFiltrationFormValues,
-): HomeownersReportRequestPayload => {
+): HomeownersReportRequestPayload | null => {
   const { HouseManagementId, HousingStockId } = getAddressId(values);
+
+  if (!HouseManagementId && !HousingStockId) return null;
 
   return {
     HouseManagementId,

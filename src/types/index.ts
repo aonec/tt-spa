@@ -57,6 +57,6 @@ export type EffectFailDataAxiosError = {
   };
 };
 
-export type BlodResponseErrorType = {
+export type BlobResponseErrorType = {
   response: { data: Blob; status: number };
 };
