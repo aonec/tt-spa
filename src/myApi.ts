@@ -2582,7 +2582,6 @@ export interface HomeownerAccountSplitRequest {
   useExistingApartment: boolean;
   newApartment: ApartmentCreateRequest;
 }
-
 export interface HomeownerAccountUpdateRequest {
   personalAccountNumber?: string | null;
   paymentCode?: string | null;

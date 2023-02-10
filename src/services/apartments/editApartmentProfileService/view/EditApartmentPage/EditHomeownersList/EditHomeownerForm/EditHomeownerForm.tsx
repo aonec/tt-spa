@@ -14,6 +14,7 @@ import {
 } from './EditHomeownerForm.constants';
 import { CheckBoxWrapper, FirstLineWrapper } from './EditHomeownerForm.styled';
 import { EditHomeownerFormProps } from './EditHomeownerForm.types';
+import { EPersonType } from 'myApi';
 
 export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   formId,
@@ -28,7 +29,15 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
     setFieldValue,
     handleSubmit: handleSubmitForm,
     errors,
-  } = useFormik({
+  } = useFormik<{
+    personalAccountNumber: string;
+    name: string;
+    phoneNumber: string;
+    paymentCode: string;
+    personType: EPersonType | null;
+    openAt: moment.Moment | null;
+    isMainOnApartment: boolean;
+  }>({
     initialValues: initialValues || formInitialValues,
     onSubmit: (values) => {
       handleSubmit({
@@ -37,6 +46,7 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
         name: values.name,
         phoneNumber: values.phoneNumber,
         personType: values.personType || undefined,
+        paymentCode: values.paymentCode,
         openAt: values.openAt?.toISOString()!,
         isMainOnApartment: values.isMainOnApartment,
       });

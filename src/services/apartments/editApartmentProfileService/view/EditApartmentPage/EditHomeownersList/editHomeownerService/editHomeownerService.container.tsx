@@ -17,7 +17,7 @@ export const EditHomeownerContainer = () => {
   const handleCloseModal = useEvent(inputs.closeEditHomeownerModal);
   const handleEditHomeowner = useEvent(inputs.handleEditHomeowner);
 
-  const handleSubmit = (payload: HomeownerAccountCreateRequest) => {
+  const handleSubmit = (payload: any) => {
     if (!housingStockPayload?.id) return;
 
     handleEditHomeowner({
@@ -25,6 +25,8 @@ export const EditHomeownerContainer = () => {
       personalAccountNumber: payload.personalAccountNumber,
       name: payload.name,
       phoneNumber: payload.phoneNumber,
+      paymentCode: payload.paymentCode ,
+      // openAt: payload.openAt,
       personType: String(payload.personType) as EPersonType,
     });
   };
