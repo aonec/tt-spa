@@ -823,6 +823,7 @@ export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  closingReason: EClosingReason | null;
 }
 
 export interface ClosedDevicesConstructedReportResponse {
@@ -833,6 +834,7 @@ export interface ClosedDevicesConstructedReportResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  closingReason: EClosingReason | null;
 }
 
 export interface CommunicationPipeForAddingDeviceListResponse {
@@ -5756,6 +5758,7 @@ export interface TaskStatisticsItem {
   id?: number;
   isEmergency?: boolean;
   isClosed?: boolean;
+  creationReason?: string | null;
 }
 
 export interface TaskStatisticsResponse {
