@@ -26,6 +26,7 @@ import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/Co
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 import { configNamesLookup } from 'utils/configNamesLookup';
+import { NodeStatusTextDictionary } from 'dictionaries';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
@@ -128,12 +129,12 @@ export const CreateNodeConfirmationModal: FC<
             },
             { key: 'Номер узла', value: requestPayload.number },
             { key: 'Зона', value: serviceZone.name },
-            // {
-            //   key: 'Коммерческий учет показателей приборов',
-            //   value: requestPayload.nodeStatus
-            //     ? NodeStatusTextDictionary[requestPayload.nodeStatus]
-            //     : '',
-            // },
+            {
+              key: 'Коммерческий учет показателей приборов',
+              value: requestPayload.commercialStatus
+                ? NodeStatusTextDictionary[requestPayload.commercialStatus]
+                : '',
+            },
             {
               key: 'Даты действия акта-допуска',
               value: commercialAccountingDatesString,

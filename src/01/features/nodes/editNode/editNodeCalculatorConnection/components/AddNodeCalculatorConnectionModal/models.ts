@@ -64,7 +64,6 @@ sample({
     entryNumber: values.entryNumber!,
     nodeId: node?.id!,
     resource: node?.resource,
-    // nodeStatus: node?.nodeStatus?.value,
     number: node?.number,
   }),
   target: saveNodeCalculatorConnectionFx,
