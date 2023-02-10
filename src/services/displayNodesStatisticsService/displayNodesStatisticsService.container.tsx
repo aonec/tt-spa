@@ -15,6 +15,7 @@ import { NodeStatisticsTable } from './view/NodeStatisticsTable';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
+const wrapperId = 'nodeConsumptionGraphWrapper';
 
 export const DisplayNodesStatisticsContainer: FC<
   DisplayNodesStatisticsContainerProps
@@ -59,12 +60,13 @@ export const DisplayNodesStatisticsContainer: FC<
         <WithLoader isLoading={isLoading}>
           {archiveData && archiveReadingExist && (
             <>
-              <Wrapper>
+              <Wrapper id={wrapperId}>
                 <GraphView
                   graphParam={graphType}
                   data={archiveData}
                   reportType={currentArhiveFilter.ReportType}
                   taskStatistics={taskStatistics}
+                  wrapperId={wrapperId}
                 />
               </Wrapper>
               <NodeStatisticsTable

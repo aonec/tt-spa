@@ -8,7 +8,7 @@ import {
   VictoryLabel,
   VictoryScatter,
 } from 'victory';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'antd/es/date-picker/style/index';
 import { GraphViewProps, ResourceType } from './GraphView.types';
 import { formTicks, getTickFormat } from '../../utils';
@@ -30,7 +30,6 @@ import { TaskPoint } from '../TaskPoint';
 import { getTaskXPos } from './GraphView.utils';
 
 const minDelta = 0.01;
-const width = 730;
 const height = 350;
 
 export const GraphView: React.FC<GraphViewProps> = ({
@@ -38,7 +37,27 @@ export const GraphView: React.FC<GraphViewProps> = ({
   data,
   reportType,
   taskStatistics,
+  wrapperId,
 }) => {
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const wrapperNode = document.getElementById(wrapperId);
+
+    if (!wrapperNode) {
+      return;
+    }
+
+    console.log(wrapperNode);
+
+    const handleResize = () => setWidth(wrapperNode?.clientWidth || 0);
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [wrapperId]);
+
   const { resource, data: readingsData, averageDeltaMass } = data;
   const isAverageLineRendered = renderForHeatAndDeltaMass(
     resource as ResourceType,
@@ -76,7 +95,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   };
 
   return (
-    <div>
+    <>
       <GraphWrapper>
         <Gradient resource={resource as ResourceType} />
 
@@ -181,6 +200,6 @@ export const GraphView: React.FC<GraphViewProps> = ({
         graphParam={graphParam}
         isTasksExist={taskStatistics.length !== 0}
       />
-    </div>
+    </>
   );
 };

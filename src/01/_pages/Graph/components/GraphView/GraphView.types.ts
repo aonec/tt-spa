@@ -16,6 +16,7 @@ export type GraphViewProps = {
   data: ArchivesDataModel;
   reportType: ReportType;
   taskStatistics: DateTimeTaskStatisticsItemArrayDictionaryItem[];
+  wrapperId: string;
 };
 
 export type PreparedArchiveValues = {
