@@ -1,4 +1,3 @@
-import { Tooltip } from 'antd';
 import React, { FC } from 'react';
 import { TaskPointProps } from './TaskPoint.types';
 import { getTaskDotStyle, getTaskTextStyle } from './TaskPoint.utils';
@@ -27,19 +26,13 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
         stroke={'#DCDEE4'}
         strokeDasharray="5"
       />
-      <Tooltip
-        getPopupContainer={(triggerNode) =>
-          triggerNode.parentNode as HTMLElement
-        }
-        title=""
-      >
-        <circle
-          cx={xPos}
-          cy={yPos}
-          r={radius}
-          style={getTaskDotStyle(isAllActive || false)}
-        />
-      </Tooltip>
+
+      <circle
+        cx={xPos}
+        cy={yPos}
+        r={radius}
+        style={getTaskDotStyle(isAllActive || false)}
+      />
 
       <text
         x={xPos}
