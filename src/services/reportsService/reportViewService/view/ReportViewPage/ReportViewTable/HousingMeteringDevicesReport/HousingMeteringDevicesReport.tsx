@@ -38,14 +38,14 @@ export const HousingMeteringDevicesReport: FC<
           label: 'Адрес',
           size: '230px',
           render: (elem) => {
-            const { addressString, apartmentNumber } = getReportElemAddress(
+            const { addressString, number } = getReportElemAddress(
               elem,
               'house',
             );
 
             return (
               <div>
-                <ApartmentNumber>Дом №{apartmentNumber}</ApartmentNumber>
+                <ApartmentNumber>Дом №{number}</ApartmentNumber>
                 {addressString}
               </div>
             );

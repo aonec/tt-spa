@@ -46,12 +46,11 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             label: 'Адрес',
             size: '0.5fr',
             render: (elem) => {
-              const { addressString, apartmentNumber } =
-                getReportElemAddress(elem);
+              const { addressString, number } = getReportElemAddress(elem);
 
               return (
                 <div>
-                  <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
+                  <ApartmentNumber>Кв. №{number}</ApartmentNumber>
                   {addressString}
                 </div>
               );

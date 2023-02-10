@@ -11,7 +11,7 @@ export const getReportElemAddress = (
   }
 
   return {
-    apartmentNumber: address.apartmentNumber,
+    number: address.apartmentNumber,
     addressString: addressArray.join(', '),
   };
 };

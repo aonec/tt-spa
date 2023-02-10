@@ -52,12 +52,11 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           label: 'Адрес',
           size: '230px',
           render: (elem) => {
-            const { addressString, apartmentNumber } =
-              getReportElemAddress(elem);
+            const { addressString, number } = getReportElemAddress(elem);
 
             return (
               <div>
-                <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
+                <ApartmentNumber>Кв. №{number}</ApartmentNumber>
                 {addressString}
               </div>
             );
