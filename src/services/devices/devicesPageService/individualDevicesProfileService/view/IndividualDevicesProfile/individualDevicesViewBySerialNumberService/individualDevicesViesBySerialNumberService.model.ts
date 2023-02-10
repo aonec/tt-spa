@@ -9,8 +9,6 @@ const domain = createDomain('individualDevicesViewBySerialNumberService');
 
 const clearFilter = domain.createEvent();
 
-clearFilter.watch(() => console.log('first'));
-
 const getDevicesFx = domain.createEffect<
   IndividualDeviceSearchbySerialNumberPayload,
   IndividualDeviceListResponseFromDevicePagePagedList
