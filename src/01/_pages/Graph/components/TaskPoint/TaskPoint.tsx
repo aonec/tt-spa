@@ -1,8 +1,8 @@
 import { Tooltip } from 'antd';
 import React, { FC } from 'react';
-import { TaskInfoItem } from './TaskPoint.styled';
 import { TaskPointProps } from './TaskPoint.types';
 import { getTaskDotStyle, getTaskTextStyle } from './TaskPoint.utils';
+import { TaskPointHint } from './TaskPointHint';
 
 const radius = 10;
 const littleRadius = 4;
@@ -33,9 +33,7 @@ export const TaskPoint: FC<TaskPointProps> = ({ scale, datum }) => {
         title={
           <div>
             {tasksInfo.map((task) => (
-              <TaskInfoItem key={task.id}>
-                <span>{task.title}</span>
-              </TaskInfoItem>
+              <TaskPointHint task={task} key={task.id} />
             ))}
           </div>
         }

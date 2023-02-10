@@ -6,7 +6,7 @@ export const TaskInfoItem = styled.div`
   justify-content: space-between;
 
   padding: 8px 0px;
-  min-width: 240px;
+  max-width: 240px;
 
   border-top: 1px solid #ffffff33;
 

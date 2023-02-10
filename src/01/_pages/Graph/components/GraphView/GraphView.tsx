@@ -153,7 +153,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
                   .length === 0,
               tasksInfo: (tasksByDate?.value || []).map((task) => ({
                 id: task.id,
-                title: 'Привет',
+                title: task.creationReason,
               })),
             }))}
             sortKey="x"

@@ -5,10 +5,15 @@ export type TaskPointProps = {
     isEmergency: boolean;
     isAllActive: boolean;
     amount: number;
-    tasksInfo: { id: number; title: string }[];
+    tasksInfo: NodeStatisticTaskInfo[];
   };
   scale?: {
     y: (y: number) => number;
     x: (x: number) => number;
   };
+};
+
+export type NodeStatisticTaskInfo = {
+  id: number;
+  title: string | null;
 };
