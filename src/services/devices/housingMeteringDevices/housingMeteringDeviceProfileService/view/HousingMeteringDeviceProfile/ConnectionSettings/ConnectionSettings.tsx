@@ -1,3 +1,4 @@
+import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CalculatorIcon } from 'ui-kit/icons';
@@ -6,24 +7,28 @@ import {
   Name,
   NameWrap,
   Serial,
-  Wrapper,
 } from './ConnectionSettings.styled';
 import { ConnectionSettingsProps } from './ConnectionSettings.types';
 
 export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
   hubConnection,
 }) => {
+  const isConnected = Boolean(hubConnection?.calculatorId);
+
   return (
-    <Wrapper>
-      <NavLink to={`/calculators/${hubConnection?.calculatorId}`}>
-        <CalculatorItem>
-          <CalculatorIcon />
-          <NameWrap>
-            <Name>{hubConnection?.calculatorModel || 'Вычислитель'}</Name>
-            <Serial>{` (${hubConnection?.calculatorSerialNumber})`}</Serial>
-          </NameWrap>
-        </CalculatorItem>
-      </NavLink>
-    </Wrapper>
+    <>
+      {isConnected && (
+        <NavLink to={`/calculators/${hubConnection?.calculatorId}`}>
+          <CalculatorItem>
+            <CalculatorIcon />
+            <NameWrap>
+              <Name>{hubConnection?.calculatorModel || 'Вычислитель'}</Name>
+              <Serial>{` (${hubConnection?.calculatorSerialNumber})`}</Serial>
+            </NameWrap>
+          </CalculatorItem>
+        </NavLink>
+      )}
+      {!isConnected && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+    </>
   );
 };

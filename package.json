@@ -43,12 +43,24 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "husky": {
@@ -76,13 +88,26 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.13.12",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/node-logger": "^6.5.16",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
     "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.14.191",
     "@types/styled-components": "^5.1.7",
     "@types/yup": "^0.29.11",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.3",
     "prettier": "^2.8.3",
-    "sass": "^1.57.1"
+    "prop-types": "^15.8.1",
+    "sass": "^1.57.1",
+    "webpack": "^5.75.0"
   }
 }
