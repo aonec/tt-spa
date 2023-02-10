@@ -15,12 +15,3 @@ export const NodeStatusIconsDictionary: {
   [ENodeCommercialAccountStatus.OnReview]: PendingApprovalIcon,
   [ENodeCommercialAccountStatus.Registered]: RegisteredIcon,
 };
-
-export const NodeStatusTextDictionary: {
-  [key in ENodeCommercialAccountStatus]: string;
-} = {
-  [ENodeCommercialAccountStatus.NotRegistered]: 'Не на коммерческом учете',
-  [ENodeCommercialAccountStatus.Prepared]: 'Подготовлен к сдаче',
-  [ENodeCommercialAccountStatus.OnReview]: 'На утверждении',
-  [ENodeCommercialAccountStatus.Registered]: 'Сдан на коммерческий учет',
-};

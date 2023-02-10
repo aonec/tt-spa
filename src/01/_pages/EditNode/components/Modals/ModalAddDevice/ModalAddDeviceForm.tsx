@@ -13,10 +13,10 @@ import {
   styles,
 } from '../../../../../tt-components';
 import {
+  DEFAULT_CALCULATOR,
   DEFAULT_NODE,
   housingMeteringDeviceTypes,
   isConnectedOptions,
-  nodeStatusList,
   resources,
 } from '../../../../../tt-components/localBases';
 import Tabs from '../../../../../tt-components/Tabs';
@@ -45,6 +45,7 @@ import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBefor
 import { addHousingMeteringDevice } from './apiModalAddDevice';
 import Warning from '../../../../../tt-components/Warning';
 import { EffectFailDataAxiosError } from 'types';
+import { NodeStatusTextDictionary } from 'dictionaries';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
@@ -99,16 +100,16 @@ const ModalAddDeviceForm = ({
     },
   ];
 
-  // const { id: calculatorId } = calculator || DEFAULT_CALCULATOR;
   const {
     futureCommercialAccountingDate,
     lastCommercialAccountingDate,
-    // nodeStatus,
+    commercialStatus,
     number,
     resource,
     communicationPipes,
-    calculatorId,
+    calculator,
   } = node || DEFAULT_NODE;
+  const { id: calculatorId } = calculator || DEFAULT_CALCULATOR;
 
   const entryNumber = communicationPipes?.length
     ? communicationPipes[0].entryNumber
@@ -142,7 +143,7 @@ const ModalAddDeviceForm = ({
     pipeNumber: null,
     magistral: magistrals[0]?.key,
     number,
-    // nodeStatus: nodeStatus?.value,
+    commercialStatus: commercialStatus?.value,
     coldWaterWarningHidden: true,
     isSensorAllowed: true,
   };
@@ -285,36 +286,24 @@ const ModalAddDeviceForm = ({
                   />
                 </Form.Item>
 
-                {/*<Form.Item*/}
-                {/*  name="calculatorId"*/}
-                {/*  label="Вычислитель, к которому подключен прибор"*/}
-                {/*  style={styles.w49}*/}
-                {/*>*/}
-                {/*  <InputFormik name="calculatorId" disabled />*/}
-                {/*</Form.Item>*/}
-
-                {/*<Form.Item*/}
-                {/*  name="entryNumber"*/}
-                {/*  label="Номер ввода"*/}
-                {/*  style={styles.w100}*/}
-                {/*>*/}
-                {/*  <InputFormik name="entryNumber" disabled />*/}
-                {/*</Form.Item>*/}
-
                 <Form.Item name="number" label="Номер узла" style={styles.w49}>
                   <InputFormik name="number" disabled />
                 </Form.Item>
 
                 <Form.Item
-                  name="nodeStatus"
+                  name="commercialStatus"
                   label="Статус узла"
                   style={styles.w49}
                 >
-                  <SelectFormik
-                    name="nodeStatus"
-                    options={nodeStatusList}
-                    disabled
-                  />
+                  <SelectFormik name="commercialStatus" disabled>
+                    {Object.entries(NodeStatusTextDictionary).map(
+                      ([key, value]) => (
+                        <SelectFormik.Option value={key} key={key}>
+                          {value}
+                        </SelectFormik.Option>
+                      ),
+                    )}
+                  </SelectFormik>
                 </Form.Item>
 
                 <Form.Item

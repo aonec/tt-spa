@@ -2,6 +2,7 @@ import {
   EClosingReason,
   EIndividualDeviceReportOption,
   EMagistralType,
+  ENodeCommercialAccountStatus,
   EResourceType,
 } from 'myApi';
 
@@ -43,4 +44,13 @@ export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
   [EClosingReason.MaintainingStopped]: 'Остановлено',
   [EClosingReason.CheckingDate]: 'Выход даты поверки',
   [EClosingReason.None]: 'Нет',
+};
+
+export const NodeStatusTextDictionary: {
+  [key in ENodeCommercialAccountStatus]: string;
+} = {
+  [ENodeCommercialAccountStatus.NotRegistered]: 'Не на коммерческом учете',
+  [ENodeCommercialAccountStatus.Prepared]: 'Подготовлен к сдаче',
+  [ENodeCommercialAccountStatus.OnReview]: 'На утверждении',
+  [ENodeCommercialAccountStatus.Registered]: 'Сдан на коммерческий учет',
 };
