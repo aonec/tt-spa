@@ -214,6 +214,8 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               </Checkbox>
             </FormItem>
           )}
+        </Wrapper>
+        <Wrapper>
           {isShowDatePeriodPicker && (
             <div>
               <FormItem label="Период">
