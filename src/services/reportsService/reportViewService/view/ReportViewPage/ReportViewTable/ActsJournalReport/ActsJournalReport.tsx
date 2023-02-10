@@ -2,7 +2,6 @@ import { Empty } from 'antd';
 import { useStore } from 'effector-react';
 import { last } from 'lodash';
 import moment from 'moment';
-import { EApartmentActType } from 'myApi';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';

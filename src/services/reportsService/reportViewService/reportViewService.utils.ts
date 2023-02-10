@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { ApartmentActsConstructedReportResponse } from 'myApi';
 import {
   IndividualDeviceReportRequestPaload,
   ReportDatePeriod,
