@@ -10,15 +10,21 @@ export const validationSchema = Yup.object().shape({
     .oneOf(Object.values(EReportType))
     .required('Это поле обязательное'),
   NodeResourceTypes: Yup.array<EResourceType>(
-    Yup.mixed<EResourceType>().oneOf(Object.values(EResourceType))
+    Yup.mixed<EResourceType>().oneOf(Object.values(EResourceType)),
   ).required('Это поле обязательное'),
 
   DelayedEmailTarget: Yup.string(),
 
-  'Subscription.Email': Yup.string().email(),
+  isRegular: Yup.bool(),
+  'Subscription.Email': Yup.string().when('isRegular', {
+    is: true,
+    then: Yup.string()
+      .required('Это поле обязательное')
+      .email('Корректно введите Email'),
+  }),
   'Subscription.TriggerAt': Yup.string(),
   'Subscription.Type': Yup.mixed<EEmailSubscriptionType>().oneOf(
-    Object.values(EEmailSubscriptionType)
+    Object.values(EEmailSubscriptionType),
   ),
   'Subscription.ContractorIds': Yup.array(Yup.number()),
 });
