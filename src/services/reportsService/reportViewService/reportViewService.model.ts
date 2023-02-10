@@ -11,7 +11,9 @@ import {
 import { createGate } from 'effector-react';
 import {
   ApartmentActsConstructedReportResponse,
+  HomeownersConstructedReportResponse,
   HouseManagementWithStreetsResponse,
+  HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
 } from 'myApi';
 import { houseManagementsService } from 'services/objects/houseManagementsService';
@@ -22,17 +24,24 @@ import {
 import {
   getActJournalReport,
   getAddressesWithHouseManagements,
+  getHomeownersReport,
+  getHousingMeteringDevicesReport,
   getIndividualDevicesReport,
 } from './reportViewService.api';
 import {
   ActsJournalReportRequestPayload,
+  HomeownersReportRequestPayload,
+  HousingMeteringDevicesReportRequestPayload,
   IndividualDeviceReportRequestPaload,
   ReportFiltrationFormValues,
   ReportPayload,
 } from './reportViewService.types';
 import {
-  prepareActJournalReportData,
-  prepareIndividualDevicesReportData,
+  getReportPayloadValues,
+  prepareActJournalReportRequestPayload,
+  prepareHomeownersReportRequestPayload,
+  prepareHousingMeteringDevicesReportRequestPayload,
+  prepareIndividualDevicesReportRequestPayload,
 } from './reportViewService.utils';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import { EffectFailDataAxiosError } from 'types';
@@ -61,9 +70,22 @@ const fetchActJournalReportFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getActJournalReport);
 
-const loadIndividualDeviceReport = domain.createEvent<ReportPayload>();
+const fetchHousingMeteringDevicesReportFx = domain.createEffect<
+  HousingMeteringDevicesReportRequestPayload,
+  HousingDevicesConstructedReportResponse[],
+  EffectFailDataAxiosError
+>(getHousingMeteringDevicesReport);
 
+const fetchHomeownersReportFx = domain.createEffect<
+  HomeownersReportRequestPayload,
+  HomeownersConstructedReportResponse[],
+  EffectFailDataAxiosError
+>(getHomeownersReport);
+
+const loadIndividualDeviceReport = domain.createEvent<ReportPayload>();
 const loadActJournalReport = domain.createEvent<ReportPayload>();
+const loadHousingMeteringDevicesReport = domain.createEvent<ReportPayload>();
+const loadHomeownersReport = domain.createEvent<ReportPayload>();
 
 const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
 
@@ -84,9 +106,10 @@ const $filtrationValues = domain
     reportDatePeriod: null,
     closingReasons: [],
     actResources: [],
+    showOnlyDuplicates: false,
   })
-  .on(setFiltrationValues, (_, values) => values)
-  // .reset(ReportViewGate.close);
+  .on(setFiltrationValues, (_, values) => values);
+// .reset(ReportViewGate.close);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
@@ -96,6 +119,16 @@ const $individualDevicesReportData = domain
 const $actJournalReportData = domain
   .createStore<ApartmentActsConstructedReportResponse | null>(null)
   .on(fetchActJournalReportFx.doneData, (_, data) => data)
+  .reset(ReportViewGate.close);
+
+const $housingMeteringDevicesReportData = domain
+  .createStore<HousingDevicesConstructedReportResponse[] | null>(null)
+  .on(fetchHousingMeteringDevicesReportFx.doneData, (_, data) => data)
+  .reset(ReportViewGate.close);
+
+const $homeownersReportData = domain
+  .createStore<HomeownersConstructedReportResponse[] | null>(null)
+  .on(fetchHomeownersReportFx.doneData, (_, data) => data)
   .reset(ReportViewGate.close);
 
 forward({
@@ -115,23 +148,26 @@ split({
   cases: {
     [ReportType.IndividualDevices]: loadIndividualDeviceReport,
     [ReportType.ActsJournal]: loadActJournalReport,
+    [ReportType.HousingDevices]: loadHousingMeteringDevicesReport,
+    [ReportType.Homeowners]: loadHomeownersReport,
   },
 });
 
 guard({
   clock: sample({
-    clock: loadIndividualDeviceReport.map(({ values }) => values),
-    fn: prepareIndividualDevicesReportData,
+    clock: loadIndividualDeviceReport.map(getReportPayloadValues),
+    fn: prepareIndividualDevicesReportRequestPayload,
   }),
-  filter: (payload): payload is IndividualDeviceReportRequestPaload =>
-    Boolean(payload),
+  filter: (payload): payload is IndividualDeviceReportRequestPaload => {
+    return Boolean(payload);
+  },
   target: fetchIndividualDevicesReportFx,
 });
 
 guard({
   clock: sample({
-    clock: loadActJournalReport.map(({ values }) => values),
-    fn: prepareActJournalReportData,
+    clock: loadActJournalReport.map(getReportPayloadValues),
+    fn: prepareActJournalReportRequestPayload,
   }),
   filter: (payload): payload is ActsJournalReportRequestPayload => {
     return Boolean(payload);
@@ -139,14 +175,38 @@ guard({
   target: fetchActJournalReportFx,
 });
 
+guard({
+  clock: sample({
+    clock: loadHousingMeteringDevicesReport.map(getReportPayloadValues),
+    fn: prepareHousingMeteringDevicesReportRequestPayload,
+  }),
+  filter: (payload): payload is HousingMeteringDevicesReportRequestPayload => {
+    return Boolean(payload);
+  },
+  target: fetchHousingMeteringDevicesReportFx,
+});
+
+guard({
+  clock: sample({
+    clock: loadHomeownersReport.map(getReportPayloadValues),
+    fn: prepareHomeownersReportRequestPayload,
+  }),
+  filter: () => true,
+  target: fetchHomeownersReportFx,
+});
+
 merge([
   fetchIndividualDevicesReportFx.failData,
   fetchActJournalReportFx.failData,
+  fetchHousingMeteringDevicesReportFx.failData,
+  fetchHomeownersReportFx.failData,
 ]).watch((error) => message.error(error.response.data.error.Text));
 
 const $isReportLoading = combine(
   fetchIndividualDevicesReportFx.pending,
   fetchActJournalReportFx.pending,
+  fetchHousingMeteringDevicesReportFx.pending,
+  fetchHomeownersReportFx.pending,
   (...loadings) => loadings.some(Boolean),
 );
 
@@ -159,9 +219,11 @@ export const reportViewService = {
     $houseManagements: houseManagementsService.outputs.$houseManagements,
     $addressesWithHouseManagements,
     $filtrationValues,
-    $individualDevicesReportData,
     $isReportLoading,
+    $individualDevicesReportData,
     $actJournalReportData,
+    $housingMeteringDevicesReportData,
+    $homeownersReportData,
   },
   gates: {
     ExistingCitiesGate,

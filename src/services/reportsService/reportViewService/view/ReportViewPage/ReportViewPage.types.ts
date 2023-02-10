@@ -1,7 +1,9 @@
 import {
   ApartmentActsConstructedReportResponse,
+  HomeownersConstructedReportResponse,
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
+  HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
 } from 'myApi';
 import { ReportType } from '../../../view/ReportsPage/ReportsPage.types';
@@ -19,4 +21,8 @@ export type ReportViewPageProps = {
     | IndividualDevicesConstructedReportResponse[]
     | null;
   actJournalReportData: ApartmentActsConstructedReportResponse | null;
+  housingMeteringDevicesReportData:
+    | HousingDevicesConstructedReportResponse[]
+    | null;
+  homeownersReportData: HomeownersConstructedReportResponse[] | null;
 };

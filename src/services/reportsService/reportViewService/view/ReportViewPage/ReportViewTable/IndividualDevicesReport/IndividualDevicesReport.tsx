@@ -9,17 +9,16 @@ import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { ResourceShortNamesDictionary } from 'dictionaries';
 import { Table } from 'ui-kit/Table';
-import { last } from 'lodash';
 import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
 } from 'myApi';
 import moment from 'moment';
 import { Empty } from 'antd';
+import { getReportElemAddress } from '../ReportViewTable.utils';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
-  city,
   reportOption,
 }) => {
   const isDeviceCheckingDateExpirationOption =
@@ -37,15 +36,11 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
 
-  const emptyComponentDescription = individualDevicesReportData
-    ? 'Нет данных'
-    : 'Выберите фильтры для формирования отчета';
-
-  if (!individualDevicesReportData?.length) {
+  if (!individualDevicesReportData) {
     return (
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description={emptyComponentDescription}
+        description={'Выберите фильтры для формирования отчета'}
       />
     );
   }
@@ -57,19 +52,12 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           label: 'Адрес',
           size: '230px',
           render: (elem) => {
-            const addressSplit = elem.address?.split(' ');
-
-            const apartmentNumber = last(addressSplit);
-
-            const address = addressSplit
-              ?.slice(0, addressSplit.length - 1)
-              .join(' ');
+            const { addressString, number } = getReportElemAddress(elem);
 
             return (
               <div>
-                <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
-                {city && `${city}, `}
-                {address}
+                <ApartmentNumber>Кв. №{number}</ApartmentNumber>
+                {addressString}
               </div>
             );
           },
@@ -133,7 +121,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
 
             return Object.values(reading)
               .filter((readingValue) => typeof readingValue === 'number')
-              .map((readingValue, index) => <div key={index}>{readingValue}</div>);
+              .map((readingValue, index) => (
+                <div key={index}>{readingValue}</div>
+              ));
           },
         },
         {

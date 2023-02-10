@@ -1,6 +1,5 @@
 import { Empty } from 'antd';
 import { useStore } from 'effector-react';
-import { last } from 'lodash';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -10,6 +9,8 @@ import {
   ApartmentNumber,
   ResourceWrapper,
 } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
+import { getReportElemAddress } from '../ReportViewTable.utils';
+import { ActsCountPanel } from './ActsCountPanel';
 import { actsJournalReportService } from './ActsJournalReport.model';
 import { ActDate } from './ActsJournalReport.styled';
 import { ActsJournalReportProps } from './ActsJournalReport.types';
@@ -19,7 +20,6 @@ const { ApartmentActTypesGate } = gates;
 
 export const ActsJournalReport: FC<ActsJournalReportProps> = ({
   actJournalReportData,
-  city,
 }) => {
   const apartmentActTypes = useStore(outputs.$actTypes);
 
@@ -46,19 +46,12 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             label: 'Адрес',
             size: '0.5fr',
             render: (elem) => {
-              const addressSplit = elem.address?.split(' ');
-
-              const apartmentNumber = last(addressSplit);
-
-              const address = addressSplit
-                ?.slice(0, addressSplit.length - 1)
-                .join(' ');
+              const { addressString, number } = getReportElemAddress(elem);
 
               return (
                 <div>
-                  <ApartmentNumber>Кв. №{apartmentNumber}</ApartmentNumber>
-                  {city && `${city}, `}
-                  {address}
+                  <ApartmentNumber>Кв. №{number}</ApartmentNumber>
+                  {addressString}
                 </div>
               );
             },
@@ -79,10 +72,8 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             label: 'Тип документа',
             size: '190px',
             render: (act) =>
-              apartmentActTypes?.find(
-                // дождаться правки по апи с бэка
-                (elem) => (elem.key as any) === act.actType,
-              )?.value,
+              apartmentActTypes?.find((elem) => elem.key === act.actType)
+                ?.value,
           },
           {
             label: 'Ресурс',
@@ -102,6 +93,9 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
         ]}
         elements={actJournalReportData?.rows?.slice(0, 50) || []}
       />
+      {actJournalReportData.rows && (
+        <ActsCountPanel count={actJournalReportData.rows.length} />
+      )}
     </>
   );
 };
