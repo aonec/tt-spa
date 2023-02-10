@@ -210,6 +210,7 @@ sample({
       const endOfPeriod = moment(period).endOf('month').toISOString();
       return { type: type!, date: { From: startOfPeriod, To: endOfPeriod } };
     }
+
     return {
       type: type!,
       date: {

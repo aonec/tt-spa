@@ -131,3 +131,7 @@ export const prepareHomeownersReportRequestPayload = (
     ShowOnlyDuplicates: values.showOnlyDuplicates,
   };
 };
+
+export const prepareEmployeeReportRequestPayload = () => {
+  return null;
+};

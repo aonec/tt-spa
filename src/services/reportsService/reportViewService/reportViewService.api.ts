@@ -12,7 +12,10 @@ import {
   HomeownersReportRequestPayload,
   HousingMeteringDevicesReportRequestPayload,
   IndividualDeviceReportRequestPaload,
+  ReportPayload,
 } from './reportViewService.types';
+import { downloadURI } from 'utils/downloadByURL';
+import { DownloadReportUrlsDictionary } from './reportViewService.constants';
 
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
@@ -55,4 +58,27 @@ export const getHomeownersReport = (
     params: payload,
     paramsSerializer: queryString.stringify,
   });
+};
+
+export const downloadReportFile = async ({
+  reportType,
+  values,
+}: ReportPayload) => {
+  const res: string = await axios.get(
+    DownloadReportUrlsDictionary[reportType],
+    {
+      responseType: 'blob',
+      paramsSerializer: (params) => {
+        return queryString.stringify(params);
+      },
+    },
+  );
+
+  const url = window.URL.createObjectURL(new Blob([res]));
+
+  downloadURI(
+    url,
+    'Отчет по кому-то',
+    // ZippedReports.includes(type),
+  );
 };
