@@ -48,8 +48,6 @@ export const GraphView: React.FC<GraphViewProps> = ({
       return;
     }
 
-    console.log(wrapperNode);
-
     const handleResize = () => setWidth(wrapperNode?.clientWidth || 0);
     window.addEventListener('resize', handleResize);
 
