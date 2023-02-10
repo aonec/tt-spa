@@ -43,7 +43,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateTypes": "npx swagger-typescript-api -p https://staging.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios"
+    "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/v1/ttm_api.json -o ./src -n myApi.ts --axios"
   },
   "eslintConfig": {
     "extends": [
