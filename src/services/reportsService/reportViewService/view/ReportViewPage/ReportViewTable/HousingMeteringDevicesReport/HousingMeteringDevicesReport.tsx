@@ -1,6 +1,7 @@
 import { Empty } from 'antd';
 import moment from 'moment';
 import React, { FC } from 'react';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { Table } from 'ui-kit/Table';
 import { ApartmentNumber } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
 import { getReportElemAddress } from '../ReportViewTable.utils';
@@ -15,6 +16,7 @@ import { HousingMeteringDevicesReportProps } from './HousingMeteringDevicesRepor
 export const HousingMeteringDevicesReport: FC<
   HousingMeteringDevicesReportProps
 > = ({ housingMeteringDevicesReportData }) => {
+  console.log(housingMeteringDevicesReportData);
   if (!housingMeteringDevicesReportData) {
     return (
       <Empty
@@ -53,16 +55,18 @@ export const HousingMeteringDevicesReport: FC<
         },
         {
           label: 'Прибор',
-          size: '235px',
+          size: '320px',
           render: (elem) => {
             return (
               <div>
                 <DeviceWrapper>
+                  <ResourceIconLookup resource={elem.resource} />
                   <DeviceSerialNumber>{elem.serialNumber}</DeviceSerialNumber>
                   <DeviceModel>{elem.model}</DeviceModel>
                 </DeviceWrapper>
                 <DeviceCheckingDates>
-                  {moment(elem.lastCheckingDate).format('DD.MM.YYYY')}—
+                  {moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
+                  {` — `}
                   {moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
                 </DeviceCheckingDates>
               </div>
@@ -91,7 +95,7 @@ export const HousingMeteringDevicesReport: FC<
           },
         },
       ]}
-      elements={housingMeteringDevicesReportData?.slice(50) || []}
+      elements={housingMeteringDevicesReportData || []}
     />
   );
 };

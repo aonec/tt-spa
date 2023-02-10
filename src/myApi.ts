@@ -2741,6 +2741,7 @@ export interface HousingDevicesConstructedReportResponse {
   corpus: string | null;
   model: string | null;
   serialNumber: string | null;
+  resource: EResourceType;
 
   /** @format date-time */
   lastCheckingDate: string | null;

@@ -21,9 +21,10 @@ export const DeviceModel = styled.div`
 `;
 
 export const DeviceCheckingDates = styled.div`
-  margin-top: 4px;
+  margin-top: 2px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: rgba(39, 47, 90, 0.7);
+  transform: translateX(24px);
 `;
