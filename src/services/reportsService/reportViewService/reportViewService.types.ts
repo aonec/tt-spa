@@ -1,4 +1,5 @@
 import {
+  EActResourceType,
   EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
@@ -18,10 +19,12 @@ export type ReportFiltrationFormValues = {
   houseManagement: null | string;
   housingStockId: null | number;
   resources: EResourceType[];
+  actResources: EActResourceType[];
   reportOption: null | EIndividualDeviceReportOption;
   from: null | moment.Moment;
   to: null | moment.Moment;
   reportDatePeriod: null | ReportDatePeriod;
+  closingReasons: EClosingReason[];
 };
 
 export type ReportPayload = {
@@ -37,4 +40,12 @@ export type IndividualDeviceReportRequestPaload = {
   From?: string;
   To?: string;
   ClosingReasons?: EClosingReason[];
+};
+
+export type ActsJournalReportRequestPayload = {
+  HouseManagementId?: string;
+  HousingStockId?: number;
+  Resources?: EActResourceType[];
+  From?: string;
+  To?: string;
 };

@@ -1,4 +1,5 @@
 import {
+  EClosingReason,
   EIndividualDeviceReportOption,
   EMagistralType,
   EResourceType,
@@ -31,4 +32,15 @@ export const ResourceShortNamesDictionary: {
   [EResourceType.HotWaterSupply]: 'ГВС',
   [EResourceType.Electricity]: 'ЭЭ',
   [EResourceType.Heat]: 'Тепло',
+};
+
+export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
+  [EClosingReason.Manually]: 'Плановая замена',
+  [EClosingReason.DeviceBroken]: 'Поломка',
+  [EClosingReason.CertificateIssued]: 'Выдана справка',
+  [EClosingReason.ByLetter]: 'Письмо из УК',
+  [EClosingReason.NoReadings]: 'Отсутствие показаний',
+  [EClosingReason.MaintainingStopped]: 'Остановлено',
+  [EClosingReason.CheckingDate]: 'Выход даты поверки',
+  [EClosingReason.None]: 'Нет',
 };
