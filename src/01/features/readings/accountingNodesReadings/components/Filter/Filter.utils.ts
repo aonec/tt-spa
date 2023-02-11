@@ -1,6 +1,6 @@
 export function getArrayByCountRange<T>(
   count: number,
-  callback: (count: number) => T
+  callback: (count: number) => T,
 ): T[] {
   const result: T[] = [];
 

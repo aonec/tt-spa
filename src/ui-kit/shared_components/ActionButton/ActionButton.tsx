@@ -6,9 +6,10 @@ export const ActionButton: FC<ActionButtonProps> = ({
   text,
   icon,
   onClick,
+  active,
 }) => {
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper onClick={onClick} active={active}>
       {icon}
       <Text>{text}</Text>
     </Wrapper>
