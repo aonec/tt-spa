@@ -1,6 +1,7 @@
 import { downloadURI } from '01/features/reports/CreateReportModal/utils';
 import { axios } from '01/axios';
 import { FeedBackFlowReportPayload } from './feedFlowBackReportService.types';
+import queryString from 'query-string';
 
 export const getFeedBackFlowReport = async ({
   Name,
@@ -8,6 +9,7 @@ export const getFeedBackFlowReport = async ({
 }: FeedBackFlowReportPayload): Promise<void> => {
   const res: string = await axios.get('Reports/FeedBackFlowTemperatureReport', {
     params: payload,
+    paramsSerializer: (params) => queryString.stringify(params),
     responseType: 'blob',
   });
 

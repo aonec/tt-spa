@@ -19,7 +19,7 @@ export type GetAddressesRequestPayload = {
 
 export type CreateSoiReportRequestPayload = {
   ReportName: string;
-  HouseManagementId?: string;
+  HouseManagementId?: string | null;
   HousingStockId?: number;
   Resource?: EResourceType;
   Month?: number;

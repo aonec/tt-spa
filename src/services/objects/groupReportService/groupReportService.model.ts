@@ -63,7 +63,6 @@ guard({
       payload.From &&
         payload.To &&
         payload.Name &&
-        payload.HouseManagementId &&
         payload.NodeResourceTypes &&
         payload.ReportType,
     ),

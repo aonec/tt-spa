@@ -19,6 +19,8 @@ import { LabeledValue } from 'antd/lib/select';
 import { RegularUnloading } from './RegularUnloading';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
+const withoutHouseMagement = 'withoutHouseMagement';
+
 export const GroupReportForm: FC<GroupReportFormProps> = ({
   formId,
   handleDownload,
@@ -36,6 +38,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       From: moment().startOf('month').format(),
       To: moment().endOf('day').format(),
       isRegular: false,
+      HouseManagementId: null,
     },
     validationSchema,
     validateOnBlur: false,
@@ -52,8 +55,13 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   });
 
   const groupReportsOptions = useMemo(
-    () =>
-      (groupReports || []).reduce((acc, elem) => {
+    () => [
+      {
+        label: 'Без домоуправления',
+        value: withoutHouseMagement,
+        key: withoutHouseMagement,
+      },
+      ...(groupReports || []).reduce((acc, elem) => {
         if (!elem.houseManagementId) {
           return acc;
         }
@@ -66,6 +74,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           },
         ];
       }, [] as LabeledValue[]),
+    ],
     [groupReports],
   );
 
@@ -114,11 +123,19 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Группа">
         <Select
-          value={values.HouseManagementId}
-          onChange={(value) => setFieldValue('HouseManagementId', value)}
+          value={
+            values.HouseManagementId === null
+              ? withoutHouseMagement
+              : values.HouseManagementId || undefined
+          }
+          onChange={(value) => {
+            if (value === withoutHouseMagement) {
+              return setFieldValue('HouseManagementId', null);
+            }
+            setFieldValue('HouseManagementId', value);
+          }}
           options={groupReportsOptions}
         />
-        <ErrorMessage>{errors.HouseManagementId}</ErrorMessage>
       </FormItem>
       <FormItem label="Название отчёта">
         <Input
