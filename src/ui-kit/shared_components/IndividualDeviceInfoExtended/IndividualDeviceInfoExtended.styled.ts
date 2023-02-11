@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ClosingDate = styled.div`
-  margin-top: 2px;
-  margin-left: 25px;
+  margin-top: 4px;
+  margin-left: 38px;
   font-weight: bold;
 `;
 
@@ -32,6 +32,7 @@ export const ModelWrapper = styled.span`
 
 export const ApartmentInfo = styled.div`
   display: flex;
+  align-items: center;
   margin-left: 22px;
   margin-top: 8px;
 `;

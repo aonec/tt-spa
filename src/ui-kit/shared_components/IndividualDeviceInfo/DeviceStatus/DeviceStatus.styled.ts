@@ -15,6 +15,8 @@ export const StatusBar = styled.div<{ isActive: boolean }>`
 
 export const StatusText = styled.div`
   margin-left: 10px;
+  display: flex;
+  align-items: center;
 `;
 
 export const ClosingReasonText = styled.span`
