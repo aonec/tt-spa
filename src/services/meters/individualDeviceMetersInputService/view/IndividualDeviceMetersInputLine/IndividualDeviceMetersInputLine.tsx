@@ -10,7 +10,6 @@ import { deleteIndividualDeviceService } from '01/features/individualDevices/del
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
@@ -24,6 +23,7 @@ import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps
@@ -143,7 +143,7 @@ export const IndividualDeviceMetersInputLine: FC<
         close={() => setIsModalOpen(false)}
         deviceId={device.id}
       />
-      <DeviceInfo device={device} />
+      <IndividualDeviceInfoExtended device={device} />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
         reading={previousReading}

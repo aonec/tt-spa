@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { InputReadingsProps, Reading } from './InputReadings.types';
 import { useStore } from 'effector-react';
 import { IndividualDeviceOnTaskResponse } from 'myApi';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { getReadingMonth } from './InputReadings.utils';
@@ -10,6 +9,7 @@ import { MonthWrapper, ReadingInputSC } from './InputReadings.styled';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getFilledArray } from 'utils/getFilledArray';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
 
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);
@@ -108,7 +108,7 @@ const ReadingLine = ({
   return (
     <div>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <DeviceInfo device={device} />
+        <IndividualDeviceInfoExtended device={device} />
         <Flex style={{ flexDirection: 'column' }}>
           {readingValues.map((value, index) => (
             <>
