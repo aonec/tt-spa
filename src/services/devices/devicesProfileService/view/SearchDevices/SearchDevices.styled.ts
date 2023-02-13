@@ -38,7 +38,6 @@ export const StyledLabelSimple = styled.label`
 export const FlexCenterRow = styled.div`
   display: flex;
   align-items: center;
-  /* flex-direction: row; */
 `;
 
 export const Grid = styled.div`
