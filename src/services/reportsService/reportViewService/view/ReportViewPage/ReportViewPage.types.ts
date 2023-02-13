@@ -25,4 +25,6 @@ export type ReportViewPageProps = {
     | HousingDevicesConstructedReportResponse[]
     | null;
   homeownersReportData: HomeownersConstructedReportResponse[] | null;
+  downloadReport: () => void;
+  isReportFileDownloading: boolean;
 };

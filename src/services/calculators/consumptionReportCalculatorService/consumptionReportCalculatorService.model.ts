@@ -2,7 +2,7 @@ import { createDomain, forward } from 'effector';
 import { getReport } from './consumptionReportCalculatorService.api';
 import { GetCalculatorReportParams } from './consumptionReportCalculatorService.types';
 import { message } from 'antd';
-import { BlodResponseErrorType } from 'types';
+import { BlobResponseErrorType } from 'types';
 
 const domain = createDomain('consumptionReportCalculatorService');
 
@@ -14,7 +14,7 @@ const handleSubmit = domain.createEvent<GetCalculatorReportParams>();
 const fetchReportFx = domain.createEffect<
   GetCalculatorReportParams,
   void,
-  BlodResponseErrorType
+  BlobResponseErrorType
 >(getReport);
 
 forward({

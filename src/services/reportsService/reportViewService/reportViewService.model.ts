@@ -22,6 +22,7 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import {
+  downloadReportFile,
   getActJournalReport,
   getAddressesWithHouseManagements,
   getHomeownersReport,
@@ -44,7 +45,7 @@ import {
   prepareIndividualDevicesReportRequestPayload,
 } from './reportViewService.utils';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
-import { EffectFailDataAxiosError } from 'types';
+import { BlobResponseErrorType, EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 
 const domain = createDomain('reportViewService');
@@ -82,10 +83,18 @@ const fetchHomeownersReportFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getHomeownersReport);
 
+const downloadReportFileFx = domain.createEffect<
+  ReportPayload,
+  void,
+  BlobResponseErrorType
+>(downloadReportFile);
+
 const loadIndividualDeviceReport = domain.createEvent<ReportPayload>();
 const loadActJournalReport = domain.createEvent<ReportPayload>();
 const loadHousingMeteringDevicesReport = domain.createEvent<ReportPayload>();
 const loadHomeownersReport = domain.createEvent<ReportPayload>();
+
+const downloadReport = domain.createEvent();
 
 const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
 
@@ -191,8 +200,16 @@ guard({
     clock: loadHomeownersReport.map(getReportPayloadValues),
     fn: prepareHomeownersReportRequestPayload,
   }),
-  filter: () => true,
+  filter: (payload): payload is HomeownersReportRequestPayload => {
+    return Boolean(payload);
+  },
   target: fetchHomeownersReportFx,
+});
+
+sample({
+  source: $reportPayload,
+  clock: downloadReport,
+  target: downloadReportFileFx,
 });
 
 merge([
@@ -202,6 +219,22 @@ merge([
   fetchHomeownersReportFx.failData,
 ]).watch((error) => message.error(error.response.data.error.Text));
 
+downloadReportFileFx.failData.watch(async (error) => {
+  const newErr = { ...error };
+
+  if (newErr.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(
+    errObject.error.Text || errObject.error.Message || 'Произошла ошибка',
+  );
+});
+
 const $isReportLoading = combine(
   fetchIndividualDevicesReportFx.pending,
   fetchActJournalReportFx.pending,
@@ -210,9 +243,12 @@ const $isReportLoading = combine(
   (...loadings) => loadings.some(Boolean),
 );
 
+const $isReportFileDownloading = downloadReportFileFx.pending;
+
 export const reportViewService = {
   inputs: {
     setFiltrationValues,
+    downloadReport,
   },
   outputs: {
     $existingCities,
@@ -224,6 +260,7 @@ export const reportViewService = {
     $actJournalReportData,
     $housingMeteringDevicesReportData,
     $homeownersReportData,
+    $isReportFileDownloading,
   },
   gates: {
     ExistingCitiesGate,

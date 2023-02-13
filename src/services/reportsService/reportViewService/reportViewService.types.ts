@@ -63,4 +63,6 @@ export type HomeownersReportRequestPayload = {
   HouseManagementId?: string;
   HousingStockId?: number;
   ShowOnlyDuplicates: boolean;
+  From?: string;
+  To?: string;
 };

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: relative;
@@ -11,10 +11,9 @@ export const Panel = styled.div`
   height: 64px;
   left: 208px;
   width: calc(100% - 208px);
-  background-color: #ffffff74;
+  background-color: #ffffff99;
   box-shadow: 0px -4px 8px rgba(78, 93, 146, 0.16);
-  backdrop-filter: blur(3px);
-
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: space-between;
