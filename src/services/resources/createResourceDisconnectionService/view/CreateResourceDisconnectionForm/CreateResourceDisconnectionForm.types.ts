@@ -16,18 +16,21 @@ export type CreateResourceDisconnectionFormProps = {
   treeData: TreeSelectElement[];
   formId: string;
   handleCreateResourceDisconnection: (
-    payload: ResourceDisconnectingCreateRequest
+    payload: ResourceDisconnectingCreateRequest,
   ) => void;
   isInterHeatingSeason: boolean;
   isEdit: boolean;
   resourceDisconnection: ResourceDisconnectingResponse | null;
   handleEditResourceDisconnection: (
-    payload: ResourceDisconnectingUpdateRequest
+    payload: ResourceDisconnectingUpdateRequest,
   ) => void;
   handleUpdateDocument: (id: number) => void;
   setTypeOfAddress: (type: EAddressDetails) => void;
   typeOfAddress: EAddressDetails;
   isHousingStocksLoading: boolean;
+  existingCities: string[];
+  selectedCity: string | null;
+  selectCity: (city: string) => void;
 };
 
 export type CreateResourceDisconnectionFormTypes = {
@@ -59,8 +62,9 @@ export const DetailsSelectLookup = [
   { key: EAddressDetails.HeatingStation, value: 'ЦТП' },
 ];
 
-export type TreeSelectValue =  TreeSelectLabelValueType
-| TreeSelectLabelValueType[]
-| string
-| (string | number)[]
-| number;
+export type TreeSelectValue =
+  | TreeSelectLabelValueType
+  | TreeSelectLabelValueType[]
+  | string
+  | (string | number)[]
+  | number;

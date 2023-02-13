@@ -8,7 +8,7 @@ export interface ItemInterface {
   label: string;
 }
 
-export type SelectItem = ItemInterface
+export type SelectItem = ItemInterface;
 
 export const items: Array<ItemInterface> = [
   {
@@ -59,16 +59,17 @@ interface HousingMeteringDeviceTypeInterface {
   label: string;
 }
 
-export const housingMeteringDeviceTypes: Array<HousingMeteringDeviceTypeInterface> = [
-  {
-    value: EHousingMeteringDeviceType.FlowMeter,
-    label: 'Расходомер',
-  },
-  {
-    value: EHousingMeteringDeviceType.TemperatureSensor,
-    label: 'Термодатчик',
-  },
-];
+export const housingMeteringDeviceTypes: Array<HousingMeteringDeviceTypeInterface> =
+  [
+    {
+      value: EHousingMeteringDeviceType.FlowMeter,
+      label: 'Расходомер',
+    },
+    {
+      value: EHousingMeteringDeviceType.TemperatureSensor,
+      label: 'Термодатчик',
+    },
+  ];
 
 export const DEFAULT_DEVICE = {
   model: '',
@@ -132,7 +133,7 @@ export const magistrals: Array<MagistralsInterface> = [
   {
     value: EMagistralType.Recharge,
     label: 'Подпитка',
-  }
+  },
 ];
 
 export const isConnected = [
@@ -274,28 +275,17 @@ export const typelList = [
   { label: 'Горячая вода', value: 'heat' },
 ];
 
-export const nodeStatusList = [
-  {
-    value: 'Registered',
-    label: 'Сдан на коммерческий учет',
-    icon: 'ok',
-  },
-  {
-    value: 'NotRegistered',
-    label: 'Не на коммерческом учете',
-    icon: 'block',
-  },
-];
-
 export const entryNumberList = [
   { value: 1, label: 1 },
   { value: 2, label: 2 },
   { value: 3, label: 3 },
 ];
 
-export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+export const phoneRegExp =
+  /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
 
-export const ipv4RegExp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+export const ipv4RegExp =
+  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 export const numberRegExp = /^[0-9][A-Za-z0-9 -]*$/;
 

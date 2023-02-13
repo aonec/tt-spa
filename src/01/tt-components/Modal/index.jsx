@@ -1,4 +1,3 @@
-import React from 'react';
 import styled, { css } from 'styled-components';
 import { Modal } from 'antd';
 
@@ -80,12 +79,4 @@ export const styles = {
   w100: {
     width: '100%',
   },
-};
-
-export default {
-  StyledFooter,
-  StyledModal,
-  StyledModalBody,
-  StyledFormPage,
-  styles,
 };

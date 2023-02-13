@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { Empty } from 'antd';
 import {
   ExtendedSearchWrapper,
   FiltrationInfoItem,
@@ -20,6 +19,8 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { Button } from 'ui-kit/Button';
 import { getFiltersList } from './ReportViewPage.utils';
+import { ReportViewTable } from './ReportViewTable';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const formId = 'report-form-id';
 
@@ -30,6 +31,11 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   addressesWithHouseManagements,
   filtrationValues,
   setFiltrationValues,
+  isLoadingReport,
+  individualDevicesReportData,
+  actJournalReportData,
+  housingMeteringDevicesReportData,
+  homeownersReportData,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -72,6 +78,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
               filtrationValues={filtrationValues}
               formId={formId}
               setFiltrationValues={setFiltrationValues}
+              reportType={reportType}
             />
           }
         >
@@ -91,12 +98,16 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           </FiltrationInfoWrapper>
         </ExtendedSearch>
       </ExtendedSearchWrapper>
-      {!isOpen && (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="Выберите фильтры для формирования отчёта"
+      <WithLoader isLoading={isLoadingReport}>
+        <ReportViewTable
+          reportType={reportType}
+          individualDevicesReportData={individualDevicesReportData}
+          actJournalReportData={actJournalReportData}
+          reportOption={filtrationValues.reportOption}
+          housingMeteringDevicesReportData={housingMeteringDevicesReportData}
+          homeownersReportData={homeownersReportData}
         />
-      )}
+      </WithLoader>
     </Wrapper>
   );
 };

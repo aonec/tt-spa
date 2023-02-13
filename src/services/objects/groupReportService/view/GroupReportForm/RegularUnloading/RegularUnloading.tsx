@@ -1,7 +1,8 @@
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Switch } from 'antd';
 import { LabeledValue } from 'antd/lib/select';
 import moment from 'moment';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -18,9 +19,11 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   handleChangeEmail,
   handleChangeSubsType,
   handleThriggerAt,
+  handleChangeIsRegular,
   values,
+  errors,
 }) => {
-  const [isRegular, setIsRegular] = useState(false);
+  const { isRegular } = values;
 
   const contractorsOptions: LabeledValue[] = useMemo(
     () =>
@@ -29,7 +32,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
         value: String(elem.id),
         label: elem.title,
       })),
-    [contractors]
+    [contractors],
   );
 
   useEffect(() => {
@@ -57,7 +60,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
 
   return (
     <Wrapper>
-      <SwitchWrapper onClick={() => setIsRegular((prev) => !prev)}>
+      <SwitchWrapper onClick={() => handleChangeIsRegular(!isRegular)}>
         <Switch checked={isRegular} />
         <div>
           <label>Регулярная выгрузка отчёта</label>
@@ -75,6 +78,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
                 value={values['Subscription.Email']}
                 onChange={(e) => handleChangeEmail(e.target.value)}
               />
+              <ErrorMessage>{errors['Subscription.Email']}</ErrorMessage>
             </FormItem>
             <FormItem label="Подрядчики">
               <Select
@@ -87,13 +91,19 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
           <RowWrapper>
             <FormItem label="Дата следующей выгрузки отчёта">
               <DatePicker
-                value={moment(values['Subscription.TriggerAt'])}
+                value={
+                  values['Subscription.TriggerAt']
+                    ? moment(values['Subscription.TriggerAt'])
+                    : undefined
+                }
+                placeholder={'Введите дату'}
                 onChange={(date) =>
                   handleThriggerAt(date?.format('YYYY-MM-DD'))
                 }
                 allowClear={false}
                 format={'DD.MM.YYYY'}
               />
+              <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
           <FormItem label="Период">
@@ -102,6 +112,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               onChange={(e) => handleChangeSubsType(e.target.value)}
               value={values['Subscription.Type']}
             />
+            <ErrorMessage>{errors['Subscription.Type']}</ErrorMessage>
           </FormItem>
         </>
       )}

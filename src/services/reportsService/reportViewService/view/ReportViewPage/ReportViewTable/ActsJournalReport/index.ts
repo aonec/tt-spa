@@ -1,0 +1,1 @@
+export { ActsJournalReport } from './ActsJournalReport'

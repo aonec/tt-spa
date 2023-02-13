@@ -1,0 +1,1 @@
+export { IndividualDevicesReport } from './IndividualDevicesReport'

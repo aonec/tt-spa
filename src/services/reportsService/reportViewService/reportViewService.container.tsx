@@ -6,7 +6,11 @@ import { reportViewService } from './reportViewService.model';
 import { useEvent, useStore } from 'effector-react';
 
 const { inputs, outputs, gates } = reportViewService;
-const { ExistingCitiesGate, AddressesWithHouseManagementsGate } = gates;
+const {
+  ExistingCitiesGate,
+  AddressesWithHouseManagementsGate,
+  ReportViewGate,
+} = gates;
 
 export const ReportViewContainer = () => {
   const { reportType } = useParams<{ reportType: ReportType }>();
@@ -16,14 +20,24 @@ export const ReportViewContainer = () => {
   const existingCities = useStore(outputs.$existingCities);
   const houseManagements = useStore(outputs.$houseManagements);
   const addressesWithHouseManagements = useStore(
-    outputs.$addressesWithHouseManagements
+    outputs.$addressesWithHouseManagements,
   );
   const filtrationValues = useStore(outputs.$filtrationValues);
+  const isLoadingReport = useStore(outputs.$isReportLoading);
+  const individualDevicesReportData = useStore(
+    outputs.$individualDevicesReportData,
+  );
+  const actJournalReportData = useStore(outputs.$actJournalReportData);
+  const housingMeteringDevicesReportData = useStore(
+    outputs.$housingMeteringDevicesReportData,
+  );
+  const homeownersReportData = useStore(outputs.$homeownersReportData);
 
   if (!reportType) return null;
 
   return (
     <>
+      <ReportViewGate reportType={reportType} />
       <AddressesWithHouseManagementsGate />
       <ExistingCitiesGate />
       <ReportViewPage
@@ -33,6 +47,11 @@ export const ReportViewContainer = () => {
         addressesWithHouseManagements={addressesWithHouseManagements}
         filtrationValues={filtrationValues}
         setFiltrationValues={setFiltrationValues}
+        isLoadingReport={isLoadingReport}
+        individualDevicesReportData={individualDevicesReportData}
+        actJournalReportData={actJournalReportData}
+        housingMeteringDevicesReportData={housingMeteringDevicesReportData}
+        homeownersReportData={homeownersReportData}
       />
     </>
   );

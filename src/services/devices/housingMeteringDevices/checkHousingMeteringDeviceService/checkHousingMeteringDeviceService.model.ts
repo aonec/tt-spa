@@ -19,14 +19,21 @@ const editCheckDateFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postCheckDevice);
 
-editCheckDateFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
-
 editCheckDateFx.doneData.watch(() => {
   message.success('Поверка успешно обновлена!');
   handleCloseModal();
   handleUpdateDevice();
+});
+
+editCheckDateFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 forward({
@@ -40,6 +47,11 @@ const $isModalOpen = domain
   .on(handleCloseModal, () => false);
 
 export const checkHousingMeteringDeviceService = {
-  inputs: { handleOpenModal, handleCloseModal, handleOnSubmit, handleUpdateDevice },
+  inputs: {
+    handleOpenModal,
+    handleCloseModal,
+    handleOnSubmit,
+    handleUpdateDevice,
+  },
   outputs: { $isModalOpen },
 };

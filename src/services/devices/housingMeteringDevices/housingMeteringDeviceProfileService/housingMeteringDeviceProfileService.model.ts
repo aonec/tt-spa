@@ -8,6 +8,8 @@ import {
 import { HousingProfileTabs } from './housingMeteringDeviceProfileService.types';
 import { checkHousingMeteringDeviceService } from '../checkHousingMeteringDeviceService';
 import { closeHousingMeteringDeviceService } from '../closeHousingMeteringDeviceService';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('housingMeteringDeviceProfileService');
 
@@ -22,7 +24,8 @@ const FetchHousingMeteringDeviceGate = createGate<{ deviceId: number }>();
 
 const fetchHousingMeteringDeviceFx = domain.createEffect<
   number,
-  PipeHousingMeteringDeviceResponse
+  PipeHousingMeteringDeviceResponse,
+  EffectFailDataAxiosError
 >(getHousingMeteringDevice);
 
 const fetchHousingMeteringDeviceTasksFx = domain.createEffect<
@@ -69,6 +72,17 @@ sample({
   clock: [handleHousingMeteringDeviceUpdate, handleCheckDateUpdate],
   fn: (device) => Number(device?.id),
   target: fetchHousingMeteringDeviceFx,
+});
+
+fetchHousingMeteringDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 const $pending = fetchHousingMeteringDeviceFx.pending;

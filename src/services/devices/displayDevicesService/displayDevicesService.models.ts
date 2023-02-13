@@ -16,20 +16,26 @@ import { DevicesSearchType } from '../devicesPageService/devicesPageService.type
 
 const domain = createDomain('displayDevicesService');
 
-const $calculatorsPagedData = domain.createStore<CalculatorListResponsePagedList | null>(
-  null
-);
+const $calculatorsPagedData =
+  domain.createStore<CalculatorListResponsePagedList | null>(null);
 
 const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload[],
-  HousingByFilterResponse[]
+  (HousingByFilterResponse | null)[]
 >(getHousingsByFilter);
 const $housingsByFilter = domain
   .createStore<HousingByFilterResponse[]>([])
-  .on(fetchHousingsByFilterFx.doneData, (_, addresses) => addresses);
+  .on(fetchHousingsByFilterFx.doneData, (_, addresses) =>
+    addresses.reduce((acc, elem) => {
+      if (!elem) {
+        return acc;
+      }
+      return [...acc, elem];
+    }, [] as HousingByFilterResponse[]),
+  );
 
 const $devices = $calculatorsPagedData.map((data) =>
-  groupDevicesByObjects(data?.items || [])
+  groupDevicesByObjects(data?.items || []),
 );
 
 const fetchCalculatorsFx = domain.createEffect<
@@ -37,12 +43,13 @@ const fetchCalculatorsFx = domain.createEffect<
   CalculatorListResponsePagedList
 >(getCalculatorsList);
 
-const setDevicesProfileFilter = domain.createEvent<CalculatorsListRequestPayload>();
+const setDevicesProfileFilter =
+  domain.createEvent<CalculatorsListRequestPayload>();
 
 const $loading = combine(
   fetchCalculatorsFx.pending,
   fetchHousingsByFilterFx.pending,
-  (...loadings) => loadings.includes(true)
+  (...loadings) => loadings.includes(true),
 );
 
 const $searchPayload = domain.createStore<CalculatorsListRequestPayload>({
@@ -133,7 +140,7 @@ sample({
           Corpus: corpus || undefined,
         },
       ];
-    }, [] as GetHousingByFilterRequestPayload[])
+    }, [] as GetHousingByFilterRequestPayload[]),
   ),
   target: fetchHousingsByFilterFx,
 });

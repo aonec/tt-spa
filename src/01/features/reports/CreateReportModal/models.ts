@@ -124,7 +124,7 @@ const createReportFx = createReportDomain.createEffect<
     managementFirmId,
     isWithoutApartments,
   }) => {
-    const res: string = await axios.get(`Reports/${type}`, {
+    const res: string = await axios.get(`Reports/${type}Xlsx`, {
       params: {
         From: date.From && moment(date.From).startOf('day').toISOString(),
         To: date.To && moment(date.To).endOf('day').toISOString(),
@@ -146,11 +146,11 @@ const createReportFx = createReportDomain.createEffect<
     downloadURI(
       url,
       `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
-        date.To
+        date.To,
       ).format('MMMM_YYYY')}`,
-      ZippedReports.includes(type)
+      ZippedReports.includes(type),
     );
-  }
+  },
 );
 
 forward({
@@ -181,7 +181,7 @@ const workingReports = [
 sample({
   source: combine(
     form.$values,
-    closedIndividualDevicesFormService.outputs.$unloadSelectType
+    closedIndividualDevicesFormService.outputs.$unloadSelectType,
   ),
   clock: createReport,
   fn: ([
@@ -235,11 +235,11 @@ forward({
 });
 
 createReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 const $loading = combine(createReportFx.pending, (...pendings) =>
-  pendings.some(Boolean)
+  pendings.some(Boolean),
 );
 
 export const outputs = {
