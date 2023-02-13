@@ -823,6 +823,7 @@ export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  closingReason: EClosingReason | null;
 }
 
 export interface ClosedDevicesConstructedReportResponse {
@@ -833,6 +834,7 @@ export interface ClosedDevicesConstructedReportResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  closingReason: EClosingReason | null;
 }
 
 export interface CommunicationPipeForAddingDeviceListResponse {
@@ -2484,6 +2486,7 @@ export interface HomeownerAccountCreateRequest {
   /** @format date-time */
   openAt: string;
   isMainOnApartment?: boolean;
+  paymentCode?: string | null;
 
   /** @format int32 */
   apartmentId: number;
@@ -2502,6 +2505,7 @@ export interface HomeownerAccountCreateUnattachedRequest {
   /** @format date-time */
   openAt: string;
   isMainOnApartment?: boolean;
+  paymentCode?: string | null;
 }
 
 export interface HomeownerAccountListResponse {
@@ -2613,6 +2617,7 @@ export interface HomeownerAccountSplitRequest {
   useExistingApartment: boolean;
   newApartment: ApartmentCreateRequest;
 }
+
 export interface HomeownerAccountUpdateRequest {
   personalAccountNumber?: string | null;
   paymentCode?: string | null;
@@ -2659,7 +2664,7 @@ export interface HouseAddress {
 }
 
 export interface HouseManagementConstructedReportResponse {
-  houseManagement: string | null;
+  houseManagementName: string | null;
 
   /** @format int32 */
   housingStocksCount: number;
@@ -5755,6 +5760,7 @@ export interface TaskStatisticsItem {
   id?: number;
   isEmergency?: boolean;
   isClosed?: boolean;
+  creationReason?: string | null;
 }
 
 export interface TaskStatisticsResponse {
