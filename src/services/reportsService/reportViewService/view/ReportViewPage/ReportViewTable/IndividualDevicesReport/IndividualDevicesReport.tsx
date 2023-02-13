@@ -7,7 +7,10 @@ import {
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { ResourceShortNamesDictionary } from 'dictionaries';
+import {
+  ClosingReasonsDictionary,
+  ResourceShortNamesDictionary,
+} from 'dictionaries';
 import { Table } from 'ui-kit/Table';
 import {
   EConstructedReportDeviceStatus,
@@ -136,24 +139,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
         {
-          label: 'Статус',
-          size: '150px',
-          hidden: !isClosedDeviceOption,
-          render: (elem) => (
-            <>
-              {elem.closedDeviceOnOneOfRisersOption?.status ===
-              EConstructedReportDeviceStatus.Open
-                ? 'Открыт'
-                : 'Закрыт'}
-              <ClosingDate>
-                {moment(elem.closedDevicesOption?.closingDate).format(
-                  'DD.MM.YYYY',
-                )}
-              </ClosingDate>
-            </>
-          ),
-        },
-        {
           label: 'Дата поверки',
           size: '150px',
           hidden: !isClosedDeviceOption,
@@ -162,21 +147,32 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Статус',
-          size: '150px',
+          size: '230px',
           hidden: !isClosedDeviceOption,
-          render: (elem) => (
-            <>
-              {elem.closedDeviceOnOneOfRisersOption?.status ===
+          render: (elem) => {
+            const closingStatus =
+              elem.closedDevicesOption?.status ===
               EConstructedReportDeviceStatus.Open
                 ? 'Открыт'
-                : 'Закрыт'}
-              <ClosingDate>
-                {moment(elem.closedDevicesOption?.closingDate).format(
-                  'DD.MM.YYYY',
-                )}
-              </ClosingDate>
-            </>
-          ),
+                : 'Закрыт';
+
+            const closingReason =
+              elem.closedDevicesOption?.closingReason &&
+              `(${
+                ClosingReasonsDictionary[elem.closedDevicesOption.closingReason]
+              })`;
+
+            const closingDate = moment(
+              elem.closedDevicesOption?.closingDate,
+            ).format('DD.MM.YYYY');
+
+            return (
+              <>
+                {`${closingStatus} ${closingReason}`}
+                <ClosingDate>{closingDate}</ClosingDate>
+              </>
+            );
+          },
         },
         {
           label: 'Дата последней поверки',
