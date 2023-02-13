@@ -52,7 +52,11 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
     setIsOpen(false);
   }, [setIsOpen]);
 
-  const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
+  const filtersViewArray = getFiltersList(
+    filtrationValues,
+    houseManagements,
+    addressesWithHouseManagements,
+  );
 
   const isShowClearButton = useMemo(() => {
     return Object.values(filtrationValues).some((value) => {
