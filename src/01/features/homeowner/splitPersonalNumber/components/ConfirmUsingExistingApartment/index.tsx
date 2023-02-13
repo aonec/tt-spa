@@ -2,7 +2,6 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { PersonalNumber } from '01/_pages/MetersPage/components/ApartmentInfo';
 import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -16,6 +15,7 @@ import {
 } from '../../models';
 import { renderDevice } from '../TransferDevices';
 import { confirmUsingExistingApartmentService } from './ConfirmUsingExistingApartmenService.model';
+import { PersonalNumber } from './ConfirmUsingExistingApartmentModal.styled';
 
 const { outputs } = confirmUsingExistingApartmentService;
 

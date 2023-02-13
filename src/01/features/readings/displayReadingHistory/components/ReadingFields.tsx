@@ -1,8 +1,8 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Input } from 'antd';
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
+import { getFilledArray } from 'utils/getFilledArray';
 import { RequestStatusShared } from '../hooks/useReadingValues';
 
 interface Props {
@@ -40,18 +40,15 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   const preparedValuesArray = useMemo(
     () =>
-      getArrayByCountRange(
+      getFilledArray(
         rateNum || 0,
-        (index) => (values && values[index - 1]) || null,
+        (index) => (values && values[index]) || null,
       ),
     [values, rateNum],
   );
 
   const [valuesArray, setValuesArray] = useState(
-    getArrayByCountRange(
-      rateNum || 0,
-      (index) => (values && values[index - 1]) || null,
-    ),
+    getFilledArray(rateNum || 0, (index) => (values && values[index]) || null),
   );
 
   useEffect(() => setValuesArray(preparedValuesArray), [preparedValuesArray]);

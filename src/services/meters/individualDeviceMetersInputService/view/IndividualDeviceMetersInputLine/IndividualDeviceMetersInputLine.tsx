@@ -10,7 +10,6 @@ import { deleteIndividualDeviceService } from '01/features/individualDevices/del
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
 import { getRateNum } from '../MetersInputsBlock/MetersInputsBlock.utils';
@@ -21,11 +20,14 @@ import {
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
 import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
-import { SelectSwitchDeviceTypeModal } from '01/_pages/MetersPage/components/MeterDevices/components/SelectSwitchDeviceTypeModal';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
+import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
 
-export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLineProps> = ({
+export const IndividualDeviceMetersInputLine: FC<
+  IndividualDeviceMetersInputLineProps
+> = ({
   device,
   sliderIndex,
   openReadingsHistoryModal,
@@ -42,11 +44,11 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
+    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened,
   );
 
   const openEditReadingsHistoryModal = useEvent(
-    editReadingsHistoryService.inputs.openModal
+    editReadingsHistoryService.inputs.openModal,
   );
 
   const managementFirmUser = useStore($currentManagingFirmUser);
@@ -58,10 +60,10 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       Boolean(managementFirmUser?.roles) &&
       Boolean(
         managementFirmUser?.roles?.find(
-          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator
-        )
+          (elem) => elem.key === ESecuredIdentityRoleName.SeniorOperator,
+        ),
       ),
-    [managementFirmUser]
+    [managementFirmUser],
   );
 
   const menuButtonArr: ContextMenuElement[] = useMemo(
@@ -119,7 +121,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       onDeleteIndividualDevice,
       isDeviceClosed,
       openEditReadingsHistoryModal,
-    ]
+    ],
   );
 
   const previousReadingTooltipTitle = useMemo(
@@ -128,9 +130,9 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
       getPreviousMeterTooltipTitle(
         previousReadingByCurrentSliderIndex,
         getRateNum(device.rateType),
-        getMeasurementUnit(device.resource)
+        getMeasurementUnit(device.resource),
       ),
-    [previousReadingByCurrentSliderIndex, device]
+    [previousReadingByCurrentSliderIndex, device],
   );
 
   return (
@@ -141,7 +143,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
         close={() => setIsModalOpen(false)}
         deviceId={device.id}
       />
-      <DeviceInfo device={device} />
+      <IndividualDeviceInfoExtended device={device} />
       <MetersInputsBlock
         handleUploadReading={handleUploadReading}
         reading={previousReading}
@@ -174,7 +176,7 @@ export const IndividualDeviceMetersInputLine: FC<IndividualDeviceMetersInputLine
           <StarIcon
             onClick={() =>
               history.push(
-                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`
+                `/apartment/${apartmentId}/individualDevice/${device.id}/reopen`,
               )
             }
             style={{ cursor: 'pointer' }}
