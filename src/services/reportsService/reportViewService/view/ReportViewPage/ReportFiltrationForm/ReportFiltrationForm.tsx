@@ -9,7 +9,6 @@ import {
 import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { SearchIcon } from 'ui-kit/icons';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
 import { getAddresses } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
@@ -117,10 +116,13 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           </FormItem>
           <FormItem label="Адрес">
             <Select
+              showSearch
               value={values.housingStockId || undefined}
-              suffixIcon={<SearchIcon />}
               placeholder="Выберите адреса из списка"
               onChange={(value) => setFieldValue('housingStockId', value)}
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             >
               {addresses.map((address) => (
                 <Select.Option key={address.id} value={address.id}>
