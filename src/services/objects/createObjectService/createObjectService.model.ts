@@ -26,7 +26,8 @@ const goNextStage = domain.createEvent();
 
 const handleSubmitCreateObject = domain.createEvent<ObjectCreateSubmitData>();
 
-const handleCreateHeatingStation = domain.createEvent<AddHeatingStationRequest>();
+const handleCreateHeatingStation =
+  domain.createEvent<AddHeatingStationRequest>();
 
 const handlePostCreateObject = domain.createEvent();
 
@@ -132,14 +133,7 @@ guard({
         elevator,
       } = data;
 
-      if (
-        !city ||
-        !street ||
-        !house ||
-        !heatingStationId ||
-        !houseManagement ||
-        !objectCategory
-      )
+      if (!city || !street || !house || !heatingStationId || !objectCategory)
         return null;
 
       const payload: HousingStockCreateRequest = {
@@ -179,7 +173,7 @@ guard({
 });
 
 createObjectFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
