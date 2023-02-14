@@ -193,7 +193,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
       ]}
-      elements={individualDevicesReportData.slice(0, 50)}
+      elements={individualDevicesReportData}
+      pagination={{ pageSize: 50 }}
     />
   );
 };
