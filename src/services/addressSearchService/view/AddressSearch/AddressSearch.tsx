@@ -23,7 +23,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const { match: streetMatch, options } = useAutocomplete(
     values.street,
-    streets
+    streets,
   );
 
   function clearFields(index: number) {
@@ -53,7 +53,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <StyledAutocomplete
       placeholder="Улица"
       ref={refs[index]}
-      value={values.street}
+      value={values.street || ''}
       onChange={(value) =>
         handleChange(SearchFieldType.Street, value.toString())
       }
@@ -154,7 +154,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   const searchFields = fields.map((fieldType, index) => {
     const field = fieldsLookup[fieldType](
       index,
-      disabledFields?.includes(fieldType)
+      disabledFields?.includes(fieldType),
     );
 
     return (

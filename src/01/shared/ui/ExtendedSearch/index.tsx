@@ -39,7 +39,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
             size="small"
             icon={<ClearIconSC />}
           >
-            Очистить
+            Сбросить
           </Button>
         </Header>
         <Content>{extendedSearchContent}</Content>

@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 
 export const SearchFieldsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 4.5fr 1fr 2fr 2.5fr;
+  grid-template-columns: 4.5fr 1fr 2fr 2.1fr 1fr;
 
   grid-column-gap: 16px;
   align-items: flex-start;
