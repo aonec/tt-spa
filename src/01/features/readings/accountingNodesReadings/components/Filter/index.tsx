@@ -3,7 +3,6 @@ import { useForm } from 'effector-forms';
 import { accountingNodesFilterForm } from '../../models';
 import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { useRef } from 'react';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
@@ -16,6 +15,7 @@ import {
   $existingCities,
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
+import { getArrayByCountRange } from './Filter.utils';
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
@@ -30,7 +30,7 @@ export const AccountingNodesFilter = () => {
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   function onSendHandler() {
@@ -99,12 +99,8 @@ export function useOnEnterSwitch(amount: number, difference?: number) {
   const refs = getArrayByCountRange(amount, useRef) as any[];
 
   const lastRef = refs[refs.length - 1];
-  const refWithoutDisabled = refs.slice(
-    0,
-    (amount -= difference || 0)
-  );
+  const refWithoutDisabled = refs.slice(0, (amount -= difference || 0));
 
-  
   function onEnterHandler(index: number) {
     try {
       if (refs[index]?.current) refs[index]?.current?.blur();

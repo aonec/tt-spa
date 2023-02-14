@@ -8,7 +8,6 @@ import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
 } from '../../../../../myApi';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import {
   getPreviousReadingsMonth,
   getDateByReadingMonthSlider,
@@ -16,6 +15,7 @@ import {
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { getFilledArray } from 'utils/getFilledArray';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
@@ -37,7 +37,7 @@ export const ReadingsInput: React.FC<Props> = ({
   const defaultValues = useMemo(
     () =>
       device.rateType
-        ? getArrayByCountRange(
+        ? getFilledArray(
             getIndividualDeviceRateNumByName(device.rateType),
             () => '',
           )

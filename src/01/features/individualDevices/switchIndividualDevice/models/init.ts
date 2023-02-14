@@ -44,11 +44,11 @@ import {
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
 } from 'myApi';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import moment from 'moment';
 import { getReadingValuesArray } from '../components/ReadingsInput';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { axios } from '01/axios';
+import { getFilledArray } from 'utils/getFilledArray';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -156,8 +156,8 @@ export const clearEmptyValueFields = (
   reading: SwitchIndividualDeviceReadingsCreateRequest,
   rateNum: number,
 ): SwitchIndividualDeviceReadingsCreateRequest => {
-  const clearValues = getArrayByCountRange(rateNum, (index) => ({
-    [`value${index}`]: Number((reading as any)[`value${index}`]),
+  const clearValues = getFilledArray(rateNum, (index) => ({
+    [`value${index + 1}`]: Number((reading as any)[`value${index + 1}`]),
   })).reduce((acc, elem) => ({ ...acc, ...elem }), {});
 
   return { ...clearValues, readingDate: reading.readingDate } as any;

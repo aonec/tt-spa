@@ -9,7 +9,7 @@ export type GroupReportRequestPayload = RegularUnloadSubscription & {
   To: string;
   From: string;
   Name: string;
-  HouseManagementId: string;
+  HouseManagementId: string | null;
   NodeResourceTypes: EResourceType[];
   ReportType: EReportType;
 

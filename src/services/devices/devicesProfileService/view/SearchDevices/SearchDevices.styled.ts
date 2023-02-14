@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Slider } from 'antd';
+import { Button } from 'ui-kit/Button';
 export { StyledForm } from '../DevicesProfile/DevicesProfile.styled';
 
 export const Wrapper = styled.div`
@@ -10,7 +11,7 @@ export const Wrapper = styled.div`
 export const StyledGrid = styled.div<{ isExtendedSearchOpen: boolean }>`
   display: grid;
   grid-template-columns: ${({ isExtendedSearchOpen }) =>
-    isExtendedSearchOpen ? '1fr' : '30px 8fr 3.5fr'};
+    isExtendedSearchOpen ? '1fr' : '30px 8fr 3.5fr 1fr'};
   gap: 15px;
 `;
 
@@ -37,7 +38,6 @@ export const StyledLabelSimple = styled.label`
 export const FlexCenterRow = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: row;
 `;
 
 export const Grid = styled.div`
@@ -50,4 +50,8 @@ export const Grid = styled.div`
 export const StyledExpirationDate = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const ResetButton = styled(Button)`
+  box-shadow: 0 4px 7px #02004b1f;
 `;

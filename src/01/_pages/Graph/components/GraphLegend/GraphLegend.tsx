@@ -4,16 +4,23 @@ import { $graphData } from '../../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
 import {
   Accuracy,
+  LegendCircle,
+  LegendCircleWithBorder,
   LegendLine,
   LegendLineWrapper,
   LegendWrapper,
   Percents,
+  TaskLegendGroupWrapper,
+  LegendColumnWrapper,
 } from './GraphLegend.styled';
 import { GraphLegendProps } from './GraphLegend.types';
 import { ResourceType } from '../GraphView/GraphView.types';
 import { renderForHeatAndDeltaMass } from './GraphLegend.utils';
 
-export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
+export const GraphLegend: FC<GraphLegendProps> = ({
+  graphParam,
+  isTasksExist,
+}) => {
   const graphData = useStore($graphData);
   if (!graphData || !graphData.resource) {
     return null;
@@ -21,34 +28,30 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
   const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
   const isDeltaMass = renderForHeatAndDeltaMass(
     resource as ResourceType,
-    graphParam
+    graphParam,
+  );
+
+  const isRenderAccuracy = !(
+    !isDeltaMass ||
+    deltaMassAccuracy === null ||
+    deltaMassAccuracy === undefined ||
+    averageDeltaMass === null ||
+    averageDeltaMass === undefined
   );
 
   const renderAccuracyLegendLine = () => {
-    if (
-      !isDeltaMass ||
-      deltaMassAccuracy === null ||
-      deltaMassAccuracy === undefined ||
-      averageDeltaMass === null ||
-      averageDeltaMass === undefined
-    ) {
+    if (!isRenderAccuracy) {
       return null;
     }
     return <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>;
   };
 
   const renderAccuracyValue = () => {
-    if (
-      !isDeltaMass ||
-      deltaMassAccuracy === null ||
-      deltaMassAccuracy === undefined ||
-      averageDeltaMass === null ||
-      averageDeltaMass === undefined
-    ) {
+    if (!isRenderAccuracy) {
       return null;
     }
     const absoluteDelta = Number(
-      Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
+      Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1),
     );
 
     return (
@@ -80,7 +83,28 @@ export const GraphLegend: FC<GraphLegendProps> = ({ graphParam }) => {
         </LegendLine>
         {renderAccuracyLegendLine()}
       </LegendLineWrapper>
-      {renderAccuracyValue()}
+      <LegendColumnWrapper>
+        {renderAccuracyValue()}
+
+        {isTasksExist && (
+          <>
+            <TaskLegendGroupWrapper>
+              <LegendCircle color={'#272F5A'} />
+              Закрытая задача
+            </TaskLegendGroupWrapper>
+
+            <TaskLegendGroupWrapper>
+              <LegendCircleWithBorder color={'#272F5A'} />
+              Активная задача
+            </TaskLegendGroupWrapper>
+
+            <TaskLegendGroupWrapper>
+              <LegendCircle color={'#FC525B'} />
+              Аварийная задача
+            </TaskLegendGroupWrapper>
+          </>
+        )}
+      </LegendColumnWrapper>
     </LegendWrapper>
   );
 };

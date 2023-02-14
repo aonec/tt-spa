@@ -23,6 +23,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   onChange,
 }) => {
   const { outputs } = addressSearchService;
+
   const { values, handleSubmit, setFieldValue } =
     useFormik<AddressSearchValues>({
       initialValues: initialValues || {
@@ -62,7 +63,9 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
   const handleChange = (key: string, value: string) => {
     setFieldValue(key, value);
-    if (onChange) onChange(key, value);
+    if (onChange) {
+      return onChange(key, value);
+    }
   };
 
   return (

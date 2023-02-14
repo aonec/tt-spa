@@ -2486,6 +2486,7 @@ export interface HomeownerAccountCreateRequest {
   /** @format date-time */
   openAt: string;
   isMainOnApartment?: boolean;
+  paymentCode?: string | null;
 
   /** @format int32 */
   apartmentId: number;
@@ -2504,6 +2505,7 @@ export interface HomeownerAccountCreateUnattachedRequest {
   /** @format date-time */
   openAt: string;
   isMainOnApartment?: boolean;
+  paymentCode?: string | null;
 }
 
 export interface HomeownerAccountListResponse {
@@ -2662,7 +2664,7 @@ export interface HouseAddress {
 }
 
 export interface HouseManagementConstructedReportResponse {
-  houseManagement: string | null;
+  houseManagementName: string | null;
 
   /** @format int32 */
   housingStocksCount: number;

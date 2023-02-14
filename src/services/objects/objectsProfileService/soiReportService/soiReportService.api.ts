@@ -10,12 +10,14 @@ import {
   CreateSoiReportRequestPayload,
   GetHouseManagementsRequestPayload,
 } from './soiReportService.types';
+import queryString from 'query-string';
 
 export const getSoiReport = async (
   params: CreateSoiReportRequestPayload,
 ): Promise<void> => {
   const res: string = await axios.get('Reports/SoiReport', {
     params: omit(params, ['ReportName']),
+    paramsSerializer: (params) => queryString.stringify(params),
     responseType: 'blob',
   });
 

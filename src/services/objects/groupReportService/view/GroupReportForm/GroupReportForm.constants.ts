@@ -5,7 +5,7 @@ export const validationSchema = Yup.object().shape({
   Name: Yup.string().required('Это поле обязательное'),
   From: Yup.string().required('Это поле обязательное'),
   To: Yup.string().required('Это поле обязательное'),
-  HouseManagementId: Yup.string().required('Это поле обязательное'),
+  HouseManagementId: Yup.string().nullable(),
   ReportType: Yup.mixed<EReportType>()
     .oneOf(Object.values(EReportType))
     .required('Это поле обязательное'),

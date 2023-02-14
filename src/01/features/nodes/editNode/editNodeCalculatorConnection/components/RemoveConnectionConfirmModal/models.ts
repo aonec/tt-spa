@@ -6,6 +6,7 @@ import {
   outputs as nodeOutputs,
   inputs as nodeInputs,
 } from '../../../../displayNode/models';
+import { EffectFailDataAxiosError } from 'types';
 
 const removeNodeCalculatorConnectionDomain = createDomain();
 
@@ -14,9 +15,10 @@ const $isConfirmModalOpen =
 
 const removeConnectionFx = removeNodeCalculatorConnectionDomain.createEffect<
   UpdatePipeNodeRequest & { nodeId: number },
-  void
+  void,
+  EffectFailDataAxiosError
 >((payload) => {
-  axios.put(`PipeNodes/${payload.nodeId}`, payload);
+  return axios.put(`PipeNodes/${payload.nodeId}`, payload);
 });
 
 const openConfirmationModal =
@@ -51,6 +53,15 @@ forward({
 
 removeConnectionFx.doneData.watch(() => {
   message.info('Узел отключен от вычислителя');
+});
+
+removeConnectionFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(error.response.data.error.Text);
 });
 
 export const outputs = {

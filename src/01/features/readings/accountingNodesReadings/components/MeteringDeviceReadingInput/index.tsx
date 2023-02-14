@@ -3,13 +3,13 @@ import { RequestStatusShared } from '01/features/readings/displayReadingHistory/
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
+import { getColorByRequestStatus } from './MeteringDeviceReadingInput.utils';
 import { useUploadingReadings } from './useUploadingReadings';
 
 interface Props {

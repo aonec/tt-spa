@@ -16,4 +16,5 @@ export type SearchDevicesProps = {
   devicesSearchType: DevicesSearchType;
   setSerialNumber: (value: string) => void;
   serialNumber: string;
+  handleClear: () => void;
 };

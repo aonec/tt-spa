@@ -19,7 +19,6 @@ import {
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 import {
   confirmReading,
@@ -51,6 +50,7 @@ import moment from 'moment';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import _ from 'lodash';
 import { getMeasurementUnit } from 'services/meters/individualDeviceMetersInputService/individualDeviceMetersInputService.utils';
+import { getFilledArray } from 'utils/getFilledArray';
 
 interface Props {
   isModal?: boolean;
@@ -206,7 +206,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           editable={true}
           values={
             getReadingValues('value') ||
-            getArrayByCountRange(
+            getFilledArray(
               getIndividualDeviceRateNumByName(device?.rateType! || 0),
               () => '' as any,
             )

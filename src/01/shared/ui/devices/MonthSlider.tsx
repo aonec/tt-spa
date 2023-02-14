@@ -1,10 +1,7 @@
 import React from 'react';
 import Arrow from '../../../_components/Arrow/Arrow';
-import {
-  ArrowContainer,
-  CenterContainer,
-} from '../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings.styled';
 import { getPreviousReadingsMonth } from '../../lib/readings/getPreviousReadingsMonth';
+import { ArrowContainer, CenterContainer } from './MonthSlider.styled';
 
 interface MonthSliderInterface {
   onClickDecrease: () => void;
