@@ -1,8 +1,11 @@
-import { ResourceType } from '../GraphView/GraphView.types';
+import { EResourceType } from 'myApi';
 
 export const renderForHeatAndDeltaMass = (
-  resource: ResourceType,
-  graphParam: string
+  resource: EResourceType,
+  graphParam: string,
 ) => {
-  return resource === 'HotWaterSupply' && graphParam === 'Расход по массе, т';
+  return (
+    resource === EResourceType.HotWaterSupply &&
+    graphParam === 'Расход по массе, т'
+  );
 };

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { SearchIcon } from 'ui-kit/icons';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { IndividualDeviceInfoShort } from 'ui-kit/shared_components/IndividualDeviceInfoShort';
+import { IndividualDeviceConsumptionGraph } from '../IndividualDeviceConsumptionGraph';
 import {
   Consumption,
   ConsumptionDate,
@@ -19,6 +20,7 @@ import { IndividualDeviceListItemProps } from './IndividualDeviceListItem.types'
 export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   device,
   apartmentId,
+  consumptionData,
 }) => {
   const history = useHistory();
 
@@ -26,6 +28,8 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
     () => history.push(`/apartments/${apartmentId}`),
     [history, apartmentId],
   );
+
+  const isConsumptionExist = consumptionData.length !== 0;
 
   return (
     <Wrapper>
@@ -52,10 +56,18 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
           {moment(device.consumption?.readingDate).format('DD.MM.YYYY')}
         </ConsumptionDate>
       </div>
-      <NoData>
-        <SearchIcon />
-        <NoDataText>Нет данных</NoDataText>
-      </NoData>
+      {isConsumptionExist && (
+        <IndividualDeviceConsumptionGraph
+          resource={device.resource}
+          data={consumptionData}
+        />
+      )}
+      {!isConsumptionExist && (
+        <NoData>
+          <SearchIcon />
+          <NoDataText>Нет данных</NoDataText>
+        </NoData>
+      )}
     </Wrapper>
   );
 };

@@ -10,7 +10,7 @@ import {
 } from 'victory';
 import React, { useEffect, useState } from 'react';
 import 'antd/es/date-picker/style/index';
-import { GraphViewProps, ResourceType } from './GraphView.types';
+import { GraphViewProps } from './GraphView.types';
 import { formTicks, getTickFormat } from '../../utils';
 import Gradient from '../Gradient';
 import { TickComponent } from '../TickComponent';
@@ -20,14 +20,18 @@ import {
   horizontalAxisStyle,
   verticalAxisStyle,
 } from './GraphView.styled';
-import { getResourceColor } from '01/utils/getResourceColor';
 import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
-import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
+import {
+  getMinAndMax,
+  GraphColorLookup,
+  prepareData,
+} from '../../../../../utils/Graph.utils';
 import { TaskPoint } from '../TaskPoint';
 import { getPreparedData } from './GraphView.utils';
+import { EResourceType } from 'myApi';
 
 const minDelta = 0.01;
 const height = 350;
@@ -58,7 +62,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
 
   const { resource, data: readingsData, averageDeltaMass } = data;
   const isAverageLineRendered = renderForHeatAndDeltaMass(
-    resource as ResourceType,
+    resource as EResourceType,
     graphParam,
   );
 
@@ -87,7 +91,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
     parent: { overflow: 'visible' },
     data: {
       fill: `url(#${data.resource})`,
-      stroke: getResourceColor(resource as ResourceType),
+      stroke: GraphColorLookup[resource as EResourceType],
       strokeWidth: 2,
     },
   };
@@ -95,7 +99,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   return (
     <>
       <GraphWrapper>
-        <Gradient resource={resource as ResourceType} />
+        <Gradient resource={resource as EResourceType} />
 
         <VictoryChart
           domain={{ y: [minValue, maxValue] }}
