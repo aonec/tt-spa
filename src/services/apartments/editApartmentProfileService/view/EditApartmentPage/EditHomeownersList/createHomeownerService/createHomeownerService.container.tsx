@@ -1,7 +1,7 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { EditHomeownerForm } from '../EditHomeownerForm';
+import { EditHomeownerForm } from '../HomeownerForm';
 import { createHomeownerService } from './createHomeownerService.model';
 
 const { inputs, outputs } = createHomeownerService;
@@ -26,7 +26,7 @@ export const CreateHomeownerContainer = () => {
       form={
         <EditHomeownerForm
           formId={formId}
-          handleSubmit={handleCreateHomeowner}
+          handleCreateHomeowner={handleCreateHomeowner}
         />
       }
     />

@@ -17,35 +17,47 @@ import { EditHomeownerFormProps } from './EditHomeownerForm.types';
 
 export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
   formId,
-  handleSubmit,
   initialValues,
+  handleCreateHomeowner,
+  handleEditHomeownerPreparation,
+  isEdit,
 }) => {
   const { apartmentId } = useParams<{ apartmentId: string }>();
 
-  const {
-    values,
-    handleChange,
-    setFieldValue,
-    handleSubmit: handleSubmitForm,
-    errors,
-  } = useFormik({
-    initialValues: initialValues || formInitialValues,
-    onSubmit: (values) => {
-      handleSubmit({
-        apartmentId: Number(apartmentId),
-        personalAccountNumber: values.personalAccountNumber,
-        name: values.name,
-        phoneNumber: values.phoneNumber,
-        personType: values.personType || undefined,
-        openAt: values.openAt?.toISOString()!,
-        isMainOnApartment: values.isMainOnApartment,
-      });
-    },
-    validationSchema: validationSchema,
-  });
+  const { values, handleChange, setFieldValue, handleSubmit, errors } =
+    useFormik({
+      initialValues: initialValues || formInitialValues,
+      onSubmit: (values) => {
+        isEdit &&
+          handleEditHomeownerPreparation &&
+          handleEditHomeownerPreparation({
+            id: apartmentId,
+            personalAccountNumber: values.personalAccountNumber,
+            name: values.name,
+            phoneNumber: values.phoneNumber,
+            personType: values.personType || undefined,
+            paymentCode: values.paymentCode || null,
+            isMainOnApartment: values.isMainOnApartment,
+          });
+
+        handleCreateHomeowner &&
+          handleCreateHomeowner({
+            apartmentId: Number(apartmentId),
+            personalAccountNumber: values.personalAccountNumber,
+            name: values.name,
+            phoneNumber: values.phoneNumber,
+            personType: values.personType || undefined,
+            paymentCode: values.paymentCode || null,
+            openAt: values.openAt?.toISOString()!,
+            isMainOnApartment: values.isMainOnApartment,
+          });
+      },
+      validationSchema: validationSchema,
+      validateOnChange: false,
+    });
 
   return (
-    <Form id={formId} onSubmitCapture={() => handleSubmitForm()}>
+    <Form id={formId} onSubmitCapture={() => handleSubmit()}>
       <FirstLineWrapper>
         <FormItem label="Собственник">
           <Input
@@ -81,17 +93,29 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
             onChange={handleChange}
             placeholder="Введите телефон"
           />
-          <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
         </FormItem>
         <FormItem label="Дата открытия лицевого счета">
-          <DatePicker
-            value={values.openAt}
-            onChange={(date) => setFieldValue('openAt', date)}
-            format="DD.MM.YYYY"
-          />
+          {!isEdit && (
+            <>
+              <DatePicker
+                value={values.openAt}
+                onChange={(date) => setFieldValue('openAt', date)}
+                format="DD.MM.YYYY"
+              />
+              <ErrorMessage>{errors.openAt}</ErrorMessage>
+            </>
+          )}
+
+          {isEdit && (
+            <DatePicker disabled value={values.openAt} format="DD.MM.YYYY" />
+          )}
         </FormItem>
         <FormItem label="Юридическое состояние">
-          <Select value={values.personType || undefined} placeholder="Выберите">
+          <Select
+            value={values.personType || undefined}
+            onChange={(type) => setFieldValue('personType', type)}
+            placeholder="Выберите"
+          >
             {Object.entries(PersonTypeDictionary).map(([key, value]) => (
               <Select.Option key={key} value={key}>
                 {value}
