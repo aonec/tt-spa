@@ -20,6 +20,8 @@ import {
 } from './resourceConsumptionService.types';
 import { getAddressSearchData } from './resourceConsumptionService.utils';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -48,18 +50,18 @@ const $addressesList = combine(
     if (!selectedHouseManagement) {
       const streets = houseManagements.reduce(
         (acc, houseManagement) => [...acc, ...(houseManagement.streets || [])],
-        [] as StreetWithHousingStockNumbersResponse[]
+        [] as StreetWithHousingStockNumbersResponse[],
       );
 
       return getAddressSearchData(streets);
     }
 
     const requiredHouseManagements = houseManagements.find(
-      (houseManagement) => houseManagement.id === selectedHouseManagement
+      (houseManagement) => houseManagement.id === selectedHouseManagement,
     );
 
     return getAddressSearchData(requiredHouseManagements?.streets || []);
-  }
+  },
 );
 
 const setFilter = domain.createEvent<GetConsumptionDataFilter>();
@@ -79,7 +81,8 @@ const $resourceConsumptionFilter = domain
 
 const getHousingConsumptionFx = domain.createEffect<
   ConsumptionDataFilter,
-  ConsumptionDataForTwoMonth
+  ConsumptionDataForTwoMonth,
+  EffectFailDataAxiosError
 >(fetchConsumptionsForTwoMonth);
 
 const clearData = domain.createEvent();
@@ -100,10 +103,11 @@ const $additionalConsumption = domain
   .reset(clearData)
   .reset(clearAdditionalAddress);
 
-const setSelectedGraphTypes = domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
+const setSelectedGraphTypes =
+  domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
 const $selectedGraphTypes = domain
   .createStore<BooleanTypesOfResourceConsumptionGraphForTwoMonth>(
-    initialSelectedGraphTypes
+    initialSelectedGraphTypes,
   )
   .on(setSelectedGraphTypes, (_, selected) => selected)
   .reset(clearData);
@@ -122,7 +126,7 @@ guard({
       filter?.From &&
         filter?.To &&
         filter?.HousingStockId &&
-        filter?.ResourceType
+        filter?.ResourceType,
     ),
   target: getAdditionalConsumptionFx,
 });
@@ -134,7 +138,7 @@ guard({
       filter?.From &&
         filter?.To &&
         filter?.HousingStockId &&
-        filter?.ResourceType
+        filter?.ResourceType,
     ),
   target: getHousingConsumptionFx,
 });
@@ -154,6 +158,19 @@ guard({
   clock: ResourceConsumptionGate.open,
   filter: (arr) => !arr.length,
   target: getAddressesFx,
+});
+
+getHousingConsumptionFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const resourceConsumptionService = {
