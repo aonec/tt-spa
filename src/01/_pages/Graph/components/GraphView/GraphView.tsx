@@ -6,8 +6,9 @@ import {
   VictoryArea,
   VictoryLine,
   VictoryLabel,
+  VictoryScatter,
 } from 'victory';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'antd/es/date-picker/style/index';
 import { GraphViewProps, ResourceType } from './GraphView.types';
 import { formTicks, getTickFormat } from '../../utils';
@@ -25,24 +26,44 @@ import { GraphLegend } from '../GraphLegend/GraphLegend';
 import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import { getMinAndMax, prepareData } from '../../../../../utils/Graph.utils';
+import { TaskPoint } from '../TaskPoint';
+import { getPreparedData } from './GraphView.utils';
 
 const minDelta = 0.01;
-const width = 730;
 const height = 350;
 
 export const GraphView: React.FC<GraphViewProps> = ({
   graphParam,
   data,
   reportType,
+  taskStatistics,
+  wrapperId,
 }) => {
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const wrapperNode = document.getElementById(wrapperId);
+
+    if (!wrapperNode) {
+      return;
+    }
+
+    const handleResize = () => setWidth(wrapperNode?.clientWidth || 0);
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [wrapperId]);
+
   const { resource, data: readingsData, averageDeltaMass } = data;
   const isAverageLineRendered = renderForHeatAndDeltaMass(
     resource as ResourceType,
-    graphParam
+    graphParam,
   );
 
   const requiredArchiveValues = (readingsData || []).find(
-    (reading) => reading.header === graphParam
+    (reading) => reading.header === graphParam,
   );
 
   const archiveValues = requiredArchiveValues?.data;
@@ -75,6 +96,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
     <>
       <GraphWrapper>
         <Gradient resource={resource as ResourceType} />
+
         <VictoryChart
           domain={{ y: [minValue, maxValue] }}
           width={width}
@@ -113,6 +135,20 @@ export const GraphView: React.FC<GraphViewProps> = ({
               },
             }}
           />
+
+          <VictoryScatter
+            data={taskStatistics.map((tasksByDate) =>
+              getPreparedData({
+                tasksByDate,
+                reportType,
+                maxValue,
+                minData: ticksData[0],
+              }),
+            )}
+            sortKey="x"
+            dataComponent={<TaskPoint />}
+          />
+
           <VictoryArea
             name="graph"
             sortKey="time"
@@ -152,7 +188,10 @@ export const GraphView: React.FC<GraphViewProps> = ({
           ) : null}
         </VictoryChart>
       </GraphWrapper>
-      <GraphLegend graphParam={graphParam} />
+      <GraphLegend
+        graphParam={graphParam}
+        isTasksExist={taskStatistics.length !== 0}
+      />
     </>
   );
 };
