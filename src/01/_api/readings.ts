@@ -1,11 +1,9 @@
-import { EffectFailDataAxiosError } from 'types';
 import {
   IndividualDeviceReadingsHistoryResponse,
   IndividualDeviceReadingsCreateRequest,
   IndividualDeviceReadingsCreateListResponse,
 } from './../../myApi';
 import axios from '01/axios';
-import { message } from 'antd';
 
 export const getReadingsHistory = (
   deviceId: number,

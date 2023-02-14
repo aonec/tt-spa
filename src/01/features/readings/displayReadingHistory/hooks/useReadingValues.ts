@@ -14,8 +14,6 @@ import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
-import { EffectFailDataAxiosError } from 'types';
-import { message } from 'antd';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 

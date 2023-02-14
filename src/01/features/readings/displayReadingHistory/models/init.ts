@@ -11,7 +11,6 @@ import {
 } from './index';
 import { forward, sample } from 'effector';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { message } from 'antd';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 

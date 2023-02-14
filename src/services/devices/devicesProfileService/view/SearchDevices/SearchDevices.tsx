@@ -53,7 +53,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
       setTimeout(() => submitForm(), 1000);
     },
-    [setFieldValue, diameters],
+    [setFieldValue, diameters, submitForm],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
