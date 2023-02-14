@@ -76,6 +76,9 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   const isShowApartmentsWithOpenDevicesCheckbox =
     isIndividualDevicesReport && isClosedDevicesReport;
 
+  const isShowClosingReasonsSelect =
+    values.reportOption === EIndividualDeviceReportOption.ClosedDevices;
+
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <HouseManagementsGate />
@@ -184,24 +187,26 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   )}
                 </Select>
               </FormItem>
-              <FormItem label="Причины закрытия">
-                <SelectMultiple
-                  placeholder="Выберите из списка"
-                  value={values.closingReasons || undefined}
-                  onChange={(value) => setFieldValue('closingReasons', value)}
-                >
-                  {[
-                    EClosingReason.Manually,
-                    EClosingReason.DeviceBroken,
-                    EClosingReason.CertificateIssued,
-                    EClosingReason.ByLetter,
-                  ].map((reportOption) => (
-                    <Select.Option key={reportOption} value={reportOption}>
-                      {ClosingReasonsDictionary[reportOption]}
-                    </Select.Option>
-                  ))}
-                </SelectMultiple>
-              </FormItem>
+              {isShowClosingReasonsSelect && (
+                <FormItem label="Причины закрытия">
+                  <SelectMultiple
+                    placeholder="Выберите из списка"
+                    value={values.closingReasons || undefined}
+                    onChange={(value) => setFieldValue('closingReasons', value)}
+                  >
+                    {[
+                      EClosingReason.Manually,
+                      EClosingReason.DeviceBroken,
+                      EClosingReason.CertificateIssued,
+                      EClosingReason.ByLetter,
+                    ].map((reportOption) => (
+                      <Select.Option key={reportOption} value={reportOption}>
+                        {ClosingReasonsDictionary[reportOption]}
+                      </Select.Option>
+                    ))}
+                  </SelectMultiple>
+                </FormItem>
+              )}
             </>
           )}
           {isHomeownersReport && (
