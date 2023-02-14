@@ -28,21 +28,27 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik<
-    Partial<GroupReportRequestPayload>
+    Partial<GroupReportRequestPayload> & { isRegular: boolean }
   >({
     initialValues: {
       Name: `Групповой_отчёт_${moment().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
+      From: moment().startOf('month').format(),
+      To: moment().endOf('day').format(),
+      isRegular: false,
     },
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: (values) =>
+    onSubmit: (values) => {
+      const { isRegular, ...payload } = values;
+
       handleDownload({
-        ...values,
+        ...payload,
         From: moment(values.From).format('YYYY-MM-DD'),
         To: moment(values.To).format('YYYY-MM-DD'),
-      }),
+      });
+    },
   });
 
   const groupReportsOptions = useMemo(
@@ -96,7 +102,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   );
   const handleThriggerAt = useCallback(
     (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
-    [values],
+    [setFieldValue],
+  );
+
+  const handleChangeIsRegular = useCallback(
+    (isRegular: boolean) => setFieldValue('isRegular', isRegular),
+    [setFieldValue],
   );
 
   return (
@@ -174,13 +185,16 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         handleChangeEmail={handleChangeEmail}
         handleChangeSubsType={handleChangeSubsType}
         handleThriggerAt={handleThriggerAt}
+        handleChangeIsRegular={handleChangeIsRegular}
         contractors={contractors || []}
         values={{
           'Subscription.ContractorIds': values['Subscription.ContractorIds'],
           'Subscription.Email': values['Subscription.Email'],
           'Subscription.TriggerAt': values['Subscription.TriggerAt'],
           'Subscription.Type': values['Subscription.Type'],
+          isRegular: values.isRegular,
         }}
+        errors={errors}
       />
     </Form>
   );

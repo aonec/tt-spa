@@ -8,7 +8,6 @@ import { ButtonTT } from '01/tt-components';
 import IsActive from '01/tt-components/IsActive';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Form, message } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
@@ -34,6 +33,7 @@ import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_
 import { getReadingValuesArray } from '01/features/readings/displayReadingHistory/utils';
 import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { getFilledArray } from 'utils/getFilledArray';
 
 export const CorrectionReadingsPanel = () => {
   const task = useStore($task);
@@ -52,7 +52,7 @@ export const CorrectionReadingsPanel = () => {
 
         if (errorMessage) message.error(errorMessage);
       }).unsubscribe,
-    []
+    [],
   );
 
   useEffect(
@@ -60,7 +60,7 @@ export const CorrectionReadingsPanel = () => {
       pushStageFx.done.watch(() => {
         message.success('Задача успешно обновлена');
       }).unsubscribe,
-    []
+    [],
   );
 
   if (!task?.individualDevices) return null;
@@ -97,7 +97,7 @@ export const CorrectionReadingsPanel = () => {
     getReadingValuesArray(
       problemReading as IndividualDeviceReadingsItemHistoryResponse,
       'value',
-      rateNum
+      rateNum,
     );
 
   const editTaskInfo = (
@@ -118,9 +118,9 @@ export const CorrectionReadingsPanel = () => {
     </Grid>
   );
 
-  const readingValues = getArrayByCountRange(
+  const readingValues = getFilledArray(
     rateNum,
-    (count) => (fields.readingValue.value as any)[`value${count}`]
+    (count) => (fields.readingValue.value as any)[`value${count + 1}`],
   );
 
   const isReadOnly = !task?.isPerpetrator;
@@ -162,7 +162,7 @@ export const CorrectionReadingsPanel = () => {
         checked={fields.needSeniorOperatorCheck.value}
         onClick={() =>
           fields.needSeniorOperatorCheck.onChange(
-            !fields.needSeniorOperatorCheck.value
+            !fields.needSeniorOperatorCheck.value,
           )
         }
       >

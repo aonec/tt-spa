@@ -66,7 +66,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         message.success('Акт успешно добавлен');
         resetForm();
       }).unsubscribe,
-    [],
+    [resetForm],
   );
 
   useEffect(

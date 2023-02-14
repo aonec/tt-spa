@@ -8,7 +8,6 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   isLoading,
   individualDevicesList,
   apartmentId,
-  housingStockId,
 }) => {
   return (
     <Wrapper>
@@ -25,7 +24,6 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
         individualDevicesList?.map((device) => (
           <IndividualDeviceListItem
             apartmentId={apartmentId}
-            housingStockId={housingStockId}
             key={device.id}
             device={device}
           />

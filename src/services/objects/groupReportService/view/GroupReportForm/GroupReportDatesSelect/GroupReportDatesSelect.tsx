@@ -1,6 +1,6 @@
 import { StyledRangePicker } from '01/shared/ui/Fields';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
   GroupReportRangeLookup,
   GroupReportRangeOptions,
@@ -16,14 +16,14 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
   setValue,
 }) => {
   const [currentRange, setCurrentRange] = useState<GroupReportRangeOptions>(
-    GroupReportRangeOptions.ThisMonth
+    GroupReportRangeOptions.ThisMonth,
   );
 
   const radioOptions = Object.entries(GroupReportRangeLookup).map(
     ([value, label]) => ({
       value,
       label,
-    })
+    }),
   );
 
   const handleRangeTypeChange = useCallback(
@@ -41,12 +41,8 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
         });
       }
     },
-    [setValue]
+    [setValue],
   );
-
-  useEffect(() => {
-    handleRangeTypeChange(currentRange);
-  }, []);
 
   return (
     <div>

@@ -24,6 +24,7 @@ import {
 } from './CreateResourceDisconnectionForm.constants';
 import {
   BaseInfoWrapper,
+  CitySelectWrapper,
   InputSC,
   TagPlaceholder,
   TimeWrapper,
@@ -43,7 +44,9 @@ import {
 } from './CreateresourceDisconnectionForm.utils';
 import { CreateResourceDisconnectionSelectResource } from './CreateResourceDisconnectionSelectResource';
 
-export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionFormProps> = ({
+export const CreateResourceDisconnectionForm: FC<
+  CreateResourceDisconnectionFormProps
+> = ({
   formId,
   handleCreateResourceDisconnection,
   treeData,
@@ -57,10 +60,15 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   setTypeOfAddress,
   typeOfAddress,
   isHousingStocksLoading,
+  existingCities,
+  selectCity,
+  selectedCity,
 }) => {
-  const documentInit = resourceDisconnection?.document
-    ? [resourceDisconnection?.document]
-    : [];
+  const documentInit = useMemo(
+    () =>
+      resourceDisconnection?.document ? [resourceDisconnection?.document] : [],
+    [resourceDisconnection?.document],
+  );
 
   const [documents, setDocuments] = useState<Document[]>(documentInit);
 
@@ -74,7 +82,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
   const handleSubmitFormik = useCallback(
     (formValues: CreateResourceDisconnectionFormTypes) => {
       const preparedHousingStockIds = formValues.housingStockIds.filter(
-        (elem) => elem !== -1
+        (elem) => elem !== -1,
       );
       const resource = formValues.resource;
       const disconnectingType = formValues.disconnectingType;
@@ -118,38 +126,39 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
       handleCreateResourceDisconnection,
       handleEditResourceDisconnection,
       isEdit,
-    ]
+      documentInit,
+      handleUpdateDocument,
+      isInterHeatingSeason,
+    ],
   );
 
-  const {
-    values,
-    submitForm,
-    setFieldValue,
-    handleChange,
-    errors,
-  } = useFormik<CreateResourceDisconnectionFormTypes>({
-    initialValues,
-    validationSchema: createResourceDisconnectionValidationSchema,
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: handleSubmitFormik,
-  });
+  const { values, submitForm, setFieldValue, handleChange, errors } =
+    useFormik<CreateResourceDisconnectionFormTypes>({
+      initialValues,
+      validationSchema: createResourceDisconnectionValidationSchema,
+      enableReinitialize: true,
+      validateOnChange: false,
+      validateOnBlur: false,
+      onSubmit: handleSubmitFormik,
+    });
 
   const isAllPrevious = useRef(false);
   const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
 
-  const allHousingStocks = useMemo(() => getAllHousingStocks(treeData), [
-    treeData,
-  ]);
+  const isCityShow =
+    existingCities.length > 1 && typeOfAddress === EAddressDetails.All;
+
+  const allHousingStocks = useMemo(
+    () => getAllHousingStocks(treeData),
+    [treeData],
+  );
 
   const handleChangeHousingStocks = useCallback(
     (selectedAddresses: TreeSelectValue) => {
       const selectedAddressesArray = [selectedAddresses].flat();
 
-      const allHousingStocksVariantClicked = selectedAddressesArray.includes(
-        -1
-      );
+      const allHousingStocksVariantClicked =
+        selectedAddressesArray.includes(-1);
       const allHousingStocksChosen =
         selectedAddressesArray.length === allHousingStocks.length &&
         !isAllPrevious.current;
@@ -170,10 +179,10 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
 
       setFieldValue(
         'housingStockIds',
-        selectedAddressesArray.filter((elem) => elem !== -1)
+        selectedAddressesArray.filter((elem) => elem !== -1),
       );
     },
-    [allHousingStocks]
+    [allHousingStocks, setFieldValue],
   );
 
   const housingStocksPlaceholderText = isAllHousingStocksSelected
@@ -186,7 +195,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         {housingStocksPlaceholderText}
       </TagPlaceholder>
     ),
-    [housingStocksPlaceholderText]
+    [housingStocksPlaceholderText],
   );
 
   const preparedEndHours = prepareEndHours(values.startHour);
@@ -199,7 +208,7 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
       }
       return endDate.startOf('day').diff(startDate, 'day') < 0;
     },
-    [values.startDate]
+    [values.startDate],
   );
 
   useEffect(() => {
@@ -218,11 +227,11 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
     }
     const housingStocks = resourceDisconnection.housingStocks || [];
     const housingStockIds = housingStocks.map(
-      (housingstock) => housingstock.id
+      (housingstock) => housingstock.id,
     );
 
     handleChangeHousingStocks(housingStockIds);
-  }, [treeData]);
+  }, [treeData, handleChangeHousingStocks, resourceDisconnection]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {
@@ -233,14 +242,14 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
         setFieldValue('endHour', values.startHour);
       }
     }
-  }, [values.startHour, setFieldValue]);
+  }, [values.startHour, setFieldValue, values.endHour, isInterHeatingSeason]);
 
   useEffect(() => {
     if (isInterHeatingSeason) {
       setFieldValue('resource', EResourceType.Heat);
       setFieldValue(
         'disconnectingType',
-        EResourceDisconnectingType.InterHeatingSeason
+        EResourceDisconnectingType.InterHeatingSeason,
       );
     }
   }, [isInterHeatingSeason, setFieldValue]);
@@ -271,29 +280,50 @@ export const CreateResourceDisconnectionForm: FC<CreateResourceDisconnectionForm
                   </Select.Option>
                 );
               }
-            }) || null}
+              return null;
+            })}
           </Select>
           <ErrorMessage>{errors.disconnectingType}</ErrorMessage>
         </FormItem>
-        <FormItem label="Детальность адреса">
-          <Select
-            placeholder="Выберите из списка"
-            onChange={(type) => setTypeOfAddress(type as EAddressDetails)}
-            value={typeOfAddress}
-          >
-            {DetailsSelectLookup.map(({ key, value }) => (
-              <Select.Option key={key} value={key}>
-                {value}
-              </Select.Option>
-            ))}
-          </Select>
-        </FormItem>
+
+        <CitySelectWrapper showCity={isCityShow}>
+          <FormItem label="Детальность адреса">
+            <Select
+              placeholder="Выберите из списка"
+              onChange={(type) => setTypeOfAddress(type as EAddressDetails)}
+              value={typeOfAddress}
+            >
+              {DetailsSelectLookup.map(({ key, value }) => (
+                <Select.Option key={key} value={key}>
+                  {value}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+
+          {isCityShow && (
+            <FormItem label="Город">
+              <Select
+                placeholder="Выберите из списка"
+                onChange={(type) => selectCity(String(type))}
+                value={selectedCity || undefined}
+              >
+                {existingCities.map((city) => (
+                  <Select.Option key={city} value={city}>
+                    {city}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          )}
+        </CitySelectWrapper>
+
         <FormItem label="Адрес">
           <TreeSelectSC
             showSearch
             showArrow
             value={values.housingStockIds}
-            disabled={isHousingStocksLoading}
+            disabled={isHousingStocksLoading || (isCityShow && !selectedCity)}
             treeCheckable
             maxTagCount={0}
             maxTagPlaceholder={() => {

@@ -23,7 +23,7 @@ export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
       <Link to={`/nodes/${node?.id}`}>
         <NodeName>Узел {node?.number}</NodeName>
         <AdditionalInfo>
-          Ввод {node?.communicationPipes?.[0].entryNumber},{' '}
+          Ввод {node?.communicationPipes?.[0]?.entryNumber},{' '}
           {node?.nodeServiceZone?.name}
         </AdditionalInfo>
       </Link>
@@ -45,8 +45,8 @@ export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
       </NodeInfoWrapper>
 
       <NodeStatusWrapper>
-        {node?.nodeStatus?.value && (
-          <NodeStatus status={node?.nodeStatus?.value} />
+        {node?.commercialStatus?.value && (
+          <NodeStatus status={node?.commercialStatus?.value} />
         )}
       </NodeStatusWrapper>
     </Wrapper>

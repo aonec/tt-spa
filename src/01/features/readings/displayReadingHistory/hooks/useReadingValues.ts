@@ -9,7 +9,7 @@ import {
   IndividualDeviceReadingsCreateRequest,
 } from './../../../../../myApi';
 import { useStore } from 'effector-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
@@ -21,11 +21,9 @@ export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
 export function useReadingHistoryValues() {
   const [bufferedValues, setBufferedValues] =
-    useState<IndividualDeviceReadingsHistoryResponse | null>();
+    useState<IndividualDeviceReadingsHistoryResponse | null>(null);
 
-  const params = useParams<{ deviceId: string }>();
-
-  const { deviceId } = params;
+  const { deviceId } = useParams<{ deviceId: string }>();
 
   const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
     [date: string]: RequestStatusShared;
@@ -37,12 +35,15 @@ export function useReadingHistoryValues() {
     setBufferedValues(initialValues);
   }, [initialValues]);
 
-  async function deleteReading(id: number) {
-    try {
-      await axios.post(`IndividualDeviceReadings/${id}/remove`);
-      refetchReadingHistory(Number(deviceId));
-    } catch (error) {}
-  }
+  const deleteReading = useCallback(
+    async (id: number) => {
+      try {
+        await axios.post(`IndividualDeviceReadings/${id}/remove`);
+        refetchReadingHistory(Number(deviceId));
+      } catch (error) {}
+    },
+    [deviceId],
+  );
 
   const resetValue = (address: {
     year: number;
@@ -83,72 +84,74 @@ export function useReadingHistoryValues() {
     setBufferedValues((prev) => prev && setInitValue(prev));
   };
 
-  const setFieldValue = (
-    value: string,
-    address: { year: number; month: number; id: number | null; index: number },
-  ) => {
-    setBufferedValues((prev) => ({
-      ...prev,
-      yearReadings:
-        prev?.yearReadings?.map((year) =>
-          year.year === address.year
-            ? {
-                ...year,
-                monthReadings:
-                  year.monthReadings?.map((month) =>
-                    month.month === address.month
-                      ? {
-                          ...month,
-                          readings:
-                            month.readings?.map((elem) =>
-                              elem.id === address.id
-                                ? { ...elem, [`value${address.index}`]: value }
-                                : elem,
-                            ) || [],
-                        }
-                      : month,
-                  ) || [],
-              }
-            : year,
-        ) || [],
-    }));
-  };
+  const setFieldValue = useCallback(
+    (
+      value: string,
+      address: {
+        year: number;
+        month: number;
+        id: number | null;
+        index: number;
+      },
+    ) => {
+      setBufferedValues((prev) => ({
+        ...prev,
+        yearReadings:
+          prev?.yearReadings?.map((year) =>
+            year.year === address.year
+              ? {
+                  ...year,
+                  monthReadings:
+                    year.monthReadings?.map((month) =>
+                      month.month === address.month
+                        ? {
+                            ...month,
+                            readings:
+                              month.readings?.map((elem) =>
+                                elem.id === address.id
+                                  ? {
+                                      ...elem,
+                                      [`value${address.index}`]: value,
+                                    }
+                                  : elem,
+                              ) || [],
+                          }
+                        : month,
+                    ) || [],
+                }
+              : year,
+          ) || [],
+      }));
+    },
+    [],
+  );
 
-  async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
-    const date = moment(reading.readingDate);
-    const dateString = `${date.month() + 2}.${date.year()}`;
-
-    setUploadingReadingsStatuses((prev) => ({
-      ...prev,
-      [dateString]: 'pending',
-    }));
-    try {
-      await createReading(reading);
-      refetchReadingHistory(Number(deviceId));
+  const uploadReading = useCallback(
+    async (reading: IndividualDeviceReadingsCreateRequest) => {
+      const date = moment(reading.readingDate);
+      const dateString = `${date.month() + 2}.${date.year()}`;
 
       setUploadingReadingsStatuses((prev) => ({
         ...prev,
-        [dateString]: 'done',
+        [dateString]: 'pending',
       }));
-    } catch (err) {
-      if (
-        (err as unknown as EffectFailDataAxiosError).response.status === 403
-      ) {
-        message.error(
-          'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-        );
-      } else {
-        message.error(
-          (err as unknown as EffectFailDataAxiosError).response.data.error.Text,
-        );
+      try {
+        await createReading(reading);
+        refetchReadingHistory(Number(deviceId));
+
+        setUploadingReadingsStatuses((prev) => ({
+          ...prev,
+          [dateString]: 'done',
+        }));
+      } catch (e) {
+        setUploadingReadingsStatuses((prev) => ({
+          ...prev,
+          [dateString]: 'failed',
+        }));
       }
-
-      setUploadingReadingsStatuses((prev) => ({
-        ...prev,
-        [dateString]: 'failed',
-      }));
-    }
-  }
+    },
+    [deviceId],
+  );
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 

@@ -13,7 +13,7 @@ export const DevicesPageContainer = () => {
     if (type) return;
 
     history.push(`/devices/${DevicesProfileTabsType.ODPU}`);
-  }, [type]);
+  }, [type, history]);
 
   const setDevicesType = useCallback(
     (type: DevicesProfileTabsType) => {

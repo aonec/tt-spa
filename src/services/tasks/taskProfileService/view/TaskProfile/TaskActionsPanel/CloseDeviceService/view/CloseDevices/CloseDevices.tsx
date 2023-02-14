@@ -1,7 +1,7 @@
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import { Checkbox } from 'antd';
 import React, { FC } from 'react';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
 import {
   DatePickerWrapper,
   DeviceInfoStrokeWrap,
@@ -45,7 +45,7 @@ export const CloseDevices: FC<CloseDevicesProps> = ({
             <DeviceInfoWrapper>
               <Checkbox checked={isSelected} onChange={handleCheckboxChanged} />
               <DeviceInfoStrokeWrap>
-                <DeviceInfo device={device} />
+                <IndividualDeviceInfoExtended device={device} />
               </DeviceInfoStrokeWrap>
             </DeviceInfoWrapper>
             <DatePickerWrapper>

@@ -10,13 +10,13 @@ import {
 } from './soiReportService.api';
 import {
   CreateSoiReportRequestPayload,
-  GetAddressesRequestPayload,
   GetHouseManagementsRequestPayload,
   SoiReportType,
 } from './soiReportService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
+import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 
 const domain = createDomain('soiReportService');
 
@@ -32,7 +32,7 @@ const fetchHouseManagementFx = domain.createEffect<
 >(getHouseManagements);
 
 const fetchAdressesFx = domain.createEffect<
-  GetAddressesRequestPayload,
+  GetAddressesWithCityRequestPayload,
   StreetWithHousingStockNumbersResponsePagedList
 >(getAdresses);
 

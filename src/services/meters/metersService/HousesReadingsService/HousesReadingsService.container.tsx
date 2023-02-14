@@ -57,15 +57,15 @@ export const HousesReadingsContainer = () => {
     return () => {
       window.removeEventListener('scroll', onScrollDown, true);
     };
-  }, []);
+  }, [loadNextPageOfIndividualDevicesList, history, isLoadingIndividualDevices]);
 
   useEffect(() => {
     return inputs.handleHousingStockLoaded.watch((housingStock) => {
-      if (!housingStock) return;
+      if (!housingStock || Number(id) === housingStock?.id) return;
 
       history.push(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
-  }, []);
+  }, [history, id]);
 
   return (
     <>

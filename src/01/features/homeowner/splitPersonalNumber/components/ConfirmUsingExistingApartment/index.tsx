@@ -2,66 +2,31 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { getApartment } from '01/_api/apartments';
-import { getIndividualDevices } from '01/_api/individualDevices';
-import { PersonalNumber } from '01/_pages/MetersPage/components/ApartmentInfo';
 import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
-import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
 import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import {
-  $checkedExistingApartmentId,
   $isConfirmExistingApartmentModalOpen,
   closeConfirmExistingApartmentModal,
   splitPersonalNumber,
   splitPersonalNumberFx,
 } from '../../models';
 import { renderDevice } from '../TransferDevices';
+import { confirmUsingExistingApartmentService } from './ConfirmUsingExistingApartmenService.model';
+import { PersonalNumber } from './ConfirmUsingExistingApartmentModal.styled';
+
+const { outputs } = confirmUsingExistingApartmentService;
 
 export const ConfirmUsingExistingApartmentModal = () => {
   const show = useStore($isConfirmExistingApartmentModalOpen);
-  const id = useStore($checkedExistingApartmentId);
+  const apartment = useStore(outputs.$apartment);
+  const devices = useStore(outputs.$devices);
 
-  const [devices, setDevices] = useState<
-    IndividualDeviceListItemResponse[] | null
-  >(null);
-  const [pendingDevices, setPendingDevices] = useState(false);
+  const pendingDevices = useStore(outputs.$isDeviceLoading);
 
-  const [apartment, setApartment] = useState<ApartmentResponse | null>(null);
-  const [pendingApartment, setPendingApartment] = useState(false);
-
-  async function fetchApartment() {
-    if (!id) return;
-    setPendingApartment(true);
-
-    try {
-      const apartment = await getApartment(id);
-
-      setApartment(apartment);
-    } catch (error) {}
-
-    setPendingApartment(false);
-  }
-
-  async function fetchDevices() {
-    if (!id) return;
-    setPendingDevices(true);
-    try {
-      const devices = await getIndividualDevices({ ApartmentId: id });
-
-      setDevices(devices.items);
-    } catch (error) {}
-    setPendingDevices(false);
-  }
-
-  useEffect(() => {
-    fetchApartment();
-    fetchDevices();
-  }, [id]);
+  const pendingApartment = useStore(outputs.$isApartmentLoading);
 
   const address = apartment && getApartmentAddressString(apartment);
 
@@ -74,9 +39,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
   const pendingSplitRequest = useStore(splitPersonalNumberFx.pending);
 
   const getLinkOnApartmentProfile = () =>
-    apartment
-      ? `/apartments/${apartment?.id}`
-      : '';
+    apartment ? `/apartments/${apartment?.id}` : '';
 
   const isApartmentHasDevices = Boolean(devices?.length);
   const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);

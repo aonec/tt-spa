@@ -32,8 +32,10 @@ export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
 
   .ant-select-selector {
     height: 100% !important;
+    min-height: 48px;
     padding: 8px 16px !important;
     border-radius: 4px !important;
+    padding: 5px 16px !important;
   }
 
   .ant-select-arrow {

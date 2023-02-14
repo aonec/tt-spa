@@ -1,12 +1,10 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
-import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import moment from 'moment';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MetersInputsBlockPure } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MeterInputsBlockPure';
-import {
-  getRateNum,
-} from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
+import { getRateNum } from 'services/meters/individualDeviceMetersInputService/view/MetersInputsBlock/MetersInputsBlock.utils';
 import { ChevronIcon } from 'ui-kit/icons';
+import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
 import { ReadingDateFormat } from '../../editReadingsHistoryService.constants';
 import {
   ArrowContainer,
@@ -34,7 +32,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
 
   const isCanUp = useMemo(
     () => moment().startOf('month').diff(readingDate, 'month') !== 0,
-    [readingDate]
+    [readingDate],
   );
 
   const upMonth = useCallback(() => {
@@ -42,7 +40,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
       const date = moment(readingDate, ReadingDateFormat).add(1, 'month');
       setReadingDate(date.format(ReadingDateFormat));
     }
-  }, [setReadingDate, readingDate]);
+  }, [setReadingDate, readingDate, isCanUp]);
 
   const downMonth = useCallback(() => {
     const date = moment(readingDate, ReadingDateFormat).subtract(1, 'month');
@@ -100,7 +98,7 @@ export const EditReadingsHistoryModal: FC<EditReadingsHistoryModalProps> = ({
           </MonthSliderWrapper>
         </Header>
         <Wrapper>
-          <DeviceInfo device={device} />
+          <IndividualDeviceInfoExtended device={device} />
           <MetersInputsBlockPure
             resource={resource}
             rateNum={rateNum}

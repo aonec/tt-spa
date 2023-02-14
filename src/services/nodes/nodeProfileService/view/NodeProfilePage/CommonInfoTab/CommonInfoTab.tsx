@@ -2,9 +2,7 @@ import React, { FC } from 'react';
 import moment from 'moment';
 import { NodeStatusIconsDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus/NodeStatus.constants';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { resourceNamesLookup } from 'utils/resourceNamesLookup';
 import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
@@ -15,8 +13,8 @@ import { configNamesLookup } from 'utils/configNamesLookup';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
-    pipeNode?.nodeStatus?.value &&
-    NodeStatusIconsDictionary[pipeNode?.nodeStatus?.value];
+    pipeNode?.commercialStatus?.value &&
+    NodeStatusIconsDictionary[pipeNode?.commercialStatus?.value];
 
   const additionalAdress = additionalAddressesString(pipeNode.address);
   const isNodeCommercial =
@@ -58,7 +56,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           value: (
             <NodeStatusWrapper>
               {NodeStatusIcon && <NodeStatusIcon />}
-              <div>{pipeNode?.nodeStatus?.description}</div>
+              <div>{pipeNode?.commercialStatus?.description}</div>
             </NodeStatusWrapper>
           ),
         },

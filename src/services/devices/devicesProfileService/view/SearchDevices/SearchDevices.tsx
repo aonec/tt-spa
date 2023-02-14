@@ -12,9 +12,9 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
+  ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { Icon } from '01/components';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
@@ -22,6 +22,8 @@ import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
+import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
+import { SearchIcon } from 'ui-kit/icons';
 
 const { Option } = Select;
 
@@ -35,6 +37,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   devicesSearchType,
   serialNumber,
   setSerialNumber,
+  handleClear,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
@@ -45,15 +48,16 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
 
       setFieldValue(
         "['Filter.PipeDiameters']",
-        diameters.slice(firstIndex, secondIndex)
+        diameters.slice(firstIndex, secondIndex),
       );
+
+      setTimeout(() => submitForm(), 1000);
     },
-    [setFieldValue, diameters]
+    [setFieldValue, diameters],
   );
 
   const rangeValues: [number, number] = useMemo(() => {
     const first = _.first(values['Filter.PipeDiameters']);
-
     const last = _.last(values['Filter.PipeDiameters']);
 
     return [first || minValue, last || maxValue];
@@ -79,7 +83,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             onChange={(key, value) =>
               setFieldValue(
                 `['Filter.Address.${SearchDevicesFormikFieldsLookup[key]}']`,
-                value
+                value,
               )
             }
             handleSubmit={() => submitForm()}
@@ -96,7 +100,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
           className={styles.input}
           value={serialNumber}
           placeholder="Введите серийный номер прибора"
-          prefix={<Icon icon="search" />}
+          prefix={<SearchIcon />}
           onKeyDown={fromEnter(submitForm)}
         />
       </FormItem>
@@ -134,15 +138,24 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 </SelectSC>
               </FlexCenterRow>
             </FormItem>
+            <ResetButton
+              type="ghost"
+              onClick={handleClear}
+              size="small"
+              icon={<ClearIconSC />}
+            >
+              Сбросить
+            </ResetButton>
           </StyledGrid>
 
           <Grid>
             <FormItem>
               <StyledExpirationDate>
                 <StyledLabelSimple htmlFor="expirationDate">
-                  Истекает дата поверки:{' '}
+                  Истекает дата поверки:
                 </StyledLabelSimple>
                 <SelectSC
+                  placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}
                   onChange={(value) =>

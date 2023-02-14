@@ -15,26 +15,29 @@ export const SubscribersConsumption = () => {
 
   const currentUser = useStore(currentUserService.outputs.$currentUser);
   const isHousingStockHasCorpuses = Boolean(
-    currentUser?.organization?.filtersConfiguration?.hasHousingStockCorpuses
+    currentUser?.organization?.filtersConfiguration?.hasHousingStockCorpuses,
   );
 
   const subscribersConsumptionListComponentsLookup: {
     [key: string]: ReactNode;
-  } = {
-    [SubscribersConsumptionSearchType.Houses]: (
-      <>
-        {isHousingStockHasCorpuses && <Search isHousingStockHasCorpuses />}
-        {!isHousingStockHasCorpuses && (
-          <Search isHousingStockHasCorpuses={false} />
-        )}
-        <Space />
-        <StatisticsList />
-      </>
-    ),
-    [SubscribersConsumptionSearchType.ManagingFirm]: (
-      <DisplayStatisticsListByManagingFirmContainer />
-    ),
-  };
+  } = useMemo(
+    () => ({
+      [SubscribersConsumptionSearchType.Houses]: (
+        <>
+          {isHousingStockHasCorpuses && <Search isHousingStockHasCorpuses />}
+          {!isHousingStockHasCorpuses && (
+            <Search isHousingStockHasCorpuses={false} />
+          )}
+          <Space />
+          <StatisticsList />
+        </>
+      ),
+      [SubscribersConsumptionSearchType.ManagingFirm]: (
+        <DisplayStatisticsListByManagingFirmContainer />
+      ),
+    }),
+    [isHousingStockHasCorpuses],
+  );
 
   const subscribersConsumptionComponent = useMemo(() => {
     if (!searchType) return null;
@@ -44,7 +47,7 @@ export const SubscribersConsumption = () => {
     if (!Component) return null;
 
     return Component;
-  }, [searchType, isHousingStockHasCorpuses]);
+  }, [searchType, subscribersConsumptionListComponentsLookup]);
 
   return (
     <Wrap>

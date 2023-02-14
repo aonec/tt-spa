@@ -1,9 +1,9 @@
 import {
-  EIndividualDeviceReportOption,
-  EResourceType,
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
 } from 'myApi';
+import { ReportFiltrationFormValues } from 'services/reportsService/reportViewService/reportViewService.types';
+import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 
 export type ReportFiltrationFormProps = {
   existingCities: string[] | null;
@@ -12,28 +12,10 @@ export type ReportFiltrationFormProps = {
   filtrationValues: ReportFiltrationFormValues;
   formId: string;
   setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
+  reportType: ReportType;
 };
 
 export type Address = {
   id: number;
   addressString: string;
-};
-
-export enum ReportDatePeriod {
-  LastDay = 'LastDay',
-  LastSevenDays = 'LastSevenDays',
-  FromStartOfMonth = 'FromStartOfMonth',
-  PreviousMonth = 'PreviousMonth',
-  AnyPeriod = 'AnyPeriod',
-}
-
-export type ReportFiltrationFormValues = {
-  city: null | string;
-  houseManagement: null | string;
-  housingStockId: null | number;
-  resources: EResourceType[];
-  reportOption: null | EIndividualDeviceReportOption;
-  from: null | moment.Moment;
-  to: null | moment.Moment;
-  reportDatePeriod: null | ReportDatePeriod;
 };

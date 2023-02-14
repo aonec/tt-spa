@@ -10,31 +10,32 @@ const { inputs, outputs } = apartmentReadingsService;
 
 export const ApartmentReadingsContainer = () => {
   const history = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   const setSearchMode = useEvent(inputs.setSearchMode);
   const handleSearchApartment = useEvent(inputs.handleSearchApartment);
   const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
   const handlePauseApartment = useEvent(inputs.handlePauseApartment);
   const handleCancelPauseApartment = useEvent(
-    inputs.handleCancelPauseApartment
+    inputs.handleCancelPauseApartment,
   );
   const openEditPersonalNumberModal = useEvent(
-    inputs.openEditPersonalNumberModal
+    inputs.openEditPersonalNumberModal,
   );
   const setSelectedHomeownerName = useEvent(inputs.setSelectedHomeownerName);
 
   const searchMode = useStore(outputs.$searchMode);
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
   const apartment = useStore(outputs.$apartment);
-  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName)
+  const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
-      if (!apartment) return;
+      if (!apartment || apartment.id === Number(id)) return;
 
       history.push(`/meters/apartments/${apartment.id}`);
     }).unsubscribe;
-  }, []);
+  }, [history, id]);
 
   return (
     <>

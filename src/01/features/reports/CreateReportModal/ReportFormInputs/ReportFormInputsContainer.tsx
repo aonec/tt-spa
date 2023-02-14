@@ -64,7 +64,14 @@ export const ReportFormInputsContainer = () => {
         element: <ClosedIndividualDevicesFormContainer />,
       },
     ],
-    [rangePeriod, period, changePeriod, resources]
+    [
+      rangePeriod,
+      period,
+      changePeriod,
+      resources,
+      changeRangePeriod,
+      handleChangeResources,
+    ],
   );
 
   const formInputsElement = (type &&

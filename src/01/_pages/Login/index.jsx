@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Loader } from '01/components';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
@@ -12,6 +12,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DevSettingsModal } from '01/features/developmentSettings';
 import { openDevSettingsModal } from '01/features/developmentSettings/models';
 import { useIsDev } from '01/hooks/useDev';
+import { parse } from 'query-string';
 
 export const Main = styled.div`
   height: 100vh;
@@ -58,6 +59,7 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
+  const { search } = useLocation();
 
   async function FormSubmitHadler() {
     setLoading(true);
@@ -70,7 +72,11 @@ export const Login = () => {
       });
       setLoading(false);
 
-      // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
+      const { redirectUrl } = parse(search);
+      if (redirectUrl && redirectUrl !== '/login') {
+        return window.location.replace(redirectUrl);
+      }
+
       replace(res.roles.includes('Operator') ? '/meters' : '/tasks');
     } catch (error) {
       setLoading(false);
