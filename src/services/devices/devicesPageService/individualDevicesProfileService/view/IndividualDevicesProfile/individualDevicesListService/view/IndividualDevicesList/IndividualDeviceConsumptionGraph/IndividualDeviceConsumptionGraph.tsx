@@ -12,6 +12,8 @@ import {
 } from 'victory';
 import { Wrapper } from './IndividualDeviceConsumptionGraph.styled';
 import { IndividualDeviceConsumptionGraphProps } from './IndividualDeviceConsumptionGraph.types';
+import _ from 'lodash';
+import { DeviceGraphTick } from './DeviceGraphTick';
 
 const height = 50;
 const width = 150;
@@ -26,6 +28,7 @@ export const IndividualDeviceConsumptionGraph: FC<
   }));
 
   const { maxValue, minValue } = getMinAndMax(preparedData, minDelta);
+  const ticksData = [_.first(preparedData)?.time, _.last(preparedData)?.time];
 
   const areaStyle = {
     parent: { overflow: 'visible' },
@@ -58,11 +61,16 @@ export const IndividualDeviceConsumptionGraph: FC<
           style={{
             axis: { stroke: 'none' },
             grid: { stroke: 'none' },
-            ticks: { stroke: 'none' },
             tickLabels: { fontSize: '10' },
           }}
           offsetY={10}
-          tickFormat={(date) => moment(date).format('MM.YY')}
+          tickFormat={(date) =>
+            ticksData.includes(date) ? moment(date).format('MMMM') : ''
+          }
+          tickValues={preparedData
+            .map((value) => value.time)
+            .sort((first, second) => moment(first).diff(moment(second)))}
+          tickComponent={<DeviceGraphTick />}
         />
         <VictoryAxis
           dependentAxis
