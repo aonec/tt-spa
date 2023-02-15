@@ -27,3 +27,5 @@ export type TasksProfileProps = {
   perpetrators: OrganizationUserListResponse[];
   isSpectator: boolean;
 };
+
+export type TasksPageSegment = 'list' | 'map';
