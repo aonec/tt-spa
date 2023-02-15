@@ -30,11 +30,9 @@ const uploadMeterFx = domain.createEffect<
   EffectFailDataAxiosError
 >(({ meter }) => uploadReading(meter));
 
-const deleteMeterFx = domain.createEffect<
-  DeleteMeterPayload,
-  void,
-  EffectFailDataAxiosError
->(({ meterId }) => removeReading(meterId));
+const deleteMeterFx = domain.createEffect<DeleteMeterPayload, void>(
+  ({ meterId }) => removeReading(meterId),
+);
 
 const uploadMeter = domain.createEvent<UploadMeterPayload>();
 
@@ -54,29 +52,15 @@ forward({
 });
 
 uploadMeterFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+  if (error.response.status === 422) {
+    message.error('Введите все необходимы значения');
+  } else {
+    message.error(
+      error.response.data.error.Text ||
+        error.response.data.error.Message ||
+        'Произошла ошибка',
     );
   }
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
-  );
-});
-
-deleteMeterFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
-  );
 });
 
 const clearStatuses = domain.createEvent();
