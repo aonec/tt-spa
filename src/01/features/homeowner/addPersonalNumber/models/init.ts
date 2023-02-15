@@ -17,6 +17,7 @@ import { HomeownerAccountCreateRequest } from 'myApi';
 addPersonalNumberFx.use(addHomeowner);
 
 sample({
+  clock: addPersonalNmberSaveButtonClicked,
   source: combine(
     personalNumberEditForm.$values,
     $apartment,
@@ -45,7 +46,6 @@ sample({
       return data;
     },
   ),
-  clock: addPersonalNmberSaveButtonClicked,
   target: addPersonalNumberFx,
 });
 

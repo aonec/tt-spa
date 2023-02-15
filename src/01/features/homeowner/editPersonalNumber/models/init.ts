@@ -19,12 +19,18 @@ import {
   $closeHomeownerRequestStatus,
   resetCloseHomeownerRequestStatus,
   closeHomeownerAccountForm,
+  $samePersonalAccountNumderId,
+  handleConfirmationModalClose,
+  $isForced,
+  onForced,
+  handleEditHomeownerAccount,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
 import moment from 'moment';
 import { fetchApartmentFx } from '01/features/apartments/displayApartment/models';
 import { HomeownerGate } from '../../displayHomeowner/models/index';
+import { HomeownerAccountUpdateRequest } from 'myApi';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -43,7 +49,7 @@ sample({
     if (!isAutocomplete) return {};
 
     const currentAccount = data.homeownerAccounts?.find(
-      (account) => account.id === gateState.id
+      (account) => account.id === gateState.id,
     );
 
     const form = {
@@ -71,10 +77,22 @@ forward({
   to: personalNumberEditForm.submit,
 });
 
+forward({
+  from: personalNumberEditForm.formValidated,
+  to: handleEditHomeownerAccount,
+});
+
+forward({
+  from: onForced,
+  to: handleEditHomeownerAccount,
+});
+
 sample({
+  clock: handleEditHomeownerAccount,
   source: combine(
     HomeownerGate.state,
     personalNumberEditForm.$values,
+    $isForced,
     (
       gateState,
       {
@@ -84,7 +102,8 @@ sample({
         phoneNumber,
         openAt,
         isMainAccountingNumber,
-      }
+      },
+      isForced,
     ) => ({
       id: gateState?.id,
       data: {
@@ -94,11 +113,11 @@ sample({
         phoneNumber,
         openAt,
         IsMainOnApartment: isMainAccountingNumber,
-      },
-    })
+        isForced: isForced,
+      } as HomeownerAccountUpdateRequest,
+    }),
   ),
-  clock: personalNumberEditForm.formValidated,
-  target: editHomeownerAccountEffect as any,
+  target: editHomeownerAccountEffect,
 });
 
 forward({
@@ -124,7 +143,25 @@ sample({
       ({
         ClosedAt: moment(form?.closedAt).toISOString(true),
         HomeownerAccountId: gateState?.id,
-      } as any)
+      } as any),
   ),
   target: closeHomeownerAccountFx,
+});
+
+$samePersonalAccountNumderId
+  .on(editHomeownerAccountEffect.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
+
+$isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
+
+$samePersonalAccountNumderId.reset(handleConfirmationModalClose);
+
+forward({
+  from: editHomeownerAccountEffect.doneData,
+  to: handleConfirmationModalClose,
 });

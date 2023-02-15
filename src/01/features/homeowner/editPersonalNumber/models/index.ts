@@ -6,6 +6,7 @@ import {
 } from './../../../../../myApi';
 import { createStore, createEvent, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 
 export const $isSelectEditPersonalNumberTypeModalOpen = createStore(false);
 
@@ -15,6 +16,13 @@ export const closeEditPersonalNumberTypeModal = createEvent();
 export const $editRequestStatus = createStore<null | RequestStatusShared>(null);
 
 export const setEditRequestStatus = createEvent<null | RequestStatusShared>();
+
+export const handleConfirmationModalClose = createEvent();
+export const onForced = createEvent();
+export const $samePersonalAccountNumderId = createStore<number | null>(null);
+export const $isConfirmationModalOpen =
+  $samePersonalAccountNumderId.map(Boolean);
+export const $isForced = createStore<boolean>(false);
 
 export const personalNumberEditForm = createForm({
   fields: {
@@ -75,7 +83,8 @@ export const PersonalNumberFormGate = createGate();
 
 export const editHomeownerAccountEffect = createEffect<
   { id: string; data: HomeownerAccountUpdateRequest },
-  void
+  void,
+  EffectFailDataAxiosErrorDataApartmentId
 >();
 
 export const editHomeownerSaveButtonClicked = createEvent();
@@ -86,14 +95,15 @@ export const openCloseHomeonwerAccountModal = createEvent();
 
 export const closeCloseHomeonwerAccountModal = createEvent();
 
+export const handleEditHomeownerAccount = createEvent();
+
 export const closeHomeownerAccountFx = createEffect<
   HomeownerAccountCloseRequest,
   void
 >();
 
-export const $closeHomeownerRequestStatus = createStore<RequestStatusShared>(
-  null
-);
+export const $closeHomeownerRequestStatus =
+  createStore<RequestStatusShared>(null);
 
 export const resetCloseHomeownerRequestStatus = createEvent();
 
