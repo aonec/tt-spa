@@ -15,3 +15,9 @@ export const Header = styled.div`
   color: rgba(39, 47, 90, 0.9);
   font-size: 12px;
 `;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
