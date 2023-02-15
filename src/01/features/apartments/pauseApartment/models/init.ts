@@ -53,8 +53,10 @@ const payload = combine(
 sample({
   source: payload,
   clock: pauseApartmentForm.formValidated,
-  target: pauseApartmentStatusFx as any,
+  target: pauseApartmentStatusFx,
 });
+
+cancelPauseApartmentButtonClicked.watch(() => console.log('first'));
 
 sample({
   source: PauseApartmentGate.state,

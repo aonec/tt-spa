@@ -67,7 +67,7 @@ sample({
       clock: ApartmentGate.state,
       filter: (apartment, { id }) => Boolean(id && id !== apartment?.id),
     }),
-    pauseApartmentStatusFx.doneData,
+    pauseApartmentStatusFx.doneData, //Это приводит к ошибочному запросу
   ],
   target: fetchApartmentFx,
 });
