@@ -11,6 +11,8 @@ import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
 import moment from 'moment';
+import { message } from 'antd';
+import { handleResetProblemDevices } from '../../displayProblemDevices/models';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 
@@ -31,7 +33,7 @@ forward({
     pauseApartmentStatusFx.doneData,
     pauseApartmentModalCancelButtonClicked,
   ],
-  to: pauseApartmentForm.reset,
+  to: [pauseApartmentForm.reset, handleResetProblemDevices],
 });
 
 const payload = combine(
@@ -50,17 +52,17 @@ const payload = combine(
   }),
 );
 
+pauseApartmentForm.formValidated.watch(() => console.log('first'));
+
 sample({
-  source: payload,
   clock: pauseApartmentForm.formValidated,
+  source: payload,
   target: pauseApartmentStatusFx,
 });
 
-cancelPauseApartmentButtonClicked.watch(() => console.log('first'));
-
 sample({
-  source: PauseApartmentGate.state,
   clock: cancelPauseApartmentButtonClicked,
+  source: PauseApartmentGate.state,
   fn: (source) => ({
     apartmentId: source.id,
     requestPayload: {
@@ -70,4 +72,17 @@ sample({
     },
   }),
   target: pauseApartmentStatusFx,
+});
+
+pauseApartmentStatusFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });

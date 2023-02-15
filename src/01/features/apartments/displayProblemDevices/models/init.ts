@@ -3,13 +3,16 @@ import {
   ProblemDevicesGate,
   fetchProblemDevicesFx,
   $problemDevices,
+  handleResetProblemDevices,
 } from './index';
 import { sample } from 'effector';
 import moment from 'moment';
 
 fetchProblemDevicesFx.use(getProblemDevices);
 
-$problemDevices.on(fetchProblemDevicesFx.doneData, (_, devices) => devices);
+$problemDevices
+  .on(fetchProblemDevicesFx.doneData, (_, devices) => devices)
+  .reset(handleResetProblemDevices);
 
 sample({
   clock: ProblemDevicesGate.state,
