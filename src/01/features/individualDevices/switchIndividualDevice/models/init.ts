@@ -49,6 +49,7 @@ import { getReadingValuesArray } from '../components/ReadingsInput';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { axios } from '01/axios';
 import { getFilledArray } from 'utils/getFilledArray';
+import { message } from 'antd';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -249,6 +250,19 @@ guard({
 forward({
   from: addIndividualDeviceForm.formValidated,
   to: checkBeforSavingButtonClicked,
+});
+
+createIndividualDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export function getChangedReadings(

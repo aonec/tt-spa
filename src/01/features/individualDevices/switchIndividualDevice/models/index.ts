@@ -20,6 +20,7 @@ import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { createGate } from 'effector-react';
 import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
+import { EffectFailDataAxiosError } from 'types';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -142,7 +143,8 @@ export const createIndividualDeviceFx = createEffect<
     deviceId: number;
     requestPayload: SwitchIndividualDeviceRequest;
   },
-  IndividualDeviceResponse | null
+  IndividualDeviceResponse | null,
+  EffectFailDataAxiosError
 >();
 
 export const checkIndividualDeviceFx = createEffect<

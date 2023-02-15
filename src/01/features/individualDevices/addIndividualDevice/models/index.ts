@@ -9,6 +9,7 @@ import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { createGate } from 'effector-react';
+import { EffectFailDataAxiosError } from 'types';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -133,5 +134,6 @@ export const AddIndividualDeviceDate = createGate<{ id: number }>();
 
 export const createIndividualDeviceFx = createEffect<
   CreateIndividualDeviceRequest,
-  MeteringDeviceResponse
+  MeteringDeviceResponse,
+  EffectFailDataAxiosError
 >();
