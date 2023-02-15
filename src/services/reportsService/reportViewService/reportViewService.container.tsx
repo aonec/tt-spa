@@ -17,6 +17,7 @@ export const ReportViewContainer = () => {
 
   const setFiltrationValues = useEvent(inputs.setFiltrationValues);
   const downloadReport = useEvent(inputs.downloadReport);
+  const clearFiltrationValues = useEvent(inputs.clearFiltrationValues);
 
   const existingCities = useStore(outputs.$existingCities);
   const houseManagements = useStore(outputs.$houseManagements);
@@ -56,6 +57,7 @@ export const ReportViewContainer = () => {
         homeownersReportData={homeownersReportData}
         isReportFileDownloading={isReportFileDownloading}
         downloadReport={() => downloadReport()}
+        clearFiltrationValues={() => clearFiltrationValues()}
       />
     </>
   );

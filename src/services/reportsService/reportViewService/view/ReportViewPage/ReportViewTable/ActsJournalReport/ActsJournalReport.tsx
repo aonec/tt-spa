@@ -44,7 +44,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
           },
           {
             label: 'Адрес',
-            size: '0.5fr',
+            size: '270px',
             render: (elem) => {
               const { addressString, number } = getReportElemAddress(elem);
 
@@ -77,7 +77,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
           },
           {
             label: 'Ресурс',
-            size: '0.35fr',
+            size: '150px',
             render: (elem) => (
               <ResourceWrapper>
                 <ResourceIconLookup resource={elem.resourceType} />
@@ -91,7 +91,8 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             render: (elem) => moment(elem.actJobDate).format('DD.MM.YYYY'),
           },
         ]}
-        elements={actJournalReportData?.rows?.slice(0, 50) || []}
+        elements={actJournalReportData?.rows || []}
+        pagination={{ pageSize: 50 }}
       />
       {actJournalReportData.rows && (
         <ActsCountPanel count={actJournalReportData.rows.length} />
