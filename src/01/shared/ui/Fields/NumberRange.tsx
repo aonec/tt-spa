@@ -3,14 +3,14 @@ import { ArrowRight } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { Grid } from '../Layout/Grid';
 
-interface NumberRange {
+interface INumberRange {
   from: number | null;
   to: number | null;
 }
 
 interface Props {
-  value: NumberRange;
-  onChange: (value: NumberRange) => void;
+  value: INumberRange;
+  onChange: (value: INumberRange) => void;
   disabled?: boolean;
 }
 

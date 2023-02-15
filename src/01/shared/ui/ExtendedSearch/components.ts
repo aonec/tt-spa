@@ -4,7 +4,7 @@ import { CloseIcon } from 'ui-kit/icons';
 export const SearchWrap = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 0 15px;
+  padding: 0 0 16px;
 `;
 
 export const ExtendedSearchButton = styled.div`
@@ -59,7 +59,7 @@ export const HideExtendedSearchButton = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 15px 10px;
+  padding: 6px 12px 16px;
 `;
 
 export const Header = styled.div`
@@ -69,20 +69,23 @@ export const Header = styled.div`
 `;
 
 export const Footer = styled.div`
-  padding: 10px;
+  padding: 12px;
   background: #f3f5f6;
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
+  border-radius: 0 0 10px 10px;
 `;
 
 export const SearchContentWrap = styled.div`
   width: 100%;
-  margin-left: 15px;
+  margin-left: 16px;
 `;
 
 export const ExtendedSearchWrap = styled.div`
-  margin: 0 5px 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin: 0 6px 16px;
+  box-shadow: 0 5px 10px rgba(0, 0, 66, 0.12);
 `;
 
 export const ClearIconSC = styled(CloseIcon)`

@@ -1,6 +1,7 @@
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
-import { combine, createDomain, forward, split } from 'effector';
+import { combine, createDomain, forward, sample, split } from 'effector';
 import {
   ResourceDisconnectingCreateRequest,
   StreetWithHousingStockNumbersResponsePagedList,
@@ -63,8 +64,15 @@ const $typeOfAddress = domain
   .on(setTypeOfAddress, (_, type) => type)
   .reset(clearTypeOfAddress);
 
+const selectCity = domain.createEvent<string>();
+
+const $selectedCity = domain
+  .createStore<string | null>(null)
+  .on(selectCity, (_, city) => city)
+  .reset(closeModal);
+
 const getExistingHousingStocksFx = domain.createEffect<
-  void,
+  string,
   StreetWithHousingStockNumbersResponsePagedList
 >(fetchExistingHousingStocks);
 
@@ -136,9 +144,21 @@ forward({
   to: [clearHousingStocks, clearTypeOfAddress],
 });
 
-forward({
-  from: openModal,
-  to: getExistingHousingStocksFx,
+sample({
+  clock: $selectedCity,
+  filter: Boolean,
+  target: getExistingHousingStocksFx,
+});
+
+sample({
+  source: sample({
+    source: $existingCities,
+    filter: (cities): cities is string[] =>
+      Boolean(cities && cities.length === 1),
+  }),
+  clock: [openModal],
+  fn: (cities) => cities[0],
+  target: selectCity,
 });
 
 split({
@@ -173,6 +193,7 @@ export const createResourceDisconnectionService = {
     closeModal,
     createResourceDisconnection,
     setTypeOfAddress,
+    selectCity,
   },
   outputs: {
     $isModalOpen,
@@ -183,5 +204,6 @@ export const createResourceDisconnectionService = {
     $housingStockWithHouseManagements,
     $typeOfAddress,
     $isHousingStocksLoading,
+    $selectedCity,
   },
 };

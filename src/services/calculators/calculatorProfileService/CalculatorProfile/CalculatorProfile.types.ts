@@ -1,4 +1,8 @@
-import { CalculatorResponse } from 'myApi';
+import {
+  CalculatorResponse,
+  NodeOnHousingStockResponse,
+  PipeNodeIntoCalculatorResponse,
+} from 'myApi';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 
 export type CalculatorProfileProps = {
@@ -8,4 +12,7 @@ export type CalculatorProfileProps = {
   handleOpenCloseCalculatorModal: (payload: CalculatorResponse) => void;
   handleOpenCheckCalculatorModal: (payload: CalculatorResponse) => void;
   handleOpenConsumptionReportModal: () => void;
+  openDevicesListModal: (
+    payload: NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse,
+  ) => void;
 };

@@ -11,14 +11,18 @@ export type FetchArchiveReadingsPayload = ArchiveReadingsFilter & {
   pipeCount: number;
 };
 
-export type DateRange = {
-  From: string;
-  To: string;
+export type TasksStatisticPayload = DateRange & {
+  nodeId: number;
 };
 
 export type FormikDateRange = {
   From: moment.Moment | null;
   To: moment.Moment | null;
+};
+
+export type DateRange = {
+  From: string;
+  To: string;
 };
 
 export type ArchiveReadingsFilter = DateRange & {

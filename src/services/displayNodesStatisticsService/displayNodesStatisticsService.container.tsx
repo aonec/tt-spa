@@ -15,6 +15,7 @@ import { NodeStatisticsTable } from './view/NodeStatisticsTable';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;
+const wrapperId = 'nodeConsumptionGraphWrapper';
 
 export const DisplayNodesStatisticsContainer: FC<
   DisplayNodesStatisticsContainerProps
@@ -23,11 +24,12 @@ export const DisplayNodesStatisticsContainer: FC<
   const graphType = useStore(outputs.$graphType);
   const archiveData = useStore(outputs.$archiveReadings);
   const isLoading = useStore(outputs.$isLoading);
+  const taskStatistics = useStore(outputs.$taskStatistics);
 
   const setGraphType = useEvent(inputs.setGraphType);
   const setArchiveFilter = useEvent(inputs.setArchiveFilter);
 
-  const archive = archiveData?.data || [];
+  const archive = useMemo(() => archiveData?.data || [], [archiveData]);
   const paramsList = useMemo(
     () =>
       archive.reduce((acc, readings) => {
@@ -58,11 +60,13 @@ export const DisplayNodesStatisticsContainer: FC<
         <WithLoader isLoading={isLoading}>
           {archiveData && archiveReadingExist && (
             <>
-              <Wrapper>
+              <Wrapper id={wrapperId}>
                 <GraphView
                   graphParam={graphType}
                   data={archiveData}
                   reportType={currentArhiveFilter.ReportType}
+                  taskStatistics={taskStatistics}
+                  wrapperId={wrapperId}
                 />
               </Wrapper>
               <NodeStatisticsTable

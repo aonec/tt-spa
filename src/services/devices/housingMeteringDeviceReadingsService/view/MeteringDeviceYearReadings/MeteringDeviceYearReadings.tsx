@@ -22,7 +22,7 @@ export const MeteringDeviceYearReadings: FC<
           />
         );
       }),
-    [yearRreadings, allReadings, isColdWater],
+    [yearRreadings, allReadings, isColdWater, createReading],
   );
 
   return (

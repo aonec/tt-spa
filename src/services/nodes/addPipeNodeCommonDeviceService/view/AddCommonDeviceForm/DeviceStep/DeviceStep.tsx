@@ -69,7 +69,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
     () =>
       inputs.handleCreatePipe.watch((id) => setFieldValue('pipeId', id))
         .unsubscribe,
-    []
+    [setFieldValue]
   );
 
   return (

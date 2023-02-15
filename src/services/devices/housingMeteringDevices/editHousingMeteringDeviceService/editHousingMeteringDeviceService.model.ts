@@ -37,17 +37,24 @@ forward({
 
 const $currentTab = domain
   .createStore<EditHousingMeteringDeviceTabs>(
-    EditHousingMeteringDeviceTabs.CommonInfo
+    EditHousingMeteringDeviceTabs.CommonInfo,
   )
   .on(handleChangeTab, (_, tab) => tab);
-
-editHousingMeteringDeviceFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
 
 editHousingMeteringDeviceFx.doneData.watch(() => {
   message.success('ОДПУ успешно обновлен!');
   handleHousingMeteringDeviceUpdate();
+});
+
+editHousingMeteringDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 export const editHousingMeteringDeviceService = {

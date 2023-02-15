@@ -4,5 +4,5 @@ export const renderForHeatAndDeltaMass = (
   resource: ResourceType,
   graphParam: string
 ) => {
-  return resource === 'Heat' && graphParam === 'Расход по массе, т';
+  return resource === 'HotWaterSupply' && graphParam === 'Расход по массе, т';
 };

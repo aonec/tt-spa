@@ -4,7 +4,7 @@ import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/Individu
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useEffect } from 'react';
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ export const SplitPersonalNumber = () => {
     id: string;
   }>();
   const homeowner = useStore($apartment)?.homeownerAccounts?.find(
-    (account) => account.id === homeownerId
+    (account) => account.id === homeownerId,
   );
 
   const stage = useStore($splitPersonalNumberStageNumber);
@@ -64,17 +64,17 @@ export const SplitPersonalNumber = () => {
 
   const pending = useStore(splitPersonalNumberFx.pending);
 
-  function onSuccesRequest() {
+  const onSuccesRequest = useCallback(() => {
     history.goBack();
 
     message.success('Данные успешно сохранены');
-  }
+  }, [history]);
 
   useEffect(() => {
     const unwatch = splitPersonalNumberFx.doneData.watch(onSuccesRequest);
 
     return () => unwatch();
-  }, []);
+  }, [onSuccesRequest]);
 
   return (
     <>

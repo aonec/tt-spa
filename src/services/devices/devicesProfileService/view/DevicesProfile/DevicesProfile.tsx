@@ -101,6 +101,10 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
         devicesSearchType={devicesSearchType}
         serialNumber={serialNumber}
         setSerialNumber={setSerialNumber}
+        handleClear={() => {
+          resetForm();
+          clearSearchPayload();
+        }}
       >
         <ExtendedSearch
           isOpen={isOpen}

@@ -1,5 +1,5 @@
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import styled, { keyframes } from 'styled-components';
+import { getFilledArray } from 'utils/getFilledArray';
 
 export const columnWidth = `120px`;
 
@@ -14,7 +14,7 @@ export const Header = styled.div<{ columnsCount: number }>`
   background: rgba(243, 245, 246, 1);
   display: grid;
   grid-template-columns: ${({ columnsCount }) =>
-    getArrayByCountRange(columnsCount, () => columnWidth).join(' ')};
+    getFilledArray(columnsCount, () => columnWidth).join(' ')};
   grid-gap: 10px;
   align-items: center;
   padding: 0 10px;

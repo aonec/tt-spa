@@ -102,7 +102,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   useEffect(() => {
     selectedHomeowner?.name &&
       setSelectedHomeownerName(selectedHomeowner?.name);
-  }, [activeHomeowner]);
+  }, [selectedHomeowner, setSelectedHomeownerName]);
 
   const houseManagement = housingStock?.houseManagement;
 

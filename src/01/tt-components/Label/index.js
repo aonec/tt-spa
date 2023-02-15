@@ -12,11 +12,11 @@ export const Label = styled.label`
   padding-bottom: 8px;
 
   ${({ color }) =>
-    (color == 'rgba' &&
+    (color === 'rgba' &&
       css`
         color: rgba(39, 47, 90, 0.6);
       `) ||
-    (color == 'grey' &&
+    (color === 'grey' &&
       css`
         color: rgba(39, 47, 90, 0.6);
       `)};

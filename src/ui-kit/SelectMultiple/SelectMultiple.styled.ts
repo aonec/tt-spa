@@ -4,8 +4,25 @@ import { Select as AntSelect } from 'antd';
 export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
   min-height: 48px;
 
+  .ant-select-selection-item {
+    min-height: 24px;
+    height: auto;
+    border: none;
+    background: rgba(24, 158, 233, 0.16);
+  }
+
   .ant-select-selection-item-content {
     line-height: initial;
+  }
+
+  .ant-select-selection-item-remove {
+    transform: translateY(2px);
+  }
+
+  .ant-select-selection-item-remove {
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
   }
 
   * {
@@ -15,8 +32,10 @@ export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
 
   .ant-select-selector {
     height: 100% !important;
+    min-height: 48px;
     padding: 8px 16px !important;
     border-radius: 4px !important;
+    padding: 5px 16px !important;
   }
 
   .ant-select-arrow {

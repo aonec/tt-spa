@@ -1,5 +1,4 @@
 import React from 'react';
-import { CommunicationPipeInterface } from '../../utils/groupDevicesByObjects';
 import { Dates } from '../Dates';
 import {
   DeviceLink,

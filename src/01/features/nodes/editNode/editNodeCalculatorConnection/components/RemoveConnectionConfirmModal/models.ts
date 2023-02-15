@@ -6,25 +6,29 @@ import {
   outputs as nodeOutputs,
   inputs as nodeInputs,
 } from '../../../../displayNode/models';
+import { EffectFailDataAxiosError } from 'types';
 
 const removeNodeCalculatorConnectionDomain = createDomain();
 
-const $isConfirmModalOpen = removeNodeCalculatorConnectionDomain.createStore(
-  false
-);
+const $isConfirmModalOpen =
+  removeNodeCalculatorConnectionDomain.createStore(false);
 
 const removeConnectionFx = removeNodeCalculatorConnectionDomain.createEffect<
   UpdatePipeNodeRequest & { nodeId: number },
-  void
+  void,
+  EffectFailDataAxiosError
 >((payload) => {
-  axios.put(`PipeNodes/${payload.nodeId}`, payload);
+  return axios.put(`PipeNodes/${payload.nodeId}`, payload);
 });
 
-const openConfirmationModal = removeNodeCalculatorConnectionDomain.createEvent();
+const openConfirmationModal =
+  removeNodeCalculatorConnectionDomain.createEvent();
 
-const closeConfirmationModal = removeNodeCalculatorConnectionDomain.createEvent();
+const closeConfirmationModal =
+  removeNodeCalculatorConnectionDomain.createEvent();
 
-const removeConnectionButtonClicked = removeNodeCalculatorConnectionDomain.createEvent();
+const removeConnectionButtonClicked =
+  removeNodeCalculatorConnectionDomain.createEvent();
 
 $isConfirmModalOpen
   .on(openConfirmationModal, () => true)
@@ -37,7 +41,6 @@ sample({
     resource: node?.resource,
     nodeId: node?.id!,
     disconnectFromCalculator: true,
-    nodeStatus: node?.nodeStatus?.value,
     number: node?.number,
   }),
   target: removeConnectionFx,
@@ -50,6 +53,15 @@ forward({
 
 removeConnectionFx.doneData.watch(() => {
   message.info('Узел отключен от вычислителя');
+});
+
+removeConnectionFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(error.response.data.error.Text);
 });
 
 export const outputs = {
@@ -65,5 +77,5 @@ export const inputs = {
 
 export const RemoveNodeCalculatorConnectionService = {
   inputs,
-  outputs
-}
+  outputs,
+};

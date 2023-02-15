@@ -8,9 +8,8 @@ import {
   searchStateChanged,
   showDownloadDeviceReportButtonClicked,
 } from './index';
-import { guard, merge } from 'effector';
+import { merge, sample } from 'effector';
 import { downloadDevicesReport } from '../../../_api/devicesReport';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 
 downloadDevicesReportFx.use(downloadDevicesReport);
 
@@ -22,13 +21,11 @@ $isDeviceReportModalVisible.on(
     downloadDeviceReportCancelButtonClicked,
     downloadDevicesReportFx.done,
   ]),
-  (x) => !x
+  (x) => !x,
 );
 
-guard({
+sample({
   clock: downloadDeviceReportConfirmButtonClicked,
-  filter: (searchState): searchState is Partial<CalculatorsListRequestPayload> =>
-    searchState !== null,
   source: $devicesSearchState,
   target: downloadDevicesReportFx,
 });

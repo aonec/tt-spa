@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IndividualDeviceReadingsYearHistoryResponse } from '../../../../../myApi';
 export function useOpenedYears(
-  years: IndividualDeviceReadingsYearHistoryResponse[]
+  years: IndividualDeviceReadingsYearHistoryResponse[],
 ) {
   const [openedYears, setOpenedYears] = useState<
     { year: number; openedMonths: number[]; open: boolean }[]
@@ -14,51 +14,74 @@ export function useOpenedYears(
           year: elem.year,
           open: true,
           openedMonths: [],
-        })) || []
+        })) || [],
       ),
-    [years.map((elem) => elem.year).join()]
+    [years],
   );
 
-  const openYear = (year: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) => (elem.year === year ? { ...elem, open: true } : elem))
-    );
+  const openYear = useCallback(
+    (year: number) =>
+      setOpenedYears((prev) =>
+        prev.map((elem) =>
+          elem.year === year ? { ...elem, open: true } : elem,
+        ),
+      ),
+    [],
+  );
 
-  const closeYear = (year: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) => (elem.year === year ? { ...elem, open: false } : elem))
-    );
+  const closeYear = useCallback(
+    (year: number) =>
+      setOpenedYears((prev) =>
+        prev.map((elem) =>
+          elem.year === year ? { ...elem, open: false } : elem,
+        ),
+      ),
+    [],
+  );
 
-  const isYearOpen = (year: number) =>
-    openedYears.find((elem) => elem.year === year)?.open;
+  const isYearOpen = useCallback(
+    (year: number) => openedYears.find((elem) => elem.year === year)?.open,
+    [openedYears],
+  );
 
-  const openMonth = (year: number, month: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) =>
-        elem.year === year
-          ? { ...elem, openedMonths: [...elem.openedMonths, month] }
-          : elem
-      )
-    );
+  const openMonth = useCallback(
+    (year: number, month: number) =>
+      setOpenedYears((prev) =>
+        prev.map((elem) =>
+          elem.year === year
+            ? { ...elem, openedMonths: [...elem.openedMonths, month] }
+            : elem,
+        ),
+      ),
+    [],
+  );
 
-  const closeMonth = (year: number, month: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) =>
-        elem.year === year
-          ? {
-              ...elem,
-              openedMonths: elem.openedMonths.filter((elem) => elem !== month),
-            }
-          : elem
-      )
-    );
+  const closeMonth = useCallback(
+    (year: number, month: number) =>
+      setOpenedYears((prev) =>
+        prev.map((elem) =>
+          elem.year === year
+            ? {
+                ...elem,
+                openedMonths: elem.openedMonths.filter(
+                  (elem) => elem !== month,
+                ),
+              }
+            : elem,
+        ),
+      ),
+    [],
+  );
 
-  const isMonthOpen = (year: number, month: number) =>
-    Boolean(
-      openedYears
-        .find((elem) => elem.year === year)
-        ?.openedMonths.find((elem) => elem === month)
-    );
+  const isMonthOpen = useCallback(
+    (year: number, month: number) =>
+      Boolean(
+        openedYears
+          .find((elem) => elem.year === year)
+          ?.openedMonths.find((elem) => elem === month),
+      ),
+    [openedYears],
+  );
 
   return {
     isYearOpen,

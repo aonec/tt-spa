@@ -7,6 +7,7 @@ const { inputs, outputs } = meteringDevicesService;
 
 export const MeteringDevicesContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
+
   const isLoading = useStore(outputs.$isLoading);
   const meterindDevicesList = useStore(outputs.$meterindDevicesList);
   const pipeNode = useStore(outputs.$pipeNode);

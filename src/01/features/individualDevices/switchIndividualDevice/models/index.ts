@@ -30,6 +30,8 @@ export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 export const readingValueValidate = (value: number | string | null) =>
   Number(value) === 0 && value !== null ? true : Boolean(value);
 
+export const ApartmentIdGate = createGate<{ apartmentId: number }>();
+
 export const addIndividualDeviceForm = createForm({
   fields: {
     serialNumber: {

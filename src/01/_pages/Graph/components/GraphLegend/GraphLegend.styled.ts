@@ -7,7 +7,6 @@ export const LegendWrapper = styled.div`
   width: 100%;
   position: absolute;
   left: 75px;
-  bottom: 0px;
 
   .ant-tooltip-inner {
     border-radius: 4px;
@@ -49,4 +48,36 @@ export const LegendLine = styled.div<{
     background: ${({ resource, color }) =>
       resource ? getResourceColor(resource) : color};
   }
+`;
+
+export const LegendCircle = styled.div<{ color: string }>`
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+  background-color: ${({ color }) => color};
+`;
+
+export const LegendCircleWithBorder = styled.div<{ color: string }>`
+  width: 10px;
+  height: 10px;
+
+  border: 3px solid ${({ color }) => color};
+  border-radius: 50%;
+
+  background-color: transparent;
+`;
+
+export const LegendColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+export const TaskLegendGroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  color: #272f5ab2;
 `;

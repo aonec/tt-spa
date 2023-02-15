@@ -1,4 +1,4 @@
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -19,11 +19,11 @@ export const CloseHomeownerAccountContainer = () => {
 
   const handleCloseModal = useEvent(inputs.closeClosingHomeownerModal);
   const handleCloseHomeownerAccount = useEvent(
-    inputs.handleCloseHomeownerAccount
+    inputs.handleCloseHomeownerAccount,
   );
 
   const handleSubmit = () => {
-    if (!closedAt) return;
+    if (!closedAt) return message.warning('Не выбрана дата закрытия');
 
     handleCloseHomeownerAccount({ closedAt: closedAt.format('YYYY-MM-DD') });
   };

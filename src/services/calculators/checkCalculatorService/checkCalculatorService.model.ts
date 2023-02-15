@@ -4,6 +4,7 @@ import { CalculatorResponse, CheckDeviceRequest } from 'myApi';
 import { calculatorProfileService } from '../calculatorProfileService';
 import { fetchCloseCalculator } from './checkCalculatorService.api';
 import { CheckCalculatorFormik } from './checkCalculatorService.types';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('checkCalculatorService');
 
@@ -18,9 +19,11 @@ const $calculatorInfo = domain
 const $isModalOpen = $calculatorInfo.map(Boolean);
 
 const checkCalculator = domain.createEvent<CheckCalculatorFormik>();
-const checkCalculatorFx = domain.createEffect<CheckDeviceRequest, void>(
-  fetchCloseCalculator,
-);
+const checkCalculatorFx = domain.createEffect<
+  CheckDeviceRequest,
+  void,
+  EffectFailDataAxiosError
+>(fetchCloseCalculator);
 
 sample({
   source: guard({
@@ -40,8 +43,17 @@ forward({
   to: [closeModal, calculatorProfileService.inputs.refetchCalculator],
 });
 
-checkCalculatorFx.done.watch(() => {
+checkCalculatorFx.doneData.watch(() => {
   message.success('Вычислитель успешно поверен');
+});
+
+checkCalculatorFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(error.response.data.error.Text);
 });
 
 export const checkCalculatorService = {

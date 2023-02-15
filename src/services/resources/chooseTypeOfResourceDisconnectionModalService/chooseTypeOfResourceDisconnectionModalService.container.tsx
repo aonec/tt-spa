@@ -1,9 +1,13 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { ActionButton } from '01/_pages/MetersPage/components/MeterDevices/components/action_button/action_button';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
+import { ActionButton } from 'ui-kit/shared_components/ActionButton';
 import { chooseTypeOfResourceDisconnectionModalService } from './chooseTypeOfResourceDisconnectionModalService.model';
-import { ButtonsWrapper } from './chooseTypeOfResourceDisconnectionModalService.styled';
+import {
+  ButtonsWrapper,
+  HeatIconSC,
+  TimerIconSC,
+} from './chooseTypeOfResourceDisconnectionModalService.styled';
 
 const { inputs, outputs } = chooseTypeOfResourceDisconnectionModalService;
 
@@ -26,14 +30,16 @@ export const ChooseTypeOfResourceDisconnectionModalContainer = () => {
     >
       <ButtonsWrapper>
         <ActionButton
-          type="temporaryDisconnection"
           onClick={() => clearInterHeatingSeason()}
           active={!isInterHeatingSeason}
+          icon={<TimerIconSC />}
+          text="Временное отключение"
         />
         <ActionButton
-          type="interHeatingSeason"
           onClick={() => setInterHeatingSeason()}
           active={isInterHeatingSeason}
+          icon={<HeatIconSC />}
+          text="Межотопительный сезон"
         />
       </ButtonsWrapper>
     </ModalTT>

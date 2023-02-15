@@ -152,7 +152,7 @@ const IndividualDeviceEditForm = ({
     if (mountPlaceInit) {
       setFieldValue('mountPlaceId', mountPlaceInit?.id);
     }
-  }, [mountPlaceInit]);
+  }, [mountPlaceInit, setFieldValue]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

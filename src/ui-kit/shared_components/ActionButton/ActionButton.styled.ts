@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ active?: boolean }>`
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -24,6 +24,11 @@ export const Wrapper = styled.div`
     border-color: #189ee9;
     box-shadow: 0 4px 8px 0 #189ee955;
   }
+
+  ${({ active }) =>
+    active &&
+    `border-color: #189ee9;
+      box-shadow: 0 4px 8px 0 #189ee955;`}
 `;
 
 export const Text = styled.div`

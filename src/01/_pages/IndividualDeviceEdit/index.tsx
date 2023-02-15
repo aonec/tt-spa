@@ -19,10 +19,10 @@ export const IndividualDeviceEdit = () => {
 
   useEffect(() => {
     run(getIndividualDevice(Number(deviceId)));
-  }, [deviceId]);
+  }, [deviceId, run]);
 
   if (!device) {
-    return <Loader size={'32'} show />;
+    return <Loader size={32} show />;
   }
   const tabItems: Array<TabsItemInterface> = [
     {
@@ -46,7 +46,7 @@ export const IndividualDeviceEdit = () => {
         <div style={{ background: 'red' }}>ОШИБКА</div>
       ) : null}
       {status === 'pending' || status === 'idle' ? (
-        <Loader size={'32'} show />
+        <Loader size={32} show />
       ) : null}
       {status === 'resolved' ? (
         <>
