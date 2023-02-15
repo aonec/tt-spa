@@ -9,6 +9,7 @@ import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { TaskGroupingFilter } from 'myApi';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
+import { TasksMapContainer } from 'services/tasks/tasksMapService';
 
 const { TabPane } = TabsSC;
 
@@ -84,39 +85,44 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           onChange={setCurrentSegment}
         />
       </PageHeader>
-      <TabsSC activeKey={grouptype} onChange={history.push}>
-        {!isSpectator && (
-          <TabPane tab={executingTabText} key="Executing"></TabPane>
-        )}
-        <TabPane tab={observingTabText} key="Observing"></TabPane>
-        <TabPane tab="Архив" key="Archived"></TabPane>
-      </TabsSC>
-      <Wrapper>
-        <SearchTasks
-          onSubmit={handleSearch}
-          taskTypes={taskTypes}
-          currentFilter={initialValues}
-          isExtendedSearchOpen={isExtendedSearchOpen}
-          closeExtendedSearch={closeExtendedSearch}
-          openExtendedSearch={openExtendedSearch}
-          clearFilters={clearFilters}
-          changeFiltersByGroupType={changeFiltersByGroupType}
-          housingManagments={housingManagments}
-          perpetrators={perpetrators}
-        />
-        <div>{!isLoading && tasksList}</div>
-        {isLoading && <Skeleton active />}
-        {!isLoading && Boolean(tasks?.length) && (
-          <PaginationSC
-            defaultCurrent={1}
-            onChange={changePageNumber}
-            pageSize={20}
-            total={totalItems}
-            current={initialValues?.PageNumber}
-            showSizeChanger={false}
-          />
-        )}
-      </Wrapper>
+      {currentSegment === 'list' && (
+        <>
+          <TabsSC activeKey={grouptype} onChange={history.push}>
+            {!isSpectator && (
+              <TabPane tab={executingTabText} key="Executing"></TabPane>
+            )}
+            <TabPane tab={observingTabText} key="Observing"></TabPane>
+            <TabPane tab="Архив" key="Archived"></TabPane>
+          </TabsSC>
+          <Wrapper>
+            <SearchTasks
+              onSubmit={handleSearch}
+              taskTypes={taskTypes}
+              currentFilter={initialValues}
+              isExtendedSearchOpen={isExtendedSearchOpen}
+              closeExtendedSearch={closeExtendedSearch}
+              openExtendedSearch={openExtendedSearch}
+              clearFilters={clearFilters}
+              changeFiltersByGroupType={changeFiltersByGroupType}
+              housingManagments={housingManagments}
+              perpetrators={perpetrators}
+            />
+            <div>{!isLoading && tasksList}</div>
+            {isLoading && <Skeleton active />}
+            {!isLoading && Boolean(tasks?.length) && (
+              <PaginationSC
+                defaultCurrent={1}
+                onChange={changePageNumber}
+                pageSize={20}
+                total={totalItems}
+                current={initialValues?.PageNumber}
+                showSizeChanger={false}
+              />
+            )}
+          </Wrapper>
+        </>
+      )}
+      {currentSegment === 'map' && <TasksMapContainer />}
     </div>
   );
 };
