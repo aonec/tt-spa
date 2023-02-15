@@ -1,24 +1,21 @@
 import { Skeleton } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
-import { IndividualDeviceListItem } from './IndividualDeviceListItem';
-import { GroupWrapper, Header, Wrapper } from './IndividualDevicesList.styled';
 import {
   IndividualDeviceConsumptionGraphLookup,
   IndividualDeviceConsumptionGraphType,
-  IndividualDevicesListProps,
-} from './IndividualDevicesList.types';
+} from '../../individualDevicesListService.constants';
+import { IndividualDeviceListItem } from './IndividualDeviceListItem';
+import { GroupWrapper, Header, Wrapper } from './IndividualDevicesList.styled';
+import { IndividualDevicesListProps } from './IndividualDevicesList.types';
 
 export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   isLoading,
   individualDevicesList,
   apartmentId,
+  selectGraphType,
+  selectedGraphType,
 }) => {
-  const [typeOfConsumptionGraph, setTypeOfConsumptionGraph] =
-    useState<IndividualDeviceConsumptionGraphType>(
-      IndividualDeviceConsumptionGraphType.BySixMonths,
-    );
-
   return (
     <Wrapper>
       <Header>
@@ -36,8 +33,8 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
               key: key as IndividualDeviceConsumptionGraphType,
               value,
             }))}
-            selectedFilters={[typeOfConsumptionGraph]}
-            handleUpdate={(types) => setTypeOfConsumptionGraph(types[0])}
+            selectedFilters={[selectedGraphType]}
+            handleUpdate={(types) => selectGraphType(types[0])}
             allowClear={false}
             max={1}
           />
