@@ -1,15 +1,20 @@
 import { replaceHomeownerAccount } from './../../../../_api/homeowners';
 import {
+  $isForced,
+  $samePersonalAccountNumderId,
+  handleConfirmationModalClose,
+  onForced,
   setSwitchRequestStatus,
   switchPersonalNumber,
   switchPersonalNumberFx,
 } from './index';
 import { $switchRequestStatus } from '.';
-import { combine, sample } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { HomeownerGate } from '../../displayHomeowner/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
+import { HomeownerAccountReplaceRequest } from 'myApi';
 
 switchPersonalNumberFx.use(replaceHomeownerAccount);
 
@@ -18,6 +23,10 @@ $switchRequestStatus
   .on(switchPersonalNumberFx.doneData, () => 'done')
   .on(switchPersonalNumberFx.failData, () => 'failed');
 
+forward({
+  from: onForced,
+  to: switchPersonalNumber,
+});
 
 sample({
   clock: switchPersonalNumber,
@@ -25,6 +34,7 @@ sample({
     HomeownerGate.state,
     personalNumberEditForm.$values,
     $apartment,
+    $isForced,
     (
       gatestate,
       {
@@ -35,10 +45,11 @@ sample({
         openAt,
         isMainAccountingNumber,
       },
-      apartment
+      apartment,
+      isForced,
     ) => {
       return {
-        ReplaceableAccountId: gatestate?.id,
+        replaceableAccountId: gatestate?.id,
         newHomeownerAccount: {
           personalAccountNumber,
           paymentCode,
@@ -48,8 +59,27 @@ sample({
           apartmentId: apartment?.id,
           IsMainOnApartment: isMainAccountingNumber,
         },
-      };
-    }
+        isForced,
+      } as HomeownerAccountReplaceRequest;
+    },
   ),
-  target: switchPersonalNumberFx as any,
+  target: switchPersonalNumberFx,
+});
+
+$samePersonalAccountNumderId
+  .on(switchPersonalNumberFx.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
+
+$isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
+
+$samePersonalAccountNumderId.reset(handleConfirmationModalClose);
+
+forward({
+  from: switchPersonalNumberFx.doneData,
+  to: handleConfirmationModalClose,
 });
