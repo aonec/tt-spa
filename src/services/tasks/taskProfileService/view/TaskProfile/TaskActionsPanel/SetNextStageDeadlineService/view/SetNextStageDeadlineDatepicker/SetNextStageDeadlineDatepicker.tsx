@@ -4,16 +4,16 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { SetNextStageDeadlineDatepickerProps } from './SetNextStageDeadlineDatepicker.types';
 
-export const SetNextStageDeadlineDatepicker: FC<SetNextStageDeadlineDatepickerProps> = ({
-  handleDateChange,
-}) => {
+export const SetNextStageDeadlineDatepicker: FC<
+  SetNextStageDeadlineDatepickerProps
+> = ({ handleDateChange }) => {
   const [date, setDate] = useState<moment.Moment | null>(null);
 
   useEffect(() => {
     const formattedDate = date?.format('YYYY-MM-DD');
 
     if (formattedDate) handleDateChange(formattedDate);
-  }, [date]);
+  }, [date, handleDateChange]);
 
   return (
     <FormItem label="Дата">

@@ -1,0 +1,1 @@
+export { ReportViewTable } from './ReportViewTable';

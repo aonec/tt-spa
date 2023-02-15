@@ -42,18 +42,20 @@ import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 import { ReportViewContainer } from 'services/reportsService/reportViewService';
 import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
 import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
-import { ReportsPageContainer } from '01/features/reports';
 import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
 import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
+import { ReportsPageContainer } from '01/features/reports';
 
 const { gates } = objectProfileService;
 
 const { ObjectGroupIsOpen } = gates;
 
 export const Router: FC<RouterProps> = ({ roles }) => {
-  const redirectRoute = roles?.includes(ESecuredIdentityRoleName.Operator)
-    ? '/meters/'
-    : '/tasks/';
+  const redirectRoute = roles.length
+    ? roles?.includes(ESecuredIdentityRoleName.Operator)
+      ? '/meters/'
+      : '/tasks/'
+    : '/login';
   return (
     <Wrapper>
       <Switch>

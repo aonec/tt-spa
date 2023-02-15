@@ -27,7 +27,7 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
     if (!cities?.length) return;
 
     setFieldValue('City', last(cities));
-  }, [cities]);
+  }, [cities, setFieldValue]);
 
   return (
     <>

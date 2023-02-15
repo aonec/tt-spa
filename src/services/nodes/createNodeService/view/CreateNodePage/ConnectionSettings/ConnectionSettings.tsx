@@ -77,9 +77,9 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
   useEffect(
     () =>
       inputs.newCalculatorCreated.watch(({ id }) =>
-        setFieldValue('calculatorId', id)
+        setFieldValue('calculatorId', id),
       ).unsubscribe,
-    []
+    [setFieldValue],
   );
 
   const isFieldsDisabled =
@@ -89,7 +89,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
     if (values.connectionType && values.connectionType !== connectionType) {
       setConnectionType(values.connectionType);
     }
-  }, [values.connectionType, connectionType]);
+  }, [values.connectionType, connectionType, setConnectionType]);
 
   const handleChangeConnectionType = useCallback(
     async (value: SelectValue) => {
@@ -99,7 +99,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
         handleSubmit();
       }
     },
-    [handleSubmit, setFieldValue]
+    [handleSubmit, setFieldValue],
   );
 
   const selectedCalculator = useMemo(() => {
@@ -107,7 +107,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
 
     return (
       calculatorsList.find(
-        (calculator) => calculator.id === values.calculatorId
+        (calculator) => calculator.id === values.calculatorId,
       ) || null
     );
   }, [values.calculatorId, calculatorsList]);

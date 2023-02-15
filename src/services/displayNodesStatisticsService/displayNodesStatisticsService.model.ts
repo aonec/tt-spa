@@ -2,11 +2,19 @@ import { setDataToStore } from '01/features/graph/graphView/models';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
-import { ArchivesDataModel } from 'myApi';
-import { requestNodeReadings } from './displayNodesStatisticsService.api';
+import {
+  ArchivesDataModel,
+  DateTimeTaskStatisticsItemArrayDictionaryItem,
+  TaskStatisticsResponse,
+} from 'myApi';
+import {
+  requestNodeReadings,
+  requestTaskStatistics,
+} from './displayNodesStatisticsService.api';
 import {
   ArchiveReadingsFilter,
   FetchArchiveReadingsPayload,
+  TasksStatisticPayload,
 } from './displayNodesStatisticsService.types';
 
 const domain = createDomain('displayNodesStatisticsService');
@@ -41,6 +49,14 @@ const $archiveReadings = domain
   .on(getArchiveDataFx.doneData, (_, data) => data)
   .reset(clearStores);
 
+const getTaskStatisticsFx = domain.createEffect<
+  TasksStatisticPayload,
+  TaskStatisticsResponse
+>(requestTaskStatistics);
+const $taskStatistics = domain
+  .createStore<DateTimeTaskStatisticsItemArrayDictionaryItem[]>([])
+  .on(getTaskStatisticsFx.doneData, (_, data) => data.tasks || []);
+
 const $isLoading = getArchiveDataFx.pending;
 
 const NodeInfoGate = createGate<{ nodeId: number; pipeCount: number }>();
@@ -49,14 +65,14 @@ sample({
   source: NodeInfoGate.state,
   clock: $archiveFilter,
   fn: (nodeInfo, filter) => ({ ...nodeInfo, ...filter }),
-  target: getArchiveDataFx,
+  target: [getArchiveDataFx, getTaskStatisticsFx],
 });
 
 sample({
   source: $archiveFilter,
   clock: NodeInfoGate.open,
   fn: (filter, nodeInfo) => ({ ...nodeInfo, ...filter }),
-  target: getArchiveDataFx,
+  target: [getArchiveDataFx, getTaskStatisticsFx],
 });
 
 forward({
@@ -79,6 +95,7 @@ export const displayNodesStatisticsService = {
     $graphType,
     $archiveReadings,
     $isLoading,
+    $taskStatistics,
   },
   gates: { NodeInfoGate },
 };

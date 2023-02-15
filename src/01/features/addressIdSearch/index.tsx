@@ -1,7 +1,7 @@
 import { Loader } from '01/components';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/hooks/useFilter';
 import { combine } from 'effector';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -43,6 +43,7 @@ export const AddressIdSearch: FC<Props> = (props) => {
 
   let { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(3);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, homeNumberRef, apartmentNumberRef] = refs;
 
   function onChangeHandler(e: any) {

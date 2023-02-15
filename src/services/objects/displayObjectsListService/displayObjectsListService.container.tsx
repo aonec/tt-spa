@@ -7,21 +7,21 @@ import { SearchObjects } from './view/SearchObjects';
 
 export const ObjectsListContainer = () => {
   const pagedHousingStocks = useStore(
-    displayObjectsListService.outputs.$housingStocks
+    displayObjectsListService.outputs.$housingStocks,
   );
 
   const housingStocks = pagedHousingStocks?.items;
 
-  const isNotEmpty = housingStocks?.length || 0 > 0;
+  const isNotEmpty = (housingStocks?.length || 0) > 0;
 
   const handleSearch = useEvent(
-    displayObjectsListService.inputs.searchHosuingStocks
+    displayObjectsListService.inputs.searchHosuingStocks,
   );
 
   const isLoading = useStore(displayObjectsListService.outputs.$isLoading);
 
   const handlePageNumberChanged = useEvent(
-    displayObjectsListService.inputs.setPageNumber
+    displayObjectsListService.inputs.setPageNumber,
   );
 
   const { HousingStocksGate } = displayObjectsListService.gates;

@@ -1,8 +1,8 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Input } from 'antd';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
+import { getFilledArray } from 'utils/getFilledArray';
 import { RequestStatusShared } from '../hooks/useReadingValues';
 
 interface Props {
@@ -38,23 +38,29 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   const wrapRef = useRef<any>();
 
-  const preparedValuesArray = getArrayByCountRange(
-    rateNum || 0,
-    (index) => (values && values[index - 1]) || null
+  const preparedValuesArray = useMemo(
+    () =>
+      getFilledArray(
+        rateNum || 0,
+        (index) => (values && values[index]) || null,
+      ),
+    [values, rateNum],
   );
 
-  const [valuesArray, setValuesArray] = useState(preparedValuesArray);
+  const [valuesArray, setValuesArray] = useState(
+    getFilledArray(rateNum || 0, (index) => (values && values[index]) || null),
+  );
 
-  useEffect(() => setValuesArray(preparedValuesArray), [values]);
+  useEffect(() => setValuesArray(preparedValuesArray), [preparedValuesArray]);
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     e.preventDefault();
 
     setValuesArray((prev) =>
-      prev.map((elem, i) => (i === index ? e.target.value : elem))
+      prev.map((elem, i) => (i === index ? e.target.value : elem)),
     );
 
     onChange && onChange(e.target.value, index + 1);
@@ -65,7 +71,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   const onKeyHandler = (e: any) => {
     if (e.key === 'Enter') {
       const clearValues = valuesArray.map((value) =>
-        value === null ? null : Number(value)
+        value === null ? null : Number(value),
       );
       onEnter && onEnter(clearValues);
       e.target.blur();
@@ -75,7 +81,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   const renderField = (
     value: string | null,
     index: number,
-    isOnlyOne?: boolean
+    isOnlyOne?: boolean,
   ) => {
     if (!editable) {
       return (

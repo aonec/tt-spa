@@ -1,5 +1,5 @@
 import { HomeownerAccountUpdateRequest } from 'myApi';
-import { EditHomeownerPayload } from '../EditHomeownerForm/EditHomeownerForm.types';
+import { EditHomeownerPayload } from '../HomeownerForm/EditHomeownerForm.types';
 
 export type EditHomeownerRequestPayload = HomeownerAccountUpdateRequest & {
   id: string;

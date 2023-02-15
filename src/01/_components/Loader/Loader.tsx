@@ -6,7 +6,7 @@ import { LoaderProps } from './Loader.types';
 export const Loader: FC<LoaderProps> = ({ children, show, size, ...props }) => {
   const loader = (
     <LoaderWrapper>
-      <Icon icon="replacement" {...props} size={Number(size)} />
+      <Icon icon="replacement" size={Number(size || 16)} {...props} />
     </LoaderWrapper>
   );
 

@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, sample, guard } from 'effector';
 import { createGate } from 'effector-react';
 import { HouseManagementResponse } from 'myApi';
 import { getHouseManagements } from './houseManagementsService.api';
@@ -15,12 +15,16 @@ const fetchHouseManagementFx = domain.createEffect<
 
 const $houseManagements = domain
   .createStore<HouseManagementResponse[] | null>(null)
-  .on(fetchHouseManagementFx.doneData, (_, list) => list)
-  .reset(HouseManagementsGate.close);
+  .on(fetchHouseManagementFx.doneData, (_, list) => list);
 
-forward({
-  from: HouseManagementsGate.state,
-  to: fetchHouseManagementFx,
+sample({
+  source: HouseManagementsGate.state,
+  clock: guard({
+    source: $houseManagements,
+    clock: HouseManagementsGate.state,
+    filter: (houseManagements) => !houseManagements,
+  }),
+  target: fetchHouseManagementFx,
 });
 
 export const houseManagementsService = {

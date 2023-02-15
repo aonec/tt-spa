@@ -13,8 +13,8 @@ import {
   getNodeUniqueWorkingRange,
   getNodes,
 } from './uniqueWorkingRangeService.api';
-import { GetAddressesRequestPayload } from 'services/objects/objectsProfileService/soiReportService/soiReportService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import { GetAddressesWithCityRequestPayload } from './uniqueWorkingRangeService.types';
 
 const domain = createDomain('uniqueWorkingRangeService');
 
@@ -53,7 +53,7 @@ const getNodeUniqueWorkingRangeFx = domain.createEffect<
 >(getNodeUniqueWorkingRange);
 
 const fetchAdressesFx = domain.createEffect<
-  GetAddressesRequestPayload,
+  GetAddressesWithCityRequestPayload,
   StreetWithHousingStockNumbersResponsePagedList | null
 >(getAdresses);
 
@@ -81,7 +81,7 @@ const $nodes = domain
   .on(getNodesFx.doneData, (_, nodes) => nodes);
 
 sample({
-  clock: $selectedCity,
+  clock: sample({ clock: $selectedCity, filter: Boolean }),
   fn: (selectedCity) => ({ City: selectedCity! }),
   target: fetchAdressesFx,
 });

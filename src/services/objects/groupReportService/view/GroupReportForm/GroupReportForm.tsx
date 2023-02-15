@@ -19,39 +19,49 @@ import { LabeledValue } from 'antd/lib/select';
 import { RegularUnloading } from './RegularUnloading';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
+const withoutHouseMagement = 'withoutHouseMagement';
+
 export const GroupReportForm: FC<GroupReportFormProps> = ({
   formId,
   handleDownload,
   reportFilters,
 }) => {
-  const {
-    groupReports,
-    nodeResourceTypes,
-    nodeStatuses,
-    contractors,
-  } = reportFilters;
+  const { groupReports, nodeResourceTypes, nodeStatuses, contractors } =
+    reportFilters;
 
   const { values, setFieldValue, handleSubmit, errors } = useFormik<
-    Partial<GroupReportRequestPayload>
+    Partial<GroupReportRequestPayload> & { isRegular: boolean }
   >({
     initialValues: {
       Name: `Групповой_отчёт_${moment().format('DD.MM.YYYY')}`,
       ReportType: EReportType.Hourly,
+      From: moment().startOf('month').format(),
+      To: moment().endOf('day').format(),
+      isRegular: false,
+      HouseManagementId: null,
     },
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: (values) =>
+    onSubmit: (values) => {
+      const { isRegular, ...payload } = values;
+
       handleDownload({
-        ...values,
+        ...payload,
         From: moment(values.From).format('YYYY-MM-DD'),
         To: moment(values.To).format('YYYY-MM-DD'),
-      }),
+      });
+    },
   });
 
   const groupReportsOptions = useMemo(
-    () =>
-      (groupReports || []).reduce((acc, elem) => {
+    () => [
+      {
+        label: 'Без домоуправления',
+        value: withoutHouseMagement,
+        key: withoutHouseMagement,
+      },
+      ...(groupReports || []).reduce((acc, elem) => {
         if (!elem.houseManagementId) {
           return acc;
         }
@@ -64,7 +74,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           },
         ];
       }, [] as LabeledValue[]),
-    [groupReports]
+    ],
+    [groupReports],
   );
 
   const nodeResourceTypesOptions = useMemo(
@@ -82,36 +93,49 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           },
         ];
       }, [] as LabeledValue[]),
-    [nodeResourceTypes]
+    [nodeResourceTypes],
   );
 
   const handleChangeContractorIds = useCallback(
     (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
-    [setFieldValue]
+    [setFieldValue],
   );
   const handleChangeEmail = useCallback(
     (email?: string) => setFieldValue("['Subscription.Email']", email),
-    [setFieldValue]
+    [setFieldValue],
   );
   const handleChangeSubsType = useCallback(
     (type?: EEmailSubscriptionType) =>
       setFieldValue("['Subscription.Type']", type),
-    [setFieldValue]
+    [setFieldValue],
   );
   const handleThriggerAt = useCallback(
     (date?: string) => setFieldValue("['Subscription.TriggerAt']", date),
-    [values]
+    [setFieldValue],
+  );
+
+  const handleChangeIsRegular = useCallback(
+    (isRegular: boolean) => setFieldValue('isRegular', isRegular),
+    [setFieldValue],
   );
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
       <FormItem label="Группа">
         <Select
-          value={values.HouseManagementId}
-          onChange={(value) => setFieldValue('HouseManagementId', value)}
+          value={
+            values.HouseManagementId === null
+              ? withoutHouseMagement
+              : values.HouseManagementId || undefined
+          }
+          onChange={(value) => {
+            if (value === withoutHouseMagement) {
+              return setFieldValue('HouseManagementId', null);
+            }
+            setFieldValue('HouseManagementId', value);
+          }}
           options={groupReportsOptions}
         />
-        <ErrorMessage>{errors.HouseManagementId}</ErrorMessage>
       </FormItem>
       <FormItem label="Название отчёта">
         <Input
@@ -177,13 +201,16 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         handleChangeEmail={handleChangeEmail}
         handleChangeSubsType={handleChangeSubsType}
         handleThriggerAt={handleThriggerAt}
+        handleChangeIsRegular={handleChangeIsRegular}
         contractors={contractors || []}
         values={{
           'Subscription.ContractorIds': values['Subscription.ContractorIds'],
           'Subscription.Email': values['Subscription.Email'],
           'Subscription.TriggerAt': values['Subscription.TriggerAt'],
           'Subscription.Type': values['Subscription.Type'],
+          isRegular: values.isRegular,
         }}
+        errors={errors}
       />
     </Form>
   );

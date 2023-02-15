@@ -12,13 +12,13 @@ export const AddPerpetratorSelect: FC<AddPerpetratorSelectProps> = ({
 
   useEffect(() => {
     handlePerpetratorChange(perpetratorId);
-  }, [perpetratorId]);
+  }, [perpetratorId, handlePerpetratorChange]);
 
   const handleChange = useCallback(
     (value: SelectValue) => {
       if (typeof value === 'number') setPerpetratorId(value);
     },
-    [setPerpetratorId]
+    [setPerpetratorId],
   );
 
   return (

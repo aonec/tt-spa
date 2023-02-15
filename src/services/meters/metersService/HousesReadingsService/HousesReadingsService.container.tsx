@@ -21,24 +21,24 @@ export const HousesReadingsContainer = () => {
   const inspector = useStore(outputs.$inspector);
   const individualDevicesList = useStore(outputs.$individualDevices);
   const isLoadingIndividualDevices = useStore(
-    outputs.$isLoadingIndividualDevices
+    outputs.$isLoadingIndividualDevices,
   );
   const consumptionRates = useStore(outputs.$consumptionRates);
   const isAllDevicesLoaded = useStore(outputs.$isAllDevicesLoaded);
 
   const handleSearchHousingStock = useEvent(inputs.handleSearchHousingStock);
   const loadNextPageOfIndividualDevicesList = useEvent(
-    inputs.loadNextPageOfIndividualDevicesList
+    inputs.loadNextPageOfIndividualDevicesList,
   );
   const loadConsumptionRates = useEvent(
-    inputs.loadManagemenFirmConsumptionRates
+    inputs.loadManagemenFirmConsumptionRates,
   );
   const openReadingsHistoryModal = useEvent(inputs.openReadingsHistoryModal);
 
   const { managementFirmConsumptionRates } = useManagingFirmConsumptionRates(
     consumptionRates,
     loadConsumptionRates,
-    housingStock?.managingFirmId
+    housingStock?.managingFirmId,
   );
 
   useEffect(() => {
@@ -57,15 +57,19 @@ export const HousesReadingsContainer = () => {
     return () => {
       window.removeEventListener('scroll', onScrollDown, true);
     };
-  }, []);
+  }, [
+    loadNextPageOfIndividualDevicesList,
+    history,
+    isLoadingIndividualDevices,
+  ]);
 
   useEffect(() => {
     return inputs.handleHousingStockLoaded.watch((housingStock) => {
-      if (!housingStock) return;
+      if (!housingStock || Number(id) === housingStock?.id) return;
 
       history.push(`/meters/houses/${housingStock.id}`);
     }).unsubscribe;
-  }, []);
+  }, [history, id]);
 
   return (
     <>

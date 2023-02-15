@@ -1,5 +1,8 @@
-import { NodeOnHousingStockResponse } from "myApi";
+import {
+  NodeOnHousingStockResponse,
+  PipeNodeIntoCalculatorResponse,
+} from 'myApi';
 
 export type PipeNodeInfoProps = {
-  pipeNode: NodeOnHousingStockResponse;
+  pipeNode: NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse;
 };

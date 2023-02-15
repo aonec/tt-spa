@@ -10,15 +10,13 @@ export const CustomInput: FC<CustomInputProps> = ({
   const { title, color, inputType } = configuration;
   return (
     <>
-      <>
-        {title && <TitleWrapper>{title}</TitleWrapper>}
-        <Input
-          color={color}
-          type={inputType}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      </>
+      {title && <TitleWrapper>{title}</TitleWrapper>}
+      <Input
+        color={color}
+        type={inputType}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </>
   );
 };

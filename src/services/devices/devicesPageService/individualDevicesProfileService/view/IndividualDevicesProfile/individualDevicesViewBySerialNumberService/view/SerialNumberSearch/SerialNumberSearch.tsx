@@ -16,38 +16,33 @@ import {
   Wrapper,
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
+import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
+import { ResetButton } from 'services/devices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
 
-export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesViewBySerialNumberSearchProps> = ({
-  filter,
-  setFilter,
-  clearSearchPayload,
-  mountPlaces,
-}) => {
+export const IndividualDevicesViewBySerialNumberSearch: FC<
+  IndividualDevicesViewBySerialNumberSearchProps
+> = ({ filter, setFilter, clearSearchPayload, mountPlaces }) => {
   const next = useSwitchInputOnEnter('searchBySerialNumber', true);
 
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-    setValues,
-  } = useFormik<IndividualDeviceSearchbySerialNumberPayload>({
-    initialValues: {
-      SerialNumber: filter.SerialNumber,
-      ApartmentStatus: filter.ApartmentStatus || null,
-      Resource: filter.Resource || null,
-      IsAlsoClosing: filter.IsAlsoClosing,
-      Model: filter.Model || '',
-      MountPlace: filter.MountPlace || '',
-      ClosingReason: filter.ClosingReason || null,
-      ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
-      City: filter.City || '',
-      HouseCorpus: filter.HouseCorpus || '',
-      HouseNumber: filter.HouseNumber || '',
-      Street: filter.Street || '',
-    },
-    enableReinitialize: true,
-    onSubmit: setFilter,
-  });
+  const { values, setFieldValue, handleSubmit, setValues, resetForm } =
+    useFormik<IndividualDeviceSearchbySerialNumberPayload>({
+      initialValues: {
+        SerialNumber: filter.SerialNumber,
+        ApartmentStatus: filter.ApartmentStatus || null,
+        Resource: filter.Resource || null,
+        IsAlsoClosing: filter.IsAlsoClosing,
+        Model: filter.Model || '',
+        MountPlace: filter.MountPlace || '',
+        ClosingReason: filter.ClosingReason || null,
+        ExpiresCheckingDateAt: filter.ExpiresCheckingDateAt || null,
+        City: filter.City || '',
+        HouseCorpus: filter.HouseCorpus || '',
+        HouseNumber: filter.HouseNumber || '',
+        Street: filter.Street || '',
+      },
+      enableReinitialize: true,
+      onSubmit: setFilter,
+    });
 
   const handleEnter = useCallback(
     (index: number) =>
@@ -55,7 +50,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
         next(index);
         handleSubmit();
       }),
-    [next, handleSubmit]
+    [next, handleSubmit],
   );
 
   return (
@@ -127,6 +122,17 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<IndividualDevicesView
           >
             Закрытые приборы
           </CheckboxSC>
+          <ResetButton
+            type="ghost"
+            onClick={() => {
+              clearSearchPayload();
+              resetForm();
+            }}
+            size="small"
+            icon={<ClearIconSC />}
+          >
+            Сбросить
+          </ResetButton>
         </SearchFieldsWrapper>
       </IndividualDevicesExtendedSearch>
     </Wrapper>

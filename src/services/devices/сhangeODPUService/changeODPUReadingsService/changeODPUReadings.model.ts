@@ -17,7 +17,7 @@ const $newDeviceInitialReadings = $oldReadings.map((readings) =>
     text: elem.text,
     value: null,
     nonResidentialRoomConsumption: null,
-  }))
+  })),
 );
 
 const getOldReadings = domain.createEffect<
@@ -25,7 +25,9 @@ const getOldReadings = domain.createEffect<
   GetHousingMeteringDeviceReadingsResponse
 >(fetchOldReadings);
 
-$oldReadings.on(getOldReadings.doneData, (_, res) => prepareData(res.items!));
+$oldReadings.on(getOldReadings.doneData, (_, res) =>
+  prepareData(res.items || []),
+);
 
 const $loading = getOldReadings.pending;
 

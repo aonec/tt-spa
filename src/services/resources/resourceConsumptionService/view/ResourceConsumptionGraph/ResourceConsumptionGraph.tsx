@@ -101,7 +101,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
                       resource,
                       type: key as ResourceConsumptionGraphType,
                       isOpacityNeed:
-                        typeOfData !=
+                        typeOfData !==
                         ResourceConsumptionGraphDataType.currentMonthData,
                     }),
                     strokeWidth: 2,
@@ -113,7 +113,13 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
           return null;
         });
       }),
-    [consumptionData, resource, checked, selectedAddresses]
+    [
+      consumptionData,
+      resource,
+      checked,
+      selectedAddresses,
+      additionalConsumptionData,
+    ],
   );
 
   useEffect(() => {
@@ -145,7 +151,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       ...Object.values(currentMonthData),
       ...Object.values(prevMonthData),
       ...Object.values(additionalConsumptionData || {}),
-    ].map(prepareData)
+    ].map(prepareData),
   );
 
   return (

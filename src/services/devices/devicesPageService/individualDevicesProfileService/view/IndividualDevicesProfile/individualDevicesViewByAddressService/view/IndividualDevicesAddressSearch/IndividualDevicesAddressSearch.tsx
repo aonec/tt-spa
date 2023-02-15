@@ -12,6 +12,8 @@ import {
   Wrapper,
 } from './IndividualDevicesAddressSearch.styled';
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
+import { ResetButton } from 'services/devices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
+import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 
 export const IndividualDevicesAddressSearch: FC<
   IndividualDevicesAddressSearchProps
@@ -21,7 +23,7 @@ export const IndividualDevicesAddressSearch: FC<
   clearSearchPayload,
   mountPlaces,
 }) => {
-  const { values, handleSubmit, setValues, setFieldValue } =
+  const { values, handleSubmit, setValues, setFieldValue, resetForm } =
     useFormik<SearchIndividualDevicesRequestPayload>({
       initialValues: filters,
       onSubmit: (values) => {
@@ -92,6 +94,17 @@ export const IndividualDevicesAddressSearch: FC<
             >
               Закрытые приборы
             </CheckboxSC>
+            <ResetButton
+              type="ghost"
+              onClick={() => {
+                clearSearchPayload();
+                resetForm();
+              }}
+              size="small"
+              icon={<ClearIconSC />}
+            >
+              Сбросить
+            </ResetButton>
           </SearchInputsWrapper>
         </SearchWrapper>
       </IndividualDevicesExtendedSearch>

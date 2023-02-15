@@ -1,8 +1,4 @@
-import {
-  HouseManagementResponse,
-  OrganizationResponsePagedList,
-  
-} from 'myApi';
+import { HouseManagementResponse, OrganizationResponsePagedList } from 'myApi';
 import { TreeSelectElement } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
 
@@ -12,4 +8,7 @@ export type ClosedIndividualDevicesFormProps = {
   preparedAddresses: TreeSelectElement[];
   organizationPagedList: OrganizationResponsePagedList | null;
   houseManagementList: HouseManagementResponse[] | null;
+  selectedCity: string | null;
+  selectCity: (city: string) => void;
+  existingCities: string[];
 };

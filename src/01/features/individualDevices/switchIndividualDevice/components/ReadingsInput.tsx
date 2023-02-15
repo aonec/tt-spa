@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import React from 'react';
 import styled from 'styled-components';
 import { DataStringDevice, DeviceDataString } from './DeviceDataString';
@@ -8,7 +8,6 @@ import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
 } from '../../../../../myApi';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import {
   getPreviousReadingsMonth,
   getDateByReadingMonthSlider,
@@ -16,11 +15,12 @@ import {
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
+import { getFilledArray } from 'utils/getFilledArray';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
   onChange?: (
-    readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[]
+    readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[],
   ) => void;
   title: string;
   device: DataStringDevice;
@@ -34,67 +34,78 @@ export const ReadingsInput: React.FC<Props> = ({
 }) => {
   const { sliderIndex, up, down, canUp, canDown } = useSliderIndex();
 
-  const defaultValues = device.rateType
-    ? getArrayByCountRange(
-        getIndividualDeviceRateNumByName(device.rateType),
-        () => ''
-      )
-    : [''];
+  const defaultValues = useMemo(
+    () =>
+      device.rateType
+        ? getFilledArray(
+            getIndividualDeviceRateNumByName(device.rateType),
+            () => '',
+          )
+        : [''],
+    [device.rateType],
+  );
 
   const rateNum = getIndividualDeviceRateNumByName(device.rateType!);
 
   const preparedReadingsArrWithEmpties = getReadingsArrayWithEmpties(readings);
 
-  const previousReading = getReadingValuesArray(
-    preparedReadingsArrWithEmpties[sliderIndex] as any,
-    rateNum
+  const previousReading = useMemo(
+    () =>
+      getReadingValuesArray(
+        preparedReadingsArrWithEmpties[sliderIndex] as any,
+        rateNum,
+      ),
+    [preparedReadingsArrWithEmpties, rateNum, sliderIndex],
   );
 
   const readingByCurrentMonth = readings.find((elem) =>
-    compareDates(elem.readingDate, moment().toISOString(true))
+    compareDates(elem.readingDate, moment().toISOString(true)),
   );
 
   const currentReading = readingByCurrentMonth
     ? getReadingValuesArray(readingByCurrentMonth, rateNum)
     : null;
 
-  function onChangeHandler(props: {
-    value: string;
-    index: number;
-    readingDate?: string;
-    isNew?: boolean;
-    isPrevious?: boolean;
-  }) {
-    if (!onChange) return;
+  const onChangeHandler = useCallback(
+    (props: {
+      value: string;
+      index: number;
+      readingDate?: string;
+      isNew?: boolean;
+      isPrevious?: boolean;
+    }) => {
+      if (!onChange) return;
 
-    const { value, index, isNew, isPrevious, readingDate } = props;
+      const { value, index, isNew, isPrevious, readingDate } = props;
 
-    const newReadingDateByMonth = getNewReadingDate(
-      isPrevious ? sliderIndex : -1
-    );
+      const newReadingDateByMonth = getNewReadingDate(
+        isPrevious ? sliderIndex : -1,
+      );
 
-    if (isNew) {
-      const newReading = {
-        ...(getNewReadingValuesByIndex(value, index) as any),
-        readingDate: newReadingDateByMonth,
-      };
+      if (isNew) {
+        const newReading = {
+          ...(getNewReadingValuesByIndex(value, index) as any),
+          readingDate: newReadingDateByMonth,
+        };
 
-      return onChange([...readings, newReading]);
-    }
+        return onChange([...readings, newReading]);
+      }
 
-    const newValues = readings.map((elem) => {
-      if (readingDate !== elem.readingDate) return elem;
+      const newValues = readings.map((elem) => {
+        if (readingDate !== elem.readingDate) return elem;
 
-      const changedReading = {
-        ...{ ...elem, [`value${index}`]: value },
-        readingDate: newReadingDateByMonth,
-      };
+        const changedReading = {
+          ...{ ...elem, [`value${index}`]: value },
+          readingDate: newReadingDateByMonth,
+        };
 
-      return changedReading;
-    });
+        return changedReading;
+      });
 
-    onChange(newValues.filter((reading) => isReadingEmpty(reading, rateNum)));
-  }
+      onChange(newValues.filter((reading) => isReadingEmpty(reading, rateNum)));
+    },
+    [onChange, rateNum, readings, sliderIndex],
+  );
 
   return (
     <Wrap>
@@ -154,11 +165,11 @@ export const ReadingsInput: React.FC<Props> = ({
 
 const isReadingEmpty = (
   reading: SwitchIndividualDeviceReadingsCreateRequest,
-  rateNum: number
+  rateNum: number,
 ) =>
   getReadingValuesArray(reading, rateNum)?.value?.reduce(
     (acc, elem) => acc || Boolean(elem),
-    false
+    false,
   );
 
 const compareDates = (date1: string, date2: string) =>
@@ -181,14 +192,14 @@ function getNewReadingValuesByIndex(value: string, index: number) {
 }
 
 const getReadingsArrayWithEmpties = (
-  readings: SwitchIndividualDeviceReadingsCreateRequest[]
+  readings: SwitchIndividualDeviceReadingsCreateRequest[],
 ) => {
   return readings.reduce((acc, elem) => {
     const dateFormat = 'YYYY-MM';
 
     const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
     const readingMonthDate = moment(
-      moment(elem.readingDate).format(dateFormat)
+      moment(elem.readingDate).format(dateFormat),
     );
 
     if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
@@ -205,7 +216,7 @@ export const getReadingValuesArray = (
   reading?:
     | IndividualDeviceReadingsResponse
     | SwitchIndividualDeviceReadingsCreateRequest,
-  rateNum?: number
+  rateNum?: number,
 ) => {
   if (!reading || !rateNum) return null;
 

@@ -24,7 +24,7 @@ export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
   async function saveConsumption() {
     setStatus('pending');
     try {
-      if (!reading.id) throw 'none id';
+      if (!reading.id) throw new Error('none id');
 
       await updateHousingMeteringDeviceReading({
         id: reading.id,

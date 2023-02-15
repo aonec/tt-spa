@@ -9,7 +9,10 @@ import {
   getAlreadyExistingConnectionCalculator,
   putCalculator,
 } from './editCalculatorService.api';
-import { EffectFailDataAxiosError, EffectFailDataAxiosErrorDataId } from 'types';
+import {
+  EffectFailDataAxiosError,
+  EffectFailDataAxiosErrorDataId,
+} from 'types';
 import {
   CalculatorResponse,
   MeteringDeviceResponse,
@@ -55,7 +58,7 @@ const $sameConnectionCalculator = domain
   .createStore<CalculatorResponse | null>(null)
   .on(
     getSameConnectionCalculatorFx.doneData,
-    (_, calculatorData) => calculatorData
+    (_, calculatorData) => calculatorData,
   );
 
 sample({
@@ -81,12 +84,17 @@ sample({
   target: [getSameConnectionCalculatorFx, handleExisingConnectionError],
 });
 
-editCalculatorFailData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+editCalculatorFailData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  message.error(error.response.data.error.Text);
+});
 
 editCalculatorSuccess.watch(() =>
-  message.success('Вычислитель успешно обновлён!')
+  message.success('Вычислитель успешно обновлён!'),
 );
 
 export const editCalculatorService = {

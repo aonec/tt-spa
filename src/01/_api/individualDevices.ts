@@ -13,6 +13,7 @@ import {
 export interface CloseIndividualDeviceRequestBody {
   documentsIds: number[];
   closingDate: string | null;
+  closingReason: string | null;
 }
 
 export const closeIndividualDevice = (props: {
@@ -77,7 +78,7 @@ export const checkIndividualDevice = (
 export const getIndividualDevice = async (
   id: number,
 ): Promise<IndividualDeviceResponse> => {
-  if (!id) throw 'no id';
+  if (!id) throw new Error('no id');
   try {
     const res: IndividualDeviceResponse = await axios.get(
       `IndividualDevices/${id}`,

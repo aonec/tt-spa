@@ -4,7 +4,6 @@ import './contractors/addContractors/models/init';
 import './contractors/displayContractors/models/init';
 import './devicesReport/models/init';
 import './staff/addStaff/models/init';
-import './competences/fetchCompetences/models/init';
 import './userRoles/displayUserRoles/models/init';
 import './staff/displayStaff/models/init';
 import './staff/deleteStaff/models/init';
@@ -44,7 +43,6 @@ import './actsJournal/displayActsJournal/models/init';
 import './actsJournal/displayActTypes/models/init';
 import './actsJournal/displayActResources/models/init';
 import './developmentSettings/models/init';
-import './addressSearch/models/init';
 import './addressIdSearch/models/init';
 import './tasks/displayTask/models/init';
 import './tasks/displayNextStages/models/init';
@@ -58,6 +56,5 @@ import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFil
 import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
 import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';
-import './settings/inspectorsDistributionService/inspectorRassignmentService/inspectorReassignmentService.init'
+import './settings/inspectorsDistributionService/inspectorRassignmentService/inspectorReassignmentService.init';
 import './settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.init';
-

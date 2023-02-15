@@ -14,11 +14,11 @@ export const Comment: FC<CommentProps> = ({ handleCommentChange }) => {
 
   useEffect(() => {
     if (typeof text === 'string') handleCommentChange(text);
-  }, [text]);
+  }, [text, handleCommentChange]);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
-    [setText]
+    [setText],
   );
 
   return (

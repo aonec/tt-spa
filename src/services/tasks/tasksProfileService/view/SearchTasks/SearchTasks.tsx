@@ -1,4 +1,11 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { Select } from 'antd';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
@@ -65,12 +72,13 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     },
     [setFieldValue],
   );
-  const handleKeyDown = useCallback(
-    fromEnter((e) => {
-      e.currentTarget.blur();
-      setFieldValue(e.target.name, e.target.value);
-      handleSubmit();
-    }),
+  const handleKeyDown = useMemo(
+    () =>
+      fromEnter((e) => {
+        e.currentTarget.blur();
+        setFieldValue(e.target.name, e.target.value);
+        handleSubmit();
+      }),
     [setFieldValue, handleSubmit],
   );
   const clearInput = useCallback(() => {

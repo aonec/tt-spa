@@ -1,10 +1,10 @@
 import React from 'react';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
-import { translateResource } from '../../../utils/translateResource';
 import { IndividualDeviceResponse } from '../../../../myApi';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Loader } from '../../../_components/Loader';
+import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 
 interface InformationInterface {
   device: IndividualDeviceResponse;
@@ -22,28 +22,28 @@ export const Information = ({ device }: InformationInterface) => {
 
   return (
     <ListWrap>
-      <Loader show={loading} size="32">
-          <ListItem
-            title={'Тип ресурса'}
-            description={translateResource(resource)}
-          />
-          <ListItem
-            title={'Место установки'}
-            description={translateMountPlace(mountPlace)}
-          />
-          <ListItem
-            title={'Дата начальной поверки'}
-            description={moment(lastCheckingDate).format('DD.MM.YYYY')}
-          />
-          <ListItem
-            title={'Дата следующей поверки прибора'}
-            description={moment(futureCheckingDate).format('DD.MM.YYYY')}
-          />
-          <ListItem
-            title={'Пломба'}
-            description={hasMagneticSeal ? 'Есть' : 'Нет'}
-          />
-          {/*<ListItem title={'title'} description={'description'} />*/}
+      <Loader show={loading} size={32}>
+        <ListItem
+          title={'Тип ресурса'}
+          description={actResourceNamesLookup[resource]}
+        />
+        <ListItem
+          title={'Место установки'}
+          description={translateMountPlace(mountPlace)}
+        />
+        <ListItem
+          title={'Дата начальной поверки'}
+          description={moment(lastCheckingDate).format('DD.MM.YYYY')}
+        />
+        <ListItem
+          title={'Дата следующей поверки прибора'}
+          description={moment(futureCheckingDate).format('DD.MM.YYYY')}
+        />
+        <ListItem
+          title={'Пломба'}
+          description={hasMagneticSeal ? 'Есть' : 'Нет'}
+        />
+        {/*<ListItem title={'title'} description={'description'} />*/}
       </Loader>
     </ListWrap>
   );
@@ -68,7 +68,6 @@ const ListItem = ({ title, description }: ListItemInterface) => {
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const StyledListItem = styled.div`
@@ -97,5 +96,4 @@ const StyledListItem = styled.div`
       font-weight: normal;
     }
   }
-}
 `;

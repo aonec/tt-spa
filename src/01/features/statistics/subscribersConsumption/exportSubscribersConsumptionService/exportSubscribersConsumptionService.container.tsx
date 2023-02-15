@@ -8,9 +8,9 @@ import { ExportSubscribersConsumptionContainerProps } from './exportSubscribersC
 
 const { inputs, outputs } = exportSubscribersConsumptionService;
 
-export const ExportSubscribersConsumptionContainer: FC<ExportSubscribersConsumptionContainerProps> = ({
-  filter,
-}) => {
+export const ExportSubscribersConsumptionContainer: FC<
+  ExportSubscribersConsumptionContainerProps
+> = ({ filter }) => {
   const isOpen = useStore(outputs.$isModalOpen);
   const fileName = useStore(outputs.$fileName);
 
@@ -26,7 +26,7 @@ export const ExportSubscribersConsumptionContainer: FC<ExportSubscribersConsumpt
 
   useEffect(() => {
     setFilter(filter);
-  }, [filter]);
+  }, [filter, setFilter]);
 
   return (
     <ModalTT

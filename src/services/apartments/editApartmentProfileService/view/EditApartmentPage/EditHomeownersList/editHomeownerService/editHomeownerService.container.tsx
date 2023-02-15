@@ -1,9 +1,10 @@
 import { useEvent, useStore } from 'effector-react';
-import { EPersonType, HomeownerAccountCreateRequest } from 'myApi';
+import { EPersonType } from 'myApi';
 import React from 'react';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';
-import { EditHomeownerForm } from '../EditHomeownerForm';
+import { EditHomeownerForm } from '../HomeownerForm';
 import { editHomeownerService } from './editHomeownerService.model';
+import { EditHomeownerRequestPayload } from './editHomeownerService.types';
 
 const { inputs, outputs } = editHomeownerService;
 
@@ -17,7 +18,9 @@ export const EditHomeownerContainer = () => {
   const handleCloseModal = useEvent(inputs.closeEditHomeownerModal);
   const handleEditHomeowner = useEvent(inputs.handleEditHomeowner);
 
-  const handleSubmit = (payload: HomeownerAccountCreateRequest) => {
+  const handleEditHomeownerPreparation = (
+    payload: EditHomeownerRequestPayload,
+  ) => {
     if (!housingStockPayload?.id) return;
 
     handleEditHomeowner({
@@ -25,7 +28,9 @@ export const EditHomeownerContainer = () => {
       personalAccountNumber: payload.personalAccountNumber,
       name: payload.name,
       phoneNumber: payload.phoneNumber,
+      paymentCode: payload.paymentCode,
       personType: String(payload.personType) as EPersonType,
+      isMainOnApartment: payload.isMainOnApartment,
     });
   };
 
@@ -41,8 +46,9 @@ export const EditHomeownerContainer = () => {
         housingStockPayload && (
           <EditHomeownerForm
             formId={formId}
-            handleSubmit={handleSubmit}
+            handleEditHomeownerPreparation={handleEditHomeownerPreparation}
             initialValues={housingStockPayload}
+            isEdit={isModalOpen}
           />
         )
       }

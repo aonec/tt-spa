@@ -19,11 +19,11 @@ export const CompletionComment: FC<CompletionCommentProps> = ({
     if (typeof text === 'string') {
       handleChangeComment(text);
     }
-  }, [text]);
+  }, [text, handleChangeComment]);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
-    [setText]
+    [setText],
   );
 
   return (

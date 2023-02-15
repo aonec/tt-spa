@@ -19,7 +19,7 @@ interface TabsInterface {
   visible?: boolean;
 }
 
-export default ({
+const TabsContainer = ({
   tabItems,
   tabsType,
   activeKey,
@@ -52,3 +52,5 @@ const StyledTabs = styled.div`
   margin: 0;
   padding: 0;
 `;
+
+export default TabsContainer;

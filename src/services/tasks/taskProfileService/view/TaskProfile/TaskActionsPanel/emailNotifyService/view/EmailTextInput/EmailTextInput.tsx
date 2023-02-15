@@ -16,11 +16,11 @@ export const EmailTextInput: FC<EmailTextInputProps> = ({
 
   useEffect(() => {
     if (typeof text === 'string') handleMessageChange(text);
-  }, [text]);
+  }, [text, handleMessageChange]);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
-    [setText]
+    [setText],
   );
 
   return (

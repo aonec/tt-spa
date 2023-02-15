@@ -39,7 +39,6 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   openDeleteDocumentModal,
 }) => {
   const {
-    closingStatus,
     individualDevices,
     device,
     name: taskName,
@@ -56,7 +55,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
   const timer = createTimer(task);
 
   const name = useMemo(() => {
-    if (!closingStatus) {
+    if (!task.closingStatus) {
       return task.currentStage?.name;
     }
     return task.name;
@@ -131,6 +130,7 @@ export const TaskProfile: FC<TaskProfileProps> = ({
               handleRevertStage={handleRevertStage}
               stages={stages || []}
               isRevertStageLoading={isRevertStageLoading}
+              isPerpetrator={isPerpetrator}
             />
           </TaskWrapper>
         </>
