@@ -10,6 +10,10 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import {
+  StockIconWrapper,
+  WrapperFlex,
+} from './IndividualDeviceEditForm.styled';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -30,23 +34,23 @@ export const Header = ({ device }: HeaderInterface) => {
         <div>
           <Title>
             <Flex>
-              <div style={{ transform: 'translateY(-2px)' }}>
+              <StockIconWrapper>
                 <StockIconTT
                   icon={DeviceIcons[resource]?.icon}
                   size="24"
                   dark
                 />
-              </div>
+              </StockIconWrapper>
               <Space w={9} />
               <div>{`${model} (${serialNumber}). Редактирование`}</div>
             </Flex>
           </Title>
-          <div style={{ display: 'flex' }}>
+          <WrapperFlex>
             <Subtitle to={`/apartments/${apartmentId}`}>
               {getApartmentFromFullAddress(address, true)}
             </Subtitle>
             <IsActive closingDate={closingDate} />
-          </div>
+          </WrapperFlex>
         </div>
       </HeaderWrap>
     </Loader>

@@ -20,7 +20,6 @@ export const ConfirmationAddingExistingPersonalNumber: FC<
       title="Данный лицевой счет уже существует"
       onSubmit={() => {
         handleForced();
-        console.log('forced 1');
       }}
       submitBtnText="Все равно сохранить!"
       formId={formId}
