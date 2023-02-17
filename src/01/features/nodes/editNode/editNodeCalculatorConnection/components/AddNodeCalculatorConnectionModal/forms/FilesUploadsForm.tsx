@@ -1,16 +1,51 @@
-import React from 'react';
-import { FilesUpload } from '../../../../../../../shared/ui/FilesUpload';
+import React, { FC } from 'react';
+import { EDocumentType } from 'myApi';
+import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { DocumentsInputWrapper } from './FilesUploadsForm.styled';
+import { useForm } from 'effector-forms/dist';
+import { createCalcuatorService } from '../CreateCalculatorModal/models';
 
-export const FilesUploadForm = () => {
+export const FilesUploadForm: FC = () => {
+  const { fields } = useForm(createCalcuatorService.forms.documentsForm);
+
   return (
-    <>
-      <FilesUpload uniqId="one" text="Добавьте акт выполненных работ" max={1} />
-      <FilesUpload uniqId="two" text="Добавьте паспорт прибора" max={1} />
-      <FilesUpload
-        uniqId="three"
-        text="Добавьте свидетельство о поверке прибора"
+    <DocumentsInputWrapper>
+      <DocumentsUploadContainer
+        label="Добавьте акт выполненных работ"
+        type={EDocumentType.DeviceAcceptanceAct}
+        uniqId="one"
         max={1}
+        documents={
+          fields.deviceAcceptanceAct.value && [fields.deviceAcceptanceAct.value]
+        }
+        onChange={(documents) =>
+          fields.deviceAcceptanceAct.onChange(documents[0] || null)
+        }
       />
-    </>
+      <DocumentsUploadContainer
+        type={EDocumentType.DevicePassport}
+        uniqId="two"
+        label="Добавьте паспорт прибора"
+        max={1}
+        documents={fields.devicePassport.value && [fields.devicePassport.value]}
+        onChange={(documents) =>
+          fields.devicePassport.onChange(documents[0] || null)
+        }
+      />
+      <DocumentsUploadContainer
+        type={EDocumentType.DeviceTestCertificates}
+        uniqId="three"
+        label="Добавьте свидетельство о поверке прибора"
+        max={1}
+        documents={
+          fields.deviceTestCertificates.value && [
+            fields.deviceTestCertificates.value,
+          ]
+        }
+        onChange={(documents) =>
+          fields.deviceTestCertificates.onChange(documents[0] || null)
+        }
+      />
+    </DocumentsInputWrapper>
   );
 };

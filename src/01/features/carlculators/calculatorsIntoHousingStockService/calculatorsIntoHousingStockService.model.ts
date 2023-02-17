@@ -1,7 +1,5 @@
 import { createGate } from 'effector-react';
-import {
-  CalculatorIntoHousingStockResponse,
-} from '../../../../myApi';
+import { CalculatorIntoHousingStockResponse } from '../../../../myApi';
 import { createDomain, forward, sample } from 'effector';
 import { createCalcuatorService } from '../../nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 import { getCalculatorsList } from './calculatorsIntoHousingStockService.api';
@@ -27,14 +25,10 @@ $calculators
   .on(fetchCalculatorsFx.doneData, (_, data) => data)
   .reset(fetchCalculatorsFx.failData);
 
-forward({
-  from: CalculatorsGate.open.map(({ housingStockId }) => housingStockId),
-  to: fetchCalculatorsFx,
-});
-
 sample({
-  source: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
   clock: refetchCalculators,
+  source: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
+  filter: (housingStockId) => Boolean(housingStockId),
   target: fetchCalculatorsFx,
 });
 
