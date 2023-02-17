@@ -15,6 +15,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   apartmentId,
   selectGraphType,
   selectedGraphType,
+  graphData,
 }) => {
   return (
     <Wrapper>
@@ -25,7 +26,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
         <div>Дата следующей поверки прибора</div>
         <div>Текущий расход</div>
         <GroupWrapper>
-          Расход
+          Средний расход
           <FilterExtendedSearch
             allowedFilters={Object.entries(
               IndividualDeviceConsumptionGraphLookup,
@@ -47,14 +48,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
             apartmentId={apartmentId}
             key={device.id}
             device={device}
-            consumptionData={[
-              { consumption: 100, date: '2022-11-01T00:00:00' },
-              { consumption: 450, date: '2022-10-01T00:00:00' },
-              { consumption: 100, date: '2022-09-01T00:00:00' },
-              { consumption: 300, date: '2022-08-01T00:00:00' },
-              { consumption: 900, date: '2022-07-01T00:00:00' },
-              { consumption: 80, date: '2022-06-01T00:00:00' },
-            ]}
+            consumptionData={graphData}
           />
         ))}
     </Wrapper>

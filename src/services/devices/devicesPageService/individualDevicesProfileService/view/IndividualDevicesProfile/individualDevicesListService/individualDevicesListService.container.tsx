@@ -16,6 +16,7 @@ export const IndividualDevicesListContainer: FC<
   const isLoading = useStore(outputs.$isLoading);
   const individualDevicesList = useStore(outputs.$individualDevicesList);
   const deviceConsumptionGraphType = useStore(outputs.$graphType);
+  const graphData = useStore(outputs.$preparedData);
 
   const selectDeviceConsumptionGraphType = useEvent(inputs.selectGraphType);
 
@@ -28,6 +29,7 @@ export const IndividualDevicesListContainer: FC<
         apartmentId={apartmentId}
         selectGraphType={selectDeviceConsumptionGraphType}
         selectedGraphType={deviceConsumptionGraphType}
+        graphData={graphData}
       />
     </>
   );

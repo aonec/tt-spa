@@ -7,4 +7,5 @@ export type IndividualDevicesListProps = {
   apartmentId?: number;
   selectedGraphType: IndividualDeviceConsumptionGraphType;
   selectGraphType: (type: IndividualDeviceConsumptionGraphType) => void;
+  graphData: { consumption: number; date: string }[];
 };

@@ -1,5 +1,5 @@
 import { createGate } from 'effector-react';
-import { createDomain, guard, sample } from 'effector';
+import { combine, createDomain, guard, sample } from 'effector';
 import { getIndividualDevicesList } from './individualDevicesListService.api';
 import { IndividualDeviceResponseFromDevicePage } from 'myApi';
 import { IndividualDeviceConsumptionGraphType } from './individualDevicesListService.constants';
@@ -21,6 +21,28 @@ const $graphType = domain
     IndividualDeviceConsumptionGraphType.BySixMonths,
   )
   .on(selectGraphType, (_, type) => type);
+
+const $consumptionData = domain.createStore([
+  { consumption: 100, date: '2022-11-01T00:00:00' },
+  { consumption: 450, date: '2022-10-01T00:00:00' },
+  { consumption: 100, date: '2022-09-01T00:00:00' },
+  { consumption: 300, date: '2022-08-01T00:00:00' },
+  { consumption: 900, date: '2022-07-01T00:00:00' },
+  { consumption: 80, date: '2022-06-01T00:00:00' },
+  { consumption: 80, date: '2022-05-01T00:00:00' },
+  { consumption: 100, date: '2022-04-01T00:00:00' },
+  { consumption: 80, date: '2022-03-01T00:00:00' },
+  { consumption: 80, date: '2022-02-01T00:00:00' },
+  { consumption: 900, date: '2022-01-01T00:00:00' },
+  { consumption: 80, date: '2021-12-01T00:00:00' },
+]);
+
+const $preparedData = combine($consumptionData, $graphType, (data, type) => {
+  if (type === IndividualDeviceConsumptionGraphType.BySixMonths) {
+    return data.slice(0, 6);
+  }
+  return data;
+});
 
 const $individualDevicesList = domain
   .createStore<IndividualDeviceResponseFromDevicePage[] | null>(null)
@@ -49,6 +71,7 @@ export const individualDevicesListService = {
     $isLoading,
     $individualDevicesList,
     $graphType,
+    $preparedData,
   },
   gates: { IndividualDevicesIds },
 };
