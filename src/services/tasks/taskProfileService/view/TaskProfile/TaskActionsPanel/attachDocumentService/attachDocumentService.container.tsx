@@ -8,7 +8,7 @@ export const AttachDocumentContainer: FC<ActionComponentProps> = ({
   type,
 }) => {
   const handleDocumentsChange = useCallback(
-    () => (documentsIds: number[]) => {
+    (documentsIds: number[]) => {
       handleChange({ documentsIds });
     },
     [handleChange],

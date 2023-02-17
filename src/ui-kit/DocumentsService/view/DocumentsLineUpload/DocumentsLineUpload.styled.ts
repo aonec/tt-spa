@@ -13,7 +13,7 @@ export const DocumentsListWrapper = styled.div`
   height: 42px;
   display: flex;
   align-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
 `;
 
 export const DocumentItemWrapper = styled.div`
@@ -43,7 +43,7 @@ export const DocumentsListElement = styled.div`
   transition: 0.2s;
   cursor: pointer;
   white-space: nowrap;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   &:first-child {
