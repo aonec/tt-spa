@@ -50,7 +50,8 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
           render: (elem) => elem.homeownerAccountNumber,
         },
       ]}
-      elements={homeownersReportData.slice(50)}
+      elements={homeownersReportData}
+      pagination={{ pageSize: 50 }}
     />
   );
 };

@@ -9,7 +9,6 @@ import {
 import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { SearchIcon } from 'ui-kit/icons';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
 import { getAddresses } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
@@ -65,9 +64,20 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   const isShowResourcesField = !isHomeownersReport;
   const isShowDatePeriodPicker = !isHomeownersReport;
 
-  const isShowReportOptionSelect = reportType === ReportType.IndividualDevices;
-
   const isShowActResourcesSelect = reportType === ReportType.ActsJournal;
+
+  const isIndividualDevicesReport = reportType === ReportType.IndividualDevices;
+
+  const isShowReportOptionSelect = isIndividualDevicesReport;
+
+  const isClosedDevicesReport =
+    values.reportOption === EIndividualDeviceReportOption.ClosedDevices;
+
+  const isShowApartmentsWithOpenDevicesCheckbox =
+    isIndividualDevicesReport && isClosedDevicesReport;
+
+  const isShowClosingReasonsSelect =
+    values.reportOption === EIndividualDeviceReportOption.ClosedDevices;
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -109,10 +119,13 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           </FormItem>
           <FormItem label="Адрес">
             <Select
+              showSearch
               value={values.housingStockId || undefined}
-              suffixIcon={<SearchIcon />}
               placeholder="Выберите адреса из списка"
               onChange={(value) => setFieldValue('housingStockId', value)}
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             >
               {addresses.map((address) => (
                 <Select.Option key={address.id} value={address.id}>
@@ -174,24 +187,26 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   )}
                 </Select>
               </FormItem>
-              <FormItem label="Причины закрытия">
-                <SelectMultiple
-                  placeholder="Выберите из списка"
-                  value={values.closingReasons || undefined}
-                  onChange={(value) => setFieldValue('closingReasons', value)}
-                >
-                  {[
-                    EClosingReason.Manually,
-                    EClosingReason.DeviceBroken,
-                    EClosingReason.CertificateIssued,
-                    EClosingReason.ByLetter,
-                  ].map((reportOption) => (
-                    <Select.Option key={reportOption} value={reportOption}>
-                      {ClosingReasonsDictionary[reportOption]}
-                    </Select.Option>
-                  ))}
-                </SelectMultiple>
-              </FormItem>
+              {isShowClosingReasonsSelect && (
+                <FormItem label="Причины закрытия">
+                  <SelectMultiple
+                    placeholder="Выберите из списка"
+                    value={values.closingReasons || undefined}
+                    onChange={(value) => setFieldValue('closingReasons', value)}
+                  >
+                    {[
+                      EClosingReason.Manually,
+                      EClosingReason.DeviceBroken,
+                      EClosingReason.CertificateIssued,
+                      EClosingReason.ByLetter,
+                    ].map((reportOption) => (
+                      <Select.Option key={reportOption} value={reportOption}>
+                        {ClosingReasonsDictionary[reportOption]}
+                      </Select.Option>
+                    ))}
+                  </SelectMultiple>
+                </FormItem>
+              )}
             </>
           )}
           {isHomeownersReport && (
@@ -207,39 +222,56 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             </FormItem>
           )}
         </Wrapper>
-        {isShowDatePeriodPicker && (
-          <>
-            <FormItem label="Период">
-              <Radio.Group
-                value={values.reportDatePeriod}
-                onChange={(event) =>
-                  setFieldValue('reportDatePeriod', event.target.value)
+        <Wrapper>
+          {isShowDatePeriodPicker && (
+            <div>
+              <FormItem label="Период">
+                <Radio.Group
+                  value={values.reportDatePeriod}
+                  onChange={(event) =>
+                    setFieldValue('reportDatePeriod', event.target.value)
+                  }
+                >
+                  <Space direction="vertical">
+                    {Object.values(ReportDatePeriod).map((period) => (
+                      <Radio key={period} value={period}>
+                        {ReportPeriodDictionary[period]}
+                      </Radio>
+                    ))}
+                  </Space>
+                </Radio.Group>
+              </FormItem>
+              <PeriodPickerWrapprer>
+                <RangePicker
+                  disabled={
+                    values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
+                  }
+                  value={[values.from, values.to]}
+                  format="DD.MM.YYYY"
+                  onChange={(dates) => {
+                    setFieldValue('from', dates?.[0]);
+                    setFieldValue('to', dates?.[1]);
+                  }}
+                />
+              </PeriodPickerWrapprer>
+            </div>
+          )}
+          {isShowApartmentsWithOpenDevicesCheckbox && (
+            <FormItem>
+              <Checkbox
+                checked={values.withoutApartmentsWithOpenDevicesByResources}
+                onChange={(e) =>
+                  setFieldValue(
+                    'withoutApartmentsWithOpenDevicesByResources',
+                    e.target.checked,
+                  )
                 }
               >
-                <Space direction="vertical">
-                  {Object.values(ReportDatePeriod).map((period) => (
-                    <Radio key={period} value={period}>
-                      {ReportPeriodDictionary[period]}
-                    </Radio>
-                  ))}
-                </Space>
-              </Radio.Group>
+                Исключить квартиры с открытыми ИПУ по ресурсу
+              </Checkbox>
             </FormItem>
-            <PeriodPickerWrapprer>
-              <RangePicker
-                disabled={
-                  values.reportDatePeriod !== ReportDatePeriod.AnyPeriod
-                }
-                value={[values.from, values.to]}
-                format="DD.MM.YYYY"
-                onChange={(dates) => {
-                  setFieldValue('from', dates?.[0]);
-                  setFieldValue('to', dates?.[1]);
-                }}
-              />
-            </PeriodPickerWrapprer>
-          </>
-        )}
+          )}
+        </Wrapper>
       </div>
     </Form>
   );
