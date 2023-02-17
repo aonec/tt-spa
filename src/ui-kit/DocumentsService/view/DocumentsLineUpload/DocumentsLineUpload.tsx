@@ -14,6 +14,7 @@ import {
 } from './DocumentsLineUpload.styled';
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 import { DocumentResponse } from 'myApi';
+import axios from '01/axios';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,
@@ -31,7 +32,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
     (url?: string | null, name?: string | null) => {
       if (url && name) saveAs(url, name);
     },
-    []
+    [],
   );
 
   const handleFile = useCallback(
@@ -40,14 +41,14 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
 
       fileHandler(files);
     },
-    [fileHandler, isLoading]
+    [fileHandler, isLoading],
   );
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) handleFile(event.target.files);
     },
-    [handleFile]
+    [handleFile],
   );
 
   return (
@@ -81,7 +82,12 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
       <DocumentsListWrapper>
         {(documents as DocumentResponse[]).map((document) => (
           <DocumentItemWrapper key={document.id}>
-            <TrashIconSC onClick={() => removeDocument(document.id)} />
+            <TrashIconSC
+              onClick={() => {
+                axios.delete(`Documents/${document.id}`);
+                removeDocument(document.id);
+              }}
+            />
             <DocumentsListElement
               onClick={() => handleDownloadFile(document.url, document.name)}
               title={document.name || ''}

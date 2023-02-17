@@ -17,22 +17,19 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
 }) => {
   const [documents, setDocuments] = useState<Document[]>([]);
 
-  const {
-    submitForm,
-    setFieldValue,
-    values,
-    errors,
-  } = useFormik<CloseCalculatorFormik>({
-    initialValues: {
-      closingDate: moment().format(),
-    },
-    validationSchema: yup.object().shape({
-      closingDate: yup.string().required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: handleSubmit,
-  });
+  const { submitForm, setFieldValue, values, errors } =
+    useFormik<CloseCalculatorFormik>({
+      initialValues: {
+        closingDate: moment().format(),
+        documentsIds: [],
+      },
+      validationSchema: yup.object().shape({
+        closingDate: yup.string().required('Это поле обязательно'),
+      }),
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: handleSubmit,
+    });
 
   return (
     <Form id={formId} onSubmitCapture={submitForm}>
@@ -58,6 +55,9 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
         uniqId={formId}
         onChange={(files) => {
           setDocuments(files);
+          if (files.length === 0) {
+            return setFieldValue('documentsIds', []);
+          }
           setFieldValue('documentsIds', [files[0]?.id]);
         }}
         max={1}

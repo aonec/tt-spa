@@ -14,6 +14,7 @@ import {
   Wrapper,
 } from './DocumentItem.styled';
 import { DocumentItemProps } from './DocumentItem.types';
+import axios from '01/axios';
 
 export const DocumentItem: FC<DocumentItemProps> = ({
   document,
@@ -45,7 +46,14 @@ export const DocumentItem: FC<DocumentItemProps> = ({
       </DocumentDateWrapper>
       <ManageButtonsWrapper>
         <DownloadIconSC onClick={handleSaveDocument} />
-        {removeDocument && <TrashIconSC onClick={handleRemoveDocument} />}
+        {removeDocument && (
+          <TrashIconSC
+            onClick={() => {
+              axios.delete(`Documents/${document.id}`);
+              handleRemoveDocument();
+            }}
+          />
+        )}
       </ManageButtonsWrapper>
     </Wrapper>
   );
