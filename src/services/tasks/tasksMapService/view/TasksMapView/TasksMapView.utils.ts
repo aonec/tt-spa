@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { EActResourceType, MeteringDeviceSearchListResponse } from 'myApi';
 import { ResourcesPlacemarksLookup } from './TasksMapView.constants';
+import calculatorPlacemark from './assets/calculatorPlacemark.svg';
 
 export const getTaskIcon = (
   devices: MeteringDeviceSearchListResponse[] | null,
@@ -18,5 +19,6 @@ export const getTaskIcon = (
   if (iconType) {
     return ResourcesPlacemarksLookup[iconType];
   }
-  return 'calculator icon';
+
+  return calculatorPlacemark;
 };
