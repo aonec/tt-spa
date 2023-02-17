@@ -44,8 +44,12 @@ sample({
   fn: (data) => {
     return {
       ...data,
-      startDate: moment(data.startDate).format('YYYY-MM-DD'),
-      endDate: moment(data.endDate).format('YYYY-MM-DD'),
+      startDate: moment(data.startDate)
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(true),
+      endDate: moment(data.endDate)
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(true),
     };
   },
   target: updateStatusFx,
