@@ -1,5 +1,11 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { Header, PaginationWrapper, Row, Wrapper } from './Table.styled';
+import {
+  Header,
+  PaginationWrapper,
+  Row,
+  TableElement,
+  Wrapper,
+} from './Table.styled';
 import { TableProps } from './Table.types';
 import { Empty, Pagination } from 'antd';
 
@@ -23,13 +29,15 @@ export function Table<T>({
     <Wrapper>
       <Header temp={temp}>
         {filteredColumns.map((elem) => (
-          <div key={elem.label}>{elem.label}</div>
+          <TableElement key={elem.label}>{elem.label}</TableElement>
         ))}
       </Header>
       {elements.slice(start, end).map((elem, index) => (
         <Row key={index} temp={temp}>
           {filteredColumns.map((column) => (
-            <div key={column.label}>{column.render(elem, index)}</div>
+            <TableElement key={column.label}>
+              {column.render(elem, index)}
+            </TableElement>
           ))}
         </Row>
       ))}
