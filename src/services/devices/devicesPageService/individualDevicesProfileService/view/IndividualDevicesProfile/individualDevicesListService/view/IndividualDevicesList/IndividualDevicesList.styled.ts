@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
 
-export const individualDeviceGrid = '0.7fr 0.3fr 0.3fr 0.3fr 0.26fr 0.4fr';
+export const individualDeviceGrid = '0.6fr 0.25fr 0.3fr 0.3fr 0.26fr 0.55fr';
 
 export const Header = styled.div`
   height: 50px;

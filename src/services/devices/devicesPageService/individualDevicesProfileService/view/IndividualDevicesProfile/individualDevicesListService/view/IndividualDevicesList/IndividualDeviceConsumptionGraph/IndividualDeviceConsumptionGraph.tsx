@@ -16,7 +16,7 @@ import _ from 'lodash';
 import { DeviceGraphTick } from './DeviceGraphTick';
 
 const height = 50;
-const width = 150;
+const width = 180;
 const minDelta = 0.01;
 
 export const IndividualDeviceConsumptionGraph: FC<
@@ -48,6 +48,7 @@ export const IndividualDeviceConsumptionGraph: FC<
           parent: {
             display: 'flex',
             overflow: 'visible',
+            width,
           },
         }}
         height={height}
