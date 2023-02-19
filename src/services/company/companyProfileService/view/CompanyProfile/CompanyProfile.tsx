@@ -49,6 +49,10 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
                 CompanyProfileSection.Contractors === section ||
                 CompanyProfileSection.CommonInfo === section,
             },
+            {
+              title: 'Редактировать информацию о компании',
+              onClick: () => history.push('/editCompany'),
+            },
           ],
         }}
       />
