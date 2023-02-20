@@ -13,11 +13,9 @@ import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 
 const uniqId = 'close-housing-metering-device-form';
 
-export const CloseHousingMeteringDeviceForm: FC<CloseHousingMeteringDeviceFormProps> = ({
-  deviceId,
-  formId,
-  handleOnSubmit,
-}) => {
+export const CloseHousingMeteringDeviceForm: FC<
+  CloseHousingMeteringDeviceFormProps
+> = ({ deviceId, formId, handleOnSubmit }) => {
   const { handleSubmit, values, errors, setFieldValue } = useFormik({
     initialValues: {
       deviceId: deviceId,
@@ -61,7 +59,12 @@ export const CloseHousingMeteringDeviceForm: FC<CloseHousingMeteringDeviceFormPr
 
       <DocumentsUploadContainer
         uniqId={uniqId}
-        onChange={(doc) => setFieldValue('document', doc)}
+        onChange={(doc) => {
+          if (doc.length === 0) {
+            return setFieldValue('document', []);
+          }
+          setFieldValue('document', doc);
+        }}
         label="Добавьте акт снятия прибора с учета"
         documents={values.document}
       />

@@ -55,11 +55,14 @@ closeCalculatorFx.failData.watch((error) => {
   );
 });
 
+const successClose = closeCalculatorFx.done;
+
 export const closeCalculatorService = {
   inputs: {
     closeModal,
     openModal,
     closeCalculator,
+    successClose,
   },
   outputs: {
     $isModalOpen,
