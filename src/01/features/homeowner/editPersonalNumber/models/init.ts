@@ -9,7 +9,6 @@ import {
   $editRequestStatus,
   setEditRequestStatus,
   editHomeownerAccountEffect,
-  editHomeownerSaveButtonClicked,
   AutoCompleteFormGate,
   PersonalNumberFormGate,
   $isVisibleCloseHomeonwerAccountModal,
@@ -31,6 +30,10 @@ import moment from 'moment';
 import { fetchApartmentFx } from '01/features/apartments/displayApartment/models';
 import { HomeownerGate } from '../../displayHomeowner/models/index';
 import { HomeownerAccountUpdateRequest } from 'myApi';
+import {
+  PersonalNumberFormMountPlaceType,
+  PersonalNumberFormTypeGate,
+} from '../components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -72,14 +75,12 @@ $editRequestStatus
   .on(editHomeownerAccountEffect.doneData, () => 'done')
   .on(editHomeownerAccountEffect.failData, () => 'failed');
 
-forward({
-  from: editHomeownerSaveButtonClicked,
-  to: personalNumberEditForm.submit,
-});
-
-forward({
-  from: personalNumberEditForm.formValidated,
-  to: handleEditHomeownerAccount,
+sample({
+  clock: personalNumberEditForm.formValidated,
+  source: PersonalNumberFormTypeGate.state,
+  filter: (formType) => formType.type === PersonalNumberFormMountPlaceType.Edit,
+  fn: (source) => source.type,
+  target: handleEditHomeownerAccount,
 });
 
 forward({

@@ -14,13 +14,13 @@ import {
   handleConfirmationModalClose,
   onForced,
   setSwitchRequestStatus,
-  switchPersonalNumber,
   switchPersonalNumberFx,
 } from './models';
 import { message } from 'antd';
 import styled from 'styled-components';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const SwitchPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
@@ -58,7 +58,6 @@ export const SwitchPersonalNumberPage = () => {
     <Wrap>
       <HomeownerGate id={homeownerId} />
       <PersonaNumberActionPage
-        onSaveHandler={switchPersonalNumber}
         loading={pendingSwitch}
         title="Замена лицевого счета"
       >
@@ -74,7 +73,9 @@ export const SwitchPersonalNumberPage = () => {
           handleForced={handleForced}
         />
         <SpaceLine />
-        <PersonalNumberEditForm type="split" />
+        <PersonalNumberEditForm
+          type={PersonalNumberFormMountPlaceType.Switch}
+        />
       </PersonaNumberActionPage>
     </Wrap>
   );

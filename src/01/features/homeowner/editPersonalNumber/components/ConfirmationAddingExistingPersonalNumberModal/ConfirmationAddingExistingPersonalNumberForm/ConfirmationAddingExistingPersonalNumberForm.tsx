@@ -27,7 +27,7 @@ export const ConfirmationAddingExistingPersonalNumberForm: FC<
           {apartmentAddress && getHousingStockItemAddress(apartmentAddress)}
         </AddressWrapper>
         <AddressWrapper>
-          кв: {samePersonalAccountNumderApartmentData?.apartmentNumber}
+          кв. {samePersonalAccountNumderApartmentData?.apartmentNumber}
         </AddressWrapper>
       </LinkSC>
     </>

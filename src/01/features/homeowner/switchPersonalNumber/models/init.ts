@@ -3,6 +3,7 @@ import {
   $isForced,
   $samePersonalAccountNumderId,
   handleConfirmationModalClose,
+  handleSwitchPersonalNumber,
   onForced,
   setSwitchRequestStatus,
   switchPersonalNumber,
@@ -15,6 +16,11 @@ import { HomeownerGate } from '../../displayHomeowner/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
 import { HomeownerAccountReplaceRequest } from 'myApi';
+import { message } from 'antd';
+import {
+  PersonalNumberFormMountPlaceType,
+  PersonalNumberFormTypeGate,
+} from '../../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 switchPersonalNumberFx.use(replaceHomeownerAccount);
 
@@ -28,8 +34,19 @@ forward({
   to: switchPersonalNumber,
 });
 
+forward({ from: switchPersonalNumber, to: personalNumberEditForm.submit });
+
 sample({
-  clock: switchPersonalNumber,
+  clock: personalNumberEditForm.formValidated,
+  source: PersonalNumberFormTypeGate.state,
+  filter: (formType) =>
+    formType.type === PersonalNumberFormMountPlaceType.Switch,
+  fn: (source) => source.type,
+  target: handleSwitchPersonalNumber,
+});
+
+sample({
+  clock: handleSwitchPersonalNumber,
   source: combine(
     HomeownerGate.state,
     personalNumberEditForm.$values,
@@ -74,6 +91,19 @@ $samePersonalAccountNumderId
     return prev;
   })
   .reset(handleConfirmationModalClose);
+
+switchPersonalNumberFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 $isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
 

@@ -17,6 +17,7 @@ export const switchPersonalNumber = createEvent();
 
 export const handleConfirmationModalClose = createEvent();
 export const onForced = createEvent();
+export const handleSwitchPersonalNumber = createEvent();
 
 export const $samePersonalAccountNumderId = createStore<number | null>(null);
 export const $isConfirmationModalOpen =

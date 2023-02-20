@@ -3,6 +3,7 @@ import {
   $isForced,
   $samePersonalAccountNumderId,
   addPersonalNmberSaveButtonClicked,
+  handleAddPersonalNumber,
   handleConfirmationModalClose,
   onForced,
   setAddPersonalNumberStatus,
@@ -13,11 +14,28 @@ import { combine, forward, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { HomeownerAccountCreateRequest } from 'myApi';
+import {
+  PersonalNumberFormMountPlaceType,
+  PersonalNumberFormTypeGate,
+} from '../../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 addPersonalNumberFx.use(addHomeowner);
 
+forward({
+  from: addPersonalNmberSaveButtonClicked,
+  to: personalNumberEditForm.submit,
+});
+
 sample({
-  clock: addPersonalNmberSaveButtonClicked,
+  clock: personalNumberEditForm.formValidated,
+  source: PersonalNumberFormTypeGate.state,
+  filter: (formType) => formType.type === PersonalNumberFormMountPlaceType.Add,
+  fn: (source) => source.type,
+  target: handleAddPersonalNumber,
+});
+
+sample({
+  clock: handleAddPersonalNumber,
   source: combine(
     personalNumberEditForm.$values,
     $apartment,
@@ -49,11 +67,6 @@ sample({
   target: addPersonalNumberFx,
 });
 
-forward({
-  from: onForced,
-  to: addPersonalNmberSaveButtonClicked,
-});
-
 $addPersonalNumberRequestStatus
   .on(addPersonalNumberFx.done, () => 'done')
   .on(addPersonalNumberFx.fail, () => 'failed')
@@ -69,6 +82,11 @@ $samePersonalAccountNumderId
   .reset(handleConfirmationModalClose);
 
 $isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
+
+forward({
+  from: onForced,
+  to: addPersonalNmberSaveButtonClicked,
+});
 
 $samePersonalAccountNumderId.reset(handleConfirmationModalClose);
 

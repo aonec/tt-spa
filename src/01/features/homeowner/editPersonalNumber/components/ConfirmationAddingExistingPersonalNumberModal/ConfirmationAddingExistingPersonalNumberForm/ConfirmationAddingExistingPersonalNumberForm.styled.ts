@@ -9,7 +9,10 @@ export const LinkSC = styled(Link)`
 `;
 
 export const AddressWrapper = styled.span`
-  margin-left: 16px;
+  margin-left: 8px;
+  &:last-child {
+    margin-left: 16px;
+  }
 `;
 
 export const TitleWrapper = styled.span`

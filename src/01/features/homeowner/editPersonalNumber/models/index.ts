@@ -37,12 +37,6 @@ export const personalNumberEditForm = createForm({
     },
     phoneNumber: {
       init: '',
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     openAt: {
       init: null as string | null,

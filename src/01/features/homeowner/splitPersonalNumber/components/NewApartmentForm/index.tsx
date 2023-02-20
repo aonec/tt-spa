@@ -10,6 +10,7 @@ import { $apartment } from '01/features/apartments/displayApartment/models';
 import { newApartmentPersonalNumberForm } from '../../models';
 import { useForm } from 'effector-forms/dist';
 import { ErrorMessage } from '01/features/contractors/addContractors';
+import { PersonalNumberFormMountPlaceType } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const NewApartmentForm = () => {
   const apartment = useStore($apartment);
@@ -44,7 +45,10 @@ export const NewApartmentForm = () => {
         </Form.Item>
       </Grid>
       <SpaceLine />
-      <PersonalNumberEditForm form={newApartmentPersonalNumberForm} />
+      <PersonalNumberEditForm
+        form={newApartmentPersonalNumberForm}
+        type={PersonalNumberFormMountPlaceType.Split}
+      />
     </Wrap>
   );
 };

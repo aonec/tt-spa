@@ -11,7 +11,6 @@ import {
   $samePersonalAccountNumderId,
   AutoCompleteFormGate,
   editHomeownerAccountEffect,
-  editHomeownerSaveButtonClicked,
   handleConfirmationModalClose,
   onForced,
   setEditRequestStatus,
@@ -20,6 +19,7 @@ import { message } from 'antd';
 import { CloseHomeownerAccountModal } from './components/CloseHomeownerAccountModal';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { ConfirmationAddingExistingPersonalNumber } from './components/ConfirmationAddingExistingPersonalNumberModal';
+import { PersonalNumberFormMountPlaceType } from './components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const EditHomeownerPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
@@ -61,10 +61,9 @@ export const EditHomeownerPersonalNumberPage = () => {
       <PersonaNumberActionPage
         loading={loading}
         title="Редактирование лицевого счета"
-        onSaveHandler={editHomeownerSaveButtonClicked}
       >
         <PersonalNumberEditForm
-          type="edit"
+          type={PersonalNumberFormMountPlaceType.Edit}
           isMainPersonalAccountNumber={isMainPersonalAccountNumber}
         />
         <ConfirmationAddingExistingPersonalNumber

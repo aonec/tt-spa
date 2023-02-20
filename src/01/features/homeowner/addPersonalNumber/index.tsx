@@ -8,7 +8,6 @@ import {
   $addPersonalNumberRequestStatus,
   $isConfirmationModalOpen,
   $samePersonalAccountNumderId,
-  addPersonalNmberSaveButtonClicked,
   addPersonalNumberFx,
   handleConfirmationModalClose,
   onForced,
@@ -16,6 +15,7 @@ import {
 } from './models';
 import { useHistory } from 'react-router';
 import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const AddPersonalNumberPage = () => {
   const pendingAdd = useStore(addPersonalNumberFx.pending);
@@ -47,9 +47,8 @@ export const AddPersonalNumberPage = () => {
     <PersonaNumberActionPage
       title="Добавление лицевого счета"
       loading={pendingAdd}
-      onSaveHandler={addPersonalNmberSaveButtonClicked}
     >
-      <PersonalNumberEditForm />
+      <PersonalNumberEditForm type={PersonalNumberFormMountPlaceType.Add} />
       <ConfirmationAddingExistingPersonalNumber
         isConfirmationModalOpen={isConfirmationModalOpen}
         samePersonalAccountNumderId={samePersonalAccountNumderId}

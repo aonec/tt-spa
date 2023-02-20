@@ -10,6 +10,7 @@ export const addPersonalNumberFx = createEffect<
 >();
 
 export const addPersonalNmberSaveButtonClicked = createEvent();
+export const handleAddPersonalNumber = createEvent();
 export const handleConfirmationModalClose = createEvent();
 export const onForced = createEvent();
 

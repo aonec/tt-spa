@@ -34,7 +34,7 @@ export const ConfirmationAddingExistingPersonalNumber: FC<
     <FormModal
       visible={isConfirmationModalOpen}
       onCancel={() => confirmationModalClose()}
-      title="Данный лицевой счет уже существует"
+      title="Данный лицевой счёт уже существует"
       onSubmit={() => {
         handleForced();
       }}
