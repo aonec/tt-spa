@@ -32,7 +32,7 @@ sample({
         millisecond: 0,
       })
       .utcOffset(0, true)
-      .add(1, 'day')
+      .endOf('day')
       .toISOString(),
   }),
   target: displayNodeArchiveService.inputs.fetchNodeArchiveDataFx,
