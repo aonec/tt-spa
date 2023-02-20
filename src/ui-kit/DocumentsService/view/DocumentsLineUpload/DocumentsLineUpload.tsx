@@ -15,6 +15,7 @@ import {
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 import { DocumentResponse } from 'myApi';
 import axios from '01/axios';
+import { EffectFailDataAxiosError } from 'types';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,
@@ -84,7 +85,15 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
           <DocumentItemWrapper key={document.id}>
             <TrashIconSC
               onClick={() => {
-                axios.delete(`Documents/${document.id}`);
+                try {
+                  axios.delete(`Documents/${document.id}`);
+                } catch (error) {
+                  console.log('first');
+                  console.log(
+                    (error as unknown as EffectFailDataAxiosError).response
+                      .status,
+                  );
+                }
                 removeDocument(document.id);
               }}
             />

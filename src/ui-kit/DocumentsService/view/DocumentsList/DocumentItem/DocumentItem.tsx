@@ -15,6 +15,7 @@ import {
 } from './DocumentItem.styled';
 import { DocumentItemProps } from './DocumentItem.types';
 import axios from '01/axios';
+import { EffectFailDataAxiosError } from 'types';
 
 export const DocumentItem: FC<DocumentItemProps> = ({
   document,
@@ -49,7 +50,14 @@ export const DocumentItem: FC<DocumentItemProps> = ({
         {removeDocument && (
           <TrashIconSC
             onClick={() => {
-              axios.delete(`Documents/${document.id}`);
+              try {
+                axios.delete(`Documents/${document.id}`);
+              } catch (error) {
+                console.log(
+                  (error as unknown as EffectFailDataAxiosError).response
+                    .status,
+                );
+              }
               handleRemoveDocument();
             }}
           />
