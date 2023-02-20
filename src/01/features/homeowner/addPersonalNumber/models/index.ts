@@ -17,6 +17,7 @@ export const $addPersonalNumberRequestStatus =
   createStore<RequestStatusShared>(null);
 
 export const $samePersonalAccountNumderId = createStore<number | null>(null);
+
 export const $isConfirmationModalOpen =
   $samePersonalAccountNumderId.map(Boolean);
 export const $isForced = createStore<boolean>(false);

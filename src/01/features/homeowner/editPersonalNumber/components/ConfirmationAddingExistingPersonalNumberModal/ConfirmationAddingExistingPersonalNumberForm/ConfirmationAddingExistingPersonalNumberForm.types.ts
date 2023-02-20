@@ -1,3 +1,5 @@
+import { ApartmentResponse } from 'myApi';
+
 export type ConfirmationAddingExistingPersonalNumberFormProps = {
-  samePersonalAccountNumderId: number | null;
+  samePersonalAccountNumderApartmentData: ApartmentResponse | null;
 };

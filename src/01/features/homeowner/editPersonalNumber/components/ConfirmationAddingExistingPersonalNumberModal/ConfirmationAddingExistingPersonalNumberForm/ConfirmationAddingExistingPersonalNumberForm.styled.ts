@@ -6,5 +6,14 @@ export const LinkSC = styled(Link)`
   font-weight: 500;
   font-size: 20px;
   line-height: 32px;
-  padding: 0 10px;
+`;
+
+export const AddressWrapper = styled.span`
+  margin-left: 16px;
+`;
+
+export const TitleWrapper = styled.span`
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 32px;
 `;

@@ -1,16 +1,35 @@
 import React, { FC } from 'react';
-import { LinkSC } from './ConfirmationAddingExistingPersonalNumberForm.styled';
+import {
+  AddressWrapper,
+  LinkSC,
+  TitleWrapper,
+} from './ConfirmationAddingExistingPersonalNumberForm.styled';
 import { ConfirmationAddingExistingPersonalNumberFormProps } from './ConfirmationAddingExistingPersonalNumberForm.types';
+import { getHousingStockItemAddress } from '../../../../../../../utils/getHousingStockItemAddress';
 
 export const ConfirmationAddingExistingPersonalNumberForm: FC<
   ConfirmationAddingExistingPersonalNumberFormProps
-> = ({ samePersonalAccountNumderId }) => {
+> = ({ samePersonalAccountNumderApartmentData }) => {
+  const samePersonalAccountNumderId =
+    samePersonalAccountNumderApartmentData?.id;
+
+  const apartmentAddress =
+    samePersonalAccountNumderApartmentData?.housingStock?.address?.mainAddress;
+
   return (
+    <>
+      <TitleWrapper>Квартира с таким же лицевым счётом:</TitleWrapper>
       <LinkSC
         to={`/meters/apartments/${samePersonalAccountNumderId}`}
         target="_blank"
       >
-        Квартира с таким же л\с: {samePersonalAccountNumderId}
+        <AddressWrapper>
+          {apartmentAddress && getHousingStockItemAddress(apartmentAddress)}
+        </AddressWrapper>
+        <AddressWrapper>
+          кв: {samePersonalAccountNumderApartmentData?.apartmentNumber}
+        </AddressWrapper>
       </LinkSC>
+    </>
   );
 };
