@@ -41,13 +41,18 @@ export const HomeownersReport: FC<HomeownersReportProps> = ({
         },
         {
           label: 'ФИО',
-          size: '230px',
+          size: '270px',
           render: (elem) => elem.homeownerFullName,
         },
         {
           label: 'Лицевой счет',
           size: '130px',
           render: (elem) => elem.homeownerAccountNumber,
+        },
+        {
+          label: 'Номер телефона',
+          size: '170px',
+          render: (elem) => elem.homeownerPhoneNumber,
         },
       ]}
       elements={homeownersReportData}
