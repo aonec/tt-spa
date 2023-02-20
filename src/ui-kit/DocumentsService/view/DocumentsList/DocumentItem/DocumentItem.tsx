@@ -16,6 +16,7 @@ import {
 import { DocumentItemProps } from './DocumentItem.types';
 import axios from '01/axios';
 import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 export const DocumentItem: FC<DocumentItemProps> = ({
   document,
@@ -49,14 +50,18 @@ export const DocumentItem: FC<DocumentItemProps> = ({
         <DownloadIconSC onClick={handleSaveDocument} />
         {removeDocument && (
           <TrashIconSC
-            onClick={() => {
+            onClick={async () => {
               try {
-                axios.delete(`Documents/${document.id}`);
+                await axios.delete(`Documents/${document.id}`);
               } catch (error) {
-                console.log(
+                if (
                   (error as unknown as EffectFailDataAxiosError).response
-                    .status,
-                );
+                    .status === 403
+                ) {
+                  message.error(
+                    'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+                  );
+                }
               }
               handleRemoveDocument();
             }}
