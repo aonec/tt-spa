@@ -1,4 +1,5 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
+import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { EditCompanyForm } from '../EditCompanyForm';
@@ -14,16 +15,21 @@ export const EditCompanyPage: FC<EditCompanyPageProps> = ({
   return (
     <>
       <GoBack />
-      <HeaderWrapper>
-        <PageHeader title="Профиль компании. Редактирование" />
-      </HeaderWrapper>
       {currentManagingFirm && (
-        <EditCompanyForm
-          currentManagingFirm={currentManagingFirm}
-          handleUpdateOrganization={handleUpdateOrganization}
-          existingCities={existingCities}
-          isUpdating={isUpdating}
-        />
+        <>
+          <HeaderWrapper>
+            <PageHeader title="Профиль компании. Редактирование" />
+          </HeaderWrapper>
+          <EditCompanyForm
+            currentManagingFirm={currentManagingFirm}
+            handleUpdateOrganization={handleUpdateOrganization}
+            existingCities={existingCities}
+            isUpdating={isUpdating}
+          />
+        </>
+      )}
+      {!currentManagingFirm && (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет данных" />
       )}
     </>
   );
