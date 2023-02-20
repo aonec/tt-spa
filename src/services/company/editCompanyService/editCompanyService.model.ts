@@ -1,6 +1,8 @@
+import { message } from 'antd';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { OrganizationResponse, OrganizationUpdateRequest } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
 import {
   fetchCurrentManagingFirm,
   fetchUpdateOrganization,
@@ -22,12 +24,16 @@ const $currentManagingFirm = domain
 const updateOrganization = domain.createEvent<OrganizationUpdateRequest>();
 const updateOrganizationFx = domain.createEffect<
   OrganizationUpdatePayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(fetchUpdateOrganization);
+
+const organizationUpdated = updateOrganizationFx.doneData;
 
 const EditCompanyGate = createGate();
 
 const $isOrganizationLoading = getCurrentManagingFirmFx.pending;
+const $isUpdating = updateOrganizationFx.pending;
 
 sample({
   source: sample({
@@ -49,13 +55,19 @@ forward({
   to: clearCurrentManagingFirm,
 });
 
+updateOrganizationFx.doneData.watch(() =>
+  message.success('Информация о компании успешна отредактирована!'),
+);
+
 export const editCompanyService = {
   inputs: {
     updateOrganization,
+    organizationUpdated,
   },
   outputs: {
     $currentManagingFirm,
     $isOrganizationLoading,
+    $isUpdating,
   },
   gates: { EditCompanyGate },
 };
