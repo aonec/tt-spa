@@ -41,7 +41,7 @@ sample({
     filter: (id): id is number => Boolean(id),
   }),
   clock: updateOrganization,
-  fn: (managingFirmId, payload) => ({ managingFirmId, payload }),
+  fn: (managingFirmId, payload) => ({ managingFirmId, ...payload }),
   target: updateOrganizationFx,
 });
 
