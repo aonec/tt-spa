@@ -131,6 +131,8 @@ export const StyledDatePicker = styled(DatePicker)`
 `;
 
 export const StyledSquareButton = styled.div`
+  height: 32px;
+  width: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,8 +159,8 @@ export const StyledSquareButton = styled.div`
   }
 `;
 
-export const FilterButton = styled(() => (
-  <StyledSquareButton>
+export const FilterButton = styled(({ onClick }: { onClick?: () => void }) => (
+  <StyledSquareButton onClick={onClick}>
     <div>
       <FilterIcon />
     </div>

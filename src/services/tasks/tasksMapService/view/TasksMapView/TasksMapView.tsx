@@ -8,6 +8,7 @@ import {
   ZoomControl,
 } from '@pbe/react-yandex-maps';
 import { getTaskIcon } from './TasksMapView.utils';
+import { TasksMapFiltration } from './TasksMapFiltration';
 
 export const TasksMapView: FC<TasksMapViewProps> = ({ tasks }) => {
   const map = useRef<null | { getBounds: () => number[][] }>(null);
@@ -20,6 +21,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({ tasks }) => {
 
   return (
     <Wrapper>
+      <TasksMapFiltration />
       <Map
         instanceRef={map}
         width={'100%'}
