@@ -13,7 +13,6 @@ export const Wrapper = styled.div`
   z-index: 1;
   box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
     0px 8px 16px rgba(78, 93, 146, 0.08);
-  padding: 16px;
 `;
 
 export const FilterHeader = styled.div`
@@ -21,6 +20,7 @@ export const FilterHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  padding: 16px;
 `;
 
 export const SearchInput = styled(InputSC)`
@@ -44,7 +44,16 @@ const slideDown = keyframes`
   `;
 
 export const ExtendedFiltration = styled.div`
-  margin-top: 8px;
   animation-duration: 0.2s;
   animation-name: ${slideDown};
+  padding: 0 16px 16px 16px;
+`;
+
+export const Footer = styled.div`
+  background: #f3f5f6;
+  border-radius: 0 0 4px 4px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 `;

@@ -7,6 +7,7 @@ import {
   CloseIconSC,
   ExtendedFiltration,
   FilterHeader,
+  Footer,
   SearchInput,
   Wrapper,
 } from './TasksMapFiltration.styled';
@@ -18,6 +19,7 @@ import { EResourceType } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { ResourceMapNamesDictionary } from 'dictionaries';
 import { useFormik } from 'formik';
+import { Checkbox, Space } from 'antd';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +72,31 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
                 onChange={(value) => setFieldValue('resource', value)}
               />
             </FormItem>
+            <FormItem label="Статус задачи">
+              <Checkbox.Group>
+                <Space direction="vertical">
+                  <Checkbox>В процессе</Checkbox>
+                  <Checkbox>Истекает срок исполнения</Checkbox>
+                  <Checkbox>Просроченная</Checkbox>
+                </Space>
+              </Checkbox.Group>
+            </FormItem>
+            <FormItem label="Тип задачи">
+              <SelectSC placeholder="Введите номер задачи или адрес" />
+            </FormItem>
+            <FormItem label="Исполнитель">
+              <SearchInput
+                placeholder="Выберите из списка"
+                prefix={<SearchIcon />}
+              />
+            </FormItem>
           </ExtendedFiltration>
+          <Footer>
+            <Button size="small" type="ghost">
+              Отмена
+            </Button>
+            <Button size="small">Применить фильтр</Button>
+          </Footer>
         </>
       )}
     </Wrapper>
