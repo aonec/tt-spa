@@ -13,9 +13,21 @@ import {
 import { TasksMapFiltrationProps } from './TasksMapFiltration.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
+import { ItemPanelsSelect } from 'ui-kit/shared_components/ItemPanelsSelect';
+import { EResourceType } from 'myApi';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
+import { ResourceMapNamesDictionary } from 'dictionaries';
+import { useFormik } from 'formik';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { values, setFieldValue } = useFormik({
+    initialValues: {
+      resource: [] as EResourceType[],
+    },
+    onSubmit: () => void 0,
+  });
 
   return (
     <Wrapper>
@@ -42,7 +54,22 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
             <FormItem label="Элемент инженерной сети">
               <SelectSC placeholder="Выберите"></SelectSC>
             </FormItem>
-            <FormItem label="Тип ресурса"></FormItem>
+            <FormItem label="Тип ресурса">
+              <ItemPanelsSelect<EResourceType>
+                items={[
+                  EResourceType.ColdWaterSupply,
+                  EResourceType.HotWaterSupply,
+                  EResourceType.Heat,
+                  EResourceType.Electricity,
+                ].map((resource) => ({
+                  key: resource,
+                  icon: <ResourceIconLookup resource={resource} />,
+                  title: ResourceMapNamesDictionary[resource],
+                }))}
+                selected={values.resource}
+                onChange={(value) => setFieldValue('resource', value)}
+              />
+            </FormItem>
           </ExtendedFiltration>
         </>
       )}

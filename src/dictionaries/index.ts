@@ -35,6 +35,15 @@ export const ResourceShortNamesDictionary: {
   [EResourceType.Heat]: 'Тепло',
 };
 
+export const ResourceMapNamesDictionary: {
+  [key in EResourceType]: string;
+} = {
+  [EResourceType.ColdWaterSupply]: 'ХВС',
+  [EResourceType.HotWaterSupply]: 'ГВС',
+  [EResourceType.Electricity]: 'Электричество',
+  [EResourceType.Heat]: 'Отопление',
+};
+
 export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
   [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
