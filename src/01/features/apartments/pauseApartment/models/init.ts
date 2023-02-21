@@ -52,8 +52,6 @@ const payload = combine(
   }),
 );
 
-pauseApartmentForm.formValidated.watch(() => console.log('first'));
-
 sample({
   clock: pauseApartmentForm.formValidated,
   source: payload,
