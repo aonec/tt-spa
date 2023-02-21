@@ -34,6 +34,7 @@ import {
   PersonalNumberFormMountPlaceType,
   PersonalNumberFormTypeGate,
 } from '../components/PersonalNumberEditForm/personalNumberEditForm.controller';
+import { message } from 'antd';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -165,4 +166,24 @@ $samePersonalAccountNumderId.reset(handleConfirmationModalClose);
 forward({
   from: editHomeownerAccountEffect.doneData,
   to: handleConfirmationModalClose,
+});
+
+editHomeownerAccountEffect.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });

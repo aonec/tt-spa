@@ -46,10 +46,6 @@ export const EditHomeownerPersonalNumberPage = () => {
       message.success('Лицевой счет успешно изменен');
     }
 
-    if (status === 'failed') {
-      message.error('Ошибка сохранения');
-    }
-
     setEditRequestStatus(null);
   }, [status, history]);
 

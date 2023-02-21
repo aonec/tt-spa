@@ -76,6 +76,7 @@ export type EffectFailDataAxiosErrorDataApartmentId = {
         Data: {
           ApartmentId: number;
         };
+        Code: string;
       };
     };
     status: number;

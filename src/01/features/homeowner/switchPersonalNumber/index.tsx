@@ -46,11 +46,6 @@ export const SwitchPersonalNumberPage = () => {
       history.goBack();
       message.success('Лицевой счет успешно изменен');
     }
-
-    if (status === 'failed') {
-      message.error('Ошибка сохранения');
-    }
-
     setSwitchRequestStatus(null);
   }, [status, history]);
 

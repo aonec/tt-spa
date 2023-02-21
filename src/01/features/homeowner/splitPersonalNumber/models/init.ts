@@ -21,6 +21,7 @@ import { HomeownerGate } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { doesApartmentExist } from '01/_api/housingStocks';
+import { message } from 'antd';
 
 splitPersonalNumberFx.use(splitHomeownerAccount);
 checkApartmentExistingFx.use(doesApartmentExist);
@@ -158,4 +159,17 @@ sample({
     }),
   ),
   target: checkApartmentExistingFx,
+});
+
+splitPersonalNumberFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });

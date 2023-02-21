@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import {
   AddressWrapper,
+  ConfirmationTextWrapper,
   LinkSC,
+  SkeletonLineSC,
   TitleWrapper,
 } from './ConfirmationAddingExistingPersonalNumberForm.styled';
 import { ConfirmationAddingExistingPersonalNumberFormProps } from './ConfirmationAddingExistingPersonalNumberForm.types';
@@ -17,19 +19,25 @@ export const ConfirmationAddingExistingPersonalNumberForm: FC<
     samePersonalAccountNumderApartmentData?.housingStock?.address?.mainAddress;
 
   return (
-    <>
+    <ConfirmationTextWrapper>
       <TitleWrapper>Квартира с таким же лицевым счётом:</TitleWrapper>
       <LinkSC
         to={`/meters/apartments/${samePersonalAccountNumderId}`}
         target="_blank"
       >
-        <AddressWrapper>
-          {apartmentAddress && getHousingStockItemAddress(apartmentAddress)}
-        </AddressWrapper>
-        <AddressWrapper>
-          кв. {samePersonalAccountNumderApartmentData?.apartmentNumber}
-        </AddressWrapper>
+        {!apartmentAddress && <SkeletonLineSC active />}
+
+        {apartmentAddress && (
+          <>
+            <AddressWrapper>
+              {getHousingStockItemAddress(apartmentAddress)}
+            </AddressWrapper>
+            <AddressWrapper>
+              кв. {samePersonalAccountNumderApartmentData?.apartmentNumber}
+            </AddressWrapper>
+          </>
+        )}
       </LinkSC>
-    </>
+    </ConfirmationTextWrapper>
   );
 };

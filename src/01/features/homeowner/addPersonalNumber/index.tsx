@@ -35,11 +35,6 @@ export const AddPersonalNumberPage = () => {
       history.goBack();
       message.success('Лицевой счет успешно изменен');
     }
-
-    if (status === 'failed') {
-      message.error('Ошибка сохранения');
-    }
-
     setAddPersonalNumberStatus(null);
   }, [status, history]);
 
