@@ -53,8 +53,6 @@ import { message } from 'antd';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
-confirmCreationNewDeviceButtonClicked.watch(() => console.log('work'));
-
 createIndividualDeviceFx.failData.watch((error) => {
   if (error.response.status === 403) {
     return message.error(
