@@ -82,7 +82,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Модель',
-          size: '150px',
+          size: '180px',
           render: (elem) => elem.model,
         },
         {
