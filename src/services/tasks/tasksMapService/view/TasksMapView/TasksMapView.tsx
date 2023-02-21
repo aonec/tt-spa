@@ -15,10 +15,6 @@ export const TasksMapView: FC<TasksMapViewProps> = ({ tasks }) => {
 
   const data = tasks[0]?.housingStockCoordinates;
 
-  // useEffect(() => {
-  //   console.log(map.current?.getBounds());
-  // }, [map.current]);
-
   return (
     <Wrapper>
       <TasksMapFiltration />
@@ -34,6 +30,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({ tasks }) => {
       >
         {tasks.map((task) => (
           <Placemark
+            key={task.id}
             defaultGeometry={
               task.housingStockCoordinates
                 ? [
