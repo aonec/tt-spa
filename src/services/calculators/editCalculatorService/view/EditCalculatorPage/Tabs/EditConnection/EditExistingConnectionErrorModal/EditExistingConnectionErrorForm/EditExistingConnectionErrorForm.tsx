@@ -8,10 +8,9 @@ import {
 } from './EditExistingConnectionErrorForm.styled';
 import { EditExistingConnectionErrorFormProps } from './EditExistingConnectionErrorForm.types';
 
-export const EditExistingConnectionErrorForm: FC<EditExistingConnectionErrorFormProps> = ({
-  sameConnectionCalculator,
-}) => {
-
+export const EditExistingConnectionErrorForm: FC<
+  EditExistingConnectionErrorFormProps
+> = ({ sameConnectionCalculator }) => {
   return (
     <Wrapper>
       <Description>
@@ -21,7 +20,7 @@ export const EditExistingConnectionErrorForm: FC<EditExistingConnectionErrorForm
 
       <CalculatorBlock>
         <Model
-          href={`/calculators/${sameConnectionCalculator?.id}`}
+          to={`/calculators/${sameConnectionCalculator?.id}`}
           target="_blank"
         >
           {sameConnectionCalculator?.model || 'Модель не указана'}
