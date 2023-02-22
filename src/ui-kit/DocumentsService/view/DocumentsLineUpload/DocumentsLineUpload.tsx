@@ -15,8 +15,6 @@ import {
 import { DocumentsLineUploadProps } from './DocumentsLineUpload.types';
 import { DocumentResponse } from 'myApi';
 import axios from '01/axios';
-import { EffectFailDataAxiosError } from 'types';
-import { message } from 'antd';
 
 export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
   fileHandler,
@@ -88,16 +86,7 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
               onClick={() => {
                 try {
                   axios.delete(`Documents/${document.id}`);
-                } catch (error) {
-                  if (
-                    (error as unknown as EffectFailDataAxiosError).response
-                      .status === 403
-                  ) {
-                    message.error(
-                      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-                    );
-                  }
-                }
+                } catch (error) {}
                 removeDocument(document.id);
               }}
             />

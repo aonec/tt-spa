@@ -1,40 +1,67 @@
-import { FileData } from '01/hooks/useFilesUpload';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { useForm } from 'effector-forms/dist';
 import React from 'react';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
+import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { EDocumentType } from 'myApi';
+import { DocumentsUploadWrapper } from './BaseInfoStage.styled';
 
 export const DocumentsStage = () => {
   const { fields } = useForm(addIndividualDeviceForm);
 
-  const {
-    completedWorks,
-    devicePassport,
-    deviceCheck,
-  } = fields.documentsIds.value;
+  const { completedWorks, devicePassport, deviceCheck } =
+    fields.documentsIds.value;
 
-  const setFile = (
-    name: 'completedWorks' | 'devicePassport' | 'deviceCheck'
-  ) => (files: FileData[]) => {
-    if (files.length === 0) return;
+  const setFile =
+    (name: 'completedWorks' | 'devicePassport' | 'deviceCheck') =>
+    (documents: Document[]) => {
+      const isFilesListEmpty = documents.length === 0;
 
-    const isFilesListEmpty = files.length === 0;
+      const neededFile = isFilesListEmpty
+        ? null
+        : documents[0] || fields.documentsIds.value[name];
 
-    const neededFile = isFilesListEmpty
-      ? null
-      : files[0] || fields.documentsIds.value[name];
+      fields.documentsIds.onChange({
+        ...fields.documentsIds.value,
+        [name]: neededFile,
+      });
+    };
 
-    fields.documentsIds.onChange({
-      ...fields.documentsIds.value,
-      [name]: neededFile,
-    });
-  };
+  function getFilesArrByFile(fileData: Document | null) {
+    return fileData ? [fileData] : [];
+  }
 
   return (
     <>
       <FormHeader>Документы</FormHeader>
-      <FilesUpload
+
+      <DocumentsUploadWrapper>
+        <DocumentsUploadContainer
+          uniqId="create-individual-device-completed-works"
+          label="Добавьте акт выполненных работ"
+          max={1}
+          documents={getFilesArrByFile(completedWorks)}
+          onChange={setFile('completedWorks')}
+          type={EDocumentType.DeviceAcceptanceAct}
+        />
+        <DocumentsUploadContainer
+          uniqId="create-individual-device-passport"
+          label="Добавьте паспорт прибора"
+          max={1}
+          documents={getFilesArrByFile(devicePassport)}
+          onChange={setFile('devicePassport')}
+          type={EDocumentType.DevicePassport}
+        />
+        <DocumentsUploadContainer
+          uniqId="create-individual-device-check"
+          label="Добавьте свидетельство о проверке прибора"
+          max={1}
+          documents={getFilesArrByFile(deviceCheck)}
+          onChange={setFile('deviceCheck')}
+          type={EDocumentType.DeviceTestCertificates}
+        />
+      </DocumentsUploadWrapper>
+      {/* <FilesUpload
         uniqId="create-individual-device-completed-works"
         text="Добавьте акт выполненных работ"
         filesInit={getFilesArrByFile(completedWorks)}
@@ -42,9 +69,9 @@ export const DocumentsStage = () => {
         onChange={setFile('completedWorks')}
         withoutDeletion
         type="DeviceAcceptanceAct"
-      />
+      /> */}
 
-      <FilesUpload
+      {/* <FilesUpload
         uniqId="create-individual-device-passport"
         text="Добавьте паспорт прибора"
         filesInit={getFilesArrByFile(devicePassport)}
@@ -52,9 +79,9 @@ export const DocumentsStage = () => {
         onChange={setFile('devicePassport')}
         withoutDeletion
         type="DevicePassport"
-      />
+      /> */}
 
-      <FilesUpload
+      {/* <FilesUpload
         uniqId="create-individual-device-check"
         text="Добавьте свидетельство о проверке прибора"
         max={1}
@@ -62,11 +89,7 @@ export const DocumentsStage = () => {
         onChange={setFile('deviceCheck')}
         withoutDeletion
         type="DeviceTestCertificates"
-      />
+      /> */}
     </>
   );
 };
-
-function getFilesArrByFile(fileData: FileData | null) {
-  return fileData ? [fileData] : [];
-}
