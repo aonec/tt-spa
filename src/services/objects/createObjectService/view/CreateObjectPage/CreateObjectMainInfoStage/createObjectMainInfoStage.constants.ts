@@ -6,7 +6,7 @@ import {
 import * as yup from 'yup';
 
 export const validationSchema = yup.object().shape({
-  houseManagement: yup.string().nullable().required('Обязательное поле'),
+  houseManagement: yup.string().nullable(true),
   objectCategory: yup.string().nullable().required('Обязательное поле'),
 
   livingHouseType: yup

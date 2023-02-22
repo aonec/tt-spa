@@ -12,7 +12,7 @@ import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/c
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import { useFormik } from 'formik';
@@ -49,30 +49,26 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
   const isExcluded =
     moment().diff(moment(filter?.DateLastCheckFrom), 'month') >= 3;
 
-  const {
-    values,
-    setFieldValue,
-    resetForm,
-    submitForm,
-  } = useFormik<SubscriberStatisticsFormik>({
-    initialValues: {
-      ColdWaterSupply: filter?.ColdWaterSupply,
-      Electricity: filter?.Electricity,
-      HotWaterSupply: filter?.HotWaterSupply,
-      ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
-      ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
-      ElectricitySupplyConsumptionFrom:
-        filter?.ElectricitySupplyConsumptionFrom,
-      ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
-      HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
-      HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
-      ExcludeApartments: isExcluded,
-    },
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      setFilter(values);
-    },
-  });
+  const { values, setFieldValue, resetForm, submitForm } =
+    useFormik<SubscriberStatisticsFormik>({
+      initialValues: {
+        ColdWaterSupply: filter?.ColdWaterSupply,
+        Electricity: filter?.Electricity,
+        HotWaterSupply: filter?.HotWaterSupply,
+        ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
+        ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
+        ElectricitySupplyConsumptionFrom:
+          filter?.ElectricitySupplyConsumptionFrom,
+        ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
+        HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
+        HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+        ExcludeApartments: isExcluded,
+      },
+      enableReinitialize: true,
+      onSubmit: (values) => {
+        setFilter(values);
+      },
+    });
 
   const {
     keyDownEnterGuardedHandler,
@@ -81,7 +77,7 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   function onSendHandler() {
@@ -108,7 +104,7 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             PageSize: 1,
             PageNumber: 1,
           },
-        }
+        },
       );
 
       if (!res.items) return;

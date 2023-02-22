@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  max-width: 670px;
   position: relative;
   margin-top: 32px;
   padding-bottom: 100px;
+
+  width: 100%;
 `;
 
 export const Title = styled.div`
@@ -15,4 +16,5 @@ export const Title = styled.div`
 
 export const PageWrapper = styled.div`
   padding-bottom: 24px;
+  width: 100%;
 `;

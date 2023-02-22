@@ -1,5 +1,5 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -47,6 +47,7 @@ const {
 const {
   inputs: { handleHeatingStationEdited },
 } = editHeatingStationService;
+const withoutHouseMagement = 'withoutHouseMagement';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   houseManagements,
@@ -64,13 +65,17 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
 
   const heatingStationsValues = heatingStations?.items;
 
-  const initialValues = {
-    houseManagement: createObjectData?.houseManagement || null,
-    objectCategory: createObjectData?.objectCategory || null,
-    livingHouseType: createObjectData?.livingHouseType || null,
-    nonResidentialHouseType: createObjectData?.nonResidentialHouseType || null,
-    heatingStationId: createObjectData?.heatingStationId || null,
-  };
+  const initialValues = useMemo(
+    () => ({
+      houseManagement: createObjectData?.houseManagement || null,
+      objectCategory: createObjectData?.objectCategory || null,
+      livingHouseType: createObjectData?.livingHouseType || null,
+      nonResidentialHouseType:
+        createObjectData?.nonResidentialHouseType || null,
+      heatingStationId: createObjectData?.heatingStationId || null,
+    }),
+    [createObjectData],
+  );
 
   const { values, handleSubmit, setFieldValue, errors } =
     useFormik<ObjectMainInfoValues>({
@@ -111,9 +116,21 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
         <FormItem label="Домоуправления">
           <Select
             placeholder="Выберите из списка"
-            onChange={(value) => setFieldValue('houseManagement', value)}
-            value={values.houseManagement || undefined}
+            onChange={(value) => {
+              if (value === withoutHouseMagement) {
+                return setFieldValue('houseManagement', null);
+              }
+              setFieldValue('houseManagement', value);
+            }}
+            value={
+              values.houseManagement === null
+                ? withoutHouseMagement
+                : values.houseManagement || undefined
+            }
           >
+            <Select.Option value={withoutHouseMagement}>
+              Без домоуправления
+            </Select.Option>
             {houseManagements?.map(
               (houseManagement) =>
                 houseManagement.name && (

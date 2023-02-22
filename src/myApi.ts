@@ -26,6 +26,33 @@ export interface AddApartmentActRequest {
   documentId?: number | null;
 }
 
+export interface AddFirmRequest {
+  managementFirmName: string;
+  managementFirmCity: string;
+  managementFirmStreet: string;
+  managementFirmHouseNumber: string;
+  managementFirmTimeZone: TimeSpan;
+}
+
+export interface AddFirmUserRequest {
+  email: string;
+  lastName: string;
+  firstName: string;
+  middleName?: string | null;
+  phoneNumber?: string | null;
+  department?: string | null;
+  roles: SecuredIdentityRoleName[];
+  position?: string | null;
+}
+
+export interface AddFirmUsersRequest {
+  addFirmRequest?: AddFirmRequest | null;
+
+  /** @format int32 */
+  managementFirmId?: number | null;
+  addFirmUserRequests: AddFirmUserRequest[];
+}
+
 export interface AddHeatingStationRequest {
   name: string;
   isThermalChamber?: boolean;
@@ -2650,6 +2677,7 @@ export interface HomeownersConstructedReportResponse {
   apartmentNumber: string | null;
   homeownerFullName: string | null;
   homeownerAccountNumber: string | null;
+  homeownerPhoneNumber: string | null;
 }
 
 export interface HomeownersConstructedReportResponseSuccessApiResponse {
@@ -5089,6 +5117,21 @@ export interface ResourceDisconnectingUpdateRequest {
   sender?: string | null;
 }
 
+export enum SecuredIdentityRoleName {
+  Administrator = 'Administrator',
+  ManagingFirmExecutor = 'ManagingFirmExecutor',
+  Homeowner = 'Homeowner',
+  Operator = 'Operator',
+  ErcService = 'ErcService',
+  Admin = 'Admin',
+  Worker = 'Worker',
+  ManagingFirmSpectator = 'ManagingFirmSpectator',
+  ManagingFirmDispatcher = 'ManagingFirmDispatcher',
+  Controller = 'Controller',
+  SeniorOperator = 'SeniorOperator',
+  ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
+}
+
 export interface SetMagneticSealRequest {
   /** @format date-time */
   magneticSealInstallationDate?: string | null;
@@ -5802,6 +5845,41 @@ export interface TasksPagedList {
 
 export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
+}
+
+export interface TimeSpan {
+  /** @format int64 */
+  ticks?: number;
+
+  /** @format int32 */
+  days?: number;
+
+  /** @format int32 */
+  hours?: number;
+
+  /** @format int32 */
+  milliseconds?: number;
+
+  /** @format int32 */
+  minutes?: number;
+
+  /** @format int32 */
+  seconds?: number;
+
+  /** @format double */
+  totalDays?: number;
+
+  /** @format double */
+  totalHours?: number;
+
+  /** @format double */
+  totalMilliseconds?: number;
+
+  /** @format double */
+  totalMinutes?: number;
+
+  /** @format double */
+  totalSeconds?: number;
 }
 
 export interface TokenResponse {
@@ -7548,11 +7626,16 @@ export class Api<
      * @request POST:/api/DataMigrations/AddFirmUsers
      * @secure
      */
-    dataMigrationsAddFirmUsersCreate: (params: RequestParams = {}) =>
+    dataMigrationsAddFirmUsersCreate: (
+      data: AddFirmUsersRequest,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/api/DataMigrations/AddFirmUsers`,
         method: 'POST',
+        body: data,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
