@@ -1,4 +1,4 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { postEmloyeeStatus } from './changeStatusEmployeeService.api';
 import {
   AddOrganizationUserWorkingStatusRequest,
@@ -7,6 +7,7 @@ import {
 } from 'myApi';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
+import moment from 'moment';
 
 const domain = createDomain('changeStatusEmployeeService');
 
@@ -18,7 +19,8 @@ const handleCatchEmployeeStatusData = domain.createEvent<{
   status: UserStatusResponse | null;
 }>();
 
-const handleUpdateStatus = domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
+const handleUpdateStatus =
+  domain.createEvent<AddOrganizationUserWorkingStatusRequest>();
 
 const updateStatusFx = domain.createEffect<
   AddOrganizationUserWorkingStatusRequest,
@@ -37,14 +39,30 @@ const $employeeStatus = domain
   .createStore<{ id: number; status: UserStatusResponse | null } | null>(null)
   .on(handleCatchEmployeeStatusData, (_, data) => data);
 
-forward({
-  from: handleUpdateStatus,
-  to: updateStatusFx,
+sample({
+  clock: handleUpdateStatus,
+  fn: (data) => {
+    return {
+      ...data,
+      startDate: moment(data.startDate)
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(true),
+      endDate: moment(data.endDate)
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(true),
+    };
+  },
+  target: updateStatusFx,
 });
 
 updateStatusFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
+
+forward({
+  from: successUpdateStatus,
+  to: handleCloseModal,
+});
 
 successUpdateStatus.watch(() => message.success('Статус изменен!'));
 
@@ -54,7 +72,7 @@ export const changeStatusEmployeeService = {
     handleCloseModal,
     handleUpdateStatus,
     handleCatchEmployeeStatusData,
-    successUpdateStatus
+    successUpdateStatus,
   },
   outputs: { $isModalOpen, $employeeStatus },
 };

@@ -1,1 +1,1 @@
-export { TaskPoint } from './TaskPoint'
+export { TaskPoint } from './TaskPoint';

@@ -51,9 +51,17 @@ forward({
   to: deleteMeterFx,
 });
 
-uploadMeterFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+uploadMeterFx.failData.watch((error) => {
+  if (error.response.status === 422) {
+    message.error('Введите все необходимы значения');
+  } else {
+    message.error(
+      error.response.data.error.Text ||
+        error.response.data.error.Message ||
+        'Произошла ошибка',
+    );
+  }
+});
 
 const clearStatuses = domain.createEvent();
 

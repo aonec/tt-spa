@@ -142,6 +142,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           value={values.Name}
           onChange={(e) => setFieldValue('Name', e.currentTarget.value)}
         />
+        <ErrorMessage>{errors.Name}</ErrorMessage>
       </FormItem>
       <RowWrapper>
         <FormItem label="Ресурс">

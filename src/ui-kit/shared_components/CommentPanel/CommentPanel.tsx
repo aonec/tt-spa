@@ -17,8 +17,8 @@ import {
 } from './CommentPanel.styled';
 import { PencilIconSC } from 'ui-kit/shared_components/SelectedEntityPanel/SelectedEntityPanel.styled';
 import { CommentPanelProps } from './CommentPanel.types';
-import moment from 'moment';
 import { Button } from 'ui-kit/Button';
+import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
 export const CommentPanel: FC<CommentPanelProps> = ({
   commentDate,
@@ -116,7 +116,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
           </IconSubstrate>
           <UserName>{author}</UserName>
           <CommentDate>
-            {moment(commentDate).format('DD.MM.YYYY HH:mm')}
+            {commentDate && getTimeStringByUTC(commentDate)}
           </CommentDate>
         </CommentInfo>
       )}

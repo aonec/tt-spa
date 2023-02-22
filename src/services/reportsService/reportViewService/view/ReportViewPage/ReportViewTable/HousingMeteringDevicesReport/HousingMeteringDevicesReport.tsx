@@ -96,6 +96,7 @@ export const HousingMeteringDevicesReport: FC<
         },
       ]}
       elements={housingMeteringDevicesReportData || []}
+      pagination={{ pageSize: 50 }}
     />
   );
 };
