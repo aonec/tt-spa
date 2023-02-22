@@ -20,7 +20,7 @@ export const CloseHousingMeteringDeviceForm: FC<
     initialValues: {
       deviceId: deviceId,
       closingDate: moment(),
-      document: [] as Document[],
+      documents: [] as Document[],
     },
     validationSchema: yup.object({
       deviceId: yup.number().required('Не передан Идентификатор устройства'),
@@ -30,7 +30,7 @@ export const CloseHousingMeteringDeviceForm: FC<
       const form: CloseDeviceRequest = {
         deviceId: values.deviceId,
         closingDate: values.closingDate.toISOString(true),
-        documentsIds: values.document.map((doc) => doc.id),
+        documentsIds: values.documents.map((doc) => doc.id),
       };
 
       handleOnSubmit(form);
@@ -61,12 +61,12 @@ export const CloseHousingMeteringDeviceForm: FC<
         uniqId={uniqId}
         onChange={(doc) => {
           if (doc.length === 0) {
-            return setFieldValue('document', []);
+            return setFieldValue('documents', []);
           }
-          setFieldValue('document', doc);
+          setFieldValue('documents', doc);
         }}
         label="Добавьте акт снятия прибора с учета"
-        documents={values.document}
+        documents={values.documents}
       />
     </>
   );
