@@ -22,6 +22,8 @@ forward({
   to: fetchReportFx,
 });
 
+const handleSuccess = fetchReportFx.doneData;
+
 fetchReportFx.failData.watch(async (error) => {
   const newErr = { ...error };
 
@@ -39,7 +41,8 @@ fetchReportFx.failData.watch(async (error) => {
 const $isModalOpen = domain
   .createStore<boolean>(false)
   .on(handleModalOpen, () => true)
-  .on(handleModalClose, () => false);
+  .on(handleModalClose, () => false)
+  .reset(handleSuccess);
 
 export const consumptionReportCalculatorService = {
   inputs: { handleModalOpen, handleModalClose, handleSubmit },

@@ -6,13 +6,14 @@ import {
   updateElectricHousingMeteringDevice,
 } from './editElectricNodeService.api';
 import { EditElectricNodePayload } from './editElectricNodeService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('editElectricNodeService');
 
-const $electricNode = domain.createStore<ElectricHousingMeteringDeviceResponse | null>(
-  null
-);
-const getElectricNode = domain.createEffect<
+const $electricNode =
+  domain.createStore<ElectricHousingMeteringDeviceResponse | null>(null);
+const getElectricNodeFx = domain.createEffect<
   number,
   ElectricHousingMeteringDeviceResponse
 >(fetchElectricNode);
@@ -20,14 +21,15 @@ const refetchElectricNode = domain.createEvent<number>();
 
 const updateDevice = domain.createEvent<EditElectricNodePayload>();
 const updateDeviceFx = domain.createEffect<
-EditElectricNodePayload,
-  void
+  EditElectricNodePayload,
+  void,
+  EffectFailDataAxiosError
 >(updateElectricHousingMeteringDevice);
 
-$electricNode.on(getElectricNode.doneData, (_, node) => node);
+$electricNode.on(getElectricNodeFx.doneData, (_, node) => node);
 
 const $isLoadingUpdate = updateDeviceFx.pending;
-const $isLoadingDevice = getElectricNode.pending;
+const $isLoadingDevice = getElectricNodeFx.pending;
 
 const NodeIdGate = createGate<{ deviceId: number }>();
 
@@ -38,7 +40,7 @@ forward({
 
 forward({
   from: refetchElectricNode,
-  to: getElectricNode,
+  to: getElectricNodeFx,
 });
 
 sample({
@@ -50,12 +52,32 @@ sample({
 
 forward({
   from: NodeIdGate.open.map(({ deviceId }) => deviceId),
-  to: getElectricNode,
+  to: getElectricNodeFx,
+});
+
+const handleSuccessUpdateDevice = updateDeviceFx.doneData;
+
+handleSuccessUpdateDevice.watch(() =>
+  message.success('Успешно отредактировано!'),
+);
+
+updateDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const editElectricNodeService = {
   inputs: {
     updateDevice,
+    handleSuccessUpdateDevice,
   },
   outputs: {
     $electricNode,
