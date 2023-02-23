@@ -18,12 +18,15 @@ import { EditHousingMeteringDevicePageProps } from './EditHousingMeteringDeviceP
 import { EditHousingMeteringDeviceCommonInfo } from './Tabs/EditHousingMeteringDeviceCommonInfo';
 import { EditHousingMeteringDeviceDocuments } from './Tabs/EditHousingMeteringDeviceDocuments';
 
-export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProps> = ({
+export const EditHousingMeteringDevicePage: FC<
+  EditHousingMeteringDevicePageProps
+> = ({
   currentTab,
   handleChangeTab,
   housingMeteringDevice,
   handleSubmitForm,
   deviceId,
+  communicationPipes,
 }) => {
   const address = housingMeteringDevice?.address?.address?.mainAddress;
   const isActive = !Boolean(housingMeteringDevice?.closingDate);
@@ -77,6 +80,7 @@ export const EditHousingMeteringDevicePage: FC<EditHousingMeteringDevicePageProp
           handleSubmitForm={handleSubmitForm}
           deviceId={deviceId}
           onCancel={onCancel}
+          communicationPipes={communicationPipes}
         />
       )}
       {currentTab === EditHousingMeteringDeviceTabs.Documents && (

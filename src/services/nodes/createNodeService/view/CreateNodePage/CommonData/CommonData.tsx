@@ -1,33 +1,22 @@
 import React, { FC, useEffect } from 'react';
 import { Button } from 'ui-kit/Button';
-import { DatePicker } from 'ui-kit/DatePicker';
-import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
-import {
-  commercialNodeStatuses,
-  nodeStatuses,
-  validationSchema,
-} from './CommonData.constants';
+import { validationSchema } from './CommonData.constants';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
   CreateNewZoneButtonWrapper,
-  FilesUploaderWrapper,
   FirstLineWrapper,
   SelectOptionWithIconWrapper,
   SecondLineWrapper,
-  ThirdLineWrapper,
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
-import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { getInitialDateFieldValue, getNodeStatus } from './CommonData.utils';
-import { ENodeRegistrationType } from 'myApi';
 import { configNamesLookup } from 'utils/configNamesLookup';
 
 const { inputs } = createNodeServiceZoneService;
@@ -39,62 +28,57 @@ export const CommonData: FC<CommonDataProps> = ({
   requestPayload,
   updateRequestPayload,
 }) => {
-  const {
-    values,
-    handleChange,
-    setFieldValue,
-    errors,
-    handleSubmit,
-  } = useFormik({
-    initialValues: {
-      configuration: requestPayload.configuration || null,
-      number: requestPayload.number ? String(requestPayload.number) : '',
-      nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
-      nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
-      startCommercialAccountingDate: getInitialDateFieldValue(
-        requestPayload.startCommercialAccountingDate
-      ),
-      endCommercialAccountingDate: getInitialDateFieldValue(
-        requestPayload.endCommercialAccountingDate
-      ),
-      documents: [] as Document[],
-      commercialStatus: requestPayload.commercialStatus || null,
-    },
-    validationSchema,
-    validateOnChange: false,
-    onSubmit: (values) => {
-      const {
-        configuration,
-        number,
-        commercialStatus,
-        nodeServiceZoneId,
-        startCommercialAccountingDate,
-        endCommercialAccountingDate,
-      } = values;
+  const { values, handleChange, setFieldValue, errors, handleSubmit } =
+    useFormik({
+      initialValues: {
+        configuration: requestPayload.configuration || null,
+        number: requestPayload.number ? String(requestPayload.number) : '',
+        // nodeStatus: getNodeStatus(requestPayload?.commercialStatus),
+        nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
+        // startCommercialAccountingDate: getInitialDateFieldValue(
+        //   requestPayload.startCommercialAccountingDate
+        // ),
+        // endCommercialAccountingDate: getInitialDateFieldValue(
+        //   requestPayload.endCommercialAccountingDate
+        // ),
+        // documents: [] as Document[],
+        // commercialStatus: requestPayload.commercialStatus || null,
+      },
+      validationSchema,
+      validateOnChange: false,
+      onSubmit: (values) => {
+        const {
+          configuration,
+          number,
+          // commercialStatus,
+          nodeServiceZoneId,
+          // startCommercialAccountingDate,
+          // endCommercialAccountingDate,
+        } = values;
 
-      if (!number || !nodeServiceZoneId || !configuration) return;
+        if (!number || !nodeServiceZoneId || !configuration) return;
 
-      updateRequestPayload({
-        configuration,
-        number: Number(number),
-        commercialStatus,
-        nodeServiceZoneId,
-        startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
-          true
-        ),
-        endCommercialAccountingDate: endCommercialAccountingDate?.toISOString(
-          true
-        ),
-      });
-    },
-  });
+        // updateRequestPayload({
+        //   configuration,
+        //   number: Number(number),
+        //   commercialStatus,
+        //   nodeServiceZoneId,
+        //   startCommercialAccountingDate: startCommercialAccountingDate?.toISOString(
+        //     true
+        //   ),
+        //   endCommercialAccountingDate: endCommercialAccountingDate?.toISOString(
+        //     true
+        //   ),
+        // });
+      },
+    });
 
   useEffect(
     () =>
       inputs.handleServiceZoneCreated.watch((nodeServiceZone) =>
-        setFieldValue('nodeServiceZoneId', nodeServiceZone.id)
+        setFieldValue('nodeServiceZoneId', nodeServiceZone.id),
       ).unsubscribe,
-    [setFieldValue]
+    [setFieldValue],
   );
 
   return (
@@ -107,7 +91,7 @@ export const CommonData: FC<CommonDataProps> = ({
             value={values.configuration || undefined}
             onChange={(value) => setFieldValue('configuration', value)}
           >
-            {Object.entries(configNamesLookup).map(([ configuration, text ]) => (
+            {Object.entries(configNamesLookup).map(([configuration, text]) => (
               <Select.Option key={configuration} value={configuration}>
                 <SelectOptionWithIconWrapper>
                   <div>{text}</div>
@@ -118,7 +102,7 @@ export const CommonData: FC<CommonDataProps> = ({
           <ErrorMessage>{errors.configuration}</ErrorMessage>
         </FormItem>
         <FormItem label="Тип узла">
-          <Select
+          {/* <Select
             placeholder="Выберите"
             value={values.nodeStatus || undefined}
             onChange={(value) => {
@@ -133,8 +117,8 @@ export const CommonData: FC<CommonDataProps> = ({
                 <div>{text}</div>
               </Select.Option>
             ))}
-          </Select>
-          <ErrorMessage>{errors.nodeStatus}</ErrorMessage>
+          </Select> */}
+          {/* <ErrorMessage>{errors.nodeStatus}</ErrorMessage> */}
         </FormItem>
         <FormItem label="Номер узла">
           <Input
@@ -168,7 +152,7 @@ export const CommonData: FC<CommonDataProps> = ({
           </LinkButton>
         </CreateNewZoneButtonWrapper>
       </SecondLineWrapper>
-      {values.nodeStatus &&
+      {/* {values.nodeStatus &&
         values.nodeStatus !== ENodeRegistrationType.Technical && (
           <>
             <FormItem label="Статус узла">
@@ -222,7 +206,7 @@ export const CommonData: FC<CommonDataProps> = ({
               />
             </FilesUploaderWrapper>
           </>
-        )}
+        )} */}
       <Footer>
         <Button type="ghost" onClick={goPrevStep}>
           Назад
