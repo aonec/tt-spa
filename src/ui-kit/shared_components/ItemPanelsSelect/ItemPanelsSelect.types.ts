@@ -6,8 +6,10 @@ export type SelectPanelItem<T> = {
   icon: ReactNode;
 };
 
-export type ItemPanelsSelectProps<T extends string> = {
+type SelectedItemPanel<T> = T[] | T | null;
+
+export type ItemPanelsSelectProps<T extends string | null> = {
   items: SelectPanelItem<T>[];
-  selected: T[] | T | null;
-  onChange?: (value: T | T[]) => void;
+  selected: SelectedItemPanel<T>;
+  onChange?: (value: SelectedItemPanel<T>) => void;
 };

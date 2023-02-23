@@ -2,7 +2,7 @@ import React from 'react';
 import { ItemPanel, Wrapper } from './ItemPanelsSelect.styled';
 import { ItemPanelsSelectProps } from './ItemPanelsSelect.types';
 
-export function ItemPanelsSelect<T extends string>({
+export function ItemPanelsSelect<T extends string | null>({
   items,
   selected,
   onChange,
@@ -11,7 +11,7 @@ export function ItemPanelsSelect<T extends string>({
     const isArray = Array.isArray(selected);
 
     if (!isArray) {
-      onChange?.(value);
+      onChange?.(value === selected ? null : value);
       return;
     }
 

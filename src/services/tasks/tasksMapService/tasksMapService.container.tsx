@@ -1,14 +1,21 @@
-import { useStore } from 'effector-react';
 import React from 'react';
+import { useStore } from 'effector-react';
 import { tasksMapService } from './tasksMapService.model';
 import { TasksMapView } from './view/TasksMapView';
 
-const { outputs } = tasksMapService;
+const { outputs, gates } = tasksMapService;
+const { TaskTypesGate } = gates;
 
 export const TasksMapContainer = () => {
   const tasksPagedData = useStore(outputs.$tasks);
+  const taskTypes = useStore(outputs.$taskTypes);
 
   const tasks = tasksPagedData?.items;
 
-  return <TasksMapView tasks={tasks || []} />;
+  return (
+    <>
+      <TaskTypesGate />
+      <TasksMapView tasks={tasks || []} taskTypes={taskTypes} />
+    </>
+  );
 };

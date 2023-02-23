@@ -15,21 +15,41 @@ import { TasksMapFiltrationProps } from './TasksMapFiltration.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { ItemPanelsSelect } from 'ui-kit/shared_components/ItemPanelsSelect';
-import { EResourceType } from 'myApi';
+import {
+  EActResourceType,
+  EResourceType,
+  ETaskEngineeringElement,
+} from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { ResourceMapNamesDictionary } from 'dictionaries';
+import {
+  ResourceMapNamesDictionary,
+  EngineeringElementLookUp,
+} from 'dictionaries';
 import { useFormik } from 'formik';
 import { Checkbox, Space } from 'antd';
 
-export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
+export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
+  taskTypes,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { values, setFieldValue } = useFormik({
     initialValues: {
-      resource: [] as EResourceType[],
+      resource: null as EResourceType | null,
     },
     onSubmit: () => void 0,
   });
+
+  const baseResourceOptions = [
+    EResourceType.ColdWaterSupply,
+    EResourceType.HotWaterSupply,
+    EResourceType.Heat,
+    EResourceType.Electricity,
+  ].map((resource) => ({
+    key: resource,
+    icon: <ResourceIconLookup resource={resource} />,
+    title: ResourceMapNamesDictionary[resource],
+  }));
 
   return (
     <Wrapper>
@@ -54,20 +74,31 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
           </FilterHeader>
           <ExtendedFiltration>
             <FormItem label="Элемент инженерной сети">
-              <SelectSC placeholder="Выберите"></SelectSC>
+              <SelectSC placeholder="Выберите" value="">
+                <SelectSC.Option value="" key="">
+                  Все
+                </SelectSC.Option>
+                {Object.values(ETaskEngineeringElement).map((elem) => {
+                  return (
+                    <SelectSC.Option value={elem} key={elem}>
+                      {EngineeringElementLookUp[elem]}
+                    </SelectSC.Option>
+                  );
+                })}
+              </SelectSC>
             </FormItem>
             <FormItem label="Тип ресурса">
-              <ItemPanelsSelect<EResourceType>
+              <ItemPanelsSelect<EResourceType | null>
                 items={[
-                  EResourceType.ColdWaterSupply,
-                  EResourceType.HotWaterSupply,
-                  EResourceType.Heat,
-                  EResourceType.Electricity,
-                ].map((resource) => ({
-                  key: resource,
-                  icon: <ResourceIconLookup resource={resource} />,
-                  title: ResourceMapNamesDictionary[resource],
-                }))}
+                  {
+                    key: null,
+                    icon: (
+                      <ResourceIconLookup resource={EActResourceType.All} />
+                    ),
+                    title: 'Все',
+                  },
+                  ...baseResourceOptions,
+                ]}
                 selected={values.resource}
                 onChange={(value) => setFieldValue('resource', value)}
               />
@@ -82,7 +113,14 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = () => {
               </Checkbox.Group>
             </FormItem>
             <FormItem label="Тип задачи">
-              <SelectSC placeholder="Введите номер задачи или адрес" />
+              <SelectSC placeholder="Выберите тип">
+                {taskTypes &&
+                  taskTypes.map(({ value, key }) => (
+                    <SelectSC.Option key={key!} value={key!}>
+                      {value}
+                    </SelectSC.Option>
+                  ))}
+              </SelectSC>
             </FormItem>
             <FormItem label="Исполнитель">
               <SearchInput

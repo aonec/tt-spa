@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import { Wrapper } from './TasksMapView.styled';
 import { TasksMapViewProps } from './TasksMapView.types';
 import {
@@ -10,16 +10,13 @@ import {
 import { getTaskIcon } from './TasksMapView.utils';
 import { TasksMapFiltration } from './TasksMapFiltration';
 
-export const TasksMapView: FC<TasksMapViewProps> = ({ tasks }) => {
-  const map = useRef<null | { getBounds: () => number[][] }>(null);
-
+export const TasksMapView: FC<TasksMapViewProps> = ({ tasks, taskTypes }) => {
   const data = tasks[0]?.housingStockCoordinates;
 
   return (
     <Wrapper>
-      <TasksMapFiltration />
+      <TasksMapFiltration taskTypes={taskTypes} />
       <Map
-        instanceRef={map}
         width={'100%'}
         height={'calc(100vh - 130px)'}
         defaultState={{

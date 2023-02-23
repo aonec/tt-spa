@@ -4,6 +4,7 @@ import {
   EMagistralType,
   ENodeCommercialAccountStatus,
   EResourceType,
+  ETaskEngineeringElement,
 } from 'myApi';
 
 export const MagistralsDisctionary: { [key in EMagistralType]: string } = {
@@ -62,4 +63,12 @@ export const NodeStatusTextDictionary: {
   [ENodeCommercialAccountStatus.Prepared]: 'Подготовлен к сдаче',
   [ENodeCommercialAccountStatus.OnReview]: 'На утверждении',
   [ENodeCommercialAccountStatus.Registered]: 'Сдан на коммерческий учет',
+};
+
+export const EngineeringElementLookUp: {
+  [key in ETaskEngineeringElement]: string;
+} = {
+  [ETaskEngineeringElement.Node]: 'Общедомовой узел учета',
+  [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
+  [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
 };
