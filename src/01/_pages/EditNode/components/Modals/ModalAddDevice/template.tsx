@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  DatePicker,
-} from 'formik-antd';
+import { Form, Input, InputNumber, Select, DatePicker } from 'formik-antd';
 import { Formik } from 'formik';
 import { ButtonTT } from '../../../../../tt-components';
 import styled from 'styled-components';
@@ -113,4 +107,19 @@ export const DatePickerFormik = styled(DatePicker)`
       line-height: 32px;
     }
   }
+`;
+
+export const PipeInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: #272f5ae5;
+`;
+
+export const PipeMagistralWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  font-size: 14px !important;
+  color: #272f5ab2;
+  margin-left: 8px;
 `;

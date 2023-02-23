@@ -6,7 +6,6 @@ import { EditNodeRelatedDevicesProps } from './EditNodeRelatedDevices.types';
 
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
-  magistrals,
   refetchNode,
 }) => {
   const [isAddDeviceVisible, setIsAddDeviceVisible] = useState(false);
@@ -20,7 +19,6 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
       <ModalAddDevice
         visible={isAddDeviceVisible}
         setVisible={setIsAddDeviceVisible}
-        magistrals={magistrals}
         node={node!}
         refetchNode={() => refetchNode()}
       />

@@ -8,10 +8,7 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
 import { NodeRegistrationTypeLookup } from './EditNodePage.constants';
-import {
-  CommonInfoWrapper,
-  ContentWrapper,
-} from './EditNodePage.styled';
+import { CommonInfoWrapper, ContentWrapper } from './EditNodePage.styled';
 import {
   AddressWrapper,
   HeaderWrapper,
@@ -30,7 +27,6 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   setGrouptype,
   openAddNewZonesModal,
   nodeZones,
-  magistrals,
   refetchNode,
   updateNode,
 }) => {
@@ -72,7 +68,11 @@ export const EditNodePage: FC<EditNodePageProps> = ({
       >
         <TabPane tab="Общая информация" key={NodeEditGrouptype.CommonInfo}>
           <CommonInfoWrapper>
-            {isIncorrectConfig && <IncorrectConfigAlert validationResultArray={validationResultArray}/>}
+            {isIncorrectConfig && (
+              <IncorrectConfigAlert
+                validationResultArray={validationResultArray}
+              />
+            )}
             <EditNodeCommonInfo
               node={node}
               openAddNewZonesModal={openAddNewZonesModal}
@@ -91,11 +91,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
 
         <TabPane tab="Подключенные приборы" key={NodeEditGrouptype.Devices}>
           <ContentWrapper>
-            <EditNodeRelatedDevices
-              node={node}
-              magistrals={magistrals}
-              refetchNode={refetchNode}
-            />
+            <EditNodeRelatedDevices node={node} refetchNode={refetchNode} />
           </ContentWrapper>
         </TabPane>
 

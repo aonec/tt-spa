@@ -20,13 +20,10 @@ import {
   resources,
 } from '../../../../../tt-components/localBases';
 import Tabs from '../../../../../tt-components/Tabs';
-import {
-  validationSchemaFlowMeter,
-  validationSchemaTemperatureSensor,
-} from './validationSchemas';
+import { validationSchemaHousingMeteringDevice } from './validationSchemas';
 import {
   CreatePipeHousingMeteringDeviceRequest,
-  EMagistralTypeStringDictionaryItem,
+  EMagistralType,
   PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
@@ -38,20 +35,20 @@ import { Form } from 'formik-antd';
 import {
   DatePickerFormik,
   InputFormik,
-  InputNumberFormik,
+  PipeInfoWrapper,
+  PipeMagistralWrapper,
   SelectFormik,
 } from './template';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import { addHousingMeteringDevice } from './apiModalAddDevice';
 import Warning from '../../../../../tt-components/Warning';
 import { EffectFailDataAxiosError } from 'types';
-import { NodeStatusTextDictionary } from 'dictionaries';
+import { MagistralsDisctionary, NodeStatusTextDictionary } from 'dictionaries';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
-  magistrals: EMagistralTypeStringDictionaryItem[];
   refetchNode: () => void;
 }
 
@@ -59,13 +56,9 @@ const ModalAddDeviceForm = ({
   node,
   handleCancel,
   setVisible,
-  magistrals,
   refetchNode,
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
-  const [validationSchema, setValidationSchema] = useState<any>(
-    validationSchemaFlowMeter,
-  );
 
   const tabItems: Array<TabsItemInterface> = [
     {
@@ -92,7 +85,7 @@ const ModalAddDeviceForm = ({
     },
     {
       key: '2',
-      value: ['diameter', 'pipeNumber', 'serial', 'model'],
+      value: ['serial', 'model', 'communicationPipeId'],
     },
     {
       key: '3',
@@ -108,12 +101,9 @@ const ModalAddDeviceForm = ({
     resource,
     communicationPipes,
     calculator,
+    id,
   } = node || DEFAULT_NODE;
   const { id: calculatorId } = calculator || DEFAULT_CALCULATOR;
-
-  const entryNumber = communicationPipes?.length
-    ? communicationPipes[0].entryNumber
-    : null;
 
   const allDevices = _.flatten(
     communicationPipes?.map((communicationPipe) => {
@@ -136,13 +126,10 @@ const ModalAddDeviceForm = ({
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
-    diameter: null,
-    diameterVisible: true,
     calculatorId: calculatorId,
-    entryNumber,
-    pipeNumber: null,
-    magistral: magistrals[0]?.key,
+    communicationPipeId: undefined,
     number,
+    nodeId: id,
     commercialStatus: commercialStatus?.value,
     coldWaterWarningHidden: true,
     isSensorAllowed: true,
@@ -159,7 +146,8 @@ const ModalAddDeviceForm = ({
         .toISOString(),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       model: values.model,
-      communicationPipeId: undefined,
+      communicationPipeId: values.communicationPipeId,
+      nodeId: values.nodeId,
     };
     addHousingMeteringDevice(form)
       .then(() => {
@@ -185,7 +173,7 @@ const ModalAddDeviceForm = ({
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={validationSchemaHousingMeteringDevice}
       validateOnBlur={false}
       validateOnChange={false}
       onSubmit={(values) => handleSubmit(values)}
@@ -252,13 +240,6 @@ const ModalAddDeviceForm = ({
                     options={housingMeteringDeviceTypes}
                     name="housingMeteringDeviceType"
                     onChange={(value) => {
-                      value === 'FlowMeter'
-                        ? setValidationSchema(validationSchemaFlowMeter)
-                        : setValidationSchema(
-                            validationSchemaTemperatureSensor,
-                          );
-                      value !== 'FlowMeter' &&
-                        setFieldValue('diameter', undefined);
                       coldWaterValidation(value);
                       validateSensor(value);
                     }}
@@ -359,14 +340,6 @@ const ModalAddDeviceForm = ({
                 </Form.Item>
 
                 <Form.Item
-                  name="diameter"
-                  label="Диаметр трубы (мм)"
-                  style={styles.w100}
-                >
-                  <InputNumberFormik name="diameter" min={0} step={1} />
-                </Form.Item>
-
-                <Form.Item
                   name="lastCheckingDate"
                   label="Дата поверки"
                   style={styles.w49}
@@ -403,32 +376,27 @@ const ModalAddDeviceForm = ({
                 </Form.Item>
 
                 <Form.Item
-                  name="pipeNumber"
-                  label="Номер трубы"
+                  label="Труба"
+                  name="communicationPipeId"
                   style={styles.w49}
                 >
-                  <InputNumberFormik name="pipeNumber" />
-                </Form.Item>
-
-                <Form.Item
-                  name="magistral"
-                  label="Магистраль"
-                  style={styles.w49}
-                >
-                  <SelectFormik name="magistral">
-                    {magistrals.map((magistral) => {
-                      if (magistral.key) {
-                        return (
-                          <SelectFormik.Option
-                            value={magistral.key}
-                            key={magistral.key}
-                          >
-                            {magistral?.value}
-                          </SelectFormik.Option>
-                        );
-                      }
-                      return null;
-                    })}
+                  <SelectFormik name="communicationPipeId">
+                    {(communicationPipes || []).map((pipe) => (
+                      <SelectFormik.Option value={pipe.id} key={pipe.id}>
+                        <PipeInfoWrapper>
+                          {pipe.number}
+                          <PipeMagistralWrapper>
+                            Ввод: {pipe.entryNumber},
+                            {pipe.magistral &&
+                              `${
+                                MagistralsDisctionary[
+                                  pipe.magistral as EMagistralType
+                                ]
+                              } маг.`}
+                          </PipeMagistralWrapper>
+                        </PipeInfoWrapper>
+                      </SelectFormik.Option>
+                    ))}
                   </SelectFormik>
                 </Form.Item>
               </StyledFormPage>
