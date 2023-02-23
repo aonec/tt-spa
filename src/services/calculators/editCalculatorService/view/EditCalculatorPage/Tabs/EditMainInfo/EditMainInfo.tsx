@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Footer, GridContainer, Wrapper } from './EditMainInfo.styled';
 import { EditMainInfoProps } from './EditMainInfo.types';
 import { FormItem } from 'ui-kit/FormItem';
@@ -27,15 +27,18 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     entryNumber: node.communicationPipes?.[0]?.entryNumber || null,
   }));
 
-  const getCurrentInfoId = calculatorTypesSelectItems.find(
-    (calculatorType) => calculatorType.id === calculator?.infoId,
-  )?.id;
+  const currentInfoId = useMemo(
+    () =>
+      calculatorTypesSelectItems.find(
+        (calculatorType) => calculatorType.id === calculator?.infoId,
+      )?.id,
+    [calculatorTypesSelectItems, calculator],
+  );
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<UpdateCalculatorRequest>({
       initialValues: {
         serialNumber: calculator?.serialNumber,
-        infoId: getCurrentInfoId,
         lastCheckingDate: calculator?.lastCheckingDate,
         futureCheckingDate: calculator?.futureCheckingDate,
       },
@@ -56,11 +59,8 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     <Wrapper>
       <FormItem label="Тип вычислителя">
         <Select
-          placeholder="Выберите"
-          value={values.infoId || undefined}
-          onChange={(value) => {
-            setFieldValue('infoId', value);
-          }}
+          value={currentInfoId || undefined}
+          disabled
           options={calculatorTypesSelectItems}
         />
       </FormItem>
