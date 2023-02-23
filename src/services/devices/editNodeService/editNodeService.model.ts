@@ -14,6 +14,7 @@ import {
   fetchUpdateNode,
 } from './editNodeService.api';
 import { NodeEditGrouptype } from './editNodeService.constants';
+import { addHosuingMeteringDeviceService } from './view/EditNodePage/addHosuingMeteringDeviceService';
 
 const domain = createDomain('editNodeService');
 
@@ -73,6 +74,11 @@ forward({
 
 forward({
   from: updateNodeFx.doneData,
+  to: refetchNode,
+});
+
+forward({
+  from: addHosuingMeteringDeviceService.inputs.deviceCreated,
   to: refetchNode,
 });
 

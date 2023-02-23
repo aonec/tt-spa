@@ -1,27 +1,30 @@
 import NodeRelatedDevices from '01/tt-components/NodeRelatedDevices';
-import ModalAddDevice from '01/_pages/EditNode/components/Modals/ModalAddDevice';
-import React, { FC, useState } from 'react';
+import { useEvent } from 'effector-react';
+import React, { FC } from 'react';
+import {
+  AddHosuingMeteringDeviceContainer,
+  addHosuingMeteringDeviceService,
+} from '../addHosuingMeteringDeviceService';
 import { ButtonSC } from './EditNodeRelatedDevices.styled';
 import { EditNodeRelatedDevicesProps } from './EditNodeRelatedDevices.types';
 
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
-  refetchNode,
 }) => {
-  const [isAddDeviceVisible, setIsAddDeviceVisible] = useState(false);
+  const openAddHousingMeteringDeviceModal = useEvent(
+    addHosuingMeteringDeviceService.inputs.openModal,
+  );
 
   return (
     <>
       <NodeRelatedDevices node={node} edit={true} />
-      <ButtonSC type="ghost" onClick={() => setIsAddDeviceVisible(true)}>
+      <AddHosuingMeteringDeviceContainer />
+      <ButtonSC
+        type="ghost"
+        onClick={() => openAddHousingMeteringDeviceModal(node)}
+      >
         Добавить прибор
       </ButtonSC>
-      <ModalAddDevice
-        visible={isAddDeviceVisible}
-        setVisible={setIsAddDeviceVisible}
-        node={node!}
-        refetchNode={() => refetchNode()}
-      />
     </>
   );
 };

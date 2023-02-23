@@ -91,7 +91,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
 
         <TabPane tab="Подключенные приборы" key={NodeEditGrouptype.Devices}>
           <ContentWrapper>
-            <EditNodeRelatedDevices node={node} refetchNode={refetchNode} />
+            <EditNodeRelatedDevices node={node} />
           </ContentWrapper>
         </TabPane>
 
