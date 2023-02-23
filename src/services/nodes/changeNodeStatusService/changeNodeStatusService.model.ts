@@ -32,9 +32,16 @@ changeNodeStatusFx.doneData.watch(() =>
   message.success('Статус успешно изменён')
 );
 
-changeNodeStatusFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+changeNodeStatusFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 forward({
   from: changeNodeStatusFx.doneData,

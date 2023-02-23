@@ -7,19 +7,21 @@ import {
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 interface Params {
   meteringDeviceReading?: MeteringDeviceReading;
   refetch: () => void;
   deviceId: number;
   prevValue?: number;
-  monthIndex:number;
+  monthIndex: number;
 }
 
 export function useUploadingReadings(params: Params) {
   const { meteringDeviceReading, refetch, deviceId, prevValue } = params;
   const [value, setValue] = useState<string>(
-    getReadingValue(meteringDeviceReading?.value)
+    getReadingValue(meteringDeviceReading?.value),
   );
 
   const [status, setStatus] = useState<RequestStatusShared>(null);
@@ -27,9 +29,10 @@ export function useUploadingReadings(params: Params) {
   const edited =
     Boolean(value) && String(value) !== String(meteringDeviceReading?.value);
 
-  useEffect(() => setValue(getReadingValue(meteringDeviceReading?.value)), [
-    meteringDeviceReading,
-  ]);
+  useEffect(
+    () => setValue(getReadingValue(meteringDeviceReading?.value)),
+    [meteringDeviceReading],
+  );
 
   async function saveReading() {
     if (!edited) return;
@@ -49,6 +52,13 @@ export function useUploadingReadings(params: Params) {
       setStatus('done');
       refetch();
     } catch (error) {
+      message.error(
+        (error as unknown as EffectFailDataAxiosError).response.data.error
+          .Text ||
+          (error as unknown as EffectFailDataAxiosError).response.data.error
+            .Message ||
+          'Произошла необработанная ошибка',
+      );
       setStatus('failed');
     }
   }

@@ -37,3 +37,8 @@ export const DialogText = styled.div`
   font-weight: 400;
   font-size: 14px;
 `;
+
+export const FooterWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+`;

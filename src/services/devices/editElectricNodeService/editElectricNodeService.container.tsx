@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { editElectricNodeService } from './editElectricNodeService.model';
 import { EditElectricNodePage } from './view/EditElectricNodePage';
 
@@ -14,6 +14,15 @@ export const EditElectricNodeContainer = () => {
   const isLoadingDevice = useStore(outputs.$isLoadingDevice);
 
   const handleUpdateDevice = useEvent(inputs.updateDevice);
+
+  const history = useHistory();
+
+  useEffect(
+    () =>
+      inputs.handleSuccessUpdateDevice.watch(() => history.goBack())
+        .unsubscribe,
+    [history],
+  );
 
   return (
     <>
