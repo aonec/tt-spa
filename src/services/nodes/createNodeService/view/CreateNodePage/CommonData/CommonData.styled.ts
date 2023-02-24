@@ -12,16 +12,6 @@ export const SecondLineWrapper = styled.div`
   grid-gap: 16px;
 `;
 
-export const ThirdLineWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 16px;
-`;
-
-export const FilesUploaderWrapper = styled.div`
-  margin-top: 16px;
-`;
-
 export const CreateNewZoneButtonWrapper = styled.div`
   display: flex;
   margin: 45px 0 0 25px;

@@ -14,14 +14,41 @@ export const commercialNodeStatuses: NodeStatusesList = Object.values(
 
 export const validationSchema = Yup.object().shape({
   configuration: Yup.string().nullable().required('Это поле обязательное'),
-  nodeStatus: Yup.string().nullable().required('Это поле обязательное'),
+  registrationType: Yup.string().nullable().required('Это поле обязательное'),
   nodeServiceZoneId: Yup.string().nullable().required('Это поле обязательное'),
   number: Yup.string().required('Это поле обязательное'),
-  commercialStatus: Yup.string()
+  commercialStatusRequest: Yup.object()
     .nullable()
-    .when('nodeStatus', {
+    .when('registrationType', {
       is: ENodeRegistrationType.Commercial,
-      then: Yup.string().required('Это поле обязательное'),
+      then: Yup.object().shape({
+        commercialStatus: Yup.string()
+          .nullable()
+          .required('Укажите коммерческий статус узла'),
+        documentId: Yup.string()
+          .nullable()
+          .when('commercialStatus', {
+            is: ENodeCommercialAccountStatus.Registered,
+            then: Yup.string().nullable().required('Прикрепите документ'),
+          }),
+        startCommercialAccountingDate: Yup.string()
+          .nullable()
+          .when('commercialStatus', {
+            is: ENodeCommercialAccountStatus.Registered,
+            then: Yup.string()
+              .nullable()
+              .required('Укажите дату начала действия акта-допуска'),
+          }),
+
+        endCommercialAccountingDate: Yup.string()
+          .nullable()
+          .when('commercialStatus', {
+            is: ENodeCommercialAccountStatus.Registered,
+            then: Yup.string()
+              .nullable()
+              .required('Укажите дату окончания действия акта-допуска'),
+          }),
+      }),
     }),
 });
 

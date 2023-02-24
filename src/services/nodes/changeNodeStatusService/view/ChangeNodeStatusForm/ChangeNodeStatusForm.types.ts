@@ -1,10 +1,14 @@
-import { ENodeCommercialAccountStatus, PipeNodeResponse } from 'myApi';
+import {
+  ENodeCommercialAccountStatus,
+  NodeCommercialStatusResponse,
+} from 'myApi';
 import { ChangeNodeStatusFormPayload } from '../../changeNodeStatusService.types';
 
 export type ChangeNodeStatusFormProps = {
-  initialValues?: PipeNodeResponse;
+  commercialStatus?: NodeCommercialStatusResponse | null;
   formId?: string;
   handleChangeNodeStatus: (payload: ChangeNodeStatusFormPayload) => void;
+  createMode?: boolean;
 };
 
 export type ChangeNodeStatusFormik = {

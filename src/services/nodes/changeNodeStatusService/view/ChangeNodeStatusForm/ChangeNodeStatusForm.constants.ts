@@ -22,6 +22,10 @@ export const validationSchema = Yup.object().shape({
     }),
 });
 
+export const createNodeStatusValidationSchema = Yup.object().shape({
+  commercialStatus: Yup.string().nullable().required('Это поле обязательное'),
+});
+
 export const DocumentUploaderLabels = {
   [ENodeCommercialAccountStatus.NotRegistered]:
     'Добавьте акт снятия с коммерческого учёта',
