@@ -103,7 +103,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);
-                setFieldValue('housingStockId', null);
+                setFieldValue('housingStockIds', []);
               }}
               allowClear
             >
@@ -118,11 +118,11 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             </Select>
           </FormItem>
           <FormItem label="Адрес">
-            <Select
+            <SelectMultiple
               showSearch
-              value={values.housingStockId || undefined}
+              value={values.housingStockIds || undefined}
               placeholder="Выберите адреса из списка"
-              onChange={(value) => setFieldValue('housingStockId', value)}
+              onChange={(value) => setFieldValue('housingStockIds', value)}
               filterOption={(input, option) =>
                 option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
@@ -132,7 +132,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   {address.addressString}
                 </Select.Option>
               ))}
-            </Select>
+            </SelectMultiple>
           </FormItem>
           {isShowResourcesField && (
             <FormItem label="Ресурс">

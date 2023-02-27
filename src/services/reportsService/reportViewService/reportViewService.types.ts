@@ -18,6 +18,7 @@ export type ReportFiltrationFormValues = {
   city: null | string;
   houseManagement: null | string;
   housingStockId: null | number;
+  housingStockIds: number[];
   resources: EResourceType[];
   actResources: EActResourceType[];
   reportOption: null | EIndividualDeviceReportOption;
@@ -36,7 +37,7 @@ export type ReportPayload = {
 
 export type IndividualDeviceReportRequestPaload = {
   HouseManagementId?: string;
-  HousingStockId?: number;
+  HousingStocksIds?: number[];
   ReportOption: EIndividualDeviceReportOption;
   Resources?: EResourceType[];
   From?: string;
@@ -49,6 +50,7 @@ export type ActsJournalReportRequestPayload = {
   HouseManagementId?: string;
   HousingStockId?: number;
   Resources?: EActResourceType[];
+  HousingStocksIds?: number[];
   From?: string;
   To?: string;
 };
@@ -56,6 +58,7 @@ export type ActsJournalReportRequestPayload = {
 export type HousingMeteringDevicesReportRequestPayload = {
   HouseManagementId?: string;
   HousingStockId?: number;
+  HousingStocksIds?: number[];
   Resources?: EResourceType[];
   From: string;
   To: string;
@@ -64,6 +67,7 @@ export type HousingMeteringDevicesReportRequestPayload = {
 export type HomeownersReportRequestPayload = {
   HouseManagementId?: string;
   HousingStockId?: number;
+  HousingStocksIds?: number[];
   ShowOnlyDuplicates: boolean;
   From?: string;
   To?: string;

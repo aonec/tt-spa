@@ -110,6 +110,7 @@ const $filtrationValues = domain
     city: null,
     houseManagement: null,
     housingStockId: null,
+    housingStockIds: [],
     resources: [],
     reportOption: null,
     from: null,

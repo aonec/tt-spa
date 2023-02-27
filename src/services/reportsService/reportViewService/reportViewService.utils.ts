@@ -46,10 +46,12 @@ const getDatePeriod = (
   return { from: from?.format('YYYY-MM-DD'), to: to?.format('YYYY-MM-DD') };
 };
 
-const getAddressId = (values: ReportFiltrationFormValues) => {
+const getAddressId = (
+  values: ReportFiltrationFormValues,
+): { HousingStocksIds: number[]; HouseManagementId?: string | undefined } => {
   return {
-    HousingStockId: values.housingStockId || undefined,
-    HouseManagementId: values.housingStockId
+    HousingStocksIds: values.housingStockIds,
+    HouseManagementId: values.housingStockIds.length
       ? undefined
       : values.houseManagement || undefined,
   };
@@ -65,11 +67,11 @@ export const prepareIndividualDevicesReportRequestPayload = (
     to: values.to,
   });
 
-  const { HouseManagementId, HousingStockId } = getAddressId(values);
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
 
   return {
     HouseManagementId,
-    HousingStockId,
+    HousingStocksIds,
     ReportOption: values.reportOption,
     Resources: values.resources,
     From: dates?.from,
@@ -88,13 +90,13 @@ export const prepareActJournalReportRequestPayload = (
     to: values.to,
   });
 
-  if (!values.housingStockId && !values.houseManagement) return null;
+  if (!values.housingStockIds.length && !values.houseManagement) return null;
 
-  const { HouseManagementId, HousingStockId } = getAddressId(values);
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
 
   return {
     HouseManagementId,
-    HousingStockId,
+    HousingStocksIds,
     From: dates?.from,
     To: dates?.to,
     Resources: values.actResources,
@@ -111,11 +113,11 @@ export const prepareHousingMeteringDevicesReportRequestPayload = (
 
   if (!dates) return null;
 
-  const { HouseManagementId, HousingStockId } = getAddressId(values);
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
 
   return {
     HouseManagementId,
-    HousingStockId,
+    HousingStocksIds,
     From: dates.from,
     To: dates.to,
     Resources: values.resources,
@@ -125,13 +127,13 @@ export const prepareHousingMeteringDevicesReportRequestPayload = (
 export const prepareHomeownersReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): HomeownersReportRequestPayload | null => {
-  const { HouseManagementId, HousingStockId } = getAddressId(values);
+  const { HouseManagementId, HousingStocksIds } = getAddressId(values);
 
-  if (!HouseManagementId && !HousingStockId) return null;
+  if (!HouseManagementId && !HousingStocksIds) return null;
 
   return {
     HouseManagementId,
-    HousingStockId,
+    HousingStocksIds,
     ShowOnlyDuplicates: values.showOnlyDuplicates,
   };
 };
