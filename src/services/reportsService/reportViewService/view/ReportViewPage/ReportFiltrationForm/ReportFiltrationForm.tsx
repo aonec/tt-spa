@@ -10,7 +10,7 @@ import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
-import { getAddresses } from './ReportFiltrationForm.utils';
+import { prepareAddressesTreeData } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import {
   EActResourceType,
@@ -32,6 +32,7 @@ import {
 } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
+import { TreeSelect } from 'ui-kit/TreeSelect';
 
 const { gates } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -54,7 +55,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
       },
     });
 
-  const addresses = getAddresses(
+  const addressesTreeData = prepareAddressesTreeData(
     addressesWithHouseManagements,
     values.houseManagement,
   );
@@ -118,21 +119,22 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             </Select>
           </FormItem>
           <FormItem label="Адрес">
-            <SelectMultiple
+            <TreeSelect
+              treeData={addressesTreeData}
               showSearch
-              value={values.housingStockIds || undefined}
-              placeholder="Выберите адреса из списка"
-              onChange={(value) => setFieldValue('housingStockIds', value)}
-              filterOption={(input, option) =>
-                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              showArrow
+              placeholder="Выберите адрес"
+              showCheckedStrategy="SHOW_CHILD"
+              treeCheckable
+              maxTagCount={0}
+              maxTagPlaceholder={() => {
+                return `Выбрано ${values.housingStockIds.length} адрес(-ов)`;
+              }}
+              value={values.housingStockIds}
+              onChange={(housingStocksIds) =>
+                setFieldValue('housingStockIds', housingStocksIds)
               }
-            >
-              {addresses.map((address) => (
-                <Select.Option key={address.id} value={address.id}>
-                  {address.addressString}
-                </Select.Option>
-              ))}
-            </SelectMultiple>
+            />
           </FormItem>
           {isShowResourcesField && (
             <FormItem label="Ресурс">
