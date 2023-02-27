@@ -12,6 +12,12 @@ export const SecondLineWrapper = styled.div`
   grid-gap: 16px;
 `;
 
+export const Divider = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #dcdee4;
+  margin: 24px 0;
+`;
+
 export const CreateNewZoneButtonWrapper = styled.div`
   display: flex;
   margin: 45px 0 0 25px;

@@ -1,0 +1,1 @@
+export { ConfiguratePipe } from './ConfiguratePipe';

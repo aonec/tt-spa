@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -6,13 +6,14 @@ import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Title } from 'ui-kit/Title';
 import { Footer } from '../CreateNodePage.styled';
-import { nodeStatuses, validationSchema } from './CommonData.constants';
+import { validationSchema } from './CommonData.constants';
 import { createNodeServiceZoneService } from 'services/nodes/createNodeServiceZoneService';
 import {
   CreateNewZoneButtonWrapper,
   FirstLineWrapper,
   SelectOptionWithIconWrapper,
   SecondLineWrapper,
+  Divider,
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
@@ -22,6 +23,10 @@ import { ENodeRegistrationType } from 'myApi';
 import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm';
 import { getChangeNodeStatusPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.utils';
 import { ChangeNodeStatusFormPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.types';
+import { NodeRegistrationTypeLookup } from 'dictionaries';
+import { getInitialPipesFromConfig } from './CommonData.utils';
+import { ConfiguratePipe } from './ConfiguratePipe';
+import { CreateNodeFormPayload } from 'services/nodes/createNodeService/createNodeService.types';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -41,6 +46,7 @@ export const CommonData: FC<CommonDataProps> = ({
         nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
         technicalTypeRequest: requestPayload.technicalTypeRequest,
         commercialStatusRequest: requestPayload.commercialStatusRequest,
+        communicationPipes: requestPayload.communicationPipes || [],
       },
       validationSchema,
       validateOnChange: false,
@@ -51,13 +57,15 @@ export const CommonData: FC<CommonDataProps> = ({
           registrationType,
           nodeServiceZoneId,
           commercialStatusRequest,
+          communicationPipes,
         } = values;
 
         if (
           !number ||
           !nodeServiceZoneId ||
           !configuration ||
-          !registrationType
+          !registrationType ||
+          !communicationPipes
         ) {
           return;
         }
@@ -70,6 +78,7 @@ export const CommonData: FC<CommonDataProps> = ({
           number: Number(number),
           nodeServiceZoneId,
           registrationType,
+          communicationPipes,
         });
       },
     });
@@ -81,6 +90,34 @@ export const CommonData: FC<CommonDataProps> = ({
         getChangeNodeStatusPayload(commercialStatusRequest),
       ),
     [setFieldValue],
+  );
+
+  const pipesErrors = useMemo(
+    () =>
+      (errors as unknown as CreateNodeFormPayload)?.communicationPipes || [],
+    [errors],
+  );
+
+  const handleChangeNumberOfPipe = useCallback(
+    (id: string, number: number) =>
+      values.communicationPipes.map((pipe) => {
+        if (pipe.id !== id) {
+          return pipe;
+        }
+        return { ...pipe, number };
+      }),
+    [values.communicationPipes],
+  );
+
+  const handleChangeDiameterOfPipe = useCallback(
+    (id: string, diameter: number) =>
+      values.communicationPipes.map((pipe) => {
+        if (pipe.id !== id) {
+          return pipe;
+        }
+        return { ...pipe, diameter };
+      }),
+    [values.communicationPipes],
   );
 
   useEffect(
@@ -97,6 +134,15 @@ export const CommonData: FC<CommonDataProps> = ({
       return;
     }
   }, [values.registrationType, setFieldValue]);
+
+  useEffect(() => {
+    if (values.configuration) {
+      setFieldValue(
+        'communicationPipes',
+        getInitialPipesFromConfig(values.configuration),
+      );
+    }
+  }, [values.configuration, setFieldValue]);
 
   return (
     <>
@@ -124,7 +170,7 @@ export const CommonData: FC<CommonDataProps> = ({
             value={values.registrationType || undefined}
             onChange={(value) => setFieldValue('registrationType', value)}
           >
-            {Object.entries(nodeStatuses).map(([value, text]) => (
+            {Object.entries(NodeRegistrationTypeLookup).map(([value, text]) => (
               <Select.Option key={value} value={value}>
                 <div>{text}</div>
               </Select.Option>
@@ -164,9 +210,38 @@ export const CommonData: FC<CommonDataProps> = ({
           </LinkButton>
         </CreateNewZoneButtonWrapper>
       </SecondLineWrapper>
+
+      {Boolean(values.communicationPipes.length) && <Divider />}
+
+      {values.communicationPipes.map((pipe, index) => (
+        <>
+          <ConfiguratePipe
+            key={pipe.id}
+            pipe={pipe}
+            index={index + 1}
+            handleChangeNumber={(number) =>
+              setFieldValue(
+                'communicationPipes',
+                handleChangeNumberOfPipe(pipe.id, number),
+              )
+            }
+            handleChangeDiameter={(diameter) =>
+              setFieldValue(
+                'communicationPipes',
+                handleChangeDiameterOfPipe(pipe.id, diameter),
+              )
+            }
+          />
+          <ErrorMessage>
+            {Object.values(pipesErrors?.[index] || {}).join(', ')}
+          </ErrorMessage>
+        </>
+      ))}
+
       {values.registrationType &&
         values.registrationType !== ENodeRegistrationType.Technical && (
           <>
+            <Divider />
             <ChangeNodeStatusForm
               handleChangeNodeStatus={handleChangeCommercialStatus}
               createMode={true}
