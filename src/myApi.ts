@@ -4762,6 +4762,7 @@ export interface PipeHousingMeteringDeviceResponse {
 
   /** @format int32 */
   diameter: number | null;
+  communicationPipe: CommunicationPipeLiteResponse | null;
   hubConnection: PipeHousingMeteringDeviceConnectionResponse | null;
 }
 

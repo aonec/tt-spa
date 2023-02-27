@@ -45,7 +45,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
     futureCheckingDate: housingMeteringDevice?.futureCheckingDate
       ? moment(housingMeteringDevice?.futureCheckingDate)
       : null,
-    communicationPipeId: null,
+    communicationPipeId: housingMeteringDevice?.communicationPipe?.id || null,
   };
 
   const { values, handleSubmit, setFieldValue, errors } =
@@ -114,13 +114,16 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
 
       <GridContainer>
         <FormItem label="Труба">
-          <Select onChange={(id) => setFieldValue('communicationPipeId', id)}>
+          <Select
+            onChange={(id) => setFieldValue('communicationPipeId', id)}
+            value={values.communicationPipeId || undefined}
+          >
             {communicationPipes.map((pipe) => (
               <Select.Option value={pipe.id} key={pipe.id}>
                 <PipeInfoWrapper>
-                  {pipe.number}
+                  №{pipe.number}
                   <PipeMagistralWrapper>
-                    Ввод: {pipe.entryNumber},
+                    ({pipe.diameter} мм),
                     {pipe.magistral &&
                       `${
                         MagistralsDisctionary[pipe.magistral as EMagistralType]

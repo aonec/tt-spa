@@ -28,7 +28,7 @@ export const PipeMagistralWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  font-size: 14px !important;
+  font-size: 12px !important;
   color: #272f5ab2;
   margin-left: 8px;
 `;
