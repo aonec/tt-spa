@@ -18,11 +18,11 @@ import {
   $closeHomeownerRequestStatus,
   resetCloseHomeownerRequestStatus,
   closeHomeownerAccountForm,
-  $samePersonalAccountNumderId,
   handleConfirmationModalClose,
   $isForced,
   onForced,
   handleEditHomeownerAccount,
+  $samePersonalAccountNumderId,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
@@ -158,10 +158,6 @@ $samePersonalAccountNumderId
     return prev;
   })
   .reset(handleConfirmationModalClose);
-
-$isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
-
-$samePersonalAccountNumderId.reset(handleConfirmationModalClose);
 
 forward({
   from: editHomeownerAccountEffect.doneData,

@@ -19,7 +19,18 @@ export const handleConfirmationModalClose = createEvent();
 export const onForced = createEvent();
 export const handleSwitchPersonalNumber = createEvent();
 
-export const $samePersonalAccountNumderId = createStore<number | null>(null);
+export const $samePersonalAccountNumderId = createStore<number | null>(null)
+  .on(switchPersonalNumberFx.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
+
 export const $isConfirmationModalOpen =
   $samePersonalAccountNumderId.map(Boolean);
-export const $isForced = createStore<boolean>(false);
+
+export const $isForced = createStore<boolean>(false)
+  .on(onForced, () => true)
+  .reset(handleConfirmationModalClose);

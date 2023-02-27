@@ -1,7 +1,6 @@
 import {
   $addPersonalNumberRequestStatus,
   $isForced,
-  $samePersonalAccountNumderId,
   addPersonalNmberSaveButtonClicked,
   handleAddPersonalNumber,
   handleConfirmationModalClose,
@@ -73,23 +72,10 @@ $addPersonalNumberRequestStatus
   .on(addPersonalNumberFx.fail, () => 'failed')
   .on(setAddPersonalNumberStatus, (_, status) => status);
 
-$samePersonalAccountNumderId
-  .on(addPersonalNumberFx.failData, (prev, errData) => {
-    if (errData.response.status === 409) {
-      return errData.response.data.error.Data.ApartmentId;
-    }
-    return prev;
-  })
-  .reset(handleConfirmationModalClose);
-
-$isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
-
 forward({
   from: onForced,
   to: addPersonalNmberSaveButtonClicked,
 });
-
-$samePersonalAccountNumderId.reset(handleConfirmationModalClose);
 
 forward({
   from: addPersonalNumberFx.doneData,
