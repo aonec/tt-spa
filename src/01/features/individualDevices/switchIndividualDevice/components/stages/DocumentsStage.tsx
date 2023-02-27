@@ -1,72 +1,66 @@
-import { FileData } from '01/hooks/useFilesUpload';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { useForm } from 'effector-forms/dist';
 import React from 'react';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
+import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { EDocumentType } from 'myApi';
 
 export const DocumentsStage = () => {
   const { fields } = useForm(addIndividualDeviceForm);
 
-  const {
-    completedWorks,
-    devicePassport,
-    deviceCheck,
-  } = fields.documentsIds.value;
+  const { completedWorks, devicePassport, deviceCheck } =
+    fields.documentsIds.value;
 
-  const setFile = (
-    name: 'completedWorks' | 'devicePassport' | 'deviceCheck'
-  ) => (files: FileData[]) => {
-    if (files.length === 0) return;
+  const setFile =
+    (name: 'completedWorks' | 'devicePassport' | 'deviceCheck') =>
+    (files: Document[]) => {
+      if (files.length === 0) return;
 
-    const isFilesListEmpty = files.length === 0;
+      const isFilesListEmpty = files.length === 0;
 
-    const neededFile = isFilesListEmpty
-      ? null
-      : files[0] || fields.documentsIds.value[name];
+      const neededFile = isFilesListEmpty
+        ? null
+        : files[0] || fields.documentsIds.value[name];
 
-    fields.documentsIds.onChange({
-      ...fields.documentsIds.value,
-      [name]: neededFile,
-    });
-  };
+      fields.documentsIds.onChange({
+        ...fields.documentsIds.value,
+        [name]: neededFile,
+      });
+    };
 
   return (
     <>
       <FormHeader>Документы</FormHeader>
-      <FilesUpload
+      <DocumentsUploadContainer
         uniqId="create-individual-device-completed-works"
-        text="Добавьте акт выполненных работ"
-        filesInit={getFilesArrByFile(completedWorks)}
+        label="Добавьте акт выполненных работ"
+        documents={getFilesArrByFile(completedWorks)}
         max={1}
         onChange={setFile('completedWorks')}
-        withoutDeletion
-        type="DeviceAcceptanceAct"
+        type={EDocumentType.DeviceAcceptanceAct}
       />
 
-      <FilesUpload
+      <DocumentsUploadContainer
         uniqId="create-individual-device-passport"
-        text="Добавьте паспорт прибора"
-        filesInit={getFilesArrByFile(devicePassport)}
+        label="Добавьте паспорт прибора"
+        documents={getFilesArrByFile(devicePassport)}
         max={1}
         onChange={setFile('devicePassport')}
-        withoutDeletion
-        type="DevicePassport"
+        type={EDocumentType.DevicePassport}
       />
 
-      <FilesUpload
+      <DocumentsUploadContainer
         uniqId="create-individual-device-check"
-        text="Добавьте свидетельство о проверке прибора"
+        label="Добавьте свидетельство о проверке прибора"
         max={1}
-        filesInit={getFilesArrByFile(deviceCheck)}
+        documents={getFilesArrByFile(deviceCheck)}
         onChange={setFile('deviceCheck')}
-        withoutDeletion
-        type="DeviceTestCertificates"
+        type={EDocumentType.DeviceTestCertificates}
       />
     </>
   );
 };
 
-function getFilesArrByFile(fileData: FileData | null) {
+function getFilesArrByFile(fileData: Document | null) {
   return fileData ? [fileData] : [];
 }

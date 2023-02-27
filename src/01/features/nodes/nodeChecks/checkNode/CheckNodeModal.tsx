@@ -1,7 +1,5 @@
 import { ErrorMessage } from '01/features/contractors/addContractors';
-import { FileData } from '01/hooks/useFilesUpload';
 import { FilesList } from '01/shared/ui/FilesList';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { DatePickerTT, InputTT } from '01/tt-components';
@@ -11,6 +9,8 @@ import moment from 'moment';
 import React, { FC, SyntheticEvent } from 'react';
 import { EditNodeCheckPayload } from './models';
 import { CheckingActDocumentType } from './utils';
+import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { EDocumentType } from 'myApi';
 
 interface Props {
   visible: boolean;
@@ -21,7 +21,7 @@ interface Props {
   pending: boolean;
   closeCheckApartmentModal(): void;
   clearPayloadFile(): void;
-  setFiles: (ids: FileData[]) => void;
+  setFiles: (ids: Document[]) => void;
 }
 
 export const CheckNodeModal: FC<Props> = ({
@@ -109,14 +109,15 @@ export const CheckNodeModal: FC<Props> = ({
             ]}
           />
         ) : (
-          <FilesUpload
-            text="Добавьте заключение проверки"
+          <DocumentsUploadContainer
+            label="Добавьте заключение проверки"
             uniqId="check-apartments"
-            filesInit={fields.documentIds.value}
+            documents={fields.documentIds.value}
             onChange={(value) => {
               setFiles(value);
             }}
             max={1}
+            type={EDocumentType.DeviceCheckAct}
           />
         )}
         <ErrorMessage>
