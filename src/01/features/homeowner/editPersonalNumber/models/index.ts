@@ -22,10 +22,17 @@ export const setEditRequestStatus = createEvent<null | RequestStatusShared>();
 
 export const handleConfirmationModalClose = createEvent();
 export const onForced = createEvent();
-export const $samePersonalAccountNumderId = createStore<number | null>(null);
+
+export const $samePersonalAccountNumderId = createStore<number | null>(
+  null,
+).reset(handleConfirmationModalClose);
+
 export const $isConfirmationModalOpen =
   $samePersonalAccountNumderId.map(Boolean);
-export const $isForced = createStore<boolean>(false);
+
+export const $isForced = createStore<boolean>(false)
+  .on(onForced, () => true)
+  .reset(handleConfirmationModalClose);
 
 export const personalNumberEditForm = createForm({
   fields: {

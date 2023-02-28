@@ -1,7 +1,6 @@
 import { replaceHomeownerAccount } from './../../../../_api/homeowners';
 import {
   $isForced,
-  $samePersonalAccountNumderId,
   handleConfirmationModalClose,
   handleSwitchPersonalNumber,
   onForced,
@@ -83,15 +82,6 @@ sample({
   target: switchPersonalNumberFx,
 });
 
-$samePersonalAccountNumderId
-  .on(switchPersonalNumberFx.failData, (prev, errData) => {
-    if (errData.response.status === 409) {
-      return errData.response.data.error.Data.ApartmentId;
-    }
-    return prev;
-  })
-  .reset(handleConfirmationModalClose);
-
 switchPersonalNumberFx.failData.watch((error) => {
   if (error.response.status === 403) {
     return message.error(
@@ -111,10 +101,6 @@ switchPersonalNumberFx.failData.watch((error) => {
       'Произошла ошибка',
   );
 });
-
-$isForced.on(onForced, () => true).reset(handleConfirmationModalClose);
-
-$samePersonalAccountNumderId.reset(handleConfirmationModalClose);
 
 forward({
   from: switchPersonalNumberFx.doneData,
