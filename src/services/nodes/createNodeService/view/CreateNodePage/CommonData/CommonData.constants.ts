@@ -12,15 +12,12 @@ export const commercialNodeStatuses: NodeStatusesList = Object.values(
   Icon: NodeStatusIconsDictionary[nodeStatus],
 }));
 
-const pipeValidationSchema = Yup.object().shape({
+export const pipeValidationSchema = Yup.object().shape({
   number: Yup.number()
     .min(1, 'Номер трубы должен быть не меньше 1')
     .max(10, 'Номер трубы должен быть не больше 10')
     .required('Укажите номер для трубы'),
-  diameter: Yup.number()
-    .min(1, 'Номер должен быть не меньше 1')
-    .max(10, 'Номер должен быть не больше 10')
-    .required('Укажите диаметр для трубы'),
+  diameter: Yup.number().required('Укажите диаметр для трубы'),
 });
 
 export const validationSchema = Yup.object().shape({
