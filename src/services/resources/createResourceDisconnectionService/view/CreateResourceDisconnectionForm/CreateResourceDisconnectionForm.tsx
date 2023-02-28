@@ -2,7 +2,11 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EResourceDisconnectingType, EResourceType } from 'myApi';
+import {
+  EDocumentType,
+  EResourceDisconnectingType,
+  EResourceType,
+} from 'myApi';
 import React, {
   FC,
   useCallback,
@@ -409,7 +413,7 @@ export const CreateResourceDisconnectionForm: FC<
               setFieldValue('documentId', files[0]?.id || null);
             }}
             max={1}
-            // type={EDocumentType.}
+            type={EDocumentType.Common}
           />
           <ErrorMessage>{errors.documentId}</ErrorMessage>
         </FormItem>
