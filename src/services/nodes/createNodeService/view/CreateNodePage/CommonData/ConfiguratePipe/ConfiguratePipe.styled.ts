@@ -22,6 +22,8 @@ export const NameWrapper = styled.div`
   align-items: center;
   align-self: flex-end;
   transform: translateY(-5px);
+  color: #272f5a;
+  font-weight: 500;
 
   gap: 8px;
 `;

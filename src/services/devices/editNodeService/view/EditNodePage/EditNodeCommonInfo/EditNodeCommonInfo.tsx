@@ -161,7 +161,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
                   id: String(id),
                   magistral: magistral as EMagistralType,
                 }}
-                index={index}
+                index={index + 1}
                 key={pipe.id}
                 handleChangeNumber={(number) =>
                   setFieldValue(
