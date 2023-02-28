@@ -12,7 +12,6 @@ export const FilesUploadForm: FC = () => {
     <DocumentsInputWrapper>
       <DocumentsUploadContainer
         label="Добавьте акт выполненных работ"
-        type={EDocumentType.DeviceAcceptanceAct}
         uniqId="one"
         max={1}
         documents={
@@ -21,9 +20,9 @@ export const FilesUploadForm: FC = () => {
         onChange={(documents) =>
           fields.deviceAcceptanceAct.onChange(documents[0] || null)
         }
+        type={EDocumentType.DeviceAcceptanceAct}
       />
       <DocumentsUploadContainer
-        type={EDocumentType.DevicePassport}
         uniqId="two"
         label="Добавьте паспорт прибора"
         max={1}
@@ -31,9 +30,9 @@ export const FilesUploadForm: FC = () => {
         onChange={(documents) =>
           fields.devicePassport.onChange(documents[0] || null)
         }
+        type={EDocumentType.DevicePassport}
       />
       <DocumentsUploadContainer
-        type={EDocumentType.DeviceTestCertificates}
         uniqId="three"
         label="Добавьте свидетельство о поверке прибора"
         max={1}
@@ -45,6 +44,7 @@ export const FilesUploadForm: FC = () => {
         onChange={(documents) =>
           fields.deviceTestCertificates.onChange(documents[0] || null)
         }
+        type={EDocumentType.DeviceTestCertificates}
       />
     </DocumentsInputWrapper>
   );

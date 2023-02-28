@@ -27,7 +27,7 @@ import { useFormik } from 'formik';
 import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { getInitialDateFieldValue, getNodeStatus } from './CommonData.utils';
-import { ENodeRegistrationType } from 'myApi';
+import { EDocumentType, ENodeRegistrationType } from 'myApi';
 import { configNamesLookup } from 'utils/configNamesLookup';
 
 const { inputs } = createNodeServiceZoneService;
@@ -217,6 +217,7 @@ export const CommonData: FC<CommonDataProps> = ({
                   setFieldValue('documents', documents);
                 }}
                 max={1}
+                type={EDocumentType.NodeAdmissionAct}
               />
             </FilesUploaderWrapper>
           </>

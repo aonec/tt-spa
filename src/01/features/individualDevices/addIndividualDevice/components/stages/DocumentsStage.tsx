@@ -61,35 +61,6 @@ export const DocumentsStage = () => {
           type={EDocumentType.DeviceTestCertificates}
         />
       </DocumentsUploadWrapper>
-      {/* <FilesUpload
-        uniqId="create-individual-device-completed-works"
-        text="Добавьте акт выполненных работ"
-        filesInit={getFilesArrByFile(completedWorks)}
-        max={1}
-        onChange={setFile('completedWorks')}
-        withoutDeletion
-        type="DeviceAcceptanceAct"
-      /> */}
-
-      {/* <FilesUpload
-        uniqId="create-individual-device-passport"
-        text="Добавьте паспорт прибора"
-        filesInit={getFilesArrByFile(devicePassport)}
-        max={1}
-        onChange={setFile('devicePassport')}
-        withoutDeletion
-        type="DevicePassport"
-      /> */}
-
-      {/* <FilesUpload
-        uniqId="create-individual-device-check"
-        text="Добавьте свидетельство о проверке прибора"
-        max={1}
-        filesInit={getFilesArrByFile(deviceCheck)}
-        onChange={setFile('deviceCheck')}
-        withoutDeletion
-        type="DeviceTestCertificates"
-      /> */}
     </>
   );
 };

@@ -409,6 +409,7 @@ export const CreateResourceDisconnectionForm: FC<
               setFieldValue('documentId', files[0]?.id || null);
             }}
             max={1}
+            // type={EDocumentType.}
           />
           <ErrorMessage>{errors.documentId}</ErrorMessage>
         </FormItem>

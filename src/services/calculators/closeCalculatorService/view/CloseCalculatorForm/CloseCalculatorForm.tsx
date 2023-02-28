@@ -10,6 +10,7 @@ import { MessageWrapper } from './CloseCalculatorForm.styled';
 import { CloseCalculatorFormProps } from './CloseCalculatorForm.types';
 import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { EDocumentType } from 'myApi';
 
 export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
   formId,
@@ -61,6 +62,7 @@ export const CloseCalculatorForm: FC<CloseCalculatorFormProps> = ({
           setFieldValue('documentsIds', [files[0]?.id]);
         }}
         max={1}
+        type={EDocumentType.DeviceClosingAct}
       />
     </Form>
   );

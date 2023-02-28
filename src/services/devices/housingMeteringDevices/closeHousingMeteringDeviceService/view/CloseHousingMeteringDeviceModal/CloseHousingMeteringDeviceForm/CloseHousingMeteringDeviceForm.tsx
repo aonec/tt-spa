@@ -6,7 +6,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import * as yup from 'yup';
-import { CloseDeviceRequest } from 'myApi';
+import { CloseDeviceRequest, EDocumentType } from 'myApi';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Description } from './CloseHousingMeteringDeviceForm.styled';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
@@ -67,6 +67,7 @@ export const CloseHousingMeteringDeviceForm: FC<
         }}
         label="Добавьте акт снятия прибора с учета"
         documents={values.documents}
+        type={EDocumentType.DeviceClosingAct}
       />
     </>
   );

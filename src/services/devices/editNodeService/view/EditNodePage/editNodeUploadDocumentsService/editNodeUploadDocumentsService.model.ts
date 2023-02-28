@@ -3,6 +3,8 @@ import { DocumentLiteResponse } from 'myApi';
 import { editNodeService } from 'services/devices/editNodeService/editNodeService.model';
 import { fetchUpdateDocuments } from './editNodeUploadDocumentsService.api';
 import { UpdateDocumentPayload } from './editNodeUploadDocumentsService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('editNodeUploadDocumentsService');
 
@@ -13,9 +15,12 @@ const $isOpenModal = domain
   .on(openModal, () => true)
   .reset(closeModal);
 
-const updateDocumentsFx = domain.createEffect<UpdateDocumentPayload, void>(
-  fetchUpdateDocuments,
-);
+const updateDocumentsFx = domain.createEffect<
+  UpdateDocumentPayload,
+  void,
+  EffectFailDataAxiosError
+>(fetchUpdateDocuments);
+
 const updateDocuments = domain.createEvent<DocumentLiteResponse[]>();
 
 const $documents = domain
@@ -34,6 +39,19 @@ sample({
     documentsIds: documents.map((document) => document.id),
   }),
   target: updateDocumentsFx,
+});
+
+updateDocumentsFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const editNodeUploadDocumentsService = {

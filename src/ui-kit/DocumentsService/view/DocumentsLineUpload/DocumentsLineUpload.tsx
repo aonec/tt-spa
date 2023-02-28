@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from 'react';
 import { saveAs } from 'file-saver';
-
 import { Button } from 'ui-kit/Button';
 import { UploadIcon } from 'ui-kit/icons';
 
