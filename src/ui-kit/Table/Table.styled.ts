@@ -34,3 +34,13 @@ export const Row = styled.div<{ temp: string }>`
   color: #272f5a;
   width: 100%;
 `;
+
+export const PaginationWrapper = styled.div`
+  margin: 16px;
+`;
+
+export const TableElement = styled.div`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;

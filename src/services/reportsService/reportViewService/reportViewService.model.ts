@@ -98,6 +98,8 @@ const downloadReport = domain.createEvent();
 
 const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
 
+const clearFiltrationValues = domain.createEvent();
+
 const $addressesWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(fetchAddressesWithHouseManagementsFx.doneData, (_, data) => data)
@@ -116,9 +118,10 @@ const $filtrationValues = domain
     closingReasons: [],
     actResources: [],
     showOnlyDuplicates: false,
+    withoutApartmentsWithOpenDevicesByResources: false,
   })
-  .on(setFiltrationValues, (_, values) => values);
-// .reset(ReportViewGate.close);
+  .on(setFiltrationValues, (_, values) => values)
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
@@ -249,6 +252,7 @@ export const reportViewService = {
   inputs: {
     setFiltrationValues,
     downloadReport,
+    clearFiltrationValues,
   },
   outputs: {
     $existingCities,

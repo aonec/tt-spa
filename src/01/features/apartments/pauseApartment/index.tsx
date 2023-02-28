@@ -72,7 +72,9 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
     </Grid>
   );
 
-  const problemDevices = useStore($problemDevices);
+  const problemDevices = useStore($problemDevices)?.filter((device) => {
+    return !Boolean(device.closingDate);
+  });
 
   const gatePayload = useMemo(
     () => ({

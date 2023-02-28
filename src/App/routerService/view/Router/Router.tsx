@@ -44,6 +44,7 @@ import { EditCalculatorContainer } from 'services/calculators/editCalculatorServ
 import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
 import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
 import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
+import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 
 const { gates } = objectProfileService;
@@ -148,6 +149,8 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   path="/companyProfile/:section?"
                   component={CompanyProfileContainer}
                 />
+
+                <Route path="/editCompany" component={EditCompanyContainer} />
 
                 <Route
                   path="/userProfile/:id"

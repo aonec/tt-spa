@@ -13,6 +13,8 @@ import { createGate } from 'effector-react';
 import { groupDevicesByObjects } from '01/_pages/Devices/components/utils/groupDevicesByObjects';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('displayDevicesService');
 
@@ -21,7 +23,8 @@ const $calculatorsPagedData =
 
 const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload[],
-  (HousingByFilterResponse | null)[]
+  (HousingByFilterResponse | null)[],
+  EffectFailDataAxiosError
 >(getHousingsByFilter);
 const $housingsByFilter = domain
   .createStore<HousingByFilterResponse[]>([])
@@ -145,6 +148,17 @@ sample({
     }, [] as GetHousingByFilterRequestPayload[]),
   ),
   target: fetchHousingsByFilterFx,
+});
+
+fetchHousingsByFilterFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
 });
 
 const $isExtendedSearchOpen = domain.createStore(false);

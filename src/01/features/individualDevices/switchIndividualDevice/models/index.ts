@@ -21,6 +21,7 @@ import { $individualDevice } from '../../displayIndividualDevice/models';
 import { createGate } from 'effector-react';
 import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
 import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -149,7 +150,8 @@ export const createIndividualDeviceFx = createEffect<
 
 export const checkIndividualDeviceFx = createEffect<
   CheckIndividualDevicePayload,
-  void
+  void,
+  EffectFailDataAxiosError
 >(checkIndividualDevice);
 
 export const SwitchIndividualDeviceGate = createGate<{
@@ -226,4 +228,17 @@ guard({
   clock: confirmCreationNewDeviceButtonClicked,
   filter: Boolean,
   target: checkIndividualDeviceFx,
+});
+
+checkIndividualDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
