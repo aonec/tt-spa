@@ -46,7 +46,7 @@ export const AddCommunicationPipeModal: FC<AddCommunicationPipeModalProps> = ({
 
         closeAddPipeModal();
         resetForm();
-        handleCreatePipe(id);
+        handleCreatePipe(String(id));
       },
       validateOnChange: false,
       validationSchema,

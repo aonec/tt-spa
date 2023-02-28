@@ -24,7 +24,10 @@ import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/vie
 import { getChangeNodeStatusPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.utils';
 import { ChangeNodeStatusFormPayload } from 'services/nodes/changeNodeStatusService/changeNodeStatusService.types';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
-import { getInitialPipesFromConfig } from './CommonData.utils';
+import {
+  getInitialDataForChangeNodeStatusForm,
+  getInitialPipesFromConfig,
+} from './CommonData.utils';
 import { ConfiguratePipe } from './ConfiguratePipe';
 import { CreateNodeFormPayload } from 'services/nodes/createNodeService/createNodeService.types';
 
@@ -44,7 +47,6 @@ export const CommonData: FC<CommonDataProps> = ({
         number: requestPayload.number ? String(requestPayload.number) : '',
         registrationType: requestPayload?.registrationType || null,
         nodeServiceZoneId: requestPayload.nodeServiceZoneId || null,
-        technicalTypeRequest: requestPayload.technicalTypeRequest,
         commercialStatusRequest: requestPayload.commercialStatusRequest,
         communicationPipes: requestPayload.communicationPipes || [],
       },
@@ -69,17 +71,20 @@ export const CommonData: FC<CommonDataProps> = ({
         ) {
           return;
         }
-        if (registrationType === ENodeRegistrationType.Commercial) {
-          updateRequestPayload({ commercialStatusRequest });
-        }
 
-        updateRequestPayload({
+        let payload: CreateNodeFormPayload = {
           configuration,
           number: Number(number),
           nodeServiceZoneId,
           registrationType,
           communicationPipes,
-        });
+        };
+
+        if (registrationType === ENodeRegistrationType.Commercial) {
+          payload = { ...payload, commercialStatusRequest };
+        }
+
+        updateRequestPayload(payload);
       },
     });
 
@@ -143,6 +148,12 @@ export const CommonData: FC<CommonDataProps> = ({
       );
     }
   }, [values.configuration, setFieldValue]);
+
+  useEffect(() => {
+    if (requestPayload.communicationPipes) {
+      setFieldValue('communicationPipes', requestPayload.communicationPipes);
+    }
+  }, [setFieldValue, requestPayload.communicationPipes]);
 
   return (
     <>
@@ -245,6 +256,9 @@ export const CommonData: FC<CommonDataProps> = ({
             <ChangeNodeStatusForm
               handleChangeNodeStatus={handleChangeCommercialStatus}
               createMode={true}
+              initialData={getInitialDataForChangeNodeStatusForm(
+                values.commercialStatusRequest,
+              )}
             />
             <ErrorMessage>
               {Object.values(errors.commercialStatusRequest || {}).join(', ')}

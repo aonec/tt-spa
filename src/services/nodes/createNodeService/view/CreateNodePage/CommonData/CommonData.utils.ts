@@ -1,12 +1,42 @@
 import { uniqueId } from 'lodash';
 import moment from 'moment';
-import { EMagistralType, EPipeNodeConfig } from 'myApi';
+import {
+  EMagistralType,
+  ENodeCommercialAccountStatus,
+  EPipeNodeConfig,
+  NodeSetCommercialStatusRequest,
+} from 'myApi';
 import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
+import { ChangeNodeStatusFormik } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm/ChangeNodeStatusForm.types';
 
 export const getInitialDateFieldValue = (date?: string | null) => {
   if (!date) return null;
 
   return moment(date);
+};
+
+export const getInitialDataForChangeNodeStatusForm = (
+  data?: NodeSetCommercialStatusRequest | null,
+): ChangeNodeStatusFormik => {
+  const commercialStatus = data?.commercialStatus;
+  if (!commercialStatus) {
+    return {};
+  }
+
+  if (
+    commercialStatus === ENodeCommercialAccountStatus.OnReview ||
+    commercialStatus === ENodeCommercialAccountStatus.Prepared
+  ) {
+    return { ...data, firstDate: data?.commercialStatusChangingDate };
+  }
+  if (commercialStatus === ENodeCommercialAccountStatus.NotRegistered) {
+    return { ...data, firstDate: data?.commercialAccountingDeregistrationDate };
+  }
+  return {
+    ...data,
+    firstDate: data?.startCommercialAccountingDate,
+    secondDate: data?.endCommercialAccountingDate,
+  };
 };
 
 export const getInitialPipesFromConfig = (config: EPipeNodeConfig) => {

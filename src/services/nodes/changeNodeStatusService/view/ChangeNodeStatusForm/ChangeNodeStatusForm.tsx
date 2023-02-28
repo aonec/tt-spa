@@ -28,7 +28,7 @@ import {
 export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   formId,
   handleChangeNodeStatus,
-  commercialStatus,
+  initialData,
   createMode = false,
 }) => {
   const handleSubmitForm = useCallback(
@@ -52,10 +52,10 @@ export const ChangeNodeStatusForm: FC<ChangeNodeStatusFormProps> = ({
   const { handleSubmit, values, setFieldValue, errors } =
     useFormik<ChangeNodeStatusFormik>({
       initialValues: {
-        commercialStatus: commercialStatus?.value || null,
-        documentId: null,
-        firstDate: null,
-        secondDate: null,
+        commercialStatus: initialData?.commercialStatus || null,
+        documentId: initialData?.documentId || null,
+        firstDate: initialData?.firstDate || null,
+        secondDate: initialData?.secondDate || null,
       },
       validationSchema: createMode
         ? createNodeStatusValidationSchema
