@@ -39,7 +39,10 @@ export const getInitialPipesFromConfig = (config: EPipeNodeConfig) => {
       RechargePipe,
     ],
     [EPipeNodeConfig.HotWaterSupplyNoBackflow]: [FeedFlowPipe],
-    [EPipeNodeConfig.HotWaterSupplyWithBackflow]: [FeedFlowPipe, RechargePipe],
+    [EPipeNodeConfig.HotWaterSupplyWithBackflow]: [
+      FeedFlowPipe,
+      FeedBackFlowPipe,
+    ],
   };
 
   return PipesLookup[config];
