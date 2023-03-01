@@ -1,9 +1,9 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
-  TaskListResponse,
+  HousingStockWithTasksResponse,
 } from 'myApi';
 
 export type TasksMapViewProps = {
-  tasks: TaskListResponse[];
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
+  housingStocksWithTasks: HousingStockWithTasksResponse[];
 };

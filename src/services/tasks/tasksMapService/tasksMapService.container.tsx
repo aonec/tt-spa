@@ -7,15 +7,18 @@ const { outputs, gates } = tasksMapService;
 const { TaskTypesGate } = gates;
 
 export const TasksMapContainer = () => {
-  const tasksPagedData = useStore(outputs.$tasks);
+  const housingStocksWithTasks = useStore(outputs.$housingStocksWithTasks);
   const taskTypes = useStore(outputs.$taskTypes);
 
-  const tasks = tasksPagedData?.items;
+  // const applyFilters = useEvent(inputs.applyFilters);
 
   return (
     <>
       <TaskTypesGate />
-      <TasksMapView tasks={tasks || []} taskTypes={taskTypes} />
+      <TasksMapView
+        taskTypes={taskTypes}
+        housingStocksWithTasks={housingStocksWithTasks}
+      />
     </>
   );
 };
