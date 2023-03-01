@@ -22,6 +22,7 @@ const $graphType = domain
   )
   .on(selectGraphType, (_, type) => type);
 
+const fetchIndividualDeviceConsumptionsList = domain.createEffect();
 const $consumptionData = domain.createStore([
   { consumption: 100, date: '2022-11-01T00:00:00' },
   { consumption: 450, date: '2022-10-01T00:00:00' },
@@ -61,7 +62,7 @@ sample({
     clock: IndividualDevicesIds.state,
     filter: (isLoading) => !isLoading,
   }),
-  target: fetchIndividualDevicesList,
+  target: [fetchIndividualDevicesList, fetchIndividualDeviceConsumptionsList],
 });
 
 export const individualDevicesListService = {
