@@ -65,9 +65,11 @@ export const HousingMeteringDevicesReport: FC<
                   <DeviceModel>{elem.model}</DeviceModel>
                 </DeviceWrapper>
                 <DeviceCheckingDates>
-                  {moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
+                  {elem.lastCheckingDate &&
+                    moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
                   {` — `}
-                  {moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
+                  {elem.futureCheckingDate &&
+                    moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
                 </DeviceCheckingDates>
               </div>
             );

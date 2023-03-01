@@ -17,7 +17,6 @@ export enum ReportDatePeriod {
 export type ReportFiltrationFormValues = {
   city: null | string;
   houseManagement: null | string;
-  housingStockId: null | number;
   housingStockIds: number[];
   resources: EResourceType[];
   actResources: EActResourceType[];

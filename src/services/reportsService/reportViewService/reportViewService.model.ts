@@ -109,7 +109,6 @@ const $filtrationValues = domain
   .createStore<ReportFiltrationFormValues>({
     city: null,
     houseManagement: null,
-    housingStockId: null,
     housingStockIds: [],
     resources: [],
     reportOption: null,

@@ -129,7 +129,7 @@ export const prepareHomeownersReportRequestPayload = (
 ): HomeownersReportRequestPayload | null => {
   const { HouseManagementId, HousingStocksIds } = getAddressId(values);
 
-  if (!HouseManagementId && !HousingStocksIds) return null;
+  if (!HouseManagementId && !HousingStocksIds.length) return null;
 
   return {
     HouseManagementId,

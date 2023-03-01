@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Checkbox, Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import {
@@ -34,7 +34,7 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
 
-const { gates } = reportViewService;
+const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
 
 export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
@@ -46,7 +46,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   setFiltrationValues,
   reportType,
 }) => {
-  const { values, setFieldValue, handleSubmit } =
+  const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<ReportFiltrationFormValues>({
       initialValues: filtrationValues,
       enableReinitialize: true,
@@ -54,6 +54,10 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
         setFiltrationValues(values);
       },
     });
+
+  useEffect(() => {
+    return inputs.clearFiltrationValues.watch(() => resetForm()).unsubscribe;
+  }, [resetForm]);
 
   const addressesTreeData = prepareAddressesTreeData(
     addressesWithHouseManagements,
