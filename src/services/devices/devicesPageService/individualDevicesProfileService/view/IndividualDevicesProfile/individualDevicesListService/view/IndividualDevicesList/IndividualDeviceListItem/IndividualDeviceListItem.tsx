@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 import React, { FC, useCallback } from 'react';
@@ -21,6 +22,7 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   device,
   apartmentId,
   consumptionData,
+  isConsumptionsLoading,
 }) => {
   const history = useHistory();
 
@@ -29,7 +31,8 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
     [history, apartmentId],
   );
 
-  const isConsumptionExist = consumptionData.length !== 0;
+  const isConsumptionExist =
+    consumptionData.filter((elem) => Boolean(elem.consumption)).length !== 0;
 
   return (
     <Wrapper>
@@ -56,18 +59,20 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
           {moment(device.consumption?.readingDate).format('DD.MM.YYYY')}
         </ConsumptionDate>
       </div>
-      {isConsumptionExist && (
-        <IndividualDeviceConsumptionGraph
-          resource={device.resource}
-          data={consumptionData}
-        />
-      )}
-      {!isConsumptionExist && (
-        <NoData>
-          <SearchIcon />
-          <NoDataText>Нет данных</NoDataText>
-        </NoData>
-      )}
+      <Loader show={isConsumptionsLoading} size={20}>
+        {isConsumptionExist && (
+          <IndividualDeviceConsumptionGraph
+            resource={device.resource}
+            data={consumptionData}
+          />
+        )}
+        {!isConsumptionExist && (
+          <NoData>
+            <SearchIcon />
+            <NoDataText>Нет данных</NoDataText>
+          </NoData>
+        )}
+      </Loader>
     </Wrapper>
   );
 };

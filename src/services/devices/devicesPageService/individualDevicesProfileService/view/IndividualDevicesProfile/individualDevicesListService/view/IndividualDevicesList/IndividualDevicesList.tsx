@@ -1,6 +1,6 @@
-import { Skeleton } from 'antd';
 import React, { FC } from 'react';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import {
   IndividualDeviceConsumptionGraphLookup,
   IndividualDeviceConsumptionGraphType,
@@ -16,6 +16,7 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
   selectGraphType,
   selectedGraphType,
   graphData,
+  isConsumptionsLoading,
 }) => {
   return (
     <Wrapper>
@@ -41,16 +42,20 @@ export const IndividualDevicesList: FC<IndividualDevicesListProps> = ({
           />
         </GroupWrapper>
       </Header>
-      {isLoading && <Skeleton active />}
-      {!isLoading &&
-        individualDevicesList?.map((device) => (
+      <WithLoader isLoading={isLoading}>
+        {individualDevicesList?.map((device) => (
           <IndividualDeviceListItem
             apartmentId={apartmentId}
+            isConsumptionsLoading={isConsumptionsLoading}
             key={device.id}
             device={device}
-            consumptionData={graphData}
+            consumptionData={
+              graphData.find((elem) => elem.deviceId === device.id)
+                ?.consumptions || []
+            }
           />
         ))}
+      </WithLoader>
     </Wrapper>
   );
 };

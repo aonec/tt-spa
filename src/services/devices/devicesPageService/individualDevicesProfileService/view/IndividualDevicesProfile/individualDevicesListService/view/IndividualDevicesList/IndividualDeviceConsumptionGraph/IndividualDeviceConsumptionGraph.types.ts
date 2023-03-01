@@ -1,7 +1,6 @@
-import { EResourceType } from 'myApi';
-import { Consumption } from '../IndividualDeviceListItem/IndividualDeviceListItem.types';
+import { EResourceType, IndividualDeviceConsumptionResponse } from 'myApi';
 
 export type IndividualDeviceConsumptionGraphProps = {
   resource?: EResourceType;
-  data: Consumption[];
+  data: IndividualDeviceConsumptionResponse[];
 };

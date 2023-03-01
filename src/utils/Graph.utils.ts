@@ -3,7 +3,7 @@ import { maxBy, minBy } from 'lodash';
 import { EResourceType } from 'myApi';
 
 export function getMinAndMax<T>(
-  data: (T & { value: number })[],
+  data: (T & { value: number | null })[],
   minDelta: number,
 ) {
   const minElementValue = minBy(data, (obj) => obj.value)?.value || 0;

@@ -1,5 +1,6 @@
 import { IndividualDeviceResponseFromDevicePage } from 'myApi';
 import { IndividualDeviceConsumptionGraphType } from '../../individualDevicesListService.constants';
+import { IndividualDeviceConsumptionForGraph } from '../../individualDevicesListService.types';
 
 export type IndividualDevicesListProps = {
   isLoading: boolean;
@@ -7,5 +8,6 @@ export type IndividualDevicesListProps = {
   apartmentId?: number;
   selectedGraphType: IndividualDeviceConsumptionGraphType;
   selectGraphType: (type: IndividualDeviceConsumptionGraphType) => void;
-  graphData: { consumption: number; date: string }[];
+  graphData: IndividualDeviceConsumptionForGraph[];
+  isConsumptionsLoading: boolean;
 };

@@ -1,8 +1,12 @@
 import { createGate } from 'effector-react';
 import { combine, createDomain, guard, sample } from 'effector';
-import { getIndividualDevicesList } from './individualDevicesListService.api';
+import {
+  getIndividualDeviceConsumptionsList,
+  getIndividualDevicesList,
+} from './individualDevicesListService.api';
 import { IndividualDeviceResponseFromDevicePage } from 'myApi';
 import { IndividualDeviceConsumptionGraphType } from './individualDevicesListService.constants';
+import { IndividualDeviceConsumptionForGraph } from './individualDevicesListService.types';
 
 const domain = createDomain('individualDevicesListService');
 
@@ -22,25 +26,24 @@ const $graphType = domain
   )
   .on(selectGraphType, (_, type) => type);
 
-const fetchIndividualDeviceConsumptionsList = domain.createEffect();
-const $consumptionData = domain.createStore([
-  { consumption: 100, date: '2022-11-01T00:00:00' },
-  { consumption: 450, date: '2022-10-01T00:00:00' },
-  { consumption: 100, date: '2022-09-01T00:00:00' },
-  { consumption: 300, date: '2022-08-01T00:00:00' },
-  { consumption: 900, date: '2022-07-01T00:00:00' },
-  { consumption: 80, date: '2022-06-01T00:00:00' },
-  { consumption: 80, date: '2022-05-01T00:00:00' },
-  { consumption: 100, date: '2022-04-01T00:00:00' },
-  { consumption: 80, date: '2022-03-01T00:00:00' },
-  { consumption: 80, date: '2022-02-01T00:00:00' },
-  { consumption: 900, date: '2022-01-01T00:00:00' },
-  { consumption: 80, date: '2021-12-01T00:00:00' },
-]);
+const fetchIndividualDeviceConsumptionsListFx = domain.createEffect<
+  number[],
+  (IndividualDeviceConsumptionForGraph | null)[]
+>(getIndividualDeviceConsumptionsList);
+const $consumptionData = domain
+  .createStore<IndividualDeviceConsumptionForGraph[]>([])
+  .on(
+    fetchIndividualDeviceConsumptionsListFx.doneData,
+    (_, devicesList) =>
+      devicesList.filter(Boolean) as IndividualDeviceConsumptionForGraph[],
+  );
 
 const $preparedData = combine($consumptionData, $graphType, (data, type) => {
   if (type === IndividualDeviceConsumptionGraphType.BySixMonths) {
-    return data.slice(0, 6);
+    return data.map((device) => ({
+      ...device,
+      consumptions: device.consumptions.slice(6, 12),
+    }));
   }
   return data;
 });
@@ -54,6 +57,7 @@ const $openedBlockId = domain
   .on(toggleBlock, (prevId, id) => (prevId === id ? null : id));
 
 const $isLoading = fetchIndividualDevicesList.pending;
+const $isConsumptionsLoading = fetchIndividualDeviceConsumptionsListFx.pending;
 
 sample({
   source: IndividualDevicesIds.state.map(({ devicesIds }) => devicesIds),
@@ -62,7 +66,7 @@ sample({
     clock: IndividualDevicesIds.state,
     filter: (isLoading) => !isLoading,
   }),
-  target: [fetchIndividualDevicesList, fetchIndividualDeviceConsumptionsList],
+  target: [fetchIndividualDevicesList, fetchIndividualDeviceConsumptionsListFx],
 });
 
 export const individualDevicesListService = {
@@ -73,6 +77,7 @@ export const individualDevicesListService = {
     $individualDevicesList,
     $graphType,
     $preparedData,
+    $isConsumptionsLoading,
   },
   gates: { IndividualDevicesIds },
 };
