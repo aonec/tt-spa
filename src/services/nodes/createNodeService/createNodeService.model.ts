@@ -166,6 +166,11 @@ const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
 
 const handlePipeNodeCreated = createPipeNodeFx.doneData;
 
+forward({
+  from: handlePipeNodeCreated,
+  to: closeConfiramtionModal,
+});
+
 createPipeNodeFx.failData.watch((error) => {
   if (error.response.status === 403) {
     return message.error(
