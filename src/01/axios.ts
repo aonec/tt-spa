@@ -50,8 +50,9 @@ axios.interceptors.response.use(
       status === 403 &&
       forbiddenList.some(
         (forbiddenUrl) =>
-          forbiddenUrl.methods.includes(error?.response.config.method) &&
-          forbiddenUrl.regExp.test(error.config.url),
+          forbiddenUrl.methods.includes(
+            error?.response.config.method.toUpperCase(),
+          ) && forbiddenUrl.regExp.test(error.config.url),
       )
     ) {
       message.error(
