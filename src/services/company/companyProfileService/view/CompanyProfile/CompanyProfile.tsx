@@ -36,6 +36,10 @@ export const CompanyProfile: FC<CompanyProfileProps> = ({
         contextMenu={{
           menuButtons: [
             {
+              title: 'Редактировать информацию о компании',
+              onClick: () => history.push('/editCompany'),
+            },
+            {
               title: 'Добавить контрагента',
               onClick: () => handleOpenAddContractorModal(),
               hidden:
