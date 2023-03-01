@@ -126,22 +126,26 @@ const $filtrationValues = domain
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
   .on(fetchIndividualDevicesReportFx.doneData, (_, data) => data)
-  .reset(fetchIndividualDevicesReportFx.failData, ReportViewGate.close);
+  .reset(
+    fetchIndividualDevicesReportFx.failData,
+    ReportViewGate.close,
+    clearFiltrationValues,
+  );
 
 const $actJournalReportData = domain
   .createStore<ApartmentActsConstructedReportResponse | null>(null)
   .on(fetchActJournalReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close);
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $housingMeteringDevicesReportData = domain
   .createStore<HousingDevicesConstructedReportResponse[] | null>(null)
   .on(fetchHousingMeteringDevicesReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close);
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $homeownersReportData = domain
   .createStore<HomeownersConstructedReportResponse[] | null>(null)
   .on(fetchHomeownersReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close);
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 forward({
   from: AddressesWithHouseManagementsGate.open,

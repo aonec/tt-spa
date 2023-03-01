@@ -3,11 +3,16 @@ import {
   ReportOptionsDictionary,
 } from 'dictionaries';
 import { HouseManagementResponse, EResourceType } from 'myApi';
-import { ReportPeriodDictionary } from './ReportFiltrationForm/ReportFiltrationForm.constants';
+import {
+  addressesCountTexts,
+  ReportPeriodDictionary,
+  selectedCountTexts,
+} from './ReportFiltrationForm/ReportFiltrationForm.constants';
 import {
   ReportDatePeriod,
   ReportFiltrationFormValues,
 } from '../../reportViewService.types';
+import { getCountText } from 'utils/getCountText';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList
@@ -38,7 +43,13 @@ export const getFiltersList = (
   const resourcesText = getResourcesText(filtrationValues.resources);
 
   const selectedAddress = filtrationValues.housingStockIds.length
-    ? `Выбрано ${filtrationValues.housingStockIds.length} адресов`
+    ? `${getCountText(
+        filtrationValues.housingStockIds.length,
+        selectedCountTexts,
+      )} ${filtrationValues.housingStockIds.length} ${getCountText(
+        filtrationValues.housingStockIds.length,
+        addressesCountTexts,
+      )}`
     : null;
 
   const houseManagement = houseManagements?.find(

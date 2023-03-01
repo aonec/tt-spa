@@ -91,7 +91,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
-      <HouseManagementsGate />
+      <HouseManagementsGate City={values.city || undefined} />
       <div>
         <Wrapper>
           <FormItem label="Город">
