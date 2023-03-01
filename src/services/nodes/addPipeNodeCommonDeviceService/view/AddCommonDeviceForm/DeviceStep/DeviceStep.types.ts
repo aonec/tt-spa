@@ -9,4 +9,5 @@ export type DeviceStepProps = {
   communicationPipes: CommunicationPipePayload[];
   updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   requestPayload: CreateCommonDevicePartitial;
+  withoutNewPipes: boolean;
 };

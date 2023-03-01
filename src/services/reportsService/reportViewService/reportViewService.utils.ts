@@ -75,6 +75,8 @@ export const prepareIndividualDevicesReportRequestPayload = (
     From: dates?.from,
     To: dates?.to,
     ClosingReasons: values.closingReasons,
+    WithoutApartmentsWithOpenDevicesByResources:
+      values.withoutApartmentsWithOpenDevicesByResources,
   };
 };
 

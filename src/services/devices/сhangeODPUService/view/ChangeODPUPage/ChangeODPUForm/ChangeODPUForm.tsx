@@ -146,6 +146,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
               picker="year"
               placeholder="Введите год"
             />
+            <ErrorMessage>{errors.manufactureYear}</ErrorMessage>
           </FormItem>
         </div>
         <div id="deviceInstallationDate">
@@ -193,6 +194,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
             picker="year"
             placeholder="Введите год посл. поверки"
           />
+          <ErrorMessage>{errors.stateVerificationYear}</ErrorMessage>
         </FormItem>
         <FormItem label="Год след. поверки">
           <DatePicker
@@ -203,6 +205,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
             picker="year"
             placeholder="Введите год след. поверки"
           />
+          <ErrorMessage>{errors.nextStateVerificationYear}</ErrorMessage>
         </FormItem>
         <FormItem label="Квартал">
           <Select
@@ -218,6 +221,7 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.stateVerificationQuarter}</ErrorMessage>
         </FormItem>
         <FormItem label="Интервал">
           <Input

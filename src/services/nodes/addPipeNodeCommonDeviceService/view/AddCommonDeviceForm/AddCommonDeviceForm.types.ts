@@ -13,4 +13,5 @@ export type AddCommonDeviceFormProps = {
   openAddPipeModal: () => void;
   communicationPipes: CommunicationPipePayload[];
   handleFormComplete: () => void;
+  withoutNewPipes?: boolean;
 };

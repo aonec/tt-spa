@@ -8,7 +8,7 @@ import {
   ExistingStreetsGate,
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
-import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/hooks/useFilter';
 import {
   $existingCities,
   ExistingCitiesGate,
@@ -36,7 +36,7 @@ export const SearchForm = () => {
 
   const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
-    existingStreets
+    existingStreets,
   );
 
   function onSendHandler() {

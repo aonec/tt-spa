@@ -20,6 +20,7 @@ import {
   PrepareReportRequestFunctionsDictionary,
 } from './reportViewService.constants';
 import { ReportNamesDictionary } from '../view/ReportsPage/ReportsPage.constants';
+import moment from 'moment';
 
 export const getAddressesWithHouseManagements = (): Promise<
   HouseManagementWithStreetsResponse[]
@@ -86,10 +87,14 @@ export const downloadReportFile = async ({
   const url = window.URL.createObjectURL(new Blob([res]));
 
   const reportDatesString =
-    payload?.From && payload.To && `${payload.From}—${payload.To}`;
+    payload?.From &&
+    payload.To &&
+    `${moment(payload.From).format('DD.MM.YYYY')} — ${moment(payload.To).format(
+      'DD.MM.YYYY',
+    )}`;
 
   const reportNameString = `${ReportNamesDictionary[reportType]}${
-    reportDatesString ? `_${reportDatesString}` : ''
+    reportDatesString ? ` ${reportDatesString}` : ''
   }`;
 
   downloadURI(url, reportNameString);

@@ -10,7 +10,7 @@ import {
   ConsumptionReportCalculatorFormProps,
   DatePeriod,
 } from './ConsumptionReportCalculatorForm.types';
-import { Checkbox, Form, Radio } from 'antd';
+import { Checkbox, Form, Radio, message } from 'antd';
 import { Tabs } from 'ui-kit/Tabs';
 import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import _ from 'lodash';
@@ -32,12 +32,9 @@ import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 
-export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorFormProps> = ({
-  formId,
-  calculator,
-  handleSubmitForm,
-  isSono,
-}) => {
+export const ConsumptionReportCalculatorForm: FC<
+  ConsumptionReportCalculatorFormProps
+> = ({ formId, calculator, handleSubmitForm, isSono }) => {
   const address = calculator?.address?.address?.mainAddress;
   const reportName = `${calculator?.model}_${address?.street}_${address?.number}`;
 
@@ -61,11 +58,15 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
     validateOnChange: false,
     validationSchema: yup.object({
       nodeId: yup.number().typeError('Выберите Узел').required('Выберите Узел'),
+      reportName: yup.string().required('Введите название отчёта'),
     }),
     onSubmit: (data) => {
       const period = getDatePeriod(values.archiveType, values.period);
 
-      if (!period) return;
+      if (!period) {
+        message.warning('Выберите период!');
+        return;
+      }
 
       const { From, To } = period;
 
@@ -95,9 +96,9 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
         return devices?.filter(
           (device) =>
             device.housingMeteringDeviceType ===
-            EHousingMeteringDeviceType.FlowMeter
+            EHousingMeteringDeviceType.FlowMeter,
         );
-      })
+      }),
     );
 
     const devicesString = devicesList
@@ -143,6 +144,7 @@ export const ConsumptionReportCalculatorForm: FC<ConsumptionReportCalculatorForm
           value={values.reportName}
           suffix=".xlsx"
         />
+        <ErrorMessage>{errors.reportName}</ErrorMessage>
       </FormItem>
 
       <FormItem label="Узел">

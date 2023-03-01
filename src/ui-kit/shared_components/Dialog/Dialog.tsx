@@ -1,7 +1,12 @@
 import { Loader } from '01/components';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
-import { DialogText, StyledDialog, TitleText } from './Dialog.styled';
+import {
+  DialogText,
+  FooterWrapper,
+  StyledDialog,
+  TitleText,
+} from './Dialog.styled';
 import { DialogProps } from './Dialog.types';
 
 export const Dialog: FC<DialogProps> = ({
@@ -34,14 +39,14 @@ export const Dialog: FC<DialogProps> = ({
       zIndex={zIndex}
       footer={
         footer || (
-          <>
+          <FooterWrapper>
             <Button type="ghost" key="back" onClick={onCancel}>
               {cancelText || 'Отмена'}
             </Button>
             <Button onClick={onSubmit} disabled={isLoading} type={type}>
               {isLoading ? <Loader show /> : btnText}
             </Button>
-          </>
+          </FooterWrapper>
         )
       }
     />

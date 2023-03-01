@@ -15,9 +15,8 @@ const domain = createDomain('changeODPUService');
 
 const OldDeviceIdGate = createGate<{ oldDeviceId: number }>();
 
-const $oldDevice = domain.createStore<ElectricHousingMeteringDeviceResponse | null>(
-  null
-);
+const $oldDevice =
+  domain.createStore<ElectricHousingMeteringDeviceResponse | null>(null);
 
 const getHousingMeteringDeviceFx = domain.createEffect<
   number,
@@ -30,7 +29,8 @@ const switchHousingMeteringDeviceFx = domain.createEffect<
   EffectFailDataAxiosError
 >(postSwitchHousingMeteringDevice);
 
-const switchHousingMeteringDevice = domain.createEvent<SwitchElectricHousingDeviceRequest>();
+const switchHousingMeteringDevice =
+  domain.createEvent<SwitchElectricHousingDeviceRequest>();
 
 const $isLoadingDevice = getHousingMeteringDeviceFx.pending;
 const $isLoadingSwitch = switchHousingMeteringDeviceFx.pending;
@@ -47,12 +47,21 @@ forward({
   to: switchHousingMeteringDeviceFx,
 });
 
-switchHousingMeteringDeviceFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+switchHousingMeteringDeviceFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 switchHousingMeteringDeviceFx.doneData.watch(() =>
-  message.success('Прибор успешно заменен')
+  message.success('Прибор успешно заменен!'),
 );
 
 export const сhangeODPUService = {

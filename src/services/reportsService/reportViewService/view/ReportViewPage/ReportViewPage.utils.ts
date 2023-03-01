@@ -2,9 +2,17 @@ import {
   ResourceShortNamesDictionary,
   ReportOptionsDictionary,
 } from 'dictionaries';
-import { HouseManagementResponse, EResourceType } from 'myApi';
+import {
+  HouseManagementResponse,
+  EResourceType,
+  HouseManagementWithStreetsResponse,
+} from 'myApi';
 import { ReportPeriodDictionary } from './ReportFiltrationForm/ReportFiltrationForm.constants';
-import { ReportDatePeriod, ReportFiltrationFormValues } from '../../reportViewService.types';
+import {
+  ReportDatePeriod,
+  ReportFiltrationFormValues,
+} from '../../reportViewService.types';
+import { getAddresses } from './ReportFiltrationForm/ReportFiltrationForm.utils';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList
@@ -31,8 +39,15 @@ const getPeriodText = (
 export const getFiltersList = (
   filtrationValues: ReportFiltrationFormValues,
   houseManagements: HouseManagementResponse[] | null,
+  addressesWithHouseManagements: HouseManagementWithStreetsResponse[],
 ) => {
   const resourcesText = getResourcesText(filtrationValues.resources);
+
+  const addresses = getAddresses(addressesWithHouseManagements);
+
+  const selectedAddress =
+    filtrationValues.housingStockId &&
+    addresses.find((address) => address.id === filtrationValues.housingStockId);
 
   const houseManagement = houseManagements?.find(
     (houseManagement) =>
@@ -51,7 +66,8 @@ export const getFiltersList = (
 
   return [
     filtrationValues.city,
-    houseManagement?.name,
+    !selectedAddress ? houseManagement?.name : null,
+    selectedAddress && selectedAddress.addressString,
     resourcesText,
     period,
     reportOption,

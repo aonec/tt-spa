@@ -12,6 +12,10 @@ const selectIconStyles = css`
 export const Select = styled(AntSelect)`
   height: 48px;
 
+  .ant-select-selection-search-input {
+    transform: translate(6px, 8px);
+  }
+
   .ant-select-selection-item-content {
     line-height: initial;
   }

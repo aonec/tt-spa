@@ -17,6 +17,8 @@ createReadingFx.failData.watch((error) => {
     );
   }
   return message.error(
-    error.response.data.error.Text || error.response.data.error.Message,
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
   );
 });

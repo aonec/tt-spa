@@ -172,9 +172,16 @@ guard({
   target: createObjectFx,
 });
 
-createObjectFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+createObjectFx.failData.watch((error) => {
+  if (error.response.status === 403) {
+    return message.error(
+      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+    );
+  }
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
 

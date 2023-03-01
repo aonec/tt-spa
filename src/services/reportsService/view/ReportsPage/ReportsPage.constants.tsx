@@ -12,7 +12,7 @@ export const ReportNamesDictionary: {
   [key in ReportType]: string;
 } = {
   [ReportType.IndividualDevices]: 'Отчёт по ИПУ',
-  [ReportType.ActsJournal]: 'Отчёты по журналу акта',
+  [ReportType.ActsJournal]: 'Отчёт по журналу акта',
   [ReportType.HousingDevices]: 'Отчёт по общедомовым приборам',
   [ReportType.Homeowners]: 'Отчёт по собственникам',
   [ReportType.Employee]: 'Отчёт по сотрудникам',

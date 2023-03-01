@@ -24,7 +24,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 }) => {
   const { outputs } = addressSearchService;
 
-  const { values, handleSubmit, setFieldValue, handleReset, resetForm } =
+  const { values, handleSubmit, setFieldValue } =
     useFormik<AddressSearchValues>({
       initialValues: initialValues || {
         city: '',

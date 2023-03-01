@@ -26,6 +26,7 @@ export type ReportFiltrationFormValues = {
   reportDatePeriod: null | ReportDatePeriod;
   closingReasons: EClosingReason[];
   showOnlyDuplicates: boolean;
+  withoutApartmentsWithOpenDevicesByResources: boolean;
 };
 
 export type ReportPayload = {
@@ -41,6 +42,7 @@ export type IndividualDeviceReportRequestPaload = {
   From?: string;
   To?: string;
   ClosingReasons?: EClosingReason[];
+  WithoutApartmentsWithOpenDevicesByResources?: boolean;
 };
 
 export type ActsJournalReportRequestPayload = {

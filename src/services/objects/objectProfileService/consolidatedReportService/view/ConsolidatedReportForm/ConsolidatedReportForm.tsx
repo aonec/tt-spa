@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Form, Radio, Space } from 'antd';
+import { Form, Radio, Space, message } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { useFormik } from 'formik';
@@ -14,6 +14,8 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { getDatePeriod } from './ConsolidatedReportForm.utils';
+import * as yup from 'yup';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
   formId,
@@ -28,6 +30,7 @@ export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
     setFieldValue,
     handleChange,
     handleSubmit: handleSubmitForm,
+    errors,
   } = useFormik({
     initialValues: {
       name: `Сводный_отчёт_${address?.street}_${address?.number}`,
@@ -35,10 +38,16 @@ export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
       period: [null, null] as DatePeriod,
       archiveType: ArchiveType.StartOfMonth,
     },
+    validationSchema: yup.object().shape({
+      name: yup.string().required('Введите название отчёта'),
+    }),
     onSubmit: (values) => {
       const period = getDatePeriod(values.archiveType, values.period);
 
-      if (!period) return;
+      if (!period) {
+        message.warning('Выберите период!');
+        return;
+      }
 
       const { From, To } = period;
 
@@ -62,6 +71,7 @@ export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
           placeholder="Введите название"
           suffix=".xlsx"
         />
+        <ErrorMessage>{errors.name}</ErrorMessage>
       </FormItem>
       <FormItem label="Адрес">
         <Input value={addressString || ''} disabled />

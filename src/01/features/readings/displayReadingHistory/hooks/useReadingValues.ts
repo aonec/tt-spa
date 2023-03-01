@@ -14,6 +14,8 @@ import { $readingHistory } from '../models';
 import axios from '01/axios';
 import moment from 'moment';
 import _ from 'lodash/fp';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -142,6 +144,13 @@ export function useReadingHistoryValues() {
           [dateString]: 'done',
         }));
       } catch (e) {
+        message.error(
+          (e as unknown as EffectFailDataAxiosError).response.data.error.Text ||
+            (e as unknown as EffectFailDataAxiosError).response.data.error
+              .Message ||
+            'Произошла ошибка',
+        );
+
         setUploadingReadingsStatuses((prev) => ({
           ...prev,
           [dateString]: 'failed',

@@ -22,4 +22,5 @@ export const PhoneNumber = styled.div`
 export const ClosingDate = styled.div`
   margin-top: 4px;
   font-size: 12px;
+  color: rgba(39, 47, 90, 0.7);
 `;
