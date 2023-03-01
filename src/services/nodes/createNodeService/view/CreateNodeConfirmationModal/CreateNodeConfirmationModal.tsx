@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { StyledModal } from '01/shared/ui/Modal/Modal';
 import { Header } from 'ui-kit/Modals/FormModal/FormModal.styled';
 import {
@@ -20,13 +20,11 @@ import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 import { configNamesLookup } from 'utils/configNamesLookup';
-import { NodeStatusTextDictionary } from 'dictionaries';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
@@ -40,22 +38,22 @@ export const CreateNodeConfirmationModal: FC<
   isLoading,
   handleSubmitForm,
 }) => {
-  const commercialAccountingDatesString = useMemo(() => {
-    if (
-      !requestPayload.startCommercialAccountingDate ||
-      !requestPayload.endCommercialAccountingDate
-    ) {
-      return '—';
-    }
+  // const commercialAccountingDatesString = useMemo(() => {
+  //   if (
+  //     !requestPayload.startCommercialAccountingDate ||
+  //     !requestPayload.endCommercialAccountingDate
+  //   ) {
+  //     return '—';
+  //   }
 
-    const start = moment(requestPayload.startCommercialAccountingDate);
-    const end = moment(requestPayload.endCommercialAccountingDate);
+  //   const start = moment(requestPayload.startCommercialAccountingDate);
+  //   const end = moment(requestPayload.endCommercialAccountingDate);
 
-    return `${start.format('DD.MM.YYYY')} — ${end.format('DD.MM.YYYY')}`;
-  }, [
-    requestPayload.startCommercialAccountingDate,
-    requestPayload.endCommercialAccountingDate,
-  ]);
+  //   return `${start.format('DD.MM.YYYY')} — ${end.format('DD.MM.YYYY')}`;
+  // }, [
+  //   requestPayload.startCommercialAccountingDate,
+  //   requestPayload.endCommercialAccountingDate,
+  // ]);
 
   return (
     <StyledModal
@@ -129,16 +127,16 @@ export const CreateNodeConfirmationModal: FC<
             },
             { key: 'Номер узла', value: requestPayload.number },
             { key: 'Зона', value: serviceZone.name },
-            {
-              key: 'Коммерческий учет показателей приборов',
-              value: requestPayload.commercialStatus
-                ? NodeStatusTextDictionary[requestPayload.commercialStatus]
-                : '',
-            },
-            {
-              key: 'Даты действия акта-допуска',
-              value: commercialAccountingDatesString,
-            },
+            // {
+            //   key: 'Коммерческий учет показателей приборов',
+            //   value: requestPayload.commercialStatus
+            //     ? NodeStatusTextDictionary[requestPayload.commercialStatus]
+            //     : '',
+            // },
+            // {
+            //   key: 'Даты действия акта-допуска',
+            //   value: commercialAccountingDatesString,
+            // },
           ]}
         />
       </StepWrapper>

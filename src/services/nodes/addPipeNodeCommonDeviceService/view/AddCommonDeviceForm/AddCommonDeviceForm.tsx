@@ -17,6 +17,7 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
   openAddPipeModal,
   communicationPipes,
   handleFormComplete,
+  withoutNewPipes = false,
 }) => {
   const componentsDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -34,6 +35,7 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
         communicationPipes={communicationPipes}
         updateRequestPayload={updateRequestPayload}
         requestPayload={requestPayload}
+        withoutNewPipes={withoutNewPipes}
       />
     ),
     2: (
