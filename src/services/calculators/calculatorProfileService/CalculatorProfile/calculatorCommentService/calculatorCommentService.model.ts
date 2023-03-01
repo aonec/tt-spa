@@ -64,11 +64,6 @@ sample({
 });
 
 createCommentFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
@@ -77,11 +72,6 @@ createCommentFx.failData.watch((error) => {
 });
 
 removeCommentFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
@@ -90,11 +80,6 @@ removeCommentFx.failData.watch((error) => {
 });
 
 editCommentFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
