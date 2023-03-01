@@ -31,10 +31,15 @@ const updateCommonDeviceRequestPayload =
   domain.createEvent<Partial<CreatePipeHousingMeteringDevicePayload>>();
 const $requestPayload = domain
   .createStore<Partial<CreatePipeHousingMeteringDevicePayload> | null>(null)
-  .on(updateCommonDeviceRequestPayload, (oldData, data) => ({
-    ...oldData,
-    ...data,
-  }))
+  .on(updateCommonDeviceRequestPayload, (oldData, data) => {
+    if (!oldData) {
+      return { ...data };
+    }
+    return {
+      ...oldData,
+      ...data,
+    };
+  })
   .on($pipeNode, (payload, node) => ({ ...payload, nodeId: node?.id }))
   .reset(closeModal);
 
