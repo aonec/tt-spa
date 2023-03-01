@@ -25,7 +25,11 @@ import {
   ResourceShortNamesDictionary,
 } from 'dictionaries';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { ReportPeriodDictionary } from './ReportFiltrationForm.constants';
+import {
+  addressesCountTexts,
+  ReportPeriodDictionary,
+  selectedCountTexts,
+} from './ReportFiltrationForm.constants';
 import {
   ReportDatePeriod,
   ReportFiltrationFormValues,
@@ -33,6 +37,7 @@ import {
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
+import { getCountText } from 'utils/getCountText';
 
 const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -132,7 +137,17 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               treeCheckable
               maxTagCount={0}
               maxTagPlaceholder={() => {
-                return `Выбрано ${values.housingStockIds.length} адрес(-ов)`;
+                const addressesCountText = getCountText(
+                  values.housingStockIds.length,
+                  addressesCountTexts,
+                );
+
+                const selectedCountText = getCountText(
+                  values.housingStockIds.length,
+                  selectedCountTexts,
+                );
+
+                return `${selectedCountText} ${values.housingStockIds.length} ${addressesCountText}`;
               }}
               value={values.housingStockIds}
               onChange={(housingStocksIds) =>
