@@ -5,6 +5,7 @@ import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { useFormik } from 'formik';
 import { Document } from 'ui-kit/DocumentsService/DocumentsService.types';
 import { Form } from 'antd';
+import { EDocumentType } from 'myApi';
 
 export const DocumentsStep: FC<DocumentsStepProps> = ({
   updateRequestPayload,
@@ -46,6 +47,7 @@ export const DocumentsStep: FC<DocumentsStepProps> = ({
           documents={values.devicePassport && [values.devicePassport]}
           onChange={([document]) => setFieldValue('devicePassport', document)}
           max={1}
+          type={EDocumentType.DevicePassport}
         />
         <DocumentsUploadContainer
           label="Добавьте свидетельство о поверке прибора"
@@ -53,6 +55,7 @@ export const DocumentsStep: FC<DocumentsStepProps> = ({
           documents={values.checkingAct && [values.checkingAct]}
           onChange={([document]) => setFieldValue('checkingAct', document)}
           max={1}
+          type={EDocumentType.DeviceCheckAct}
         />
       </Wrapper>
     </Form>
