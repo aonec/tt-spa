@@ -2097,6 +2097,13 @@ export enum ETaskEngineeringElement {
   HouseNetwork = 'HouseNetwork',
 }
 
+export enum ETaskTargetObject {
+  IndividualDevice = 'IndividualDevice',
+  PipeHousingDevice = 'PipeHousingDevice',
+  Calculator = 'Calculator',
+  PipeNode = 'PipeNode',
+}
+
 export enum ETaskTargetObjectRequestType {
   Apartment = 'Apartment',
   MeteringDevice = 'MeteringDevice',
@@ -3337,6 +3344,18 @@ export interface IndividualDeviceConsumption {
 
   /** @format date-time */
   readingDate?: string;
+}
+
+export interface IndividualDeviceConsumptionResponse {
+  /** @format double */
+  consumption: number | null;
+
+  /** @format date-time */
+  date: string;
+}
+
+export interface IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse {
+  successResponse: IndividualDeviceConsumptionResponse[] | null;
 }
 
 export interface IndividualDeviceIntoHomeownerCertificateResponse {
@@ -5829,12 +5848,13 @@ export interface TaskResponseSuccessApiResponse {
 export interface TaskShortResponse {
   /** @format int32 */
   id: number;
-  type: string | null;
+  type: EManagingFirmTaskType;
   creationReason: string | null;
 
   /** @format date-time */
   creationDate: string;
-  resourceType: string | null;
+  targetObject: ETaskTargetObject;
+  resourceTypes: EResourceType[] | null;
   executor: OrganizationUserShortResponse | null;
 }
 
@@ -10620,6 +10640,30 @@ export class Api<
         path: `/api/IndividualDevices/${deviceId}/Delete`,
         method: 'POST',
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesConsumptionDetail
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/IndividualDevices/{deviceId}/Consumption
+     * @secure
+     */
+    individualDevicesConsumptionDetail: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/Consumption`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 

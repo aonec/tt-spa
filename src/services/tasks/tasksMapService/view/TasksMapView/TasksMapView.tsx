@@ -15,8 +15,8 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
   housingStocksWithTasks,
 }) => {
   const center = [
-    housingStocksWithTasks?.[0].housingStock?.coordinates?.latitude,
-    housingStocksWithTasks?.[0].housingStock?.coordinates?.longitude,
+    housingStocksWithTasks?.[0].housingStock?.coordinates?.latitude || 55.75,
+    housingStocksWithTasks?.[0].housingStock?.coordinates?.longitude || 37.57,
   ];
 
   return (
@@ -26,7 +26,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         width={'100%'}
         height={'calc(100vh - 130px)'}
         defaultState={{
-          center: [center[0] || 55.75, center[1] || 37.57],
+          center,
           zoom: 16,
         }}
       >
@@ -34,10 +34,12 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
           const textPosition =
             String(housingStockWithTask.tasks?.length).length === 2 ? 23 : 25.6;
 
-          const firtsTask = housingStockWithTask.tasks?.[0];
+          const firtsTask = housingStockWithTask.tasks?.find((elem) =>
+            Boolean(elem.resourceTypes),
+          );
 
-          const placemarkSvgCodeText = firtsTask?.resourceType
-            ? ResourcesPlacemarksLookup[firtsTask.resourceType]
+          const placemarkSvgCodeText = firtsTask?.resourceTypes
+            ? ResourcesPlacemarksLookup[firtsTask.resourceTypes?.[0]]
             : '';
 
           const svgCodeText = `<svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">${placemarkSvgCodeText}<path d="M21 8C21 4.13401 24.134 1 28 1C31.866 1 35 4.13401 35 8C35 11.866 31.866 15 28 15C24.134 15 21 11.866 21 8Z" fill="#272F5A" stroke="#272F5A" stroke-width="2"/>
