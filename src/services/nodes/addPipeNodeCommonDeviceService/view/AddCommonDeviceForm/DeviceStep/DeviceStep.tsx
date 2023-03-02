@@ -56,7 +56,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
           serialNumber: values.serialNumber,
           lastCheckingDate: values.lastCheckingDate?.format('YYYY-MM-DD'),
           futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
-          pipeId: values.pipeId,
+          pipeId: Number(values.pipeId),
         });
       },
     });
