@@ -13,15 +13,23 @@ import { ResourcesPlacemarksLookup } from './TasksMapView.constants';
 export const TasksMapView: FC<TasksMapViewProps> = ({
   taskTypes,
   housingStocksWithTasks,
+  applyFilters,
+  filtrationValues,
+  resetFilters,
 }) => {
   const center = [
-    housingStocksWithTasks?.[0].housingStock?.coordinates?.latitude || 55.75,
-    housingStocksWithTasks?.[0].housingStock?.coordinates?.longitude || 37.57,
+    housingStocksWithTasks?.[0]?.housingStock?.coordinates?.latitude || 55.75,
+    housingStocksWithTasks?.[0]?.housingStock?.coordinates?.longitude || 37.57,
   ];
 
   return (
     <Wrapper>
-      <TasksMapFiltration taskTypes={taskTypes} />
+      <TasksMapFiltration
+        taskTypes={taskTypes}
+        applyFilters={applyFilters}
+        filtrationValues={filtrationValues}
+        resetFilters={resetFilters}
+      />
       <Map
         width={'100%'}
         height={'calc(100vh - 130px)'}

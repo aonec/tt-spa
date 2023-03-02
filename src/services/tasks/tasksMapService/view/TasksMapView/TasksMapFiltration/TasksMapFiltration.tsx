@@ -18,6 +18,7 @@ import { ItemPanelsSelect } from 'ui-kit/shared_components/ItemPanelsSelect';
 import {
   EActResourceType,
   EResourceType,
+  EStageTimeStatus,
   ETaskEngineeringElement,
 } from 'myApi';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
@@ -26,18 +27,22 @@ import {
   EngineeringElementLookUp,
 } from 'dictionaries';
 import { useFormik } from 'formik';
-import { Checkbox, Space } from 'antd';
+import { Radio, Space } from 'antd';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
+  filtrationValues,
+  applyFilters,
+  resetFilters,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { values, setFieldValue } = useFormik({
-    initialValues: {
-      resource: null as EResourceType | null,
+  const { values, setFieldValue, handleSubmit, resetForm } = useFormik({
+    initialValues: filtrationValues,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      applyFilters(values);
     },
-    onSubmit: () => void 0,
   });
 
   const baseResourceOptions = [
@@ -68,13 +73,27 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <HideExtendedSearchButton onClick={() => setIsOpen(false)}>
               <ChevronUp />
             </HideExtendedSearchButton>
-            <Button type="ghost" icon={<CloseIconSC />} size="small">
+            <Button
+              type="ghost"
+              icon={<CloseIconSC />}
+              size="small"
+              onClick={() => {
+                resetForm();
+                resetFilters();
+              }}
+            >
               Очистить
             </Button>
           </FilterHeader>
           <ExtendedFiltration>
             <FormItem label="Элемент инженерной сети">
-              <SelectSC placeholder="Выберите" value="">
+              <SelectSC
+                placeholder="Выберите"
+                value={values.engineeringElement || ''}
+                onChange={(value) =>
+                  setFieldValue('engineeringElement', value || null)
+                }
+              >
                 <SelectSC.Option value="" key="">
                   Все
                 </SelectSC.Option>
@@ -99,21 +118,34 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
                   },
                   ...baseResourceOptions,
                 ]}
-                selected={values.resource}
-                onChange={(value) => setFieldValue('resource', value)}
+                selected={values.resourceTypes}
+                onChange={(value) => setFieldValue('resourceTypes', value)}
               />
             </FormItem>
             <FormItem label="Статус задачи">
-              <Checkbox.Group>
+              <Radio.Group
+                defaultValue={values.timeStatus}
+                onChange={(event) =>
+                  setFieldValue('timeStatus', event.target.value)
+                }
+              >
                 <Space direction="vertical">
-                  <Checkbox>В процессе</Checkbox>
-                  <Checkbox>Истекает срок исполнения</Checkbox>
-                  <Checkbox>Просроченная</Checkbox>
+                  <Radio value={EStageTimeStatus.Normal}>В процессе</Radio>
+                  <Radio value={EStageTimeStatus.Expired}>
+                    Истекает срок исполнения
+                  </Radio>
+                  <Radio value={EStageTimeStatus.RunningOut}>
+                    Просроченная
+                  </Radio>
                 </Space>
-              </Checkbox.Group>
+              </Radio.Group>
             </FormItem>
             <FormItem label="Тип задачи">
-              <SelectSC placeholder="Выберите тип">
+              <SelectSC
+                placeholder="Выберите тип"
+                value={values.type || ''}
+                onChange={(value) => setFieldValue('type', value)}
+              >
                 {taskTypes &&
                   taskTypes.map(({ value, key }) => (
                     <SelectSC.Option key={key!} value={key!}>
@@ -133,7 +165,15 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <Button size="small" type="ghost">
               Отмена
             </Button>
-            <Button size="small">Применить фильтр</Button>
+            <Button
+              size="small"
+              onClick={() => {
+                setIsOpen(false);
+                handleSubmit();
+              }}
+            >
+              Применить фильтр
+            </Button>
           </Footer>
         </>
       )}

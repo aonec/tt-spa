@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { HousingStockWithTasksResponse } from 'myApi';
+import { ETaskEngineeringElement, HousingStockWithTasksResponse } from 'myApi';
 import {
   $taskTypes,
   TaskTypesGate,
@@ -16,6 +16,8 @@ const domain = createDomain('tasksMap');
 const applyFilters =
   domain.createEvent<Partial<HousingStocksWithTasksFiltrationValues>>();
 
+const resetFilters = domain.createEvent();
+
 const fetchHousingStocksWithTasksFx = domain.createEffect<
   GetHousingStocksWithTasksRequestPayload,
   HousingStockWithTasksResponse[]
@@ -27,17 +29,17 @@ const $housingStocksWithTasks = domain
 
 const $filtrationValues = domain
   .createStore<HousingStocksWithTasksFiltrationValues>({
-    engineeringElement: null,
+    engineeringElement: ETaskEngineeringElement.IndividualDevice,
     resourceTypes: [],
     timeStatus: null,
     type: null,
     executorId: null,
   })
-  .on(applyFilters, (prev, filters) => ({ ...prev, filters }));
+  .on(applyFilters, (prev, filters) => ({ ...prev, ...filters }))
+  .reset(resetFilters);
 
 sample({
   source: $filtrationValues,
-  clock: TaskTypesGate.open,
   fn: getHousingStocksWithTasksRequestPayload,
   target: fetchHousingStocksWithTasksFx,
 });
@@ -45,6 +47,7 @@ sample({
 export const tasksMapService = {
   inputs: {
     applyFilters,
+    resetFilters,
   },
   outputs: {
     $taskTypes,
