@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { combine, createDomain, forward, sample } from 'effector';
 import { HomeownerAccountCreateRequest } from 'myApi';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
@@ -21,6 +21,11 @@ const createHomeownerFx = domain.createEffect<
 const openCreateHomeownerModal = domain.createEvent();
 const closeCreateHomeownerModal = domain.createEvent();
 
+const $createHomeownerPayloadData = domain
+  .createStore<HomeownerAccountCreateRequest | null>(null)
+  .on(handleCreateHomeowner, (_, formData) => formData)
+  .reset(closeCreateHomeownerModal);
+
 const $isModalOpen = domain
   .createStore(false)
   .on(openCreateHomeownerModal, () => true)
@@ -42,11 +47,16 @@ const $isForced = domain
   .reset(handleConfirmationModalClose);
 
 sample({
-  clock: handleCreateHomeowner,
-  source: $isForced,
-  fn: (source, clock) => {
-    return { ...clock, source } as HomeownerAccountCreateRequest;
-  },
+  clock: [handleCreateHomeowner, onForced],
+  source: combine(
+    $createHomeownerPayloadData,
+    $isForced,
+    (payloadData, isForced): HomeownerAccountCreateRequest | null => {
+      return payloadData && { ...payloadData, isForced };
+    },
+  ),
+  filter: (payload): payload is HomeownerAccountCreateRequest =>
+    Boolean(payload),
   target: createHomeownerFx,
 });
 
