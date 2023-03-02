@@ -46,8 +46,8 @@ const payload = combine(
       toDate: moment(values.toDate).format('YYYY-MM-DD'),
       status: EApartmentStatus.Pause,
       documentIds: values.documents
-        .filter((elem) => elem.fileResponse)
-        .map((elem) => elem.fileResponse?.id!),
+        .map((document) => document.id)
+        .filter((documentId): documentId is number => Boolean(documentId)),
     },
   }),
 );
