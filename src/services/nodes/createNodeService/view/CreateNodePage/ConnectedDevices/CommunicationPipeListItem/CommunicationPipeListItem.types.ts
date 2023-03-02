@@ -8,6 +8,7 @@ export type CommunicationPipeListItemProps = {
   configuration: EPipeNodeConfig;
   handleDeletePipe?: (pipeId: string) => void;
   handleDeleteDevice?: (pipeId: string, deviceIndex: number) => void;
+  handleEditDevice?: (deviceId: number) => void;
 };
 
 export const TrashIconSC = styled(TrashIcon)`
