@@ -1,4 +1,5 @@
 import {
+  CommunicationPipeResponse,
   PipeHousingMeteringDeviceResponse,
   UpdatePipeHousingMeteringDeviceRequest,
 } from 'myApi';
@@ -8,9 +9,7 @@ export type EditHousingMeteringDevicePageProps = {
   handleChangeTab: (payload: EditHousingMeteringDeviceTabs) => void;
   currentTab: EditHousingMeteringDeviceTabs;
   housingMeteringDevice: PipeHousingMeteringDeviceResponse | null;
-  handleSubmitForm: (payload: {
-    deviceId: number;
-    request: UpdatePipeHousingMeteringDeviceRequest;
-  }) => void;
-  deviceId: string
+  handleSubmitForm: (payload: UpdatePipeHousingMeteringDeviceRequest) => void;
+  deviceId: string;
+  communicationPipes: CommunicationPipeResponse[];
 };

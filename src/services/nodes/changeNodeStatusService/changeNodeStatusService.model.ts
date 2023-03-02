@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createDomain, forward, guard, sample } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { PipeNodeResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { fetchChangeCommercialStatus } from './changeNodeStatusService.api';
@@ -44,7 +44,7 @@ forward({
 });
 
 sample({
-  source: guard({
+  source: sample({
     source: $node.map((node) => node?.id),
     filter: Boolean,
   }),
