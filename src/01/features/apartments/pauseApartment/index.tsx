@@ -1,12 +1,11 @@
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Alert } from '01/shared/ui/Alert/Alert';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Spaces, Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EApartmentStatus } from 'myApi';
+import { EApartmentStatus, EDocumentType } from 'myApi';
 import React, { FC } from 'react';
 import { useMemo } from 'react';
 import styled from 'styled-components';
@@ -23,6 +22,7 @@ import {
 } from './models';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 
 export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
   apartmentId,
@@ -117,12 +117,12 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
           {form}
         </Spaces>
         <FilesUploadWrap>
-          <FilesUpload
-            filesInit={fields.documents.value}
-            uniqId={`pause-apartment`}
-            text="Добавьте заявление абонента о постановке квартиры на паузу"
+          <DocumentsUploadContainer
+            uniqId="pause-apartment"
+            documents={fields.documents.value}
+            label="Добавьте заявление абонента о постановке квартиры на паузу"
             onChange={fields.documents.onChange}
-            type="ApartmentStoppingStatement"
+            type={EDocumentType.ApartmentStoppingStatement}
           />
         </FilesUploadWrap>
       </ModalTT>

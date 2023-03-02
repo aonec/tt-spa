@@ -99,13 +99,6 @@ forward({
 });
 
 createSoiReportFx.failData.watch(async (error) => {
-  const newErr = { ...error };
-
-  if (newErr.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   const jsonData = await error.response.data.text();
   const errObject = JSON.parse(jsonData);
 

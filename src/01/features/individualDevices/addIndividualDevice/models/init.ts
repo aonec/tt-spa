@@ -1,5 +1,4 @@
 import { CreateIndividualDeviceRequest } from './../../../../../myApi';
-import { FileData } from '01/hooks/useFilesUpload';
 import { createIndividualDevice } from '01/_api/individualDevices';
 import { forward, sample } from 'effector';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
@@ -20,6 +19,7 @@ import {
 } from './index';
 import moment from 'moment';
 import { message } from 'antd';
+import { Document } from 'ui-kit/DocumentsService';
 
 createIndividualDeviceFx.use(createIndividualDevice);
 
@@ -72,9 +72,9 @@ sample({
       resource: values.resource!,
       model: values.model,
       isPolling: values.isPolling,
-      documentsIds: toArray<FileData>(values.documentsIds, false)
-        .filter((elem) => elem?.fileResponse)
-        .map((elem) => elem.fileResponse?.id!),
+      documentsIds: toArray<Document>(values.documentsIds, false)
+        .map((document) => document?.id)
+        .filter((documentId): documentId is number => Boolean(documentId)),
       startupReadings:
         values.startupReadings as unknown as BaseIndividualDeviceReadingsCreateRequest,
       defaultReadings:

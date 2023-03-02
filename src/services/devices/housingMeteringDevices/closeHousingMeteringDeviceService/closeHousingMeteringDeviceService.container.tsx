@@ -12,10 +12,9 @@ export const CloseHousingMeteringDeviceContainer: FC<
 > = ({ housingMeteringDevice }) => {
   const navigate = useHistory();
 
-  useEffect(
-    () => inputs.onSuccessClose.watch(() => navigate.goBack()).unsubscribe,
-    [navigate],
-  );
+  useEffect(() => {
+    return inputs.onSuccessClose.watch(() => navigate.goBack()).unsubscribe;
+  }, [navigate]);
 
   const isModalOpen = useStore(outputs.$isModalOpen);
 

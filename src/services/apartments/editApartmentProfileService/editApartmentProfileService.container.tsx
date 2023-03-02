@@ -1,6 +1,6 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { editApartmentProfileService } from './editApartmentProfileService.model';
 import { EditApartmentPage } from './view/EditApartmentPage';
 
@@ -12,11 +12,22 @@ export const EditApartmentProfileContainer = () => {
 
   const setTabSection = useEvent(inputs.setTabSection);
   const handleUpdateApartment = useEvent(inputs.handleUpdateApartment);
+  const updateApartmentSuccess = inputs.updateApartmentSuccess;
 
   const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
   const tabSection = useStore(outputs.$tabSection);
-  const isUpdatingApartmentLoading = useStore(outputs.$isUpdatingApartmentLoading);
+  const isUpdatingApartmentLoading = useStore(
+    outputs.$isUpdatingApartmentLoading,
+  );
+
+  const history = useHistory();
+
+  useEffect(() => {
+    return updateApartmentSuccess.watch(() => {
+      history.goBack();
+    }).unsubscribe;
+  }, [updateApartmentSuccess, history]);
 
   return (
     <>

@@ -14,6 +14,11 @@ export const ChangeNodeStatusDocument: FC<ChangeNodeStatusDocumentProps> = ({
       documents={documents}
       uniqId="change-node-status-document"
       onChange={(files) => {
+        if (files.length === 0) {
+          handleChange(null);
+          setDocuments([]);
+          return;
+        }
         if (files[0]?.id) {
           setDocuments(files);
           handleChange(files[0].id);
