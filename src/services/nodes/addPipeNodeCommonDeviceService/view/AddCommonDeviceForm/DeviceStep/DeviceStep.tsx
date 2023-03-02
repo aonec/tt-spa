@@ -56,7 +56,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
           serialNumber: values.serialNumber,
           lastCheckingDate: values.lastCheckingDate?.format('YYYY-MM-DD'),
           futureCheckingDate: values.futureCheckingDate?.format('YYYY-MM-DD'),
-          pipeId: Number(values.pipeId),
+          pipeId: values.pipeId,
         });
       },
     });
@@ -114,8 +114,8 @@ export const DeviceStep: FC<DeviceStepProps> = ({
         <FormItem label="Труба">
           <Select
             placeholder="Выберите"
-            value={values.pipeId || undefined}
-            onChange={(value) => setFieldValue('pipeId', value)}
+            value={values.pipeId ? String(values.pipeId) : undefined}
+            onChange={(value) => setFieldValue('pipeId', Number(value))}
           >
             {communicationPipes.map((pipe) => (
               <Select.Option key={pipe.id} value={pipe.id}>
