@@ -1,19 +1,21 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { HomeownerAccountCreateRequest } from 'myApi';
 import { editApartmentProfileService } from 'services/apartments/editApartmentProfileService/editApartmentProfileService.model';
 import { postHomeownerAccount } from './createHomeownerService.api';
 import { message } from 'antd';
-import { EffectFailDataAxiosError } from 'types';
+import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 
 const domain = createDomain('createHomeownerService');
 
 const handleCreateHomeowner =
   domain.createEvent<HomeownerAccountCreateRequest>();
+const handleConfirmationModalClose = domain.createEvent();
+const onForced = domain.createEvent();
 
 const createHomeownerFx = domain.createEffect<
   HomeownerAccountCreateRequest,
   void,
-  EffectFailDataAxiosError
+  EffectFailDataAxiosErrorDataApartmentId
 >(postHomeownerAccount);
 
 const openCreateHomeownerModal = domain.createEvent();
@@ -24,14 +26,40 @@ const $isModalOpen = domain
   .on(openCreateHomeownerModal, () => true)
   .reset(closeCreateHomeownerModal, createHomeownerFx.doneData);
 
-forward({
-  from: handleCreateHomeowner,
-  to: createHomeownerFx,
+const $samePersonalAccountNumderId = domain
+  .createStore<number | null>(null)
+  .on(createHomeownerFx.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
+
+const $isForced = domain
+  .createStore<boolean>(false)
+  .on(onForced, () => true)
+  .reset(handleConfirmationModalClose);
+
+sample({
+  clock: handleCreateHomeowner,
+  source: $isForced,
+  fn: (source, clock) => {
+    return { ...clock, source } as HomeownerAccountCreateRequest;
+  },
+  target: createHomeownerFx,
 });
+
+const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
 forward({
   from: createHomeownerFx.doneData,
   to: editApartmentProfileService.inputs.refetchAaprtment,
+});
+
+forward({
+  from: createHomeownerFx.doneData,
+  to: handleConfirmationModalClose,
 });
 
 const $isLoading = createHomeownerFx.pending;
@@ -42,6 +70,13 @@ createHomeownerFx.failData.watch((error) => {
       'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
     );
   }
+
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
@@ -54,9 +89,14 @@ export const createHomeownerService = {
     openCreateHomeownerModal,
     closeCreateHomeownerModal,
     handleCreateHomeowner,
+    handleConfirmationModalClose,
+    onForced,
   },
   outputs: {
     $isModalOpen,
     $isLoading,
+    $samePersonalAccountNumderId,
+    $isForced,
+    $isConfirmationModalOpen,
   },
 };
