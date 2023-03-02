@@ -4,6 +4,7 @@ import {
   CreatePipeHousingMeteringDeviceRequest,
   PipeNodeResponse,
 } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
 import { fetchAddHousingMeteringDevice } from './addHosuingMeteringDeviceService.api';
 import { EXTREAM_STEP_NUMBER } from './addHosuingMeteringDeviceService.constants';
 import { CreatePipeHousingMeteringDevicePayload } from './addHosuingMeteringDeviceService.types';
@@ -24,7 +25,8 @@ const handleFormComplete = domain.createEvent();
 
 const createMeteringDeviceFx = domain.createEffect<
   CreatePipeHousingMeteringDeviceRequest,
-  void
+  void,
+  EffectFailDataAxiosError
 >(fetchAddHousingMeteringDevice);
 
 const updateCommonDeviceRequestPayload =
@@ -75,7 +77,10 @@ sample({
       ),
   }),
   clock: handleFormComplete,
-  fn: (payload) => ({ ...payload, communicationPipeId: payload.pipeId }),
+  fn: (payload) => ({
+    ...payload,
+    communicationPipeId: payload.pipeId,
+  }),
   target: createMeteringDeviceFx,
 });
 
@@ -83,6 +88,10 @@ forward({
   from: createMeteringDeviceFx.doneData,
   to: closeModal,
 });
+
+createMeteringDeviceFx.failData.watch((error) =>
+  message.error(error.response.data.error.Text),
+);
 
 export const addHosuingMeteringDeviceService = {
   inputs: {

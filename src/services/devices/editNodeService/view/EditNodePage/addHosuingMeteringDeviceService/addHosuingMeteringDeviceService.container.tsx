@@ -44,7 +44,7 @@ export const AddHosuingMeteringDeviceContainer = () => {
                 magistral: pipe.magistral as EMagistralType,
                 diameter: pipe.diameter || undefined,
                 entryNumber: pipe.entryNumber,
-                id: pipe.id,
+                id: String(pipe.id),
                 number: pipe.number,
               }),
             )}

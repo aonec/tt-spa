@@ -10,8 +10,8 @@ export const GroupWrapper = styled.div<{ isSeveralDates: boolean }>`
   display: grid;
   align-items: flex-start;
 
-  grid-template-columns: 1.3fr ${({ isSeveralDates }) =>
-      isSeveralDates ? '1fr 1fr' : '1fr'};
+  grid-template-columns: ${({ isSeveralDates }) =>
+    isSeveralDates ? '1.4fr 1fr 1fr' : '1fr 1fr'};
   grid-gap: 16px;
 
   .ant-select-selector {
