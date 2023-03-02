@@ -22,7 +22,6 @@ import {
   $isForced,
   onForced,
   handleEditHomeownerAccount,
-  $samePersonalAccountNumderId,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
@@ -149,15 +148,6 @@ sample({
   ),
   target: closeHomeownerAccountFx,
 });
-
-$samePersonalAccountNumderId
-  .on(editHomeownerAccountEffect.failData, (prev, errData) => {
-    if (errData.response.status === 409) {
-      return errData.response.data.error.Data.ApartmentId;
-    }
-    return prev;
-  })
-  .reset(handleConfirmationModalClose);
 
 forward({
   from: editHomeownerAccountEffect.doneData,
