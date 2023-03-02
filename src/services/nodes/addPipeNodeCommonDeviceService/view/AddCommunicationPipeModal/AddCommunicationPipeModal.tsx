@@ -38,7 +38,7 @@ export const AddCommunicationPipeModal: FC<AddCommunicationPipeModalProps> = ({
         const id = Date.now();
 
         handleAddCommunicationPipe({
-          id,
+          id: String(id),
           number: Number(values.number),
           diameter: Number(values.diameter),
           magistral: values.magistral,
@@ -46,7 +46,7 @@ export const AddCommunicationPipeModal: FC<AddCommunicationPipeModalProps> = ({
 
         closeAddPipeModal();
         resetForm();
-        handleCreatePipe(id);
+        handleCreatePipe(String(id));
       },
       validateOnChange: false,
       validationSchema,

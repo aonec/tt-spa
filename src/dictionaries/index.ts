@@ -3,6 +3,7 @@ import {
   EIndividualDeviceReportOption,
   EMagistralType,
   ENodeCommercialAccountStatus,
+  ENodeRegistrationType,
   EResourceType,
 } from 'myApi';
 
@@ -53,4 +54,11 @@ export const NodeStatusTextDictionary: {
   [ENodeCommercialAccountStatus.Prepared]: 'Подготовлен к сдаче',
   [ENodeCommercialAccountStatus.OnReview]: 'На утверждении',
   [ENodeCommercialAccountStatus.Registered]: 'Сдан на коммерческий учет',
+};
+
+export const NodeRegistrationTypeLookup: {
+  [key in ENodeRegistrationType]: string;
+} = {
+  [ENodeRegistrationType.Commercial]: 'Коммерческий',
+  [ENodeRegistrationType.Technical]: 'Технический',
 };
