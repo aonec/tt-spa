@@ -46,6 +46,8 @@ const $isForced = domain
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 
+const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
+
 sample({
   clock: [handleCreateHomeowner, onForced],
   source: combine(
@@ -59,8 +61,6 @@ sample({
     Boolean(payload),
   target: createHomeownerFx,
 });
-
-const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
 forward({
   from: createHomeownerFx.doneData,
