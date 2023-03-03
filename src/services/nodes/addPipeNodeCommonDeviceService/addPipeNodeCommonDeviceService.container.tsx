@@ -5,7 +5,6 @@ import { EXTREAM_STEP_NUMBER } from './addPipeNodeCommonDeviceService.constants'
 import { addPipeNodeCommonDeviceService } from './addPipeNodeCommonDeviceService.model';
 import { AddCommonDeviceForm } from './view/AddCommonDeviceForm';
 import { Props } from './addPipeNodeCommonDeviceService.types';
-import { AddCommunicationPipeModal } from './view/AddCommunicationPipeModal';
 
 const { inputs, outputs } = addPipeNodeCommonDeviceService;
 
@@ -19,15 +18,12 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
   const isModalOpen = useStore(outputs.$isModalOpen);
   const currentFormStep = useStore(outputs.$currentFormStep);
   const requestPayload = useStore(outputs.$requestPayload);
-  const isAddPipeModalOpen = useStore(outputs.$isAddPipeModalOpen);
 
   const close = useEvent(inputs.closeAddCommonDeviceModal);
   const updateRequestPayload = useEvent(
-    inputs.updateCommonDeviceRequestPayload
+    inputs.updateCommonDeviceRequestPayload,
   );
   const goPrevStep = useEvent(inputs.goPrevStep);
-  const openAddPipeModal = useEvent(inputs.openAddPipeModal);
-  const closeAddPipeModal = useEvent(inputs.closeAddPipeModal);
   const handleFormComplete = useEvent(inputs.handleFormComplete);
 
   const submitBtnText =
@@ -48,18 +44,12 @@ export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
         formId={formId}
         form={
           <>
-            <AddCommunicationPipeModal
-              isOpen={isAddPipeModalOpen}
-              closeAddPipeModal={() => closeAddPipeModal()}
-              handleAddCommunicationPipe={handleAddCommunicationPipe}
-            />
             <AddCommonDeviceForm
               updateRequestPayload={updateRequestPayload}
               formId={formId}
               configuration={configuration}
               currentFormStep={currentFormStep}
               requestPayload={requestPayload}
-              openAddPipeModal={() => openAddPipeModal()}
               communicationPipes={communicationPipes}
               handleFormComplete={() => handleFormComplete()}
             />
