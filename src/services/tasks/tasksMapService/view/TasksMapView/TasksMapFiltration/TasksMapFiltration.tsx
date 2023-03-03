@@ -28,6 +28,7 @@ import {
 } from 'dictionaries';
 import { useFormik } from 'formik';
 import { Radio, Space } from 'antd';
+import { HousingStockTasks } from './HousingStockTasks';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -35,6 +36,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   applyFilters,
   resetFilters,
   isLoadingHousingStocksWithTasks,
+  selectedHousingStock,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -60,16 +62,21 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   return (
     <Wrapper>
       {!isOpen && (
-        <FilterHeader>
-          <FilterButton
-            isLoading={isLoadingHousingStocksWithTasks}
-            onClick={() => setIsOpen(true)}
-          />
-          <SearchInput
-            placeholder="Введите номер задачи или адрес"
-            prefix={<SearchIcon />}
-          />
-        </FilterHeader>
+        <>
+          <FilterHeader>
+            <FilterButton
+              isLoading={isLoadingHousingStocksWithTasks}
+              onClick={() => setIsOpen(true)}
+            />
+            <SearchInput
+              placeholder="Введите номер задачи или адрес"
+              prefix={<SearchIcon />}
+            />
+          </FilterHeader>
+          {selectedHousingStock && (
+            <HousingStockTasks selectedHousingStock={selectedHousingStock} />
+          )}
+        </>
       )}
       {isOpen && (
         <>
