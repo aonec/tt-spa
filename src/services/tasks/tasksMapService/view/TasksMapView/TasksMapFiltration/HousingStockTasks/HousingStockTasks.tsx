@@ -14,22 +14,26 @@ import {
   TaskTitle,
 } from './HousingStockTasks.styled';
 import { HousingStockTasksProps } from './HousingStockTasks.types';
+import _ from 'lodash';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
+  clearSelectedHousingStock,
 }) => {
   const address = selectedHousingStock?.housingStock?.address?.mainAddress;
+
+  const tasks = selectedHousingStock?.tasks || [];
 
   return (
     <HousingStockWrapper>
       <Header>
-        <ChevronIconSC />
+        <ChevronIconSC onClick={clearSelectedHousingStock} />
         <Address>
           {`${address?.street}, ${address?.number}${address?.corpus || ''}`}
           <City>{`${address?.city}`}</City>
         </Address>
       </Header>
-      {selectedHousingStock?.tasks?.map((task) => {
+      {_.sortBy(tasks, (task) => task.type)?.map((task) => {
         const resource =
           (task.resourceTypes?.length || 1) > 1
             ? EActResourceType.All
@@ -47,7 +51,7 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
               ) : (
                 <CalculatorIcon />
               )}
-              <TaskTitle>{task.type}</TaskTitle>
+              <TaskTitle>{task.typeString}</TaskTitle>
             </TaskInfo>
             <ChevronRightIcon className="chevron-icon-right" />
           </TaskItem>

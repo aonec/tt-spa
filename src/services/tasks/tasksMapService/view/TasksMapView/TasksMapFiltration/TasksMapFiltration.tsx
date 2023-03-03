@@ -37,6 +37,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   resetFilters,
   isLoadingHousingStocksWithTasks,
   selectedHousingStock,
+  clearSelectedHousingStock,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,6 +68,11 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <FilterButton
               isLoading={isLoadingHousingStocksWithTasks}
               onClick={() => setIsOpen(true)}
+              isActiveFilters={[
+                filtrationValues.resourceTypes.join(''),
+                filtrationValues.timeStatus,
+                filtrationValues.type,
+              ].some(Boolean)}
             />
             <SearchInput
               placeholder="Введите номер задачи или адрес"
@@ -74,7 +80,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             />
           </FilterHeader>
           {selectedHousingStock && (
-            <HousingStockTasks selectedHousingStock={selectedHousingStock} />
+            <HousingStockTasks
+              selectedHousingStock={selectedHousingStock}
+              clearSelectedHousingStock={clearSelectedHousingStock}
+            />
           )}
         </>
       )}

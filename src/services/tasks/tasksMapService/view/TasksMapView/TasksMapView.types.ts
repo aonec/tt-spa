@@ -15,4 +15,5 @@ export type TasksMapViewProps = {
   isLoadingHousingStocksWithTasks: boolean;
   selectedHousingStock: HousingStockWithTasksResponse | null;
   handleClickMarker: (payload: HousingStockWithTasksResponse) => void;
+  clearSelectedHousingStock: () => void;
 };

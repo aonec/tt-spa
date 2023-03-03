@@ -18,6 +18,7 @@ export const TasksMapContainer = () => {
   const applyFilters = useEvent(inputs.applyFilters);
   const resetFilters = useEvent(inputs.resetFilters);
   const handleClickMarker = useEvent(inputs.handleClickMarker);
+  const clearSelectedHousingStock = useEvent(inputs.clearSelectedHousingStock);
 
   return (
     <>
@@ -31,6 +32,7 @@ export const TasksMapContainer = () => {
         isLoadingHousingStocksWithTasks={isLoadingHousingStocksWithTasks}
         selectedHousingStock={selectedHousingStock}
         handleClickMarker={handleClickMarker}
+        clearSelectedHousingStock={clearSelectedHousingStock}
       />
     </>
   );

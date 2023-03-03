@@ -5849,6 +5849,7 @@ export interface TaskShortResponse {
   /** @format int32 */
   id: number;
   type: EManagingFirmTaskType;
+  typeString: string | null;
   creationReason: string | null;
 
   /** @format date-time */
@@ -9726,7 +9727,7 @@ export class Api<
         EngineeringElement?: ETaskEngineeringElement;
         ResourceTypes?: EResourceType[];
         TimeStatus?: EStageTimeStatus;
-        Type?: EManagingFirmTaskType;
+        TaskType?: EManagingFirmTaskFilterType;
         ExecutorId?: number;
       },
       params: RequestParams = {},

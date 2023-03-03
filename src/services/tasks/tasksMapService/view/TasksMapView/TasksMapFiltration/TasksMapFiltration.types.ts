@@ -13,4 +13,5 @@ export type TasksMapFiltrationProps = {
   resetFilters: () => void;
   isLoadingHousingStocksWithTasks: boolean;
   selectedHousingStock: HousingStockWithTasksResponse | null;
+  clearSelectedHousingStock: () => void;
 };
