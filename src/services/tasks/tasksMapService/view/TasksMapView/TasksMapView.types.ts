@@ -13,4 +13,6 @@ export type TasksMapViewProps = {
   filtrationValues: HousingStocksWithTasksFiltrationValues;
   resetFilters: () => void;
   isLoadingHousingStocksWithTasks: boolean;
+  selectedHousingStock: HousingStockWithTasksResponse | null;
+  handleClickMarker: (payload: HousingStockWithTasksResponse) => void;
 };

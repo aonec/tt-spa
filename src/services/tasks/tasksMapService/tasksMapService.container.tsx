@@ -13,9 +13,11 @@ export const TasksMapContainer = () => {
   const isLoadingHousingStocksWithTasks = useStore(
     outputs.$isLoadingHousingStocksWithTasks,
   );
+  const selectedHousingStock = useStore(outputs.$selectedHousingStock);
 
   const applyFilters = useEvent(inputs.applyFilters);
   const resetFilters = useEvent(inputs.resetFilters);
+  const handleClickMarker = useEvent(inputs.handleClickMarker);
 
   return (
     <>
@@ -27,6 +29,8 @@ export const TasksMapContainer = () => {
         filtrationValues={filtrationValues}
         resetFilters={() => resetFilters()}
         isLoadingHousingStocksWithTasks={isLoadingHousingStocksWithTasks}
+        selectedHousingStock={selectedHousingStock}
+        handleClickMarker={handleClickMarker}
       />
     </>
   );

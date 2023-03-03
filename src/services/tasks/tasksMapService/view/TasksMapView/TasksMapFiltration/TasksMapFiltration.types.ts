@@ -1,4 +1,7 @@
-import { EManagingFirmTaskFilterTypeNullableStringDictionaryItem } from 'myApi';
+import {
+  EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
+  HousingStockWithTasksResponse,
+} from 'myApi';
 import { HousingStocksWithTasksFiltrationValues } from 'services/tasks/tasksMapService/tasksMapService.types';
 
 export type TasksMapFiltrationProps = {
@@ -9,4 +12,5 @@ export type TasksMapFiltrationProps = {
   filtrationValues: HousingStocksWithTasksFiltrationValues;
   resetFilters: () => void;
   isLoadingHousingStocksWithTasks: boolean;
+  selectedHousingStock: HousingStockWithTasksResponse | null;
 };

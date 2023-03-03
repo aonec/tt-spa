@@ -18,6 +18,8 @@ const applyFilters =
 
 const resetFilters = domain.createEvent();
 
+const handleClickMarker = domain.createEvent<HousingStockWithTasksResponse>();
+
 const fetchHousingStocksWithTasksFx = domain.createEffect<
   GetHousingStocksWithTasksRequestPayload,
   HousingStockWithTasksResponse[]
@@ -38,8 +40,19 @@ const $filtrationValues = domain
   .on(applyFilters, (prev, filters) => ({ ...prev, ...filters }))
   .reset(resetFilters);
 
+const $selectedHousingStock = domain
+  .createStore<HousingStockWithTasksResponse | null>(null)
+  .on(handleClickMarker, (_, housingStock) => housingStock);
+
+sample({
+  clock: $filtrationValues,
+  fn: getHousingStocksWithTasksRequestPayload,
+  target: fetchHousingStocksWithTasksFx,
+});
+
 sample({
   source: $filtrationValues,
+  clock: TaskTypesGate.open,
   fn: getHousingStocksWithTasksRequestPayload,
   target: fetchHousingStocksWithTasksFx,
 });
@@ -50,12 +63,14 @@ export const tasksMapService = {
   inputs: {
     applyFilters,
     resetFilters,
+    handleClickMarker,
   },
   outputs: {
     $taskTypes,
     $housingStocksWithTasks,
     $filtrationValues,
     $isLoadingHousingStocksWithTasks,
+    $selectedHousingStock,
   },
   gates: {
     TaskTypesGate,

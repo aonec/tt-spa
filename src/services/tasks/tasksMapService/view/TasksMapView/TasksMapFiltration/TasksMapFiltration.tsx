@@ -157,7 +157,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <FormItem label="Тип задачи">
               <SelectSC
                 placeholder="Выберите тип"
-                value={values.type || ''}
+                value={values.type || undefined}
                 onChange={(value) => setFieldValue('type', value)}
               >
                 {taskTypes &&
