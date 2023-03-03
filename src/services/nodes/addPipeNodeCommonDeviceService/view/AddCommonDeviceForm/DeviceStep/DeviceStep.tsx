@@ -30,6 +30,7 @@ export const DeviceStep: FC<DeviceStepProps> = ({
   requestPayload,
   updateRequestPayload,
   formId,
+  withoutNewPipes,
 }) => {
   const { values, setFieldValue, handleChange, errors, handleSubmit } =
     useFormik({
@@ -113,8 +114,8 @@ export const DeviceStep: FC<DeviceStepProps> = ({
         <FormItem label="Труба">
           <Select
             placeholder="Выберите"
-            value={values.pipeId || undefined}
-            onChange={(value) => setFieldValue('pipeId', value)}
+            value={values.pipeId ? String(values.pipeId) : undefined}
+            onChange={(value) => setFieldValue('pipeId', Number(value))}
           >
             {communicationPipes.map((pipe) => (
               <Select.Option key={pipe.id} value={pipe.id}>
@@ -128,9 +129,11 @@ export const DeviceStep: FC<DeviceStepProps> = ({
           </Select>
           <ErrorMessage>{errors.pipeId}</ErrorMessage>
         </FormItem>
-        <CreatePipeButtonWrapper>
-          <LinkButton onClick={openAddPipeModal}>+ Добавить трубу</LinkButton>
-        </CreatePipeButtonWrapper>
+        {!withoutNewPipes && (
+          <CreatePipeButtonWrapper>
+            <LinkButton onClick={openAddPipeModal}>+ Добавить трубу</LinkButton>
+          </CreatePipeButtonWrapper>
+        )}
       </LineWrapper>
     </Form>
   );

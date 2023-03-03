@@ -53,6 +53,14 @@ import { message } from 'antd';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
+createIndividualDeviceFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
   .reset([createIndividualDeviceFx.doneData, checkIndividualDeviceFx.doneData]);
@@ -185,6 +193,7 @@ const mapArray = <T>(array: T[], ...callbacks: ((elem: T) => T)[]) => {
 };
 
 guard({
+  clock: confirmCreationNewDeviceButtonClicked,
   source: combine(
     addIndividualDeviceForm.$values,
     $individualDevice,
@@ -243,7 +252,6 @@ guard({
     },
   ),
   filter: Boolean,
-  clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
 });
 

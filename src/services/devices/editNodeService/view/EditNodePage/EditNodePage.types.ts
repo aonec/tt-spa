@@ -1,5 +1,4 @@
 import {
-  EMagistralTypeStringDictionaryItem,
   NodeServiceZoneResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
@@ -12,7 +11,6 @@ export type EditNodePageProps = {
   grouptype: NodeEditGrouptype;
   openAddNewZonesModal: () => void;
   nodeZones: NodeServiceZoneResponse[];
-  magistrals: EMagistralTypeStringDictionaryItem[];
   refetchNode: () => void;
   updateNode: (payload: UpdatePipeNodeRequest) => void;
 };

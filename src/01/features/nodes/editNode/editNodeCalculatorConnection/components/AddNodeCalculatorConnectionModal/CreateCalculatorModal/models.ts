@@ -11,6 +11,7 @@ import { addNodeCalculatorService } from '../models';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
+import { Document } from 'ui-kit/DocumentsService';
 
 const createCalcuatorDomain = createDomain();
 
@@ -48,10 +49,18 @@ $isCreateCalculatorModalOpen
 
 const baseInfoAddNodeCalculatorConnectionForm = createForm({
   fields: {
-    serialNumber: { init: null as number | null },
+    serialNumber: { init: null as string | null },
     futureCheckingDate: { init: null as string | null },
     lastCheckingDate: { init: null as string | null },
     infoId: { init: null as number | null },
+  },
+});
+
+const documentsForm = createForm({
+  fields: {
+    deviceAcceptanceAct: { init: null as null | Document },
+    devicePassport: { init: null as null | Document },
+    deviceTestCertificates: { init: null as null | Document },
   },
 });
 
@@ -68,28 +77,36 @@ sample({
     nodeService.outputs.$node,
     baseInfoAddNodeCalculatorConnectionForm.$values,
     addNodeCalculatorService.inputs.connectionSettingsForm.$values,
-    CreateCalculatorGate.state
+    CreateCalculatorGate.state,
+    documentsForm.$values,
   ),
   clock: saveButtonClicked,
   fn: ([
     node,
     { serialNumber, lastCheckingDate, futureCheckingDate, infoId },
     { isConnected, ipV4, port, deviceAddress },
-    gateState
-  ]) => ({
-    housingStockId: node?.housingStockId || gateState?.housingStockId,
-    infoId,
-    isConnected,
-    serialNumber,
-    lastCheckingDate,
-    futureCheckingDate,
-    connection: {
-      ipV4,
-      port: Number(port),
-      deviceAddress: Number(deviceAddress),
-    },
-  }),
-  target: createCalculatorFx as any,
+    gateState,
+    { deviceAcceptanceAct, devicePassport, deviceTestCertificates },
+  ]) =>
+    ({
+      housingStockId: node?.housingStockId || gateState?.housingStockId,
+      infoId,
+      isConnected,
+      serialNumber,
+      lastCheckingDate,
+      futureCheckingDate,
+      connection: {
+        ipV4,
+        port: Number(port),
+        deviceAddress: Number(deviceAddress),
+      },
+      documentsIds: [
+        deviceAcceptanceAct?.id,
+        devicePassport?.id,
+        deviceTestCertificates?.id,
+      ].filter((documentId): documentId is number => Boolean(documentId)),
+    } as CreateCalculatorRequest),
+  target: createCalculatorFx,
 });
 
 forward({
@@ -103,7 +120,7 @@ forward({
 });
 
 createCalculatorFx.doneData.watch(() =>
-  message.success('Вычислитель успешно создан!')
+  message.success('Вычислитель успешно создан!'),
 );
 
 createCalculatorFx.failData.watch((e) => {
@@ -133,6 +150,7 @@ export const createCalcuatorService = {
   },
   forms: {
     baseInfo: baseInfoAddNodeCalculatorConnectionForm,
+    documentsForm,
   },
   events: {
     newCalculatorCreated: createCalculatorFx.doneData,

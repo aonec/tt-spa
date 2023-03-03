@@ -29,9 +29,11 @@ forward({
   to: exportFeedBackFlowReportFx,
 });
 
-exportFeedBackFlowReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+exportFeedBackFlowReportFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 const $isLoading = exportFeedBackFlowReportFx.pending;
 

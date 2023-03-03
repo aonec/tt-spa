@@ -3,8 +3,9 @@ import { createStore, createEffect, createEvent } from 'effector';
 import moment from 'moment';
 import { createGate } from 'effector-react';
 import { IndividualDeviceWithExpiredCheckingDateListResponse } from 'myApi';
-import { FileData } from './../../../../hooks/useFilesUpload';
 import { SetApartmentStatusRequest } from './../../../../_api/apartments.types';
+import { EffectFailDataAxiosError } from 'types';
+import { Document } from 'ui-kit/DocumentsService';
 
 export const $isPauseApartmentModalVisible = createStore(false);
 
@@ -31,7 +32,7 @@ export const pauseApartmentForm = createForm({
       ],
     },
     documents: {
-      init: [] as FileData[],
+      init: [] as Document[],
     },
   },
 });
@@ -42,5 +43,6 @@ export const cancelPauseApartmentButtonClicked = createEvent();
 
 export const pauseApartmentStatusFx = createEffect<
   SetApartmentStatusRequest,
-  IndividualDeviceWithExpiredCheckingDateListResponse
+  IndividualDeviceWithExpiredCheckingDateListResponse,
+  EffectFailDataAxiosError
 >();

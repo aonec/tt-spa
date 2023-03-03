@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
   ExtendedSearchWrapper,
   FiltrationInfoItem,
@@ -38,6 +38,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   homeownersReportData,
   downloadReport,
   isReportFileDownloading,
+  clearFiltrationValues,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -51,7 +52,23 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
     setIsOpen(false);
   }, [setIsOpen]);
 
-  const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
+  const filtersViewArray = getFiltersList(
+    filtrationValues,
+    houseManagements,
+    addressesWithHouseManagements,
+  );
+
+  const isShowClearButton = useMemo(() => {
+    return Object.values(filtrationValues).some((value) => {
+      const isValueArray = Array.isArray(value);
+
+      if (isValueArray) {
+        return Boolean(value.length);
+      }
+
+      return Boolean(value);
+    });
+  }, [filtrationValues]);
 
   return (
     <Wrapper>
@@ -68,10 +85,13 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
       </HeaderWrapper>
       <ExtendedSearchWrapper>
         <ExtendedSearch
+          title={isShowClearButton ? undefined : 'Фильтры'}
           isOpen={isOpen}
           handleOpen={() => setIsOpen(true)}
           handleClose={() => setIsOpen(false)}
           handleApply={handleApply}
+          handleClear={clearFiltrationValues}
+          isShowClearButton={isShowClearButton}
           extendedSearchContent={
             <ReportFiltrationForm
               existingCities={existingCities}

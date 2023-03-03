@@ -12,6 +12,7 @@ import {
   Header,
   DisabledExtendedSearchButton,
   ClearIconSC,
+  Title,
 } from './components';
 import { ExtendedSearchProps } from './types';
 import { Button } from 'ui-kit/Button';
@@ -25,6 +26,8 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   extendedSearchContent,
   handleClear,
   disabled = false,
+  isShowClearButton = true,
+  title,
 }) => {
   if (isOpen) {
     return (
@@ -33,14 +36,17 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
           <HideExtendedSearchButton onClick={handleClose}>
             <ChevronUp />
           </HideExtendedSearchButton>
-          <Button
-            type="ghost"
-            onClick={handleClear}
-            size="small"
-            icon={<ClearIconSC />}
-          >
-            Сбросить
-          </Button>
+          {isShowClearButton && (
+            <Button
+              type="ghost"
+              onClick={handleClear}
+              size="small"
+              icon={<ClearIconSC />}
+            >
+              Очистить
+            </Button>
+          )}
+          {title && <Title>{title}</Title>}
         </Header>
         <Content>{extendedSearchContent}</Content>
         <Footer>

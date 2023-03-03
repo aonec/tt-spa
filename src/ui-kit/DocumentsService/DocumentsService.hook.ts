@@ -3,10 +3,11 @@ import { EDocumentType } from 'myApi';
 import { useState } from 'react';
 import { uploadDocument } from './DocumentsService.api';
 import { Document } from './DocumentsService.types';
+import { EffectFailDataAxiosError } from 'types';
 
 export function useDocumentsUpload(
   documents: Document[],
-  onChange: (documents: Document[]) => void
+  onChange: (documents: Document[]) => void,
 ) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +18,12 @@ export function useDocumentsUpload(
 
       onChange([...documents, document]);
     } catch (e) {
-      message.error('Не удалось загрузить документ');
+      message.error(
+        (e as unknown as EffectFailDataAxiosError).response.data.error.Text ||
+          (e as unknown as EffectFailDataAxiosError).response.data.error
+            .Message ||
+          'Не удалось загрузить документ',
+      );
     }
     setIsLoading(false);
   }

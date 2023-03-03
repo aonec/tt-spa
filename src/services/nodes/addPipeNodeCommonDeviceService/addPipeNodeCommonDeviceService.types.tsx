@@ -8,7 +8,7 @@ export type Props = {
   configuration: EPipeNodeConfig;
   communicationPipes: CommunicationPipePayload[];
   handleAddCommunicationPipe: (
-    communicationPipe: CommunicationPipePayload
+    communicationPipe: CommunicationPipePayload,
   ) => void;
 };
 
@@ -17,5 +17,5 @@ export type CreateCommonDevicePartitial = Partial<
 >;
 
 export type CommunicationPipePayload = CreateCommunicationPipeRequest & {
-  id: number;
+  id: string;
 };

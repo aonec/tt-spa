@@ -66,6 +66,7 @@ export const Header = styled.div`
   padding: 12px;
   display: flex;
   gap: 12px;
+  align-items: center;
 `;
 
 export const Footer = styled.div`
@@ -90,4 +91,10 @@ export const ExtendedSearchWrap = styled.div`
 
 export const ClearIconSC = styled(CloseIcon)`
   transform: translateY(2px);
+`;
+
+export const Title = styled.div`
+  color: #272f5a;
+  font-weight: 500;
+  font-size: 20px;
 `;

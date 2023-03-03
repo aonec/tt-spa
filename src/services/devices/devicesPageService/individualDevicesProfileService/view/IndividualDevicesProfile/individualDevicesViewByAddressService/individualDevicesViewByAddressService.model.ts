@@ -18,12 +18,16 @@ import {
   GetIndividualDevicesApartments,
   SearchIndividualDevicesRequestPayload,
 } from './individualDevicesViewByAddressService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { message } from 'antd';
 
 const domain = createDomain('individualDevicesViewByAddressService');
 
-const setIndividualDeviceSearchRequestPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
+const setIndividualDeviceSearchRequestPayload =
+  domain.createEvent<SearchIndividualDevicesRequestPayload>();
 
-const updateSearchPayload = domain.createEvent<SearchIndividualDevicesRequestPayload>();
+const updateSearchPayload =
+  domain.createEvent<SearchIndividualDevicesRequestPayload>();
 
 const IndividualDevicesSearchGate = createGate();
 
@@ -31,9 +35,10 @@ const clearSearchPayload = domain.createEvent();
 
 const setPageNumber = domain.createEvent<number>();
 
-const fetchHousingsByFilter = domain.createEffect<
+const fetchHousingsByFilterFx = domain.createEffect<
   GetHousingByFilterRequestPayload,
-  HousingByFilterResponse | null
+  HousingByFilterResponse | null,
+  EffectFailDataAxiosError
 >(getHousingsByFilter);
 
 const fetchIndividualDevicesApartments = domain.createEffect<
@@ -49,7 +54,7 @@ const $individualDeviceSearchRequestPayload = domain
 
 const $housingsByFilter = domain
   .createStore<HousingByFilterResponse | null>(null)
-  .on(fetchHousingsByFilter.doneData, (_, data) => data)
+  .on(fetchHousingsByFilterFx.doneData, (_, data) => data)
   .reset(clearSearchPayload);
 
 const $individualDevicesApartmentsPagedData = domain
@@ -62,8 +67,8 @@ const $pageNumber = domain
   .on(setPageNumber, (_, pageNumber) => pageNumber)
   .reset($individualDeviceSearchRequestPayload);
 
-const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload | null> = $individualDeviceSearchRequestPayload.map(
-  (values) => {
+const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload | null> =
+  $individualDeviceSearchRequestPayload.map((values) => {
     if (!(values?.City && values?.Street && values?.HouseNumber)) return null;
 
     const payload: GetHousingByFilterRequestPayload = {
@@ -74,42 +79,43 @@ const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload
     };
 
     return payload;
-  }
-);
+  });
 
 guard({
   clock: $getHousingsByFilterRequestPayload,
   filter: (payload): payload is GetHousingByFilterRequestPayload =>
     Boolean(payload),
-  target: fetchHousingsByFilter,
+  target: fetchHousingsByFilterFx,
 });
 
-const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesApartments | null> = combine(
-  $individualDeviceSearchRequestPayload,
-  $housingsByFilter,
-  $pageNumber
-).map(([searchPayload, housingsByFilter, pageNumber]) => {
-  const housingStockId = housingsByFilter?.current?.id;
+const $getIndividualDevicesApartmentsRequestPayload: Store<GetIndividualDevicesApartments | null> =
+  combine(
+    $individualDeviceSearchRequestPayload,
+    $housingsByFilter,
+    $pageNumber,
+  ).map(([searchPayload, housingsByFilter, pageNumber]) => {
+    const housingStockId = housingsByFilter?.current?.id;
 
-  if (!housingStockId) return null;
+    if (!housingStockId) return null;
 
-  const payload: GetIndividualDevicesApartments = {
-    HousingStockId: housingStockId,
-    ApartmentNumber: searchPayload?.Apartment || undefined,
-    'DeviceFilter.Resource': searchPayload?.Resource || undefined,
-    'DeviceFilter.Model': searchPayload?.Model,
-    'DeviceFilter.ClosingReason': searchPayload?.ClosingReason || undefined,
-    'DeviceFilter.MountPlace': searchPayload?.MountPlace || undefined,
-    'DeviceFilter.ApartmentStatus': searchPayload?.ApartmentStatus || undefined,
-    'DeviceFilter.ExpiresCheckingDateAt':
-      searchPayload?.ExpiresCheckingDateAt || undefined,
-    'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
-    PageNumber: pageNumber,
-    PageSize: APARTMENTS_LIST_PAGE_SIZE,
-  };
+    const payload: GetIndividualDevicesApartments = {
+      HousingStockId: housingStockId,
+      ApartmentNumber: searchPayload?.Apartment || undefined,
+      'DeviceFilter.Resource': searchPayload?.Resource || undefined,
+      'DeviceFilter.Model': searchPayload?.Model,
+      'DeviceFilter.ClosingReason': searchPayload?.ClosingReason || undefined,
+      'DeviceFilter.MountPlace': searchPayload?.MountPlace || undefined,
+      'DeviceFilter.ApartmentStatus':
+        searchPayload?.ApartmentStatus || undefined,
+      'DeviceFilter.ExpiresCheckingDateAt':
+        searchPayload?.ExpiresCheckingDateAt || undefined,
+      'DeviceFilter.IsAlsoClosing': searchPayload?.IsAlsoClosing,
+      PageNumber: pageNumber,
+      PageSize: APARTMENTS_LIST_PAGE_SIZE,
+    };
 
-  return payload;
-});
+    return payload;
+  });
 
 guard({
   clock: $getIndividualDevicesApartmentsRequestPayload,
@@ -118,7 +124,13 @@ guard({
   target: fetchIndividualDevicesApartments,
 });
 
-const $isHousingsByFilterLoading = fetchHousingsByFilter.pending;
+fetchHousingsByFilterFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
+
+const $isHousingsByFilterLoading = fetchHousingsByFilterFx.pending;
 const $isIndividualDevicesApartmentsLoading =
   fetchIndividualDevicesApartments.pending;
 

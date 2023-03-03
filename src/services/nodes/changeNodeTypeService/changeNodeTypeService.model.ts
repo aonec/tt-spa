@@ -39,9 +39,11 @@ changeNodeTypeFx.doneData.watch(() =>
   message.success('Статус успешно изменён'),
 );
 
-changeNodeTypeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+changeNodeTypeFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 guard({
   clock: $node,

@@ -98,6 +98,8 @@ const downloadReport = domain.createEvent();
 
 const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
 
+const clearFiltrationValues = domain.createEvent();
+
 const $addressesWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(fetchAddressesWithHouseManagementsFx.doneData, (_, data) => data)
@@ -116,9 +118,10 @@ const $filtrationValues = domain
     closingReasons: [],
     actResources: [],
     showOnlyDuplicates: false,
+    withoutApartmentsWithOpenDevicesByResources: false,
   })
-  .on(setFiltrationValues, (_, values) => values);
-// .reset(ReportViewGate.close);
+  .on(setFiltrationValues, (_, values) => values)
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
@@ -220,13 +223,6 @@ merge([
 ]).watch((error) => message.error(error.response.data.error.Text));
 
 downloadReportFileFx.failData.watch(async (error) => {
-  const newErr = { ...error };
-
-  if (newErr.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   const jsonData = await error.response.data.text();
   const errObject = JSON.parse(jsonData);
 
@@ -249,6 +245,7 @@ export const reportViewService = {
   inputs: {
     setFiltrationValues,
     downloadReport,
+    clearFiltrationValues,
   },
   outputs: {
     $existingCities,
