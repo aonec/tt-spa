@@ -12,6 +12,7 @@ import {
   Wrapper,
 } from './EditCommonDataForm.styled';
 import { EditCommonDataFormProps } from './EditCommonDataForm.types';
+import { useHistory } from 'react-router-dom';
 
 export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
   apartment,
@@ -39,6 +40,8 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
     },
     enableReinitialize: true,
   });
+
+  const history = useHistory();
 
   return (
     <Wrapper>
@@ -96,7 +99,9 @@ export const EditCommonDataForm: FC<EditCommonDataFormProps> = ({
       </FieldsWrapper>
       <SpaceLine />
       <Footer>
-        <Button type="ghost">Отмена</Button>
+        <Button type="ghost" onClick={() => history.goBack()}>
+          Отмена
+        </Button>
         <SaveButtonWrapper>
           <Button
             onClick={() => handleSubmit()}

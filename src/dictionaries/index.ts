@@ -3,6 +3,7 @@ import {
   EIndividualDeviceReportOption,
   EMagistralType,
   ENodeCommercialAccountStatus,
+  ENodeRegistrationType,
   EResourceType,
   ETaskEngineeringElement,
 } from 'myApi';
@@ -71,4 +72,11 @@ export const EngineeringElementLookUp: {
   [ETaskEngineeringElement.Node]: 'Общедомовой узел учета',
   [ETaskEngineeringElement.IndividualDevice]: 'Индивидуальный прибор учета',
   [ETaskEngineeringElement.HouseNetwork]: 'Общедомовые сети',
+};
+
+export const NodeRegistrationTypeLookup: {
+  [key in ENodeRegistrationType]: string;
+} = {
+  [ENodeRegistrationType.Commercial]: 'Коммерческий',
+  [ENodeRegistrationType.Technical]: 'Технический',
 };

@@ -10,12 +10,15 @@ import { nodeService } from '../../../../displayNode/models';
 
 export const AddNodeCalculatorConnectionModalContainer = () => {
   const closeModal = useEvent(
-    addNodeCalculatorService.inputs.closeAddNodeCalculatorConnectionModal
+    addNodeCalculatorService.inputs.closeAddNodeCalculatorConnectionModal,
   );
   const isOpen = useStore($isAddNodeCalculatorConnectionModalOpen);
   const node = useStore(nodeService.outputs.$node);
+  console.log(1, node?.housingStockId);
 
-  const calculators = useStore(calculatorsIntoHousingStockService.outputs.$calculators);
+  const calculators = useStore(
+    calculatorsIntoHousingStockService.outputs.$calculators,
+  );
 
   const { CalculatorsGate } = calculatorsIntoHousingStockService.inputs;
 

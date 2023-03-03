@@ -55,7 +55,7 @@ export const StyledAutocomplete = styled(AutoComplete)`
   }
 `;
 
-export const InputSC = styled(Input)`
+export const InputSC = styled(Input)<{ isShadow?: boolean }>`
   color: #333333;
   border: 1px solid lightgray;
   padding: 3px 15px;
@@ -70,7 +70,8 @@ export const InputSC = styled(Input)`
   border: 1px solid var(--frame);
   height: var(--h-norm);
 
-  box-shadow: 0 4px 7px #02004b1f;
+  box-shadow: ${({ isShadow = true }) =>
+    isShadow ? '0 4px 7px #02004b1f' : 'none'};
 
   &:hover,
   &:focus {

@@ -114,8 +114,8 @@ export const DeviceStep: FC<DeviceStepProps> = ({
         <FormItem label="Труба">
           <Select
             placeholder="Выберите"
-            value={values.pipeId || undefined}
-            onChange={(value) => setFieldValue('pipeId', value)}
+            value={values.pipeId ? String(values.pipeId) : undefined}
+            onChange={(value) => setFieldValue('pipeId', Number(value))}
           >
             {communicationPipes.map((pipe) => (
               <Select.Option key={pipe.id} value={pipe.id}>

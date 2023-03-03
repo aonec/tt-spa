@@ -21,7 +21,7 @@ export const ChangeNodeStatusContainer = () => {
       form={
         node && (
           <ChangeNodeStatusForm
-            initialValues={node}
+            initialData={{ commercialStatus: node.commercialStatus?.value }}
             formId={formId}
             handleChangeNodeStatus={handleChangeNodeStatus}
           />

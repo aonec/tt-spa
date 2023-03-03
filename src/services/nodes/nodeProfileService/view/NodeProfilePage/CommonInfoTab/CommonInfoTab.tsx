@@ -7,9 +7,9 @@ import { AddressWrapper, NodeStatusWrapper } from './CommonInfoTab.styled';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { additionalAddressesString } from 'utils/additionalAddressesString';
 import { Tooltip } from 'antd';
-import { NodeRegistrationTypeLookup } from './CommonInfoTab.constants';
 import { ENodeRegistrationType } from 'myApi';
 import { configNamesLookup } from 'utils/configNamesLookup';
+import { NodeRegistrationTypeLookup } from 'dictionaries';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
   const NodeStatusIcon =
@@ -73,7 +73,7 @@ export const CommonInfoTab: FC<CommonInfoTabProps> = ({ pipeNode }) => {
           value:
             pipeNode?.futureCommercialAccountingDate &&
             moment(pipeNode?.futureCommercialAccountingDate).format(
-              'DD.MM.YYYY'
+              'DD.MM.YYYY',
             ),
         },
       ]}
