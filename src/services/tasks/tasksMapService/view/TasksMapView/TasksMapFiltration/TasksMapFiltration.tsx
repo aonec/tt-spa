@@ -34,6 +34,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   filtrationValues,
   applyFilters,
   resetFilters,
+  isLoadingHousingStocksWithTasks,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -60,7 +61,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
     <Wrapper>
       {!isOpen && (
         <FilterHeader>
-          <FilterButton onClick={() => setIsOpen(true)} />
+          <FilterButton
+            isLoading={isLoadingHousingStocksWithTasks}
+            onClick={() => setIsOpen(true)}
+          />
           <SearchInput
             placeholder="Введите номер задачи или адрес"
             prefix={<SearchIcon />}
@@ -123,22 +127,32 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               />
             </FormItem>
             <FormItem label="Статус задачи">
-              <Radio.Group
-                defaultValue={values.timeStatus}
-                onChange={(event) =>
-                  setFieldValue('timeStatus', event.target.value)
-                }
-              >
-                <Space direction="vertical">
-                  <Radio value={EStageTimeStatus.Normal}>В процессе</Radio>
-                  <Radio value={EStageTimeStatus.Expired}>
-                    Истекает срок исполнения
-                  </Radio>
-                  <Radio value={EStageTimeStatus.RunningOut}>
-                    Просроченная
-                  </Radio>
-                </Space>
-              </Radio.Group>
+              <Space direction="vertical">
+                <Radio
+                  checked={values.timeStatus === EStageTimeStatus.Normal}
+                  onClick={() =>
+                    setFieldValue('timeStatus', EStageTimeStatus.Normal)
+                  }
+                >
+                  В процессе
+                </Radio>
+                <Radio
+                  checked={values.timeStatus === EStageTimeStatus.Expired}
+                  onClick={() =>
+                    setFieldValue('timeStatus', EStageTimeStatus.Expired)
+                  }
+                >
+                  Истекает срок исполнения
+                </Radio>
+                <Radio
+                  checked={values.timeStatus === EStageTimeStatus.RunningOut}
+                  onClick={() =>
+                    setFieldValue('timeStatus', EStageTimeStatus.RunningOut)
+                  }
+                >
+                  Просроченная
+                </Radio>
+              </Space>
             </FormItem>
             <FormItem label="Тип задачи">
               <SelectSC

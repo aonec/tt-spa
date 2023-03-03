@@ -16,6 +16,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
   applyFilters,
   filtrationValues,
   resetFilters,
+  isLoadingHousingStocksWithTasks,
 }) => {
   const center = [
     housingStocksWithTasks?.[0]?.housingStock?.coordinates?.latitude || 55.75,
@@ -29,6 +30,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         applyFilters={applyFilters}
         filtrationValues={filtrationValues}
         resetFilters={resetFilters}
+        isLoadingHousingStocksWithTasks={isLoadingHousingStocksWithTasks}
       />
       <Map
         width={'100%'}

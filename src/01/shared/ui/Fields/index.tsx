@@ -2,6 +2,7 @@ import React from 'react';
 import { Select, AutoComplete, DatePicker, Input } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
+import { Loader } from '01/components';
 
 export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
   width: 100%;
@@ -159,10 +160,10 @@ export const StyledSquareButton = styled.div`
   }
 `;
 
-export const FilterButton = styled(({ onClick }: { onClick?: () => void }) => (
-  <StyledSquareButton onClick={onClick}>
-    <div>
-      <FilterIcon />
-    </div>
-  </StyledSquareButton>
-))``;
+export const FilterButton = styled(
+  ({ onClick, isLoading }: { onClick?: () => void; isLoading?: boolean }) => (
+    <StyledSquareButton onClick={onClick}>
+      <div>{isLoading ? <Loader show /> : <FilterIcon />}</div>
+    </StyledSquareButton>
+  ),
+)``;

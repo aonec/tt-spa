@@ -44,6 +44,8 @@ sample({
   target: fetchHousingStocksWithTasksFx,
 });
 
+const $isLoadingHousingStocksWithTasks = fetchHousingStocksWithTasksFx.pending;
+
 export const tasksMapService = {
   inputs: {
     applyFilters,
@@ -53,6 +55,7 @@ export const tasksMapService = {
     $taskTypes,
     $housingStocksWithTasks,
     $filtrationValues,
+    $isLoadingHousingStocksWithTasks,
   },
   gates: {
     TaskTypesGate,

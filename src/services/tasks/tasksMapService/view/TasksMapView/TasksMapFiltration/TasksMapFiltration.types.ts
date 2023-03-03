@@ -8,4 +8,5 @@ export type TasksMapFiltrationProps = {
   ) => void;
   filtrationValues: HousingStocksWithTasksFiltrationValues;
   resetFilters: () => void;
+  isLoadingHousingStocksWithTasks: boolean;
 };
