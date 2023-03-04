@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { uniq } from 'lodash';
 import {
   EActResourceType,
   EResourceType,
@@ -37,9 +37,11 @@ export const getTaskPlacemarkerLink = (
   const textPosition =
     String(housingStockWithTask.tasks?.length).length === 2 ? 24.5 : 27.3;
 
-  const allTasksResources = housingStockWithTask.tasks?.reduce(
-    (acc, elem) => [...acc, ...(elem.resourceTypes || [])],
-    [] as EResourceType[],
+  const allTasksResources = uniq(
+    housingStockWithTask.tasks?.reduce(
+      (acc, elem) => [...acc, ...(elem.resourceTypes || [])],
+      [] as EResourceType[],
+    ),
   );
 
   const placemarkSvgCodeText = allTasksResources?.length

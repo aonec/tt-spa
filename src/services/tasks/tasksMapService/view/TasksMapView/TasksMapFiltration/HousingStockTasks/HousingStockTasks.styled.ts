@@ -62,6 +62,10 @@ export const TaskTitle = styled.div`
   color: rgba(39, 47, 90, 0.9);
   font-weight: 500;
   font-size: 16px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const ChevronRightIcon = styled(ChevronIcon)`

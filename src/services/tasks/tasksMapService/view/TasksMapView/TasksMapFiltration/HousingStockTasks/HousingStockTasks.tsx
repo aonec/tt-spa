@@ -15,6 +15,7 @@ import {
 } from './HousingStockTasks.styled';
 import { HousingStockTasksProps } from './HousingStockTasks.types';
 import _ from 'lodash';
+import { Tooltip } from 'antd';
 
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
@@ -39,6 +40,8 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
             ? EActResourceType.All
             : task.resourceTypes?.[0];
 
+        const isDrawTooltip = (task.typeString?.length || 0) > 26;
+
         return (
           <TaskItem
             key={task.id}
@@ -51,7 +54,12 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
               ) : (
                 <CalculatorIcon />
               )}
-              <TaskTitle>{task.typeString}</TaskTitle>
+              {!isDrawTooltip && <TaskTitle>{task.typeString}</TaskTitle>}
+              {isDrawTooltip && (
+                <Tooltip title={task.typeString}>
+                  <TaskTitle>{task.typeString}</TaskTitle>
+                </Tooltip>
+              )}
             </TaskInfo>
             <ChevronRightIcon className="chevron-icon-right" />
           </TaskItem>
