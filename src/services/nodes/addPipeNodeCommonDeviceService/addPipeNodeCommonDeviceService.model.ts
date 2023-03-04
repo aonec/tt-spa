@@ -13,9 +13,6 @@ const goPrevStep = domain.createEvent();
 const openAddCommonDeviceModal = domain.createEvent();
 const closeAddCommonDeviceModal = domain.createEvent();
 
-const openAddPipeModal = domain.createEvent();
-const closeAddPipeModal = domain.createEvent();
-
 const handleFormComplete = domain.createEvent();
 
 const handleMeteringDeviceCreated =
@@ -33,11 +30,6 @@ const $isModalOpen = domain
   .createStore(false)
   .on(openAddCommonDeviceModal, () => true)
   .reset(closeAddCommonDeviceModal);
-
-const $isAddPipeModalOpen = domain
-  .createStore(false)
-  .on(openAddPipeModal, () => true)
-  .on(closeAddPipeModal, () => false);
 
 const $currentFormStep = domain
   .createStore<number>(0)
@@ -69,8 +61,6 @@ export const addPipeNodeCommonDeviceService = {
     closeAddCommonDeviceModal,
     updateCommonDeviceRequestPayload,
     goPrevStep,
-    openAddPipeModal,
-    closeAddPipeModal,
     handleFormComplete,
     handleMeteringDeviceCreated,
   },
@@ -78,6 +68,5 @@ export const addPipeNodeCommonDeviceService = {
     $isModalOpen,
     $currentFormStep,
     $requestPayload,
-    $isAddPipeModalOpen,
   },
 };
