@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { HousingStockWithTasksResponse, TasksPagedList } from 'myApi';
+import {
+  HousingStockWithTasksResponse,
+  TaskResponse,
+  TasksPagedList,
+} from 'myApi';
 import { GetHousingStocksWithTasksRequestPayload } from './tasksMapService.types';
 import queryString from 'query-string';
 
@@ -16,3 +20,6 @@ export const getTasksByHousingStock = (
   housingStockId: number,
 ): Promise<TasksPagedList> =>
   axios.get('Tasks', { params: { HousingStockId: housingStockId } });
+
+export const getTask = (taskId: number): Promise<TaskResponse> =>
+  axios.get(`Tasks/${taskId}`);

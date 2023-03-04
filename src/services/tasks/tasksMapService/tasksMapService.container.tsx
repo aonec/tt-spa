@@ -14,11 +14,14 @@ export const TasksMapContainer = () => {
     outputs.$isLoadingHousingStocksWithTasks,
   );
   const selectedHousingStock = useStore(outputs.$selectedHousingStock);
+  const task = useStore(outputs.$task);
+  const isLoadingTask = useStore(outputs.$isLoadingTask);
 
   const applyFilters = useEvent(inputs.applyFilters);
   const resetFilters = useEvent(inputs.resetFilters);
   const handleClickMarker = useEvent(inputs.handleClickMarker);
   const clearSelectedHousingStock = useEvent(inputs.clearSelectedHousingStock);
+  const handleClickTask = useEvent(inputs.handleClickTask);
 
   return (
     <>
@@ -28,11 +31,14 @@ export const TasksMapContainer = () => {
         housingStocksWithTasks={housingStocksWithTasks}
         applyFilters={applyFilters}
         filtrationValues={filtrationValues}
-        resetFilters={() => resetFilters()}
+        resetFilters={resetFilters}
         isLoadingHousingStocksWithTasks={isLoadingHousingStocksWithTasks}
         selectedHousingStock={selectedHousingStock}
         handleClickMarker={handleClickMarker}
         clearSelectedHousingStock={clearSelectedHousingStock}
+        task={task}
+        isLoadingTask={isLoadingTask}
+        handleClickTask={handleClickTask}
       />
     </>
   );

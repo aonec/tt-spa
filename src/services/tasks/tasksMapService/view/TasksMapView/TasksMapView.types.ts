@@ -1,6 +1,7 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   HousingStockWithTasksResponse,
+  TaskResponse,
 } from 'myApi';
 import { HousingStocksWithTasksFiltrationValues } from '../../tasksMapService.types';
 
@@ -16,4 +17,7 @@ export type TasksMapViewProps = {
   selectedHousingStock: HousingStockWithTasksResponse | null;
   handleClickMarker: (payload: HousingStockWithTasksResponse) => void;
   clearSelectedHousingStock: () => void;
+  task: TaskResponse | null;
+  isLoadingTask: boolean;
+  handleClickTask: (taskId: number) => void;
 };

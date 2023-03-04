@@ -32,7 +32,7 @@ export const ChevronIconSC = styled(ChevronIcon)`
   cursor: pointer;
 `;
 
-export const TaskItem = styled.a`
+export const TaskItem = styled.div`
   border-top: 1px solid #f3f5f6;
   display: flex;
   align-items: center;

@@ -1,10 +1,14 @@
-import { createDomain, sample } from 'effector';
-import { ETaskEngineeringElement, HousingStockWithTasksResponse } from 'myApi';
+import { createDomain, forward, sample } from 'effector';
+import {
+  ETaskEngineeringElement,
+  HousingStockWithTasksResponse,
+  TaskResponse,
+} from 'myApi';
 import {
   $taskTypes,
   TaskTypesGate,
 } from '../taskTypesService/taskTypesService.model';
-import { getHousingStocksWithTasks } from './tasksMapService.api';
+import { getHousingStocksWithTasks, getTask } from './tasksMapService.api';
 import {
   GetHousingStocksWithTasksRequestPayload,
   HousingStocksWithTasksFiltrationValues,
@@ -22,6 +26,8 @@ const handleClickMarker = domain.createEvent<HousingStockWithTasksResponse>();
 
 const clearSelectedHousingStock = domain.createEvent();
 
+const handleClickTask = domain.createEvent<number>();
+
 const fetchHousingStocksWithTasksFx = domain.createEffect<
   GetHousingStocksWithTasksRequestPayload,
   HousingStockWithTasksResponse[]
@@ -30,6 +36,8 @@ const fetchHousingStocksWithTasksFx = domain.createEffect<
 const $housingStocksWithTasks = domain
   .createStore<HousingStockWithTasksResponse[]>([])
   .on(fetchHousingStocksWithTasksFx.doneData, (_, data) => data);
+
+const fetchTaskFx = domain.createEffect<number, TaskResponse>(getTask);
 
 const $filtrationValues = domain
   .createStore<HousingStocksWithTasksFiltrationValues>({
@@ -47,6 +55,10 @@ const $selectedHousingStock = domain
   .on(handleClickMarker, (_, housingStock) => housingStock)
   .reset(clearSelectedHousingStock);
 
+const $task = domain
+  .createStore<TaskResponse | null>(null)
+  .on(fetchTaskFx.doneData, (_, task) => task);
+
 sample({
   clock: $filtrationValues,
   fn: getHousingStocksWithTasksRequestPayload,
@@ -60,7 +72,14 @@ sample({
   target: fetchHousingStocksWithTasksFx,
 });
 
+forward({
+  from: handleClickTask,
+  to: fetchTaskFx,
+});
+
 const $isLoadingHousingStocksWithTasks = fetchHousingStocksWithTasksFx.pending;
+
+const $isLoadingTask = fetchTaskFx.pending;
 
 export const tasksMapService = {
   inputs: {
@@ -68,6 +87,7 @@ export const tasksMapService = {
     resetFilters,
     handleClickMarker,
     clearSelectedHousingStock,
+    handleClickTask,
   },
   outputs: {
     $taskTypes,
@@ -75,6 +95,8 @@ export const tasksMapService = {
     $filtrationValues,
     $isLoadingHousingStocksWithTasks,
     $selectedHousingStock,
+    $task,
+    $isLoadingTask,
   },
   gates: {
     TaskTypesGate,

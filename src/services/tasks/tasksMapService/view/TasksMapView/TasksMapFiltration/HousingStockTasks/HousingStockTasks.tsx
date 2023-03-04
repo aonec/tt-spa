@@ -20,6 +20,9 @@ import { Tooltip } from 'antd';
 export const HousingStockTasks: FC<HousingStockTasksProps> = ({
   selectedHousingStock,
   clearSelectedHousingStock,
+  task,
+  handleClickTask,
+  isLoadingTask,
 }) => {
   const address = selectedHousingStock?.housingStock?.address?.mainAddress;
 
@@ -43,11 +46,7 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
         const isDrawTooltip = (task.typeString?.length || 0) > 26;
 
         return (
-          <TaskItem
-            key={task.id}
-            href={`/tasks/profile/${task.id}`}
-            target="_blank"
-          >
+          <TaskItem key={task.id} onClick={() => handleClickTask(task.id)}>
             <TaskInfo>
               {resource ? (
                 <ResourceIconLookup resource={resource} />

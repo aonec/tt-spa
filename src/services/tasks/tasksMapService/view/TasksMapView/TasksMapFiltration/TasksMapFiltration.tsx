@@ -38,6 +38,9 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   isLoadingHousingStocksWithTasks,
   selectedHousingStock,
   clearSelectedHousingStock,
+  task,
+  handleClickTask,
+  isLoadingTask,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -83,6 +86,9 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <HousingStockTasks
               selectedHousingStock={selectedHousingStock}
               clearSelectedHousingStock={clearSelectedHousingStock}
+              task={task}
+              isLoadingTask={isLoadingTask}
+              handleClickTask={handleClickTask}
             />
           )}
         </>
