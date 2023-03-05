@@ -6,6 +6,7 @@ import {
   FullscreenControl,
   ZoomControl,
   Placemark,
+  Clusterer,
 } from '@pbe/react-yandex-maps';
 
 export const TasksMap: FC<TasksMapProps> = React.memo(
@@ -26,29 +27,37 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
           zoom: 16,
         }}
       >
-        {housingStocksWithTasks.map((housingStockWithTasks) => {
-          const iconHrev = getTaskPlacemarkerLink(housingStockWithTasks);
+        <Clusterer
+          options={{
+            groupByCoordinates: false,
+          }}
+        >
+          {housingStocksWithTasks.map((housingStockWithTasks) => {
+            const iconHrev = getTaskPlacemarkerLink(housingStockWithTasks);
 
-          return (
-            <Placemark
-              key={housingStockWithTasks.housingStock?.id}
-              onClick={() => handleClickMarker(housingStockWithTasks)}
-              defaultGeometry={
-                housingStockWithTasks.housingStock?.coordinates
-                  ? [
-                      housingStockWithTasks.housingStock?.coordinates.latitude,
-                      housingStockWithTasks.housingStock?.coordinates.longitude,
-                    ]
-                  : undefined
-              }
-              options={{
-                iconLayout: 'default#image',
-                iconImageHref: iconHrev,
-                iconImageSize: [52, 52],
-              }}
-            />
-          );
-        })}
+            return (
+              <Placemark
+                key={housingStockWithTasks.housingStock?.id}
+                onClick={() => handleClickMarker(housingStockWithTasks)}
+                defaultGeometry={
+                  housingStockWithTasks.housingStock?.coordinates
+                    ? [
+                        housingStockWithTasks.housingStock?.coordinates
+                          .latitude,
+                        housingStockWithTasks.housingStock?.coordinates
+                          .longitude,
+                      ]
+                    : undefined
+                }
+                options={{
+                  iconLayout: 'default#image',
+                  iconImageHref: iconHrev,
+                  iconImageSize: [52, 52],
+                }}
+              />
+            );
+          })}
+        </Clusterer>
         <FullscreenControl />
         <ZoomControl
           options={{
