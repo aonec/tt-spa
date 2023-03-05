@@ -31,6 +31,7 @@ export const TasksProfileContainer = () => {
   const isSpectator = useStore(outputs.$isSpectator);
   const apartment = useStore(outputs.$apartment);
   const housingStock = useStore(outputs.$housingStock);
+  const tasksPageSegment = useStore(outputs.$tasksPageSegment);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.exportTasksList,
@@ -43,6 +44,7 @@ export const TasksProfileContainer = () => {
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
   const clearFilters = useEvent(inputs.clearFilters);
   const clearAddress = useEvent(inputs.clearAddress);
+  const setTasksPageSegment = useEvent(inputs.setTasksPageSegment);
 
   const {
     apartmentId,
@@ -163,6 +165,8 @@ export const TasksProfileContainer = () => {
         housingManagments={housingManagments}
         perpetrators={perpetrators}
         isSpectator={isSpectator}
+        tasksPageSegment={tasksPageSegment}
+        setTasksPageSegment={setTasksPageSegment}
       />
     </>
   );

@@ -20,4 +20,5 @@ export type TasksMapViewProps = {
   task: TaskResponse | null;
   isLoadingTask: boolean;
   handleClickTask: (taskId: number) => void;
+  clearTask: () => void;
 };

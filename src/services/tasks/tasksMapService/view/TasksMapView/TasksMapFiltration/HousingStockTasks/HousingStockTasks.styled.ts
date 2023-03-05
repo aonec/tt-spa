@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
@@ -14,7 +15,7 @@ export const Header = styled.div`
   padding-bottom: 16px;
 `;
 
-export const Address = styled.div`
+export const Address = styled(Link)`
   font-weight: 600;
   color: rgba(39, 47, 90, 0.9);
   font-size: 16;

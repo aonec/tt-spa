@@ -28,6 +28,8 @@ const clearSelectedHousingStock = domain.createEvent();
 
 const handleClickTask = domain.createEvent<number>();
 
+const clearTask = domain.createEvent();
+
 const fetchHousingStocksWithTasksFx = domain.createEffect<
   GetHousingStocksWithTasksRequestPayload,
   HousingStockWithTasksResponse[]
@@ -57,7 +59,8 @@ const $selectedHousingStock = domain
 
 const $task = domain
   .createStore<TaskResponse | null>(null)
-  .on(fetchTaskFx.doneData, (_, task) => task);
+  .on(fetchTaskFx.doneData, (_, task) => task)
+  .reset(clearTask, handleClickMarker);
 
 sample({
   clock: $filtrationValues,
@@ -88,6 +91,7 @@ export const tasksMapService = {
     handleClickMarker,
     clearSelectedHousingStock,
     handleClickTask,
+    clearTask,
   },
   outputs: {
     $taskTypes,

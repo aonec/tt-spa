@@ -22,6 +22,7 @@ export const TasksMapContainer = () => {
   const handleClickMarker = useEvent(inputs.handleClickMarker);
   const clearSelectedHousingStock = useEvent(inputs.clearSelectedHousingStock);
   const handleClickTask = useEvent(inputs.handleClickTask);
+  const clearTask = useEvent(inputs.clearTask);
 
   return (
     <>
@@ -39,6 +40,7 @@ export const TasksMapContainer = () => {
         task={task}
         isLoadingTask={isLoadingTask}
         handleClickTask={handleClickTask}
+        clearTask={clearTask}
       />
     </>
   );

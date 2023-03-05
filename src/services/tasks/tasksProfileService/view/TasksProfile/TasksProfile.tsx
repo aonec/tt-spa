@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from '01/shared/ui/PageHeader';
@@ -31,6 +31,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   housingManagments,
   perpetrators,
   isSpectator,
+  tasksPageSegment,
+  setTasksPageSegment,
 }) => {
   const history = useHistory();
   const { executingTasksCount, observingTasksCount, totalItems } =
@@ -51,9 +53,6 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     }
   });
 
-  const [currentSegment, setCurrentSegment] =
-    useState<TasksPageSegment>('list');
-
   return (
     <div>
       <PageHeader
@@ -69,7 +68,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         }}
       >
         <Segmented<TasksPageSegment>
-          active={currentSegment}
+          active={tasksPageSegment}
           items={[
             {
               title: 'Список',
@@ -82,10 +81,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               icon: <MapIcon />,
             },
           ]}
-          onChange={setCurrentSegment}
+          onChange={setTasksPageSegment}
         />
       </PageHeader>
-      {currentSegment === 'list' && (
+      {tasksPageSegment === 'list' && (
         <>
           <TabsSC activeKey={grouptype} onChange={history.push}>
             {!isSpectator && (
@@ -122,7 +121,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           </Wrapper>
         </>
       )}
-      {currentSegment === 'map' && <TasksMapContainer />}
+      {tasksPageSegment === 'map' && <TasksMapContainer />}
     </div>
   );
 };

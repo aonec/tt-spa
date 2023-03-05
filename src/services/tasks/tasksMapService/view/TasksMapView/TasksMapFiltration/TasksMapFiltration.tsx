@@ -41,6 +41,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   task,
   handleClickTask,
   isLoadingTask,
+  clearTask,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -89,6 +90,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               task={task}
               isLoadingTask={isLoadingTask}
               handleClickTask={handleClickTask}
+              clearTask={clearTask}
             />
           )}
         </>

@@ -18,4 +18,5 @@ export type TasksMapFiltrationProps = {
   task: TaskResponse | null;
   isLoadingTask: boolean;
   handleClickTask: (taskId: number) => void;
+  clearTask: () => void;
 };

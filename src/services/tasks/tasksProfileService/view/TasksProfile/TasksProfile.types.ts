@@ -26,6 +26,8 @@ export type TasksProfileProps = {
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: OrganizationUserListResponse[];
   isSpectator: boolean;
+  tasksPageSegment: TasksPageSegment;
+  setTasksPageSegment: (segment: TasksPageSegment) => void;
 };
 
 export type TasksPageSegment = 'list' | 'map';
