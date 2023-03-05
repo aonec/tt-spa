@@ -1,12 +1,26 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
+
+const slideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const HousingStockWrapper = styled.div`
   border-top: 1px solid #f3f5f6;
   padding: 16px 16px 0 16px;
   max-height: 560px;
   overflow-y: auto;
+  animation-name: ${slideDown};
+  animation-duration: 0.2s;
 `;
 
 export const Header = styled.div`
@@ -72,4 +86,8 @@ export const TaskTitle = styled.div`
 export const ChevronRightIcon = styled(ChevronIcon)`
   transform: rotate(180deg);
   transition: 0.2s;
+`;
+
+export const LoaderWrapper = styled.div<{ isLoading: boolean }>`
+  margin-bottom: ${({ isLoading }) => (isLoading ? '16px' : 'none')};
 `;

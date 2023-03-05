@@ -37,3 +37,19 @@ export const TimerWrapper = styled.div`
 export const ListWrapper = styled.div`
   margin-top: 12px;
 `;
+
+export const DeviceWrapper = styled.div`
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: rgba(39, 47, 90, 0.9);
+`;
+
+export const DeviceSerialNumber = styled.div`
+  color: rgba(39, 47, 90, 0.5);
+`;
+
+export const DeviceNumber = styled.div`
+  font-weight: 500;
+`;

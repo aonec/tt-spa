@@ -10,6 +10,7 @@ import {
   City,
   Header,
   HousingStockWrapper,
+  LoaderWrapper,
   TaskInfo,
   TaskItem,
   TaskTitle,
@@ -76,9 +77,11 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
           <City>{`${address?.city}`}</City>
         </Address>
       </Header>
-      <WithLoader isLoading={isLoadingTask}>
-        {task ? <TaskInfoPanel task={task} /> : tasksListView}
-      </WithLoader>
+      <LoaderWrapper isLoading={isLoadingTask}>
+        <WithLoader isLoading={isLoadingTask}>
+          {task ? <TaskInfoPanel task={task} /> : tasksListView}
+        </WithLoader>
+      </LoaderWrapper>
     </HousingStockWrapper>
   );
 };
