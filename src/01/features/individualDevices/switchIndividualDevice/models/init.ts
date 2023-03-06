@@ -49,8 +49,17 @@ import { getReadingValuesArray } from '../components/ReadingsInput';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { axios } from '01/axios';
 import { getFilledArray } from 'utils/getFilledArray';
+import { message } from 'antd';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
+
+createIndividualDeviceFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
@@ -184,6 +193,7 @@ const mapArray = <T>(array: T[], ...callbacks: ((elem: T) => T)[]) => {
 };
 
 guard({
+  clock: confirmCreationNewDeviceButtonClicked,
   source: combine(
     addIndividualDeviceForm.$values,
     $individualDevice,
@@ -242,7 +252,6 @@ guard({
     },
   ),
   filter: Boolean,
-  clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
 });
 

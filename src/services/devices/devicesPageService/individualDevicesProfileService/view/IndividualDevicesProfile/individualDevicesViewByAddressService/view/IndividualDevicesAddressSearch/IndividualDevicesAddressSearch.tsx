@@ -40,7 +40,9 @@ export const IndividualDevicesAddressSearch: FC<
   return (
     <Wrapper>
       <IndividualDevicesExtendedSearch
-        handleClear={clearSearchPayload}
+        handleClear={() => {
+          clearSearchPayload();
+        }}
         handleApply={(values) => {
           submitWrap(() => setValues((prev) => ({ ...prev, ...values })));
         }}

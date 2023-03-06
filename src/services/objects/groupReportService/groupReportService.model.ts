@@ -14,6 +14,7 @@ import {
 } from './groupReportService.constants';
 import { GroupReportRequestPayload } from './groupReportService.types';
 import { sendReportToEmailService } from './sendReportToEmailService';
+import { BlobResponseErrorType } from 'types';
 
 const domain = createDomain('groupReportService');
 
@@ -34,7 +35,8 @@ const $reportFilters = domain
 
 const downloadGroupReportFx = domain.createEffect<
   GroupReportRequestPayload,
-  void
+  void,
+  BlobResponseErrorType
 >(downloadGroupReportRequest);
 
 const getGroupReport = domain.createEvent<GroupReportRequestPayload>();
@@ -120,9 +122,16 @@ forward({
   to: closeModal,
 });
 
-downloadGroupReportFx.failData.watch(() =>
-  message.error('Не удалось скачать отчёт'),
-);
+downloadGroupReportFx.failData.watch(async (error) => {
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(
+    errObject.error.Text ||
+      errObject.error.Message ||
+      'Не удалось выгрузить отчёт',
+  );
+});
 
 export const groupReportService = {
   inputs: {

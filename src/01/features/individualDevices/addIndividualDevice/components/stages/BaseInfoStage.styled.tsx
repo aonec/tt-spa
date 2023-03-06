@@ -13,3 +13,9 @@ export const TextWrapper = styled.div`
   font-weight: 500;
   margin-left: 16px;
 `;
+
+export const DocumentsUploadWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;

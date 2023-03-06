@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   margin-top: 36px;
   display: grid;
-  width: 950px;
+  width: 1000px;
   grid-template-columns: 1fr 0.5fr;
   grid-gap: 32px;
 `;

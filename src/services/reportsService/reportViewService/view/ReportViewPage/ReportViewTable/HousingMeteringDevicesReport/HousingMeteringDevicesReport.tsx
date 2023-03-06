@@ -16,7 +16,6 @@ import { HousingMeteringDevicesReportProps } from './HousingMeteringDevicesRepor
 export const HousingMeteringDevicesReport: FC<
   HousingMeteringDevicesReportProps
 > = ({ housingMeteringDevicesReportData }) => {
-  console.log(housingMeteringDevicesReportData);
   if (!housingMeteringDevicesReportData) {
     return (
       <Empty

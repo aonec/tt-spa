@@ -1,6 +1,8 @@
 import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { createDomain, forward, guard, sample } from 'effector';
 import { fetchDeleteResourceDisconnecting } from './deleteResourceDisconnectionService.api';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('deleteResourceDisconnectionService');
 
@@ -20,9 +22,12 @@ const $endDate = domain
 const $isModalOpen = $resourceDisconnectionId.map(Boolean);
 
 const deleteResourceDisconnection = domain.createEvent();
-const deleteResourceDisconnectionFx = domain.createEffect<string, void>(
-  fetchDeleteResourceDisconnecting
-);
+const deleteResourceDisconnectionFx = domain.createEffect<
+  string,
+  void,
+  EffectFailDataAxiosError
+>(fetchDeleteResourceDisconnecting);
+
 const $deleteResourceDisconnectionIsLoading =
   deleteResourceDisconnectionFx.pending;
 
@@ -42,6 +47,14 @@ forward({
     resourceDisablingScheduleServiceService.inputs
       .refetchResourceDisconnections,
   ],
+});
+
+deleteResourceDisconnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const deleteResourceDisconnectionService = {

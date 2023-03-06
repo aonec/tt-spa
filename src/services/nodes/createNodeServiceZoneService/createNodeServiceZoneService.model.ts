@@ -6,7 +6,8 @@ import { postNodeServiceZone } from './createNodeServiceZoneService.api';
 
 const domain = createDomain('createNodeServiceZoneService');
 
-const handleCreateNodeServiceZone = domain.createEvent<NodeServiceZoneRequest>();
+const handleCreateNodeServiceZone =
+  domain.createEvent<NodeServiceZoneRequest>();
 
 const createNodeServiceZoneFx = domain.createEffect<
   NodeServiceZoneRequest,
@@ -38,12 +39,14 @@ const $isLoading = createNodeServiceZoneFx.pending;
 const handleServiceZoneCreated = createNodeServiceZoneFx.doneData;
 
 createNodeServiceZoneFx.doneData.watch(() =>
-  message.success('Новая зона добавлена')
+  message.success('Новая зона добавлена'),
 );
 
-createNodeServiceZoneFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+createNodeServiceZoneFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 export const createNodeServiceZoneService = {
   inputs: {
@@ -51,7 +54,7 @@ export const createNodeServiceZoneService = {
     openCreateNodeServiceZoneModal,
     closeCreateNodeServiceZoneModal,
     handleServiceZoneCreated,
-    createNodeServiceZoneFx
+    createNodeServiceZoneFx,
   },
   outputs: {
     $isLoading,

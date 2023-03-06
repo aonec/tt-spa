@@ -1,1 +1,0 @@
-export { AddCommunicationPipeModal } from './AddCommunicationPipeModal'

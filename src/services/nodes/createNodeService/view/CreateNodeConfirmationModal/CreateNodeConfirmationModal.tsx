@@ -20,13 +20,16 @@ import { Button } from 'ui-kit/Button';
 import { CalculatorIcon, CitySmallIcon } from 'ui-kit/icons';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
-import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { CommunicationPipeListItem } from '../CreateNodePage/ConnectedDevices/CommunicationPipeListItem';
 import { Empty } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 import { configNamesLookup } from 'utils/configNamesLookup';
-import { NodeStatusTextDictionary } from 'dictionaries';
+import {
+  NodeRegistrationTypeLookup,
+  NodeStatusTextDictionary,
+} from 'dictionaries';
+import moment from 'moment';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
@@ -42,20 +45,21 @@ export const CreateNodeConfirmationModal: FC<
 }) => {
   const commercialAccountingDatesString = useMemo(() => {
     if (
-      !requestPayload.startCommercialAccountingDate ||
-      !requestPayload.endCommercialAccountingDate
+      !requestPayload.commercialStatusRequest?.startCommercialAccountingDate ||
+      !requestPayload.commercialStatusRequest?.endCommercialAccountingDate
     ) {
       return '—';
     }
 
-    const start = moment(requestPayload.startCommercialAccountingDate);
-    const end = moment(requestPayload.endCommercialAccountingDate);
+    const start = moment(
+      requestPayload.commercialStatusRequest.startCommercialAccountingDate,
+    );
+    const end = moment(
+      requestPayload.commercialStatusRequest.endCommercialAccountingDate,
+    );
 
     return `${start.format('DD.MM.YYYY')} — ${end.format('DD.MM.YYYY')}`;
-  }, [
-    requestPayload.startCommercialAccountingDate,
-    requestPayload.endCommercialAccountingDate,
-  ]);
+  }, [requestPayload.commercialStatusRequest]);
 
   return (
     <StyledModal
@@ -127,12 +131,21 @@ export const CreateNodeConfirmationModal: FC<
                 </NodeResourceInfo>
               ),
             },
+            {
+              key: 'Тип узла',
+              value: requestPayload.registrationType
+                ? NodeRegistrationTypeLookup[requestPayload.registrationType]
+                : '',
+            },
             { key: 'Номер узла', value: requestPayload.number },
             { key: 'Зона', value: serviceZone.name },
             {
+              hidden: !requestPayload.commercialStatusRequest?.commercialStatus,
               key: 'Коммерческий учет показателей приборов',
-              value: requestPayload.commercialStatus
-                ? NodeStatusTextDictionary[requestPayload.commercialStatus]
+              value: requestPayload.commercialStatusRequest?.commercialStatus
+                ? NodeStatusTextDictionary[
+                    requestPayload.commercialStatusRequest.commercialStatus
+                  ]
                 : '',
             },
             {

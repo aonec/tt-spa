@@ -22,11 +22,13 @@ const $endDate = domain
 const $isModalOpen = $resourceDisconnectionId.map(Boolean);
 
 const completeResourceDisconnection = domain.createEvent();
+
 const completeResourceDisconnectionFx = domain.createEffect<
   string,
   void,
   EffectFailDataAxiosError
 >(fetchCompleteResourceDisconnecting);
+
 const $completeResourceDisconnectionIsLoading =
   completeResourceDisconnectionFx.pending;
 
@@ -48,9 +50,13 @@ forward({
   ],
 });
 
-completeResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+completeResourceDisconnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const completeResourceDisconnectionService = {
   inputs: {

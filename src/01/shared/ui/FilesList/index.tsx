@@ -9,6 +9,7 @@ import { DocumentResponse } from 'myApi';
 import { ReactComponent as DropIcon } from './drop.svg';
 import confirm from 'antd/lib/modal/confirm';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
+import axios from 'axios';
 
 interface Props {
   files?: FileData[];
@@ -96,6 +97,7 @@ export const FilesList: React.FC<Props> = ({
         cb: () => {
           removeFile && removeFile(id, file?.id);
           onRemove && onRemove();
+          axios.delete(`Documents/${file?.id}`);
         },
         show: true,
         color: 'red',

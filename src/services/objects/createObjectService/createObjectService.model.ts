@@ -172,9 +172,11 @@ guard({
   target: createObjectFx,
 });
 
-createObjectFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+createObjectFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
 

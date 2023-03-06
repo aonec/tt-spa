@@ -4,7 +4,7 @@
 1. Наименование веток - `R2-1318-add-incpectors-to-object`
 2. Наименование коммитов `[R2-1318]: add modal to main page`
 
-# Правила создания сервсиов
+# Правила создания сервисов
 1. новый сервис добавляется в папку features
 2. если он связан с некой центральной сущностью, то добавляем в папку этой сущности
 
@@ -138,3 +138,99 @@ export const DeleteIndividualDeviceModalContainer = () => {
 ```cmd
 npm i -g @pronix/ttcodegen
 ```
+
+
+## Правила загрузки документов:
+Следует использовать компонент **DocumentsUploadContainer** . 
+Он принимает props ***type***, обязательный для парсинга на бэке. 
+Тип назначает согласно **enum EDocumentType** .
+Типы можно получить: GET /api/Documents/types 
+
+Дикшинари:
+
+    {
+        "key": "Common",
+        "value": "Прочее"
+    },
+    {
+        "key": "DeviceCommissionCheckAct",
+        "value": "Акт комиссионной проверки прибора"
+    },
+    {
+        "key": "DeviceCheckAct",
+        "value": "Акт проверки прибора"
+    },
+    {
+        "key": "DeviceCommercialAccountingAct",
+        "value": "Акт постановки прибора на коммерческий учет"
+    },
+    {
+        "key": "DeviceAcceptanceAct",
+        "value": "Акт выполненных работ"
+    },
+    {
+        "key": "DeviceDeploymentAct",
+        "value": "Акт установки прибора"
+    },
+    {
+        "key": "DeviceClosingAct",
+        "value": "Акт снятия прибора"
+    },
+    {
+        "key": "DevicePassport",
+        "value": "Паспорт прибора"
+    },
+    {
+        "key": "DeviceTestCertificates",
+        "value": "Свидетельство о поверке прибора"
+    },
+    {
+        "key": "ApartmentCheckingAct",
+        "value": "Акт проверки на квартире"
+    },
+    {
+        "key": "ApartmentAccessDeniedAct",
+        "value": "Акт недопуска в квартиру"
+    },
+    {
+        "key": "ApartmentUnauthorizedInterferenceAct",
+        "value": "Акт несанкционированного вмешательства в ИПУ"
+    },
+    {
+        "key": "AdditionalMaterials",
+        "value": "Дополнительные материалы"
+    },
+    {
+        "key": "HeatingSeasonStartingOrder",
+        "value": "Приказ о начале отопительного сезона"
+    },
+    {
+        "key": "HeatingSeasonEndingOrder",
+        "value": "Приказ о завершении отопительного сезона"
+    },
+    {
+        "key": "HeatingSeasonChangingStatement",
+        "value": "Заявление об изменении отопительного сезона"
+    },
+    {
+        "key": "Photo",
+        "value": "Фотография"
+    },
+    {
+        "key": "NodeAdmissionAct",
+        "value": "Aкт допуска"
+    },
+    {
+        "key": "ImportedFile",
+        "value": "Импортированный файл"
+    },
+    {
+        "key": "ProfilePhoto",
+        "value": "Фотография в профиле пользователя"
+    },
+    {
+        "key": "ApartmentStoppingStatement",
+        "value": "Заявление от абонента о постановке квартиры на паузу"
+    }
+
+

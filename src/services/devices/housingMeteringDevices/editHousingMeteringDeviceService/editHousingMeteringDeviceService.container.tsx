@@ -1,11 +1,12 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { editHousingMeteringDeviceService } from './editHousingMeteringDeviceService.model';
 import { EditHousingMeteringDevicePage } from './view/EditHousingMeteringDevicePage';
 
 const { inputs, outputs, gates } = editHousingMeteringDeviceService;
-const { FetchHousingMeteringDeviceGate } = gates;
+const { EditMeteringDeviceGate } = gates;
 
 export const EditHousingMeteringDeviceContainer = () => {
   const handleChangeTab = useEvent(inputs.handleChangeTab);
@@ -13,20 +14,24 @@ export const EditHousingMeteringDeviceContainer = () => {
 
   const currentTab = useStore(outputs.$currentTab);
   const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
+  const communicationPipes = useStore(outputs.$communicationPipes);
+  const isLoading = useStore(outputs.$isLoading);
 
   const { deviceId } = useParams<{ deviceId: string }>();
 
   return (
     <>
-      <FetchHousingMeteringDeviceGate deviceId={Number(deviceId)} />
-
-      <EditHousingMeteringDevicePage
-        handleChangeTab={handleChangeTab}
-        currentTab={currentTab}
-        housingMeteringDevice={housingMeteringDevice}
-        handleSubmitForm={handleSubmitForm}
-        deviceId={deviceId}
-      />
+      <EditMeteringDeviceGate deviceId={Number(deviceId)} />
+      <WithLoader isLoading={isLoading}>
+        <EditHousingMeteringDevicePage
+          handleChangeTab={handleChangeTab}
+          currentTab={currentTab}
+          housingMeteringDevice={housingMeteringDevice}
+          handleSubmitForm={handleSubmitForm}
+          deviceId={deviceId}
+          communicationPipes={communicationPipes}
+        />
+      </WithLoader>
     </>
   );
 };

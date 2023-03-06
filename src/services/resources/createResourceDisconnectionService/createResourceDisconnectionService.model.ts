@@ -183,9 +183,13 @@ forward({
     .refetchResourceDisconnections,
 });
 
-createResourceDisconnectionFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+createResourceDisconnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const createResourceDisconnectionService = {
   inputs: {

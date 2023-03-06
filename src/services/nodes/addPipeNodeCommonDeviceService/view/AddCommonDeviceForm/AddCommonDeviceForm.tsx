@@ -14,7 +14,6 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
   updateRequestPayload,
   formId,
   requestPayload,
-  openAddPipeModal,
   communicationPipes,
   handleFormComplete,
 }) => {
@@ -30,7 +29,6 @@ export const AddCommonDeviceForm: FC<AddCommonDeviceFormProps> = ({
     1: (
       <DeviceStep
         formId={formId}
-        openAddPipeModal={openAddPipeModal}
         communicationPipes={communicationPipes}
         updateRequestPayload={updateRequestPayload}
         requestPayload={requestPayload}
