@@ -7,12 +7,14 @@ import { ReactComponent as FilterIconBlue } from './assets/filterIconBlue.svg';
 interface Props {
   onClear?(): void;
   active?: boolean;
+  allowClear?: boolean;
 }
 
 export const FilterButton: React.FC<Props> = ({
   onClear,
   active,
   children,
+  allowClear,
 }) => {
   return (
     <Popover
@@ -20,16 +22,21 @@ export const FilterButton: React.FC<Props> = ({
       content={
         <div>
           <div>{children}</div>
-          <div style={{ marginTop: -10 }}>
-            <SpaceLine />
-          </div>
-          <div
-            onClick={onClear}
-            className="ant-btn-link"
-            style={{ marginTop: -5, cursor: 'pointer' }}
-          >
-            Сбросить
-          </div>
+          {allowClear && (
+            <>
+              <div style={{ marginTop: -10 }}>
+                <SpaceLine />
+              </div>
+
+              <div
+                onClick={onClear}
+                className="ant-btn-link"
+                style={{ marginTop: -5, cursor: 'pointer' }}
+              >
+                Сбросить
+              </div>
+            </>
+          )}
         </div>
       }
     >

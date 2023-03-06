@@ -14,8 +14,8 @@ import {
   LegendColumnWrapper,
 } from './GraphLegend.styled';
 import { GraphLegendProps } from './GraphLegend.types';
-import { ResourceType } from '../GraphView/GraphView.types';
 import { renderForHeatAndDeltaMass } from './GraphLegend.utils';
+import { EResourceType } from 'myApi';
 
 export const GraphLegend: FC<GraphLegendProps> = ({
   graphParam,
@@ -27,7 +27,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({
   }
   const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
   const isDeltaMass = renderForHeatAndDeltaMass(
-    resource as ResourceType,
+    resource as EResourceType,
     graphParam,
   );
 
@@ -76,7 +76,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({
     <LegendWrapper>
       <LegendLineWrapper>
         <LegendLine
-          resource={resource as ResourceType}
+          resource={resource as EResourceType}
           style={{ marginBottom: 16 }}
         >
           Текущий период
