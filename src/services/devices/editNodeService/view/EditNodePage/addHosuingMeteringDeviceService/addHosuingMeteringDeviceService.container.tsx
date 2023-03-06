@@ -48,8 +48,6 @@ export const AddHosuingMeteringDeviceContainer = () => {
                 number: pipe.number,
               }),
             )}
-            withoutNewPipes
-            openAddPipeModal={() => void null}
           />
         )
       }
