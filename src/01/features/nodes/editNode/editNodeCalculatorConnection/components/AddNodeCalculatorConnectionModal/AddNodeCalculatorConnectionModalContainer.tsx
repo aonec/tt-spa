@@ -14,7 +14,6 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
   );
   const isOpen = useStore($isAddNodeCalculatorConnectionModalOpen);
   const node = useStore(nodeService.outputs.$node);
-  console.log(1, node?.housingStockId);
 
   const calculators = useStore(
     calculatorsIntoHousingStockService.outputs.$calculators,
