@@ -4,6 +4,7 @@ import {
   HousingStockWithTasksResponse,
   TaskResponse,
 } from 'myApi';
+import { tasksProfileService } from '../tasksProfileService';
 import {
   $taskTypes,
   TaskTypesGate,
@@ -101,6 +102,7 @@ export const tasksMapService = {
     $selectedHousingStock,
     $task,
     $isLoadingTask,
+    $organizationUsers: tasksProfileService.outputs.$organizationUsers,
   },
   gates: {
     TaskTypesGate,

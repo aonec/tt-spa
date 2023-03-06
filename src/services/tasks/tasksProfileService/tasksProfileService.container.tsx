@@ -24,7 +24,7 @@ export const TasksProfileContainer = () => {
 
   const taskTypes = useStore(outputs.$taskTypes);
   const housingManagments = useStore(outputs.$housingManagments);
-  const perpetrators = useStore(outputs.$perpetratorIdStore);
+  const perpetrators = useStore(outputs.$organizationUsers);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);

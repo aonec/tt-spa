@@ -200,7 +200,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             </FormItem>
           </ExtendedFiltration>
           <Footer>
-            <Button size="small" type="ghost">
+            <Button size="small" type="ghost" onClick={() => setIsOpen(false)}>
               Отмена
             </Button>
             <Button

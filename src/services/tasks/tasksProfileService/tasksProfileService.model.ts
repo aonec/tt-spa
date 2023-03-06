@@ -12,7 +12,7 @@ import { currentUserService } from 'services/currentUserService';
 import {
   $taskTypes,
   $housingManagments,
-  $perpetratorIdStore,
+  $organizationUsers,
 } from '../taskTypesService/taskTypesService.model';
 import {
   fetchApartment,
@@ -198,7 +198,7 @@ export const tasksProfileService = {
     $tasksPagedData,
     $isExtendedSearchOpen,
     $housingManagments,
-    $perpetratorIdStore,
+    $organizationUsers,
     $isSpectator,
     $isAdministrator,
     $apartment,
