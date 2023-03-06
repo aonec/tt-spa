@@ -6,9 +6,13 @@ import { routerService } from './routerService.model';
 const { outputs } = routerService;
 
 export const RouterContainer = () => {
-  const currentUser = useStore(outputs.$currentManagingFirmUser);
+  const currentUserRoles = useStore(outputs.$currentUserRoles);
 
-  const roles = currentUser?.roles?.map(({ key }) => key!) || [];
+  const roles = currentUserRoles?.map(({ key }) => key!) || [];
 
-  return <Router roles={roles} />;
+  return (
+    <>
+      <Router roles={roles} />
+    </>
+  );
 };

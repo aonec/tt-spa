@@ -97,7 +97,6 @@ export const FilesList: React.FC<Props> = ({
         cb: () => {
           removeFile && removeFile(id, file?.id);
           onRemove && onRemove();
-          console.log('first');
           axios.delete(`Documents/${file?.id}`);
         },
         show: true,

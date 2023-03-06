@@ -57,6 +57,32 @@ export const Router: FC<RouterProps> = ({ roles }) => {
       ? '/meters/'
       : '/tasks/'
     : '/login';
+
+  console.log(roles);
+
+  // const isAdministrator = roles.includes(
+  //   ESecuredIdentityRoleName.Administrator,
+  // );
+  // const isSeniorOperator = roles.includes(
+  //   ESecuredIdentityRoleName.SeniorOperator,
+  // );
+  // const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
+
+  // const isManagingFirmDispatcher = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  // );
+  // const isManagingFirmExecutor = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmExecutor,
+  // );
+  // const isController = roles.includes(ESecuredIdentityRoleName.Controller);
+
+  // const isManagingFirmSpectator = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmSpectator,
+  // );
+  // const isManagingFirmSpectatorRestricted = roles.includes(
+  //   ESecuredIdentityRoleName.ManagingFirmSpectator,
+  // );
+
   return (
     <Wrapper>
       <Switch>

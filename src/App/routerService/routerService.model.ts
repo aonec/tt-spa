@@ -1,7 +1,7 @@
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { currentUserService } from 'services/currentUserService';
 
 export const routerService = {
   outputs: {
-    $currentManagingFirmUser,
+    $currentUserRoles: currentUserService.outputs.$currentUserRoles,
   },
 };

@@ -102,7 +102,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     ) {
       return openChangeNodeTypeModal(pipeNode);
     }
-    return message.error('Техническийй тип узла нельзя изменить!');
+    return message.error('Технический тип узла нельзя изменить');
   }, [pipeNode, openChangeNodeTypeModal]);
 
   return (
