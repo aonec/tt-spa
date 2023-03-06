@@ -71,6 +71,7 @@ sample({
   source: $housingMeteringDevice,
   clock: [handleHousingMeteringDeviceUpdate, handleCheckDateUpdate],
   fn: (device) => Number(device?.id),
+  filter: (device) => Boolean(device?.id),
   target: fetchHousingMeteringDeviceFx,
 });
 

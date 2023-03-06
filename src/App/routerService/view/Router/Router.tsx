@@ -60,28 +60,28 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
   console.log(roles);
 
-  // const isAdministrator = roles.includes(
-  //   ESecuredIdentityRoleName.Administrator,
-  // );
-  // const isSeniorOperator = roles.includes(
-  //   ESecuredIdentityRoleName.SeniorOperator,
-  // );
-  // const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
+  const isAdministrator = roles.includes(
+    ESecuredIdentityRoleName.Administrator,
+  );
+  const isSeniorOperator = roles.includes(
+    ESecuredIdentityRoleName.SeniorOperator,
+  );
+  const isOperator = roles.includes(ESecuredIdentityRoleName.Operator);
 
-  // const isManagingFirmDispatcher = roles.includes(
-  //   ESecuredIdentityRoleName.ManagingFirmDispatcher,
-  // );
-  // const isManagingFirmExecutor = roles.includes(
-  //   ESecuredIdentityRoleName.ManagingFirmExecutor,
-  // );
-  // const isController = roles.includes(ESecuredIdentityRoleName.Controller);
+  const isDispatcher = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  );
+  const isExecutor = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  );
+  const isController = roles.includes(ESecuredIdentityRoleName.Controller);
 
-  // const isManagingFirmSpectator = roles.includes(
-  //   ESecuredIdentityRoleName.ManagingFirmSpectator,
-  // );
-  // const isManagingFirmSpectatorRestricted = roles.includes(
-  //   ESecuredIdentityRoleName.ManagingFirmSpectator,
-  // );
+  const isSpectator = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  );
+  const isSpectatorRestricted = roles.includes(
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  );
 
   return (
     <Wrapper>
@@ -101,66 +101,121 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 {TasksRouter()}
 
-                <Route path="/actsJournal" exact>
-                  <ApartmentActs />
-                </Route>
+                {(isAdministrator ||
+                  isSeniorOperator ||
+                  isOperator ||
+                  isExecutor ||
+                  isController ||
+                  isDispatcher ||
+                  isSpectator ||
+                  isSpectatorRestricted) && (
+                  <Route path="/actsJournal" exact>
+                    <ApartmentActs />
+                  </Route>
+                )}
 
-                <Route
-                  path="/objects/create"
-                  component={CreateObjectContainer}
-                  exact
-                />
-
-                <Route
-                  path="/objects/:housingStockId/addNode"
-                  component={CreateNodeContainer}
-                  exact
-                />
-
-                <Route
-                  path="/objects/:searchType?"
-                  component={ObjectsProfileContainer}
-                  exact
-                />
-
-                <Route
-                  path="/apartments/:apartmentId/edit"
-                  component={EditApartmentProfileContainer}
-                  exact
-                />
-
-                <Route
-                  path="/apartments/:apartmentId/:tabSection?"
-                  component={ApartmentProfileContainer}
-                  exact
-                />
-
-                <Route path="/objects">
-                  <ObjectGroupIsOpen />
+                {isAdministrator && (
                   <Route
-                    path="/objects/profile/:housingStockId"
-                    component={ObjectProfileContainer}
+                    path="/objects/create"
+                    component={CreateObjectContainer}
                     exact
                   />
-                </Route>
+                )}
 
-                <Route
-                  path="/devices/addNode"
-                  component={CreateNodeContainer}
-                  exact
-                />
+                {(isAdministrator || isExecutor) && (
+                  <Route
+                    path="/objects/:housingStockId/addNode"
+                    component={CreateNodeContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/devices/:type?"
-                  component={DevicesPageContainer}
-                  exact
-                />
+                {(isAdministrator ||
+                  isSeniorOperator ||
+                  isOperator ||
+                  isExecutor ||
+                  isController ||
+                  isDispatcher ||
+                  isSpectator ||
+                  isSpectatorRestricted) && (
+                  <Route
+                    path="/objects/:searchType?"
+                    component={ObjectsProfileContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/changeODPU/:oldDeviceId"
-                  component={ChangeODPUContainer}
-                  exact
-                />
+                {(isAdministrator || isSeniorOperator || isOperator) && (
+                  <Route
+                    path="/apartments/:apartmentId/edit"
+                    component={EditApartmentProfileContainer}
+                    exact
+                  />
+                )}
+
+                {(isAdministrator ||
+                  isSeniorOperator ||
+                  isOperator ||
+                  isExecutor ||
+                  isController ||
+                  isDispatcher ||
+                  isSpectator ||
+                  isSpectatorRestricted) && (
+                  <Route
+                    path="/apartments/:apartmentId/:tabSection?"
+                    component={ApartmentProfileContainer}
+                    exact
+                  />
+                )}
+
+                {(isAdministrator ||
+                  isSeniorOperator ||
+                  isOperator ||
+                  isExecutor ||
+                  isController ||
+                  isDispatcher ||
+                  isSpectator ||
+                  isSpectatorRestricted) && (
+                  <Route path="/objects">
+                    <ObjectGroupIsOpen />
+                    <Route
+                      path="/objects/profile/:housingStockId"
+                      component={ObjectProfileContainer}
+                      exact
+                    />
+                  </Route>
+                )}
+
+                {(isAdministrator || isExecutor) && (
+                  <Route
+                    path="/devices/addNode"
+                    component={CreateNodeContainer}
+                    exact
+                  />
+                )}
+
+                {(isAdministrator ||
+                  isSeniorOperator ||
+                  isOperator ||
+                  isExecutor ||
+                  isController ||
+                  isDispatcher ||
+                  isSpectator ||
+                  isSpectatorRestricted) && (
+                  <Route
+                    path="/devices/:type?"
+                    component={DevicesPageContainer}
+                    exact
+                  />
+                )}
+
+                {(isAdministrator || isExecutor) && (
+                  <Route
+                    path="/changeODPU/:oldDeviceId"
+                    component={ChangeODPUContainer}
+                    exact
+                  />
+                )}
 
                 <Route
                   path="/electricNode/:deviceId/edit"
@@ -294,6 +349,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                 />
 
                 <Redirect from="/meters" to="/meters/apartments" exact />
+                <Redirect from="*" to="/access-denied/" />
               </Switch>
               <ApartmentsRouteGroup />
             </PageWrapper>
