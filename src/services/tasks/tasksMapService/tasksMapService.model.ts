@@ -19,7 +19,7 @@ import { getHousingStocksWithTasksRequestPayload } from './tasksMapService.utils
 const domain = createDomain('tasksMap');
 
 const applyFilters =
-  domain.createEvent<Partial<HousingStocksWithTasksFiltrationValues>>();
+  domain.createEvent<HousingStocksWithTasksFiltrationValues>();
 
 const resetFilters = domain.createEvent();
 
@@ -50,7 +50,7 @@ const $filtrationValues = domain
     type: null,
     executorId: null,
   })
-  .on(applyFilters, (prev, filters) => ({ ...prev, ...filters }))
+  .on(applyFilters, (_, filters) => filters)
   .reset(resetFilters);
 
 const $selectedHousingStock = domain

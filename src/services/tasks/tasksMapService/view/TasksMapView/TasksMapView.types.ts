@@ -1,6 +1,7 @@
 import {
   EManagingFirmTaskFilterTypeNullableStringDictionaryItem,
   HousingStockWithTasksResponse,
+  OrganizationUserListResponse,
   TaskResponse,
 } from 'myApi';
 import { HousingStocksWithTasksFiltrationValues } from '../../tasksMapService.types';
@@ -8,9 +9,7 @@ import { HousingStocksWithTasksFiltrationValues } from '../../tasksMapService.ty
 export type TasksMapViewProps = {
   taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
   housingStocksWithTasks: HousingStockWithTasksResponse[];
-  applyFilters: (
-    payload: Partial<HousingStocksWithTasksFiltrationValues>,
-  ) => void;
+  applyFilters: (payload: HousingStocksWithTasksFiltrationValues) => void;
   filtrationValues: HousingStocksWithTasksFiltrationValues;
   resetFilters: () => void;
   isLoadingHousingStocksWithTasks: boolean;
@@ -21,4 +20,5 @@ export type TasksMapViewProps = {
   isLoadingTask: boolean;
   handleClickTask: (taskId: number) => void;
   clearTask: () => void;
+  organizationUsers: OrganizationUserListResponse[];
 };

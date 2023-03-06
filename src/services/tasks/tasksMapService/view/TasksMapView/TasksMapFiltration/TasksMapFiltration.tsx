@@ -16,7 +16,6 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { ItemPanelsSelect } from 'ui-kit/shared_components/ItemPanelsSelect';
 import {
-  EActResourceType,
   EResourceType,
   EStageTimeStatus,
   ETaskEngineeringElement,
@@ -42,6 +41,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   handleClickTask,
   isLoadingTask,
   clearTask,
+  organizationUsers,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -81,6 +81,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <SearchInput
               placeholder="Введите номер задачи или адрес"
               prefix={<SearchIcon />}
+              disabled
             />
           </FilterHeader>
           {selectedHousingStock && (
@@ -136,16 +137,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             </FormItem>
             <FormItem label="Тип ресурса">
               <ItemPanelsSelect<EResourceType | null>
-                items={[
-                  {
-                    key: null,
-                    icon: (
-                      <ResourceIconLookup resource={EActResourceType.All} />
-                    ),
-                    title: 'Все',
-                  },
-                  ...baseResourceOptions,
-                ]}
+                items={baseResourceOptions}
                 selected={values.resourceTypes}
                 onChange={(value) => setFieldValue('resourceTypes', value)}
               />
@@ -193,10 +185,18 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               </SelectSC>
             </FormItem>
             <FormItem label="Исполнитель">
-              <SearchInput
-                placeholder="Выберите из списка"
-                prefix={<SearchIcon />}
-              />
+              <SelectSC
+                placeholder="Выберите исполнителя"
+                value={values.executorId || undefined}
+                onChange={(userId) => setFieldValue('executorId', userId)}
+                allowClear
+              >
+                {organizationUsers.map((user) => (
+                  <SelectSC.Option value={user.id} key={user.id}>
+                    {user.firstName} {user.lastName}
+                  </SelectSC.Option>
+                ))}
+              </SelectSC>
             </FormItem>
           </ExtendedFiltration>
           <Footer>

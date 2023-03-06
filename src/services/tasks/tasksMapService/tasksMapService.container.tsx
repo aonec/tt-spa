@@ -16,6 +16,7 @@ export const TasksMapContainer = () => {
   const selectedHousingStock = useStore(outputs.$selectedHousingStock);
   const task = useStore(outputs.$task);
   const isLoadingTask = useStore(outputs.$isLoadingTask);
+  const organizationUsers = useStore(outputs.$organizationUsers);
 
   const applyFilters = useEvent(inputs.applyFilters);
   const resetFilters = useEvent(inputs.resetFilters);
@@ -41,6 +42,7 @@ export const TasksMapContainer = () => {
         isLoadingTask={isLoadingTask}
         handleClickTask={handleClickTask}
         clearTask={clearTask}
+        organizationUsers={organizationUsers}
       />
     </>
   );
