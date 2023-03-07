@@ -1,5 +1,7 @@
 import { EActResourceType, EResourceType } from 'myApi';
 
+export const EXTENDED_PLACEMARK_ZOOM_LIMIT = 18;
+
 export const ResourcesPlacemarksLookup: {
   [key: string]: string;
 } = {

@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { TasksMapProps } from './TasksMap.types';
-import { getTaskPlacemarkerLink } from '../TasksMapView.utils';
 import { Map, ZoomControl, Placemark } from '@pbe/react-yandex-maps';
+import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TaskMap.constants';
+import { getTaskPlacemarkerLink } from './TasksMap.utils';
 
 export const TasksMap: FC<TasksMapProps> = React.memo(
   ({ housingStocksWithTasks, handleClickMarker }) => {
-    const [zoom, setZoom] = useState<number | null>(null);
+    const [isExtenedPlacemarks, setIsExtendedPlacemarks] =
+      useState<boolean>(false);
 
     const mapRef = useRef<null | { _zoom?: number }>(null);
 
@@ -17,20 +19,20 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
     ];
 
     useEffect(() => {
-      console.log(zoom);
-    }, [zoom]);
+      console.log(isExtenedPlacemarks);
+    }, [isExtenedPlacemarks]);
 
     useEffect(() => {
       const timer = setInterval(() => {
         const currentZoom = mapRef?.current?._zoom;
 
-        if (!currentZoom || zoom === currentZoom) return;
+        if (!currentZoom) return;
 
-        setZoom(currentZoom);
-      }, 100);
+        setIsExtendedPlacemarks(EXTENDED_PLACEMARK_ZOOM_LIMIT <= currentZoom);
+      }, 300);
 
       return () => clearInterval(timer);
-    }, [setZoom, mapRef, zoom]);
+    }, [setIsExtendedPlacemarks, mapRef]);
 
     return (
       <Map

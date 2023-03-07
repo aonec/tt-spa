@@ -8,7 +8,7 @@ import {
 import {
   CalculatorPlacemark,
   ResourcesPlacemarksLookup,
-} from './TasksMapView.constants';
+} from './TaskMap.constants';
 import calculatorPlacemark from './assets/calculatorPlacemark.svg';
 
 export const getTaskIcon = (
