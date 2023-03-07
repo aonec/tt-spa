@@ -8,11 +8,13 @@ const { outputs } = routerService;
 export const RouterContainer = () => {
   const currentUserRoles = useStore(outputs.$currentUserRoles);
 
+  const isRolesLoadded = useStore(outputs.$isCurrentUserLoading);
+
   const roles = currentUserRoles?.map(({ key }) => key!) || [];
 
   return (
     <>
-      <Router roles={roles} />
+      <Router roles={roles} isRolesLoadded={isRolesLoadded} />
     </>
   );
 };

@@ -51,10 +51,13 @@ const { gates } = objectProfileService;
 
 const { ObjectGroupIsOpen } = gates;
 
-export const Router: FC<RouterProps> = ({ roles }) => {
+export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   const redirectRoute = roles.length
-    ? roles?.includes(ESecuredIdentityRoleName.Operator)
-      ? '/meters/'
+    ? roles?.includes(
+        ESecuredIdentityRoleName.SeniorOperator ||
+          ESecuredIdentityRoleName.Operator,
+      )
+      ? '/meters/apartments'
       : '/tasks/'
     : '/login';
 
@@ -99,266 +102,357 @@ export const Router: FC<RouterProps> = ({ roles }) => {
         <Route path="/logout" render={() => 'logout'} />
         <Route path="/error/" render={() => <ErrorPage />} />
         <Route path="/registration*" render={() => <Registration />} />
-        <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
         <Route path="/">
           <Layout>
             <Panel />
             <div />
             <PageWrapper>
-              <Switch>
-                <Redirect from="/" to={redirectRoute} exact />
+              {!isRolesLoadded && roles.length ? (
+                <Switch>
+                  <Redirect from="/" to={redirectRoute} exact />
 
-                {TasksRouter()}
+                  {TasksRouter()}
 
-                {isAnyRole && (
-                  <Route path="/actsJournal" exact>
-                    <ApartmentActs />
-                  </Route>
-                )}
+                  {isAnyRole && (
+                    <Route path="/actsJournal" exact>
+                      <ApartmentActs />
+                    </Route>
+                  )}
 
-                {isAdministrator && (
-                  <Route
-                    path="/objects/create"
-                    component={CreateObjectContainer}
-                    exact
-                  />
-                )}
-
-                {(isAdministrator || isExecutor) && (
-                  <Route
-                    path="/objects/:housingStockId/addNode"
-                    component={CreateNodeContainer}
-                    exact
-                  />
-                )}
-
-                {isAnyRole && (
-                  <Route
-                    path="/objects/:searchType?"
-                    component={ObjectsProfileContainer}
-                    exact
-                  />
-                )}
-
-                {(isAdministrator || isSeniorOperator || isOperator) && (
-                  <Route
-                    path="/apartments/:apartmentId/edit"
-                    component={EditApartmentProfileContainer}
-                    exact
-                  />
-                )}
-
-                {isAnyRole && (
-                  <Route
-                    path="/apartments/:apartmentId/:tabSection?"
-                    component={ApartmentProfileContainer}
-                    exact
-                  />
-                )}
-
-                {isAnyRole && (
-                  <Route path="/objects">
-                    <ObjectGroupIsOpen />
+                  {isAdministrator ? (
                     <Route
-                      path="/objects/profile/:housingStockId"
-                      component={ObjectProfileContainer}
+                      path="/objects/create"
+                      component={CreateObjectContainer}
                       exact
                     />
-                  </Route>
-                )}
+                  ) : (
+                    <Redirect
+                      from="/objects/create"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
 
-                {(isAdministrator || isExecutor) && (
-                  <Route
-                    path="/devices/addNode"
-                    component={CreateNodeContainer}
-                    exact
-                  />
-                )}
+                  {isAdministrator || isExecutor ? (
+                    <Route
+                      path="/objects/:housingStockId/addNode"
+                      component={CreateNodeContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/objects/:housingStockId/addNode"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
 
-                {isAnyRole && (
-                  <Route
-                    path="/devices/:type?"
-                    component={DevicesPageContainer}
-                    exact
-                  />
-                )}
+                  {isAnyRole && (
+                    <Route
+                      path="/objects/:searchType?"
+                      component={ObjectsProfileContainer}
+                      exact
+                    />
+                  )}
 
-                {(isAdministrator || isExecutor) && (
-                  <Route
-                    path="/changeODPU/:oldDeviceId"
-                    component={ChangeODPUContainer}
-                    exact
-                  />
-                )}
+                  {isAdministrator || isSeniorOperator || isOperator ? (
+                    <Route
+                      path="/apartments/:apartmentId/edit"
+                      component={EditApartmentProfileContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/apartments/:apartmentId/edit"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
 
-                {(isAdministrator ||
+                  {isAnyRole && (
+                    <Route
+                      path="/apartments/:apartmentId/:tabSection?"
+                      component={ApartmentProfileContainer}
+                      exact
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route path="/objects">
+                      <ObjectGroupIsOpen />
+                      <Route
+                        path="/objects/profile/:housingStockId"
+                        component={ObjectProfileContainer}
+                        exact
+                      />
+                    </Route>
+                  )}
+
+                  {isAdministrator || isExecutor ? (
+                    <Route
+                      path="/devices/addNode"
+                      component={CreateNodeContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/devices/addNode"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
+                      path="/devices/:type?"
+                      component={DevicesPageContainer}
+                      exact
+                    />
+                  )}
+
+                  {isAdministrator || isExecutor ? (
+                    <Route
+                      path="/changeODPU/:oldDeviceId"
+                      component={ChangeODPUContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/changeODPU/:oldDeviceId"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
+
+                  {isAdministrator ||
                   isSeniorOperator ||
                   isOperator ||
-                  isExecutor) && (
-                  <Route
-                    path="/electricNode/:deviceId/edit"
-                    component={EditElectricNodeContainer}
-                  />
-                )}
+                  isExecutor ? (
+                    <Route
+                      path="/electricNode/:deviceId/edit"
+                      component={EditElectricNodeContainer}
+                    />
+                  ) : (
+                    <Redirect
+                      from="/electricNode/:deviceId/edit"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
 
-                {isAdministrator && (
-                  <Route path="/companyProfile/editManagingFirmUser/:id" exact>
-                    <EditEmployeeContainer />
-                  </Route>
-                )}
+                  {isAdministrator && (
+                    <Route
+                      path="/companyProfile/editManagingFirmUser/:id"
+                      exact
+                    >
+                      <EditEmployeeContainer />
+                    </Route>
+                  )}
 
-                {isAdministrator && (
-                  <Route
-                    path="/companyProfile/:section?"
-                    component={CompanyProfileContainer}
-                  />
-                )}
+                  {isAdministrator && (
+                    <Route
+                      path="/companyProfile/:section?"
+                      component={CompanyProfileContainer}
+                    />
+                  )}
 
-                {isAdministrator && (
-                  <Route path="/editCompany" component={EditCompanyContainer} />
-                )}
+                  {isAdministrator && (
+                    <Route
+                      path="/editCompany"
+                      component={EditCompanyContainer}
+                    />
+                  )}
 
-                {isAdministrator && (
-                  <Route
-                    path="/userProfile/:id"
-                    component={EmployeeProfileContainer}
-                  />
-                )}
+                  {isAdministrator && (
+                    <Route
+                      path="/userProfile/:id"
+                      component={EmployeeProfileContainer}
+                    />
+                  )}
 
-                {isAnyRole && (
-                  <Route
-                    path={['/calculators/:deviceId']}
-                    component={CalculatorProfileContainer}
-                    exact
-                  />
-                )}
+                  {isAnyRole && (
+                    <Route
+                      path={['/calculators/:deviceId']}
+                      component={CalculatorProfileContainer}
+                      exact
+                    />
+                  )}
 
-                {(isAdministrator || isExecutor) && (
-                  <Route
-                    path="/calculators/:deviceId/edit"
-                    component={EditCalculatorContainer}
-                    exact
-                  />
-                )}
+                  {isAdministrator || isExecutor ? (
+                    <Route
+                      path="/calculators/:deviceId/edit"
+                      component={EditCalculatorContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/calculators/:deviceId/edit"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
 
-                {(isAdministrator || isExecutor) && (
-                  <Route
-                    path="/nodes/:nodeId/edit"
-                    component={EditNodeContainer}
-                    exact
-                  />
-                )}
+                  {isAdministrator || isExecutor ? (
+                    <Route
+                      path="/nodes/:nodeId/edit"
+                      component={EditNodeContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/nodes/:nodeId/edit"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
 
-                {isAnyRole && (
-                  <Route
-                    path="/nodes/:nodeId/:section?"
-                    component={NodeProfileContainer}
-                    exact
-                  />
-                )}
+                  {isAnyRole && (
+                    <Route
+                      path="/nodes/:nodeId/:section?"
+                      component={NodeProfileContainer}
+                      exact
+                    />
+                  )}
 
-                {isAnyRole && (
-                  <Route
-                    path={['/housingMeteringDevices/:deviceId/']}
-                    component={HousingMeteringDeviceProfileContainer}
-                    exact
-                  />
-                )}
+                  {isAnyRole && (
+                    <Route
+                      path={['/housingMeteringDevices/:deviceId/']}
+                      component={HousingMeteringDeviceProfileContainer}
+                      exact
+                    />
+                  )}
 
-                {(isAdministrator ||
+                  {isAdministrator ||
                   isExecutor ||
                   isSeniorOperator ||
-                  isOperator) && (
-                  <Route
-                    path="/housingMeteringDevices/:deviceId/edit"
-                    component={EditHousingMeteringDeviceContainer}
+                  isOperator ? (
+                    <Route
+                      path="/housingMeteringDevices/:deviceId/edit"
+                      component={EditHousingMeteringDeviceContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/housingMeteringDevices/:deviceId/edit"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
+                      path="/individualDevices/:deviceId"
+                      component={IndividualDevice}
+                      exact
+                    />
+                  )}
+
+                  {isAdministrator || isSeniorOperator || isExecutor ? (
+                    <Route
+                      path="/individualDevices/:deviceId/edit"
+                      component={IndividualDeviceEdit}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/individualDevices/:deviceId/edit"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
+                      path="/meters/:section/:id?"
+                      component={MetersContainer}
+                    />
+                  )}
+
+                  {isAnyRole && (
+                    <Route
+                      path="/nodeArchive/:nodeId"
+                      component={NodeArchivePageContainer}
+                      exact
+                    />
+                  )}
+
+                  {(isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/settings/:section/:id?"
+                      component={SettingsPageContainer}
+                      exact
+                    />
+                  )}
+
+                  {isAdministrator && (
+                    <Route
+                      path="/adminSettings/:section"
+                      component={SettingsPageContainer}
+                      exact
+                    />
+                  )}
+
+                  {isAdministrator && (
+                    <Route
+                      path="/adminSettings/operatingRanges/Standart"
+                      component={StandartWorkingRangeContainer}
+                      exact
+                    />
+                  )}
+                  {isAdministrator && (
+                    <Route
+                      path="/adminSettings/operatingRanges/Group"
+                      component={GroupWorkingRangeContainer}
+                      exact
+                    />
+                  )}
+                  {isAdministrator && (
+                    <Route
+                      path="/adminSettings/operatingRanges/Unique"
+                      component={UniqueWorkingRangeContainer}
+                      exact
+                    />
+                  )}
+
+                  <Redirect
+                    from="/statistics/"
+                    to="/statistics/subscribersConsumption/houses"
                     exact
                   />
-                )}
 
-                {isAnyRole && (
-                  <Route
-                    path="/individualDevices/:deviceId"
-                    component={IndividualDevice}
+                  <Redirect
+                    from="/statistics/subscribersConsumption"
+                    to="/statistics/subscribersConsumption/houses"
                     exact
                   />
-                )}
+                  {isAnyRole && (
+                    <Route path="/statistics/:grouptype/:searchType?">
+                      <StatisticsPage />
+                    </Route>
+                  )}
 
-                {(isAdministrator || isSeniorOperator || isExecutor) && (
-                  <Route
-                    path="/individualDevices/:deviceId/edit"
-                    component={IndividualDeviceEdit}
-                    exact
-                  />
-                )}
+                  {isSeniorOperator && (
+                    <Route
+                      path="/reports"
+                      component={ReportsPageContainer}
+                      exact
+                    />
+                  )}
+                  {isSeniorOperator && (
+                    <Route
+                      path="/reports/:reportType"
+                      component={ReportViewContainer}
+                      exact
+                    />
+                  )}
 
-                {isAnyRole && (
-                  <Route
-                    path="/meters/:section/:id?"
-                    component={MetersContainer}
-                  />
-                )}
-
-                <Route
-                  path="/nodeArchive/:nodeId"
-                  component={NodeArchivePageContainer}
-                  exact
-                />
-
-                <Route
-                  path="/settings/:section/:id?"
-                  component={SettingsPageContainer}
-                  exact
-                />
-                <Route
-                  path="/adminSettings/:section"
-                  component={SettingsPageContainer}
-                  exact
-                />
-
-                <Route
-                  path="/adminSettings/operatingRanges/Standart"
-                  component={StandartWorkingRangeContainer}
-                  exact
-                />
-                <Route
-                  path="/adminSettings/operatingRanges/Group"
-                  component={GroupWorkingRangeContainer}
-                  exact
-                />
-                <Route
-                  path="/adminSettings/operatingRanges/Unique"
-                  component={UniqueWorkingRangeContainer}
-                  exact
-                />
-
-                <Redirect
-                  from="/statistics/"
-                  to="/statistics/subscribersConsumption/houses"
-                  exact
-                />
-
-                <Redirect
-                  from="/statistics/subscribersConsumption"
-                  to="/statistics/subscribersConsumption/houses"
-                  exact
-                />
-
-                <Route path="/statistics/:grouptype/:searchType?">
-                  <StatisticsPage />
-                </Route>
-
-                <Route path="/reports" component={ReportsPageContainer} exact />
-
-                <Route
-                  path="/reports/:reportType"
-                  component={ReportViewContainer}
-                  exact
-                />
-
-                <Redirect from="/meters" to="/meters/apartments" exact />
-                <Redirect from="*" to="/access-denied/" />
-              </Switch>
+                  <Redirect from="/meters" to="/meters/apartments" exact />
+                  <Redirect from="*" to="/access-denied/" exact />
+                  <Route path="/access-denied/" component={AccessDeniedPage} />
+                </Switch>
+              ) : (
+                <></>
+              )}
               <ApartmentsRouteGroup />
             </PageWrapper>
           </Layout>
