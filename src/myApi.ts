@@ -2097,6 +2097,13 @@ export enum ETaskEngineeringElement {
   HouseNetwork = 'HouseNetwork',
 }
 
+export enum ETaskTargetObject {
+  IndividualDevice = 'IndividualDevice',
+  PipeHousingDevice = 'PipeHousingDevice',
+  Calculator = 'Calculator',
+  PipeNode = 'PipeNode',
+}
+
 export enum ETaskTargetObjectRequestType {
   Apartment = 'Apartment',
   MeteringDevice = 'MeteringDevice',
@@ -5776,6 +5783,7 @@ export interface TaskListResponse {
 
   /** @format date-time */
   closingTime: string | null;
+  type: EManagingFirmTaskType;
   closingStatus: ETaskClosingStatus | null;
   address: FullAddressResponse | null;
   perpetrator: OrganizationUserShortResponse | null;
@@ -5841,12 +5849,14 @@ export interface TaskResponseSuccessApiResponse {
 export interface TaskShortResponse {
   /** @format int32 */
   id: number;
-  type: string | null;
+  type: EManagingFirmTaskType;
+  typeString: string | null;
   creationReason: string | null;
 
   /** @format date-time */
   creationDate: string;
-  resourceType: string | null;
+  targetObject: ETaskTargetObject;
+  resourceTypes: EResourceType[] | null;
   executor: OrganizationUserShortResponse | null;
 }
 
@@ -9718,7 +9728,7 @@ export class Api<
         EngineeringElement?: ETaskEngineeringElement;
         ResourceTypes?: EResourceType[];
         TimeStatus?: EStageTimeStatus;
-        Type?: EManagingFirmTaskType;
+        TaskType?: EManagingFirmTaskFilterType;
         ExecutorId?: number;
       },
       params: RequestParams = {},
