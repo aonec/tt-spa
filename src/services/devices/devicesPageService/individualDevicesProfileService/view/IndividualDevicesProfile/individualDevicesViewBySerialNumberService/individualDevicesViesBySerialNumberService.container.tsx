@@ -26,7 +26,9 @@ export const IndividualDevicesViewBySerialNumberContainer = () => {
   return (
     <>
       <IndividualDevicesViewBySerialNumberSearch
-        clearSearchPayload={() => clearSearchPayload()}
+        clearSearchPayload={() => {
+          clearSearchPayload();
+        }}
         filter={filter}
         setFilter={setFilter}
         mountPlaces={mountPlaces}

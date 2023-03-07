@@ -6,11 +6,6 @@ export const LineWrapper = styled.div`
   grid-gap: 4px 16px;
 `;
 
-export const CreatePipeButtonWrapper = styled.div`
-  margin-top: 42px;
-  margin-left: 24px;
-`;
-
 export const PipeSelectOption = styled.div`
   color: #272f5ad1;
 `;

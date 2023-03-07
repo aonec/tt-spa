@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
+import { forbiddenList } from './403handling';
+import { message } from 'antd';
 
 export const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
 
@@ -44,6 +46,20 @@ axios.interceptors.response.use(
   (error) => {
     const status = error?.response?.status;
 
+    if (
+      status === 403 &&
+      forbiddenList.some(
+        (forbiddenUrl) =>
+          forbiddenUrl.methods.includes(
+            error?.response.config.method.toUpperCase(),
+          ) && forbiddenUrl.regExp.test(error.config.url),
+      )
+    ) {
+      message.error(
+        'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
+      );
+    }
+
     if (status === 401 && checkUrl('refresh', error.config.url)) {
       localStorage.clear();
       window.location.replace('/login');
@@ -56,13 +72,11 @@ axios.interceptors.response.use(
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axios.post('/auth/refreshToken').then(
-            () => {
-              setIsRefreshRunning(false);
+          axios.post('/auth/refreshToken').then(() => {
+            setIsRefreshRunning(false);
 
-              return resolve(axios(config));
-            }
-          );
+            return resolve(axios(config));
+          });
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {
@@ -75,7 +89,7 @@ axios.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 function saveToLocalStorage(name: string, data: string) {

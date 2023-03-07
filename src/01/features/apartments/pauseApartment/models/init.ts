@@ -46,8 +46,8 @@ const payload = combine(
       toDate: moment(values.toDate).format('YYYY-MM-DD'),
       status: EApartmentStatus.Pause,
       documentIds: values.documents
-        .filter((elem) => elem.fileResponse)
-        .map((elem) => elem.fileResponse?.id!),
+        .map((document) => document.id)
+        .filter((documentId): documentId is number => Boolean(documentId)),
     },
   }),
 );
@@ -73,11 +73,6 @@ sample({
 });
 
 pauseApartmentStatusFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
