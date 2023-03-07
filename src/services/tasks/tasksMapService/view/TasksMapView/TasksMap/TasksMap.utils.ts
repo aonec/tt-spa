@@ -1,35 +1,13 @@
-import _, { uniq } from 'lodash';
+import { uniq } from 'lodash';
 import {
   EActResourceType,
   EResourceType,
   HousingStockWithTasksResponse,
-  MeteringDeviceSearchListResponse,
 } from 'myApi';
 import {
   CalculatorPlacemark,
   ResourcesPlacemarksLookup,
 } from './TaskMap.constants';
-import calculatorPlacemark from './assets/calculatorPlacemark.svg';
-
-export const getTaskIcon = (
-  devices: MeteringDeviceSearchListResponse[] | null,
-) => {
-  if (!devices) {
-    return null;
-  }
-
-  const device = devices[0];
-
-  const allDevicesResource = devices.map((device) => device?.resource);
-  const isUniq = _.uniq(allDevicesResource).length === 1;
-  const iconType = isUniq ? device?.resource : EActResourceType.All;
-
-  if (iconType) {
-    return ResourcesPlacemarksLookup[iconType];
-  }
-
-  return calculatorPlacemark;
-};
 
 export const getTaskPlacemarkerLink = (
   housingStockWithTask: HousingStockWithTasksResponse,
