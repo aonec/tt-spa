@@ -20,7 +20,6 @@ const { ApartmentIdGate } = gates;
 
 export const TasksProfileContainer = () => {
   const { grouptype } = useParams<{ grouptype: TaskGroupingFilter }>();
-  const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(null);
 
   const taskTypes = useStore(outputs.$taskTypes);
   const housingManagments = useStore(outputs.$housingManagments);
@@ -31,6 +30,7 @@ export const TasksProfileContainer = () => {
   const isSpectator = useStore(outputs.$isSpectator);
   const apartment = useStore(outputs.$apartment);
   const housingStock = useStore(outputs.$housingStock);
+  const initialValues = useStore(outputs.$searchState);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.exportTasksList,
@@ -62,6 +62,10 @@ export const TasksProfileContainer = () => {
     housingMeteringDeviceId || calculatorId,
   );
 
+  const lastGroupTypeRef = useRef<TaskGroupingFilter | null>(
+    initialValues?.GroupType || null,
+  );
+
   useEffect(() => {
     closeExtendedSearch();
 
@@ -73,10 +77,6 @@ export const TasksProfileContainer = () => {
       return;
     }
     clearAddress();
-
-    if (!lastGroupTypeRef.current) {
-      changeGroupType(grouptype);
-    }
 
     if (lastGroupTypeRef.current === grouptype) {
       return;
@@ -101,7 +101,6 @@ export const TasksProfileContainer = () => {
     closeExtendedSearch,
   ]);
 
-  const initialValues = useStore(outputs.$searchState);
   const preparedTasks = useMemo(
     () => prepareData(pagedTasks?.items || [], grouptype),
     [pagedTasks?.items, grouptype],

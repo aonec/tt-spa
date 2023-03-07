@@ -27,6 +27,7 @@ import {
 const domain = createDomain('tasksProfileService');
 
 const clearAddress = domain.createEvent();
+const clearFilters = domain.createEvent();
 
 const getApartmentFx = domain.createEffect<
   FiltersGatePayload,
@@ -65,7 +66,6 @@ const $searchState = domain
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 const $isExtendedSearchOpen = domain.createStore(false);
 
-const clearFilters = domain.createEvent();
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
 
@@ -119,8 +119,9 @@ $searchState
     ...filters,
     PageNumber: 1,
   }))
-  .on(changeFiltersByGroupType, (_, GroupType) => ({
+  .on(changeFiltersByGroupType, ({ City }, GroupType) => ({
     GroupType,
+    City,
     PageNumber: 1,
   }))
   .on(changeGroupType, (filters, GroupType) => ({
