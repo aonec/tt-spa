@@ -2,7 +2,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
@@ -38,22 +38,15 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
 }) => {
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
-  const initialDate = useMemo(
-    () =>
-      filter?.From
-        ? filter.From
-        : moment().startOf('month').utcOffset(0, true).format(),
-    [filter?.From],
-  );
-
-  const { values, setFieldValue, submitForm, resetForm, errors, setValues } =
+  const { values, setFieldValue, submitForm, resetForm, errors } =
     useFormik<GetHousingConsumptionDataFormik>({
       initialValues: {
         HousingStockId: filter?.HousingStockId || null,
         currentAddress: filter?.currentAddress || null,
         AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
         additionalAddress: filter?.additionalAddress || null,
-        From: initialDate,
+        From:
+          filter?.From || moment().startOf('month').utcOffset(0, true).format(),
       },
       validationSchema: resourceConsumptionFilterValidationSchema,
       enableReinitialize: true,
@@ -75,14 +68,11 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     });
 
   useEffect(() => {
-    setValues({
-      additionalAddress: null,
-      currentAddress: null,
-      AdditionalHousingStockId: null,
-      HousingStockId: null,
-      From: initialDate,
-    });
-  }, [streetsList, initialDate, setValues]);
+    setFieldValue('additionalAddress', null);
+    setFieldValue('currentAddress', null);
+    setFieldValue('AdditionalHousingStockId', null);
+    setFieldValue('HousingStockId', null);
+  }, [streetsList, setFieldValue]);
 
   const handleReset = useCallback(() => {
     resetForm();
