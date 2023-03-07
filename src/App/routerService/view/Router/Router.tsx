@@ -82,6 +82,15 @@ export const Router: FC<RouterProps> = ({ roles }) => {
   const isSpectatorRestricted = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmSpectator,
   );
+  const isAnyRole =
+    isAdministrator ||
+    isSeniorOperator ||
+    isOperator ||
+    isExecutor ||
+    isController ||
+    isDispatcher ||
+    isSpectator ||
+    isSpectatorRestricted;
 
   return (
     <Wrapper>
@@ -101,14 +110,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
 
                 {TasksRouter()}
 
-                {(isAdministrator ||
-                  isSeniorOperator ||
-                  isOperator ||
-                  isExecutor ||
-                  isController ||
-                  isDispatcher ||
-                  isSpectator ||
-                  isSpectatorRestricted) && (
+                {isAnyRole && (
                   <Route path="/actsJournal" exact>
                     <ApartmentActs />
                   </Route>
@@ -130,14 +132,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   />
                 )}
 
-                {(isAdministrator ||
-                  isSeniorOperator ||
-                  isOperator ||
-                  isExecutor ||
-                  isController ||
-                  isDispatcher ||
-                  isSpectator ||
-                  isSpectatorRestricted) && (
+                {isAnyRole && (
                   <Route
                     path="/objects/:searchType?"
                     component={ObjectsProfileContainer}
@@ -153,14 +148,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   />
                 )}
 
-                {(isAdministrator ||
-                  isSeniorOperator ||
-                  isOperator ||
-                  isExecutor ||
-                  isController ||
-                  isDispatcher ||
-                  isSpectator ||
-                  isSpectatorRestricted) && (
+                {isAnyRole && (
                   <Route
                     path="/apartments/:apartmentId/:tabSection?"
                     component={ApartmentProfileContainer}
@@ -168,14 +156,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   />
                 )}
 
-                {(isAdministrator ||
-                  isSeniorOperator ||
-                  isOperator ||
-                  isExecutor ||
-                  isController ||
-                  isDispatcher ||
-                  isSpectator ||
-                  isSpectatorRestricted) && (
+                {isAnyRole && (
                   <Route path="/objects">
                     <ObjectGroupIsOpen />
                     <Route
@@ -194,14 +175,7 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   />
                 )}
 
-                {(isAdministrator ||
-                  isSeniorOperator ||
-                  isOperator ||
-                  isExecutor ||
-                  isController ||
-                  isDispatcher ||
-                  isSpectator ||
-                  isSpectatorRestricted) && (
+                {isAnyRole && (
                   <Route
                     path="/devices/:type?"
                     component={DevicesPageContainer}
@@ -217,79 +191,113 @@ export const Router: FC<RouterProps> = ({ roles }) => {
                   />
                 )}
 
-                <Route
-                  path="/electricNode/:deviceId/edit"
-                  component={EditElectricNodeContainer}
-                />
+                {(isAdministrator ||
+                  isSeniorOperator ||
+                  isOperator ||
+                  isExecutor) && (
+                  <Route
+                    path="/electricNode/:deviceId/edit"
+                    component={EditElectricNodeContainer}
+                  />
+                )}
 
-                <Route path="/companyProfile/editManagingFirmUser/:id" exact>
-                  <EditEmployeeContainer />
-                </Route>
+                {isAdministrator && (
+                  <Route path="/companyProfile/editManagingFirmUser/:id" exact>
+                    <EditEmployeeContainer />
+                  </Route>
+                )}
 
-                <Route
-                  path="/companyProfile/:section?"
-                  component={CompanyProfileContainer}
-                />
+                {isAdministrator && (
+                  <Route
+                    path="/companyProfile/:section?"
+                    component={CompanyProfileContainer}
+                  />
+                )}
 
-                <Route path="/editCompany" component={EditCompanyContainer} />
+                {isAdministrator && (
+                  <Route path="/editCompany" component={EditCompanyContainer} />
+                )}
 
-                <Route
-                  path="/userProfile/:id"
-                  component={EmployeeProfileContainer}
-                />
+                {isAdministrator && (
+                  <Route
+                    path="/userProfile/:id"
+                    component={EmployeeProfileContainer}
+                  />
+                )}
 
-                <Route
-                  path={['/calculators/:deviceId']}
-                  component={CalculatorProfileContainer}
-                  exact
-                />
+                {isAnyRole && (
+                  <Route
+                    path={['/calculators/:deviceId']}
+                    component={CalculatorProfileContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/calculators/:deviceId/edit"
-                  component={EditCalculatorContainer}
-                  exact
-                />
+                {(isAdministrator || isExecutor) && (
+                  <Route
+                    path="/calculators/:deviceId/edit"
+                    component={EditCalculatorContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/nodes/:nodeId/edit"
-                  component={EditNodeContainer}
-                  exact
-                />
+                {(isAdministrator || isExecutor) && (
+                  <Route
+                    path="/nodes/:nodeId/edit"
+                    component={EditNodeContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/nodes/:nodeId/:section?"
-                  component={NodeProfileContainer}
-                  exact
-                />
+                {isAnyRole && (
+                  <Route
+                    path="/nodes/:nodeId/:section?"
+                    component={NodeProfileContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path={['/housingMeteringDevices/:deviceId/']}
-                  component={HousingMeteringDeviceProfileContainer}
-                  exact
-                />
+                {isAnyRole && (
+                  <Route
+                    path={['/housingMeteringDevices/:deviceId/']}
+                    component={HousingMeteringDeviceProfileContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/housingMeteringDevices/:deviceId/edit"
-                  component={EditHousingMeteringDeviceContainer}
-                  exact
-                />
+                {(isAdministrator ||
+                  isExecutor ||
+                  isSeniorOperator ||
+                  isOperator) && (
+                  <Route
+                    path="/housingMeteringDevices/:deviceId/edit"
+                    component={EditHousingMeteringDeviceContainer}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/individualDevices/:deviceId"
-                  component={IndividualDevice}
-                  exact
-                />
+                {isAnyRole && (
+                  <Route
+                    path="/individualDevices/:deviceId"
+                    component={IndividualDevice}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/individualDevices/:deviceId/edit"
-                  component={IndividualDeviceEdit}
-                  exact
-                />
+                {(isAdministrator || isSeniorOperator || isExecutor) && (
+                  <Route
+                    path="/individualDevices/:deviceId/edit"
+                    component={IndividualDeviceEdit}
+                    exact
+                  />
+                )}
 
-                <Route
-                  path="/meters/:section/:id?"
-                  component={MetersContainer}
-                />
+                {isAnyRole && (
+                  <Route
+                    path="/meters/:section/:id?"
+                    component={MetersContainer}
+                  />
+                )}
 
                 <Route
                   path="/nodeArchive/:nodeId"
