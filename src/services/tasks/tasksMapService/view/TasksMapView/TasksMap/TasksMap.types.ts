@@ -3,6 +3,7 @@ import { HousingStockWithTasksResponse } from 'myApi';
 export type TasksMapProps = {
   housingStocksWithTasks: HousingStockWithTasksResponse[];
   handleClickMarker: (payload: HousingStockWithTasksResponse) => void;
+  selectedHousingStockId: number | undefined;
 };
 
 export enum HousingStockTaskMarkerType {
@@ -13,3 +14,11 @@ export enum HousingStockTaskMarkerType {
   Heat = 'Heat',
   Electricity = 'Electricity',
 }
+
+export type GetPlacemarkerLayoutLinkResponse = {
+  iconHrev: string;
+  size: {
+    width: number;
+    height: number;
+  };
+};

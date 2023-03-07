@@ -39,6 +39,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
       <TasksMap
         housingStocksWithTasks={housingStocksWithTasks}
         handleClickMarker={handleClickMarker}
+        selectedHousingStockId={selectedHousingStock?.housingStock?.id}
       />
     </Wrapper>
   );
