@@ -1,13 +1,16 @@
-import { uniq } from 'lodash';
+import { groupBy, uniq } from 'lodash';
 import {
   EActResourceType,
   EResourceType,
+  ETaskTargetObject,
   HousingStockWithTasksResponse,
+  TaskShortResponse,
 } from 'myApi';
 import {
   CalculatorPlacemark,
   ResourcesPlacemarksLookup,
 } from './TaskMap.constants';
+import { HousingStockTaskMarkerType } from './TasksMap.types';
 
 export const getTaskPlacemarkerLink = (
   housingStockWithTask: HousingStockWithTasksResponse,
@@ -44,4 +47,34 @@ export const getTaskPlacemarkerLink = (
   const iconHrev = 'data:image/svg+xml;base64,' + btoa(svgCodeText);
 
   return iconHrev;
+};
+
+export const getHousingStockTaskType = (
+  task: TaskShortResponse,
+): HousingStockTaskMarkerType | null => {
+  if (task.targetObject === ETaskTargetObject.Calculator)
+    return HousingStockTaskMarkerType.Calculator;
+
+  const resources = uniq(task.resourceTypes || []);
+
+  if (resources.length > 1) return HousingStockTaskMarkerType.AllResources;
+
+  const taskTesource = resources[0];
+
+  if (!taskTesource) return null;
+
+  switch (taskTesource) {
+    case EResourceType.ColdWaterSupply:
+      return HousingStockTaskMarkerType.ColdWaterSupply;
+    case EResourceType.HotWaterSupply:
+      return HousingStockTaskMarkerType.HotWaterSupply;
+    case EResourceType.Heat:
+      return HousingStockTaskMarkerType.Heat;
+    case EResourceType.Electricity:
+      return HousingStockTaskMarkerType.Electricity;
+  }
+};
+
+export const groupTasksByMarkerType = (tasks: TaskShortResponse[]) => {
+  return groupBy(tasks, (task) => getHousingStockTaskType(task));
 };

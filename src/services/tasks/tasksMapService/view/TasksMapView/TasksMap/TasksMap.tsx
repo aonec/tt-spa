@@ -2,12 +2,18 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { TasksMapProps } from './TasksMap.types';
 import { Map, ZoomControl, Placemark } from '@pbe/react-yandex-maps';
 import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TaskMap.constants';
-import { getTaskPlacemarkerLink } from './TasksMap.utils';
+import {
+  getTaskPlacemarkerLink,
+  groupTasksByMarkerType,
+} from './TasksMap.utils';
 
 export const TasksMap: FC<TasksMapProps> = React.memo(
   ({ housingStocksWithTasks, handleClickMarker }) => {
-    const [isExtenedPlacemarks, setIsExtendedPlacemarks] =
-      useState<boolean>(false);
+    housingStocksWithTasks.map((elem) =>
+      console.log(groupTasksByMarkerType(elem.tasks || [])),
+    );
+
+    const [, setIsExtendedPlacemarks] = useState<boolean>(false);
 
     const mapRef = useRef<null | { _zoom?: number }>(null);
 
@@ -17,10 +23,6 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
       housingStocksWithTasks?.[0]?.housingStock?.coordinates?.longitude ||
         51.8245,
     ];
-
-    useEffect(() => {
-      console.log(isExtenedPlacemarks);
-    }, [isExtenedPlacemarks]);
 
     useEffect(() => {
       const timer = setInterval(() => {
