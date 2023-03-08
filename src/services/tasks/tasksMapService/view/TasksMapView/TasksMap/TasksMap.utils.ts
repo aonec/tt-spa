@@ -8,7 +8,9 @@ import {
 import {
   CalculatorPlacemark,
   ExtenedTaskPanelBySizeDictionary,
+  getCountCircle,
   ResourcesPlacemarksLookup,
+  TaskTypePlacemarkIconsDictionary,
 } from './TaskMap.constants';
 import {
   GetPlacemarkerLayoutLinkResponse,
@@ -98,9 +100,20 @@ export const getExtendedMapMarkerlayoutLink = (
 
   if (!panelLayout) return getTaskPlacemarkerLink(tasks);
 
+  const taskTypesIcons = Object.entries(tasksTypeGroups)
+    .map(([type, tasks], index) => {
+      const calculateIcon = TaskTypePlacemarkIconsDictionary[type];
+
+      const x = (index + 1) * 31 - 8;
+
+      return `${calculateIcon(x, 20)} ${getCountCircle(x + 3, tasks.length)}`;
+    })
+    .join(' ');
+
   const svgCodeText = `
       <svg width="${panelLayout.width}px" preserveAspectRatio="xMidYMid meet" height="65px" viewBox="0 0 300px 65px" fill="none" xmlns="http://www.w3.org/2000/svg">
         ${panelLayout.layout}
+        ${taskTypesIcons}
       </svg>
     `;
 
