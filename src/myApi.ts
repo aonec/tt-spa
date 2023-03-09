@@ -2097,6 +2097,13 @@ export enum ETaskEngineeringElement {
   HouseNetwork = 'HouseNetwork',
 }
 
+export enum ETaskTargetObject {
+  IndividualDevice = 'IndividualDevice',
+  PipeHousingDevice = 'PipeHousingDevice',
+  Calculator = 'Calculator',
+  PipeNode = 'PipeNode',
+}
+
 export enum ETaskTargetObjectRequestType {
   Apartment = 'Apartment',
   MeteringDevice = 'MeteringDevice',
@@ -3267,6 +3274,25 @@ export interface HousingStockUpdateRequest {
   index?: string | null;
 }
 
+export interface HousingStockWithCoordinatesResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
+  address: HousingStockAddressResponse | null;
+  coordinates: PointResponse | null;
+}
+
+export interface HousingStockWithTasksResponse {
+  housingStock: HousingStockWithCoordinatesResponse | null;
+  tasks: TaskShortResponse[] | null;
+}
+
+export interface HousingStockWithTasksResponseIEnumerableSuccessApiResponse {
+  successResponse: HousingStockWithTasksResponse[] | null;
+}
+
 export interface ImportLogListResponse {
   importLogs: ImportLogResponse[] | null;
 }
@@ -3318,6 +3344,18 @@ export interface IndividualDeviceConsumption {
 
   /** @format date-time */
   readingDate?: string;
+}
+
+export interface IndividualDeviceConsumptionResponse {
+  /** @format double */
+  consumption: number | null;
+
+  /** @format date-time */
+  date: string;
+}
+
+export interface IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse {
+  successResponse: IndividualDeviceConsumptionResponse[] | null;
 }
 
 export interface IndividualDeviceIntoHomeownerCertificateResponse {
@@ -5745,6 +5783,7 @@ export interface TaskListResponse {
 
   /** @format date-time */
   closingTime: string | null;
+  type: EManagingFirmTaskType;
   closingStatus: ETaskClosingStatus | null;
   address: FullAddressResponse | null;
   perpetrator: OrganizationUserShortResponse | null;
@@ -5759,6 +5798,7 @@ export interface TaskListResponse {
   /** @format int32 */
   totalHomeownersCount: number;
   housingStockCoordinates: PointResponse | null;
+  taskConfirmation: TaskConfirmationResponse | null;
 }
 
 export interface TaskResponse {
@@ -5804,6 +5844,21 @@ export interface TaskResponse {
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
+}
+
+export interface TaskShortResponse {
+  /** @format int32 */
+  id: number;
+  type: EManagingFirmTaskType;
+  typeString: string | null;
+  creationReason: string | null;
+
+  /** @format date-time */
+  creationDate: string;
+  targetObject: ETaskTargetObject;
+  resourceTypes: EResourceType[] | null;
+  executor: OrganizationUserShortResponse | null;
+  apartmentNumber: string | null;
 }
 
 export interface TaskStatisticsItem {
@@ -9506,13 +9561,14 @@ export class Api<
      * @secure
      */
     housingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList:
-      (params: RequestParams = {}) =>
+      (query?: { city?: string }, params: RequestParams = {}) =>
         this.request<
           HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
           ErrorApiResponse
         >({
           path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement`,
           method: 'GET',
+          query: query,
           secure: true,
           format: 'json',
           ...params,
@@ -9655,6 +9711,37 @@ export class Api<
       this.request<Int32NullableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
         method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksHousingStockWithTasksList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/HousingStockWithTasks
+     * @secure
+     */
+    housingStocksHousingStockWithTasksList: (
+      query?: {
+        EngineeringElement?: ETaskEngineeringElement;
+        ResourceTypes?: EResourceType[];
+        TimeStatus?: EStageTimeStatus;
+        TaskType?: EManagingFirmTaskFilterType;
+        ExecutorId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        HousingStockWithTasksResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/HousingStocks/HousingStockWithTasks`,
+        method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -10557,6 +10644,30 @@ export class Api<
         path: `/api/IndividualDevices/${deviceId}/Delete`,
         method: 'POST',
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesConsumptionDetail
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/IndividualDevices/{deviceId}/Consumption
+     * @secure
+     */
+    individualDevicesConsumptionDetail: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/Consumption`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
