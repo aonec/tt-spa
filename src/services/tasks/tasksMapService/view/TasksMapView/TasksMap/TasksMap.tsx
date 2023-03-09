@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { TasksMapProps } from './TasksMap.types';
 import { Map, ZoomControl, Placemark } from '@pbe/react-yandex-maps';
 import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TaskMap.constants';
@@ -12,7 +12,7 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
     const [isExtendedPlacemark, setIsExtendedPlacemarks] =
       useState<boolean>(false);
 
-    const mapRef = useRef<null | { _zoom?: number }>(null);
+    const mapRef = useRef<null | any>(null);
 
     const center = [
       housingStocksWithTasks?.[0]?.housingStock?.coordinates?.latitude ||
@@ -20,6 +20,17 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
       housingStocksWithTasks?.[0]?.housingStock?.coordinates?.longitude ||
         51.8245,
     ];
+
+    useEffect(() => {
+      const center = [
+        housingStocksWithTasks?.[0]?.housingStock?.coordinates?.latitude ||
+          55.6366,
+        housingStocksWithTasks?.[0]?.housingStock?.coordinates?.longitude ||
+          51.8245,
+      ];
+
+      mapRef.current?.setCenter?.(center);
+    }, [mapRef, housingStocksWithTasks]);
 
     return (
       <Map
