@@ -1,6 +1,5 @@
 import { createDomain, forward, sample } from 'effector';
 import { HousingStockWithTasksResponse, TaskResponse } from 'myApi';
-import { currentUserService } from 'services/currentUserService';
 import { tasksProfileService } from '../tasksProfileService';
 import {
   $taskTypes,
@@ -48,11 +47,7 @@ const $filtrationValues = domain
     executorId: null,
   })
   .on(applyFilters, (_, filters) => filters)
-  .reset(resetFilters)
-  .on(currentUserService.outputs.$currentUser, (prev, user) => ({
-    ...prev,
-    executorId: user?.id || null,
-  }));
+  .reset(resetFilters);
 
 const $selectedHousingStock = domain
   .createStore<HousingStockWithTasksResponse | null>(null)
