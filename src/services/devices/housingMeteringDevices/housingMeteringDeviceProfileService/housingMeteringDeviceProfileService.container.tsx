@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
+import { currentUserService } from 'services/currentUserService';
+import { ESecuredIdentityRoleName } from 'myApi';
+import _ from 'lodash';
 
 const { inputs, outputs, gates } = housingMeteringDeviceProfileService;
 const { FetchHousingMeteringDeviceGate } = gates;
@@ -16,19 +19,36 @@ export const HousingMeteringDeviceProfileContainer = () => {
   const handleCheckModalOpen = useEvent(inputs.handleCheckModalOpen);
 
   const handleDeviceClosingModalOpen = useEvent(
-    inputs.handleDeviceClosingModalOpen
+    inputs.handleDeviceClosingModalOpen,
   );
 
   const housingMeteringDevice = useStore(outputs.$housingMeteringDevice);
   const housingMeteringDeviceTasks = useStore(
-    outputs.$housingMeteringDeviceTask
+    outputs.$housingMeteringDeviceTask,
   );
 
   const currentTab = useStore(outputs.$currentTab);
-
   const pending = useStore(outputs.$pending);
-
   const tasksPending = useStore(outputs.$tasksPending);
+
+  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
+  const userRolesKeys = userRoles.map((e) => e.key);
+  const isPermitionToCheckHousingMeteringDevice = Boolean(
+    _.intersection(userRolesKeys, [
+      ESecuredIdentityRoleName.Administrator,
+      ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ]).length,
+  );
+  const isPermitionToCloseHousingMeteringDevice =
+    isPermitionToCheckHousingMeteringDevice;
+  const isPermitionToEditHousingMeteringDevice = Boolean(
+    _.intersection(userRolesKeys, [
+      ESecuredIdentityRoleName.Administrator,
+      ESecuredIdentityRoleName.ManagingFirmExecutor,
+      ESecuredIdentityRoleName.SeniorOperator,
+      ESecuredIdentityRoleName.Operator,
+    ]).length,
+  );
 
   return (
     <>
@@ -43,6 +63,15 @@ export const HousingMeteringDeviceProfileContainer = () => {
           handleCheckModalOpen={() => handleCheckModalOpen()}
           handleDeviceClosingModalOpen={() => handleDeviceClosingModalOpen()}
           tasksPending={tasksPending}
+          isPermitionToCheckHousingMeteringDevice={
+            isPermitionToCheckHousingMeteringDevice
+          }
+          isPermitionToCloseHousingMeteringDevice={
+            isPermitionToCloseHousingMeteringDevice
+          }
+          isPermitionToEditHousingMeteringDevice={
+            isPermitionToEditHousingMeteringDevice
+          }
         />
       </WithLoader>
     </>

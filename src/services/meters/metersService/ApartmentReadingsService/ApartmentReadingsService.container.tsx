@@ -5,6 +5,9 @@ import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
+import { currentUserService } from 'services/currentUserService';
+import _ from 'lodash';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 const { inputs, outputs } = apartmentReadingsService;
 
@@ -28,6 +31,17 @@ export const ApartmentReadingsContainer = () => {
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
   const apartment = useStore(outputs.$apartment);
   const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
+
+  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
+  const userRolesKeys = userRoles.map((e) => e.key);
+
+  const isPermitionToApartmentStatusPatch = Boolean(
+    _.intersection(userRolesKeys, [
+      ESecuredIdentityRoleName.Administrator,
+      ESecuredIdentityRoleName.SeniorOperator,
+      ESecuredIdentityRoleName.Operator,
+    ]).length,
+  );
 
   useEffect(() => {
     return inputs.handleApartmentLoaded.watch((apartment) => {
@@ -53,6 +67,7 @@ export const ApartmentReadingsContainer = () => {
         openEditPersonalNumberModal={() => openEditPersonalNumberModal()}
         setSelectedHomeownerName={setSelectedHomeownerName}
         selectedHomeownerName={selectedHomeownerName}
+        isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
       />
     </>
   );

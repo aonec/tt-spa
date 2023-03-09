@@ -44,6 +44,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
   handleCancelPauseApartment,
   openEditPersonalNumberModal,
   setSelectedHomeownerName,
+  isPermitionToApartmentStatusPatch,
 }) => {
   const history = useHistory();
 
@@ -153,12 +154,12 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
             menuButtons={[
               {
                 title: 'Поставить на паузу',
-                hidden: isPaused,
+                hidden: isPaused || !isPermitionToApartmentStatusPatch,
                 onClick: handlePauseApartment,
               },
               {
                 title: 'Снять с паузы',
-                hidden: !isPaused,
+                hidden: !isPaused || !isPermitionToApartmentStatusPatch,
                 onClick: handleCancelPauseApartment,
               },
               {
