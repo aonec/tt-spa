@@ -153,17 +153,17 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
                   В процессе
                 </Radio>
                 <Radio
-                  checked={values.timeStatus === EStageTimeStatus.Expired}
+                  checked={values.timeStatus === EStageTimeStatus.RunningOut}
                   onClick={() =>
-                    setFieldValue('timeStatus', EStageTimeStatus.Expired)
+                    setFieldValue('timeStatus', EStageTimeStatus.RunningOut)
                   }
                 >
                   Истекает срок исполнения
                 </Radio>
                 <Radio
-                  checked={values.timeStatus === EStageTimeStatus.RunningOut}
+                  checked={values.timeStatus === EStageTimeStatus.Expired}
                   onClick={() =>
-                    setFieldValue('timeStatus', EStageTimeStatus.RunningOut)
+                    setFieldValue('timeStatus', EStageTimeStatus.Expired)
                   }
                 >
                   Просроченная
