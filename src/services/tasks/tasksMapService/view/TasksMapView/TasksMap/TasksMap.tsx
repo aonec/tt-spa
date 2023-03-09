@@ -39,7 +39,7 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
         {housingStocksWithTasks.map((housingStockWithTasks) => {
           const isSelected =
             selectedHousingStockId === housingStockWithTasks.housingStock?.id;
-          const { iconHrev, size } =
+          const { iconHrev, size, isExtended } =
             isExtendedPlacemark || isSelected
               ? getExtendedMapMarkerlayoutLink(
                   housingStockWithTasks.tasks || [],
@@ -66,7 +66,7 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
                 iconImageSize: [size.width, size.height],
                 iconOffset: [
                   -(size.width / 2),
-                  isExtendedPlacemark || isSelected ? -20 : 0,
+                  (isExtendedPlacemark || isSelected) && isExtended ? -20 : 0,
                 ],
                 zIndex: isSelected ? 1000 : undefined,
               }}

@@ -5783,6 +5783,7 @@ export interface TaskListResponse {
 
   /** @format date-time */
   closingTime: string | null;
+  type: EManagingFirmTaskType;
   closingStatus: ETaskClosingStatus | null;
   address: FullAddressResponse | null;
   perpetrator: OrganizationUserShortResponse | null;
@@ -5857,6 +5858,7 @@ export interface TaskShortResponse {
   targetObject: ETaskTargetObject;
   resourceTypes: EResourceType[] | null;
   executor: OrganizationUserShortResponse | null;
+  apartmentNumber: string | null;
 }
 
 export interface TaskStatisticsItem {
@@ -9559,13 +9561,14 @@ export class Api<
      * @secure
      */
     housingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList:
-      (params: RequestParams = {}) =>
+      (query?: { city?: string }, params: RequestParams = {}) =>
         this.request<
           HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
           ErrorApiResponse
         >({
           path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement`,
           method: 'GET',
+          query: query,
           secure: true,
           format: 'json',
           ...params,

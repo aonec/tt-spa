@@ -21,4 +21,5 @@ export type GetPlacemarkerLayoutLinkResponse = {
     width: number;
     height: number;
   };
+  isExtended?: boolean;
 };

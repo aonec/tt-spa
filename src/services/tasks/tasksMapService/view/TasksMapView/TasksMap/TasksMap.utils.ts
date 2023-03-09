@@ -119,5 +119,9 @@ export const getExtendedMapMarkerlayoutLink = (
 
   const iconHrev = 'data:image/svg+xml;base64,' + btoa(svgCodeText);
 
-  return { iconHrev, size: { width: panelLayout.width, height: 65 } };
+  return {
+    iconHrev,
+    size: { width: panelLayout.width, height: 65 },
+    isExtended: true,
+  };
 };

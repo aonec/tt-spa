@@ -35,7 +35,7 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
 
   const sortedTasks = _.sortBy(tasks, (task) => _.sortBy(task.resourceTypes));
 
-  const tasksListView = sortedTasks.map((task, index) => {
+  const tasksListView = sortedTasks.map((task) => {
     const resource =
       (task.resourceTypes?.length || 1) > 1
         ? EActResourceType.All
@@ -58,7 +58,9 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
                 <TaskTitle>{task.typeString}</TaskTitle>
               </Tooltip>
             )}
-            <ApartmentInfo>Кв. {index + 1}</ApartmentInfo>
+            {task.apartmentNumber && (
+              <ApartmentInfo>Кв. {task.apartmentNumber}</ApartmentInfo>
+            )}
           </div>
         </TaskInfo>
         <ChevronRightIcon className="chevron-icon-right" />
