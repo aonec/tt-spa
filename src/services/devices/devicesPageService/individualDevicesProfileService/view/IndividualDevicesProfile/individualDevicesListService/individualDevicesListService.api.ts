@@ -1,11 +1,34 @@
 import { axios } from '01/axios';
-import { IndividualDeviceResponseFromDevicePage } from 'myApi';
+import {
+  IndividualDeviceConsumptionResponse,
+  IndividualDeviceResponseFromDevicePage,
+} from 'myApi';
+import { IndividualDeviceConsumptionForGraph } from './individualDevicesListService.types';
 
 const getIndividualDevice = (
-  deviceId: number
+  deviceId: number,
 ): Promise<IndividualDeviceResponseFromDevicePage> =>
   axios.get(`Devices/Individual/${deviceId}`);
 
 export const getIndividualDevicesList = (devicesIds: number[]) => {
   return Promise.all(devicesIds.map(getIndividualDevice));
+};
+
+const getDeviceConsumption = async (
+  deviceId: number,
+): Promise<IndividualDeviceConsumptionForGraph | null> => {
+  try {
+    const res: IndividualDeviceConsumptionResponse[] = await axios.get(
+      `IndividualDevices/${deviceId}/Consumption`,
+    );
+    return { consumptions: res, deviceId };
+  } catch {
+    return null;
+  }
+};
+
+export const getIndividualDeviceConsumptionsList = (
+  devicesIds: number[],
+): Promise<(IndividualDeviceConsumptionForGraph | null)[]> => {
+  return Promise.all(devicesIds.map(getDeviceConsumption));
 };

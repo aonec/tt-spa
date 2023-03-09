@@ -24,13 +24,14 @@ export const TasksProfileContainer = () => {
 
   const taskTypes = useStore(outputs.$taskTypes);
   const housingManagments = useStore(outputs.$housingManagments);
-  const perpetrators = useStore(outputs.$perpetratorIdStore);
+  const perpetrators = useStore(outputs.$organizationUsers);
   const pagedTasks = useStore(outputs.$tasksPagedData);
   const isLoading = useStore(outputs.$isLoading);
   const isExtendedSearchOpen = useStore(outputs.$isExtendedSearchOpen);
   const isSpectator = useStore(outputs.$isSpectator);
   const apartment = useStore(outputs.$apartment);
   const housingStock = useStore(outputs.$housingStock);
+  const tasksPageSegment = useStore(outputs.$tasksPageSegment);
 
   const handleExportTasksList = useEvent(
     exportTasksListService.inputs.exportTasksList,
@@ -43,6 +44,7 @@ export const TasksProfileContainer = () => {
   const openExtendedSearch = useEvent(inputs.extendedSearchOpened);
   const clearFilters = useEvent(inputs.clearFilters);
   const clearAddress = useEvent(inputs.clearAddress);
+  const setTasksPageSegment = useEvent(inputs.setTasksPageSegment);
 
   const {
     apartmentId,
@@ -163,6 +165,8 @@ export const TasksProfileContainer = () => {
         housingManagments={housingManagments}
         perpetrators={perpetrators}
         isSpectator={isSpectator}
+        tasksPageSegment={tasksPageSegment}
+        setTasksPageSegment={setTasksPageSegment}
       />
     </>
   );
