@@ -3,12 +3,6 @@ import {
   DateTimeTaskStatisticsItemArrayDictionaryItem,
 } from 'myApi';
 
-export type ResourceType =
-  | 'Heat'
-  | 'ColdWaterSupply'
-  | 'HotWaterSupply'
-  | 'Electricity';
-
 export type ReportType = 'hourly' | 'daily' | 'monthly';
 
 export type GraphViewProps = {
