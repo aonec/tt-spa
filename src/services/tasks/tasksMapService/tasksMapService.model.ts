@@ -1,9 +1,6 @@
 import { createDomain, forward, sample } from 'effector';
-import {
-  ETaskEngineeringElement,
-  HousingStockWithTasksResponse,
-  TaskResponse,
-} from 'myApi';
+import { HousingStockWithTasksResponse, TaskResponse } from 'myApi';
+import { currentUserService } from 'services/currentUserService';
 import { tasksProfileService } from '../tasksProfileService';
 import {
   $taskTypes,
@@ -44,14 +41,18 @@ const fetchTaskFx = domain.createEffect<number, TaskResponse>(getTask);
 
 const $filtrationValues = domain
   .createStore<HousingStocksWithTasksFiltrationValues>({
-    engineeringElement: ETaskEngineeringElement.IndividualDevice,
+    engineeringElement: null,
     resourceTypes: [],
     timeStatus: null,
     type: null,
     executorId: null,
   })
   .on(applyFilters, (_, filters) => filters)
-  .reset(resetFilters);
+  .reset(resetFilters)
+  .on(currentUserService.outputs.$currentUser, (prev, user) => ({
+    ...prev,
+    executorId: user?.id || null,
+  }));
 
 const $selectedHousingStock = domain
   .createStore<HousingStockWithTasksResponse | null>(null)
