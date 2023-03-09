@@ -50,7 +50,7 @@ export const ChevronIconSC = styled(ChevronIcon)`
 export const TaskItem = styled.div`
   border-top: 1px solid #f3f5f6;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-between;
   padding: 16px 8px 16px 0;
   cursor: pointer;
@@ -61,14 +61,14 @@ export const TaskItem = styled.div`
     }
 
     .chevron-icon-right {
-      transform: rotate(180deg) translateX(-8px);
+      transform: rotate(180deg) translateX(-8px) translateY(-4px);
     }
   }
 `;
 
 export const TaskInfo = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 16px;
   transition: 0.2s;
 `;
@@ -84,10 +84,17 @@ export const TaskTitle = styled.div`
 `;
 
 export const ChevronRightIcon = styled(ChevronIcon)`
-  transform: rotate(180deg);
+  transform: rotate(180deg) translateY(-4px);
   transition: 0.2s;
 `;
 
 export const LoaderWrapper = styled.div<{ isLoading: boolean }>`
   margin-bottom: ${({ isLoading }) => (isLoading ? '16px' : 'none')};
+`;
+
+export const ApartmentInfo = styled.div`
+  font-weight: 300;
+  font-size: 12px;
+  margin-top: 6px;
+  color: rgba(39, 47, 90, 0.8);
 `;

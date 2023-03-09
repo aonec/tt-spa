@@ -5,6 +5,7 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import {
   Address,
+  ApartmentInfo,
   ChevronIconSC,
   ChevronRightIcon,
   City,
@@ -34,7 +35,7 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
 
   const sortedTasks = _.sortBy(tasks, (task) => _.sortBy(task.resourceTypes));
 
-  const tasksListView = sortedTasks.map((task) => {
+  const tasksListView = sortedTasks.map((task, index) => {
     const resource =
       (task.resourceTypes?.length || 1) > 1
         ? EActResourceType.All
@@ -50,21 +51,26 @@ export const HousingStockTasks: FC<HousingStockTasksProps> = ({
           ) : (
             <CalculatorIcon />
           )}
-          {!isDrawTooltip && <TaskTitle>{task.typeString}</TaskTitle>}
-          {isDrawTooltip && (
-            <Tooltip title={task.typeString}>
-              <TaskTitle>{task.typeString}</TaskTitle>
-            </Tooltip>
-          )}
+          <div>
+            {!isDrawTooltip && <TaskTitle>{task.typeString}</TaskTitle>}
+            {isDrawTooltip && (
+              <Tooltip title={task.typeString}>
+                <TaskTitle>{task.typeString}</TaskTitle>
+              </Tooltip>
+            )}
+            <ApartmentInfo>Кв. {index + 1}</ApartmentInfo>
+          </div>
         </TaskInfo>
         <ChevronRightIcon className="chevron-icon-right" />
       </TaskItem>
     );
   });
 
+  const apartmentNumber = task?.apartment?.apartmentNumber;
+
   const addressString = `${address?.street}, ${address?.number}${
     address?.corpus || ''
-  }`;
+  }${apartmentNumber ? `, кв. ${apartmentNumber}` : ''}`;
 
   return (
     <HousingStockWrapper>

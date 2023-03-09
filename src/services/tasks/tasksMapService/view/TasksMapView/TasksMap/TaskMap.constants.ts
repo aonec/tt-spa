@@ -77,7 +77,7 @@ export const ExtenedTaskPanelBySizeDictionary: {
 };
 
 export const getCountCircle = (x: number, count: number) => {
-  const xCountOffset = String(count).length === 2 ? 2 : 0;
+  const xCountOffset = String(count).length === 2 ? 2.5 : -0.5;
 
   return `
      <path transform="translate(${
@@ -85,7 +85,7 @@ export const getCountCircle = (x: number, count: number) => {
      }, 12)" d="M22.3147 8.5C22.3147 4.35786 25.6726 1 29.8147 1V1C33.9569 1 37.3147 4.35786 37.3147 8.5V8.5C37.3147 12.6421 33.9569 16 29.8147 16V16C25.6726 16 22.3147 12.6421 22.3147 8.5V8.5Z" fill="#272F5A" stroke="white"/>
     <text x="${
       x + 11
-    }" y="24" font-family="PTRootUIWeb" fill="white" style="font: 9px sans-serif;">${count}</text>      
+    }" y="23" font-family="PTRootUIWeb" fill="white" style="font: 9px sans-serif;">${count}</text>      
   `;
 };
 
