@@ -7,15 +7,14 @@ import { useHistory } from 'react-router-dom';
 
 const { inputs, outputs } = closeHousingMeteringDeviceService;
 
-export const CloseHousingMeteringDeviceContainer: FC<CloseHousingMeteringDeviceServiceContainerProps> = ({
-  housingMeteringDevice,
-}) => {
+export const CloseHousingMeteringDeviceContainer: FC<
+  CloseHousingMeteringDeviceServiceContainerProps
+> = ({ housingMeteringDevice }) => {
   const navigate = useHistory();
 
-  useEffect(
-    () => inputs.onSuccessClose.watch(() => navigate.goBack()).unsubscribe,
-    [navigate]
-  );
+  useEffect(() => {
+    return inputs.onSuccessClose.watch(() => navigate.goBack()).unsubscribe;
+  }, [navigate]);
 
   const isModalOpen = useStore(outputs.$isModalOpen);
 

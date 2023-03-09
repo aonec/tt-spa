@@ -40,6 +40,7 @@ export const DocumentsStep: FC<DocumentsStepProps> = ({
           documents={values.actOfDoneWork && [values.actOfDoneWork]}
           onChange={([document]) => setFieldValue('actOfDoneWork', document)}
           max={1}
+          type={EDocumentType.DeviceAcceptanceAct}
         />
         <DocumentsUploadContainer
           label="Добавьте паспорт прибора"
@@ -55,7 +56,7 @@ export const DocumentsStep: FC<DocumentsStepProps> = ({
           documents={values.checkingAct && [values.checkingAct]}
           onChange={([document]) => setFieldValue('checkingAct', document)}
           max={1}
-          type={EDocumentType.DeviceCheckAct}
+          type={EDocumentType.DeviceTestCertificates}
         />
       </Wrapper>
     </Form>

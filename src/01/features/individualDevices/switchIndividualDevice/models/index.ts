@@ -14,7 +14,6 @@ import {
   guard,
 } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { FileData } from '01/hooks/useFilesUpload';
 import { checkIndividualDevice } from '01/_api/individualDevices';
 import { CheckIndividualDevicePayload } from '../switchIndividualDevice.types';
 import { $individualDevice } from '../../displayIndividualDevice/models';
@@ -22,6 +21,7 @@ import { createGate } from 'effector-react';
 import { getPreparedReadingsOfIndividualDevice } from '../switchIndividualDevice.utils';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { Document } from 'ui-kit/DocumentsService';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -63,9 +63,9 @@ export const addIndividualDeviceForm = createForm({
     },
     documentsIds: {
       init: {
-        completedWorks: null as FileData | null,
-        devicePassport: null as FileData | null,
-        deviceCheck: null as FileData | null,
+        completedWorks: null as Document | null,
+        devicePassport: null as Document | null,
+        deviceCheck: null as Document | null,
       },
     },
     bitDepth: {
@@ -231,11 +231,6 @@ guard({
 });
 
 checkIndividualDeviceFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
