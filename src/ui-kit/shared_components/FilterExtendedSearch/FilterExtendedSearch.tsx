@@ -10,7 +10,11 @@ export function FilterExtendedSearch<T>({
   handleUpdate,
   selectedFilters,
   allowedFilters,
+  allowClear = true,
+  max = Infinity,
 }: FilterExtendedSearchProps<T>) {
+  const isMax = selectedFilters.length >= max;
+
   const handleFilterClick = useCallback(
     (clickPayload: { filterField: SearchFilterType<T>; checked: boolean }) =>
       handleUpdate(
@@ -18,9 +22,14 @@ export function FilterExtendedSearch<T>({
           ? selectedFilters?.filter(
               (type) => type !== clickPayload.filterField.key,
             )
-          : [...(selectedFilters || []), clickPayload.filterField.key!],
+          : [
+              ...(isMax
+                ? selectedFilters.slice(0, selectedFilters.length - 1)
+                : selectedFilters || []),
+              clickPayload.filterField.key,
+            ],
       ),
-    [selectedFilters, handleUpdate],
+    [selectedFilters, handleUpdate, isMax],
   );
   const handleClearFilter = useCallback(() => handleUpdate([]), [handleUpdate]);
 
@@ -28,10 +37,11 @@ export function FilterExtendedSearch<T>({
     <FilterButton
       onClear={handleClearFilter}
       active={Boolean(selectedFilters?.length)}
+      allowClear={allowClear}
     >
       {allowedFilters &&
         allowedFilters.map((filterField) => {
-          const checked = selectedFilters?.includes(filterField.key!);
+          const checked = selectedFilters?.includes(filterField.key);
 
           return (
             <div key={filterField.value}>

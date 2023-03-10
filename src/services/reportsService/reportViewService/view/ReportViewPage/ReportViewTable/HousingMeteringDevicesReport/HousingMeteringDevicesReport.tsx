@@ -5,6 +5,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { Table } from 'ui-kit/Table';
 import { ApartmentNumber } from '../IndividualDevicesReport/IndividualDevicesReport.styled';
 import { getReportElemAddress } from '../ReportViewTable.utils';
+import { HousingDevicesConsumptionPanel } from './HousingDevicesConsumptionPanel';
 import {
   DeviceCheckingDates,
   DeviceModel,
@@ -16,7 +17,6 @@ import { HousingMeteringDevicesReportProps } from './HousingMeteringDevicesRepor
 export const HousingMeteringDevicesReport: FC<
   HousingMeteringDevicesReportProps
 > = ({ housingMeteringDevicesReportData }) => {
-  console.log(housingMeteringDevicesReportData);
   if (!housingMeteringDevicesReportData) {
     return (
       <Empty
@@ -27,76 +27,86 @@ export const HousingMeteringDevicesReport: FC<
   }
 
   return (
-    <Table
-      columns={[
-        {
-          label: 'Домоуправление',
-          size: '160px',
-          render: (elem) => {
-            return elem.houseManagementName;
+    <>
+      <Table
+        columns={[
+          {
+            label: 'Домоуправление',
+            size: '160px',
+            render: (elem) => {
+              return elem.houseManagementName;
+            },
           },
-        },
-        {
-          label: 'Адрес',
-          size: '230px',
-          render: (elem) => {
-            const { addressString, number } = getReportElemAddress(
-              elem,
-              'house',
-            );
+          {
+            label: 'Адрес',
+            size: '230px',
+            render: (elem) => {
+              const { addressString, number } = getReportElemAddress(
+                elem,
+                'house',
+              );
 
-            return (
-              <div>
-                <ApartmentNumber>Дом №{number}</ApartmentNumber>
-                {addressString}
-              </div>
-            );
+              return (
+                <div>
+                  <ApartmentNumber>Дом №{number}</ApartmentNumber>
+                  {addressString}
+                </div>
+              );
+            },
           },
-        },
-        {
-          label: 'Прибор',
-          size: '320px',
-          render: (elem) => {
-            return (
-              <div>
-                <DeviceWrapper>
-                  <ResourceIconLookup resource={elem.resource} />
-                  <DeviceSerialNumber>{elem.serialNumber}</DeviceSerialNumber>
-                  <DeviceModel>{elem.model}</DeviceModel>
-                </DeviceWrapper>
-                <DeviceCheckingDates>
-                  {moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
-                  {` — `}
-                  {moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
-                </DeviceCheckingDates>
-              </div>
-            );
+          {
+            label: 'Прибор',
+            size: '320px',
+            render: (elem) => {
+              return (
+                <div>
+                  <DeviceWrapper>
+                    <ResourceIconLookup resource={elem.resource} />
+                    <DeviceSerialNumber>{elem.serialNumber}</DeviceSerialNumber>
+                    <DeviceModel>{elem.model}</DeviceModel>
+                  </DeviceWrapper>
+                  <DeviceCheckingDates>
+                    {elem.lastCheckingDate &&
+                      moment(elem.lastCheckingDate).format('DD.MM.YYYY')}
+                    {` — `}
+                    {elem.futureCheckingDate &&
+                      moment(elem.futureCheckingDate).format('DD.MM.YYYY')}
+                  </DeviceCheckingDates>
+                </div>
+              );
+            },
           },
-        },
-        {
-          label: 'Начало месяца',
-          size: '120px',
-          render: (elem) => {
-            return elem.previousReadings?.value;
+          {
+            label: 'Начало месяца',
+            size: '120px',
+            render: (elem) => {
+              return elem.previousReadings?.value;
+            },
           },
-        },
-        {
-          label: 'Конец месяца',
-          size: '120px',
-          render: (elem) => {
-            return elem.currentReadings?.value;
+          {
+            label: 'Конец месяца',
+            size: '120px',
+            render: (elem) => {
+              return elem.currentReadings?.value;
+            },
           },
-        },
-        {
-          label: 'Расход м3',
-          size: '120px',
-          render: (elem) => {
-            return elem.consumption;
+          {
+            label: 'Расход м3',
+            size: '120px',
+            render: (elem) => {
+              return elem.consumption;
+            },
           },
-        },
-      ]}
-      elements={housingMeteringDevicesReportData || []}
-      pagination={{ pageSize: 50 }}
-    />
+        ]}
+        elements={housingMeteringDevicesReportData || []}
+        pagination={{ pageSize: 50 }}
+      />
+      <HousingDevicesConsumptionPanel
+        count={housingMeteringDevicesReportData.reduce(
+          (acc, elem) => (elem.consumption || 0) + acc,
+          0,
+        )}
+      />
+    </>
   );
 };

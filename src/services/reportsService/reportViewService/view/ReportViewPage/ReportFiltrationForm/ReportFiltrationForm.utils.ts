@@ -24,3 +24,36 @@ export const getAddresses = (
 
   return getAddressSearchData(requiredHouseManagements?.streets || []);
 };
+
+export const prepareAddressesTreeData = (
+  addressesWithHouseManagements: HouseManagementWithStreetsResponse[],
+  selectedHouseManagementId: string | null,
+) => {
+  const addressesTreeData = addressesWithHouseManagements
+    .filter((houseManagement) =>
+      selectedHouseManagementId
+        ? houseManagement.id === selectedHouseManagementId
+        : true,
+    )
+    .map((houseManagement) => ({
+      value: houseManagement.id,
+      title: houseManagement.name,
+      key: houseManagement.id,
+      children:
+        houseManagement.streets?.map((street) => ({
+          value: `${street.street} ${houseManagement.id}`,
+          title: street.street || '',
+          key: `${street.street} ${houseManagement.id}`,
+          children:
+            street.addresses?.map((address) => ({
+              value: address.housingStockId,
+              key: address.housingStockId,
+              title: address.housingStockNumber
+                ? `${street.street}, ${address.housingStockNumber}`
+                : '',
+            })) || [],
+        })) || [],
+    }));
+
+  return addressesTreeData;
+};
