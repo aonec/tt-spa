@@ -112,7 +112,7 @@ const $housingConsumptionData = domain
   .on(getHousingConsumptionFx.doneData, (_, data) => data)
   .reset(clearData);
 
-const clearAdditionalAddress = domain.createEvent();
+const clearAdditionalAddressData = domain.createEvent();
 const getAdditionalConsumptionFx = domain.createEffect<
   ConsumptionDataFilter,
   MonthConsumptionData
@@ -121,7 +121,7 @@ const $additionalConsumption = domain
   .createStore<MonthConsumptionData | null>(null)
   .on(getAdditionalConsumptionFx.doneData, (_, data) => data)
   .reset(clearData)
-  .reset(clearAdditionalAddress);
+  .reset(clearAdditionalAddressData);
 
 const setSelectedGraphTypes =
   domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
@@ -139,13 +139,13 @@ const $isLoading = getHousingConsumptionFx.pending;
 guard({
   clock: $resourceConsumptionFilter.map((filter) => ({
     ...filter,
-    HousingStockIds: [filter?.AdditionalHousingStockId],
+    HousingStockIds: filter?.AdditionalHousingStockIds,
   })),
   filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockIds &&
+        filter?.HousingStockIds?.length &&
         filter?.ResourceType,
     ),
   target: getAdditionalConsumptionFx,
@@ -157,7 +157,7 @@ guard({
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockIds &&
+        filter?.HousingStockIds?.length &&
         filter?.ResourceType,
     ),
   target: getHousingConsumptionFx,
@@ -196,7 +196,7 @@ export const resourceConsumptionService = {
     clearData,
     clearStore,
     setSelectedGraphTypes,
-    clearAdditionalAddress,
+    clearAdditionalAddressData,
   },
   outputs: {
     $housingConsumptionData,

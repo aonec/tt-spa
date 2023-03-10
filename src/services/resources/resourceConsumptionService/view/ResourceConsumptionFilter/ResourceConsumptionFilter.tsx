@@ -7,7 +7,6 @@ import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
-import { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch';
 import { AddressTreeSelect } from '../../../../../ui-kit/shared_components/AddressTreeSelect';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
@@ -21,10 +20,8 @@ import {
   TrashIconSC,
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
-import {
-  GetHousingConsumptionDataFormik,
-  ResourceConsumptionFilterProps,
-} from './ResourceConsumptionFilter.types';
+import { GetConsumptionDataFilter } from '../../resourceConsumptionService.types';
+import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
 
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
@@ -35,18 +32,16 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   houseManagements,
   handleClearData,
   handleClearFilter,
-  handleClearAdditionalAddress,
   treeData,
+  handleClearAdditionalAddressData,
 }) => {
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
   const { values, setFieldValue, submitForm, resetForm, errors } =
-    useFormik<GetHousingConsumptionDataFormik>({
+    useFormik<GetConsumptionDataFilter>({
       initialValues: {
         HousingStockIds: filter?.HousingStockIds || [],
-        currentAddress: filter?.currentAddress || null,
-        AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
-        additionalAddress: filter?.additionalAddress || null,
+        AdditionalHousingStockIds: filter?.AdditionalHousingStockIds || [],
         From:
           filter?.From || moment().startOf('month').utcOffset(0, true).format(),
       },
@@ -55,14 +50,14 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       validateOnChange: false,
       validateOnBlur: false,
       onSubmit: (values) => {
-        const { HousingStockIds, AdditionalHousingStockId } = values;
+        const { HousingStockIds, AdditionalHousingStockIds } = values;
 
         if (!HousingStockIds.length) {
           return;
         }
 
-        if (!AdditionalHousingStockId) {
-          handleClearAdditionalAddress();
+        if (!AdditionalHousingStockIds.length) {
+          handleClearAdditionalAddressData();
         }
 
         setFilter({ ...values, HousingStockIds });
@@ -70,13 +65,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     });
 
   useEffect(() => {
-    setFieldValue('additionalAddress', null);
-    setFieldValue('currentAddress', null);
-    setFieldValue('AdditionalHousingStockId', null);
-    setFieldValue('HousingStockId', null);
-  }, [streetsList, setFieldValue]);
-
-  useEffect(() => {
+    setFieldValue('AdditionalHousingStockIds', []);
     setFieldValue('HousingStockIds', []);
   }, [streetsList, setFieldValue]);
 
@@ -162,17 +151,19 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         {isAdditionalAddress && (
           <FormItem label="Адрес для сравнения">
             <GroupWrapper>
-              <AddressAutoCompleteSearch
-                streetsList={streetsList}
-                handleChooseHousingStock={({ id, address }) => {
-                  setFieldValue('AdditionalHousingStockId', id);
-                  setFieldValue('additionalAddress', address);
-                }}
+              <AddressTreeSelect
+                small
+                treeData={treeData}
+                placeholder="Выберите из списка"
+                onChange={(ids) =>
+                  setFieldValue('AdditionalHousingStockIds', ids)
+                }
+                selectedHousingStockIds={values.AdditionalHousingStockIds}
               />
               <TrashIconSC
                 onClick={() => {
                   setIsAdditionalAddress(false);
-                  setFieldValue('AdditionalHousingStockId', null);
+                  setFieldValue('AdditionalHousingStockIds', []);
                 }}
               />
             </GroupWrapper>

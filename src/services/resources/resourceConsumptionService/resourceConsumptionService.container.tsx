@@ -25,7 +25,9 @@ export const ResourceConsumptionContainer = () => {
   const handleClearData = useEvent(inputs.clearData);
   const handleClearFilter = useEvent(inputs.clearStore);
   const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
-  const handleClearAdditionalAddress = useEvent(inputs.clearAdditionalAddress);
+  const handleClearAdditionalAddressData = useEvent(
+    inputs.clearAdditionalAddressData,
+  );
 
   const preparedHouseManagements = useMemo(
     () =>
@@ -54,7 +56,9 @@ export const ResourceConsumptionContainer = () => {
         selectedGraphTypes={selectedGraphTypes}
         setSelectedGraphTypes={setSelectedGraphTypes}
         additionalConsumptionData={additionalConsumptionData}
-        handleClearAdditionalAddress={() => handleClearAdditionalAddress()}
+        handleClearAdditionalAddressData={() =>
+          handleClearAdditionalAddressData()
+        }
         treeData={treeData}
       />
     </>

@@ -11,6 +11,7 @@ import {
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
+import queryString from 'query-string';
 
 export const fetchConsumptionsForTwoMonth = async (
   params: ConsumptionDataFilter,
@@ -57,6 +58,9 @@ export const fetchHousingConsumptionData = (
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
   axios.get('PipeNodes/DataForHousingConsumptionPlot', {
     params,
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
+    },
     headers: {
       'api-version': 2,
     },
@@ -69,6 +73,9 @@ export const fetchNormativeConsumptionData = (
     'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
     {
       params,
+      paramsSerializer: (params) => {
+        return queryString.stringify(params);
+      },
       headers: {
         'api-version': 2,
       },

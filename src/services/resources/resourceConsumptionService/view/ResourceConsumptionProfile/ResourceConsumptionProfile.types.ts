@@ -28,7 +28,7 @@ export type ResourceConsumptionProfileProps = {
     selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   ) => void;
   additionalConsumptionData: MonthConsumptionData | null;
-  handleClearAdditionalAddress: () => void;
+  handleClearAdditionalAddressData: () => void;
   treeData: TreeSelectElement[];
 };
 

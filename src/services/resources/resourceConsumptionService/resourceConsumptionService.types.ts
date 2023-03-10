@@ -35,9 +35,7 @@ export type ConsumptionDataFilter = GetConsumptionDataFilter & {
 
 export type GetConsumptionDataFilter = {
   HousingStockIds: number[];
-  currentAddress: string | null;
-  additionalAddress: string | null;
-  AdditionalHousingStockId: number | null;
+  AdditionalHousingStockIds: number[];
   From: string;
 };
 

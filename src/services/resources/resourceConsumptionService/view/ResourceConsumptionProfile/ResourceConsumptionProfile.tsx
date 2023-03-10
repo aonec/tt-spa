@@ -30,7 +30,7 @@ export const ResourceConsumptionProfile: FC<
   selectedGraphTypes,
   setSelectedGraphTypes,
   additionalConsumptionData,
-  handleClearAdditionalAddress,
+  handleClearAdditionalAddressData,
   treeData,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
@@ -81,10 +81,8 @@ export const ResourceConsumptionProfile: FC<
                 setCheckedGraphTypes={setSelectedGraphTypes}
                 resource={resourceConsumptionFilter?.ResourceType}
                 isAdditionalAddress={Boolean(additionalConsumptionData)}
-                additionalAddress={
-                  resourceConsumptionFilter?.additionalAddress || ''
-                }
-                currentAddress={resourceConsumptionFilter?.currentAddress || ''}
+                additionalAddress={'Основные адреса'}
+                currentAddress={'Адреса для сравнения'}
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)
@@ -102,8 +100,8 @@ export const ResourceConsumptionProfile: FC<
         houseManagements={houseManagements}
         handleClearData={handleClearData}
         handleClearFilter={handleClearFilter}
-        handleClearAdditionalAddress={handleClearAdditionalAddress}
         treeData={treeData}
+        handleClearAdditionalAddressData={handleClearAdditionalAddressData}
       />
     </Wrapper>
   );
