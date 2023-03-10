@@ -1,8 +1,10 @@
 export type AddressTreeSelectProps = {
   treeData: TreeSelectElement[];
+  small?: boolean;
   onChange: (ids: number[]) => void;
   selectedHousingStockIds: number[];
   disabled?: boolean;
+  placeholder?: string;
 };
 
 export type TreeSelectElement = {

@@ -5,15 +5,17 @@ import {
 } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.constants';
 import { TreeSelectValue } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.types';
 import { getAllHousingStocks } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateresourceDisconnectionForm.utils';
-import { TreeSelect } from 'ui-kit/TreeSelect';
 import { getCountText } from 'utils/getCountText';
+import { TreeSelectSC } from './AddressTreeSelect.styled';
 import { AddressTreeSelectProps } from './AddressTreeSelect.types';
 
 export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   treeData,
   onChange,
   selectedHousingStockIds,
+  placeholder = 'Выберите адрес',
   disabled = false,
+  small = false,
 }) => {
   const isAllPrevious = useRef(false);
   const isAllHousingStocksSelected = selectedHousingStockIds.includes(-1);
@@ -57,7 +59,8 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   );
 
   return (
-    <TreeSelect
+    <TreeSelectSC
+      small={small}
       showSearch
       showArrow
       value={selectedHousingStockIds}
@@ -83,7 +86,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
       treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
       showCheckedStrategy="SHOW_CHILD"
       onChange={(values) => handleChangeHousingStocks(values)}
-      placeholder="Выберите адрес"
+      placeholder={placeholder}
     />
   );
 };

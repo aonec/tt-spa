@@ -144,7 +144,9 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         </FormItem>
         <FormItem label="Адрес">
           <AddressTreeSelect
+            small
             treeData={treeData}
+            placeholder="Выберите из списка"
             onChange={(ids) => setFieldValue('HousingStockIds', ids)}
             selectedHousingStockIds={values.HousingStockIds}
           />
