@@ -2,7 +2,7 @@ import { Select } from '01/shared/ui/Select';
 import { InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import { EActResourceType, EActType } from 'myApi';
+import { EActResourceType, EActType, EDocumentType } from 'myApi';
 import React, {
   FC,
   SyntheticEvent,
@@ -136,9 +136,13 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
         uniqId="edit-apartment-act-form"
         onChange={(files) => {
           setDocuments(files);
+          if (files.length === 0) {
+            return setFieldValue('documentId', null);
+          }
           setFieldValue('documentId', files[0]?.id);
         }}
         max={1}
+        type={EDocumentType.Common}
       />
     </Form>
   );

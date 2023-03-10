@@ -1,5 +1,6 @@
 export type TimeLineProps = {
   timeline: Timeline;
+  isShowInfo?: boolean;
 };
 
 export type Timeline = {

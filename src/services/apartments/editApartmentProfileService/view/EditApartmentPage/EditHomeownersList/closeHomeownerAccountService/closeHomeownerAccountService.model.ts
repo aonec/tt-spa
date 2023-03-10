@@ -44,20 +44,15 @@ forward({
   to: editApartmentProfileService.inputs.refetchAaprtment,
 });
 
-const $isLoading = closeHomeownerAccountFx.pending;
-
 closeHomeownerAccountFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
       'Произошла ошибка',
   );
 });
+
+const $isLoading = closeHomeownerAccountFx.pending;
 
 export const closeHomeownerAccountService = {
   inputs: {

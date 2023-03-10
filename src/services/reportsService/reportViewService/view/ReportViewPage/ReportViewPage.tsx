@@ -38,6 +38,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   homeownersReportData,
   downloadReport,
   isReportFileDownloading,
+  clearFiltrationValues,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -72,6 +73,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           handleOpen={() => setIsOpen(true)}
           handleClose={() => setIsOpen(false)}
           handleApply={handleApply}
+          handleClear={clearFiltrationValues}
+          isShowClearButton
           extendedSearchContent={
             <ReportFiltrationForm
               existingCities={existingCities}

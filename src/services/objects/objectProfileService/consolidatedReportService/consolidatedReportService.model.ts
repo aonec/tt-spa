@@ -22,9 +22,11 @@ forward({
   to: downloadConsolidatedReportFx,
 });
 
-downloadConsolidatedReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
-);
+downloadConsolidatedReportFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
 
 const $isModalOpen = domain
   .createStore(false)

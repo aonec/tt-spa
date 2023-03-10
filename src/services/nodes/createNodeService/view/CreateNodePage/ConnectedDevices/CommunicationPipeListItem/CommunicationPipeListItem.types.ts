@@ -6,8 +6,8 @@ import { CommunicationPipePayload } from 'services/nodes/addPipeNodeCommonDevice
 export type CommunicationPipeListItemProps = {
   pipe: CommunicationPipePayload;
   configuration: EPipeNodeConfig;
-  handleDeletePipe?: (pipeId: number) => void;
-  handleDeleteDevice?: (pipeId: number, deviceIndex: number) => void;
+  handleDeletePipe?: (pipeId: string) => void;
+  handleDeleteDevice?: (pipeId: string, deviceIndex: number) => void;
 };
 
 export const TrashIconSC = styled(TrashIcon)`

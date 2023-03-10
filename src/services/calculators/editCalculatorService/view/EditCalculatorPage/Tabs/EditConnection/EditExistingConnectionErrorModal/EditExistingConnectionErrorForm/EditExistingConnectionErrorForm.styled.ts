@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
@@ -15,7 +16,7 @@ export const CalculatorBlock = styled.div`
   margin-top: 16px;
 `;
 
-export const Model = styled.a`
+export const Model = styled(Link)`
   color: rgba(39, 47, 90, 1);
   font-weight: 400;
   font-size: 24px;

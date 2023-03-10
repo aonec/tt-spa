@@ -6,9 +6,9 @@ import {
 } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { FileData } from '01/hooks/useFilesUpload';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { createGate } from 'effector-react';
+import { Document } from 'ui-kit/DocumentsService';
 import { EffectFailDataAxiosError } from 'types';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
@@ -66,9 +66,9 @@ export const addIndividualDeviceForm = createForm({
     },
     documentsIds: {
       init: {
-        completedWorks: null as FileData | null,
-        devicePassport: null as FileData | null,
-        deviceCheck: null as FileData | null,
+        completedWorks: null as Document | null,
+        devicePassport: null as Document | null,
+        deviceCheck: null as Document | null,
       },
     },
     bitDepth: {
@@ -85,6 +85,7 @@ export const addIndividualDeviceForm = createForm({
     },
     model: {
       init: '',
+      rules: [{ name: 'required', validator: Boolean }],
     },
     startupReadings: {
       init: { value1: null, value2: null, value3: null, value4: null } as {

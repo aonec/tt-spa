@@ -3,7 +3,6 @@ import {
   $apartmentEditMode,
   ApartmentEditModeGate,
   ApartmentGate,
-  refetchApartment,
   resetApartment,
   switchApartmentEditMode,
 } from './index';
@@ -19,8 +18,8 @@ $apartment
 fetchApartmentFx.use(getApartment);
 
 sample({
+  clock: ApartmentGate.state,
   source: ApartmentGate.state.map((state) => state.id),
-  clock: [ApartmentGate.state, refetchApartment],
   target: fetchApartmentFx,
 });
 

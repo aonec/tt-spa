@@ -6,7 +6,7 @@ import {
 
 export const getDatePeriod = (
   archiveType: ArchiveType,
-  period: DatePeriod
+  period: DatePeriod,
 ): { From: string; To: string } | null => {
   if (archiveType === ArchiveType.StartOfMonth) {
     period = [moment().startOf('month'), moment()];
@@ -15,7 +15,7 @@ export const getDatePeriod = (
   if (archiveType === ArchiveType.PreviousMonth) {
     period = [
       moment().subtract(1, 'months').startOf('month'),
-      moment().startOf('month'),
+      moment().subtract(1, 'months').endOf('month'),
     ];
   }
   if (archiveType === ArchiveType.LastSevenDays) {

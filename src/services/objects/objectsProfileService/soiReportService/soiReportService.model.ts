@@ -14,7 +14,7 @@ import {
   SoiReportType,
 } from './soiReportService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { EffectFailDataAxiosError } from 'types';
+import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
 import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 
@@ -39,7 +39,7 @@ const fetchAdressesFx = domain.createEffect<
 const createSoiReportFx = domain.createEffect<
   CreateSoiReportRequestPayload,
   void,
-  EffectFailDataAxiosError
+  BlobResponseErrorType
 >(getSoiReport);
 
 const $addressesPagedList = domain
@@ -98,9 +98,16 @@ forward({
   to: createSoiReportFx,
 });
 
-createSoiReportFx.failData.watch((e) =>
-  message.error(e.response.data.error.Text),
-);
+createSoiReportFx.failData.watch(async (error) => {
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(
+    errObject.error.Text ||
+      errObject.error.Message ||
+      'Невозможно выгрузить отчёт',
+  );
+});
 
 const $isCreateReportLoading = createSoiReportFx.pending;
 

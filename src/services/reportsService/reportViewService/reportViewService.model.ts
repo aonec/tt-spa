@@ -98,6 +98,8 @@ const downloadReport = domain.createEvent();
 
 const setFiltrationValues = domain.createEvent<ReportFiltrationFormValues>();
 
+const clearFiltrationValues = domain.createEvent();
+
 const $addressesWithHouseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(fetchAddressesWithHouseManagementsFx.doneData, (_, data) => data)
@@ -107,7 +109,7 @@ const $filtrationValues = domain
   .createStore<ReportFiltrationFormValues>({
     city: null,
     houseManagement: null,
-    housingStockId: null,
+    housingStockIds: [],
     resources: [],
     reportOption: null,
     from: null,
@@ -116,29 +118,34 @@ const $filtrationValues = domain
     closingReasons: [],
     actResources: [],
     showOnlyDuplicates: false,
+    withoutApartmentsWithOpenDevicesByResources: false,
   })
-  .on(setFiltrationValues, (_, values) => values);
-// .reset(ReportViewGate.close);
+  .on(setFiltrationValues, (_, values) => values)
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
   .on(fetchIndividualDevicesReportFx.doneData, (_, data) => data)
-  .reset(fetchIndividualDevicesReportFx.failData, ReportViewGate.close);
+  .reset(
+    fetchIndividualDevicesReportFx.failData,
+    ReportViewGate.close,
+    clearFiltrationValues,
+  );
 
 const $actJournalReportData = domain
   .createStore<ApartmentActsConstructedReportResponse | null>(null)
   .on(fetchActJournalReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close);
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $housingMeteringDevicesReportData = domain
   .createStore<HousingDevicesConstructedReportResponse[] | null>(null)
   .on(fetchHousingMeteringDevicesReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close);
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $homeownersReportData = domain
   .createStore<HomeownersConstructedReportResponse[] | null>(null)
   .on(fetchHomeownersReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close);
+  .reset(ReportViewGate.close, clearFiltrationValues);
 
 forward({
   from: AddressesWithHouseManagementsGate.open,
@@ -220,13 +227,6 @@ merge([
 ]).watch((error) => message.error(error.response.data.error.Text));
 
 downloadReportFileFx.failData.watch(async (error) => {
-  const newErr = { ...error };
-
-  if (newErr.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   const jsonData = await error.response.data.text();
   const errObject = JSON.parse(jsonData);
 
@@ -249,6 +249,7 @@ export const reportViewService = {
   inputs: {
     setFiltrationValues,
     downloadReport,
+    clearFiltrationValues,
   },
   outputs: {
     $existingCities,

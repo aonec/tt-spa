@@ -7,6 +7,7 @@ import {
   TaskListResponse,
   TaskResponse,
 } from 'myApi';
+import { Timeline } from 'ui-kit/shared_components/TimeLine/TimeLine.types';
 import { TimerClosingStatus } from 'ui-kit/shared_components/Timer/Timer.types';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 
@@ -37,7 +38,9 @@ export const prepareData = (tasks: TaskListResponse[], grouptype: string) =>
     showExecutor: grouptype === 'Observing',
   }));
 
-export const createTimeline = (task: TaskListResponse | TaskResponse) => {
+export const createTimeline = (
+  task: TaskListResponse | TaskResponse,
+): Timeline | null => {
   const { closingTime, expectedCompletionTime, currentStage } = task;
 
   if (closingTime) return null;

@@ -41,7 +41,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   };
 
   const handleAddDevice = (device: CreateCommonDevicePartitial) => {
-    const pipeId = device.pipeId;
+    const pipeId = String(device.pipeId);
 
     const newDevice = omit(
       device,
@@ -71,11 +71,11 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     updateRequestPayload({ communicationPipes });
   }, [communicationPipes, updateRequestPayload]);
 
-  const handleDeletePipe = (pipeId: number) => {
+  const handleDeletePipe = (pipeId: string) => {
     setCommunicationPipes((prev) => prev.filter((elem) => elem.id !== pipeId));
   };
 
-  const handleDeleteDevice = (pipeId: number, deviceIndex: number) => {
+  const handleDeleteDevice = (pipeId: string, deviceIndex: number) => {
     setCommunicationPipes((prev) =>
       prev.map((pipe) => {
         if (pipe.id !== pipeId) return pipe;

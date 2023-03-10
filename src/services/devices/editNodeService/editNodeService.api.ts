@@ -1,7 +1,5 @@
 import { axios } from '01/axios';
 import {
-  EMagistralTypeStringDictionaryItem,
-  EResourceType,
   NodeServiceZoneListResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
@@ -12,11 +10,6 @@ export const fetchNode = (nodeId: string): Promise<PipeNodeResponse> =>
 
 export const fetchServiceZones = (): Promise<NodeServiceZoneListResponse> =>
   axios.get('NodeServiceZones');
-
-export const fetchPipeNodeMagistrals = (
-  resource: EResourceType
-): Promise<EMagistralTypeStringDictionaryItem[]> =>
-  axios.get('PipeNodes/PipeMagistralTypes', { params: { resource } });
 
 export const fetchUpdateNode = ({
   pipeNodeId,

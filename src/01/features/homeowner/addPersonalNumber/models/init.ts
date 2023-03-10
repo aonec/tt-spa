@@ -83,12 +83,6 @@ forward({
 });
 
 addPersonalNumberFx.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
-
   if (
     error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
   ) {

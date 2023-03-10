@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Input } from 'ui-kit/Input';
 import { FormItem } from 'ui-kit/FormItem';
@@ -13,12 +13,17 @@ import {
 } from './EditNodeCommonInfo.styled';
 import { EditNodeCommonInfoProps } from './EditNodeCommonInfo.types';
 import { useFormik } from 'formik';
-import { UpdatePipeNodeRequest } from 'myApi';
 import moment from 'moment';
 import { Form } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { useHistory } from 'react-router-dom';
 import { configNamesLookup } from 'utils/configNamesLookup';
+import { ConfiguratePipe } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/ConfiguratePipe';
+import { CommunicationPipeResponse, EMagistralType } from 'myApi';
+import { validationSchema } from './EditNodeCommonInfo.constants';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { filterCommunicationPipes } from './EditNodeCommonInfo.utils';
+import { Divider } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.styled';
 
 export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   node,
@@ -37,15 +42,31 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
     ? moment(node.lastCommercialAccountingDate)
     : undefined;
 
-  const { values, setFieldValue, handleSubmit } =
-    useFormik<UpdatePipeNodeRequest>({
-      initialValues: {
-        nodeServiceZoneId: node.nodeServiceZone?.id,
-        number: node.number,
-      },
-      enableReinitialize: true,
-      onSubmit: (values) => updateNode(values),
-    });
+  const { values, setFieldValue, handleSubmit, errors } = useFormik({
+    initialValues: {
+      nodeServiceZoneId: node.nodeServiceZone?.id,
+      number: node.number,
+      communicationPipes: node.communicationPipes || [],
+    },
+    enableReinitialize: true,
+    validationSchema,
+    onSubmit: (values) => {
+      const communicationPipes = values.communicationPipes.filter((pipe) =>
+        filterCommunicationPipes({
+          newPipe: pipe,
+          oldPipes: node.communicationPipes || [],
+        }),
+      );
+
+      updateNode({
+        ...values,
+        communicationPipes: communicationPipes.map((pipe) => ({
+          ...pipe,
+          communicationPipeId: pipe.id,
+        })),
+      });
+    },
+  });
 
   const selectZonesOptions = useMemo(
     () =>
@@ -54,6 +75,35 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         label: zone.name,
       })),
     [nodeZones],
+  );
+
+  const pipesErrors = useMemo(
+    () =>
+      (errors as unknown as { communicationPipes: CommunicationPipeResponse[] })
+        ?.communicationPipes || [],
+    [errors],
+  );
+
+  const handleChangeNumberOfPipe = useCallback(
+    (id: string, number: number) =>
+      (values.communicationPipes || []).map((pipe) => {
+        if (String(pipe?.id) !== id) {
+          return pipe;
+        }
+        return { ...pipe, number };
+      }),
+    [values.communicationPipes],
+  );
+
+  const handleChangeDiameterOfPipe = useCallback(
+    (id: string, diameter: number) =>
+      (values.communicationPipes || []).map((pipe) => {
+        if (String(pipe.id) !== id) {
+          return pipe;
+        }
+        return { ...pipe, diameter };
+      }),
+    [values.communicationPipes],
   );
 
   return (
@@ -98,25 +148,64 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           </ZoneWrapper>
         </FormItem>
 
-        <FormItem label="Дата начала действия акта-допуска">
-          <DatePicker
-            format="DD.MM.YYYY"
-            placeholder="Укажите дату..."
-            value={lastCommercialAccountingDate}
-            allowClear={false}
-            disabled
-          />
-        </FormItem>
+        {Boolean(values.communicationPipes.length) && <Divider />}
+        {(values.communicationPipes || []).map((pipe, index) => {
+          const { id, diameter, number, magistral } = pipe;
 
-        <FormItem label="Дата окончания действия акта-допуска">
-          <DatePicker
-            format="DD.MM.YYYY"
-            placeholder="Укажите дату..."
-            allowClear={false}
-            value={futureCommercialAccountingDate}
-            disabled
-          />
-        </FormItem>
+          return (
+            <>
+              <ConfiguratePipe
+                pipe={{
+                  number: number || undefined,
+                  diameter: diameter || undefined,
+                  id: String(id),
+                  magistral: magistral as EMagistralType,
+                }}
+                index={index + 1}
+                key={pipe.id}
+                handleChangeNumber={(number) =>
+                  setFieldValue(
+                    'communicationPipes',
+                    handleChangeNumberOfPipe(String(id), number),
+                  )
+                }
+                handleChangeDiameter={(diameter) =>
+                  setFieldValue(
+                    'communicationPipes',
+                    handleChangeDiameterOfPipe(String(id), diameter),
+                  )
+                }
+              />
+              <ErrorMessage>
+                {Object.values(pipesErrors?.[index] || {}).join(', ')}
+              </ErrorMessage>
+            </>
+          );
+        })}
+
+        {lastCommercialAccountingDate && (
+          <FormItem label="Дата начала действия акта-допуска">
+            <DatePicker
+              format="DD.MM.YYYY"
+              placeholder="Укажите дату..."
+              value={lastCommercialAccountingDate}
+              allowClear={false}
+              disabled
+            />
+          </FormItem>
+        )}
+
+        {futureCommercialAccountingDate && (
+          <FormItem label="Дата окончания действия акта-допуска">
+            <DatePicker
+              format="DD.MM.YYYY"
+              placeholder="Укажите дату..."
+              allowClear={false}
+              value={futureCommercialAccountingDate}
+              disabled
+            />
+          </FormItem>
+        )}
       </Form>
 
       <FooterWrapper>

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
@@ -8,11 +8,8 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
-import { LinkButton } from 'ui-kit/shared_components/LinkButton';
-import { addCommunicationPipeService } from '../../AddCommunicationPipeModal/AddCommunicationPipeModal.model';
 import { validationSchema } from './DeviceStep.constants';
 import {
-  CreatePipeButtonWrapper,
   LineWrapper,
   MagistralLabel,
   PipeNumber,
@@ -22,10 +19,7 @@ import { DeviceStepProps } from './DeviceStep.types';
 import { MagistralsDisctionary } from 'dictionaries';
 import moment from 'moment';
 
-const { inputs } = addCommunicationPipeService;
-
 export const DeviceStep: FC<DeviceStepProps> = ({
-  openAddPipeModal,
   communicationPipes,
   requestPayload,
   updateRequestPayload,
@@ -59,13 +53,6 @@ export const DeviceStep: FC<DeviceStepProps> = ({
         });
       },
     });
-
-  useEffect(
-    () =>
-      inputs.handleCreatePipe.watch((id) => setFieldValue('pipeId', id))
-        .unsubscribe,
-    [setFieldValue],
-  );
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -113,8 +100,8 @@ export const DeviceStep: FC<DeviceStepProps> = ({
         <FormItem label="Труба">
           <Select
             placeholder="Выберите"
-            value={values.pipeId || undefined}
-            onChange={(value) => setFieldValue('pipeId', value)}
+            value={values.pipeId ? String(values.pipeId) : undefined}
+            onChange={(value) => setFieldValue('pipeId', Number(value))}
           >
             {communicationPipes.map((pipe) => (
               <Select.Option key={pipe.id} value={pipe.id}>
@@ -128,9 +115,6 @@ export const DeviceStep: FC<DeviceStepProps> = ({
           </Select>
           <ErrorMessage>{errors.pipeId}</ErrorMessage>
         </FormItem>
-        <CreatePipeButtonWrapper>
-          <LinkButton onClick={openAddPipeModal}>+ Добавить трубу</LinkButton>
-        </CreatePipeButtonWrapper>
       </LineWrapper>
     </Form>
   );
