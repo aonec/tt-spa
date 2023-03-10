@@ -11,6 +11,7 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   type,
   setDevicesType,
   handleAddNode,
+  isPermitionToAddNode,
 }) => {
   const menuButtonArr = [
     {
@@ -21,6 +22,7 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
     {
       title: 'Добавить узел',
       onClick: handleAddNode,
+      hidden: !isPermitionToAddNode,
     },
   ];
 

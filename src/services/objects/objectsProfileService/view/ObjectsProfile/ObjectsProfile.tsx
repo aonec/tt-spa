@@ -24,42 +24,53 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   searchType,
   openSoiReportModal,
   handleCreateObject,
-  isAdministrator,
   openFeedFlowBackReportModal,
   handleExportGroupReport,
+  isPermitionToCreateObject,
+  isPermitionToCreateResourceDisconnection,
+  isPermitionToDownloadFeedBackFlowReport,
+  isPermitionToDownloadGroupReport,
+  isPermitionToDownloadSOIReport,
 }) => {
   const menuButtons = useMemo(
     () => [
       {
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
-        hidden: !isAdministrator,
+        hidden: !isPermitionToDownloadGroupReport,
       },
       {
         title: 'Выгрузить отчёт по СОИ',
         onClick: openSoiReportModal,
+        hidden: !isPermitionToDownloadSOIReport,
       },
       {
         title: 'Выгрузить отчёт по обратной магистрали',
         onClick: openFeedFlowBackReportModal,
+        hidden: !isPermitionToDownloadFeedBackFlowReport,
       },
       {
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
+        hidden: !isPermitionToCreateResourceDisconnection,
       },
       {
         title: 'Создать объект',
         onClick: handleCreateObject,
-        hidden: !isAdministrator,
+        hidden: !isPermitionToCreateObject,
       },
     ],
     [
       handleOpenChooseResourceDisconnectionModal,
       handleCreateObject,
       openFeedFlowBackReportModal,
-      isAdministrator,
       openSoiReportModal,
-      handleExportGroupReport
+      handleExportGroupReport,
+      isPermitionToCreateObject,
+      isPermitionToCreateResourceDisconnection,
+      isPermitionToDownloadFeedBackFlowReport,
+      isPermitionToDownloadGroupReport,
+      isPermitionToDownloadSOIReport,
     ],
   );
 

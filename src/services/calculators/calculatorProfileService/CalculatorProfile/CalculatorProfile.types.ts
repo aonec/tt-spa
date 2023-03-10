@@ -15,4 +15,5 @@ export type CalculatorProfileProps = {
   openDevicesListModal: (
     payload: NodeOnHousingStockResponse | PipeNodeIntoCalculatorResponse,
   ) => void;
+  isPermitionToCalculatorActions: boolean;
 };

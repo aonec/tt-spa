@@ -5,8 +5,11 @@ export type ObjectsProfileProps = {
   searchType?: SearchType;
   openSoiReportModal: () => void;
   handleCreateObject: () => void;
-  isAdministrator: boolean;
   openFeedFlowBackReportModal: () => void;
   handleExportGroupReport: () => void;
-  handleOpenGroupreportModal: () => void;
+  isPermitionToDownloadGroupReport: boolean;
+  isPermitionToDownloadSOIReport: boolean;
+  isPermitionToDownloadFeedBackFlowReport: boolean;
+  isPermitionToCreateObject: boolean;
+  isPermitionToCreateResourceDisconnection: boolean;
 };

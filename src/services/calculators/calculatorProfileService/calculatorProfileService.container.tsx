@@ -13,6 +13,9 @@ import {
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
+import { currentUserService } from 'services/currentUserService';
+import { ESecuredIdentityRoleName } from 'myApi';
+import _ from 'lodash';
 
 const { gates, inputs, outputs } = calculatorProfileService;
 const { CalculatorIdGate } = gates;
@@ -36,7 +39,15 @@ export const CalculatorProfileContainer = () => {
   );
   const openDevicesListModal = useEvent(inputs.openDevicesListModal);
 
-  
+  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
+  const userRolesKeys = userRoles.map((e) => e.key);
+
+  const isPermitionToCalculatorActions = Boolean(
+    _.intersection(userRolesKeys, [
+      ESecuredIdentityRoleName.Administrator,
+      ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ]).length,
+  );
 
   return (
     <>
@@ -56,6 +67,7 @@ export const CalculatorProfileContainer = () => {
               handleOpenConsumptionReportModal()
             }
             openDevicesListModal={openDevicesListModal}
+            isPermitionToCalculatorActions={isPermitionToCalculatorActions}
           />
         )}
       </WithLoader>

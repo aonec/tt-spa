@@ -7,6 +7,10 @@ import {
 } from './DocumentsService.types';
 import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
+import { useStore } from 'effector-react';
+import { currentUserService } from 'services/currentUserService';
+import _ from 'lodash';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 const accept =
   'application/msword, application/vnd.ms-excel, application/pdf, image/*';
@@ -23,6 +27,18 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   if (!documents) {
     documents = [];
   }
+
+  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
+  const userRolesKeys = userRoles.map((e) => e.key);
+
+  const isPermitionToDeleteExistedDocument = Boolean(
+    _.intersection(userRolesKeys, [
+      ESecuredIdentityRoleName.Administrator,
+      ESecuredIdentityRoleName.ManagingFirmExecutor,
+      ESecuredIdentityRoleName.ManagingFirmDispatcher,
+      ESecuredIdentityRoleName.Controller,
+    ]).length,
+  );
 
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
@@ -50,6 +66,9 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           isLoading={isLoading}
           removeDocument={removeDocument}
           documents={documents}
+          isPermitionToDeleteExistedDocument={
+            isPermitionToDeleteExistedDocument
+          }
         />
       )}
     </div>
