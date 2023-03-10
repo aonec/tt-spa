@@ -13,6 +13,7 @@ import {
 import { $closingIndividualDevice } from '.';
 import { refetchIndividualDevices } from '../../displayIndividualDevices/models';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
+import { message } from 'antd';
 
 closeIndividualDeviceFx.use(closeIndividualDevice);
 
@@ -56,6 +57,14 @@ sample({
   ),
   clock: closeIndividualDeviceForm.formValidated,
   target: closeIndividualDeviceFx,
+});
+
+closeIndividualDeviceFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });
 
 $isClosingIndividualDeviceRequstSuccessfull

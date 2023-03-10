@@ -25,6 +25,7 @@ import {
 } from './models';
 import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExistingApartment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
+import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{
@@ -46,7 +47,7 @@ export const SplitPersonalNumber = () => {
       />
       <SpaceLine />
       <PersonalNumberEditForm
-        type="switch"
+        type={PersonalNumberFormMountPlaceType.Split}
         form={homeownerAccountForSplittedApartmentForm}
       />
     </>,

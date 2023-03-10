@@ -260,6 +260,14 @@ forward({
   to: checkBeforSavingButtonClicked,
 });
 
+createIndividualDeviceFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
 export function getChangedReadings(
   prevReadings: IndividualDeviceReadingsResponse[],
   currentReadings: (SwitchIndividualDeviceReadingsCreateRequest & {

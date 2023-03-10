@@ -10,11 +10,14 @@ export interface MagnetSeal {
 }
 
 export function useSwitchMagnetSeal(device: IndividualDeviceResponse) {
-  const getMagnetSeal = useMemo(() => ({
-    magneticSealInstallationDate: device.magneticSealInstallationDate,
-    magneticSealTypeName: device.magneticSealTypeName,
-    isInstalled: device.hasMagneticSeal,
-  }), [device]);
+  const getMagnetSeal = useMemo(
+    () => ({
+      magneticSealInstallationDate: device.magneticSealInstallationDate,
+      magneticSealTypeName: device.magneticSealTypeName,
+      isInstalled: device.hasMagneticSeal,
+    }),
+    [device],
+  );
 
   const [magnetSeal, setMagnetSeal] = useState<MagnetSeal>(getMagnetSeal);
 

@@ -10,7 +10,7 @@ const { outputs, inputs, gates } = displayDevicesService;
 
 export const DevicesProfileContainer = () => {
   const prevSearchType = useRef<DevicesSearchType>(
-    DevicesSearchType.SearialNumber
+    DevicesSearchType.SearialNumber,
   );
 
   const CalculatorsGate = gates.CalculatorsGate;
