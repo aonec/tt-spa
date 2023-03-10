@@ -64,6 +64,7 @@ import { ReactComponent as PipeIcon } from './svg/pipe.svg';
 import { ReactComponent as BriefcaseIcon } from './svg/briefcase.svg';
 import { ReactComponent as HouseIcon } from './svg/house.svg';
 import { ReactComponent as IncorrectConfigurationIcon } from './svg/incorrectConfiguration.svg';
+import { ReactComponent as ActiveFiltersIcon } from './svg/activeFilters.svg';
 
 export {
   FinishIcon,
@@ -132,4 +133,5 @@ export {
   HouseIcon,
   BriefcaseIcon,
   IncorrectConfigurationIcon,
+  ActiveFiltersIcon,
 };

@@ -1,0 +1,1 @@
+export { HousingDevicesConsumptionPanel } from './HousingDevicesConsumptionPanel';

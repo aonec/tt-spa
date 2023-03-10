@@ -12,7 +12,7 @@ import { currentUserService } from 'services/currentUserService';
 import {
   $taskTypes,
   $housingManagments,
-  $perpetratorIdStore,
+  $organizationUsers,
 } from '../taskTypesService/taskTypesService.model';
 import {
   fetchApartment,
@@ -23,6 +23,7 @@ import {
   FiltersGatePayload,
   GetTasksListRequestPayload,
 } from './tasksProfileService.types';
+import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
 
 const domain = createDomain('tasksProfileService');
 
@@ -52,6 +53,8 @@ const setDeviceId = domain.createEvent<{
   deviceId: string;
 }>();
 
+const setTasksPageSegment = domain.createEvent<TasksPageSegment>();
+
 const $searchState = domain
   .createStore<GetTasksListRequestPayload>({})
   .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
@@ -65,6 +68,9 @@ const $searchState = domain
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 const $isExtendedSearchOpen = domain.createStore(false);
+const $tasksPageSegment = domain
+  .createStore<TasksPageSegment>('list')
+  .on(setTasksPageSegment, (_, segment) => segment);
 
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
@@ -184,6 +190,7 @@ export const tasksProfileService = {
     extendedSearchOpened,
     clearFilters,
     clearAddress,
+    setTasksPageSegment,
   },
   outputs: {
     $taskTypes,
@@ -192,11 +199,12 @@ export const tasksProfileService = {
     $tasksPagedData,
     $isExtendedSearchOpen,
     $housingManagments,
-    $perpetratorIdStore,
+    $organizationUsers,
     $isSpectator,
     $isAdministrator,
     $apartment,
     $housingStock,
+    $tasksPageSegment,
   },
   gates: {
     TasksIsOpen,

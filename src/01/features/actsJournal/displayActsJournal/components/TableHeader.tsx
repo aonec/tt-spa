@@ -1,5 +1,5 @@
 import { Grid } from '01/shared/ui/Layout/Grid';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
@@ -85,9 +85,20 @@ const ResourceExtendedSearch = () => {
     allowedActResources.onChange(resources);
   };
 
+  const allowedFilters = useMemo(
+    () =>
+      (resources || [])?.reduce((acc, { key, value }) => {
+        if (!key || !value) {
+          return acc;
+        }
+        return [...acc, { key, value }];
+      }, [] as { key: EActResourceType; value: string }[]),
+    [resources],
+  );
+
   return (
     <FilterExtendedSearch
-      allowedFilters={resources}
+      allowedFilters={allowedFilters}
       handleUpdate={handleUpdateResources}
       selectedFilters={allowedActResources.value}
     />
@@ -98,18 +109,29 @@ const TypeDocumentExtendedSearch = () => {
   const actTypes = useStore($actTypes);
   const {
     fields: { allowedActTypes },
-    reset
+    reset,
   } = useForm(expandedFilterForm);
 
   const handleUpdateActTypes = (actTypes: EActType[]) => {
     allowedActTypes.onChange(actTypes);
   };
 
-  useEffect(()=> reset, [reset])
+  const allowedActFilters = useMemo(
+    () =>
+      (actTypes || [])?.reduce((acc, { key, value }) => {
+        if (!key || !value) {
+          return acc;
+        }
+        return [...acc, { key, value }];
+      }, [] as { key: EActType; value: string }[]),
+    [actTypes],
+  );
+
+  useEffect(() => reset, [reset]);
 
   return (
     <FilterExtendedSearch
-      allowedFilters={actTypes}
+      allowedFilters={allowedActFilters}
       handleUpdate={handleUpdateActTypes}
       selectedFilters={allowedActTypes.value}
     />
