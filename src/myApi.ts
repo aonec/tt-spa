@@ -1864,18 +1864,10 @@ export enum EPipeNodeConfig {
   HotWaterSupplyWithBackflow = 'HotWaterSupplyWithBackflow',
 }
 
-export enum EPipeNodeValidationError {
+export enum EPipeNodeValidationMessage {
   ExtraFeed = 'ExtraFeed',
   ExtraBack = 'ExtraBack',
   ExtraRecharge = 'ExtraRecharge',
-}
-
-export interface EPipeNodeValidationErrorStringDictionaryItem {
-  key?: EPipeNodeValidationError;
-  value?: string | null;
-}
-
-export enum EPipeNodeValidationWarning {
   NoPipes = 'NoPipes',
   NoFeed = 'NoFeed',
   NoBack = 'NoBack',
@@ -1893,8 +1885,8 @@ export enum EPipeNodeValidationWarning {
   LackNodeTemperatureSensor = 'LackNodeTemperatureSensor',
 }
 
-export interface EPipeNodeValidationWarningStringDictionaryItem {
-  key?: EPipeNodeValidationWarning;
+export interface EPipeNodeValidationMessageStringDictionaryItem {
+  key?: EPipeNodeValidationMessage;
   value?: string | null;
 }
 
@@ -4900,8 +4892,8 @@ export interface PipeNodeResponseSuccessApiResponse {
 }
 
 export interface PipeNodeValidationResultResponse {
-  errors: EPipeNodeValidationErrorStringDictionaryItem[] | null;
-  warnings: EPipeNodeValidationWarningStringDictionaryItem[] | null;
+  errors: EPipeNodeValidationMessageStringDictionaryItem[] | null;
+  warnings: EPipeNodeValidationMessageStringDictionaryItem[] | null;
 }
 
 export interface PipeNodeValidationStatusResponse {
@@ -5858,6 +5850,7 @@ export interface TaskShortResponse {
   targetObject: ETaskTargetObject;
   resourceTypes: EResourceType[] | null;
   executor: OrganizationUserShortResponse | null;
+  apartmentNumber: string | null;
 }
 
 export interface TaskStatisticsItem {
@@ -7939,59 +7932,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsUpdatePipeNodesConfigurationsList
-     * @summary DataMigration
-     * @request GET:/api/DataMigrations/UpdatePipeNodesConfigurations
-     * @secure
-     */
-    dataMigrationsUpdatePipeNodesConfigurationsList: (
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/UpdatePipeNodesConfigurations`,
-        method: 'GET',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsInsertPipeNodeIdsToTasksList
-     * @summary DataMigration
-     * @request GET:/api/DataMigrations/InsertPipeNodeIdsToTasks
-     * @secure
-     */
-    dataMigrationsInsertPipeNodeIdsToTasksList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/InsertPipeNodeIdsToTasks`,
-        method: 'GET',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsAddMissingPipesToNodesCreate
-     * @summary DataMigration
-     * @request POST:/api/DataMigrations/AddMissingPipesToNodes
-     * @secure
-     */
-    dataMigrationsAddMissingPipesToNodesCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/AddMissingPipesToNodes`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
      *
      * @tags Documents
@@ -9560,13 +9500,14 @@ export class Api<
      * @secure
      */
     housingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList:
-      (params: RequestParams = {}) =>
+      (query?: { city?: string }, params: RequestParams = {}) =>
         this.request<
           HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
           ErrorApiResponse
         >({
           path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement`,
           method: 'GET',
+          query: query,
           secure: true,
           format: 'json',
           ...params,
