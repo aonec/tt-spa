@@ -14,6 +14,8 @@ import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import {
   Footer,
   GridContainer,
+  PipeInfoWrapper,
+  PipeMagistralWrapper,
   Wrapper,
 } from './EditHousingMeteringDeviceCommonInfo.styled';
 import {
@@ -24,8 +26,14 @@ import { getUpdateNodeDataFromFormik } from './EditHousingMeteringDeviceCommonIn
 
 export const EditHousingMeteringDeviceCommonInfo: FC<
   EditHousingMeteringDeviceCommonInfoProps
-> = ({ housingMeteringDevice, handleSubmitForm, deviceId, onCancel }) => {
-  const initialValues = {
+> = ({
+  housingMeteringDevice,
+  handleSubmitForm,
+  deviceId,
+  onCancel,
+  communicationPipes,
+}) => {
+  const initialValues: EditHousingMeteringDeviceCommonInfoFormTypes = {
     resource: housingMeteringDevice?.resource || null,
     housingMeteringDeviceType:
       housingMeteringDevice?.housingMeteringDeviceType || null,
@@ -37,16 +45,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
     futureCheckingDate: housingMeteringDevice?.futureCheckingDate
       ? moment(housingMeteringDevice?.futureCheckingDate)
       : null,
-    diameter: housingMeteringDevice?.diameter || null,
-    pipeNumber: housingMeteringDevice?.hubConnection?.hub?.pipeNumber || null,
-    magistral: housingMeteringDevice?.hubConnection?.hub?.magistral || null,
-    city: housingMeteringDevice?.address?.address?.mainAddress?.city || null,
-    street:
-      housingMeteringDevice?.address?.address?.mainAddress?.street || null,
-    housingStockNumber:
-      housingMeteringDevice?.address?.address?.mainAddress?.number || null,
-    corpus:
-      housingMeteringDevice?.address?.address?.mainAddress?.corpus || null,
+    communicationPipeId: housingMeteringDevice?.communicationPipe?.id || null,
   };
 
   const { values, handleSubmit, setFieldValue, errors } =
@@ -54,10 +53,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
       initialValues,
       enableReinitialize: true,
       onSubmit: (values) => {
-        handleSubmitForm({
-          deviceId: Number(deviceId),
-          request: getUpdateNodeDataFromFormik(values),
-        });
+        handleSubmitForm(getUpdateNodeDataFromFormik(values));
       },
       validateOnChange: false,
     });
@@ -93,65 +89,52 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
         <ErrorMessage>{errors.housingMeteringDeviceType}</ErrorMessage>
       </FormItem>
 
-      <FormItem label="Модель прибора">
-        <Input
-          placeholder="Введите"
-          value={values.model || undefined}
-          onChange={(value) => setFieldValue('model', value.target.value)}
-        />
-        <ErrorMessage> {errors.model} </ErrorMessage>
-      </FormItem>
-
-      <FormItem label="Серийный номер">
-        <Input
-          type="number"
-          placeholder="Введите"
-          value={values.serialNumber || undefined}
-          onChange={(value) =>
-            setFieldValue('serialNumber', value.target.value)
-          }
-        />
-        <ErrorMessage> {errors.serialNumber} </ErrorMessage>
-      </FormItem>
-
       <GridContainer>
-        <FormItem label="Диаметр трубы, мм">
+        <FormItem label="Модель прибора">
           <Input
             placeholder="Введите"
-            value={values.diameter || undefined}
-            onChange={(value) => setFieldValue('diameter', value.target.value)}
-            disabled
+            value={values.model || undefined}
+            onChange={(value) => setFieldValue('model', value.target.value)}
           />
-          <ErrorMessage> {errors.diameter} </ErrorMessage>
+          <ErrorMessage> {errors.model} </ErrorMessage>
         </FormItem>
 
-        <FormItem label="Номер трубы">
+        <FormItem label="Серийный номер">
           <Input
             type="number"
             placeholder="Введите"
-            value={values.pipeNumber || undefined}
+            value={values.serialNumber || undefined}
             onChange={(value) =>
-              setFieldValue('pipeNumber', value.target.value)
+              setFieldValue('serialNumber', value.target.value)
             }
           />
-          <ErrorMessage> {errors.pipeNumber} </ErrorMessage>
+          <ErrorMessage> {errors.serialNumber} </ErrorMessage>
         </FormItem>
       </GridContainer>
 
-      <FormItem label="Магистраль">
-        <Select
-          placeholder="Выберите из списка"
-          onChange={(value) => setFieldValue('magistral', value)}
-          value={values.magistral || undefined}
-        >
-          {Object.values(EMagistralType).map((magistralType) => (
-            <Select.Option value={magistralType} key={magistralType}>
-              {MagistralsDisctionary[magistralType as EMagistralType]}
-            </Select.Option>
-          ))}
-        </Select>
-        <ErrorMessage>{errors.magistral}</ErrorMessage>
-      </FormItem>
+      <GridContainer>
+        <FormItem label="Труба">
+          <Select
+            onChange={(id) => setFieldValue('communicationPipeId', id)}
+            value={values.communicationPipeId || undefined}
+          >
+            {communicationPipes.map((pipe) => (
+              <Select.Option value={pipe.id} key={pipe.id}>
+                <PipeInfoWrapper>
+                  №{pipe.number}
+                  <PipeMagistralWrapper>
+                    ({pipe.diameter} мм),
+                    {pipe.magistral &&
+                      `${
+                        MagistralsDisctionary[pipe.magistral as EMagistralType]
+                      } маг.`}
+                  </PipeMagistralWrapper>
+                </PipeInfoWrapper>
+              </Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+      </GridContainer>
 
       <GridContainer>
         <FormItem label="Дата поверки прибора">
@@ -177,26 +160,6 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
             format="DD.MM.YYYY"
           />
         </FormItem>
-      </GridContainer>
-
-      <FormItem label="Город">
-        <Input value={values.city || undefined} disabled />
-      </FormItem>
-
-      <GridContainer>
-        <FormItem label="Улица">
-          <Input value={values.street || undefined} disabled />
-        </FormItem>
-
-        <GridContainer>
-          <FormItem label="Номер дома">
-            <Input value={values.housingStockNumber || undefined} disabled />
-          </FormItem>
-
-          <FormItem label="Корпус">
-            <Input value={values.corpus || undefined} disabled />
-          </FormItem>
-        </GridContainer>
       </GridContainer>
 
       <Footer>

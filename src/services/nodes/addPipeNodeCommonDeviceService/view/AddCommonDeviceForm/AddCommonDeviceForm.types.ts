@@ -10,7 +10,6 @@ export type AddCommonDeviceFormProps = {
   updateRequestPayload: (payload: CreateCommonDevicePartitial) => void;
   configuration: EPipeNodeConfig;
   requestPayload: CreateCommonDevicePartitial;
-  openAddPipeModal: () => void;
   communicationPipes: CommunicationPipePayload[];
   handleFormComplete: () => void;
 };

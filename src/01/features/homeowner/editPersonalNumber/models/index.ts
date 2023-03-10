@@ -11,6 +11,12 @@ import {
   EffectFailDataAxiosErrorDataApartmentId,
 } from 'types';
 
+export const editHomeownerAccountEffect = createEffect<
+  { id: string; data: HomeownerAccountUpdateRequest },
+  void,
+  EffectFailDataAxiosErrorDataApartmentId
+>();
+
 export const $isSelectEditPersonalNumberTypeModalOpen = createStore(false);
 
 export const openEditPersonalNumberTypeModal = createEvent();
@@ -23,9 +29,14 @@ export const setEditRequestStatus = createEvent<null | RequestStatusShared>();
 export const handleConfirmationModalClose = createEvent();
 export const onForced = createEvent();
 
-export const $samePersonalAccountNumderId = createStore<number | null>(
-  null,
-).reset(handleConfirmationModalClose);
+export const $samePersonalAccountNumderId = createStore<number | null>(null)
+  .on(editHomeownerAccountEffect.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
 
 export const $isConfirmationModalOpen =
   $samePersonalAccountNumderId.map(Boolean);
@@ -84,12 +95,6 @@ export const personalNumberEditForm = createForm({
 export const AutoCompleteFormGate = createGate<{ autocomplete: boolean }>();
 
 export const PersonalNumberFormGate = createGate();
-
-export const editHomeownerAccountEffect = createEffect<
-  { id: string; data: HomeownerAccountUpdateRequest },
-  void,
-  EffectFailDataAxiosErrorDataApartmentId
->();
 
 export const editHomeownerSaveButtonClicked = createEvent();
 

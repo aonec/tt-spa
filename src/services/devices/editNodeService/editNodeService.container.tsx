@@ -19,11 +19,10 @@ export const EditNodeContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const grouptype = useStore(outputs.$editNodeGrouptype);
   const nodeZones = useStore(outputs.$nodeZones);
-  const magistrals = useStore(outputs.$magistrals);
 
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
   const openAddNewZonesModal = useEvent(
-    createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal
+    createNodeServiceZoneService.inputs.openCreateNodeServiceZoneModal,
   );
 
   const refetchNode = useEvent(inputs.refetchNode);
@@ -44,7 +43,6 @@ export const EditNodeContainer = () => {
               setGrouptype={setGrouptype}
               openAddNewZonesModal={() => openAddNewZonesModal()}
               nodeZones={nodeZones}
-              magistrals={magistrals}
               refetchNode={() => refetchNode()}
               updateNode={updateNode}
             />

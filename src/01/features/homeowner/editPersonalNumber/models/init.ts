@@ -22,7 +22,6 @@ import {
   $isForced,
   onForced,
   handleEditHomeownerAccount,
-  $samePersonalAccountNumderId,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
@@ -150,27 +149,12 @@ sample({
   target: closeHomeownerAccountFx,
 });
 
-$samePersonalAccountNumderId
-  .on(editHomeownerAccountEffect.failData, (prev, errData) => {
-    if (errData.response.status === 409) {
-      return errData.response.data.error.Data.ApartmentId;
-    }
-    return prev;
-  })
-  .reset(handleConfirmationModalClose);
-
 forward({
   from: editHomeownerAccountEffect.doneData,
   to: handleConfirmationModalClose,
 });
 
 editHomeownerAccountEffect.failData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
-
   if (
     error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
   ) {

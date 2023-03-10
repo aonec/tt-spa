@@ -12,7 +12,7 @@ import { currentUserService } from 'services/currentUserService';
 import {
   $taskTypes,
   $housingManagments,
-  $perpetratorIdStore,
+  $organizationUsers,
 } from '../taskTypesService/taskTypesService.model';
 import {
   fetchApartment,
@@ -23,10 +23,12 @@ import {
   FiltersGatePayload,
   GetTasksListRequestPayload,
 } from './tasksProfileService.types';
+import { TasksPageSegment } from './view/TasksProfile/TasksProfile.types';
 
 const domain = createDomain('tasksProfileService');
 
 const clearAddress = domain.createEvent();
+const clearFilters = domain.createEvent();
 
 const getApartmentFx = domain.createEffect<
   FiltersGatePayload,
@@ -51,6 +53,8 @@ const setDeviceId = domain.createEvent<{
   deviceId: string;
 }>();
 
+const setTasksPageSegment = domain.createEvent<TasksPageSegment>();
+
 const $searchState = domain
   .createStore<GetTasksListRequestPayload>({})
   .on(setPipeNodeId, (prev, { pipeNodeId }) => ({
@@ -64,8 +68,10 @@ const $searchState = domain
 
 const $tasksPagedData = domain.createStore<TasksPagedList | null>(null);
 const $isExtendedSearchOpen = domain.createStore(false);
+const $tasksPageSegment = domain
+  .createStore<TasksPageSegment>('list')
+  .on(setTasksPageSegment, (_, segment) => segment);
 
-const clearFilters = domain.createEvent();
 const extendedSearchOpened = domain.createEvent();
 const extendedSearchClosed = domain.createEvent();
 
@@ -119,8 +125,9 @@ $searchState
     ...filters,
     PageNumber: 1,
   }))
-  .on(changeFiltersByGroupType, (_, GroupType) => ({
+  .on(changeFiltersByGroupType, ({ City }, GroupType) => ({
     GroupType,
+    City,
     PageNumber: 1,
   }))
   .on(changeGroupType, (filters, GroupType) => ({
@@ -183,6 +190,7 @@ export const tasksProfileService = {
     extendedSearchOpened,
     clearFilters,
     clearAddress,
+    setTasksPageSegment,
   },
   outputs: {
     $taskTypes,
@@ -191,11 +199,12 @@ export const tasksProfileService = {
     $tasksPagedData,
     $isExtendedSearchOpen,
     $housingManagments,
-    $perpetratorIdStore,
+    $organizationUsers,
     $isSpectator,
     $isAdministrator,
     $apartment,
     $housingStock,
+    $tasksPageSegment,
   },
   gates: {
     TasksIsOpen,

@@ -1,6 +1,6 @@
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
-import { EActResourceType } from 'myApi';
+import { EActResourceType, EActType } from 'myApi';
 import React, { FC, useMemo } from 'react';
 import { FilterExtendedSearch } from 'ui-kit/shared_components/FilterExtendedSearch';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
@@ -54,6 +54,17 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
     ([key, value]) => ({ key: key as EActResourceType, value }),
   );
 
+  const allowedFilters = useMemo(
+    () =>
+      (actTypes || [])?.reduce((acc, { key, value }) => {
+        if (!key || !value) {
+          return acc;
+        }
+        return [...acc, { key, value }];
+      }, [] as { key: EActType; value: string }[]),
+    [actTypes],
+  );
+
   return (
     <>
       <Wrapper>
@@ -68,7 +79,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
                 <FilterExtendedSearch
                   allowedFilters={resources}
                   handleUpdate={handleUpdateResources}
-                  selectedFilters={selectedFilters.resources}
+                  selectedFilters={selectedFilters.resources || []}
                 />
               </ExtendedSearchWrapper>
             </ColumnTitle>
@@ -76,9 +87,9 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
               Тип
               <ExtendedSearchWrapper>
                 <FilterExtendedSearch
-                  allowedFilters={actTypes}
+                  allowedFilters={allowedFilters}
                   handleUpdate={handleUpdateTypes}
-                  selectedFilters={selectedFilters.actTypes}
+                  selectedFilters={selectedFilters.actTypes || []}
                 />
               </ExtendedSearchWrapper>
             </ColumnTitle>
