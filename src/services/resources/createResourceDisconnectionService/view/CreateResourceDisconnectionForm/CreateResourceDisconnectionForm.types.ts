@@ -7,8 +7,8 @@ import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
 } from 'myApi';
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
-import { TreeSelectElement } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
 
 export type CreateResourceDisconnectionFormProps = {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[];

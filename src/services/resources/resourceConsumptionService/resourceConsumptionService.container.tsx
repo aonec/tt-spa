@@ -9,7 +9,7 @@ const { ResourceConsumptionGate } = gates;
 export const ResourceConsumptionContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const resourceConsumptionFilter = useStore(
-    outputs.$resourceConsumptionFilter
+    outputs.$resourceConsumptionFilter,
   );
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
   const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
@@ -17,6 +17,7 @@ export const ResourceConsumptionContainer = () => {
   const houseManagements = useStore(outputs.$houseManagements);
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
   const additionalConsumptionData = useStore(outputs.$additionalConsumption);
+  const treeData = useStore(outputs.$treeData);
 
   const setResource = useEvent(inputs.setResource);
   const setFilter = useEvent(inputs.setFilter);
@@ -32,7 +33,7 @@ export const ResourceConsumptionContainer = () => {
         id: houseManagement.id,
         name: houseManagement.name,
       })),
-    [houseManagements]
+    [houseManagements],
   );
 
   return (
@@ -54,6 +55,7 @@ export const ResourceConsumptionContainer = () => {
         setSelectedGraphTypes={setSelectedGraphTypes}
         additionalConsumptionData={additionalConsumptionData}
         handleClearAdditionalAddress={() => handleClearAdditionalAddress()}
+        treeData={treeData}
       />
     </>
   );

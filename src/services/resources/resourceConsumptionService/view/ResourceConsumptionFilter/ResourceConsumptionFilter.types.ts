@@ -1,3 +1,4 @@
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import {
   GetConsumptionDataFilter,
   AddressWithSearchString,
@@ -15,10 +16,11 @@ export type ResourceConsumptionFilterProps = {
   handleClearData: () => void;
   handleClearFilter: () => void;
   handleClearAdditionalAddress: () => void;
+  treeData: TreeSelectElement[];
 };
 
 export type GetHousingConsumptionDataFormik = {
-  HousingStockId: number | null;
+  HousingStockIds: number[];
   currentAddress: string | null;
   additionalAddress: string | null;
   AdditionalHousingStockId: number | null;

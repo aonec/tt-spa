@@ -13,7 +13,9 @@ import {
 } from './ResourceConsumptionProfile.types';
 import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
 
-export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = ({
+export const ResourceConsumptionProfile: FC<
+  ResourceConsumptionProfileProps
+> = ({
   isLoading,
   resourceConsumptionFilter,
   setResource,
@@ -29,11 +31,12 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   setSelectedGraphTypes,
   additionalConsumptionData,
   handleClearAdditionalAddress,
+  treeData,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
-    initialSelectedAddresses
+    initialSelectedAddresses,
   );
 
   useEffect(() => {
@@ -46,7 +49,8 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
     }
     return {
       ...housingConsumptionData,
-      [ResourceConsumptionGraphDataType.additionalAddress]: additionalConsumptionData,
+      [ResourceConsumptionGraphDataType.additionalAddress]:
+        additionalConsumptionData,
     };
   }, [housingConsumptionData, additionalConsumptionData]);
 
@@ -69,7 +73,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
           />
           {housingConsumptionData &&
             Boolean(
-              housingConsumptionData?.currentMonthData.housing.length
+              housingConsumptionData?.currentMonthData.housing.length,
             ) && (
               <SelectResourceConsumptionType
                 disabled={getDisabledGraphTypes(housingConsumptionData)}
@@ -99,6 +103,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
         handleClearData={handleClearData}
         handleClearFilter={handleClearFilter}
         handleClearAdditionalAddress={handleClearAdditionalAddress}
+        treeData={treeData}
       />
     </Wrapper>
   );

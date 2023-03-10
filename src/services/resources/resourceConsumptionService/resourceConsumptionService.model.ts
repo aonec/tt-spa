@@ -22,6 +22,10 @@ import { getAddressSearchData } from './resourceConsumptionService.utils';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
+import {
+  prepareAddressesForTreeSelect,
+  prepareAddressesWithParentsForTreeSelect,
+} from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 
 const domain = createDomain('resourceConsumptionService');
 
@@ -61,6 +65,22 @@ const $addressesList = combine(
     );
 
     return getAddressSearchData(requiredHouseManagements?.streets || []);
+  },
+);
+
+const $treeData = combine(
+  $houseManagements,
+  $selectedHouseManagement,
+  (houseManagements, selectedHouseManagement) => {
+    if (!selectedHouseManagement) {
+      return prepareAddressesWithParentsForTreeSelect(houseManagements);
+    }
+    const requiredHouseManagements = houseManagements.find(
+      (houseManagement) => houseManagement.id === selectedHouseManagement,
+    );
+    return prepareAddressesForTreeSelect({
+      items: requiredHouseManagements?.streets || [],
+    });
   },
 );
 
@@ -119,13 +139,13 @@ const $isLoading = getHousingConsumptionFx.pending;
 guard({
   clock: $resourceConsumptionFilter.map((filter) => ({
     ...filter,
-    HousingStockId: filter?.AdditionalHousingStockId,
+    HousingStockIds: [filter?.AdditionalHousingStockId],
   })),
   filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockId &&
+        filter?.HousingStockIds &&
         filter?.ResourceType,
     ),
   target: getAdditionalConsumptionFx,
@@ -137,7 +157,7 @@ guard({
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockId &&
+        filter?.HousingStockIds &&
         filter?.ResourceType,
     ),
   target: getHousingConsumptionFx,
@@ -187,6 +207,7 @@ export const resourceConsumptionService = {
     $houseManagements,
     $selectedGraphTypes,
     $additionalConsumption,
+    $treeData,
   },
   gates: { ResourceConsumptionGate },
 };

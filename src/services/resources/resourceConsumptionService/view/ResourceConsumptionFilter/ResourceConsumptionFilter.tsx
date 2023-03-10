@@ -8,6 +8,7 @@ import { SearchFieldType } from 'services/addressSearchService/view/AddressSearc
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { AddressAutoCompleteSearch } from './AddressAutoCompleteSearch';
+import { AddressTreeSelect } from '../../../../../ui-kit/shared_components/AddressTreeSelect';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
   AdditionalAddressWrapper,
@@ -35,13 +36,14 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   handleClearData,
   handleClearFilter,
   handleClearAdditionalAddress,
+  treeData,
 }) => {
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
   const { values, setFieldValue, submitForm, resetForm, errors } =
     useFormik<GetHousingConsumptionDataFormik>({
       initialValues: {
-        HousingStockId: filter?.HousingStockId || null,
+        HousingStockIds: filter?.HousingStockIds || [],
         currentAddress: filter?.currentAddress || null,
         AdditionalHousingStockId: filter?.AdditionalHousingStockId || null,
         additionalAddress: filter?.additionalAddress || null,
@@ -53,9 +55,9 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
       validateOnChange: false,
       validateOnBlur: false,
       onSubmit: (values) => {
-        const { HousingStockId, AdditionalHousingStockId } = values;
+        const { HousingStockIds, AdditionalHousingStockId } = values;
 
-        if (!HousingStockId) {
+        if (!HousingStockIds.length) {
           return;
         }
 
@@ -63,7 +65,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
           handleClearAdditionalAddress();
         }
 
-        setFilter({ ...values, HousingStockId });
+        setFilter({ ...values, HousingStockIds });
       },
     });
 
@@ -72,6 +74,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     setFieldValue('currentAddress', null);
     setFieldValue('AdditionalHousingStockId', null);
     setFieldValue('HousingStockId', null);
+  }, [streetsList, setFieldValue]);
+
+  useEffect(() => {
+    setFieldValue('HousingStockIds', []);
   }, [streetsList, setFieldValue]);
 
   const handleReset = useCallback(() => {
@@ -137,14 +143,12 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
           </SelectSC>
         </FormItem>
         <FormItem label="Адрес">
-          <AddressAutoCompleteSearch
-            streetsList={streetsList}
-            handleChooseHousingStock={({ id, address }) => {
-              setFieldValue('HousingStockId', id);
-              setFieldValue('currentAddress', address);
-            }}
+          <AddressTreeSelect
+            treeData={treeData}
+            onChange={(ids) => setFieldValue('HousingStockIds', ids)}
+            selectedHousingStockIds={values.HousingStockIds}
           />
-          <ErrorMessage>{errors.HousingStockId}</ErrorMessage>
+          <ErrorMessage>{errors.HousingStockIds}</ErrorMessage>
         </FormItem>
         {!isAdditionalAddress && (
           <AdditionalAddressWrapper

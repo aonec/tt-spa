@@ -1,4 +1,5 @@
 import { EResourceType } from 'myApi';
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import {
   ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
@@ -24,10 +25,11 @@ export type ResourceConsumptionProfileProps = {
   handleClearFilter: () => void;
   selectedGraphTypes: BooleanTypesOfResourceConsumptionGraphForTwoMonth;
   setSelectedGraphTypes: (
-    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth
+    selected: BooleanTypesOfResourceConsumptionGraphForTwoMonth,
   ) => void;
   additionalConsumptionData: MonthConsumptionData | null;
   handleClearAdditionalAddress: () => void;
+  treeData: TreeSelectElement[];
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {
