@@ -119,7 +119,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {TasksRouter()}
 
-                  {isAnyRole && (
+                  {(isSeniorOperator || isOperator) && (
                     <Route path="/actsJournal" exact>
                       <ApartmentActs />
                     </Route>

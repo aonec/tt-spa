@@ -3,6 +3,9 @@ import React, { FC } from 'react';
 import { CommentPanel } from 'ui-kit/shared_components/CommentPanel';
 import { calculatorCommentService } from './calculatorCommentService.model';
 import { CalculatorCommentContainerProps } from './calculatorCommentService.types';
+import { currentUserService } from 'services/currentUserService';
+import _ from 'lodash';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 const { outputs, inputs, gates } = calculatorCommentService;
 const { CalculatorIdGate } = gates;
@@ -28,6 +31,15 @@ export const CalculatorCommentContainer: FC<
   const lastModifiedUser =
     commentResponseData?.lastModifiedUser || lastModifiedUserFromCalculatorData;
 
+  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
+  const userRolesKeys = userRoles.map((e) => e.key);
+  const isPermitionToChangeComment = Boolean(
+    _.intersection(userRolesKeys, [
+      ESecuredIdentityRoleName.Administrator,
+      ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ]).length,
+  );
+
   return (
     <>
       <CalculatorIdGate calculatorId={calculatorId} />
@@ -46,6 +58,7 @@ export const CalculatorCommentContainer: FC<
           return handleCreateComment(text);
         }}
         onRemove={() => handleRemoveComment()}
+        isHavePermission={isPermitionToChangeComment}
       />
     </>
   );
