@@ -18,6 +18,10 @@ export const TreeSelectSC = styled(TreeSelect)<{ small: boolean }>`
       .ant-select-selection-item {
         padding: 0px;
       }
+
+      .ant-select-arrow {
+        margin-right: 0px;
+      }
  
     `}
 `;
