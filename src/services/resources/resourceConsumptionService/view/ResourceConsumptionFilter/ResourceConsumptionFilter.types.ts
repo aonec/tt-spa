@@ -17,4 +17,6 @@ export type ResourceConsumptionFilterProps = {
   handleClearFilter: () => void;
   handleClearAdditionalAddressData: () => void;
   treeData: TreeSelectElement[];
+  selectedCity: string | null;
+  selectCity: (city: string) => void;
 };

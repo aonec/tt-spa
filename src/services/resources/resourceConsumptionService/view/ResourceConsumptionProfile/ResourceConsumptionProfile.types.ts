@@ -30,6 +30,8 @@ export type ResourceConsumptionProfileProps = {
   additionalConsumptionData: MonthConsumptionData | null;
   handleClearAdditionalAddressData: () => void;
   treeData: TreeSelectElement[];
+  selectedCity: string | null;
+  selectCity: (city: string) => void;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

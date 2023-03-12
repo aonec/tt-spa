@@ -1,3 +1,4 @@
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
@@ -18,6 +19,7 @@ export const ResourceConsumptionContainer = () => {
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
   const additionalConsumptionData = useStore(outputs.$additionalConsumption);
   const treeData = useStore(outputs.$treeData);
+  const selectedCity = useStore(outputs.$selectedCity);
 
   const setResource = useEvent(inputs.setResource);
   const setFilter = useEvent(inputs.setFilter);
@@ -28,6 +30,7 @@ export const ResourceConsumptionContainer = () => {
   const handleClearAdditionalAddressData = useEvent(
     inputs.clearAdditionalAddressData,
   );
+  const selectCity = useEvent(inputs.selectCity);
 
   const preparedHouseManagements = useMemo(
     () =>
@@ -40,6 +43,7 @@ export const ResourceConsumptionContainer = () => {
 
   return (
     <>
+      <ExistingCitiesGate />
       <ResourceConsumptionGate />
       <ResourceConsumptionProfile
         isLoading={isLoading}
@@ -60,6 +64,8 @@ export const ResourceConsumptionContainer = () => {
           handleClearAdditionalAddressData()
         }
         treeData={treeData}
+        selectedCity={selectedCity}
+        selectCity={selectCity}
       />
     </>
   );
