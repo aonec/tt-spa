@@ -82,9 +82,14 @@ export const fetchNormativeConsumptionData = (
     },
   );
 
-export const fetchAddresses = (): Promise<
-  HouseManagementWithStreetsResponse[]
-> =>
+export const fetchAddresses = (
+  City: string,
+): Promise<HouseManagementWithStreetsResponse[]> =>
   axios.get(
     'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
+    {
+      params: {
+        City,
+      },
+    },
   );

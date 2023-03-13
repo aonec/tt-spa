@@ -32,6 +32,8 @@ export const ResourceConsumptionProfile: FC<
   additionalConsumptionData,
   handleClearAdditionalAddressData,
   treeData,
+  selectCity,
+  selectedCity,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
@@ -102,6 +104,8 @@ export const ResourceConsumptionProfile: FC<
         handleClearFilter={handleClearFilter}
         treeData={treeData}
         handleClearAdditionalAddressData={handleClearAdditionalAddressData}
+        selectedCity={selectedCity}
+        selectCity={selectCity}
       />
     </Wrapper>
   );

@@ -32,12 +32,18 @@ const domain = createDomain('resourceConsumptionService');
 const clearStore = domain.createEvent();
 
 const getAddressesFx = domain.createEffect<
-  void,
+  string,
   HouseManagementWithStreetsResponse[]
 >(fetchAddresses);
 
-const selectHouseManagememt = domain.createEvent<string | null>();
+const clearCity = domain.createEvent();
+const selectCity = domain.createEvent<string>();
+const $selectedCity = domain
+  .createStore<string | null>(null)
+  .on(selectCity, (_, city) => city)
+  .reset(clearCity);
 
+const selectHouseManagememt = domain.createEvent<string | null>();
 const $selectedHouseManagement = domain
   .createStore<string | null>(null)
   .on(selectHouseManagememt, (_, id) => id)
@@ -165,7 +171,7 @@ guard({
 
 forward({
   from: ResourceConsumptionGate.close,
-  to: [clearStore, clearData],
+  to: [clearStore, clearData, clearCity],
 });
 
 forward({
@@ -174,9 +180,8 @@ forward({
 });
 
 guard({
-  source: $houseManagements,
-  clock: ResourceConsumptionGate.open,
-  filter: (arr) => !arr.length,
+  clock: $selectedCity,
+  filter: Boolean,
   target: getAddressesFx,
 });
 
@@ -197,6 +202,7 @@ export const resourceConsumptionService = {
     clearStore,
     setSelectedGraphTypes,
     clearAdditionalAddressData,
+    selectCity,
   },
   outputs: {
     $housingConsumptionData,
@@ -208,6 +214,7 @@ export const resourceConsumptionService = {
     $selectedGraphTypes,
     $additionalConsumption,
     $treeData,
+    $selectedCity,
   },
   gates: { ResourceConsumptionGate },
 };

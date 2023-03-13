@@ -3,8 +3,6 @@ import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { AddressSearchContainer } from 'services/addressSearchService';
-import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { AddressTreeSelect } from '../../../../../ui-kit/shared_components/AddressTreeSelect';
@@ -22,6 +20,8 @@ import {
 } from './ResourceConsumptionFilter.styled';
 import { GetConsumptionDataFilter } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import { useStore } from 'effector-react';
 
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
@@ -34,7 +34,10 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   handleClearFilter,
   treeData,
   handleClearAdditionalAddressData,
+  selectCity,
+  selectedCity,
 }) => {
+  const existingCities = useStore($existingCities);
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
   const { values, setFieldValue, submitForm, resetForm, errors } =
@@ -100,20 +103,26 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
               }}
             />
           </FormItem>
-          <AddressSearchContainer
-            disabledFields={[SearchFieldType.City]}
-            fields={[SearchFieldType.City]}
-            showLabels
-            customTemplate={[
-              {
-                fieldType: SearchFieldType.City,
-                templateValue: '100%',
-              },
-            ]}
-          />
+          <FormItem label="Город">
+            <SelectSC
+              disabled={!(existingCities || []).length}
+              isShadow={false}
+              onChange={(value) => selectCity(String(value))}
+              value={selectedCity || undefined}
+              placeholder="Выберите город"
+            >
+              {(existingCities || []).map((city) => (
+                <SelectSC.Option key={city} value={city}>
+                  {city}
+                </SelectSC.Option>
+              ))}
+            </SelectSC>
+          </FormItem>
         </FormWrapper>
         <FormItem label="Домоуправление">
           <SelectSC
+            disabled={!houseManagements.length}
+            isShadow={false}
             placeholder="Выберите из списка"
             value={selectedHouseManagement || undefined}
             onChange={(id) => setHouseManagement(id ? String(id) : null)}
@@ -134,6 +143,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <FormItem label="Адрес">
           <AddressTreeSelect
             small
+            disabled={!treeData.length}
             treeData={treeData}
             placeholder="Выберите из списка"
             onChange={(ids) => setFieldValue('HousingStockIds', ids)}
