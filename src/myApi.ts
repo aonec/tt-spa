@@ -12569,6 +12569,28 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags Reports
+     * @name ReportsHeatIndividualDevicesReportList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/HeatIndividualDevicesReport
+     * @secure
+     */
+    reportsHeatIndividualDevicesReportList: (
+      query: { HousingStockIds: number[]; Month: number; Year: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/HeatIndividualDevicesReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Старший оператор</li><li>Оператор</li>
      *
      * @tags Reports
