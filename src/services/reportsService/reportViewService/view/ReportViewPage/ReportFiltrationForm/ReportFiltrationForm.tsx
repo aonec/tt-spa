@@ -2,11 +2,16 @@ import React, { FC, useEffect } from 'react';
 import { Checkbox, Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import {
+  EmployeeReportFormWrapper,
   PeriodPickerWrapprer,
   ResourceOption,
   Wrapper,
 } from './ReportFiltrationForm.styled';
-import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+  ReportFiltrationFormProps,
+} from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
@@ -27,6 +32,8 @@ import {
 import { RangePicker } from 'ui-kit/RangePicker';
 import {
   addressesCountTexts,
+  EmployeeReportDatePeriodTypesDictionary,
+  EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
   selectedCountTexts,
 } from './ReportFiltrationForm.constants';
@@ -38,6 +45,7 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
 import { getCountText } from 'utils/getCountText';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -68,6 +76,38 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
     addressesWithHouseManagements,
     values.houseManagement,
   );
+
+  const isEmployeeReport = reportType === ReportType.Employee;
+
+  if (isEmployeeReport) {
+    return (
+      <Form id={formId} onSubmitCapture={handleSubmit}>
+        <EmployeeReportFormWrapper>
+          <FormItem label="Вид отчета">
+            <Select placeholder="Выберите из списка">
+              {Object.values(EmployeeReportType).map((elem) => (
+                <Select.Option key={elem} value={elem}>
+                  {EmployeeReportTypesDictionary[elem]}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+          <FormItem label="Период">
+            <Select placeholder="Выберите из списка">
+              {Object.values(EmployeeReportDatePeriodType).map((elem) => (
+                <Select.Option key={elem} value={elem}>
+                  {EmployeeReportDatePeriodTypesDictionary[elem]}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+          <FormItem label="Дата">
+            <DatePicker />
+          </FormItem>
+        </EmployeeReportFormWrapper>
+      </Form>
+    );
+  }
 
   const isHomeownersReport = reportType === ReportType.Homeowners;
 

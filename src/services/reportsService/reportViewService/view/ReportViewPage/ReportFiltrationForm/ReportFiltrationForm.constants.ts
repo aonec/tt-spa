@@ -1,5 +1,9 @@
 import { ReportDatePeriod } from 'services/reportsService/reportViewService/reportViewService.types';
 import { DigitCountTextList } from 'utils/getCountText';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './ReportFiltrationForm.types';
 
 export const ReportPeriodDictionary: { [key in ReportDatePeriod]: string } = {
   [ReportDatePeriod.LastDay]: 'Последние сутки',
@@ -34,3 +38,17 @@ export const selectedCountTexts: DigitCountTextList = [
     text: 'Выбран',
   },
 ];
+
+export const EmployeeReportTypesDictionary = {
+  [EmployeeReportType.OperatorsWorkingReport]: 'Отчет по операторам',
+  [EmployeeReportType.HouseManagementsReport]:
+    'Сводный отчет принятых показаний',
+  [EmployeeReportType.CallCenterWorkingReport]:
+    'Еженедельный отчет по работе операторов',
+  [EmployeeReportType.InspectorsWorkingReport]: 'Отчет по инспекторам',
+};
+
+export const EmployeeReportDatePeriodTypesDictionary = {
+  [EmployeeReportDatePeriodType.Month]: 'Месяц',
+  [EmployeeReportDatePeriodType.Year]: 'Год',
+};
