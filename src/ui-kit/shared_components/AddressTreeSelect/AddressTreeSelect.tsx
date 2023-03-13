@@ -18,12 +18,21 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   small = false,
 }) => {
   const isAllPrevious = useRef(false);
-  const isAllHousingStocksSelected = selectedHousingStockIds.includes(-1);
 
   const allHousingStocks = useMemo(
     () => getAllHousingStocks(treeData),
     [treeData],
   );
+
+  const isAllHousingStocksSelected =
+    selectedHousingStockIds.length === allHousingStocks.length;
+
+  const treeSelectValues = useMemo(() => {
+    if (isAllHousingStocksSelected) {
+      return [...allHousingStocks, -1];
+    }
+    return selectedHousingStockIds;
+  }, [isAllHousingStocksSelected, allHousingStocks, selectedHousingStockIds]);
 
   const handleChangeHousingStocks = useCallback(
     (selectedAddresses: TreeSelectValue) => {
@@ -40,7 +49,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
 
       if (isAllSelected && !isAllPrevious.current) {
         isAllPrevious.current = true;
-        return onChange([...allHousingStocks, -1]);
+        return onChange(allHousingStocks);
       }
 
       if (!isAllSelected && isAllPrevious.current) {
@@ -63,7 +72,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
       small={small}
       showSearch
       showArrow
-      value={selectedHousingStockIds}
+      value={treeSelectValues}
       disabled={disabled}
       treeCheckable
       maxTagCount={0}

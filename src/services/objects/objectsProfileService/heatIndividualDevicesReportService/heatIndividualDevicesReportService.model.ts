@@ -10,6 +10,8 @@ import { HeatIndividualDevicesReportPayload } from './heatIndividualDevicesRepor
 
 const domain = createDomain('heatIndividualDevicesReportService');
 
+const clearStore = domain.createEvent();
+
 const openModal = domain.createEvent();
 const closeModal = domain.createEvent();
 const $isOpen = domain
@@ -25,12 +27,11 @@ const downloadReport = domain.createEvent<HeatIndividualDevicesReportPayload>();
 
 const $isLoading = downloadReportFx.pending;
 
-const clearCity = domain.createEvent();
 const selectCity = domain.createEvent<string>();
 const $selectedCity = domain
   .createStore<string | null>(null)
   .on(selectCity, (_, city) => city)
-  .reset(clearCity);
+  .reset(clearStore);
 
 const getAddressesFx = domain.createEffect<
   string,
@@ -43,7 +44,8 @@ const $treeData = domain
     prepareAddressesForTreeSelect({
       items: data.items || [],
     }),
-  );
+  )
+  .reset(clearStore);
 
 sample({
   clock: downloadReport,
@@ -58,7 +60,7 @@ sample({
 
 forward({
   from: downloadReportFx.doneData,
-  to: [closeModal, clearCity],
+  to: [closeModal, clearStore],
 });
 
 export const heatIndividualDevicesReportService = {

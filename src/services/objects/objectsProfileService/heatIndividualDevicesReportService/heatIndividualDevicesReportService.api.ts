@@ -8,7 +8,7 @@ export const fetchDownloadHeatIndividualDeviceReport = async ({
   Name,
   ...payload
 }: HeatIndividualDevicesReportPayload): Promise<void> => {
-  const res: string = await axios.get('Reports/FeedBackFlowTemperatureReport', {
+  const res: string = await axios.get('Reports/HeatIndividualDevicesReport', {
     params: payload,
     paramsSerializer: (params) => queryString.stringify(params),
     responseType: 'blob',
@@ -16,7 +16,7 @@ export const fetchDownloadHeatIndividualDeviceReport = async ({
 
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(url, `${Name}.xlsx`);
+  downloadURI(url, Name);
 };
 
 export const fetchAddresses = (

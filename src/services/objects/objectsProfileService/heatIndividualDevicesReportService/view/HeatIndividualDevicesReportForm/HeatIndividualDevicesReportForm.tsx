@@ -5,7 +5,6 @@ import { EResourceType } from 'myApi';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
-import { HeatIndividualDevicesReportPayload } from '../../heatIndividualDevicesReportService.types';
 import { HeatIndividualDevicesReportFormProps } from './HeatIndividualDevicesReportForm.types';
 import { GroupWrapper } from './HeatIndividualDevicesReportForm.styled';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
@@ -14,23 +13,38 @@ import { AddressTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect';
 import { Select } from 'ui-kit/Select';
 import { useStore } from 'effector-react';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import { validationSchema } from './HeatIndividualDevicesReportForm.constants';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const HeatIndividualDevicesReportForm: FC<
   HeatIndividualDevicesReportFormProps
 > = ({ handleDownloadModal, formId, selectCity, selectedCity, treeData }) => {
   const existingCities = useStore($existingCities);
 
-  const { values, handleSubmit, setFieldValue } = useFormik<
-    HeatIndividualDevicesReportPayload & { resource: EResourceType }
-  >({
+  const { values, handleSubmit, setFieldValue, errors } = useFormik({
     initialValues: {
       resource: EResourceType.Heat,
       Name: 'Сводный_отчёт_ИПУ',
       HousingStockIds: [],
-      Month: moment().month(),
-      Year: moment().year(),
+      date: moment()
+        .startOf('month')
+        .set('day', 15)
+        .utcOffset(0, true)
+        .format(),
     },
-    onSubmit: handleDownloadModal,
+    validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      const { HousingStockIds, Name, date } = values;
+
+      handleDownloadModal({
+        HousingStockIds,
+        Name,
+        Month: Number(moment(date).format('MM')),
+        Year: Number(moment(date).format('YYYY')),
+      });
+    },
   });
 
   return (
@@ -43,6 +57,7 @@ export const HeatIndividualDevicesReportForm: FC<
           placeholder="Введите название"
           suffix={<>.xlsx</>}
         />
+        <ErrorMessage>{errors.Name}</ErrorMessage>
       </FormItem>
       <GroupWrapper>
         <FormItem label="Город">
@@ -66,6 +81,7 @@ export const HeatIndividualDevicesReportForm: FC<
             treeData={treeData}
             disabled={!treeData.length}
           />
+          <ErrorMessage>{errors.HousingStockIds}</ErrorMessage>
         </FormItem>
       </GroupWrapper>
       <GroupWrapper>
@@ -76,11 +92,18 @@ export const HeatIndividualDevicesReportForm: FC<
           <DatePicker
             picker="month"
             format="MMMM YYYY"
-            value={moment(`${values.Month} ${values.Year}`, 'MM YYYY')}
-            onChange={(date) => {
-              setFieldValue('Year', date?.year());
-              setFieldValue('Month', date?.month());
-            }}
+            placeholder="Выберите"
+            value={moment(values.date)}
+            onChange={(date) =>
+              setFieldValue(
+                'date',
+                date
+                  ?.startOf('month')
+                  .set('day', 15)
+                  .utcOffset(0, true)
+                  .format(),
+              )
+            }
           />
         </FormItem>
       </GroupWrapper>
