@@ -19,6 +19,10 @@ export const TreeSelectSC = styled(TreeSelect)<{ small: boolean }>`
         padding: 0px;
       }
 
+      .ant-select-selection-search {
+        transform: translateY(-6px);
+      }
+
       .ant-select-arrow {
         margin-right: 0px;
       }
