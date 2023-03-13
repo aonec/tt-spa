@@ -1,3 +1,3 @@
 export type ActsCountPanelProps = {
-    count: number;
+  count: number;
 };

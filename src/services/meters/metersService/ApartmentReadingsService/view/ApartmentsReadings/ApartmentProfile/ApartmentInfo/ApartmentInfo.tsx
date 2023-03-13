@@ -127,7 +127,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
           <AddressWrapper>
             <ChevronWraper>
               <ChevronIconSC
-                isOpen={isPanelOpen}
+                opened={isPanelOpen}
                 onClick={() => togglePanel()}
               />
             </ChevronWraper>
@@ -137,6 +137,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
                 <PersonalNumberPanel
                   isActive={activeHomeowner === homeowner.id}
                   onClick={() => setActiveHomeowner(homeowner.id)}
+                  key={homeowner.id}
                 >
                   <div>{homeowner.personalAccountNumber}</div>
                   {homeowner.isMainPersonalAccountNumber && (

@@ -4,10 +4,7 @@ import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import { LineWrapper } from './CommonDataStep.styled';
 import { CommonDataStepProps } from './CommonDataStep.types';
-import {
-  EHousingMeteringDeviceType,
-  EPipeNodeConfig,
-} from 'myApi';
+import { EHousingMeteringDeviceType, EPipeNodeConfig } from 'myApi';
 import {
   HousingMeteringDeviceDictionary,
   validationSchema,
@@ -48,12 +45,13 @@ export const CommonDataStep: FC<CommonDataStepProps> = ({
       !(
         configuration === EPipeNodeConfig.ColdWaterSupply &&
         elem === EHousingMeteringDeviceType.TemperatureSensor
-      )
+      ),
   );
 
-  const resource = useMemo(() => resourceFromConfig[configuration], [
-    configuration,
-  ]);
+  const resource = useMemo(
+    () => resourceFromConfig[configuration],
+    [configuration],
+  );
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>

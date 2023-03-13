@@ -24,16 +24,14 @@ export const ActsCard: FC<ActsCardProps> = ({
           handleSaveFile={handleSaveFile}
         />
       )),
-    [acts, actTypes, handleSaveFile]
+    [acts, actTypes, handleSaveFile],
   );
 
   return (
     <Wrapper>
       <TitleWrapper>Журнал актов</TitleWrapper>
       {cards}
-      <MoreDocumentsLink
-        to={`/apartments/${apartmentid}/actsJournal`}
-      >
+      <MoreDocumentsLink to={`/apartments/${apartmentid}/actsJournal`}>
         <DocumentIconSC />
         Показать все акты
       </MoreDocumentsLink>

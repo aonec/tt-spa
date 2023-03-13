@@ -68,7 +68,6 @@ forward({
   to: clearStore,
 });
 
-
 export const calculatorProfileService = {
   inputs: {
     setCalculatorGrouptype,

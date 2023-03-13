@@ -2,10 +2,12 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { createGate } from 'effector-react';
 import { HomeownerAccountSplitRequest } from 'myApi';
+import { EffectFailDataAxiosError } from 'types';
 
 export const splitPersonalNumberFx = createEffect<
   HomeownerAccountSplitRequest,
-  void
+  void,
+  EffectFailDataAxiosError
 >();
 
 export const $splitPersonalNumberStageNumber = createStore<number>(1);
@@ -14,9 +16,8 @@ export const setSplitPersonalNumberStage = createEvent<number>();
 
 export const $checkedExistingApartmentId = createStore<number | null>(null);
 
-export const $isConfirmExistingApartmentModalOpen = $checkedExistingApartmentId.map(
-  Boolean
-);
+export const $isConfirmExistingApartmentModalOpen =
+  $checkedExistingApartmentId.map(Boolean);
 
 export const closeConfirmExistingApartmentModal = createEvent();
 

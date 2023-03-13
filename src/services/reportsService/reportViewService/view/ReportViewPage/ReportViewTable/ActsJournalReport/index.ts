@@ -1,1 +1,1 @@
-export { ActsJournalReport } from './ActsJournalReport'
+export { ActsJournalReport } from './ActsJournalReport';

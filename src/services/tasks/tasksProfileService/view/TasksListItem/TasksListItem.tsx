@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { EActResourceType } from 'myApi';
+import { EActResourceType, EManagingFirmTaskType } from 'myApi';
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { CalculatorIcon, NumberIcon } from 'ui-kit/icons';
@@ -7,6 +7,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { TimeLine } from 'ui-kit/shared_components/TimeLine';
 import { Timer } from 'ui-kit/shared_components/Timer';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { PipeRuptureConclusion } from './PipeRuptureConclusion';
 import {
   CalendarIconSC,
   DeviceInfoWrapper,
@@ -39,6 +40,9 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     formatedCreationTime,
     address,
     pipeNode,
+    closingStatus,
+    taskConfirmation,
+    type,
   } = task;
   const taskName = currentStage ? currentStage.name : name;
 
@@ -60,6 +64,14 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
     }
     return <CalculatorIcon />;
   }, [devices]);
+
+  const isPipeRuptureArchived = useMemo(
+    () =>
+      closingStatus &&
+      taskConfirmation &&
+      type === EManagingFirmTaskType.PipeRupture,
+    [closingStatus, taskConfirmation, type],
+  );
 
   const pipeNodeInfo = useMemo(() => {
     if (!pipeNode) return null;
@@ -85,6 +97,9 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
           {timeline && <TimeLine timeline={timeline} />}
           <TimerRowWrapper>
             <Timer timer={timer} />
+            {isPipeRuptureArchived && (
+              <PipeRuptureConclusion taskConfirmation={taskConfirmation} />
+            )}
             {showExecutor && (
               <>
                 <UserIconSC />

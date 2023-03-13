@@ -23,7 +23,7 @@ export const CompletionComment: FC<CompletionCommentProps> = ({
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
-    [setText]
+    [setText],
   );
 
   return (
