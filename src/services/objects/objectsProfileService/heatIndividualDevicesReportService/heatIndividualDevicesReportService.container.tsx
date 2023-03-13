@@ -9,9 +9,13 @@ const formId = 'heat-individual-devices-report';
 
 export const HeatIndividualDevicesReportContainer = () => {
   const isOpen = useStore(outputs.$isOpen);
+  const selectedCity = useStore(outputs.$selectedCity);
+  const treeData = useStore(outputs.$treeData);
+  const isLoading = useStore(outputs.$isLoading);
 
   const closeModal = useEvent(inputs.closeModal);
   const handleDownloadModal = useEvent(inputs.downloadReport);
+  const selectCity = useEvent(inputs.selectCity);
 
   return (
     <FormModal
@@ -19,10 +23,15 @@ export const HeatIndividualDevicesReportContainer = () => {
       submitBtnText="Выгрузить отчёт"
       formId={formId}
       visible={isOpen}
+      loading={isLoading}
       onCancel={closeModal}
       form={
         <HeatIndividualDevicesReportForm
           handleDownloadModal={handleDownloadModal}
+          selectCity={selectCity}
+          selectedCity={selectedCity}
+          formId={formId}
+          treeData={treeData}
         />
       }
     />
