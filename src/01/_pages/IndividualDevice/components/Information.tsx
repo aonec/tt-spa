@@ -23,27 +23,27 @@ export const Information = ({ device }: InformationInterface) => {
   return (
     <ListWrap>
       <Loader show={loading} size={32}>
-          <ListItem
-            title={'Тип ресурса'}
-            description={actResourceNamesLookup[resource]}
-          />
-          <ListItem
-            title={'Место установки'}
-            description={translateMountPlace(mountPlace)}
-          />
-          <ListItem
-            title={'Дата начальной поверки'}
-            description={moment(lastCheckingDate).format('DD.MM.YYYY')}
-          />
-          <ListItem
-            title={'Дата следующей поверки прибора'}
-            description={moment(futureCheckingDate).format('DD.MM.YYYY')}
-          />
-          <ListItem
-            title={'Пломба'}
-            description={hasMagneticSeal ? 'Есть' : 'Нет'}
-          />
-          {/*<ListItem title={'title'} description={'description'} />*/}
+        <ListItem
+          title={'Тип ресурса'}
+          description={actResourceNamesLookup[resource]}
+        />
+        <ListItem
+          title={'Место установки'}
+          description={translateMountPlace(mountPlace)}
+        />
+        <ListItem
+          title={'Дата начальной поверки'}
+          description={moment(lastCheckingDate).format('DD.MM.YYYY')}
+        />
+        <ListItem
+          title={'Дата следующей поверки прибора'}
+          description={moment(futureCheckingDate).format('DD.MM.YYYY')}
+        />
+        <ListItem
+          title={'Пломба'}
+          description={hasMagneticSeal ? 'Есть' : 'Нет'}
+        />
+        {/*<ListItem title={'title'} description={'description'} />*/}
       </Loader>
     </ListWrap>
   );

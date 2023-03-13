@@ -9,7 +9,10 @@ import {
   getAlreadyExistingConnectionCalculator,
   putCalculator,
 } from './editCalculatorService.api';
-import { EffectFailDataAxiosError } from 'types';
+import {
+  EffectFailDataAxiosError,
+  EffectFailDataAxiosErrorDataId,
+} from 'types';
 import {
   CalculatorResponse,
   MeteringDeviceResponse,
@@ -33,7 +36,7 @@ const SaveDeviceIdGate = createGate<{ deviceId: number }>();
 const editCalculatorFx = domain.createEffect<
   { deviceId: number; form: UpdateCalculatorRequest },
   MeteringDeviceResponse | null,
-  EffectFailDataAxiosError
+  EffectFailDataAxiosErrorDataId
 >(putCalculator);
 
 const getSameConnectionCalculatorFx = domain.createEffect<
@@ -82,11 +85,6 @@ sample({
 });
 
 editCalculatorFailData.watch((error) => {
-  if (error.response.status === 403) {
-    return message.error(
-      'У вашего аккаунта нет доступа к выбранному действию. Уточните свои права у Администратора',
-    );
-  }
   message.error(error.response.data.error.Text);
 });
 

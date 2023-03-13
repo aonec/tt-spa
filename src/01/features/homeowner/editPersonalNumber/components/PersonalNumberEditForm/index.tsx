@@ -15,9 +15,13 @@ import {
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
 import { ErrorMessage } from '01/features/contractors/addContractors';
+import {
+  PersonalNumberFormMountPlaceType,
+  PersonalNumberFormTypeGate,
+} from './personalNumberEditForm.controller';
 
 interface Props {
-  type?: 'switch' | 'edit' | 'split';
+  type: PersonalNumberFormMountPlaceType;
   form?: any;
   isMainPersonalAccountNumber?: boolean;
 }
@@ -28,13 +32,14 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
   isMainPersonalAccountNumber,
 }) => {
   const { fields } = useForm(form || personalNumberEditForm);
-  const isEdit = type === 'edit';
+  const isEdit = type === PersonalNumberFormMountPlaceType.Edit;
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     (fields as any)[e.target.name]?.onChange(e.target.value);
 
   return (
     <Wrap>
+      <PersonalNumberFormTypeGate type={type} />
       <PersonalNumberFormGate />
       <Form.Item label="Дата открытия лицевого счета">
         <DatePickerNative
@@ -97,11 +102,6 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
             onChange={onChangeHandler}
             name="phoneNumber"
           />
-          <ErrorMessage>
-            {fields.phoneNumber.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
         </Form.Item>
       </Grid>
       <Flex style={{ justifyContent: 'space-between' }}>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Checkbox, Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import {
@@ -10,7 +10,7 @@ import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
-import { getAddresses } from './ReportFiltrationForm.utils';
+import { prepareAddressesTreeData } from './ReportFiltrationForm.utils';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import {
   EActResourceType,
@@ -25,15 +25,21 @@ import {
   ResourceShortNamesDictionary,
 } from 'dictionaries';
 import { RangePicker } from 'ui-kit/RangePicker';
-import { ReportPeriodDictionary } from './ReportFiltrationForm.constants';
+import {
+  addressesCountTexts,
+  ReportPeriodDictionary,
+  selectedCountTexts,
+} from './ReportFiltrationForm.constants';
 import {
   ReportDatePeriod,
   ReportFiltrationFormValues,
 } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
+import { TreeSelect } from 'ui-kit/TreeSelect';
+import { getCountText } from 'utils/getCountText';
 
-const { gates } = reportViewService;
+const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
 
 export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
@@ -45,7 +51,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   setFiltrationValues,
   reportType,
 }) => {
-  const { values, setFieldValue, handleSubmit } =
+  const { values, setFieldValue, handleSubmit, resetForm } =
     useFormik<ReportFiltrationFormValues>({
       initialValues: filtrationValues,
       enableReinitialize: true,
@@ -54,7 +60,11 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
       },
     });
 
-  const addresses = getAddresses(
+  useEffect(() => {
+    return inputs.clearFiltrationValues.watch(() => resetForm()).unsubscribe;
+  }, [resetForm]);
+
+  const addressesTreeData = prepareAddressesTreeData(
     addressesWithHouseManagements,
     values.houseManagement,
   );
@@ -81,7 +91,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
 
   return (
     <Form id={formId} onSubmitCapture={handleSubmit}>
-      <HouseManagementsGate />
+      <HouseManagementsGate City={values.city || undefined} />
       <div>
         <Wrapper>
           <FormItem label="Город">
@@ -103,7 +113,7 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);
-                setFieldValue('housingStockId', null);
+                setFieldValue('housingStockIds', []);
               }}
               allowClear
             >
@@ -118,21 +128,32 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             </Select>
           </FormItem>
           <FormItem label="Адрес">
-            <Select
+            <TreeSelect
+              treeData={addressesTreeData}
               showSearch
-              value={values.housingStockId || undefined}
-              placeholder="Выберите адреса из списка"
-              onChange={(value) => setFieldValue('housingStockId', value)}
-              filterOption={(input, option) =>
-                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              showArrow
+              placeholder="Выберите адрес"
+              showCheckedStrategy="SHOW_CHILD"
+              treeCheckable
+              maxTagCount={0}
+              maxTagPlaceholder={() => {
+                const addressesCountText = getCountText(
+                  values.housingStockIds.length,
+                  addressesCountTexts,
+                );
+
+                const selectedCountText = getCountText(
+                  values.housingStockIds.length,
+                  selectedCountTexts,
+                );
+
+                return `${selectedCountText} ${values.housingStockIds.length} ${addressesCountText}`;
+              }}
+              value={values.housingStockIds}
+              onChange={(housingStocksIds) =>
+                setFieldValue('housingStockIds', housingStocksIds)
               }
-            >
-              {addresses.map((address) => (
-                <Select.Option key={address.id} value={address.id}>
-                  {address.addressString}
-                </Select.Option>
-              ))}
-            </Select>
+            />
           </FormItem>
           {isShowResourcesField && (
             <FormItem label="Ресурс">

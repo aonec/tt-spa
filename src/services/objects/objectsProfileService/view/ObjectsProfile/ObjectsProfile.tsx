@@ -59,7 +59,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       openFeedFlowBackReportModal,
       isAdministrator,
       openSoiReportModal,
-      handleExportGroupReport
+      handleExportGroupReport,
     ],
   );
 

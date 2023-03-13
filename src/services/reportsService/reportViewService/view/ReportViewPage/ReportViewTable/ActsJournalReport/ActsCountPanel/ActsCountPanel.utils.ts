@@ -1,4 +1,4 @@
-import { actsCountTexts } from "./ActsCountPanel.constants";
+import { actsCountTexts } from './ActsCountPanel.constants';
 
 export const getActsCountText = (actsCount: number) => {
   const actsCountText = actsCountTexts.find(({ digits }) => {

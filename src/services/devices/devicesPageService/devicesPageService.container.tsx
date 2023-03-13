@@ -19,7 +19,7 @@ export const DevicesPageContainer = () => {
     (type: DevicesProfileTabsType) => {
       history.push(`/devices/${type}`);
     },
-    [history]
+    [history],
   );
 
   const handleAddNode = () => history.push('/devices/addNode');

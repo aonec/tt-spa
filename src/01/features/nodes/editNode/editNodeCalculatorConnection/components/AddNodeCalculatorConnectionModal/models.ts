@@ -3,6 +3,7 @@ import { nodeService } from './../../../../displayNode/models/index';
 import { createForm } from 'effector-forms';
 import { createDomain, sample, forward } from 'effector';
 import axios from '../../../../../../axios';
+import { EffectFailDataAxiosError } from 'types';
 
 const addNodeCalculatorConnection = createDomain('addNodeCalculatorConnection');
 
@@ -53,7 +54,8 @@ const saveNodeCalculatorConnectionFx = addNodeCalculatorConnection.createEffect<
     entryNumber: number;
     nodeId: number;
   },
-  void
+  void,
+  EffectFailDataAxiosError
 >((payload) => axios.put(`PipeNodes/${payload.nodeId}`, payload));
 
 sample({
@@ -88,9 +90,13 @@ saveNodeCalculatorConnectionFx.doneData.watch(() =>
   message.success('Вычислитель успешно подключен!'),
 );
 
-saveNodeCalculatorConnectionFx.failData.watch(() =>
-  message.error('Ошибка подключения вычислителя'),
-);
+saveNodeCalculatorConnectionFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 forward({
   from: saveNodeCalculatorConnectionFx.doneData,

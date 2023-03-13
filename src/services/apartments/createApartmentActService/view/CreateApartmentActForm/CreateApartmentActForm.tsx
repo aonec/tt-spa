@@ -3,7 +3,7 @@ import { InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { EActResourceType, EActType } from 'myApi';
+import { EActResourceType, EActType, EDocumentType } from 'myApi';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import {
@@ -117,6 +117,7 @@ export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
           setFieldValue('documentId', files[0]?.id);
         }}
         max={1}
+        type={EDocumentType.Common}
       />
     </Form>
   );

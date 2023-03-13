@@ -1,6 +1,6 @@
-import { getResourceColor } from '01/utils/getResourceColor';
+import { EResourceType } from 'myApi';
 import styled from 'styled-components';
-import { ResourceType } from '../GraphView/GraphView.types';
+import { GraphColorLookup } from 'utils/Graph.utils';
 
 export const LegendWrapper = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ export const Accuracy = styled.span`
 `;
 
 export const LegendLine = styled.div<{
-  resource?: ResourceType;
+  resource?: EResourceType;
   color?: string;
 }>`
   color: var(--main-70);
@@ -46,7 +46,7 @@ export const LegendLine = styled.div<{
     width: 32px;
     height: 2px;
     background: ${({ resource, color }) =>
-      resource ? getResourceColor(resource) : color};
+      resource ? GraphColorLookup[resource] : color};
   }
 `;
 

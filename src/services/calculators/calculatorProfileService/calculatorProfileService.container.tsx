@@ -36,8 +36,6 @@ export const CalculatorProfileContainer = () => {
   );
   const openDevicesListModal = useEvent(inputs.openDevicesListModal);
 
-  
-
   return (
     <>
       <CalculatorIdGate id={Number(deviceId)} />
