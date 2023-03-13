@@ -2,10 +2,6 @@ import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { resourceDisconnectionFiltersService } from 'services/resources/resourceDisconnectionFiltersService';
 import { createResourceDisconnectionService } from './createResourceDisconnectionService.model';
-import {
-  prepareAddressesForTreeSelect,
-  prepareAddressesWithParentsForTreeSelect,
-} from './createResourceDisconnectionService.utils';
 import { CreateResourceDisconnectionModal } from './view/CreateResourceDisconnectionModal';
 import { chooseTypeOfResourceDisconnectionModalService } from '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
 
@@ -14,6 +10,10 @@ import '../chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDis
 import { editResourceDisconnectionService } from '../editResourceDisconnectionService';
 import { EAddressDetails } from './createResourceDisconnectionService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
+import {
+  prepareAddressesForTreeSelect,
+  prepareAddressesWithParentsForTreeSelect,
+} from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 
 const { inputs, outputs } = createResourceDisconnectionService;
 const { gates } = resourceDisconnectionFiltersService;

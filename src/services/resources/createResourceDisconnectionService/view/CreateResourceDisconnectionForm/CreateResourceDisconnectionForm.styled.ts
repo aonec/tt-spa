@@ -8,8 +8,9 @@ export const BaseInfoWrapper = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 15px;
   .ant-select-focused {
-    .tag-placeholder {
+    .ant-select-selection-item {
       color: #bfbfbf;
+      transition: 0.2s;
     }
   }
   .ant-select-selection-item {
@@ -72,13 +73,4 @@ export const TreeSelectSC = styled(TreeSelect)`
   .ant-select-arrow {
     margin-right: 16px;
   }
-`;
-
-export const TagPlaceholder = styled.div`
-  color: #272f5ae5;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 22px;
-
-  transition: 0.3s;
 `;

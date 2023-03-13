@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const GroupWrapper = styled.div`
+export const GroupWrapper = styled.div<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   margin-top: 12px;
@@ -10,7 +10,7 @@ export const GroupWrapper = styled.div`
   color: #272f5ae5;
 
   user-select: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'no-drop' : 'pointer')};
 `;
 
 export const Circle = styled.div<{ color: string }>`
