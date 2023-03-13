@@ -28,12 +28,18 @@ export const DeviceLink = styled(Link)`
 export const ModelWrapper = styled.span`
   margin-left: 6px;
   color: rgba(39, 47, 90, 0.6);
+
+  max-width: 150px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const ApartmentInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 22px;
+
+  margin-left: 6px;
   margin-top: 8px;
 `;
 
@@ -50,7 +56,6 @@ export const DateLineWrapper = styled.div`
 
   font-weight: 500;
   color: rgba(39, 47, 90);
-  line-height: 1.2;
 
   white-space: nowrap;
 `;
