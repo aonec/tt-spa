@@ -124,6 +124,7 @@ export interface AddressShortResponse {
   /** @format int32 */
   housingStockId: number;
   housingStockNumber: string | null;
+  housingStockCorpus: string | null;
 }
 
 export interface AllNodeWorkingRangeResponse {

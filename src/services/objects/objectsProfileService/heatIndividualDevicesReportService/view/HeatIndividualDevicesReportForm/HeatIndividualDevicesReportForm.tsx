@@ -55,7 +55,7 @@ export const HeatIndividualDevicesReportForm: FC<
           name="name"
           onChange={(e) => setFieldValue('Name', e.target.value)}
           placeholder="Введите название"
-          suffix={<>.xlsx</>}
+          suffix={<>.zip</>}
         />
         <ErrorMessage>{errors.Name}</ErrorMessage>
       </FormItem>

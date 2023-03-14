@@ -16,7 +16,7 @@ export const fetchDownloadHeatIndividualDeviceReport = async ({
 
   const url = window.URL.createObjectURL(new Blob([res]));
 
-  downloadURI(url, Name);
+  downloadURI(url, Name, true);
 };
 
 export const fetchAddresses = (

@@ -21,11 +21,18 @@ export const prepareAddressesForTreeSelect = ({
 
     const childrenAddresses = addresses || [];
 
-    const children = childrenAddresses.map((address) => ({
-      title: `${street}, ${address.housingStockNumber}`,
-      value: address.housingStockId,
-      key: address.housingStockId,
-    }));
+    const children = childrenAddresses.map((address) => {
+      const { housingStockCorpus, housingStockId, housingStockNumber } =
+        address;
+
+      const corpusText = housingStockCorpus ? `, к. ${housingStockCorpus}` : '';
+
+      return {
+        title: `${street}, ${housingStockNumber}${corpusText}`,
+        value: housingStockId,
+        key: housingStockId,
+      };
+    });
 
     return [
       ...acc,
