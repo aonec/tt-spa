@@ -22,7 +22,7 @@ export const AttachDocument: FC<AttachDocumentProps> = ({
       label={componentData.lable}
       componentType={DocumentsUploadComponentType.Line}
       max={componentData.maxDocuments}
-      type={EDocumentType.DeviceAcceptanceAct}
+      type={EDocumentType.AdditionalMaterials}
     />
   );
 };

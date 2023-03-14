@@ -20,7 +20,7 @@ export const EmailTextInput: FC<EmailTextInputProps> = ({
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
-    [setText]
+    [setText],
   );
 
   return (

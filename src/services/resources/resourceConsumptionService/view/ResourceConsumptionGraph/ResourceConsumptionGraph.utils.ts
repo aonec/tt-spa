@@ -1,6 +1,5 @@
-import { getResourceColor } from '01/utils/getResourceColor';
 import { EResourceType } from 'myApi';
-import { getMinAndMax } from 'utils/Graph.utils';
+import { getMinAndMax, GraphColorLookup } from 'utils/Graph.utils';
 import { ResourceConsumptionGraphType } from '../../resourceConsumptionService.types';
 import { ResourceConsumptionGraphColors } from './ResourceConsumptionGraph.constants';
 
@@ -24,7 +23,7 @@ export const getGraphTypeColors = ({
   let color = ResourceConsumptionGraphColors[type];
 
   if (type === ResourceConsumptionGraphType.Housing) {
-    color = getResourceColor(resource);
+    color = GraphColorLookup[resource];
   }
 
   if (isOpacityNeed) {

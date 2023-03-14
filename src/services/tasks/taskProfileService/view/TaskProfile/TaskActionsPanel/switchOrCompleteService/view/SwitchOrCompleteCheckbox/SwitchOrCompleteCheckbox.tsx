@@ -4,12 +4,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { Wrapper } from './SwitchOrCompleteCheckbox.styled';
 import { SwitchOrCompleteCheckboxProps } from './SwitchOrCompleteCheckbox.types';
 
-export const SwitchOrCompleteCheckbox: FC<SwitchOrCompleteCheckboxProps> = ({ handleChange }) => {
-
+export const SwitchOrCompleteCheckbox: FC<SwitchOrCompleteCheckboxProps> = ({
+  handleChange,
+}) => {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    handleChange(checked)
+    handleChange(checked);
   }, [checked, handleChange]);
 
   return (

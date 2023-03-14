@@ -27,7 +27,7 @@ export const NodeItem: FC<NodeItemProps> = ({
 }) => {
   const content = useMemo(() => {
     const isIncorrectConfig =
-      node?.pipeNodeValidationStatus?.validationResult?.errors?.length!== 0 ||
+      node?.pipeNodeValidationStatus?.validationResult?.errors?.length !== 0 ||
       node?.pipeNodeValidationStatus?.validationResult?.warnings?.length !== 0;
 
     const nodeInfo = (

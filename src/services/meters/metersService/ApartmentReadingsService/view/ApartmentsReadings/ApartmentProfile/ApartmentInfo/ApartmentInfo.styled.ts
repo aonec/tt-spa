@@ -34,10 +34,10 @@ export const ChevronWraper = styled.div`
   align-items: center;
 `;
 
-export const ChevronIconSC = styled(ChevronIcon)<{ isOpen: boolean }>`
+export const ChevronIconSC = styled(ChevronIcon)<{ opened: boolean }>`
   cursor: pointer;
   transition: 0.2s;
-  transform: scale(1.3) rotate(${({ isOpen }) => (isOpen ? '270' : '180')}deg);
+  transform: scale(1.3) rotate(${({ opened }) => (opened ? '270' : '180')}deg);
 `;
 
 export const PersonalNumbersWrapper = styled.div`

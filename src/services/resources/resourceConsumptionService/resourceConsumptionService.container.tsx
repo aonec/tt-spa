@@ -1,3 +1,4 @@
+import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
@@ -9,7 +10,7 @@ const { ResourceConsumptionGate } = gates;
 export const ResourceConsumptionContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
   const resourceConsumptionFilter = useStore(
-    outputs.$resourceConsumptionFilter
+    outputs.$resourceConsumptionFilter,
   );
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
   const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
@@ -17,6 +18,8 @@ export const ResourceConsumptionContainer = () => {
   const houseManagements = useStore(outputs.$houseManagements);
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
   const additionalConsumptionData = useStore(outputs.$additionalConsumption);
+  const treeData = useStore(outputs.$treeData);
+  const selectedCity = useStore(outputs.$selectedCity);
 
   const setResource = useEvent(inputs.setResource);
   const setFilter = useEvent(inputs.setFilter);
@@ -24,7 +27,10 @@ export const ResourceConsumptionContainer = () => {
   const handleClearData = useEvent(inputs.clearData);
   const handleClearFilter = useEvent(inputs.clearStore);
   const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
-  const handleClearAdditionalAddress = useEvent(inputs.clearAdditionalAddress);
+  const handleClearAdditionalAddressData = useEvent(
+    inputs.clearAdditionalAddressData,
+  );
+  const selectCity = useEvent(inputs.selectCity);
 
   const preparedHouseManagements = useMemo(
     () =>
@@ -32,11 +38,12 @@ export const ResourceConsumptionContainer = () => {
         id: houseManagement.id,
         name: houseManagement.name,
       })),
-    [houseManagements]
+    [houseManagements],
   );
 
   return (
     <>
+      <ExistingCitiesGate />
       <ResourceConsumptionGate />
       <ResourceConsumptionProfile
         isLoading={isLoading}
@@ -53,7 +60,12 @@ export const ResourceConsumptionContainer = () => {
         selectedGraphTypes={selectedGraphTypes}
         setSelectedGraphTypes={setSelectedGraphTypes}
         additionalConsumptionData={additionalConsumptionData}
-        handleClearAdditionalAddress={() => handleClearAdditionalAddress()}
+        handleClearAdditionalAddressData={() =>
+          handleClearAdditionalAddressData()
+        }
+        treeData={treeData}
+        selectedCity={selectedCity}
+        selectCity={selectCity}
       />
     </>
   );

@@ -13,7 +13,9 @@ import {
 } from './ResourceConsumptionProfile.types';
 import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
 
-export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = ({
+export const ResourceConsumptionProfile: FC<
+  ResourceConsumptionProfileProps
+> = ({
   isLoading,
   resourceConsumptionFilter,
   setResource,
@@ -28,12 +30,15 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
   selectedGraphTypes,
   setSelectedGraphTypes,
   additionalConsumptionData,
-  handleClearAdditionalAddress,
+  handleClearAdditionalAddressData,
+  treeData,
+  selectCity,
+  selectedCity,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
-    initialSelectedAddresses
+    initialSelectedAddresses,
   );
 
   useEffect(() => {
@@ -46,7 +51,8 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
     }
     return {
       ...housingConsumptionData,
-      [ResourceConsumptionGraphDataType.additionalAddress]: additionalConsumptionData,
+      [ResourceConsumptionGraphDataType.additionalAddress]:
+        additionalConsumptionData,
     };
   }, [housingConsumptionData, additionalConsumptionData]);
 
@@ -69,7 +75,7 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
           />
           {housingConsumptionData &&
             Boolean(
-              housingConsumptionData?.currentMonthData.housing.length
+              housingConsumptionData?.currentMonthData.housing.length,
             ) && (
               <SelectResourceConsumptionType
                 disabled={getDisabledGraphTypes(housingConsumptionData)}
@@ -77,10 +83,8 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
                 setCheckedGraphTypes={setSelectedGraphTypes}
                 resource={resourceConsumptionFilter?.ResourceType}
                 isAdditionalAddress={Boolean(additionalConsumptionData)}
-                additionalAddress={
-                  resourceConsumptionFilter?.additionalAddress || ''
-                }
-                currentAddress={resourceConsumptionFilter?.currentAddress || ''}
+                additionalAddress={'Основные адреса'}
+                currentAddress={'Адреса для сравнения'}
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)
@@ -98,7 +102,10 @@ export const ResourceConsumptionProfile: FC<ResourceConsumptionProfileProps> = (
         houseManagements={houseManagements}
         handleClearData={handleClearData}
         handleClearFilter={handleClearFilter}
-        handleClearAdditionalAddress={handleClearAdditionalAddress}
+        treeData={treeData}
+        handleClearAdditionalAddressData={handleClearAdditionalAddressData}
+        selectedCity={selectedCity}
+        selectCity={selectCity}
       />
     </Wrapper>
   );

@@ -11,4 +11,3 @@ export const Layout = styled.div`
 export const PageWrapper = styled.div`
   padding: 16px 52px;
 `;
-

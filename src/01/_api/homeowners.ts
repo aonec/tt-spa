@@ -10,12 +10,12 @@ import {
 import axios from '01/axios';
 
 export const getHomeownerCertificate = (
-  id: number
+  id: number,
 ): Promise<HomeownerCertificateResponse> =>
   axios.get(`HomeownerAccounts/${id}/Certificate`);
 
 export const getHomeownerAccount = (
-  id: string
+  id: string,
 ): Promise<HomeownerAccountResponse> => axios.get(`HomeownerAccounts/${id}`);
 
 export const putHomeownerAccount = ({
@@ -27,17 +27,17 @@ export const putHomeownerAccount = ({
 }): Promise<void> => axios.put(`HomeownerAccounts/${id}`, data);
 
 export const replaceHomeownerAccount = (
-  requestPayload: HomeownerAccountReplaceRequest
+  requestPayload: HomeownerAccountReplaceRequest,
 ): Promise<void> => axios.post('HomeownerAccounts/Replace', requestPayload);
 
 export const closeHomeownerAccount = (
-  payload: HomeownerAccountCloseRequest
+  payload: HomeownerAccountCloseRequest,
 ): Promise<void> => axios.post('HomeownerAccounts/Close', payload);
 
 export const addHomeowner = (
-  reqestPayload: HomeownerAccountCreateRequest
+  reqestPayload: HomeownerAccountCreateRequest,
 ): Promise<void> => axios.post('HomeownerAccounts', reqestPayload);
 
 export const splitHomeownerAccount = (
-  data: HomeownerAccountSplitRequest
+  data: HomeownerAccountSplitRequest,
 ): Promise<void> => axios.post('HomeownerAccounts/Split', data);

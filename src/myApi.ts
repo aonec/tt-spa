@@ -124,6 +124,7 @@ export interface AddressShortResponse {
   /** @format int32 */
   housingStockId: number;
   housingStockNumber: string | null;
+  housingStockCorpus: string | null;
 }
 
 export interface AllNodeWorkingRangeResponse {
@@ -1864,18 +1865,10 @@ export enum EPipeNodeConfig {
   HotWaterSupplyWithBackflow = 'HotWaterSupplyWithBackflow',
 }
 
-export enum EPipeNodeValidationError {
+export enum EPipeNodeValidationMessage {
   ExtraFeed = 'ExtraFeed',
   ExtraBack = 'ExtraBack',
   ExtraRecharge = 'ExtraRecharge',
-}
-
-export interface EPipeNodeValidationErrorStringDictionaryItem {
-  key?: EPipeNodeValidationError;
-  value?: string | null;
-}
-
-export enum EPipeNodeValidationWarning {
   NoPipes = 'NoPipes',
   NoFeed = 'NoFeed',
   NoBack = 'NoBack',
@@ -1893,8 +1886,8 @@ export enum EPipeNodeValidationWarning {
   LackNodeTemperatureSensor = 'LackNodeTemperatureSensor',
 }
 
-export interface EPipeNodeValidationWarningStringDictionaryItem {
-  key?: EPipeNodeValidationWarning;
+export interface EPipeNodeValidationMessageStringDictionaryItem {
+  key?: EPipeNodeValidationMessage;
   value?: string | null;
 }
 
@@ -2095,6 +2088,13 @@ export enum ETaskEngineeringElement {
   Node = 'Node',
   IndividualDevice = 'IndividualDevice',
   HouseNetwork = 'HouseNetwork',
+}
+
+export enum ETaskTargetObject {
+  IndividualDevice = 'IndividualDevice',
+  PipeHousingDevice = 'PipeHousingDevice',
+  Calculator = 'Calculator',
+  PipeNode = 'PipeNode',
 }
 
 export enum ETaskTargetObjectRequestType {
@@ -3267,6 +3267,25 @@ export interface HousingStockUpdateRequest {
   index?: string | null;
 }
 
+export interface HousingStockWithCoordinatesResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  managingFirmId: number;
+  address: HousingStockAddressResponse | null;
+  coordinates: PointResponse | null;
+}
+
+export interface HousingStockWithTasksResponse {
+  housingStock: HousingStockWithCoordinatesResponse | null;
+  tasks: TaskShortResponse[] | null;
+}
+
+export interface HousingStockWithTasksResponseIEnumerableSuccessApiResponse {
+  successResponse: HousingStockWithTasksResponse[] | null;
+}
+
 export interface ImportLogListResponse {
   importLogs: ImportLogResponse[] | null;
 }
@@ -3318,6 +3337,18 @@ export interface IndividualDeviceConsumption {
 
   /** @format date-time */
   readingDate?: string;
+}
+
+export interface IndividualDeviceConsumptionResponse {
+  /** @format double */
+  consumption: number | null;
+
+  /** @format date-time */
+  date: string;
+}
+
+export interface IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse {
+  successResponse: IndividualDeviceConsumptionResponse[] | null;
 }
 
 export interface IndividualDeviceIntoHomeownerCertificateResponse {
@@ -4862,8 +4893,8 @@ export interface PipeNodeResponseSuccessApiResponse {
 }
 
 export interface PipeNodeValidationResultResponse {
-  errors: EPipeNodeValidationErrorStringDictionaryItem[] | null;
-  warnings: EPipeNodeValidationWarningStringDictionaryItem[] | null;
+  errors: EPipeNodeValidationMessageStringDictionaryItem[] | null;
+  warnings: EPipeNodeValidationMessageStringDictionaryItem[] | null;
 }
 
 export interface PipeNodeValidationStatusResponse {
@@ -5745,6 +5776,7 @@ export interface TaskListResponse {
 
   /** @format date-time */
   closingTime: string | null;
+  type: EManagingFirmTaskType;
   closingStatus: ETaskClosingStatus | null;
   address: FullAddressResponse | null;
   perpetrator: OrganizationUserShortResponse | null;
@@ -5759,6 +5791,7 @@ export interface TaskListResponse {
   /** @format int32 */
   totalHomeownersCount: number;
   housingStockCoordinates: PointResponse | null;
+  taskConfirmation: TaskConfirmationResponse | null;
 }
 
 export interface TaskResponse {
@@ -5804,6 +5837,21 @@ export interface TaskResponse {
 
 export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse | null;
+}
+
+export interface TaskShortResponse {
+  /** @format int32 */
+  id: number;
+  type: EManagingFirmTaskType;
+  typeString: string | null;
+  creationReason: string | null;
+
+  /** @format date-time */
+  creationDate: string;
+  targetObject: ETaskTargetObject;
+  resourceTypes: EResourceType[] | null;
+  executor: OrganizationUserShortResponse | null;
+  apartmentNumber: string | null;
 }
 
 export interface TaskStatisticsItem {
@@ -7885,59 +7933,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsUpdatePipeNodesConfigurationsList
-     * @summary DataMigration
-     * @request GET:/api/DataMigrations/UpdatePipeNodesConfigurations
-     * @secure
-     */
-    dataMigrationsUpdatePipeNodesConfigurationsList: (
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/UpdatePipeNodesConfigurations`,
-        method: 'GET',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsInsertPipeNodeIdsToTasksList
-     * @summary DataMigration
-     * @request GET:/api/DataMigrations/InsertPipeNodeIdsToTasks
-     * @secure
-     */
-    dataMigrationsInsertPipeNodeIdsToTasksList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/InsertPipeNodeIdsToTasks`,
-        method: 'GET',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор системы</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsAddMissingPipesToNodesCreate
-     * @summary DataMigration
-     * @request POST:/api/DataMigrations/AddMissingPipesToNodes
-     * @secure
-     */
-    dataMigrationsAddMissingPipesToNodesCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/AddMissingPipesToNodes`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Контролёр</li>
      *
      * @tags Documents
@@ -9506,13 +9501,14 @@ export class Api<
      * @secure
      */
     housingStocksExistingStreetsWithHousingStockNumbersWithHouseManagementList:
-      (params: RequestParams = {}) =>
+      (query?: { city?: string }, params: RequestParams = {}) =>
         this.request<
           HouseManagementWithStreetsResponseIEnumerableSuccessApiResponse,
           ErrorApiResponse
         >({
           path: `/api/HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement`,
           method: 'GET',
+          query: query,
           secure: true,
           format: 'json',
           ...params,
@@ -9655,6 +9651,37 @@ export class Api<
       this.request<Int32NullableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
         method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksHousingStockWithTasksList
+     * @summary HousingStocksRead
+     * @request GET:/api/HousingStocks/HousingStockWithTasks
+     * @secure
+     */
+    housingStocksHousingStockWithTasksList: (
+      query?: {
+        EngineeringElement?: ETaskEngineeringElement;
+        ResourceTypes?: EResourceType[];
+        TimeStatus?: EStageTimeStatus;
+        TaskType?: EManagingFirmTaskFilterType;
+        ExecutorId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        HousingStockWithTasksResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/HousingStocks/HousingStockWithTasks`,
+        method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -10557,6 +10584,30 @@ export class Api<
         path: `/api/IndividualDevices/${deviceId}/Delete`,
         method: 'POST',
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesConsumptionDetail
+     * @summary IndividualDeviceReadingsRead
+     * @request GET:/api/IndividualDevices/{deviceId}/Consumption
+     * @secure
+     */
+    individualDevicesConsumptionDetail: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        IndividualDeviceConsumptionResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/IndividualDevices/${deviceId}/Consumption`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -12511,6 +12562,28 @@ export class Api<
     ) =>
       this.request<ReportRequestHistoryPagedList, ErrorApiResponse>({
         path: `/api/Reports/ReportRequestsHistory`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags Reports
+     * @name ReportsHeatIndividualDevicesReportList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/HeatIndividualDevicesReport
+     * @secure
+     */
+    reportsHeatIndividualDevicesReportList: (
+      query: { HousingStockIds: number[]; Month: number; Year: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/HeatIndividualDevicesReport`,
         method: 'GET',
         query: query,
         secure: true,

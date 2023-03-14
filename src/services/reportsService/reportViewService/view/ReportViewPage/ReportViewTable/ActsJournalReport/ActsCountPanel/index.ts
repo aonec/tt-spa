@@ -1,1 +1,1 @@
-export { ActsCountPanel } from './ActsCountPanel'
+export { ActsCountPanel } from './ActsCountPanel';

@@ -14,3 +14,11 @@ export const TextWrapper = styled.div`
   font-weight: 500;
   margin-left: 16px;
 `;
+
+export const StockIconWrapper = styled.div`
+  transform: translateY(-2px);
+`;
+
+export const WrapperFlex = styled.div`
+  display: flex;
+`;

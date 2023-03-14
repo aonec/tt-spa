@@ -61,8 +61,6 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
       : '/tasks/'
     : '/login';
 
-  console.log(roles);
-
   const isAdministrator = roles.includes(
     ESecuredIdentityRoleName.Administrator,
   );
