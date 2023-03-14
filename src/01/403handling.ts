@@ -209,4 +209,8 @@ export const forbiddenList: ForbiddenUrl[] = [
     methods: ['POST'],
     regExp: /^Nodes\/\d+\/Documents$/,
   },
+  {
+    methods: ['DELETE'],
+    regExp: /^Tasks\/\d+\/Comments\/\d+$/,
+  },
 ];
