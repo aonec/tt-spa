@@ -1,1 +1,1 @@
-export { ConfirmationAddingExistingPersonalNumber } from './ConfirmationAddingExistingPersonalNumberModal'
+export { ConfirmationAddingExistingPersonalNumber } from './ConfirmationAddingExistingPersonalNumberModal';
