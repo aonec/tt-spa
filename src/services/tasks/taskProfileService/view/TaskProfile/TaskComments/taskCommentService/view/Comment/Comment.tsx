@@ -18,6 +18,8 @@ import { PencilIconSC } from 'ui-kit/shared_components/SelectedEntityPanel/Selec
 import { TrashIconSC } from 'ui-kit/DocumentsService/view/DocumentsLineUpload/DocumentsLineUpload.styled';
 import { Button } from 'ui-kit/Button';
 import confirm from 'antd/es/modal/confirm';
+import { currentUserService } from 'services/currentUserService';
+import { useStore } from 'effector-react';
 
 export const Comment: FC<CommentProps> = ({
   comment,
@@ -27,6 +29,9 @@ export const Comment: FC<CommentProps> = ({
 }) => {
   const { author, createdAt, text } = comment;
   const preparedDate = getTimeStringByUTC(createdAt);
+
+  const user = useStore(currentUserService.outputs.$currentUser);
+  const isUserOwnComment = author === `${user?.firstName} ${user?.lastName}`;
 
   const oldCommentText = comment.text;
 
@@ -44,7 +49,7 @@ export const Comment: FC<CommentProps> = ({
             <AuthorWrapper>{author}</AuthorWrapper>
             <TimeWrapper>{preparedDate}</TimeWrapper>
           </LeftBlock>
-          {!isEditing && (
+          {!isEditing && isUserOwnComment && (
             <div>
               <PencilIconSC onClick={() => setIsEditing(true)} />
               <TrashIconSC
