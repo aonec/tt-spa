@@ -10,6 +10,10 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import {
+  StockIconWrapper,
+  WrapperFlex,
+} from './IndividualDeviceEditForm.styled';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;
@@ -25,30 +29,30 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size={32}>
-        <GoBack />
-        <HeaderWrap>
-          <div>
-            <Title>
-              <Flex>
-                <div style={{ transform: 'translateY(-2px)' }}>
-                  <StockIconTT
-                    icon={DeviceIcons[resource]?.icon}
-                    size="24"
-                    dark
-                  />
-                </div>
-                <Space w={9} />
-                <div>{`${model} (${serialNumber}). Редактирование`}</div>
-              </Flex>
-            </Title>
-            <div style={{ display: 'flex' }}>
-              <Subtitle to={`/apartments/${apartmentId}`}>
-                {getApartmentFromFullAddress(address, true)}
-              </Subtitle>
-              <IsActive closingDate={closingDate} />
-            </div>
-          </div>
-        </HeaderWrap>
+      <GoBack />
+      <HeaderWrap>
+        <div>
+          <Title>
+            <Flex>
+              <StockIconWrapper>
+                <StockIconTT
+                  icon={DeviceIcons[resource]?.icon}
+                  size="24"
+                  dark
+                />
+              </StockIconWrapper>
+              <Space w={9} />
+              <div>{`${model} (${serialNumber}). Редактирование`}</div>
+            </Flex>
+          </Title>
+          <WrapperFlex>
+            <Subtitle to={`/apartments/${apartmentId}`}>
+              {getApartmentFromFullAddress(address, true)}
+            </Subtitle>
+            <IsActive closingDate={closingDate} />
+          </WrapperFlex>
+        </div>
+      </HeaderWrap>
     </Loader>
   );
 };

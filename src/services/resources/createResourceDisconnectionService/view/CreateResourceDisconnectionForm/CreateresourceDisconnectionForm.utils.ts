@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { ResourceDisconnectingResponse } from 'myApi';
-import { TreeSelectElement } from '../CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { hours } from './CreateResourceDisconnectionForm.constants';
 
 export const getDate = (date: string, hour: string) =>
@@ -17,7 +17,7 @@ export const getAllHousingStocks = (items: TreeSelectElement[]): number[] =>
   }, [] as number[]);
 
 export const getFormValues = (
-  resourceDisconnection: ResourceDisconnectingResponse
+  resourceDisconnection: ResourceDisconnectingResponse,
 ) => {
   const {
     heatingStation,
@@ -29,7 +29,7 @@ export const getFormValues = (
 
   const heatingStationId = heatingStation?.id;
   const housingStockIds = (housingStocks || []).map(
-    (housingStock) => housingStock.id
+    (housingStock) => housingStock.id,
   );
 
   return {

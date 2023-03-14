@@ -23,7 +23,7 @@ export const Slider: FC<SliderProps> = ({ values, onChange, inputs }) => {
         id: values[sliderIndex].id!,
       });
     },
-    [onChange, sliderIndex, values]
+    [onChange, sliderIndex, values],
   );
 
   return (

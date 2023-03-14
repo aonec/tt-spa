@@ -13,6 +13,8 @@ import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
+import { useForm } from 'effector-forms/dist';
+import { personalNumberEditForm } from '../../models';
 
 interface Props {
   title: string;
@@ -35,6 +37,8 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   cancelButtonText,
 }) => {
   const apartment = useStore($apartment);
+
+  const { submit } = useForm(personalNumberEditForm);
 
   const isSplit = type === 'split';
 
@@ -64,7 +68,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           color="blue"
           key="submit"
           disabled={loading}
-          onClick={onSaveHandler}
+          onClick={onSaveHandler || submit}
         >
           {loading ? (
             <Loader show />

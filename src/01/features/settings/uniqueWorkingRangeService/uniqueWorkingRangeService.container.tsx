@@ -2,14 +2,14 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { uniqueWorkingRangeService } from './uniqueWorkingRangeService.model';
 import { UniqueWorkingRange } from './view/UniqueWorkingRange/UniqueWorkingRange';
-import { prepareAddressesForTreeSelect } from 'services/resources/createResourceDisconnectionService/createResourceDisconnectionService.utils';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+import { prepareAddressesForTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 
 const { inputs, outputs } = uniqueWorkingRangeService;
 
 export const UniqueWorkingRangeContainer = () => {
   const housingStockUniqueWorkingRange = useStore(
-    outputs.$housingStockUniqueWorkingRange
+    outputs.$housingStockUniqueWorkingRange,
   );
   const isLoading = useStore(outputs.$isLoading);
   const addressesPagedList = useStore(outputs.$addressesPagedList);

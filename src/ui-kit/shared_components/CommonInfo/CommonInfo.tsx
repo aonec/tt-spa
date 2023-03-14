@@ -11,7 +11,7 @@ export const CommonInfo: FC<CommonInfoProps> = ({ items }) => {
         }
 
         return (
-          <Wrapper>
+          <Wrapper key={key}>
             <KeyWrapper>{key}</KeyWrapper>
             <ValueWrapper>{value || '—'}</ValueWrapper>
           </Wrapper>

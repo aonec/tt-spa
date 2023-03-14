@@ -40,6 +40,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
 
   const homeowner = apartment?.homeownerAccounts?.[0];
 
+  const filteredHomeownerAccounts =
+    apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
+
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const houseManagementInfo =
@@ -90,7 +93,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
       </CommonInfoWrapper>
     ),
     [ApartmentSection.Homeowners]: apartment?.homeownerAccounts && (
-      <HomeownersList homeowners={apartment?.homeownerAccounts} />
+      <HomeownersList homeowners={filteredHomeownerAccounts} />
     ),
     [ApartmentSection.Testimony]: apartment && (
       <ApartmentIndividualDevicesMetersContainer
@@ -138,7 +141,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               activeKey={tabSection}
               onChange={(activeKey) =>
                 history.push(
-                  `/apartments/${apartment.id}/${activeKey as ApartmentSection}`
+                  `/apartments/${apartment.id}/${
+                    activeKey as ApartmentSection
+                  }`,
                 )
               }
             >
@@ -169,9 +174,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 apartmentId={String(apartment.id)}
                 tasksNumber={apartment.activeTaskIds?.length || 0}
               />
-              <ActsCardContainer
-                apartmentId={String(apartment.id)}
-              />
+              <ActsCardContainer apartmentId={String(apartment.id)} />
             </CardsWrapper>
           </ContentWrapper>
         </div>

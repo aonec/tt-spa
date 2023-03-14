@@ -25,9 +25,11 @@ export const DeviceStatus: FC<DeviceStatusProps> = ({
 
   return (
     <Wrapper>
-      <StatusBar isActive={isActive} />
+      <div>
+        <StatusBar isActive={isActive} />
+      </div>
       <StatusText>
-        {statusText}{' '}
+        {statusText}
         {closingReasonText && (
           <ClosingReasonText>{closingReasonText}</ClosingReasonText>
         )}

@@ -124,6 +124,7 @@ export interface AddressShortResponse {
   /** @format int32 */
   housingStockId: number;
   housingStockNumber: string | null;
+  housingStockCorpus: string | null;
 }
 
 export interface AllNodeWorkingRangeResponse {
@@ -12561,6 +12562,28 @@ export class Api<
     ) =>
       this.request<ReportRequestHistoryPagedList, ErrorApiResponse>({
         path: `/api/Reports/ReportRequestsHistory`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags Reports
+     * @name ReportsHeatIndividualDevicesReportList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/HeatIndividualDevicesReport
+     * @secure
+     */
+    reportsHeatIndividualDevicesReportList: (
+      query: { HousingStockIds: number[]; Month: number; Year: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/HeatIndividualDevicesReport`,
         method: 'GET',
         query: query,
         secure: true,

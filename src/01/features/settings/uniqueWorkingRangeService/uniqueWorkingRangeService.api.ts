@@ -28,7 +28,7 @@ export const getNodeUniqueWorkingRange = (query: {
 };
 
 export const getAdresses = (
-  payload: GetAddressesWithCityRequestPayload
+  payload: GetAddressesWithCityRequestPayload,
 ): Promise<StreetWithHousingStockNumbersResponsePagedList | null> => {
   return axios.get('HousingStocks/ExistingStreetsWithHousingStockNumbers', {
     params: payload,
@@ -36,7 +36,7 @@ export const getAdresses = (
 };
 
 export const getNodes = (
-  housingStockId: number
+  housingStockId: number,
 ): Promise<NodeOnHousingStockResponse[] | null> => {
   return axios.get(`HousingStocks/${housingStockId}/Nodes`);
 };

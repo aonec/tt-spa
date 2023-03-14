@@ -1,15 +1,25 @@
 import { replaceHomeownerAccount } from './../../../../_api/homeowners';
 import {
+  $isForced,
+  handleConfirmationModalClose,
+  handleSwitchPersonalNumber,
+  onForced,
   setSwitchRequestStatus,
   switchPersonalNumber,
   switchPersonalNumberFx,
 } from './index';
 import { $switchRequestStatus } from '.';
-import { combine, sample } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { HomeownerGate } from '../../displayHomeowner/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import moment from 'moment';
+import { HomeownerAccountReplaceRequest } from 'myApi';
+import { message } from 'antd';
+import {
+  PersonalNumberFormMountPlaceType,
+  PersonalNumberFormTypeGate,
+} from '../../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 switchPersonalNumberFx.use(replaceHomeownerAccount);
 
@@ -18,13 +28,29 @@ $switchRequestStatus
   .on(switchPersonalNumberFx.doneData, () => 'done')
   .on(switchPersonalNumberFx.failData, () => 'failed');
 
+forward({
+  from: onForced,
+  to: switchPersonalNumber,
+});
+
+forward({ from: switchPersonalNumber, to: personalNumberEditForm.submit });
 
 sample({
-  clock: switchPersonalNumber,
+  clock: personalNumberEditForm.formValidated,
+  source: PersonalNumberFormTypeGate.state,
+  filter: (formType) =>
+    formType.type === PersonalNumberFormMountPlaceType.Switch,
+  fn: (source) => source.type,
+  target: handleSwitchPersonalNumber,
+});
+
+sample({
+  clock: handleSwitchPersonalNumber,
   source: combine(
     HomeownerGate.state,
     personalNumberEditForm.$values,
     $apartment,
+    $isForced,
     (
       gatestate,
       {
@@ -35,10 +61,11 @@ sample({
         openAt,
         isMainAccountingNumber,
       },
-      apartment
+      apartment,
+      isForced,
     ) => {
       return {
-        ReplaceableAccountId: gatestate?.id,
+        replaceableAccountId: gatestate?.id,
         newHomeownerAccount: {
           personalAccountNumber,
           paymentCode,
@@ -48,8 +75,28 @@ sample({
           apartmentId: apartment?.id,
           IsMainOnApartment: isMainAccountingNumber,
         },
-      };
-    }
+        isForced,
+      } as HomeownerAccountReplaceRequest;
+    },
   ),
-  target: switchPersonalNumberFx as any,
+  target: switchPersonalNumberFx,
+});
+
+switchPersonalNumberFx.failData.watch((error) => {
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+forward({
+  from: switchPersonalNumberFx.doneData,
+  to: handleConfirmationModalClose,
 });

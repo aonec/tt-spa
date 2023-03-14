@@ -7,18 +7,12 @@ import {
   EResourceDisconnectingType,
   EResourceType,
 } from 'myApi';
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
+import { AddressTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 import {
@@ -30,18 +24,14 @@ import {
   BaseInfoWrapper,
   CitySelectWrapper,
   InputSC,
-  TagPlaceholder,
   TimeWrapper,
-  TreeSelectSC,
 } from './CreateResourceDisconnectionForm.styled';
 import {
   CreateResourceDisconnectionFormTypes,
   CreateResourceDisconnectionFormProps,
   DetailsSelectLookup,
-  TreeSelectValue,
 } from './CreateResourceDisconnectionForm.types';
 import {
-  getAllHousingStocks,
   getDate,
   getFormValues,
   prepareEndHours,
@@ -146,61 +136,8 @@ export const CreateResourceDisconnectionForm: FC<
       onSubmit: handleSubmitFormik,
     });
 
-  const isAllPrevious = useRef(false);
-  const isAllHousingStocksSelected = values.housingStockIds.includes(-1);
-
   const isCityShow =
     existingCities.length > 1 && typeOfAddress === EAddressDetails.All;
-
-  const allHousingStocks = useMemo(
-    () => getAllHousingStocks(treeData),
-    [treeData],
-  );
-
-  const handleChangeHousingStocks = useCallback(
-    (selectedAddresses: TreeSelectValue) => {
-      const selectedAddressesArray = [selectedAddresses].flat();
-
-      const allHousingStocksVariantClicked =
-        selectedAddressesArray.includes(-1);
-      const allHousingStocksChosen =
-        selectedAddressesArray.length === allHousingStocks.length &&
-        !isAllPrevious.current;
-
-      const isAllSelected =
-        allHousingStocksVariantClicked || allHousingStocksChosen;
-
-      if (isAllSelected && !isAllPrevious.current) {
-        isAllPrevious.current = true;
-        return setFieldValue('housingStockIds', [...allHousingStocks, -1]);
-      }
-
-      if (!isAllSelected && isAllPrevious.current) {
-        isAllPrevious.current = false;
-        return setFieldValue('housingStockIds', []);
-      }
-      isAllPrevious.current = false;
-
-      setFieldValue(
-        'housingStockIds',
-        selectedAddressesArray.filter((elem) => elem !== -1),
-      );
-    },
-    [allHousingStocks, setFieldValue],
-  );
-
-  const housingStocksPlaceholderText = isAllHousingStocksSelected
-    ? 'Выбраны все адреса'
-    : `Выбрано ${values.housingStockIds.length} адреса(-ов)`;
-
-  const tagPlaceholder = useMemo(
-    () => (
-      <TagPlaceholder className="tag-placeholder">
-        {housingStocksPlaceholderText}
-      </TagPlaceholder>
-    ),
-    [housingStocksPlaceholderText],
-  );
 
   const preparedEndHours = prepareEndHours(values.startHour);
 
@@ -234,8 +171,8 @@ export const CreateResourceDisconnectionForm: FC<
       (housingstock) => housingstock.id,
     );
 
-    handleChangeHousingStocks(housingStockIds);
-  }, [treeData, handleChangeHousingStocks, resourceDisconnection]);
+    setFieldValue('housingStockIds', housingStockIds);
+  }, [treeData, setFieldValue, resourceDisconnection]);
 
   useEffect(() => {
     if (!isInterHeatingSeason) {
@@ -323,20 +260,11 @@ export const CreateResourceDisconnectionForm: FC<
         </CitySelectWrapper>
 
         <FormItem label="Адрес">
-          <TreeSelectSC
-            showSearch
-            showArrow
-            value={values.housingStockIds}
+          <AddressTreeSelect
+            selectedHousingStockIds={values.housingStockIds}
             disabled={isHousingStocksLoading || (isCityShow && !selectedCity)}
-            treeCheckable
-            maxTagCount={0}
-            maxTagPlaceholder={() => {
-              return tagPlaceholder;
-            }}
-            treeData={[{ title: 'Все дома', value: -1, key: -1 }, ...treeData]}
-            showCheckedStrategy="SHOW_CHILD"
-            onChange={(values) => handleChangeHousingStocks(values)}
-            placeholder="Выберите адрес"
+            treeData={treeData}
+            onChange={(values) => setFieldValue('housingStockIds', values)}
           />
           <ErrorMessage>{errors.housingStockIds}</ErrorMessage>
         </FormItem>

@@ -9,4 +9,5 @@ export type ObjectsProfileProps = {
   openFeedFlowBackReportModal: () => void;
   handleExportGroupReport: () => void;
   handleOpenGroupreportModal: () => void;
+  openHeatIndividualDevicesReportModal: () => void;
 };
