@@ -129,6 +129,17 @@ forward({
   to: openModal,
 });
 
+sample({
+  clock: sample({
+    clock: editResourceDisconnectionService.outputs.$resourceDisconnection,
+    fn: (disconnection) =>
+      (disconnection?.housingStocks || [])[0]?.address?.mainAddress?.city ||
+      null,
+  }),
+  filter: Boolean,
+  target: selectCity,
+});
+
 forward({
   from: createResourceDisconnection,
   to: createResourceDisconnectionFx,

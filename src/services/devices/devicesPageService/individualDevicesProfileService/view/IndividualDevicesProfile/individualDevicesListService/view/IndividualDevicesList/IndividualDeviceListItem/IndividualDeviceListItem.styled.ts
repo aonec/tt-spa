@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 `;
 
 export const DeviceStatusWrapper = styled.div`
-  margin-left: -15px;
+  margin-left: -16px;
   overflow: hidden;
 `;
 

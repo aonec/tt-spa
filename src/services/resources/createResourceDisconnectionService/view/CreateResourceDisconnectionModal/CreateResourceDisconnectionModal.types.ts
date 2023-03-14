@@ -5,6 +5,7 @@ import {
   ResourceDisconnectingResponse,
   ResourceDisconnectingUpdateRequest,
 } from 'myApi';
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { EAddressDetails } from '../../createResourceDisconnectionService.types';
 
 export type CreateResourceDisconnectionModalProps = {
@@ -30,11 +31,4 @@ export type CreateResourceDisconnectionModalProps = {
   existingCities: string[];
   selectedCity: string | null;
   selectCity: (city: string) => void;
-};
-
-export type TreeSelectElement = {
-  title: string;
-  key: string | number;
-  value: string | number;
-  children?: TreeSelectElement[];
 };

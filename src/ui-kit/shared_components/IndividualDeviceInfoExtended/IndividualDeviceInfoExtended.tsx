@@ -16,6 +16,7 @@ import {
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
 import { translateMountPlace } from '01/utils/translateMountPlace';
+import { Tooltip } from 'antd';
 
 export const IndividualDeviceInfoExtended: FC<
   IndividualDeviceInfoExtendedProps
@@ -38,7 +39,9 @@ export const IndividualDeviceInfoExtended: FC<
       <DeviceLink to={history.location.pathname}>
         <ResourceIconLookup resource={device.resource} />
         <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
-        <ModelWrapper>{` ${device.model}`}</ModelWrapper>
+        <ModelWrapper>
+          <Tooltip title={device.model}>{device.model}</Tooltip>
+        </ModelWrapper>
         <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
       </DeviceLink>
       <ApartmentInfo>

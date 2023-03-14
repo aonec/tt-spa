@@ -4,7 +4,7 @@ import {
   EResourceType,
   NodeOnHousingStockResponse,
 } from 'myApi';
-import { TreeSelectElement } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 
 export type UniqueWorkingRangeProps = {
   housingStockUniqueWorkingRange: AllNodeWorkingRangeResponse | null;

@@ -141,7 +141,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
               activeKey={tabSection}
               onChange={(activeKey) =>
                 history.push(
-                  `/apartments/${apartment.id}/${activeKey as ApartmentSection}`
+                  `/apartments/${apartment.id}/${
+                    activeKey as ApartmentSection
+                  }`,
                 )
               }
             >
@@ -172,9 +174,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 apartmentId={String(apartment.id)}
                 tasksNumber={apartment.activeTaskIds?.length || 0}
               />
-              <ActsCardContainer
-                apartmentId={String(apartment.id)}
-              />
+              <ActsCardContainer apartmentId={String(apartment.id)} />
             </CardsWrapper>
           </ContentWrapper>
         </div>
