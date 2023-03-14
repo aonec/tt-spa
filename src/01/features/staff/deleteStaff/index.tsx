@@ -1,9 +1,9 @@
-import { Loader } from '01/components';
 import { Footer, Header, ModalText } from '01/shared/ui/Modal/Modal';
-import { ButtonTT, StyledModal } from '01/tt-components';
+import { StyledModal } from '01/tt-components';
 import { ErrorAlert } from '01/_components/Alert';
 import { useStore } from 'effector-react';
 import React from 'react';
+import { Button } from 'ui-kit/Button';
 import {
   $isDeleteStaffModalVisible,
   $isDeletionStaffFailed,
@@ -29,17 +29,12 @@ export const DeleteStaffModal: React.FC = () => {
       width={800}
       footer={
         <Footer>
-          <ButtonTT color={'white'} key="back" onClick={onCancel}>
+          <Button type="ghost" key="back" onClick={onCancel}>
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            disabled={pending}
-            color={'red'}
-            key="submit"
-            onClick={onOk}
-          >
-            {pending ? <Loader show /> : 'Удалить'}
-          </ButtonTT>
+          </Button>
+          <Button type="danger" onClick={onOk} isLoading={pending}>
+            Удалить
+          </Button>
         </Footer>
       }
     >

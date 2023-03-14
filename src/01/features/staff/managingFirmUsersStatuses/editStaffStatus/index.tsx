@@ -1,5 +1,4 @@
 import { Footer, StyledModal, Header } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -21,8 +20,8 @@ import { useForm } from 'effector-forms';
 import { EOrganizationUserWorkingStatusType } from 'myApi';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
-import { Loader } from '01/_components/Loader';
 import { ErrorAlert } from '01/_components/Alert';
+import { Button } from 'ui-kit/Button';
 
 const Select = styled(AntdSelect)`
   .ant-select-selector {
@@ -72,17 +71,12 @@ export const EditStaffStatusModal: React.FC = () => {
       title={<Header>Статус сотрудника</Header>}
       footer={
         <Footer>
-          <ButtonTT color={'white'} key="back" onClick={onCancel}>
+          <Button type="ghost" onClick={onCancel}>
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            key="submit"
-            onClick={onSubmit}
-            disabled={pending}
-          >
-            {pending ? <Loader show /> : 'Изменить статус'}
-          </ButtonTT>
+          </Button>
+          <Button onClick={onSubmit} disabled={pending} isLoading={pending}>
+            Изменить статус
+          </Button>
         </Footer>
       }
     >

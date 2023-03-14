@@ -3,7 +3,6 @@ import { FileData } from '01/hooks/useFilesUpload';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -26,6 +25,7 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { $contractors } from '01/features/contractors/displayContractors/models';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
+import { Button } from 'ui-kit/Button';
 
 interface ILine {
   name: string;
@@ -158,14 +158,12 @@ export const CheckFormValuesModal = () => {
       title={<Header>{isCheck ? 'Поверка прибора' : 'Замена прибора'}</Header>}
       footer={
         <Footer>
-          <ButtonTT color="white" key="back" onClick={onCancel}>
+          <Button type="ghost" onClick={onCancel}>
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            key="submit"
+          </Button>
+          <Button
             disabled={pending}
-            onClick={confirmCreationNewDeviceButtonClicked}
+            onClick={() => confirmCreationNewDeviceButtonClicked()}
           >
             {pending ? (
               <Loader show />
@@ -174,7 +172,7 @@ export const CheckFormValuesModal = () => {
             ) : (
               'Заменить прибор'
             )}
-          </ButtonTT>
+          </Button>
         </Footer>
       }
     >

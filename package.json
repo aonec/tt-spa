@@ -70,7 +70,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "src/**/*.{js,jsx,ts,tsx,json,css,md}": [
       "prettier --write",
       "eslint --max-warnings 0"
     ]
@@ -109,6 +109,7 @@
     "prettier": "^2.8.3",
     "prop-types": "^15.8.1",
     "sass": "^1.57.1",
+    "typescript-plugin-css-modules": "^4.2.3",
     "webpack": "^5.75.0"
   }
 }

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Loader } from '01/components';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
-import { Label, Button, Input, Icon, ButtonTT } from '01/tt-components';
+import { Label, Input, Icon } from '01/tt-components';
 import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
 import { message } from 'antd';
@@ -13,6 +12,8 @@ import { DevSettingsModal } from '01/features/developmentSettings';
 import { openDevSettingsModal } from '01/features/developmentSettings/models';
 import { useIsDev } from '01/hooks/useDev';
 import { parse } from 'query-string';
+import { Button } from 'ui-kit/Button';
+import styles from './Login.module.scss';
 
 export const Main = styled.div`
   height: 100vh;
@@ -138,30 +139,26 @@ export const Login = () => {
               />
             </Input>
           </div>
-          <Loader show={loading} size="48">
-            <Button
-              data-big
-              data-primary
-              disabled={loading}
-              type="loading"
-              onClick={FormSubmitHadler}
-            >
-              <span>Вход в систему</span>
-            </Button>
-          </Loader>
+          <Button
+            isLoading={loading}
+            onClick={FormSubmitHadler}
+            className={styles['login-btn']}
+          >
+            <span>Вход в систему</span>
+          </Button>
         </Form>
         {isDev && (
           <>
             <DevSettingsModal />
             <Space />
-            <ButtonTT
+            <Button
               onClick={openDevSettingsModal}
-              small
-              color="white"
-              style={{ color: 'white' }}
+              size="small"
+              type="ghost"
+              className={styles['devSettings-btn']}
             >
               Development settings
-            </ButtonTT>
+            </Button>
           </>
         )}
       </LoginRight>

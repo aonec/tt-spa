@@ -1,10 +1,8 @@
-import { Loader } from '01/components';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { ButtonTT } from '01/tt-components';
 import IsActive from '01/tt-components/IsActive';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
@@ -34,6 +32,7 @@ import { getReadingValuesArray } from '01/features/readings/displayReadingHistor
 import { IndividualDeviceReadingsItemHistoryResponse } from 'myApi';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getFilledArray } from 'utils/getFilledArray';
+import { Button } from 'ui-kit/Button';
 
 export const CorrectionReadingsPanel = () => {
   const task = useStore($task);
@@ -181,13 +180,9 @@ export const CorrectionReadingsPanel = () => {
   );
 
   const endStageButton = isReadOnly ? null : (
-    <ButtonTT
-      color="blue"
-      onClick={completeStage}
-      disabled={pendingCompleteStage}
-    >
-      {pendingCompleteStage ? <Loader show /> : 'Завершить этап'}
-    </ButtonTT>
+    <Button onClick={() => completeStage()} isLoading={pendingCompleteStage}>
+      Завершить этап
+    </Button>
   );
 
   return (

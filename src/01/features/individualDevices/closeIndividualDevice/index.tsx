@@ -1,11 +1,10 @@
-import { Loader } from '01/components';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { useFilesUpload } from '01/hooks/useFilesUpload';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT, DatePickerTT } from '01/tt-components';
+import { DatePickerTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, Select } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
@@ -14,6 +13,7 @@ import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 import { closingReasons } from '../switchIndividualDevice/components/stages/BaseInfoStage';
 import {
   $closingIndividualDevice,
@@ -32,7 +32,7 @@ export const CloseIndividualDeviceModal = () => {
 
   const { addFile, removeFile, pendingProcessing } = useFilesUpload(
     fields.documentIds.onChange,
-    'DeviceClosingAct'
+    'DeviceClosingAct',
   );
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);
@@ -60,16 +60,17 @@ export const CloseIndividualDeviceModal = () => {
       footer={
         <Footer>
           <Flex style={{ justifyContent: 'flex-end' }}>
-            <ButtonTT color="white" onClick={onCancel}>
+            <Button type="ghost" onClick={onCancel}>
               Отмена
-            </ButtonTT>
-            <ButtonTT
-              color="red"
-              onClick={submit}
+            </Button>
+            <Button
+              type="danger"
+              onClick={() => submit()}
               disabled={pendingProcessing || pendingSave}
+              isLoading={pendingSave}
             >
-              {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
-            </ButtonTT>
+              Снять прибор с учета
+            </Button>
           </Flex>
         </Footer>
       }

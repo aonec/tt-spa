@@ -29,9 +29,9 @@ import {
   switchDeviceValidationSchema,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
-import { ButtonTT } from '01/tt-components';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { ChangeODPUReadingsContainer } from 'services/devices/сhangeODPUService/changeODPUReadingsService';
+import { Button } from 'ui-kit/Button';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
   oldDevice,
@@ -278,10 +278,10 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         </FormItem>
       </SealInfoWrapper>
       <ButtonsWrapper>
-        <ButtonTT color="blue" type="submit" disabled={isLoading}>
+        <Button disabled={isLoading}>
           {isLoading && 'Загрузка...'}
           {!isLoading && 'Сохранить'}
-        </ButtonTT>
+        </Button>
       </ButtonsWrapper>
     </FormSC>
   );

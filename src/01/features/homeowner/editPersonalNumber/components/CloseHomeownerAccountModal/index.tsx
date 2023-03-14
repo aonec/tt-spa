@@ -53,7 +53,7 @@ export const CloseHomeownerAccountModal = () => {
       visible={visible}
       onCancel={closeCloseHomeonwerAccountModal}
       saveBtnText="Закрыть"
-      saveButtonType="red"
+      saveButtonType="danger"
       loading={pending}
       onSubmit={submit}
     >
