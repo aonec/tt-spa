@@ -47,11 +47,11 @@ $sizes: (
     white-space: nowrap;
     transition: 0.25s;
 
-    &:hover {
+    &:not(&[disabled]):hover {
       transform: translate(-4px, -4px);
     }
 
-    &:active {
+    &:not(&[disabled]):active {
       transform: translate(-2px, -2px);
     }
   }
@@ -61,11 +61,24 @@ $sizes: (
   &:global(.ant-btn) {
     &,
     &:hover,
-    &:active {
+    &:active,
+    &[disabled],
+    &[disabled]:hover,
+    &[disabled]:active {
       border: none;
       border: 1px solid $borderColor;
       background-color: $mainColor;
       color: $fontColor;
+
+      svg {
+        path {
+          fill: $fontColor;
+        }
+      }
+    }
+
+    &[disabled] {
+      opacity: 0.6;
     }
 
     &:hover {
