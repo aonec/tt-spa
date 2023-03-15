@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import moment from 'moment';
-import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import {
@@ -17,6 +16,7 @@ import {
   HomeownerNumberWrapper,
 } from './StatisticsList.styled';
 import { Link } from 'react-router-dom';
+import { round } from 'utils/round';
 
 export const StatisticsList: React.FC = () => {
   const apartmentList = useStore($consumptionStatistics);
@@ -35,7 +35,6 @@ export const StatisticsList: React.FC = () => {
     electricitySupplyConsumption,
     dateLastCheck,
     dateLastTransmissionOfReading,
-    housingStockId,
     apartmentId,
     homeownerAccountFullName,
     homeownerAccountPhoneNumber,
