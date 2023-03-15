@@ -1,5 +1,4 @@
 import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { FileData } from '01/hooks/useFilesUpload';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
@@ -26,6 +25,7 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 
 interface ILine {
   name: string;

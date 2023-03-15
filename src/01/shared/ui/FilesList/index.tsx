@@ -4,12 +4,12 @@ import { ReactComponent as FileIcon } from './file.svg';
 import { ReactComponent as UserIcon } from './user.svg';
 import { Flex } from '../Layout/Flex';
 import { MenuButtonTT } from '01/tt-components';
-import { FileData } from '01/hooks/useFilesUpload';
 import { DocumentResponse } from 'myApi';
 import { ReactComponent as DropIcon } from './drop.svg';
 import confirm from 'antd/lib/modal/confirm';
 import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import axios from 'axios';
+import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 
 interface Props {
   files?: FileData[];
