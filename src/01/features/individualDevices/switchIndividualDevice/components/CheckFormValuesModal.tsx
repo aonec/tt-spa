@@ -23,9 +23,9 @@ import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { $contractors } from '01/features/contractors/displayContractors/models';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
+import { displayContractorsService } from 'services/contractors/displayContractorsService';
 
 interface ILine {
   name: string;
@@ -44,7 +44,7 @@ export const CheckFormValuesModal = () => {
 
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
-  const contractors = useStore($contractors);
+  const contractors = useStore(displayContractorsService.outputs.$contractors);
 
   const device = useStore($individualDevice);
   const type = useStore(
