@@ -16,6 +16,7 @@ import { $homeowner } from '01/features/homeowner/displayHomeowner/models';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
 import { useForm } from 'effector-forms/dist';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const CloseHomeownerAccountModal = () => {
   const visible = useStore($isVisibleCloseHomeonwerAccountModal);
@@ -37,11 +38,6 @@ export const CloseHomeownerAccountModal = () => {
       history.goBack();
       message.success('Лицевой счет успешно закрыт');
     }
-
-    if (status === 'failed') {
-      message.error('Ошибка сохранения');
-    }
-
     resetCloseHomeownerRequestStatus();
   }, [status, history]);
 
@@ -63,6 +59,11 @@ export const CloseHomeownerAccountModal = () => {
             value={fields.closedAt.value}
             onChange={fields.closedAt.onChange}
           />
+          <ErrorMessage>
+            {fields.closedAt.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
     </ModalTT>
