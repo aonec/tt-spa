@@ -23,56 +23,67 @@ $types: (
 
 $sizes: (
   middle: (
-    height: 42,
-    padding: 20,
-    fontSize: 16,
+    height: 42px,
+    padding: 20px,
+    fontSize: 16px,
   ),
   small: (
-    height: 32,
-    padding: 14,
-    fontSize: 13,
+    height: 32px,
+    padding: 14px,
+    fontSize: 13px,
   ),
 );
 
 .btn {
-  border-radius: 4px;
-  font-weight: 600;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  transition: 0.25s;
-  user-select: none;
-  white-space: nowrap;
+  &:global(.ant-btn) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: min-content;
 
-  &:hover {
-    transform: translate(-4px, -4px);
-  }
+    border-radius: 4px;
+    font-weight: 600;
 
-  &:active {
-    transform: translate(-2px, -2px);
+    white-space: nowrap;
+    transition: 0.25s;
+
+    &:hover {
+      transform: translate(-4px, -4px);
+    }
+
+    &:active {
+      transform: translate(-2px, -2px);
+    }
   }
 }
 
 @mixin btnType($mainColor, $fontColor, $shadowColor, $borderColor) {
-  border: 1px solid $borderColor;
-  background-color: $mainColor;
-  color: $fontColor;
+  &:global(.ant-btn) {
+    &,
+    &:hover,
+    &:active {
+      border: none;
+      border: 1px solid $borderColor;
+      background-color: $mainColor;
+      color: $fontColor;
+    }
 
-  &:hover {
-    box-shadow: 4px 4px 0 $shadowColor;
-  }
+    &:hover {
+      box-shadow: 4px 4px 0 $shadowColor;
+    }
 
-  &:active {
-    box-shadow: 2px 2px 0 $shadowColor;
+    &:active {
+      box-shadow: 2px 2px 0 $shadowColor;
+    }
   }
 }
 
 @mixin btnSize($height, $padding, $fontSize) {
-  padding: 0 $padding;
-  height: $height;
-  font-size: $fontSize;
+  &:global(.ant-btn) {
+    padding: 0 $padding;
+    height: $height;
+    font-size: $fontSize;
+  }
 }
 
 @each $type, $styles in $types {

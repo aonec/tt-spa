@@ -142,7 +142,7 @@ export const Login = () => {
           <Button
             isLoading={loading}
             onClick={FormSubmitHadler}
-            className={styles['login-btn']}
+            style={{ width: '100%' }}
           >
             <span>Вход в систему</span>
           </Button>
@@ -156,6 +156,7 @@ export const Login = () => {
               size="small"
               type="ghost"
               className={styles['devSettings-btn']}
+              style={{ color: 'white' }}
             >
               Development settings
             </Button>

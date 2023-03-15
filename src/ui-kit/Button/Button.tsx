@@ -1,45 +1,31 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { Loader } from '01/components';
-import { IconWrapper, Wrapper } from './Button.styled';
+import { IconWrapper } from './Button.styled';
 import { ButtonProps } from './Button.types';
+import { Button as ButtonAntd } from 'antd';
+import styles from './Button.module.scss';
 
 export const Button: FC<ButtonProps> = (props) => {
   const {
     icon,
     type = 'default',
     className,
-    onClick,
     disabled = props.isLoading,
     size = 'middle',
     sidePadding,
     isLoading,
+    ...otherProps
   } = props;
 
-  const classNameString = [
-    className,
-    ...(disabled ? ['tt-button-disabled'] : []),
-  ].join(' ');
-
-  const handleSubmit = useCallback(
-    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (disabled) {
-        return;
-      }
-      if (onClick) {
-        return onClick(e);
-      }
-    },
-    [onClick, disabled],
-  );
-
   return (
-    <Wrapper
-      {...props}
-      type={type}
-      onClick={handleSubmit}
-      className={classNameString}
-      size={size}
-      sidePadding={sidePadding}
+    <ButtonAntd
+      {...otherProps}
+      disabled={disabled}
+      className={[
+        styles['btn'],
+        styles[`btn-${type}`],
+        styles[`btn-${size}`],
+      ].join(' ')}
     >
       {props.children}
       {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}
@@ -48,6 +34,6 @@ export const Button: FC<ButtonProps> = (props) => {
           <Loader show />
         </IconWrapper>
       )}
-    </Wrapper>
+    </ButtonAntd>
   );
 };
