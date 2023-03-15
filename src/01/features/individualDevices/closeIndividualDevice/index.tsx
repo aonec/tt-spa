@@ -1,5 +1,4 @@
 import { Loader } from '01/components';
-import { ErrorMessage } from '01/features/contractors/addContractors';
 import { useFilesUpload } from '01/hooks/useFilesUpload';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
@@ -22,6 +21,7 @@ import {
   closeIndividualDeviceForm,
   closeIndividualDeviceFx,
 } from './models';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const CloseIndividualDeviceModal = () => {
   const visible = useStore($isCloseIndividualDeviceModalOpen);
@@ -32,7 +32,7 @@ export const CloseIndividualDeviceModal = () => {
 
   const { addFile, removeFile, pendingProcessing } = useFilesUpload(
     fields.documentIds.onChange,
-    'DeviceClosingAct'
+    'DeviceClosingAct',
   );
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);
