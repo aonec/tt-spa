@@ -131,7 +131,7 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
 };
 
 const FilesUploadWrap = styled.div`
-  margin-top: -20px;
+  margin-top: 2px;
 `;
 
 const Grid = styled.div`
