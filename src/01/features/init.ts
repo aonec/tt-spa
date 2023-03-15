@@ -1,10 +1,7 @@
 import './serviceZones/selectServiceZones/models/init';
 import './graph/graphView/models/init';
-import './contractors/addContractors/models/init';
-import './contractors/displayContractors/models/init';
 import './devicesReport/models/init';
 import './userRoles/displayUserRoles/models/init';
-import './contractors/deleteContractor/models/init';
 import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/init';
 import './individualDevices/closeIndividualDevice/models/init';
 import './housingStocks/displayHousingStocks/models/init';
