@@ -31,8 +31,6 @@ import './actsJournal/displayActTypes/models/init';
 import './actsJournal/displayActResources/models/init';
 import './developmentSettings/models/init';
 import './addressIdSearch/models/init';
-import './tasks/displayTask/models/init';
-import './tasks/displayNextStages/models/init';
 import './carlculators/calculatorsInfo/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
