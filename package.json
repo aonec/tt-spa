@@ -11,6 +11,7 @@
     "@types/victory": "^33.1.4",
     "antd": "^4.7.0",
     "axios": "^0.21.1",
+    "classnames": "^2.3.2",
     "date-fns": "^2.16.1",
     "effector": "^22.5.0",
     "effector-forms": "^0.0.21",

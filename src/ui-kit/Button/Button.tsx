@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Loader } from '01/components';
-import { IconWrapper } from './Button.styled';
 import { ButtonProps } from './Button.types';
 import { Button as ButtonAntd } from 'antd';
 import styles from './Button.module.scss';
+import classNames from 'classnames/bind';
 
 export const Button: FC<ButtonProps> = (props) => {
   const {
@@ -12,27 +12,28 @@ export const Button: FC<ButtonProps> = (props) => {
     className,
     disabled = props.isLoading,
     size = 'middle',
-    sidePadding,
     isLoading,
+    long = false,
     ...otherProps
   } = props;
+
+  const cx = classNames.bind(styles);
 
   return (
     <ButtonAntd
       {...otherProps}
       disabled={disabled}
-      className={[
-        styles['btn'],
-        styles[`btn-${type}`],
-        styles[`btn-${size}`],
-      ].join(' ')}
+      data-long={long}
+      className={cx('btn', `btn-${type}`, `btn-${size}`)}
     >
       {props.children}
-      {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}
+      {icon && !isLoading && (
+        <div className={styles['iconWrapper']}>{icon}</div>
+      )}
       {isLoading && (
-        <IconWrapper>
+        <div className={styles['iconWrapper']}>
           <Loader show />
-        </IconWrapper>
+        </div>
       )}
     </ButtonAntd>
   );

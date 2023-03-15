@@ -231,7 +231,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               </Button>
             </ButtonPadding>
             <Button
-              sidePadding={25}
+              long
               onClick={() => {
                 handleSubmit();
               }}

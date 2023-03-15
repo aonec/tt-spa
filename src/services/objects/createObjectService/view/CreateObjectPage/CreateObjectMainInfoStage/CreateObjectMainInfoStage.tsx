@@ -278,7 +278,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button sidePadding={25} onClick={() => handleSubmit()}>
+            <Button long onClick={() => handleSubmit()}>
               Далее
             </Button>
           </RightButtonBlock>

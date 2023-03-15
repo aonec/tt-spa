@@ -270,7 +270,7 @@ export const CommonData: FC<CommonDataProps> = ({
         <Button type="ghost" onClick={goPrevStep}>
           Назад
         </Button>
-        <Button sidePadding={20} onClick={() => handleSubmit()}>
+        <Button long onClick={() => handleSubmit()}>
           Далее
         </Button>
       </Footer>

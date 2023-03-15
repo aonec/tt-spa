@@ -72,11 +72,7 @@ export const CreateNodeConfirmationModal: FC<
           <Button type="ghost" onClick={handleClose}>
             Отмена
           </Button>
-          <Button
-            isLoading={isLoading}
-            sidePadding={20}
-            onClick={handleSubmitForm}
-          >
+          <Button isLoading={isLoading} long onClick={handleSubmitForm}>
             Создать узел
           </Button>
         </Footer>

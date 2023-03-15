@@ -5,7 +5,7 @@ export type ButtonProps = {
   disabled?: boolean;
   icon?: ReactElement;
   size?: ButtonSizeType;
-  sidePadding?: number;
+  long?: boolean;
   isLoading?: boolean;
 } & HTMLAttributes<HTMLElement>;
 

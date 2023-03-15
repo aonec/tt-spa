@@ -128,7 +128,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20} onClick={openConfiramtionModal}>
+          <Button long onClick={openConfiramtionModal}>
             Создать узел
           </Button>
         </Footer>

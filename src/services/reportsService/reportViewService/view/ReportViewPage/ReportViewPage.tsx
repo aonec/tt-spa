@@ -99,7 +99,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
             </FiltrationInfoList>
             <Button
               size="small"
-              sidePadding={16}
+              long
               onClick={downloadReport}
               isLoading={isReportFileDownloading}
             >

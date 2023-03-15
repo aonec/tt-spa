@@ -20,7 +20,9 @@ import {
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
 
-export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
+export const CreateObjectAdditionalInfoStage: FC<
+  CreateObjectAdditionalInfoStageProps
+> = ({
   goBackStage,
   onPageCancel,
   handleSubmitCreateObject,
@@ -89,7 +91,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
               Отмена
             </Button>
           </ButtonPadding>
-          <Button sidePadding={25} onClick={() => handleSubmit()}>
+          <Button long onClick={() => handleSubmit()}>
             Создать объект
           </Button>
         </RightButtonBlock>
