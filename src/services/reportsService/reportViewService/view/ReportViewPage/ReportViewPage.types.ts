@@ -7,7 +7,10 @@ import {
   IndividualDevicesConstructedReportResponse,
 } from 'myApi';
 import { ReportType } from '../../../view/ReportsPage/ReportsPage.types';
-import { ReportFiltrationFormValues } from '../../reportViewService.types';
+import {
+  EmployeeReportResponse,
+  ReportFiltrationFormValues,
+} from '../../reportViewService.types';
 
 export type ReportViewPageProps = {
   reportType: ReportType;
@@ -28,4 +31,5 @@ export type ReportViewPageProps = {
   downloadReport: () => void;
   isReportFileDownloading: boolean;
   clearFiltrationValues: () => void;
+  emloyeeReportData: EmployeeReportResponse | null;
 };

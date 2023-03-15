@@ -1,8 +1,12 @@
 import {
+  CallCenterWorkingConstructedReportResponse,
   EActResourceType,
   EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
+  HouseManagementConstructedReportResponse,
+  InspectorsConstructedReportResponse,
+  OperatorsConstructedReportResponse,
 } from 'myApi';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
 import {
@@ -81,8 +85,13 @@ export type HomeownersReportRequestPayload = {
 
 export type EmployeeReportRequestPayload = {
   employeeReportType: EmployeeReportType;
-  employeeReportDatePeriodType: EmployeeReportDatePeriodType;
-  employeeReportDate: moment.Moment | null;
   From?: string;
   To?: string;
+};
+
+export type EmployeeReportResponse = {
+  [EmployeeReportType.OperatorsWorkingReport]?: OperatorsConstructedReportResponse[];
+  [EmployeeReportType.InspectorsWorkingReport]?: InspectorsConstructedReportResponse[];
+  [EmployeeReportType.CallCenterWorkingReport]?: CallCenterWorkingConstructedReportResponse[];
+  [EmployeeReportType.HouseManagementsReport]?: HouseManagementConstructedReportResponse[];
 };

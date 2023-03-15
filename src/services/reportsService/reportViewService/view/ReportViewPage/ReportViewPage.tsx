@@ -39,6 +39,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   downloadReport,
   isReportFileDownloading,
   clearFiltrationValues,
+  emloyeeReportData,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
