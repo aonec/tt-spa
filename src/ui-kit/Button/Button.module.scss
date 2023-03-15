@@ -2,9 +2,9 @@
 
 $types: (
   default: (
-    mainColor: #189ee9,
+    mainColor: var(--primary-100),
     fontColor: white,
-    shadowColor: #189ee940,
+    shadowColor: rgba(var(--primary), 0.25),
     borderColor: none,
   ),
   danger: (
@@ -17,7 +17,7 @@ $types: (
     mainColor: transparent,
     fontColor: #191b35,
     shadowColor: rgba(0, 0, 0, 0.08),
-    borderColor: #dcdee4,
+    borderColor: var(--frame),
   ),
 );
 
