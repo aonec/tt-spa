@@ -1,4 +1,3 @@
-import './serviceZones/selectServiceZones/models/init';
 import './graph/graphView/models/init';
 import './devicesReport/models/init';
 import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/init';
