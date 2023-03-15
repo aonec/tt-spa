@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
@@ -62,7 +61,6 @@ export const Router: FC<RouterProps> = ({ roles }) => {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => 'logout'} />
-        <Route path="/error/" render={() => <ErrorPage />} />
         <Route path="/registration*" render={() => <Registration />} />
         <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
         <Route path="/">
