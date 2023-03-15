@@ -1,5 +1,3 @@
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
-import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { TabsItemInterface } from '01/tt-components/interfaces';
@@ -24,6 +22,8 @@ import {
 import { EmployeeProfileProps } from './EmployeeProfile.types';
 import { useHistory } from 'react-router-dom';
 import { sortUserRoles } from 'services/company/companyProfileService/view/CompanyProfile/Tabs/Staff/Staff.utils';
+import { usePhoneMask } from 'hooks/usePhoneMask';
+import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
 
 export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   userData,
@@ -73,7 +73,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
               title: 'Редактировать информацию о сотруднике',
               onClick: () =>
                 history.push(
-                  `/companyProfile/editManagingFirmUser/${userData?.id}`
+                  `/companyProfile/editManagingFirmUser/${userData?.id}`,
                 ),
             },
             {

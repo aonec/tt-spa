@@ -18,7 +18,7 @@ import { ButtonTT, InputTT } from '01/tt-components';
 import { Alert, Form } from 'antd';
 import { Loader } from '01/_components/Loader';
 import styled from 'styled-components';
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
+import { usePhoneMask } from 'hooks/usePhoneMask';
 
 export const ErrorMessage = styled.div`
   margin: 5px 0 5px;
@@ -135,7 +135,7 @@ export const AddContractorsFormModal = () => {
                 disabled={pending}
                 onChange={(e: InputTTEvent) =>
                   fields.cellPhone.onChange(
-                    phoneMask.unmaskedValue(e.target.value)
+                    phoneMask.unmaskedValue(e.target.value),
                   )
                 }
               />
