@@ -5,6 +5,10 @@ import {
   EResourceType,
 } from 'myApi';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
 export enum ReportDatePeriod {
   LastDay = 'LastDay',
@@ -27,6 +31,8 @@ export type ReportFiltrationFormValues = {
   closingReasons: EClosingReason[];
   showOnlyDuplicates: boolean;
   withoutApartmentsWithOpenDevicesByResources: boolean;
+  employeeReportType: EmployeeReportType | null;
+  employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
 };
 
 export type ReportPayload = {

@@ -32,6 +32,7 @@ import {
 import { RangePicker } from 'ui-kit/RangePicker';
 import {
   addressesCountTexts,
+  EmployeeReportDatePeriodDictionary,
   EmployeeReportDatePeriodTypesDictionary,
   EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
@@ -79,12 +80,19 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
 
   const isEmployeeReport = reportType === ReportType.Employee;
 
+  const isCallCenterReport =
+    values.employeeReportType === EmployeeReportType.CallCenterWorkingReport;
+
   if (isEmployeeReport) {
     return (
       <Form id={formId} onSubmitCapture={handleSubmit}>
         <EmployeeReportFormWrapper>
           <FormItem label="Вид отчета">
-            <Select placeholder="Выберите из списка">
+            <Select
+              placeholder="Выберите из списка"
+              value={values.employeeReportType || undefined}
+              onChange={(value) => setFieldValue('employeeReportType', value)}
+            >
               {Object.values(EmployeeReportType).map((elem) => (
                 <Select.Option key={elem} value={elem}>
                   {EmployeeReportTypesDictionary[elem]}
@@ -93,7 +101,18 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             </Select>
           </FormItem>
           <FormItem label="Период">
-            <Select placeholder="Выберите из списка">
+            <Select
+              placeholder="Выберите из списка"
+              value={
+                isCallCenterReport
+                  ? 'Произвольный период'
+                  : values.employeeReportDatePeriodType || undefined
+              }
+              onChange={(value) =>
+                setFieldValue('employeeReportDatePeriodType', value)
+              }
+              disabled={!values.employeeReportType || isCallCenterReport}
+            >
               {Object.values(EmployeeReportDatePeriodType).map((elem) => (
                 <Select.Option key={elem} value={elem}>
                   {EmployeeReportDatePeriodTypesDictionary[elem]}
@@ -102,7 +121,32 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
             </Select>
           </FormItem>
           <FormItem label="Дата">
-            <DatePicker />
+            {!isCallCenterReport && (
+              <DatePicker
+                picker={
+                  values.employeeReportDatePeriodType
+                    ? EmployeeReportDatePeriodDictionary[
+                        values.employeeReportDatePeriodType
+                      ]
+                    : undefined
+                }
+                format="MMMM YYYY"
+                disabled={
+                  !values.employeeReportType ||
+                  !values.employeeReportDatePeriodType
+                }
+              />
+            )}
+            {isCallCenterReport && (
+              <RangePicker
+                value={[values.from, values.to]}
+                format="DD.MM.YYYY"
+                onChange={(dates) => {
+                  setFieldValue('from', dates?.[0]);
+                  setFieldValue('to', dates?.[1]);
+                }}
+              />
+            )}
           </FormItem>
         </EmployeeReportFormWrapper>
       </Form>

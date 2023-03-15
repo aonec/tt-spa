@@ -1,5 +1,5 @@
-import { ReportDatePeriod } from 'services/reportsService/reportViewService/reportViewService.types';
 import { DigitCountTextList } from 'utils/getCountText';
+import { ReportDatePeriod } from 'services/reportsService/reportViewService/reportViewService.types';
 import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
@@ -51,4 +51,11 @@ export const EmployeeReportTypesDictionary = {
 export const EmployeeReportDatePeriodTypesDictionary = {
   [EmployeeReportDatePeriodType.Month]: 'Месяц',
   [EmployeeReportDatePeriodType.Year]: 'Год',
+};
+
+export const EmployeeReportDatePeriodDictionary: {
+  [key in EmployeeReportDatePeriodType]: 'year' | 'month';
+} = {
+  [EmployeeReportDatePeriodType.Month]: 'month',
+  [EmployeeReportDatePeriodType.Year]: 'year',
 };
