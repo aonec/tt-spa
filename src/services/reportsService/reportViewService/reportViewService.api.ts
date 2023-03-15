@@ -9,6 +9,7 @@ import {
 import { axios } from '01/axios';
 import {
   ActsJournalReportRequestPayload,
+  EmployeeReportRequestPayload,
   HomeownersReportRequestPayload,
   HousingMeteringDevicesReportRequestPayload,
   IndividualDeviceReportRequestPaload,
@@ -98,4 +99,15 @@ export const downloadReportFile = async ({
   }`;
 
   downloadURI(url, reportNameString);
+};
+
+export const getEmployeeReport = async (
+  payload: EmployeeReportRequestPayload,
+) => {
+  const data = await axios.get(`Reports/${payload.employeeReportType}`, {
+    params: payload,
+    paramsSerializer: queryString.stringify,
+  });
+
+  return data;
 };

@@ -33,6 +33,7 @@ export type ReportFiltrationFormValues = {
   withoutApartmentsWithOpenDevicesByResources: boolean;
   employeeReportType: EmployeeReportType | null;
   employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
+  employeeReportDate: moment.Moment | null;
 };
 
 export type ReportPayload = {
@@ -74,6 +75,14 @@ export type HomeownersReportRequestPayload = {
   HousingStockId?: number;
   HousingStocksIds?: number[];
   ShowOnlyDuplicates: boolean;
+  From?: string;
+  To?: string;
+};
+
+export type EmployeeReportRequestPayload = {
+  employeeReportType: EmployeeReportType;
+  employeeReportDatePeriodType: EmployeeReportDatePeriodType;
+  employeeReportDate: moment.Moment | null;
   From?: string;
   To?: string;
 };

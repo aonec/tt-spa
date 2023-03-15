@@ -121,6 +121,7 @@ const $filtrationValues = domain
     withoutApartmentsWithOpenDevicesByResources: false,
     employeeReportType: null,
     employeeReportDatePeriodType: null,
+    employeeReportDate: null,
   })
   .on(setFiltrationValues, (_, values) => values)
   .reset(ReportViewGate.close, clearFiltrationValues);

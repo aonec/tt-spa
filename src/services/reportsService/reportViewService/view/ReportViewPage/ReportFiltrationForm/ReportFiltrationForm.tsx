@@ -123,6 +123,8 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           <FormItem label="Дата">
             {!isCallCenterReport && (
               <DatePicker
+                value={values.employeeReportDate}
+                onChange={(value) => setFieldValue('employeeReportDate', value)}
                 picker={
                   values.employeeReportDatePeriodType
                     ? EmployeeReportDatePeriodDictionary[

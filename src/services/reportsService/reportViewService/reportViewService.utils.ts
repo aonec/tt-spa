@@ -7,6 +7,7 @@ import {
   HousingMeteringDevicesReportRequestPayload,
   HomeownersReportRequestPayload,
   ReportPayload,
+  EmployeeReportRequestPayload,
 } from './reportViewService.types';
 
 export const getReportPayloadValues = ({ values }: ReportPayload) => values;
@@ -138,6 +139,17 @@ export const prepareHomeownersReportRequestPayload = (
   };
 };
 
-export const prepareEmployeeReportRequestPayload = () => {
-  return null;
+export const prepareEmployeeReportRequestPayload = (
+  values: ReportFiltrationFormValues,
+): EmployeeReportRequestPayload | null => {
+  if (!values.employeeReportType || !values.employeeReportDatePeriodType)
+    return null;
+
+  return {
+    employeeReportType: values.employeeReportType,
+    employeeReportDatePeriodType: values.employeeReportDatePeriodType,
+    employeeReportDate: values.employeeReportDate,
+    From: values.from?.toISOString(),
+    To: values.to?.toISOString(),
+  };
 };
