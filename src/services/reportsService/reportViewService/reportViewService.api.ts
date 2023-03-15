@@ -18,6 +18,7 @@ import {
 } from './reportViewService.types';
 import { downloadURI } from 'utils/downloadByURL';
 import {
+  DownloadEmployeeReportUrlsDictionary,
   DownloadReportUrlsDictionary,
   PrepareReportRequestFunctionsDictionary,
 } from './reportViewService.constants';
@@ -75,8 +76,14 @@ export const downloadReportFile = async ({
 
   const payload = prepareFunction(values);
 
+  const employeeReportType = payload?.employeeReportType;
+
+  const employeeReportUrl =
+    employeeReportType &&
+    DownloadEmployeeReportUrlsDictionary[employeeReportType];
+
   const res: string = await axios.get(
-    DownloadReportUrlsDictionary[reportType],
+    employeeReportUrl || DownloadReportUrlsDictionary[reportType],
     {
       params: payload,
       responseType: 'blob',
