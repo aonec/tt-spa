@@ -134,8 +134,8 @@ const $filtrationValues = domain
     employeeReportDatePeriodType: null,
     employeeReportDate: null,
   })
-  .on(setFiltrationValues, (_, values) => values)
-  .reset(ReportViewGate.close, clearFiltrationValues);
+  .on(setFiltrationValues, (_, values) => values);
+// .reset(ReportViewGate.close, clearFiltrationValues);
 
 const $individualDevicesReportData = domain
   .createStore<IndividualDevicesConstructedReportResponse[] | null>(null)
@@ -163,8 +163,8 @@ const $homeownersReportData = domain
 
 const $emloyeeReportData = domain
   .createStore<EmployeeReportResponse | null>(null)
-  .on(fetchEmployeeReportFx.doneData, (_, data) => data)
-  .reset(ReportViewGate.close, clearFiltrationValues);
+  .on(fetchEmployeeReportFx.doneData, (_, data) => data);
+// .reset(ReportViewGate.close, clearFiltrationValues);
 
 forward({
   from: AddressesWithHouseManagementsGate.open,

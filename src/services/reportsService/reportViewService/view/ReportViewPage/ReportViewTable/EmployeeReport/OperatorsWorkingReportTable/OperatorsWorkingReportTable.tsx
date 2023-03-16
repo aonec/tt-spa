@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
 import { ReadingNameToSourceDictionary } from './OperatorsWorkingReportTable.constants';
 import {
-  getReadingsCountCSS,
+  getSumColumnCSS,
   ReadingsSourceWrapper,
 } from './OperatorsWorkingReportTable.styled';
 import { OperatorsWorkingReportTableProps } from './OperatorsWorkingReportTable.types';
@@ -66,7 +66,7 @@ export const OperatorsWorkingReportTable: FC<
               elem.hotWaterSupplyCount,
               elem.electricityCount,
             ].reduce((acc, count) => acc + count, 0),
-          css: getReadingsCountCSS,
+          css: getSumColumnCSS,
         },
       ]}
       elements={elements}

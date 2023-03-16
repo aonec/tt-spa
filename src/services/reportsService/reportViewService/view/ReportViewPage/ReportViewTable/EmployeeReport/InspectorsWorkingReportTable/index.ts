@@ -1,0 +1,1 @@
+export { InspectorsWorkingReportTable } from './InspectorsWorkingReportTable';

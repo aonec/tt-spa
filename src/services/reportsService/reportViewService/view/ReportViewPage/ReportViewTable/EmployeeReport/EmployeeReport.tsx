@@ -2,6 +2,7 @@ import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { EmployeeReportType } from '../../ReportFiltrationForm/ReportFiltrationForm.types';
 import { EmployeeReportProps } from './EmployeeReport.types';
+import { InspectorsWorkingReportTable } from './InspectorsWorkingReportTable';
 import { OperatorsWorkingReportTable } from './OperatorsWorkingReportTable';
 
 export const EmployeeReport: FC<EmployeeReportProps> = ({
@@ -22,7 +23,7 @@ export const EmployeeReport: FC<EmployeeReportProps> = ({
   const reportTableCompponentsDictionary = {
     [EmployeeReportType.OperatorsWorkingReport]: OperatorsWorkingReportTable,
     [EmployeeReportType.CallCenterWorkingReport]: OperatorsWorkingReportTable,
-    [EmployeeReportType.InspectorsWorkingReport]: OperatorsWorkingReportTable,
+    [EmployeeReportType.InspectorsWorkingReport]: InspectorsWorkingReportTable,
     [EmployeeReportType.HouseManagementsReport]: OperatorsWorkingReportTable,
   };
 

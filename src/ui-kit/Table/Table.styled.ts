@@ -1,6 +1,7 @@
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
 
 export const Wrapper = styled.div`
+  max-width: 1200px;
   overflow-x: auto;
 `;
 
@@ -15,7 +16,6 @@ export const Header = styled.div<{ temp: string }>`
   font-weight: 400;
   font-size: 12px;
   align-items: center;
-  width: 100%;
 `;
 
 export const Row = styled.div<{ temp: string }>`
@@ -29,7 +29,6 @@ export const Row = styled.div<{ temp: string }>`
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
-  width: 100%;
 `;
 
 export const PaginationWrapper = styled.div`
