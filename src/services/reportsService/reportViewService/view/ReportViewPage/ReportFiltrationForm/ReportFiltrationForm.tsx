@@ -83,6 +83,16 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   const isCallCenterReport =
     values.employeeReportType === EmployeeReportType.CallCenterWorkingReport;
 
+  const employeeReportDatePickerFormat = `${
+    values.employeeReportDatePeriodType === EmployeeReportDatePeriodType.Month
+      ? 'MMMM'
+      : ''
+  } YYYY`;
+
+  const employeeReportDatePicker = values.employeeReportDatePeriodType
+    ? EmployeeReportDatePeriodDictionary[values.employeeReportDatePeriodType]
+    : undefined;
+
   if (isEmployeeReport) {
     return (
       <Form id={formId} onSubmitCapture={handleSubmit}>
@@ -125,14 +135,8 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               <DatePicker
                 value={values.employeeReportDate}
                 onChange={(value) => setFieldValue('employeeReportDate', value)}
-                picker={
-                  values.employeeReportDatePeriodType
-                    ? EmployeeReportDatePeriodDictionary[
-                        values.employeeReportDatePeriodType
-                      ]
-                    : undefined
-                }
-                format="MMMM YYYY"
+                picker={employeeReportDatePicker}
+                format={employeeReportDatePickerFormat}
                 disabled={
                   !values.employeeReportType ||
                   !values.employeeReportDatePeriodType
