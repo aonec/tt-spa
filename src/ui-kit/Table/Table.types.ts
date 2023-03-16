@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { FlattenSimpleInterpolation } from 'styled-components';
 
 export type Pagination = {
   pageSize: number;
@@ -7,8 +8,9 @@ export type Pagination = {
 export type TableColumn<T> = {
   label: string;
   size: string;
-  render: (element: T, index: number) => ReactNode;
+  render: (element: T, rowIndex: number) => ReactNode;
   hidden?: boolean;
+  css?: (isHeader: boolean) => FlattenSimpleInterpolation;
 };
 
 export type TableProps<T> = {

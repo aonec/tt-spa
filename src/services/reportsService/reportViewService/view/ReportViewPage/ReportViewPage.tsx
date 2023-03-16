@@ -117,6 +117,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           reportOption={filtrationValues.reportOption}
           housingMeteringDevicesReportData={housingMeteringDevicesReportData}
           homeownersReportData={homeownersReportData}
+          emloyeeReportData={emloyeeReportData}
+          employeeReportType={filtrationValues.employeeReportType}
         />
       </WithLoader>
     </Wrapper>
