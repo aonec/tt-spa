@@ -1,6 +1,12 @@
+import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
+import { EIndividualDeviceReadingsSource } from 'myApi';
 import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
-import { getReadingsCountCSS } from './OperatorsWorkingReportTable.styled';
+import { ReadingNameToSourceDictionary } from './OperatorsWorkingReportTable.constants';
+import {
+  getReadingsCountCSS,
+  ReadingsSourceWrapper,
+} from './OperatorsWorkingReportTable.styled';
 import { OperatorsWorkingReportTableProps } from './OperatorsWorkingReportTable.types';
 
 export const OperatorsWorkingReportTable: FC<
@@ -19,7 +25,16 @@ export const OperatorsWorkingReportTable: FC<
         {
           label: 'Оператор',
           size: '250px',
-          render: (elem) => elem.name,
+          render: (elem) => (
+            <ReadingsSourceWrapper>
+              {elem.name &&
+                getSourceIcon(
+                  ReadingNameToSourceDictionary[elem.name] ||
+                    EIndividualDeviceReadingsSource.Ttm,
+                )}
+              <div>{elem.name}</div>
+            </ReadingsSourceWrapper>
+          ),
         },
         {
           label: 'ХВС',
