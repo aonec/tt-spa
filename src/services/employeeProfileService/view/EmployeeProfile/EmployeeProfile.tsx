@@ -1,6 +1,5 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import { TabsItemInterface } from '01/tt-components/interfaces';
 import Tabs from '01/tt-components/Tabs';
 import { Tooltip } from 'antd';
 import moment from 'moment';
@@ -43,7 +42,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
 
   const [currentTabKey, setTab] = useState('1');
 
-  const tabItems: Array<TabsItemInterface> = [
+  const tabItems = [
     {
       title: 'Общие данные',
       key: '1',
