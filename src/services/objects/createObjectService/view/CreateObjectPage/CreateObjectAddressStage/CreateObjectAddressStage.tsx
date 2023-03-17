@@ -25,7 +25,6 @@ import {
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
 import { StyledSelect } from '01/shared/ui/Select/components';
-import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
 
@@ -39,7 +38,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   const { values, handleSubmit, setFieldValue, errors } =
     useFormik<ObjectAddressValues>({
       initialValues: {
-        city: createObjectData?.city || null,
+        city: createObjectData?.city || '',
         street: createObjectData?.street || '',
         house: createObjectData?.house || null,
         corpus: createObjectData?.corpus || null,
@@ -68,10 +67,15 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     );
 
   const addressSearch = values.street;
+  const citySearch = values.city;
 
   const preparedExistingStreets = getPreparedStreetsOptions(
     addressSearch,
     existingStreets || [],
+  );
+  const preparedExistingCities = getPreparedStreetsOptions(
+    citySearch || '',
+    existingCities || [],
   );
 
   return (
@@ -85,17 +89,12 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <BlockTitle>Основной адрес объекта</BlockTitle>
         <GridWrapper>
           <FormItem label="Город">
-            <Select
+            <AutoComplete
               onChange={(value) => setFieldValue('city', value)}
               value={values.city || undefined}
               placeholder="Выберите из списка"
-            >
-              {existingCities?.map((city) => (
-                <Select.Option value={city} key={city}>
-                  {city}
-                </Select.Option>
-              ))}
-            </Select>
+              options={preparedExistingCities}
+            />
             <ErrorMessage> {errors.city} </ErrorMessage>
           </FormItem>
 
@@ -104,7 +103,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               placeholder="Улица"
               value={values.street}
               onChange={(value) => setFieldValue('street', value)}
-              options={preparedExistingStreets || undefined}
+              options={preparedExistingStreets}
             />
             <ErrorMessage> {errors.street} </ErrorMessage>
           </FormItem>
