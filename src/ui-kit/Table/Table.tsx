@@ -28,8 +28,8 @@ export function Table<T>({
   return (
     <Wrapper>
       <Header temp={temp}>
-        {filteredColumns.map((column) => (
-          <TableElement key={column.label} css={column.css?.(true)}>
+        {filteredColumns.map((column, columnIndex) => (
+          <TableElement key={columnIndex} css={column.css?.(true)}>
             {column.label}
           </TableElement>
         ))}
@@ -37,7 +37,7 @@ export function Table<T>({
       {elements.slice(start, end).map((elem, rowIndex) => (
         <Row key={rowIndex} temp={temp}>
           {filteredColumns.map((column, columnIndex) => (
-            <TableElement key={column.label} css={column.css?.(false)}>
+            <TableElement key={columnIndex} css={column.css?.(false)}>
               {column.render(elem, rowIndex)}
             </TableElement>
           ))}

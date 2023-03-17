@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 export const Header = styled.div<{ temp: string }>`
   width: max-content;
   background: #f3f5f6;
-  height: 50px;
+  min-height: 50px;
   display: grid;
   grid-gap: 16px;
   grid-template-columns: ${({ temp }) => temp};
