@@ -8,7 +8,7 @@ export const Wrapper = styled.div<{ clickable: boolean }>`
   display: flex;
   align-items: center;
   overflow: hidden;
-  max-width: 250px;
+  max-width: 220px;
   cursor: pointer;
   transition: 0.2s;
 
@@ -32,6 +32,7 @@ export const Model = styled.div`
   margin-left: 10px;
   font-size: 16px;
   color: #272f5a88;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

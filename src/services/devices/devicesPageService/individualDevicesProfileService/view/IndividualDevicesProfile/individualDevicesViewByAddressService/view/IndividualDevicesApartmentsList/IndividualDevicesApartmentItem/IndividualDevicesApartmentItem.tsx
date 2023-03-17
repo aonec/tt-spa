@@ -20,10 +20,9 @@ import { IndividualDevicesApartmentItemProps } from './IndividualDevicesApartmen
 
 const { inputs, outputs } = individualDevicesListService;
 
-export const IndividualDevicesApartmentItem: FC<IndividualDevicesApartmentItemProps> = ({
-  individualDevicesApartment,
-  housingStockId,
-}) => {
+export const IndividualDevicesApartmentItem: FC<
+  IndividualDevicesApartmentItemProps
+> = ({ individualDevicesApartment, housingStockId }) => {
   const openedApartmentId = useStore(outputs.$openedBlockId);
 
   const toggleApartment = useEvent(inputs.toggleBlock);
