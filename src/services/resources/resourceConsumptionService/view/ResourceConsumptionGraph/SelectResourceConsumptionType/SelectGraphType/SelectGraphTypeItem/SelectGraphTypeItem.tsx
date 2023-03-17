@@ -11,7 +11,10 @@ export const SelectGraphTypeItem: FC<SelectGraphTypeItemProps> = ({
   text,
 }) => {
   return (
-    <GroupWrapper onClick={() => !disabled && setChecked(!checked)}>
+    <GroupWrapper
+      onClick={() => !disabled && setChecked(!checked)}
+      disabled={disabled}
+    >
       <Checkbox disabled={disabled} checked={checked} />
       <Circle color={color} />
       {text}

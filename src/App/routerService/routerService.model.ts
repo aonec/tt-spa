@@ -2,6 +2,7 @@ import { currentUserService } from 'services/currentUserService';
 
 export const routerService = {
   outputs: {
-    $currentUser: currentUserService.outputs.$currentUser,
+    $currentUserRoles: currentUserService.outputs.$currentUserRoles,
+    $isCurrentUserLoading: currentUserService.outputs.$isLoading,
   },
 };

@@ -27,9 +27,15 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   isAdministrator,
   openFeedFlowBackReportModal,
   handleExportGroupReport,
+  openHeatIndividualDevicesReportModal,
 }) => {
   const menuButtons = useMemo(
     () => [
+      {
+        title: 'Создать объект',
+        onClick: handleCreateObject,
+        hidden: !isAdministrator,
+      },
       {
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
@@ -44,13 +50,13 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
         onClick: openFeedFlowBackReportModal,
       },
       {
-        title: 'Создать оключение ресурса на объекте',
-        onClick: handleOpenChooseResourceDisconnectionModal,
+        title: 'Выгрузить сводный отчёт по ИПУ',
+        onClick: openHeatIndividualDevicesReportModal,
+        hidden: !isAdministrator,
       },
       {
-        title: 'Создать объект',
-        onClick: handleCreateObject,
-        hidden: !isAdministrator,
+        title: 'Создать оключение ресурса на объекте',
+        onClick: handleOpenChooseResourceDisconnectionModal,
       },
     ],
     [
@@ -60,6 +66,7 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       isAdministrator,
       openSoiReportModal,
       handleExportGroupReport,
+      openHeatIndividualDevicesReportModal,
     ],
   );
 

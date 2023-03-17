@@ -1,5 +1,5 @@
 import { HouseManagementResponse, OrganizationResponsePagedList } from 'myApi';
-import { TreeSelectElement } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionModal/CreateResourceDisconnectionModal.types';
+import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
 import { UnloadingType } from '../../closedIndividualDevicesFormService.types';
 
 export type ClosedIndividualDevicesFormProps = {
