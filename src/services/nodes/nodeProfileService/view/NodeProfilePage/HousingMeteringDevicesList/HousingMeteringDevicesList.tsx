@@ -19,9 +19,10 @@ export const HousingMeteringDevicesList: FC<
           pipe={{ ...pipe, id: String(pipe.id) } as CommunicationPipePayload}
           key={pipe.id}
           handleEditDevice={handleEditDevice}
-          handleDeleteDevice={(_, deviceIndex) =>
+          handleDeleteDevice={
             handleDeleteDevice &&
-            handleDeleteDevice((pipe.devices || [])?.[deviceIndex])
+            ((_, deviceIndex) =>
+              handleDeleteDevice((pipe.devices || [])?.[deviceIndex]))
           }
         />
       ))}

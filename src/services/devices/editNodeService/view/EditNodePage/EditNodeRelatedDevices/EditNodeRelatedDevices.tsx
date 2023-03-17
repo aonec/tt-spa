@@ -2,9 +2,9 @@ import { useEvent } from 'effector-react';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  DeleteHousingMeteringDeviceContainer,
-  deleteHousingMeteringDeviceService,
-} from 'services/devices/editNodeService/deleteHousingMeteringDeviceService';
+  DeletePipeHousingMeteringDeviceContainer,
+  deletePipeHousingMeteringDeviceService,
+} from 'services/devices/deletePipeHousingMeteringDeviceService';
 import { HousingMeteringDevicesList } from 'services/nodes/nodeProfileService/view/NodeProfilePage/HousingMeteringDevicesList';
 import {
   AddHosuingMeteringDeviceContainer,
@@ -22,7 +22,7 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
     addHosuingMeteringDeviceService.inputs.openModal,
   );
   const openDeleteHousingMeteringDeviceModal = useEvent(
-    deleteHousingMeteringDeviceService.inputs.openModal,
+    deletePipeHousingMeteringDeviceService.inputs.openModal,
   );
 
   return (
@@ -38,7 +38,7 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
         }
       />
       <AddHosuingMeteringDeviceContainer />
-      <DeleteHousingMeteringDeviceContainer />
+      <DeletePipeHousingMeteringDeviceContainer />
       <CreateDeviceText onClick={() => openAddHousingMeteringDeviceModal(node)}>
         + Добавить прибор
       </CreateDeviceText>
