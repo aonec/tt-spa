@@ -2,6 +2,7 @@ import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { EmployeeReportType } from '../../ReportFiltrationForm/ReportFiltrationForm.types';
 import { EmployeeReportProps } from './EmployeeReport.types';
+import { HouseManagementsReportTable } from './HouseManagementsReportTable';
 import { InspectorsWorkingReportTable } from './InspectorsWorkingReportTable';
 import { OperatorsWorkingReportTable } from './OperatorsWorkingReportTable';
 
@@ -24,7 +25,7 @@ export const EmployeeReport: FC<EmployeeReportProps> = ({
     [EmployeeReportType.OperatorsWorkingReport]: OperatorsWorkingReportTable,
     [EmployeeReportType.CallCenterWorkingReport]: OperatorsWorkingReportTable,
     [EmployeeReportType.InspectorsWorkingReport]: InspectorsWorkingReportTable,
-    [EmployeeReportType.HouseManagementsReport]: OperatorsWorkingReportTable,
+    [EmployeeReportType.HouseManagementsReport]: HouseManagementsReportTable,
   };
 
   const TableComponent =
