@@ -18,7 +18,7 @@ export const AddPerpetratorSelect: FC<AddPerpetratorSelectProps> = ({
     (value: SelectValue) => {
       if (typeof value === 'number') setPerpetratorId(value);
     },
-    [setPerpetratorId]
+    [setPerpetratorId],
   );
 
   return (

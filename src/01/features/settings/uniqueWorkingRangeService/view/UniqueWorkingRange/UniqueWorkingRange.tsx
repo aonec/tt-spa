@@ -46,12 +46,12 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
     housingStockUniqueWorkingRange &&
     housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
-        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError
+        range.nodeWorkingRangeType === ENodeWorkingRangeType.AllowableError,
     );
 
   const criticalError = housingStockUniqueWorkingRange?.nodeWorkingRanges?.find(
     (range) =>
-      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError
+      range.nodeWorkingRangeType === ENodeWorkingRangeType.CriticalError,
   );
 
   const massOfFeedFlowMagistral =
@@ -59,7 +59,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
     housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedFlowMagistral
+        ENodeWorkingRangeType.MassOfFeedFlowMagistral,
     );
 
   const massOfFeedBackFlowMagistral =
@@ -67,7 +67,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
     housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral
+        ENodeWorkingRangeType.MassOfFeedBackFlowMagistral,
     );
 
   const deltaMassOfMagistral =
@@ -75,31 +75,32 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
     housingStockUniqueWorkingRange.nodeWorkingRanges?.find(
       (range) =>
         range.nodeWorkingRangeType ===
-        ENodeWorkingRangeType.DeltaMassOfMagistral
+        ENodeWorkingRangeType.DeltaMassOfMagistral,
     );
 
-  const {
-    values,
-    handleSubmit,
-    setFieldValue,
-  } = useFormik<UniqueWorkingRangeType>({
-    initialValues: {
-      nodeResourceType: EResourceType.ColdWaterSupply,
-      season: ENodeWorkingRangeSeason.HeatingSeason,
-      housingStockId: null,
-      nodeId: null,
-    },
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      const { housingStockId, nodeId, nodeResourceType, season } = data;
+  const { values, handleSubmit, setFieldValue } =
+    useFormik<UniqueWorkingRangeType>({
+      initialValues: {
+        nodeResourceType: EResourceType.ColdWaterSupply,
+        season: ENodeWorkingRangeSeason.HeatingSeason,
+        housingStockId: null,
+        nodeId: null,
+      },
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        const { housingStockId, nodeId, nodeResourceType, season } = data;
 
-      !nodeId &&
-        housingStockId &&
-        handleOnSearchDataChange({ nodeResourceType, season, housingStockId });
+        !nodeId &&
+          housingStockId &&
+          handleOnSearchDataChange({
+            nodeResourceType,
+            season,
+            housingStockId,
+          });
 
-      nodeId && handleNodeChoosen({ season, nodeId });
-    },
-  });
+        nodeId && handleNodeChoosen({ season, nodeId });
+      },
+    });
 
   useEffect(() => {
     values.housingStockId && handleFetchNodes(values.housingStockId);

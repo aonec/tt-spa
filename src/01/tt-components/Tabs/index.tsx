@@ -53,4 +53,4 @@ const StyledTabs = styled.div`
   padding: 0;
 `;
 
-export default TabsContainer
+export default TabsContainer;

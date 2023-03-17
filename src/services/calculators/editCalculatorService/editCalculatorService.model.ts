@@ -9,7 +9,10 @@ import {
   getAlreadyExistingConnectionCalculator,
   putCalculator,
 } from './editCalculatorService.api';
-import { EffectFailDataAxiosError } from 'types';
+import {
+  EffectFailDataAxiosError,
+  EffectFailDataAxiosErrorDataId,
+} from 'types';
 import {
   CalculatorResponse,
   MeteringDeviceResponse,
@@ -33,7 +36,7 @@ const SaveDeviceIdGate = createGate<{ deviceId: number }>();
 const editCalculatorFx = domain.createEffect<
   { deviceId: number; form: UpdateCalculatorRequest },
   MeteringDeviceResponse | null,
-  EffectFailDataAxiosError
+  EffectFailDataAxiosErrorDataId
 >(putCalculator);
 
 const getSameConnectionCalculatorFx = domain.createEffect<

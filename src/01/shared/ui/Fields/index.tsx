@@ -2,6 +2,8 @@ import React from 'react';
 import { Select, AutoComplete, DatePicker, Input } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
+import { Loader } from '01/components';
+import { ActiveFiltersIcon } from 'ui-kit/icons';
 
 export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
   width: 100%;
@@ -132,6 +134,8 @@ export const StyledDatePicker = styled(DatePicker)`
 `;
 
 export const StyledSquareButton = styled.div`
+  height: 32px;
+  width: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,10 +162,22 @@ export const StyledSquareButton = styled.div`
   }
 `;
 
-export const FilterButton = styled(() => (
-  <StyledSquareButton>
-    <div>
-      <FilterIcon />
-    </div>
-  </StyledSquareButton>
-))``;
+export const FilterButton = styled(
+  ({
+    onClick,
+    isLoading,
+    isActiveFilters,
+  }: {
+    onClick?: () => void;
+    isLoading?: boolean;
+    isActiveFilters?: boolean;
+  }) => (
+    <StyledSquareButton onClick={onClick}>
+      <div>
+        {isLoading && <Loader show />}
+        {!isLoading &&
+          (isActiveFilters ? <ActiveFiltersIcon /> : <FilterIcon />)}
+      </div>
+    </StyledSquareButton>
+  ),
+)``;

@@ -9,7 +9,6 @@ import {
   $editRequestStatus,
   setEditRequestStatus,
   editHomeownerAccountEffect,
-  editHomeownerSaveButtonClicked,
   AutoCompleteFormGate,
   PersonalNumberFormGate,
   $isVisibleCloseHomeonwerAccountModal,
@@ -19,12 +18,22 @@ import {
   $closeHomeownerRequestStatus,
   resetCloseHomeownerRequestStatus,
   closeHomeownerAccountForm,
+  handleConfirmationModalClose,
+  $isForced,
+  onForced,
+  handleEditHomeownerAccount,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
 import moment from 'moment';
 import { fetchApartmentFx } from '01/features/apartments/displayApartment/models';
 import { HomeownerGate } from '../../displayHomeowner/models/index';
+import { HomeownerAccountUpdateRequest } from 'myApi';
+import {
+  PersonalNumberFormMountPlaceType,
+  PersonalNumberFormTypeGate,
+} from '../components/PersonalNumberEditForm/personalNumberEditForm.controller';
+import { message } from 'antd';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -43,7 +52,7 @@ sample({
     if (!isAutocomplete) return {};
 
     const currentAccount = data.homeownerAccounts?.find(
-      (account) => account.id === gateState.id
+      (account) => account.id === gateState.id,
     );
 
     const form = {
@@ -66,15 +75,25 @@ $editRequestStatus
   .on(editHomeownerAccountEffect.doneData, () => 'done')
   .on(editHomeownerAccountEffect.failData, () => 'failed');
 
+sample({
+  clock: personalNumberEditForm.formValidated,
+  source: PersonalNumberFormTypeGate.state,
+  filter: (formType) => formType.type === PersonalNumberFormMountPlaceType.Edit,
+  fn: (source) => source.type,
+  target: handleEditHomeownerAccount,
+});
+
 forward({
-  from: editHomeownerSaveButtonClicked,
-  to: personalNumberEditForm.submit,
+  from: onForced,
+  to: handleEditHomeownerAccount,
 });
 
 sample({
+  clock: handleEditHomeownerAccount,
   source: combine(
     HomeownerGate.state,
     personalNumberEditForm.$values,
+    $isForced,
     (
       gateState,
       {
@@ -84,7 +103,8 @@ sample({
         phoneNumber,
         openAt,
         isMainAccountingNumber,
-      }
+      },
+      isForced,
     ) => ({
       id: gateState?.id,
       data: {
@@ -94,11 +114,11 @@ sample({
         phoneNumber,
         openAt,
         IsMainOnApartment: isMainAccountingNumber,
-      },
-    })
+        isForced: isForced,
+      } as HomeownerAccountUpdateRequest,
+    }),
   ),
-  clock: personalNumberEditForm.formValidated,
-  target: editHomeownerAccountEffect as any,
+  target: editHomeownerAccountEffect,
 });
 
 forward({
@@ -124,7 +144,34 @@ sample({
       ({
         ClosedAt: moment(form?.closedAt).toISOString(true),
         HomeownerAccountId: gateState?.id,
-      } as any)
+      } as any),
   ),
   target: closeHomeownerAccountFx,
+});
+
+forward({
+  from: editHomeownerAccountEffect.doneData,
+  to: handleConfirmationModalClose,
+});
+
+editHomeownerAccountEffect.failData.watch((error) => {
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+closeHomeownerAccountFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
 });

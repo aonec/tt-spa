@@ -10,6 +10,8 @@ export type ObjectsProfileProps = {
   isPermitionToDownloadGroupReport: boolean;
   isPermitionToDownloadSOIReport: boolean;
   isPermitionToDownloadFeedBackFlowReport: boolean;
-  isPermitionToCreateObject: boolean;
+  isPermitionToCreateObjectAndIPUReport: boolean;
   isPermitionToCreateResourceDisconnection: boolean;
+  handleOpenGroupreportModal: () => void;
+  openHeatIndividualDevicesReportModal: () => void;
 };

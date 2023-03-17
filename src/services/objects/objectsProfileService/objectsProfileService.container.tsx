@@ -15,6 +15,10 @@ import { SearchType } from './objectsProfileService.types';
 import { SoiReportContainer } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
 import { usePermission } from 'hooks/usePermission';
+import {
+  HeatIndividualDevicesReportContainer,
+  heatIndividualDevicesReportService,
+} from './heatIndividualDevicesReportService';
 
 const { inputs } = objectsProfileService;
 
@@ -33,6 +37,14 @@ export const ObjectsProfileContainer = () => {
 
   const handleOpenChooseResourceDisconnectionModal = useEvent(
     chooseTypeOfResourceDisconnectionModalService.inputs.openModal,
+  );
+
+  const handleOpenGroupreportModal = useEvent(
+    groupReportService.inputs.openModal,
+  );
+
+  const handleOpenHeatIndividualDevicesReportModal = useEvent(
+    heatIndividualDevicesReportService.inputs.openModal,
   );
 
   const handleCreateObject = () => history.push('/objects/create');
@@ -59,7 +71,7 @@ export const ObjectsProfileContainer = () => {
   const isPermitionToCreateResourceDisconnection = usePermission([
     ESecuredIdentityRoleName.Administrator,
   ]);
-  const isPermitionToCreateObject = usePermission([
+  const isPermitionToCreateObjectAndIPUReport = usePermission([
     ESecuredIdentityRoleName.Administrator,
   ]);
 
@@ -71,6 +83,7 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
+      <HeatIndividualDevicesReportContainer />
       <SoiReportContainer />
       <CreateResourceDisconnectionContainer />
       <ChooseTypeOfResourceDisconnectionModalContainer />
@@ -85,7 +98,9 @@ export const ObjectsProfileContainer = () => {
         }
         handleCreateObject={handleCreateObject}
         openFeedFlowBackReportModal={() => openFeedFlowBackReportModal()}
-        isPermitionToCreateObject={isPermitionToCreateObject}
+        isPermitionToCreateObjectAndIPUReport={
+          isPermitionToCreateObjectAndIPUReport
+        }
         isPermitionToCreateResourceDisconnection={
           isPermitionToCreateResourceDisconnection
         }
@@ -94,6 +109,10 @@ export const ObjectsProfileContainer = () => {
         }
         isPermitionToDownloadSOIReport={isPermitionToDownloadSOIReport}
         isPermitionToDownloadGroupReport={isPermitionToDownloadGroupReport}
+        handleOpenGroupreportModal={() => handleOpenGroupreportModal()}
+        openHeatIndividualDevicesReportModal={() =>
+          handleOpenHeatIndividualDevicesReportModal()
+        }
       />
     </>
   );

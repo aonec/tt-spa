@@ -7,10 +7,11 @@ import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
+import { EffectFailDataAxiosError } from 'types';
 
 export const $closingIndividualDevice =
   createStore<IndividualDeviceListItemResponse | null>(null);
-  
+
 export const $isCloseIndividualDeviceModalOpen =
   $closingIndividualDevice.map(Boolean);
 
@@ -48,5 +49,6 @@ export const closeIndividualDeviceFx = createEffect<
     deviceId: number;
     requestBody: CloseIndividualDeviceRequestBody;
   },
-  IndividualDeviceResponse | null
+  IndividualDeviceResponse | null,
+  EffectFailDataAxiosError
 >();

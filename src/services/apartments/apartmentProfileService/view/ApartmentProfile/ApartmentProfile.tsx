@@ -41,6 +41,9 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
 
   const homeowner = apartment?.homeownerAccounts?.[0];
 
+  const filteredHomeownerAccounts =
+    apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
+
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const houseManagementInfo =
@@ -91,7 +94,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
       </CommonInfoWrapper>
     ),
     [ApartmentSection.Homeowners]: apartment?.homeownerAccounts && (
-      <HomeownersList homeowners={apartment?.homeownerAccounts} />
+      <HomeownersList homeowners={filteredHomeownerAccounts} />
     ),
     [ApartmentSection.Testimony]: apartment && (
       <ApartmentIndividualDevicesMetersContainer

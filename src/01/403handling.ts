@@ -177,4 +177,44 @@ export const forbiddenList: ForbiddenUrl[] = [
     methods: ['GET'],
     regExp: /^Reports\/ConsolidatedReport$/,
   },
+  {
+    methods: ['PUT'],
+    regExp: /^HomeownerAccounts\/\d+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^HomeownerAccounts\/Split+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^HomeownerAccounts\/Replace+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^IndividualDevices+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^IndividualDevices\/\d+\/close+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^IndividualDevices\/\d+\/Delete+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^IndividualDevices\/\d+\/switch+$/,
+  },
+  {
+    methods: ['PUT'],
+    regExp: /^PipeNodes\/\d+$/,
+  },
+  {
+    methods: ['POST'],
+    regExp: /^Nodes\/\d+\/Documents$/,
+  },
+  {
+    methods: ['DELETE'],
+    regExp: /^Tasks\/\d+\/Comments\/\d+$/,
+  },
 ];
