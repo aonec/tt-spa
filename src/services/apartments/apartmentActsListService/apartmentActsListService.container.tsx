@@ -16,9 +16,8 @@ import {
 } from '../editApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
-import { currentUserService } from 'services/currentUserService';
-import _ from 'lodash';
 import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { outputs, inputs, gates } = apartmentActsListService;
 
@@ -46,16 +45,12 @@ export const ApartmentActsListContainer = () => {
   const updateTypes = useEvent(inputs.updateType);
   const updateResources = useEvent(inputs.updateResources);
 
-  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
-  const userRolesKeys = userRoles.map((e) => e.key);
-  const isPermitionToChangeApartmentAct = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-      ESecuredIdentityRoleName.SeniorOperator,
-      ESecuredIdentityRoleName.ManagingFirmSpectator,
-    ]).length,
-  );
+  const isPermitionToChangeApartmentAct = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  ]);
 
   return (
     <>

@@ -4,9 +4,8 @@ import { Redirect, useParams } from 'react-router-dom';
 import { apartmentProfileService } from './apartmentProfileService.model';
 import { ApartmentProfile } from './view/ApartmentProfile';
 import { ApartmentSection } from './view/ApartmentProfile/ApartmentProfile.types';
-import { currentUserService } from 'services/currentUserService';
-import _ from 'lodash';
 import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { gates, outputs } = apartmentProfileService;
 const { ApartmentGate } = gates;
@@ -19,16 +18,11 @@ export const ApartmentProfileContainer = () => {
 
   const { tabSection } = useParams<{ tabSection: ApartmentSection }>();
 
-  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
-  const userRolesKeys = userRoles.map((e) => e.key);
-
-  const isPermitionToEditApartment = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.SeniorOperator,
-      ESecuredIdentityRoleName.Operator,
-    ]).length,
-  );
+  const isPermitionToEditApartment = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.Operator,
+  ]);
 
   return (
     <>

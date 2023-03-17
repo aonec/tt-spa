@@ -4,9 +4,8 @@ import { useParams } from 'react-router-dom';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { housingMeteringDeviceProfileService } from './housingMeteringDeviceProfileService.model';
 import { HousingMeteringDeviceProfile } from './view/HousingMeteringDeviceProfile';
-import { currentUserService } from 'services/currentUserService';
 import { ESecuredIdentityRoleName } from 'myApi';
-import _ from 'lodash';
+import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = housingMeteringDeviceProfileService;
 const { FetchHousingMeteringDeviceGate } = gates;
@@ -31,24 +30,18 @@ export const HousingMeteringDeviceProfileContainer = () => {
   const pending = useStore(outputs.$pending);
   const tasksPending = useStore(outputs.$tasksPending);
 
-  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
-  const userRolesKeys = userRoles.map((e) => e.key);
-  const isPermitionToCheckHousingMeteringDevice = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-    ]).length,
-  );
+  const isPermitionToCheckHousingMeteringDevice = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
   const isPermitionToCloseHousingMeteringDevice =
     isPermitionToCheckHousingMeteringDevice;
-  const isPermitionToEditHousingMeteringDevice = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-      ESecuredIdentityRoleName.SeniorOperator,
-      ESecuredIdentityRoleName.Operator,
-    ]).length,
-  );
+  const isPermitionToEditHousingMeteringDevice = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.Operator,
+  ]);
 
   return (
     <>

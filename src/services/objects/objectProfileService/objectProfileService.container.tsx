@@ -5,9 +5,8 @@ import { useParams } from 'react-router-dom';
 import { objectProfileService } from './objectProfileService.model';
 import { ObjectProfile } from './view/ObjectProfile';
 import { ConsolidatedReportContainer } from './consolidatedReportService';
-import { currentUserService } from 'services/currentUserService';
-import _ from 'lodash';
 import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = objectProfileService;
 const { ObjectProfileIdGate } = gates;
@@ -24,22 +23,16 @@ export const ObjectProfileContainer = () => {
     inputs.openConsolidatedReportModal,
   );
 
-  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
-  const userRolesKeys = userRoles.map((e) => e.key);
-  const isPermitionToAddNode = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-    ]).length,
-  );
-  const isPermitionToDownloadConsolidatedReport = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-      ESecuredIdentityRoleName.ManagingFirmSpectator,
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
-    ]).length,
-  );
+  const isPermitionToAddNode = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
+  const isPermitionToDownloadConsolidatedReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  ]);
 
   return (
     <>

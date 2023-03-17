@@ -1,8 +1,7 @@
-import { useEvent, useStore } from 'effector-react';
+import { useEvent } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { currentUserService } from 'services/currentUserService';
 import { FeedFlowBackReportContainer } from 'services/nodes/feedFlowBackReportService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.model';
@@ -15,7 +14,7 @@ import { objectsProfileService } from './objectsProfileService.model';
 import { SearchType } from './objectsProfileService.types';
 import { SoiReportContainer } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
-import _ from 'lodash';
+import { usePermission } from 'hooks/usePermission';
 
 const { inputs } = objectsProfileService;
 
@@ -38,41 +37,31 @@ export const ObjectsProfileContainer = () => {
 
   const handleCreateObject = () => history.push('/objects/create');
 
-  const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
-  const userRolesKeys = userRoles.map((e) => e.key);
-  const isPermitionToDownloadGroupReport = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-      ESecuredIdentityRoleName.ManagingFirmSpectator,
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
-    ]).length,
-  );
-  const isPermitionToDownloadSOIReport = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-      ESecuredIdentityRoleName.SeniorOperator,
-      ESecuredIdentityRoleName.Operator,
-      ESecuredIdentityRoleName.ManagingFirmSpectator,
-      ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
-      ESecuredIdentityRoleName.ManagingFirmDispatcher,
-    ]).length,
-  );
-  const isPermitionToDownloadFeedBackFlowReport = Boolean(
-    _.intersection(userRolesKeys, [
-      ESecuredIdentityRoleName.Administrator,
-      ESecuredIdentityRoleName.ManagingFirmExecutor,
-    ]).length,
-  );
-  const isPermitionToCreateResourceDisconnection = Boolean(
-    _.intersection(userRolesKeys, [ESecuredIdentityRoleName.Administrator])
-      .length,
-  );
-  const isPermitionToCreateObject = Boolean(
-    _.intersection(userRolesKeys, [ESecuredIdentityRoleName.Administrator])
-      .length,
-  );
+  const isPermitionToDownloadGroupReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  ]);
+  const isPermitionToDownloadSOIReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ]);
+  const isPermitionToDownloadFeedBackFlowReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
+  const isPermitionToCreateResourceDisconnection = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
+  const isPermitionToCreateObject = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
 
   useEffect(() => {
     if (!searchType) {
