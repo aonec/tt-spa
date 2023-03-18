@@ -46,7 +46,6 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
         DateLastCheckTo: filter?.DateLastCheckTo,
         ExcludeApartments: isExcluded,
       },
-      enableReinitialize: true,
       onSubmit: setFilter,
     });
 
@@ -57,10 +56,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
       <ExtendedSearch
         isOpen={isOpen}
         handleApply={submitForm}
-        handleClear={() => {
-          resetForm();
-          submitForm();
-        }}
+        handleClear={resetForm}
         handleClose={close}
         handleOpen={open}
         extendedSearchContent={
