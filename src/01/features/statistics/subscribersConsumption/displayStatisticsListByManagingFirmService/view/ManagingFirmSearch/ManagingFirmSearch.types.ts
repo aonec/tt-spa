@@ -10,6 +10,7 @@ export type ManagingFirmSearchProps = {
   selectedManagingFirm: string;
   setFilter: (filter: SubscriberStatisticsForm) => void;
   filter: SubscriberStatisticsForm | null;
+  managingFirmsLoading: boolean;
 };
 
 export type SubscriberStatisticsForm = Omit<
