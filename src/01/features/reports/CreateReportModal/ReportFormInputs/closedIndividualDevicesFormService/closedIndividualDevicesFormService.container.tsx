@@ -1,6 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { prepareAddressesForTreeSelect } from 'services/resources/createResourceDisconnectionService/createResourceDisconnectionService.utils';
 import { closedIndividualDevicesFormService } from './closedIndividualDevicesFormService.model';
 import { ClosedIndividualDevicesForm } from './view/ClosedIndividualDevicesForm';
 import './closedIndividualDevicesFormService.relations';
@@ -8,6 +7,7 @@ import {
   $existingCities,
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
+import { prepareAddressesForTreeSelect } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 
 export const ClosedIndividualDevicesFormContainer = () => {
   const { inputs, outputs } = closedIndividualDevicesFormService;

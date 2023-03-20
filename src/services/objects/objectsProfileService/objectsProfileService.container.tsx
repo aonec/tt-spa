@@ -15,6 +15,10 @@ import { objectsProfileService } from './objectsProfileService.model';
 import { SearchType } from './objectsProfileService.types';
 import { SoiReportContainer } from './soiReportService';
 import { ObjectsProfile } from './view/ObjectsProfile';
+import {
+  HeatIndividualDevicesReportContainer,
+  heatIndividualDevicesReportService,
+} from './heatIndividualDevicesReportService';
 
 const { inputs } = objectsProfileService;
 
@@ -39,6 +43,10 @@ export const ObjectsProfileContainer = () => {
     groupReportService.inputs.openModal,
   );
 
+  const handleOpenHeatIndividualDevicesReportModal = useEvent(
+    heatIndividualDevicesReportService.inputs.openModal,
+  );
+
   const handleCreateObject = () => history.push('/objects/create');
 
   const userRoles = useStore(currentUserService.outputs.$currentUserRoles);
@@ -55,6 +63,7 @@ export const ObjectsProfileContainer = () => {
 
   return (
     <>
+      <HeatIndividualDevicesReportContainer />
       <SoiReportContainer />
       <CreateResourceDisconnectionContainer />
       <ChooseTypeOfResourceDisconnectionModalContainer />
@@ -71,6 +80,9 @@ export const ObjectsProfileContainer = () => {
         isAdministrator={isAdministrator}
         openFeedFlowBackReportModal={() => openFeedFlowBackReportModal()}
         handleOpenGroupreportModal={() => handleOpenGroupreportModal()}
+        openHeatIndividualDevicesReportModal={() =>
+          handleOpenHeatIndividualDevicesReportModal()
+        }
       />
     </>
   );

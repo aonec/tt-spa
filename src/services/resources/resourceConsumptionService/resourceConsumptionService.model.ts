@@ -22,18 +22,28 @@ import { getAddressSearchData } from './resourceConsumptionService.utils';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
+import {
+  prepareAddressesForTreeSelect,
+  prepareAddressesWithParentsForTreeSelect,
+} from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
 
 const domain = createDomain('resourceConsumptionService');
 
 const clearStore = domain.createEvent();
 
 const getAddressesFx = domain.createEffect<
-  void,
+  string,
   HouseManagementWithStreetsResponse[]
 >(fetchAddresses);
 
-const selectHouseManagememt = domain.createEvent<string | null>();
+const clearCity = domain.createEvent();
+const selectCity = domain.createEvent<string>();
+const $selectedCity = domain
+  .createStore<string | null>(null)
+  .on(selectCity, (_, city) => city)
+  .reset(clearCity);
 
+const selectHouseManagememt = domain.createEvent<string | null>();
 const $selectedHouseManagement = domain
   .createStore<string | null>(null)
   .on(selectHouseManagememt, (_, id) => id)
@@ -61,6 +71,22 @@ const $addressesList = combine(
     );
 
     return getAddressSearchData(requiredHouseManagements?.streets || []);
+  },
+);
+
+const $treeData = combine(
+  $houseManagements,
+  $selectedHouseManagement,
+  (houseManagements, selectedHouseManagement) => {
+    if (!selectedHouseManagement) {
+      return prepareAddressesWithParentsForTreeSelect(houseManagements);
+    }
+    const requiredHouseManagements = houseManagements.find(
+      (houseManagement) => houseManagement.id === selectedHouseManagement,
+    );
+    return prepareAddressesForTreeSelect({
+      items: requiredHouseManagements?.streets || [],
+    });
   },
 );
 
@@ -92,7 +118,7 @@ const $housingConsumptionData = domain
   .on(getHousingConsumptionFx.doneData, (_, data) => data)
   .reset(clearData);
 
-const clearAdditionalAddress = domain.createEvent();
+const clearAdditionalAddressData = domain.createEvent();
 const getAdditionalConsumptionFx = domain.createEffect<
   ConsumptionDataFilter,
   MonthConsumptionData
@@ -101,7 +127,7 @@ const $additionalConsumption = domain
   .createStore<MonthConsumptionData | null>(null)
   .on(getAdditionalConsumptionFx.doneData, (_, data) => data)
   .reset(clearData)
-  .reset(clearAdditionalAddress);
+  .reset(clearAdditionalAddressData);
 
 const setSelectedGraphTypes =
   domain.createEvent<BooleanTypesOfResourceConsumptionGraphForTwoMonth>();
@@ -119,13 +145,13 @@ const $isLoading = getHousingConsumptionFx.pending;
 guard({
   clock: $resourceConsumptionFilter.map((filter) => ({
     ...filter,
-    HousingStockId: filter?.AdditionalHousingStockId,
+    HousingStockIds: filter?.AdditionalHousingStockIds,
   })),
   filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockId &&
+        filter?.HousingStockIds?.length &&
         filter?.ResourceType,
     ),
   target: getAdditionalConsumptionFx,
@@ -137,7 +163,7 @@ guard({
     Boolean(
       filter?.From &&
         filter?.To &&
-        filter?.HousingStockId &&
+        filter?.HousingStockIds?.length &&
         filter?.ResourceType,
     ),
   target: getHousingConsumptionFx,
@@ -145,7 +171,7 @@ guard({
 
 forward({
   from: ResourceConsumptionGate.close,
-  to: [clearStore, clearData],
+  to: [clearStore, clearData, clearCity],
 });
 
 forward({
@@ -154,9 +180,8 @@ forward({
 });
 
 guard({
-  source: $houseManagements,
-  clock: ResourceConsumptionGate.open,
-  filter: (arr) => !arr.length,
+  clock: $selectedCity,
+  filter: Boolean,
   target: getAddressesFx,
 });
 
@@ -176,7 +201,8 @@ export const resourceConsumptionService = {
     clearData,
     clearStore,
     setSelectedGraphTypes,
-    clearAdditionalAddress,
+    clearAdditionalAddressData,
+    selectCity,
   },
   outputs: {
     $housingConsumptionData,
@@ -187,6 +213,8 @@ export const resourceConsumptionService = {
     $houseManagements,
     $selectedGraphTypes,
     $additionalConsumption,
+    $treeData,
+    $selectedCity,
   },
   gates: { ResourceConsumptionGate },
 };
