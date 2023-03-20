@@ -102,6 +102,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
               size="small"
               sidePadding={16}
               onClick={downloadReport}
+              disabled={isLoadingReport}
               isLoading={isReportFileDownloading}
             >
               Скачать отчет
