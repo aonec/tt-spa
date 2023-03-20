@@ -1,3 +1,0 @@
- 
-
-export { AccessDeniedPage } from './AccessDeniedPage';

@@ -9,8 +9,8 @@ import login from '../../assets/svg/login.svg';
 import { Button, Title } from '../../tt-components';
 import { confirmRegistration } from './apiRegistration';
 import styles from './registration.module.scss';
-import { AccessDeniedPage } from '../AccessDeniedPage';
 import { useHistory } from 'react-router-dom';
+import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 
 export const Registration = () => {
   const parsedSearch = queryString.parse(window.location.search);
@@ -18,33 +18,27 @@ export const Registration = () => {
 
   const history = useHistory();
 
-  const {
-    handleSubmit,
-    handleChange,
-    values,
-    touched,
-    errors,
-    handleBlur,
-  } = useFormik({
-    initialValues: {
-      password: '',
-      confirmPassword: '',
-    },
-    validationSchema: Yup.object({
-      password: Yup.string().required('Введите пароль'),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Пароли не совпадают')
-        .required('Подтвердите пароль'),
-    }),
-    onSubmit: async () => {
-      const form = {
-        token,
-        password: values.password,
-      };
-      await confirmRegistration(form);
-      history.push('/login');
-    },
-  });
+  const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
+    useFormik({
+      initialValues: {
+        password: '',
+        confirmPassword: '',
+      },
+      validationSchema: Yup.object({
+        password: Yup.string().required('Введите пароль'),
+        confirmPassword: Yup.string()
+          .oneOf([Yup.ref('password'), null], 'Пароли не совпадают')
+          .required('Подтвердите пароль'),
+      }),
+      onSubmit: async () => {
+        const form = {
+          token,
+          password: values.password,
+        };
+        await confirmRegistration(form);
+        history.push('/login');
+      },
+    });
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
