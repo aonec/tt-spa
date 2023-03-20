@@ -27,7 +27,7 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
   const history = useHistory();
 
   const handleClickDevice = useCallback(
-    () => history.push(`/apartments/${apartmentId}`),
+    () => history.push(`/apartments/${apartmentId}/testimony`),
     [history, apartmentId],
   );
 
