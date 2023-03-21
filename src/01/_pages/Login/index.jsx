@@ -14,6 +14,7 @@ import { useIsDev } from '01/hooks/useDev';
 import { parse } from 'query-string';
 import { Button } from 'ui-kit/Button';
 import styles from './Login.module.scss';
+import classNames from 'classnames/bind';
 
 export const Main = styled.div`
   height: 100vh;
@@ -61,6 +62,8 @@ export const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
   const { search } = useLocation();
+
+  const cx = classNames.bind(styles);
 
   async function FormSubmitHadler() {
     setLoading(true);
@@ -139,11 +142,7 @@ export const Login = () => {
               />
             </Input>
           </div>
-          <Button
-            isLoading={loading}
-            onClick={FormSubmitHadler}
-            style={{ width: '100%' }}
-          >
+          <Button isLoading={loading} onClick={FormSubmitHadler} floating>
             <span>Вход в систему</span>
           </Button>
         </Form>
@@ -155,8 +154,7 @@ export const Login = () => {
               onClick={openDevSettingsModal}
               size="small"
               type="ghost"
-              className={styles['devSettings-btn']}
-              style={{ color: 'white' }}
+              className={cx('devSettings-btn')}
             >
               Development settings
             </Button>

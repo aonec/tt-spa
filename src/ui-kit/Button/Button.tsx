@@ -10,10 +10,11 @@ export const Button: FC<ButtonProps> = (props) => {
     icon,
     type = 'default',
     className,
-    disabled = props.isLoading,
-    size = 'middle',
     isLoading,
+    size = 'middle',
+    disabled = false,
     long = false,
+    floating,
     ...otherProps
   } = props;
 
@@ -22,9 +23,11 @@ export const Button: FC<ButtonProps> = (props) => {
   return (
     <ButtonAntd
       {...otherProps}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       data-long={long}
-      className={cx('btn', `btn-${type}`, `btn-${size}`)}
+      className={cx(className, 'btn', `btn-${type}`, `btn-${size}`, {
+        'btn-float': floating,
+      })}
     >
       {props.children}
       {icon && !isLoading && (

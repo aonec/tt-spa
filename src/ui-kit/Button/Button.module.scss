@@ -61,11 +61,18 @@ $sizes: (
   }
 }
 
+.btn-float {
+  &:global(.ant-btn) {
+    width: 100%;
+  }
+}
+
 @mixin btnType($mainColor, $fontColor, $shadowColor, $borderColor) {
   &:global(.ant-btn) {
     &,
     &:hover,
     &:active,
+    &:focus,
     &[disabled],
     &[disabled]:hover,
     &[disabled]:active {
@@ -86,11 +93,14 @@ $sizes: (
     }
 
     &:hover {
+      transform: translate(-4px, -4px);
       box-shadow: 4px 4px 0 $shadowColor;
     }
 
     &:active {
+      transform: translate(-2px, -2px);
       box-shadow: 2px 2px 0 $shadowColor;
+      background-color: $shadowColor;
     }
   }
 }

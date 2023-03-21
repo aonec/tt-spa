@@ -1,7 +1,10 @@
-.login-btn {
-  width: 100% !important;
-}
-
 .devSettings-btn {
-  color: white !important;
+  &:global(.ant-btn) {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+      color: white;
+    }
+  }
 }

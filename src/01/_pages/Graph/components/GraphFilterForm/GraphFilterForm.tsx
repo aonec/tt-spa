@@ -196,9 +196,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               >
                 Отмена
               </Button>
-              <Button disabled={false} onClick={submitForm}>
-                Применить настройки
-              </Button>
+              <Button onClick={submitForm}>Применить настройки</Button>
             </FormFooter>
           </Form>
         </OpenedFilter>
