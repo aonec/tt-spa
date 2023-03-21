@@ -7,5 +7,6 @@ export type ConnectedDevicesProps = {
   goPrevStep: () => void;
   requestPayload: CreateNodeFormPayload;
   updateRequestPayload: UpdateNodeFormPayloadCallback;
-  openConfiramtionModal: () => void;
+  validateNode: () => void;
+  isValidationLoading: boolean;
 };

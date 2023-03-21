@@ -1,10 +1,11 @@
+import { Input } from 'antd';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  margin-top: 16px;
+export const Wrapper = styled.div<{ isEditing: boolean }>`
   display: flex;
+  margin-top: 16px;
   align-items: center;
-  max-width: 100%;
+  max-width: ${({ isEditing }) => (isEditing ? '600px' : '100%')};
 `;
 
 export const IconWrapper = styled.div`
@@ -18,7 +19,7 @@ export const IconWrapper = styled.div`
   justify-content: center;
 
   border-color: #f3f5f6;
-  background-color: #f3f5f6; ;
+  background-color: #f3f5f6;
 `;
 
 export const TimeWrapper = styled.div`
@@ -34,7 +35,9 @@ export const AuthorWrapper = styled.div`
 
 export const InfoWrapper = styled.div`
   display: flex;
+  width: 500px;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const CommentWrapper = styled.div`
@@ -44,4 +47,26 @@ export const CommentWrapper = styled.div`
 export const CommentText = styled.div`
   color: #272f5ae5;
   font-size: 14px;
+  width: 400px;
+  line-height: 32px;
+`;
+
+export const TextareaSC = styled(Input.TextArea)`
+  height: 6px;
+  border: 1px solid #189ee9;
+  border-radius: 4px;
+  margin-top: 12px;
+  width: 430px;
+`;
+
+export const CommentFooter = styled.div`
+  margin-top: 12px;
+  margin-right: 70px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+`;
+
+export const LeftBlock = styled.div`
+  display: flex;
 `;
