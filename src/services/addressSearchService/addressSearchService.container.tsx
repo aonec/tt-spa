@@ -15,7 +15,7 @@ import {
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
-  handleSubmit: onSubmit = () => {},
+  handleSubmit: onSubmit,
   initialValues,
   customTemplate,
   showLabels,
@@ -35,7 +35,9 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
         question: '',
       },
       enableReinitialize: true,
-      onSubmit,
+      onSubmit: (values) => {
+        onSubmit?.(values);
+      },
     });
 
   const cities = useStore(outputs.cities);
