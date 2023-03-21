@@ -69,7 +69,7 @@ export const IndividualDeviceListItem: FC<IndividualDeviceListItemProps> = ({
         {!isConsumptionExist && (
           <NoData>
             <SearchIcon />
-            <NoDataText>Нет данных</NoDataText>
+            <NoDataText>Недостаточно данных</NoDataText>
           </NoData>
         )}
       </Loader>
