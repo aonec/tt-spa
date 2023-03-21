@@ -32,15 +32,28 @@ export const SubscribersConsumptionExtendedSearch: FC<
   } = values;
 
   const handleChangeDateRange = useCallback(
-    (dates: [string, string]) => {
+    (dates: [moment.Moment | null, moment.Moment | null] | null) => {
+      if (!dates) {
+        return;
+      }
       const dateLastCheckFromValue = dates[0];
       const dateLastCheckTo = dates[1];
 
+      if (!dateLastCheckTo || !dateLastCheckFromValue) {
+        return;
+      }
+
       setFieldValue(
         'DateLastCheckFrom',
-        moment(dateLastCheckFromValue).toISOString(),
+        dateLastCheckFromValue
+          .startOf('day')
+          .utcOffset(0, true)
+          .toISOString(true),
       );
-      setFieldValue('DateLastCheckTo', moment(dateLastCheckTo).toISOString());
+      setFieldValue(
+        'DateLastCheckTo',
+        dateLastCheckTo.utcOffset(0, true).toISOString(true),
+      );
     },
     [setFieldValue],
   );
@@ -142,7 +155,7 @@ export const SubscribersConsumptionExtendedSearch: FC<
               : undefined
           }
           format="DD.MM.YYYY"
-          onChange={(_, dates) => handleChangeDateRange(dates)}
+          onChange={(dates) => handleChangeDateRange(dates)}
         />
 
         <StyledDatePicker
