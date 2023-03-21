@@ -14,7 +14,7 @@ export const getHousingStocksWithTasksRequestPayload = ({
     EngineeringElement: engineeringElement || undefined,
     ResourceTypes: resourceTypes,
     TimeStatus: timeStatus || undefined,
-    Type: type || undefined,
+    TaskType: type || undefined,
     ExecutorId: executorId || undefined,
   };
 };
