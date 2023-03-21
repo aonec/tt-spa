@@ -17,9 +17,13 @@ export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
   const from = moment(apartment.stoppedFrom).format('MMMM YYYY');
   const to = moment(apartment.stoppedTo).format('MMMM YYYY');
 
-  return isPaused ? (
+  if (!isPaused) {
+    return null;
+  }
+
+  return (
     <Alert color="FC525B" type="stop">
       Квартира на паузе: {from} - {to}
     </Alert>
-  ) : null;
+  );
 };
