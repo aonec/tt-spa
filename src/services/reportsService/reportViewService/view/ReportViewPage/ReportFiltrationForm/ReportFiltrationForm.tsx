@@ -203,7 +203,27 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);
-                setFieldValue('housingStockIds', []);
+
+                const houseManagement = addressesWithHouseManagements.find(
+                  (elem) => elem.id === value,
+                );
+
+                const selectedHouseManagementHousingStocksIds = (
+                  houseManagement?.streets || []
+                ).reduce(
+                  (acc, street) => [
+                    ...acc,
+                    ...(street.addresses || []).map(
+                      (elem) => elem.housingStockId,
+                    ),
+                  ],
+                  [] as number[],
+                );
+
+                setFieldValue(
+                  'housingStockIds',
+                  selectedHouseManagementHousingStocksIds,
+                );
               }}
               allowClear
             >

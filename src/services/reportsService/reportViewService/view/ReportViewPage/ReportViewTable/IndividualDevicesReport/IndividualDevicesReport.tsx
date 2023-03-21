@@ -95,7 +95,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ).format('DD.MM.YYYY'),
         },
         {
-          label: 'Дата слудующей поверки',
+          label: 'Дата следующей поверки',
           size: '150px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
@@ -184,7 +184,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
         {
-          label: 'Дата слудующей поверки',
+          label: 'Дата следующей поверки',
           size: '150px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
