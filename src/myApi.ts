@@ -1863,6 +1863,7 @@ export enum EPipeNodeConfig {
   ColdWaterSupply = 'ColdWaterSupply',
   HeatWithRecharge = 'HeatWithRecharge',
   HotWaterSupplyWithBackflow = 'HotWaterSupplyWithBackflow',
+  HeatNoHousingMeteringDevice = 'HeatNoHousingMeteringDevice', //
 }
 
 export enum EPipeNodeValidationMessage {

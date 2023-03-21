@@ -54,6 +54,7 @@ const goNextStep = domain.createEvent();
 const goPrevStep = domain.createEvent();
 
 const openConfiramtionModal = domain.createEvent();
+openConfiramtionModal.watch(() => console.log('open'));
 const closeConfiramtionModal = domain.createEvent();
 
 const $stepNumber = domain

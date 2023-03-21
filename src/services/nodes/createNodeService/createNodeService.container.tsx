@@ -23,6 +23,7 @@ export const CreateNodeContainer = () => {
   const requestPayload = useStore(outputs.$requestPayload);
   const nodeServiceZones = useStore(outputs.$nodeServiceZones);
   const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
+  console.log(isConfirmationModalOpen);
   const selectedCalculator = useStore(outputs.$selectedCalculator);
   const selectedServiceZone = useStore(outputs.$selectedServiceZone);
   const isCreatePipeNodeLoading = useStore(outputs.$isCreatePipeNodeLoading);
