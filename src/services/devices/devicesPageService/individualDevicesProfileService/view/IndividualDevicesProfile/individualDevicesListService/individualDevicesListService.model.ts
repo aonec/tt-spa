@@ -64,7 +64,7 @@ sample({
   clock: guard({
     source: $isLoading,
     clock: IndividualDevicesIds.state,
-    filter: (isLoading) => !isLoading,
+    filter: (isLoading, ids) => !isLoading && Boolean(ids?.devicesIds?.length),
   }),
   target: [fetchIndividualDevicesList, fetchIndividualDeviceConsumptionsListFx],
 });
