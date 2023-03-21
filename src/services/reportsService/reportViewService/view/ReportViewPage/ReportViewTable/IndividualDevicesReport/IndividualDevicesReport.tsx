@@ -176,7 +176,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Дата последней поверки',
-          size: '150px',
+          size: '190px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             moment(elem.invalidCheckingDatesOption?.lastCheckingDate).format(
@@ -185,7 +185,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Дата следующей поверки',
-          size: '150px',
+          size: '190px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             moment(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
