@@ -12,8 +12,7 @@ import {
   getIndividualDevice,
   getIndividualDeviceTasks,
 } from '../../_api/apiRequests';
-import { Grid } from '01/_components/Grid';
-import { TabsSC } from './IndividualDevice.styled';
+import { GridContainer, TabsSC } from './IndividualDevice.styled';
 import { IndividualDeviceGrouptype } from './IndividualDevice.types';
 const { TabPane } = TabsSC;
 
@@ -57,19 +56,19 @@ export const IndividualDevice = () => {
               tab={'Общая информация'}
               key={IndividualDeviceGrouptype.info}
             >
-              <Grid>
+              <GridContainer>
                 <Information device={device} />
                 <Events title="Задачи с объектом" tasks={tasks} />
-              </Grid>
+              </GridContainer>
             </TabPane>
             <TabPane
               tab={'Документы'}
               key={IndividualDeviceGrouptype.documents}
             >
-              <Grid>
+              <GridContainer>
                 <Title color="black">Компонент в разработке</Title>
                 <Events title="Задачи с объектом" tasks={tasks} />
-              </Grid>
+              </GridContainer>
             </TabPane>
           </TabsSC>
 

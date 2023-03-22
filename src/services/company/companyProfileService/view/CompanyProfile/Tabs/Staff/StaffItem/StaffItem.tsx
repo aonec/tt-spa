@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { Cellphone, Name, Role, Wrapper } from './StaffItem.styled';
 import { StaffItemProps } from './StaffItem.types';
 import { useHistory } from 'react-router-dom';
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
 import { sortUserRoles } from '../Staff.utils';
-import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { Tooltip } from 'antd';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { usePhoneMask } from 'hooks/usePhoneMask';
+import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
 
 export const StaffItem: FC<StaffItemProps> = ({
   staff,
@@ -18,15 +18,8 @@ export const StaffItem: FC<StaffItemProps> = ({
   const history = useHistory();
   const phoneMask = usePhoneMask();
 
-  const {
-    firstName,
-    lastName,
-    middleName,
-    roles,
-    id,
-    cellphone,
-    status,
-  } = staff;
+  const { firstName, lastName, middleName, roles, id, cellphone, status } =
+    staff;
 
   const sortedRoles = sortUserRoles(roles || []);
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
