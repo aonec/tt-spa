@@ -55,7 +55,6 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       ref={refs[index]}
       value={values.street || ''}
       onChange={(value) => {
-        console.log(value);
         handleChange(SearchFieldType.Street, value.toString());
       }}
       onKeyDown={(e) => {
