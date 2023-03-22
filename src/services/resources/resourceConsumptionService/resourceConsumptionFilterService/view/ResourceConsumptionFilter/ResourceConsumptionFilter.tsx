@@ -5,7 +5,7 @@ import moment from 'moment';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
-import { AddressTreeSelect } from '../../../../../ui-kit/shared_components/AddressTreeSelect';
+import { AddressTreeSelect } from '../../../../../../ui-kit/shared_components/AddressTreeSelect';
 import { resourceConsumptionFilterValidationSchema } from './ResourceConsumptionFilter.constants';
 import {
   AdditionalAddressWrapper,
@@ -18,7 +18,7 @@ import {
   TrashIconSC,
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
-import { GetConsumptionDataFilter } from '../../resourceConsumptionService.types';
+import { GetConsumptionDataFilter } from '../../../resourceConsumptionService.types';
 import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useStore } from 'effector-react';
@@ -26,7 +26,6 @@ import { useStore } from 'effector-react';
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
   filter,
-  streetsList,
   selectedHouseManagement,
   setHouseManagement,
   houseManagements,
@@ -36,17 +35,17 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   handleClearAdditionalAddressData,
   selectCity,
   selectedCity,
+  isLoading,
 }) => {
   const existingCities = useStore($existingCities);
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
-  const { values, setFieldValue, submitForm, resetForm, errors } =
+  const { values, setFieldValue, submitForm, errors, setValues } =
     useFormik<GetConsumptionDataFilter>({
       initialValues: {
-        HousingStockIds: filter?.HousingStockIds || [],
-        AdditionalHousingStockIds: filter?.AdditionalHousingStockIds || [],
-        From:
-          filter?.From || moment().startOf('month').utcOffset(0, true).format(),
+        HousingStockIds: filter.HousingStockIds || [],
+        AdditionalHousingStockIds: filter.AdditionalHousingStockIds || [],
+        From: filter.From,
       },
       validationSchema: resourceConsumptionFilterValidationSchema,
       enableReinitialize: true,
@@ -68,16 +67,20 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
     });
 
   useEffect(() => {
-    setFieldValue('AdditionalHousingStockIds', []);
-    setFieldValue('HousingStockIds', []);
-  }, [streetsList, setFieldValue]);
+    setValues(filter);
+  }, [filter, setValues]);
 
   const handleReset = useCallback(() => {
-    resetForm();
     setHouseManagement('');
     handleClearData();
+    handleClearAdditionalAddressData();
     handleClearFilter();
-  }, [resetForm, setHouseManagement, handleClearData, handleClearFilter]);
+  }, [
+    setHouseManagement,
+    handleClearData,
+    handleClearFilter,
+    handleClearAdditionalAddressData,
+  ]);
 
   return (
     <Wrapper>
@@ -184,7 +187,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <Button type="ghost" onClick={handleReset}>
           Сбросить
         </Button>
-        <Button type="default" onClick={submitForm}>
+        <Button type="default" onClick={submitForm} isLoading={isLoading}>
           Применить фильтр
         </Button>
       </Footer>
