@@ -3,7 +3,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { TrashIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
-  width: 340px;
+  width: 356px;
   height: fit-content;
   margin-left: 16px;
 
