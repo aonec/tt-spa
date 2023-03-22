@@ -71,6 +71,8 @@ export const EditNodePage: FC<EditNodePageProps> = ({
             {isIncorrectConfig && (
               <IncorrectConfigAlert
                 validationResultArray={validationResultArray}
+                description="Данные с вычислителя не обрабатываются, так как узел не соответствует
+                выбранной конфигурации. Исправьте следующие ошибки:"
               />
             )}
             <EditNodeCommonInfo

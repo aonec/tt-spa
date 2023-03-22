@@ -9,16 +9,14 @@ import { IncorrectConfigAlertProps } from './IncorrectConfigAlert.types';
 
 export const IncorrectConfigAlert: FC<IncorrectConfigAlertProps> = ({
   validationResultArray,
+  description,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Alert type="incorrect" color="FC525B">
       <ErrorContentWrapper>
-        <span>
-          Данные с вычислителя не обрабатываются, так как узел не соответствует
-          выбранной конфигурации. Исправьте следующие ошибки:
-        </span>
+        <span>{description}</span>
 
         {!isOpen && (
           <TextWrapper onClick={() => setIsOpen(true)}>Показать</TextWrapper>

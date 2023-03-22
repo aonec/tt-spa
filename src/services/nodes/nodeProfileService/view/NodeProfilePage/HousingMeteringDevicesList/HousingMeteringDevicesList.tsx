@@ -5,7 +5,12 @@ import { HousingMeteringDevicesListProps } from './HousingMeteringDevicesList.ty
 
 export const HousingMeteringDevicesList: FC<
   HousingMeteringDevicesListProps
-> = ({ communicationPipes, configuration }) => {
+> = ({
+  communicationPipes,
+  configuration,
+  handleEditDevice,
+  handleDeleteDevice,
+}) => {
   return (
     <div>
       {communicationPipes.map((pipe) => (
@@ -13,6 +18,12 @@ export const HousingMeteringDevicesList: FC<
           configuration={configuration}
           pipe={{ ...pipe, id: String(pipe.id) } as CommunicationPipePayload}
           key={pipe.id}
+          handleEditDevice={handleEditDevice}
+          handleDeleteDevice={
+            handleDeleteDevice &&
+            ((_, deviceIndex) =>
+              handleDeleteDevice((pipe.devices || [])?.[deviceIndex]))
+          }
         />
       ))}
     </div>
