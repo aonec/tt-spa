@@ -29,7 +29,9 @@ import {
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
 
-export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps> = ({
+export const HousingMeteringDeviceProfile: FC<
+  HousingMeteringDeviceProfileProps
+> = ({
   deviceId,
   housingMeteringDevice,
   currentTab,
@@ -37,6 +39,9 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
   housingMeteringDeviceTasks,
   handleCheckModalOpen,
   handleDeviceClosingModalOpen,
+  isPermitionToCheckHousingMeteringDevice,
+  isPermitionToCloseHousingMeteringDevice,
+  isPermitionToEditHousingMeteringDevice,
 }) => {
   const { push } = useHistory();
 
@@ -91,16 +96,19 @@ export const HousingMeteringDeviceProfile: FC<HousingMeteringDeviceProfileProps>
                   push(`/housingMeteringDevices/${deviceId}/edit`);
                 },
                 color: 'default',
+                hidden: !isPermitionToEditHousingMeteringDevice,
               },
               {
                 title: 'Поверка ОДПУ',
                 onClick: () => handleCheckModalOpen(),
                 color: 'default',
+                hidden: !isPermitionToCheckHousingMeteringDevice,
               },
               {
                 title: 'Закрыть ОДПУ',
                 onClick: () => handleDeviceClosingModalOpen(),
                 color: 'danger',
+                hidden: !isPermitionToCloseHousingMeteringDevice,
               },
             ],
           }}

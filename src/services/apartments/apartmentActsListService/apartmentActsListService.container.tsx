@@ -16,6 +16,8 @@ import {
 } from '../editApartmentActService';
 import { apartmentActsListService } from './apartmentActsListService.model';
 import { ApartmentActsList } from './view/ApartmentActsList';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { outputs, inputs, gates } = apartmentActsListService;
 
@@ -28,20 +30,28 @@ export const ApartmentActsListContainer = () => {
   const documents = useStore(outputs.$filteredActsList);
   const isLoading = useStore(outputs.$isLoading);
   const actTypes = useStore(outputs.$actTypes);
-  const selectedFilters= useStore(outputs.$actsFilter)
+  const selectedFilters = useStore(outputs.$actsFilter);
 
   const handleOpeningCreateActModal = useEvent(
-    createApartmentActService.inputs.openModal
+    createApartmentActService.inputs.openModal,
   );
   const handleOpeningDeleteActModal = useEvent(
-    deleteApartmentActService.inputs.openModal
+    deleteApartmentActService.inputs.openModal,
   );
   const handleOpeningEditActModal = useEvent(
-    editApartmentActService.inputs.openModal
+    editApartmentActService.inputs.openModal,
   );
   const handleSaveFile = useEvent(inputs.saveFile);
   const updateTypes = useEvent(inputs.updateType);
   const updateResources = useEvent(inputs.updateResources);
+
+  const isPermitionToChangeApartmentAct = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+  ]);
+
   return (
     <>
       <ApartmentActTypesGate />
@@ -60,6 +70,7 @@ export const ApartmentActsListContainer = () => {
         handleUpdateResources={updateResources}
         actTypes={actTypes}
         selectedFilters={selectedFilters}
+        isPermitionToChangeApartmentAct={isPermitionToChangeApartmentAct}
       />
     </>
   );

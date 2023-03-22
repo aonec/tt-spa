@@ -7,6 +7,8 @@ import {
 } from './DocumentsService.types';
 import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const accept =
   'application/msword, application/vnd.ms-excel, application/pdf, image/*';
@@ -23,6 +25,13 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
   if (!documents) {
     documents = [];
   }
+
+  const isPermitionToDeleteExistedDocument = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    ESecuredIdentityRoleName.Controller,
+  ]);
 
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
@@ -50,6 +59,9 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           isLoading={isLoading}
           removeDocument={removeDocument}
           documents={documents}
+          isPermitionToDeleteExistedDocument={
+            isPermitionToDeleteExistedDocument
+          }
         />
       )}
     </div>

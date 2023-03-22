@@ -37,6 +37,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenCheckCalculatorModal,
   handleOpenConsumptionReportModal,
   openDevicesListModal,
+  isPermitionToCalculatorActions,
 }) => {
   const history = useHistory();
 
@@ -97,19 +98,23 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         {
           title: 'Редактировать вычислитель',
           onClick: () => history.push(`/calculators/${calculator.id}/edit`),
+          hidden: !isPermitionToCalculatorActions,
         },
         {
           title: 'Поверить вычислитель',
           onClick: () => handleOpenCheckCalculatorModal(calculator),
+          hidden: !isPermitionToCalculatorActions,
         },
         {
           title: 'Выгрузить отчёт об общедомовом потреблении',
           onClick: () => handleOpenConsumptionReportModal(),
+          hidden: !isPermitionToCalculatorActions,
         },
         {
           title: 'Снять вычислитель с учёта',
           onClick: () => handleOpenCloseCalculatorModal(calculator),
           color: 'danger',
+          hidden: !isPermitionToCalculatorActions,
         },
       ],
     }),
@@ -119,6 +124,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
       calculator,
       history,
       handleOpenConsumptionReportModal,
+      isPermitionToCalculatorActions,
     ],
   );
 

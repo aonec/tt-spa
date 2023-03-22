@@ -16,6 +16,7 @@ export type ApartmentsReadingsProps = {
   openEditPersonalNumberModal: () => void;
   setSelectedHomeownerName: (payload: string) => void;
   selectedHomeownerName: string | null;
+  isPermitionToApartmentStatusPatch: boolean;
 };
 
 export enum SearchMode {
