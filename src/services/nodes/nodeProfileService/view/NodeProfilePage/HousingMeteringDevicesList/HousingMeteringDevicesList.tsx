@@ -11,6 +11,8 @@ export const HousingMeteringDevicesList: FC<
   handleEditDevice,
   handleDeleteDevice,
 }) => {
+  // isConfigWithoutODPU
+
   return (
     <div>
       {communicationPipes.map((pipe) => (
@@ -24,6 +26,7 @@ export const HousingMeteringDevicesList: FC<
             ((_, deviceIndex) =>
               handleDeleteDevice((pipe.devices || [])?.[deviceIndex]))
           }
+          // isConfigWithoutODPU={isConfigWithoutODPU}
         />
       ))}
     </div>
