@@ -9,13 +9,17 @@ import { ApartmentIndividualDevicesMeters } from './view/ApartmentIndividualDevi
 import { useManagingFirmConsumptionRates } from '../managementFirmConsumptionRatesService';
 import { Params } from './apartmentIndividualDevicesMetersService.types';
 import { EditReadingsHistoryContainer } from '../editReadingsHistoryService';
-import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { currentUserService } from 'services/currentUserService';
 
 const {
   inputs,
   outputs,
   gates: { IndividualDevicesGate },
 } = apartmentIndividualDevicesMetersService;
+
+const {
+  gates: { CurrentUserGate },
+} = currentUserService;
 
 export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
   apartment,
@@ -50,7 +54,7 @@ export const ApartmentIndividualDevicesMetersContainer: FC<Params> = ({
       {apartmentId && (
         <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       )}
-      <CurrentManagingFirmUserGate />
+      <CurrentUserGate />
       <ReadingsHistoryModal />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />

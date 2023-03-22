@@ -3,7 +3,7 @@ import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useEffect } from 'react';
@@ -15,9 +15,13 @@ import { NewApartmentForm } from './components/NewApartmentForm';
 import { Stages } from './components/Stages';
 import { TransferDevices } from './components/TransferDevices';
 import {
+  $isConfirmationModalOpen,
+  $samePersonalAccountNumderId,
   $splitPersonalNumberStageNumber,
+  handleConfirmationModalClose,
   homeownerAccountForSplittedApartmentForm,
   newApartmentPersonalNumberForm,
+  onForced,
   previousSplitPersonalNumberPage,
   splitPersonalNumberFx,
   SplitPersonalNumberGate,
@@ -26,6 +30,7 @@ import {
 import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExistingApartment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
+import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{
@@ -55,6 +60,12 @@ export const SplitPersonalNumber = () => {
     <TransferDevices />,
   ];
 
+  const samePersonalAccountNumderId = useStore($samePersonalAccountNumderId);
+  const isConfirmationModalOpen = useStore($isConfirmationModalOpen);
+
+  const confirmationModalClose = useEvent(handleConfirmationModalClose);
+  const handleForced = useEvent(onForced);
+
   const firstForm = useForm(homeownerAccountForSplittedApartmentForm);
   const secondForm = useForm(newApartmentPersonalNumberForm);
   const thirdForm = useForm(transferDevicesForm);
@@ -83,6 +94,12 @@ export const SplitPersonalNumber = () => {
       <HomeownerGate id={homeownerId} />
       <SplitPersonalNumberGate />
       <ConfirmUsingExistingApartmentModal />
+      <ConfirmationAddingExistingPersonalNumber
+        isConfirmationModalOpen={isConfirmationModalOpen}
+        samePersonalAccountNumderId={samePersonalAccountNumderId}
+        confirmationModalClose={() => confirmationModalClose()}
+        handleForced={handleForced}
+      />
       <Wrap>
         <PersonaNumberActionPage
           saveButtonText={stage === 3 ? 'Сохранить' : void 0}

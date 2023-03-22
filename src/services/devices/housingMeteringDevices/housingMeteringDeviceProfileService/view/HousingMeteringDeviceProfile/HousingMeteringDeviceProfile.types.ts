@@ -10,4 +10,7 @@ export type HousingMeteringDeviceProfileProps = {
   handleCheckModalOpen: () => void;
   handleDeviceClosingModalOpen: () => void;
   tasksPending: boolean;
+  isPermitionToCheckHousingMeteringDevice: boolean;
+  isPermitionToCloseHousingMeteringDevice: boolean;
+  isPermitionToEditHousingMeteringDevice: boolean;
 };

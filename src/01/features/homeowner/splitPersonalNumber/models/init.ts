@@ -1,9 +1,11 @@
 import {
   $checkedExistingApartmentId,
+  $isForced,
   checkApartmentExistingFx,
   closeConfirmExistingApartmentModal,
   homeownerAccountForSplittedApartmentForm,
   newApartmentPersonalNumberForm,
+  onForced,
   previousSplitPersonalNumberPage,
   saveSplitPersonalNumberForm,
   splitPersonalNumber,
@@ -22,6 +24,7 @@ import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { doesApartmentExist } from '01/_api/housingStocks';
 import { message } from 'antd';
+import { HomeownerAccountSplitRequest } from 'myApi';
 
 splitPersonalNumberFx.use(splitHomeownerAccount);
 checkApartmentExistingFx.use(doesApartmentExist);
@@ -84,21 +87,29 @@ sample({
 });
 
 sample({
+  clock: onForced,
+  fn: () => true,
+  target: splitPersonalNumber,
+});
+
+sample({
   source: combine(
     homeownerAccountForSplittedApartmentForm.$values,
     newApartmentPersonalNumberForm.$values,
     transferDevicesForm.$values,
     HomeownerGate.state,
     $apartment,
+    $isForced,
     (
       splittedApartmentHomeownerAccount,
       newApartmentHomeownerAccount,
       transferedDevices,
       gateState,
       apartment,
+      isForced,
     ) => {
       const accountForClosing = {
-        HomeownerAccountId: gateState.id,
+        homeownerAccountId: gateState.id,
         closedAt: moment().toISOString(true),
       };
 
@@ -126,16 +137,29 @@ sample({
       ];
 
       return {
-        accountForClosing,
-        homeownerAccountForSplittedApartment,
-        individualDeviceIdsForSwitch,
-        newApartment,
+        data: {
+          accountForClosing,
+          homeownerAccountForSplittedApartment,
+          individualDeviceIdsForSwitch,
+          newApartment,
+        },
+        isForced,
       };
     },
   ),
   clock: splitPersonalNumber,
-  fn: (store, clock) =>
-    ({ ...store, useExistingApartment: Boolean(clock) } as any),
+  fn: (store, isSplitPersonalNumber) => {
+    return {
+      data: {
+        ...store.data,
+        useExistingApartment: isSplitPersonalNumber,
+      },
+      isForced: store.isForced,
+    } as {
+      data: HomeownerAccountSplitRequest;
+      isForced?: boolean;
+    };
+  },
   target: splitPersonalNumberFx,
 });
 
@@ -162,6 +186,12 @@ sample({
 });
 
 splitPersonalNumberFx.failData.watch((error) => {
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||

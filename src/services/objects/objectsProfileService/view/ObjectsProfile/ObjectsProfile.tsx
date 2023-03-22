@@ -24,9 +24,13 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
   searchType,
   openSoiReportModal,
   handleCreateObject,
-  isAdministrator,
   openFeedFlowBackReportModal,
   handleExportGroupReport,
+  isPermitionToCreateObjectAndIPUReport,
+  isPermitionToCreateResourceDisconnection,
+  isPermitionToDownloadFeedBackFlowReport,
+  isPermitionToDownloadGroupReport,
+  isPermitionToDownloadSOIReport,
   openHeatIndividualDevicesReportModal,
 }) => {
   const menuButtons = useMemo(
@@ -34,38 +38,45 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
       {
         title: 'Создать объект',
         onClick: handleCreateObject,
-        hidden: !isAdministrator,
+        hidden: !isPermitionToCreateObjectAndIPUReport,
       },
       {
         title: 'Выгрузка группового отчёта',
         onClick: handleExportGroupReport,
-        hidden: !isAdministrator,
+        hidden: !isPermitionToDownloadGroupReport,
       },
       {
         title: 'Выгрузить отчёт по СОИ',
         onClick: openSoiReportModal,
+        hidden: !isPermitionToDownloadSOIReport,
       },
       {
         title: 'Выгрузить отчёт по обратной магистрали',
         onClick: openFeedFlowBackReportModal,
-      },
-      {
-        title: 'Выгрузить сводный отчёт по ИПУ',
-        onClick: openHeatIndividualDevicesReportModal,
-        hidden: !isAdministrator,
+        hidden: !isPermitionToDownloadFeedBackFlowReport,
       },
       {
         title: 'Создать оключение ресурса на объекте',
         onClick: handleOpenChooseResourceDisconnectionModal,
+        hidden: !isPermitionToCreateResourceDisconnection,
+      },
+      {
+        title: 'Выгрузить сводный отчёт по ИПУ',
+        onClick: openHeatIndividualDevicesReportModal,
+        hidden: !isPermitionToCreateObjectAndIPUReport,
       },
     ],
     [
       handleOpenChooseResourceDisconnectionModal,
       handleCreateObject,
       openFeedFlowBackReportModal,
-      isAdministrator,
       openSoiReportModal,
       handleExportGroupReport,
+      isPermitionToCreateObjectAndIPUReport,
+      isPermitionToCreateResourceDisconnection,
+      isPermitionToDownloadFeedBackFlowReport,
+      isPermitionToDownloadGroupReport,
+      isPermitionToDownloadSOIReport,
       openHeatIndividualDevicesReportModal,
     ],
   );

@@ -1,5 +1,4 @@
 import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { FileData } from '01/hooks/useFilesUpload';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
@@ -22,6 +21,7 @@ import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
+import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 
 interface ILine {
   name: string;
@@ -74,14 +74,14 @@ export const CheckFormValuesModal = () => {
       name: 'Первичные показания прибора',
       value: getStartupReadingsString(
         fields.startupReadings.value,
-        deviceIcon?.color
+        deviceIcon?.color,
       ),
     },
     {
       name: 'Текущие показания прибора',
       value: getStartupReadingsString(
         fields.defaultReadings.value,
-        deviceIcon?.color
+        deviceIcon?.color,
       ),
     },
     { name: 'Диспетчеризация', value: fields.isPolling.value ? 'Да' : 'Нет' },
@@ -108,7 +108,7 @@ export const CheckFormValuesModal = () => {
   ];
 
   const files: (FileData & RemoveFile)[] = toArray<FileData>(
-    fields.documentsIds.value
+    fields.documentsIds.value,
   )
     .filter((elem) => elem?.fileResponse)
     .map((elem) => ({
@@ -208,7 +208,7 @@ function getResourceName(resource: EResourceType | null) {
 
 function getMountPlaceById(
   id: number | null,
-  places: IndividualDeviceMountPlaceListResponse[] | null
+  places: IndividualDeviceMountPlaceListResponse[] | null,
 ): string | null {
   if (!id || !places) return null;
 
@@ -227,7 +227,7 @@ function getDate(dateString: string | null) {
 
 export function toArray<T>(
   obj: object,
-  setName: boolean = true
+  setName: boolean = true,
 ): (T & { __name__?: string })[] {
   const arr = Object.keys(obj).map((name) => {
     const value = (obj as any)[name];
@@ -249,7 +249,7 @@ export function toArray<T>(
 
 function getStartupReadingsString(
   value: { [key: string]: number | null },
-  color?: string | null
+  color?: string | null,
 ) {
   const values = toArray(value, false);
 
@@ -287,7 +287,7 @@ function getStartupReadingsString(
             </div>
             <div style={{ marginRight: '0 10px 0 30px' }}>{elem}</div>
           </ReadingValue>
-        ) : null
+        ) : null,
       )}
     </StyledReadingsValues>
   );
