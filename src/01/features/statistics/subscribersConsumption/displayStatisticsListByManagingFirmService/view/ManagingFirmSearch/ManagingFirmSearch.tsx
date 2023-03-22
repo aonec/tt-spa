@@ -54,7 +54,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
     });
 
   const isManagingFirmSelectDisabled =
-    managingFirmsLoading && managingFirms.length === 0;
+    managingFirmsLoading || managingFirms.length === 0;
 
   return (
     <Wrapper>

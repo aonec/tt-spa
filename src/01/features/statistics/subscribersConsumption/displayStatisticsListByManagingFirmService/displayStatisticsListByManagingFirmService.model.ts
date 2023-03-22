@@ -1,5 +1,5 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, createDomain, forward, sample } from 'effector';
+import { combine, createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
   HouseManagementWithStreetsResponse,
@@ -37,7 +37,8 @@ const $selectedCity = domain
 const selectManagingFirm = domain.createEvent<string>();
 const $selectedManagingFirm = domain
   .createStore<string>('')
-  .on(selectManagingFirm, (_, managingFirm) => managingFirm);
+  .on(selectManagingFirm, (_, managingFirm) => managingFirm)
+  .reset($managingFirms);
 
 const setSubscriberStatisticsFilter =
   domain.createEvent<SubscriberStatisticsForm>();
@@ -96,9 +97,10 @@ sample({
   target: getManagingFirmsFx,
 });
 
-forward({
-  from: $selectedManagingFirm,
-  to: getHousingStocksFx,
+sample({
+  clock: $selectedManagingFirm,
+  filter: Boolean,
+  target: getHousingStocksFx,
 });
 
 sample({
