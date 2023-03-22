@@ -8,7 +8,7 @@ export type CommunicationPipeListItemProps = {
   configuration: EPipeNodeConfig;
   handleDeletePipe?: (pipeId: string) => void;
   handleDeleteDevice?: (pipeId: string, deviceIndex: number) => void;
-  isConfigWithoutODPU?: boolean;
+  isNodeConfigWithoutODPU?: boolean;
   handleEditDevice?: (deviceId: number) => void;
 };
 

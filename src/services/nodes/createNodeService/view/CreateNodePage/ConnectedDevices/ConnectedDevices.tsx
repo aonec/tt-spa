@@ -38,7 +38,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
 
   const { configuration } = requestPayload;
 
-  const isConfigWithoutODPU =
+  const isNodeConfigWithoutODPU =
     configuration === EPipeNodeConfig.HeatNoHousingMeteringDevice;
 
   const handleAddCommunicationPipe = (
@@ -124,12 +124,12 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
                 pipe={pipe}
                 handleDeletePipe={handleDeletePipe}
                 handleDeleteDevice={handleDeleteDevice}
-                isConfigWithoutODPU={isConfigWithoutODPU}
+                isNodeConfigWithoutODPU={isNodeConfigWithoutODPU}
               />
             ))}
           </CommunicationPipesListWrapper>
         )}
-        {!isConfigWithoutODPU && (
+        {!isNodeConfigWithoutODPU && (
           <LinkButton onClick={() => openAddCommonDeviceModal()}>
             + Добавить прибор
           </LinkButton>

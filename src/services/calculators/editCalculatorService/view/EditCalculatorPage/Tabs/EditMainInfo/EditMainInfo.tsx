@@ -35,9 +35,6 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
     [calculatorTypesSelectItems, calculator],
   );
 
-  console.log(calculator?.serialNumber);
-  console.log(calculator);
-
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<UpdateCalculatorRequest>({
       initialValues: {
