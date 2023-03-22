@@ -1,4 +1,4 @@
-import styled, { FlattenSimpleInterpolation } from 'styled-components';
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   max-width: 1200px;
@@ -35,7 +35,7 @@ export const PaginationWrapper = styled.div`
   margin: 16px;
 `;
 
-export const TableElement = styled.div<{ css?: FlattenSimpleInterpolation }>`
+export const TableElement = styled.div<{ css?: string }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

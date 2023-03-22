@@ -9,6 +9,7 @@ import {
   ReadingsSourceWrapper,
 } from './OperatorsWorkingReportTable.styled';
 import { OperatorsWorkingReportTableProps } from './OperatorsWorkingReportTable.types';
+import { sum } from 'lodash';
 
 export const OperatorsWorkingReportTable: FC<
   OperatorsWorkingReportTableProps
@@ -62,12 +63,12 @@ export const OperatorsWorkingReportTable: FC<
           label: 'Количество показаний',
           size: 'minmax(150px, 200px)',
           render: (elem) =>
-            [
+            sum([
               elem.heatCount,
               elem.coldWaterSupplyCount,
               elem.hotWaterSupplyCount,
               elem.electricityCount,
-            ].reduce((acc, count) => acc + count, 0),
+            ]),
           css: getSumColumnCSS,
         },
       ]}

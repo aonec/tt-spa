@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const ResourceReadingsCountHeader = styled.div`
   padding: 12px 0;
@@ -15,6 +15,6 @@ export const ResourceReadingsCountHeaderFact = styled.div`
   align-items: flex-end;
 `;
 
-export const getBorderedColumnCSS = () => css`
+export const getBorderedColumnCSS = () => `
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 `;
