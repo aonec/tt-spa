@@ -93,8 +93,8 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
             disabled={isManagingFirmSelectDisabled}
           >
             {managingFirms.map((managingFirm) => {
-              const key = managingFirm.key;
-              const value = managingFirm.value;
+              const key = managingFirm.id;
+              const value = managingFirm.name;
               if (!key || !value) {
                 return null;
               }

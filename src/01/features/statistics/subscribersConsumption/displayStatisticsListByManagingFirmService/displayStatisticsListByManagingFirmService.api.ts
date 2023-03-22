@@ -1,21 +1,18 @@
 import { axios } from '01/axios';
 import {
-  GuidStringDictionaryItem,
-  HousingStockFilterResponse,
+  HouseManagementWithStreetsResponse,
   HousingStockListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
 import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFirmService.types';
 
 export const fetchManagingFirm = async (
-  City: string,
-): Promise<GuidStringDictionaryItem[]> => {
-  const res = await axios.get<string, HousingStockFilterResponse>(
-    '/HousingStocks/filters',
-    { params: { City } },
+  city: string,
+): Promise<HouseManagementWithStreetsResponse[]> =>
+  axios.get(
+    '/HousingStocks/ExistingStreetsWithHousingStockNumbersWithhouseManagement',
+    { params: { city } },
   );
-  return res?.houseManagements || [];
-};
 
 export const fetchHousingStocksByManagingFirm = (
   HouseManagementId: string,

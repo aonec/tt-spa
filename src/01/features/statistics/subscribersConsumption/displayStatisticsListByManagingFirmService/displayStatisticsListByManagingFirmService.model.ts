@@ -2,7 +2,7 @@ import { $existingCities } from '01/features/housingStocks/displayHousingStockCi
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
-  GuidStringDictionaryItem,
+  HouseManagementWithStreetsResponse,
   HousingStockListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
@@ -23,10 +23,10 @@ const domain = createDomain('displayStatisticsListByManagingFirmService');
 
 const getManagingFirmsFx = domain.createEffect<
   string,
-  GuidStringDictionaryItem[]
+  HouseManagementWithStreetsResponse[]
 >(fetchManagingFirm);
 const $managingFirms = domain
-  .createStore<GuidStringDictionaryItem[]>([])
+  .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(getManagingFirmsFx.doneData, (_, managingFirms) => managingFirms);
 
 const selectCity = domain.createEvent<string>();
