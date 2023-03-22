@@ -102,7 +102,10 @@ const $treeData = combine(
 
 sample({
   source: $selectedCity,
-  clock: resourceConsumptionService.gates.ResourceConsumptionGate.open,
+  clock: [
+    $selectedCity,
+    resourceConsumptionService.gates.ResourceConsumptionGate.open,
+  ],
   filter: Boolean,
   target: getAddressesFx,
 });
