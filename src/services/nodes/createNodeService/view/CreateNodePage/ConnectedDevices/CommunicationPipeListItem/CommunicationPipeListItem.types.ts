@@ -9,6 +9,7 @@ export type CommunicationPipeListItemProps = {
   handleDeletePipe?: (pipeId: string) => void;
   handleDeleteDevice?: (pipeId: string, deviceIndex: number) => void;
   isConfigWithoutODPU?: boolean;
+  handleEditDevice?: (deviceId: number) => void;
 };
 
 export const TrashIconSC = styled(TrashIcon)`

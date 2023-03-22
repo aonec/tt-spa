@@ -31,6 +31,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   apartment,
   isApartmentLoading,
   tabSection,
+  isPermitionToEditApartment,
 }) => {
   const history = useHistory();
 
@@ -119,6 +120,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                     title: 'Редактировать квартиру',
                     onClick: () =>
                       history.push(`/apartments/${apartment.id}/edit`),
+                    hidden: !isPermitionToEditApartment,
                   },
                 ],
               }}

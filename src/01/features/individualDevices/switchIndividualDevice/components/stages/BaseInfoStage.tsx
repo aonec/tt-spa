@@ -29,10 +29,6 @@ import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
-import {
-  $contractors,
-  ContractorsGate,
-} from '01/features/contractors/displayContractors/models';
 import { ReadingsInput } from '../ReadingsInput';
 import {
   $individualDevice,
@@ -48,13 +44,19 @@ import {
   $serialNumberForChecking,
   handleFetchSerialNumberForCheck,
 } from '../../models/init';
+import { displayContractorsService } from 'services/contractors/displayContractorsService';
+
+const {
+  outputs,
+  gates: { ContractorsGate },
+} = displayContractorsService;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
   const modelNames = useStore($individualDevicesNames);
-  const contractors = useStore($contractors);
+  const contractors = useStore(outputs.$contractors);
   const device = useStore($individualDevice);
   const { fields, set } = useForm(addIndividualDeviceForm);
   const type = useStore(

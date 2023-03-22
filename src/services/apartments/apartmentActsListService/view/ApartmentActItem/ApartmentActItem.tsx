@@ -24,19 +24,14 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
   openEditActModal,
   saveFile,
   actTypes,
+  isPermitionToChangeApartmentAct,
 }) => {
-  const {
-    actJobDate,
-    id,
-    actType,
-    actResourceType,
-    registryNumber,
-    document,
-  } = act;
+  const { actJobDate, id, actType, actResourceType, registryNumber, document } =
+    act;
 
   const actTypeText = useMemo(
     () => actTypes?.find(({ key }) => key === actType)?.value || actType,
-    [actType, actTypes]
+    [actType, actTypes],
   );
 
   const documentName = document?.name || (
@@ -61,13 +56,17 @@ export const ApartmentActItem: FC<ApartmentActItemProps> = ({
       <DocumentType>
         <DocumentTypeText>{actTypeText}</DocumentTypeText>
         <ManageIconsWrapper>
-          <DocumentIconSC onClick={() => openEditActModal(act)}>
-            <PencilIcon />
-          </DocumentIconSC>
+          {isPermitionToChangeApartmentAct && (
+            <DocumentIconSC onClick={() => openEditActModal(act)}>
+              <PencilIcon />
+            </DocumentIconSC>
+          )}
 
-          <DocumentIconSC onClick={() => openDeleteActModal(id)}>
-            <TrashIcon />
-          </DocumentIconSC>
+          {isPermitionToChangeApartmentAct && (
+            <DocumentIconSC onClick={() => openDeleteActModal(id)}>
+              <TrashIcon />
+            </DocumentIconSC>
+          )}
           <DocumentIconSC
             onClick={() => saveFile(document as DocumentResponse)}
           >

@@ -20,6 +20,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
   openEditPersonalNumberModal,
   setSelectedHomeownerName,
   selectedHomeownerName,
+  isPermitionToApartmentStatusPatch,
 }) => {
   const componentsDictionary: { [key in SearchMode]: ReactNode } = {
     [SearchMode.Apartment]: (
@@ -33,6 +34,7 @@ export const ApartmentsReadings: FC<ApartmentsReadingsProps> = ({
         openEditPersonalNumberModal={openEditPersonalNumberModal}
         setSelectedHomeownerName={setSelectedHomeownerName}
         selectedHomeownerName={selectedHomeownerName}
+        isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
       />
     ),
     [SearchMode.SerialNumber]: (

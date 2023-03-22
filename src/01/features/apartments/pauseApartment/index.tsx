@@ -1,4 +1,3 @@
-import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Alert } from '01/shared/ui/Alert/Alert';
 import { Spaces, Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
@@ -23,6 +22,7 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
   apartmentId,
@@ -131,7 +131,7 @@ export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
 };
 
 const FilesUploadWrap = styled.div`
-  margin-top: -20px;
+  margin-top: 2px;
 `;
 
 const Grid = styled.div`

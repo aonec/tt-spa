@@ -9,7 +9,6 @@ import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
-import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
 import {
   HistoryIconSC,
@@ -17,6 +16,7 @@ import {
 } from './MeteringDeviceReadingsLine.styled';
 import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { round } from 'utils/round';
 
 interface Props {
   sliderIndex: number;

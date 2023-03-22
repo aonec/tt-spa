@@ -25,6 +25,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   handleDeletePipe,
   handleDeleteDevice,
   isConfigWithoutODPU,
+  handleEditDevice,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -73,6 +74,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
               handleDeleteDevice={
                 handleDeleteDevice && (() => handleDeleteDevice(pipe.id, index))
               }
+              handleEditDevice={handleEditDevice}
             />
           ))}
         </div>

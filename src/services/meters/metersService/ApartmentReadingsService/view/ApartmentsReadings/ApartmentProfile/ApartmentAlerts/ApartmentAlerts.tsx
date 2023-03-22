@@ -18,6 +18,7 @@ import { checkIsHomeownerAccountRecentlyModified } from './ApartmentAlerts.utils
 export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
   apartment,
   handleCancelPauseApartment,
+  isPermitionToApartmentStatusPatch,
 }) => {
   const isPaused = apartment.status === EApartmentStatus.Pause;
 
@@ -57,9 +58,11 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
             Квартира на паузе до{' '}
             {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
           </div>
-          <AlertLink onClick={handleCancelPauseApartment}>
-            Снять с паузы
-          </AlertLink>
+          {isPermitionToApartmentStatusPatch && (
+            <AlertLink onClick={handleCancelPauseApartment}>
+              Снять с паузы
+            </AlertLink>
+          )}
         </AlertContent>
       </Alert>
     </ApartmentAlertWrapper>

@@ -1,4 +1,3 @@
-import { firstLetterToUpperCase } from '01/utils/getMonthFromDate';
 import moment from 'moment';
 import {
   HousingMeteringDeviceReadingsIncludingPlacementResponse,
@@ -6,6 +5,7 @@ import {
 } from 'myApi';
 import { getFilledArray } from 'utils/getFilledArray';
 import { PreparedHousingMeteringDeviceReadings } from './changeODPUReadingsService.types';
+import { firstLetterToUpperCase } from 'utils/firstLetterToUpperCase';
 
 export const prepareData = (
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
