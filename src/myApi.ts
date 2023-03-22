@@ -8687,6 +8687,7 @@ export class Api<
      */
     homeownerAccountsSplitCreate: (
       data: HomeownerAccountSplitRequest,
+      query?: { isForced?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -8695,6 +8696,7 @@ export class Api<
       >({
         path: `/api/HomeownerAccounts/Split`,
         method: 'POST',
+        query: query,
         body: data,
         secure: true,
         type: ContentType.Json,
