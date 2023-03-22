@@ -42,10 +42,14 @@ sample({
     source: $existingCities,
     fn: (cities) => _.last(cities) || null,
   }),
-  clock: [
-    $existingCities,
-    resourceConsumptionService.gates.ResourceConsumptionGate.open,
-  ],
+  clock: sample({
+    source: resourceConsumptionService.gates.ResourceConsumptionGate.open,
+    clock: [
+      $existingCities,
+      resourceConsumptionService.gates.ResourceConsumptionGate.open,
+    ],
+    filter: (isOpen) => Boolean(isOpen),
+  }),
   filter: Boolean,
   target: resourceConsumptionFilterService.inputs.selectCity,
 });
