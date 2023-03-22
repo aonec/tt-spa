@@ -32,7 +32,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   requestPayload,
   nodeServiceZones,
   openCreateNodeServiceZoneModal,
-  openConfiramtionModal,
+  validateNode,
+  isValidationLoading,
 }) => {
   const stepComponentDictionary: { [key: number]: ReactNode } = {
     0: (
@@ -67,7 +68,8 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         goPrevStep={goPrevStep}
         requestPayload={requestPayload}
         updateRequestPayload={updateRequestPayload}
-        openConfiramtionModal={openConfiramtionModal}
+        validateNode={validateNode}
+        isValidationLoading={isValidationLoading}
       />
     ),
   };

@@ -21,7 +21,7 @@ const DeviceIcons: {
     color: '#272F5A',
     translate: 'Вычислитель',
   },
-  Heat: { icon: 'heat', color: '#272F5A', translate: 'Отопление' },
+  Heat: { icon: 'heat', color: 'rgb(146, 84, 222)', translate: 'Отопление' },
   null: { icon: 'device', color: '#272F5A', translate: '' },
 };
 

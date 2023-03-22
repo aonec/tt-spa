@@ -8687,6 +8687,7 @@ export class Api<
      */
     homeownerAccountsSplitCreate: (
       data: HomeownerAccountSplitRequest,
+      query?: { isForced?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -8695,6 +8696,7 @@ export class Api<
       >({
         path: `/api/HomeownerAccounts/Split`,
         method: 'POST',
+        query: query,
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -11973,6 +11975,29 @@ export class Api<
       this.request<PipeNodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/PipeNodes/${pipeNodeId}`,
         method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesValidateCreate
+     * @summary NodeRead
+     * @request POST:/api/PipeNodes/validate
+     * @secure
+     */
+    pipeNodesValidateCreate: (
+      data: CreatePipeNodeRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<PipeNodeValidationResultResponse, any>({
+        path: `/api/PipeNodes/validate`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

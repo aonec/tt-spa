@@ -11,6 +11,7 @@ import {
   RightContent,
   DeviceType,
   DeviceInfoWrapper,
+  PencilIconSC,
 } from './MeteringDeviceListItem.styled';
 import { MeteringDeviceListItemProps } from './MeteringDeviceListItem.types';
 
@@ -18,6 +19,7 @@ export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
   resource,
   device,
   handleDeleteDevice,
+  handleEditDevice,
 }) => {
   const deviceInfo = (
     <DeviceInfoWrapper>
@@ -39,6 +41,9 @@ export const MeteringDeviceListItem: FC<MeteringDeviceListItemProps> = ({
         {HousingMeteringDeviceDictionary[device.housingMeteringDeviceType]}
       </DeviceType>
       <RightContent>
+        {handleEditDevice && device.id && (
+          <PencilIconSC onClick={() => handleEditDevice(device.id!)} />
+        )}
         {handleDeleteDevice && <TrashIconSC onClick={handleDeleteDevice} />}
       </RightContent>
     </Wrapper>

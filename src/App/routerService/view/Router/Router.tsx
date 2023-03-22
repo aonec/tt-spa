@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
-  ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
@@ -104,7 +103,6 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => 'logout'} />
-        <Route path="/error/" render={() => <ErrorPage />} />
         <Route path="/registration*" render={() => <Registration />} />
         <Route path="/">
           <Layout>

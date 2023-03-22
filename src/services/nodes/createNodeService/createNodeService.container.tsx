@@ -26,6 +26,8 @@ export const CreateNodeContainer = () => {
   const selectedCalculator = useStore(outputs.$selectedCalculator);
   const selectedServiceZone = useStore(outputs.$selectedServiceZone);
   const isCreatePipeNodeLoading = useStore(outputs.$isCreatePipeNodeLoading);
+  const isValidationLoading = useStore(outputs.$isValidationLoading);
+  const validationResult = useStore(outputs.$validationResult);
 
   const updateRequestPayload = useEvent(inputs.updateRequestPayload);
   const goPrevStep = useEvent(inputs.goPrevStep);
@@ -33,7 +35,7 @@ export const CreateNodeContainer = () => {
   const openCreateNodeServiceZoneModal = useEvent(
     inputs.openCreateNodeServiceZoneModal,
   );
-  const openConfiramtionModal = useEvent(inputs.openConfiramtionModal);
+  const validateNode = useEvent(inputs.validateNode);
   const closeConfiramtionModal = useEvent(inputs.closeConfiramtionModal);
   const handleSubmitForm = useEvent(inputs.handleSubmitForm);
 
@@ -59,6 +61,7 @@ export const CreateNodeContainer = () => {
           serviceZone={selectedServiceZone}
           handleSubmitForm={() => handleSubmitForm()}
           isLoading={isCreatePipeNodeLoading}
+          validationResult={validationResult}
         />
       )}
       <CreateNodePage
@@ -72,10 +75,11 @@ export const CreateNodeContainer = () => {
         calculatorsList={calculatorsList}
         openCreateCalculatorModal={() => openCreateCalculatorModal()}
         isDisabledAddress={Boolean(housingStockId)}
+        isValidationLoading={isValidationLoading}
         requestPayload={requestPayload}
         nodeServiceZones={nodeServiceZones}
         openCreateNodeServiceZoneModal={() => openCreateNodeServiceZoneModal()}
-        openConfiramtionModal={() => openConfiramtionModal()}
+        validateNode={() => validateNode()}
       />
     </>
   );

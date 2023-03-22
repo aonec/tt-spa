@@ -7,7 +7,6 @@ import {
   $individualDeviceMountPlaces,
   fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
-import { FileData } from '01/hooks/useFilesUpload';
 import {
   forward,
   sample,
@@ -50,6 +49,7 @@ import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateN
 import { axios } from '01/axios';
 import { getFilledArray } from 'utils/getFilledArray';
 import { message } from 'antd';
+import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 

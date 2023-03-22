@@ -6,11 +6,14 @@ import { createGate } from 'effector-react';
 import {
   CalculatorIntoHousingStockResponse,
   CreatePipeNodeRequest,
+  EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
   NodeServiceZoneListResponse,
   PipeNodeResponse,
+  PipeNodeValidationResultResponse,
 } from 'myApi';
 import {
+  fetchValidateNode,
   getCalculatorsList,
   getHousingStock,
   getNodeServiceZones,
@@ -50,11 +53,23 @@ const CreateNodeGate = createGate<{ housingStockId: number }>();
 const updateRequestPayload = domain.createEvent<CreateNodeFormPayload>();
 
 const goNextStep = domain.createEvent();
-
 const goPrevStep = domain.createEvent();
 
 const openConfiramtionModal = domain.createEvent();
 const closeConfiramtionModal = domain.createEvent();
+
+const validateNode = domain.createEvent();
+const validateNodeFx = domain.createEffect<
+  CreatePipeNodeRequest,
+  PipeNodeValidationResultResponse
+>(fetchValidateNode);
+const $validationResult = domain
+  .createStore<EPipeNodeValidationMessageStringDictionaryItem[]>([])
+  .on(validateNodeFx.doneData, (_, result) => [
+    ...(result?.errors || []),
+    ...(result?.warnings || []),
+  ])
+  .reset(closeConfiramtionModal);
 
 const $stepNumber = domain
   .createStore(0)
@@ -143,7 +158,16 @@ sample({
   target: createPipeNodeFx,
 });
 
-const $isLoadingHousingStock = fetchHousingStockFx.pending;
+sample({
+  source: $requestPayload,
+  clock: validateNode,
+  target: validateNodeFx,
+});
+
+forward({
+  from: validateNodeFx.doneData,
+  to: openConfiramtionModal,
+});
 
 const $selectedCalculator = combine(
   $requestPayload,
@@ -162,7 +186,9 @@ const $selectedServiceZone = combine(
     ) || null,
 );
 
+const $isLoadingHousingStock = fetchHousingStockFx.pending;
 const $isCreatePipeNodeLoading = createPipeNodeFx.pending;
+const $isValidationLoading = validateNodeFx.pending;
 
 const handlePipeNodeCreated = createPipeNodeFx.doneData;
 
@@ -191,6 +217,7 @@ export const createNodeService = {
     closeConfiramtionModal,
     handleSubmitForm,
     handlePipeNodeCreated,
+    validateNode,
   },
   outputs: {
     $housingStock,
@@ -205,6 +232,8 @@ export const createNodeService = {
     $selectedCalculator,
     $selectedServiceZone,
     $isCreatePipeNodeLoading,
+    $validationResult,
+    $isValidationLoading,
   },
   gates: {
     CreateNodeGate,

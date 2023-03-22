@@ -9,8 +9,8 @@ import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { newApartmentPersonalNumberForm } from '../../models';
 import { useForm } from 'effector-forms/dist';
-import { ErrorMessage } from '01/features/contractors/addContractors';
 import { PersonalNumberFormMountPlaceType } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 export const NewApartmentForm = () => {
   const apartment = useStore($apartment);

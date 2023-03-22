@@ -4,8 +4,8 @@ import {
   NumberIdResponse,
   StringPagedList,
 } from './../../myApi';
+import queryString from 'query-string';
 import axios from '01/axios';
-import { formQueryString } from '01/utils/formQueryString';
 
 export interface GetHousingStockParams {
   City: string;
@@ -16,10 +16,12 @@ export interface GetHousingStockParams {
 
 export const getHousingStocks = async (params: GetHousingStockParams) => {
   try {
-    const queryString = formQueryString(params);
-
     const res: { items: HousingStockListResponse[] } = await axios.get(
-      `HousingStocks${queryString}`
+      `HousingStocks`,
+      {
+        params,
+        paramsSerializer: queryString.stringify,
+      },
     );
 
     return res?.items;
@@ -29,7 +31,7 @@ export const getHousingStocks = async (params: GetHousingStockParams) => {
 };
 
 export const getHousingStock = async (
-  id: number
+  id: number,
 ): Promise<HousingStockResponse> => {
   return await axios.get(`HousingStocks/${id}`);
 };
@@ -42,7 +44,7 @@ export const doesApartmentExist = async ({
   apartmentNumber: string;
 }): Promise<number | null> => {
   const res: any = await axios.get(
-    `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`
+    `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
   );
 
   if (typeof res === 'number') return res;
@@ -62,13 +64,13 @@ export interface GetExistingHousingStockParams {
 }
 
 export const getExistingHousingStockNumbers = (
-  params: GetExistingHousingStockParams
+  params: GetExistingHousingStockParams,
 ): Promise<NumberIdResponse[] | null> =>
   axios.get(`HousingStocks/ExistingHousingStockNumber`, {
     params,
   });
 
 export const getExistingApartmentNumbers = (
-  housingStockId: number
+  housingStockId: number,
 ): Promise<NumberIdResponse[] | null> =>
   axios.get(`HousingStocks/${housingStockId}/ExistingApartmentNumber`);

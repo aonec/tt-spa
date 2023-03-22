@@ -12,7 +12,7 @@ const {
 
 export const IndividualDevicesListContainer: FC<
   IndividualDevicesListContainerProps
-> = ({ devicesIds, housingStockId, apartmentId }) => {
+> = ({ devicesIds, apartmentId }) => {
   const isLoading = useStore(outputs.$isLoading);
   const individualDevicesList = useStore(outputs.$individualDevicesList);
   const deviceConsumptionGraphType = useStore(outputs.$graphType);
