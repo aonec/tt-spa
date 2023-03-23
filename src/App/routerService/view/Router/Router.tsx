@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
-  AccessDeniedPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
@@ -51,6 +50,7 @@ import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNu
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
+import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 
 const { gates } = objectProfileService;
 
@@ -527,9 +527,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     </Route>
                   )}
 
+                  <Route path="/access-denied/">
+                    <AccessDeniedPage />
+                  </Route>
                   <Redirect from="/meters" to="/meters/apartments" exact />
                   <Redirect from="*" to="/access-denied/" exact />
-                  <Route path="/access-denied/" component={AccessDeniedPage} />
                 </Switch>
               )}
             </PageWrapper>
