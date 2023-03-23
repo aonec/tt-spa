@@ -83,6 +83,7 @@ export const LoginPage: FC<LoginPageProps> = ({
                 setFieldValue('password', e.target.value);
               }}
             />
+            <ErrorMessage>{errors.password}</ErrorMessage>
           </div>
 
           <Loader show={isLoading} size={48}>
