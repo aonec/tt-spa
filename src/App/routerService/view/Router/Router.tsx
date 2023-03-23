@@ -5,7 +5,6 @@ import { RouterProps } from './Router.types';
 import {
   IndividualDevice,
   IndividualDeviceEdit,
-  Login,
   Registration,
 } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
@@ -51,6 +50,7 @@ import { AddIndividualDevice } from '01/features/individualDevices/addIndividual
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
+import { LoginContainer } from 'services/authorizations/loginService';
 
 const { gates } = objectProfileService;
 
@@ -101,7 +101,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   return (
     <Wrapper>
       <Switch>
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={LoginContainer} />
         <Route path="/logout" render={() => 'logout'} />
         <Route path="/registration*" render={() => <Registration />} />
         <Route path="/">
