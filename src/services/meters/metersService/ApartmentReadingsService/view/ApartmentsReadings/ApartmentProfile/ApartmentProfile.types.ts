@@ -14,4 +14,5 @@ export type ApartmentProfileProps = {
   openEditPersonalNumberModal: () => void;
   setSelectedHomeownerName: (payload: string) => void;
   selectedHomeownerName: string | null;
+  isPermitionToApartmentStatusPatch: boolean;
 };

@@ -18,4 +18,5 @@ export type ApartmentActsListProps = {
   handleUpdateResources: (resources: EActResourceType[]) => void;
   actTypes: EActTypeStringDictionaryItem[] | null;
   selectedFilters: ActsFilter;
+  isPermitionToChangeApartmentAct: boolean;
 };

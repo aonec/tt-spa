@@ -1,15 +1,14 @@
 import { currentUserService } from './../currentUserService/currentUserService.model';
-import { UserRolesGate } from './../../01/features/userRoles/displayUserRoles/models/index';
-import { $userRoles } from '01/features/userRoles/displayUserRoles/models';
+import { rolesService } from 'services/employee/rolesService';
 
 export const menuService = {
   outputs: {
-    $userRoles,
+    $userRoles: rolesService.outputs.$userRoles,
     $currentUser: currentUserService.outputs.$currentUser,
     $isCurrentUserLoading: currentUserService.outputs.$isLoading,
   },
   gates: {
-    UserRolesGate,
+    UserRolesGate: rolesService.gates.UserRolesGate,
     CurrentUserGate: currentUserService.gates.CurrentUserGate,
   },
 };

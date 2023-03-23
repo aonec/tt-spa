@@ -24,7 +24,8 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   goPrevStep,
   requestPayload,
   updateRequestPayload,
-  openConfiramtionModal,
+  validateNode,
+  isValidationLoading,
 }) => {
   const openAddCommonDeviceModal = useEvent(inputs.openAddCommonDeviceModal);
 
@@ -128,7 +129,11 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20} onClick={openConfiramtionModal}>
+          <Button
+            sidePadding={20}
+            onClick={validateNode}
+            isLoading={isValidationLoading}
+          >
             Создать узел
           </Button>
         </Footer>

@@ -33,6 +33,17 @@ export const BaseContentWrapper = styled.div`
 
 export const CommonInfoWrapper = styled.div`
   max-width: 716px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+export const Deviceswrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  max-width: 860px;
 `;
 
 export const CardsWrapper = styled.div`

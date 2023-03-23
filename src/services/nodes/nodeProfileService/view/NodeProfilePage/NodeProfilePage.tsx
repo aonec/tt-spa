@@ -43,6 +43,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
   handleEditNode,
   openChangeNodeStatusModal,
   openChangeNodeTypeModal,
+  isPermitionToEditsNode,
 }) => {
   const address = pipeNode?.address?.address;
 
@@ -102,7 +103,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
     ) {
       return openChangeNodeTypeModal(pipeNode);
     }
-    return message.error('Техническийй тип узла нельзя изменить!');
+    return message.error('Технический тип узла нельзя изменить');
   }, [pipeNode, openChangeNodeTypeModal]);
 
   return (
@@ -133,16 +134,18 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                   {
                     title: 'Редактировать узел',
                     onClick: handleEditNode,
+                    hidden: !isPermitionToEditsNode,
                   },
                   {
                     title: 'Сменить статус узла',
                     onClick: () => openChangeNodeStatusModal(pipeNode),
-                    hidden: !isNodeCommercial,
+                    hidden: !isNodeCommercial || !isPermitionToEditsNode,
                   },
                   {
                     title: 'Изменить тип узла',
                     onClick: handleClickChangeNodeType,
                     color: 'danger',
+                    hidden: !isPermitionToEditsNode,
                   },
                 ],
               }}

@@ -28,6 +28,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   openEditPersonalNumberModal,
   setSelectedHomeownerName,
   selectedHomeownerName,
+  isPermitionToApartmentStatusPatch,
 }) => {
   const { id } = useParams<{ id: string }>();
 
@@ -107,10 +108,16 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
                 handleCancelPauseApartment={cancelPauseApartment}
                 openEditPersonalNumberModal={openEditPersonalNumberModal}
                 setSelectedHomeownerName={setSelectedHomeownerName}
+                isPermitionToApartmentStatusPatch={
+                  isPermitionToApartmentStatusPatch
+                }
               />
               <ApartmentAlerts
                 apartment={apartment}
                 handleCancelPauseApartment={cancelPauseApartment}
+                isPermitionToApartmentStatusPatch={
+                  isPermitionToApartmentStatusPatch
+                }
               />
               <ReadingsWrapper>
                 <ApartmentIndividualDevicesMetersContainer

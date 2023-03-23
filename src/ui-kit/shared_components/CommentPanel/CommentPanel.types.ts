@@ -4,4 +4,5 @@ export type CommentPanelProps = {
   commentDate?: string;
   onEdit: (comment: string) => void;
   onRemove: () => void;
+  isHavePermission?: boolean;
 };

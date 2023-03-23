@@ -73,7 +73,6 @@ export const StatisticsPage = () => {
         >
           <SubscribersConsumption />
         </TabPane>
-        <TabPane tab="Анализ количества задач" key="tasks"></TabPane>
         <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
           <ResourceConsumptionContainer />
         </TabPane>

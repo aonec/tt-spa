@@ -120,6 +120,7 @@ sample({
       return { ...filter, HousingStockId };
     },
   ),
+  filter: (filter) => Boolean(filter.HousingStockId),
   fn: (filter) => prepareFilterBeforeSenging(filter),
   target: getStatisticFx,
 });

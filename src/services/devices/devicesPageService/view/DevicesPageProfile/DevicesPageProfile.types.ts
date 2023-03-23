@@ -4,4 +4,5 @@ export type DevicesPageProfileProps = {
   type?: DevicesProfileTabsType;
   setDevicesType: (type: DevicesProfileTabsType) => void;
   handleAddNode: () => void;
+  isPermitionToAddNode: boolean;
 };

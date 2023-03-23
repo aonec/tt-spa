@@ -10,6 +10,7 @@ export const AlertLink = styled.div`
   align-items: center;
   color: #fc525b;
   transition: 0.2s;
+  cursor: pointer;
 
   &:hover {
     color: red;
@@ -25,8 +26,6 @@ export const AlertContent = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-
-  cursor: pointer;
 `;
 
 export const ArrowRightSC = styled(ArrowRight)`

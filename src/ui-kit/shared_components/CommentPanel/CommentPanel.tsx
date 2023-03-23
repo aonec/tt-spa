@@ -26,6 +26,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
   oldCommentText,
   onEdit,
   onRemove,
+  isHavePermission,
 }) => {
   const isCommentExist = oldCommentText !== null;
 
@@ -52,7 +53,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
         <RightButtonsBlock>
           {!isEditing && (
             <>
-              {isCommentExist && (
+              {isCommentExist && isHavePermission && (
                 <>
                   <PencilIconSC onClick={() => setIsEditing(true)} />
                   <TrashIconSC
@@ -63,7 +64,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
                   />
                 </>
               )}
-              {!isCommentExist && (
+              {!isCommentExist && isHavePermission && (
                 <AddCommentWrapper onClick={() => setIsEditing(true)}>
                   + Добавить
                 </AddCommentWrapper>

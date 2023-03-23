@@ -64,7 +64,6 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
         HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
         ExcludeApartments: isExcluded,
       },
-      enableReinitialize: true,
       onSubmit: (values) => {
         setFilter(values);
       },

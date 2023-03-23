@@ -3,11 +3,18 @@ import React, { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { DevicesProfileTabsType } from './devicesPageService.types';
 import { DevicesPageProfile } from './view/DevicesPageProfile';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 export const DevicesPageContainer = () => {
   const { type } = useParams<{ type?: DevicesProfileTabsType }>();
 
   const history = useHistory();
+
+  const isPermitionToAddNode = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
 
   useEffect(() => {
     if (type) return;
@@ -31,6 +38,7 @@ export const DevicesPageContainer = () => {
         setDevicesType={setDevicesType}
         type={type}
         handleAddNode={handleAddNode}
+        isPermitionToAddNode={isPermitionToAddNode}
       />
     </>
   );
