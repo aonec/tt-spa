@@ -13,6 +13,7 @@ export function Table<T>({
   columns,
   elements,
   pagination,
+  rowStyles,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -35,7 +36,7 @@ export function Table<T>({
         ))}
       </Header>
       {elements.slice(start, end).map((elem, rowIndex) => (
-        <Row key={rowIndex} temp={temp}>
+        <Row key={rowIndex} temp={temp} css={rowStyles?.[rowIndex]}>
           {filteredColumns.map((column, columnIndex) => (
             <TableElement key={columnIndex} css={column.css?.(false)}>
               {column.render(elem, rowIndex)}

@@ -1,8 +1,10 @@
+import { sum } from 'lodash';
 import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
 import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';
 import {
   getBorderedColumnCSS,
+  lastLineStyles,
   ResourceReadingsCountHeader,
   ResourceReadingsCountHeaderFact,
 } from './CallCenterWorkingReportTable.styled';
@@ -108,7 +110,30 @@ export const CallCenterWorkingReportTable: FC<
           render: (elem) => elem.heatValue,
         },
       ]}
-      elements={elements}
+      rowStyles={
+        Boolean(elements.length)
+          ? {
+              [elements.length]: lastLineStyles,
+            }
+          : undefined
+      }
+      elements={[
+        ...elements,
+        {
+          managingFirm: null,
+          houseManagement: 'Итого',
+          coldWaterSupplyPlan: sum(elements.map((e) => e.coldWaterSupplyPlan)),
+          coldWaterSupplyValue: sum(
+            elements.map((e) => e.coldWaterSupplyValue),
+          ),
+          hotWaterSupplyPlan: sum(elements.map((e) => e.hotWaterSupplyPlan)),
+          hotWaterSupplyValue: sum(elements.map((e) => e.hotWaterSupplyValue)),
+          electricityPlan: sum(elements.map((e) => e.electricityPlan)),
+          electricityValue: sum(elements.map((e) => e.electricityValue)),
+          heatPlan: sum(elements.map((e) => e.heatPlan)),
+          heatValue: sum(elements.map((e) => e.heatValue)),
+        },
+      ]}
     />
   );
 };

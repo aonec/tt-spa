@@ -18,3 +18,7 @@ export const ResourceReadingsCountHeaderFact = styled.div`
 export const getBorderedColumnCSS = () => `
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 `;
+
+export const lastLineStyles = `
+  background: #F3F5F6;
+`;
