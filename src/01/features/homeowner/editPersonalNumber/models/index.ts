@@ -76,12 +76,6 @@ export const personalNumberEditForm = createForm({
     },
     paymentCode: {
       init: null as number | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     isMainAccountingNumber: {
       init: false,
