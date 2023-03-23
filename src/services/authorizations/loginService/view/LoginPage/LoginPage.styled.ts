@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Button } from 'ui-kit/Button';
+import { Input as AntInput } from 'antd';
 
 export const PageWrapper = styled.div`
   height: 100vh;
@@ -71,4 +72,11 @@ export const ButtonLogin = styled(Button)`
   width: 100%;
   height: 48px;
   margin-top: 16px;
+`;
+
+export const InputPassword = styled(AntInput.Password)`
+  border-radius: 4px;
+  height: 48px;
+  font-size: 16px;
+  padding: 0px 16px;
 `;

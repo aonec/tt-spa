@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { LoginPageProps } from './LoginPage.types';
 import {
   ButtonLogin,
   Form,
+  InputPassword,
   Label,
   LeftBlockWrapper,
   Logo,
@@ -43,8 +44,6 @@ export const LoginPage: FC<LoginPageProps> = ({
     },
   });
 
-  const [isShowPass] = useState(false);
-
   return (
     <PageWrapper>
       <LeftBlockWrapper>
@@ -74,24 +73,16 @@ export const LoginPage: FC<LoginPageProps> = ({
 
           <div>
             <Label>Пароль</Label>
-            <Input
+            <InputPassword
               name="password"
               placeholder="Введите пароль"
               readOnly={isLoading}
-              type={isShowPass ? 'text' : 'password'}
               value={values.password}
               onChange={(e) => {
                 // if (e.nativeEvent.type === ' ') return;
                 setFieldValue('password', e.target.value);
               }}
-            >
-              {/* <Icon
-                icon={showPass ? 'off' : 'on'}
-                onClick={() => {
-                  setShowPass(!showPass);
-                }}
-              /> */}
-            </Input>
+            />
           </div>
 
           <Loader show={isLoading} size={48}>
