@@ -1,8 +1,8 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, createDomain, forward, guard, sample } from 'effector';
+import { combine, createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
-  GuidStringDictionaryItem,
+  HouseManagementWithStreetsResponse,
   HousingStockListResponsePagedList,
   SubscriberStatisticsСonsumptionResponse,
 } from 'myApi';
@@ -17,15 +17,16 @@ import {
 } from './displayStatisticsListByManagingFirmService.types';
 import { prepareFilterBeforeSenging } from './displayStatisticsListByManagingFirmService.utils';
 import { SubscriberStatisticsForm } from './view/ManagingFirmSearch/ManagingFirmSearch.types';
+import _ from 'lodash';
 
 const domain = createDomain('displayStatisticsListByManagingFirmService');
 
 const getManagingFirmsFx = domain.createEffect<
-  void,
-  GuidStringDictionaryItem[]
+  string,
+  HouseManagementWithStreetsResponse[]
 >(fetchManagingFirm);
 const $managingFirms = domain
-  .createStore<GuidStringDictionaryItem[]>([])
+  .createStore<HouseManagementWithStreetsResponse[]>([])
   .on(getManagingFirmsFx.doneData, (_, managingFirms) => managingFirms);
 
 const selectCity = domain.createEvent<string>();
@@ -36,7 +37,8 @@ const $selectedCity = domain
 const selectManagingFirm = domain.createEvent<string>();
 const $selectedManagingFirm = domain
   .createStore<string>('')
-  .on(selectManagingFirm, (_, managingFirm) => managingFirm);
+  .on(selectManagingFirm, (_, managingFirm) => managingFirm)
+  .reset($managingFirms);
 
 const setSubscriberStatisticsFilter =
   domain.createEvent<SubscriberStatisticsForm>();
@@ -88,19 +90,23 @@ const StatiscticsPageGate = createGate();
 
 const $housingStocksIsLoading = getHousingStocksFx.pending;
 const $statisticIsLoading = getStatisticFx.pending;
+const $managingFirmsLoading = getManagingFirmsFx.pending;
 
 sample({
-  clock: guard({
-    source: $managingFirms,
-    clock: StatiscticsPageGate.open,
-    filter: (managingFirms) => !Boolean(managingFirms.length),
-  }),
+  clock: $selectedCity,
   target: getManagingFirmsFx,
 });
 
-forward({
-  from: $selectedManagingFirm,
-  to: getHousingStocksFx,
+sample({
+  clock: $selectedManagingFirm,
+  filter: Boolean,
+  target: getHousingStocksFx,
+});
+
+sample({
+  clock: $existingCities.map((cities) => _.last(cities)),
+  filter: Boolean,
+  target: selectCity,
 });
 
 sample({
@@ -136,6 +142,7 @@ export const displayStatisticsListByManagingFirmService = {
     $housingStocksIsLoading,
     $statisticIsLoading,
     $subscriberStatisticsFilter,
+    $managingFirmsLoading,
   },
   gates: {
     StatiscticsPageGate,
