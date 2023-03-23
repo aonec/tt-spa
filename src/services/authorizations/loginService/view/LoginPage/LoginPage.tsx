@@ -40,7 +40,10 @@ export const LoginPage: FC<LoginPageProps> = ({
       const { email, password } = data;
       const trimmedEmail = email.trim();
 
-      handlePostLogin({ email: trimmedEmail, password });
+      handlePostLogin({
+        email: trimmedEmail,
+        password,
+      });
     },
   });
 
@@ -78,9 +81,13 @@ export const LoginPage: FC<LoginPageProps> = ({
               placeholder="Введите пароль"
               readOnly={isLoading}
               value={values.password}
-              onChange={(e) => {
-                // if (e.nativeEvent.type === ' ') return;
-                setFieldValue('password', e.target.value);
+              onChange={(event) => {
+                if (
+                  (event.nativeEvent as unknown as { data: string }).data ===
+                  ' '
+                )
+                  return;
+                setFieldValue('password', event.target.value);
               }}
             />
             <ErrorMessage>{errors.password}</ErrorMessage>
