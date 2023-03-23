@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
   AccessDeniedPage,
-  ErrorPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
@@ -25,7 +24,6 @@ import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
-import { ApartmentsRouteGroup } from '../routeGroups/ApartmentsRouteGroup';
 import { EditNodeContainer } from 'services/devices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
@@ -46,6 +44,13 @@ import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRan
 import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
+import { AddPersonalNumberPage } from '01/features/homeowner/addPersonalNumber';
+import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
+import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
+import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
+import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
+import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
+import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 
 const { gates } = objectProfileService;
 
@@ -98,20 +103,19 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => 'logout'} />
-        <Route path="/error/" render={() => <ErrorPage />} />
         <Route path="/registration*" render={() => <Registration />} />
         <Route path="/">
           <Layout>
             <Panel />
             <div />
             <PageWrapper>
-              {!isRolesLoadded && roles.length ? (
+              {!isRolesLoadded && Boolean(roles.length) && (
                 <Switch>
                   <Redirect from="/" to={redirectRoute} exact />
 
                   {TasksRouter()}
 
-                  {isAnyRole && (
+                  {(isSeniorOperator || isOperator) && (
                     <Route path="/actsJournal" exact>
                       <ApartmentActs />
                     </Route>
@@ -444,14 +448,90 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route path="/apartment/:id/addIndividualDevice" exact>
+                      <AddIndividualDevice />
+                    </Route>
+                  )}
+
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/individualDevice/:deviceId/readingHistory"
+                      exact
+                    >
+                      <ReadingHistoryPage />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/houses/individualDevice/:deviceId/readingHistory"
+                      exact
+                    >
+                      <ReadingHistoryPage />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/individualDevice/:deviceId/switch"
+                      exact
+                    >
+                      <SwitchIndividualDevice type="switch" />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/individualDevice/:deviceId/check"
+                      exact
+                    >
+                      <SwitchIndividualDevice type="check" />
+                    </Route>
+                  )}
+                  {(isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/individualDevice/:deviceId/reopen"
+                      exact
+                    >
+                      <SwitchIndividualDevice type="reopen" />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/homeowners/addPersonalNumber"
+                      exact
+                    >
+                      <AddPersonalNumberPage />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/homeowners/:homeownerId/splitApartment"
+                      exact
+                    >
+                      <SplitPersonalNumber />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/homeowners/:homeownerId/editPersonalNumber"
+                      exact
+                    >
+                      <EditHomeownerPersonalNumberPage />
+                    </Route>
+                  )}
+                  {(isAdministrator || isSeniorOperator || isOperator) && (
+                    <Route
+                      path="/apartment/:id/homeowners/:homeownerId/switchPersonalNumberFx"
+                      exact
+                    >
+                      <SwitchPersonalNumberPage />
+                    </Route>
+                  )}
+
                   <Redirect from="/meters" to="/meters/apartments" exact />
                   <Redirect from="*" to="/access-denied/" exact />
                   <Route path="/access-denied/" component={AccessDeniedPage} />
                 </Switch>
-              ) : (
-                <></>
               )}
-              <ApartmentsRouteGroup />
             </PageWrapper>
           </Layout>
         </Route>

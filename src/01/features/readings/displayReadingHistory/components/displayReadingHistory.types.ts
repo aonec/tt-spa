@@ -11,3 +11,15 @@ export type RenderReading = {
   isHasArchived: boolean;
   prevReading?: IndividualDeviceReadingsItemHistoryResponse | null;
 };
+export interface CorrectReadingValuesValidationResult {
+  validated: boolean;
+  valuesValidationResults?: {
+    type: 'up' | 'down' | null;
+    validated: boolean;
+    index: number;
+    difference: number;
+    currentValue: number;
+    prevValue: number;
+  }[];
+  limit?: number;
+}

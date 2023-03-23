@@ -13,6 +13,8 @@ import {
 import { CalculatorProfile } from './CalculatorProfile/CalculatorProfile';
 import { calculatorProfileService } from './calculatorProfileService.model';
 import { ConsumptionReportCalculatorContainer } from '../consumptionReportCalculatorService';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { gates, inputs, outputs } = calculatorProfileService;
 const { CalculatorIdGate } = gates;
@@ -36,6 +38,11 @@ export const CalculatorProfileContainer = () => {
   );
   const openDevicesListModal = useEvent(inputs.openDevicesListModal);
 
+  const isPermitionToCalculatorActions = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
+
   return (
     <>
       <CalculatorIdGate id={Number(deviceId)} />
@@ -54,6 +61,7 @@ export const CalculatorProfileContainer = () => {
               handleOpenConsumptionReportModal()
             }
             openDevicesListModal={openDevicesListModal}
+            isPermitionToCalculatorActions={isPermitionToCalculatorActions}
           />
         )}
       </WithLoader>

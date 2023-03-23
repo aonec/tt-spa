@@ -1,4 +1,3 @@
-import { ErrorMessage } from '01/features/contractors/addContractors';
 import { FilesList } from '01/shared/ui/FilesList';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { ModalTT } from '01/shared/ui/ModalTT';
@@ -11,6 +10,7 @@ import { EditNodeCheckPayload } from './models';
 import { CheckingActDocumentType } from './utils';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { EDocumentType } from 'myApi';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 interface Props {
   visible: boolean;

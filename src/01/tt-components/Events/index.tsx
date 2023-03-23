@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import React from 'react';
 import { Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
-import { Button } from '01/_components/Button';
 import { TaskListResponse } from '../../../myApi';
+import { Button } from 'ui-kit/Button';
 
 export interface EventsInterface {
   title: string;
@@ -26,7 +26,7 @@ export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
         <TaskRow>
           <Icon icon="timer" style={{ marginRight: '8px' }} />
           {`${convertDate(currentStage.startingTime)} - ${convertDate(
-            currentStage.expectedCompletionTime
+            currentStage.expectedCompletionTime,
           )}`}
         </TaskRow>
         <TaskRow>

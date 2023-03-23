@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import {
   ApartmentResponse,
   ApartmentStatusSetRequest,
@@ -8,7 +9,6 @@ import {
   EditApartmentCheckRequest,
 } from './../../myApi';
 import axios from '01/axios';
-import { formQueryString } from '01/utils/formQueryString';
 import { FindApartmentIdQueryPayload } from '01/features/addressIdSearch/models';
 import { SetApartmentStatusRequest } from './apartments.types';
 
@@ -39,9 +39,12 @@ export const getProblemDevices = async ({
   const res: {
     devices: IndividualDeviceWithExpiredCheckingDateResponse[];
   } = await axios.get(
-    `Apartments/${apartmentId}/SetStatusProblemDevices${formQueryString(
-      requestPayload
-    )}`
+    `Apartments/${apartmentId}/SetStatusProblemDevices`,
+
+    {
+      params: requestPayload,
+      paramsSerializer: queryString.stringify,
+    },
   );
 
   return res.devices;
@@ -49,7 +52,7 @@ export const getProblemDevices = async ({
 
 export const getApartmentCheckDocuments = async (apartmentId: number) => {
   const res: ApartmentCheckResponsePagedList = await axios.get(
-    `Apartments/${apartmentId}/ApartmentChecks`
+    `Apartments/${apartmentId}/ApartmentChecks`,
   );
 
   return res.items;
@@ -64,7 +67,7 @@ export const checkApartment = ({
 }): Promise<void> => axios.post(`Apartments/${apartmentId}/AddCheck`, data);
 
 export const findApartmentId = (
-  payload: FindApartmentIdQueryPayload
+  payload: FindApartmentIdQueryPayload,
 ): Promise<number | null> =>
   axios.get('Apartments/FindApartmentId', { params: payload });
 
