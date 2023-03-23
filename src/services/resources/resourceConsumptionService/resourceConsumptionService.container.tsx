@@ -15,6 +15,9 @@ export const ResourceConsumptionContainer = () => {
   const resourceConsumptionFilter = useStore(
     resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
   );
+  const resource = useStore(
+    resourceConsumptionFilterService.outputs.$selectedResource,
+  );
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
   const summaryConsumption = useStore(outputs.$summaryConsumption);
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
@@ -38,6 +41,7 @@ export const ResourceConsumptionContainer = () => {
         setSelectedGraphTypes={setSelectedGraphTypes}
         additionalConsumptionData={additionalConsumptionData}
         summaryConsumption={summaryConsumption}
+        resource={resource}
       />
     </>
   );
