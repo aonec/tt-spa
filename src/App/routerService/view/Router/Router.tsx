@@ -102,8 +102,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
     <Wrapper>
       <Switch>
         <Route path="/login" component={LoginContainer} />
-        <Route path="/logout" render={() => 'logout'} />
-        <Route path="/registration*" render={() => <Registration />} />
+        <Route path="/registration" component={Registration} />
         <Route path="/">
           <Layout>
             <Panel />
