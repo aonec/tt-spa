@@ -3,7 +3,7 @@ import moment from 'moment';
 import {
   GetDataForHousingConsumptionPlotResponse,
   GetDataForIndividualDevicesConsumptionPlotResponse,
-  HouseManagementWithStreetsResponse,
+  GetSummaryHousingConsumptionsByResourcesResponse,
 } from 'myApi';
 import {
   ConsumptionDataFilter,
@@ -82,14 +82,12 @@ export const fetchNormativeConsumptionData = (
     },
   );
 
-export const fetchAddresses = (
-  City: string,
-): Promise<HouseManagementWithStreetsResponse[]> =>
-  axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
-    {
-      params: {
-        City,
-      },
+export const fetchSummaryConsumption = (
+  params: ConsumptionDataFilter,
+): Promise<GetSummaryHousingConsumptionsByResourcesResponse> =>
+  axios.get('PipeNodes/SummaryHousingConsumptionsByResources', {
+    params,
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
     },
-  );
+  });
