@@ -5,6 +5,7 @@ import {
 import { HouseManagementResponse, EResourceType } from 'myApi';
 import {
   addressesCountTexts,
+  EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
   selectedCountTexts,
 } from './ReportFiltrationForm/ReportFiltrationForm.constants';
@@ -13,6 +14,7 @@ import {
   ReportFiltrationFormValues,
 } from '../../reportViewService.types';
 import { getCountText } from 'utils/getCountText';
+import { EmployeeReportDatePeriodType } from './ReportFiltrationForm/ReportFiltrationForm.types';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList
@@ -67,6 +69,20 @@ export const getFiltersList = (
     filtrationValues.reportOption &&
     ReportOptionsDictionary[filtrationValues.reportOption];
 
+  const employeeReportType =
+    filtrationValues.employeeReportType &&
+    EmployeeReportTypesDictionary[filtrationValues.employeeReportType];
+
+  const employeeReportDate = filtrationValues.employeeReportDate;
+
+  const isEmployeeReportPeriodMonth =
+    filtrationValues.employeeReportDatePeriodType ===
+    EmployeeReportDatePeriodType.Month;
+
+  const employeeReportDatePeriod = employeeReportDate?.format(
+    `${isEmployeeReportPeriodMonth ? 'MMMM' : ''} YYYY`,
+  );
+
   return [
     filtrationValues.city,
     houseManagement?.name || null,
@@ -74,5 +90,7 @@ export const getFiltersList = (
     resourcesText,
     period,
     reportOption,
+    employeeReportType,
+    employeeReportDatePeriod,
   ].filter(Boolean);
 };

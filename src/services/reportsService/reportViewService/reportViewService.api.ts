@@ -9,6 +9,8 @@ import {
 import { axios } from '01/axios';
 import {
   ActsJournalReportRequestPayload,
+  EmployeeReportRequestPayload,
+  EmployeeReportResponse,
   HomeownersReportRequestPayload,
   HousingMeteringDevicesReportRequestPayload,
   IndividualDeviceReportRequestPaload,
@@ -16,6 +18,7 @@ import {
 } from './reportViewService.types';
 import { downloadURI } from 'utils/downloadByURL';
 import {
+  DownloadEmployeeReportUrlsDictionary,
   DownloadReportUrlsDictionary,
   PrepareReportRequestFunctionsDictionary,
 } from './reportViewService.constants';
@@ -73,8 +76,14 @@ export const downloadReportFile = async ({
 
   const payload = prepareFunction(values);
 
+  const employeeReportType = payload?.employeeReportType;
+
+  const employeeReportUrl =
+    employeeReportType &&
+    DownloadEmployeeReportUrlsDictionary[employeeReportType];
+
   const res: string = await axios.get(
-    DownloadReportUrlsDictionary[reportType],
+    employeeReportUrl || DownloadReportUrlsDictionary[reportType],
     {
       params: payload,
       responseType: 'blob',
@@ -98,4 +107,17 @@ export const downloadReportFile = async ({
   }`;
 
   downloadURI(url, reportNameString);
+};
+
+export const getEmployeeReport = async ({
+  employeeReportType,
+  From,
+  To,
+}: EmployeeReportRequestPayload): Promise<EmployeeReportResponse> => {
+  const data = await axios.get(`Reports/${employeeReportType}`, {
+    params: { From, To },
+    paramsSerializer: queryString.stringify,
+  });
+
+  return { [employeeReportType]: data };
 };

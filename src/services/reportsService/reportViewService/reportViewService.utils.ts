@@ -7,7 +7,13 @@ import {
   HousingMeteringDevicesReportRequestPayload,
   HomeownersReportRequestPayload,
   ReportPayload,
+  EmployeeReportRequestPayload,
 } from './reportViewService.types';
+import { EmployeeReportDatePeriodDictionary } from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.constants';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
 export const getReportPayloadValues = ({ values }: ReportPayload) => values;
 
@@ -138,6 +144,50 @@ export const prepareHomeownersReportRequestPayload = (
   };
 };
 
-export const prepareEmployeeReportRequestPayload = () => {
-  return null;
+const getCallCenterReportDatePeriod = (
+  from: null | moment.Moment,
+  to: null | moment.Moment,
+) => {
+  return {
+    From: from?.utcOffset(0)?.format('YYYY-MM-DD'),
+    To: to?.utcOffset(0)?.format('YYYY-MM-DD'),
+  };
+};
+
+const getEmployeeReportDatePeriod = (
+  employeeReportDatePeriodType: EmployeeReportDatePeriodType,
+  employeeReportDate: moment.Moment | null,
+) => {
+  if (!employeeReportDate) return null;
+
+  const period =
+    EmployeeReportDatePeriodDictionary[employeeReportDatePeriodType];
+
+  return {
+    From: employeeReportDate.utcOffset(0).startOf(period).format('YYYY-MM-DD'),
+    To: employeeReportDate.utcOffset(0).endOf(period).format('YYYY-MM-DD'),
+  };
+};
+
+export const prepareEmployeeReportRequestPayload = (
+  values: ReportFiltrationFormValues,
+): EmployeeReportRequestPayload | null => {
+  if (!values.employeeReportType || !values.employeeReportDatePeriodType)
+    return null;
+
+  const period =
+    values.employeeReportType === EmployeeReportType.CallCenterWorkingReport
+      ? getCallCenterReportDatePeriod(values.from, values.to)
+      : getEmployeeReportDatePeriod(
+          values.employeeReportDatePeriodType,
+          values.employeeReportDate,
+        );
+
+  if (!period) return null;
+
+  return {
+    employeeReportType: values.employeeReportType,
+    From: period.From,
+    To: period.To,
+  };
 };

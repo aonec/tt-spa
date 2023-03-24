@@ -1,10 +1,18 @@
 import {
+  CallCenterWorkingConstructedReportResponse,
   EActResourceType,
   EClosingReason,
   EIndividualDeviceReportOption,
   EResourceType,
+  HouseManagementConstructedReportResponse,
+  InspectorsConstructedReportResponse,
+  OperatorsConstructedReportResponse,
 } from 'myApi';
 import { ReportType } from '../view/ReportsPage/ReportsPage.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
 export enum ReportDatePeriod {
   LastDay = 'LastDay',
@@ -27,6 +35,9 @@ export type ReportFiltrationFormValues = {
   closingReasons: EClosingReason[];
   showOnlyDuplicates: boolean;
   withoutApartmentsWithOpenDevicesByResources: boolean;
+  employeeReportType: EmployeeReportType | null;
+  employeeReportDatePeriodType: EmployeeReportDatePeriodType | null;
+  employeeReportDate: moment.Moment | null;
 };
 
 export type ReportPayload = {
@@ -70,4 +81,17 @@ export type HomeownersReportRequestPayload = {
   ShowOnlyDuplicates: boolean;
   From?: string;
   To?: string;
+};
+
+export type EmployeeReportRequestPayload = {
+  employeeReportType: EmployeeReportType;
+  From?: string;
+  To?: string;
+};
+
+export type EmployeeReportResponse = {
+  [EmployeeReportType.OperatorsWorkingReport]?: OperatorsConstructedReportResponse[];
+  [EmployeeReportType.InspectorsWorkingReport]?: InspectorsConstructedReportResponse[];
+  [EmployeeReportType.CallCenterWorkingReport]?: CallCenterWorkingConstructedReportResponse[];
+  [EmployeeReportType.HouseManagementsReport]?: HouseManagementConstructedReportResponse[];
 };
