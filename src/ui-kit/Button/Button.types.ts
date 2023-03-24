@@ -12,4 +12,4 @@ export type ButtonProps = {
 
 export type ButtonSizeType = 'middle' | 'small';
 
-export type ButtonStyleType = 'default' | 'ghost' | 'danger';
+export type ButtonStyleType = 'primary' | 'ghost' | 'danger';

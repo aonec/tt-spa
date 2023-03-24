@@ -1,7 +1,7 @@
 @use 'sass:map';
 
 $types: (
-  default: (
+  primary: (
     mainColor: var(--primary-100),
     fontColor: white,
     shadowColor: rgba(var(--primary), 0.25),
@@ -92,13 +92,11 @@ $sizes: (
       opacity: 0.6;
     }
 
-    &:hover {
-      transform: translate(-4px, -4px);
+    &:not(&[disabled]):hover {
       box-shadow: 4px 4px 0 $shadowColor;
     }
 
-    &:active {
-      transform: translate(-2px, -2px);
+    &:not(&[disabled]):active {
       box-shadow: 2px 2px 0 $shadowColor;
       background-color: $shadowColor;
     }

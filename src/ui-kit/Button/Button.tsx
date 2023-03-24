@@ -8,7 +8,7 @@ import classNames from 'classnames/bind';
 export const Button: FC<ButtonProps> = (props) => {
   const {
     icon,
-    type = 'default',
+    type = 'primary',
     className,
     isLoading,
     size = 'middle',

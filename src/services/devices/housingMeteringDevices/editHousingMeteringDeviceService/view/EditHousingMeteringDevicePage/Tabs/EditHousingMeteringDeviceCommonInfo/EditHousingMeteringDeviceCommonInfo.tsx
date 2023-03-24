@@ -166,7 +166,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
         <Button type="ghost" onClick={() => onCancel()}>
           Отмена
         </Button>
-        <Button type="default" long onClick={() => handleSubmit()}>
+        <Button long onClick={() => handleSubmit()}>
           Сохранить
         </Button>
       </Footer>
