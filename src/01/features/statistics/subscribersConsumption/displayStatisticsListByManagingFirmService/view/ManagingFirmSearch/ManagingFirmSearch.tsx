@@ -19,8 +19,11 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   managingFirms,
   selectManagingFirm,
   selectedManagingFirm,
+  selectCity,
+  selectedCity,
   setFilter,
   filter,
+  managingFirmsLoading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
@@ -46,21 +49,18 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
         DateLastCheckTo: filter?.DateLastCheckTo,
         ExcludeApartments: isExcluded,
       },
-      enableReinitialize: true,
       onSubmit: setFilter,
     });
 
-  const isManagingFirmSelectDisabled = managingFirms.length === 0;
+  const isManagingFirmSelectDisabled =
+    managingFirmsLoading || managingFirms.length === 0;
 
   return (
     <Wrapper>
       <ExtendedSearch
         isOpen={isOpen}
         handleApply={submitForm}
-        handleClear={() => {
-          resetForm();
-          submitForm();
-        }}
+        handleClear={resetForm}
         handleClose={close}
         handleOpen={open}
         extendedSearchContent={
@@ -71,7 +71,11 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
         }
       >
         <SearchFieldsWrapper>
-          <SelectCitySC placeholder="Выберите город" disabled>
+          <SelectCitySC
+            placeholder="Выберите город"
+            value={selectedCity}
+            onChange={(city) => selectCity(String(city))}
+          >
             {cities.map((city) => (
               <SelectCitySC.Option key={city} value={city}>
                 {city}
@@ -85,8 +89,8 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
             disabled={isManagingFirmSelectDisabled}
           >
             {managingFirms.map((managingFirm) => {
-              const key = managingFirm.key;
-              const value = managingFirm.value;
+              const key = managingFirm.id;
+              const value = managingFirm.name;
               if (!key || !value) {
                 return null;
               }
