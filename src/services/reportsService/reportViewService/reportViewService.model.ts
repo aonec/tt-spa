@@ -25,12 +25,15 @@ import {
   downloadReportFile,
   getActJournalReport,
   getAddressesWithHouseManagements,
+  getEmployeeReport,
   getHomeownersReport,
   getHousingMeteringDevicesReport,
   getIndividualDevicesReport,
 } from './reportViewService.api';
 import {
   ActsJournalReportRequestPayload,
+  EmployeeReportRequestPayload,
+  EmployeeReportResponse,
   HomeownersReportRequestPayload,
   HousingMeteringDevicesReportRequestPayload,
   IndividualDeviceReportRequestPaload,
@@ -40,6 +43,7 @@ import {
 import {
   getReportPayloadValues,
   prepareActJournalReportRequestPayload,
+  prepareEmployeeReportRequestPayload,
   prepareHomeownersReportRequestPayload,
   prepareHousingMeteringDevicesReportRequestPayload,
   prepareIndividualDevicesReportRequestPayload,
@@ -83,6 +87,12 @@ const fetchHomeownersReportFx = domain.createEffect<
   EffectFailDataAxiosError
 >(getHomeownersReport);
 
+const fetchEmployeeReportFx = domain.createEffect<
+  EmployeeReportRequestPayload,
+  EmployeeReportResponse,
+  EffectFailDataAxiosError
+>(getEmployeeReport);
+
 const downloadReportFileFx = domain.createEffect<
   ReportPayload,
   void,
@@ -93,6 +103,7 @@ const loadIndividualDeviceReport = domain.createEvent<ReportPayload>();
 const loadActJournalReport = domain.createEvent<ReportPayload>();
 const loadHousingMeteringDevicesReport = domain.createEvent<ReportPayload>();
 const loadHomeownersReport = domain.createEvent<ReportPayload>();
+const loadEmployeeReport = domain.createEvent<ReportPayload>();
 
 const downloadReport = domain.createEvent();
 
@@ -119,6 +130,9 @@ const $filtrationValues = domain
     actResources: [],
     showOnlyDuplicates: false,
     withoutApartmentsWithOpenDevicesByResources: false,
+    employeeReportType: null,
+    employeeReportDatePeriodType: null,
+    employeeReportDate: null,
   })
   .on(setFiltrationValues, (_, values) => values)
   .reset(ReportViewGate.close, clearFiltrationValues);
@@ -147,6 +161,11 @@ const $homeownersReportData = domain
   .on(fetchHomeownersReportFx.doneData, (_, data) => data)
   .reset(ReportViewGate.close, clearFiltrationValues);
 
+const $emloyeeReportData = domain
+  .createStore<EmployeeReportResponse | null>(null)
+  .on(fetchEmployeeReportFx.doneData, (_, data) => data)
+  .reset(ReportViewGate.close, clearFiltrationValues);
+
 forward({
   from: AddressesWithHouseManagementsGate.open,
   to: fetchAddressesWithHouseManagementsFx,
@@ -166,6 +185,7 @@ split({
     [ReportType.ActsJournal]: loadActJournalReport,
     [ReportType.HousingDevices]: loadHousingMeteringDevicesReport,
     [ReportType.Homeowners]: loadHomeownersReport,
+    [ReportType.Employee]: loadEmployeeReport,
   },
 });
 
@@ -213,6 +233,17 @@ guard({
   target: fetchHomeownersReportFx,
 });
 
+guard({
+  clock: sample({
+    clock: loadEmployeeReport.map(getReportPayloadValues),
+    fn: prepareEmployeeReportRequestPayload,
+  }),
+  filter: (payload): payload is EmployeeReportRequestPayload => {
+    return Boolean(payload);
+  },
+  target: fetchEmployeeReportFx,
+});
+
 sample({
   source: $reportPayload,
   clock: downloadReport,
@@ -224,6 +255,7 @@ merge([
   fetchActJournalReportFx.failData,
   fetchHousingMeteringDevicesReportFx.failData,
   fetchHomeownersReportFx.failData,
+  fetchEmployeeReportFx.failData,
 ]).watch((error) => message.error(error.response.data.error.Text));
 
 downloadReportFileFx.failData.watch(async (error) => {
@@ -240,6 +272,7 @@ const $isReportLoading = combine(
   fetchActJournalReportFx.pending,
   fetchHousingMeteringDevicesReportFx.pending,
   fetchHomeownersReportFx.pending,
+  fetchEmployeeReportFx.pending,
   (...loadings) => loadings.some(Boolean),
 );
 
@@ -262,6 +295,7 @@ export const reportViewService = {
     $housingMeteringDevicesReportData,
     $homeownersReportData,
     $isReportFileDownloading,
+    $emloyeeReportData,
   },
   gates: {
     ExistingCitiesGate,

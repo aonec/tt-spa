@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import {
-  AccessDeniedPage,
   IndividualDevice,
   IndividualDeviceEdit,
   Login,
@@ -44,6 +43,8 @@ import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRan
 import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
+import { featureToggles } from 'featureToggles';
+import { ReportsContainer } from 'services/reportsService';
 import { AddPersonalNumberPage } from '01/features/homeowner/addPersonalNumber';
 import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
 import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
@@ -51,6 +52,7 @@ import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNu
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
+import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 
 const { gates } = objectProfileService;
 
@@ -436,7 +438,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   {isSeniorOperator && (
                     <Route
                       path="/reports"
-                      component={ReportsPageContainer}
+                      component={
+                        featureToggles.reportsConstructor
+                          ? ReportsContainer
+                          : ReportsPageContainer
+                      }
                       exact
                     />
                   )}
@@ -527,9 +533,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     </Route>
                   )}
 
+                  <Route path="/access-denied/">
+                    <AccessDeniedPage />
+                  </Route>
                   <Redirect from="/meters" to="/meters/apartments" exact />
                   <Redirect from="*" to="/access-denied/" exact />
-                  <Route path="/access-denied/" component={AccessDeniedPage} />
                 </Switch>
               )}
             </PageWrapper>

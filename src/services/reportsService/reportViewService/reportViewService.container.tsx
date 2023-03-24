@@ -34,6 +34,7 @@ export const ReportViewContainer = () => {
     outputs.$housingMeteringDevicesReportData,
   );
   const homeownersReportData = useStore(outputs.$homeownersReportData);
+  const emloyeeReportData = useStore(outputs.$emloyeeReportData);
   const isReportFileDownloading = useStore(outputs.$isReportFileDownloading);
 
   if (!reportType) return null;
@@ -55,6 +56,7 @@ export const ReportViewContainer = () => {
         actJournalReportData={actJournalReportData}
         housingMeteringDevicesReportData={housingMeteringDevicesReportData}
         homeownersReportData={homeownersReportData}
+        emloyeeReportData={emloyeeReportData}
         isReportFileDownloading={isReportFileDownloading}
         downloadReport={() => downloadReport()}
         clearFiltrationValues={() => clearFiltrationValues()}

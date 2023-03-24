@@ -1863,7 +1863,7 @@ export enum EPipeNodeConfig {
   ColdWaterSupply = 'ColdWaterSupply',
   HeatWithRecharge = 'HeatWithRecharge',
   HotWaterSupplyWithBackflow = 'HotWaterSupplyWithBackflow',
-  HeatNoHousingMeteringDevice = 'HeatNoHousingMeteringDevice', //
+  HeatNoHousingMeteringDevice = 'HeatNoHousingMeteringDevice',
 }
 
 export enum EPipeNodeValidationMessage {
@@ -1958,6 +1958,13 @@ export interface EResourceTypeConsumptionRateResponseDictionaryItem {
 
 export interface EResourceTypeConsumptionRateResponseDictionaryItemListSuccessApiResponse {
   successResponse: EResourceTypeConsumptionRateResponseDictionaryItem[] | null;
+}
+
+export interface EResourceTypeDoubleDictionaryItem {
+  key?: EResourceType;
+
+  /** @format double */
+  value?: number;
 }
 
 export interface EResourceTypeNullableStringDictionaryItem {
@@ -2300,6 +2307,14 @@ export interface GetHousingMeteringDeviceReadingsResponseSuccessApiResponse {
   successResponse: GetHousingMeteringDeviceReadingsResponse | null;
 }
 
+export interface GetSummaryHousingConsumptionsByResourcesResponse {
+  consumptions: EResourceTypeDoubleDictionaryItem[] | null;
+}
+
+export interface GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse {
+  successResponse: GetSummaryHousingConsumptionsByResourcesResponse | null;
+}
+
 export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
@@ -2524,7 +2539,7 @@ export interface HomeownerAccountCreateRequest {
 
   /** @format int32 */
   apartmentId: number;
-  isForced?: boolean;
+  isForced?: boolean | null;
 }
 
 export interface HomeownerAccountCreateUnattachedRequest {
@@ -2579,7 +2594,7 @@ export interface HomeownerAccountReplaceRequest {
   /** @format uuid */
   replaceableAccountId: string;
   newHomeownerAccount: HomeownerAccountCreateRequest;
-  isForced?: boolean;
+  isForced?: boolean | null;
 }
 
 export interface HomeownerAccountResponse {
@@ -2662,7 +2677,7 @@ export interface HomeownerAccountUpdateRequest {
   /** @format double */
   ownershipArea?: number | null;
   isMainOnApartment?: boolean | null;
-  isForced?: boolean;
+  isForced?: boolean | null;
 }
 
 export interface HomeownerCertificateResponse {
@@ -4240,6 +4255,12 @@ export interface MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse {
   successResponse: MeteringDeviceSearchListResponse[] | null;
 }
 
+export interface NoHousingMeteringDeviceConfigurationRequest {
+  updateNodeConfigs?: boolean;
+  removePipes?: boolean;
+  removeDevices?: boolean;
+}
+
 export interface NodeCheckResponse {
   /** @format int32 */
   id: number;
@@ -5354,6 +5375,12 @@ export interface SubscriberStatisticsСonsumptionResponse {
 
   /** @format double */
   electricitySupplyConsumption: number | null;
+
+  /** @format double */
+  electricityConsumption: number | null;
+
+  /** @format double */
+  heatConsumption: number | null;
 
   /** @format date-time */
   dateLastTransmissionOfReading: string;
@@ -7793,6 +7820,28 @@ export class Api<
      * @description Роли:<li>Администратор системы</li>
      *
      * @tags DataMigrations
+     * @name DataMigrationsSetNoHousingMeteringDeviceConfigurationCreate
+     * @summary DataMigration
+     * @request POST:/api/DataMigrations/SetNoHousingMeteringDeviceConfiguration
+     * @secure
+     */
+    dataMigrationsSetNoHousingMeteringDeviceConfigurationCreate: (
+      data: NoHousingMeteringDeviceConfigurationRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/SetNoHousingMeteringDeviceConfiguration`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор системы</li>
+     *
+     * @tags DataMigrations
      * @name DataMigrationsImportHousingStockInfoCreate
      * @summary DataMigration
      * @request POST:/api/DataMigrations/ImportHousingStockInfo
@@ -8539,6 +8588,7 @@ export class Api<
      */
     homeownerAccountsCreate: (
       data: HomeownerAccountCreateRequest,
+      query?: { isForced?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -8547,6 +8597,7 @@ export class Api<
       >({
         path: `/api/HomeownerAccounts`,
         method: 'POST',
+        query: query,
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -8583,13 +8634,14 @@ export class Api<
      *
      * @tags HomeownerAccounts
      * @name HomeownerAccountsUpdate
-     * @summary HomeownersCreate
+     * @summary HomeownersUpdate
      * @request PUT:/api/HomeownerAccounts/{id}
      * @secure
      */
     homeownerAccountsUpdate: (
       id: string,
       data: HomeownerAccountUpdateRequest,
+      query?: { isForced?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -8598,6 +8650,7 @@ export class Api<
       >({
         path: `/api/HomeownerAccounts/${id}`,
         method: 'PUT',
+        query: query,
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -8638,6 +8691,7 @@ export class Api<
      */
     homeownerAccountsReplaceCreate: (
       data: HomeownerAccountReplaceRequest,
+      query?: { isForced?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -8646,6 +8700,7 @@ export class Api<
       >({
         path: `/api/HomeownerAccounts/Replace`,
         method: 'POST',
+        query: query,
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -11922,6 +11977,26 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
      *
      * @tags PipeHousingMeteringDevices
+     * @name PipeHousingMeteringDevicesDelete
+     * @summary HousingMeteringDeviceDelete
+     * @request DELETE:/api/PipeHousingMeteringDevices/{deviceId}
+     * @secure
+     */
+    pipeHousingMeteringDevicesDelete: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/PipeHousingMeteringDevices/${deviceId}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags PipeHousingMeteringDevices
      * @name PipeHousingMeteringDevicesCreate
      * @summary HousingMeteringDeviceCreate
      * @request POST:/api/PipeHousingMeteringDevices
@@ -12192,6 +12267,31 @@ export class Api<
         ErrorApiResponse
       >({
         path: `/api/PipeNodes/DataForHousingConsumptionPlot`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags PipeNodes
+     * @name PipeNodesSummaryHousingConsumptionsByResourcesList
+     * @summary HousingMeteringDeviceReadingsRead
+     * @request GET:/api/PipeNodes/SummaryHousingConsumptionsByResources
+     * @secure
+     */
+    pipeNodesSummaryHousingConsumptionsByResourcesList: (
+      query: { HousingStockIds: number[]; From: string; To: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/PipeNodes/SummaryHousingConsumptionsByResources`,
         method: 'GET',
         query: query,
         secure: true,
@@ -13284,6 +13384,14 @@ export class Api<
         ColdWaterSupplyConsumptionTo?: number;
         ElectricitySupplyConsumptionFrom?: number;
         ElectricitySupplyConsumptionTo?: number;
+        'HotWaterSupplyFilter.From'?: number;
+        'HotWaterSupplyFilter.To'?: number;
+        'ColdWaterSupplyFilter.From'?: number;
+        'ColdWaterSupplyFilter.To'?: number;
+        'ElectricityFilter.From'?: number;
+        'ElectricityFilter.To'?: number;
+        'HeatFilter.From'?: number;
+        'HeatFilter.To'?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -13320,6 +13428,14 @@ export class Api<
         ColdWaterSupplyConsumptionTo?: number;
         ElectricitySupplyConsumptionFrom?: number;
         ElectricitySupplyConsumptionTo?: number;
+        'HotWaterSupplyFilter.From'?: number;
+        'HotWaterSupplyFilter.To'?: number;
+        'ColdWaterSupplyFilter.From'?: number;
+        'ColdWaterSupplyFilter.To'?: number;
+        'ElectricityFilter.From'?: number;
+        'ElectricityFilter.To'?: number;
+        'HeatFilter.From'?: number;
+        'HeatFilter.To'?: number;
       },
       params: RequestParams = {},
     ) =>

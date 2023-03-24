@@ -12,12 +12,14 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Tabs } from 'ui-kit/Tabs';
 import { Title } from 'ui-kit/Title';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
+import { ApartmentOnPauseAlert } from './ApartmentOnPauseAlert';
 import {
   AdditionalAddressWrapper,
   BaseContentWrapper,
   CardsWrapper,
   CommonInfoWrapper,
   ContentWrapper,
+  Deviceswrapper,
   HeaderWrapper,
   TabsWrapper,
 } from './ApartmentProfile.styled';
@@ -56,6 +58,8 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   } = {
     [ApartmentSection.CommonData]: (
       <CommonInfoWrapper>
+        <ApartmentOnPauseAlert apartment={apartment} />
+
         <Title>Информация</Title>
         {apartment && (
           <CommonInfo
@@ -97,11 +101,15 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
       <HomeownersList homeowners={filteredHomeownerAccounts} />
     ),
     [ApartmentSection.Testimony]: apartment && (
-      <ApartmentIndividualDevicesMetersContainer
-        maxWidth={860}
-        apartment={apartment}
-        editable={false}
-      />
+      <Deviceswrapper>
+        <ApartmentOnPauseAlert apartment={apartment} />
+
+        <ApartmentIndividualDevicesMetersContainer
+          maxWidth={860}
+          apartment={apartment}
+          editable={false}
+        />
+      </Deviceswrapper>
     ),
     [ApartmentSection.ActsJournal]: <ApartmentActsListContainer />,
   };

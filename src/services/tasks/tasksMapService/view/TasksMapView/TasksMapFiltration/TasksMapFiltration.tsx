@@ -175,6 +175,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
                 placeholder="Выберите тип"
                 value={values.type || undefined}
                 onChange={(value) => setFieldValue('type', value)}
+                allowClear
               >
                 {taskTypes &&
                   taskTypes.map(({ value, key }) => (
