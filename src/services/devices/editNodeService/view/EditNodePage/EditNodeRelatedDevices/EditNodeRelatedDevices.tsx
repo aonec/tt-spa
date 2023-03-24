@@ -12,6 +12,7 @@ import {
 } from '../addHosuingMeteringDeviceService';
 import { CreateDeviceText } from './EditNodeRelatedDevices.styled';
 import { EditNodeRelatedDevicesProps } from './EditNodeRelatedDevices.types';
+import { EPipeNodeConfig } from 'myApi';
 
 export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   node,
@@ -24,6 +25,9 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
   const openDeleteHousingMeteringDeviceModal = useEvent(
     deletePipeHousingMeteringDeviceService.inputs.openModal,
   );
+
+  const isNodeConfigWithoutODPU =
+    node.configuration === EPipeNodeConfig.HeatNoHousingMeteringDevice;
 
   return (
     <>
@@ -39,9 +43,13 @@ export const EditNodeRelatedDevices: FC<EditNodeRelatedDevicesProps> = ({
       />
       <AddHosuingMeteringDeviceContainer />
       <DeletePipeHousingMeteringDeviceContainer />
-      <CreateDeviceText onClick={() => openAddHousingMeteringDeviceModal(node)}>
-        + Добавить прибор
-      </CreateDeviceText>
+      {!isNodeConfigWithoutODPU && (
+        <CreateDeviceText
+          onClick={() => openAddHousingMeteringDeviceModal(node)}
+        >
+          + Добавить прибор
+        </CreateDeviceText>
+      )}
     </>
   );
 };

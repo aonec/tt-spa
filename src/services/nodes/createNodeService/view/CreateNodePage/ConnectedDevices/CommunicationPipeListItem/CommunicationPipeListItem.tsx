@@ -24,6 +24,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   configuration,
   handleDeletePipe,
   handleDeleteDevice,
+  isNodeConfigWithoutODPU,
   handleEditDevice,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -58,7 +59,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
             isOpen={isOpen}
             onClick={() => setIsOpen((prev) => !prev)}
           />
-          {handleDeletePipe && (
+          {handleDeletePipe && !isNodeConfigWithoutODPU && (
             <TrashIconSC onClick={() => handleDeletePipe(pipe.id)} />
           )}
         </RighContentWrapper>

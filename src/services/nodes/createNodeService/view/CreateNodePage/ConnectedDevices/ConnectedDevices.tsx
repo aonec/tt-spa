@@ -14,7 +14,10 @@ import {
   CreateCommonDevicePartitial,
 } from 'services/nodes/addPipeNodeCommonDeviceService/addPipeNodeCommonDeviceService.types';
 import { omit } from 'lodash';
-import { CreatePipeHousingMeteringDeviceInNodeRequest } from 'myApi';
+import {
+  CreatePipeHousingMeteringDeviceInNodeRequest,
+  EPipeNodeConfig,
+} from 'myApi';
 import { CommunicationPipesListWrapper } from './ConnectedDevices.styled';
 import { CommunicationPipeListItem } from './CommunicationPipeListItem';
 
@@ -34,6 +37,9 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
   >(requestPayload?.communicationPipes || []);
 
   const { configuration } = requestPayload;
+
+  const isNodeConfigWithoutODPU =
+    configuration === EPipeNodeConfig.HeatNoHousingMeteringDevice;
 
   const handleAddCommunicationPipe = (
     communicationPipe: CommunicationPipePayload,
@@ -118,13 +124,16 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
                 pipe={pipe}
                 handleDeletePipe={handleDeletePipe}
                 handleDeleteDevice={handleDeleteDevice}
+                isNodeConfigWithoutODPU={isNodeConfigWithoutODPU}
               />
             ))}
           </CommunicationPipesListWrapper>
         )}
-        <LinkButton onClick={() => openAddCommonDeviceModal()}>
-          + Добавить прибор
-        </LinkButton>
+        {!isNodeConfigWithoutODPU && (
+          <LinkButton onClick={() => openAddCommonDeviceModal()}>
+            + Добавить прибор
+          </LinkButton>
+        )}
         <Footer>
           <Button type="ghost" onClick={goPrevStep}>
             Назад
