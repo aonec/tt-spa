@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
+import { firstLetterToUpperCase } from 'utils/firstLetterToUpperCase';
 
 export const getPreviousReadingsMonth = (sliderIndex: number) => {
   const month = moment().subtract(sliderIndex, 'months').format('MMMM');

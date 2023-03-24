@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import { objectProfileService } from './objectProfileService.model';
 import { ObjectProfile } from './view/ObjectProfile';
 import { ConsolidatedReportContainer } from './consolidatedReportService';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = objectProfileService;
 const { ObjectProfileIdGate } = gates;
@@ -18,8 +20,19 @@ export const ObjectProfileContainer = () => {
 
   const setCurrentGrouptype = useEvent(inputs.setCurrentGroutype);
   const openConsolidatedReportModal = useEvent(
-    inputs.openConsolidatedReportModal
+    inputs.openConsolidatedReportModal,
   );
+
+  const isPermitionToAddNode = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
+  const isPermitionToDownloadConsolidatedReport = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmSpectator,
+    ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+  ]);
 
   return (
     <>
@@ -34,6 +47,10 @@ export const ObjectProfileContainer = () => {
           setCurrentGrouptype={setCurrentGrouptype}
           currentGrouptype={currentGrouptype}
           openCommonReport={() => openConsolidatedReportModal()}
+          isPermitionToAddNode={isPermitionToAddNode}
+          isPermitionToDownloadConsolidatedReport={
+            isPermitionToDownloadConsolidatedReport
+          }
         />
       )}
     </>

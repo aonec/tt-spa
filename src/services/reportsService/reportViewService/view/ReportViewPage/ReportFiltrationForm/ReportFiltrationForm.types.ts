@@ -19,3 +19,15 @@ export type Address = {
   id: number;
   addressString: string;
 };
+
+export enum EmployeeReportType {
+  OperatorsWorkingReport = 'OperatorsWorkingReport',
+  HouseManagementsReport = 'HouseManagementsReport',
+  CallCenterWorkingReport = 'CallCenterWorkingReport',
+  InspectorsWorkingReport = 'InspectorsWorkingReport',
+}
+
+export enum EmployeeReportDatePeriodType {
+  Month = 'Month',
+  Year = 'Year',
+}

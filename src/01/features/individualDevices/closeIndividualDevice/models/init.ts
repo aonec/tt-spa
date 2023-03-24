@@ -45,7 +45,7 @@ sample({
     closeIndividualDeviceForm.$values.map((values) => ({
       closingDate: values.closingDate,
       closingReason: values.closingReason,
-      documentsIds: values.documentIds.map((file) => file.fileResponse?.id!),
+      documentsIds: values.documentIds.map((document) => document.id),
     })),
     $closingIndividualDevice,
     (props, device) => {

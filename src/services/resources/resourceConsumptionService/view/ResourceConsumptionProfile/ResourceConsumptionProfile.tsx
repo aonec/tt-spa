@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ResourceConsumptionGraphDataType } from '../../resourceConsumptionService.types';
-import { ResourceConsumptionFilter } from '../ResourceConsumptionFilter';
 import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
@@ -12,6 +11,7 @@ import {
   SelectedAddresses,
 } from './ResourceConsumptionProfile.types';
 import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
+import { ResourceConsumptionFilterContainer } from '../../resourceConsumptionFilterService';
 
 export const ResourceConsumptionProfile: FC<
   ResourceConsumptionProfileProps
@@ -19,21 +19,11 @@ export const ResourceConsumptionProfile: FC<
   isLoading,
   resourceConsumptionFilter,
   setResource,
-  setFilter,
   housingConsumptionData,
-  streetsList,
-  selectedHouseManagement,
-  setHouseManagement,
-  houseManagements,
-  handleClearData,
-  handleClearFilter,
   selectedGraphTypes,
   setSelectedGraphTypes,
   additionalConsumptionData,
-  handleClearAdditionalAddressData,
-  treeData,
-  selectCity,
-  selectedCity,
+  summaryConsumption,
 }) => {
   const { ResourceType } = resourceConsumptionFilter || {};
 
@@ -62,6 +52,7 @@ export const ResourceConsumptionProfile: FC<
         <SelectResource
           selectedResource={ResourceType || null}
           setResource={setResource}
+          summaryConsumption={summaryConsumption}
         />
 
         <WithLoader isLoading={isLoading}>
@@ -93,20 +84,7 @@ export const ResourceConsumptionProfile: FC<
             )}
         </WithLoader>
       </GraphWrapper>
-      <ResourceConsumptionFilter
-        setFilter={setFilter}
-        filter={resourceConsumptionFilter}
-        streetsList={streetsList}
-        selectedHouseManagement={selectedHouseManagement}
-        setHouseManagement={setHouseManagement}
-        houseManagements={houseManagements}
-        handleClearData={handleClearData}
-        handleClearFilter={handleClearFilter}
-        treeData={treeData}
-        handleClearAdditionalAddressData={handleClearAdditionalAddressData}
-        selectedCity={selectedCity}
-        selectCity={selectCity}
-      />
+      <ResourceConsumptionFilterContainer />
     </Wrapper>
   );
 };

@@ -28,4 +28,10 @@ export const ReportIconsDictionary: {
   [ReportType.Employee]: <UserIcon />,
 };
 
-export const reportsSelectItems: ReportType[] = Object.values(ReportType);
+export const reportsSelectItems: ReportType[] = [
+  ReportType.Employee,
+  ReportType.IndividualDevices,
+  ReportType.HousingDevices,
+  ReportType.ActsJournal,
+  ReportType.Homeowners,
+];

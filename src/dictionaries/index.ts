@@ -23,7 +23,7 @@ export const ReportOptionsDictionary: {
   [EIndividualDeviceReportOption.DeviceCheckingDateExpiration]:
     'Отчет по выходу поверки приборов',
   [EIndividualDeviceReportOption.InvalidCheckingDates]:
-    'Некорректные даты повероки приборов',
+    'Некорректные даты поверки приборов',
   [EIndividualDeviceReportOption.SkippedReadingOnOneOfRisers]:
     'Отчет по пропущенным показаниям на одном из стояков',
 };

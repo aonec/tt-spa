@@ -6,10 +6,10 @@ import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
 import { StyledSelect } from '../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { ErrorMessage } from '../../../../../contractors/addContractors';
 import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 import { createCalcuatorService } from './CreateCalculatorModal/models';
 import { AddNodeCalculatorConnectionForm } from './models';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 interface Props {
   onClose(): void;

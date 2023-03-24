@@ -19,6 +19,7 @@ import axios from '01/axios';
 export const DocumentItem: FC<DocumentItemProps> = ({
   document,
   removeDocument,
+  isPermitionToDeleteExistedDocument,
 }) => {
   const documentDate = useMemo(
     () => getTimeStringByUTC(document.uploadingTime),
@@ -46,7 +47,7 @@ export const DocumentItem: FC<DocumentItemProps> = ({
       </DocumentDateWrapper>
       <ManageButtonsWrapper>
         <DownloadIconSC onClick={handleSaveDocument} />
-        {removeDocument && (
+        {removeDocument && isPermitionToDeleteExistedDocument && (
           <TrashIconSC
             onClick={async () => {
               try {

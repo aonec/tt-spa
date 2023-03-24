@@ -6,6 +6,8 @@ import { ChangeNodeTypeContainer } from '../changeNodeTypeService';
 import { nodeProfileService } from './nodeProfileService.model';
 import { NodeProfilePage } from './view/NodeProfilePage';
 import { PipeNodeProfileSection } from './view/NodeProfilePage/NodeProfilePage.types';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const { inputs, outputs, gates } = nodeProfileService;
 const { PipeNodeGate } = gates;
@@ -29,6 +31,11 @@ export const NodeProfileContainer = () => {
 
   const handleEditNode = () => history.push(`/nodes/${pipeNode?.id}/edit`);
 
+  const isPermitionToEditsNode = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+  ]);
+
   return (
     <>
       <PipeNodeGate pipeNodeId={Number(nodeId)} />
@@ -42,6 +49,7 @@ export const NodeProfileContainer = () => {
         handleEditNode={handleEditNode}
         openChangeNodeStatusModal={openChangeNodeStatusModal}
         openChangeNodeTypeModal={openChangeNodeTypeModal}
+        isPermitionToEditsNode={isPermitionToEditsNode}
       />
     </>
   );

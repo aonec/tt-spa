@@ -2,11 +2,16 @@ import React, { FC, useEffect } from 'react';
 import { Checkbox, Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import {
+  EmployeeReportFormWrapper,
   PeriodPickerWrapprer,
   ResourceOption,
   Wrapper,
 } from './ReportFiltrationForm.styled';
-import { ReportFiltrationFormProps } from './ReportFiltrationForm.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+  ReportFiltrationFormProps,
+} from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { reportViewService } from 'services/reportsService/reportViewService/reportViewService.model';
@@ -27,6 +32,9 @@ import {
 import { RangePicker } from 'ui-kit/RangePicker';
 import {
   addressesCountTexts,
+  EmployeeReportDatePeriodDictionary,
+  EmployeeReportDatePeriodTypesDictionary,
+  EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
   selectedCountTexts,
 } from './ReportFiltrationForm.constants';
@@ -38,6 +46,7 @@ import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
 import { getCountText } from 'utils/getCountText';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -68,6 +77,87 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
     addressesWithHouseManagements,
     values.houseManagement,
   );
+
+  const isEmployeeReport = reportType === ReportType.Employee;
+
+  const isCallCenterReport =
+    values.employeeReportType === EmployeeReportType.CallCenterWorkingReport;
+
+  const employeeReportDatePickerFormat = `${
+    values.employeeReportDatePeriodType === EmployeeReportDatePeriodType.Month
+      ? 'MMMM'
+      : ''
+  } YYYY`;
+
+  const employeeReportDatePicker = values.employeeReportDatePeriodType
+    ? EmployeeReportDatePeriodDictionary[values.employeeReportDatePeriodType]
+    : undefined;
+
+  if (isEmployeeReport) {
+    return (
+      <Form id={formId} onSubmitCapture={handleSubmit}>
+        <EmployeeReportFormWrapper>
+          <FormItem label="Вид отчета">
+            <Select
+              placeholder="Выберите из списка"
+              value={values.employeeReportType || undefined}
+              onChange={(value) => setFieldValue('employeeReportType', value)}
+            >
+              {Object.values(EmployeeReportType).map((elem) => (
+                <Select.Option key={elem} value={elem}>
+                  {EmployeeReportTypesDictionary[elem]}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+          <FormItem label="Период">
+            <Select
+              placeholder="Выберите из списка"
+              value={
+                isCallCenterReport
+                  ? 'Произвольный период'
+                  : values.employeeReportDatePeriodType || undefined
+              }
+              onChange={(value) =>
+                setFieldValue('employeeReportDatePeriodType', value)
+              }
+              disabled={!values.employeeReportType || isCallCenterReport}
+            >
+              {Object.values(EmployeeReportDatePeriodType).map((elem) => (
+                <Select.Option key={elem} value={elem}>
+                  {EmployeeReportDatePeriodTypesDictionary[elem]}
+                </Select.Option>
+              ))}
+            </Select>
+          </FormItem>
+          <FormItem label="Дата">
+            {!isCallCenterReport && (
+              <DatePicker
+                value={values.employeeReportDate}
+                onChange={(value) => setFieldValue('employeeReportDate', value)}
+                picker={employeeReportDatePicker}
+                format={employeeReportDatePickerFormat}
+                disabled={
+                  !values.employeeReportType ||
+                  !values.employeeReportDatePeriodType
+                }
+              />
+            )}
+            {isCallCenterReport && (
+              <RangePicker
+                value={[values.from, values.to]}
+                format="DD.MM.YYYY"
+                onChange={(dates) => {
+                  setFieldValue('from', dates?.[0]);
+                  setFieldValue('to', dates?.[1]);
+                }}
+              />
+            )}
+          </FormItem>
+        </EmployeeReportFormWrapper>
+      </Form>
+    );
+  }
 
   const isHomeownersReport = reportType === ReportType.Homeowners;
 
@@ -113,7 +203,27 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               placeholder="Выберите из списка"
               onChange={(value) => {
                 setFieldValue('houseManagement', value || null);
-                setFieldValue('housingStockIds', []);
+
+                const houseManagement = addressesWithHouseManagements.find(
+                  (elem) => elem.id === value,
+                );
+
+                const selectedHouseManagementHousingStocksIds = (
+                  houseManagement?.streets || []
+                ).reduce(
+                  (acc, street) => [
+                    ...acc,
+                    ...(street.addresses || []).map(
+                      (elem) => elem.housingStockId,
+                    ),
+                  ],
+                  [] as number[],
+                );
+
+                setFieldValue(
+                  'housingStockIds',
+                  selectedHouseManagementHousingStocksIds,
+                );
               }}
               allowClear
             >

@@ -16,7 +16,6 @@ import {
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
-import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
 import { putIndividualDevice } from '../../../_api/apiRequests';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -147,7 +146,7 @@ const IndividualDeviceEditForm = ({
     }
   }, [mountPlaceInit, setFieldValue]);
 
-  const Alert = ({ name }: AlertInterface) => {
+  const Alert = ({ name }: { name: string; styles?: any }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {

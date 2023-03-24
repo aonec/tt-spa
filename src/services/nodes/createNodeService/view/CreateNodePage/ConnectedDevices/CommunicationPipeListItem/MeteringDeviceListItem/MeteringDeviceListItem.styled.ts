@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { PencilIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   padding: 16px;
@@ -48,4 +49,8 @@ export const DeviceInfoWrapper = styled.div`
       color: #189ee9 !important;
     }
   }
+`;
+
+export const PencilIconSC = styled(PencilIcon)`
+  cursor: pointer;
 `;
