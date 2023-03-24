@@ -1,6 +1,7 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from '.';
+import { SettingsIcon } from 'ui-kit/icons';
 
 export default {
   title: 'Button',
@@ -17,20 +18,49 @@ export default {
       defaultValue: 'middle',
     },
     type: {
-      defaultValue: 'default',
+      defaultValue: 'primary',
     },
   },
 } as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => (
-  <Button {...args}>Button</Button>
+export const Basic: ComponentStory<typeof Button> = (args) => (
+  <div style={{ width: 300, display: 'flex', justifyContent: 'center' }}>
+    <Button {...args} />
+  </div>
+);
+Basic.args = { children: 'Click me' };
+
+export const All = () => (
+  <div style={{ display: 'flex', gap: 20, padding: 32 }}>
+    <Button type="primary">Primary</Button>
+    <Button type="danger">Danger</Button>
+    <Button type="ghost">Ghost</Button>
+  </div>
 );
 
-export const Primary = Template.bind({});
-Primary.args = { type: 'primary' };
+export const Sizes = () => (
+  <div style={{ display: 'flex', gap: 20, padding: 32 }}>
+    <Button size="middle">middle</Button>
+    <Button size="small">small</Button>
+  </div>
+);
 
-export const Danger = Template.bind({});
-Danger.args = { type: 'danger' };
+export const Loading = () => (
+  <div style={{ display: 'flex', gap: 20, padding: 32 }}>
+    <Button type="primary" isLoading={true}>
+      Primary
+    </Button>
+    <Button type="danger" isLoading={true}>
+      Danger
+    </Button>
+    <Button type="ghost" isLoading={true}>
+      Ghost
+    </Button>
+  </div>
+);
 
-export const Ghost = Template.bind({});
-Ghost.args = { type: 'ghost' };
+export const WithIcon = () => (
+  <Button size="small" icon={<SettingsIcon />}>
+    Reset
+  </Button>
+);
