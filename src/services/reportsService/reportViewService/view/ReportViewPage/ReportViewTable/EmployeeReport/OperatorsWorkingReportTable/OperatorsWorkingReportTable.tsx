@@ -1,13 +1,15 @@
-import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
-import { EIndividualDeviceReadingsSource } from 'myApi';
 import React, { FC } from 'react';
 import { Table } from 'ui-kit/Table';
+import { EIndividualDeviceReadingsSource } from 'myApi';
+import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
+import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';
 import { ReadingNameToSourceDictionary } from './OperatorsWorkingReportTable.constants';
 import {
   getSumColumnCSS,
   ReadingsSourceWrapper,
 } from './OperatorsWorkingReportTable.styled';
 import { OperatorsWorkingReportTableProps } from './OperatorsWorkingReportTable.types';
+import { sum } from 'lodash';
 
 export const OperatorsWorkingReportTable: FC<
   OperatorsWorkingReportTableProps
@@ -35,6 +37,7 @@ export const OperatorsWorkingReportTable: FC<
               <div>{elem.name}</div>
             </ReadingsSourceWrapper>
           ),
+          css: getNameColumnCSS,
         },
         {
           label: 'ХВС',
@@ -58,14 +61,14 @@ export const OperatorsWorkingReportTable: FC<
         },
         {
           label: 'Количество показаний',
-          size: 'minmax(150px, 250px)',
+          size: 'minmax(150px, 200px)',
           render: (elem) =>
-            [
+            sum([
               elem.heatCount,
               elem.coldWaterSupplyCount,
               elem.hotWaterSupplyCount,
               elem.electricityCount,
-            ].reduce((acc, count) => acc + count, 0),
+            ]),
           css: getSumColumnCSS,
         },
       ]}

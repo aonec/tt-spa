@@ -82,16 +82,16 @@ export const downloadReportFile = async ({
     employeeReportType &&
     DownloadEmployeeReportUrlsDictionary[employeeReportType];
 
-  const res: string = await axios.get(
-    employeeReportUrl || DownloadReportUrlsDictionary[reportType],
-    {
-      params: payload,
-      responseType: 'blob',
-      paramsSerializer: (params) => {
-        return queryString.stringify(params);
-      },
+  const reportUrl =
+    employeeReportUrl || DownloadReportUrlsDictionary[reportType];
+
+  const res: string = await axios.get(reportUrl, {
+    params: payload,
+    responseType: 'blob',
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
     },
-  );
+  });
 
   const url = window.URL.createObjectURL(new Blob([res]));
 

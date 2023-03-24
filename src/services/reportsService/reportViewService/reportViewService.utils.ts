@@ -172,16 +172,18 @@ const getEmployeeReportDatePeriod = (
 export const prepareEmployeeReportRequestPayload = (
   values: ReportFiltrationFormValues,
 ): EmployeeReportRequestPayload | null => {
-  if (!values.employeeReportType || !values.employeeReportDatePeriodType)
-    return null;
+  const isCallCenterReport =
+    values.employeeReportType === EmployeeReportType.CallCenterWorkingReport;
 
-  const period =
-    values.employeeReportType === EmployeeReportType.CallCenterWorkingReport
-      ? getCallCenterReportDatePeriod(values.from, values.to)
-      : getEmployeeReportDatePeriod(
-          values.employeeReportDatePeriodType,
-          values.employeeReportDate,
-        );
+  if (!values.employeeReportType) return null;
+
+  const period = isCallCenterReport
+    ? getCallCenterReportDatePeriod(values.from, values.to)
+    : values.employeeReportDatePeriodType &&
+      getEmployeeReportDatePeriod(
+        values.employeeReportDatePeriodType,
+        values.employeeReportDate,
+      );
 
   if (!period) return null;
 

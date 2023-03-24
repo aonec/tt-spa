@@ -1,5 +1,3 @@
-import { css } from 'styled-components';
-
-export const getNameColumnCSS = (isHeader: boolean) => css`
+export const getNameColumnCSS = (isHeader: boolean) => `
   font-weight: ${!isHeader && 700};
 `;

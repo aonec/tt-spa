@@ -14,7 +14,10 @@ import {
   ReportFiltrationFormValues,
 } from '../../reportViewService.types';
 import { getCountText } from 'utils/getCountText';
-import { EmployeeReportDatePeriodType } from './ReportFiltrationForm/ReportFiltrationForm.types';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './ReportFiltrationForm/ReportFiltrationForm.types';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList
@@ -59,8 +62,16 @@ export const getFiltersList = (
       houseManagement.id === filtrationValues.houseManagement,
   );
 
+  const isCallCenterReport =
+    filtrationValues.employeeReportType ===
+    EmployeeReportType.CallCenterWorkingReport;
+
+  const reportDatePeriodType = isCallCenterReport
+    ? ReportDatePeriod.AnyPeriod
+    : filtrationValues.reportDatePeriod;
+
   const period = getPeriodText(
-    filtrationValues.reportDatePeriod,
+    reportDatePeriodType,
     filtrationValues.from,
     filtrationValues.to,
   );
@@ -79,18 +90,20 @@ export const getFiltersList = (
     filtrationValues.employeeReportDatePeriodType ===
     EmployeeReportDatePeriodType.Month;
 
-  const employeeReportDatePeriod = employeeReportDate?.format(
-    `${isEmployeeReportPeriodMonth ? 'MMMM' : ''} YYYY`,
-  );
+  const employeeReportDatePeriod =
+    !isCallCenterReport &&
+    employeeReportDate?.format(
+      `${isEmployeeReportPeriodMonth ? 'MMMM' : ''} YYYY`,
+    );
 
   return [
     filtrationValues.city,
     houseManagement?.name || null,
     selectedAddress,
     resourcesText,
+    employeeReportType,
     period,
     reportOption,
-    employeeReportType,
     employeeReportDatePeriod,
-  ].filter(Boolean);
+  ].filter(Boolean) as string[];
 };
