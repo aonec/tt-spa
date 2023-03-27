@@ -11,7 +11,7 @@ const typesOfButton: {
   };
 } = {
   default: {
-    mainColor: '#189EE9 ',
+    mainColor: '#189EE9',
     fontColor: 'white',
     shadowColor: '#189EE940',
     borderColor: 'none',

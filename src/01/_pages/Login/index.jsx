@@ -12,8 +12,6 @@ import { DevSettingsModal } from '01/features/developmentSettings';
 import { openDevSettingsModal } from '01/features/developmentSettings/models';
 import { parse } from 'query-string';
 import { Button } from 'ui-kit/Button';
-import styles from './Login.module.scss';
-import classNames from 'classnames/bind';
 import { devUrl } from '01/axios';
 
 export const Main = styled.div`
@@ -62,8 +60,6 @@ export const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
   const { search } = useLocation();
-
-  const cx = classNames.bind(styles);
 
   async function FormSubmitHadler() {
     setLoading(true);
@@ -156,7 +152,7 @@ export const Login = () => {
               onClick={openDevSettingsModal}
               size="small"
               type="ghost"
-              className={cx('devSettings-btn')}
+              style={{ color: 'white' }}
             >
               Development settings
             </Button>

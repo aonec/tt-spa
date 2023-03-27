@@ -28,8 +28,6 @@ import { StyledSelect } from '01/shared/ui/Select/components';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
-import classNames from 'classnames/bind';
-import styles from './CreateObjectAddressStage.module.scss';
 
 export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
   existingStreets,
@@ -75,8 +73,6 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
     addressSearch,
     existingStreets || [],
   );
-
-  const cx = classNames.bind(styles);
 
   return (
     <>
@@ -230,13 +226,14 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
         <Footer>
           <NextCancelBlock>
             <ButtonPadding>
-              <Button type="ghost" onSubmit={() => onPageCancel()}>
+              <Button type="ghost" onClick={() => onPageCancel()}>
                 Отмена
               </Button>
             </ButtonPadding>
+
             <Button
-              className={cx('button-long')}
-              onSubmit={() => {
+              style={{ padding: '0 40px' }}
+              onClick={() => {
                 handleSubmit();
               }}
             >

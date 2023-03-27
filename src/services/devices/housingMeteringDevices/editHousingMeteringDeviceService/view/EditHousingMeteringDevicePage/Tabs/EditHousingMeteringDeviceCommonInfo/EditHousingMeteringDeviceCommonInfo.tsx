@@ -1,5 +1,4 @@
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import classNames from 'classnames/bind';
 import { MagistralsDisctionary } from 'dictionaries';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -24,7 +23,6 @@ import {
   EditHousingMeteringDeviceCommonInfoProps,
 } from './EditHousingMeteringDeviceCommonInfo.types';
 import { getUpdateNodeDataFromFormik } from './EditHousingMeteringDeviceCommonInfo.utils';
-import styles from './EditHousingMeteringDeviceCommonInfo.module.scss';
 
 export const EditHousingMeteringDeviceCommonInfo: FC<
   EditHousingMeteringDeviceCommonInfoProps
@@ -59,8 +57,6 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
       },
       validateOnChange: false,
     });
-
-  const cx = classNames.bind(styles);
 
   return (
     <Wrapper>
@@ -170,11 +166,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
         <Button type="ghost" onClick={() => onCancel()}>
           Отмена
         </Button>
-        <Button
-          type="default"
-          className={cx('button-long')}
-          onClick={() => handleSubmit()}
-        >
+        <Button style={{ padding: '0 40px' }} onClick={() => handleSubmit()}>
           Сохранить
         </Button>
       </Footer>

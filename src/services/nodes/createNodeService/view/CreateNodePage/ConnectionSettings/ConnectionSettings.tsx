@@ -28,8 +28,6 @@ import {
 import { SelectValue } from 'antd/lib/select';
 import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
 import { CalculatorIcon } from 'ui-kit/icons';
-import classNames from 'classnames/bind';
-import styles from './ConnectionSettings.module.scss';
 
 const { inputs, outputs } = connectionSettingsService;
 
@@ -114,8 +112,6 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
     );
   }, [values.calculatorId, calculatorsList]);
 
-  const cx = classNames.bind(styles);
-
   return (
     <>
       <CreateCalculatorModalContainer />
@@ -197,10 +193,10 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
           </FormItem>
         </div>
         <Footer>
-          <Button type="ghost" onSubmit={goPrevStep}>
+          <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button className={cx('button-long')} onSubmit={() => handleSubmit()}>
+          <Button style={{ padding: '0 40px' }} onClick={() => handleSubmit()}>
             Далее
           </Button>
         </Footer>

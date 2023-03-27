@@ -32,8 +32,6 @@ import {
 } from 'dictionaries';
 import moment from 'moment';
 import { IncorrectConfigAlert } from 'services/devices/editNodeService/view/EditNodePage/IncorrectConfigAlert';
-import classNames from 'classnames/bind';
-import styles from './CreateNodeConfirmationModal.module.scss';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
@@ -68,8 +66,6 @@ export const CreateNodeConfirmationModal: FC<
 
   const isValidationMessage = Boolean(validationResult.length);
 
-  const cx = classNames.bind(styles);
-
   return (
     <StyledModal
       centered
@@ -78,13 +74,13 @@ export const CreateNodeConfirmationModal: FC<
       width={800}
       footer={
         <Footer>
-          <Button type="ghost" onSubmit={handleClose}>
+          <Button type="ghost" onClick={handleClose}>
             Отмена
           </Button>
           <Button
+            style={{ padding: '0 40px' }}
             isLoading={isLoading}
-            className={cx('button-long')}
-            onSubmit={handleSubmitForm}
+            onClick={handleSubmitForm}
           >
             Создать узел
           </Button>

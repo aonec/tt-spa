@@ -30,8 +30,6 @@ import {
 } from './CommonData.utils';
 import { ConfiguratePipe } from './ConfiguratePipe';
 import { CreateNodeFormPayload } from 'services/nodes/createNodeService/createNodeService.types';
-import classNames from 'classnames/bind';
-import styles from './CommonData.module.scss';
 
 const { inputs } = createNodeServiceZoneService;
 
@@ -157,8 +155,6 @@ export const CommonData: FC<CommonDataProps> = ({
     }
   }, [setFieldValue, requestPayload.communicationPipes]);
 
-  const cx = classNames.bind(styles);
-
   return (
     <>
       <Title>Общие данные об узле</Title>
@@ -271,10 +267,10 @@ export const CommonData: FC<CommonDataProps> = ({
         )}
 
       <Footer>
-        <Button type="ghost" onSubmit={goPrevStep}>
+        <Button type="ghost" onClick={goPrevStep}>
           Назад
         </Button>
-        <Button className={cx('button-long')} onSubmit={() => handleSubmit()}>
+        <Button style={{ padding: '0 40px' }} onClick={() => handleSubmit()}>
           Далее
         </Button>
       </Footer>

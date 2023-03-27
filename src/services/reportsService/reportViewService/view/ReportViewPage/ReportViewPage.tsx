@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import {
+  ButtonSC,
   ExtendedSearchWrapper,
   FiltrationInfoItem,
   FiltrationInfoList,
@@ -17,12 +18,9 @@ import {
 } from 'services/reportsService/view/ReportsPage/ReportsPage.constants';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
-import { Button } from 'ui-kit/Button';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import classNames from 'classnames/bind';
-import styles from './ReportViewPage.module.scss';
 
 const formId = 'report-form-id';
 
@@ -56,8 +54,6 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   }, [setIsOpen]);
 
   const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
-
-  const cx = classNames.bind(styles);
 
   return (
     <Wrapper>
@@ -102,15 +98,14 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
                 <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
               )}
             </FiltrationInfoList>
-            <Button
+            <ButtonSC
               size="small"
-              className={cx('button-long')}
-              onSubmit={downloadReport}
+              onClick={downloadReport}
               disabled={isLoadingReport}
               isLoading={isReportFileDownloading}
             >
               Скачать отчет
-            </Button>
+            </ButtonSC>
           </FiltrationInfoWrapper>
         </ExtendedSearch>
       </ExtendedSearchWrapper>
