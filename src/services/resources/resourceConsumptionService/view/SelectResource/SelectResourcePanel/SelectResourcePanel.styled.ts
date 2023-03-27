@@ -25,8 +25,19 @@ export const Wrapper = styled.div<{ active: boolean }>`
 
 export const ContentWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   gap: 8px;
   color: #272f5ae5;
+`;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+export const SummaryWrapper = styled.div`
+  font-weight: 500;
+  display: flex;
 `;

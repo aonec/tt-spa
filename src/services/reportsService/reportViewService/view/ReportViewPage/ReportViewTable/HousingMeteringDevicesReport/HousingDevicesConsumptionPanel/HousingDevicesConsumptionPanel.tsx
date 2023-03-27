@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { round } from 'utils/round';
 import {
   Panel,
   TextWrapper,
@@ -13,7 +14,7 @@ export const HousingDevicesConsumptionPanel: FC<
     <Wrapper>
       <Panel>
         <TextWrapper>Расход по всем общедомовым приборам</TextWrapper>
-        <TextWrapper isBold>{count} кВтч</TextWrapper>
+        <TextWrapper isBold>{round(count, 3)} кВтч</TextWrapper>
       </Panel>
     </Wrapper>
   );

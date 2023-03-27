@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 
-export const ButtonSC = styled(Button)`
-  margin-top: 16px;
+export const CreateDeviceText = styled.div`
+  color: #189ee9;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 32px;
+
+  cursor: pointer;
 `;

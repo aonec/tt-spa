@@ -6,7 +6,10 @@ import {
 } from './../../../../../myApi';
 import { createStore, createEvent, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
+import {
+  EffectFailDataAxiosError,
+  EffectFailDataAxiosErrorDataApartmentId,
+} from 'types';
 
 export const editHomeownerAccountEffect = createEffect<
   { id: string; data: HomeownerAccountUpdateRequest },
@@ -76,12 +79,6 @@ export const personalNumberEditForm = createForm({
     },
     paymentCode: {
       init: null as number | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     isMainAccountingNumber: {
       init: false,
@@ -105,7 +102,8 @@ export const handleEditHomeownerAccount = createEvent();
 
 export const closeHomeownerAccountFx = createEffect<
   HomeownerAccountCloseRequest,
-  void
+  void,
+  EffectFailDataAxiosError
 >();
 
 export const $closeHomeownerRequestStatus =

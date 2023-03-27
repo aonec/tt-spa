@@ -7,10 +7,10 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { EOrganizationUserWorkingStatusType } from 'myApi';
-import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { DatePeriod } from 'services/objects/objectProfileService/consolidatedReportService/view/ConsolidatedReportForm/ConsolidatedReportForm.types';
 import { Select } from '01/shared/ui/Select';
+import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
 
 export const ChangeStatusEmployeeForm: FC<ChangeStatusEmployeeFormProps> = ({
   formId,

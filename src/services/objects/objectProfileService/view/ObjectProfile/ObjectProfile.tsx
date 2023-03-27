@@ -18,6 +18,8 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   currentGrouptype,
   setCurrentGrouptype,
   openCommonReport,
+  isPermitionToAddNode,
+  isPermitionToDownloadConsolidatedReport,
 }) => {
   const history = useHistory();
   const { show } = getAccessesList();
@@ -37,11 +39,13 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
               title: 'Добавить узел',
               onClick: () =>
                 history.push(`/objects/${housingStock.id}/addNode`),
-              hidden: !show('CalculatorUpdate') as boolean,
+              hidden:
+                (!show('CalculatorUpdate') as boolean) || !isPermitionToAddNode,
             },
             {
               title: 'Выгрузка сводного отчёта',
               onClick: () => openCommonReport(),
+              hidden: !isPermitionToDownloadConsolidatedReport,
             },
           ],
         }}

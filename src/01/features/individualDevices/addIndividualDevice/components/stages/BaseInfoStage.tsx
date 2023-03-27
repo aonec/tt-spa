@@ -23,10 +23,6 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { getBitDepthAndScaleFactor } from '../../utils';
-import {
-  $contractors,
-  ContractorsGate,
-} from '01/features/contractors/displayContractors/models';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
@@ -37,6 +33,12 @@ import {
   handleFetchSerialNumberForCheck,
 } from '01/features/individualDevices/switchIndividualDevice/models/init';
 import { Loader } from '01/components';
+import { displayContractorsService } from 'services/contractors/displayContractorsService';
+
+const {
+  outputs,
+  gates: { ContractorsGate },
+} = displayContractorsService;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +48,7 @@ export const BaseInfoStage = () => {
 
   const { fields } = useForm(addIndividualDeviceForm);
 
-  const contractors = useStore($contractors);
+  const contractors = useStore(outputs.$contractors);
 
   const onChange = (e: any) => {
     const field = (fields as any)[e.target.name];

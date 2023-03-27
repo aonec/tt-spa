@@ -4,6 +4,7 @@ export type ApartmentProfileProps = {
   apartment: ApartmentResponse | null;
   isApartmentLoading: boolean;
   tabSection?: ApartmentSection;
+  isPermitionToEditApartment: boolean;
 };
 
 export enum ApartmentSection {

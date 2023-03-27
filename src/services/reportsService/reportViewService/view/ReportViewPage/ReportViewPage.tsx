@@ -39,6 +39,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   downloadReport,
   isReportFileDownloading,
   clearFiltrationValues,
+  emloyeeReportData,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -101,6 +102,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
               size="small"
               long
               onClick={downloadReport}
+              disabled={isLoadingReport}
               isLoading={isReportFileDownloading}
             >
               Скачать отчет
@@ -116,6 +118,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
           reportOption={filtrationValues.reportOption}
           housingMeteringDevicesReportData={housingMeteringDevicesReportData}
           homeownersReportData={homeownersReportData}
+          emloyeeReportData={emloyeeReportData}
+          employeeReportType={filtrationValues.employeeReportType}
         />
       </WithLoader>
     </Wrapper>

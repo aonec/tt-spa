@@ -16,3 +16,10 @@ export enum DocumentsUploadComponentType {
   DragAndDrop = 'DragAndDrop',
   Line = 'Line',
 }
+export interface FileData {
+  id: number;
+  status?: 'done' | 'failed' | 'pending';
+  fileResponse: DocumentResponse | null;
+  error?: Error;
+  onRemove?(): void;
+}

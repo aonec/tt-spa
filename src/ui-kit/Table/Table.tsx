@@ -28,15 +28,17 @@ export function Table<T>({
   return (
     <Wrapper>
       <Header temp={temp}>
-        {filteredColumns.map((elem) => (
-          <TableElement key={elem.label}>{elem.label}</TableElement>
+        {filteredColumns.map((column, columnIndex) => (
+          <TableElement key={columnIndex} css={column.css?.(true)}>
+            {column.label}
+          </TableElement>
         ))}
       </Header>
-      {elements.slice(start, end).map((elem, index) => (
-        <Row key={index} temp={temp}>
-          {filteredColumns.map((column) => (
-            <TableElement key={column.label}>
-              {column.render(elem, index)}
+      {elements.slice(start, end).map((elem, rowIndex) => (
+        <Row key={rowIndex} temp={temp}>
+          {filteredColumns.map((column, columnIndex) => (
+            <TableElement key={columnIndex} css={column.css?.(false)}>
+              {column.render(elem, rowIndex)}
             </TableElement>
           ))}
         </Row>

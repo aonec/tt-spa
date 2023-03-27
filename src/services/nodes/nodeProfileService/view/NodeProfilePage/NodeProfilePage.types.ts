@@ -8,6 +8,7 @@ export type NodeProfilePageProps = {
   handleEditNode: () => void;
   openChangeNodeStatusModal: (node: PipeNodeResponse) => void;
   openChangeNodeTypeModal: (node: PipeNodeResponse) => void;
+  isPermitionToEditsNode: boolean;
 };
 
 export enum PipeNodeProfileSection {

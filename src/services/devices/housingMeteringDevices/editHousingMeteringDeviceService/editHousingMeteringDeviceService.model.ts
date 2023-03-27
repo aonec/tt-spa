@@ -77,7 +77,9 @@ forward({
   to: getHousingMeteringDeviceFx,
 });
 
-editHousingMeteringDeviceFx.doneData.watch(() => {
+const successEditDevice = editHousingMeteringDeviceFx.doneData;
+
+successEditDevice.watch(() => {
   message.success('ОДПУ успешно обновлен!');
   handleHousingMeteringDeviceUpdate();
 });
@@ -92,6 +94,7 @@ export const editHousingMeteringDeviceService = {
   inputs: {
     handleChangeTab,
     handleSubmitForm,
+    successEditDevice,
   },
   outputs: {
     $currentTab,

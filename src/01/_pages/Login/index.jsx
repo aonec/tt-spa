@@ -10,11 +10,11 @@ import { message } from 'antd';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DevSettingsModal } from '01/features/developmentSettings';
 import { openDevSettingsModal } from '01/features/developmentSettings/models';
-import { useIsDev } from '01/hooks/useDev';
 import { parse } from 'query-string';
 import { Button } from 'ui-kit/Button';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
+import { devUrl } from '01/axios';
 
 export const Main = styled.div`
   height: 100vh;
@@ -89,7 +89,9 @@ export const Login = () => {
     }
   }
 
-  const isDev = useIsDev();
+  const isDev =
+    process.env.NODE_ENV === 'development' ||
+    process.env.REACT_APP_API_URL === devUrl;
 
   return (
     <Main>

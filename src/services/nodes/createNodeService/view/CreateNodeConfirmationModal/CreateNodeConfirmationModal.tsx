@@ -10,6 +10,7 @@ import {
   CalculatorSerialNumber,
   CalculatorWrapper,
   Footer,
+  ListWrapper,
   NoCalculatorText,
   NodeResourceInfo,
   StepTitle,
@@ -30,6 +31,7 @@ import {
   NodeStatusTextDictionary,
 } from 'dictionaries';
 import moment from 'moment';
+import { IncorrectConfigAlert } from 'services/devices/editNodeService/view/EditNodePage/IncorrectConfigAlert';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
@@ -42,6 +44,7 @@ export const CreateNodeConfirmationModal: FC<
   serviceZone,
   isLoading,
   handleSubmitForm,
+  validationResult,
 }) => {
   const commercialAccountingDatesString = useMemo(() => {
     if (
@@ -60,6 +63,8 @@ export const CreateNodeConfirmationModal: FC<
 
     return `${start.format('DD.MM.YYYY')} — ${end.format('DD.MM.YYYY')}`;
   }, [requestPayload.commercialStatusRequest]);
+
+  const isValidationMessage = Boolean(validationResult.length);
 
   return (
     <StyledModal
@@ -153,8 +158,16 @@ export const CreateNodeConfirmationModal: FC<
       </StepWrapper>
 
       <StepWrapper>
-        <StepTitle>3. Подключенные приборы</StepTitle>
-        <div>
+        <StepTitle>4. Подключенные приборы</StepTitle>
+        {isValidationMessage && (
+          <IncorrectConfigAlert
+            description="Узел не соответствует
+                выбранной конфигурации. Присутствуют следующие ошибки:"
+            validationResultArray={validationResult}
+          />
+        )}
+
+        <ListWrapper>
           {requestPayload.configuration &&
             requestPayload.communicationPipes?.map((pipe) => (
               <CommunicationPipeListItem
@@ -169,7 +182,7 @@ export const CreateNodeConfirmationModal: FC<
               description="Нет подключённых приборов"
             />
           )}
-        </div>
+        </ListWrapper>
       </StepWrapper>
     </StyledModal>
   );

@@ -14,11 +14,11 @@ import {
   PersonalNumberFormGate,
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
-import { ErrorMessage } from '01/features/contractors/addContractors';
 import {
   PersonalNumberFormMountPlaceType,
   PersonalNumberFormTypeGate,
 } from './personalNumberEditForm.controller';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 
 interface Props {
   type: PersonalNumberFormMountPlaceType;

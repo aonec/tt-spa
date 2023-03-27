@@ -1,7 +1,7 @@
 import { EOrderByRule } from './../../myApi';
 import axios from '01/axios';
+import queryString from 'query-string';
 import { EMeteringDeviceType } from 'myApi';
-import { formQueryString } from '01/utils/formQueryString';
 
 export interface GetMeteringDevicesModelsRequest {
   Type?: EMeteringDeviceType;
@@ -12,17 +12,20 @@ export interface GetMeteringDevicesModelsRequest {
 }
 
 export const getIndividualDevicesModels = async (
-  data: GetMeteringDevicesModelsRequest
+  data: GetMeteringDevicesModelsRequest,
 ): Promise<string[]> => {
-  const queryString = formQueryString({
+  const params = {
     Type: EMeteringDeviceType.Individual,
     PageSize: 10,
     ...data,
+  };
+
+  const path = `MeteringDevices/ExistingModels/`;
+
+  const res: { items: string[] } = await axios.get(path, {
+    params,
+    paramsSerializer: queryString.stringify,
   });
-
-  const path = `MeteringDevices/ExistingModels/${queryString}`;
-
-  const res: { items: string[] } = await axios.get(path);
 
   return res.items;
 };
