@@ -16,7 +16,5 @@ export type TableProps<T> = {
   columns: TableColumn<T>[];
   elements: T[];
   pagination?: Pagination;
-  rowStyles?: {
-    [key: number]: string;
-  };
+  rowStyles?: string;
 };

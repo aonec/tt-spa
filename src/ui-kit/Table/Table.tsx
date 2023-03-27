@@ -35,15 +35,17 @@ export function Table<T>({
           </TableElement>
         ))}
       </Header>
-      {elements.slice(start, end).map((elem, rowIndex) => (
-        <Row key={rowIndex} temp={temp} css={rowStyles?.[rowIndex]}>
-          {filteredColumns.map((column, columnIndex) => (
-            <TableElement key={columnIndex} css={column.css?.(false)}>
-              {column.render(elem, rowIndex)}
-            </TableElement>
-          ))}
-        </Row>
-      ))}
+      <div>
+        {elements.slice(start, end).map((elem, rowIndex) => (
+          <Row key={rowIndex} temp={temp} css={rowStyles}>
+            {filteredColumns.map((column, columnIndex) => (
+              <TableElement key={columnIndex} css={column.css?.(false)}>
+                {column.render(elem, rowIndex)}
+              </TableElement>
+            ))}
+          </Row>
+        ))}
+      </div>
       {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       {Boolean(elements.length) && pagination && (
         <PaginationWrapper>

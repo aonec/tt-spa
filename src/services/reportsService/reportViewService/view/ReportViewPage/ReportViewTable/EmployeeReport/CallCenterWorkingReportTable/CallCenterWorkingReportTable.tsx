@@ -4,9 +4,9 @@ import { Table } from 'ui-kit/Table';
 import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';
 import {
   getBorderedColumnCSS,
-  lastLineStyles,
   ResourceReadingsCountHeader,
   ResourceReadingsCountHeaderFact,
+  rowStyles,
 } from './CallCenterWorkingReportTable.styled';
 import { CallCenterWorkingReportTableProps } from './CallCenterWorkingReportTable.types';
 
@@ -14,6 +14,19 @@ export const CallCenterWorkingReportTable: FC<
   CallCenterWorkingReportTableProps
 > = ({ data }) => {
   const elements = data.CallCenterWorkingReport || [];
+
+  const sumTableRow = {
+    managingFirm: null,
+    houseManagement: 'Итого',
+    coldWaterSupplyPlan: sum(elements.map((e) => e.coldWaterSupplyPlan)),
+    coldWaterSupplyValue: sum(elements.map((e) => e.coldWaterSupplyValue)),
+    hotWaterSupplyPlan: sum(elements.map((e) => e.hotWaterSupplyPlan)),
+    hotWaterSupplyValue: sum(elements.map((e) => e.hotWaterSupplyValue)),
+    electricityPlan: sum(elements.map((e) => e.electricityPlan)),
+    electricityValue: sum(elements.map((e) => e.electricityValue)),
+    heatPlan: sum(elements.map((e) => e.heatPlan)),
+    heatValue: sum(elements.map((e) => e.heatValue)),
+  };
 
   return (
     <Table
@@ -110,30 +123,8 @@ export const CallCenterWorkingReportTable: FC<
           render: (elem) => elem.heatValue,
         },
       ]}
-      rowStyles={
-        Boolean(elements.length)
-          ? {
-              [elements.length]: lastLineStyles,
-            }
-          : undefined
-      }
-      elements={[
-        ...elements,
-        {
-          managingFirm: null,
-          houseManagement: 'Итого',
-          coldWaterSupplyPlan: sum(elements.map((e) => e.coldWaterSupplyPlan)),
-          coldWaterSupplyValue: sum(
-            elements.map((e) => e.coldWaterSupplyValue),
-          ),
-          hotWaterSupplyPlan: sum(elements.map((e) => e.hotWaterSupplyPlan)),
-          hotWaterSupplyValue: sum(elements.map((e) => e.hotWaterSupplyValue)),
-          electricityPlan: sum(elements.map((e) => e.electricityPlan)),
-          electricityValue: sum(elements.map((e) => e.electricityValue)),
-          heatPlan: sum(elements.map((e) => e.heatPlan)),
-          heatValue: sum(elements.map((e) => e.heatValue)),
-        },
-      ]}
+      rowStyles={rowStyles}
+      elements={[...elements, sumTableRow]}
     />
   );
 };

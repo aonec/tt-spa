@@ -1,3 +1,3 @@
 export const featureToggles = {
-  reportsConstructor: false,
+  reportsConstructor: true,
 };
