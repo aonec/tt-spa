@@ -1,4 +1,5 @@
 import { StyledSelect } from '01/shared/ui/Select/components';
+import classNames from 'classnames/bind';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
@@ -19,6 +20,7 @@ import {
   AdditionalInfo,
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
+import styles from './CreateObjectAdditionalInfoStage.module.scss';
 
 export const CreateObjectAdditionalInfoStage: FC<
   CreateObjectAdditionalInfoStageProps
@@ -42,6 +44,8 @@ export const CreateObjectAdditionalInfoStage: FC<
     },
     validateOnChange: false,
   });
+
+  const cx = classNames.bind(styles);
 
   return (
     <Wrapper>
@@ -91,7 +95,7 @@ export const CreateObjectAdditionalInfoStage: FC<
               Отмена
             </Button>
           </ButtonPadding>
-          <Button long onClick={() => handleSubmit()}>
+          <Button className={cx('button-long')} onClick={() => handleSubmit()}>
             Создать объект
           </Button>
         </RightButtonBlock>

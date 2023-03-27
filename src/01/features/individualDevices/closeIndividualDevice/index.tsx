@@ -54,12 +54,12 @@ export const CloseIndividualDeviceModal = () => {
       footer={
         <Footer>
           <Flex style={{ justifyContent: 'flex-end' }}>
-            <Button type="ghost" onClick={onCancel}>
+            <Button type="ghost" onSubmit={onCancel}>
               Отмена
             </Button>
             <Button
               type="danger"
-              onClick={() => submit()}
+              onSubmit={() => submit()}
               disabled={pendingSave}
               isLoading={pendingSave}
             >

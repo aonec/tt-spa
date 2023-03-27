@@ -111,10 +111,6 @@ $sizes: (
     height: $height;
     font-size: $fontSize;
   }
-
-  &[data-long='true'] {
-    padding: 0 ($padding + 20);
-  }
 }
 
 @each $type, $styles in $types {

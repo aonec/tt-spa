@@ -13,18 +13,16 @@ export const Button: FC<ButtonProps> = (props) => {
     isLoading,
     size = 'middle',
     disabled = false,
-    long = false,
     floating,
-    ...otherProps
+    ...antdProps
   } = props;
 
   const cx = classNames.bind(styles);
 
   return (
     <ButtonAntd
-      {...otherProps}
+      {...antdProps}
       disabled={disabled || isLoading}
-      data-long={long}
       className={cx(className, 'btn', `btn-${type}`, `btn-${size}`, {
         'btn-float': floating,
       })}

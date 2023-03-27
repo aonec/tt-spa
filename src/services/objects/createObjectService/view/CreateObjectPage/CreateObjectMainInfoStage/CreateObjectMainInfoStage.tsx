@@ -40,6 +40,8 @@ import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
+import styles from './CreateObjectMainInfoStage.module.scss';
+import classNames from 'classnames/bind';
 
 const {
   inputs: { handleHeatingStationCreated },
@@ -106,6 +108,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   const selectedHeatingStation = heatingStations?.items?.find(
     (station) => station.id === values.heatingStationId,
   );
+
+  const cx = classNames.bind(styles);
 
   return (
     <>
@@ -274,11 +278,14 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           </Button>
           <RightButtonBlock>
             <ButtonPadding>
-              <Button type="ghost" onClick={() => onPageCancel()}>
+              <Button type="ghost" onSubmit={() => onPageCancel()}>
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button long onClick={() => handleSubmit()}>
+            <Button
+              className={cx('button-long')}
+              onSubmit={() => handleSubmit()}
+            >
               Далее
             </Button>
           </RightButtonBlock>

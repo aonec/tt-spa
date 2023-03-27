@@ -21,6 +21,8 @@ import { Button } from 'ui-kit/Button';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import classNames from 'classnames/bind';
+import styles from './ReportViewPage.module.scss';
 
 const formId = 'report-form-id';
 
@@ -54,6 +56,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
   }, [setIsOpen]);
 
   const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
+
+  const cx = classNames.bind(styles);
 
   return (
     <Wrapper>
@@ -100,8 +104,8 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
             </FiltrationInfoList>
             <Button
               size="small"
-              long
-              onClick={downloadReport}
+              className={cx('button-long')}
+              onSubmit={downloadReport}
               disabled={isLoadingReport}
               isLoading={isReportFileDownloading}
             >

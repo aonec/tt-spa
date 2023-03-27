@@ -20,6 +20,8 @@ import {
 } from 'myApi';
 import { CommunicationPipesListWrapper } from './ConnectedDevices.styled';
 import { CommunicationPipeListItem } from './CommunicationPipeListItem';
+import classNames from 'classnames/bind';
+import styles from './ConnectedDevices.module.scss';
 
 const { inputs } = addConnectedCommonDevicesService;
 
@@ -95,6 +97,8 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
     );
   };
 
+  const cx = classNames.bind(styles);
+
   return (
     <>
       {configuration && (
@@ -135,10 +139,10 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           </LinkButton>
         )}
         <Footer>
-          <Button type="ghost" onClick={goPrevStep}>
+          <Button type="ghost" onSubmit={goPrevStep}>
             Назад
           </Button>
-          <Button long onClick={validateNode}>
+          <Button className={cx('button-long')} onSubmit={validateNode}>
             Создать узел
           </Button>
         </Footer>
