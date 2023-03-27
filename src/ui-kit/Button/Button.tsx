@@ -11,7 +11,7 @@ export const Button: FC<ButtonProps> = (props) => {
     isLoading,
     size = 'middle',
     disabled = false,
-    floating,
+    floating = false,
     ...antdProps
   } = props;
 
@@ -20,7 +20,7 @@ export const Button: FC<ButtonProps> = (props) => {
       {...antdProps}
       size={size}
       btnType={type}
-      floating={floating || false}
+      floating={floating}
       disabled={disabled || isLoading}
     >
       {props.children}
