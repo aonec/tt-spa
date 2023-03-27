@@ -143,7 +143,12 @@ export const MountAddress: FC<MountAddressProps> = ({
           <Button type="ghost" onClick={() => history.goBack()}>
             Отмена
           </Button>
-          <Button onClick={() => handleSubmitForm()}>Далее</Button>
+          <Button
+            style={{ padding: '0 40px' }}
+            onClick={() => handleSubmitForm()}
+          >
+            Далее
+          </Button>
         </Footer>
       </div>
     </>
