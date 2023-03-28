@@ -10,6 +10,7 @@ import { ElevatorDictionary } from '../CreateObjectFinalStageModal/CreateObjectF
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
   ButtonPadding,
+  ButtonSC,
   Footer,
   GridContainer,
   RightButtonBlock,
@@ -91,9 +92,7 @@ export const CreateObjectAdditionalInfoStage: FC<
               Отмена
             </Button>
           </ButtonPadding>
-          <Button long onClick={() => handleSubmit()}>
-            Создать объект
-          </Button>
+          <ButtonSC onClick={() => handleSubmit()}>Создать объект</ButtonSC>
         </RightButtonBlock>
       </Footer>
     </Wrapper>

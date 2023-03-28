@@ -18,7 +18,10 @@ import {
   CreatePipeHousingMeteringDeviceInNodeRequest,
   EPipeNodeConfig,
 } from 'myApi';
-import { CommunicationPipesListWrapper } from './ConnectedDevices.styled';
+import {
+  ButtonSC,
+  CommunicationPipesListWrapper,
+} from './ConnectedDevices.styled';
 import { CommunicationPipeListItem } from './CommunicationPipeListItem';
 
 const { inputs } = addConnectedCommonDevicesService;
@@ -138,9 +141,7 @@ export const ConnectedDevices: FC<ConnectedDevicesProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button long onClick={validateNode}>
-            Создать узел
-          </Button>
+          <ButtonSC onClick={validateNode}>Создать узел</ButtonSC>
         </Footer>
       </div>
     </>

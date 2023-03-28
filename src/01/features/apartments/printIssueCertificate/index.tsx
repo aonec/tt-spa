@@ -30,11 +30,9 @@ export const GetIssueCertificateModal: FC<GetIssueCertificateModalProps> = ({
       {visible && (
         <HomeownerCerificateGate
           id={
-            (
-              apartment?.homeownerAccounts.find(
-                (account) => account.id === homeownerId,
-              ) as any
-            )?.id!
+            (apartment?.homeownerAccounts || []).find(
+              (account) => account.id === homeownerId,
+            )?.id || null
           }
         />
       )}

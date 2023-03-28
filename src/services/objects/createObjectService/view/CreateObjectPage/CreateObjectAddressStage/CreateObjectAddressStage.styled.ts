@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 
 export const Wrapper = styled.div``;
 
@@ -44,4 +45,8 @@ export const DeleteButton = styled.div`
   cursor: pointer;
   color: red;
   width: max-content;
+`;
+
+export const ButtonSC = styled(Button)`
+  padding: 0 40px;
 `;
