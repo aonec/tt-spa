@@ -38,7 +38,13 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         clearTask={clearTask}
         organizationUsers={organizationUsers}
       />
-      {featureToggles.taskMaps.nativeApi && <TasksMapsNative />}
+      {featureToggles.taskMaps.nativeApi && (
+        <TasksMapsNative
+          housingStocksWithTasks={housingStocksWithTasks}
+          handleClickMarker={handleClickMarker}
+          selectedHousingStockId={selectedHousingStock?.housingStock?.id}
+        />
+      )}
       {!featureToggles.taskMaps.nativeApi && (
         <TasksMap
           housingStocksWithTasks={housingStocksWithTasks}
