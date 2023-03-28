@@ -1,23 +1,20 @@
 import * as Icons from './';
 import React from 'react';
-import styles from './Icons.module.scss';
-import classNames from 'classnames/bind';
-
-const cx = classNames.bind(styles);
+import { IconsList, IconWrapper } from './Icons.styled';
 
 export default {
   title: 'Icons',
 };
 
 export const All = () => (
-  <div className={cx('iconsList-root')}>
+  <IconsList>
     {Object.entries(Icons).map(([name, Icon]) => (
-      <div className={cx('icon-root')}>
+      <IconWrapper>
         <div>
           <Icon />
         </div>
         - {name}
-      </div>
+      </IconWrapper>
     ))}
-  </div>
+  </IconsList>
 );

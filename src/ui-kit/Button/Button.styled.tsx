@@ -10,7 +10,7 @@ const typesOfButton: {
     borderColor: string;
   };
 } = {
-  default: {
+  primary: {
     mainColor: '#189EE9',
     fontColor: 'white',
     shadowColor: '#189EE940',

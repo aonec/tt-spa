@@ -11,9 +11,6 @@ export default {
     floating: {
       description: 'Устанавливает width = 100%',
     },
-    long: {
-      description: 'Добавляет дополнительный padding = 20px слева и справа',
-    },
     size: {
       defaultValue: 'middle',
     },
