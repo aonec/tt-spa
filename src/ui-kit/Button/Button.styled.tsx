@@ -56,7 +56,7 @@ export const IconWrapper = styled.div`
 export const ButtonSC = styled(ButtonAntd)<{
   btnType: ButtonStyleType;
   size: ButtonSizeType;
-  floating: boolean;
+  floating?: boolean;
 }>`
   display: flex;
   justify-content: center;

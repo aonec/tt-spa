@@ -4,6 +4,7 @@ import { Header } from 'ui-kit/Modals/FormModal/FormModal.styled';
 import {
   AddressText,
   AddressWrapper,
+  ButtonSC,
   CalculatorBaseInfo,
   CalculatorEntryNumber,
   CalculatorModel,
@@ -77,13 +78,9 @@ export const CreateNodeConfirmationModal: FC<
           <Button type="ghost" onClick={handleClose}>
             Отмена
           </Button>
-          <Button
-            style={{ padding: '0 40px' }}
-            isLoading={isLoading}
-            onClick={handleSubmitForm}
-          >
+          <ButtonSC isLoading={isLoading} onClick={handleSubmitForm}>
             Создать узел
-          </Button>
+          </ButtonSC>
         </Footer>
       }
       title={<Header>Добавление нового узла</Header>}

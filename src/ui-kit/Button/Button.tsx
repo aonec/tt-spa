@@ -7,11 +7,10 @@ export const Button: FC<ButtonProps> = (props) => {
   const {
     icon,
     type = 'default',
-    className,
     isLoading,
     size = 'middle',
     disabled = false,
-    floating = false,
+    floating,
     ...antdProps
   } = props;
 

@@ -11,6 +11,7 @@ import { BlockTitle, PageTitle } from '../CreateObjectPage.styled';
 import {
   AddButtonWrapper,
   ButtonPadding,
+  ButtonSC,
   DeleteButton,
   Footer,
   GridWrapper,
@@ -231,14 +232,13 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
               </Button>
             </ButtonPadding>
 
-            <Button
-              style={{ padding: '0 40px' }}
+            <ButtonSC
               onClick={() => {
                 handleSubmit();
               }}
             >
               Далее
-            </Button>
+            </ButtonSC>
           </NextCancelBlock>
         </Footer>
       </Wrapper>

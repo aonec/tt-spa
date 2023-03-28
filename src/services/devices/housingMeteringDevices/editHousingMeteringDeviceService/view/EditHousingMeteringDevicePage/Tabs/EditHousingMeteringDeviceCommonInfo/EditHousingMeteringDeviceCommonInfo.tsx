@@ -12,6 +12,7 @@ import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 import {
+  ButtonSC,
   Footer,
   GridContainer,
   PipeInfoWrapper,
@@ -166,9 +167,7 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
         <Button type="ghost" onClick={() => onCancel()}>
           Отмена
         </Button>
-        <Button style={{ padding: '0 40px' }} onClick={() => handleSubmit()}>
-          Сохранить
-        </Button>
+        <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
       </Footer>
     </Wrapper>
   );

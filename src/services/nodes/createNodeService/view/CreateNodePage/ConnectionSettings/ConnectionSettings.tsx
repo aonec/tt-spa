@@ -15,6 +15,7 @@ import {
 } from './ConnectionSettings.constants';
 import { connectionSettingsService } from './ConnectionSettings.model';
 import {
+  ButtonSC,
   CalculatorModel,
   CalculatorSelectWrapper,
   CalculatorSerialNumber,
@@ -196,9 +197,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button style={{ padding: '0 40px' }} onClick={() => handleSubmit()}>
-            Далее
-          </Button>
+          <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
         </Footer>
       </div>
     </>
