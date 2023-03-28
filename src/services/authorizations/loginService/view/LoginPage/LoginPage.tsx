@@ -104,9 +104,9 @@ export const LoginPage: FC<LoginPageProps> = ({
             <DevSettingsModal />
             <ButtonTT
               onClick={openDevSettingsModal}
-              small
-              color="white"
-              style={{ color: 'white' }}
+              // small
+              // color="white"
+              // style={{ color: 'white' }}
             >
               Development settings
             </ButtonTT>
