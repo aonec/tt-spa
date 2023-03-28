@@ -1,4 +1,4 @@
-import { EPipeNodeConfig, EResourceType } from "myApi";
+import { EPipeNodeConfig, EResourceType } from 'myApi';
 
 export const resourceFromConfig: {
   [key in EPipeNodeConfig]: EResourceType;
@@ -8,4 +8,5 @@ export const resourceFromConfig: {
   [EPipeNodeConfig.HeatWithRecharge]: EResourceType.Heat,
   [EPipeNodeConfig.HotWaterSupplyNoBackflow]: EResourceType.HotWaterSupply,
   [EPipeNodeConfig.HotWaterSupplyWithBackflow]: EResourceType.HotWaterSupply,
+  [EPipeNodeConfig.HeatNoHousingMeteringDevice]: EResourceType.Heat,
 };

@@ -8,17 +8,26 @@ import { SelectResourcePanel } from './SelectResourcePanel';
 export const SelectResource: FC<SelectResourceProps> = ({
   selectedResource,
   setResource,
+  summaryConsumption,
 }) => {
   return (
     <Wrapper>
-      {Object.keys(ResourceTypeNamesLookup).map((resourceType) => (
-        <SelectResourcePanel
-          setResource={setResource}
-          resource={resourceType as EResourceType}
-          active={selectedResource === resourceType}
-          key={resourceType}
-        />
-      ))}
+      {Object.keys(ResourceTypeNamesLookup).map((resourceType) => {
+        const summary =
+          (summaryConsumption?.consumptions || []).find(
+            (consumption) => consumption.key === resourceType,
+          )?.value || null;
+
+        return (
+          <SelectResourcePanel
+            setResource={setResource}
+            resource={resourceType as EResourceType}
+            active={selectedResource === resourceType}
+            key={resourceType}
+            summary={summary}
+          />
+        );
+      })}
     </Wrapper>
   );
 };

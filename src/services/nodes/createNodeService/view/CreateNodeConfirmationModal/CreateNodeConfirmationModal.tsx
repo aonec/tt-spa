@@ -64,6 +64,8 @@ export const CreateNodeConfirmationModal: FC<
     return `${start.format('DD.MM.YYYY')} — ${end.format('DD.MM.YYYY')}`;
   }, [requestPayload.commercialStatusRequest]);
 
+  const isValidationMessage = Boolean(validationResult.length);
+
   return (
     <StyledModal
       centered
@@ -161,11 +163,13 @@ export const CreateNodeConfirmationModal: FC<
 
       <StepWrapper>
         <StepTitle>4. Подключенные приборы</StepTitle>
-        <IncorrectConfigAlert
-          description="Узел не соответствует
+        {isValidationMessage && (
+          <IncorrectConfigAlert
+            description="Узел не соответствует
                 выбранной конфигурации. Присутствуют следующие ошибки:"
-          validationResultArray={validationResult}
-        />
+            validationResultArray={validationResult}
+          />
+        )}
 
         <ListWrapper>
           {requestPayload.configuration &&

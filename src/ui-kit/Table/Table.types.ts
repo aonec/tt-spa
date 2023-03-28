@@ -5,10 +5,11 @@ export type Pagination = {
 };
 
 export type TableColumn<T> = {
-  label: string;
+  label: ReactNode;
   size: string;
-  render: (element: T, index: number) => ReactNode;
+  render: (element: T, rowIndex: number) => ReactNode;
   hidden?: boolean;
+  css?: (isHeader: boolean) => string;
 };
 
 export type TableProps<T> = {

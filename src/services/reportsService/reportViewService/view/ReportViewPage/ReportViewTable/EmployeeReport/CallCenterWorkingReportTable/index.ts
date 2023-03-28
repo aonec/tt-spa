@@ -1,0 +1,1 @@
+export { CallCenterWorkingReportTable } from './CallCenterWorkingReportTable';

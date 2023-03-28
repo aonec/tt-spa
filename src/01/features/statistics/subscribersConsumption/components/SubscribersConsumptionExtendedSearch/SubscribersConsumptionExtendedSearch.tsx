@@ -34,10 +34,14 @@ export const SubscribersConsumptionExtendedSearch: FC<
   const handleChangeDateRange = useCallback(
     (dates: [moment.Moment | null, moment.Moment | null] | null) => {
       if (!dates) {
+        setFieldValue('DateLastCheckFrom', undefined);
+        setFieldValue('DateLastCheckTo', undefined);
         return;
       }
       const dateLastCheckFromValue = dates[0];
       const dateLastCheckTo = dates[1];
+
+      console.log(dateLastCheckTo);
 
       if (!dateLastCheckTo || !dateLastCheckFromValue) {
         return;
@@ -45,15 +49,9 @@ export const SubscribersConsumptionExtendedSearch: FC<
 
       setFieldValue(
         'DateLastCheckFrom',
-        dateLastCheckFromValue
-          .startOf('day')
-          .utcOffset(0, true)
-          .toISOString(true),
+        dateLastCheckFromValue.startOf('day').format(),
       );
-      setFieldValue(
-        'DateLastCheckTo',
-        dateLastCheckTo.utcOffset(0, true).toISOString(true),
-      );
+      setFieldValue('DateLastCheckTo', dateLastCheckTo.endOf('day').format());
     },
     [setFieldValue],
   );
@@ -149,10 +147,10 @@ export const SubscribersConsumptionExtendedSearch: FC<
           value={
             DateLastCheckFrom && DateLastCheckTo
               ? [
-                  moment(DateLastCheckFrom) || undefined,
-                  moment(DateLastCheckTo) || undefined,
+                  moment(DateLastCheckFrom) || null,
+                  moment(DateLastCheckTo).startOf('day') || null,
                 ]
-              : undefined
+              : null
           }
           format="DD.MM.YYYY"
           onChange={(dates) => handleChangeDateRange(dates)}
