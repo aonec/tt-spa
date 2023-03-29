@@ -2,9 +2,11 @@ import { useYMaps } from '@pbe/react-yandex-maps';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { getTaskPlacemarkerLink } from '../TasksMap/TasksMap.utils';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
+import { getClusterIcon } from './TasksMapsNative.utils';
 
 export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   housingStocksWithTasks,
+  handleClickMarker,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
@@ -24,7 +26,15 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     const clusterer = new ymaps.Clusterer();
 
     clusterer.createCluster = (center, geoObjects) => {
-      return new ymaps.Placemark(center, {});
+      return new ymaps.Placemark(
+        center,
+        {},
+        {
+          iconLayout: 'default#image',
+          iconImageHref: getClusterIcon([]).iconHrev,
+          iconImageSize: [51, 51],
+        },
+      );
     };
 
     setMap(map);
@@ -58,11 +68,15 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
       (placemark.state as any).housingStockData = housingStockWithTasks;
 
+      placemark.events.add('click', () =>
+        handleClickMarker(housingStockWithTasks),
+      );
+
       return placemark;
     });
 
     clusterer.add(placemarks);
-  }, [clusterer, housingStocksWithTasks, map, ymaps]);
+  }, [clusterer, housingStocksWithTasks, map, ymaps, handleClickMarker]);
 
   return (
     <>
