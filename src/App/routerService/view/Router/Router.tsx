@@ -53,6 +53,7 @@ import { AddIndividualDevice } from '01/features/individualDevices/addIndividual
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
+import { EditObjectContainer } from 'services/objects/editObjectService';
 
 const { gates } = objectProfileService;
 
@@ -132,6 +133,19 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   ) : (
                     <Redirect
                       from="/objects/create"
+                      to="/access-denied/"
+                      exact
+                    />
+                  )}
+                  {isAdministrator ? (
+                    <Route
+                      path="/objects/:housingStockId/edit"
+                      component={EditObjectContainer}
+                      exact
+                    />
+                  ) : (
+                    <Redirect
+                      from="/objects/:housingStockId/edit"
                       to="/access-denied/"
                       exact
                     />

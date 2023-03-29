@@ -20,6 +20,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   openCommonReport,
   isPermitionToAddNode,
   isPermitionToDownloadConsolidatedReport,
+  isPermissionToEditHousingStock,
 }) => {
   const history = useHistory();
   const { show } = getAccessesList();
@@ -46,6 +47,11 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
               title: 'Выгрузка сводного отчёта',
               onClick: () => openCommonReport(),
               hidden: !isPermitionToDownloadConsolidatedReport,
+            },
+            {
+              title: 'Редактировать',
+              onClick: () => history.push(`/objects/${housingStock.id}/edit`),
+              hidden: !isPermissionToEditHousingStock,
             },
           ],
         }}
