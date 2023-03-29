@@ -7,8 +7,9 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   housingStocksWithTasks,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
-  const ymaps = useYMaps(['Map', 'Placemark']);
+  const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
   const [map, setMap] = useState<ymaps.Map | null>(null);
+  const [clusterer, setClusterer] = useState<ymaps.Clusterer | null>(null);
 
   useEffect(() => {
     if (!ymaps || !mapRef.current) {
@@ -20,13 +21,19 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
       zoom: 15,
     });
 
+    const clusterer = new ymaps.Clusterer();
+
     setMap(map);
+    setClusterer(clusterer);
+
+    map.geoObjects.add(clusterer as unknown as ymaps.ObjectManager);
   }, [ymaps, mapRef]);
 
   useEffect(() => {
-    if (!ymaps?.Placemark || !map) return;
+    console.log(clusterer);
+    if (!ymaps?.Placemark || !clusterer) return;
 
-    map.geoObjects.removeAll();
+    clusterer.removeAll();
 
     housingStocksWithTasks.forEach((housingStockWithTasks) => {
       const { iconHrev, size } = getTaskPlacemarkerLink(
@@ -46,11 +53,9 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
         },
       );
 
-      map.geoObjects.add(placemark);
+      clusterer.add(placemark);
     });
-
-    map.container.fitToViewport();
-  }, [housingStocksWithTasks, map, ymaps]);
+  }, [clusterer, housingStocksWithTasks, map, ymaps]);
 
   return (
     <>
