@@ -25,6 +25,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   handleUpdateResources,
   actTypes,
   selectedFilters,
+  isPermitionToChangeApartmentAct,
 }) => {
   const isShowActsList = Boolean(acts?.length && !isLoading);
 
@@ -39,6 +40,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
           openEditActModal={handleOpeningEditActModal}
           saveFile={handleSaveFile}
           key={act.id}
+          isPermitionToChangeApartmentAct={isPermitionToChangeApartmentAct}
         />
       )),
     [
@@ -47,6 +49,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
       handleOpeningDeleteActModal,
       handleOpeningEditActModal,
       handleSaveFile,
+      isPermitionToChangeApartmentAct,
     ],
   );
 
@@ -103,7 +106,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
         )}
 
-        {!isLoading && (
+        {!isLoading && isPermitionToChangeApartmentAct && (
           <AddButton
             className="ant-btn-link"
             onClick={handleOpeningCreateActModal}

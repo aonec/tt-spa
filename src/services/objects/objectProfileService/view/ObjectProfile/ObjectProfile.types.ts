@@ -6,4 +6,6 @@ export type ObjectProfileProps = {
   currentGrouptype: ObjectProfileGrouptype;
   setCurrentGrouptype: (grouptype: ObjectProfileGrouptype) => void;
   openCommonReport: () => void;
+  isPermitionToAddNode: boolean;
+  isPermitionToDownloadConsolidatedReport: boolean;
 };

@@ -4,7 +4,6 @@ import { Header } from './components/Header';
 import { Loader } from '../../components';
 import { useAsync } from '../../hooks/useAsync';
 import { IndividualDeviceResponse } from '../../../myApi';
-import { TabsItemInterface } from '../../tt-components/interfaces';
 import { getIndividualDevice } from '../../_api/apiRequests';
 import IndividualDeviceEditForm from './components/IndividualDeviceEditForm';
 import Tabs from '../../tt-components/Tabs';
@@ -24,7 +23,7 @@ export const IndividualDeviceEdit = () => {
   if (!device) {
     return <Loader size={32} show />;
   }
-  const tabItems: Array<TabsItemInterface> = [
+  const tabItems = [
     {
       title: 'Общая информация',
       key: '1',

@@ -82,3 +82,7 @@ export const NodeResourceInfo = styled.div`
   align-items: center;
   gap: 8px;
 `;
+
+export const ListWrapper = styled.div`
+  margin-top: 16px;
+`;

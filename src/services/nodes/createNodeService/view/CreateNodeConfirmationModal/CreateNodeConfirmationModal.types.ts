@@ -1,5 +1,6 @@
 import {
   CalculatorIntoHousingStockResponse,
+  EPipeNodeValidationMessageStringDictionaryItem,
   HousingStockResponse,
   NodeServiceZoneResponse,
 } from 'myApi';
@@ -14,4 +15,5 @@ export type CreateNodeConfirmationModalProps = {
   serviceZone: NodeServiceZoneResponse;
   isLoading: boolean;
   handleSubmitForm: () => void;
+  validationResult: EPipeNodeValidationMessageStringDictionaryItem[];
 };

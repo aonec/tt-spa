@@ -167,3 +167,11 @@ editHomeownerAccountEffect.failData.watch((error) => {
       'Произошла ошибка',
   );
 });
+
+closeHomeownerAccountFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});

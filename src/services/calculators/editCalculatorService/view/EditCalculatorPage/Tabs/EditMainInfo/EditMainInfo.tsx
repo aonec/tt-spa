@@ -67,7 +67,6 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
 
       <FormItem label="Серийный номер">
         <Input
-          type="number"
           placeholder="Введите"
           value={values.serialNumber || undefined}
           onChange={(value) => {

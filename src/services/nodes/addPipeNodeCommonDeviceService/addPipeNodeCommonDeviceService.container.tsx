@@ -13,7 +13,6 @@ const formId = 'add-common-device-form';
 export const AddPipeNodeCommonDeviceContainer: FC<Props> = ({
   configuration,
   communicationPipes,
-  handleAddCommunicationPipe,
 }) => {
   const isModalOpen = useStore(outputs.$isModalOpen);
   const currentFormStep = useStore(outputs.$currentFormStep);

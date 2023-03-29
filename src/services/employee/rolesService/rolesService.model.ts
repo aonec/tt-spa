@@ -26,7 +26,6 @@ forward({
 });
 
 export const rolesService = {
-  inputs: {},
   outputs: { $userRoles },
   gates: { UserRolesGate },
 };

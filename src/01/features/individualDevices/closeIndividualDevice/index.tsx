@@ -1,8 +1,4 @@
 import { Loader } from '01/components';
-import { ErrorMessage } from '01/features/contractors/addContractors';
-import { useFilesUpload } from '01/hooks/useFilesUpload';
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import { FilesList } from '01/shared/ui/FilesList';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, DatePickerTT } from '01/tt-components';
@@ -22,6 +18,9 @@ import {
   closeIndividualDeviceForm,
   closeIndividualDeviceFx,
 } from './models';
+import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { EDocumentType } from 'myApi';
 
 export const CloseIndividualDeviceModal = () => {
   const visible = useStore($isCloseIndividualDeviceModalOpen);
@@ -29,11 +28,6 @@ export const CloseIndividualDeviceModal = () => {
   const onCancel = () => closeClosingIndividualDeviceModalButtonClicked();
 
   const { submit, fields } = useForm(closeIndividualDeviceForm);
-
-  const { addFile, removeFile, pendingProcessing } = useFilesUpload(
-    fields.documentIds.onChange,
-    'DeviceClosingAct'
-  );
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);
 
@@ -63,11 +57,7 @@ export const CloseIndividualDeviceModal = () => {
             <ButtonTT color="white" onClick={onCancel}>
               Отмена
             </ButtonTT>
-            <ButtonTT
-              color="red"
-              onClick={submit}
-              disabled={pendingProcessing || pendingSave}
-            >
+            <ButtonTT color="red" onClick={submit} disabled={pendingSave}>
               {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
             </ButtonTT>
           </Flex>
@@ -117,14 +107,14 @@ export const CloseIndividualDeviceModal = () => {
           </ErrorMessage>
         </Form.Item>
       </Grid>
-      {!!fields.documentIds.value.length && (
-        <FilesList files={fields.documentIds.value} removeFile={removeFile} />
-      )}
-      <DragAndDrop
-        style={{ marginTop: !!fields.documentIds.value.length ? 15 : 0 }}
+
+      <DocumentsUploadContainer
         uniqId="close-individual-device"
-        fileHandler={(files) => addFile(files[0])}
-        text="Добавьте акт снятия прибора с учета"
+        label="Добавьте акт снятия прибора с учета"
+        type={EDocumentType.DeviceClosingAct}
+        onChange={fields.documentIds.onChange}
+        documents={fields.documentIds.value}
+        max={6}
       />
     </StyledModal>
   );

@@ -8,6 +8,7 @@ export const DocumentsList: FC<DocumentsListProps> = ({
   documents,
   removeDocument,
   isLoading,
+  isPermitionToDeleteExistedDocument,
 }) => {
   return (
     <Wrapper>
@@ -16,6 +17,9 @@ export const DocumentsList: FC<DocumentsListProps> = ({
           document={document}
           key={document.id}
           removeDocument={removeDocument}
+          isPermitionToDeleteExistedDocument={
+            isPermitionToDeleteExistedDocument
+          }
         />
       ))}
       {isLoading && <DocumentItemLoader />}

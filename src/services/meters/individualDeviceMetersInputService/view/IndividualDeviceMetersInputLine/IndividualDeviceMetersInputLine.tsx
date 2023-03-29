@@ -7,7 +7,6 @@ import { ESecuredIdentityRoleName } from 'myApi';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
@@ -24,6 +23,7 @@ import { apartmentIndividualDevicesMetersService } from 'services/meters/apartme
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
+import { currentUserService } from 'services/currentUserService';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps
@@ -51,7 +51,7 @@ export const IndividualDeviceMetersInputLine: FC<
     editReadingsHistoryService.inputs.openModal,
   );
 
-  const managementFirmUser = useStore($currentManagingFirmUser);
+  const managementFirmUser = useStore(currentUserService.outputs.$currentUser);
 
   const isDeviceClosed = Boolean(device.closingDate);
 

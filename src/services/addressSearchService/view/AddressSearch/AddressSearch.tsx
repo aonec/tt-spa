@@ -54,9 +54,9 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       placeholder="Улица"
       ref={refs[index]}
       value={values.street || ''}
-      onChange={(value) =>
-        handleChange(SearchFieldType.Street, value.toString())
-      }
+      onChange={(value) => {
+        handleChange(SearchFieldType.Street, value.toString());
+      }}
       onKeyDown={(e) => {
         fromEnter(() => {
           if (values.street) handleChange(SearchFieldType.Street, streetMatch);
@@ -65,7 +65,11 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         keyDownEnterGuardedHandler(index)(e);
       }}
       options={options}
-      onClick={() => {
+      onSelect={() => {
+        if (values.street) handleChange(SearchFieldType.Street, streetMatch);
+        handleSubmit();
+      }}
+      onFocus={() => {
         clearFields(index);
       }}
       disabled={isDisabled}
