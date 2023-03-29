@@ -9,12 +9,12 @@ export default {
   parameters: { layout: 'centered' },
 } as ComponentMeta<typeof CommonInfo>;
 
-export const Info: ComponentStory<typeof CommonInfo> = (args) => (
+export const Overview: ComponentStory<typeof CommonInfo> = (args) => (
   <div style={{ width: 800 }}>
     <CommonInfo {...args} />
   </div>
 );
-Info.args = {
+Overview.args = {
   items: [
     {
       key: 'Строка',
