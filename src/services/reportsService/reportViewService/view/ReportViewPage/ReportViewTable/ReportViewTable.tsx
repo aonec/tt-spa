@@ -6,7 +6,7 @@ import { Wrapper } from './ReportViewTable.styled';
 import { ActsJournalReport } from './ActsJournalReport';
 import { HousingMeteringDevicesReport } from './HousingMeteringDevicesReport';
 import { HomeownersReport } from './HomeownersReport';
-import { EmployeeReport } from './EmployeeReport/EmployeeReport';
+import { EmployeeReport } from './EmployeeReport';
 
 export const ReportViewTable: FC<ReportViewTableProps> = ({
   individualDevicesReportData,
