@@ -30,7 +30,6 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   }, [ymaps, mapRef]);
 
   useEffect(() => {
-    console.log(clusterer);
     if (!ymaps?.Placemark || !clusterer) return;
 
     clusterer.removeAll();
