@@ -2,8 +2,11 @@ import React, { FC, useMemo } from 'react';
 import {
   ButtonPadding,
   Footer,
+  GridContainer,
+  PageTitle,
   RightButtonBlock,
   Wrapper,
+  WrapperLinkButton,
 } from './MainInfoTab.styled';
 import { MainInfoTabProps } from './MainInfoTab.types';
 import { createObjectService } from 'services/objects/createObjectService';
@@ -25,21 +28,29 @@ import {
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';
+import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
+import { CreateHeatingStationContainer } from 'services/objects/heatingStations/createHeatingStationService';
+import { EditHeatingStationContainer } from 'services/objects/heatingStations/editHeatingStationService';
 
 const HeatingStationsFetchGate =
   createObjectService.gates.HeatingStationsFetchGate;
+const withoutHouseMagement = 'withoutHouseMagement';
 
-export const MainInfoTab: FC<MainInfoTabProps> = ({}) => {
+export const MainInfoTab: FC<MainInfoTabProps> = ({
+  housingStock,
+  houseManagements,
+  openCreateHeatingStationModal,
+  openEditHeatingStationModal,
+}) => {
   const initialValues = useMemo(
     () => ({
-      houseManagement: createObjectData?.houseManagement || null,
-      objectCategory: createObjectData?.objectCategory || null,
-      livingHouseType: createObjectData?.livingHouseType || null,
-      nonResidentialHouseType:
-        createObjectData?.nonResidentialHouseType || null,
-      heatingStationId: createObjectData?.heatingStationId || null,
+      houseManagement: housingStock.houseManagement || null,
+      objectCategory: housingStock.houseCategory || null,
+      livingHouseType: housingStock.livingHouseType || null,
+      nonResidentialHouseType: housingStock.nonResidentialHouseType || null,
+      heatingStationId: housingStock.heatingStation?.id || null,
     }),
-    [createObjectData],
+    [housingStock],
   );
 
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
@@ -55,6 +66,8 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({}) => {
   return (
     <>
       <HeatingStationsFetchGate />
+      <CreateHeatingStationContainer />
+      <EditHeatingStationContainer />
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
@@ -191,32 +204,29 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({}) => {
 
         {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
-            <InputTypeDisplayingDiv>
-              <FlexStart>
-                <Title>{selectedHeatingStation?.name}</Title>
-              </FlexStart>
-              <FlexEnd>
-                <PencilIconSC
-                  onClick={() => {
-                    openEditHeatingStationModal();
-                    selectedHeatingStation &&
-                      heatingStationCapture(selectedHeatingStation);
-                  }}
-                />
-                <CloseIconSC
-                  onClick={() => {
-                    setFieldValue('heatingStationId', null);
-                  }}
-                />
-              </FlexEnd>
-            </InputTypeDisplayingDiv>
+            <SelectedEntityPanel
+              children={selectedHeatingStation?.name}
+              onEdit={() => {
+                openEditHeatingStationModal();
+                selectedHeatingStation &&
+                  heatingStationCapture(selectedHeatingStation);
+              }}
+              onRemove={() => {
+                setFieldValue('heatingStationId', null);
+              }}
+            />
           </FormItem>
         )}
 
         <Footer>
-Аа          <RightButtonBlock>
+          <RightButtonBlock>
             <ButtonPadding>
-              <Button type="ghost" onClick={() => onPageCancel()}>
+              <Button
+                type="ghost"
+                onClick={() => {
+                  // onPageCancel()
+                }}
+              >
                 Отмена
               </Button>
             </ButtonPadding>

@@ -107,3 +107,11 @@ export const WrapperLinkButton = styled.div`
   width: max-content;
   margin-top: 45px;
 `;
+
+export const PageTitle = styled.div`
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0em;
+  margin-bottom: 10px;
+`;

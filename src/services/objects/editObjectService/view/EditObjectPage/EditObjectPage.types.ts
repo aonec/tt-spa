@@ -1,9 +1,12 @@
-import { HousingStockResponse } from 'myApi';
+import { HouseManagementResponse, HousingStockResponse } from 'myApi';
 
 export type EditObjectPageProps = {
   housingStock: HousingStockResponse;
   existingCities: string[] | null;
   existingStreets: string[];
+  houseManagements: HouseManagementResponse[] | null;
+  openCreateHeatingStationModal: () => void;
+  openEditHeatingStationModal: () => void;
 };
 
 export enum EditObjectPageTabs {
