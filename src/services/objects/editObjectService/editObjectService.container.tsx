@@ -15,6 +15,7 @@ export const EditObjectContainer = () => {
 
   const housingStock = useStore(outputs.$housingStock);
   const houseManagements = useStore(outputs.$houseManagements);
+  const heatingStations = useStore(outputs.$heatingStations);
 
   const existingCities = useStore(addressSearchService.outputs.cities);
   const existingStreets = useStore(addressSearchService.outputs.streets);
@@ -25,6 +26,7 @@ export const EditObjectContainer = () => {
   const openEditHeatingStationModal = useEvent(
     inputs.openEditHeatingStationModal,
   );
+  const heatingStationCapture = useEvent(inputs.heatingStationCapture);
 
   const isReasonToFetchHousingStock =
     !housingStock || housingStock.id !== housingStockIdNumber;
@@ -42,6 +44,8 @@ export const EditObjectContainer = () => {
           houseManagements={houseManagements}
           openCreateHeatingStationModal={() => openCreateHeatingStationModal()}
           openEditHeatingStationModal={() => openEditHeatingStationModal()}
+          heatingStations={heatingStations}
+          heatingStationCapture={heatingStationCapture}
         />
       )}
     </>

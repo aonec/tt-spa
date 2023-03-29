@@ -41,6 +41,8 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   houseManagements,
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
+  heatingStations,
+  heatingStationCapture,
 }) => {
   const initialValues = useMemo(
     () => ({
@@ -63,6 +65,11 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
     // validationSchema,
   });
 
+  const heatingStationsValues = heatingStations?.items;
+  const selectedHeatingStation = heatingStations?.items?.find(
+    (station) => station.id === values.heatingStationId,
+  );
+
   return (
     <>
       <HeatingStationsFetchGate />
@@ -83,7 +90,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
             value={
               values.houseManagement === null
                 ? withoutHouseMagement
-                : values.houseManagement || undefined
+                : values.houseManagement.name || undefined
             }
           >
             <Select.Option value={withoutHouseMagement}>

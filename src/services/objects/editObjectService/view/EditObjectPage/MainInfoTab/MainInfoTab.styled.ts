@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { CloseIcon, PencilIcon } from 'ui-kit/icons';
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  width: 480px;
+`;
 
 export const Footer = styled.div`
   display: flex;
   margin-top: 12px;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const ButtonPadding = styled.div`

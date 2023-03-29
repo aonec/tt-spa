@@ -1,4 +1,9 @@
-import { HouseManagementResponse, HousingStockResponse } from 'myApi';
+import {
+  HeatingStationResponse,
+  HeatingStationResponsePagedList,
+  HouseManagementResponse,
+  HousingStockResponse,
+} from 'myApi';
 
 export type EditObjectPageProps = {
   housingStock: HousingStockResponse;
@@ -7,6 +12,8 @@ export type EditObjectPageProps = {
   houseManagements: HouseManagementResponse[] | null;
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void;
+  heatingStations: HeatingStationResponsePagedList | null;
+  heatingStationCapture: (payload: HeatingStationResponse) => void;
 };
 
 export enum EditObjectPageTabs {

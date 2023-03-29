@@ -12,10 +12,12 @@ export const editObjectService = {
       createHeatingStationService.inputs.handleOpenModal,
     openEditHeatingStationModal:
       editHeatingStationService.inputs.handleOpenModal,
+    heatingStationCapture: createObjectService.inputs.heatingStationCapture,
   },
   outputs: {
     $housingStock: objectProfileService.outputs.$housingStock,
     $houseManagements: createObjectService.outputs.$houseManagements,
+    $heatingStations: createObjectService.outputs.$heatingStations,
   },
   gates: { FetchObjectGate: objectProfileService.gates.ObjectProfileIdGate },
 };
