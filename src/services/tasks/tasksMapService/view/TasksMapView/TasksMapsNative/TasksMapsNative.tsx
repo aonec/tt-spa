@@ -23,6 +23,10 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
     const clusterer = new ymaps.Clusterer();
 
+    clusterer.createCluster = (center, geoObjects) => {
+      return new ymaps.Placemark(center, {});
+    };
+
     setMap(map);
     setClusterer(clusterer);
 
@@ -34,7 +38,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
     clusterer.removeAll();
 
-    housingStocksWithTasks.forEach((housingStockWithTasks) => {
+    const placemarks = housingStocksWithTasks.map((housingStockWithTasks) => {
       const { iconHrev, size } = getTaskPlacemarkerLink(
         housingStockWithTasks.tasks || [],
       );
@@ -52,8 +56,12 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
         },
       );
 
-      clusterer.add(placemark);
+      (placemark.state as any).housingStockData = housingStockWithTasks;
+
+      return placemark;
     });
+
+    clusterer.add(placemarks);
   }, [clusterer, housingStocksWithTasks, map, ymaps]);
 
   return (
