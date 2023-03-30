@@ -43,7 +43,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
         return [...acc, housingStockWithTasks];
       }, [] as HousingStockWithTasksResponse[]);
 
-      return new ymaps.Placemark(
+      const clusterPlacemark = new ymaps.Placemark(
         center,
         {},
         {
@@ -52,6 +52,12 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
           iconImageSize: [51, 51],
         },
       );
+
+      clusterPlacemark.events.add('click', () => {
+        map.setCenter(center, map.getZoom() + 2, { duration: 200 });
+      });
+
+      return clusterPlacemark;
     };
 
     map.events.add('boundschange', (event) => {
@@ -81,11 +87,13 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
           ? getExtendedMapMarkerlayoutLink(housingStockWithTasks.tasks || [])
           : getTaskPlacemarkerLink(housingStockWithTasks.tasks || []);
 
+      const center = [
+        housingStockWithTasks.housingStock?.coordinates?.latitude || 0,
+        housingStockWithTasks.housingStock?.coordinates?.longitude || 0,
+      ];
+
       const placemark = new ymaps.Placemark(
-        [
-          housingStockWithTasks.housingStock?.coordinates?.latitude || 0,
-          housingStockWithTasks.housingStock?.coordinates?.longitude || 0,
-        ],
+        center,
         {},
         {
           iconLayout: 'default#image',
@@ -101,9 +109,10 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
       (placemark.state as any).housingStockData = housingStockWithTasks;
 
-      placemark.events.add('click', () =>
-        handleClickMarker(housingStockWithTasks),
-      );
+      placemark.events.add('click', () => {
+        handleClickMarker(housingStockWithTasks);
+        map?.setCenter(center, map.getZoom(), { duration: 200 });
+      });
 
       return placemark;
     });
