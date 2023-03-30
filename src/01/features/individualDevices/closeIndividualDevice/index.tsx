@@ -27,7 +27,7 @@ export const CloseIndividualDeviceModal = () => {
 
   const onCancel = () => closeClosingIndividualDeviceModalButtonClicked();
 
-  const { submit, fields } = useForm(closeIndividualDeviceForm);
+  const { submit: onSubmit, fields } = useForm(closeIndividualDeviceForm);
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);
 
@@ -59,7 +59,7 @@ export const CloseIndividualDeviceModal = () => {
             </Button>
             <Button
               type="danger"
-              onClick={() => submit()}
+              onClick={() => onSubmit()}
               disabled={pendingSave}
               isLoading={pendingSave}
             >
