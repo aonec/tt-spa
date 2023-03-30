@@ -351,7 +351,10 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
-                  {isAdministrator || isSeniorOperator || isExecutor ? (
+                  {isAdministrator ||
+                  isSeniorOperator ||
+                  isExecutor ||
+                  isOperator ? (
                     <Route
                       path="/individualDevices/:deviceId/edit"
                       component={IndividualDeviceEdit}
