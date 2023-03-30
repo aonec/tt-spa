@@ -35,7 +35,7 @@ export const HavePermission = () => {
 };
 
 export const DoNotHavePermission = () => {
-  const comment = 'Old comment';
+  const comment = 'AntD - хуйня а не либа';
   const commentDate = moment().format();
 
   return (
