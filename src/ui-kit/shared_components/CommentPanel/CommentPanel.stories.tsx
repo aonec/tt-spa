@@ -10,7 +10,9 @@ export default {
 } as ComponentMeta<typeof CommentPanel>;
 
 export const HavePermission = () => {
-  const [comment, setComment] = useState<string | null>('Old comment');
+  const [comment, setComment] = useState<string | null>(
+    'а через styled ебется?',
+  );
   const [date, setDate] = useState(moment().format());
   const remove = () => setComment(null);
   const author = 'Aziz Azizmuradov';
