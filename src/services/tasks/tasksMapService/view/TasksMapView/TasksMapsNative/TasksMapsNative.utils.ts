@@ -1,5 +1,12 @@
-import { HousingStockWithTasksResponse } from 'myApi';
-import { GetPlacemarkerLayoutLinkResponse } from '../TasksMap/TasksMap.types';
+import { groupBy } from 'lodash';
+import { HousingStockWithTasksResponse, TaskShortResponse } from 'myApi';
+import { round } from 'utils/round';
+import {
+  GetPlacemarkerLayoutLinkResponse,
+  HousingStockTaskMarkerType,
+} from '../TasksMap/TasksMap.types';
+import { getHousingStockTaskType } from '../TasksMap/TasksMap.utils';
+import { TaskColorsDictionary } from './TasksMapsNative.constants';
 import {
   DiagramConfig,
   DiagramData,
@@ -92,9 +99,9 @@ export const createDiagramPie = (
   return svgString;
 };
 
-export const getClusterIcon = (
+const getClusterText = (
   housingStocksWithTasksList: HousingStockWithTasksResponse[],
-): GetPlacemarkerLayoutLinkResponse => {
+) => {
   const margin = 9;
 
   const tasksCount = housingStocksWithTasksList.reduce(
@@ -105,10 +112,10 @@ export const getClusterIcon = (
   const taskCountStringLength = String(tasksCount).length;
 
   const margins: { [key: number]: number } = {
-    1: margin,
-    2: 0,
+    1: margin - 4,
+    2: -2,
     3: -margin,
-    4: -(2 * margin),
+    4: -(2 * margin) + 2,
   };
 
   const taskCountSvgText = `
@@ -117,31 +124,48 @@ export const getClusterIcon = (
             y="62px"
             font-family="PTRootUIWeb"
             fill="#28305C"
-            style="font: 26px sans-serif;"
+            style="font: 26px sans-serif; font-weight: bold"
         >
             ${tasksCount}
         </text>  
     `;
 
+  return taskCountSvgText;
+};
+
+const getDiagramDataByHousingStockTasks = (
+  housingStocksWithTasksList: HousingStockWithTasksResponse[],
+) => {
+  const tasksFlatArray = housingStocksWithTasksList.reduce(
+    (acc, elem) => [...acc, ...(elem.tasks || [])],
+    [] as TaskShortResponse[],
+  );
+
+  const tasksGroups: { [key: string]: TaskShortResponse[] } = groupBy(
+    tasksFlatArray,
+    (elem) => getHousingStockTaskType(elem) || 'unknown',
+  );
+
+  const diargamData: DiagramData[] = Object.entries(tasksGroups).map(
+    ([resource, tasks]) => ({
+      value: round(tasks.length / tasksFlatArray.length, 6) * 100,
+      color:
+        TaskColorsDictionary[
+          resource as unknown as HousingStockTaskMarkerType
+        ] || '#28305C',
+    }),
+  );
+
+  return diargamData;
+};
+
+export const getClusterIcon = (
+  housingStocksWithTasksList: HousingStockWithTasksResponse[],
+): GetPlacemarkerLayoutLinkResponse => {
+  const taskCountSvgText = getClusterText(housingStocksWithTasksList);
+
   const svgCodeText = createDiagramPie(
-    [
-      {
-        value: 30,
-        color: '#79AFFF',
-      },
-      {
-        value: 20,
-        color: '#FF8C68',
-      },
-      {
-        value: 15,
-        color: '#E2B104',
-      },
-      {
-        value: 35,
-        color: '#28305C',
-      },
-    ],
+    getDiagramDataByHousingStockTasks(housingStocksWithTasksList),
     {
       strokeWidth: 12,
       radius: 40,
@@ -149,8 +173,6 @@ export const getClusterIcon = (
     },
     taskCountSvgText,
   );
-
-  console.log(svgCodeText);
 
   const iconHrev = 'data:image/svg+xml;base64,' + btoa(svgCodeText);
 
