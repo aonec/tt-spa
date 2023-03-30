@@ -132,7 +132,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   ]);
 
   useEffect(() => {
-    if (!isCentered || !map) return;
+    if (isCentered || !map) return;
 
     const coordinates = housingStocksWithTasks?.[0]?.housingStock?.coordinates;
 
