@@ -1,4 +1,5 @@
 import { useYMaps } from '@pbe/react-yandex-maps';
+import { HousingStockWithTasksResponse } from 'myApi';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { getTaskPlacemarkerLink } from '../TasksMap/TasksMap.utils';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
@@ -26,12 +27,21 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     const clusterer = new ymaps.Clusterer();
 
     clusterer.createCluster = (center, geoObjects) => {
+      const housingStocksWithTasksList = geoObjects.reduce((acc, elem) => {
+        const housingStockWithTasks = (elem.state as any)
+          .housingStockData as HousingStockWithTasksResponse;
+
+        if (!housingStockWithTasks) return acc;
+
+        return [...acc, housingStockWithTasks];
+      }, [] as HousingStockWithTasksResponse[]);
+
       return new ymaps.Placemark(
         center,
         {},
         {
           iconLayout: 'default#image',
-          iconImageHref: getClusterIcon([]).iconHrev,
+          iconImageHref: getClusterIcon(housingStocksWithTasksList).iconHrev,
           iconImageSize: [51, 51],
         },
       );
