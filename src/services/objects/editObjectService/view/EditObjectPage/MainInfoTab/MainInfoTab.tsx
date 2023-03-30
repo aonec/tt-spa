@@ -43,6 +43,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   openEditHeatingStationModal,
   heatingStations,
   heatingStationCapture,
+  onPageCancel,
 }) => {
   const initialValues = useMemo(
     () => ({
@@ -228,12 +229,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
         <Footer>
           <RightButtonBlock>
             <ButtonPadding>
-              <Button
-                type="ghost"
-                onClick={() => {
-                  // onPageCancel()
-                }}
-              >
+              <Button type="ghost" onClick={onPageCancel}>
                 Отмена
               </Button>
             </ButtonPadding>

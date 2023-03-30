@@ -14,6 +14,7 @@ export type EditObjectPageProps = {
   openEditHeatingStationModal: () => void;
   heatingStations: HeatingStationResponsePagedList | null;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
+  onPageCancel: () => void;
 };
 
 export enum EditObjectPageTabs {

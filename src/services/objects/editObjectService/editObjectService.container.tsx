@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { EditObjectPage } from './view/EditObjectPage';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { editObjectService } from './editObjectService.model';
 import { useEvent, useStore } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
@@ -10,6 +10,7 @@ const { FetchObjectGate } = gates;
 
 export const EditObjectContainer = () => {
   const { housingStockId } = useParams<{ housingStockId: string }>();
+  const history = useHistory();
 
   const housingStockIdNumber = Number(housingStockId);
 
@@ -28,8 +29,16 @@ export const EditObjectContainer = () => {
   );
   const heatingStationCapture = useEvent(inputs.heatingStationCapture);
 
+  const onPageCancel = useEvent(inputs.onPageCancel);
+
   const isReasonToFetchHousingStock =
     !housingStock || housingStock.id !== housingStockIdNumber;
+
+  useEffect(() => {
+    inputs.onPageCancel.watch(() =>
+      history.push(`/objects/profile/${housingStockId}`),
+    );
+  }, [history, housingStockId]);
 
   return (
     <>
@@ -46,6 +55,7 @@ export const EditObjectContainer = () => {
           openEditHeatingStationModal={() => openEditHeatingStationModal()}
           heatingStations={heatingStations}
           heatingStationCapture={heatingStationCapture}
+          onPageCancel={onPageCancel}
         />
       )}
     </>

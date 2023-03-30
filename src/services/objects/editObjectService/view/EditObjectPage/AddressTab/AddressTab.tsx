@@ -29,6 +29,7 @@ export const AddressTab: FC<AddressTabProps> = ({
   address,
   existingCities,
   existingStreets,
+  onPageCancel,
 }) => {
   const { additionalAddresses, mainAddress } = address;
 
@@ -219,12 +220,7 @@ export const AddressTab: FC<AddressTabProps> = ({
         <Footer>
           <NextCancelBlock>
             <ButtonPadding>
-              <Button
-                type="ghost"
-                onClick={() => {
-                  // onPageCancel()
-                }}
-              >
+              <Button type="ghost" onClick={onPageCancel}>
                 Отмена
               </Button>
             </ButtonPadding>

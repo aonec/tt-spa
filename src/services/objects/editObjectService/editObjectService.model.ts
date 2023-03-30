@@ -6,6 +6,8 @@ import { editHeatingStationService } from '../heatingStations/editHeatingStation
 
 const domain = createDomain('editObjectService');
 
+const onPageCancel = domain.createEvent();
+
 export const editObjectService = {
   inputs: {
     openCreateHeatingStationModal:
@@ -13,6 +15,7 @@ export const editObjectService = {
     openEditHeatingStationModal:
       editHeatingStationService.inputs.handleOpenModal,
     heatingStationCapture: createObjectService.inputs.heatingStationCapture,
+    onPageCancel,
   },
   outputs: {
     $housingStock: objectProfileService.outputs.$housingStock,

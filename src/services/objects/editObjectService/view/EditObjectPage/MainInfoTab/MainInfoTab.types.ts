@@ -12,4 +12,5 @@ export type MainInfoTabProps = {
   openEditHeatingStationModal: () => void;
   heatingStations: HeatingStationResponsePagedList | null;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
+  onPageCancel: () => void;
 };
