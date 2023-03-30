@@ -6,6 +6,8 @@ import {
   getExtendedMapMarkerlayoutLink,
   getTaskPlacemarkerLink,
 } from '../TasksMap/TasksMap.utils';
+import { MapZoomControl } from './MapZoomControl';
+import { Wrapper } from './TasksMapsNative.styled';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
 import { getClusterIcon } from './TasksMapsNative.utils';
 
@@ -20,6 +22,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   const [clusterer, setClusterer] = useState<ymaps.Clusterer | null>(null);
   const [isExtendedPlacemark, setIsExtendedPlacemarks] =
     useState<boolean>(false);
+  const [isCentered, setIsCentered] = useState(false);
 
   useEffect(() => {
     if (!ymaps || !mapRef.current) {
@@ -128,9 +131,27 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     selectedHousingStockId,
   ]);
 
+  useEffect(() => {
+    if (!isCentered || !map) return;
+
+    const coordinates = housingStocksWithTasks?.[0]?.housingStock?.coordinates;
+
+    const latitude = coordinates?.latitude;
+    const longitude = coordinates?.longitude;
+
+    if (!latitude || !longitude) return;
+
+    const center = [latitude, longitude];
+
+    map.setCenter(center, map.getZoom(), { duration: 500 });
+
+    setIsCentered(true);
+  }, [housingStocksWithTasks, map, isCentered]);
+
   return (
-    <>
+    <Wrapper>
       <div ref={mapRef} style={{ width: '100%', height: '84vh' }} />
-    </>
+      {map && <MapZoomControl map={map} />}
+    </Wrapper>
   );
 };
