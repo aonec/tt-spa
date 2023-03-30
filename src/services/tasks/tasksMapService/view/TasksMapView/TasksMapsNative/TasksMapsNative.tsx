@@ -1,18 +1,25 @@
 import { useYMaps } from '@pbe/react-yandex-maps';
 import { HousingStockWithTasksResponse } from 'myApi';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { getTaskPlacemarkerLink } from '../TasksMap/TasksMap.utils';
+import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from '../TasksMap/TaskMap.constants';
+import {
+  getExtendedMapMarkerlayoutLink,
+  getTaskPlacemarkerLink,
+} from '../TasksMap/TasksMap.utils';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
 import { getClusterIcon } from './TasksMapsNative.utils';
 
 export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   housingStocksWithTasks,
   handleClickMarker,
+  selectedHousingStockId,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
   const [map, setMap] = useState<ymaps.Map | null>(null);
   const [clusterer, setClusterer] = useState<ymaps.Clusterer | null>(null);
+  const [isExtendedPlacemark, setIsExtendedPlacemarks] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (!ymaps || !mapRef.current) {
@@ -47,6 +54,13 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
       );
     };
 
+    map.events.add('boundschange', (event) => {
+      setIsExtendedPlacemarks(
+        (event.originalEvent as unknown as { newZoom: number }).newZoom >=
+          EXTENDED_PLACEMARK_ZOOM_LIMIT,
+      );
+    });
+
     setMap(map);
     setClusterer(clusterer);
 
@@ -59,9 +73,13 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     clusterer.removeAll();
 
     const placemarks = housingStocksWithTasks.map((housingStockWithTasks) => {
-      const { iconHrev, size } = getTaskPlacemarkerLink(
-        housingStockWithTasks.tasks || [],
-      );
+      const isSelected =
+        selectedHousingStockId === housingStockWithTasks.housingStock?.id;
+
+      const { iconHrev, size, isExtended } =
+        isExtendedPlacemark || isSelected
+          ? getExtendedMapMarkerlayoutLink(housingStockWithTasks.tasks || [])
+          : getTaskPlacemarkerLink(housingStockWithTasks.tasks || []);
 
       const placemark = new ymaps.Placemark(
         [
@@ -73,6 +91,11 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
           iconLayout: 'default#image',
           iconImageHref: iconHrev,
           iconImageSize: [size.width, size.height],
+          iconOffset: [
+            -(size.width / 2),
+            (isExtendedPlacemark || isSelected) && isExtended ? -20 : 0,
+          ],
+          zIndex: isSelected ? 1000 : undefined,
         },
       );
 
@@ -86,7 +109,15 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     });
 
     clusterer.add(placemarks);
-  }, [clusterer, housingStocksWithTasks, map, ymaps, handleClickMarker]);
+  }, [
+    clusterer,
+    housingStocksWithTasks,
+    map,
+    ymaps,
+    handleClickMarker,
+    isExtendedPlacemark,
+    selectedHousingStockId,
+  ]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { groupBy } from 'lodash';
+import { groupBy, sortBy } from 'lodash';
 import { HousingStockWithTasksResponse, TaskShortResponse } from 'myApi';
 import { round } from 'utils/round';
 import {
@@ -78,7 +78,7 @@ export const createDiagramPie = (
             cx="${fullRadius}" 
             cy="${fullRadius}" 
             r="${radius}"  
-            fill="white"
+            fill="#ffffffb6"
         />
     `;
 
@@ -146,15 +146,15 @@ const getDiagramDataByHousingStockTasks = (
     (elem) => getHousingStockTaskType(elem) || 'unknown',
   );
 
-  const diargamData: DiagramData[] = Object.entries(tasksGroups).map(
-    ([resource, tasks]) => ({
-      value: round(tasks.length / tasksFlatArray.length, 6) * 100,
-      color:
-        TaskColorsDictionary[
-          resource as unknown as HousingStockTaskMarkerType
-        ] || '#28305C',
-    }),
-  );
+  const diargamData: DiagramData[] = sortBy(
+    Object.entries(tasksGroups),
+    ([key]) => key,
+  ).map(([resource, tasks]) => ({
+    value: round(tasks.length / tasksFlatArray.length, 6) * 100,
+    color:
+      TaskColorsDictionary[resource as unknown as HousingStockTaskMarkerType] ||
+      '#28305C',
+  }));
 
   return diargamData;
 };
