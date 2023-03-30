@@ -1,6 +1,7 @@
-import { HousingStockResponse } from 'myApi';
+import { HousingStockResponse, HousingStockUpdateRequest } from 'myApi';
 
 export type AdditionalInfoTabProps = {
   housingStock: HousingStockResponse;
-  onPageCancel: () => void
+  onPageCancel: () => void;
+  handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
 };

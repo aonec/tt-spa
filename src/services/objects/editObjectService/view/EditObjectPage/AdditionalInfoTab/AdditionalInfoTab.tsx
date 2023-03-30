@@ -23,6 +23,7 @@ import {
 export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
   housingStock,
   onPageCancel,
+  handleUpdateHousingStock,
 }) => {
   const constructionYear = moment(housingStock.constructionDate).format('YYYY');
 
@@ -38,7 +39,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
     },
     enableReinitialize: true,
     onSubmit: (data) => {
-      // handleSubmitCreateObject(data);
+      handleUpdateHousingStock(data);
     },
     validateOnChange: false,
   });

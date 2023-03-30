@@ -6,7 +6,7 @@ import { useEvent, useStore } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs, gates } = editObjectService;
-const { FetchObjectGate } = gates;
+const { FetchObjectGate, CatchHousingStockId } = gates;
 
 export const EditObjectContainer = () => {
   const { housingStockId } = useParams<{ housingStockId: string }>();
@@ -30,6 +30,7 @@ export const EditObjectContainer = () => {
   const heatingStationCapture = useEvent(inputs.heatingStationCapture);
 
   const onPageCancel = useEvent(inputs.onPageCancel);
+  const handleUpdateHousingStock = useEvent(inputs.handleUpdateHousingStock);
 
   const isReasonToFetchHousingStock =
     !housingStock || housingStock.id !== housingStockIdNumber;
@@ -42,6 +43,7 @@ export const EditObjectContainer = () => {
 
   return (
     <>
+      <CatchHousingStockId housingStockId={housingStockIdNumber} />
       {isReasonToFetchHousingStock && (
         <FetchObjectGate objectId={housingStockIdNumber} />
       )}
@@ -56,6 +58,7 @@ export const EditObjectContainer = () => {
           heatingStations={heatingStations}
           heatingStationCapture={heatingStationCapture}
           onPageCancel={onPageCancel}
+          handleUpdateHousingStock={handleUpdateHousingStock}
         />
       )}
     </>

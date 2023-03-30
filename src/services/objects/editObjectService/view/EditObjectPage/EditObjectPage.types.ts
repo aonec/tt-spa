@@ -3,6 +3,7 @@ import {
   HeatingStationResponsePagedList,
   HouseManagementResponse,
   HousingStockResponse,
+  HousingStockUpdateRequest,
 } from 'myApi';
 
 export type EditObjectPageProps = {
@@ -15,6 +16,7 @@ export type EditObjectPageProps = {
   heatingStations: HeatingStationResponsePagedList | null;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   onPageCancel: () => void;
+  handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
 };
 
 export enum EditObjectPageTabs {

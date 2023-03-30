@@ -16,7 +16,7 @@ import { consolidatedReportService } from './consolidatedReportService';
 const domain = createDomain('objectProfileService');
 
 const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
-  fetchHousingStock
+  fetchHousingStock,
 );
 const $housingStock = domain
   .createStore<HousingStockResponse | null>(null)
@@ -31,7 +31,7 @@ const $housingStockId = $housingStock.map((housingStock) => {
 });
 
 const $isAdministrator = tasksProfileService.outputs.$isAdministrator.map(
-  (isAdministrator) => isAdministrator
+  (isAdministrator) => isAdministrator,
 );
 
 const $resourceDisconnections = domain.createStore<
@@ -45,7 +45,7 @@ const getResourceDisconnectionsFx = domain.createEffect<
 
 $resourceDisconnections.on(
   getResourceDisconnectionsFx.doneData,
-  (_, disconnectionPagedData) => disconnectionPagedData.items || []
+  (_, disconnectionPagedData) => disconnectionPagedData.items || [],
 );
 
 const resetGrouptype = domain.createEvent();
@@ -59,10 +59,15 @@ const $isLoading = getHousingStockFx.pending;
 
 const ObjectProfileIdGate = createGate<{ objectId: number }>();
 const ObjectGroupIsOpen = createGate();
+const FetchObjectGate = createGate<{ objectId: number }>();
 
 forward({
   from: ObjectProfileIdGate.open.map(({ objectId }) => objectId),
   to: [getResourceDisconnectionsFx, getHousingStockFx],
+});
+forward({
+  from: FetchObjectGate.open.map(({ objectId }) => objectId),
+  to: getHousingStockFx,
 });
 
 forward({
@@ -87,5 +92,6 @@ export const objectProfileService = {
   gates: {
     ObjectProfileIdGate,
     ObjectGroupIsOpen,
+    FetchObjectGate,
   },
 };

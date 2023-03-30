@@ -3,6 +3,7 @@ import {
   HeatingStationResponsePagedList,
   HouseManagementResponse,
   HousingStockResponse,
+  HousingStockUpdateRequest,
 } from 'myApi';
 
 export type MainInfoTabProps = {
@@ -13,4 +14,5 @@ export type MainInfoTabProps = {
   heatingStations: HeatingStationResponsePagedList | null;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   onPageCancel: () => void;
+  handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
 };

@@ -19,6 +19,7 @@ import {
   EHouseCategory,
   ELivingHouseType,
   ENonResidentialHouseType,
+  HousingStockUpdateRequest,
 } from 'myApi';
 import {
   HouseCategoryDictionary,
@@ -44,11 +45,12 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   heatingStations,
   heatingStationCapture,
   onPageCancel,
+  handleUpdateHousingStock,
 }) => {
   const initialValues = useMemo(
     () => ({
-      houseManagement: housingStock.houseManagement || null,
-      objectCategory: housingStock.houseCategory || null,
+      houseManagementId: housingStock.houseManagement?.id || null,
+      houseCategory: housingStock.houseCategory || null,
       livingHouseType: housingStock.livingHouseType || null,
       nonResidentialHouseType: housingStock.nonResidentialHouseType || null,
       heatingStationId: housingStock.heatingStation?.id || null,
@@ -59,8 +61,8 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   const { values, handleSubmit, setFieldValue, errors } = useFormik({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (data) => {
-      // handleSubmitCreateObject(data);
+    onSubmit: (data: HousingStockUpdateRequest) => {
+      handleUpdateHousingStock(data);
     },
     validateOnChange: false,
     // validationSchema,
@@ -84,14 +86,14 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
             placeholder="Выберите из списка"
             onChange={(value) => {
               if (value === withoutHouseMagement) {
-                return setFieldValue('houseManagement', null);
+                return setFieldValue('houseManagementId', null);
               }
-              setFieldValue('houseManagement', value);
+              setFieldValue('houseManagementId', value);
             }}
             value={
-              values.houseManagement === null
+              values.houseManagementId === null
                 ? withoutHouseMagement
-                : values.houseManagement.name || undefined
+                : housingStock.houseManagement?.name || undefined
             }
           >
             <Select.Option value={withoutHouseMagement}>
@@ -109,7 +111,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
                 ),
             )}
           </Select>
-          <ErrorMessage>{errors.houseManagement}</ErrorMessage>
+          <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
         </FormItem>
 
         <SpaceLine />
@@ -119,11 +121,11 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
             <Select
               placeholder="Выберите из списка"
               onChange={(value) => {
-                setFieldValue('objectCategory', value);
+                setFieldValue('houseCategory', value);
                 setFieldValue('livingHouseType', null);
                 setFieldValue('nonResidentialHouseType', null);
               }}
-              value={values.objectCategory || undefined}
+              value={values.houseCategory || undefined}
             >
               {Object.values(EHouseCategory).map((category) => (
                 <Select.Option value={category} key={category}>
@@ -131,14 +133,14 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
                 </Select.Option>
               ))}
             </Select>
-            <ErrorMessage>{errors.objectCategory}</ErrorMessage>
+            <ErrorMessage>{errors.houseCategory}</ErrorMessage>
           </FormItem>
 
           <FormItem label="Тип объекта">
-            {!values.objectCategory && (
+            {!values.houseCategory && (
               <Select disabled placeholder="Выберите" />
             )}
-            {values.objectCategory === EHouseCategory.Living && (
+            {values.houseCategory === EHouseCategory.Living && (
               <>
                 <Select
                   placeholder="Выберите из списка"
@@ -155,7 +157,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
               </>
             )}
 
-            {values.objectCategory === EHouseCategory.NonResidential && (
+            {values.houseCategory === EHouseCategory.NonResidential && (
               <>
                 <Select
                   placeholder="Выберите из списка"
