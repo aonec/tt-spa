@@ -7,6 +7,7 @@ import { updateHousingStock } from './editObjectService.api';
 import { HousingStockResponse, HousingStockUpdateRequest } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
+import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 
 const domain = createDomain('editObjectService');
 
@@ -31,7 +32,6 @@ sample({
   clock: handleUpdateHousingStock,
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
-    console.log(gateState);
     return { housingStockId: gateState.housingStockId, data: clockPayload };
   },
   target: handleUpdateHousingStockFx,
@@ -50,7 +50,16 @@ export const editObjectService = {
   outputs: {
     $housingStock: objectProfileService.outputs.$housingStock,
     $houseManagements: createObjectService.outputs.$houseManagements,
-    $heatingStations: createObjectService.outputs.$heatingStations,
+    $isHouseManagementsLoading:
+      createObjectService.outputs.$isHouseManagementsLoading,
+    $heatingStations: displayHeatingStationsService.outputs.$heatingStations,
+    $isHeatingStationsLoading:
+      displayHeatingStationsService.outputs.$isHeatingStationsLoading,
   },
-  gates: { FetchObjectGate, CatchHousingStockId },
+  gates: {
+    FetchObjectGate,
+    CatchHousingStockId,
+    HouseManagementsFetchGate:
+      createObjectService.gates.HouseManagementsFetchGate,
+  },
 };

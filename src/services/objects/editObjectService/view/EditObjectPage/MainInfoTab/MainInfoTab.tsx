@@ -35,6 +35,8 @@ import { EditHeatingStationContainer } from 'services/objects/heatingStations/ed
 
 const HeatingStationsFetchGate =
   createObjectService.gates.HeatingStationsFetchGate;
+const HouseManagementsFetchGate =
+  createObjectService.gates.HouseManagementsFetchGate;
 const withoutHouseMagement = 'withoutHouseMagement';
 
 export const MainInfoTab: FC<MainInfoTabProps> = ({
@@ -46,6 +48,8 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   heatingStationCapture,
   onPageCancel,
   handleUpdateHousingStock,
+  isHeatingStationsLoading,
+  isHouseManagementsLoading,
 }) => {
   const initialValues = useMemo(
     () => ({
@@ -75,6 +79,7 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
 
   return (
     <>
+      <HouseManagementsFetchGate />
       <HeatingStationsFetchGate />
       <CreateHeatingStationContainer />
       <EditHeatingStationContainer />
@@ -91,10 +96,13 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
               setFieldValue('houseManagementId', value);
             }}
             value={
-              values.houseManagementId === null
-                ? withoutHouseMagement
-                : housingStock.houseManagement?.name || undefined
+              !isHouseManagementsLoading
+                ? values.houseManagementId === null
+                  ? withoutHouseMagement
+                  : values.houseManagementId
+                : undefined
             }
+            disabled={isHouseManagementsLoading}
           >
             <Select.Option value={withoutHouseMagement}>
               Без домоуправления
@@ -188,7 +196,10 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
                 onChange={(value) => {
                   setFieldValue('heatingStationId', value);
                 }}
-                value={values.heatingStationId || undefined}
+                value={
+                  (isHeatingStationsLoading && values.heatingStationId) ||
+                  undefined
+                }
               >
                 {sortBy(heatingStationsValues || [], 'name').map(
                   (heatingStations) =>

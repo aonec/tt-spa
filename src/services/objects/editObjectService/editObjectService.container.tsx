@@ -14,12 +14,16 @@ export const EditObjectContainer = () => {
 
   const housingStockIdNumber = Number(housingStockId);
 
-  const housingStock = useStore(outputs.$housingStock);
-  const houseManagements = useStore(outputs.$houseManagements);
-  const heatingStations = useStore(outputs.$heatingStations);
-
   const existingCities = useStore(addressSearchService.outputs.cities);
   const existingStreets = useStore(addressSearchService.outputs.streets);
+
+  const housingStock = useStore(outputs.$housingStock);
+  const houseManagements = useStore(outputs.$houseManagements);
+  const isHouseManagementsLoading = useStore(
+    outputs.$isHouseManagementsLoading,
+  );
+  const heatingStations = useStore(outputs.$heatingStations);
+  const isHeatingStationsLoading = useStore(outputs.$isHeatingStationsLoading);
 
   const openCreateHeatingStationModal = useEvent(
     inputs.openCreateHeatingStationModal,
@@ -59,6 +63,8 @@ export const EditObjectContainer = () => {
           heatingStationCapture={heatingStationCapture}
           onPageCancel={onPageCancel}
           handleUpdateHousingStock={handleUpdateHousingStock}
+          isHouseManagementsLoading={isHouseManagementsLoading}
+          isHeatingStationsLoading={isHeatingStationsLoading}
         />
       )}
     </>

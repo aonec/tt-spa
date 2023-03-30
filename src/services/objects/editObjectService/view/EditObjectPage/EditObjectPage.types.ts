@@ -17,6 +17,8 @@ export type EditObjectPageProps = {
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   onPageCancel: () => void;
   handleUpdateHousingStock: (payload: HousingStockUpdateRequest) => void;
+  isHouseManagementsLoading: boolean;
+  isHeatingStationsLoading: boolean;
 };
 
 export enum EditObjectPageTabs {
