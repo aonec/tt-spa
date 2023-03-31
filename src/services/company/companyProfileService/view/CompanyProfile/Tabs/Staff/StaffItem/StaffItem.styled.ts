@@ -13,6 +13,12 @@ export const Name = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 32px;
+
+  &:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    color: #189ee9;
+  }
 `;
 
 export const Role = styled.div`
