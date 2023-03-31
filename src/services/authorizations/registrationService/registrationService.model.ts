@@ -17,20 +17,34 @@ const confirmRegistrationFx = domain.createEffect<
 forward({ from: handleConfirmRegistration, to: confirmRegistrationFx });
 
 const $isLoading = confirmRegistrationFx.pending;
+const successRegistration = confirmRegistrationFx.doneData;
 
 $isLoading.watch(
   (isLoading) =>
-    isLoading && message.info('Попытка подтверждения пользователя'),
+    isLoading &&
+    message.loading({
+      key: 'confirm',
+      content: 'Попытка подтверждения пользователя',
+    }),
 );
 
-const successRegistration = confirmRegistrationFx.doneData;
-
 confirmRegistrationFx.failData.watch((error) => {
-  return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
-      'Произошла ошибка',
+  setTimeout(() => message.destroy('confirm'), 500);
+
+  setTimeout(
+    () =>
+      message.error(
+        error.response.data.error.Text ||
+          error.response.data.error.Message ||
+          'Произошла ошибка',
+      ),
+    1000,
   );
+});
+
+successRegistration.watch(() => {
+  message.destroy();
+  message.info('Введите логин');
 });
 
 export const registrationService = {
