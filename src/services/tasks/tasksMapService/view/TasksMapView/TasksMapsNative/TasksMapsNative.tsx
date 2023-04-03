@@ -143,7 +143,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
     const center = [latitude, longitude];
 
-    map.setCenter(center, map.getZoom(), { duration: 500 });
+    map.setCenter(center, map.getZoom());
 
     setIsCentered(true);
   }, [housingStocksWithTasks, map, isCentered]);
