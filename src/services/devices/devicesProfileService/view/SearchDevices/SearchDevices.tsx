@@ -163,7 +163,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   }
                   onSelect={() => submitForm()}
                 >
-                  <Option value="NextMonth">Ближайший месяц</Option>
+                  <Option value="NextMonth">В ближайший месяц</Option>
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
                 </SelectSC>

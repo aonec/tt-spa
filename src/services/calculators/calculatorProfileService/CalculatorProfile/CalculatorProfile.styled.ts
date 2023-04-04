@@ -1,3 +1,4 @@
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CalculatorIcon } from 'ui-kit/icons';
@@ -7,13 +8,8 @@ export const HeaderTitleWrapper = styled.div`
   flex-grow: 1;
 `;
 
-export const HeaderWrapper = styled.div`
-  margin-top: 12px;
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  gap: 8px;
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
 `;
 
 export const AdditionalInfoWrapper = styled.div`
@@ -24,7 +20,7 @@ export const AdditionalInfoWrapper = styled.div`
 `;
 
 export const TabsSC = styled(Tabs)`
-  margin-top: 24px;
+  margin-top: 16px;
 `;
 
 export const AddressLinkWrapper = styled(Link)`
@@ -46,6 +42,7 @@ export const Content = styled.div`
 export const CalculatorIconSC = styled(CalculatorIcon)`
   width: 24px;
   height: 16px;
+  margin-right: 8px;
 `;
 
 export const PanelsWrapper = styled.div`
