@@ -9,9 +9,9 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { NodeConnection } from '01/tt-components/NodeConnection';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { ENodeRegistrationType } from 'myApi';
-import { HousingMeteringDeviceReadingsContainer } from 'services/devices/housingMeteringDeviceReadingsService';
-import { getDeviceIds } from 'services/devices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
-import { DisplayNodesStatisticsContainer } from 'services/displayNodesStatisticsService';
+import { HousingMeteringDeviceReadingsContainer } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService';
+import { getDeviceIds } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService/housingMeteringDeviceReadingsService.utils';
+import { DisplayNodesStatisticsContainer } from 'services/nodes/displayNodesStatisticsService';
 
 import {
   Title,

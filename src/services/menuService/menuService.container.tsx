@@ -12,7 +12,7 @@ const { UserRolesGate, CurrentUserGate } = gates;
 export const MenuContainer = () => {
   const currentUser = useStore(outputs.$currentUser);
 
-  const userRoles = useMemo(() => currentUser?.roles || [], [currentUser]);
+  const userRoles = useMemo(() => currentUser?.roles, [currentUser]);
 
   const isCurrentUserLoading = useStore(outputs.$isCurrentUserLoading);
 
@@ -23,7 +23,7 @@ export const MenuContainer = () => {
       menuItems,
       privates,
       hidden,
-      userRoles.map((elem) => elem.key!)
+      userRoles.map((elem) => elem.key!),
     );
   }, [userRoles]);
 
