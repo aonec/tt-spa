@@ -2,12 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import {
-  IndividualDevice,
-  IndividualDeviceEdit,
-  Login,
-  Registration,
-} from '01/_pages';
+import { IndividualDeviceEdit, Login, Registration } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -339,14 +334,6 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <Redirect
                       from="/housingMeteringDevices/:deviceId/edit"
                       to="/access-denied/"
-                      exact
-                    />
-                  )}
-
-                  {isAnyRole && (
-                    <Route
-                      path="/individualDevices/:deviceId"
-                      component={IndividualDevice}
                       exact
                     />
                   )}
