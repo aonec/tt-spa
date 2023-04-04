@@ -6,7 +6,7 @@ import {
 } from '01/_pages/Graph/components/GraphView/GraphView.styled';
 import { TickComponent } from '01/_pages/Graph/components/TickComponent';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
+import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
 import { prepareData } from 'utils/Graph.utils';
 import {
   VictoryArea,

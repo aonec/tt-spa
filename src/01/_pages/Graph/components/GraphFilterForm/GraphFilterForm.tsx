@@ -7,7 +7,7 @@ import ButtonTT from '../../../../tt-components/ButtonTT';
 import {
   ArchiveReadingsFilter,
   FormikDateRange,
-} from 'services/displayNodesStatisticsService/displayNodesStatisticsService.types';
+} from 'services/nodes/displayNodesStatisticsService/displayNodesStatisticsService.types';
 import { FormItem } from 'ui-kit/FormItem';
 import {
   ClosedFilterWrapper,

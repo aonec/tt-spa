@@ -22,7 +22,7 @@ import {
 } from './GraphView.styled';
 import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
 import { GraphLegend } from '../GraphLegend/GraphLegend';
-import { GraphEmptyData } from 'services/displayNodesStatisticsService/view/GraphEmptyData';
+import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
 import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import {
   getMinAndMax,
