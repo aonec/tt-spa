@@ -1,5 +1,7 @@
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 import { SortedMeteringDeviceReading } from '../../housingMeteringDeviceReadingsService.types';
+import { EffectFailDataAxiosError } from 'types';
+import { Event } from 'effector';
 
 export type MeteringDeviceYearReadingsProps = {
   year: string;
@@ -14,4 +16,5 @@ export type MeteringDeviceYearReadingsProps = {
     deviceId: number;
     month: string;
   }) => void;
+  failureCreateReading: Event<EffectFailDataAxiosError>;
 };

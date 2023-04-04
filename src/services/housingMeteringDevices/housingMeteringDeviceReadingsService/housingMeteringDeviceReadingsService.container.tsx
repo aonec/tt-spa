@@ -18,6 +18,7 @@ export const HousingMeteringDeviceReadingsContainer: FC<
   const isShowLoader = readings.length === 0 && isLoading;
 
   const createReading = useEvent(inputs.createReading);
+  const failureCreateReading = inputs.failureCreateReading;
 
   return (
     <>
@@ -30,6 +31,7 @@ export const HousingMeteringDeviceReadingsContainer: FC<
           readings={readings}
           createReading={createReading}
           deviceIds={deviceIds}
+          failureCreateReading={failureCreateReading}
         />
       </WithLoader>
     </>

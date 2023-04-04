@@ -8,7 +8,13 @@ import { MeteringDeviceReadingsTableProps } from './MeteringDeviceReadingsTable.
 
 export const MeteringDeviceReadingsTable: FC<
   MeteringDeviceReadingsTableProps
-> = ({ isColdWater, readings, createReading, deviceIds }) => {
+> = ({
+  isColdWater,
+  readings,
+  createReading,
+  deviceIds,
+  failureCreateReading,
+}) => {
   const preparedReadings = useMemo(
     () => groupWithEmptyReadings(readings, deviceIds),
     [readings, deviceIds],
@@ -39,6 +45,7 @@ export const MeteringDeviceReadingsTable: FC<
                   .format();
                 createReading({ readingDate, deviceId, value });
               }}
+              failureCreateReading={failureCreateReading}
             />
           ))}
         </div>

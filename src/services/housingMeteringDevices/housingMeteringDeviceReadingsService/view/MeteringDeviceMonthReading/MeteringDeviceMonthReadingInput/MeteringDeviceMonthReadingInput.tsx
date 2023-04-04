@@ -2,13 +2,43 @@ import { fromEnter } from '01/shared/ui/DatePickerNative';
 import React, { FC } from 'react';
 import { InputSC } from './MeteringDeviceMonthReadingInput.styled';
 import { MeteringDeviceMonthReadingInputProps } from './MeteringDeviceMonthReadingInput.types';
-import { getInputValue, getReadingValue } from './MeteringDeviceMonthReadingInput.utils';
+import {
+  getInputValue,
+  getReadingValue,
+} from './MeteringDeviceMonthReadingInput.utils';
+import { EMagistralType } from 'myApi';
 
-export const MeteringDeviceMonthReadingInput: FC<MeteringDeviceMonthReadingInputProps> = ({
+export const MeteringDeviceMonthReadingInput: FC<
+  MeteringDeviceMonthReadingInputProps
+> = ({
   reading,
   setFieldValue,
   createReading,
+  initialFeedFlowReading,
+  initialFeedBackFlowReading,
 }) => {
+  const createReadingWithChangesTracking = () => {
+    if (
+      reading.magistralType === EMagistralType.FeedFlow &&
+      initialFeedFlowReading?.value !== reading.value
+    ) {
+      createReading({
+        ...reading,
+        value: Number(reading.value),
+      });
+    }
+    if (
+      reading.magistralType === EMagistralType.FeedBackFlow &&
+      initialFeedBackFlowReading?.value !== reading.value
+    ) {
+      createReading({
+        ...reading,
+        value: Number(reading.value),
+      });
+    }
+    return;
+  };
+
   return (
     <InputSC
       size="small"
@@ -18,7 +48,7 @@ export const MeteringDeviceMonthReadingInput: FC<MeteringDeviceMonthReadingInput
         createReading({
           ...reading,
           value: Number(reading.value),
-        })
+        }),
       )}
       type="number"
       onChange={(e) =>
@@ -27,6 +57,7 @@ export const MeteringDeviceMonthReadingInput: FC<MeteringDeviceMonthReadingInput
           value: getReadingValue(e.target.value),
         })
       }
+      onBlur={() => createReadingWithChangesTracking()}
     />
   );
 };
