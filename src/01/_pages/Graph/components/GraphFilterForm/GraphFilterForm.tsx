@@ -6,7 +6,7 @@ import IconTT from '../../../../tt-components/IconTT';
 import {
   ArchiveReadingsFilter,
   FormikDateRange,
-} from 'services/displayNodesStatisticsService/displayNodesStatisticsService.types';
+} from 'services/nodes/displayNodesStatisticsService/displayNodesStatisticsService.types';
 import { FormItem } from 'ui-kit/FormItem';
 import {
   ClosedFilterWrapper,

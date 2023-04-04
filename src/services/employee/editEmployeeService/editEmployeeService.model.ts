@@ -3,7 +3,7 @@ import { editEmployee } from './editEmployeeService.api';
 import { OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
-import { employeeProfileService } from 'services/employeeProfileService';
+import { employeeProfileService } from 'services/employee/employeeProfileService';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 

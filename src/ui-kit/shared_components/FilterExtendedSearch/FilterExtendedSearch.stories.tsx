@@ -3,10 +3,7 @@ import { ComponentMeta } from '@storybook/react';
 import { FilterExtendedSearch } from '.';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { EActResourceType } from 'myApi';
-import {
-  IndividualDeviceConsumptionGraphType,
-  IndividualDeviceConsumptionGraphLookup,
-} from 'services/devices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesListService/individualDevicesListService.constants';
+import { IndividualDeviceConsumptionGraphLookup, IndividualDeviceConsumptionGraphType } from 'services/housingMeteringDevices/devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesListService/individualDevicesListService.constants';
 
 export default {
   title: 'FilterExtendedSearch',

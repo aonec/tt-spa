@@ -93,7 +93,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     return (
       <div>
         {previousReadingValue !== null && currentReadingValue !== null
-          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт`
+          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт/ч`
           : null}
       </div>
     );
