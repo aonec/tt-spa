@@ -27,6 +27,11 @@ export const GraphLegend: FC<GraphLegendProps> = ({
     graphParam,
   );
 
+  const isAverageLineRendered = renderForHeatAndDeltaMass(
+    resource as EResourceType,
+    graphParam,
+  );
+
   const isRenderAccuracy = !(
     !isDeltaMass ||
     deltaMassAccuracy === null ||
@@ -36,7 +41,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({
   );
 
   const renderAccuracyLegendLine = () => {
-    if (!isRenderAccuracy) {
+    if (!isAverageLineRendered) {
       return null;
     }
     return <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>;
