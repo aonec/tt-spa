@@ -1,15 +1,7 @@
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-export const HeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  color: #272f5ab2;
-  margin-top: 32px;
-  margin-bottom: 8px;
-`;
 
 export const AddressWrapper = styled(Link)`
   color: #272f5ae5;
@@ -45,4 +37,8 @@ export const ContentWrapper = styled.div`
 
 export const CommonInfoWrapper = styled.div`
   width: 560px;
+`;
+
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
 `;

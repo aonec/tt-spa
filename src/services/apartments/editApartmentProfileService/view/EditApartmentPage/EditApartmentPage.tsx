@@ -1,13 +1,10 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC } from 'react';
-import { Tabs } from 'ui-kit/Tabs';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import {
   AdditionalAddressWrapper,
-  HeaderInfoWrapper,
-  HeaderWrapper,
-  TabsWrapper,
+  PageHeaderSC,
+  TabsSC,
 } from './EditApartmentPage.styled';
 import { EditApartmentPageProps } from './EditApartmentPage.types';
 import { TabsSection } from '../../editApartmentProfileService.types';
@@ -16,6 +13,8 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { EditHomeownersList } from './EditHomeownersList';
 import { ApartmentActsListContainer } from 'services/apartments/apartmentActsListService';
+
+const { TabPane } = TabsSC;
 
 export const EditApartmentPage: FC<EditApartmentPageProps> = ({
   apartment,
@@ -36,49 +35,43 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
     <div>
       <WithLoader isLoading={isLoading}>
         <GoBack />
-        <HeaderWrapper>
-          <PageHeader
-            title={`Кв ${apartment?.apartmentNumber}. Редактирование`}
-          />
-          <HeaderInfoWrapper>
-            <HeaderInfoString>
-              <>{address?.city}</>
-              <>
-                {address && getHousingStockItemAddress(address)}
-                {additionalAddresses?.map((elem) => (
-                  <AdditionalAddressWrapper>
-                    {getHousingStockItemAddress(elem)}
-                  </AdditionalAddressWrapper>
-                ))}
-              </>
-              <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
-            </HeaderInfoString>
-          </HeaderInfoWrapper>
-        </HeaderWrapper>
-        <TabsWrapper>
-          <Tabs
-            activeKey={tabSection}
-            onChange={(activeKey) => setTabSection(activeKey as TabsSection)}
-          >
-            <Tabs.TabPane tab="Общие данные" key={TabsSection.CommonData}>
-              {apartment && (
-                <EditCommonDataForm
-                  apartment={apartment}
-                  handleUpdateApartment={handleUpdateApartment}
-                  isUpdatingApartmentLoading={isUpdatingApartmentLoading}
-                />
-              )}
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Собственники" key={TabsSection.Homeowners}>
-              {filteredHomeownerAccounts && (
-                <EditHomeownersList homeowners={filteredHomeownerAccounts} />
-              )}
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
-              <ApartmentActsListContainer />
-            </Tabs.TabPane>
-          </Tabs>
-        </TabsWrapper>
+        <PageHeaderSC
+          title={`Кв ${apartment?.apartmentNumber}. Редактирование`}
+        />
+        <HeaderInfoString>
+          <>{address?.city}</>
+          <>
+            {address && getHousingStockItemAddress(address)}
+            {additionalAddresses?.map((elem) => (
+              <AdditionalAddressWrapper>
+                {getHousingStockItemAddress(elem)}
+              </AdditionalAddressWrapper>
+            ))}
+          </>
+          <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
+        </HeaderInfoString>
+        <TabsSC
+          activeKey={tabSection}
+          onChange={(activeKey) => setTabSection(activeKey as TabsSection)}
+        >
+          <TabPane tab="Общие данные" key={TabsSection.CommonData}>
+            {apartment && (
+              <EditCommonDataForm
+                apartment={apartment}
+                handleUpdateApartment={handleUpdateApartment}
+                isUpdatingApartmentLoading={isUpdatingApartmentLoading}
+              />
+            )}
+          </TabPane>
+          <TabPane tab="Собственники" key={TabsSection.Homeowners}>
+            {filteredHomeownerAccounts && (
+              <EditHomeownersList homeowners={filteredHomeownerAccounts} />
+            )}
+          </TabPane>
+          <TabPane tab="Журнал актов" key={TabsSection.ActsJournal}>
+            <ApartmentActsListContainer />
+          </TabPane>
+        </TabsSC>
       </WithLoader>
     </div>
   );

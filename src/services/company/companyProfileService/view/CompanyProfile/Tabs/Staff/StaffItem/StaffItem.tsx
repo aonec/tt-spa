@@ -38,6 +38,7 @@ export const StaffItem: FC<StaffItemProps> = ({
       </Cellphone>
       {status?.type && <StaffStatus status={status?.type} />}
       <ContextMenuButton
+        size="small"
         menuButtons={[
           {
             title: 'Открыть профиль сотрудника',

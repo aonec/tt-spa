@@ -143,7 +143,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
 
 const Wrap = styled(Grid)`
   align-items: center;
-  padding: 25px 15px;
+  padding: 24px 16px;
   border-bottom: 1px solid #dcdee4;
 `;
 
