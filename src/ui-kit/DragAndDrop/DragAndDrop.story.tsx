@@ -10,7 +10,7 @@ const meta: ComponentMeta<typeof DragAndDrop> = {
 
 export default meta;
 
-export const Basic: ComponentStory<typeof DragAndDrop> = (args) => (
+export const Overview: ComponentStory<typeof DragAndDrop> = (args) => (
   <div style={{ width: '800px', display: 'flex', justifyContent: 'center' }}>
     <DragAndDrop {...args} fileHandler={() => {}} />
   </div>

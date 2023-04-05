@@ -12,7 +12,7 @@ const meta: ComponentMeta<typeof Segmented> = {
 
 export default meta;
 
-export const Basic: ComponentStory<typeof Segmented> = () => {
+export const Overview: ComponentStory<typeof Segmented> = () => {
   const [tasksPageSegment, setTasksPageSegment] =
     useState<TasksPageSegment>('list');
 
