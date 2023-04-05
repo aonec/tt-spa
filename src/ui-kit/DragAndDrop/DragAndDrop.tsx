@@ -1,17 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FileUploadIcon } from './upload.svg';
+import { DragAndDropProps } from './DragAndDrop.types';
 
-interface Props {
-  fileHandler: (files: FileList) => void;
-  accept?: string;
-  uniqId: string;
-  text?: string;
-  style?: React.CSSProperties;
-  disabled?: boolean;
-}
-
-export const DragAndDrop: React.FC<Props> = (props) => {
+export const DragAndDrop: React.FC<DragAndDropProps> = (props) => {
   const { fileHandler, accept, uniqId, text, style, disabled = false } = props;
   const id = `file-input-${uniqId}`;
 
@@ -21,7 +13,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
 
       fileHandler(files);
     },
-    [fileHandler, disabled]
+    [fileHandler, disabled],
   );
 
   const handleDragOver = useCallback(
@@ -29,7 +21,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
       event.preventDefault();
       event.stopPropagation();
     },
-    []
+    [],
   );
 
   const handleDrop = useCallback(
@@ -38,14 +30,14 @@ export const DragAndDrop: React.FC<Props> = (props) => {
       event.stopPropagation();
       handleFile(event.dataTransfer.files);
     },
-    [handleFile]
+    [handleFile],
   );
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) handleFile(event.target.files);
     },
-    [handleFile]
+    [handleFile],
   );
 
   return (
