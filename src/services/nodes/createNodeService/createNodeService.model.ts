@@ -139,7 +139,8 @@ guard({
 });
 
 guard({
-  clock: $requestPayload.map(({ housingStockId }) => housingStockId),
+  source: $requestPayload.map(({ housingStockId }) => housingStockId),
+  clock: $requestPayload,
   filter: (id): id is number => Boolean(id),
   target: fetchCalculatorsListFx,
 });
