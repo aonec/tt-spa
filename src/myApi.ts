@@ -11255,6 +11255,61 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Nodes
+     * @name NodesDataForHousingConsumptionPlotList
+     * @summary HousingMeteringDeviceReadingsRead
+     * @request GET:/api/Nodes/DataForHousingConsumptionPlot
+     * @secure
+     */
+    nodesDataForHousingConsumptionPlotList: (
+      query: {
+        HousingStockIds: number[];
+        ResourceType: EResourceType;
+        From: string;
+        To: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        GetDataForHousingConsumptionPlotResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Nodes/DataForHousingConsumptionPlot`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags Nodes
+     * @name NodesSummaryHousingConsumptionsByResourcesList
+     * @summary HousingMeteringDeviceReadingsRead
+     * @request GET:/api/Nodes/SummaryHousingConsumptionsByResources
+     * @secure
+     */
+    nodesSummaryHousingConsumptionsByResourcesList: (
+      query: { HousingStockIds: number[]; From: string; To: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
+        path: `/api/Nodes/SummaryHousingConsumptionsByResources`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Сервис ЕРЦ</li><li>Контролёр</li>
      *
      * @tags NodeServiceZones
