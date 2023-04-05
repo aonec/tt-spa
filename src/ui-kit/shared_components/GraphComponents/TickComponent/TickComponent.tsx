@@ -1,14 +1,11 @@
-import { LineSegment, VictoryAxisProps } from 'victory';
 import React from 'react';
-
-type TickComponentProps = VictoryAxisProps & {
-  y1?: number;
-};
+import { TickComponentProps } from './TickComponent.types';
+import { LineSegment } from 'victory';
 
 export const TickComponent = (props: TickComponentProps) => {
   const { y1 } = props;
   let y2;
-  
+
   if (!y1) {
     return null;
   }

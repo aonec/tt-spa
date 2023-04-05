@@ -10,28 +10,31 @@ import {
 } from 'victory';
 import React, { useEffect, useState } from 'react';
 import 'antd/es/date-picker/style/index';
-import { GraphViewProps } from './GraphView.types';
-import { formTicks, getTickFormat } from '../../utils';
-import Gradient from '../Gradient';
-import { TickComponent } from '../TickComponent';
-import { CustomTooltip } from '../CustomTooltip';
+import { GraphViewProps } from './StatisticsGraph.types';
 import {
   GraphWrapper,
   horizontalAxisStyle,
   verticalAxisStyle,
-} from './GraphView.styled';
-import { GraphTooltip } from '../GraphTooltip/GraphTooltip';
-import { GraphLegend } from '../GraphLegend/GraphLegend';
+} from './StatisticsGraph.styled';
 import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
-import { renderForHeatAndDeltaMass } from '../GraphLegend/GraphLegend.utils';
 import {
   getMinAndMax,
   GraphColorLookup,
   prepareData,
 } from '../../../../../utils/Graph.utils';
-import { TaskPoint } from '../TaskPoint';
-import { getPreparedData } from './GraphView.utils';
+import {
+  formTicks,
+  getPreparedData,
+  getTickFormat,
+} from './StatisticsGraph.utils';
 import { EResourceType } from 'myApi';
+import { renderForHeatAndDeltaMass } from './GraphLegend/GraphLegend.utils';
+import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
+import { TickComponent } from 'ui-kit/shared_components/GraphComponents/TickComponent';
+import { TaskPoint } from './TaskPoint';
+import { CustomTooltip } from 'ui-kit/shared_components/GraphComponents/CustomTooltip';
+import { GraphTooltip } from './GraphTooltip';
+import { GraphLegend } from './GraphLegend';
 
 const minDelta = 0.01;
 const height = 350;
@@ -99,7 +102,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
   return (
     <>
       <GraphWrapper>
-        <Gradient resource={resource as EResourceType} />
+        <GraphGradient resource={resource as EResourceType} />
 
         <VictoryChart
           domain={{ y: [minValue, maxValue] }}
@@ -195,6 +198,9 @@ export const GraphView: React.FC<GraphViewProps> = ({
       <GraphLegend
         graphParam={graphParam}
         isTasksExist={taskStatistics.length !== 0}
+        resource={resource}
+        averageDeltaMass={data.averageDeltaMass}
+        deltaMassAccuracy={data.deltaMassAccuracy}
       />
     </>
   );

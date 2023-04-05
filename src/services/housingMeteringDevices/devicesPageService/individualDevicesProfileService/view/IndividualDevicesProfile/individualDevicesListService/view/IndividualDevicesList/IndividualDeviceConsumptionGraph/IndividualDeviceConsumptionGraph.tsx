@@ -1,4 +1,3 @@
-import Gradient from '01/_pages/Graph/components/Gradient';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React, { FC } from 'react';
@@ -14,6 +13,7 @@ import { Wrapper } from './IndividualDeviceConsumptionGraph.styled';
 import { IndividualDeviceConsumptionGraphProps } from './IndividualDeviceConsumptionGraph.types';
 import _ from 'lodash';
 import { DeviceGraphTick } from './DeviceGraphTick';
+import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
 
 const height = 50;
 const width = 180;
@@ -56,7 +56,7 @@ export const IndividualDeviceConsumptionGraph: FC<
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer />}
       >
-        <Gradient resource={resource as EResourceType} style={{ width }} />
+        <GraphGradient resource={resource as EResourceType} style={{ width }} />
 
         <VictoryAxis
           style={{

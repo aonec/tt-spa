@@ -1,5 +1,3 @@
-import { GraphFilterForm } from '01/_pages/Graph/components/GraphFilterForm';
-import { GraphView } from '01/_pages/Graph/components/GraphView';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC, useMemo } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
@@ -12,6 +10,8 @@ import {
 import { DisplayNodesStatisticsContainerProps } from './displayNodesStatisticsService.types';
 import { GraphEmptyData } from './view/GraphEmptyData';
 import { NodeStatisticsTable } from './view/NodeStatisticsTable';
+import { GraphFilterForm } from './view/StatisticsGraph/GraphFilterForm';
+import { GraphView } from './view/StatisticsGraph';
 
 const { inputs, outputs, gates } = displayNodesStatisticsService;
 const { NodeInfoGate } = gates;

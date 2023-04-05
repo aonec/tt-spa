@@ -1,10 +1,3 @@
-import { CustomTooltip } from '01/_pages/Graph/components/CustomTooltip';
-import Gradient from '01/_pages/Graph/components/Gradient';
-import {
-  horizontalAxisStyle,
-  verticalAxisStyle,
-} from '01/_pages/Graph/components/GraphView/GraphView.styled';
-import { TickComponent } from '01/_pages/Graph/components/TickComponent';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { GraphEmptyData } from 'services/nodes/displayNodesStatisticsService/view/GraphEmptyData';
 import { prepareData } from 'utils/Graph.utils';
@@ -33,6 +26,13 @@ import {
   getMinAndMaxForResourceConsumptionGraph,
 } from './ResourceConsumptionGraph.utils';
 import { ResourceConsumptionGraphTooltip } from './ResourceConsumptionGraphTooltip';
+import { GraphGradient } from 'ui-kit/shared_components/GraphComponents/GraphGradient';
+import { TickComponent } from 'ui-kit/shared_components/GraphComponents/TickComponent';
+import {
+  horizontalAxisStyle,
+  verticalAxisStyle,
+} from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
+import { CustomTooltip } from 'ui-kit/shared_components/GraphComponents/CustomTooltip';
 
 const height = 360;
 
@@ -156,7 +156,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
 
   return (
     <Wrapper id="graphWrapper">
-      <Gradient resource={resource} />
+      <GraphGradient resource={resource} />
 
       <VictoryChart
         padding={{ top: 0, bottom: 0, left: 26, right: 0 }}

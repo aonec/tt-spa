@@ -1,15 +1,62 @@
-import { format } from 'date-fns';
-import {
-  PreparedArchiveValues,
-  ReportType,
-} from './components/GraphView/GraphView.types';
 import moment from 'moment';
+import { DateTimeTaskStatisticsItemArrayDictionaryItem } from 'myApi';
+import {
+  GetTaskXPosPayload,
+  ReportType,
+  PreparedArchiveValues,
+} from './StatisticsGraph.types';
+import { format } from 'date-fns';
+
+const getTaskXPos = (payload: GetTaskXPosPayload) => {
+  const { currentData, minData, reportType } = payload;
+
+  const minDataMoment = moment(minData).utcOffset(0).startOf('d');
+
+  if (!currentData) {
+    return null;
+  }
+  if (reportType === 'hourly') {
+    return moment(currentData).utc(true).diff(minDataMoment, 'h') + 1;
+  }
+
+  return moment(currentData).utc(true).diff(minDataMoment, 'd') + 1;
+};
+
+export const getPreparedData = ({
+  tasksByDate,
+  maxValue,
+  minData,
+  reportType,
+}: {
+  tasksByDate: DateTimeTaskStatisticsItemArrayDictionaryItem;
+  reportType: ReportType;
+  maxValue: number;
+  minData: string;
+}) => {
+  const tasksArr = tasksByDate.value || [];
+
+  return {
+    x: getTaskXPos({
+      currentData: tasksByDate?.key,
+      minData,
+      reportType,
+    }),
+    y: maxValue * 0.9,
+    amount: tasksArr.length,
+    isEmergency: tasksArr.filter((elem) => elem.isEmergency).length !== 0,
+    isAllActive: tasksArr.filter((elem) => elem.isClosed).length === 0,
+    tasksInfo: tasksArr.map((task) => ({
+      id: task.id,
+      title: task.creationReason,
+    })),
+  };
+};
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
   const millisecondsInHour = 60 * 1000;
   const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour
+    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
   );
   return date;
 };
@@ -45,7 +92,7 @@ export const sortArchiveArray = (archiveArr: PreparedArchiveValues[]) => {
 };
 
 const formHourlyTicks = (
-  archiveArr: PreparedArchiveValues[]
+  archiveArr: PreparedArchiveValues[],
 ): PreparedArchiveValues[] => {
   if (archiveArr.length <= 24) return archiveArr;
 
@@ -58,14 +105,14 @@ const formHourlyTicks = (
 };
 
 const formDailyTicks = (
-  archiveArr: PreparedArchiveValues[]
+  archiveArr: PreparedArchiveValues[],
 ): PreparedArchiveValues[] => {
   if (archiveArr.length <= 14) return archiveArr;
   const sortedArchive = sortArchiveArray(archiveArr);
 
   const length = sortedArchive.length;
   const multipleFives = sortedArchive.filter((entry) =>
-    isDayMultiplyFive(entry.time)
+    isDayMultiplyFive(entry.time),
   );
   const delta1 =
     getDayFromTimeStamp(multipleFives[0].time) -
@@ -86,7 +133,7 @@ const formDailyTicks = (
 
 export const formTicks = (
   archiveArr: PreparedArchiveValues[],
-  reportType: ReportType
+  reportType: ReportType,
 ): PreparedArchiveValues[] => {
   switch (reportType) {
     case 'hourly':
@@ -101,7 +148,7 @@ export const formTicks = (
 export const getTickFormat = (
   archiveArrLength: number,
   reportType: ReportType,
-  x: string
+  x: string,
 ) => {
   if (reportType === 'daily') {
     return format(formatDate(x), 'dd.MM');
