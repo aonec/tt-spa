@@ -7,6 +7,7 @@ import { DatePickerTT } from '../DatePicker';
 import Header from '../Header';
 import { CloseDeviceRequest } from '../../../myApi';
 import { Button } from 'ui-kit/Button';
+import { ButtonSC } from './DerigesterForm.styled';
 
 const ModalCalculatorDeregisterForm = ({
   handleCancel,
@@ -75,9 +76,7 @@ const ModalCalculatorDeregisterForm = ({
           Отмена
         </Button>
 
-        <Button type="danger" style={{ marginLeft: 32 }}>
-          Снять прибор с учета
-        </Button>
+        <ButtonSC type="danger">Снять прибор с учета</ButtonSC>
       </StyledFooter>
     </Form>
   );
