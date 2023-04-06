@@ -21,6 +21,7 @@ export const ContractorItem: FC<ContractorItemProps> = ({
           'Не указано'}
       </Contacts>
       <ContextMenuButton
+        size="small"
         menuButtons={[
           {
             title: 'Редактировать информацию о подрядчике',

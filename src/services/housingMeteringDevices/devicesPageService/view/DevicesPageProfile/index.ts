@@ -1,1 +1,1 @@
-export { DevicesPageProfile } from './DevicesPageProfile'
+export { DevicesPageProfile } from './DevicesPageProfile';

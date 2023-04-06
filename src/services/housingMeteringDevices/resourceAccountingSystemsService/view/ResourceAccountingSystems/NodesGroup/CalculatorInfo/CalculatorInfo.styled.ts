@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 `;
 
 export const CalculatorModel = styled.div`
-  margin-left: 10px;
+  margin-left: 8px;
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
@@ -25,7 +25,7 @@ export const CalculatorModel = styled.div`
 `;
 
 export const CalculatorSerialNumber = styled.div`
-  margin-left: 10px;
+  margin-left: 8px;
   font-weight: 400;
   font-size: 14px;
   color: rgba(39, 47, 90, 0.7);

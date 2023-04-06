@@ -1,4 +1,4 @@
-import { InputConfiguration } from "../CustomInput/CustomInput.types";
+import { InputConfiguration } from '../CustomInput/CustomInput.types';
 
 export type SliderProps = {
   values: {
@@ -7,7 +7,7 @@ export type SliderProps = {
     [key: string]: string | number | null;
   }[];
   onChange: (payload: OnChangePayload) => void;
-  inputs: (InputConfiguration & {field: string})[];
+  inputs: (InputConfiguration & { field: string })[];
 };
 
 type OnChangePayload = {
@@ -16,5 +16,3 @@ type OnChangePayload = {
     [key: string]: string;
   };
 };
-
-

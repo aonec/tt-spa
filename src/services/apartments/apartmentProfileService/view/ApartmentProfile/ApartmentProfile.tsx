@@ -1,4 +1,3 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import React, { FC, ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ActsCardContainer } from 'services/apartments/actsCardService';
@@ -20,7 +19,7 @@ import {
   CommonInfoWrapper,
   ContentWrapper,
   Deviceswrapper,
-  HeaderWrapper,
+  PageHeaderSC,
   TabsWrapper,
 } from './ApartmentProfile.styled';
 import {
@@ -119,33 +118,31 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
       {apartment && (
         <div>
           <GoBack />
-          <HeaderWrapper>
-            <PageHeader
-              title={`Кв. №${apartment.apartmentNumber}`}
-              contextMenu={{
-                menuButtons: [
-                  {
-                    title: 'Редактировать квартиру',
-                    onClick: () =>
-                      history.push(`/apartments/${apartment.id}/edit`),
-                    hidden: !isPermitionToEditApartment,
-                  },
-                ],
-              }}
-            />
-            <HeaderInfoString>
-              <>{address?.city}</>
-              <>
-                {`${address && getHousingStockItemAddress(address)} `}
-                {additionalAddresses?.map((elem) => (
-                  <AdditionalAddressWrapper>
-                    {getHousingStockItemAddress(elem)}
-                  </AdditionalAddressWrapper>
-                ))}
-              </>
-              <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
-            </HeaderInfoString>
-          </HeaderWrapper>
+          <PageHeaderSC
+            title={`Кв. №${apartment.apartmentNumber}`}
+            contextMenu={{
+              menuButtons: [
+                {
+                  title: 'Редактировать квартиру',
+                  onClick: () =>
+                    history.push(`/apartments/${apartment.id}/edit`),
+                  hidden: !isPermitionToEditApartment,
+                },
+              ],
+            }}
+          />
+          <HeaderInfoString>
+            <>{address?.city}</>
+            <>
+              {`${address && getHousingStockItemAddress(address)} `}
+              {additionalAddresses?.map((elem) => (
+                <AdditionalAddressWrapper>
+                  {getHousingStockItemAddress(elem)}
+                </AdditionalAddressWrapper>
+              ))}
+            </>
+            <>ДУ "{apartment?.housingStock?.houseManagement?.name}"</>
+          </HeaderInfoString>
           <TabsWrapper>
             <Tabs
               activeKey={tabSection}

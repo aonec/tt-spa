@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
 `;
 
 export const TabsSC = styled(Tabs)`
-  margin-top: 32px;
+  margin-top: 16px;
   .ant-tabs-tab-btn {
     font-weight: 500;
     font-size: 16px;

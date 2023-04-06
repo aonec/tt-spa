@@ -1,1 +1,1 @@
-export { MeteringDeviceYearReadings } from './MeteringDeviceYearReadings'
+export { MeteringDeviceYearReadings } from './MeteringDeviceYearReadings';

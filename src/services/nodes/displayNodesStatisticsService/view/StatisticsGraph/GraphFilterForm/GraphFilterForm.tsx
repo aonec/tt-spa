@@ -22,8 +22,9 @@ import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { ButtonTT, IconTT } from '01/tt-components';
+import { Button } from 'ui-kit/Button';
 import { ReportType } from '../StatisticsGraph.types';
+import { IconTT } from '01/tt-components';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -188,22 +189,14 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               </FormItem>
             </FormBody>
             <FormFooter>
-              <ButtonTT
-                color="white"
-                small
+              <Button
+                type="ghost"
                 style={{ marginRight: 16 }}
                 onClick={() => closeModal()}
               >
                 Отмена
-              </ButtonTT>
-              <ButtonTT
-                size="big"
-                color="blue"
-                disabled={false}
-                onClick={submitForm}
-              >
-                Применить настройки
-              </ButtonTT>
+              </Button>
+              <Button onClick={submitForm}>Применить настройки</Button>
             </FormFooter>
           </Form>
         </OpenedFilter>

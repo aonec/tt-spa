@@ -28,9 +28,9 @@ import {
 
 const { inputs, outputs } = individualDevicesListService;
 
-export const IndividualDeviceListItemBySerialNumber: FC<IndividualDeviceListItemBySerialNumberProps> = ({
-  device,
-}) => {
+export const IndividualDeviceListItemBySerialNumber: FC<
+  IndividualDeviceListItemBySerialNumberProps
+> = ({ device }) => {
   const { serialNumber, address, homeowners } = device;
 
   const openedDeviceId = useStore(outputs.$openedBlockId);

@@ -1,1 +1,1 @@
-export { EditHousingMeteringDeviceDocuments } from './EditHousingMeteringDeviceDocuments'
+export { EditHousingMeteringDeviceDocuments } from './EditHousingMeteringDeviceDocuments';

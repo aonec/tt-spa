@@ -29,4 +29,3 @@ export const MonthWrapper = styled.div`
   color: #272f5a;
   text-transform: capitalize;
 `;
-

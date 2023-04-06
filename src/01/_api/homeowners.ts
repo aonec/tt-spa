@@ -10,7 +10,7 @@ import {
 import axios from '01/axios';
 
 export const getHomeownerCertificate = (
-  id: number,
+  id: string,
 ): Promise<HomeownerCertificateResponse> =>
   axios.get(`HomeownerAccounts/${id}/Certificate`);
 
