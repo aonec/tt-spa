@@ -9,33 +9,33 @@ import { AddressHeaderWrapper } from './DevicesByAddress.styled';
 import { DevicesByAddressPropsInterface } from './DevicesByAddress.types';
 
 export const DevicesByAddress: FC<DevicesByAddressPropsInterface> = ({
-  addressDevicesGroup,
-  housingsByFilter,
-  setAddress,
-  devicesSearchType,
-  setDevicesSearchType,
+  housingStockDevices,
+  housingStocksAddressForSwitcher,
+  setAddressBySwither,
+  mainFilterSearchType,
+  setMainFilterSearchType,
 }) => {
-  const address = housingsByFilter?.current?.address;
+  const address = housingStocksAddressForSwitcher?.current?.address;
 
-  const nextAddress = housingsByFilter?.next?.address;
-  const previousAddress = housingsByFilter?.previous?.address;
+  const nextAddress = housingStocksAddressForSwitcher?.next?.address;
+  const previousAddress = housingStocksAddressForSwitcher?.previous?.address;
 
   const handleClickAddress = useCallback(
     (address: HouseAddress) => {
-      if (devicesSearchType !== DevicesSearchType.Address) {
-        setDevicesSearchType(DevicesSearchType.Address);
+      if (mainFilterSearchType !== DevicesSearchType.Address) {
+        setMainFilterSearchType(DevicesSearchType.Address);
       }
-      setAddress({
+      setAddressBySwither({
         'Filter.Address.City': address.city || undefined,
         'Filter.Address.Street': address.street || undefined,
         'Filter.Address.HousingStockNumber': address.houseNumber || undefined,
         'Filter.Address.Corpus': address.houseCorpus || undefined,
       });
     },
-    [setAddress, devicesSearchType, setDevicesSearchType],
+    [setAddressBySwither, mainFilterSearchType, setMainFilterSearchType],
   );
 
-  const deviceElems = addressDevicesGroup.devices?.map((device) => (
+  const deviceElems = housingStockDevices.devices?.map((device) => (
     <DeviceBlock device={device} key={device.id} />
   ));
 
@@ -45,9 +45,9 @@ export const DevicesByAddress: FC<DevicesByAddressPropsInterface> = ({
         <AddressHeaderWrapper>
           <Subtitle
             fontWeight={400}
-            to={`/objects/profile/${housingsByFilter?.current?.id}`}
+            to={`/objects/profile/${housingStocksAddressForSwitcher?.current?.id}`}
           >
-            {getHousingStockAddressString(address)}
+            {getHousingStockAddressString(address)} 333
           </Subtitle>
           <Switcher
             nextValue={nextAddress}

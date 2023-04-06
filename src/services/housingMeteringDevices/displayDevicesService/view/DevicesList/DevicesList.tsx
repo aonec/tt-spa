@@ -5,29 +5,32 @@ import React, { FC } from 'react';
 import { DevicesListProps } from './DevicesList.types';
 
 export const DevicesList: FC<DevicesListProps> = ({
-  devices,
+  housingStocksDevices,
   isLoading,
   total,
   pageNumber,
   pageSize,
   setPageNumber,
-  setAddress,
-  housingsByFilter,
-  devicesSearchType,
-  setDevicesSearchType,
+  setAddressBySwither,
+  housingStocksAddressForSwitcher,
+  mainFilterSearchType,
+  setMainFilterSearchType,
 }) => {
-  const isDevicesListEmpty = !devices.length;
-  const deviceArray = devices.map((addressDevicesGroup) => (
+  const isDevicesListEmpty = !housingStocksDevices.length;
+  console.log(mainFilterSearchType);
+
+  const deviceArray = housingStocksDevices.map((housingStockDevices) => (
     <DevicesByAddress
-      key={addressDevicesGroup.address?.mainAddress?.id}
-      addressDevicesGroup={addressDevicesGroup}
-      setAddress={setAddress}
-      housingsByFilter={housingsByFilter.find(
-        (housing) =>
-          housing.current?.id === addressDevicesGroup.devices[0].address?.id
+      key={housingStockDevices.address?.mainAddress?.id}
+      housingStockDevices={housingStockDevices}
+      setAddressBySwither={setAddressBySwither}
+      housingStocksAddressForSwitcher={housingStocksAddressForSwitcher.find(
+        (housingStock) =>
+          housingStock.current?.id ===
+          housingStockDevices.devices[0].address?.id,
       )}
-      devicesSearchType={devicesSearchType}
-      setDevicesSearchType={setDevicesSearchType}
+      mainFilterSearchType={mainFilterSearchType}
+      setMainFilterSearchType={setMainFilterSearchType}
     />
   ));
   return (
