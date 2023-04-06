@@ -4,7 +4,6 @@ import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
 import { TaskCommentRequest, TaskCommentResponse } from 'myApi';
 import { taskProfileService } from 'services/tasks/taskProfileService/taskProfileService.model';
-import moment from 'moment';
 
 const domain = createDomain('taskCommentService');
 
@@ -12,6 +11,7 @@ const handleDelete = domain.createEvent<{
   taskId: number;
   commentId: number;
 }>();
+
 const handleUpdate = domain.createEvent<{
   taskId: number;
   commentId: number;
@@ -36,6 +36,11 @@ const updateTaskCommentFx = domain.createEffect<
   TaskCommentResponse,
   EffectFailDataAxiosError
 >(updateTaskComment);
+
+const $updatedCommentData = domain
+  .createStore<TaskCommentResponse | null>(null)
+  .on(updateTaskCommentFx.doneData, (_, commentData) => commentData)
+  .reset(handleUpdate);
 
 forward({ from: handleDelete, to: deleteTaskCommentFx });
 forward({ from: handleUpdate, to: updateTaskCommentFx });
@@ -68,30 +73,7 @@ taskProfileService.outputs.$task.on(
   },
 );
 
-taskProfileService.outputs.$task.on(
-  updateTaskCommentFx.done,
-  (prev, { params: { commentId, data } }) => {
-    if (!prev) return prev;
-    return {
-      ...prev,
-      comments: prev.comments
-        ? prev.comments.map((comment) => {
-            if (comment.id === commentId) {
-              return {
-                ...comment,
-                text: data.comment as unknown as string,
-                createdAt: moment().toISOString(false),
-              };
-            } else {
-              return comment;
-            }
-          })
-        : prev.comments,
-    };
-  },
-);
-
 export const taskCommentService = {
   inputs: { handleDelete, handleUpdate },
-  outputs: {},
+  outputs: { $updatedCommentData },
 };

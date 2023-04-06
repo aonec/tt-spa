@@ -18,3 +18,10 @@ export const ResourceReadingsCountHeaderFact = styled.div`
 export const getBorderedColumnCSS = () => `
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 `;
+
+export const rowStyles = `
+  &:last-child {
+    background: #f3f5f6;
+    border-bottom: none;
+  }
+`;

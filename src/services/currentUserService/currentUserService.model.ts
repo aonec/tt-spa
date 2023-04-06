@@ -43,11 +43,7 @@ const $isLoading = fetchCurrentUserFx.pending;
 
 const CurrentUserGate = createGate();
 
-CurrentUserGate.open.watch(() => console.log('first'));
-
 forward({ from: CurrentUserGate.open, to: fetchCurrentUserFx });
-
-$currentUser.on(fetchCurrentUserFx.doneData, (_, user) => user);
 
 const $currentUserRoles = $currentUser.map((user) => user?.roles || []);
 const $userRolesKeys = $currentUserRoles.map((userRoles) =>

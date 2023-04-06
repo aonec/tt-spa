@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledContainerThreeItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { StyledContainerThreeItems } from 'services/housingMeteringDevices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
 import { Select } from 'antd';
 
 export const Wrapper = styled.div`
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const StyledContainerThreeItemsMainTypes = styled(
-  StyledContainerThreeItems
+  StyledContainerThreeItems,
 )`
   margin-top: 10px;
   grid-template-columns: 4fr 4fr 4fr;

@@ -58,7 +58,7 @@ export const SearchForm = () => {
     <>
       <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
-      <Grid temp="0.75fr 1.5fr 0.75fr 0.75fr 0.3fr" gap="15px">
+      <Grid temp="0.75fr 1.5fr 0.75fr 0.75fr 0.3fr" gap="16px">
         <SelectSC
           placeholder="Город"
           ref={cityRef}

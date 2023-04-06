@@ -1,1 +1,0 @@
-export { CommonInfoTab } from './CommonInfoTab'
