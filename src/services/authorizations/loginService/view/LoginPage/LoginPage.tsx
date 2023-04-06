@@ -82,11 +82,6 @@ export const LoginPage: FC<LoginPageProps> = ({
               readOnly={isLoading}
               value={values.password}
               onChange={(event) => {
-                if (
-                  (event.nativeEvent as unknown as { data: string }).data ===
-                  ' '
-                )
-                  return;
                 setFieldValue('password', event.target.value);
               }}
             />
