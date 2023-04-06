@@ -1,4 +1,3 @@
-import { Loader } from '01/components';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import {
@@ -43,8 +42,8 @@ export const Dialog: FC<DialogProps> = ({
             <Button type="ghost" key="back" onClick={onCancel}>
               {cancelText || 'Отмена'}
             </Button>
-            <Button onClick={onSubmit} disabled={isLoading} type={type}>
-              {isLoading ? <Loader show /> : btnText}
+            <Button onClick={onSubmit} isLoading={isLoading} type={type}>
+              {btnText}
             </Button>
           </FooterWrapper>
         )

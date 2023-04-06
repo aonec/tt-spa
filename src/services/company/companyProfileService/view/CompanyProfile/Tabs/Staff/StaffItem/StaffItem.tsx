@@ -25,7 +25,11 @@ export const StaffItem: FC<StaffItemProps> = ({
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
   return (
     <Wrapper key={staff.id}>
-      <Name>
+      <Name
+        onClick={() => {
+          history.push(`/userProfile/${id}`);
+        }}
+      >
         {lastName} {firstName} {middleName}
       </Name>
 

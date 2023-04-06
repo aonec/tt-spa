@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { TasksMapProps } from './TasksMap.types';
-import { Map, ZoomControl, Placemark } from '@pbe/react-yandex-maps';
+import { Map, ZoomControl, Placemark, Clusterer } from '@pbe/react-yandex-maps';
 import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TaskMap.constants';
 import {
   getExtendedMapMarkerlayoutLink,
   getTaskPlacemarkerLink,
 } from './TasksMap.utils';
+import { featureToggles } from 'featureToggles';
 
 export const TasksMap: FC<TasksMapProps> = React.memo(
   ({ housingStocksWithTasks, handleClickMarker, selectedHousingStockId }) => {
@@ -32,6 +33,42 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
       mapRef.current?.setCenter?.(center);
     }, [mapRef, housingStocksWithTasks]);
 
+    const placemarks = housingStocksWithTasks.map((housingStockWithTasks) => {
+      const isSelected =
+        selectedHousingStockId === housingStockWithTasks.housingStock?.id;
+      const { iconHrev, size, isExtended } =
+        isExtendedPlacemark || isSelected
+          ? getExtendedMapMarkerlayoutLink(housingStockWithTasks.tasks || [])
+          : getTaskPlacemarkerLink(housingStockWithTasks.tasks || []);
+
+      return (
+        <Placemark
+          key={housingStockWithTasks.housingStock?.id}
+          onClick={() => {
+            handleClickMarker(housingStockWithTasks);
+          }}
+          defaultGeometry={
+            housingStockWithTasks.housingStock?.coordinates
+              ? [
+                  housingStockWithTasks.housingStock?.coordinates.latitude,
+                  housingStockWithTasks.housingStock?.coordinates.longitude,
+                ]
+              : undefined
+          }
+          options={{
+            iconLayout: 'default#image',
+            iconImageHref: iconHrev,
+            iconImageSize: [size.width, size.height],
+            iconOffset: [
+              -(size.width / 2),
+              (isExtendedPlacemark || isSelected) && isExtended ? -20 : 0,
+            ],
+            zIndex: isSelected ? 1000 : undefined,
+          }}
+        />
+      );
+    });
+
     return (
       <Map
         width={'100%'}
@@ -47,43 +84,17 @@ export const TasksMap: FC<TasksMapProps> = React.memo(
           );
         }}
       >
-        {housingStocksWithTasks.map((housingStockWithTasks) => {
-          const isSelected =
-            selectedHousingStockId === housingStockWithTasks.housingStock?.id;
-          const { iconHrev, size, isExtended } =
-            isExtendedPlacemark || isSelected
-              ? getExtendedMapMarkerlayoutLink(
-                  housingStockWithTasks.tasks || [],
-                )
-              : getTaskPlacemarkerLink(housingStockWithTasks.tasks || []);
-
-          return (
-            <Placemark
-              key={housingStockWithTasks.housingStock?.id}
-              onClick={() => {
-                handleClickMarker(housingStockWithTasks);
-              }}
-              defaultGeometry={
-                housingStockWithTasks.housingStock?.coordinates
-                  ? [
-                      housingStockWithTasks.housingStock?.coordinates.latitude,
-                      housingStockWithTasks.housingStock?.coordinates.longitude,
-                    ]
-                  : undefined
-              }
-              options={{
-                iconLayout: 'default#image',
-                iconImageHref: iconHrev,
-                iconImageSize: [size.width, size.height],
-                iconOffset: [
-                  -(size.width / 2),
-                  (isExtendedPlacemark || isSelected) && isExtended ? -20 : 0,
-                ],
-                zIndex: isSelected ? 1000 : undefined,
-              }}
-            />
-          );
-        })}
+        {featureToggles.taskMaps.clasterization && (
+          <Clusterer
+            options={{
+              preset: 'islands#nightClusterIcons',
+              groupByCoordinates: false,
+            }}
+          >
+            {placemarks}
+          </Clusterer>
+        )}
+        {!featureToggles.taskMaps.clasterization && placemarks}
         <ZoomControl
           options={{
             position: {
