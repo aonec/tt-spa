@@ -1,14 +1,8 @@
-import { VictoryTooltip, VictoryTooltipProps } from 'victory';
-import React from 'react';
+import React, { FC } from 'react';
+import { CustomTooltipProps } from './CustomTooltip.types';
+import { VictoryTooltip } from 'victory';
 
-export const CustomTooltip: React.FC<
-  VictoryTooltipProps & {
-    minValue: number;
-    maxValue: number;
-    height: number;
-    datum?: { value: number | null };
-  }
-> = (props) => {
+export const CustomTooltip: FC<CustomTooltipProps> = (props) => {
   const { x, y, active, minValue, maxValue, height, datum } = props;
 
   if (datum?.value === null || datum?.value === undefined) {

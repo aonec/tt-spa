@@ -1,13 +1,8 @@
-import { EResourceType } from 'myApi';
-import React, { CSSProperties } from 'react';
+import React, { FC } from 'react';
+import { GraphGradientProps } from './GraphGradient.types';
 import { GraphColorLookup } from 'utils/Graph.utils';
 
-interface Props {
-  resource: EResourceType;
-  style?: CSSProperties;
-}
-
-const Gradient: React.FC<Props> = ({ resource, style }) => {
+export const GraphGradient: FC<GraphGradientProps> = ({ resource, style }) => {
   const color = GraphColorLookup[resource];
 
   return (
@@ -21,5 +16,3 @@ const Gradient: React.FC<Props> = ({ resource, style }) => {
     </svg>
   );
 };
-
-export default Gradient;

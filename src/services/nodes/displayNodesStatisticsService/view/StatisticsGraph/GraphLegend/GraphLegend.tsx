@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-import { useStore } from 'effector-react';
-import { $graphData } from '../../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
 import {
   Accuracy,
@@ -20,13 +18,16 @@ import { EResourceType } from 'myApi';
 export const GraphLegend: FC<GraphLegendProps> = ({
   graphParam,
   isTasksExist,
+  resource,
+  deltaMassAccuracy,
+  averageDeltaMass,
 }) => {
-  const graphData = useStore($graphData);
-  if (!graphData || !graphData.resource) {
-    return null;
-  }
-  const { resource, deltaMassAccuracy, averageDeltaMass } = graphData;
   const isDeltaMass = renderForHeatAndDeltaMass(
+    resource as EResourceType,
+    graphParam,
+  );
+
+  const isAverageLineRendered = renderForHeatAndDeltaMass(
     resource as EResourceType,
     graphParam,
   );
@@ -40,7 +41,7 @@ export const GraphLegend: FC<GraphLegendProps> = ({
   );
 
   const renderAccuracyLegendLine = () => {
-    if (!isRenderAccuracy) {
+    if (!isAverageLineRendered) {
       return null;
     }
     return <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>;

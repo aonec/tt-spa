@@ -1,5 +1,5 @@
-import { ReportType } from '01/_pages/Graph/components/GraphView/GraphView.types';
 import moment from 'moment';
+import { ReportType } from './view/StatisticsGraph/StatisticsGraph.types';
 
 export type DisplayNodesStatisticsContainerProps = {
   nodeId: number;

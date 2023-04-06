@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import { Form, Radio, Tooltip } from 'antd';
-import IconTT from '../../../../tt-components/IconTT';
 import {
   ArchiveReadingsFilter,
   FormikDateRange,
@@ -21,10 +20,11 @@ import {
 import { SelectSC } from '01/shared/ui/Fields';
 import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ReportType } from '../GraphView/GraphView.types';
 import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Button } from 'ui-kit/Button';
+import { ReportType } from '../StatisticsGraph.types';
+import { IconTT } from '01/tt-components';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
