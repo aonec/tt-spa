@@ -5,6 +5,7 @@ import {
 import { HouseManagementResponse, EResourceType } from 'myApi';
 import {
   addressesCountTexts,
+  EmployeeReportTypesDictionary,
   ReportPeriodDictionary,
   selectedCountTexts,
 } from './ReportFiltrationForm/ReportFiltrationForm.constants';
@@ -13,6 +14,10 @@ import {
   ReportFiltrationFormValues,
 } from '../../reportViewService.types';
 import { getCountText } from 'utils/getCountText';
+import {
+  EmployeeReportDatePeriodType,
+  EmployeeReportType,
+} from './ReportFiltrationForm/ReportFiltrationForm.types';
 
 const getResourcesText = (resourcesList: EResourceType[]) => {
   return resourcesList
@@ -57,8 +62,16 @@ export const getFiltersList = (
       houseManagement.id === filtrationValues.houseManagement,
   );
 
+  const isCallCenterReport =
+    filtrationValues.employeeReportType ===
+    EmployeeReportType.CallCenterWorkingReport;
+
+  const reportDatePeriodType = isCallCenterReport
+    ? ReportDatePeriod.AnyPeriod
+    : filtrationValues.reportDatePeriod;
+
   const period = getPeriodText(
-    filtrationValues.reportDatePeriod,
+    reportDatePeriodType,
     filtrationValues.from,
     filtrationValues.to,
   );
@@ -67,12 +80,30 @@ export const getFiltersList = (
     filtrationValues.reportOption &&
     ReportOptionsDictionary[filtrationValues.reportOption];
 
+  const employeeReportType =
+    filtrationValues.employeeReportType &&
+    EmployeeReportTypesDictionary[filtrationValues.employeeReportType];
+
+  const employeeReportDate = filtrationValues.employeeReportDate;
+
+  const isEmployeeReportPeriodMonth =
+    filtrationValues.employeeReportDatePeriodType ===
+    EmployeeReportDatePeriodType.Month;
+
+  const employeeReportDatePeriod =
+    !isCallCenterReport &&
+    employeeReportDate?.format(
+      `${isEmployeeReportPeriodMonth ? 'MMMM' : ''} YYYY`,
+    );
+
   return [
     filtrationValues.city,
     houseManagement?.name || null,
     selectedAddress,
     resourcesText,
+    employeeReportType,
     period,
     reportOption,
-  ].filter(Boolean);
+    employeeReportDatePeriod,
+  ].filter(Boolean) as string[];
 };

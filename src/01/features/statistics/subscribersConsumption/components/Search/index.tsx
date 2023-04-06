@@ -64,7 +64,6 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
         HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
         ExcludeApartments: isExcluded,
       },
-      enableReinitialize: true,
       onSubmit: (values) => {
         setFilter(values);
       },
@@ -158,16 +157,17 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             placeholder="Улица"
             ref={streetRef}
             value={fields.street.value}
+            onFocus={() => {
+              fields.street.onChange('');
+              fields.house.onChange('');
+            }}
             onChange={fields.street.onChange}
             onKeyDown={(e) => {
               fromEnter(() => fields.street.onChange(streetMatch))(e);
               keyDownEnterGuardedHandler(1)(e);
             }}
             options={options}
-            onClick={() => {
-              fields.street.onChange('');
-              fields.house.onChange('');
-            }}
+            onSelect={() => fields.street.onChange(streetMatch)}
           />
           <StyledAutocomplete
             onBlur={onFindHandler}

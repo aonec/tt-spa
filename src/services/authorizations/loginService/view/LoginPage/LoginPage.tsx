@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { LoginPageProps } from './LoginPage.types';
 import {
+  ButtonDevSettings,
   ButtonLogin,
   Form,
   InputPassword,
@@ -20,7 +21,6 @@ import { DevSettingsModal } from '01/features/developmentSettings';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { ButtonTT } from '01/tt-components';
 
 export const LoginPage: FC<LoginPageProps> = ({
   isDevMode,
@@ -82,11 +82,6 @@ export const LoginPage: FC<LoginPageProps> = ({
               readOnly={isLoading}
               value={values.password}
               onChange={(event) => {
-                if (
-                  (event.nativeEvent as unknown as { data: string }).data ===
-                  ' '
-                )
-                  return;
                 setFieldValue('password', event.target.value);
               }}
             />
@@ -102,14 +97,9 @@ export const LoginPage: FC<LoginPageProps> = ({
         {isDevMode && (
           <>
             <DevSettingsModal />
-            <ButtonTT
-              onClick={openDevSettingsModal}
-              small
-              color="white"
-              style={{ color: 'white' }}
-            >
+            <ButtonDevSettings onClick={openDevSettingsModal}>
               Development settings
-            </ButtonTT>
+            </ButtonDevSettings>
           </>
         )}
       </RightBlockWrapper>

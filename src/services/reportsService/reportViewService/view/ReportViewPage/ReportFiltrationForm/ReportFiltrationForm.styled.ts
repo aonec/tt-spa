@@ -16,3 +16,9 @@ export const PeriodPickerWrapprer = styled.div`
   margin-left: 24px;
   margin-top: 4px;
 `;
+
+export const EmployeeReportFormWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 0.75fr 0.5fr 0.5fr;
+  grid-gap: 16px;
+`;
