@@ -76,9 +76,9 @@ forward({
   to: clearStore,
 });
 
-const failureCreateReading = createReadingFx.failData;
+const createReadingFailed = createReadingFx.failData;
 
-failureCreateReading.watch((error) =>
+createReadingFailed.watch((error) =>
   message.error(error.response.data.error.Text),
 );
 
@@ -89,7 +89,7 @@ createReadingFx.done.watch(({ params }) =>
 );
 
 export const housingMeteringDeviceReadingsService = {
-  inputs: { createReading, failureCreateReading },
+  inputs: { createReading, createReadingFailed },
   outputs: {
     $readings,
     $isColdWater,

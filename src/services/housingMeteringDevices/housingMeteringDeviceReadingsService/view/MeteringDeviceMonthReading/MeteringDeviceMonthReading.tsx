@@ -14,7 +14,7 @@ export const MeteringDeviceMonthReading: FC<
   month,
   createReading,
   allReadings,
-  failureCreateReading,
+  createReadingFailed,
 }) => {
   const initialFeedFlowReading =
     monthReadings.find(
@@ -36,8 +36,8 @@ export const MeteringDeviceMonthReading: FC<
   });
 
   useEffect(() => {
-    return failureCreateReading.watch(() => resetForm()).unsubscribe;
-  }, [failureCreateReading, resetForm]);
+    return createReadingFailed.watch(() => resetForm()).unsubscribe;
+  }, [createReadingFailed, resetForm]);
 
   const consumption = useMemo(() => {
     const { feedBackFlowReading, feedFlowReading } = values;

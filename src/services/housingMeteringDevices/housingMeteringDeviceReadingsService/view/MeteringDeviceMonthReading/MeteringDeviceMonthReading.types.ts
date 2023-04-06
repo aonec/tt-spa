@@ -9,5 +9,5 @@ export type MeteringDeviceMonthReadingProps = {
   isColdWater: boolean;
   month: string;
   createReading: (reading: { value: number; deviceId: number }) => void;
-  failureCreateReading: Event<EffectFailDataAxiosError>;
+  createReadingFailed: Event<EffectFailDataAxiosError>;
 };

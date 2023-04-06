@@ -13,7 +13,7 @@ export const MeteringDeviceReadingsTable: FC<
   readings,
   createReading,
   deviceIds,
-  failureCreateReading,
+  createReadingFailed,
 }) => {
   const preparedReadings = useMemo(
     () => groupWithEmptyReadings(readings, deviceIds),
@@ -45,7 +45,7 @@ export const MeteringDeviceReadingsTable: FC<
                   .format();
                 createReading({ readingDate, deviceId, value });
               }}
-              failureCreateReading={failureCreateReading}
+              createReadingFailed={createReadingFailed}
             />
           ))}
         </div>

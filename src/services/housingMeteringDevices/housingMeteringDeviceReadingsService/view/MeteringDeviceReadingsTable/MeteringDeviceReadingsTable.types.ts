@@ -11,5 +11,5 @@ export type MeteringDeviceReadingsTableProps = {
   readings: HousingMeteringDeviceReadingsIncludingPlacementResponse[];
   createReading: (reading: CreateHousingMeteringDeviceReadingsRequest) => void;
   deviceIds: { [key in EMagistralType]: number | null };
-  failureCreateReading: Event<EffectFailDataAxiosError>;
+  createReadingFailed: Event<EffectFailDataAxiosError>;
 };

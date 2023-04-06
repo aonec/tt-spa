@@ -16,5 +16,5 @@ export type MeteringDeviceYearReadingsProps = {
     deviceId: number;
     month: string;
   }) => void;
-  failureCreateReading: Event<EffectFailDataAxiosError>;
+  createReadingFailed: Event<EffectFailDataAxiosError>;
 };

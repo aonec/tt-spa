@@ -11,7 +11,7 @@ export const MeteringDeviceYearReadings: FC<
   isColdWater,
   createReading,
   allReadings,
-  failureCreateReading,
+  createReadingFailed,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +26,7 @@ export const MeteringDeviceYearReadings: FC<
             month={month}
             key={month}
             createReading={(reading) => createReading({ month, ...reading })}
-            failureCreateReading={failureCreateReading}
+            createReadingFailed={createReadingFailed}
           />
         );
       }),
@@ -35,7 +35,7 @@ export const MeteringDeviceYearReadings: FC<
       allReadings,
       isColdWater,
       createReading,
-      failureCreateReading,
+      createReadingFailed,
     ],
   );
 
