@@ -34,7 +34,7 @@ export const UserEmail = styled(NavLink)`
 `;
 
 export const UserManagingFirmName = styled.div`
-  margin: 5px 0 0 25px;
+  margin: 4px 0 0 24px;
   font-size: 12px;
   width: 145px;
   overflow: hidden;

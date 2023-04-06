@@ -1,3 +1,5 @@
+import { PageHeader } from '01/shared/ui/PageHeader';
+import Tabs from '01/tt-components/Tabs';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
@@ -7,7 +9,7 @@ export const BlockTitle = styled.div`
   font-size: 24px;
   line-height: 32px;
   color: #272f5a;
-  margin: 16px 0px 26px 0px;
+  margin-bottom: 24px;
 `;
 
 export const GridWrapper = styled.div`
@@ -50,10 +52,6 @@ export const FieldHousingStocksNumber = styled.div`
   cursor: pointer;
 `;
 
-export const Margin = styled.div`
-  margin: 20px 0px 20px 0px;
-`;
-
 export const СompetenceDiv = styled.div`
   width: max-content;
   padding: 6px 8px 6px 12px;
@@ -71,6 +69,10 @@ export const CompetenciesContainer = styled.div`
   margin-bottom: 22px;
 `;
 
-export const LoaderWrapper = styled.div`
-  width: 600px;
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
+`;
+
+export const TabsSC = styled(Tabs)`
+  margin-top: 16px;
 `;

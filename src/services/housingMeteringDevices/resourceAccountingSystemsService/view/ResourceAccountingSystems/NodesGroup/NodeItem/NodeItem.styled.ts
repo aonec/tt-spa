@@ -6,7 +6,7 @@ export const Wrapper = styled.div<{
   segmentName: ResourceAccountingSystemsSegment;
 }>`
   height: 60px;
-  padding: 0 25px;
+  padding: 0 24px;
   display: grid;
   grid-gap: 15px;
   grid-template-columns: ${({ segmentName }) =>
