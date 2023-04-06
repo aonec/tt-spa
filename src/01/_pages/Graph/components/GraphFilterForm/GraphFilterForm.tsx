@@ -3,7 +3,6 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import { Form, Radio, Tooltip } from 'antd';
 import IconTT from '../../../../tt-components/IconTT';
-import ButtonTT from '../../../../tt-components/ButtonTT';
 import {
   ArchiveReadingsFilter,
   FormikDateRange,
@@ -25,6 +24,7 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { ReportType } from '../GraphView/GraphView.types';
 import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Button } from 'ui-kit/Button';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -189,22 +189,14 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               </FormItem>
             </FormBody>
             <FormFooter>
-              <ButtonTT
-                color="white"
-                small
+              <Button
+                type="ghost"
                 style={{ marginRight: 16 }}
                 onClick={() => closeModal()}
               >
                 Отмена
-              </ButtonTT>
-              <ButtonTT
-                size="big"
-                color="blue"
-                disabled={false}
-                onClick={submitForm}
-              >
-                Применить настройки
-              </ButtonTT>
+              </Button>
+              <Button onClick={submitForm}>Применить настройки</Button>
             </FormFooter>
           </Form>
         </OpenedFilter>

@@ -1,1 +1,1 @@
-export { PipeNodeInfo } from './PipeNodeInfo'
+export { PipeNodeInfo } from './PipeNodeInfo';

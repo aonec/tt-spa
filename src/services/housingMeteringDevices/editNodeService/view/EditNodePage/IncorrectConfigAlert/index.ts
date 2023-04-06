@@ -1,1 +1,1 @@
-export { IncorrectConfigAlert } from './IncorrectConfigAlert'
+export { IncorrectConfigAlert } from './IncorrectConfigAlert';

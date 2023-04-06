@@ -1,3 +1,1 @@
-export type DocumentsProps = {
-  
-};
+export type DocumentsProps = {};

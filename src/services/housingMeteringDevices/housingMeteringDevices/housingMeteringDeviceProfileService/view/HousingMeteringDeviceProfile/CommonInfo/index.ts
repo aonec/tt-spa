@@ -1,1 +1,1 @@
-export { CommonInfoTab } from './CommonInfoTab'
+export { CommonInfoTab } from './CommonInfoTab';

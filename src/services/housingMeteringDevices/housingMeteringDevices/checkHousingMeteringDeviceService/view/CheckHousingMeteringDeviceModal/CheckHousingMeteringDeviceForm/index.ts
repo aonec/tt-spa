@@ -1,1 +1,1 @@
-export { CheckHousingMeteringDeviceForm } from './CheckHousingMeteringDeviceForm'
+export { CheckHousingMeteringDeviceForm } from './CheckHousingMeteringDeviceForm';
