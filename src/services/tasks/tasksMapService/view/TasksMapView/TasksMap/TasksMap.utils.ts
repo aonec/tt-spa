@@ -102,7 +102,9 @@ export const getExtendedMapMarkerlayoutLink = (
 
   const taskTypesIcons = Object.entries(tasksTypeGroups)
     .map(([type, tasks], index) => {
-      const calculateIcon = TaskTypePlacemarkIconsDictionary[type];
+      const calculateIcon =
+        TaskTypePlacemarkIconsDictionary[type] ||
+        TaskTypePlacemarkIconsDictionary.AllResources;
 
       const x = (index + 1) * 31 - 8;
 
