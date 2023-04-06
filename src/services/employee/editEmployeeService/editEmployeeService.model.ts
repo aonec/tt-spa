@@ -3,7 +3,7 @@ import { editEmployee } from './editEmployeeService.api';
 import { OrganizationUserResponse, OrganizationUserUpdateRequest } from 'myApi';
 import { competencesService } from '../competencesService';
 import { rolesService } from '../rolesService';
-import { employeeProfileService } from 'services/employeeProfileService';
+import { employeeProfileService } from 'services/employee/employeeProfileService';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
@@ -28,11 +28,11 @@ forward({ from: handleSubmit, to: updateEmployeeFx });
 const $pending = updateEmployeeFx.pending;
 
 updateEmployeeFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text)
+  message.error(error.response.data.error.Text),
 );
 
 updateEmployeeFx.doneData.watch(() =>
-  message.success('Информация успешно обновлена!')
+  message.success('Информация успешно обновлена!'),
 );
 
 export const editEmployeeService = {

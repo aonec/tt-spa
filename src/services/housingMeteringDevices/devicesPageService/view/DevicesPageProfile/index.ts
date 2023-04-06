@@ -1,0 +1,1 @@
+export { DevicesPageProfile } from './DevicesPageProfile';

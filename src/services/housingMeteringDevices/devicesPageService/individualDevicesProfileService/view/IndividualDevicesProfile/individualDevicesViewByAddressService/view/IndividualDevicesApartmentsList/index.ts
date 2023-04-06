@@ -1,0 +1,1 @@
+export { IndividualDevicesApartmentsList } from './IndividualDevicesApartmentsList';

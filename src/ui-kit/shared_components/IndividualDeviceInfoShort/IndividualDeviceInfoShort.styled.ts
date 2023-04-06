@@ -20,7 +20,7 @@ export const Wrapper = styled.div<{ clickable: boolean }>`
 `;
 
 export const SerialNumber = styled.div`
-  margin-left: 10px;
+  margin-left: 8px;
   font-size: 16px;
   color: #272f5a;
   white-space: nowrap;
@@ -29,7 +29,7 @@ export const SerialNumber = styled.div`
 `;
 
 export const Model = styled.div`
-  margin-left: 10px;
+  margin-left: 8px;
   font-size: 16px;
   color: #272f5a88;
 

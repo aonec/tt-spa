@@ -1,4 +1,3 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { Steps } from 'antd';
 import React, { FC, ReactNode } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
@@ -8,11 +7,7 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { CommonData } from './CommonData';
 import { ConnectedDevices } from './ConnectedDevices';
 import { ConnectionSettings } from './ConnectionSettings';
-import {
-  AddressWrapper,
-  HeaderWrapper,
-  Wrapper,
-} from './CreateNodePage.styled';
+import { AddressWrapper, PageHeaderSC, Wrapper } from './CreateNodePage.styled';
 import { CreateNodePageProps } from './CreateNodePage.types';
 import { MountAddress } from './MountAddress';
 
@@ -77,9 +72,7 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
   return (
     <div>
       <GoBack />
-      <HeaderWrapper>
-        <PageHeader title="Добавление нового узла" isGhost />
-      </HeaderWrapper>
+      <PageHeaderSC title="Добавление нового узла" isGhost />
       {housingStock && (
         <AddressWrapper>
           {getHousingStockAddress(housingStock, true)}

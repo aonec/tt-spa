@@ -31,7 +31,7 @@ import {
   NodeStatusTextDictionary,
 } from 'dictionaries';
 import moment from 'moment';
-import { IncorrectConfigAlert } from 'services/devices/editNodeService/view/EditNodePage/IncorrectConfigAlert';
+import { IncorrectConfigAlert } from 'services/housingMeteringDevices/editNodeService/view/EditNodePage/IncorrectConfigAlert';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
