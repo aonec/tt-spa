@@ -21,7 +21,7 @@ const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DeviceLink to={`/calculators/${calculator.id}`}>
             <Flex>
-              <StockIconTT dark icon="device" fill="var(--main-100)" />
+              <StockIconTT dark icon="device" fill="var(--main-100)" /> 
               <Space w={7} />
               {calculator.model}
               <SerialNumber>({calculator.serialNumber})</SerialNumber>
@@ -30,13 +30,13 @@ const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
 
           {!isConnected && (
             <IconWithTooltip title="Вычислитель не опрашивается">
-              <Icon icon="notConnected" color="var(--main-100)" />
+              <Icon icon="notConnected" color="var(--main-100)" />  
             </IconWithTooltip>
           )}
 
           {isConnected && isConnectionError && (
             <IconWithTooltip title="Проверьте настройки соединения">
-              <Icon icon="checkConnection" color="var(--error)" />
+              <Icon icon="checkConnection" color="var(--error)" />   
             </IconWithTooltip>
           )}
         </div>
