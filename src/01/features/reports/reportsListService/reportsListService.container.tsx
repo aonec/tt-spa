@@ -1,10 +1,13 @@
-import { Pagination, Tabs } from 'antd';
+import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
 import { PAGE_SIZE } from './reportsListService.constants';
 import { reportsListService } from './reportsListService.model';
 import { ReportStatusType } from './reportsListService.types';
 import { ReportsList } from './view/ReportsList';
+import { TabsSC } from './reportsListService.styled';
+
+const { TabPane } = TabsSC;
 
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;
@@ -33,18 +36,18 @@ export const ReportsListContainer = () => {
   return (
     <>
       <ReportsHistoryGate />
-      <Tabs
+      <TabsSC
         activeKey={
           isShowActual ? ReportStatusType.Actual : ReportStatusType.Archived
         }
         onChange={(key) => setIsShowActual(key === ReportStatusType.Actual)}
       >
-        <Tabs.TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
-        <Tabs.TabPane
+        <TabPane tab="Актуальные отчеты" key={ReportStatusType.Actual} />
+        <TabPane
           tab={`Архивные отчеты ${archivedReportsCountString}`}
           key={ReportStatusType.Archived}
         />
-      </Tabs>
+      </TabsSC>
       <ReportsList
         reportsList={reportsHistoryListPagedData?.items || null}
         isLoading={isLoading}
@@ -56,6 +59,7 @@ export const ReportsListContainer = () => {
           onChange={setPageNumber}
           current={pageNumber}
           total={reportsHistoryListPagedData?.totalItems}
+          showSizeChanger={false}
         />
       )}
     </>

@@ -1,4 +1,3 @@
-import './graph/graphView/models/init';
 import './devicesReport/models/init';
 import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/init';
 import './individualDevices/closeIndividualDevice/models/init';

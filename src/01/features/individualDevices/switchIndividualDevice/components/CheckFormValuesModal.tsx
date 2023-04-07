@@ -2,7 +2,6 @@ import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountP
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -24,6 +23,7 @@ import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBloc
 import DeviceIcons from '01/_components/DeviceIcons';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
+import { Button } from 'ui-kit/Button';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 
@@ -158,14 +158,12 @@ export const CheckFormValuesModal = () => {
       title={<Header>{isCheck ? 'Поверка прибора' : 'Замена прибора'}</Header>}
       footer={
         <Footer>
-          <ButtonTT color="white" key="back" onClick={onCancel}>
+          <Button type="ghost" onClick={onCancel}>
             Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            key="submit"
+          </Button>
+          <Button
             disabled={pending}
-            onClick={confirmCreationNewDeviceButtonClicked}
+            onClick={() => confirmCreationNewDeviceButtonClicked()}
           >
             {pending ? (
               <Loader show />
@@ -174,7 +172,7 @@ export const CheckFormValuesModal = () => {
             ) : (
               'Заменить прибор'
             )}
-          </ButtonTT>
+          </Button>
         </Footer>
       }
     >
