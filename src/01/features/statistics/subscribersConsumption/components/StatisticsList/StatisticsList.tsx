@@ -30,6 +30,7 @@ export const StatisticsList: React.FC<StatisticsListProps> = ({
           label: '№',
           size: '55px',
           render: (apartment) => apartment.apartmentNumber,
+          css: (isHeader) => `${!isHeader && 'font-weight: 700'}`,
         },
         {
           label: 'ХВС',
