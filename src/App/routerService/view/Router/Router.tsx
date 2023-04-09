@@ -2,11 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import {
-  IndividualDevice,
-  IndividualDeviceEdit,
-  Registration,
-} from '01/_pages';
+import { IndividualDeviceEdit, Registration } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -15,22 +11,22 @@ import {
   ObjectProfileContainer,
   objectProfileService,
 } from 'services/objects/objectProfileService';
-import { DevicesPageContainer } from 'services/devices/devicesPageService';
-import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
-import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
+import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPageService';
+import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
+import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
-import { EditNodeContainer } from 'services/devices/editNodeService';
+import { EditNodeContainer } from 'services/housingMeteringDevices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
-import { EmployeeProfileContainer } from 'services/employeeProfileService';
+import { EmployeeProfileContainer } from 'services/employee/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
-import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
-import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
+import { HousingMeteringDeviceProfileContainer } from 'services/housingMeteringDevices/housingMeteringDevices/housingMeteringDeviceProfileService';
+import { EditHousingMeteringDeviceContainer } from 'services/housingMeteringDevices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
@@ -343,15 +339,10 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     />
                   )}
 
-                  {isAnyRole && (
-                    <Route
-                      path="/individualDevices/:deviceId"
-                      component={IndividualDevice}
-                      exact
-                    />
-                  )}
-
-                  {isAdministrator || isSeniorOperator || isExecutor ? (
+                  {isAdministrator ||
+                  isSeniorOperator ||
+                  isExecutor ||
+                  isOperator ? (
                     <Route
                       path="/individualDevices/:deviceId/edit"
                       component={IndividualDeviceEdit}

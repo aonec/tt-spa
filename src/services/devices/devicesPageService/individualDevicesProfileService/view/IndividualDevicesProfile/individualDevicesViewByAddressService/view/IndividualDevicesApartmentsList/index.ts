@@ -1,1 +1,0 @@
-export { IndividualDevicesApartmentsList } from './IndividualDevicesApartmentsList'

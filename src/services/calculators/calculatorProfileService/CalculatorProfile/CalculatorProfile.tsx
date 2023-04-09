@@ -1,4 +1,3 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { stringifyUrl } from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -16,10 +15,9 @@ import {
   Content,
   ContentWrapper,
   CalculatorIconSC,
-  HeaderTitleWrapper,
-  HeaderWrapper,
   TabsSC,
   PanelsWrapper,
+  PageHeaderSC,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
@@ -157,12 +155,15 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   return (
     <div>
       <GoBack />
-      <HeaderWrapper>
-        <CalculatorIconSC />
-        <HeaderTitleWrapper>
-          <PageHeader title={headerTitle} contextMenu={menuButtons} />
-        </HeaderTitleWrapper>
-      </HeaderWrapper>
+      <PageHeaderSC
+        title={
+          <>
+            <CalculatorIconSC />
+            {headerTitle}
+          </>
+        }
+        contextMenu={menuButtons}
+      />
       <AdditionalInfoWrapper>
         <>{getHousingStockAddress(address, true)}</>
       </AdditionalInfoWrapper>

@@ -1,0 +1,1 @@
+export { EditHousingMeteringDeviceCommonInfo } from './EditHousingMeteringDeviceCommonInfo';
