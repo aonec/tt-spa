@@ -158,7 +158,7 @@ export const forbiddenList: ForbiddenUrl[] = [
   },
   {
     methods: ['GET'],
-    regExp: /^Nodes\/DataForHousingConsumptionPlot$/,
+    regExp: /^PipeNodes\/DataForHousingConsumptionPlot$/,
   },
   {
     methods: ['GET'],

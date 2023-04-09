@@ -56,7 +56,7 @@ export const ApartmentActsList = () => {
     const actAddress = getApartmentFromFullAddress(act.apartment, false);
 
     return (
-      <ActWrap temp={gridTemp} key={act.id} gap="16px">
+      <ActWrap temp={gridTemp} key={act.id} gap="15px">
         <DocDate>{moment(act.actDateTime).format('DD.MM.YYYY')}</DocDate>
         <div>{act.registryNumber}</div>
         <div>{actType}</div>

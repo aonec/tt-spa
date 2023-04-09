@@ -72,7 +72,7 @@ export const Wrap = styled.div`
 
 export const Header = styled(Grid)`
   background: rgba(39, 47, 90, 0.04);
-  padding: 16px 24px;
+  padding: 15px 25px;
   border-bottom: 1px solid lightgray;
 
   font-size: 14px;
@@ -84,7 +84,7 @@ export const Header = styled(Grid)`
 `;
 
 export const ListItem = styled(Grid)`
-  padding: 16px 24px;
+  padding: 15px 25px;
   border-bottom: 1px solid lightgray;
 `;
 

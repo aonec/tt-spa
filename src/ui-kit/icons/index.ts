@@ -43,6 +43,7 @@ import { ReactComponent as PreparedForDeliveryIcon } from './svg/preparedForDeli
 import { ReactComponent as PendingApprovalIcon } from './svg/pendingApproval.svg';
 import { ReactComponent as RegisteredIcon } from './svg/registered.svg';
 import { ReactComponent as TelegramIcon } from './svg/telegram.svg';
+import { ReactComponent as FallbackGraphIcon } from './svg/fallbackGraph.svg';
 import { ReactComponent as SearchIcon } from './svg/search.svg';
 import { ReactComponent as ListIcon } from './svg/list.svg';
 import { ReactComponent as CellsIcon } from './svg/cells.svg';
@@ -111,6 +112,7 @@ export {
   PendingApprovalIcon,
   RegisteredIcon,
   TelegramIcon,
+  FallbackGraphIcon,
   CellsIcon,
   PauseIcon,
   ListIcon,

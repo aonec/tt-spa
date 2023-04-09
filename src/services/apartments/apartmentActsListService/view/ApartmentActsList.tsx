@@ -1,3 +1,4 @@
+import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
 import { EActResourceType, EActType } from 'myApi';
 import React, { FC, useMemo } from 'react';
@@ -12,7 +13,6 @@ import {
   Wrapper,
 } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   acts,
@@ -27,7 +27,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   selectedFilters,
   isPermitionToChangeApartmentAct,
 }) => {
-  const isShowActsList = Boolean(acts?.length);
+  const isShowActsList = Boolean(acts?.length && !isLoading);
 
   const actsList = useMemo(
     () =>
@@ -71,7 +71,7 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   return (
     <>
       <Wrapper>
-        <WithLoader isLoading={isLoading}>
+        {!isLoading && (
           <ListHeader>
             <ColumnTitle>Дата</ColumnTitle>
             <ColumnTitle>№ акта</ColumnTitle>
@@ -97,25 +97,23 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
               </ExtendedSearchWrapper>
             </ColumnTitle>
           </ListHeader>
+        )}
 
-          {isShowActsList && actsList}
+        {isShowActsList && actsList}
 
-          {!acts.length && (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="Нет актов"
-            />
-          )}
+        {isLoading && <PendingLoader loading={isLoading} />}
+        {!acts.length && !isLoading && (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
+        )}
 
-          {isPermitionToChangeApartmentAct && (
-            <AddButton
-              className="ant-btn-link"
-              onClick={handleOpeningCreateActModal}
-            >
-              + Добавить акт
-            </AddButton>
-          )}
-        </WithLoader>
+        {!isLoading && isPermitionToChangeApartmentAct && (
+          <AddButton
+            className="ant-btn-link"
+            onClick={handleOpeningCreateActModal}
+          >
+            + Добавить акт
+          </AddButton>
+        )}
       </Wrapper>
     </>
   );

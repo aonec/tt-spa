@@ -21,7 +21,7 @@ export const DeleteIndividualDeviceModal: React.FC<Props> = ({
     <ModalTT
       title={`Вы действительно хотите удалить прибор ${device?.serialNumber} (${device?.model})?`}
       visible={visible}
-      saveButtonType="danger"
+      saveButtonType="red"
       saveBtnText="Удалить прибор"
       onCancel={handleClose}
       onSubmit={handleDelete}

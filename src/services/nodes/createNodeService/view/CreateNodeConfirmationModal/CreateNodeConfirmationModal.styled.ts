@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 
 export const StepWrapper = styled.div`
   margin-top: 32px;
@@ -86,8 +85,4 @@ export const NodeResourceInfo = styled.div`
 
 export const ListWrapper = styled.div`
   margin-top: 16px;
-`;
-
-export const ButtonSC = styled(Button)`
-  padding: 0 40px;
 `;

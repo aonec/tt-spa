@@ -1,16 +1,18 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import styled from 'styled-components';
-import { Tabs } from 'ui-kit/Tabs';
+
+export const HeaderWrapper = styled.div`
+  margin-top: 35px;
+`;
+
+export const HeaderInfoWrapper = styled.div`
+  margin-top: 25px;
+`;
 
 export const AdditionalAddressWrapper = styled.span`
   margin-left: 10px;
   font-weight: 400;
 `;
 
-export const PageHeaderSC = styled(PageHeader)`
-  margin-top: 16px;
-`;
-
-export const TabsSC = styled(Tabs)`
-  margin-top: 16px;
+export const TabsWrapper = styled.div`
+  margin-top: 15px;
 `;

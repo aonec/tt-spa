@@ -6,15 +6,15 @@ import {
   GetSummaryHousingConsumptionsByResourcesResponse,
 } from 'myApi';
 import {
+  ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
-  ConsumptionDataPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
 import queryString from 'query-string';
 
 export const fetchConsumptionsForTwoMonth = async (
-  params: ConsumptionDataPayload,
+  params: ConsumptionDataFilter,
 ): Promise<ConsumptionDataForTwoMonth> => {
   const prevMonth = moment(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
@@ -32,7 +32,7 @@ export const fetchConsumptionsForTwoMonth = async (
 };
 
 export const fetchConsumptionsForMonth = async (
-  params: ConsumptionDataPayload,
+  params: ConsumptionDataFilter,
 ): Promise<MonthConsumptionData> => {
   const housingMonthData = await fetchHousingConsumptionData(params);
 
@@ -54,17 +54,20 @@ export const fetchConsumptionsForMonth = async (
 };
 
 export const fetchHousingConsumptionData = (
-  params: ConsumptionDataPayload,
+  params: ConsumptionDataFilter,
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
-  axios.get('Nodes/DataForHousingConsumptionPlot', {
+  axios.get('PipeNodes/DataForHousingConsumptionPlot', {
     params,
     paramsSerializer: (params) => {
       return queryString.stringify(params);
     },
+    headers: {
+      'api-version': 2,
+    },
   });
 
 export const fetchNormativeConsumptionData = (
-  params: ConsumptionDataPayload,
+  params: ConsumptionDataFilter,
 ): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
   axios.get(
     'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
@@ -80,9 +83,9 @@ export const fetchNormativeConsumptionData = (
   );
 
 export const fetchSummaryConsumption = (
-  params: ConsumptionDataPayload,
+  params: ConsumptionDataFilter,
 ): Promise<GetSummaryHousingConsumptionsByResourcesResponse> =>
-  axios.get('Nodes/SummaryHousingConsumptionsByResources', {
+  axios.get('PipeNodes/SummaryHousingConsumptionsByResources', {
     params,
     paramsSerializer: (params) => {
       return queryString.stringify(params);

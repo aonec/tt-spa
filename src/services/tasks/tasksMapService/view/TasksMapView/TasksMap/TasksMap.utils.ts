@@ -69,11 +69,11 @@ export const getHousingStockTaskType = (
 
   if (resources.length > 1) return HousingStockTaskMarkerType.AllResources;
 
-  const taskResource = resources[0];
+  const taskTesource = resources[0];
 
-  if (!taskResource) return null;
+  if (!taskTesource) return null;
 
-  switch (taskResource) {
+  switch (taskTesource) {
     case EResourceType.ColdWaterSupply:
       return HousingStockTaskMarkerType.ColdWaterSupply;
     case EResourceType.HotWaterSupply:
@@ -102,9 +102,7 @@ export const getExtendedMapMarkerlayoutLink = (
 
   const taskTypesIcons = Object.entries(tasksTypeGroups)
     .map(([type, tasks], index) => {
-      const calculateIcon =
-        TaskTypePlacemarkIconsDictionary[type] ||
-        TaskTypePlacemarkIconsDictionary.AllResources;
+      const calculateIcon = TaskTypePlacemarkIconsDictionary[type];
 
       const x = (index + 1) * 31 - 8;
 

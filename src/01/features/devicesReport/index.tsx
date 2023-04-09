@@ -9,9 +9,10 @@ import {
   downloadDeviceReportConfirmButtonClicked,
   downloadDevicesReportFx,
 } from './models';
+import ButtonTT from '../../tt-components/ButtonTT';
+import { Loader } from '../../_components/Loader';
 import InputTT from '../../tt-components/InputTT';
 import { Alert, Form } from 'antd';
-import { Button } from 'ui-kit/Button';
 
 export const DevicesReportModal = () => {
   const isVisible = useStore($isDeviceReportModalVisible);
@@ -27,12 +28,17 @@ export const DevicesReportModal = () => {
       onCancel={handleCancel}
       footer={
         <Footer>
-          <Button type="ghost" key="back" onClick={handleCancel}>
+          <ButtonTT color={'white'} key="back" onClick={handleCancel}>
             Отмена
-          </Button>
-          <Button isLoading={pending} disabled={pending} onClick={onSubmit}>
-            Выгрузить
-          </Button>
+          </ButtonTT>
+          <ButtonTT
+            color="blue"
+            disabled={pending}
+            key="submit"
+            onClick={onSubmit}
+          >
+            {pending ? <Loader show /> : 'Выгрузить'}
+          </ButtonTT>
         </Footer>
       }
     >

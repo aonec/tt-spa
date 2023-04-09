@@ -1,12 +1,12 @@
 import { RightAlign } from '01/shared/ui/Layout/RightAlign';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
+import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
@@ -66,10 +66,12 @@ export const CreateIndividualDeviceForm = () => {
 
         <RightAlign>
           <Spaces flex>
-            <Button type="ghost" onClick={onCancel}>
+            <ButtonTT color="white" onClick={onCancel}>
               {stageNumber === 0 ? 'Отмена' : 'Назад'}
-            </Button>
-            <Button onClick={() => submit()}>Далее</Button>
+            </ButtonTT>
+            <ButtonTT color="blue" onClick={submit}>
+              Далее
+            </ButtonTT>
           </Spaces>
         </RightAlign>
       </Wrap>

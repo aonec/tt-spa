@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 import { PencilIcon, CloseIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div``;
@@ -107,8 +106,4 @@ export const Subtitle = styled.div`
 export const WrapperLinkButton = styled.div`
   width: max-content;
   margin-top: 45px;
-`;
-
-export const ButtonSC = styled(Button)`
-  padding: 0 40px;
 `;

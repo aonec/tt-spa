@@ -1,7 +1,9 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { TreeSelect } from 'antd';
 import styled from 'styled-components';
-import { Tabs } from 'ui-kit/Tabs';
+
+export const Margin = styled.div`
+  margin: 12px 0px 16px 0px;
+`;
 
 export const ErrorBlockGrid = styled.div`
   display: grid;
@@ -78,12 +80,4 @@ export const TreeSelectSC = styled(TreeSelect)`
   .ant-select-selector {
     border-radius: 4px !important;
   }
-`;
-
-export const PageHeaderSC = styled(PageHeader)`
-  margin-top: 16px;
-`;
-
-export const TabsSC = styled(Tabs)`
-  margin-top: 16px;
 `;

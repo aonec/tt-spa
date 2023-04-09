@@ -1,9 +1,9 @@
+import { ButtonTT } from '01/tt-components';
 import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EReportType } from 'myApi';
 import React, { FC } from 'react';
-import { Button } from 'ui-kit/Button';
 import {
   Bottom,
   FiltersWrap,
@@ -75,16 +75,17 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
         </Form.Item>
       </FiltersWrap>
       <Bottom>
-        <Button onClick={() => resetForm()} type="ghost">
+        <ButtonTT onClick={resetForm} color="white">
           Сбросить
-        </Button>
-        <Button
+        </ButtonTT>
+        <ButtonTT
           disabled={loading}
           onClick={submitForm}
+          color="blue"
           style={{ marginLeft: '15px' }}
         >
           Применить фильтр
-        </Button>
+        </ButtonTT>
       </Bottom>
     </Wrap>
   );

@@ -15,7 +15,7 @@ import {
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { clearFilters, searchForm } from '../models';
-import { Button } from 'ui-kit/Button';
+import { ButtonTT } from '01/tt-components';
 
 export const SearchForm = () => {
   const { fields, submit } = useForm(searchForm);
@@ -58,7 +58,7 @@ export const SearchForm = () => {
     <>
       <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
-      <Grid temp="0.75fr 1.5fr 0.75fr 0.75fr 0.3fr" gap="16px">
+      <Grid temp="0.75fr 1.5fr 0.75fr 0.75fr 0.3fr" gap="15px">
         <SelectSC
           placeholder="Город"
           ref={cityRef}
@@ -108,9 +108,9 @@ export const SearchForm = () => {
             keyDownEnterGuardedHandler(3)(e);
           }}
         />
-        <Button type="ghost" size="small" onClick={() => clearFilters()}>
+        <ButtonTT color="white" small onClick={clearFilters}>
           Очистить
-        </Button>
+        </ButtonTT>
       </Grid>
     </>
   );

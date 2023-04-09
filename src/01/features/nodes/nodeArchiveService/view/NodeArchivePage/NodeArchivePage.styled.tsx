@@ -1,4 +1,3 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
@@ -10,6 +9,10 @@ export const FiltersWrap = styled.div`
   margin-left: 15px;
 `;
 
-export const PageHeaderSC = styled(PageHeader)`
+export const NodeInfoWrapper = styled.div`
   margin-top: 16px;
+`;
+
+export const HeaderWrapper = styled.div`
+  padding: 25px 0 5px;
 `;

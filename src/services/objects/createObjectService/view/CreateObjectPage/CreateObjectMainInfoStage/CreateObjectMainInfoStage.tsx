@@ -17,7 +17,6 @@ import {
   Wrapper,
   WrapperLinkButton,
   CloseIconSC,
-  ButtonSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
@@ -279,7 +278,9 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
+            <Button sidePadding={25} onClick={() => handleSubmit()}>
+              Далее
+            </Button>
           </RightButtonBlock>
         </Footer>
       </Wrapper>

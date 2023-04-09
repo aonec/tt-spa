@@ -1,7 +1,9 @@
 import { useStore } from 'effector-react';
 import React, { FC, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
+import { Loader } from '01/components';
 import { ModalTT } from '01/shared/ui/ModalTT';
+import { ButtonTT } from '01/tt-components';
 import { Certificate } from './Certificate';
 import {
   $homeownerCertificatre,
@@ -11,7 +13,6 @@ import {
   fetchHomeownerCertificate,
 } from './models';
 import { GetIssueCertificateModalProps } from './GetIssueCertificateModal.types';
-import { Button } from 'ui-kit/Button';
 
 export const GetIssueCertificateModal: FC<GetIssueCertificateModalProps> = ({
   apartment,
@@ -30,9 +31,11 @@ export const GetIssueCertificateModal: FC<GetIssueCertificateModalProps> = ({
       {visible && (
         <HomeownerCerificateGate
           id={
-            (apartment?.homeownerAccounts || []).find(
-              (account) => account.id === homeownerId,
-            )?.id || null
+            (
+              apartment?.homeownerAccounts.find(
+                (account) => account.id === homeownerId,
+              ) as any
+            )?.id!
           }
         />
       )}
@@ -44,7 +47,9 @@ export const GetIssueCertificateModal: FC<GetIssueCertificateModalProps> = ({
         customSubmit={
           <ReactToPrint
             trigger={() => (
-              <Button isLoading={pendingCertificate}>Печать</Button>
+              <ButtonTT color="blue" key="submit" disabled={pendingCertificate}>
+                {pendingCertificate ? <Loader show /> : 'Печать'}
+              </ButtonTT>
             )}
             content={() => {
               const node = (certificateRef as any).current;

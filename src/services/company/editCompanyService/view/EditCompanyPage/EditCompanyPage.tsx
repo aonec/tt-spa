@@ -1,8 +1,9 @@
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { Empty } from 'antd';
 import React, { FC } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { EditCompanyForm } from '../EditCompanyForm';
-import { PageHeaderSC } from './EditCompanyPage.styled';
+import { HeaderWrapper } from './EditCompanyPage.styled';
 import { EditCompanyPageProps } from './EditCompanyPage.types';
 
 export const EditCompanyPage: FC<EditCompanyPageProps> = ({
@@ -16,7 +17,9 @@ export const EditCompanyPage: FC<EditCompanyPageProps> = ({
       <GoBack />
       {currentManagingFirm && (
         <>
-          <PageHeaderSC title="Профиль компании. Редактирование" />
+          <HeaderWrapper>
+            <PageHeader title="Профиль компании. Редактирование" />
+          </HeaderWrapper>
           <EditCompanyForm
             currentManagingFirm={currentManagingFirm}
             handleUpdateOrganization={handleUpdateOrganization}

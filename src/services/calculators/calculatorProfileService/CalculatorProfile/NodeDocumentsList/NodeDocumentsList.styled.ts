@@ -6,7 +6,7 @@ export const ListHeader = styled.div`
   align-items: center;
 
   background: rgba(39, 47, 90, 0.04);
-  padding: 16px 26px;
+  padding: 15px 25px;
   border-bottom: 1px solid lightgray;
   text-align: left;
 `;

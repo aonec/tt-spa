@@ -1,9 +1,9 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { combine, sample } from 'effector';
+import { sample } from 'effector';
 import _ from 'lodash';
 import { resourceConsumptionFilterService } from './resourceConsumptionFilterService';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
-import { ConsumptionDataPayload } from './resourceConsumptionService.types';
+import { ConsumptionDataFilter } from './resourceConsumptionService.types';
 
 sample({
   source: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
@@ -67,29 +67,8 @@ sample({
 });
 
 sample({
-  source: combine(
-    resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
-    resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({ ...filter, ResourceType }),
-  ),
   clock: resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
-  filter: (filter): filter is ConsumptionDataPayload =>
-    Boolean(
-      filter?.From &&
-        filter?.To &&
-        filter?.HousingStockIds?.length &&
-        filter?.ResourceType,
-    ),
-  target: resourceConsumptionService.inputs.getSummaryConsumptions,
-});
-
-sample({
-  clock: combine(
-    resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
-    resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({ ...filter, ResourceType }),
-  ),
-  filter: (filter): filter is ConsumptionDataPayload =>
+  filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&
@@ -100,16 +79,14 @@ sample({
 });
 
 sample({
-  clock: combine(
-    resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
-    resourceConsumptionFilterService.outputs.$selectedResource,
-    (filter, ResourceType) => ({
-      ...filter,
-      ResourceType,
-      HousingStockIds: filter?.AdditionalHousingStockIds,
-    }),
-  ),
-  filter: (filter): filter is ConsumptionDataPayload =>
+  clock:
+    resourceConsumptionFilterService.outputs.$resourceConsumptionFilter.map(
+      (filter) => ({
+        ...filter,
+        HousingStockIds: filter?.AdditionalHousingStockIds,
+      }),
+    ),
+  filter: (filter): filter is ConsumptionDataFilter =>
     Boolean(
       filter?.From &&
         filter?.To &&

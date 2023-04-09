@@ -15,7 +15,6 @@ export const taskCategories: taskCategotiesProps = {
     EManagingFirmTaskFilterType.IndividualDeviceCheck,
     EManagingFirmTaskFilterType.IndividualDeviceReadingsCheck,
     EManagingFirmTaskFilterType.IndividualDeviceCheckNoReadings,
-    EManagingFirmTaskFilterType.RiserNoReadings,
   ],
   HouseNetwork: [EManagingFirmTaskFilterType.PipeRupture],
 };

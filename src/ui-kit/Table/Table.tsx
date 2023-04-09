@@ -13,7 +13,6 @@ export function Table<T>({
   columns,
   elements,
   pagination,
-  rowStyles,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -35,17 +34,15 @@ export function Table<T>({
           </TableElement>
         ))}
       </Header>
-      <div>
-        {elements.slice(start, end).map((elem, rowIndex) => (
-          <Row key={rowIndex} temp={temp} css={rowStyles}>
-            {filteredColumns.map((column, columnIndex) => (
-              <TableElement key={columnIndex} css={column.css?.(false)}>
-                {column.render(elem, rowIndex)}
-              </TableElement>
-            ))}
-          </Row>
-        ))}
-      </div>
+      {elements.slice(start, end).map((elem, rowIndex) => (
+        <Row key={rowIndex} temp={temp}>
+          {filteredColumns.map((column, columnIndex) => (
+            <TableElement key={columnIndex} css={column.css?.(false)}>
+              {column.render(elem, rowIndex)}
+            </TableElement>
+          ))}
+        </Row>
+      ))}
       {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       {Boolean(elements.length) && pagination && (
         <PaginationWrapper>

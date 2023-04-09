@@ -4,7 +4,6 @@ import { Header } from 'ui-kit/Modals/FormModal/FormModal.styled';
 import {
   AddressText,
   AddressWrapper,
-  ButtonSC,
   CalculatorBaseInfo,
   CalculatorEntryNumber,
   CalculatorModel,
@@ -32,7 +31,7 @@ import {
   NodeStatusTextDictionary,
 } from 'dictionaries';
 import moment from 'moment';
-import { IncorrectConfigAlert } from 'services/housingMeteringDevices/editNodeService/view/EditNodePage/IncorrectConfigAlert';
+import { IncorrectConfigAlert } from 'services/devices/editNodeService/view/EditNodePage/IncorrectConfigAlert';
 
 export const CreateNodeConfirmationModal: FC<
   CreateNodeConfirmationModalProps
@@ -78,9 +77,13 @@ export const CreateNodeConfirmationModal: FC<
           <Button type="ghost" onClick={handleClose}>
             Отмена
           </Button>
-          <ButtonSC isLoading={isLoading} onClick={handleSubmitForm}>
+          <Button
+            isLoading={isLoading}
+            sidePadding={20}
+            onClick={handleSubmitForm}
+          >
             Создать узел
-          </ButtonSC>
+          </Button>
         </Footer>
       }
       title={<Header>Добавление нового узла</Header>}

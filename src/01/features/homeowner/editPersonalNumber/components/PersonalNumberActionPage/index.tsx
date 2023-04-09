@@ -5,6 +5,7 @@ import {
 } from '01/features/apartments/displayApartment/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ButtonTT } from '01/tt-components';
 import { Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -14,7 +15,6 @@ import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { useForm } from 'effector-forms/dist';
 import { personalNumberEditForm } from '../../models';
-import { Button } from 'ui-kit/Button';
 
 interface Props {
   title: string;
@@ -56,15 +56,20 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
       <Space />
       {children}
       <Flex style={{ justifyContent: 'flex-end' }}>
-        <Button
-          type="ghost"
+        <ButtonTT
+          color={'white'}
           key="back"
           onClick={onCancelHandler || history.goBack}
         >
           {cancelButtonText || 'Отмена'}
-        </Button>
+        </ButtonTT>
         <Space />
-        <Button disabled={loading} onClick={onSaveHandler || (() => submit())}>
+        <ButtonTT
+          color="blue"
+          key="submit"
+          disabled={loading}
+          onClick={onSaveHandler || submit}
+        >
           {loading ? (
             <Loader show />
           ) : isSplit ? (
@@ -72,7 +77,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           ) : (
             'Сохранить изменения'
           )}
-        </Button>
+        </ButtonTT>
       </Flex>
     </Wrap>
   );

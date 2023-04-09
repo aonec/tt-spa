@@ -11,7 +11,7 @@ export const Footer = styled.div`
 `;
 
 export const SaveButtonWrapper = styled.div`
-  margin-left: 16px;
+  margin-left: 15px;
 `;
 
 export const SquareAddonWrapper = styled.div`

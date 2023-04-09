@@ -1,26 +1,45 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Loader } from '01/components';
+import { IconWrapper, Wrapper } from './Button.styled';
 import { ButtonProps } from './Button.types';
-import { ButtonSC, IconWrapper } from './Button.styled';
 
 export const Button: FC<ButtonProps> = (props) => {
   const {
     icon,
-    type = 'primary',
-    isLoading,
+    type = 'default',
+    className,
+    onClick,
+    disabled = props.isLoading,
     size = 'middle',
-    disabled = false,
-    floating,
-    ...antdProps
+    sidePadding,
+    isLoading,
   } = props;
 
+  const classNameString = [
+    className,
+    ...(disabled ? ['tt-button-disabled'] : []),
+  ].join(' ');
+
+  const handleSubmit = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (disabled) {
+        return;
+      }
+      if (onClick) {
+        return onClick(e);
+      }
+    },
+    [onClick, disabled],
+  );
+
   return (
-    <ButtonSC
-      {...antdProps}
+    <Wrapper
+      {...props}
+      type={type}
+      onClick={handleSubmit}
+      className={classNameString}
       size={size}
-      btnType={type}
-      floating={floating}
-      disabled={disabled || isLoading}
+      sidePadding={sidePadding}
     >
       {props.children}
       {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}
@@ -29,6 +48,6 @@ export const Button: FC<ButtonProps> = (props) => {
           <Loader show />
         </IconWrapper>
       )}
-    </ButtonSC>
+    </Wrapper>
   );
 };

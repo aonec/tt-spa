@@ -8,8 +8,8 @@ import {
 } from './resourceConsumptionService.api';
 import { initialSelectedGraphTypes } from './resourceConsumptionService.constants';
 import {
+  ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
-  ConsumptionDataPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
 import { BooleanTypesOfResourceConsumptionGraphForTwoMonth } from './view/ResourceConsumptionProfile/ResourceConsumptionProfile.types';
@@ -20,10 +20,10 @@ const domain = createDomain('resourceConsumptionService');
 
 const clearData = domain.createEvent();
 
-const getConsumptionData = domain.createEvent<ConsumptionDataPayload>();
+const getConsumptionData = domain.createEvent<ConsumptionDataFilter>();
 
 const getHousingConsumptionFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
   EffectFailDataAxiosError
 >(fetchConsumptionsForTwoMonth);
@@ -34,11 +34,11 @@ const $housingConsumptionData = domain
   .reset(clearData);
 
 const getAdditionalConsumptionData =
-  domain.createEvent<ConsumptionDataPayload>();
+  domain.createEvent<ConsumptionDataFilter>();
 
 const clearAdditionalAddressData = domain.createEvent();
 const getAdditionalConsumptionFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionDataFilter,
   MonthConsumptionData
 >(fetchConsumptionsForMonth);
 const $additionalConsumption = domain
@@ -56,9 +56,8 @@ const $selectedGraphTypes = domain
   .reset(clearData);
 
 const clearSummary = domain.createEvent();
-const getSummaryConsumptions = domain.createEvent<ConsumptionDataPayload>();
 const getSummaryConsumptionsFx = domain.createEffect<
-  ConsumptionDataPayload,
+  ConsumptionDataFilter,
   GetSummaryHousingConsumptionsByResourcesResponse
 >(fetchSummaryConsumption);
 const $summaryConsumption = domain
@@ -84,12 +83,7 @@ sample({
 
 sample({
   clock: getConsumptionData,
-  target: getHousingConsumptionFx,
-});
-
-sample({
-  clock: getSummaryConsumptions,
-  target: getSummaryConsumptionsFx,
+  target: [getHousingConsumptionFx, getSummaryConsumptionsFx],
 });
 
 forward({
@@ -118,7 +112,6 @@ export const resourceConsumptionService = {
     clearSummary,
     setSelectedGraphTypes,
     clearAdditionalAddressData,
-    getSummaryConsumptions,
   },
   outputs: {
     $housingConsumptionData,

@@ -1,6 +1,8 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import styled from 'styled-components';
-import { Tabs } from 'ui-kit/Tabs';
+
+export const Margin = styled.div`
+  margin: 12px 0px 16px 0px;
+`;
 
 export const ErrorBlockGrid = styled.div`
   display: grid;
@@ -72,12 +74,4 @@ export const ResourceSelectWrapper = styled.div`
   .ant-select {
     width: 100%;
   }
-`;
-
-export const PageHeaderSC = styled(PageHeader)`
-  margin-top: 16px;
-`;
-
-export const TabsSC = styled(Tabs)`
-  margin-top: 16px;
 `;

@@ -13,7 +13,7 @@ export const MeteringDeviceReadingsSumPanel: FC<
     <Wrapper>
       <Panel>
         <TextWrapper>Расход по всем узлам учёта</TextWrapper>
-        <TextWrapper>{sum || '-'} кВт/ч</TextWrapper>
+        <TextWrapper>{sum || '-'} кВтч</TextWrapper>
       </Panel>
     </Wrapper>
   );

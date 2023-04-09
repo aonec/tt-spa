@@ -16,7 +16,7 @@ export const StyledRadioGroup = styled(Radio.Group)`
 `;
 
 export const MarginTop = styled.div`
-  margin-top: 8px;
+  margin-top: 10px;
 `;
 
 export const GridContainer = styled.div`

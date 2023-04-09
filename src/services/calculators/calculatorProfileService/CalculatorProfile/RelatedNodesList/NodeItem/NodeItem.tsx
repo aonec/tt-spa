@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import { DeviceIcon } from 'ui-kit/icons';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import { NodeStatus } from 'services/housingMeteringDevices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus';
+import { NodeStatus } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodeItem/NodeStatus';
 
 export const NodeItem: FC<NodeItemProps> = ({ node, openDevicesListModal }) => {
   const nodeInfo = (

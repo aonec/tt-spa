@@ -18,7 +18,7 @@ export const Header = styled.div<{ temp: string }>`
   align-items: center;
 `;
 
-export const Row = styled.div<{ temp: string; css?: string }>`
+export const Row = styled.div<{ temp: string }>`
   width: max-content;
   height: 50px;
   display: grid;
@@ -29,7 +29,6 @@ export const Row = styled.div<{ temp: string; css?: string }>`
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
-  ${({ css }) => css || ''}
 `;
 
 export const PaginationWrapper = styled.div`

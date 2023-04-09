@@ -3,8 +3,6 @@ import { Wrapper } from './TasksMapView.styled';
 import { TasksMapViewProps } from './TasksMapView.types';
 import { TasksMapFiltration } from './TasksMapFiltration';
 import { TasksMap } from './TasksMap/TasksMap';
-import { TasksMapsNative } from './TasksMapsNative';
-import { featureToggles } from 'featureToggles';
 
 export const TasksMapView: FC<TasksMapViewProps> = ({
   taskTypes,
@@ -38,20 +36,11 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         clearTask={clearTask}
         organizationUsers={organizationUsers}
       />
-      {featureToggles.taskMaps.nativeApi && (
-        <TasksMapsNative
-          housingStocksWithTasks={housingStocksWithTasks}
-          handleClickMarker={handleClickMarker}
-          selectedHousingStockId={selectedHousingStock?.housingStock?.id}
-        />
-      )}
-      {!featureToggles.taskMaps.nativeApi && (
-        <TasksMap
-          housingStocksWithTasks={housingStocksWithTasks}
-          handleClickMarker={handleClickMarker}
-          selectedHousingStockId={selectedHousingStock?.housingStock?.id}
-        />
-      )}
+      <TasksMap
+        housingStocksWithTasks={housingStocksWithTasks}
+        handleClickMarker={handleClickMarker}
+        selectedHousingStockId={selectedHousingStock?.housingStock?.id}
+      />
     </Wrapper>
   );
 };

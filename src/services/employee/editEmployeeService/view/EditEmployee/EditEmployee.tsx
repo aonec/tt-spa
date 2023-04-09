@@ -171,7 +171,11 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         </FormItem>
 
         <Footer>
-          <Button onClick={() => handleSubmit()} disabled={isPending}>
+          <Button
+            type="default"
+            onClick={() => handleSubmit()}
+            disabled={isPending}
+          >
             {isPending ? <Loader show /> : 'Сохранить'}
           </Button>
           <Button type="ghost" onClick={onCancel}>
