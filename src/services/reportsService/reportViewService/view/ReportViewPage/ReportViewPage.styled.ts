@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -52,4 +53,8 @@ export const HeaderTitleWrapper = styled.div`
       fill: #272f5a;
     }
   }
+`;
+
+export const ButtonSC = styled(Button)`
+  padding: 0 34px;
 `;

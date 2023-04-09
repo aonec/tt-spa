@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 
 export const FirstLineWrapper = styled.div`
   display: grid;
@@ -27,4 +28,8 @@ export const SelectOptionWithIconWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const ButtonSC = styled(Button)`
+  padding: 0 40px;
 `;

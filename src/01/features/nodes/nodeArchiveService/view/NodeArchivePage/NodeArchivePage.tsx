@@ -1,12 +1,6 @@
 import React, { FC } from 'react';
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { NodeArchivePageProps } from './NodeArchivePage.types';
-import {
-  FiltersWrap,
-  HeaderWrapper,
-  NodeInfoWrapper,
-  Wrap,
-} from './NodeArchivePage.styled';
+import { FiltersWrap, PageHeaderSC, Wrap } from './NodeArchivePage.styled';
 import { NodeInfo } from './components/NodeInfo/';
 import { SearchNodeArchiveFiltersContainer } from '../../searchNodeArchiveFiltersService';
 import { NodeArchiveContainer } from '../../displayNodeArchiveService';
@@ -19,12 +13,8 @@ export const NodeArchivePage: FC<NodeArchivePageProps> = ({
   return (
     <>
       <GoBack />
-      <HeaderWrapper>
-        <PageHeader title="Архив" />
-      </HeaderWrapper>
-      <NodeInfoWrapper>
-        <NodeInfo node={node} loading={loading} />
-      </NodeInfoWrapper>
+      <PageHeaderSC title="Архив" />
+      <NodeInfo node={node} loading={loading} />
       <Wrap>
         <NodeArchiveContainer />
         <FiltersWrap>

@@ -1,1 +1,0 @@
-export { DevicesProfile } from './DevicesProfile'
