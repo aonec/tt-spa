@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 
 export const SwitchWrapper = styled.div`
   display: flex;
@@ -22,8 +21,4 @@ export const StockIconWrapper = styled.div`
 
 export const WrapperFlex = styled.div`
   display: flex;
-`;
-
-export const ButtonSC = styled(Button)`
-  margin-left: 16;
 `;

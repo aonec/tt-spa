@@ -1,4 +1,3 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { Tabs } from 'antd';
 import styled from 'styled-components';
 
@@ -22,8 +21,4 @@ export const TabsSC = styled(Tabs)`
     display: grid;
     grid-template-columns: auto 300px;
   }
-`;
-
-export const PageHeaderSC = styled(PageHeader)`
-  margin-top: 16px;
 `;

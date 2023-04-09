@@ -14,7 +14,6 @@ import {
   SelectOptionWithIconWrapper,
   SecondLineWrapper,
   Divider,
-  ButtonSC,
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
@@ -271,7 +270,9 @@ export const CommonData: FC<CommonDataProps> = ({
         <Button type="ghost" onClick={goPrevStep}>
           Назад
         </Button>
-        <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
+        <Button sidePadding={20} onClick={() => handleSubmit()}>
+          Далее
+        </Button>
       </Footer>
     </>
   );

@@ -2,8 +2,8 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 import { Link } from 'react-router-dom';
 import { StyledFooter, StyledModal, StyledModalBody } from '../Modal';
+import ButtonTT from '../ButtonTT';
 import styled from 'styled-components';
-import { ButtonSC } from './ModalDeviceExists.styled';
 
 interface ModalCalculatorExistInstance {
   existDevice: number | undefined | null;
@@ -55,9 +55,14 @@ export const ModalDeviceExists = ({
         </span>
       </StyledModalBody>
       <StyledFooter>
-        <ButtonSC type="danger" onClick={handleCancel}>
+        <ButtonTT
+          color={'red'}
+          type="button"
+          style={{ marginLeft: 16 }}
+          onClick={handleCancel}
+        >
           Изменить настройки соединения
-        </ButtonSC>
+        </ButtonTT>
       </StyledFooter>
     </StyledModal>
   );

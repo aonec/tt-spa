@@ -1,1 +1,0 @@
-export { ResourceAccountingSystems } from './ResourceAccountingSystems';

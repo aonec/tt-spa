@@ -5,7 +5,7 @@ import { Select } from 'ui-kit/Select';
 import { Title } from 'ui-kit/Title';
 import { Button } from 'ui-kit/Button';
 import { Footer } from '../CreateNodePage.styled';
-import { ButtonSC, FormWrapper } from './MountAddress.styled';
+import { FormWrapper } from './MountAddress.styled';
 import { MountAddressProps } from './MountAddress.types';
 import { useFormik } from 'formik';
 import { validationSchema } from './MountAddress.constants';
@@ -143,7 +143,9 @@ export const MountAddress: FC<MountAddressProps> = ({
           <Button type="ghost" onClick={() => history.goBack()}>
             Отмена
           </Button>
-          <ButtonSC onClick={() => handleSubmitForm()}>Далее</ButtonSC>
+          <Button sidePadding={20} onClick={() => handleSubmitForm()}>
+            Далее
+          </Button>
         </Footer>
       </div>
     </>

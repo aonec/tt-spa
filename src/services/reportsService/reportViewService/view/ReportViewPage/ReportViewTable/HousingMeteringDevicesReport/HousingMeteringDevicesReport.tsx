@@ -91,7 +91,7 @@ export const HousingMeteringDevicesReport: FC<
             },
           },
           {
-            label: 'Расход',
+            label: 'Расход м3',
             size: '120px',
             render: (elem) => {
               return elem.consumption;

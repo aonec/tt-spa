@@ -93,7 +93,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     return (
       <div>
         {previousReadingValue !== null && currentReadingValue !== null
-          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт/ч`
+          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт`
           : null}
       </div>
     );
@@ -143,7 +143,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
 
 const Wrap = styled(Grid)`
   align-items: center;
-  padding: 24px 16px;
+  padding: 25px 15px;
   border-bottom: 1px solid #dcdee4;
 `;
 

@@ -71,7 +71,7 @@ export const TimeWrapper = styled.span<{ fail?: boolean }>`
 
 export const SerialNumberWrapper = styled.span`
   font-weight: 600;
-  margin-left: 8px;
+  margin-left: 6px;
 `;
 
 export const TextWrapper = styled.span`
@@ -79,7 +79,7 @@ export const TextWrapper = styled.span`
 `;
 
 export const MapIconSC = styled(MapIcon)`
-  margin-left: 16px;
+  margin-left: 14px;
 `;
 
 export const CalendarIconSC = styled(CalendarIcon)`
@@ -87,7 +87,7 @@ export const CalendarIconSC = styled(CalendarIcon)`
 `;
 
 export const UserIconSC = styled(UserIcon)`
-  margin-left: 8px;
+  margin-left: 10px;
 `;
 
 export const RedTimerIcon = styled(TimerIcon)`
@@ -97,7 +97,7 @@ export const RedTimerIcon = styled(TimerIcon)`
 `;
 
 export const Wrapper = styled.div`
-  margin-top: 16px;
+  margin-top: 15px;
 
   &:first-child {
     margin-top: 0px;

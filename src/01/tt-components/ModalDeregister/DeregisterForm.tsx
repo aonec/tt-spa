@@ -5,9 +5,8 @@ import { deregisterDevice } from './apiDeregisterDevice';
 import { StyledFooter, StyledModalBody } from '../Modal';
 import { DatePickerTT } from '../DatePicker';
 import Header from '../Header';
+import ButtonTT from '../ButtonTT';
 import { CloseDeviceRequest } from '../../../myApi';
-import { Button } from 'ui-kit/Button';
-import { ButtonSC } from './DerigesterForm.styled';
 
 const ModalCalculatorDeregisterForm = ({
   handleCancel,
@@ -72,11 +71,13 @@ const ModalCalculatorDeregisterForm = ({
         </Form.Item>
       </StyledModalBody>
       <StyledFooter modal>
-        <Button type="ghost" onClick={handleCancel}>
+        <ButtonTT type="button" color="white" onClick={handleCancel}>
           Отмена
-        </Button>
+        </ButtonTT>
 
-        <ButtonSC type="danger">Снять прибор с учета</ButtonSC>
+        <ButtonTT color="red" style={{ marginLeft: 32 }} type="submit" big>
+          Снять прибор с учета
+        </ButtonTT>
       </StyledFooter>
     </Form>
   );

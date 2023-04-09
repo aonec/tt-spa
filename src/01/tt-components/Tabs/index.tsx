@@ -17,7 +17,6 @@ interface TabsInterface {
   tabsType: 'route' | 'tabs';
   activeKey?: string;
   visible?: boolean;
-  className?: string;
 }
 
 const TabsContainer = ({
@@ -25,7 +24,6 @@ const TabsContainer = ({
   tabsType,
   activeKey,
   visible = true,
-  className,
 }: TabsInterface) => {
   const params = useParams<Array<string>>();
 
@@ -40,7 +38,6 @@ const TabsContainer = ({
         defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
         onChange={callback}
         activeKey={activeKey}
-        className={className}
       >
         {tabItems.map((tab) => {
           const { title, key } = tab;

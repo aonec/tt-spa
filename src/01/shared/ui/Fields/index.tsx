@@ -10,7 +10,7 @@ export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
 
   .ant-select-selector {
     border: 1px solid lightgray;
-    padding: 4px 16px;
+    padding: 3px 15px;
 
     border-radius: 4px !important;
 
@@ -36,7 +36,7 @@ export const StyledAutocomplete = styled(AutoComplete)`
 
   .ant-select-selector {
     border: 1px solid lightgray;
-    padding: 4px 16px;
+    padding: 3px 15px;
 
     border-radius: 4px !important;
 
@@ -59,7 +59,7 @@ export const StyledAutocomplete = styled(AutoComplete)`
 export const InputSC = styled(Input)<{ isShadow?: boolean }>`
   color: #333333;
   border: 1px solid lightgray;
-  padding: 4px 16px;
+  padding: 3px 15px;
   transition: 0.2s;
 
   &:last-child {
@@ -83,7 +83,7 @@ export const InputSC = styled(Input)<{ isShadow?: boolean }>`
 export const StyledRangePicker = styled(DatePicker.RangePicker)`
   color: #333333;
   border: 1px solid lightgray;
-  padding: 4px 16px;
+  padding: 3px 15px;
   transition: 0.2s;
 
   &:last-child {
@@ -110,7 +110,7 @@ export const StyledRangePicker = styled(DatePicker.RangePicker)`
 export const StyledDatePicker = styled(DatePicker)`
   color: #333333;
   border: 1px solid lightgray;
-  padding: 4px 16px;
+  padding: 3px 15px;
   transition: 0.2s;
 
   &:last-child {
@@ -142,7 +142,7 @@ export const StyledSquareButton = styled.div`
   justify-content: center;
   cursor: pointer;
   border: 1px solid lightgray;
-  padding: 4px 16px;
+  padding: 3px 15px;
   transition: 0.2s;
 
   border-radius: 4px !important;

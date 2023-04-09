@@ -25,11 +25,7 @@ export const StaffItem: FC<StaffItemProps> = ({
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
   return (
     <Wrapper key={staff.id}>
-      <Name
-        onClick={() => {
-          history.push(`/userProfile/${id}`);
-        }}
-      >
+      <Name>
         {lastName} {firstName} {middleName}
       </Name>
 
@@ -42,7 +38,6 @@ export const StaffItem: FC<StaffItemProps> = ({
       </Cellphone>
       {status?.type && <StaffStatus status={status?.type} />}
       <ContextMenuButton
-        size="small"
         menuButtons={[
           {
             title: 'Открыть профиль сотрудника',

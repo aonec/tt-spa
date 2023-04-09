@@ -12,7 +12,7 @@ import {
 } from './ConsumptionReportCalculatorForm.types';
 import { Checkbox, Form, Radio, message } from 'antd';
 import { Tabs } from 'ui-kit/Tabs';
-import { ResourceNamesDictionary } from 'services/housingMeteringDevices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
+import { ResourceNamesDictionary } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import _ from 'lodash';
 import {
   EHousingMeteringDeviceType,

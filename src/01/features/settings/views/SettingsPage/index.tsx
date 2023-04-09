@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { PageHeader } from '../../../../shared/ui/PageHeader';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { Tabs } from 'antd';
 import { InspectorsDistributionPage } from '../../inspectorsDistributionService/views/InspectorsDistributionPage';
 import { SettingsPageProps } from './types';
 import { InspectorAddressesResetModalContainer } from '../../inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
@@ -9,9 +10,8 @@ import { ResourceDisablingScheduleContainer } from '../../resourcesDisablingSche
 import { CreateResourceDisconnectionContainer } from 'services/resources/createResourceDisconnectionService';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
 import { ChooseTypeOfResourceDisconnectionModalContainer } from 'services/resources/chooseTypeOfResourceDisconnectionModalService/chooseTypeOfResourceDisconnectionModalService.container';
-import { TabsSC } from './SettingsPage.styled';
 
-const { TabPane } = TabsSC;
+const { TabPane } = Tabs;
 
 export const SettingsPage: FC<SettingsPageProps> = ({
   handleReassingInspector,
@@ -78,9 +78,9 @@ export const SettingsPage: FC<SettingsPageProps> = ({
           menuButtons,
         }}
       />
-      <TabsSC activeKey={section} onChange={history.push}>
+      <Tabs activeKey={section} onChange={history.push}>
         {settingsComponent}
-      </TabsSC>
+      </Tabs>
     </>
   );
 };

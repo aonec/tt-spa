@@ -1,1 +1,0 @@
-export { IndividualDevicesViewBySerialNumberSearch } from './SerialNumberSearch';

@@ -74,6 +74,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
             onChange={onChangeHandler}
             name="paymentCode"
           />
+          <ErrorMessage>
+            {fields.paymentCode.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <Grid temp="1fr 1fr" gap="15px">

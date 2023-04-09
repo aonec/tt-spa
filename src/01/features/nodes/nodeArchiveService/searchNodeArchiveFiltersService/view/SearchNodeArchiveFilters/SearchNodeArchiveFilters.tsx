@@ -1,9 +1,9 @@
+import { ButtonTT } from '01/tt-components';
 import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { EReportType } from 'myApi';
 import React, { FC } from 'react';
-import { Button } from 'ui-kit/Button';
 import {
   Bottom,
   FiltersWrap,
@@ -21,23 +21,27 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
   loading,
   handleSubmit,
 }) => {
-  const { values, setFieldValue, resetForm, submitForm } =
-    useFormik<FormValues>({
-      initialValues: {
-        from: null,
-        to: null,
-        type: EReportType.Daily,
-      },
-      onSubmit: ({ from, to, type }) => {
-        const toDate = to?.endOf('day').toISOString(true);
+  const {
+    values,
+    setFieldValue,
+    resetForm,
+    submitForm,
+  } = useFormik<FormValues>({
+    initialValues: {
+      from: null,
+      to: null,
+      type: EReportType.Daily,
+    },
+    onSubmit: ({ from, to, type }) => {
+      const toDate = to?.endOf('day').toISOString(true);
 
-        handleSubmit({
-          from: from?.toISOString(true),
-          to: toDate,
-          type,
-        });
-      },
-    });
+      handleSubmit({
+        from: from?.toISOString(true),
+        to: toDate,
+        type,
+      });
+    },
+  });
 
   return (
     <Wrap>
@@ -75,16 +79,17 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
         </Form.Item>
       </FiltersWrap>
       <Bottom>
-        <Button onClick={() => resetForm()} type="ghost">
+        <ButtonTT onClick={resetForm} color="white">
           Сбросить
-        </Button>
-        <Button
+        </ButtonTT>
+        <ButtonTT
           disabled={loading}
           onClick={submitForm}
+          color="blue"
           style={{ marginLeft: '15px' }}
         >
           Применить фильтр
-        </Button>
+        </ButtonTT>
       </Bottom>
     </Wrap>
   );

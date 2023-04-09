@@ -1,12 +1,12 @@
 import { RightAlign } from '01/shared/ui/Layout/RightAlign';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
+import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
@@ -43,13 +43,6 @@ export const CreateIndividualDeviceForm = () => {
   const onCancel = () =>
     stageNumber === 0 ? history.goBack() : switchStageButtonClicked(0);
 
-  const handleSubmit = useMemo(() => {
-    if (stageNumber === 1) {
-      return () => checkBeforSavingButtonClicked();
-    }
-    return () => submit();
-  }, [stageNumber, submit]);
-
   return (
     <>
       <AddIndividualDeviceDate id={Number(id)} />
@@ -60,12 +53,17 @@ export const CreateIndividualDeviceForm = () => {
 
         <RightAlign>
           <Spaces flex>
-            <Button type="ghost" onClick={onCancel}>
+            <ButtonTT color="white" onClick={onCancel}>
               {stageNumber === 0 ? 'Отмена' : 'Назад'}
-            </Button>
-            <Button onClick={handleSubmit}>
+            </ButtonTT>
+            <ButtonTT
+              color="blue"
+              onClick={
+                stageNumber === 1 ? checkBeforSavingButtonClicked : submit
+              }
+            >
               {stageNumber === 1 ? 'Создать прибор' : 'Далее'}
-            </Button>
+            </ButtonTT>
           </Spaces>
         </RightAlign>
       </Wrap>

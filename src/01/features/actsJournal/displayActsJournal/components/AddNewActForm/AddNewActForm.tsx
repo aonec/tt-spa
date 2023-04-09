@@ -1,9 +1,11 @@
+import { Loader } from '01/components';
 import { AddressIdSearch } from '01/features/addressIdSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
+import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
@@ -12,7 +14,6 @@ import { EActResourceType, EActType } from 'myApi';
 import React, { ChangeEvent, FC, useMemo } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from 'ui-kit/Button';
 import {
   $actResources,
   ActResourcesGate,
@@ -24,7 +25,6 @@ import {
 import { createApartmentActFx } from '../../models';
 import { gridTemp } from '../TableHeader';
 import { AddNewActFormProps, AddNewActFormT } from './AddNewActForm.types';
-import { ButtonSC } from './AddNewActForm.styled';
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -153,20 +153,32 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         />
       </Wrap>
       <ButtonWrap>
-        <Button
-          type="ghost"
-          size="small"
+        <ButtonTT
+          color="white"
+          small
           onClick={() => {
             clearForm();
             resetForm();
           }}
         >
           Сбросить
-        </Button>
+        </ButtonTT>
         <Space />
-        <ButtonSC size="small" onClick={submitForm} isLoading={pendingRequest}>
-          Сохранить
-        </ButtonSC>
+        <ButtonTT
+          style={{ padding: '5px 40px' }}
+          disabled={pendingRequest}
+          color="blue"
+          small
+          onClick={submitForm}
+        >
+          {pendingRequest ? (
+            <div style={{ transform: 'translate(-8px, 2px)' }}>
+              <Loader show />
+            </div>
+          ) : (
+            'Сохранить'
+          )}
+        </ButtonTT>
       </ButtonWrap>
       <SpaceLine />
     </>

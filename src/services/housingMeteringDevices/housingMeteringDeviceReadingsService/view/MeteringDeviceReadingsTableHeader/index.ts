@@ -1,1 +1,0 @@
-export { MeteringDeviceReadingsTableHeader } from './MeteringDeviceReadingsTableHeader';

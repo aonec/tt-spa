@@ -14,7 +14,7 @@ export const HousingDevicesConsumptionPanel: FC<
     <Wrapper>
       <Panel>
         <TextWrapper>Расход по всем общедомовым приборам</TextWrapper>
-        <TextWrapper isBold>{round(count, 3)} кВт/ч</TextWrapper>
+        <TextWrapper isBold>{round(count, 3)} кВтч</TextWrapper>
       </Panel>
     </Wrapper>
   );

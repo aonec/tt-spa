@@ -5,10 +5,10 @@ export type ButtonProps = {
   disabled?: boolean;
   icon?: ReactElement;
   size?: ButtonSizeType;
-  floating?: boolean;
+  sidePadding?: number;
   isLoading?: boolean;
 } & HTMLAttributes<HTMLElement>;
 
 export type ButtonSizeType = 'middle' | 'small';
 
-export type ButtonStyleType = 'primary' | 'ghost' | 'danger';
+export type ButtonStyleType = 'default' | 'ghost' | 'danger';

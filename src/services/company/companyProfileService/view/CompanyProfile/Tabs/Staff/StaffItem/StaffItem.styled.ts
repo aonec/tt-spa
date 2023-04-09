@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.li`
   display: grid;
-  max-width: 960px;
+  max-width: 1000px;
   grid-template-columns: 2.5fr 1.7fr 1.5fr 1fr 0fr;
   align-items: center;
-  padding: 12px 0 12px 8px;
+  padding: 8px 0 8px 8px;
   margin-bottom: 8px;
 `;
 
@@ -13,12 +13,6 @@ export const Name = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 32px;
-
-  &:hover {
-    cursor: pointer;
-    transition: 0.3s;
-    color: #189ee9;
-  }
 `;
 
 export const Role = styled.div`

@@ -2,6 +2,7 @@ import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountP
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
+import { ButtonTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -17,9 +18,9 @@ import {
   createIndividualDeviceFx,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
+import { Loader } from '01/components';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { Button } from 'ui-kit/Button';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
 
 interface ILine {
@@ -128,16 +129,17 @@ export const CheckFormValuesModal = () => {
       title={<Header>Добавление нового прибора</Header>}
       footer={
         <Footer>
-          <Button type="ghost" onClick={onCancel}>
+          <ButtonTT color="white" key="back" onClick={onCancel}>
             Отмена
-          </Button>
-          <Button
-            isLoading={pending}
+          </ButtonTT>
+          <ButtonTT
+            color="blue"
+            key="submit"
             disabled={pending}
-            onClick={() => confirmCreationNewDeviceButtonClicked()}
+            onClick={confirmCreationNewDeviceButtonClicked}
           >
-            Создать прибор
-          </Button>
+            {pending ? <Loader show /> : 'Создать прибор'}
+          </ButtonTT>
         </Footer>
       }
     >

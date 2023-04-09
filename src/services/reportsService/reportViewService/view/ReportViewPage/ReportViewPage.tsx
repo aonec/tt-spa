@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
 import {
-  ButtonSC,
   ExtendedSearchWrapper,
   FiltrationInfoItem,
   FiltrationInfoList,
@@ -18,6 +17,7 @@ import {
 } from 'services/reportsService/view/ReportsPage/ReportsPage.constants';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
+import { Button } from 'ui-kit/Button';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
@@ -98,14 +98,15 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
                 <FiltrationInfoItem>Фильтры не выбраны</FiltrationInfoItem>
               )}
             </FiltrationInfoList>
-            <ButtonSC
+            <Button
               size="small"
+              sidePadding={16}
               onClick={downloadReport}
               disabled={isLoadingReport}
               isLoading={isReportFileDownloading}
             >
               Скачать отчет
-            </ButtonSC>
+            </Button>
           </FiltrationInfoWrapper>
         </ExtendedSearch>
       </ExtendedSearchWrapper>

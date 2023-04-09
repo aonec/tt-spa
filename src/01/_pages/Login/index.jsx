@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Loader } from '01/components';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
-import { Label, Input, Icon } from '01/tt-components';
+import { Label, Button, Input, Icon, ButtonTT } from '01/tt-components';
 import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
 import { message } from 'antd';
@@ -11,7 +12,6 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DevSettingsModal } from '01/features/developmentSettings';
 import { openDevSettingsModal } from '01/features/developmentSettings/models';
 import { parse } from 'query-string';
-import { Button } from 'ui-kit/Button';
 import { devUrl } from '01/axios';
 
 export const Main = styled.div`
@@ -140,22 +140,30 @@ export const Login = () => {
               />
             </Input>
           </div>
-          <Button isLoading={loading} onClick={FormSubmitHadler} floating>
-            <span>Вход в систему</span>
-          </Button>
+          <Loader show={loading} size="48">
+            <Button
+              data-big
+              data-primary
+              disabled={loading}
+              type="loading"
+              onClick={FormSubmitHadler}
+            >
+              <span>Вход в систему</span>
+            </Button>
+          </Loader>
         </Form>
         {isDev && (
           <>
             <DevSettingsModal />
             <Space />
-            <Button
+            <ButtonTT
               onClick={openDevSettingsModal}
-              size="small"
-              type="ghost"
+              small
+              color="white"
               style={{ color: 'white' }}
             >
               Development settings
-            </Button>
+            </ButtonTT>
           </>
         )}
       </LoginRight>

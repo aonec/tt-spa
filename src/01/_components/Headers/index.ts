@@ -9,9 +9,9 @@ export const HeaderWrap = styled.div`
   align-items: center;
 `;
 
-export const Title = styled.div`
+export const Title = styled.h2`
   padding: 0;
-  margin-top: 16px;
+  margin: 0;
   font-weight: 300;
   font-size: 32px;
   line-height: 48px;

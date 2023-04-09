@@ -1,1 +1,0 @@
-export { MeteringDeviceMonthReading } from './MeteringDeviceMonthReading';

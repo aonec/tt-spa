@@ -6,18 +6,18 @@ export const Wrapper = styled.div`
 `;
 
 export const SerialNumber = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
   font-size: 16px;
   color: #272f5a;
 `;
 
 export const Model = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
   font-size: 16px;
   color: #272f5a88;
 `;
 
 export const CheckingDates = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
   font-weight: 600;
 `;

@@ -8,7 +8,7 @@ import {
 } from 'myApi';
 import React, { FC } from 'react';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
-import { NodeRegistrationTypeLookup } from 'services/housingMeteringDevices/editNodeService/view/EditNodePage/EditNodePage.constants';
+import { NodeRegistrationTypeLookup } from 'services/devices/editNodeService/view/EditNodePage/EditNodePage.constants';
 import { FormItem } from 'ui-kit/FormItem';
 import { GroupWrapper } from './ChangeNodeTypeForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';

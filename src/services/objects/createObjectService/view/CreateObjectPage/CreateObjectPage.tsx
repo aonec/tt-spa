@@ -6,7 +6,12 @@ import { CreateObjectAdditionalInfoStage } from './CreateObjectAdditionalInfoSta
 import { CreateObjectAddressStage } from './CreateObjectAddressStage';
 import { CreateObjectFinalStageModal } from './CreateObjectFinalStageModal';
 import { CreateObjectMainInfoStage } from './CreateObjectMainInfoStage';
-import { GridWrapper, PageHeaderSC, Wrapper } from './CreateObjectPage.styled';
+import {
+  GridWrapper,
+  Header,
+  HeaderTitle,
+  Wrapper,
+} from './CreateObjectPage.styled';
 import { CreateObjectPageProps } from './CreateObjectPage.types';
 
 export const CreateObjectPage: FC<CreateObjectPageProps> = ({
@@ -36,8 +41,10 @@ export const CreateObjectPage: FC<CreateObjectPageProps> = ({
 
   return (
     <Wrapper>
-      <GoBack />
-      <PageHeaderSC isGhost title="Добавление нового объекта" />
+      <Header>
+        <GoBack />
+        <HeaderTitle>Добавление нового объекта</HeaderTitle>
+      </Header>
 
       <GridWrapper>
         <div>

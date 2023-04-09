@@ -6,10 +6,10 @@ export const Wrapper = styled(Link)`
   display: grid;
   grid-template-columns: 1fr 2.5fr 1fr 0.75fr;
   align-items: center;
-  grid-gap: 0 16px;
+  grid-gap: 0 15px;
   height: 46px;
   border-bottom: 1px solid #dcdee4;
-  padding-left: 16px;
+  padding-left: 15px;
   color: rgba(39, 47, 90, 0.8);
   cursor: pointer;
   transition: 0.2s;
@@ -54,9 +54,9 @@ export const AdditionalHomeownersCountTextWrapper = styled.span`
 `;
 
 export const WarningIconWrapper = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
 `;
 
 export const PauseIconWrapper = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
 `;
