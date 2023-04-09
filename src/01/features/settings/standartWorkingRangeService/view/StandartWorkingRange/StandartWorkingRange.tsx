@@ -5,17 +5,16 @@ import {
   FieldGrid,
   FieldName,
   LoaderWrapper,
-  Margin,
+  PageHeaderSC,
   RangeBlockGrid,
   RangeFieldName,
   ResourceSelectWrapper,
   Symbol,
+  TabsSC,
   Value,
 } from './StandartWorkingRange.styled';
 import { StandartWorkingRangeProps } from './StandartWorkingRange.types';
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Tabs } from 'ui-kit/Tabs';
 import { useFormik } from 'formik';
 import {
   ENodeWorkingRangeSeason,
@@ -24,6 +23,8 @@ import {
 } from 'myApi';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+
+const { TabPane } = TabsSC;
 
 export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
   handleOnSearchDataChange,
@@ -89,28 +90,24 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
 
   return (
     <>
-      <Margin>
-        <GoBack />
-      </Margin>
-      <PageHeader title="Стандартные рабочие диапазоны" />
-      <Margin>
-        <Tabs
-          onChange={(value) => {
-            setFieldValue('season', value);
-            handleSubmit();
-          }}
-          activeKey={values.season}
-        >
-          <Tabs.TabPane
-            tab="Отопительный сезон"
-            key={ENodeWorkingRangeSeason.HeatingSeason}
-          />
-          <Tabs.TabPane
-            tab="Межотопительный сезон"
-            key={ENodeWorkingRangeSeason.InterHeating}
-          />
-        </Tabs>
-      </Margin>
+      <GoBack />
+      <PageHeaderSC title="Стандартные рабочие диапазоны" />
+      <TabsSC
+        onChange={(value) => {
+          setFieldValue('season', value);
+          handleSubmit();
+        }}
+        activeKey={values.season}
+      >
+        <TabPane
+          tab="Отопительный сезон"
+          key={ENodeWorkingRangeSeason.HeatingSeason}
+        />
+        <TabPane
+          tab="Межотопительный сезон"
+          key={ENodeWorkingRangeSeason.InterHeating}
+        />
+      </TabsSC>
       <ResourceSelectWrapper>
         <ResourceSelectSC
           isShadow={false}

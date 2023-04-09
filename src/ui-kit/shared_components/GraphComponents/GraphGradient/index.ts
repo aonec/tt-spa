@@ -1,0 +1,1 @@
+export { GraphGradient } from './GraphGradient';

@@ -14,6 +14,6 @@ export const ResourceConsumptionGraphColorsMeasure: {
 } = {
   [EResourceType.ColdWaterSupply]: 'м³',
   [EResourceType.HotWaterSupply]: 'м³',
-  [EResourceType.Electricity]: 'кВт⋅ч',
+  [EResourceType.Electricity]: 'кВт/ч',
   [EResourceType.Heat]: 'Гкал',
 };

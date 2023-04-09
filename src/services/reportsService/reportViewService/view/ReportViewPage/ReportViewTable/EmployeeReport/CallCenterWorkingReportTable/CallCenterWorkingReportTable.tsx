@@ -1,17 +1,49 @@
-import React, { FC } from 'react';
+import { sum } from 'lodash';
+import { CallCenterWorkingConstructedReportResponse } from 'myApi';
+import React, { FC, useMemo } from 'react';
 import { Table } from 'ui-kit/Table';
 import { getNameColumnCSS } from '../InspectorsWorkingReportTable/InspectorsWorkingReportTable.styled';
 import {
   getBorderedColumnCSS,
   ResourceReadingsCountHeader,
   ResourceReadingsCountHeaderFact,
+  rowStyles,
 } from './CallCenterWorkingReportTable.styled';
 import { CallCenterWorkingReportTableProps } from './CallCenterWorkingReportTable.types';
 
 export const CallCenterWorkingReportTable: FC<
   CallCenterWorkingReportTableProps
 > = ({ data }) => {
-  const elements = data.CallCenterWorkingReport || [];
+  const elements = useMemo(() => data.CallCenterWorkingReport || [], [data]);
+
+  const sumTableRow = useMemo(() => {
+    const resourcesValues = [
+      'coldWaterSupplyPlan',
+      'coldWaterSupplyValue',
+      'hotWaterSupplyPlan',
+      'hotWaterSupplyValue',
+      'electricityPlan',
+      'electricityValue',
+      'heatPlan',
+      'heatValue',
+    ].reduce(
+      (acc, elem) => ({
+        ...acc,
+        [elem]: sum(
+          elements.map(
+            (e) => e[elem as keyof CallCenterWorkingConstructedReportResponse],
+          ),
+        ),
+      }),
+      {} as CallCenterWorkingConstructedReportResponse,
+    );
+
+    return {
+      ...resourcesValues,
+      managingFirm: null,
+      houseManagement: 'Итого',
+    };
+  }, [elements]);
 
   return (
     <Table
@@ -108,7 +140,8 @@ export const CallCenterWorkingReportTable: FC<
           render: (elem) => elem.heatValue,
         },
       ]}
-      elements={elements}
+      rowStyles={rowStyles}
+      elements={[...elements, sumTableRow]}
     />
   );
 };

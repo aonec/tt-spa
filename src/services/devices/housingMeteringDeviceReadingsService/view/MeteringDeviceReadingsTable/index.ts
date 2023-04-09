@@ -1,1 +1,0 @@
-export { MeteringDeviceReadingsTable } from './MeteringDeviceReadingsTable'

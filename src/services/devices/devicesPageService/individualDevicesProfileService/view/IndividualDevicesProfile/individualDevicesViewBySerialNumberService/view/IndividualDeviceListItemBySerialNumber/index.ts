@@ -1,1 +1,0 @@
-export { IndividualDeviceListItemBySerialNumber } from './ListItemBySerialNumber'
