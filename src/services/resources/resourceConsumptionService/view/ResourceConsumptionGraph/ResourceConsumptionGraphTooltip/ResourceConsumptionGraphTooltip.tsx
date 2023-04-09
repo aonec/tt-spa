@@ -1,12 +1,12 @@
-import {
-  DateBlock,
-  Pointer,
-  TooltipBlock,
-} from '01/_pages/Graph/components/GraphTooltip/GraphTooltip.styled';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { Value } from './ResourceConsumptionGraphTooltip.styled';
 import { ResourceConsumptionGraphTooltipProps } from './ResourceConsumptionGraphTooltip.types';
+import {
+  DateBlock,
+  Pointer,
+  TooltipBlock,
+} from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/GraphTooltip/GraphTooltip.styled';
 
 export const ResourceConsumptionGraphTooltip: FC<
   ResourceConsumptionGraphTooltipProps

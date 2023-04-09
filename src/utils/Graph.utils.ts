@@ -1,6 +1,6 @@
-import { PreparedArchiveValues } from '01/_pages/Graph/components/GraphView/GraphView.types';
 import { maxBy, minBy } from 'lodash';
 import { EResourceType } from 'myApi';
+import { PreparedArchiveValues } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.types';
 
 export function getMinAndMax<T>(
   data: (T & { value: number | null })[],

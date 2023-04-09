@@ -86,7 +86,7 @@ export const ActsJournalReport: FC<ActsJournalReportProps> = ({
             ),
           },
           {
-            label: 'Дата раброт',
+            label: 'Дата работ',
             size: '100px',
             render: (elem) => moment(elem.actJobDate).format('DD.MM.YYYY'),
           },

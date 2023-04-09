@@ -5,8 +5,8 @@ import {
   ModalText,
   StyledModal,
 } from '01/shared/ui/Modal/Modal';
-import { ButtonTT } from '01/tt-components';
-import { Loader } from '01/_components/Loader';
+import { Button } from 'ui-kit/Button';
+import { ButtonStyleType } from 'ui-kit/Button/Button.types';
 
 interface Props {
   width?: number;
@@ -22,7 +22,7 @@ interface Props {
   footer?: ReactNode;
   customCancelButton?(): void;
   disabled?: boolean;
-  saveButtonType?: 'blue' | 'red';
+  saveButtonType?: ButtonStyleType;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -53,23 +53,18 @@ export const ModalTT: React.FC<Props> = (props) => {
     if (!footer) {
       return (
         <Footer>
-          <ButtonTT
-            color={'white'}
-            key="back"
-            onClick={customCancelButton || onCancel}
-          >
+          <Button type="ghost" onClick={customCancelButton || onCancel}>
             {cancelBtnText}
-          </ButtonTT>
+          </Button>
           {customSubmit || (
-            <ButtonTT
-              color={saveButtonType || 'blue'}
-              key="submit"
-              type="submit"
+            <Button
+              type={saveButtonType}
               onClick={onSubmit}
-              disabled={loading || disabled}
+              disabled={disabled}
+              isLoading={loading}
             >
-              {loading ? <Loader show /> : text}
-            </ButtonTT>
+              {text}
+            </Button>
           )}
         </Footer>
       );

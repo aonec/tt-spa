@@ -1,6 +1,6 @@
 import { HouseAddress } from 'myApi';
 import React, { FC, useCallback } from 'react';
-import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
+import { DevicesSearchType } from 'services/housingMeteringDevices/devicesPageService/devicesPageService.types';
 import { Switcher } from 'ui-kit/shared_components/Switcher';
 import { getHousingStockAddressString } from 'utils/getHousingStockAddress';
 import { Subtitle } from '../../../../_components/Headers';

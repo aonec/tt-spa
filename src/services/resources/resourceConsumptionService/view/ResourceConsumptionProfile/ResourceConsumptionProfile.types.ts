@@ -2,8 +2,8 @@ import {
   EResourceType,
   GetSummaryHousingConsumptionsByResourcesResponse,
 } from 'myApi';
+import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService/resourceConsumptionFilterService.types';
 import {
-  ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
   ResourceConsumptionGraphType,
   ResourceConsumptionGraphDataType,
@@ -21,6 +21,7 @@ export type ResourceConsumptionProfileProps = {
   ) => void;
   additionalConsumptionData: MonthConsumptionData | null;
   summaryConsumption: GetSummaryHousingConsumptionsByResourcesResponse | null;
+  resource: EResourceType;
 };
 
 export type BooleanTypesOfResourceConsumptionGraphForTwoMonth = {

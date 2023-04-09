@@ -11,8 +11,8 @@ export const closeIssueCertificateModalButtonClicked = createEvent();
 export const printIssueSertificateButtonClicked = createEvent<number>();
 
 export const fetchHomeownerCertificate = createEffect<
-  number,
+  string,
   HomeownerCertificateResponse
 >();
 
-export const HomeownerCerificateGate = createGate<{ id: number }>();
+export const HomeownerCerificateGate = createGate<{ id: string | null }>();

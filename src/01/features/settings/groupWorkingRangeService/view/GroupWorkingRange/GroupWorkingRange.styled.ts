@@ -1,8 +1,6 @@
+import { PageHeader } from '01/shared/ui/PageHeader';
 import styled from 'styled-components';
-
-export const Margin = styled.div`
-  margin: 12px 0px 16px 0px;
-`;
+import { Tabs } from 'ui-kit/Tabs';
 
 export const ErrorBlockGrid = styled.div`
   display: grid;
@@ -73,4 +71,12 @@ export const FilterBlock = styled.div`
   display: grid;
   grid-template-columns: 0.7fr 3fr 1.5fr;
   grid-gap: 16px;
+`;
+
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
+`;
+
+export const TabsSC = styled(Tabs)`
+  margin-top: 16px;
 `;
