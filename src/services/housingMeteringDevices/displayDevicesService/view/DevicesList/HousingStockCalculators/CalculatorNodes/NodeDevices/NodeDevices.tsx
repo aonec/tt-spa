@@ -4,6 +4,7 @@ import {
   CommercialAct,
   Diameter,
   MeteringDeviceWrapper,
+  ResourceIconWrapper,
   ServiceZone,
   TitleWrapper,
 } from './NodeDevices.styled';
@@ -45,7 +46,9 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
         <div>
           <TitleWrapper>
             <DeviceLink to={`/nodes/${node.id}`}>
-              <ResourceIconLookup resource={node.resource} />
+              <ResourceIconWrapper>
+                <ResourceIconLookup resource={node.resource} />
+              </ResourceIconWrapper>
               <span>{`Узел ${node.number}`}</span>
             </DeviceLink>
             <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>

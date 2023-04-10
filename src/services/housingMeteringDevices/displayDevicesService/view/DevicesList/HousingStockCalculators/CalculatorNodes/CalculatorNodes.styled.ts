@@ -34,3 +34,9 @@ export const CalculatorWithStatusWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const CalculatorIconWrapper = styled.div`
+  margin-right: 9px;
+  display: flex;
+  align-items: center;
+`;

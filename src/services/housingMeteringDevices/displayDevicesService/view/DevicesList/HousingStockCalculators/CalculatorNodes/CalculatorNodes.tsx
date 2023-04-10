@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { CalculatorNodesProps } from './CalculatorNodes.types';
 import {
+  CalculatorIconWrapper,
   CalculatorModelWrapper,
   CalculatorTitle,
   CalculatorWithStatusWrapper,
@@ -27,7 +28,9 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ calculator }) => {
         <CalculatorWithStatusWrapper>
           <DeviceLink to={`/calculators/${calculator.id}`}>
             <CalculatorModelWrapper>
-              <CalculatorIcon />
+              <CalculatorIconWrapper>
+                <CalculatorIcon />
+              </CalculatorIconWrapper>
               {calculator.model}
               <SerialNumber>({calculator.serialNumber})</SerialNumber>
             </CalculatorModelWrapper>

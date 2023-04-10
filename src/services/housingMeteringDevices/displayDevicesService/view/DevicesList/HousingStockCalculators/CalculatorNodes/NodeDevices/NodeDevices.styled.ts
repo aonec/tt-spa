@@ -30,3 +30,9 @@ export const CommercialAct = styled.div`
 export const Diameter = styled.div`
   margin: 0 auto;
 `;
+
+export const ResourceIconWrapper = styled.div`
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+`;
