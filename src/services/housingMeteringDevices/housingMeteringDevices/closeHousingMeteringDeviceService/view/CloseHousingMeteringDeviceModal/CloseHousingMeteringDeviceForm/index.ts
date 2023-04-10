@@ -1,1 +1,1 @@
-export { CloseHousingMeteringDeviceForm } from './CloseHousingMeteringDeviceForm'
+export { CloseHousingMeteringDeviceForm } from './CloseHousingMeteringDeviceForm';

@@ -7,9 +7,10 @@ import {
 } from 'myApi';
 import { SearchIndividualDevicesParams } from '../../../individualDevicesProfileService.types';
 
-export type SearchIndividualDevicesRequestPayload = SearchIndividualDevicesParams & {
-  Apartment?: string;
-};
+export type SearchIndividualDevicesRequestPayload =
+  SearchIndividualDevicesParams & {
+    Apartment?: string;
+  };
 
 export type GetHousingByFilterRequestPayload = {
   City: string;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 
 export const CalculatorSelectWrapper = styled.div`
@@ -22,6 +23,10 @@ export const CalculatorSerialNumber = styled.div`
 export const CalculatorModel = styled.div`
   font-weight: 400;
   font-size: 14px;
+`;
+
+export const ButtonSC = styled(Button)`
+  padding: 0 40px;
 `;
 
 export const FormItemSC = styled(FormItem)<{ isWide?: boolean }>`

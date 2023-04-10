@@ -121,7 +121,7 @@ export const EditCompanyForm: FC<EditCompanyFormProps> = ({
         <Button type="ghost" onClick={() => history.goBack()}>
           Отмена
         </Button>
-        <Button type="default" onClick={submitForm} isLoading={isUpdating}>
+        <Button type="primary" onClick={submitForm} isLoading={isUpdating}>
           Сохранить
         </Button>
       </FooterWrapper>

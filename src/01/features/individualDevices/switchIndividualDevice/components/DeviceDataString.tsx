@@ -3,7 +3,7 @@ import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 

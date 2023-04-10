@@ -116,7 +116,7 @@ export const ExtendedSearchForm: FC<{
             }
           >
             <Option value="">Все</Option>
-            <Option value="NextMonth">Ближайший месяц</Option>
+            <Option value="NextMonth">В ближайший месяц</Option>
             <Option value="NextTwoMonth">В следующие два месяца</Option>
             <Option value="Past">Истекла</Option>
           </SelectSC>
