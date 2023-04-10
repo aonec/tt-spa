@@ -5,11 +5,11 @@ import React, { FC } from 'react';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
-import { StyledSelect } from '../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 import { createCalcuatorService } from './CreateCalculatorModal/models';
 import { AddNodeCalculatorConnectionForm } from './models';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Select } from 'ui-kit/Select';
 
 interface Props {
   onClose(): void;
@@ -48,17 +48,17 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
       <CreateCalculatorModalContainer />
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Вычислитель, к которому подключен узел">
-          <StyledSelect
+          <Select
             placeholder="Серийный номер или IP адрес"
             value={fields.calculatorId.value || undefined}
             onChange={fields.calculatorId.onChange as any}
           >
             {calculators?.map((calculator) => (
-              <StyledSelect.Option key={calculator.id} value={calculator.id}>
+              <Select.Option key={calculator.id} value={calculator.id}>
                 {calculator.serialNumber} ({calculator.model})
-              </StyledSelect.Option>
+              </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>
             {fields.calculatorId.errorText({
               required: 'Это поле обязательное',
@@ -76,17 +76,17 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
           </Button>
         </Flex>
         <Form.Item label="Номер ввода">
-          <StyledSelect
+          <Select
             placeholder="Выберите номер ввода"
             value={fields.entryNumber.value || undefined}
             onChange={fields.entryNumber.onChange as any}
           >
             {calculatorConnectionInputNumbers.map((value) => (
-              <StyledSelect.Option key={value} value={value}>
+              <Select.Option key={value} value={value}>
                 {value}
-              </StyledSelect.Option>
+              </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>
             {fields.entryNumber.errorText({
               required: 'Это поле обязательное',

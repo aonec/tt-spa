@@ -6,7 +6,6 @@ import _ from 'lodash';
 import queryString from 'query-string';
 import logo from '../../assets/svg/logo.svg';
 import login from '../../assets/svg/login.svg';
-import { Button, Title } from '../../tt-components';
 import { confirmRegistration } from './apiRegistration';
 import styles from './registration.module.scss';
 import { useHistory } from 'react-router-dom';
@@ -58,9 +57,9 @@ export const Registration = () => {
       <div className={styles.registration__left}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img src={logo} alt="logo" />
-          <Title size="24" style={{ marginLeft: 8 }}>
+          {/* <Title size="24" style={{ marginLeft: 8 }}>
             TT Management
-          </Title>
+          </Title> */}
         </div>
 
         <img src={login} alt="login" style={{ width: '100%' }} />
@@ -71,9 +70,9 @@ export const Registration = () => {
           style={{ maxWidth: 400 }}
           onSubmit={handleSubmit}
         >
-          <Title size="32" color="white">
+          {/* <Title size="32" color="white">
             Создайте пароль для входа в систему
-          </Title>
+          </Title> */}
 
           <Form.Item label={<label>Пароль</label>}>
             <Input.Password
@@ -97,14 +96,14 @@ export const Registration = () => {
             <Alert name="confirmPassword" />
           </Form.Item>
 
-          <Button
+          {/* <Button
             data-big
             data-primary
             type="submit"
             style={{ width: '100%', marginTop: '24px' }}
           >
             <span>Сохранить пароль</span>
-          </Button>
+          </Button> */}
         </form>
       </div>
     </div>

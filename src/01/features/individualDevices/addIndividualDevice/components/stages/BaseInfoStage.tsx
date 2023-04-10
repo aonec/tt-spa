@@ -5,8 +5,7 @@ import {
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select, Switch } from 'antd';
+import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
@@ -34,6 +33,7 @@ import {
 } from '01/features/individualDevices/switchIndividualDevice/models/init';
 import { Loader } from '01/components';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { Select } from 'ui-kit/Select';
 
 const {
   outputs,
@@ -189,7 +189,7 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Тип ресурса">
-          <StyledSelect
+          <Select
             placeholder="Выберите тип ресурса"
             onChange={(value: any) => {
               fields.resource.onChange(value);
@@ -217,7 +217,7 @@ export const BaseInfoStage = () => {
                 </Flex>
               </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>
             {fields.resource.errorText({
               required: 'Это поле обязательное',
@@ -266,7 +266,7 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Место установки">
-          <StyledSelect
+          <Select
             placeholder="Выберите место установки"
             value={fields.mountPlaceId.value || undefined}
             onChange={(value: any) => fields.mountPlaceId.onChange(value)}
@@ -274,7 +274,7 @@ export const BaseInfoStage = () => {
             {mountPlaces?.map((elem) => (
               <Select.Option value={elem.id}>{elem.description}</Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>
             {fields.mountPlaceId.errorText({
               required: 'Это поле обязательное',
@@ -314,21 +314,21 @@ export const BaseInfoStage = () => {
       </FormWrap>
 
       <FormItem label="Тариф прибора">
-        <StyledSelect
+        <Select
           placeholder="Выберите тариф прибора"
           value={fields.rateType.value}
           onChange={(value) => value && fields.rateType.onChange(value as any)}
         >
-          <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
+          <Select.Option value={EIndividualDeviceRateType.OneZone}>
             Одна зона
-          </StyledSelect.Option>
-          <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
+          </Select.Option>
+          <Select.Option value={EIndividualDeviceRateType.TwoZone}>
             Две зоны
-          </StyledSelect.Option>
-          <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
+          </Select.Option>
+          <Select.Option value={EIndividualDeviceRateType.ThreeZone}>
             Три зоны
-          </StyledSelect.Option>
-        </StyledSelect>
+          </Select.Option>
+        </Select>
       </FormItem>
 
       <FormWrap>
@@ -425,7 +425,7 @@ export const BaseInfoStage = () => {
       </FormWrap>
 
       <FormItem label="Монтажная организация">
-        <StyledSelect
+        <Select
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }
@@ -433,11 +433,11 @@ export const BaseInfoStage = () => {
           placeholder="Выберите монтажную организацию"
         >
           {contractors?.map((elem) => (
-            <StyledSelect.Option value={elem.id} key={elem.id}>
+            <Select.Option value={elem.id} key={elem.id}>
               {elem.name}
-            </StyledSelect.Option>
+            </Select.Option>
           ))}
-        </StyledSelect>
+        </Select>
       </FormItem>
     </Wrap>
   );

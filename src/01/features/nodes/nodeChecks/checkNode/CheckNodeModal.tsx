@@ -1,8 +1,5 @@
-import { FilesList } from '01/shared/ui/FilesList';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { DatePickerTT, InputTT } from '01/tt-components';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form } from 'antd';
 import moment from 'moment';
 import React, { FC, SyntheticEvent } from 'react';
@@ -11,6 +8,10 @@ import { CheckingActDocumentType } from './utils';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { EDocumentType } from 'myApi';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Select } from 'ui-kit/Select';
+import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
+import { DatePicker } from 'ui-kit/DatePicker';
+import { InputTT } from '01/tt-components';
 
 interface Props {
   visible: boolean;
@@ -35,6 +36,8 @@ export const CheckNodeModal: FC<Props> = ({
   clearPayloadFile,
   setFiles,
 }) => {
+  console.log(payload);
+
   return (
     <>
       <ModalTT
@@ -47,7 +50,7 @@ export const CheckNodeModal: FC<Props> = ({
       >
         <Grid temp="1fr 1fr 1fr" gap="15px">
           <Form.Item label="Дата проверки">
-            <DatePickerTT
+            <DatePicker
               format="DD.MM.YYYY"
               onChange={fields.checkingDate.onChange as any}
               value={
@@ -63,17 +66,17 @@ export const CheckNodeModal: FC<Props> = ({
             </ErrorMessage>
           </Form.Item>
           <Form.Item label="Тип проверки">
-            <StyledSelect
+            <Select
               placeholder="Выберите тип проверки"
               value={fields.checkType.value || undefined}
               onChange={fields.checkType.onChange as any}
             >
               {Object.entries(CheckingActDocumentType).map(([key, value]) => (
-                <StyledSelect.Option value={key} key={key}>
+                <Select.Option value={key} key={key}>
                   {value}
-                </StyledSelect.Option>
+                </Select.Option>
               ))}
-            </StyledSelect>
+            </Select>
             <ErrorMessage>
               {fields.checkType.errorText({
                 required: 'Это поле обязательное',
@@ -96,18 +99,7 @@ export const CheckNodeModal: FC<Props> = ({
           </Form.Item>
         </Grid>
         {payload?.checkingAct ? (
-          <FilesList
-            files={[
-              {
-                id: 432,
-                fileResponse: payload?.checkingAct,
-                onRemove: () => {
-                  fields.documentIds.onChange([]);
-                  clearPayloadFile();
-                },
-              },
-            ]}
-          />
+          <DocumentsList documents={[payload.checkingAct]} isLoading={false} />
         ) : (
           <DocumentsUploadContainer
             label="Добавьте заключение проверки"

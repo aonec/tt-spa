@@ -5,8 +5,8 @@ import { DatePickerNative } from '../../../../../../../shared/ui/DatePickerNativ
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
 import InputTT from '../../../../../../../tt-components/InputTT';
 import { SelectItem } from '../../../../../../../tt-components/localBases';
-import { StyledSelect } from '../../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { createCalcuatorService } from '../CreateCalculatorModal/models';
+import { Select } from 'ui-kit/Select';
 
 interface Props {
   calculatorTypes: SelectItem[];
@@ -30,17 +30,17 @@ export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
           />
         </Form.Item>
         <Form.Item label="Тип вычислителя">
-          <StyledSelect
+          <Select
             placeholder="Выберите тип вычислителя из списка"
             value={fields.infoId.value as any}
             onChange={fields.infoId.onChange as any}
           >
             {calculatorTypes.map((elem) => (
-              <StyledSelect.Option key={elem.id} value={elem.id}>
+              <Select.Option key={elem.id} value={elem.id}>
                 {elem.label}
-              </StyledSelect.Option>
+              </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
         </Form.Item>
         <Form.Item label="Дата последней поверки прибора">
           <DatePickerNative

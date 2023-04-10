@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { IndividualDeviceEdit, Login, Registration } from '01/_pages';
+import { Login, Registration } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -341,11 +341,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   isSeniorOperator ||
                   isExecutor ||
                   isOperator ? (
-                    <Route
-                      path="/individualDevices/:deviceId/edit"
-                      component={IndividualDeviceEdit}
-                      exact
-                    />
+                    <Route path="/individualDevices/:deviceId/edit" />
                   ) : (
                     <Route
                       path="/individualDevices/:deviceId/edit"

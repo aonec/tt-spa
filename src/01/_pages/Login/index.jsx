@@ -3,8 +3,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
-import { Label, Input, Icon } from '01/tt-components';
-import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
 import { message } from 'antd';
 import { Space } from '01/shared/ui/Layout/Space/Space';
@@ -57,7 +55,7 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false);
+  const [showPass] = useState(false);
   const { replace } = useHistory();
   const { search } = useLocation();
 
@@ -94,51 +92,36 @@ export const Login = () => {
       <LoginLeft>
         <LoginTopHeader>
           <Img src={logo} alt="logo" />
-          <Title size="24">TT Management</Title>
         </LoginTopHeader>
         <Img src={login} alt="login" />
       </LoginLeft>
       <LoginRight>
-        <Title size="big">Вход в систему</Title>
+        {/* <Title size="big">Вход в систему</Title> */}
         <Form className="form" onSubmit={FormSubmitHadler}>
-          <div>
-            <Label>Логин</Label>
-            <Input data-big>
-              <input
-                autoFocus
-                name="email"
-                placeholder="Введите логин"
-                type="text"
-                readOnly={loading}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </Input>
-          </div>
+          <input
+            autoFocus
+            name="email"
+            placeholder="Введите логин"
+            type="text"
+            readOnly={loading}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
 
           <div>
-            <Label>Пароль</Label>
-            <Input data-big>
-              <input
-                name="password"
-                placeholder="Введите пароль"
-                readOnly={loading}
-                type={showPass ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => {
-                  if (e.nativeEvent.data === ' ') return;
-                  setPassword(e.target.value);
-                }}
-              />
-              <Icon
-                icon={showPass ? 'off' : 'on'}
-                onClick={() => {
-                  setShowPass(!showPass);
-                }}
-              />
-            </Input>
+            <input
+              name="password"
+              placeholder="Введите пароль"
+              readOnly={loading}
+              type={showPass ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => {
+                if (e.nativeEvent.data === ' ') return;
+                setPassword(e.target.value);
+              }}
+            />
           </div>
           <Button isLoading={loading} onClick={FormSubmitHadler} floating>
             <span>Вход в систему</span>
