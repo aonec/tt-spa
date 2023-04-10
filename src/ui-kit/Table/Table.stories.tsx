@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Table } from './Table';
 import { CallCenterWorkingReportTable } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportViewTable/EmployeeReport/CallCenterWorkingReportTable';
-import { mockData } from './Table.mock.story';
+import { mockData } from './Table.mock.stories';
 
 const meta: ComponentMeta<typeof Table> = {
   title: 'Table',
