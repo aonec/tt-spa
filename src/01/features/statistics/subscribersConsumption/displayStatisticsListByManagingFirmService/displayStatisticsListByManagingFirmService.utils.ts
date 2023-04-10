@@ -1,18 +1,13 @@
 import { SubscriberStatisticsFilter } from './displayStatisticsListByManagingFirmService.types';
 
 export const prepareFilterBeforeSenging = (
-  filter: SubscriberStatisticsFilter
+  filter: SubscriberStatisticsFilter,
 ) => {
   const {
     ColdWaterSupply,
     Electricity,
     HotWaterSupply,
-    ColdWaterSupplyConsumptionFrom,
-    ColdWaterSupplyConsumptionTo,
-    ElectricitySupplyConsumptionFrom,
-    ElectricitySupplyConsumptionTo,
-    HotWaterSupplyConsumptionFrom,
-    HotWaterSupplyConsumptionTo,
+    Heat,
     DateLastCheckFrom,
     DateLastCheckTo,
     MonthOfLastTransmission,
@@ -29,22 +24,30 @@ export const prepareFilterBeforeSenging = (
   if (ColdWaterSupply) {
     payload = {
       ...payload,
-      ColdWaterSupplyConsumptionFrom,
-      ColdWaterSupplyConsumptionTo,
+
+      'ColdWaterSupplyFilter.From': filter['ColdWaterSupplyFilter.From'],
+      'ColdWaterSupplyFilter.To': filter['ColdWaterSupplyFilter.To'],
     };
   }
   if (Electricity) {
     payload = {
       ...payload,
-      ElectricitySupplyConsumptionFrom,
-      ElectricitySupplyConsumptionTo,
+      'ElectricityFilter.From': filter['ElectricityFilter.From'],
+      'ElectricityFilter.To': filter['ElectricityFilter.To'],
     };
   }
   if (HotWaterSupply) {
     payload = {
       ...payload,
-      HotWaterSupplyConsumptionFrom,
-      HotWaterSupplyConsumptionTo,
+      'HotWaterSupplyFilter.From': filter['ElectricityFilter.From'],
+      'HotWaterSupplyFilter.To': filter['HotWaterSupplyFilter.To'],
+    };
+  }
+  if (Heat) {
+    payload = {
+      ...payload,
+      'HeatFilter.From': filter['HeatFilter.From'],
+      'HeatFilter.To': filter['HeatFilter.To'],
     };
   }
   return payload;
