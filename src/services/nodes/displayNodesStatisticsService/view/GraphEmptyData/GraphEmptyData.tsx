@@ -1,6 +1,6 @@
 import { Empty } from 'antd';
 import React, { FC } from 'react';
-import { FallbackGraphIcon } from 'services/displayNodesStatisticsService/view/GraphEmptyData/assets';
+import { FallbackGraphIcon } from './assets';
 
 export const GraphEmptyData: FC = () => {
   return (
