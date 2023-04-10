@@ -26,7 +26,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
 }) => {
   const deviceTitle = device ? `${device.model} (${device.serialNumber}).` : '';
   const [grouptype, setGrouptype] = useState<EditElectricNodeGrouptype>(
-    EditElectricNodeGrouptype.edit
+    EditElectricNodeGrouptype.edit,
   );
   return (
     <div>

@@ -1,5 +1,5 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import {} from '01/shared/ui/PageHeader';
 import React, { FC, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
@@ -8,10 +8,13 @@ import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { NodeEditGrouptype } from '../../editNodeService.constants';
 import { EditNodeCommonInfo } from './EditNodeCommonInfo';
 import { NodeRegistrationTypeLookup } from './EditNodePage.constants';
-import { CommonInfoWrapper, ContentWrapper } from './EditNodePage.styled';
+import {
+  CommonInfoWrapper,
+  ContentWrapper,
+  PageHeaderSC,
+} from './EditNodePage.styled';
 import {
   AddressWrapper,
-  HeaderWrapper,
   ResourceIconWrapper,
   TabsSC,
 } from './EditNodePage.styled';
@@ -49,12 +52,16 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   return (
     <>
       <GoBack />
-      <HeaderWrapper>
-        <ResourceIconWrapper>
-          <ResourceIconLookup resource={resource} />
-        </ResourceIconWrapper>
-        <PageHeader title={`Узел ${number}. Редактирование`} />
-      </HeaderWrapper>
+      <PageHeaderSC
+        title={
+          <>
+            <ResourceIconWrapper>
+              <ResourceIconLookup resource={resource} />
+            </ResourceIconWrapper>
+            Узел {number}. Редактирование
+          </>
+        }
+      />
       <AddressWrapper to={`/objects/profile/${address?.id}`}>
         <HeaderInfoString>
           <>{getHousingStockAddress(address, true)}</>

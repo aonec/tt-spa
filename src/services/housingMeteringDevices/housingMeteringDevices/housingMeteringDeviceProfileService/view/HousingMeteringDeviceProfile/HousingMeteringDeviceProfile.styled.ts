@@ -1,12 +1,9 @@
+import { PageHeader } from '01/shared/ui/PageHeader';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Tabs } from 'ui-kit/Tabs';
 
 export const Wrapper = styled.div``;
-
-export const PageTitle = styled.div`
-  margin-top: 12px;
-  margin-bottom: 20px;
-`;
 
 export const DeviceTitle = styled.div`
   display: flex;
@@ -61,4 +58,12 @@ export const ResourceIconWrapper = styled.div`
     height: 24px;
     width: 24px;
   }
+`;
+
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
+`;
+
+export const TabsSC = styled(Tabs)`
+  margin-top: 16px;
 `;

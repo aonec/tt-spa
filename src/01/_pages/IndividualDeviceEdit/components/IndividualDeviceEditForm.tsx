@@ -1,17 +1,10 @@
-import React, {
-  BaseSyntheticEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, message, Select, Switch } from 'antd';
 import moment from 'moment';
 import { resources } from '../../../tt-components/localBases';
 import {
-  ButtonTT,
   Header,
   InputNumberTT,
   InputTT,
@@ -32,13 +25,17 @@ import {
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
-import { Loader } from '01/components';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { SwitchWrapper, TextWrapper } from './IndividualDeviceEditForm.styled';
+import {
+  ButtonSC,
+  SwitchWrapper,
+  TextWrapper,
+} from './IndividualDeviceEditForm.styled';
+import { Button } from 'ui-kit/Button';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -353,20 +350,17 @@ const IndividualDeviceEditForm = ({
         </StyledFormPage>
 
         <StyledFooter right>
-          <ButtonTT
-            color="blue"
-            type="button"
+          <Button
             disabled={loading}
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
+            isLoading={loading}
           >
-            {loading ? <Loader show /> : 'Сохранить'}
-          </ButtonTT>
+            Сохранить
+          </Button>
 
-          <ButtonTT
-            style={{ marginLeft: 16 }}
-            color="white"
-            type="button"
-            onClick={(e: BaseSyntheticEvent) => {
+          <ButtonSC
+            type="ghost"
+            onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
 
@@ -374,7 +368,7 @@ const IndividualDeviceEditForm = ({
             }}
           >
             Отмена
-          </ButtonTT>
+          </ButtonSC>
         </StyledFooter>
       </form>
     </>

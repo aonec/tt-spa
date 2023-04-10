@@ -54,25 +54,25 @@ export const BaseInfoWrapper = styled.div`
 
 export const CheckingDatesWrapper = styled.div`
   display: grid;
-  grid-gap: 15px;
+  grid-gap: 16px;
   grid-template-columns: 1fr 1fr;
 `;
 
 export const SealInfoWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 15px;
-  margin-top: 25px;
-  padding-top: 15px;
+  grid-gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid #dcdee4;
 `;
 
 export const AddressInfowrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 15px;
+  grid-gap: 16px;
   margin-top: 25px;
-  padding-top: 15px;
+  padding-top: 16px;
   border-top: 1px solid #dcdee4;
 
   grid-template-areas:

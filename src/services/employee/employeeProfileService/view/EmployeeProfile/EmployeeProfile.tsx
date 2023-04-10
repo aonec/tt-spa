@@ -1,6 +1,4 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { PageHeader } from '01/shared/ui/PageHeader';
-import Tabs from '01/tt-components/Tabs';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
@@ -14,7 +12,8 @@ import {
   FieldTitle,
   GridContainer,
   GridWrapper,
-  Margin,
+  PageHeaderSC,
+  TabsSC,
   Wrapper,
   СompetenceDiv,
 } from './EmployeeProfile.styled';
@@ -57,10 +56,8 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
 
   return (
     <Wrapper>
-      <Margin>
-        <GoBack />
-      </Margin>
-      <PageHeader
+      <GoBack />
+      <PageHeaderSC
         title={userInitials}
         contextMenu={{
           menuButtons: [
@@ -87,9 +84,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
         <StaffStatus status={userData?.status?.type} />
       )}
 
-      <Margin>
-        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
-      </Margin>
+      <TabsSC tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
 
       {currentTabKey === '1' && (
         <GridWrapper>
@@ -157,7 +152,6 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
             </GridContainer>
             <SpaceLine />
           </div>
-          <div></div>
         </GridWrapper>
       )}
       {currentTabKey === '2' && <h2>Страница появится в будущем</h2>}

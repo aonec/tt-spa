@@ -15,6 +15,6 @@ export const TextWrapper = styled.div`
   margin-top: 8px;
   color: #272f5a;
   font-weight: 600;
-  
+
   cursor: pointer;
 `;

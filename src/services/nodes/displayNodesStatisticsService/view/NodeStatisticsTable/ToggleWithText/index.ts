@@ -1,1 +1,1 @@
-export { ToggleWithText } from './ToggleWithText'
+export { ToggleWithText } from './ToggleWithText';

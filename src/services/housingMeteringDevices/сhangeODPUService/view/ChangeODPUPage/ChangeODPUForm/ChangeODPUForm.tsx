@@ -29,8 +29,8 @@ import {
   switchDeviceValidationSchema,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
-import { ButtonTT } from '01/tt-components';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Button } from 'ui-kit/Button';
 import { ChangeODPUReadingsContainer } from 'services/housingMeteringDevices/сhangeODPUService/changeODPUReadingsService';
 
 export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
@@ -278,10 +278,10 @@ export const ChangeODPUForm: FC<ChangeODPUFormProps> = ({
         </FormItem>
       </SealInfoWrapper>
       <ButtonsWrapper>
-        <ButtonTT color="blue" type="submit" disabled={isLoading}>
+        <Button disabled={isLoading}>
           {isLoading && 'Загрузка...'}
           {!isLoading && 'Сохранить'}
-        </ButtonTT>
+        </Button>
       </ButtonsWrapper>
     </FormSC>
   );

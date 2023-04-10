@@ -50,7 +50,7 @@ export const ManageButtonsWrapper = styled.div`
 
 export const TrashIconSC = styled(TrashIcon)`
   cursor: pointer;
-  margin-left: 15px;
+  margin-left: 16px;
 `;
 
 export const DownloadIconSC = styled(DownloadIcon)`

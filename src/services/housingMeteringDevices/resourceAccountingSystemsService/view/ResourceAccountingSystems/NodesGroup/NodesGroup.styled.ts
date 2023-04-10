@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 
 export const Header = styled.div`
   min-height: 64px;
-  padding: 0 25px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -27,7 +27,7 @@ export const closingReasonLookup: { [key: string]: string | null } = {
 export const expiresCheckingDateAtLookup: {
   [key in EExpiresCheckingDateAt]: string | null;
 } = {
-  [EExpiresCheckingDateAt.NextMonth]: 'Ближайший месяц',
+  [EExpiresCheckingDateAt.NextMonth]: 'В ближайший месяц',
   [EExpiresCheckingDateAt.NextTwoMonth]: 'В следующие два месяца',
   [EExpiresCheckingDateAt.Past]: 'Истекла',
 };

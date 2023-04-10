@@ -1,1 +1,1 @@
-export { CloseHousingMeteringDeviceModal } from './CloseHousingMeteringDeviceModal'
+export { CloseHousingMeteringDeviceModal } from './CloseHousingMeteringDeviceModal';
