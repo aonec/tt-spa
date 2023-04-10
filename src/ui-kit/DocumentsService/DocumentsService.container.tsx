@@ -1,4 +1,4 @@
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
+import { DragAndDrop } from 'ui-kit/DragAndDrop';
 import React, { FC } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
 import {
@@ -46,7 +46,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
         <DragAndDrop
           disabled={isLoading}
           accept={accept}
-          fileHandler={(files) => handleFile(files[0], type)}
+          fileHandler={(files: FileList) => handleFile(files[0], type)}
           uniqId={uniqId}
           text={label}
           style={{
