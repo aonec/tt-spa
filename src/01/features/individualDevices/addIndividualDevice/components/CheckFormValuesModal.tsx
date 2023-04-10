@@ -17,7 +17,7 @@ import {
   createIndividualDeviceFx,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Button } from 'ui-kit/Button';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
