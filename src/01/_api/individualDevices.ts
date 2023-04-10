@@ -1,6 +1,5 @@
 import axios from '01/axios';
 import { CheckIndividualDevicePayload } from '01/features/individualDevices/switchIndividualDevice/switchIndividualDevice.types';
-import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import {
   CreateIndividualDeviceRequest,
   SwitchIndividualDeviceRequest,
@@ -24,15 +23,6 @@ export const closeIndividualDevice = (props: {
   return axios.post(`IndividualDevices/${deviceId}/close`, requestBody);
 };
 
-interface WithMagnetSeal {
-  magnetSeal: MagnetSeal;
-}
-
-export interface CreateCreateIndividualDeviceWithMagnetSealRequest
-  extends WithMagnetSeal {
-  device: CreateIndividualDeviceRequest;
-}
-
 export const createIndividualDevice = async (
   payload: CreateIndividualDeviceRequest,
 ): Promise<MeteringDeviceResponse> => {
@@ -43,10 +33,6 @@ export const createIndividualDevice = async (
 
   return res;
 };
-
-export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
-  device: SwitchIndividualDeviceRequest;
-}
 
 export const switchIndividualDevice = async (request: {
   deviceId: number;
