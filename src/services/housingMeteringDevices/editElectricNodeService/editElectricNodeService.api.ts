@@ -3,7 +3,7 @@ import { ElectricHousingMeteringDeviceResponse } from 'myApi';
 import { EditElectricNodePayload } from './editElectricNodeService.types';
 
 export const fetchElectricNode = (
-  nodeId: number
+  nodeId: number,
 ): Promise<ElectricHousingMeteringDeviceResponse> =>
   axios.get(`ElectricHousingMeteringDevices/${nodeId}`);
 

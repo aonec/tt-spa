@@ -24,6 +24,7 @@ import {
 import { createApartmentActFx } from '../../models';
 import { gridTemp } from '../TableHeader';
 import { AddNewActFormProps, AddNewActFormT } from './AddNewActForm.types';
+import { ButtonSC } from './AddNewActForm.styled';
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -163,14 +164,9 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           Сбросить
         </Button>
         <Space />
-        <Button
-          style={{ padding: '5px 40px' }}
-          size="small"
-          onClick={submitForm}
-          isLoading={pendingRequest}
-        >
+        <ButtonSC size="small" onClick={submitForm} isLoading={pendingRequest}>
           Сохранить
-        </Button>
+        </ButtonSC>
       </ButtonWrap>
       <SpaceLine />
     </>

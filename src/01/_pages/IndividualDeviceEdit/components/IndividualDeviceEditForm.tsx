@@ -30,7 +30,11 @@ import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBloc
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { SwitchWrapper, TextWrapper } from './IndividualDeviceEditForm.styled';
+import {
+  ButtonSC,
+  SwitchWrapper,
+  TextWrapper,
+} from './IndividualDeviceEditForm.styled';
 import { Button } from 'ui-kit/Button';
 
 interface FormEditODPUInterface {
@@ -354,8 +358,7 @@ const IndividualDeviceEditForm = ({
             Сохранить
           </Button>
 
-          <Button
-            style={{ marginLeft: 16 }}
+          <ButtonSC
             type="ghost"
             onClick={(e) => {
               e.stopPropagation();
@@ -365,7 +368,7 @@ const IndividualDeviceEditForm = ({
             }}
           >
             Отмена
-          </Button>
+          </ButtonSC>
         </StyledFooter>
       </form>
     </>

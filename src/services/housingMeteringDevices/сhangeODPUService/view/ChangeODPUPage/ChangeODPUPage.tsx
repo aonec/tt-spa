@@ -1,5 +1,10 @@
 import React, { FC } from 'react';
-import { AddressWrapper, InforWrapper, TitleWrapper, Wrapper } from './ChangeODPUPage.styled';
+import {
+  AddressWrapper,
+  InforWrapper,
+  TitleWrapper,
+  Wrapper,
+} from './ChangeODPUPage.styled';
 import { ChangeODPUPageProps } from './ChangeODPUPage.types';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { GoBack } from 'ui-kit/shared_components/GoBack';

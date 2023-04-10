@@ -1,3 +1,1 @@
-export const NodeCommercialStatusText = {
-    
-}
+export const NodeCommercialStatusText = {};

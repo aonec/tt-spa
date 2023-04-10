@@ -1,1 +1,1 @@
-export { ConnectionSettings } from './ConnectionSettings'
+export { ConnectionSettings } from './ConnectionSettings';

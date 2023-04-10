@@ -5,7 +5,9 @@ import { CheckHousingMeteringDeviceForm } from './CheckHousingMeteringDeviceForm
 
 const formId = 'check-housing-metering-device-modal';
 
-export const CheckHousingMeteringDeviceModal: FC<CheckHousingMeteringDeviceModalProps> = ({
+export const CheckHousingMeteringDeviceModal: FC<
+  CheckHousingMeteringDeviceModalProps
+> = ({
   isModalOpen,
   handleModalClose,
   housingMeteringDevice,
