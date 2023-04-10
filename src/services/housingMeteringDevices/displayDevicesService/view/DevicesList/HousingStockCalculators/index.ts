@@ -1,1 +1,1 @@
-export { HousingStockCalculators } from './HousingStockCalculators'
+export { HousingStockCalculators } from './HousingStockCalculators';

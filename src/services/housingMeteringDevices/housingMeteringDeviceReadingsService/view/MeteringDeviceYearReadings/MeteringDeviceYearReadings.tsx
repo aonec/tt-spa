@@ -5,7 +5,14 @@ import { MeteringDeviceYearReadingsProps } from './MeteringDeviceYearReadings.ty
 
 export const MeteringDeviceYearReadings: FC<
   MeteringDeviceYearReadingsProps
-> = ({ yearRreadings, year, isColdWater, createReading, allReadings }) => {
+> = ({
+  yearRreadings,
+  year,
+  isColdWater,
+  createReading,
+  allReadings,
+  createReadingFailed,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const list = useMemo(
@@ -19,10 +26,17 @@ export const MeteringDeviceYearReadings: FC<
             month={month}
             key={month}
             createReading={(reading) => createReading({ month, ...reading })}
+            createReadingFailed={createReadingFailed}
           />
         );
       }),
-    [yearRreadings, allReadings, isColdWater, createReading],
+    [
+      yearRreadings,
+      allReadings,
+      isColdWater,
+      createReading,
+      createReadingFailed,
+    ],
   );
 
   return (

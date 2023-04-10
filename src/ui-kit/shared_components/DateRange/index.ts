@@ -1,1 +1,1 @@
-export { DateRange } from './DateRange'
+export { DateRange } from './DateRange';
