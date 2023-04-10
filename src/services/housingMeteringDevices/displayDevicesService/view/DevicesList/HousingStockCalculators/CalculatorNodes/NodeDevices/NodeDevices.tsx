@@ -4,6 +4,7 @@ import {
   CommercialAct,
   Diameter,
   MeteringDeviceWrapper,
+  NodeDevicesWrapper,
   ResourceIconWrapper,
   ServiceZone,
   TitleWrapper,
@@ -13,18 +14,16 @@ import { DateRange } from 'ui-kit/shared_components/DateRange';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
-  const housingDevices = node.communicationPipes?.map((pipe) => {
+  const housingMeteringDevices = node.communicationPipes?.map((pipe) => {
     const devices = pipe.devices?.map((housingDevice) => {
       return (
         <MeteringDeviceWrapper key={housingDevice.id}>
-          <div>
-            <TitleWrapper>
-              <DeviceLink to={`/housingMeteringDevices/${housingDevice.id}`}>
-                {`${housingDevice.model} `}
-                <SerialNumber>({housingDevice.serialNumber})</SerialNumber>
-              </DeviceLink>
-            </TitleWrapper>
-          </div>
+          <TitleWrapper>
+            <DeviceLink to={`/housingMeteringDevices/${housingDevice.id}`}>
+              {`${housingDevice.model} `}
+              <SerialNumber>({housingDevice.serialNumber})</SerialNumber>
+            </DeviceLink>
+          </TitleWrapper>
 
           <DateRange
             firstDate={housingDevice.lastCheckingDate}
@@ -41,19 +40,17 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
   });
 
   return (
-    <div>
-      <div style={{ marginBottom: 24 }}>
-        <div>
-          <TitleWrapper>
-            <DeviceLink to={`/nodes/${node.id}`}>
-              <ResourceIconWrapper>
-                <ResourceIconLookup resource={node.resource} />
-              </ResourceIconWrapper>
-              <span>{`Узел ${node.number}`}</span>
-            </DeviceLink>
-            <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>
-          </TitleWrapper>
-        </div>
+    <>
+      <NodeDevicesWrapper>
+        <TitleWrapper>
+          <DeviceLink to={`/nodes/${node.id}`}>
+            <ResourceIconWrapper>
+              <ResourceIconLookup resource={node.resource} />
+            </ResourceIconWrapper>
+            <span>{`Узел ${node.number}`}</span>
+          </DeviceLink>
+          <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>
+        </TitleWrapper>
 
         <CommercialAct>
           <span>Акт-допуска </span>
@@ -62,9 +59,9 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
             lastDate={node.futureCommercialAccountingDate}
           />
         </CommercialAct>
-      </div>
+      </NodeDevicesWrapper>
 
-      {housingDevices}
-    </div>
+      {housingMeteringDevices}
+    </>
   );
 };

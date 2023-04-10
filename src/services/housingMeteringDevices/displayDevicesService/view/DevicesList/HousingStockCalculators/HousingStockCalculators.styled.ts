@@ -15,3 +15,9 @@ export const HousingStockAddress = styled(Link)`
   margin: 0;
   opacity: 0.9;
 `;
+
+export const CalculatorNodesListWrapper = styled.div`
+  border-top: 1px solid var(--frame);
+  padding-top: 24px;
+  margin-top: 7px;
+`;

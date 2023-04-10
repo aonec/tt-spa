@@ -3,6 +3,7 @@ import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { HouseAddress } from 'myApi';
 import { DevicesSearchType } from 'services/housingMeteringDevices/devicesPageService/devicesPageService.types';
 import {
+  CalculatorNodesListWrapper,
   HousingStockAddress,
   HousingStockAddressHeaderWrapper,
 } from './HousingStockCalculators.styled';
@@ -61,15 +62,9 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
       ) : (
         'У данного прибора не указан адрес'
       )}
-      <div
-        style={{
-          borderTop: '1px solid var(--frame)',
-          paddingTop: 24,
-          marginTop: 7,
-        }}
-      >
+      <CalculatorNodesListWrapper>
         {calculatorNodesList}
-      </div>
+      </CalculatorNodesListWrapper>
     </>
   );
 };

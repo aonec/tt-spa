@@ -36,3 +36,7 @@ export const ResourceIconWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const NodeDevicesWrapper = styled.div`
+  margin-bottom: 24px;
+`;
