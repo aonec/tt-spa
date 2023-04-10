@@ -53,12 +53,11 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
             value={fields.calculatorId.value || undefined}
             onChange={fields.calculatorId.onChange as any}
           >
-            {calculators &&
-              calculators?.map((calculator) => (
-                <StyledSelect.Option key={calculator.id} value={calculator.id}>
-                  {calculator.serialNumber} ({calculator.model})
-                </StyledSelect.Option>
-              ))}
+            {calculators?.map((calculator) => (
+              <StyledSelect.Option key={calculator.id} value={calculator.id}>
+                {calculator.serialNumber} ({calculator.model})
+              </StyledSelect.Option>
+            ))}
           </StyledSelect>
           <ErrorMessage>
             {fields.calculatorId.errorText({
