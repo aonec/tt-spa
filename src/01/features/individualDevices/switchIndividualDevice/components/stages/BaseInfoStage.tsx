@@ -3,7 +3,6 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
@@ -45,6 +44,7 @@ import {
 } from '../../models/init';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 const {
   outputs,
@@ -282,7 +282,7 @@ export const BaseInfoStage = () => {
       </FormItem>
 
       <FormItem label="Серийный номер">
-        <InputTT
+        <Input
           data-reading-input={getDataAttr(isSwitch)}
           disabled={!isSwitch}
           type="text"
@@ -329,14 +329,14 @@ export const BaseInfoStage = () => {
 
       <Flex>
         <FormItem label="Разрядность">
-          <InputTT
+          <Input
             data-reading-input={getDataAttr(isSwitch)}
             disabled={!isSwitch}
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
             onChange={onChange}
-            value={fields.bitDepth.value}
+            value={fields.bitDepth.value || undefined}
             onKeyDown={enterKeyDownHandler(2, isSwitch)}
           />
           <ErrorMessage>
@@ -347,14 +347,14 @@ export const BaseInfoStage = () => {
         </FormItem>
         <Space />
         <FormItem label="Множитель">
-          <InputTT
+          <Input
             data-reading-input={getDataAttr(isSwitch)}
             disabled={!isSwitch}
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
             onChange={onChange}
-            value={fields.scaleFactor.value}
+            value={fields.scaleFactor.value || undefined}
             onKeyDown={enterKeyDownHandler(3, isSwitch)}
           />
           <ErrorMessage>
@@ -403,12 +403,12 @@ export const BaseInfoStage = () => {
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
-            <InputTT
+            <Input
               data-reading-input={getDataAttr(!isCheck)}
               onKeyDown={enterKeyDownHandler(isReopen ? 0 : 9, !isCheck)}
               disabled={isCheck}
               placeholder="Номер пломбы"
-              value={fields.sealNumber.value}
+              value={fields.sealNumber.value || undefined}
               onChange={onChange}
               name="sealNumber"
             />

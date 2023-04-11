@@ -3,7 +3,6 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
@@ -34,6 +33,7 @@ import {
 import { Loader } from '01/components';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 const {
   outputs,
@@ -123,11 +123,11 @@ export const BaseInfoStage = () => {
       <FormItem
         label={`Текущие показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
       >
-        <InputTT
+        <Input
           type="number"
           placeholder="Введите текущие показания"
           onChange={onChangeDefaultReadings(1)}
-          value={fields.defaultReadings.value.value1}
+          value={fields.defaultReadings.value.value1 || undefined}
         />
         <ErrorMessage>
           {fields.defaultReadings.errorText({
@@ -138,11 +138,11 @@ export const BaseInfoStage = () => {
 
       {rateNum >= 2 && (
         <FormItem label="Первичные текущие прибора (Ночь)">
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите текущие показания"
             onChange={onChangeDefaultReadings(2)}
-            value={fields.defaultReadings.value.value2}
+            value={fields.defaultReadings.value.value2 || undefined}
           />
           <ErrorMessage>
             {fields.defaultReadings.errorText({
@@ -153,11 +153,11 @@ export const BaseInfoStage = () => {
       )}
       {rateNum >= 3 && (
         <FormItem>
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите текущие показания"
             onChange={onChangeDefaultReadings(3)}
-            value={fields.defaultReadings.value.value3}
+            value={fields.defaultReadings.value.value3 || undefined}
           />
           <ErrorMessage>
             {fields.defaultReadings.errorText({
@@ -241,7 +241,7 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Серийный номер">
-          <InputTT
+          <Input
             type="text"
             placeholder="Введите серийный номер прибора"
             onChange={onChange}
@@ -283,12 +283,12 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Разрядность">
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
             onChange={onChange}
-            value={fields.bitDepth.value}
+            value={fields.bitDepth.value || undefined}
           />
           <ErrorMessage>
             {fields.bitDepth.errorText({
@@ -298,12 +298,12 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Множитель">
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
             onChange={onChange}
-            value={fields.scaleFactor.value}
+            value={fields.scaleFactor.value || undefined}
           />
           <ErrorMessage>
             {fields.scaleFactor.errorText({
@@ -335,11 +335,11 @@ export const BaseInfoStage = () => {
         <FormItem
           label={`Первичные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
         >
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите первичные показания"
             onChange={onChangeStartupReadings(1)}
-            value={fields.startupReadings.value.value1}
+            value={fields.startupReadings.value.value1 || undefined}
           />
           <ErrorMessage>
             {fields.startupReadings.errorText({
@@ -350,11 +350,11 @@ export const BaseInfoStage = () => {
 
         {rateNum >= 2 && (
           <FormItem label="Первичные показания прибора (Ночь)">
-            <InputTT
+            <Input
               type="number"
               placeholder="Введите первичные показания"
               onChange={onChangeStartupReadings(2)}
-              value={fields.startupReadings.value.value2}
+              value={fields.startupReadings.value.value2 || undefined}
             />
             <ErrorMessage>
               {fields.startupReadings.errorText({
@@ -365,11 +365,11 @@ export const BaseInfoStage = () => {
         )}
         {rateNum >= 3 && (
           <FormItem>
-            <InputTT
+            <Input
               type="number"
               placeholder="Введите первичные показания"
               onChange={onChangeStartupReadings(3)}
-              value={fields.startupReadings.value.value3}
+              value={fields.startupReadings.value.value3 || undefined}
             />
             <ErrorMessage>
               {fields.startupReadings.errorText({
@@ -408,9 +408,9 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Пломба">
-          <InputTT
+          <Input
             placeholder="Номер пломбы"
-            value={fields.magneticSealTypeName.value}
+            value={fields.magneticSealTypeName.value || undefined}
             onChange={onChange}
             name="magneticSealTypeName"
           />

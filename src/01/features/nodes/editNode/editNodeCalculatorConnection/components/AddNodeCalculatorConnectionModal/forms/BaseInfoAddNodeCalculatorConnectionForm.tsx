@@ -3,10 +3,10 @@ import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
 import { DatePickerNative } from '../../../../../../../shared/ui/DatePickerNative';
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
-import InputTT from '../../../../../../../tt-components/InputTT';
 import { SelectItem } from '../../../../../../../tt-components/localBases';
 import { createCalcuatorService } from '../CreateCalculatorModal/models';
 import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 interface Props {
   calculatorTypes: SelectItem[];
@@ -21,8 +21,8 @@ export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
     <div>
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Серийный номер">
-          <InputTT
-            value={fields.serialNumber.value}
+          <Input
+            value={fields.serialNumber.value || undefined}
             onChange={(e: any) =>
               fields.serialNumber.onChange(e.target.value) as any
             }

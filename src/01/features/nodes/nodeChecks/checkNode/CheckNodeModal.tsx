@@ -11,7 +11,7 @@ import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { InputTT } from '01/tt-components';
+import { Input } from 'ui-kit/Input';
 
 interface Props {
   visible: boolean;
@@ -84,7 +84,7 @@ export const CheckNodeModal: FC<Props> = ({
             </ErrorMessage>
           </Form.Item>
           <Form.Item label="Номер документа">
-            <InputTT
+            <Input
               value={fields.registryNumber.value}
               onChange={(e: SyntheticEvent<HTMLInputElement>) =>
                 fields.registryNumber.onChange(e.currentTarget.value)
