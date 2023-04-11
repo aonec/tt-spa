@@ -88,11 +88,13 @@ export const LoginPage: FC<LoginPageProps> = ({
             <ErrorMessage>{errors.password}</ErrorMessage>
           </div>
 
-          <Loader show={isLoading} size={48}>
-            <ButtonLogin disabled={isLoading} onClick={() => handleSubmit()}>
-              Вход в систему
-            </ButtonLogin>
-          </Loader>
+          <ButtonLogin
+            floating
+            isLoading={isLoading}
+            onClick={() => handleSubmit()}
+          >
+            Вход в систему
+          </ButtonLogin>
         </Form>
         {isDevMode && (
           <>
