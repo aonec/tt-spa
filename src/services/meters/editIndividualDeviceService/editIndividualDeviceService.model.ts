@@ -76,7 +76,7 @@ updateDeviceFail.watch((error) => {
 });
 
 export const editIndividualDeviceService = {
-  inputs: { handleChangeTab },
+  inputs: { handleChangeTab, handleUpdateDevice },
   outputs: { $currentTab, $individualDevice, $isDeviceLoading },
   gates: { FetchIndividualDeviceGate },
 };

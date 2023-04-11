@@ -25,6 +25,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   handleChangeTab,
   individualDevice,
   isDeviceLoading,
+  handleUpdateDevice,
 }) => {
   const address = individualDevice?.address;
 
@@ -74,8 +75,8 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
             individualDevice && (
               <MainInfo
                 individualDevice={individualDevice}
+                handleUpdateDevice={handleUpdateDevice}
                 // onCancel={onCancel}
-                // onSubmit={handleSubmit}
               />
             )}
           {currentTab === EditIndividualDeviceTabs.Documents && <Documents />}

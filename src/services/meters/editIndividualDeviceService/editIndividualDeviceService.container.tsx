@@ -11,6 +11,7 @@ export const EditIndividualDeviceContainer = () => {
   const { deviceId } = useParams<{ deviceId: string }>();
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
+  const handleUpdateDevice = useEvent(inputs.handleUpdateDevice);
 
   const currentTab = useStore(outputs.$currentTab);
   const individualDevice = useStore(outputs.$individualDevice);
@@ -25,6 +26,7 @@ export const EditIndividualDeviceContainer = () => {
         currentTab={currentTab}
         individualDevice={individualDevice}
         isDeviceLoading={isDeviceLoading}
+        handleUpdateDevice={handleUpdateDevice}
       />
     </>
   );
