@@ -1,4 +1,3 @@
-import { setDataToStore } from '01/features/graph/graphView/models';
 import { createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
@@ -73,11 +72,6 @@ sample({
   clock: NodeInfoGate.open,
   fn: (filter, nodeInfo) => ({ ...nodeInfo, ...filter }),
   target: [getArchiveDataFx, getTaskStatisticsFx],
-});
-
-forward({
-  from: getArchiveDataFx.doneData,
-  to: setDataToStore,
 });
 
 forward({

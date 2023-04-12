@@ -1,5 +1,5 @@
-import { ReportType } from '01/_pages/Graph/components/GraphView/GraphView.types';
 import { ArchivesDataGroup } from 'myApi';
+import { ReportType } from '../StatisticsGraph/StatisticsGraph.types';
 
 export type NodeStatisticsTableProps = {
   graphType: string;

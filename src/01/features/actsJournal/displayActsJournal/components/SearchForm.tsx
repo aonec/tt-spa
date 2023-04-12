@@ -15,7 +15,7 @@ import {
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { clearFilters, searchForm } from '../models';
-import { ButtonTT } from '01/tt-components';
+import { Button } from 'ui-kit/Button';
 
 export const SearchForm = () => {
   const { fields, submit } = useForm(searchForm);
@@ -108,9 +108,9 @@ export const SearchForm = () => {
             keyDownEnterGuardedHandler(3)(e);
           }}
         />
-        <ButtonTT color="white" small onClick={clearFilters}>
+        <Button type="ghost" size="small" onClick={() => clearFilters()}>
           Очистить
-        </ButtonTT>
+        </Button>
       </Grid>
     </>
   );

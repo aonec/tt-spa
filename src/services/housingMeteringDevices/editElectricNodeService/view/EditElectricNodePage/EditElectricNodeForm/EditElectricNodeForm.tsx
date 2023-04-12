@@ -1,8 +1,8 @@
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { ButtonTT } from '01/tt-components';
 import { useFormik } from 'formik';
 import { EResourceType } from 'myApi';
 import React, { FC } from 'react';
+import { Button } from 'ui-kit/Button';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
@@ -191,9 +191,9 @@ export const EditElectricNodeForm: FC<EditElectricNodeFormProps> = ({
         </div>
       </AddressInfowrapper>
       <ButtonsWrapper>
-        <ButtonTT color="blue" type="submit" disabled={isLoading}>
+        <Button isLoading={isLoading} onClick={() => submitForm()}>
           {isLoading ? 'Загрузка...' : 'Сохранить'}
-        </ButtonTT>
+        </Button>
       </ButtonsWrapper>
     </FormSC>
   );

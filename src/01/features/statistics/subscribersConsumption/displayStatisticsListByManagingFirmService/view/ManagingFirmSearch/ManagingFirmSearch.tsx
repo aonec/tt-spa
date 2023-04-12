@@ -2,7 +2,6 @@ import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
-import { SubscribersConsumptionExtendedSearch } from '../../../components/SubscribersConsumptionExtendedSearch';
 import {
   SearchFieldsWrapper,
   SelectCitySC,
@@ -13,6 +12,7 @@ import {
   ManagingFirmSearchProps,
   SubscriberStatisticsFormik,
 } from './ManagingFirmSearch.types';
+import { SubscribersConsumptionExtendedSearch } from '../../../components/SubscribersConsumptionExtendedSearch';
 
 export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   cities,
@@ -38,13 +38,15 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
         ColdWaterSupply: filter?.ColdWaterSupply || false,
         Electricity: filter?.Electricity || false,
         HotWaterSupply: filter?.HotWaterSupply || false,
-        ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
-        ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
-        ElectricitySupplyConsumptionFrom:
-          filter?.ElectricitySupplyConsumptionFrom,
-        ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
-        HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
-        HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+        Heat: filter?.Heat,
+        'ColdWaterSupplyFilter.From': filter?.['ColdWaterSupplyFilter.From'],
+        'ColdWaterSupplyFilter.To': filter?.['ColdWaterSupplyFilter.To'],
+        'ElectricityFilter.From': filter?.['ElectricityFilter.From'],
+        'ElectricityFilter.To': filter?.['ElectricityFilter.To'],
+        'HotWaterSupplyFilter.From': filter?.['HotWaterSupplyFilter.From'],
+        'HotWaterSupplyFilter.To': filter?.['HotWaterSupplyFilter.To'],
+        'HeatFilter.From': filter?.['HeatFilter.From'],
+        'HeatFilter.To': filter?.['ElectricityFilter.To'],
         DateLastCheckFrom: filter?.DateLastCheckFrom,
         DateLastCheckTo: filter?.DateLastCheckTo,
         ExcludeApartments: isExcluded,

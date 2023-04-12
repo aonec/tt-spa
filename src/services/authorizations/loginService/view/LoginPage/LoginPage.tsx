@@ -16,11 +16,12 @@ import {
 import { ReactComponent as Emblem } from './assets/emblem.svg';
 import { ReactComponent as LoginPageBackground } from './assets/loginPageBackground.svg';
 import { Input } from 'ui-kit/Input';
-import { Loader } from '01/components';
 import { DevSettingsModal } from '01/features/developmentSettings';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 
 export const LoginPage: FC<LoginPageProps> = ({
   isDevMode,
@@ -47,6 +48,8 @@ export const LoginPage: FC<LoginPageProps> = ({
     },
   });
 
+  const next = useSwitchInputOnEnter('login', true);
+
   return (
     <PageWrapper>
       <LeftBlockWrapper>
@@ -70,6 +73,8 @@ export const LoginPage: FC<LoginPageProps> = ({
               onChange={(e) => {
                 setFieldValue('email', e.target.value);
               }}
+              onKeyDown={fromEnter(() => next(0))}
+              data-reading-input="login"
             />
             <ErrorMessage>{errors.email}</ErrorMessage>
           </div>
@@ -84,15 +89,19 @@ export const LoginPage: FC<LoginPageProps> = ({
               onChange={(event) => {
                 setFieldValue('password', event.target.value);
               }}
+              onKeyDown={fromEnter(handleSubmit)}
+              data-reading-input="login"
             />
             <ErrorMessage>{errors.password}</ErrorMessage>
           </div>
 
-          <Loader show={isLoading} size={48}>
-            <ButtonLogin disabled={isLoading} onClick={() => handleSubmit()}>
-              Вход в систему
-            </ButtonLogin>
-          </Loader>
+          <ButtonLogin
+            floating
+            isLoading={isLoading}
+            onClick={() => handleSubmit()}
+          >
+            Вход в систему
+          </ButtonLogin>
         </Form>
         {isDevMode && (
           <>

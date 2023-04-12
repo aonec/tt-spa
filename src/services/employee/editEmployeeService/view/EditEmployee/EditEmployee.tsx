@@ -133,7 +133,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value)
+                phoneMask.unmaskedValue(value.target.value),
               )
             }
           />
@@ -171,11 +171,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         </FormItem>
 
         <Footer>
-          <Button
-            type="default"
-            onClick={() => handleSubmit()}
-            disabled={isPending}
-          >
+          <Button onClick={() => handleSubmit()} disabled={isPending}>
             {isPending ? <Loader show /> : 'Сохранить'}
           </Button>
           <Button type="ghost" onClick={onCancel}>
