@@ -12,6 +12,7 @@ import {
 } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const domain = createDomain('editIndividualDeviceService');
 
@@ -19,7 +20,10 @@ const FetchIndividualDeviceGate = createGate<{ deviceId: number }>();
 
 const handleChangeTab = domain.createEvent<EditIndividualDeviceTabs>();
 
-const handleUpdateDevice = domain.createEvent<UpdateIndividualDeviceRequest>();
+const handleUpdateDevice = domain.createEvent<{
+  deviceId: number;
+  payload: UpdateIndividualDeviceRequest;
+}>();
 
 const getDeviceFx = domain.createEffect<number, IndividualDeviceResponse>(
   getIndividualDevice,
@@ -49,10 +53,6 @@ sample({
 
 sample({
   clock: handleUpdateDevice,
-  source: FetchIndividualDeviceGate.state,
-  fn: (gateState, formState) => {
-    return { deviceId: gateState.deviceId, payload: formState };
-  },
   target: putDeviceFx,
 });
 
@@ -77,6 +77,11 @@ updateDeviceFail.watch((error) => {
 
 export const editIndividualDeviceService = {
   inputs: { handleChangeTab, handleUpdateDevice },
-  outputs: { $currentTab, $individualDevice, $isDeviceLoading },
+  outputs: {
+    $currentTab,
+    $individualDevice,
+    $isDeviceLoading,
+    $mountPlaces: $individualDeviceMountPlaces,
+  },
   gates: { FetchIndividualDeviceGate },
 };

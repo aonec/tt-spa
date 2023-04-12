@@ -29,6 +29,8 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   individualDevice,
   isDeviceLoading,
   handleUpdateDevice,
+  mountPlaces,
+  onCancel,
 }) => {
   const address = individualDevice?.address;
 
@@ -89,7 +91,8 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
               <MainInfo
                 individualDevice={individualDevice}
                 handleUpdateDevice={handleUpdateDevice}
-                // onCancel={onCancel}
+                mountPlaces={mountPlaces}
+                onCancel={onCancel}
               />
             )}
           {currentTab === EditIndividualDeviceTabs.Documents && <Documents />}

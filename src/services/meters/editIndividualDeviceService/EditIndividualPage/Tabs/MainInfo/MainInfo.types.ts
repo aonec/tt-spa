@@ -1,6 +1,15 @@
-import { IndividualDeviceResponse, UpdateIndividualDeviceRequest } from 'myApi';
+import {
+  IndividualDeviceMountPlaceListResponse,
+  IndividualDeviceResponse,
+  UpdateIndividualDeviceRequest,
+} from 'myApi';
 
 export type MainInfoProps = {
   individualDevice: IndividualDeviceResponse;
-  handleUpdateDevice: (payload: UpdateIndividualDeviceRequest) => void;
+  handleUpdateDevice: (payload: {
+    deviceId: number;
+    payload: UpdateIndividualDeviceRequest;
+  }) => void;
+  mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
+  onCancel: () => void;
 };

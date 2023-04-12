@@ -2,13 +2,16 @@ import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { editIndividualDeviceService } from './editIndividualDeviceService.model';
 import { EditIndividualPage } from './EditIndividualPage';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { IndividualDeviceMountPlacesGate } from '../../../01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const { inputs, outputs, gates } = editIndividualDeviceService;
 const { FetchIndividualDeviceGate } = gates;
 
 export const EditIndividualDeviceContainer = () => {
   const { deviceId } = useParams<{ deviceId: string }>();
+  const history = useHistory();
+  const onCancel = () => history.goBack();
 
   const handleChangeTab = useEvent(inputs.handleChangeTab);
   const handleUpdateDevice = useEvent(inputs.handleUpdateDevice);
@@ -16,10 +19,16 @@ export const EditIndividualDeviceContainer = () => {
   const currentTab = useStore(outputs.$currentTab);
   const individualDevice = useStore(outputs.$individualDevice);
   const isDeviceLoading = useStore(outputs.$isDeviceLoading);
+  const mountPlaces = useStore(outputs.$mountPlaces);
 
   return (
     <>
       <FetchIndividualDeviceGate deviceId={Number(deviceId)} />
+      {individualDevice?.address?.apartmentId && (
+        <IndividualDeviceMountPlacesGate
+          apartmentId={individualDevice?.address?.apartmentId}
+        />
+      )}
 
       <EditIndividualPage
         handleChangeTab={handleChangeTab}
@@ -27,6 +36,8 @@ export const EditIndividualDeviceContainer = () => {
         individualDevice={individualDevice}
         isDeviceLoading={isDeviceLoading}
         handleUpdateDevice={handleUpdateDevice}
+        mountPlaces={mountPlaces}
+        onCancel={onCancel}
       />
     </>
   );
