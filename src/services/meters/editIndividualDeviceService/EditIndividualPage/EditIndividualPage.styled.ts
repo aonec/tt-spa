@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
@@ -8,7 +9,7 @@ export const LoaderWrapper = styled.div`
 
 export const PageTitle = styled.div`
   margin-top: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
 `;
 
 export const DeviceTitle = styled.div`
@@ -24,8 +25,21 @@ export const DeviceModel = styled.div`
 `;
 
 export const DeviceNumber = styled.div`
-  color: rgba(39, 47, 90, 0.7);
-  font-weight: 300;
+  color: rgba(39, 47, 90, 0.8);
+  font-weight: 00;
   font-size: 32px;
   line-height: 48px;
+  margin-left: 8px;
+`;
+
+export const SubTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+`;
+
+export const Address = styled(Link)`
+  font-weight: 500;
+  color: #272f5a;
+  opacity: 0.9;
 `;

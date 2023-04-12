@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Wrapper } from './MainInfo.styled';
+import { ResourceTypeWrapper, Wrapper } from './MainInfo.styled';
 import { MainInfoProps } from './MainInfo.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { UpdateIndividualDeviceRequest } from 'myApi';
 import moment from 'moment';
+import { ResourceNamesDictionary } from 'dictionaries';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 export const MainInfo: FC<MainInfoProps> = ({
   individualDevice,
@@ -77,7 +79,14 @@ export const MainInfo: FC<MainInfoProps> = ({
   return (
     <Wrapper>
       <FormItem label="Тип ресурса">
-        <Select value={values.resource} disabled />
+        <Select value={values.resource} disabled>
+          <Select.Option key={values.resource} value={values.resource}>
+            <ResourceTypeWrapper>
+              <ResourceIconLookup resource={values.resource} />
+              {ResourceNamesDictionary[values.resource]}
+            </ResourceTypeWrapper>
+          </Select.Option>
+        </Select>
       </FormItem>
     </Wrapper>
   );

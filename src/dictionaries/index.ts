@@ -80,3 +80,10 @@ export const NodeRegistrationTypeLookup: {
   [ENodeRegistrationType.Commercial]: 'Коммерческий',
   [ENodeRegistrationType.Technical]: 'Технический',
 };
+
+export const ResourceNamesDictionary: { [key in EResourceType]: string } = {
+  [EResourceType.ColdWaterSupply]: 'Холодное водоснабжение',
+  [EResourceType.HotWaterSupply]: 'Горячее водоснабжение',
+  [EResourceType.Electricity]: 'Электроснабжение',
+  [EResourceType.Heat]: 'Теплоснабжение',
+};

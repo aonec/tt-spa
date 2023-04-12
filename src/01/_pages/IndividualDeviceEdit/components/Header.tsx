@@ -46,7 +46,7 @@ export const Header = ({ device }: HeaderInterface) => {
             </Flex>
           </Title>
           <WrapperFlex>
-            <Subtitle to={`/apartments/${apartmentId}`}>
+            <Subtitle to={`/apartments/${apartmentId}`} >
               {getApartmentFromFullAddress(address, true)}
             </Subtitle>
             <IsActive closingDate={closingDate} />
