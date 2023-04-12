@@ -19,7 +19,7 @@ import {
 } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import {
   EIndividualDeviceRateType,
   EResourceType,

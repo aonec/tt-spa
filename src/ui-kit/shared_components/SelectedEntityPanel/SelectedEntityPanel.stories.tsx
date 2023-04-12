@@ -5,6 +5,7 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import {
   CalculatorModel,
   CalculatorSerialNumber,
+  Wrapper,
 } from './SelectedEntityPanel.styled.stories';
 
 export default {
@@ -14,9 +15,11 @@ export default {
 } as ComponentMeta<typeof SelectedEntityPanel>;
 
 export const Overview = () => (
-  <SelectedEntityPanel>
-    <CalculatorIcon />
-    <CalculatorSerialNumber>72371</CalculatorSerialNumber>
-    <CalculatorModel>( ВКТ-7 )</CalculatorModel>
-  </SelectedEntityPanel>
+  <Wrapper>
+    <SelectedEntityPanel onRemove={() => {}} onEdit={() => {}}>
+      <CalculatorIcon />
+      <CalculatorSerialNumber>72371</CalculatorSerialNumber>
+      <CalculatorModel>( ВКТ-7 )</CalculatorModel>
+    </SelectedEntityPanel>
+  </Wrapper>
 );

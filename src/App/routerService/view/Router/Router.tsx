@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { Login, Registration } from '01/_pages';
+import { Registration } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -49,6 +49,7 @@ import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndi
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
+import { LoginContainer } from 'services/authorizations/loginService';
 
 const { gates } = objectProfileService;
 
@@ -99,7 +100,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   return (
     <Wrapper>
       <Switch>
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={LoginContainer} />
         <Route path="/logout" render={() => 'logout'} />
         <Route path="/registration*" render={() => <Registration />} />
         <Route path="/">
@@ -126,9 +127,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/objects/create"
-                      to="/access-denied/"
+                    <Route
+                      path="/objects/create"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -140,9 +141,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/objects/:housingStockId/addNode"
-                      to="/access-denied/"
+                    <Route
+                      path="/objects/:housingStockId/addNode"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -162,9 +163,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/apartments/:apartmentId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/apartments/:apartmentId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -195,9 +196,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/devices/addNode"
-                      to="/access-denied/"
+                    <Route
+                      path="/devices/addNode"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -217,9 +218,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/changeODPU/:oldDeviceId"
-                      to="/access-denied/"
+                    <Route
+                      path="/changeODPU/:oldDeviceId"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -233,10 +234,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       component={EditElectricNodeContainer}
                     />
                   ) : (
-                    <Redirect
-                      from="/electricNode/:deviceId/edit"
-                      to="/access-denied/"
-                      exact
+                    <Route
+                      path="/electricNode/:deviceId/edit"
+                      component={AccessDeniedPage}
                     />
                   )}
 
@@ -285,9 +285,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/calculators/:deviceId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/calculators/:deviceId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -299,9 +299,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/nodes/:nodeId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/nodes/:nodeId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -332,9 +332,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/housingMeteringDevices/:deviceId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/housingMeteringDevices/:deviceId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -349,9 +349,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/individualDevices/:deviceId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/individualDevices/:deviceId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}

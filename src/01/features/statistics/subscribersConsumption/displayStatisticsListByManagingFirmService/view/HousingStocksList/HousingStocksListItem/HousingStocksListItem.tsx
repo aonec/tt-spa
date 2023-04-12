@@ -2,7 +2,6 @@ import Arrow from '01/_components/Arrow/Arrow';
 import { Skeleton, Tooltip } from 'antd';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
-import { SubscribersStaticsByManagingFirm } from '../SubscribersStatisticsByManagingFirm';
 import {
   AddressWrapper,
   AppartmentNumberText,
@@ -13,6 +12,7 @@ import {
   Wrapper,
 } from './HousingStocksListItem.styled';
 import { HousingStocksListItemProps } from './HousingStocksListItem.types';
+import { StatisticsList } from '01/features/statistics/subscribersConsumption/components/StatisticsList';
 
 export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   housingStock,
@@ -44,11 +44,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
       return <Skeleton active />;
     }
     if (!statisticIsLoading) {
-      return (
-        <SubscribersStaticsByManagingFirm
-          apartmentsStatistic={apartmentsStatistic}
-        />
-      );
+      return <StatisticsList statistics={apartmentsStatistic} />;
     }
   }, [
     apartmentsStatistic,
