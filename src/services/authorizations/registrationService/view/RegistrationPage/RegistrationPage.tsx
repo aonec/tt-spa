@@ -102,7 +102,11 @@ export const RegistrationPage: FC<RegistrationPageProps> = ({
           </div>
 
           <Loader show={isLoading} size={48}>
-            <ButtonLogin disabled={isLoading} onClick={() => handleSubmit()}>
+            <ButtonLogin
+              floating
+              disabled={isLoading}
+              onClick={() => handleSubmit()}
+            >
               Вход в систему
             </ButtonLogin>
           </Loader>

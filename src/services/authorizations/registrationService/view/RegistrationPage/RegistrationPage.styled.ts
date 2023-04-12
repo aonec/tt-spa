@@ -56,7 +56,7 @@ export const Title = styled.span`
   color: #ffffff;
   font-size: 40px;
   line-height: 48px;
-  padding-botton: 32px;
+  padding-bottom: 32px;
 `;
 
 export const Label = styled.div`
@@ -69,7 +69,6 @@ export const Label = styled.div`
 `;
 
 export const ButtonLogin = styled(Button)`
-  width: 100%;
   height: 48px;
   margin-top: 16px;
 `;

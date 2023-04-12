@@ -44,7 +44,7 @@ confirmRegistrationFx.failData.watch((error) => {
 
 successRegistration.watch(() => {
   message.destroy();
-  message.info('Введите логин');
+  message.info('Войдите в систему');
 });
 
 export const registrationService = {
