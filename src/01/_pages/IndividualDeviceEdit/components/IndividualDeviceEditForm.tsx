@@ -36,6 +36,7 @@ import {
   TextWrapper,
 } from './IndividualDeviceEditForm.styled';
 import { Button } from 'ui-kit/Button';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -376,40 +377,3 @@ const IndividualDeviceEditForm = ({
 };
 
 export default IndividualDeviceEditForm;
-
-export const StyledSelect = styled(Select)`
-  height: 48px;
-  .ant-select-selector {
-    height: 100% !important;
-    padding: 8px 24px !important;
-    border-radius: 4px !important;
-
-    span {
-      font-size: 16px;
-      line-height: 32px;
-    }
-  }
-  .ant-select-arrow {
-    padding: 0 28px !important;
-  }
-  .ant-select-item {
-    margin: 0 !important;
-    padding: 0 !important;
-
-    &:hover {
-      background: #189ee9 !important;
-      color: $white;
-    }
-
-    .ant-select-item-option-content {
-      background: white;
-      padding: 8px 24px !important;
-      margin: 0 !important;
-
-      &:hover {
-        background: #189ee9 !important;
-        color: $white;
-      }
-    }
-  }
-`;

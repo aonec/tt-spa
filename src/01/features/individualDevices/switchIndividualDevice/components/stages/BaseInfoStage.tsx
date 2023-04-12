@@ -5,7 +5,7 @@ import {
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 import { AutoComplete, Form, Select, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
