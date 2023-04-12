@@ -23,9 +23,8 @@ import {
   CreateObjectAddressStageProps,
   ObjectAddressValues,
 } from './CreateObjectAddressStage.types';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { validationSchema } from './createObjectAddressStage.constants';
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { Select } from 'ui-kit/Select';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { getPreparedStreetsOptions } from './CreateObjectAddressStage.utils';
@@ -148,7 +147,7 @@ export const CreateObjectAddressStage: FC<CreateObjectAddressStageProps> = ({
           <>
             <GridWrapper key={index}>
               <FormItem label="Город">
-                <StyledSelect value={values.city || undefined} disabled />
+                <Select value={values.city || undefined} disabled />
               </FormItem>
 
               <FormItem label="Улица">

@@ -21,7 +21,7 @@ import { SelectSC } from '01/shared/ui/Fields';
 import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import * as yup from 'yup';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { ReportType } from '../StatisticsGraph.types';
 import { SortingIcon } from 'ui-kit/icons';

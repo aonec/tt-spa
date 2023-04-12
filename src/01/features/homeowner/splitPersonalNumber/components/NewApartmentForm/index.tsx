@@ -9,7 +9,7 @@ import { $apartment } from '01/features/apartments/displayApartment/models';
 import { newApartmentPersonalNumberForm } from '../../models';
 import { useForm } from 'effector-forms/dist';
 import { PersonalNumberFormMountPlaceType } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 
 export const NewApartmentForm = () => {

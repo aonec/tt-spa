@@ -29,7 +29,7 @@ import { Select } from 'ui-kit/Select';
 import { RangePicker } from 'ui-kit/RangePicker';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
 
 export const ConsumptionReportCalculatorForm: FC<

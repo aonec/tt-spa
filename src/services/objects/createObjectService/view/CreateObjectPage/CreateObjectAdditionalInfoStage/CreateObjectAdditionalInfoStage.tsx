@@ -1,4 +1,3 @@
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
@@ -68,7 +67,7 @@ export const CreateObjectAdditionalInfoStage: FC<
         </FormItem>
 
         <FormItem label="Лифт">
-          <StyledSelect
+          <Select
             placeholder="Выберите из списка"
             onChange={(value) => setFieldValue('elevator', value)}
             value={values.elevator || undefined}
@@ -78,7 +77,7 @@ export const CreateObjectAdditionalInfoStage: FC<
                 {ElevatorDictionary[e]}
               </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
         </FormItem>
       </GridContainer>
 

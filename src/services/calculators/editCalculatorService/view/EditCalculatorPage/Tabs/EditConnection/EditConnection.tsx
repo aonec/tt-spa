@@ -9,7 +9,7 @@ import { MeteringDeviceConnection, UpdateCalculatorRequest } from 'myApi';
 import * as yup from 'yup';
 import { Footer } from '../EditMainInfo/EditMainInfo.styled';
 import { Button } from 'ui-kit/Button';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { EditExistingConnectionErrorModal } from './EditExistingConnectionErrorModal';
 
 export const EditConnection: FC<EditConnectionProps> = ({
@@ -57,7 +57,7 @@ export const EditConnection: FC<EditConnectionProps> = ({
     },
   });
 
-  const err = (errors.connection as unknown) as
+  const err = errors.connection as unknown as
     | { ipV4?: string; port?: string; deviceAddress?: string }
     | undefined;
 

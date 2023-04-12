@@ -7,7 +7,7 @@ import { EditNodeCheckPayload } from './models';
 import { CheckingActDocumentType } from './utils';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { EDocumentType } from 'myApi';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 import { DocumentsList } from 'ui-kit/DocumentsService/view/DocumentsList';
 import { DatePicker } from 'ui-kit/DatePicker';

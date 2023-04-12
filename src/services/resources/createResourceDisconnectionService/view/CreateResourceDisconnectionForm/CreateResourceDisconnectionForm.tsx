@@ -1,4 +1,4 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';

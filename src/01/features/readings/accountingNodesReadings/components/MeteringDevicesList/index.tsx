@@ -6,7 +6,6 @@ import {
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import Arrow from '01/_components/Arrow/Arrow';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -14,6 +13,7 @@ import styled from 'styled-components';
 import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
 import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const { outputs, gates } = meteringDeviceReadingsService;
 
@@ -74,11 +74,11 @@ export const MeteringDevicesList = () => {
   const isShowPage = !isNullElectricNodes && !isEmptyElectricNodes;
 
   return (
-    <PendingLoader loading={pendingNodes}>
+    <WithLoader isLoading={pendingNodes}>
       {isNullElectricNodes && null}
       {isEmptyElectricNodes && 'Нет приборов'}
       {isShowPage && renderPage()}
-    </PendingLoader>
+    </WithLoader>
   );
 };
 

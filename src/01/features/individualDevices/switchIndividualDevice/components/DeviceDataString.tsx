@@ -3,9 +3,9 @@ import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 export interface DataStringDevice {
   resource: EResourceType | null;
@@ -30,7 +30,7 @@ export const DeviceDataString: React.FC<Props> = ({
 
   return (
     <Spaces flex spaceStyles={{ width: 4 }}>
-      {device?.resource && <RenderDeviceIcon resource={device?.resource} />}
+      {device?.resource && <ResourceIconLookup resource={device?.resource} />}
       {device.serialNumber && (
         <DeviceSerialNumber>{device.serialNumber}</DeviceSerialNumber>
       )}
@@ -47,27 +47,6 @@ const DeviceSerialNumber = styled.span`
   font-weight: 500;
   color: #272f5aee;
 `;
-
-export const RenderDeviceIcon = ({
-  resource,
-}: {
-  resource?: EResourceType;
-}) => {
-  if (!resource) return <></>;
-
-  const deviceIcon = DeviceIcons[resource];
-
-  if (!deviceIcon) return <></>;
-
-  return (
-    <StockIconTT
-      style={{ marginRight: 0 }}
-      icon={deviceIcon.icon}
-      fill={deviceIcon.color}
-      dark
-    />
-  );
-};
 
 export function getResourceColor(resource: EResourceType, index?: number) {
   if (resource === EResourceType.Electricity && index === 2) return '#957400E5';

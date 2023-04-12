@@ -3,7 +3,7 @@ import { Form, Radio, Space } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { ESoiReportPeriod } from 'myApi';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { TreeSelectSC } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateResourceDisconnectionForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';

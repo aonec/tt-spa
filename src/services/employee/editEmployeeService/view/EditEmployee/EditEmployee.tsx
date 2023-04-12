@@ -3,7 +3,7 @@ import { Footer, FormWrapper, Header } from './EditEmployee.styled';
 import { EditEmployeeProps } from './EditEmployee.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
