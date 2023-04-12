@@ -5,13 +5,17 @@ import {
   EActResourceType,
   EResourceType,
   ETaskTargetObject,
+  EManagingFirmTaskType,
 } from 'myApi';
 import { round } from 'utils/round';
 import {
   GetPlacemarkerLayoutLinkResponse,
   HousingStockTaskMarkerType,
 } from './TasksMapsNative.types';
-import { TaskColorsDictionary } from './TasksMapsNative.constants';
+import {
+  ApplicationTaskPlacemark,
+  TaskColorsDictionary,
+} from './TasksMapsNative.constants';
 import {
   DiagramConfig,
   DiagramData,
@@ -26,11 +30,7 @@ import {
   TaskTypePlacemarkIconsDictionary,
 } from './TasksMapsNative.constants';
 
-export const getTaskPlacemarkerLink = (
-  tasks: TaskShortResponse[],
-): GetPlacemarkerLayoutLinkResponse => {
-  const textPosition = String(tasks.length).length === 2 ? 24.5 : 27.3;
-
+const getPlacemarkSvgCodeText = (tasks: TaskShortResponse[]) => {
   const allTasksResources = uniq(
     tasks.reduce(
       (acc, elem) => [...acc, ...(elem.resourceTypes || [])],
@@ -38,13 +38,31 @@ export const getTaskPlacemarkerLink = (
     ),
   );
 
-  const placemarkSvgCodeText = allTasksResources?.length
-    ? ResourcesPlacemarksLookup[
-        (allTasksResources?.length || 1) > 1
-          ? EActResourceType.All
-          : allTasksResources?.[0]
-      ]
-    : CalculatorPlacemark;
+  if (allTasksResources?.length) {
+    const uniqTaskTypesCount = (allTasksResources?.length || 1) > 1;
+
+    const type = uniqTaskTypesCount
+      ? EActResourceType.All
+      : allTasksResources?.[0];
+
+    return ResourcesPlacemarksLookup[type];
+  }
+
+  const taskExample = tasks[0];
+
+  if (taskExample.targetObject === ETaskTargetObject.Calculator) {
+    return CalculatorPlacemark;
+  }
+
+  return ApplicationTaskPlacemark;
+};
+
+export const getTaskPlacemarkerLink = (
+  tasks: TaskShortResponse[],
+): GetPlacemarkerLayoutLinkResponse => {
+  const textPosition = String(tasks.length).length === 2 ? 24.5 : 27.3;
+
+  const placemarkSvgCodeText = getPlacemarkSvgCodeText(tasks);
 
   const svgCodeText = `
             <svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,9 +86,18 @@ export const getTaskPlacemarkerLink = (
   };
 };
 
+const applicationTypes = [
+  EManagingFirmTaskType.PlannedApplication,
+  EManagingFirmTaskType.CurrentApplication,
+  EManagingFirmTaskType.EmergencyApplication,
+];
+
 export const getHousingStockTaskType = (
   task: TaskShortResponse,
 ): HousingStockTaskMarkerType | null => {
+  if (applicationTypes.includes(task.type))
+    return HousingStockTaskMarkerType.Application;
+
   if (task.targetObject === ETaskTargetObject.Calculator)
     return HousingStockTaskMarkerType.Calculator;
 

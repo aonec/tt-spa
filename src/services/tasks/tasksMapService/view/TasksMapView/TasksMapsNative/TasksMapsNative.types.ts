@@ -13,6 +13,7 @@ export enum HousingStockTaskMarkerType {
   HotWaterSupply = 'HotWaterSupply',
   Heat = 'Heat',
   Electricity = 'Electricity',
+  Application = 'Application',
 }
 
 export type GetPlacemarkerLayoutLinkResponse = {

@@ -38,8 +38,9 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
     clusterer.createCluster = (center, geoObjects) => {
       const housingStocksWithTasksList = geoObjects.reduce((acc, elem) => {
-        const housingStockWithTasks = (elem.state as any)
-          .housingStockData as HousingStockWithTasksResponse;
+        const housingStockWithTasks = (
+          elem.state as { housingStockData?: HousingStockWithTasksResponse }
+        ).housingStockData;
 
         if (!housingStockWithTasks) return acc;
 
@@ -110,7 +111,9 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
         },
       );
 
-      (placemark.state as any).housingStockData = housingStockWithTasks;
+      (
+        placemark.state as { housingStockData?: HousingStockWithTasksResponse }
+      ).housingStockData = housingStockWithTasks;
 
       placemark.events.add('click', () => {
         handleClickMarker(housingStockWithTasks);
