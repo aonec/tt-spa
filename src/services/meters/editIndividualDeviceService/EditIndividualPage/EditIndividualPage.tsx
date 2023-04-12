@@ -6,6 +6,7 @@ import {
   DeviceTitle,
   LoaderWrapper,
   PageTitle,
+  ResourceIconLookupWrapper,
   SubTitleWrapper,
   Wrapper,
 } from './EditIndividualPage.styled';
@@ -49,13 +50,11 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
               <PageTitle>
                 <DeviceTitle>
                   {individualDevice?.resource && (
-                    <ResourceIconLookup
-                      resource={individualDevice?.resource}
-                      style={{
-                        transform: 'scale(1.3)',
-                        margin: '0px 16px 0px 6px',
-                      }}
-                    />
+                    <ResourceIconLookupWrapper>
+                      <ResourceIconLookup
+                        resource={individualDevice?.resource}
+                      />
+                    </ResourceIconLookupWrapper>
                   )}
                   <DeviceModel>{individualDevice?.model}</DeviceModel>
                   <DeviceNumber>{`(${individualDevice?.serialNumber}). Редактирование`}</DeviceNumber>

@@ -43,3 +43,10 @@ export const Address = styled(Link)`
   color: #272f5a;
   opacity: 0.9;
 `;
+
+export const ResourceIconLookupWrapper = styled.div`
+  transform: scale(1.3);
+  margin: 0px 16px 0px 6px;
+  display: flex;
+  align-items: center;
+`;
