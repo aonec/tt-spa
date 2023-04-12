@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { Switch } from 'antd';
 import {
   ButtonSC,
@@ -21,6 +20,7 @@ import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup'
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { Button } from 'ui-kit/Button';
+import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 
 export const MainInfo: FC<MainInfoProps> = ({
   individualDevice,
@@ -42,7 +42,7 @@ export const MainInfo: FC<MainInfoProps> = ({
     sealNumber,
   } = individualDevice;
 
-  const { values, setFieldValue, errors, handleSubmit } = useFormik({
+  const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       resource: resource,
       model: model,
@@ -60,13 +60,6 @@ export const MainInfo: FC<MainInfoProps> = ({
         ? moment(sealInstallationDate)
         : null,
     },
-    validationSchema: yup.object().shape({
-      serialNumber: yup.string().required('Это поле обязательно'),
-      lastCheckingDate: yup.string().required('Это поле обязательно'),
-      futureCheckingDate: yup.string().required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
       const payload: UpdateIndividualDeviceRequest = {
@@ -83,12 +76,14 @@ export const MainInfo: FC<MainInfoProps> = ({
         mountPlaceId: data.mountPlaceId,
         isPolling: data.isPolling,
       };
-
       const deviceId = individualDevice.id;
 
       handleUpdateDevice({ deviceId, payload });
     },
   });
+
+  const { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(8);
+
   return (
     <Wrapper>
       <FormItem label="Тип ресурса">
@@ -108,6 +103,10 @@ export const MainInfo: FC<MainInfoProps> = ({
           placeholder="Укажите модель"
           type="text"
           onChange={(value) => setFieldValue('model', value.target.value)}
+          ref={refs[0]}
+          onKeyDown={(e) => {
+            keyDownEnterGuardedHandler(0)(e);
+          }}
         />
       </FormItem>
 
@@ -119,6 +118,10 @@ export const MainInfo: FC<MainInfoProps> = ({
           onChange={(value) =>
             setFieldValue('serialNumber', value.target.value)
           }
+          ref={refs[1]}
+          onKeyDown={(e) => {
+            keyDownEnterGuardedHandler(1)(e);
+          }}
         />
       </FormItem>
 
@@ -128,6 +131,10 @@ export const MainInfo: FC<MainInfoProps> = ({
           onChange={(value) => setFieldValue('mountPlaceId', value)}
           placeholder="Укажите место"
           disabled={!mountPlaces}
+          ref={refs[2]}
+          onKeyDown={(e) => {
+            keyDownEnterGuardedHandler(2)(e);
+          }}
         >
           {mountPlaces?.map((elem) => (
             <Select.Option value={elem.id} key={elem.id}>
@@ -144,6 +151,10 @@ export const MainInfo: FC<MainInfoProps> = ({
             type="number"
             onChange={(value) => setFieldValue('bitDepth', value.target.value)}
             value={values.bitDepth || undefined}
+            ref={refs[3]}
+            onKeyDown={(e) => {
+              keyDownEnterGuardedHandler(3)(e);
+            }}
           />
         </FormItem>
         <FormItem label="Множитель">
@@ -154,6 +165,10 @@ export const MainInfo: FC<MainInfoProps> = ({
               setFieldValue('scaleFactor', value.target.value)
             }
             value={values.scaleFactor || undefined}
+            ref={refs[4]}
+            onKeyDown={(e) => {
+              keyDownEnterGuardedHandler(4)(e);
+            }}
           />
         </FormItem>
       </GridContainer>
@@ -187,6 +202,10 @@ export const MainInfo: FC<MainInfoProps> = ({
           type="number"
           onChange={(value) => setFieldValue('sealNumber', value.target.value)}
           value={values.sealNumber || undefined}
+          ref={refs[5]}
+          onKeyDown={(e) => {
+            keyDownEnterGuardedHandler(5)(e);
+          }}
         />
       </FormItem>
 
@@ -197,6 +216,7 @@ export const MainInfo: FC<MainInfoProps> = ({
           onChange={(date) => {
             setFieldValue('sealInstallationDate', date);
           }}
+          ref={refs[6]}
         />
       </FormItem>
 

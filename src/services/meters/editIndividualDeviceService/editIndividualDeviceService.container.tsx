@@ -1,5 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { editIndividualDeviceService } from './editIndividualDeviceService.model';
 import { EditIndividualPage } from './EditIndividualPage';
 import { useHistory, useParams } from 'react-router-dom';
@@ -20,6 +20,14 @@ export const EditIndividualDeviceContainer = () => {
   const individualDevice = useStore(outputs.$individualDevice);
   const isDeviceLoading = useStore(outputs.$isDeviceLoading);
   const mountPlaces = useStore(outputs.$mountPlaces);
+
+  const apartmentId = individualDevice?.address?.apartmentId;
+
+  useEffect(() => {
+    return inputs.updateDeviceSuccess.watch(() => {
+      history.push(`/meters/apartments/${apartmentId}`);
+    }).unsubscribe;
+  }, [history, apartmentId]);
 
   return (
     <>
