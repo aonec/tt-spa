@@ -1,6 +1,6 @@
 import { round } from 'lodash';
 
-export const prepareSupplyConsumption = (consumption: number | null) => {
+export const prepareConsumptions = (consumption: number | null) => {
   if (!consumption) {
     return '-';
   }

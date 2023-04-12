@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   overflow-x: auto;
 `;
 
-export const Header = styled.div<{ temp: string }>`
+export const Header = styled.div<{ temp: string; css?: string }>`
   width: max-content;
   background: #f3f5f6;
   min-height: 50px;
@@ -16,6 +16,7 @@ export const Header = styled.div<{ temp: string }>`
   font-weight: 400;
   font-size: 12px;
   align-items: center;
+  ${({ css }) => css || ''}
 `;
 
 export const Row = styled.div<{ temp: string; css?: string }>`

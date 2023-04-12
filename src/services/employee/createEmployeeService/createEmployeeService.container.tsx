@@ -8,7 +8,7 @@ const { CompetencesGate, UserRolesGate } = gates;
 
 export const CreateEmployeeContainer = () => {
   const isModalOpen = useStore(outputs.$isModalOpen);
-
+  const isLoading = useStore(outputs.$isLoading);
   const competences = useStore(outputs.$competencesCatalog);
   const userRoles = useStore(outputs.$userRoles);
 
@@ -39,6 +39,7 @@ export const CreateEmployeeContainer = () => {
         multipleSelectionCompetences={multipleSelectionCompetences}
         multipleSelectionUserRoles={multipleSelectionUserRoles}
         handleCreateEmloyee={handleCreateEmloyee}
+        isLoading={isLoading}
       />
     </>
   );
