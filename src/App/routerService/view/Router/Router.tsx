@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { IndividualDeviceEdit, Registration } from '01/_pages';
+import { IndividualDeviceEdit } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -49,6 +49,7 @@ import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndi
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { LoginContainer } from 'services/authorizations/loginService';
+import { RegistrationContainer } from 'services/authorizations/registrationService';
 
 const { gates } = objectProfileService;
 
@@ -100,8 +101,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
     <Wrapper>
       <Switch>
         <Route path="/login" component={LoginContainer} />
-        <Route path="/logout" render={() => 'logout'} />
-        <Route path="/registration*" render={() => <Registration />} />
+        <Route path="/registration*" component={RegistrationContainer} />
         <Route path="/">
           <Layout>
             <Panel />
