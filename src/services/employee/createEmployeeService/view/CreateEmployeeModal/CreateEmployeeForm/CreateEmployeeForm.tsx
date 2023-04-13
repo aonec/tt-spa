@@ -46,6 +46,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
         .min(2, 'Минимум два символа')
         .required('Обязательное поле'),
       email: yup.string().nullable().required('Обязательное поле'),
+      roleTypes: yup.string().nullable().required('Обязательное поле'),
     }),
   });
 
@@ -107,7 +108,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value)
+                phoneMask.unmaskedValue(value.target.value),
               )
             }
           />
@@ -128,6 +129,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
               </SelectMultiple.Option>
             ))}
           </SelectMultiple>
+          <ErrorMessage>{errors.roleTypes}</ErrorMessage>
         </FormItem>
         <FormItem label="Дата начала работы">
           <DatePicker
