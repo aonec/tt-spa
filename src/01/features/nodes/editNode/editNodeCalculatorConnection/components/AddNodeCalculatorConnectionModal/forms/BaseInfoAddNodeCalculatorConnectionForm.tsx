@@ -5,7 +5,7 @@ import { DatePickerNative } from '../../../../../../../shared/ui/DatePickerNativ
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
 import InputTT from '../../../../../../../tt-components/InputTT';
 import { SelectItem } from '../../../../../../../tt-components/localBases';
-import { StyledSelect } from '../../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 import { createCalcuatorService } from '../CreateCalculatorModal/models';
 
 interface Props {

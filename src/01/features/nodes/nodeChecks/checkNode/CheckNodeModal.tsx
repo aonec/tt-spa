@@ -2,7 +2,7 @@ import { FilesList } from '01/shared/ui/FilesList';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { DatePickerTT, InputTT } from '01/tt-components';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 import { Form } from 'antd';
 import moment from 'moment';
 import React, { FC, SyntheticEvent } from 'react';

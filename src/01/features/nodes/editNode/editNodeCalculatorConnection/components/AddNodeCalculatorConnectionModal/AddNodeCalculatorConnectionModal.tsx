@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
-import { StyledSelect } from '../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 import { createCalcuatorService } from './CreateCalculatorModal/models';
 import { AddNodeCalculatorConnectionForm } from './models';

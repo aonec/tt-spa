@@ -1,7 +1,7 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { DatePickerTT } from '01/tt-components';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 import { Form, Select } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import { useForm } from 'effector-forms/dist';

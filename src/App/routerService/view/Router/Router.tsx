@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import { IndividualDeviceEdit } from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -48,6 +47,7 @@ import { AddIndividualDevice } from '01/features/individualDevices/addIndividual
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
+import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
 
@@ -344,7 +344,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   isOperator ? (
                     <Route
                       path="/individualDevices/:deviceId/edit"
-                      component={IndividualDeviceEdit}
+                      component={EditIndividualDeviceContainer}
                       exact
                     />
                   ) : (
