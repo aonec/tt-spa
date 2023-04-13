@@ -118,6 +118,8 @@ export const getHousingStockTaskType = (
       return HousingStockTaskMarkerType.Heat;
     case EResourceType.Electricity:
       return HousingStockTaskMarkerType.Electricity;
+    default:
+      return HousingStockTaskMarkerType.AllResources;
   }
 };
 
