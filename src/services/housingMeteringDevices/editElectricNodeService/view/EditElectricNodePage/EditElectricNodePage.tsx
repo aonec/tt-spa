@@ -1,5 +1,4 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import IsActive from '01/tt-components/IsActive';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
@@ -16,6 +15,7 @@ import {
   EditElectricNodeGrouptype,
   EditElectricNodePageProps,
 } from './EditElectricNodePage.types';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 const { TabPane } = TabsSC;
 
 export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
@@ -43,7 +43,7 @@ export const EditElectricNodePage: FC<EditElectricNodePageProps> = ({
               {getHousingStockAddress(device?.address, true)}
             </AddressWrapper>
 
-            <IsActive closingdate={device.closingDate} />
+            <DeviceStatus isActive={!device.closingDate} />
           </InfoWrapper>
 
           <TabsSC

@@ -6,7 +6,6 @@ import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { LinkCard } from 'ui-kit/shared_components/LinkCard';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { NodeConnection } from '01/tt-components/NodeConnection';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { ENodeRegistrationType } from 'myApi';
 import { HousingMeteringDeviceReadingsContainer } from 'services/housingMeteringDevices/housingMeteringDeviceReadingsService';
@@ -31,6 +30,7 @@ import {
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
+import { NodeConnection } from './NodeConnection';
 
 const { TabPane } = TabsSC;
 

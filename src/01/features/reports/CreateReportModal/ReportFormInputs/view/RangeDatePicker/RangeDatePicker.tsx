@@ -1,8 +1,8 @@
-import { RangePickerSC } from '01/tt-components';
 import FormItem from 'antd/lib/form/FormItem';
 import React, { FC } from 'react';
 import { Wrapper } from './RangeDatePicker.styled';
 import { RangeDatePickerProps } from './RangeDatePicker.types';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 export const RangeDatePicker: FC<RangeDatePickerProps> = ({
   rangePeriod,
@@ -12,7 +12,7 @@ export const RangeDatePicker: FC<RangeDatePickerProps> = ({
   return (
     <FormItem label={label || 'Период'}>
       <Wrapper>
-        <RangePickerSC
+        <RangePicker
           value={rangePeriod}
           onChange={(range) => onChange(range)}
           format="DD MMMM YYYY"

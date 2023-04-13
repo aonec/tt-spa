@@ -30,7 +30,6 @@ export const EditHousingMeteringDeviceCommonInfo: FC<
 > = ({
   housingMeteringDevice,
   handleSubmitForm,
-  deviceId,
   onCancel,
   communicationPipes,
 }) => {

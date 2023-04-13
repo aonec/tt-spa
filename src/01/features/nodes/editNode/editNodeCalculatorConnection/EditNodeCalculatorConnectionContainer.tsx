@@ -6,10 +6,10 @@ import { useParams } from 'react-router-dom';
 import { RemoveConnectionConfirmModalContainer } from './components/RemoveConnectionConfirmModal/RemoveConnectionConfirmModalContainer';
 import { AddNodeCalculatorConnectionModalContainer } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModalContainer';
 import { addNodeCalculatorService } from './components/AddNodeCalculatorConnectionModal/models';
-import { NodeConnection } from '../../../../tt-components/NodeConnection';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Empty } from 'antd';
 import { Button } from 'ui-kit/Button';
+import { NodeConnection } from 'services/nodes/nodeProfileService/view/NodeProfilePage/NodeConnection';
 
 export const EditNodeCalculatorConnectionContainer = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -38,7 +38,6 @@ export const EditNodeCalculatorConnectionContainer = () => {
             onEdit={() => handleEdit()}
             onRemoveConnection={() => handleOpenConfirmModal()}
             node={node!}
-            edit
           />
         )}
         {!showCalculator && (
