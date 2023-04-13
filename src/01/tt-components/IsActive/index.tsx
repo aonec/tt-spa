@@ -43,8 +43,6 @@ export default IsActive;
 const StyledIsActive = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 4px;
-  span {
-    padding-left: 4px;
-  }
+  padding-left: 8px;
+  font-weight: 400;
 `;

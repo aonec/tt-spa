@@ -207,6 +207,10 @@ export const forbiddenList: ForbiddenUrl[] = [
   },
   {
     methods: ['PUT'],
+    regExp: /^IndividualDevices\/\d+$/,
+  },
+  {
+    methods: ['PUT'],
     regExp: /^PipeNodes\/\d+$/,
   },
   {

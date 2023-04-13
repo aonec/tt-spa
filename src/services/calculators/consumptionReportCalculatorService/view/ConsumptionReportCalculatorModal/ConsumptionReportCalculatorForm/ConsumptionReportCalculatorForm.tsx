@@ -12,7 +12,6 @@ import {
 } from './ConsumptionReportCalculatorForm.types';
 import { Checkbox, Form, Radio, message } from 'antd';
 import { Tabs } from 'ui-kit/Tabs';
-import { ResourceNamesDictionary } from 'services/housingMeteringDevices/resourceAccountingSystemsService/view/ResourceAccountingSystems/NodesGroup/NodesGroup.constants';
 import _ from 'lodash';
 import {
   EHousingMeteringDeviceType,
@@ -31,6 +30,7 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { getDatePeriod } from './ConsumptionReportCalculatorForm.utils';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { GetCalculatorReportParams } from 'services/calculators/consumptionReportCalculatorService/consumptionReportCalculatorService.types';
+import { ResourceNamesDictionary } from 'dictionaries';
 
 export const ConsumptionReportCalculatorForm: FC<
   ConsumptionReportCalculatorFormProps

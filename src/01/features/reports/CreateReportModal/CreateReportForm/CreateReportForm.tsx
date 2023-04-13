@@ -1,5 +1,5 @@
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 import { Select } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import { SelectValue } from 'antd/lib/select';

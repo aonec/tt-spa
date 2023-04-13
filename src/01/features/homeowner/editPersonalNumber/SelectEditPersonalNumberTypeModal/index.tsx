@@ -10,9 +10,9 @@ import {
 import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from '../icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { ReactComponent as MainIcon } from './icons/main.svg';
 import { Props } from './SelectEditPersonalNumberTypeModal.types';
+import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
 
 export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
   apartment,
