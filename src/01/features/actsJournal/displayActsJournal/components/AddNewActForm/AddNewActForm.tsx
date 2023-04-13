@@ -25,6 +25,7 @@ import { createApartmentActFx } from '../../models';
 import { gridTemp } from '../TableHeader';
 import { AddNewActFormProps, AddNewActFormT } from './AddNewActForm.types';
 import { ButtonSC } from './AddNewActForm.styled';
+import { Select } from 'ui-kit/Select';
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -109,20 +110,21 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           ref={registryNumberRef}
           onKeyDown={handleEnterOnRegistryNumberInput}
         />
-        <SelectSC
+        <Select
           value={selectedActType || undefined}
           onChange={(actType) => selectAct(actType as EActType)}
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={handleEnterOnActTypeSelect}
+          isSearch
         >
           {actTypes?.map((type) => (
             <SelectSC.Option key={type.key} value={type.key!}>
               {type.value}
             </SelectSC.Option>
           ))}
-        </SelectSC>
-        <SelectSC
+        </Select>
+        <Select
           value={selectedResourceType || undefined}
           onChange={(resourceType) =>
             selectResource(resourceType as EActResourceType)
@@ -130,13 +132,14 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
+          isSearch
         >
           {actResources?.map((type) => (
             <SelectSC.Option key={type.key} value={type.key!}>
               {type.value}
             </SelectSC.Option>
           ))}
-        </SelectSC>
+        </Select>
         <AddressIdSearch
           firstInputRef={addressRef}
           onExit={() => {
