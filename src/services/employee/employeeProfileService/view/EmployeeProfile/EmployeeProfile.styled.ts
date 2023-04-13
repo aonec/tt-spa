@@ -1,6 +1,6 @@
 import { PageHeader } from '01/shared/ui/PageHeader';
-import Tabs from '01/tt-components/Tabs';
 import styled from 'styled-components';
+import { Tabs } from 'ui-kit/Tabs';
 
 export const Wrapper = styled.div``;
 
@@ -65,7 +65,7 @@ export const СompetenceDiv = styled.div`
 
 export const CompetenciesContainer = styled.div`
   display: flex;
-  aling-items: center;
+  align-items: center;
   margin-bottom: 22px;
 `;
 

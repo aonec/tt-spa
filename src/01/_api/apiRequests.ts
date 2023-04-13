@@ -11,7 +11,6 @@ export async function getIndividualDevice(id: number) {
   return res;
 }
 
-
 export async function putIndividualDevice(
   deviceId: number,
   form: UpdateIndividualDeviceRequest,

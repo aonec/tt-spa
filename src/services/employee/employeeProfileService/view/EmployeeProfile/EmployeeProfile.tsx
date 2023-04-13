@@ -23,6 +23,8 @@ import { sortUserRoles } from 'services/company/companyProfileService/view/Compa
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
 
+const { TabPane } = TabsSC;
+
 export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   userData,
   handleOpenChangeStatusModal,
@@ -40,19 +42,6 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
 
   const [currentTabKey, setTab] = useState('1');
-
-  const tabItems = [
-    {
-      title: 'Общие данные',
-      key: '1',
-      cb: () => setTab('1'),
-    },
-    {
-      title: 'Статистика',
-      key: '2',
-      cb: () => setTab('2'),
-    },
-  ];
 
   return (
     <Wrapper>
@@ -84,7 +73,10 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
         <StaffStatus status={userData?.status?.type} />
       )}
 
-      <TabsSC tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
+      <TabsSC activeKey={currentTabKey} onChange={setTab}>
+        <TabPane tab="Общие данные" key="1"></TabPane>
+        <TabPane tab="Статистика" key="2"></TabPane>
+      </TabsSC>
 
       {currentTabKey === '1' && (
         <GridWrapper>

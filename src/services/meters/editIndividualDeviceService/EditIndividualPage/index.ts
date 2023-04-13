@@ -1,1 +1,1 @@
-export { EditIndividualPage } from './EditIndividualPage'
+export { EditIndividualPage } from './EditIndividualPage';

@@ -24,7 +24,7 @@ import * as yup from 'yup';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { ReportType } from '../StatisticsGraph.types';
-import { IconTT } from '01/tt-components';
+import { SortingIcon } from 'ui-kit/icons';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -100,7 +100,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
           <Tooltip title="Настройка параметров">
             <ButtonSC
               onClick={() => openModal()}
-              icon={<IconTT icon="searchFilter" />}
+              icon={<SortingIcon />}
               style={{ marginRight: 16 }}
             />
           </Tooltip>
@@ -121,7 +121,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
                 <ButtonSC
                   onClick={() => setIsActive((state) => !state)}
                   style={{ marginBottom: 8 }}
-                  icon={<IconTT icon="searchFilter" />}
+                  icon={<SortingIcon />}
                 />
               </Tooltip>
               <FormItem label="Произвольный период">
