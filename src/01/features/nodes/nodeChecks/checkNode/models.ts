@@ -1,4 +1,9 @@
-import { CreateNodeCheckRequest, ECheckType, ENodeCheckType } from 'myApi';
+import {
+  CreateNodeCheckRequest,
+  DocumentResponse,
+  ECheckType,
+  ENodeCheckType,
+} from 'myApi';
 import { createForm } from 'effector-forms';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { nodeService } from '../../displayNode/models';
@@ -38,7 +43,7 @@ export interface EditNodeCheckPayload {
   id: number;
   checkingDate: string;
   checkType: ECheckType;
-  checkingAct: any;
+  checkingAct: DocumentResponse | null;
   registryNumber: string;
 }
 

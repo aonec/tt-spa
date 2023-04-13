@@ -66,6 +66,7 @@ import { ReactComponent as IncorrectConfigurationIcon } from './svg/incorrectCon
 import { ReactComponent as ActiveFiltersIcon } from './svg/activeFilters.svg';
 import { ReactComponent as CheckConnection } from './svg/activeFilters.svg';
 import { ReactComponent as ChevronBoldIcon } from './svg/chevronBold.svg';
+import { ReactComponent as SortingIcon } from './svg/sorting.svg';
 
 export {
   FinishIcon,
@@ -136,4 +137,5 @@ export {
   ActiveFiltersIcon,
   CheckConnection,
   ChevronBoldIcon,
+  SortingIcon,
 };

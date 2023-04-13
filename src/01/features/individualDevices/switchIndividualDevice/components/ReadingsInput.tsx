@@ -8,14 +8,14 @@ import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
 } from '../../../../../myApi';
-import {
-  getPreviousReadingsMonth,
-  getDateByReadingMonthSlider,
-} from '01/shared/lib/readings/getPreviousReadingsMonth';
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import { getFilledArray } from 'utils/getFilledArray';
+import {
+  getDateByReadingMonthSlider,
+  getPreviousReadingsMonth,
+} from './ReadingsInput.utils';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];

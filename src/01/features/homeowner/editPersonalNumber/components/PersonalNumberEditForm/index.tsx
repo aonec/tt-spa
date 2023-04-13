@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Form, Switch } from 'antd';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { InputTT } from '01/tt-components';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Trash } from 'react-bootstrap-icons';
@@ -19,6 +18,7 @@ import {
   PersonalNumberFormTypeGate,
 } from './personalNumberEditForm.controller';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Input } from 'ui-kit/Input';
 
 interface Props {
   type: PersonalNumberFormMountPlaceType;
@@ -55,7 +55,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
       </Form.Item>
       <Grid temp="3fr 1fr" gap="15px">
         <Form.Item label="Лицевой счет">
-          <InputTT
+          <Input
             placeholder="Введите л/с"
             value={fields.personalAccountNumber.value}
             name="personalAccountNumber"
@@ -68,7 +68,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Платежный код">
-          <InputTT
+          <Input
             type="number"
             value={fields.paymentCode.value}
             onChange={onChangeHandler}
@@ -78,7 +78,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
       </Grid>
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Собственник">
-          <InputTT
+          <Input
             placeholder="Введите ФИО"
             value={fields.name.value}
             onChange={onChangeHandler}
@@ -91,7 +91,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Телефон">
-          <InputTT
+          <Input
             placeholder="Введите телефон"
             value={fields.phoneNumber.value}
             onChange={onChangeHandler}

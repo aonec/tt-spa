@@ -12,7 +12,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReactComponent as MainIcon } from './icons/main.svg';
 import { Props } from './SelectEditPersonalNumberTypeModal.types';
-import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
+import { Select } from 'ui-kit/Select';
 
 export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
   apartment,
@@ -98,19 +98,19 @@ export const SelectEditPersonalNumberTypeModal: React.FC<Props> = ({
     [homeownerAccounts],
   );
   const selectHomeownerAccount = (
-    <StyledSelect
+    <Select
       placeholder="Выберите лицевой счет"
       style={{ width: '100%' }}
       value={homeownerId || void 0}
       onChange={setHomeownerId as any}
     >
       {openedHomeownerAccounts.map((elem) => (
-        <StyledSelect.Option value={elem.id!} key={elem.id}>
+        <Select.Option value={elem.id!} key={elem.id}>
           {selectedHomeowner?.isMainPersonalAccountNumber && <MainIcon />}
           {elem.personalAccountNumber} ({elem?.name?.replaceAll('unknown', '')})
-        </StyledSelect.Option>
+        </Select.Option>
       ))}
-    </StyledSelect>
+    </Select>
   );
 
   return (

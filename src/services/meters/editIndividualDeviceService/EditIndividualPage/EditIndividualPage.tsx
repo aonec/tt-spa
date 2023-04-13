@@ -22,7 +22,7 @@ import { Documents } from './Tabs/Documents';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { PageHeader } from '01/shared/ui/PageHeader';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
-import IsActive from '01/tt-components/IsActive';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 
 export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   currentTab,
@@ -63,7 +63,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
                   <Address to={`/apartments/${address?.apartmentId}`}>
                     {address && getApartmentFromFullAddress(address, true)}
                   </Address>
-                  <IsActive closingDate={individualDevice?.closingDate} />
+                  <DeviceStatus isActive={!individualDevice?.closingDate} />
                 </SubTitleWrapper>
               </PageTitle>
             }

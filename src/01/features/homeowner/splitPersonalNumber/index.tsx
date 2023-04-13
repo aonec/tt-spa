@@ -30,7 +30,7 @@ import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExi
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
-import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
+import { Select } from 'ui-kit/Select';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{
@@ -45,7 +45,7 @@ export const SplitPersonalNumber = () => {
 
   const stages = [
     <>
-      <StyledSelect
+      <Select
         disabled
         value={homeowner?.personalAccountNumber || undefined}
         style={{ width: '50%' }}

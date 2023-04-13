@@ -1,11 +1,10 @@
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/tt-components/StyledSelect/StyledSelect';
-import { Select } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import { SelectValue } from 'antd/lib/select';
 import React, { FC, useCallback } from 'react';
 import { ReportFormInputsContainer } from '../ReportFormInputs';
 import { ReportType, reportTypeTitleNames } from '../types';
+import { Select } from 'ui-kit/Select';
 
 interface Props {
   type: ReportType | null;
@@ -15,12 +14,12 @@ interface Props {
 export const CreateReportForm: FC<Props> = ({ type, setType }) => {
   const handleChange = useCallback(
     (value: SelectValue) => value && setType(value as ReportType),
-    [setType]
+    [setType],
   );
   return (
     <>
       <FormItem label="Тип отчета">
-        <StyledSelect
+        <Select
           placeholder="Выберите тип отчета"
           value={type || undefined}
           onChange={handleChange}
@@ -30,7 +29,7 @@ export const CreateReportForm: FC<Props> = ({ type, setType }) => {
               {name}
             </Select.Option>
           ))}
-        </StyledSelect>
+        </Select>
         <Space />
         <ReportFormInputsContainer />
       </FormItem>

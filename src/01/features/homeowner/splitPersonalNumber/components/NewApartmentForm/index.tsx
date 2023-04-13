@@ -4,13 +4,13 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import React from 'react';
 import { Wrap } from '../TransferDevices';
 import { Form } from 'antd';
-import { InputTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { newApartmentPersonalNumberForm } from '../../models';
 import { useForm } from 'effector-forms/dist';
 import { PersonalNumberFormMountPlaceType } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { Input } from 'ui-kit/Input';
 
 export const NewApartmentForm = () => {
   const apartment = useStore($apartment);
@@ -22,17 +22,17 @@ export const NewApartmentForm = () => {
     <Wrap>
       <Grid temp="1fr 0.5fr 0.5fr" gap="15px">
         <Form.Item label="Улица">
-          <InputTT disabled value={address?.street} />
+          <Input disabled value={address?.street || undefined} />
         </Form.Item>
         <Form.Item label="Дом">
-          <InputTT
+          <Input
             disabled
             value={`${address?.number}${address?.corpus || ''}`}
           />
         </Form.Item>
         <Form.Item label="Квартира">
-          <InputTT
-            value={fields.apartmentNumber.value}
+          <Input
+            value={fields.apartmentNumber.value || undefined}
             onChange={(e: any) =>
               fields.apartmentNumber.onChange(e.target.value)
             }
