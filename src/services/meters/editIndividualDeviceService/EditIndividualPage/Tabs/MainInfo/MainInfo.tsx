@@ -66,8 +66,8 @@ export const MainInfo: FC<MainInfoProps> = ({
         serialNumber: data.serialNumber,
         resource: data.resource,
         model: data.model,
-        bitDepth: data.bitDepth,
-        scaleFactor: data.scaleFactor,
+        bitDepth: Number(data.bitDepth),
+        scaleFactor: Number(data.scaleFactor),
         sealNumber: data.sealNumber,
         sealInstallationDate: moment(
           values.sealInstallationDate,
