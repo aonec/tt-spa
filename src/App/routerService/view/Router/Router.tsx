@@ -47,6 +47,7 @@ import { AddIndividualDevice } from '01/features/individualDevices/addIndividual
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
+import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
 
@@ -341,7 +342,11 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   isSeniorOperator ||
                   isExecutor ||
                   isOperator ? (
-                    <Route path="/individualDevices/:deviceId/edit" />
+                    <Route
+                      path="/individualDevices/:deviceId/edit"
+                      component={EditIndividualDeviceContainer}
+                      exact
+                    />
                   ) : (
                     <Route
                       path="/individualDevices/:deviceId/edit"

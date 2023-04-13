@@ -3,7 +3,6 @@ import {
   fetchNodes,
   $electricNodes,
 } from '01/features/nodes/displayNodes/models';
-import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import Arrow from '01/_components/Arrow/Arrow';
@@ -14,6 +13,7 @@ import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
 import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { getPreviousReadingsMonth } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput.utils';
 
 const { outputs, gates } = meteringDeviceReadingsService;
 
