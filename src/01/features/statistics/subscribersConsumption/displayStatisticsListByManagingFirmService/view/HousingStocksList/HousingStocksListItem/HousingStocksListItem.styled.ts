@@ -21,11 +21,6 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const ArrowWrapper = styled.div<{ isActive: boolean }>`
-  transform: rotate(${({ isActive }) => (isActive ? '90deg' : '-90deg')});
-  transition: 0.2s;
-`;
-
 export const AddressWrapper = styled.div<{ isActive: boolean }>`
   font-weight: 500;
   font-size: 16px;

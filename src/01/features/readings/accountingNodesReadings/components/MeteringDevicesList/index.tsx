@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
 import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
+import { ChevronIcon } from 'ui-kit/icons';
 
 const { outputs, gates } = meteringDeviceReadingsService;
 
@@ -31,7 +32,7 @@ export const MeteringDevicesList = () => {
       <HeaderTitleElem>Коэф. трансф.</HeaderTitleElem>
       <HeaderTitleElem>
         <MonthSlider>
-          <ArrowContainer onClick={up}>{canUp && <Arrow />}</ArrowContainer>
+          <ArrowContainer onClick={up}>{canUp && <ChevronIcon />}</ArrowContainer>
           <div>{getPreviousReadingsMonth(sliderIndex)}</div>
           <ArrowContainer
             onClick={down}
