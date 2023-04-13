@@ -6,10 +6,39 @@ import {
   getInputValue,
   getReadingValue,
 } from './MeteringDeviceMonthReadingInput.utils';
+import { EMagistralType } from 'myApi';
 
 export const MeteringDeviceMonthReadingInput: FC<
   MeteringDeviceMonthReadingInputProps
-> = ({ reading, setFieldValue, createReading }) => {
+> = ({
+  reading,
+  setFieldValue,
+  createReading,
+  initialFeedFlowReading,
+  initialFeedBackFlowReading,
+}) => {
+  const createReadingWithChangesTracking = () => {
+    if (
+      reading.magistralType === EMagistralType.FeedFlow &&
+      initialFeedFlowReading?.value !== reading.value
+    ) {
+      createReading({
+        ...reading,
+        value: Number(reading.value),
+      });
+    }
+    if (
+      reading.magistralType === EMagistralType.FeedBackFlow &&
+      initialFeedBackFlowReading?.value !== reading.value
+    ) {
+      createReading({
+        ...reading,
+        value: Number(reading.value),
+      });
+    }
+    return;
+  };
+
   return (
     <InputSC
       size="small"
@@ -28,6 +57,7 @@ export const MeteringDeviceMonthReadingInput: FC<
           value: getReadingValue(e.target.value),
         })
       }
+      onBlur={() => createReadingWithChangesTracking()}
     />
   );
 };

@@ -26,7 +26,7 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';

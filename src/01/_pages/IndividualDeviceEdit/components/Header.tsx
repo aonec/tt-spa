@@ -4,7 +4,6 @@ import { HeaderWrap } from '../../../tt-components';
 import IsActive from '../../../tt-components/IsActive';
 import { Loader } from '01/_components/Loader';
 import { Title, Subtitle } from '01/_components/Headers';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
@@ -14,6 +13,7 @@ import {
   StockIconWrapper,
   WrapperFlex,
 } from './IndividualDeviceEditForm.styled';
+import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;

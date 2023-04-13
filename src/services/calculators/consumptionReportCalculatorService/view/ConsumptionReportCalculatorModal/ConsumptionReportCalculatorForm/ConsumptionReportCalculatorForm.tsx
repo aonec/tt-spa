@@ -61,7 +61,7 @@ export const ConsumptionReportCalculatorForm: FC<
       reportName: yup.string().required('Введите название отчёта'),
     }),
     onSubmit: (data) => {
-      const period = getDatePeriod(values.archiveType, values.period);
+      const period = getDatePeriod(values.archiveType, values.period, isSono);
 
       if (!period) {
         message.warning('Выберите период!');
