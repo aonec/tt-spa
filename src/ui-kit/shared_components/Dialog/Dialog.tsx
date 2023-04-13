@@ -20,6 +20,8 @@ export const Dialog: FC<DialogProps> = ({
   description,
   footer,
   zIndex,
+  children,
+  isDisabled,
 }) => {
   const btnText = submitText || 'Подтвердить';
 
@@ -29,6 +31,7 @@ export const Dialog: FC<DialogProps> = ({
         <>
           <TitleText>{title}</TitleText>
           <DialogText>{description}</DialogText>
+          {children}
         </>
       }
       visible={isOpen}
@@ -42,7 +45,12 @@ export const Dialog: FC<DialogProps> = ({
             <Button type="ghost" key="back" onClick={onCancel}>
               {cancelText || 'Отмена'}
             </Button>
-            <Button onClick={onSubmit} isLoading={isLoading} type={type}>
+            <Button
+              onClick={onSubmit}
+              isLoading={isLoading}
+              disabled={isDisabled}
+              type={type}
+            >
               {btnText}
             </Button>
           </FooterWrapper>
