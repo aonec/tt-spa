@@ -1,35 +1,9 @@
 import React from 'react';
-import { Select, AutoComplete, DatePicker, Input } from 'antd';
+import { AutoComplete, DatePicker } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
 import { Loader } from '01/components';
 import { ActiveFiltersIcon } from 'ui-kit/icons';
-
-export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
-  width: 100%;
-
-  .ant-select-selector {
-    border: 1px solid lightgray;
-    padding: 4px 16px;
-
-    border-radius: 4px !important;
-
-    border: 1px solid var(--frame);
-    height: var(--h-norm);
-
-    box-shadow: ${({ isShadow = true }) =>
-      isShadow ? `0 4px 7px #02004b1f` : 'none'};
-
-    &:hover,
-    &:focus {
-      border: 1px solid #1890ff;
-    }
-
-    &:focus {
-      box-shadow: 0 2px 7px #188fffae;
-    }
-  }
-`;
 
 export const StyledAutocomplete = styled(AutoComplete)`
   width: 100%;
@@ -53,30 +27,6 @@ export const StyledAutocomplete = styled(AutoComplete)`
     &:focus {
       box-shadow: 0 2px 7px #188fffae;
     }
-  }
-`;
-
-export const InputSC = styled(Input)<{ isShadow?: boolean }>`
-  color: #333333;
-  border: 1px solid lightgray;
-  padding: 4px 16px;
-  transition: 0.2s;
-
-  &:last-child {
-    margin-right: 10px;
-  }
-
-  border-radius: 4px;
-
-  border: 1px solid var(--frame);
-  height: var(--h-norm);
-
-  box-shadow: ${({ isShadow = true }) =>
-    isShadow ? '0 4px 7px #02004b1f' : 'none'};
-
-  &:hover,
-  &:focus {
-    border: 1px solid #1890ff;
   }
 `;
 

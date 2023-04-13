@@ -19,10 +19,6 @@ const FormSelectStyles = css`
     transform: translate(6px, 8px);
   }
 
-  .ant-select-selection-item-content {
-    line-height: initial;
-  }
-
   .ant-select-clear {
     padding: 0px 28px !important;
     height: 30%;
@@ -33,17 +29,17 @@ const FormSelectStyles = css`
   }
 `;
 
-export const Select = styled(AntSelect)<{ isSearch?: boolean }>`
-  height: ${({ isSearch }) => (isSearch ? '32px' : '48px')};
+export const Select = styled(AntSelect)<{ search?: boolean }>`
+  height: ${({ search }) => (search ? '32px' : '48px')};
 
   .ant-select-selector {
     height: 100% !important;
-    padding: ${({ isSearch }) => (isSearch ? '4px' : '8px')} 16px !important;
+    padding: ${({ search }) => (search ? '0px' : '8px')} 16px !important;
     border-radius: 4px !important;
   }
 
   .ant-select-arrow {
-    padding: ${({ isSearch }) => (isSearch ? '0px' : ' 0 28px')} !important;
+    padding: ${({ search }) => (search ? '0px' : ' 0 28px')} !important;
 
     ${({ suffixIcon }) => suffixIcon && selectIconStyles}
   }
@@ -59,7 +55,7 @@ export const Select = styled(AntSelect)<{ isSearch?: boolean }>`
 
     .ant-select-item-option-content {
       background: white;
-      padding: ${({ isSearch }) => (isSearch ? '4px' : '8px')} 24px !important;
+      padding: ${({ search }) => (search ? '4px' : '8px')} 24px !important;
       margin: 0 !important;
 
       &:hover {
@@ -69,5 +65,5 @@ export const Select = styled(AntSelect)<{ isSearch?: boolean }>`
     }
   }
 
-  ${({ isSearch }) => !isSearch && FormSelectStyles}
+  ${({ search }) => !search && FormSelectStyles}
 `;

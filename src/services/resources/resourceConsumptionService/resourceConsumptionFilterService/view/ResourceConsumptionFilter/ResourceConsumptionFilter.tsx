@@ -1,5 +1,4 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useCallback, useEffect, useState } from 'react';
@@ -22,6 +21,7 @@ import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.type
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useStore } from 'effector-react';
 import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
+import { Select } from 'ui-kit/Select';
 
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
@@ -112,25 +112,25 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             />
           </FormItem>
           <FormItem label="Город">
-            <SelectSC
+            <Select
+              search
               disabled={!(existingCities || []).length}
-              isShadow={false}
               onChange={(value) => selectCity(String(value))}
               value={selectedCity || undefined}
               placeholder="Выберите город"
             >
               {(existingCities || []).map((city) => (
-                <SelectSC.Option key={city} value={city}>
+                <Select.Option key={city} value={city}>
                   {city}
-                </SelectSC.Option>
+                </Select.Option>
               ))}
-            </SelectSC>
+            </Select>
           </FormItem>
         </FormWrapper>
         <FormItem label="Домоуправление">
-          <SelectSC
+          <Select
+            search
             disabled={!houseManagements.length}
-            isShadow={false}
             placeholder="Выберите из списка"
             value={selectedHouseManagement || undefined}
             onChange={(id) => setHouseManagement(id ? String(id) : null)}
@@ -141,12 +141,12 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
                 return null;
               }
               return (
-                <SelectSC.Option key={management.id} value={management.id}>
+                <Select.Option key={management.id} value={management.id}>
                   {management.name}
-                </SelectSC.Option>
+                </Select.Option>
               );
             })}
-          </SelectSC>
+          </Select>
         </FormItem>
         <FormItem label="Адрес">
           <AddressTreeSelect

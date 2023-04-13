@@ -1,6 +1,5 @@
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { useFormik } from 'formik';
 import { EActResourceType, EApartmentStatus } from 'myApi';
 import React, { FC, useCallback } from 'react';
@@ -18,6 +17,8 @@ import {
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
 import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 import { ResetButton } from 'services/housingMeteringDevices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 export const IndividualDevicesViewBySerialNumberSearch: FC<
   IndividualDevicesViewBySerialNumberSearchProps
@@ -66,7 +67,8 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
         mountPlaces={mountPlaces}
       >
         <SearchFieldsWrapper>
-          <InputSC
+          <Input
+            search
             data-reading-input={'searchBySerialNumber'}
             prefix={<SearchIcon />}
             type="text"
@@ -78,7 +80,8 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
               next(0);
             })}
           />
-          <SelectSC
+          <Select
+            search
             data-reading-input={'searchBySerialNumber'}
             placeholder="Ресурс"
             value={values.Resource || EActResourceType.All}
@@ -91,12 +94,13 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             showAction={['focus']}
           >
             {Object.values(EActResourceType).map((elem) => (
-              <SelectSC.Option key={elem} value={elem}>
+              <Select.Option key={elem} value={elem}>
                 <ResourceInfo resource={elem} />
-              </SelectSC.Option>
+              </Select.Option>
             ))}
-          </SelectSC>
-          <SelectSC
+          </Select>
+          <Select
+            search
             data-reading-input={'searchBySerialNumber'}
             placeholder="Статус кв."
             value={values.ApartmentStatus || undefined}
@@ -108,11 +112,11 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             showAction={['focus']}
           >
             {[EApartmentStatus.Ok, EApartmentStatus.Pause].map((elem) => (
-              <SelectSC.Option key={elem} value={elem}>
+              <Select.Option key={elem} value={elem}>
                 {apartmentStatusesLookup[elem]}
-              </SelectSC.Option>
+              </Select.Option>
             ))}
-          </SelectSC>
+          </Select>
           <CheckboxSC
             checked={values.IsAlsoClosing}
             onChange={(e) => {

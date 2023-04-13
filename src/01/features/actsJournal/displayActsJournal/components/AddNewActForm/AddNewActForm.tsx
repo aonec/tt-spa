@@ -1,7 +1,6 @@
 import { AddressIdSearch } from '01/features/addressIdSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { message } from 'antd';
@@ -26,6 +25,7 @@ import { gridTemp } from '../TableHeader';
 import { AddNewActFormProps, AddNewActFormT } from './AddNewActForm.types';
 import { ButtonSC } from './AddNewActForm.styled';
 import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -101,7 +101,8 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       <ActResourcesGate />
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
-        <InputSC
+        <Input
+          search
           value={values.registryNumber || undefined}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFieldValue('registryNumber', e.target.value)
@@ -116,12 +117,12 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={handleEnterOnActTypeSelect}
-          isSearch
+          search
         >
           {actTypes?.map((type) => (
-            <SelectSC.Option key={type.key} value={type.key!}>
+            <Select.Option key={type.key} value={type.key!}>
               {type.value}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
         </Select>
         <Select
@@ -132,12 +133,12 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
-          isSearch
+          search
         >
           {actResources?.map((type) => (
-            <SelectSC.Option key={type.key} value={type.key!}>
+            <Select.Option key={type.key} value={type.key!}>
               {type.value}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
         </Select>
         <AddressIdSearch

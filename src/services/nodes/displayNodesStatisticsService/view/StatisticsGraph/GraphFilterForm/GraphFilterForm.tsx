@@ -17,7 +17,6 @@ import {
   RangeWrapper,
   ButtonSC,
 } from './GraphFilterForm.styled';
-import { SelectSC } from '01/shared/ui/Fields';
 import { RadioOptions, RangeOptions } from './GraphFilterForm.constants';
 import { DatePicker } from 'ui-kit/DatePicker';
 import * as yup from 'yup';
@@ -25,6 +24,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { ReportType } from '../StatisticsGraph.types';
 import { SortingIcon } from 'ui-kit/icons';
+import { Select } from 'ui-kit/Select';
 
 export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
   setGraphParam,
@@ -104,7 +104,8 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
               style={{ marginRight: 16 }}
             />
           </Tooltip>
-          <SelectSC
+          <Select
+            search
             placeholder="Autocomplete"
             value={currentGraphParam}
             showArrow={true}
