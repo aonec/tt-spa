@@ -64,7 +64,7 @@ import { ReactComponent as BriefcaseIcon } from './svg/briefcase.svg';
 import { ReactComponent as HouseIcon } from './svg/house.svg';
 import { ReactComponent as IncorrectConfigurationIcon } from './svg/incorrectConfiguration.svg';
 import { ReactComponent as ActiveFiltersIcon } from './svg/activeFilters.svg';
-import { ReactComponent as CheckConnection } from './svg/activeFilters.svg';
+import { ReactComponent as CheckConnection } from './svg/checkConnection.svg';
 import { ReactComponent as SortingIcon } from './svg/sorting.svg';
 
 export {
