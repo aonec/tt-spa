@@ -36,8 +36,6 @@ export const CheckNodeModal: FC<Props> = ({
   clearPayloadFile,
   setFiles,
 }) => {
-  console.log(payload);
-
   return (
     <>
       <ModalTT
