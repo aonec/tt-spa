@@ -1,4 +1,3 @@
-import { InputSC } from '01/shared/ui/Fields';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -16,6 +15,7 @@ import { SettingsIcon } from 'ui-kit/icons';
 import { baseURL } from '01/axios';
 import moment from 'moment';
 import styled from 'styled-components';
+import { Input } from 'ui-kit/Input';
 
 export const DevSettingsModal = () => {
   const visible = useStore($isDevSettingsModalOpen);
@@ -31,7 +31,8 @@ export const DevSettingsModal = () => {
     >
       <Form.Item label="URL">
         <Flex>
-          <InputSC
+          <Input
+            search
             value={fields.devUrl.value}
             onChange={(e) => fields.devUrl.onChange(e.target.value)}
           />

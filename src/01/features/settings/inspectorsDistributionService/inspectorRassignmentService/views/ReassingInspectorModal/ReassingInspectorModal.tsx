@@ -4,8 +4,8 @@ import { ReassingInspectorModalProps } from './ReassingInspectorModal.types';
 import { FormWrap, ModalDescription } from './ReassingInspectorModal.styled';
 import { useForm } from 'effector-forms/dist';
 import { Form } from 'antd';
-import { Select } from '01/shared/ui/Select';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Select } from 'ui-kit/Select';
 
 export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
   isOpen,

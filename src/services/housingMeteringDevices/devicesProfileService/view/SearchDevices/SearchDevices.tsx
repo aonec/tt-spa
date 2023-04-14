@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
-import { Select } from 'antd';
 import _ from 'lodash';
 import {
   FlexCenterRow,
@@ -15,7 +14,6 @@ import {
   ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
@@ -24,6 +22,8 @@ import { fromEnter } from '01/shared/ui/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
 import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 import { SearchIcon } from 'ui-kit/icons';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 const { Option } = Select;
 
@@ -93,7 +93,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     }
     return (
       <FormItem>
-        <InputSC
+        <Input
+          search
           onChange={(value) => {
             setSerialNumber(value.target.value);
           }}
@@ -126,7 +127,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
                 </StyledLabelSimple>
-                <SelectSC
+                <Select
+                  search
                   style={{ width: '65%' }}
                   value={values?.OrderBy}
                   placeholder="Дате проверки"
@@ -135,7 +137,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 >
                   <Option value="Descending">Улице (уб.)</Option>
                   <Option value="Ascending">Улице (возр.)</Option>
-                </SelectSC>
+                </Select>
               </FlexCenterRow>
             </FormItem>
             <ResetButton
@@ -154,7 +156,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="expirationDate">
                   Истекает дата поверки:
                 </StyledLabelSimple>
-                <SelectSC
+                <Select
+                  search
                   placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}
@@ -166,7 +169,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="NextMonth">В ближайший месяц</Option>
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
-                </SelectSC>
+                </Select>
               </StyledExpirationDate>
             </FormItem>
 

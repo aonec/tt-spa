@@ -1,7 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -16,6 +15,7 @@ import {
 import { renderDevice } from '../TransferDevices';
 import { confirmUsingExistingApartmentService } from './ConfirmUsingExistingApartmenService.model';
 import { PersonalNumber } from './ConfirmUsingExistingApartmentModal.styled';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const { outputs } = confirmUsingExistingApartmentService;
 
@@ -54,7 +54,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
         onSubmit={onSaveHandler}
         loading={pendingSplitRequest}
       >
-        <PendingLoader loading={pending}>
+        <WithLoader isLoading={pending}>
           <div style={{ color: 'gray', fontSize: 16 }}>
             Квартира по адресу{' '}
             <Link href={getLinkOnApartmentProfile()} target="blank">
@@ -82,7 +82,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
           )}
           <Space />
           {devices?.map(renderDevice)}
-        </PendingLoader>
+        </WithLoader>
       </ModalTT>
     </>
   );

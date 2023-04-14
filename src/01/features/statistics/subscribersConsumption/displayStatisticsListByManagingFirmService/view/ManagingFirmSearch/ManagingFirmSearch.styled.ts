@@ -1,5 +1,5 @@
-import { SelectSC } from '01/shared/ui/Fields';
 import styled from 'styled-components';
+import { Select } from 'ui-kit/Select';
 
 export const Wrapper = styled.div`
   margin-top: 16px;
@@ -10,10 +10,10 @@ export const SearchFieldsWrapper = styled.div`
   align-items: center;
 `;
 
-export const SelectCitySC = styled(SelectSC)`
+export const SelectCitySC = styled(Select)`
   width: 200px;
 `;
 
-export const SelectManagingFirmSC = styled(SelectSC)`
+export const SelectManagingFirmSC = styled(Select)`
   margin-left: 8px;
 `;

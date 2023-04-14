@@ -26,8 +26,8 @@ import {
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { SelectSC } from '01/shared/ui/Fields';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
+import { Select } from 'ui-kit/Select';
 
 const { TabPane } = TabsSC;
 
@@ -140,7 +140,6 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
       <FilterBlock>
         <ResourceSelectSC
-          isShadow={false}
           resource={values.nodeResourceType}
           onChange={(value) => {
             setFieldValue('nodeResourceType', value);
@@ -149,9 +148,9 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           }}
         />
 
-        <SelectSC
+        <Select
+          search
           placeholder="Выберите город"
-          isShadow={false}
           value={selectedCity || undefined}
           onChange={(city) => {
             setSelectedCity(city as string);
@@ -159,11 +158,11 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           }}
         >
           {existingCities?.map((city) => (
-            <SelectSC.Option key={city} value={city}>
+            <Select.Option key={city} value={city}>
               {city}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
-        </SelectSC>
+        </Select>
 
         <TreeSelectSC
           placeholder="Выберите улицу"
@@ -179,9 +178,9 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           treeData={preparedAddresses}
         />
 
-        <SelectSC
+        <Select
+          search
           placeholder="Выберите узел"
-          isShadow={false}
           value={values.nodeId || undefined}
           onChange={(nodeId) => {
             setFieldValue('nodeId', nodeId);
@@ -189,11 +188,11 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
           }}
         >
           {preparedNodes?.map((node) => (
-            <SelectSC.Option key={node.value} value={node.value}>
+            <Select.Option key={node.value} value={node.value}>
               {`Узел  ${node.nodeNumber}`}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
-        </SelectSC>
+        </Select>
       </FilterBlock>
 
       {isLoading && (

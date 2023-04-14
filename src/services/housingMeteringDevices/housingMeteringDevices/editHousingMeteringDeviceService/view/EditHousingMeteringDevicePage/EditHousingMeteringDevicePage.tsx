@@ -1,4 +1,4 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared_components/GoBack';

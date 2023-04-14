@@ -1,4 +1,4 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { EResourceType } from 'myApi';
 import React, { FC } from 'react';
 import { FormItem } from 'ui-kit/FormItem';

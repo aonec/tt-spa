@@ -1,8 +1,11 @@
 import React from 'react';
 import { FC } from 'react';
-import { ContextMenuButton } from '../ContextMenuButton';
-import { PageTitle } from '../Title';
-import { ContentWrapper, PageHeaderStyled } from './PageHeader.styled';
+import { ContextMenuButton } from '../../../01/shared/ui/ContextMenuButton';
+import {
+  ContentWrapper,
+  PageHeaderStyled,
+  PageTitle,
+} from './PageHeader.styled';
 import { PageHeaderProps } from './PageHeader.types';
 
 export const PageHeader: FC<PageHeaderProps> = ({

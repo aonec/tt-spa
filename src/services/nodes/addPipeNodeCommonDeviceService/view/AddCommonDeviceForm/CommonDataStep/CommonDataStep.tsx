@@ -10,7 +10,7 @@ import {
   validationSchema,
 } from './CommonDataStep.constants';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Form } from 'antd';
 import { resourceFromConfig } from 'utils/resourceFromConfigLookup';
 

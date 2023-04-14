@@ -9,7 +9,7 @@ import { ButtonSC, FormWrapper } from './MountAddress.styled';
 import { MountAddressProps } from './MountAddress.types';
 import { useFormik } from 'formik';
 import { validationSchema } from './MountAddress.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { AutoComplete } from 'ui-kit/AutoComplete';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';

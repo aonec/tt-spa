@@ -16,7 +16,7 @@ import {
   closeIndividualDeviceForm,
   closeIndividualDeviceFx,
 } from './models';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { EDocumentType } from 'myApi';
 import { Select } from 'ui-kit/Select';

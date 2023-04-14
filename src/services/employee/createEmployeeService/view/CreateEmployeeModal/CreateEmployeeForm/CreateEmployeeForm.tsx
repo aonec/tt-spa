@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { Input } from 'ui-kit/Input';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({

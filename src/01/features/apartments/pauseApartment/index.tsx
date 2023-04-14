@@ -22,7 +22,7 @@ import {
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const PauseApartmentModal: FC<{ apartmentId: number }> = ({
   apartmentId,

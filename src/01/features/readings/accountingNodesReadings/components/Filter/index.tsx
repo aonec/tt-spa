@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
 import { accountingNodesFilterForm } from '../../models';
-import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
+import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useRef } from 'react';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -16,6 +16,7 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { getArrayByCountRange } from './Filter.utils';
+import { Select } from 'ui-kit/Select';
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
@@ -53,20 +54,21 @@ export const AccountingNodesFilter = () => {
       <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="0.75fr 1.5fr 0.75fr" gap="15px">
-        <SelectSC
+        <Select
           placeholder="Город"
           ref={cityRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
           onChange={fields.city.onChange as any}
           value={fields.city.value}
           onFocus={clearValuesOnFocusCallback(0)}
+          search
         >
           {cities?.map((elem, index) => (
-            <SelectSC.Option key={index} value={elem}>
+            <Select.Option key={index} value={elem}>
               {elem}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
-        </SelectSC>
+        </Select>
         <StyledAutocomplete
           placeholder="Улица"
           ref={streetRef}
