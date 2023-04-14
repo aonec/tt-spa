@@ -83,8 +83,7 @@ export const SearchContentWrap = styled.div`
 
 export const ExtendedSearchWrap = styled.div`
   border-radius: 10px;
-  margin: 0 6px 16px;
-  box-shadow: 0 5px 10px rgba(0, 0, 66, 0.12);
+  border: 2px solid #f3f5f6;
 `;
 
 export const ClearIconSC = styled(CloseIcon)`
