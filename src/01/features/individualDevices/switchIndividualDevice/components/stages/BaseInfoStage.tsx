@@ -34,7 +34,7 @@ import {
 } from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative, fromEnter } from '01/shared/ui/DatePickerNative';
-import { Loader } from '01/components';
+import { Loader } from 'ui-kit/Loader';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
 import {

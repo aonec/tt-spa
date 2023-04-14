@@ -1,7 +1,7 @@
-import { Loader } from '01/components';
 import { Skeleton } from 'antd';
 import React from 'react';
 import { Flex } from '../Layout/Flex';
+import { Loader } from 'ui-kit/Loader';
 
 interface Props {
   loading: boolean;

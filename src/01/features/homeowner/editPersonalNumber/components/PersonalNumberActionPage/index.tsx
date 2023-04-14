@@ -1,4 +1,3 @@
-import { Loader } from '01/components';
 import {
   $apartment,
   ApartmentGate,
@@ -15,6 +14,7 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { useForm } from 'effector-forms/dist';
 import { personalNumberEditForm } from '../../models';
 import { Button } from 'ui-kit/Button';
+import { Loader } from 'ui-kit/Loader';
 
 interface Props {
   title: string;

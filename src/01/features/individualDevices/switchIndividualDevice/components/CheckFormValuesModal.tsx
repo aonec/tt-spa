@@ -18,7 +18,7 @@ import {
   SwitchIndividualDeviceGate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { Loader } from '01/components';
+import { Loader } from 'ui-kit/Loader';
 import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { ReadingsInput } from './ReadingsInput';

@@ -2,8 +2,8 @@ import React from 'react';
 import { Select, AutoComplete, DatePicker, Input } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
-import { Loader } from '01/components';
 import { ActiveFiltersIcon } from 'ui-kit/icons';
+import { Loader } from 'ui-kit/Loader';
 
 export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
   width: 100%;
