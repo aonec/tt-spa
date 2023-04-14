@@ -42,7 +42,7 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
       >
         <SearchFieldsWrapper>
           <SelectCitySC
-            search
+            small
             value={values.City || undefined}
             placeholder="Выберите город"
             onChange={(value) => setFieldValue('City', value)}
@@ -55,7 +55,7 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
           </SelectCitySC>
 
           <PersonalNumberInput
-            search
+            small
             placeholder="Номер лицевого счёта или ФИО"
             value={values.Question}
             onChange={(e) => setFieldValue('Question', e.target.value)}

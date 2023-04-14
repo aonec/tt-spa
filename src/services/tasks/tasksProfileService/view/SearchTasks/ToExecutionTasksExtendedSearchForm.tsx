@@ -117,7 +117,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
             </Tooltip>
           </StyledTooltiContainer>
           <Input
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             onChange={(value) =>
               setFieldValue('ApartmentNumber', value.target.value)
@@ -134,7 +134,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
       <StyledContainerThreeItemsMainTypes>
         <FormItem label="Элемент инженерной сети">
           <Select
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Элемент"
@@ -154,7 +154,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
         </FormItem>
         <FormItem label="Тип ресурса">
           <Select
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Тип ресурса"
@@ -176,7 +176,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
         </FormItem>
         <FormItem label="Домоуправление">
           <Select
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             id="HouseManagementId"
@@ -201,7 +201,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
       <StyledContainerThreeItemsMainTypes>
         <FormItem label="Статус">
           <Select
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Статус"
@@ -223,7 +223,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
         </FormItem>
         <FormItem label="Тип задачи">
           <OverFlowSelectSC
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             id="TaskType"
             placeholder="Тип задачи"
@@ -243,7 +243,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
         </FormItem>
         <FormItem label="Исполнитель">
           <Select
-            search
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Исполнитель"

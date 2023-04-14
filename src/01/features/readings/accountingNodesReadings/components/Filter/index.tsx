@@ -61,7 +61,7 @@ export const AccountingNodesFilter = () => {
           onChange={fields.city.onChange as any}
           value={fields.city.value}
           onFocus={clearValuesOnFocusCallback(0)}
-          search
+          small
         >
           {cities?.map((elem, index) => (
             <Select.Option key={index} value={elem}>

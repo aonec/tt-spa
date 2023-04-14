@@ -32,7 +32,7 @@ export const DevSettingsModal = () => {
       <Form.Item label="URL">
         <Flex>
           <Input
-            search
+            small
             value={fields.devUrl.value}
             onChange={(e) => fields.devUrl.onChange(e.target.value)}
           />

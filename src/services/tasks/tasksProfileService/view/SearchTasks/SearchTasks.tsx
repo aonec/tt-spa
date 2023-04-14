@@ -140,7 +140,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       <ExistingCitiesGate />
       <Wrapper>
         <Input
-          search
+          small
           placeholder="Номер задачи"
           value={values.TaskId}
           onChange={handleInputChange}
@@ -149,7 +149,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           name="TaskId"
         />
         <Select
-          search
+          small
           placeholder="Тип задачи"
           value={values.TaskType!}
           onChange={(value) => {

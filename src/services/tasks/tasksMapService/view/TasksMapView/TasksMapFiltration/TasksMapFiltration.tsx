@@ -80,7 +80,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               ].some(Boolean)}
             />
             <SearchInput
-              search
+              small
               placeholder="Введите номер задачи или адрес"
               prefix={<SearchIcon />}
               disabled
@@ -119,7 +119,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
           <ExtendedFiltration>
             <FormItem label="Элемент инженерной сети">
               <Select
-                search
+                small
                 placeholder="Выберите"
                 value={values.engineeringElement || ''}
                 onChange={(value) =>
@@ -175,7 +175,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             </FormItem>
             <FormItem label="Тип задачи">
               <Select
-                search
+                small
                 placeholder="Выберите тип"
                 value={values.type || undefined}
                 onChange={(value) => setFieldValue('type', value)}
@@ -191,7 +191,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             </FormItem>
             <FormItem label="Исполнитель">
               <Select
-                search
+                small
                 placeholder="Выберите исполнителя"
                 value={values.executorId || undefined}
                 onChange={(userId) => setFieldValue('executorId', userId)}

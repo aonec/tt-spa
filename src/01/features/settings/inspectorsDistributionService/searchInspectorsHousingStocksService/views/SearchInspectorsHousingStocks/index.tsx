@@ -63,7 +63,7 @@ export const SearchInspectorsHousingStocks: FC<
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">
                 <Select
-                  search
+                  small
                   placeholder="Выберите из списка"
                   value={form.fields.InspectorId.value || undefined}
                   onChange={(value) => {
@@ -84,7 +84,7 @@ export const SearchInspectorsHousingStocks: FC<
               </Form.Item>
               <Form.Item label="Домоуправление">
                 <Select
-                  search
+                  small
                   value={form.fields.HouseManagement.value || undefined}
                   onChange={(value) => {
                     if (!value) {
@@ -111,7 +111,7 @@ export const SearchInspectorsHousingStocks: FC<
         >
           <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
             <Select
-              search
+              small
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(0)(e);
                 fromEnter(handleSearch)(e);
@@ -148,7 +148,7 @@ export const SearchInspectorsHousingStocks: FC<
               placeholder="Улица"
             />
             <Input
-              search
+              small
               ref={homeNumberRef}
               placeholder="Дом"
               value={form.fields.HousingStockNumber.value}

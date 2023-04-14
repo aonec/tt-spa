@@ -94,7 +94,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     return (
       <FormItem>
         <Input
-          search
+          small
           onChange={(value) => {
             setSerialNumber(value.target.value);
           }}
@@ -128,7 +128,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   Сортировать по:
                 </StyledLabelSimple>
                 <Select
-                  search
+                  small
                   style={{ width: '65%' }}
                   value={values?.OrderBy}
                   placeholder="Дате проверки"
@@ -157,7 +157,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   Истекает дата поверки:
                 </StyledLabelSimple>
                 <Select
-                  search
+                  small
                   placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}

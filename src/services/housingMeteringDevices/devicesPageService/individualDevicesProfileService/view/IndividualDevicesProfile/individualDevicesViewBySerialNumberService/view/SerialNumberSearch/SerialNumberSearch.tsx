@@ -68,7 +68,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
       >
         <SearchFieldsWrapper>
           <Input
-            search
+            small
             data-reading-input={'searchBySerialNumber'}
             prefix={<SearchIcon />}
             type="text"
@@ -81,7 +81,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             })}
           />
           <Select
-            search
+            small
             data-reading-input={'searchBySerialNumber'}
             placeholder="Ресурс"
             value={values.Resource || EActResourceType.All}
@@ -100,7 +100,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             ))}
           </Select>
           <Select
-            search
+            small
             data-reading-input={'searchBySerialNumber'}
             placeholder="Статус кв."
             value={values.ApartmentStatus || undefined}

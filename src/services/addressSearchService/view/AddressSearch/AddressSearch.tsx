@@ -36,7 +36,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const citySearch = (index: number, isDisabled?: boolean) => (
     <Select
-      search
+      small
       placeholder="Город"
       ref={refs[index]}
       onKeyDown={keyDownEnterGuardedHandler(index)}
@@ -82,7 +82,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const homeNumberSearch = (index: number, isDisabled?: boolean) => (
     <Input
-      search
+      small
       placeholder="Дом"
       value={values.house}
       onChange={(e) => handleChange(SearchFieldType.House, e.target.value)}
@@ -100,7 +100,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const corpusSearch = (index: number, isDisabled?: boolean) => (
     <Input
-      search
+      small
       placeholder="Корпус"
       value={values.corpus}
       onChange={(e) => handleChange(SearchFieldType.Corpus, e.target.value)}
@@ -118,7 +118,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const apartmentSearch = (index: number, isDisabled?: boolean) => (
     <Input
-      search
+      small
       placeholder="Квартирa"
       value={values.apartment}
       onChange={(e) => handleChange(SearchFieldType.Apartment, e.target.value)}
@@ -136,7 +136,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
 
   const questionSearch = (index: number, isDisabled?: boolean) => (
     <Input
-      search
+      small
       placeholder="Л/С или ФИО"
       value={values.question}
       onChange={(e) => handleChange(SearchFieldType.Question, e.target.value)}

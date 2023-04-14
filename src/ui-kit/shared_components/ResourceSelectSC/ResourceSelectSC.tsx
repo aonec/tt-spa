@@ -18,7 +18,7 @@ export const ResourceSelectSC: FC<ResourceSelectSCProps> = ({
 
   return (
     <Select
-      search
+      small
       value={selectedResource || undefined}
       onChange={(value) =>
         onChange && onChange((value || null) as EResourceType | null)

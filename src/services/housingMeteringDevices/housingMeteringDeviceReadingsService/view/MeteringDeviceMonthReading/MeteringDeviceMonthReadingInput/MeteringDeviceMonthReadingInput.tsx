@@ -41,7 +41,7 @@ export const MeteringDeviceMonthReadingInput: FC<
 
   return (
     <InputSC
-      search
+      small
       size="small"
       value={getInputValue(reading.value)}
       onFocus={(e) => e.currentTarget.select()}

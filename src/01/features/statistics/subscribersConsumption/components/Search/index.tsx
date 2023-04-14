@@ -142,7 +142,7 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
         <ExistingStreetsGate City={fields.city.value} />
         <Grid temp={temp} gap="15px">
           <Select
-            search
+            small
             onBlur={onFindHandler}
             placeholder="Город"
             ref={cityRef}

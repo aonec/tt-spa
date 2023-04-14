@@ -102,7 +102,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
         <Input
-          search
+          small
           value={values.registryNumber || undefined}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFieldValue('registryNumber', e.target.value)
@@ -117,7 +117,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={handleEnterOnActTypeSelect}
-          search
+          small
         >
           {actTypes?.map((type) => (
             <Select.Option key={type.key} value={type.key!}>
@@ -133,7 +133,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
-          search
+          small
         >
           {actResources?.map((type) => (
             <Select.Option key={type.key} value={type.key!}>

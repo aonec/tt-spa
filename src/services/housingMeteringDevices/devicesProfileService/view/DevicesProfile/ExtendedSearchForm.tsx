@@ -79,7 +79,7 @@ export const ExtendedSearchForm: FC<{
       <StyledContainerThreeItems>
         <FormItem label="Тип ресурса">
           <Select
-            search
+            small
             id="Resource"
             value={values['Filter.Resource']}
             placeholder="Все ресурсы"
@@ -95,7 +95,7 @@ export const ExtendedSearchForm: FC<{
 
         <FormItem label="Статус Узла">
           <Select
-            search
+            small
             id="NodeStatus"
             placeholder="Любой статус"
             value={values['Filter.NodeStatus']}
@@ -110,7 +110,7 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Истекает дата поверки">
           <Select
-            search
+            small
             id="expirationDate"
             placeholder="Все"
             value={values['Filter.ExpiresCheckingDateAt']}
@@ -172,7 +172,7 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Сортировать по">
           <Select
-            search
+            small
             id="sortBy"
             placeholder="Улица"
             value={values.OrderBy}

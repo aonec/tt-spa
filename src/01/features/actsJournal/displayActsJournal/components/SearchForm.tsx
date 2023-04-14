@@ -67,7 +67,7 @@ export const SearchForm = () => {
           onFocus={clearValuesOnFocusCallback(0)}
           onChange={fields.city.onChange as any}
           value={fields.city.value!}
-          search
+          small
         >
           {cities?.map((elem, index) => (
             <Select.Option key={index} value={elem}>
