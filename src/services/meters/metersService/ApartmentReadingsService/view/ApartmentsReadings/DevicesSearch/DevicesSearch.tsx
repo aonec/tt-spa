@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import axios from '01/axios';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { translateMountPlace } from '01/utils/translateMountPlace';
@@ -13,6 +12,7 @@ import { DateLine } from '01/_components/DateLine/DateLine';
 import { CancelTokenSource } from 'axios';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,
@@ -87,7 +87,8 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
 
   return (
     <>
-      <StyledAutocomplete
+      <AutoComplete
+        small
         value={serialNumber}
         onChange={setSerialNumber}
         placeholder="Серийный номер прибора"

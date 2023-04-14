@@ -1,7 +1,6 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
 import { Form } from 'antd';
@@ -10,6 +9,7 @@ import { ExtendedSearchWrap, Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
@@ -129,7 +129,8 @@ export const SearchInspectorsHousingStocks: FC<
                   </Select.Option>
                 ))}
             </Select>
-            <StyledAutocomplete
+            <AutoComplete
+              small
               ref={streetRef}
               value={form.fields.Street.value}
               onChange={form.fields.Street.onChange}

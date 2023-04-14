@@ -1,34 +1,9 @@
 import React from 'react';
-import { AutoComplete, DatePicker } from 'antd';
+import { DatePicker } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
 import { Loader } from '01/components';
 import { ActiveFiltersIcon } from 'ui-kit/icons';
-
-export const StyledAutocomplete = styled(AutoComplete)`
-  width: 100%;
-
-  .ant-select-selector {
-    border: 1px solid lightgray;
-    padding: 4px 16px;
-
-    border-radius: 4px !important;
-
-    border: 1px solid var(--frame);
-    height: var(--h-norm);
-
-    box-shadow: 0 4px 7px #02004b1f;
-
-    &:hover,
-    &:focus {
-      border: 1px solid #1890ff;
-    }
-
-    &:focus {
-      box-shadow: 0 2px 7px #188fffae;
-    }
-  }
-`;
 
 export const StyledRangePicker = styled(DatePicker.RangePicker)`
   color: #333333;

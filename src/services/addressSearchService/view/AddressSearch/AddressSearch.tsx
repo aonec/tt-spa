@@ -1,6 +1,5 @@
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { fromEnter } from '01/shared/ui/DatePickerNative';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useAutocomplete } from '01/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';
@@ -9,6 +8,7 @@ import { Wrapper } from './AddressSearch.styled';
 import { AddressSearchProps, SearchFieldType } from './AddressSearch.types';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const AddressSearch: FC<AddressSearchProps> = ({
   streets,
@@ -53,7 +53,8 @@ export const AddressSearch: FC<AddressSearchProps> = ({
   );
 
   const streetSearch = (index: number, isDisabled?: boolean) => (
-    <StyledAutocomplete
+    <AutoComplete
+      small
       placeholder="Улица"
       ref={refs[index]}
       value={values.street || ''}

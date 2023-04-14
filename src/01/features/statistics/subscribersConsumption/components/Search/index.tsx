@@ -10,7 +10,6 @@ import {
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
@@ -28,6 +27,7 @@ import {
 import { SubscribersConsumptionExtendedSearch } from '../SubscribersConsumptionExtendedSearch';
 import { Wrapper } from './Search.styled';
 import { Select } from 'ui-kit/Select';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 const { inputs, outputs } = subscribersConsumptionService;
 
@@ -156,7 +156,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
               </Select.Option>
             ))}
           </Select>
-          <StyledAutocomplete
+          <AutoComplete
+            small
             onBlur={onFindHandler}
             placeholder="Улица"
             ref={streetRef}
@@ -173,7 +174,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             options={options}
             onSelect={() => fields.street.onChange(streetMatch)}
           />
-          <StyledAutocomplete
+          <AutoComplete
+            small
             onBlur={onFindHandler}
             placeholder="Дом"
             value={fields.house.value}
@@ -186,7 +188,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             }}
           />
           {isHousingStockHasCorpuses && (
-            <StyledAutocomplete
+            <AutoComplete
+              small
               onBlur={onFindHandler}
               placeholder="Корпус"
               value={fields.corpus.value}
