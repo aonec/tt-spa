@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Device = styled.div`
+  margin: 14px 0px;
   padding: 15px;
   cursor: pointer;
   z-index: 0;

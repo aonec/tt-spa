@@ -15,6 +15,7 @@ import {
 } from '01/features/apartments/pauseApartment/models';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 import { EffectFailDataAxiosError } from 'types';
+import { $allIndividualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const domain = createDomain('apartmentReadingsService');
 
@@ -118,6 +119,7 @@ export const apartmentReadingsService = {
     $apartment,
     $isLoadingApartment,
     $selectedHomeownerName,
+    $allIndividualDeviceMountPlaces: $allIndividualDeviceMountPlaces,
   },
   gates: { ApartmentGate },
 };

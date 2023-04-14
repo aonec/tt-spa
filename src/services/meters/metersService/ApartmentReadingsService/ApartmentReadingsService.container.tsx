@@ -30,6 +30,9 @@ export const ApartmentReadingsContainer = () => {
   const isLoadingApartment = useStore(outputs.$isLoadingApartment);
   const apartment = useStore(outputs.$apartment);
   const selectedHomeownerName = useStore(outputs.$selectedHomeownerName);
+  const allIndividualDeviceMountPlaces = useStore(
+    outputs.$allIndividualDeviceMountPlaces,
+  );
 
   const isPermitionToApartmentStatusPatch = usePermission([
     ESecuredIdentityRoleName.Administrator,
@@ -62,6 +65,7 @@ export const ApartmentReadingsContainer = () => {
         setSelectedHomeownerName={setSelectedHomeownerName}
         selectedHomeownerName={selectedHomeownerName}
         isPermitionToApartmentStatusPatch={isPermitionToApartmentStatusPatch}
+        allIndividualDeviceMountPlaces={allIndividualDeviceMountPlaces}
       />
     </>
   );
