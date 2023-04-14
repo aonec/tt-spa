@@ -73,7 +73,6 @@ export const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  border-radius: 0 0 10px 10px;
 `;
 
 export const SearchContentWrap = styled.div`
