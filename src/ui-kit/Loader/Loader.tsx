@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import { Icon } from '01/components/Icon';
 import { LoaderWrapper } from './Loader.styled';
 import { LoaderProps } from './Loader.types';
+import { SwitchIcon } from 'ui-kit/icons';
 
-export const Loader: FC<LoaderProps> = ({ children, show, size, ...props }) => {
+export const Loader: FC<LoaderProps> = ({ children, show }) => {
   const loader = (
     <LoaderWrapper>
-      <Icon icon="replacement" size={Number(size || 16)} {...props} />
+      <SwitchIcon />
     </LoaderWrapper>
   );
 
