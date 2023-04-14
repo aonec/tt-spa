@@ -3,9 +3,9 @@ import { LoaderWrapper } from './Loader.styled';
 import { LoaderProps } from './Loader.types';
 import { SwitchIcon } from 'ui-kit/icons';
 
-export const Loader: FC<LoaderProps> = ({ children, show }) => {
+export const Loader: FC<LoaderProps> = ({ children, show, size = 16 }) => {
   const loader = (
-    <LoaderWrapper>
+    <LoaderWrapper size={size}>
       <SwitchIcon />
     </LoaderWrapper>
   );

@@ -10,11 +10,13 @@ export const rotation = keyframes`
   }
 `;
 
-export const LoaderWrapper = styled.div`
+export const LoaderWrapper = styled.div<{ size: number }>`
   margin-top: 4px;
 
   svg {
     animation: ${rotation} 1000ms linear infinite;
     margin: 0 auto;
+    width: ${({ size }) => `${size}px`};
+    height: ${({ size }) => `${size}px`};
   }
 `;
