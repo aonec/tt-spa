@@ -19,6 +19,7 @@ export const EditIndividualDeviceContainer = () => {
   const currentTab = useStore(outputs.$currentTab);
   const individualDevice = useStore(outputs.$individualDevice);
   const isDeviceLoading = useStore(outputs.$isDeviceLoading);
+  const isDeviceUpdating = useStore(outputs.$isDeviceUpdating);
   const mountPlaces = useStore(outputs.$mountPlaces);
 
   const apartmentId = individualDevice?.address?.apartmentId;
@@ -46,6 +47,7 @@ export const EditIndividualDeviceContainer = () => {
         handleUpdateDevice={handleUpdateDevice}
         mountPlaces={mountPlaces}
         onCancel={onCancel}
+        isDeviceUpdating={isDeviceUpdating}
       />
     </>
   );

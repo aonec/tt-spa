@@ -61,6 +61,7 @@ const $currentTab = domain
   .on(handleChangeTab, (_, tab) => tab);
 
 const $isDeviceLoading = getDeviceFx.pending;
+const $isDeviceUpdating = putDeviceFx.pending;
 
 const updateDeviceSuccess = putDeviceFx.doneData;
 const updateDeviceFail = putDeviceFx.failData;
@@ -82,6 +83,7 @@ export const editIndividualDeviceService = {
     $individualDevice,
     $isDeviceLoading,
     $mountPlaces: $individualDeviceMountPlaces,
+    $isDeviceUpdating,
   },
   gates: { FetchIndividualDeviceGate },
 };
