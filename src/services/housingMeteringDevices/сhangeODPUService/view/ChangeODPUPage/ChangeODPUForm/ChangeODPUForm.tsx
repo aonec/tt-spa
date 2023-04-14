@@ -16,7 +16,7 @@ import {
   checkIsDateNotFuture,
   getDatePickerValue,
 } from './ChangeODPUForm.utils';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';

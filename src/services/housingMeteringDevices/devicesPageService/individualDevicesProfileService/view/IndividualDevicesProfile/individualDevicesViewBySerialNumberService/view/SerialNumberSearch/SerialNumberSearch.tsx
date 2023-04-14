@@ -1,5 +1,5 @@
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
 import { EActResourceType, EApartmentStatus } from 'myApi';
 import React, { FC, useCallback } from 'react';

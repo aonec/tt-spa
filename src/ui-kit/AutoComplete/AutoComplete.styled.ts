@@ -7,7 +7,7 @@ export const AutoComplete = styled(AutoCompleteAntD)<{ small?: boolean }>`
   .ant-select-selector {
     height: 100% !important;
     border-radius: 4px !important;
-    padding: ${({ small }) => (small ? '2px' : '8px')} 16px !important;
+    padding: ${({ small }) => (small ? '1px' : '8px')} 16px !important;
 
     .ant-select-selection-search .ant-select-selection-search-input {
       padding: 0px;

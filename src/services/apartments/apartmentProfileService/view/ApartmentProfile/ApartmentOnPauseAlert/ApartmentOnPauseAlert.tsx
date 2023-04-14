@@ -1,4 +1,4 @@
-import { Alert } from '01/shared/ui/Alert';
+import { Alert } from 'ui-kit/Alert';
 import { EApartmentStatus } from 'myApi';
 import React, { FC } from 'react';
 import { ApartmentOnPauseAlertProps } from './ApartmentOnPauseAlert.types';

@@ -8,7 +8,7 @@ import {
 } from './ApartmentAlerts.styled';
 import { ApartmentAlertsProps } from './ApartmentAlerts.types';
 import { EApartmentStatus } from 'myApi';
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';

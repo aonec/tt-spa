@@ -1,5 +1,5 @@
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useAutocomplete } from '01/hooks/useFilter';
 import React, { FC, ReactElement } from 'react';
 import { FormItem } from 'ui-kit/FormItem';

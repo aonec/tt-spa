@@ -1,4 +1,4 @@
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';

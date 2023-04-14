@@ -1,4 +1,4 @@
-import { Alert } from '01/shared/ui/Alert';
+import { Alert } from 'ui-kit/Alert';
 import React, { FC, useState } from 'react';
 import {
   ErrorContentWrapper,

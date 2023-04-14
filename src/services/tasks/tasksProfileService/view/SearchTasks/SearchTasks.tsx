@@ -10,7 +10,7 @@ import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
 import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 import { Wrapper } from './SearchTasks.styled';

@@ -1,4 +1,3 @@
-import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { NumberRange } from '01/shared/ui/Fields/NumberRange';
 import { Checkbox } from 'antd';
 import moment from 'moment';
@@ -11,6 +10,8 @@ import {
 } from './SubscribersConsumptionExtendedSearch.styled';
 import { SubscribersConsumptionExtendedSearchProps } from './SubscribersConsumptionExtendedSearch.types';
 import { prepareConsumptionForInput } from './SubscribersConsumptionExtendedSearch.utils';
+import { RangePicker } from 'ui-kit/RangePicker';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 export const SubscribersConsumptionExtendedSearch: FC<
   SubscribersConsumptionExtendedSearchProps
@@ -155,7 +156,8 @@ export const SubscribersConsumptionExtendedSearch: FC<
         <TitleText>Период проверки ИПУ</TitleText>
         <TitleText>Месяц последней передачи показаний</TitleText>
 
-        <StyledRangePicker
+        <RangePicker
+          small
           allowClear
           disabled={ExcludeApartments}
           value={
@@ -170,7 +172,8 @@ export const SubscribersConsumptionExtendedSearch: FC<
           onChange={(dates) => handleChangeDateRange(dates)}
         />
 
-        <StyledDatePicker
+        <DatePicker
+          small
           allowClear
           onChange={(value) => {
             setFieldValue(

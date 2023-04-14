@@ -1,13 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 import {
   IncorrectConfigurationIcon,
   InfoIcon,
   StopIcon,
   WarningIcon,
 } from 'ui-kit/icons';
-import { Space } from '../Layout/Space/Space';
-import { IconWrapper } from './Alert.styled';
+import { Space } from '../../01/shared/ui/Layout/Space/Space';
+import { AlertWrap, IconWrapper, Wide } from './Alert.styled';
 
 interface Props {
   type?: 'info' | 'stop' | 'warning' | 'incorrect';
@@ -40,22 +39,3 @@ export const Alert: React.FC<Props> = ({
     </AlertWrap>
   );
 };
-
-interface AlertWrapProps {
-  color?: string;
-}
-
-export const AlertWrap = styled.div`
-  display: flex;
-  align-items: flex-start;
-
-  background: ${({ color }: AlertWrapProps) => `#${color || '189ee9'}35`};
-  border-left: 2px solid
-    ${({ color }: AlertWrapProps) => `#${color || '189ee9'}`};
-  padding: 10px 18px;
-  color: #272f5a;
-`;
-
-const Wide = styled.div`
-  width: 100%;
-`;

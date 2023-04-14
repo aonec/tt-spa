@@ -1,4 +1,4 @@
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 import { Spaces, Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useForm } from 'effector-forms/dist';

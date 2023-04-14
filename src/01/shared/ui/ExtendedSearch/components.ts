@@ -19,8 +19,6 @@ export const ExtendedSearchButton = styled.div`
   cursor: pointer;
   transition: 0.2s;
 
-  box-shadow: 0 4px 7px #02004b1f;
-
   &:hover {
     border-color: #189ee9;
     background-color: #189ce91e;

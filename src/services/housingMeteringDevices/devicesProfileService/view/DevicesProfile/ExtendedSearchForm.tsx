@@ -2,7 +2,6 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import {
-  StyledRangePicker,
   StyledContainerThreeItems,
   StyledSlider,
   StyledFormThreeRows,
@@ -16,6 +15,7 @@ import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants'
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 const { Option } = Select;
 
@@ -143,7 +143,8 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Период действия акта допуска">
           <ConfigProvider>
-            <StyledRangePicker
+            <RangePicker
+              small
               value={[
                 values['Filter.CommercialDateRange.From']
                   ? moment(

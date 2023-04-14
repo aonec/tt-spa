@@ -1,4 +1,4 @@
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
 import { useFormik } from 'formik';
 import { last } from 'lodash';

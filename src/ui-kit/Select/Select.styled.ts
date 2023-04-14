@@ -38,7 +38,7 @@ export const Select = styled(AntSelect)<{ small?: boolean }>`
 
   .ant-select-selector {
     height: 100% !important;
-    padding: ${({ small }) => (small ? '0px' : '8px')} 16px !important;
+    padding: ${({ small }) => (small ? '1px' : '8px')} 16px !important;
     border-radius: 4px !important;
   }
 

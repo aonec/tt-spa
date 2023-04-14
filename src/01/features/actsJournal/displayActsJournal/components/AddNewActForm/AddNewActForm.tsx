@@ -1,6 +1,6 @@
 import { AddressIdSearch } from '01/features/addressIdSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { message } from 'antd';
