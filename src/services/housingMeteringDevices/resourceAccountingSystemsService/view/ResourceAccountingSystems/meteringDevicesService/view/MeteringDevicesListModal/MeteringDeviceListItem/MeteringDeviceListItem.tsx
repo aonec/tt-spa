@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { MagistralsDisctionary } from 'dictionaries';
 import {
   AdditionalInfo,

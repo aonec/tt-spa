@@ -1,4 +1,4 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useState } from 'react';

@@ -13,7 +13,7 @@ import {
 } from './IndividualDevicesAddressSearch.styled';
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
 import { ResetButton } from 'services/housingMeteringDevices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 
 export const IndividualDevicesAddressSearch: FC<
   IndividualDevicesAddressSearchProps

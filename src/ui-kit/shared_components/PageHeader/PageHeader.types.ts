@@ -1,5 +1,5 @@
+import { ContextMenuButtonProps } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import { ReactNode } from 'react';
-import { ContextMenuButtonProps } from '../../../01/shared/ui/ContextMenuButton';
 
 export type PageHeaderProps = {
   title: ReactNode;

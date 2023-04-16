@@ -1,4 +1,4 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { useEvent, useStore } from 'effector-react';
 import React, { FC } from 'react';
 import {

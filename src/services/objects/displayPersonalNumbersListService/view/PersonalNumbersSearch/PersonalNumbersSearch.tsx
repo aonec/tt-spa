@@ -1,5 +1,5 @@
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { useFormik } from 'formik';
 import { last } from 'lodash';
 import React, { FC, useEffect } from 'react';

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';

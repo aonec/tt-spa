@@ -15,7 +15,7 @@ import {
   Wrapper,
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { ResetButton } from 'services/housingMeteringDevices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';

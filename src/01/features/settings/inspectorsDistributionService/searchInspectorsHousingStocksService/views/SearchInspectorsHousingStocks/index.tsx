@@ -1,6 +1,6 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
 import { Form } from 'antd';

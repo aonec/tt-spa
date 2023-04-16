@@ -1,4 +1,4 @@
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import React, { FC, useMemo } from 'react';
 import { WarningIcon } from 'ui-kit/icons';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';

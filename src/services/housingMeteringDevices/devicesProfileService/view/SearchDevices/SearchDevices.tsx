@@ -20,10 +20,10 @@ import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/housingMeteringDevices/devicesPageService/devicesPageService.types';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 import { SearchIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 
 const { Option } = Select;
 
