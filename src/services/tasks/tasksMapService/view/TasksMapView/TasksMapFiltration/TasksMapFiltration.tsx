@@ -119,9 +119,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               <SelectSC
                 placeholder="Выберите"
                 value={values.engineeringElement || ''}
-                onChange={(value) =>
-                  setFieldValue('engineeringElement', value || null)
-                }
+                onChange={(value) => {
+                  setFieldValue('engineeringElement', value || null);
+                  setFieldValue('type', null);
+                }}
               >
                 <SelectSC.Option value="" key="">
                   Все

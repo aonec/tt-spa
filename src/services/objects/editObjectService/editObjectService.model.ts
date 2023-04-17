@@ -1,7 +1,4 @@
-import { createDomain } from 'effector';
 import { objectProfileService } from '../objectProfileService';
-
-const domain = createDomain('editObjectService');
 
 export const editObjectService = {
   inputs: {},
