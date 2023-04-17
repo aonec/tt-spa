@@ -45,6 +45,10 @@ export const ConfirmUsingExistingApartmentModal = () => {
   const isApartmentHasDevices = Boolean(devices?.length);
   const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);
 
+  const allIndividualDeviceMountPlaces = useStore(
+    $allIndividualDeviceMountPlaces,
+  );
+
   return (
     <>
       <ModalTT
@@ -82,7 +86,9 @@ export const ConfirmUsingExistingApartmentModal = () => {
             </>
           )}
           <Space />
-          {devices?.map(renderDevice)}
+          {devices?.map((device, index) =>
+            renderDevice(device, index, allIndividualDeviceMountPlaces),
+          )}
         </WithLoader>
       </ModalTT>
     </>

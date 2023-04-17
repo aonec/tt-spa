@@ -5,7 +5,10 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import {
+  IndividualDeviceListItemResponse,
+  IndividualDeviceMountPlaceForFilterResponse,
+} from 'myApi';
 import React from 'react';
 import styled from 'styled-components';
 import { transferDevicesForm } from '../../models';
@@ -106,11 +109,10 @@ const Container = styled.div`
 export const renderDevice = (
   device: IndividualDeviceListItemResponse,
   index: number,
+  allIndividualDeviceMountPlaces:
+    | IndividualDeviceMountPlaceForFilterResponse[]
+    | null,
 ) => {
-  const allIndividualDeviceMountPlaces = useStore(
-    $allIndividualDeviceMountPlaces,
-  );
-
   return (
     <Device key={index}>
       <Flex>
