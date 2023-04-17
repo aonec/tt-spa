@@ -29,5 +29,7 @@ export const getTaskIconByTaskType = (task: TaskShortResponse) => {
       return HeatIcon;
     case HousingStockTaskMarkerType.HotWaterSupply:
       return HotWaterSupplyIcon;
+    default:
+      return AllResourcesIcon;
   }
 };
