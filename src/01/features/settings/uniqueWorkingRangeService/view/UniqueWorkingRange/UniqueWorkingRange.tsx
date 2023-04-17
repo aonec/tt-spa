@@ -149,7 +149,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         />
 
         <Select
-          search
+          small
           placeholder="Выберите город"
           value={selectedCity || undefined}
           onChange={(city) => {
@@ -179,7 +179,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
         />
 
         <Select
-          search
+          small
           placeholder="Выберите узел"
           value={values.nodeId || undefined}
           onChange={(nodeId) => {

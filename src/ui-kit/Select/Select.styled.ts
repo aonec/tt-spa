@@ -29,17 +29,21 @@ const FormSelectStyles = css`
   }
 `;
 
-export const Select = styled(AntSelect)<{ search?: boolean }>`
-  height: ${({ search }) => (search ? '32px' : '48px')};
+const SmallSelectStyles = css`
+  width: 100%;
+`;
+
+export const Select = styled(AntSelect)<{ small?: boolean }>`
+  height: ${({ small }) => (small ? '32px' : '48px')};
 
   .ant-select-selector {
     height: 100% !important;
-    padding: ${({ search }) => (search ? '0px' : '8px')} 16px !important;
+    padding: ${({ small }) => (small ? '1px' : '8px')} 16px !important;
     border-radius: 4px !important;
   }
 
   .ant-select-arrow {
-    padding: ${({ search }) => (search ? '0px' : ' 0 28px')} !important;
+    padding: ${({ small }) => (small ? '0px' : ' 0 28px')} !important;
 
     ${({ suffixIcon }) => suffixIcon && selectIconStyles}
   }
@@ -55,7 +59,7 @@ export const Select = styled(AntSelect)<{ search?: boolean }>`
 
     .ant-select-item-option-content {
       background: white;
-      padding: ${({ search }) => (search ? '4px' : '8px')} 24px !important;
+      padding: ${({ small }) => (small ? '4px' : '8px')} 24px !important;
       margin: 0 !important;
 
       &:hover {
@@ -65,5 +69,6 @@ export const Select = styled(AntSelect)<{ search?: boolean }>`
     }
   }
 
-  ${({ search }) => !search && FormSelectStyles}
+  ${({ small }) => !small && FormSelectStyles}
+  ${({ small }) => small && SmallSelectStyles};
 `;

@@ -16,7 +16,7 @@ import {
   ReportIconsDictionary,
   ReportNamesDictionary,
 } from 'services/reportsService/view/ReportsPage/ReportsPage.constants';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';

@@ -1,10 +1,10 @@
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 import moment from 'moment';
 import React, { FC } from 'react';
-import { InvisibleContextMenuButton } from 'ui-kit/InvisibleContextMenuButton';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { AlertContent, AlertWrapper } from './ObjectDisconnectionAlerts.styled';
 import { ObjectDisconnectionAlertsProps } from './ObjectDisconnectionAlerts.types';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 
 export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
   disconnections,
@@ -28,7 +28,7 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
               На объекте отключение ресурса {resourceName}, тип:
               {disconnectionTypeDescription}, до {entDate}
             </div>
-            <InvisibleContextMenuButton />
+            <ContextMenuButton size="small" />
           </AlertContent>
         </Alert>
       </AlertWrapper>

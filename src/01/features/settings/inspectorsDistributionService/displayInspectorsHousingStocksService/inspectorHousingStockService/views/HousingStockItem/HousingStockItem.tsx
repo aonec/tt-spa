@@ -28,7 +28,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         style={{
           borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
-        search
+        small
         onChange={(value) => {
           inspectedDatSelectRef?.current?.blur();
           updateHousingStock({
@@ -55,7 +55,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           inspectorSelectRef?.current?.blur();
           updateHousingStock({ inspectorId: value as number });
         }}
-        search
+        small
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>

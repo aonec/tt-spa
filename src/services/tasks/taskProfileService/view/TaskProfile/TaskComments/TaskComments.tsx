@@ -32,7 +32,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({
           </IconWrapper>
         </div>
         <InputSC
-          search
+          small
           value={commentText}
           onChange={(e) => handleSetComment(e.target.value)}
         />

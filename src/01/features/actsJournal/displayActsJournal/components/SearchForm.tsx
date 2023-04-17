@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
@@ -17,6 +16,7 @@ import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/c
 import { clearFilters, searchForm } from '../models';
 import { Button } from 'ui-kit/Button';
 import { Select } from 'ui-kit/Select';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const SearchForm = () => {
   const { fields, submit } = useForm(searchForm);
@@ -67,7 +67,7 @@ export const SearchForm = () => {
           onFocus={clearValuesOnFocusCallback(0)}
           onChange={fields.city.onChange as any}
           value={fields.city.value!}
-          search
+          small
         >
           {cities?.map((elem, index) => (
             <Select.Option key={index} value={elem}>
@@ -75,7 +75,8 @@ export const SearchForm = () => {
             </Select.Option>
           ))}
         </Select>
-        <StyledAutocomplete
+        <AutoComplete
+          small
           placeholder="Улица"
           ref={streetRef}
           value={fields.street.value}
@@ -88,7 +89,8 @@ export const SearchForm = () => {
           onFocus={clearValuesOnFocusCallback(1)}
           options={options}
         />
-        <StyledAutocomplete
+        <AutoComplete
+          small
           placeholder="Дом"
           value={fields.house.value}
           onChange={fields.house.onChange}
@@ -99,7 +101,8 @@ export const SearchForm = () => {
             keyDownEnterGuardedHandler(2)(e);
           }}
         />
-        <StyledAutocomplete
+        <AutoComplete
+          small
           placeholder="Кв."
           value={fields.apartment.value}
           onChange={fields.apartment.onChange}

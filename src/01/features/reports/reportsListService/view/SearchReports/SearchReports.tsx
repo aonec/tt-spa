@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Wrapper } from './SearchReports.styled';
 import { SearchReportsProps } from './SearchReports.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { SearchIcon } from 'ui-kit/icons';
 import { Input } from 'ui-kit/Input';
 

@@ -1,3 +1,1 @@
-export type MainInfoTabProps = {
-  
-};
+export type MainInfoTabProps = {};

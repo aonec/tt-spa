@@ -13,9 +13,9 @@ import {
   DisabledExtendedSearchButton,
   ClearIconSC,
   Title,
-} from './components';
-import { ExtendedSearchProps } from './types';
+} from './ExtendedSearch.styled';
 import { Button } from 'ui-kit/Button';
+import { ExtendedSearchProps } from './ExtendedSearch.types';
 
 export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   children,

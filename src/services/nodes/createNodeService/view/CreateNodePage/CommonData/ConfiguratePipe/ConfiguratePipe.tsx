@@ -27,7 +27,7 @@ export const ConfiguratePipe: FC<ConfiguratePipeProps> = ({
         <InputWrapper>
           <LabelSC>Магистраль</LabelSC>
           <Input
-            search
+            small
             value={
               pipe.magistral ? MagistralsDisctionary[pipe.magistral] : undefined
             }
@@ -37,7 +37,7 @@ export const ConfiguratePipe: FC<ConfiguratePipeProps> = ({
         <InputWrapper>
           <LabelSC>Номер</LabelSC>
           <Input
-            search
+            small
             value={pipe.number || undefined}
             onChange={(e) => handleChangeNumber(Number(e.target.value))}
             placeholder={'0'}
@@ -47,7 +47,7 @@ export const ConfiguratePipe: FC<ConfiguratePipeProps> = ({
         <InputWrapper>
           <LabelSC>Диаметр</LabelSC>
           <Input
-            search
+            small
             value={pipe.diameter || undefined}
             onChange={(e) => handleChangeDiameter(Number(e.target.value))}
             type="number"

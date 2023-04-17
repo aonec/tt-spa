@@ -31,6 +31,7 @@ import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from './NodeConnection';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 const { TabPane } = TabsSC;
 
@@ -142,7 +143,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
                 {
                   title: 'Изменить тип узла',
                   onClick: handleClickChangeNodeType,
-                  color: 'danger',
+                  color: ContextMenuButtonColor.danger,
                   hidden: !isPermitionToEditsNode,
                 },
               ],

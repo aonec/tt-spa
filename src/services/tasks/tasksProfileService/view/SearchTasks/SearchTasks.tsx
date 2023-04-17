@@ -9,8 +9,8 @@ import React, {
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
 import { EManagingFirmTaskFilterType, TaskGroupingFilter } from 'myApi';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { ArchiveTasksExtendedSearchForm } from './ArchiveTasksExtendedSearchForm';
 import { ToExecutionTasksExtendedSearchForm } from './ToExecutionTasksExtendedSearchForm';
 import { Wrapper } from './SearchTasks.styled';
@@ -140,7 +140,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       <ExistingCitiesGate />
       <Wrapper>
         <Input
-          search
+          small
           placeholder="Номер задачи"
           value={values.TaskId}
           onChange={handleInputChange}
@@ -149,7 +149,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
           name="TaskId"
         />
         <Select
-          search
+          small
           placeholder="Тип задачи"
           value={values.TaskType!}
           onChange={(value) => {

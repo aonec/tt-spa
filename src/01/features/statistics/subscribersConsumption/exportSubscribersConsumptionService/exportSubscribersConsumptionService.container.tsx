@@ -39,7 +39,7 @@ export const ExportSubscribersConsumptionContainer: FC<
     >
       <TextWrapper>Название списка</TextWrapper>
       <Input
-        search
+        small
         value={fileName || undefined}
         onChange={(e) => setFileName(e.target.value)}
       />

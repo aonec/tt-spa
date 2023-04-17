@@ -2,7 +2,6 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import {
-  StyledRangePicker,
   StyledContainerThreeItems,
   StyledSlider,
   StyledFormThreeRows,
@@ -16,6 +15,7 @@ import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants'
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 const { Option } = Select;
 
@@ -79,7 +79,7 @@ export const ExtendedSearchForm: FC<{
       <StyledContainerThreeItems>
         <FormItem label="Тип ресурса">
           <Select
-            search
+            small
             id="Resource"
             value={values['Filter.Resource']}
             placeholder="Все ресурсы"
@@ -95,7 +95,7 @@ export const ExtendedSearchForm: FC<{
 
         <FormItem label="Статус Узла">
           <Select
-            search
+            small
             id="NodeStatus"
             placeholder="Любой статус"
             value={values['Filter.NodeStatus']}
@@ -110,7 +110,7 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Истекает дата поверки">
           <Select
-            search
+            small
             id="expirationDate"
             placeholder="Все"
             value={values['Filter.ExpiresCheckingDateAt']}
@@ -143,7 +143,8 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Период действия акта допуска">
           <ConfigProvider>
-            <StyledRangePicker
+            <RangePicker
+              small
               value={[
                 values['Filter.CommercialDateRange.From']
                   ? moment(
@@ -172,7 +173,7 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Сортировать по">
           <Select
-            search
+            small
             id="sortBy"
             placeholder="Улица"
             value={values.OrderBy}

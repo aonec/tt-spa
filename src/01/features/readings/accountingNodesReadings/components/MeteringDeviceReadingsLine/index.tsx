@@ -14,7 +14,7 @@ import {
   ContextMenuWrapper,
 } from './MeteringDeviceReadingsLine.styled';
 import { useHistory } from 'react-router-dom';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { round } from 'utils/round';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 

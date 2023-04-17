@@ -1,1 +1,1 @@
-export { EditObjectPage } from './EditObjectPage'
+export { EditObjectPage } from './EditObjectPage';

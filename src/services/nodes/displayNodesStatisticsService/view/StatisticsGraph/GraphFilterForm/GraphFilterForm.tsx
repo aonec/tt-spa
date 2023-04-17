@@ -105,7 +105,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
             />
           </Tooltip>
           <Select
-            search
+            small
             placeholder="Autocomplete"
             value={currentGraphParam}
             showArrow={true}

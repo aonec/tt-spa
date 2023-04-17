@@ -1,22 +1,12 @@
 import React, { FC } from 'react';
 import { Menu, Dropdown, Button } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { SizeType } from 'antd/lib/config-provider/SizeContext';
-import { Color as ColorType } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
-
-export interface ContextMenuElement {
-  title: string;
-  onClick(): void;
-  hidden?: boolean;
-  color?: string;
-}
-
-export interface ContextMenuButtonProps {
-  menuButtons?: ContextMenuElement[];
-  disabled?: boolean;
-  size?: SizeType;
-}
+import { MoreIcon } from 'ui-kit/icons';
+import {
+  ContextMenuButtonColor,
+  ContextMenuButtonColorsLookup,
+  ContextMenuButtonProps,
+} from './ContextMenuButton.types';
 
 export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   const { menuButtons, disabled, size } = props;
@@ -28,7 +18,7 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
       {menuButtonsFiltered?.map((button) => {
         const { title, onClick, color } = button;
 
-        const currentColor = getButtonColor(color as ColorType);
+        const currentColor = getButtonColor(color);
 
         return (
           <MenuItem key={title + color} onClick={onClick} color={currentColor}>
@@ -43,7 +33,7 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
     <div onClick={(e) => e.stopPropagation()}>
       <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
         <StyledMenuButton size={size}>
-          <MoreOutlined />
+          <MoreIcon />
         </StyledMenuButton>
       </Dropdown>
     </div>
@@ -62,20 +52,16 @@ const StyledMenuButton = styled(Button)`
 
 const MenuItem = styled(Menu.Item)<{ color?: string }>`
   min-width: 408px;
-  color: ${({ color = Color.primary }) => color} !important;
+  color: ${({ color = ContextMenuButtonColorsLookup.primary }) =>
+    color} !important;
 
   &:hover {
     color: white !important;
   }
 `;
 
-export const Color = {
-  primary: '#272f5ae6',
-  danger: '#FC525B',
-};
+function getButtonColor(color?: ContextMenuButtonColor) {
+  if (!color) return ContextMenuButtonColorsLookup.primary;
 
-function getButtonColor(color?: ColorType) {
-  if (!color) return Color.primary;
-
-  return (Color as any)[color] || Color.primary;
+  return ContextMenuButtonColorsLookup[color];
 }

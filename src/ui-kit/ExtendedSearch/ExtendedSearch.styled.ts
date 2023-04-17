@@ -19,8 +19,6 @@ export const ExtendedSearchButton = styled.div`
   cursor: pointer;
   transition: 0.2s;
 
-  box-shadow: 0 4px 7px #02004b1f;
-
   &:hover {
     border-color: #189ee9;
     background-color: #189ce91e;
@@ -75,7 +73,6 @@ export const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  border-radius: 0 0 10px 10px;
 `;
 
 export const SearchContentWrap = styled.div`
@@ -85,8 +82,7 @@ export const SearchContentWrap = styled.div`
 
 export const ExtendedSearchWrap = styled.div`
   border-radius: 10px;
-  margin: 0 6px 16px;
-  box-shadow: 0 5px 10px rgba(0, 0, 66, 0.12);
+  border: 2px solid #f3f5f6;
 `;
 
 export const ClearIconSC = styled(CloseIcon)`

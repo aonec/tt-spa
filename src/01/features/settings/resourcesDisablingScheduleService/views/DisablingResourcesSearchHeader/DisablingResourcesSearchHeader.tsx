@@ -40,7 +40,7 @@ export const DisablingResourcesSearch: React.FC<
     <StyledDisablingResourcesSearchHeader>
       <FormItem>
         <Select
-          search
+          small
           placeholder="Город"
           value={values.City}
           onChange={(value) => {
@@ -57,7 +57,7 @@ export const DisablingResourcesSearch: React.FC<
 
       <FormItem>
         <Select
-          search
+          small
           placeholder="Ресурс"
           value={values.Resource}
           defaultValue={''}
@@ -77,7 +77,7 @@ export const DisablingResourcesSearch: React.FC<
 
       <FormItem>
         <Select
-          search
+          small
           placeholder="Класс"
           value={values.DisconnectingType}
           defaultValue={''}
@@ -105,7 +105,7 @@ export const DisablingResourcesSearch: React.FC<
       </FormItem>
       <FormItem>
         <Select
-          search
+          small
           value={values?.OrderBy}
           placeholder="Дате отключения"
           onChange={(value) => {

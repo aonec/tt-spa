@@ -113,7 +113,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
           </FormItem>
           <FormItem label="Город">
             <Select
-              search
+              small
               disabled={!(existingCities || []).length}
               onChange={(value) => selectCity(String(value))}
               value={selectedCity || undefined}
@@ -129,7 +129,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         </FormWrapper>
         <FormItem label="Домоуправление">
           <Select
-            search
+            small
             disabled={!houseManagements.length}
             placeholder="Выберите из списка"
             value={selectedHouseManagement || undefined}

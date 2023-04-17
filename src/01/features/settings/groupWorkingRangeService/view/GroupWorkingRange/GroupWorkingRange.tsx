@@ -115,7 +115,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
         />
 
         <Select
-          search
+          small
           onChange={(value) => {
             setFieldValue('houseManagementId', value);
             handleSubmit();

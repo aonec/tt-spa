@@ -1,4 +1,4 @@
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
 import { EResourceType } from 'myApi';
 import React, { FC } from 'react';

@@ -21,7 +21,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
       <StyledContainerFourItems>
         <FormItem label="Город">
           <Input
-            search
+            small
             onChange={(value) =>
               setFieldValue("['Filter.Address.City']", value.target.value)
             }
@@ -33,7 +33,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem label="Улица">
           <Input
-            search
+            small
             onChange={(value) =>
               setFieldValue("['Filter.Address.Street']", value.target.value)
             }
@@ -45,7 +45,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem label="Дом">
           <Input
-            search
+            small
             onChange={(value) =>
               setFieldValue(
                 "['Filter.Address.HousingStockNumber']",
@@ -60,7 +60,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
 
         <FormItem label="Корпус">
           <Input
-            search
+            small
             onChange={(value) =>
               setFieldValue("['Filter.Address.Corpus']", value.target.value)
             }
@@ -73,7 +73,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
       <StyledContainerThreeItemsMainTypes>
         <FormItem label="Номер задачи">
           <Input
-            search
+            small
             width={'100%'}
             placeholder="Номер задачи"
             value={values.TaskId}
@@ -85,7 +85,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
         </FormItem>
         <FormItem label="Тип задачи">
           <Select
-            search
+            small
             id="TaskType"
             placeholder="Тип задачи"
             value={values.TaskType!}
@@ -103,7 +103,7 @@ export const ArchiveTasksExtendedSearchForm: React.FC<ExtendedSearchTypes> = ({
         </FormItem>
         <FormItem label="Статус Задачи">
           <Select
-            search
+            small
             placeholder="Статус Задачи"
             value={values?.ClosingStatuses}
             onChange={(value) => {

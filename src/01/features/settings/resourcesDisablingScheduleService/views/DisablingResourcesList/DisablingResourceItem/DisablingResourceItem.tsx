@@ -1,8 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Popover } from 'antd';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
-import { Color } from 'ui-kit/InvisibleContextMenuButton/InvisibleContextMenuButton.types';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import {
   GroupWrapper,
   StyledGridTableBody,
@@ -16,6 +15,7 @@ import { declOfNum } from '../DisablingResourcesList.utils';
 import { ResourceDisconnectingClassLookUp } from '../../DisablingResourcesSearchHeader/DisablingResourcesSearchHeader.utils';
 import { RenderApartmentProps } from './DisablingResourceItem.types';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
   disconnection,
@@ -98,7 +98,7 @@ export const DisablingResourceItem: React.FC<RenderApartmentProps> = ({
                     id,
                     endDate: endDate || '',
                   }),
-                color: 'red' as Color,
+                color: ContextMenuButtonColor.danger,
               },
             ]}
             size="small"
