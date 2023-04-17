@@ -1,4 +1,3 @@
-import getAccessesList from '01/_api/utils/getAccessesList';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/housingMeteringDevices/resourceAccountingSystemsService';
@@ -21,7 +20,6 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   isPermitionToDownloadConsolidatedReport,
 }) => {
   const history = useHistory();
-  const { show } = getAccessesList();
 
   const { address } = housingStock;
   const addressString = getHousingStockAddress(housingStock);
@@ -38,8 +36,7 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
               title: 'Добавить узел',
               onClick: () =>
                 history.push(`/objects/${housingStock.id}/addNode`),
-              hidden:
-                (!show('CalculatorUpdate') as boolean) || !isPermitionToAddNode,
+              hidden: !isPermitionToAddNode,
             },
             {
               title: 'Выгрузка сводного отчёта',
