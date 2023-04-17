@@ -105,13 +105,19 @@ export const ButtonSC = styled(ButtonAntd)<{
   }
 
   &:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 4px 4px 0 ${({ btnType }) => typesOfButton[btnType].shadowColor};
+    $[not(disabled)] {
+      transform: translate(-4px, -4px);
+      box-shadow: 4px 4px 0
+        ${({ btnType }) => typesOfButton[btnType].shadowColor};
+    }
   }
 
   &:active {
-    transform: translate(-2px, -2px);
-    box-shadow: 2px 2px 0 ${({ btnType }) => typesOfButton[btnType].shadowColor};
-    background-color: ${({ btnType }) => typesOfButton[btnType].shadowColor};
+    $[not(disabled)] {
+      transform: translate(-2px, -2px);
+      box-shadow: 2px 2px 0
+        ${({ btnType }) => typesOfButton[btnType].shadowColor};
+      background-color: ${({ btnType }) => typesOfButton[btnType].shadowColor};
+    }
   }
 `;
