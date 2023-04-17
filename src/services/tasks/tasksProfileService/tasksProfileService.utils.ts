@@ -71,6 +71,9 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
     expectedCompletionTime,
   } = task;
 
+  console.log(expectedCompletionTime);
+  console.log(currentStage?.expectedCompletionTime);
+
   if (!closingTime) {
     const ext = currentStage?.expectedCompletionTime;
     const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
@@ -83,7 +86,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
         isFailed,
         deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
       },
-      statusDescription: 'Время на этап:',
+      statusDescription: isFailed ? 'Просрочена на:' : 'Время на этап:',
       icon: 'timer',
     };
   }
@@ -113,7 +116,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
       stage: null,
       diffTime: diffTimeStr,
       icon: 'redTimer',
-      statusDescription: 'Просрочена на',
+      statusDescription: 'Просрочена на:',
       closingStatus: TimerClosingStatus.Overdue,
     };
   }
