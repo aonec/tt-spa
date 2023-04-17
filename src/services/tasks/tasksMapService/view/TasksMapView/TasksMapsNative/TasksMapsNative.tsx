@@ -1,15 +1,15 @@
 import { useYMaps } from '@pbe/react-yandex-maps';
 import { HousingStockWithTasksResponse } from 'myApi';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from '../TasksMap/TaskMap.constants';
-import {
-  getExtendedMapMarkerlayoutLink,
-  getTaskPlacemarkerLink,
-} from '../TasksMap/TasksMap.utils';
 import { MapZoomControl } from './MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
-import { getClusterIcon } from './TasksMapsNative.utils';
+import {
+  getClusterIcon,
+  getExtendedMapMarkerlayoutLink,
+  getTaskPlacemarkerLink,
+} from './TasksMapsNative.utils';
+import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TasksMapsNative.constants';
 
 export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   housingStocksWithTasks,
@@ -38,8 +38,9 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
 
     clusterer.createCluster = (center, geoObjects) => {
       const housingStocksWithTasksList = geoObjects.reduce((acc, elem) => {
-        const housingStockWithTasks = (elem.state as any)
-          .housingStockData as HousingStockWithTasksResponse;
+        const housingStockWithTasks = (
+          elem.state as { housingStockData?: HousingStockWithTasksResponse }
+        ).housingStockData;
 
         if (!housingStockWithTasks) return acc;
 
@@ -110,7 +111,9 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
         },
       );
 
-      (placemark.state as any).housingStockData = housingStockWithTasks;
+      (
+        placemark.state as { housingStockData?: HousingStockWithTasksResponse }
+      ).housingStockData = housingStockWithTasks;
 
       placemark.events.add('click', () => {
         handleClickMarker(housingStockWithTasks);
