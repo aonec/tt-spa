@@ -3,13 +3,17 @@ import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
 import { DatePickerNative } from '../../../../../../../../ui-kit/shared_components/DatePickerNative';
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
-import { SelectItem } from '../../../../../../../tt-components/localBases';
 import { createCalcuatorService } from '../CreateCalculatorModal/models';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 
 interface Props {
-  calculatorTypes: SelectItem[];
+  calculatorTypes: {
+    id: number;
+    value: number;
+    model: string;
+    label: string;
+  }[];
 }
 
 export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({

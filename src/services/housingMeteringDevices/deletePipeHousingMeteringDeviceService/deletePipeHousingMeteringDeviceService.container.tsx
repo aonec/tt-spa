@@ -1,11 +1,16 @@
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog } from 'ui-kit/shared_components/Dialog/Dialog';
 import { deletePipeHousingMeteringDeviceService } from './deletePipeHousingMeteringDeviceService.model';
+import { FormItem } from 'ui-kit/FormItem';
+import { Input } from 'ui-kit/Input';
+import { SerialNumberInputWrapper } from './deletePipeHousingMeteringDevice.styled';
 
 const { inputs, outputs } = deletePipeHousingMeteringDeviceService;
 
 export const DeletePipeHousingMeteringDeviceContainer = () => {
+  const [serialNumberText, setSerialNumberText] = useState('');
+
   const isOpen = useStore(outputs.$isOpen);
   const device = useStore(outputs.$pipeMeteringDevice);
 
@@ -18,9 +23,20 @@ export const DeletePipeHousingMeteringDeviceContainer = () => {
       onCancel={closeModal}
       onSubmit={handleDeleteDevice}
       title={`Вы действительно хотите удалить прибор ${device?.serialNumber} (${device?.model})?`}
-      description="Прибор будет навсегда удален из системы."
+      description="Для подтверждения удаления прибора введите его серийный номер."
       type="danger"
       submitText="Удалить прибор"
-    />
+      isDisabled={serialNumberText !== device?.serialNumber}
+    >
+      <SerialNumberInputWrapper>
+        <FormItem label="Серийный номер">
+          <Input
+            value={serialNumberText}
+            onChange={(e) => setSerialNumberText(e.target.value)}
+            placeholder="Введите cерийный номер"
+          />
+        </FormItem>
+      </SerialNumberInputWrapper>
+    </Dialog>
   );
 };

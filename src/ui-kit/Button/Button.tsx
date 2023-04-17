@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { Loader } from '01/components';
 import { ButtonProps } from './Button.types';
 import { ButtonSC, IconWrapper } from './Button.styled';
+import { Loader } from 'ui-kit/Loader';
 
 export const Button: FC<ButtonProps> = (props) => {
   const {

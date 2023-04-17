@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
-export const DateWrapper = styled.span`
+export const DateWrapper = styled.span<{ bold: boolean | undefined }>`
   margin: 0 auto;
-  color: #272f5a;
-  opacity: 0.7;
+  color: ${({ bold }) => (bold ? '#272f5a' : '#000000d9')};
+  font-weight: ${({ bold }) => (bold ? '500' : '400')};
+  opacity: ${({ bold }) => (bold ? '1' : '0.7')};
 `;

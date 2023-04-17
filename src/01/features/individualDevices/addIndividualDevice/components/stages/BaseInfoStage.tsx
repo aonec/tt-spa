@@ -25,10 +25,10 @@ import {
   $serialNumberForChecking,
   handleFetchSerialNumberForCheck,
 } from '01/features/individualDevices/switchIndividualDevice/models/init';
-import { Loader } from '01/components';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { Loader } from 'ui-kit/Loader';
 import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 const {

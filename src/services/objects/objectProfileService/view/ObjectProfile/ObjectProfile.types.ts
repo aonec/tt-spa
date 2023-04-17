@@ -8,4 +8,5 @@ export type ObjectProfileProps = {
   openCommonReport: () => void;
   isPermitionToAddNode: boolean;
   isPermitionToDownloadConsolidatedReport: boolean;
+  isPermissionToEditHousingStock: boolean;
 };

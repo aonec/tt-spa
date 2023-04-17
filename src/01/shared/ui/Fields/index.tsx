@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
-import { Loader } from '01/components';
 import { ActiveFiltersIcon } from 'ui-kit/icons';
+import { Loader } from 'ui-kit/Loader';
 
 export const StyledSquareButton = styled.div`
   height: 32px;

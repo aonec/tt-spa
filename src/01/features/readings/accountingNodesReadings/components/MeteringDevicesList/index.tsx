@@ -5,13 +5,13 @@ import {
 } from '01/features/nodes/displayNodes/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import Arrow from '01/_components/Arrow/Arrow';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 import { MeteringDeviceReadingsSumPanel } from '../MeteringDeviceReadingsSumPanel';
 import { meteringDeviceReadingsService } from './meteringDevicesListService.model';
+import { ChevronBoldIcon } from 'ui-kit/icons';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { getPreviousReadingsMonth } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput.utils';
 
@@ -31,13 +31,15 @@ export const MeteringDevicesList = () => {
       <HeaderTitleElem>Коэф. трансф.</HeaderTitleElem>
       <HeaderTitleElem>
         <MonthSlider>
-          <ArrowContainer onClick={up}>{canUp && <Arrow />}</ArrowContainer>
+          <ArrowContainer onClick={up}>
+            {canUp && <ChevronBoldIcon />}
+          </ArrowContainer>
           <div>{getPreviousReadingsMonth(sliderIndex)}</div>
           <ArrowContainer
             onClick={down}
             style={{ transform: 'rotate(180deg)' }}
           >
-            {canDown && <Arrow />}
+            {canDown && <ChevronBoldIcon />}
           </ArrowContainer>
         </MonthSlider>
       </HeaderTitleElem>

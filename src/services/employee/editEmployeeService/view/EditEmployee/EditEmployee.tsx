@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { useHistory, useParams } from 'react-router-dom';
-import { Loader } from '01/_components/Loader';
+import { Loader } from 'ui-kit/Loader';
 import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import * as yup from 'yup';

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Device } from './DevicesSearch.styled';
+import { DateRangeContainer, Device } from './DevicesSearch.styled';
 import { DevicesSearchProps } from './DevicesSearch.types';
 import { NavLink } from 'react-router-dom';
 import { IndividualDeviceListItemResponse } from 'myApi';
@@ -7,15 +7,16 @@ import axios from '01/axios';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { translateMountPlace } from '01/utils/translateMountPlace';
-import { DateLine } from '01/_components/DateLine/DateLine';
 import { CancelTokenSource } from 'axios';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { AutoComplete } from 'ui-kit/AutoComplete';
+import { DateRange } from 'ui-kit/shared_components/DateRange';
+import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,
+  allIndividualDeviceMountPlaces,
 }) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
@@ -74,12 +75,22 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
             isActive={device.closingDate === null}
             closingReason={device.closingReason}
           />
-          <DateLine
-            lastCheckingDate={device.lastCheckingDate}
-            futureCheckingDate={device.futureCheckingDate}
-          />
+          <DateRangeContainer>
+            <DateRange
+              firstDate={device.lastCheckingDate}
+              lastDate={device.futureCheckingDate}
+              bold
+            />
+          </DateRangeContainer>
           <Space />
-          <div>{translateMountPlace(device.mountPlace)}</div>
+          <div>
+            {allIndividualDeviceMountPlaces &&
+              device.mountPlace &&
+              allIndividualDeviceMountPlaces.find(
+                (mountPlaceFromServer) =>
+                  mountPlaceFromServer.name === device.mountPlace,
+              )?.description}
+          </div>
         </Flex>
       </Device>
     </NavLink>
@@ -87,6 +98,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
 
   return (
     <>
+      <AllIndividualDeviceMountPlacesGate />
       <AutoComplete
         small
         value={serialNumber}

@@ -1,4 +1,3 @@
-import getAccessesList from '01/_api/utils/getAccessesList';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ResourceAccountingSystemsContainer } from 'services/housingMeteringDevices/resourceAccountingSystemsService';
@@ -10,6 +9,7 @@ import { ObjectInfo } from '../ObjectInfo';
 import { CityWrappper, PageHeaderSC, TabsSC } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
 import { RedirectToTasksContainer } from './redirectToTasks';
+import { featureToggles } from 'featureToggles';
 const { TabPane } = TabsSC;
 
 export const ObjectProfile: FC<ObjectProfileProps> = ({
@@ -19,9 +19,9 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
   openCommonReport,
   isPermitionToAddNode,
   isPermitionToDownloadConsolidatedReport,
+  isPermissionToEditHousingStock,
 }) => {
   const history = useHistory();
-  const { show } = getAccessesList();
 
   const { address } = housingStock;
   const addressString = getHousingStockAddress(housingStock);
@@ -38,13 +38,19 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
               title: 'Добавить узел',
               onClick: () =>
                 history.push(`/objects/${housingStock.id}/addNode`),
-              hidden:
-                (!show('CalculatorUpdate') as boolean) || !isPermitionToAddNode,
+              hidden: !isPermitionToAddNode,
             },
             {
               title: 'Выгрузка сводного отчёта',
               onClick: () => openCommonReport(),
               hidden: !isPermitionToDownloadConsolidatedReport,
+            },
+            {
+              title: 'Редактировать',
+              onClick: () => history.push(`/objects/${housingStock.id}/edit`),
+              hidden:
+                !isPermissionToEditHousingStock &&
+                !featureToggles.editHousingStock,
             },
           ],
         }}

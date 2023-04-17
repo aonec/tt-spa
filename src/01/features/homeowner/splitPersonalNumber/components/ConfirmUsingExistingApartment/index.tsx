@@ -16,6 +16,7 @@ import { renderDevice } from '../TransferDevices';
 import { confirmUsingExistingApartmentService } from './ConfirmUsingExistingApartmenService.model';
 import { PersonalNumber } from './ConfirmUsingExistingApartmentModal.styled';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { $allIndividualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const { outputs } = confirmUsingExistingApartmentService;
 
@@ -43,6 +44,10 @@ export const ConfirmUsingExistingApartmentModal = () => {
 
   const isApartmentHasDevices = Boolean(devices?.length);
   const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);
+
+  const allIndividualDeviceMountPlaces = useStore(
+    $allIndividualDeviceMountPlaces,
+  );
 
   return (
     <>
@@ -81,7 +86,9 @@ export const ConfirmUsingExistingApartmentModal = () => {
             </>
           )}
           <Space />
-          {devices?.map(renderDevice)}
+          {devices?.map((device, index) =>
+            renderDevice(device, index, allIndividualDeviceMountPlaces),
+          )}
         </WithLoader>
       </ModalTT>
     </>

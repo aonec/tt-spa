@@ -17,7 +17,7 @@ import {
   SwitchIndividualDeviceGate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { Loader } from '01/components';
+import { Loader } from 'ui-kit/Loader';
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { Button } from 'ui-kit/Button';

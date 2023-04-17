@@ -34,7 +34,7 @@ import {
   DatePickerNative,
   fromEnter,
 } from 'ui-kit/shared_components/DatePickerNative';
-import { Loader } from '01/components';
+import { Loader } from 'ui-kit/Loader';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
 import {

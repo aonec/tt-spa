@@ -4,4 +4,5 @@ export const featureToggles = {
     clasterization: false,
     nativeApi: true,
   },
+  editHousingStock: false,
 };

@@ -122,9 +122,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
                 small
                 placeholder="Выберите"
                 value={values.engineeringElement || ''}
-                onChange={(value) =>
-                  setFieldValue('engineeringElement', value || null)
-                }
+                onChange={(value) => {
+                  setFieldValue('engineeringElement', value || null);
+                  setFieldValue('type', null);
+                }}
               >
                 <Select.Option value="" key="">
                   Все
