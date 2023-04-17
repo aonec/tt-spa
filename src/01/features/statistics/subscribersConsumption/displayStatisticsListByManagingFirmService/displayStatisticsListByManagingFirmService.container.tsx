@@ -9,6 +9,7 @@ import {
 import { displayStatisticsListByManagingFirmService } from './displayStatisticsListByManagingFirmService.model';
 import { HousingStocksList } from './view/HousingStocksList';
 import { ManagingFirmSearch } from './view/ManagingFirmSearch';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const { gates, outputs, inputs } = displayStatisticsListByManagingFirmService;
 const { StatiscticsPageGate } = gates;
@@ -52,17 +53,19 @@ export const DisplayStatisticsListByManagingFirmContainer = () => {
         setFilter={setFilter}
         managingFirmsLoading={managingFirmsLoading}
       />
-      {housingStocksIsLoading && <Skeleton active />}
-      {!housingStocksIsLoading && (
-        <HousingStocksList
-          housingStocks={housingStocks}
-          selectHousingStock={selectHousingStock}
-          statisticIsLoading={statisticIsLoading}
-          handleOpenModal={handleOpenModal}
-          selectedHousingStock={selectedHousingStock}
-          setFileName={setFileName}
-        />
-      )}
+      <WithLoader isLoading={housingStocksIsLoading}>
+        {housingStocksIsLoading && <Skeleton active />}
+        {!housingStocksIsLoading && (
+          <HousingStocksList
+            housingStocks={housingStocks}
+            selectHousingStock={selectHousingStock}
+            statisticIsLoading={statisticIsLoading}
+            handleOpenModal={handleOpenModal}
+            selectedHousingStock={selectedHousingStock}
+            setFileName={setFileName}
+          />
+        )}
+      </WithLoader>
     </>
   );
 };

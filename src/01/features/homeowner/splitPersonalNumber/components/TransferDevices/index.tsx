@@ -3,7 +3,6 @@ import { DeviceDataString } from '01/features/individualDevices/switchIndividual
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { translateMountPlace } from '01/utils/translateMountPlace';
-import { DateLine } from '01/_components/DateLine/DateLine';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -12,6 +11,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { transferDevicesForm } from '../../models';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { DateRange } from 'ui-kit/shared_components/DateRange';
 
 export const TransferDevices = () => {
   const devices = useStore($individualDevices);
@@ -22,7 +22,7 @@ export const TransferDevices = () => {
 
     if (hasDevice) {
       fields.individualDeviceIdsForSwitch.onChange(
-        fields.individualDeviceIdsForSwitch.value.filter((elem) => elem !== id)
+        fields.individualDeviceIdsForSwitch.value.filter((elem) => elem !== id),
       );
     } else {
       fields.individualDeviceIdsForSwitch.onChange([
@@ -35,7 +35,7 @@ export const TransferDevices = () => {
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
     index: number,
-    isSelected: boolean
+    isSelected: boolean,
   ) => (
     <Device
       key={index}
@@ -51,10 +51,13 @@ export const TransferDevices = () => {
           isActive={device.closingDate === null}
           closingReason={device.closingReason}
         />
-        <DateLine
-          lastCheckingDate={device.lastCheckingDate}
-          futureCheckingDate={device.futureCheckingDate}
-        />
+        <Container>
+          <DateRange
+            firstDate={device.lastCheckingDate}
+            lastDate={device.futureCheckingDate}
+            bold
+          />
+        </Container>
         <Space />
         <div>{translateMountPlace(device.mountPlace)}</div>
       </Flex>
@@ -63,14 +66,13 @@ export const TransferDevices = () => {
 
   return (
     <Wrap>
-      {devices
-        .map((value, index) =>
-          renderDevice(
-            value,
-            index,
-            fields.individualDeviceIdsForSwitch.value.includes(value.id)
-          )
-        )}
+      {devices.map((value, index) =>
+        renderDevice(
+          value,
+          index,
+          fields.individualDeviceIdsForSwitch.value.includes(value.id),
+        ),
+      )}
     </Wrap>
   );
 };
@@ -80,9 +82,16 @@ export const Wrap = styled.div`
   margin-bottom: 25px;
 `;
 
+const Container = styled.div`
+  display: flex;
+  line-height: 1.2;
+  align-items: center;
+  white-space: nowrap;
+`;
+
 export const renderDevice = (
   device: IndividualDeviceListItemResponse,
-  index: number
+  index: number,
 ) => (
   <Device key={index}>
     <Flex>
@@ -92,10 +101,13 @@ export const renderDevice = (
         isActive={device.closingDate === null}
         closingReason={device.closingReason}
       />
-      <DateLine
-        lastCheckingDate={device.lastCheckingDate}
-        futureCheckingDate={device.futureCheckingDate}
-      />
+      <Container>
+        <DateRange
+          firstDate={device.lastCheckingDate}
+          lastDate={device.futureCheckingDate}
+          bold
+        />
+      </Container>
       <Space />
       <div>{translateMountPlace(device.mountPlace)}</div>
     </Flex>

@@ -1,13 +1,13 @@
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
-import { IsActiveBool } from '01/tt-components/IsActive';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 
 interface Props {
   isModal?: boolean;
@@ -35,7 +35,7 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
             <Spaces flex>
               {[
                 <DeviceDataString />,
-                <IsActiveBool active={device?.closingDate === null} />,
+                <DeviceStatus isActive={device?.closingDate === null} />,
                 address,
                 <b>{checkingDates}</b>,
               ]}

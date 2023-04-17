@@ -1,42 +1,26 @@
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import React, { ReactNode, useMemo } from 'react';
 import styled from 'styled-components';
-import { Search } from './components/Search';
-import { StatisticsList } from './components/StatisticsList';
 import { Link, useParams } from 'react-router-dom';
 import { Radio } from 'antd';
 import { SubscribersConsumptionSearchType } from './subscribersConsumption.types';
 import { DisplayStatisticsListByManagingFirmContainer } from './displayStatisticsListByManagingFirmService';
-import { useStore } from 'effector-react';
-import { currentUserService } from 'services/currentUserService';
+import { DisplayStatisticsListByHousesContainer } from './displayStatisticsListByHousesService';
 
 export const SubscribersConsumption = () => {
   const { searchType } = useParams<{ searchType: string }>();
-
-  const currentUser = useStore(currentUserService.outputs.$currentUser);
-  const isHousingStockHasCorpuses = Boolean(
-    currentUser?.organization?.filtersConfiguration?.hasHousingStockCorpuses,
-  );
 
   const subscribersConsumptionListComponentsLookup: {
     [key: string]: ReactNode;
   } = useMemo(
     () => ({
       [SubscribersConsumptionSearchType.Houses]: (
-        <>
-          {isHousingStockHasCorpuses && <Search isHousingStockHasCorpuses />}
-          {!isHousingStockHasCorpuses && (
-            <Search isHousingStockHasCorpuses={false} />
-          )}
-          <Space />
-          <StatisticsList />
-        </>
+        <DisplayStatisticsListByHousesContainer />
       ),
       [SubscribersConsumptionSearchType.ManagingFirm]: (
         <DisplayStatisticsListByManagingFirmContainer />
       ),
     }),
-    [isHousingStockHasCorpuses],
+    [],
   );
 
   const subscribersConsumptionComponent = useMemo(() => {

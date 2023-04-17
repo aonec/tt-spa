@@ -2,12 +2,6 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
-import {
-  IndividualDevice,
-  IndividualDeviceEdit,
-  Login,
-  Registration,
-} from '01/_pages';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
@@ -16,22 +10,22 @@ import {
   ObjectProfileContainer,
   objectProfileService,
 } from 'services/objects/objectProfileService';
-import { DevicesPageContainer } from 'services/devices/devicesPageService';
-import { ChangeODPUContainer } from 'services/devices/сhangeODPUService';
-import { EditElectricNodeContainer } from 'services/devices/editElectricNodeService';
+import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPageService';
+import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
+import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
-import { EditNodeContainer } from 'services/devices/editNodeService';
+import { EditNodeContainer } from 'services/housingMeteringDevices/editNodeService';
 import { CreateObjectContainer } from 'services/objects/createObjectService';
 import { EditApartmentProfileContainer } from 'services/apartments/editApartmentProfileService';
-import { EmployeeProfileContainer } from 'services/employeeProfileService';
+import { EmployeeProfileContainer } from 'services/employee/employeeProfileService';
 import { ApartmentProfileContainer } from 'services/apartments/apartmentProfileService';
 import { CreateNodeContainer } from 'services/nodes/createNodeService';
 import { CalculatorProfileContainer } from 'services/calculators/calculatorProfileService';
-import { HousingMeteringDeviceProfileContainer } from 'services/devices/housingMeteringDevices/housingMeteringDeviceProfileService';
-import { EditHousingMeteringDeviceContainer } from 'services/devices/housingMeteringDevices/editHousingMeteringDeviceService';
+import { HousingMeteringDeviceProfileContainer } from 'services/housingMeteringDevices/housingMeteringDevices/housingMeteringDeviceProfileService';
+import { EditHousingMeteringDeviceContainer } from 'services/housingMeteringDevices/housingMeteringDevices/editHousingMeteringDeviceService';
 import { NodeProfileContainer } from 'services/nodes/nodeProfileService';
 import { MetersContainer } from 'services/meters/metersService';
 import { CompanyProfileContainer } from 'services/company/companyProfileService';
@@ -54,6 +48,9 @@ import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndi
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 import { AccessDeniedPage } from 'services/authorizations/AccessDeniedPage';
 import { EditObjectContainer } from 'services/objects/editObjectService';
+import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
+import { LoginContainer } from 'services/authorizations/loginService';
+import { RegistrationContainer } from 'services/authorizations/registrationService';
 
 const { gates } = objectProfileService;
 
@@ -104,9 +101,8 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
   return (
     <Wrapper>
       <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/logout" render={() => 'logout'} />
-        <Route path="/registration*" render={() => <Registration />} />
+        <Route path="/login" component={LoginContainer} />
+        <Route path="/registration*" component={RegistrationContainer} />
         <Route path="/">
           <Layout>
             <Panel />
@@ -131,9 +127,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/objects/create"
-                      to="/access-denied/"
+                    <Route
+                      path="/objects/create"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -158,9 +154,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/objects/:housingStockId/addNode"
-                      to="/access-denied/"
+                    <Route
+                      path="/objects/:housingStockId/addNode"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -180,9 +176,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/apartments/:apartmentId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/apartments/:apartmentId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -213,9 +209,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/devices/addNode"
-                      to="/access-denied/"
+                    <Route
+                      path="/devices/addNode"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -235,9 +231,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/changeODPU/:oldDeviceId"
-                      to="/access-denied/"
+                    <Route
+                      path="/changeODPU/:oldDeviceId"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -251,10 +247,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       component={EditElectricNodeContainer}
                     />
                   ) : (
-                    <Redirect
-                      from="/electricNode/:deviceId/edit"
-                      to="/access-denied/"
-                      exact
+                    <Route
+                      path="/electricNode/:deviceId/edit"
+                      component={AccessDeniedPage}
                     />
                   )}
 
@@ -303,9 +298,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/calculators/:deviceId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/calculators/:deviceId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -317,9 +312,9 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/nodes/:nodeId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/nodes/:nodeId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -350,31 +345,26 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/housingMeteringDevices/:deviceId/edit"
-                      to="/access-denied/"
-                      exact
-                    />
-                  )}
-
-                  {isAnyRole && (
                     <Route
-                      path="/individualDevices/:deviceId"
-                      component={IndividualDevice}
+                      path="/housingMeteringDevices/:deviceId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
 
-                  {isAdministrator || isSeniorOperator || isExecutor ? (
+                  {isAdministrator ||
+                  isSeniorOperator ||
+                  isExecutor ||
+                  isOperator ? (
                     <Route
                       path="/individualDevices/:deviceId/edit"
-                      component={IndividualDeviceEdit}
+                      component={EditIndividualDeviceContainer}
                       exact
                     />
                   ) : (
-                    <Redirect
-                      from="/individualDevices/:deviceId/edit"
-                      to="/access-denied/"
+                    <Route
+                      path="/individualDevices/:deviceId/edit"
+                      component={AccessDeniedPage}
                       exact
                     />
                   )}
@@ -551,7 +541,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <AccessDeniedPage />
                   </Route>
                   <Redirect from="/meters" to="/meters/apartments" exact />
-                  <Redirect from="*" to="/access-denied/" exact />
+                  <Route path="*" component={AccessDeniedPage} exact />
                 </Switch>
               )}
             </PageWrapper>

@@ -45,8 +45,6 @@ const CurrentUserGate = createGate();
 
 forward({ from: CurrentUserGate.open, to: fetchCurrentUserFx });
 
-$currentUser.on(fetchCurrentUserFx.doneData, (_, user) => user);
-
 const $currentUserRoles = $currentUser.map((user) => user?.roles || []);
 const $userRolesKeys = $currentUserRoles.map((userRoles) =>
   userRoles.map((role) => role.key),

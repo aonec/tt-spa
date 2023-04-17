@@ -18,3 +18,10 @@ export const Device = styled.div`
     }
   }
 `;
+
+export const DateRangeContainer = styled.div`
+  display: flex;
+  line-height: 1.2;
+  align-items: center;
+  white-space: nowrap;
+`;

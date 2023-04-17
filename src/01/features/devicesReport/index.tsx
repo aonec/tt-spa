@@ -1,6 +1,4 @@
 import React from 'react';
-import { Footer, Header } from '../../shared/ui/Modal/Modal';
-import { StyledModal, StyledModalBody } from '../../tt-components/Modal';
 import { useStore } from 'effector-react';
 import {
   $downloadDevicesReportError,
@@ -9,10 +7,11 @@ import {
   downloadDeviceReportConfirmButtonClicked,
   downloadDevicesReportFx,
 } from './models';
-import ButtonTT from '../../tt-components/ButtonTT';
-import { Loader } from '../../_components/Loader';
-import InputTT from '../../tt-components/InputTT';
 import { Alert, Form } from 'antd';
+import { FormModal } from 'ui-kit/Modals/FormModal';
+import { Input } from 'ui-kit/Input';
+
+const formId = 'device-report-modal';
 
 export const DevicesReportModal = () => {
   const isVisible = useStore($isDeviceReportModalVisible);
@@ -22,46 +21,34 @@ export const DevicesReportModal = () => {
   const onSubmit = () => downloadDeviceReportConfirmButtonClicked();
 
   return (
-    <StyledModal
+    <FormModal
+      title="Выгрузить список приборов"
       visible={isVisible}
-      width={800}
       onCancel={handleCancel}
-      footer={
-        <Footer>
-          <ButtonTT color={'white'} key="back" onClick={handleCancel}>
-            Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            disabled={pending}
-            key="submit"
-            onClick={onSubmit}
-          >
-            {pending ? <Loader show /> : 'Выгрузить'}
-          </ButtonTT>
-        </Footer>
+      loading={pending}
+      onSubmit={onSubmit}
+      formId={formId}
+      form={
+        <>
+          {downloadError ? (
+            <Alert
+              message="Ошибка"
+              // description="Не удалось выгрузить список приборов. Попробуйте еще раз или обратитесь к администратору"
+              description={downloadError}
+              type="error"
+              showIcon
+              closable
+              style={{ marginBottom: 24 }}
+            />
+          ) : null}
+          <div style={{ marginBottom: 16 }}>
+            При выгрузке списка приборов сохраняются все параметры фильтрации
+          </div>
+          <Form.Item label="Название списка">
+            <Input disabled value={'Список приборов.xlsx'} />
+          </Form.Item>
+        </>
       }
-    >
-      <StyledModalBody>
-        <Header style={{ marginBottom: 8 }}>Выгрузить список приборов</Header>
-        {downloadError ? (
-          <Alert
-            message="Ошибка"
-            // description="Не удалось выгрузить список приборов. Попробуйте еще раз или обратитесь к администратору"
-            description={downloadError}
-            type="error"
-            showIcon
-            closable
-            style={{ marginBottom: 24 }}
-          />
-        ) : null}
-        <div style={{ marginBottom: 16 }}>
-          При выгрузке списка приборов сохраняются все параметры фильтрации
-        </div>
-        <Form.Item label="Название списка">
-          <InputTT readOnly value={'Список приборов.xlsx'} />
-        </Form.Item>
-      </StyledModalBody>
-    </StyledModal>
+    />
   );
 };

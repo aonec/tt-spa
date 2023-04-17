@@ -13,6 +13,9 @@ export function Table<T>({
   columns,
   elements,
   pagination,
+  rowStyles,
+  headerStyles,
+  onClick,
 }: PropsWithChildren<TableProps<T>>) {
   const pageSize = pagination?.pageSize || Infinity;
 
@@ -27,22 +30,29 @@ export function Table<T>({
 
   return (
     <Wrapper>
-      <Header temp={temp}>
+      <Header temp={temp} css={headerStyles}>
         {filteredColumns.map((column, columnIndex) => (
           <TableElement key={columnIndex} css={column.css?.(true)}>
             {column.label}
           </TableElement>
         ))}
       </Header>
-      {elements.slice(start, end).map((elem, rowIndex) => (
-        <Row key={rowIndex} temp={temp}>
-          {filteredColumns.map((column, columnIndex) => (
-            <TableElement key={columnIndex} css={column.css?.(false)}>
-              {column.render(elem, rowIndex)}
-            </TableElement>
-          ))}
-        </Row>
-      ))}
+      <div>
+        {elements.slice(start, end).map((elem, rowIndex) => (
+          <Row
+            key={rowIndex}
+            temp={temp}
+            css={rowStyles}
+            onClick={() => onClick && onClick(elem)}
+          >
+            {filteredColumns.map((column, columnIndex) => (
+              <TableElement key={columnIndex} css={column.css?.(false)}>
+                {column.render(elem, rowIndex)}
+              </TableElement>
+            ))}
+          </Row>
+        ))}
+      </div>
       {!elements.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       {Boolean(elements.length) && pagination && (
         <PaginationWrapper>
