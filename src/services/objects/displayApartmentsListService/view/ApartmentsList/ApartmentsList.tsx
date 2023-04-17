@@ -1,8 +1,8 @@
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
-import { Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { ApartmentItem } from './ApartmentItem';
 import { ApartmentsListProps } from './ApartmentsList.types';
+import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 export const ApartmentsList: FC<ApartmentsListProps> = ({
   apartments,
@@ -18,9 +18,10 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({
 
   return (
     <div>
-      {isLoading && <Skeleton active />}
-      {!isLoading && apartmentsList}
-      {isEmpty && !isLoading && <TypeAddressToStart />}
+      <WithLoader isLoading={isLoading}>
+        {apartmentsList}
+        {isEmpty && <TypeAddressToStart />}
+      </WithLoader>
     </div>
   );
 };

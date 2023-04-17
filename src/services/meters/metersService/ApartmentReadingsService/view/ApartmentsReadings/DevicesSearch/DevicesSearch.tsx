@@ -8,14 +8,15 @@ import { DeviceDataString } from '01/features/individualDevices/switchIndividual
 import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { translateMountPlace } from '01/utils/translateMountPlace';
 import { CancelTokenSource } from 'axios';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { DateRange } from 'ui-kit/shared_components/DateRange';
+import { AllIndividualDeviceMountPlacesGate } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 export const DevicesSearch: FC<DevicesSearchProps> = ({
   handleClickDevice,
+  allIndividualDeviceMountPlaces,
 }) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
@@ -82,7 +83,14 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
             />
           </DateRangeContainer>
           <Space />
-          <div>{translateMountPlace(device.mountPlace)}</div>
+          <div>
+            {allIndividualDeviceMountPlaces &&
+              device.mountPlace &&
+              allIndividualDeviceMountPlaces.find(
+                (mountPlaceFromServer) =>
+                  mountPlaceFromServer.name === device.mountPlace,
+              )?.description}
+          </div>
         </Flex>
       </Device>
     </NavLink>
@@ -90,6 +98,7 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
 
   return (
     <>
+      <AllIndividualDeviceMountPlacesGate />
       <StyledAutocomplete
         value={serialNumber}
         onChange={setSerialNumber}

@@ -3,7 +3,10 @@ import React, { useEffect } from 'react';
 import { editIndividualDeviceService } from './editIndividualDeviceService.model';
 import { EditIndividualPage } from './EditIndividualPage';
 import { useHistory, useParams } from 'react-router-dom';
-import { IndividualDeviceMountPlacesGate } from '../../../01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import {
+  AllIndividualDeviceMountPlacesGate,
+  IndividualDeviceMountPlacesGate,
+} from '../../../01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const { inputs, outputs, gates } = editIndividualDeviceService;
 const { FetchIndividualDeviceGate } = gates;
@@ -38,6 +41,7 @@ export const EditIndividualDeviceContainer = () => {
           apartmentId={individualDevice?.address?.apartmentId}
         />
       )}
+      <AllIndividualDeviceMountPlacesGate />
 
       <EditIndividualPage
         handleChangeTab={handleChangeTab}

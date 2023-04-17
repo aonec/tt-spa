@@ -13,7 +13,7 @@ import {
 } from './EditCalculatorPage.types';
 import { useHistory } from 'react-router-dom';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 import { Tabs } from 'ui-kit/Tabs';

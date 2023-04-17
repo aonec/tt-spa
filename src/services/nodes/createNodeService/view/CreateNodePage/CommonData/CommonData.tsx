@@ -18,7 +18,7 @@ import {
 } from './CommonData.styled';
 import { CommonDataProps } from './CommonData.types';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { configNamesLookup } from 'utils/configNamesLookup';
 import { ENodeRegistrationType } from 'myApi';
 import { ChangeNodeStatusForm } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusForm';

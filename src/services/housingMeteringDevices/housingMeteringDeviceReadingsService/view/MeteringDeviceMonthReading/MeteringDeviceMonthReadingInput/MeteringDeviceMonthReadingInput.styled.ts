@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-
-import { InputSC as Input } from '01/shared/ui/Fields';
+import { Input } from 'ui-kit/Input';
 
 export const InputSC = styled(Input)`
   width: 120px !important;

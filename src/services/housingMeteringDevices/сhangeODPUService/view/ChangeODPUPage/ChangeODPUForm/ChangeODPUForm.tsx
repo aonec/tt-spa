@@ -29,7 +29,7 @@ import {
   switchDeviceValidationSchema,
   yearQuarterDictionary,
 } from './ChangeODPUForm.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { ChangeODPUReadingsContainer } from 'services/housingMeteringDevices/сhangeODPUService/changeODPUReadingsService';
 

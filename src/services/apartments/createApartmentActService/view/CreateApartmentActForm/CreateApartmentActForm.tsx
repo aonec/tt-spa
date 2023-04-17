@@ -1,4 +1,3 @@
-import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -19,6 +18,7 @@ import * as yup from 'yup';
 import { CreateActFormPayload } from '../../createApartmentActService.types';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { Input } from 'ui-kit/Input';
+import { Select } from 'ui-kit/Select';
 
 export const CreateApartmentActForm: FC<CreateApartmentActFormProps> = ({
   formId,

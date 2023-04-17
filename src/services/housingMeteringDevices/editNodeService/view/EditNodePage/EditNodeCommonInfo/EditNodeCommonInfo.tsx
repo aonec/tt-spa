@@ -21,7 +21,7 @@ import { configNamesLookup } from 'utils/configNamesLookup';
 import { ConfiguratePipe } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/ConfiguratePipe';
 import { CommunicationPipeResponse, EMagistralType } from 'myApi';
 import { validationSchema } from './EditNodeCommonInfo.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { filterCommunicationPipes } from './EditNodeCommonInfo.utils';
 import { Divider } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.styled';
 

@@ -14,7 +14,7 @@ import { Select } from 'ui-kit/Select';
 import { useStore } from 'effector-react';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { validationSchema } from './HeatIndividualDevicesReportForm.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const HeatIndividualDevicesReportForm: FC<
   HeatIndividualDevicesReportFormProps

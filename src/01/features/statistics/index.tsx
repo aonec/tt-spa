@@ -1,4 +1,4 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';

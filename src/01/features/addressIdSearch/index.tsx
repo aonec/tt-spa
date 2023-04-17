@@ -1,4 +1,3 @@
-import { Loader } from '01/components';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
@@ -22,6 +21,7 @@ import {
   fetchApartmentSearchIdFx,
   $error,
 } from './models';
+import { Loader } from 'ui-kit/Loader';
 
 interface Props {
   apartmentId?: MayBe<number>;

@@ -3,7 +3,6 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { allResources } from '01/tt-components/localBases';
 import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
@@ -16,8 +15,6 @@ import {
   SwitchIndividualDeviceGate,
 } from '../../models';
 import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import {
   EIndividualDeviceRateType,
   EResourceType,
@@ -34,7 +31,7 @@ import {
 } from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative, fromEnter } from '01/shared/ui/DatePickerNative';
-import { Loader } from '01/components';
+import { Loader } from 'ui-kit/Loader';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { useSwitchInputOnEnter } from './BaseInfoStage.hook';
 import {
@@ -45,6 +42,7 @@ import {
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 const {
   outputs,
@@ -234,26 +232,12 @@ export const BaseInfoStage = () => {
   const baseInfo = (
     <FormWrap>
       <FormItem label="Тип ресурса">
-        <Select
+        <ResourceSelect
           disabled
-          placeholder="Выберите тип ресурса"
           onChange={(value: any) => fields.resource.onChange(value)}
-          value={fields.resource.value || undefined}
-        >
-          {allResources.map((elem) => (
-            <Select.Option value={elem.value} key={elem.value}>
-              <Flex>
-                <StockIconTT
-                  icon={DeviceIcons[elem.value]?.icon}
-                  dark
-                  fill={DeviceIcons[elem.value]?.color}
-                />
-                <Space />
-                <div>{elem.label}</div>
-              </Flex>
-            </Select.Option>
-          ))}
-        </Select>
+          resource={fields.resource.value}
+        />
+
         <ErrorMessage>
           {fields.resource.errorText({
             required: 'Это поле обязательное',

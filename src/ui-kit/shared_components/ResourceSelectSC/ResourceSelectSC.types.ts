@@ -5,5 +5,4 @@ export type ResourceSelectSCProps = {
   exclude?: EResourceType[];
   disabled?: boolean;
   onChange?: (resource: EResourceType | null) => void;
-  isShadow: boolean;
 };

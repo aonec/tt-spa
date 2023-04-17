@@ -1,4 +1,3 @@
-import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import {
@@ -15,7 +14,8 @@ import { DatePicker } from 'ui-kit/DatePicker';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { ChangeNodeStatusDocument } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusDocument';
 import { validationSchema } from './ChangeNodeTypeForm.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Select } from 'ui-kit/Select';
 
 export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
   formId,

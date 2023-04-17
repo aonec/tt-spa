@@ -2,8 +2,6 @@ import {
   $individualDeviceMountPlaces,
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { allResources } from '01/tt-components/localBases';
 import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
@@ -13,15 +11,12 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { getBitDepthAndScaleFactor } from '../../utils';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
@@ -30,10 +25,11 @@ import {
   $serialNumberForChecking,
   handleFetchSerialNumberForCheck,
 } from '01/features/individualDevices/switchIndividualDevice/models/init';
-import { Loader } from '01/components';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { Loader } from 'ui-kit/Loader';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
 
 const {
   outputs,
@@ -189,8 +185,7 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Тип ресурса">
-          <Select
-            placeholder="Выберите тип ресурса"
+          <ResourceSelect
             onChange={(value: any) => {
               fields.resource.onChange(value);
 
@@ -202,22 +197,9 @@ export const BaseInfoStage = () => {
               fields.bitDepth.onChange(bitDepth);
               fields.scaleFactor.onChange(scaleFactor);
             }}
-            value={fields.resource.value || undefined}
-          >
-            {allResources.map((elem) => (
-              <Select.Option value={elem.value}>
-                <Flex>
-                  <StockIconTT
-                    icon={DeviceIcons[elem.value]?.icon}
-                    fill={DeviceIcons[elem.value]?.color}
-                    dark
-                  />
-                  <Space />
-                  <div>{elem.label}</div>
-                </Flex>
-              </Select.Option>
-            ))}
-          </Select>
+            resource={fields.resource.value}
+          />
+
           <ErrorMessage>
             {fields.resource.errorText({
               required: 'Это поле обязательное',

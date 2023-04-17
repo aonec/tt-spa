@@ -1,10 +1,10 @@
 import { Input as AntInput } from 'antd';
 import styled from 'styled-components';
 
-export const Input = styled(AntInput)`
+export const Input = styled(AntInput)<{ search?: boolean }>`
   border-radius: 4px;
-  height: 48px;
-  font-size: 16px;
+  height: ${({ search }) => (search ? '32px' : '48px')};
+  font-size: ${({ search }) => (search ? '14px' : '16px')};
   padding: 0px 16px;
 `;
 

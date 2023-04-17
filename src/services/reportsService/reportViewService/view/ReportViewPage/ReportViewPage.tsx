@@ -11,7 +11,7 @@ import {
 } from './ReportViewPage.styled';
 import { ReportViewPageProps } from './ReportViewPage.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,

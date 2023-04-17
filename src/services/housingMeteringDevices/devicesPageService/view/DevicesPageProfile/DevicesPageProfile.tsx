@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import { TabsSC } from './DevicesPageProfile.styled';
 import { DevicesPageProfileProps } from './DevicesPageProfile.types';

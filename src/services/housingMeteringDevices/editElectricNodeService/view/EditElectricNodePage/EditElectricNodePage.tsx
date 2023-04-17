@@ -1,4 +1,4 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { Skeleton } from 'antd';
 import React, { FC, useState } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
