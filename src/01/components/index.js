@@ -1,2 +1,2 @@
 export { Icon } from './Icon';
-export { Loader } from '../_components/Loader';
+export { Loader } from '../../ui-kit/Loader';

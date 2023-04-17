@@ -1,6 +1,6 @@
-import Arrow from '01/_components/Arrow/Arrow';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ChevronBoldIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   border-top: 1px solid var(--frame);
@@ -44,7 +44,7 @@ export const ReadingsHistoryButtonWrapper = styled.div`
   margin-left: 16px;
 `;
 
-export const ArrowSC = styled(Arrow)`
+export const ArrowSC = styled(ChevronBoldIcon)`
   path : {
     fill: #272f5ab2;
   }
