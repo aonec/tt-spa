@@ -527,7 +527,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     <AccessDeniedPage />
                   </Route>
                   <Redirect from="/meters" to="/meters/apartments" exact />
-                  <Redirect from="*" to="/access-denied/" exact />
+                  <Route path="*" component={AccessDeniedPage} exact />
                 </Switch>
               )}
             </PageWrapper>

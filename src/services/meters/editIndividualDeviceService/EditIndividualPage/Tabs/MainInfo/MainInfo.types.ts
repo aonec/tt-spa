@@ -12,4 +12,5 @@ export type MainInfoProps = {
   }) => void;
   mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
   onCancel: () => void;
+  isDeviceUpdating: boolean;
 };

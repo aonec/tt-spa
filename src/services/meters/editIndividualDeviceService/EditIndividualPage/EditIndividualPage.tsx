@@ -32,6 +32,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   handleUpdateDevice,
   mountPlaces,
   onCancel,
+  isDeviceUpdating,
 }) => {
   const address = individualDevice?.address;
 
@@ -92,6 +93,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
                 handleUpdateDevice={handleUpdateDevice}
                 mountPlaces={mountPlaces}
                 onCancel={onCancel}
+                isDeviceUpdating={isDeviceUpdating}
               />
             )}
           {currentTab === EditIndividualDeviceTabs.Documents && <Documents />}
