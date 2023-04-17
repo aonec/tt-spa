@@ -7,13 +7,13 @@ import {
   SearchFieldType,
 } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { ApartmentIndividualDevicesMetersContainer } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { ApartmentInfo } from './ApartmentInfo';
 import { ApartmentAlerts } from './ApartmentAlerts';
 import { apartmentReadingsService } from '../../../ApartmentReadingsService.model';
 import { useParams } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
+import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
 
 const { gates } = apartmentReadingsService;
 const { ApartmentGate } = gates;

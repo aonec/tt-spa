@@ -19,7 +19,7 @@ const fetchConsumptionStatistics = createEffect<
   SubscriberStatisticsСonsumptionResponse[]
 >(getConsumptionStatistics);
 
-export const $consumptionStatistics = createStore<
+const $consumptionStatistics = createStore<
   SubscriberStatisticsСonsumptionResponse[]
 >([]).on(fetchConsumptionStatistics.doneData, (_, statistics) => statistics);
 
@@ -68,5 +68,7 @@ export const subscribersConsumptionService = {
   outputs: {
     $subscriberStatisticsFilter,
     $isLoading,
+    $consumptionStatistics,
+    $selectedHousingsStockId,
   },
 };

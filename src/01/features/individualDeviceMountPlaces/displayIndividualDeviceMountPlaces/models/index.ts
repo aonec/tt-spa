@@ -1,6 +1,9 @@
 import { createGate } from 'effector-react';
 import { createStore, createEffect } from 'effector';
-import { IndividualDeviceMountPlaceListResponse } from './../../../../../myApi';
+import {
+  IndividualDeviceMountPlaceForFilterResponse,
+  IndividualDeviceMountPlaceListResponse,
+} from './../../../../../myApi';
 
 export const $individualDeviceMountPlaces = createStore<
   IndividualDeviceMountPlaceListResponse[] | null
@@ -14,3 +17,14 @@ export const fetchIndividualDeviceFxMountPlacesFx = createEffect<
 export const IndividualDeviceMountPlacesGate = createGate<{
   apartmentId: number;
 }>();
+
+export const $allIndividualDeviceMountPlaces = createStore<
+  IndividualDeviceMountPlaceForFilterResponse[] | null
+>(null);
+
+export const fetchAllIndividualDeviceMountPlacesFx = createEffect<
+  void,
+  IndividualDeviceMountPlaceForFilterResponse[]
+>();
+
+export const AllIndividualDeviceMountPlacesGate = createGate();

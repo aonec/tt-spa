@@ -17,7 +17,7 @@ import { RadioGroupSC } from './GroupReportDatesSelect/GroupReportDatesSelect.st
 import { EEmailSubscriptionType, EReportType } from 'myApi';
 import { LabeledValue } from 'antd/lib/select';
 import { RegularUnloading } from './RegularUnloading';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 

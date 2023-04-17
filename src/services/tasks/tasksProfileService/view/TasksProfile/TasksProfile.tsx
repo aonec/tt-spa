@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useMemo } from 'react';
-import { Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
 import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
@@ -10,6 +9,8 @@ import { TaskGroupingFilter } from 'myApi';
 import { Segmented } from 'ui-kit/Segmented';
 import { ListIcon, MapIcon } from 'ui-kit/icons';
 import { TasksMapContainer } from 'services/tasks/tasksMapService';
+import { Empty } from 'antd';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const { TabPane } = TabsSC;
 
@@ -106,8 +107,16 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               housingManagments={housingManagments}
               perpetrators={perpetrators}
             />
-            <div>{!isLoading && tasksList}</div>
-            {isLoading && <Skeleton active />}
+            <WithLoader isLoading={isLoading}>
+              {Boolean(tasks?.length) ? (
+                tasksList
+              ) : (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Нет задач"
+                />
+              )}
+            </WithLoader>
             {!isLoading && Boolean(tasks?.length) && (
               <PaginationSC
                 defaultCurrent={1}

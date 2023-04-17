@@ -1,11 +1,8 @@
-import { Loader } from '01/components';
 import { AddressIdSearch } from '01/features/addressIdSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { ButtonTT } from '01/tt-components';
 import { message } from 'antd';
 import { useStore } from 'effector-react';
 import { useFormik } from 'formik';
@@ -14,6 +11,7 @@ import { EActResourceType, EActType } from 'myApi';
 import React, { ChangeEvent, FC, useMemo } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 import {
   $actResources,
   ActResourcesGate,
@@ -25,6 +23,9 @@ import {
 import { createApartmentActFx } from '../../models';
 import { gridTemp } from '../TableHeader';
 import { AddNewActFormProps, AddNewActFormT } from './AddNewActForm.types';
+import { ButtonSC } from './AddNewActForm.styled';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -100,7 +101,8 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       <ActResourcesGate />
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
-        <InputSC
+        <Input
+          search
           value={values.registryNumber || undefined}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFieldValue('registryNumber', e.target.value)
@@ -109,20 +111,21 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           ref={registryNumberRef}
           onKeyDown={handleEnterOnRegistryNumberInput}
         />
-        <SelectSC
+        <Select
           value={selectedActType || undefined}
           onChange={(actType) => selectAct(actType as EActType)}
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={handleEnterOnActTypeSelect}
+          search
         >
           {actTypes?.map((type) => (
-            <SelectSC.Option key={type.key} value={type.key!}>
+            <Select.Option key={type.key} value={type.key!}>
               {type.value}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
-        </SelectSC>
-        <SelectSC
+        </Select>
+        <Select
           value={selectedResourceType || undefined}
           onChange={(resourceType) =>
             selectResource(resourceType as EActResourceType)
@@ -130,13 +133,14 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
+          search
         >
           {actResources?.map((type) => (
-            <SelectSC.Option key={type.key} value={type.key!}>
+            <Select.Option key={type.key} value={type.key!}>
               {type.value}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
-        </SelectSC>
+        </Select>
         <AddressIdSearch
           firstInputRef={addressRef}
           onExit={() => {
@@ -153,32 +157,20 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         />
       </Wrap>
       <ButtonWrap>
-        <ButtonTT
-          color="white"
-          small
+        <Button
+          type="ghost"
+          size="small"
           onClick={() => {
             clearForm();
             resetForm();
           }}
         >
           Сбросить
-        </ButtonTT>
+        </Button>
         <Space />
-        <ButtonTT
-          style={{ padding: '5px 40px' }}
-          disabled={pendingRequest}
-          color="blue"
-          small
-          onClick={submitForm}
-        >
-          {pendingRequest ? (
-            <div style={{ transform: 'translate(-8px, 2px)' }}>
-              <Loader show />
-            </div>
-          ) : (
-            'Сохранить'
-          )}
-        </ButtonTT>
+        <ButtonSC size="small" onClick={submitForm} isLoading={pendingRequest}>
+          Сохранить
+        </ButtonSC>
       </ButtonWrap>
       <SpaceLine />
     </>

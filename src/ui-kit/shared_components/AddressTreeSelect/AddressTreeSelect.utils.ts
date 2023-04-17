@@ -34,12 +34,14 @@ export const prepareAddressesForTreeSelect = ({
       };
     });
 
+    const preparedParent = parentId ? parentId : '';
+
     return [
       ...acc,
       {
         title: street,
-        key: `${street}${parentId}`,
-        value: `${street}${parentId}`,
+        key: `${street}${preparedParent}`,
+        value: `${street}${preparedParent}`,
         children,
         selectable: isSelectableStreetNode,
       },

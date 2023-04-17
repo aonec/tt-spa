@@ -16,7 +16,7 @@ import { $homeowner } from '01/features/homeowner/displayHomeowner/models';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
 import { useForm } from 'effector-forms/dist';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const CloseHomeownerAccountModal = () => {
   const visible = useStore($isVisibleCloseHomeonwerAccountModal);
@@ -49,7 +49,7 @@ export const CloseHomeownerAccountModal = () => {
       visible={visible}
       onCancel={closeCloseHomeonwerAccountModal}
       saveBtnText="Закрыть"
-      saveButtonType="red"
+      saveButtonType="danger"
       loading={pending}
       onSubmit={submit}
     >

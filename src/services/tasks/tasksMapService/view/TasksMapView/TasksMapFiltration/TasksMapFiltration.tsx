@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { ChevronUp } from 'react-bootstrap-icons';
 import { SearchIcon } from 'ui-kit/icons';
-import { FilterButton, SelectSC } from '01/shared/ui/Fields';
+import { FilterButton } from '01/shared/ui/Fields';
 import { HideExtendedSearchButton } from '01/shared/ui/ExtendedSearch/components';
 import {
   CloseIconSC,
@@ -28,6 +28,7 @@ import {
 import { useFormik } from 'formik';
 import { Radio, Space } from 'antd';
 import { HousingStockTasks } from './HousingStockTasks';
+import { Select } from 'ui-kit/Select';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -79,6 +80,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               ].some(Boolean)}
             />
             <SearchInput
+              search
               placeholder="Введите номер задачи или адрес"
               prefix={<SearchIcon />}
               disabled
@@ -116,24 +118,26 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
           </FilterHeader>
           <ExtendedFiltration>
             <FormItem label="Элемент инженерной сети">
-              <SelectSC
+              <Select
+                search
                 placeholder="Выберите"
                 value={values.engineeringElement || ''}
-                onChange={(value) =>
-                  setFieldValue('engineeringElement', value || null)
-                }
+                onChange={(value) => {
+                  setFieldValue('engineeringElement', value || null);
+                  setFieldValue('type', null);
+                }}
               >
-                <SelectSC.Option value="" key="">
+                <Select.Option value="" key="">
                   Все
-                </SelectSC.Option>
+                </Select.Option>
                 {Object.values(ETaskEngineeringElement).map((elem) => {
                   return (
-                    <SelectSC.Option value={elem} key={elem}>
+                    <Select.Option value={elem} key={elem}>
                       {EngineeringElementLookUp[elem]}
-                    </SelectSC.Option>
+                    </Select.Option>
                   );
                 })}
-              </SelectSC>
+              </Select>
             </FormItem>
             <FormItem label="Тип ресурса">
               <ItemPanelsSelect<EResourceType | null>
@@ -171,7 +175,8 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               </Space>
             </FormItem>
             <FormItem label="Тип задачи">
-              <SelectSC
+              <Select
+                search
                 placeholder="Выберите тип"
                 value={values.type || undefined}
                 onChange={(value) => setFieldValue('type', value)}
@@ -179,25 +184,26 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               >
                 {taskTypes &&
                   taskTypes.map(({ value, key }) => (
-                    <SelectSC.Option key={key!} value={key!}>
+                    <Select.Option key={key!} value={key!}>
                       {value}
-                    </SelectSC.Option>
+                    </Select.Option>
                   ))}
-              </SelectSC>
+              </Select>
             </FormItem>
             <FormItem label="Исполнитель">
-              <SelectSC
+              <Select
+                search
                 placeholder="Выберите исполнителя"
                 value={values.executorId || undefined}
                 onChange={(userId) => setFieldValue('executorId', userId)}
                 allowClear
               >
                 {organizationUsers.map((user) => (
-                  <SelectSC.Option value={user.id} key={user.id}>
+                  <Select.Option value={user.id} key={user.id}>
                     {user.firstName} {user.lastName}
-                  </SelectSC.Option>
+                  </Select.Option>
                 ))}
-              </SelectSC>
+              </Select>
             </FormItem>
           </ExtendedFiltration>
           <Footer>

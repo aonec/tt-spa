@@ -1,5 +1,5 @@
-import { ButtonTT } from '01/tt-components';
 import React, { FC } from 'react';
+import { Button } from 'ui-kit/Button';
 import { UserIcon } from 'ui-kit/icons';
 import {
   ButtonWrapper,
@@ -32,20 +32,20 @@ export const TaskComments: FC<TaskCommentsProps> = ({
           </IconWrapper>
         </div>
         <InputSC
+          search
           value={commentText}
           onChange={(e) => handleSetComment(e.target.value)}
         />
       </CommentInputWrapper>
       <ButtonWrapper>
-        <ButtonTT
+        <Button
           disabled={disabled}
-          color="blue"
-          type="submit"
-          small
+          type={disabled ? 'ghost' : 'primary'}
+          size="small"
           onClick={handleAddComment}
         >
           Добавить комментарий
-        </ButtonTT>
+        </Button>
       </ButtonWrapper>
       <TaskCommentsList comments={comments} />
     </Wrapper>

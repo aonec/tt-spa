@@ -1,9 +1,8 @@
-import { SelectSC } from '01/shared/ui/Fields';
-import { Select } from 'antd';
 import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
 import { Address, Wrap } from './HousingStockItem.styled';
 import { HousingStockItemProps } from './HousingStockItem.types';
+import { Select } from 'ui-kit/Select';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -21,15 +20,15 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         housingStock.corpus || ''
       }`}</Address>
       <div>{housingStock.houseManagement}</div>
-      <SelectSC
+      <Select
         ref={inspectedDatSelectRef}
         placeholder="Число"
-        isShadow={false}
         disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectedDay || void 0}
         style={{
           borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
+        search
         onChange={(value) => {
           inspectedDatSelectRef?.current?.blur();
           updateHousingStock({
@@ -43,11 +42,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
             {day} число
           </Select.Option>
         ))}
-      </SelectSC>
-      <SelectSC
+      </Select>
+      <Select
         ref={inspectorSelectRef}
         placeholder="Контролер"
-        isShadow={false}
         disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectorId || void 0}
         style={{
@@ -57,13 +55,14 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
           inspectorSelectRef?.current?.blur();
           updateHousingStock({ inspectorId: value as number });
         }}
+        search
       >
         {inspectors?.map((inspector) => (
           <Select.Option key={inspector.id} value={inspector.id}>
             {inspector.fullName}
           </Select.Option>
         ))}
-      </SelectSC>
+      </Select>
     </Wrap>
   );
 };

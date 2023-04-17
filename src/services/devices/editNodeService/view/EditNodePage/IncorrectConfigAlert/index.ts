@@ -1,1 +1,0 @@
-export { IncorrectConfigAlert } from './IncorrectConfigAlert'

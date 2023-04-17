@@ -3,12 +3,12 @@ import { Footer, FormWrapper, Header } from './EditEmployee.styled';
 import { EditEmployeeProps } from './EditEmployee.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { useHistory, useParams } from 'react-router-dom';
-import { Loader } from '01/_components/Loader';
+import { Loader } from 'ui-kit/Loader';
 import { ESecuredIdentityRoleName, OrganizationUserUpdateRequest } from 'myApi';
 import { usePhoneMask } from 'hooks/usePhoneMask';
 import * as yup from 'yup';
@@ -133,7 +133,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
             onChange={(value) =>
               setFieldValue(
                 'cellphone',
-                phoneMask.unmaskedValue(value.target.value)
+                phoneMask.unmaskedValue(value.target.value),
               )
             }
           />
@@ -171,11 +171,7 @@ export const EditEmployee: FC<EditEmployeeProps> = ({
         </FormItem>
 
         <Footer>
-          <Button
-            type="default"
-            onClick={() => handleSubmit()}
-            disabled={isPending}
-          >
+          <Button onClick={() => handleSubmit()} disabled={isPending}>
             {isPending ? <Loader show /> : 'Сохранить'}
           </Button>
           <Button type="ghost" onClick={onCancel}>

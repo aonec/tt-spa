@@ -131,7 +131,10 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
               Отмена
             </Button>
           </ButtonPadding>
-          <Button sidePadding={25} onClick={() => handleSubmit()}>
+          <Button
+            // sidePadding={25}
+            onClick={() => handleSubmit()}
+          >
             Сохранить
           </Button>
         </RightButtonBlock>

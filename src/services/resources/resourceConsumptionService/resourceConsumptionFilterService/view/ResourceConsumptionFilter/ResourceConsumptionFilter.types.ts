@@ -1,12 +1,9 @@
 import { TreeSelectElement } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.types';
-import {
-  GetConsumptionDataFilter,
-  PreparedHouseManagements,
-  ConsumptionDataFilter,
-} from '../../../resourceConsumptionService.types';
+import { PreparedHouseManagements } from '../../../resourceConsumptionService.types';
+import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
 
 export type ResourceConsumptionFilterProps = {
-  setFilter: (filter: GetConsumptionDataFilter) => void;
+  setFilter: (filter: ConsumptionDataFilter) => void;
   filter: ConsumptionDataFilter;
   selectedHouseManagement: string | null;
   setHouseManagement: (houseManagement: string | null) => void;

@@ -6,10 +6,11 @@ import {
   FieldName,
   FilterBlock,
   LoaderWrapper,
-  Margin,
+  PageHeaderSC,
   RangeBlockGrid,
   RangeFieldName,
   Symbol,
+  TabsSC,
   Value,
 } from './GroupWorkingRange.styled';
 import { GroupWorkingRangeProps } from './GroupWorkingRange.types';
@@ -20,12 +21,11 @@ import {
 } from 'myApi';
 import { useFormik } from 'formik';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
-import { Tabs } from 'ui-kit/Tabs';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
-import { SelectSC } from '01/shared/ui/Fields';
+
+const { TabPane } = TabsSC;
 
 export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
   groupWorkingRange,
@@ -86,32 +86,27 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
 
   return (
     <>
-      <Margin>
-        <GoBack />
-      </Margin>
-      <PageHeader title="Групповые рабочие диапазоны" />
-      <Margin>
-        <Tabs
-          onChange={(value) => {
-            setFieldValue('season', value);
-            handleSubmit();
-          }}
-          activeKey={values.season}
-        >
-          <Tabs.TabPane
-            tab="Отопительный сезон"
-            key={ENodeWorkingRangeSeason.HeatingSeason}
-          />
-          <Tabs.TabPane
-            tab="Межотопительный сезон"
-            key={ENodeWorkingRangeSeason.InterHeating}
-          />
-        </Tabs>
-      </Margin>
+      <GoBack />
+      <PageHeaderSC title="Групповые рабочие диапазоны" />
+      <TabsSC
+        onChange={(value) => {
+          setFieldValue('season', value);
+          handleSubmit();
+        }}
+        activeKey={values.season}
+      >
+        <TabPane
+          tab="Отопительный сезон"
+          key={ENodeWorkingRangeSeason.HeatingSeason}
+        />
+        <TabPane
+          tab="Межотопительный сезон"
+          key={ENodeWorkingRangeSeason.InterHeating}
+        />
+      </TabsSC>
 
       <FilterBlock>
         <ResourceSelectSC
-          isShadow={false}
           resource={values.nodeResourceType}
           onChange={(value) => {
             setFieldValue('nodeResourceType', value);
@@ -119,8 +114,8 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
           }}
         />
 
-        <SelectSC
-          isShadow={false}
+        <Select
+          search
           onChange={(value) => {
             setFieldValue('houseManagementId', value);
             handleSubmit();
@@ -134,7 +129,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
               </Select.Option>
             );
           })}
-        </SelectSC>
+        </Select>
       </FilterBlock>
 
       {isLoading && (

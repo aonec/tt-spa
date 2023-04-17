@@ -1,13 +1,15 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { StyledAutocomplete, InputSC, SelectSC } from '01/shared/ui/Fields';
+import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
-import { Form, Select } from 'antd';
+import { Form } from 'antd';
 import React, { FC } from 'react';
 import { ExtendedSearchWrap, Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 export const SearchInspectorsHousingStocks: FC<
   SearchInspectorsHousingStocksProps
@@ -60,7 +62,8 @@ export const SearchInspectorsHousingStocks: FC<
           extendedSearchContent={
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">
-                <SelectSC
+                <Select
+                  search
                   placeholder="Выберите из списка"
                   value={form.fields.InspectorId.value || undefined}
                   onChange={(value) => {
@@ -77,10 +80,11 @@ export const SearchInspectorsHousingStocks: FC<
                       {inspector.fullName}
                     </Select.Option>
                   ))}
-                </SelectSC>
+                </Select>
               </Form.Item>
               <Form.Item label="Домоуправление">
-                <SelectSC
+                <Select
+                  search
                   value={form.fields.HouseManagement.value || undefined}
                   onChange={(value) => {
                     if (!value) {
@@ -100,13 +104,14 @@ export const SearchInspectorsHousingStocks: FC<
                       {houseManagement.value}
                     </Select.Option>
                   ))}
-                </SelectSC>
+                </Select>
               </Form.Item>
             </ExtendedSearchWrap>
           }
         >
           <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
-            <SelectSC
+            <Select
+              search
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(0)(e);
                 fromEnter(handleSearch)(e);
@@ -123,7 +128,7 @@ export const SearchInspectorsHousingStocks: FC<
                     {city}
                   </Select.Option>
                 ))}
-            </SelectSC>
+            </Select>
             <StyledAutocomplete
               ref={streetRef}
               value={form.fields.Street.value}
@@ -141,7 +146,8 @@ export const SearchInspectorsHousingStocks: FC<
               options={options}
               placeholder="Улица"
             />
-            <InputSC
+            <Input
+              search
               ref={homeNumberRef}
               placeholder="Дом"
               value={form.fields.HousingStockNumber.value}

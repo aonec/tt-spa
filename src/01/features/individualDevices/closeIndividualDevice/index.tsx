@@ -1,15 +1,13 @@
-import { Loader } from '01/components';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT, DatePickerTT } from '01/tt-components';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Form, Select } from 'antd';
+import { Form } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from 'ui-kit/Button';
 import { closingReasons } from '../switchIndividualDevice/components/stages/BaseInfoStage';
 import {
   $closingIndividualDevice,
@@ -18,16 +16,18 @@ import {
   closeIndividualDeviceForm,
   closeIndividualDeviceFx,
 } from './models';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { DocumentsUploadContainer } from 'ui-kit/DocumentsService';
 import { EDocumentType } from 'myApi';
+import { Select } from 'ui-kit/Select';
+import { DatePicker } from 'ui-kit/DatePicker';
 
 export const CloseIndividualDeviceModal = () => {
   const visible = useStore($isCloseIndividualDeviceModalOpen);
 
   const onCancel = () => closeClosingIndividualDeviceModalButtonClicked();
 
-  const { submit, fields } = useForm(closeIndividualDeviceForm);
+  const { submit: onSubmit, fields } = useForm(closeIndividualDeviceForm);
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);
 
@@ -54,12 +54,17 @@ export const CloseIndividualDeviceModal = () => {
       footer={
         <Footer>
           <Flex style={{ justifyContent: 'flex-end' }}>
-            <ButtonTT color="white" onClick={onCancel}>
+            <Button type="ghost" onClick={onCancel}>
               Отмена
-            </ButtonTT>
-            <ButtonTT color="red" onClick={submit} disabled={pendingSave}>
-              {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
-            </ButtonTT>
+            </Button>
+            <Button
+              type="danger"
+              onClick={() => onSubmit()}
+              disabled={pendingSave}
+              isLoading={pendingSave}
+            >
+              Снять прибор с учета
+            </Button>
           </Flex>
         </Footer>
       }
@@ -69,7 +74,7 @@ export const CloseIndividualDeviceModal = () => {
           label="Дата снятия прибора с учета"
           style={{ width: '100%' }}
         >
-          <DatePickerTT
+          <DatePicker
             style={{ borderRadius: '4px', width: '100%' }}
             value={
               fields.closingDate.value ? moment(fields.closingDate.value) : null
@@ -89,7 +94,7 @@ export const CloseIndividualDeviceModal = () => {
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Причина зыкрытия" style={{ width: '100%' }}>
-          <StyledSelect
+          <Select
             placeholder="Выберите причину закрытия"
             value={fields.closingReason.value || undefined}
             onChange={fields.closingReason.onChange as any}
@@ -99,7 +104,7 @@ export const CloseIndividualDeviceModal = () => {
                 {elem}
               </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>
             {fields.closingReason.errorText({
               required: 'Это поле обязательное',

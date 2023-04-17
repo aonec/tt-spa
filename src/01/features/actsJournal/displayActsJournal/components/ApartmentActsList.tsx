@@ -1,7 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { ApartmentActResponse } from 'myApi';
@@ -25,6 +24,7 @@ import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 const pageSize = 20;
 
@@ -56,7 +56,7 @@ export const ApartmentActsList = () => {
     const actAddress = getApartmentFromFullAddress(act.apartment, false);
 
     return (
-      <ActWrap temp={gridTemp} key={act.id} gap="15px">
+      <ActWrap temp={gridTemp} key={act.id} gap="16px">
         <DocDate>{moment(act.actDateTime).format('DD.MM.YYYY')}</DocDate>
         <div>{act.registryNumber}</div>
         <div>{actType}</div>
@@ -83,7 +83,7 @@ export const ApartmentActsList = () => {
         RegistryNumberOrderBy={fields.RegistryNumberOrderBy.value}
         AddressOrderBy={fields.AddressOrderBy.value}
       />
-      <PendingLoader loading={pending} skeleton>
+      <WithLoader isLoading={pending}>
         {!acts?.length && (
           <Flex style={{ justifyContent: 'center' }}>
             <Empty
@@ -94,7 +94,7 @@ export const ApartmentActsList = () => {
         )}
 
         <div>{acts?.map(renderAct)}</div>
-      </PendingLoader>
+      </WithLoader>
       <SpaceLine noTop={!pending} />
       {actsPagedData && (
         <Pagination

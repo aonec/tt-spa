@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -15,6 +15,7 @@ import {
 } from './ConnectionSettings.constants';
 import { connectionSettingsService } from './ConnectionSettings.model';
 import {
+  ButtonSC,
   CalculatorModel,
   CalculatorSelectWrapper,
   CalculatorSerialNumber,
@@ -196,9 +197,7 @@ export const ConnectionSettings: FC<ConnectionSettingsProps> = ({
           <Button type="ghost" onClick={goPrevStep}>
             Назад
           </Button>
-          <Button sidePadding={20} onClick={() => handleSubmit()}>
-            Далее
-          </Button>
+          <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
         </Footer>
       </div>
     </>

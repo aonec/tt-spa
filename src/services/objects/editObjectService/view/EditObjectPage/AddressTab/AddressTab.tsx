@@ -225,7 +225,7 @@ export const AddressTab: FC<AddressTabProps> = ({
               </Button>
             </ButtonPadding>
             <Button
-              sidePadding={25}
+              // sidePadding={25}
               onClick={() => {
                 handleSubmit();
               }}

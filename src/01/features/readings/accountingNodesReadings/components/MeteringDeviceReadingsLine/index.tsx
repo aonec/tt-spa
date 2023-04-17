@@ -1,4 +1,3 @@
-import { Icon } from '01/shared/ui/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
@@ -17,6 +16,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
 import { round } from 'utils/round';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 interface Props {
   sliderIndex: number;
@@ -75,7 +75,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   const deviceData = (
     <Flex>
       <IconWrap>
-        <Icon name={node.counter?.resource!} />
+        <ResourceIconLookup resource={node.counter?.resource!} />
       </IconWrap>
       <Space w={11} />
       <div>
@@ -93,7 +93,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     return (
       <div>
         {previousReadingValue !== null && currentReadingValue !== null
-          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт`
+          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт/ч`
           : null}
       </div>
     );
@@ -143,7 +143,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
 
 const Wrap = styled(Grid)`
   align-items: center;
-  padding: 25px 15px;
+  padding: 24px 16px;
   border-bottom: 1px solid #dcdee4;
 `;
 

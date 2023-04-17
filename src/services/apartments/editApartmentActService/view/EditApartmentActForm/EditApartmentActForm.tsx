@@ -1,5 +1,3 @@
-import { Select } from '01/shared/ui/Select';
-import { InputTT } from '01/tt-components';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import { EActResourceType, EActType, EDocumentType } from 'myApi';
@@ -23,6 +21,8 @@ import * as yup from 'yup';
 import moment from 'moment';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
+import { Input } from 'ui-kit/Input';
+import { Select } from 'ui-kit/Select';
 
 export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   actTypes,
@@ -87,8 +87,8 @@ export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
         </Form.Item>
 
         <Form.Item label="Номер документа">
-          <InputTT
-            value={values.registryNumber}
+          <Input
+            value={values.registryNumber || undefined}
             onChange={(e: SyntheticEvent<HTMLInputElement>) =>
               setFieldValue('registryNumber', e.currentTarget.value)
             }

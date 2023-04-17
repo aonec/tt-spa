@@ -1,4 +1,3 @@
-import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import {
@@ -8,14 +7,15 @@ import {
 } from 'myApi';
 import React, { FC } from 'react';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
-import { NodeRegistrationTypeLookup } from 'services/devices/editNodeService/view/EditNodePage/EditNodePage.constants';
+import { NodeRegistrationTypeLookup } from 'services/housingMeteringDevices/editNodeService/view/EditNodePage/EditNodePage.constants';
 import { FormItem } from 'ui-kit/FormItem';
 import { GroupWrapper } from './ChangeNodeTypeForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { getDatePickerValue } from 'utils/getDatePickerValue';
 import { ChangeNodeStatusDocument } from 'services/nodes/changeNodeStatusService/view/ChangeNodeStatusDocument';
 import { validationSchema } from './ChangeNodeTypeForm.constants';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { Select } from 'ui-kit/Select';
 
 export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
   formId,

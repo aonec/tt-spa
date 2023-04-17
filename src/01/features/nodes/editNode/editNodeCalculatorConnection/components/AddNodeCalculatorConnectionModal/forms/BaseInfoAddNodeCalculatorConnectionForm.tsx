@@ -3,13 +3,17 @@ import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
 import { DatePickerNative } from '../../../../../../../shared/ui/DatePickerNative';
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
-import InputTT from '../../../../../../../tt-components/InputTT';
-import { SelectItem } from '../../../../../../../tt-components/localBases';
-import { StyledSelect } from '../../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { createCalcuatorService } from '../CreateCalculatorModal/models';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 interface Props {
-  calculatorTypes: SelectItem[];
+  calculatorTypes: {
+    id: number;
+    value: number;
+    model: string;
+    label: string;
+  }[];
 }
 
 export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
@@ -21,8 +25,8 @@ export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
     <div>
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Серийный номер">
-          <InputTT
-            value={fields.serialNumber.value}
+          <Input
+            value={fields.serialNumber.value || undefined}
             onChange={(e: any) =>
               fields.serialNumber.onChange(e.target.value) as any
             }
@@ -30,17 +34,17 @@ export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
           />
         </Form.Item>
         <Form.Item label="Тип вычислителя">
-          <StyledSelect
+          <Select
             placeholder="Выберите тип вычислителя из списка"
             value={fields.infoId.value as any}
             onChange={fields.infoId.onChange as any}
           >
             {calculatorTypes.map((elem) => (
-              <StyledSelect.Option key={elem.id} value={elem.id}>
+              <Select.Option key={elem.id} value={elem.id}>
                 {elem.label}
-              </StyledSelect.Option>
+              </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
         </Form.Item>
         <Form.Item label="Дата последней поверки прибора">
           <DatePickerNative

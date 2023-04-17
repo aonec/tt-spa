@@ -17,13 +17,14 @@ import {
   Wrapper,
   WrapperLinkButton,
   CloseIconSC,
+  ButtonSC,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
   ObjectMainInfoValues,
 } from './CreateObjectMainInfoStage.types';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import {
   HouseCategoryDictionary,
   LivingHouseTypeDictionary,
@@ -278,9 +279,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 Отмена
               </Button>
             </ButtonPadding>
-            <Button sidePadding={25} onClick={() => handleSubmit()}>
-              Далее
-            </Button>
+            <ButtonSC onClick={() => handleSubmit()}>Далее</ButtonSC>
           </RightButtonBlock>
         </Footer>
       </Wrapper>

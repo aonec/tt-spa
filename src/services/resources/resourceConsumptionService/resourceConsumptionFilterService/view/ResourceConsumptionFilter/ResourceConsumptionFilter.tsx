@@ -1,5 +1,4 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { SelectSC } from '01/shared/ui/Fields';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useCallback, useEffect, useState } from 'react';
@@ -18,10 +17,11 @@ import {
   TrashIconSC,
   Wrapper,
 } from './ResourceConsumptionFilter.styled';
-import { GetConsumptionDataFilter } from '../../../resourceConsumptionService.types';
 import { ResourceConsumptionFilterProps } from './ResourceConsumptionFilter.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useStore } from 'effector-react';
+import { ConsumptionDataFilter } from '../../resourceConsumptionFilterService.types';
+import { Select } from 'ui-kit/Select';
 
 export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   setFilter,
@@ -40,31 +40,36 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   const existingCities = useStore($existingCities);
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
 
-  const { values, setFieldValue, submitForm, errors, setValues } =
-    useFormik<GetConsumptionDataFilter>({
-      initialValues: {
-        HousingStockIds: filter.HousingStockIds || [],
-        AdditionalHousingStockIds: filter.AdditionalHousingStockIds || [],
-        From: filter.From,
-      },
-      validationSchema: resourceConsumptionFilterValidationSchema,
-      enableReinitialize: true,
-      validateOnChange: false,
-      validateOnBlur: false,
-      onSubmit: (values) => {
-        const { HousingStockIds, AdditionalHousingStockIds } = values;
+  const { values, setFieldValue, submitForm, errors, setValues } = useFormik<
+    Omit<ConsumptionDataFilter, 'To'>
+  >({
+    initialValues: {
+      HousingStockIds: filter.HousingStockIds || [],
+      AdditionalHousingStockIds: filter.AdditionalHousingStockIds || [],
+      From: filter.From,
+    },
+    validationSchema: resourceConsumptionFilterValidationSchema,
+    enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: (values) => {
+      const { HousingStockIds, AdditionalHousingStockIds } = values;
 
-        if (!HousingStockIds.length) {
-          return;
-        }
+      if (!HousingStockIds.length) {
+        return;
+      }
 
-        if (!AdditionalHousingStockIds.length) {
-          handleClearAdditionalAddressData();
-        }
+      if (!AdditionalHousingStockIds.length) {
+        handleClearAdditionalAddressData();
+      }
 
-        setFilter({ ...values, HousingStockIds });
-      },
-    });
+      setFilter({
+        ...values,
+        HousingStockIds,
+        To: moment(values.From).endOf('month').utcOffset(0, true).format(),
+      });
+    },
+  });
 
   useEffect(() => {
     setValues(filter);
@@ -107,25 +112,25 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
             />
           </FormItem>
           <FormItem label="Город">
-            <SelectSC
+            <Select
+              search
               disabled={!(existingCities || []).length}
-              isShadow={false}
               onChange={(value) => selectCity(String(value))}
               value={selectedCity || undefined}
               placeholder="Выберите город"
             >
               {(existingCities || []).map((city) => (
-                <SelectSC.Option key={city} value={city}>
+                <Select.Option key={city} value={city}>
                   {city}
-                </SelectSC.Option>
+                </Select.Option>
               ))}
-            </SelectSC>
+            </Select>
           </FormItem>
         </FormWrapper>
         <FormItem label="Домоуправление">
-          <SelectSC
+          <Select
+            search
             disabled={!houseManagements.length}
-            isShadow={false}
             placeholder="Выберите из списка"
             value={selectedHouseManagement || undefined}
             onChange={(id) => setHouseManagement(id ? String(id) : null)}
@@ -136,12 +141,12 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
                 return null;
               }
               return (
-                <SelectSC.Option key={management.id} value={management.id}>
+                <Select.Option key={management.id} value={management.id}>
                   {management.name}
-                </SelectSC.Option>
+                </Select.Option>
               );
             })}
-          </SelectSC>
+          </Select>
         </FormItem>
         <FormItem label="Адрес">
           <AddressTreeSelect
@@ -187,7 +192,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <Button type="ghost" onClick={handleReset}>
           Сбросить
         </Button>
-        <Button type="default" onClick={submitForm} isLoading={isLoading}>
+        <Button type="primary" onClick={submitForm} isLoading={isLoading}>
           Применить фильтр
         </Button>
       </Footer>

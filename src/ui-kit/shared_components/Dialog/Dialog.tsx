@@ -1,4 +1,3 @@
-import { Loader } from '01/components';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
 import {
@@ -21,6 +20,8 @@ export const Dialog: FC<DialogProps> = ({
   description,
   footer,
   zIndex,
+  children,
+  isDisabled,
 }) => {
   const btnText = submitText || 'Подтвердить';
 
@@ -30,6 +31,7 @@ export const Dialog: FC<DialogProps> = ({
         <>
           <TitleText>{title}</TitleText>
           <DialogText>{description}</DialogText>
+          {children}
         </>
       }
       visible={isOpen}
@@ -43,8 +45,13 @@ export const Dialog: FC<DialogProps> = ({
             <Button type="ghost" key="back" onClick={onCancel}>
               {cancelText || 'Отмена'}
             </Button>
-            <Button onClick={onSubmit} disabled={isLoading} type={type}>
-              {isLoading ? <Loader show /> : btnText}
+            <Button
+              onClick={onSubmit}
+              isLoading={isLoading}
+              disabled={isDisabled}
+              type={type}
+            >
+              {btnText}
             </Button>
           </FooterWrapper>
         )

@@ -16,4 +16,7 @@ export type TableProps<T> = {
   columns: TableColumn<T>[];
   elements: T[];
   pagination?: Pagination;
+  rowStyles?: string;
+  headerStyles?: string;
+  onClick?: (elem: T) => void;
 };

@@ -8,14 +8,11 @@ import {
   prepareAddressesForTreeSelect,
   prepareAddressesWithParentsForTreeSelect,
 } from 'ui-kit/shared_components/AddressTreeSelect/AddressTreeSelect.utils';
-import {
-  ConsumptionDataFilter,
-  GetConsumptionDataFilter,
-} from '../resourceConsumptionService.types';
 import { getAddressSearchData } from '../resourceConsumptionService.utils';
 import { fetchAddresses } from './resourceConsumptionFilterService.api';
 import moment from 'moment';
 import { resourceConsumptionService } from '../resourceConsumptionService.model';
+import { ConsumptionDataFilter } from './resourceConsumptionFilterService.types';
 
 const domain = createDomain('resourceConsumptionFilterService');
 
@@ -42,24 +39,23 @@ const $houseManagements = domain
   .on(getAddressesFx.doneData, (_, houseManagements) => houseManagements)
   .reset(resourceConsumptionService.inputs.clearSummary);
 
-const setFilter = domain.createEvent<GetConsumptionDataFilter>();
 const setResource = domain.createEvent<EResourceType>();
+const $selectedResource = domain
+  .createStore<EResourceType>(EResourceType.ColdWaterSupply)
+  .on(setResource, (_, resource) => resource)
+  .reset(clearFilter);
+
+const setFilter = domain.createEvent<ConsumptionDataFilter>();
 const $resourceConsumptionFilter = domain
   .createStore<ConsumptionDataFilter>({
-    ResourceType: EResourceType.ColdWaterSupply,
     From: moment().startOf('month').utcOffset(0, true).format(),
     To: moment().endOf('month').utcOffset(0, true).format(),
     AdditionalHousingStockIds: [],
     HousingStockIds: [],
   })
-  .on(setResource, (oldFilter, ResourceType) => ({
-    ...oldFilter,
-    ResourceType,
-  }))
   .on(setFilter, (oldFilter, filter) => ({
     ...oldFilter,
     ...filter,
-    To: moment(filter.From).endOf('month').utcOffset(0, true).format(),
   }))
   .reset(clearFilter);
 
@@ -125,5 +121,6 @@ export const resourceConsumptionFilterService = {
     $selectedCity,
     $houseManagements,
     $resourceConsumptionFilter,
+    $selectedResource,
   },
 };
