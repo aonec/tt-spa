@@ -17,7 +17,7 @@ export const EditedAccountsAlert: FC<EditedAccountsAlertProps> = ({
   const preparedDate = moment(editedAt).format('DD.MM.YYYY');
   return (
     <ApartmentAlertWrapper>
-      <Alert type="info">
+      <Alert>
         <AlertContent>
           <AlertTextWrapper>
             Лицевой счёт квартиры был отредактирован{' '}
