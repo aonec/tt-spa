@@ -1613,6 +1613,7 @@ export enum EIndividualDeviceOrderRule {
   Resource = 'Resource',
   ApartmentNumber = 'ApartmentNumber',
   SerialNumber = 'SerialNumber',
+  Address = 'Address',
 }
 
 export enum EIndividualDeviceRateType {
@@ -2002,7 +2003,6 @@ export enum EStageActionType {
   AddEmailTemplate = 'AddEmailTemplate',
   AddPhotos = 'AddPhotos',
   SetApplicationCompletionDate = 'SetApplicationCompletionDate',
-  Returnable = 'Returnable',
   AddComment = 'AddComment',
   AddApartmentCheck = 'AddApartmentCheck',
   FixReading = 'FixReading',
@@ -5574,13 +5574,6 @@ export interface SwitchMagneticSealRequest {
   magneticSealTypeName?: string | null;
 }
 
-export interface TaskAssignToMultipleRequest {
-  taskIds: number[];
-
-  /** @format int32 */
-  nextPerpetratorId: number;
-}
-
 export interface TaskCommentRequest {
   comment?: string | null;
 }
@@ -5665,7 +5658,7 @@ export enum TaskGroupingFilter {
   Observing = 'Observing',
   NotArchived = 'NotArchived',
   Archived = 'Archived',
-  Returnable = 'Returnable',
+  Revertable = 'Revertable',
 }
 
 export interface TaskListResponse {
@@ -5734,6 +5727,7 @@ export interface TaskResponse {
     | ETaskConfirmationTypeStringDictionaryItem[]
     | null;
   housingStockCoordinates: PointResponse | null;
+  canBeReverted: boolean;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -13626,28 +13620,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li>
-     *
-     * @tags Tasks
-     * @name TasksAssignMultipleCreate
-     * @summary TaskAssign
-     * @request POST:/api/Tasks/assignMultiple
-     * @secure
-     */
-    tasksAssignMultipleCreate: (
-      data: TaskAssignToMultipleRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/Tasks/assignMultiple`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
@@ -13660,24 +13632,6 @@ export class Api<
       this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/filters`,
         method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksReturnCreate
-     * @summary TasksExecute
-     * @request POST:/api/Tasks/{taskId}/return
-     * @secure
-     */
-    tasksReturnCreate: (taskId: number, params: RequestParams = {}) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Tasks/${taskId}/return`,
-        method: 'POST',
         secure: true,
         format: 'json',
         ...params,
