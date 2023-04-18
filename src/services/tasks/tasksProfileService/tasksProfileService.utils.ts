@@ -71,9 +71,6 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
     expectedCompletionTime,
   } = task;
 
-  console.log(expectedCompletionTime);
-  console.log(currentStage?.expectedCompletionTime);
-
   if (!closingTime) {
     const ext = currentStage?.expectedCompletionTime;
     const isFailed = new Date(ext!).valueOf() - Date.now() < 0;
