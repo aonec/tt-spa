@@ -36,8 +36,8 @@ import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveS
 import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
 import './Inspectors/displayInspectors/displayInspectorsService.init';
 import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
-import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
-import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
-import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';
-import './settings/inspectorsDistributionService/inspectorRassignmentService/inspectorReassignmentService.init';
-import './settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.init';
+import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
+import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
+import '../../services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';
+import '../../services/settings/inspectorsDistributionService/inspectorRassignmentService/inspectorReassignmentService.init';
+import '../../services/settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.init';

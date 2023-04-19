@@ -14,7 +14,7 @@ import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPag
 import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
-import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
+import { SettingsPageContainer } from 'services/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
 import { EditNodeContainer } from 'services/housingMeteringDevices/editNodeService';
@@ -32,9 +32,9 @@ import { CompanyProfileContainer } from 'services/company/companyProfileService'
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 import { ReportViewContainer } from 'services/reportsService/reportViewService';
 import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
-import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
-import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
-import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
+import { StandartWorkingRangeContainer } from 'services/workingRanges/standartWorkingRangeService';
+import { GroupWorkingRangeContainer } from 'services/workingRanges/groupWorkingRangeService';
+import { UniqueWorkingRangeContainer } from 'services/workingRanges/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
