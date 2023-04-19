@@ -17,8 +17,6 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
 
   const calculators = useStore(calculatorsListService.outputs.$calculatorsList);
 
-  console.log(' 11111111111111111111111111111111');
-
   const { CalculatorsGate } = calculatorsListService.gates;
 
   const loading = useStore(addNodeCalculatorService.outputs.$loading);

@@ -15,12 +15,13 @@ const fetchCalculatorTypesFx = domain.createEffect<
 
 const $calculatorTypes = domain
   .createStore<CalculatorInfoListResponse[] | null>(null)
-  .on(fetchCalculatorTypesFx.doneData, (_, data) => data)
+  .on(fetchCalculatorTypesFx.doneData, (_, data) => {
+    return data;
+  })
   .reset(CalculatorInfosGate.close);
 
-const $calculatorTypesSelectItems = $calculatorTypes.map<CalculatorInfoItem[] >(
+const $calculatorTypesSelectItems = $calculatorTypes.map<CalculatorInfoItem[]>(
   (types): CalculatorInfoItem[] => {
-    console.log(types)
     return (
       types?.map((type) => ({
         id: type.id,

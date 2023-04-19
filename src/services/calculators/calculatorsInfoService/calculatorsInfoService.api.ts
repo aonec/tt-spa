@@ -1,8 +1,12 @@
 import { axios } from '01/axios';
 import { CalculatorInfoListResponse } from 'myApi';
 
-export const getCalculatorInfos = (): Promise<
+export const getCalculatorInfos = async (): Promise<
   CalculatorInfoListResponse[] | null
 > => {
-  return axios.get('CalculatorInfos');
+  const res: { items: CalculatorInfoListResponse[] } = await axios.get(
+    'CalculatorInfos',
+  );
+
+  return res.items;
 };

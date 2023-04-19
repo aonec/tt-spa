@@ -33,9 +33,6 @@ export const CreateCalculatorModal: FC<Props> = ({
   loading,
 }) => {
   const calculatorTypes = useStore(outputs.$calculatorTypesSelectItems);
-
-  console.log(calculatorTypes);
-
   return (
     <>
       <CalculatorInfosGate />
