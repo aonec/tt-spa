@@ -1,4 +1,4 @@
-import { Store, createDomain, forward } from 'effector';
+import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorInfoListResponse } from 'myApi';
 import { CalculatorInfoItem } from './calculatorsInfoService.types';
