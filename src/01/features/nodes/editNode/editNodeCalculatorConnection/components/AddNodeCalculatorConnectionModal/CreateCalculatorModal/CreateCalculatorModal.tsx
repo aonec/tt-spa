@@ -20,6 +20,9 @@ interface Props {
 
 const { TabPane } = Tabs;
 
+const { gates, outputs } = calculatorsInfoService;
+const { CalculatorInfosGate } = gates;
+
 export const CreateCalculatorModal: FC<Props> = ({
   onClose,
   isOpen,
@@ -29,10 +32,9 @@ export const CreateCalculatorModal: FC<Props> = ({
   onSave,
   loading,
 }) => {
-  const { gates, outputs } = calculatorsInfoService;
-  const { CalculatorInfosGate } = gates;
-
   const calculatorTypes = useStore(outputs.$calculatorTypesSelectItems);
+
+  console.log(calculatorTypes);
 
   return (
     <>

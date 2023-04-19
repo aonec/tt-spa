@@ -18,16 +18,19 @@ const $calculatorTypes = domain
   .on(fetchCalculatorTypesFx.doneData, (_, data) => data)
   .reset(CalculatorInfosGate.close);
 
-const $calculatorTypesSelectItems: Store<CalculatorInfoItem[]> =
-  $calculatorTypes.map<CalculatorInfoItem[]>(
-    (types): CalculatorInfoItem[] =>
+const $calculatorTypesSelectItems = $calculatorTypes.map<CalculatorInfoItem[] >(
+  (types): CalculatorInfoItem[] => {
+    console.log(types)
+    return (
       types?.map((type) => ({
         id: type.id,
         value: type.id,
         model: type.model || 'N/A',
         label: type.model || 'N/A',
-      })) || [],
-  );
+      })) || []
+    );
+  },
+);
 
 forward({
   from: CalculatorInfosGate.open,
