@@ -1,4 +1,4 @@
 export const featureToggles = {
-  reportsConstructor: true,
+  reportsConstructor: false,
   editHousingStock: false,
 };
