@@ -2,14 +2,11 @@ import { Tabs } from 'antd';
 import { useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { ModalTT } from '../../../../../../../shared/ui/ModalTT';
-import {
-  $calculatorTypesSelectItems,
-  CalculatorInfosGate,
-} from '../../../../../../carlculators/calculatorsInfo/models';
 import { BaseInfoAddNodeCalculatorConnectionForm } from '../forms/BaseInfoAddNodeCalculatorConnectionForm';
 import { ConnectionSettingsForm } from '../forms/ConnectionSettingsForm';
 import { FilesUploadForm } from '../forms/FilesUploadsForm';
 import { Stage } from './types';
+import { calculatorsInfoService } from 'services/calculators/calculatorsInfoService';
 
 interface Props {
   onClose(): void;
@@ -32,7 +29,10 @@ export const CreateCalculatorModal: FC<Props> = ({
   onSave,
   loading,
 }) => {
-  const calculatorTypes = useStore($calculatorTypesSelectItems);
+  const { gates, outputs } = calculatorsInfoService;
+  const { CalculatorInfosGate } = gates;
+
+  const calculatorTypes = useStore(outputs.$calculatorTypesSelectItems);
 
   return (
     <>
