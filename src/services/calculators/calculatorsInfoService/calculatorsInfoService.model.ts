@@ -1,7 +1,6 @@
 import { createDomain, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorInfoListResponse } from 'myApi';
-import { CalculatorInfoItem } from './calculatorsInfoService.types';
 import { getCalculatorInfos } from './calculatorsInfoService.api';
 
 const domain = createDomain('calculatorsInfoService');
@@ -20,18 +19,16 @@ const $calculatorTypes = domain
   })
   .reset(CalculatorInfosGate.close);
 
-const $calculatorTypesSelectItems = $calculatorTypes.map<CalculatorInfoItem[]>(
-  (types): CalculatorInfoItem[] => {
-    return (
-      types?.map((type) => ({
-        id: type.id,
-        value: type.id,
-        model: type.model || 'N/A',
-        label: type.model || 'N/A',
-      })) || []
-    );
-  },
-);
+const $calculatorTypesSelectItems = $calculatorTypes.map((types) => {
+  if (!types) return [];
+
+  return types?.map((type) => ({
+    id: type.id,
+    value: type.id,
+    model: type.model || 'N/A',
+    label: type.model || 'N/A',
+  }));
+});
 
 forward({
   from: CalculatorInfosGate.open,
