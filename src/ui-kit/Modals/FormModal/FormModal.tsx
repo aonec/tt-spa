@@ -51,7 +51,7 @@ export const FormModal: React.FC<FormModalProps> = ({
 
   const DefaultModalFooter = (
     <Footer>
-      <Button type="ghost" key="back" onClick={onCancel}>
+      <Button disabled type="ghost" key="back" onClick={onCancel}>
         {cancelBtnText}
       </Button>
       {customSubmit || DefaultModalSubmitButton}
