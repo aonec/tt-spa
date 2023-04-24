@@ -1,14 +1,7 @@
-import { createDomain } from 'effector';
-
-const domain = createDomain(
-  'settingsPageService'
-);
+import { inspectorReassignmentService } from '../inspectorsDistributionService/inspectorRassignmentService/inspectorReassignmentService.models';
 
 export const settingsPageService = {
   inputs: {
-  
-  },
-  outputs: {
-
+    reassingInspector: inspectorReassignmentService.inputs.openModal,
   },
 };

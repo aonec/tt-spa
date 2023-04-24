@@ -14,7 +14,6 @@ import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPag
 import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
-import { SettingsPageContainer } from 'services/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
 import { EditNodeContainer } from 'services/housingMeteringDevices/editNodeService';
@@ -51,6 +50,7 @@ import { EditObjectContainer } from 'services/objects/editObjectService';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
+import { SettingsPageContainer } from 'services/settings/settingsPageService';
 
 const { gates } = objectProfileService;
 

@@ -4,7 +4,7 @@ import { ReassingInspectorModalContainer } from './inspectorsDistributionService
 import { settingsService } from './settingsService.models';
 import { SettingsPage } from './views/SettingsPage';
 
-export const SettingsPageContainer = () => {
+ const SettingsPageContainer = () => {
   const handleReassingInspector = useEvent(
     settingsService.inputs.reassingInspector,
   );
