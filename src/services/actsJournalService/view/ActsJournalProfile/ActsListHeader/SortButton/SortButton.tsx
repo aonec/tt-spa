@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Wrapper } from './SortButton.styled';
 import { SortButtonProps } from './SortButton.types';
 import { EOrderByRule } from 'myApi';
@@ -20,12 +20,15 @@ export const SortButton: FC<SortButtonProps> = ({
     return onChange(undefined);
   };
 
-  const Icon =
-    value === undefined
-      ? SortIcon
-      : value === EOrderByRule.Ascending
-      ? SortIconTop
-      : SortIconBottom;
+  const Icon = useMemo(() => {
+    if (value === EOrderByRule.Ascending) {
+      return SortIconTop;
+    }
+    if (value === EOrderByRule.Descending) {
+      return SortIconBottom;
+    }
+    return SortIcon;
+  }, [value]);
 
   return (
     <Wrapper className={className} onClick={handleChange}>

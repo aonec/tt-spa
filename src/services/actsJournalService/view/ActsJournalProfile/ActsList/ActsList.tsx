@@ -10,13 +10,14 @@ export const ActsList: FC<ActsListProps> = ({
   actsPagedData,
   setPageNumber,
 }) => {
-  const list = useMemo(
-    () =>
-      (actsPagedData?.items || []).map((act) => (
-        <ActsListItem act={act} key={act.id} />
-      )),
-    [actsPagedData],
-  );
+  const list = useMemo(() => {
+    if (!actsPagedData?.items) {
+      return null;
+    }
+    return actsPagedData.items.map((act) => (
+      <ActsListItem act={act} key={act.id} />
+    ));
+  }, [actsPagedData]);
 
   return (
     <WithLoader isLoading={isActsLoading}>
