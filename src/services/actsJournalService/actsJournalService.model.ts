@@ -7,6 +7,7 @@ import { $apartmentSearchId } from '01/features/addressIdSearch/models';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { last } from 'lodash';
+import moment from 'moment';
 
 const domain = createDomain('actsJournalService');
 
@@ -57,7 +58,11 @@ sample({
     filter: Boolean,
   }),
   clock: createAct,
-  fn: (apartmentId, payload) => ({ ...payload, apartmentId }),
+  fn: (apartmentId, payload) => ({
+    ...payload,
+    apartmentId,
+    actJobDate: moment(payload.actJobDate).format('YYYY-MM-DD'),
+  }),
   target: createActFx,
 });
 
