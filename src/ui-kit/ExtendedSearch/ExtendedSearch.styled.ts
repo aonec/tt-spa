@@ -81,6 +81,7 @@ export const SearchContentWrap = styled.div`
 `;
 
 export const ExtendedSearchWrap = styled.div`
+  margin-bottom: 16px;
   border-radius: 10px;
   border: 2px solid #f3f5f6;
 `;
