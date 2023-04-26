@@ -9,7 +9,7 @@ export type ActsJournalProfileProps = {
   isCreateLoading: boolean;
   isActsLoading: boolean;
   actsPagedData: ApartmentActResponsePagedList | null;
-  setActsFilter: (filter: ActsJournalRequestParams) => void;
+  updateActsFilter: (filter: ActsJournalRequestParams) => void;
   actsFilter: ActsJournalRequestParams;
   setPageNumber: (pageNumber: number) => void;
   actCreated: Event<void>;
