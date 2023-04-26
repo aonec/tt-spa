@@ -1,12 +1,11 @@
-import { useMemo } from 'react';
+export function getFocusedIndex(dataKey: string) {
+  let index = null;
 
-export function useFocusedIndex(dataKey: string) {
-  let index: number | null = null;
-
-  const nodeList = useMemo(
-    () => document.querySelectorAll(`[data-search-input="${dataKey}"]`),
-    [dataKey],
+  const nodeList = document.querySelectorAll(
+    `[data-search-input="${dataKey}"]`,
   );
+
+  console.log(nodeList);
 
   nodeList.forEach((node, key) => {
     if (document.activeElement === node) {

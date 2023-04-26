@@ -48,7 +48,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       },
     });
 
-  const next = useSwitchInputOnEnter(dataKey, true);
+  const next = useSwitchInputOnEnter(dataKey, false);
 
   useEffect(
     () =>
@@ -61,7 +61,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
 
   const handleEnterOnRegistryNumberInput = useCallback(() => {
     if (values.actResourceType) {
-      return () => next(2);
+      return next(2);
     }
     if (values.actType) {
       return next(1);

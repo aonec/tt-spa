@@ -10,7 +10,7 @@ import {
 } from './AddressIdSearch.styled';
 import { Loader } from 'ui-kit/Loader';
 import { AddressIdSearchProps } from './AddressIdSearch.types';
-import { useFocusedIndex } from './AddressIdSearch.hooks';
+import { getFocusedIndex } from './AddressIdSearch.hooks';
 import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { SearchIcon } from 'ui-kit/icons';
@@ -28,7 +28,7 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
   dataKey,
 }) => {
   const existingStreets = useStore($existingStreets);
-  const focusedIndex = useFocusedIndex(addressIdSearchKey);
+  const focusedIndex = getFocusedIndex(addressIdSearchKey);
   const isFirstFocused = focusedIndex === 0;
 
   const { bestMatch: bestStreetMatch } = useAutocomplete(
@@ -121,8 +121,8 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
           }
           onKeyDown={(e: any) => {
             fromEnter(() => {
-              onEnter && onEnter(2);
               getApartmentId();
+              onEnter && onEnter(2);
             })(e);
           }}
           placeholder="Кв."
