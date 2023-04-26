@@ -1,45 +1,40 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { ResourceIconLookup } from '../ResourceIconLookup';
 import {
   IconWrapper,
   Model,
+  RowWrapper,
   SealWrapper,
   SerialNumber,
   Wrapper,
 } from './IndividualDeviceInfoShort.styled';
 import { IndividualDeviceInfoShortProps } from './IndividualDeviceInfoShort.types';
-import { useStore } from 'effector-react';
-import { $allIndividualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import moment from 'moment';
 
 export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
   device,
   onClick,
 }) => {
-  const allIndividualDeviceMountPlaces = useStore(
-    $allIndividualDeviceMountPlaces,
-  );
-
-  const mountPlace = useMemo(
-    () =>
-      (allIndividualDeviceMountPlaces &&
-        device.model &&
-        allIndividualDeviceMountPlaces.find(
-          (mountPlaceFromServer) => mountPlaceFromServer.name === device.model,
-        )?.description) ||
-      '',
-    [device, allIndividualDeviceMountPlaces],
-  );
-
-  const modelDescription = `${device.model} ${mountPlace}`;
+  const modelDescription = `${device.model || ''} ${device.mountPlace || ''}`;
+  const sealInstallationDate = device.sealInstallationDate
+    ? `(${moment(device.sealInstallationDate).format('DD.MM.YYYY')})`
+    : '';
 
   return (
     <Wrapper onClick={onClick} clickable={Boolean(onClick)}>
-      <IconWrapper>
-        {device.resource && <ResourceIconLookup resource={device.resource} />}
-      </IconWrapper>
-      <SerialNumber>{device.serialNumber}</SerialNumber>
-      <Model>{modelDescription}</Model>
-      <SealWrapper>{}</SealWrapper>
+      <RowWrapper>
+        <IconWrapper>
+          {device.resource && <ResourceIconLookup resource={device.resource} />}
+        </IconWrapper>
+        <SerialNumber>{device.serialNumber}</SerialNumber>
+        <Model>{modelDescription}</Model>
+      </RowWrapper>
+      {device.sealNumber && (
+        <SealWrapper>
+          Пломба <span>{device.sealNumber}</span>
+          <span>{sealInstallationDate}</span>
+        </SealWrapper>
+      )}
     </Wrapper>
   );
 };

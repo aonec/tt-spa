@@ -5,8 +5,6 @@ const clickableMixin = css`
 `;
 
 export const Wrapper = styled.div<{ clickable: boolean }>`
-  display: flex;
-  align-items: center;
   overflow: hidden;
   max-width: 220px;
   cursor: pointer;
@@ -39,9 +37,22 @@ export const Model = styled.div`
 `;
 
 export const IconWrapper = styled.div`
-  min-width: 15px;
+  min-width: 16px;
   display: flex;
   align-items: center;
 `;
 
-export const SealWrapper = styled.div``;
+export const RowWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const SealWrapper = styled.div`
+  margin-left: 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #272f5ab2;
+  font-size: 12px;
+`;
