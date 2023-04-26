@@ -9,7 +9,7 @@ const { ActsJournalGate } = gates;
 
 export const ActsJournalContainer = () => {
   const handleCreateAct = useEvent(inputs.createAct);
-  const setActsFilter = useEvent(inputs.setActsFilter);
+  const updateActsFilter = useEvent(inputs.updateActsFilter);
   const setPageNumber = useEvent(inputs.setPageNumber);
   const actCreated = inputs.actCreated;
 
@@ -26,7 +26,7 @@ export const ActsJournalContainer = () => {
         isCreateLoading={isCreateLoading}
         isActsLoading={isActsLoading}
         actsPagedData={actsPagedData}
-        setActsFilter={setActsFilter}
+        updateActsFilter={updateActsFilter}
         actsFilter={actsFilter}
         setPageNumber={setPageNumber}
         actCreated={actCreated}

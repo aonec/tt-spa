@@ -11,11 +11,11 @@ import { addressIdSearchService } from './addressIdSearchService';
 
 const domain = createDomain('actsJournalService');
 
-const setActsFilter = domain.createEvent<ActsJournalRequestParams>();
+const updateActsFilter = domain.createEvent<ActsJournalRequestParams>();
 const setPageNumber = domain.createEvent<number>();
 const $actsFilter = domain
   .createStore<ActsJournalRequestParams>({ PageSize: 20, PageNumber: 1 })
-  .on(setActsFilter, (oldFilter, newFilter) => ({
+  .on(updateActsFilter, (oldFilter, newFilter) => ({
     ...oldFilter,
     ...newFilter,
     PageNumber: 1,
@@ -49,7 +49,7 @@ createActFx.failData.watch(() => message.error('Ошибка при добавл
 sample({
   clock: $existingCities,
   fn: (cities) => ({ City: last(cities) }),
-  target: setActsFilter,
+  target: updateActsFilter,
 });
 
 sample({
@@ -81,7 +81,7 @@ sample({
 export const actsJournalService = {
   inputs: {
     createAct,
-    setActsFilter,
+    updateActsFilter,
     setPageNumber,
     actCreated,
   },

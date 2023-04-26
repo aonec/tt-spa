@@ -12,20 +12,20 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
   isCreateLoading,
   isActsLoading,
   actsPagedData,
-  setActsFilter,
+  updateActsFilter,
   actsFilter,
   setPageNumber,
   actCreated,
 }) => {
   const handleClearAddress = useCallback(
     () =>
-      setActsFilter({
+      updateActsFilter({
         HousingStockNumber: undefined,
         Street: undefined,
         Corpus: undefined,
         ApartmentNumber: undefined,
       }),
-    [setActsFilter],
+    [updateActsFilter],
   );
 
   return (
@@ -53,7 +53,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
             apartment: actsFilter.ApartmentNumber,
           }}
           handleSubmit={(values) =>
-            setActsFilter({
+            updateActsFilter({
               City: values.city,
               Street: values.street,
               HousingStockNumber: values.house,
@@ -67,7 +67,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
         </ButtonSC>
       </HeaderWrapper>
       <Wrapper>
-        <ActsListHeader setActsFilter={setActsFilter} filter={actsFilter} />
+        <ActsListHeader setActsFilter={updateActsFilter} filter={actsFilter} />
         <AddNewActForm
           addNewAct={handleCreateAct}
           isCreateLoading={isCreateLoading}

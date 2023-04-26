@@ -83,7 +83,7 @@ export const createTimer = (task: TaskListResponse | TaskResponse) => {
         isFailed,
         deadlineDate: `(до ${new Date(ext!).toLocaleDateString()})`,
       },
-      statusDescription: isFailed ? 'Просрочена на:' : 'Время на этап:',
+      statusDescription: isFailed ? 'Этап просрочен:' : 'Время на этап:',
       icon: 'timer',
     };
   }
