@@ -2,6 +2,7 @@ import React from 'react';
 import { ActsJournalProfile } from './view/ActsJournalProfile';
 import { actsJournalService } from './actsJournalService.model';
 import { useEvent, useStore } from 'effector-react';
+import './actsJournalService.relations';
 
 const { inputs, outputs, gates } = actsJournalService;
 const { ActsJournalGate } = gates;
