@@ -6,7 +6,7 @@ export type ApartmentInfoProps = {
   handleUpdateApartment: (payload: UpdateApartmentRequestPayload) => void;
   handlePauseApartment: () => void;
   handleCancelPauseApartment: () => void;
-  openEditPersonalNumberModal: () => void;
+  openEditPersonalNumberModal: (payload: boolean) => boolean
   setSelectedHomeownerName: (payload: string) => void;
   isPermitionToApartmentStatusPatch: boolean;
 };
