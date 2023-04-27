@@ -1,1 +1,1 @@
-export { PersonalNumberForm } from './PersonalNumberForm'
+export { PersonalNumberForm } from './PersonalNumberForm';

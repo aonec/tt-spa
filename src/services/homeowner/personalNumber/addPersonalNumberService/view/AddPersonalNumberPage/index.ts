@@ -1,1 +1,1 @@
-export { AddPersonalNumberPage } from './AddPersonalNumberPage'
+export { AddPersonalNumberPage } from './AddPersonalNumberPage';

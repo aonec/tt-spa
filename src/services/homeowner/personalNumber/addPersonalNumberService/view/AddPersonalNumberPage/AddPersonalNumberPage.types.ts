@@ -1,3 +1,1 @@
-export type AddPersonalNumberPageProps = {
-  
-};
+export type AddPersonalNumberPageProps = {};
