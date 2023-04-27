@@ -1,6 +1,6 @@
 import { ApartmentResponse } from 'myApi';
 
-export enum PersonalNumberActionType {
+export enum PersonalNumberActions {
   Add = 'Add',
   Edit = 'Edit',
   Switch = 'Switch',

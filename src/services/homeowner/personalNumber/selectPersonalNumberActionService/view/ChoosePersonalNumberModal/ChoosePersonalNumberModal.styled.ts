@@ -1,3 +1,12 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { Select } from 'ui-kit/Select';
 
-export const Wrapper = styled.div``
+export const Title = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const SelectSC = styled(Select)`
+  width: 100%;
+`;

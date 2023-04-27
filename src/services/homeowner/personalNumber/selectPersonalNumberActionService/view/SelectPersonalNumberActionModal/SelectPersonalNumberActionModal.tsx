@@ -11,12 +11,13 @@ import {
   SwitchIcon,
 } from 'ui-kit/icons';
 import { FormModal } from 'ui-kit/Modals/FormModal';
+import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
 
 const formId = 'select-personal-number-action-modal';
 
 export const SelectPersonalNumberActionModal: FC<
   SelectPersonalNumberActionModalProps
-> = ({ isOpen, setOpen }) => {
+> = ({ isOpen, setAction }) => {
   return (
     <FormModal
       title="Выберите действие"
@@ -25,34 +26,26 @@ export const SelectPersonalNumberActionModal: FC<
       visible={isOpen}
       form={
         <>
-          <SelectItem
-          // onClick={() => setSelectedType(selectItem)}
-          >
+          <SelectItem onClick={() => setAction(PersonalNumberActions.Edit)}>
             <PencilBigIcon />
             <StyledSelectItemTitle>
               Редактировать лицевой счет
             </StyledSelectItemTitle>
           </SelectItem>
 
-          <SelectItem
-          // onClick={() => setSelectedType(selectItem)}
-          >
+          <SelectItem onClick={() => setAction(PersonalNumberActions.Switch)}>
             <SwitchIcon />
             <StyledSelectItemTitle>Заменить лицевой счет</StyledSelectItemTitle>
           </SelectItem>
 
-          <SelectItem
-          // onClick={() => setSelectedType(selectItem)}
-          >
+          <SelectItem onClick={() => setAction(PersonalNumberActions.Add)}>
             <PlusIcon />
             <StyledSelectItemTitle>
               Добавить новый лицевой счет к этой квартире
             </StyledSelectItemTitle>
           </SelectItem>
 
-          <SelectItem
-          // onClick={() => setSelectedType(selectItem)}
-          >
+          <SelectItem onClick={() => setAction(PersonalNumberActions.Split)}>
             <ApartmentIcon />
             <StyledSelectItemTitle>
               Разделить лицевые счета и создать новую квартиру

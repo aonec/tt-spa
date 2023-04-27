@@ -1,14 +1,30 @@
 import { createDomain } from 'effector';
+import { PersonalNumberActions } from './selectPersonalNumberActionService.types';
 
 const domain = createDomain('selectPersonalNumberActionService');
 
 const setSelectActionModalOpen = domain.createEvent<boolean>();
 
-const isSelectActionModalOpen = domain
+const setAction = domain.createEvent<PersonalNumberActions>();
+
+const $isSelectActionModalOpen = domain
   .createStore<boolean>(false)
-  .on(setSelectActionModalOpen, (_, isOpen) => isOpen);
+  .on(setSelectActionModalOpen, (_, isOpen) => isOpen)
+  .reset(setAction);
+
+const $isChoosePersonalNumberModalOpen = domain
+  .createStore<boolean>(false)
+  .on(setAction, () => true);
+
+const $selectedAction = domain
+  .createStore<PersonalNumberActions | null>(null)
+  .on(setAction, (_, action) => action);
 
 export const selectPersonalNumberActionService = {
-  inputs: {setSelectActionModalOpen},
-  outputs: {isSelectActionModalOpen},
+  inputs: { setSelectActionModalOpen, setAction },
+  outputs: {
+    $isSelectActionModalOpen,
+    $isChoosePersonalNumberModalOpen,
+    $selectedAction,
+  },
 };

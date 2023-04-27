@@ -1,4 +1,6 @@
+import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
+
 export type SelectPersonalNumberActionModalProps = {
-  setOpen: (payload: boolean) => boolean;
   isOpen: boolean;
+  setAction: (payload: PersonalNumberActions) => PersonalNumberActions;
 };
