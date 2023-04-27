@@ -505,16 +505,13 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
-                    <Route
-                      path="/apartment/:id/homeowners/addPersonalNumber"
-                      exact
-                    >
+                    <Route path="/apartment/:id/homeowners/add" exact>
                       <AddPersonalNumberPage />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/homeowners/:homeownerId/splitApartment"
+                      path="/apartment/:id/homeowners/:homeownerId/split"
                       exact
                     >
                       <SplitPersonalNumber />
@@ -522,7 +519,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/homeowners/:homeownerId/editPersonalNumber"
+                      path="/apartment/:id/homeowners/:homeownerId/edit"
                       exact
                     >
                       <EditHomeownerPersonalNumberPage />
@@ -530,7 +527,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route
-                      path="/apartment/:id/homeowners/:homeownerId/switchPersonalNumberFx"
+                      path="/apartment/:id/homeowners/:homeownerId/switch"
                       exact
                     >
                       <SwitchPersonalNumberPage />

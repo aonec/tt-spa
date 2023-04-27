@@ -2,15 +2,34 @@ import React, { FC, useMemo, useState } from 'react';
 import { ChoosePersonalNumberModalProps } from './ChoosePersonalNumberModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { CrownIcon, PencilBigIcon } from 'ui-kit/icons';
-import { SelectSC, Title } from './ChoosePersonalNumberModal.styled';
+import { Footer, SelectSC, Title } from './ChoosePersonalNumberModal.styled';
+import { Button } from 'ui-kit/Button';
+import { useHistory } from 'react-router-dom';
+import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
 
 const formId = 'choose-personal-number-modal';
 
 export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
   isOpen,
   apartment,
+  setIsOpen,
+  selectedAction,
 }) => {
+  const history = useHistory();
+
   const [homeownerId, setHomeownerId] = useState<string | null>(null);
+
+  const redirectToPage = () => {
+    if (selectedAction === PersonalNumberActions.Add) {
+      history.push(
+        `/apartment/${apartment.id}/homeowners/${PersonalNumberActions.Add}`,
+      );
+    }
+
+    history.push(
+      `/apartment/${apartment.id}/homeowners/${homeownerId}/${selectedAction}`,
+    );
+  };
 
   const activeHomeownerAccounts = useMemo(
     () =>
@@ -28,7 +47,29 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
       }
       formId={formId}
       visible={isOpen}
-      submitBtnText="Далее"
+      customFooter={
+        <Footer>
+          <Button
+            type="ghost"
+            onClick={() => {
+              setIsOpen(false);
+              setHomeownerId(null);
+            }}
+          >
+            Назад
+          </Button>
+          <Button
+            disabled={!homeownerId}
+            onClick={() => {
+              redirectToPage();
+              setIsOpen(false);
+              setHomeownerId(null);
+            }}
+          >
+            Далее
+          </Button>
+        </Footer>
+      }
       form={
         <SelectSC
           placeholder="Выберите лицевой счет"

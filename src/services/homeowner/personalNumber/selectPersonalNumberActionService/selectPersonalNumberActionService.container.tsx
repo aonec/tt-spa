@@ -12,10 +12,15 @@ export const SelectPersonalNumberActionContainer: FC<
 > = ({ apartment }) => {
   const setAction = useEvent(inputs.setAction);
 
+  const setChoosePersonalNumberModalOpen = useEvent(
+    inputs.setChoosePersonalNumberModalOpen,
+  );
+
   const isSelectActionModalOpen = useStore(outputs.$isSelectActionModalOpen);
   const isChoosePersonalNumberModalOpen = useStore(
     outputs.$isChoosePersonalNumberModalOpen,
   );
+  const selectedAction = useStore(outputs.$selectedAction);
 
   return (
     <>
@@ -25,7 +30,9 @@ export const SelectPersonalNumberActionContainer: FC<
       />
       <ChoosePersonalNumberModal
         isOpen={isChoosePersonalNumberModalOpen}
+        setIsOpen={setChoosePersonalNumberModalOpen}
         apartment={apartment}
+        selectedAction={selectedAction}
       />
     </>
   );

@@ -1,10 +1,10 @@
 import { ApartmentResponse } from 'myApi';
 
 export enum PersonalNumberActions {
-  Add = 'Add',
-  Edit = 'Edit',
-  Switch = 'Switch',
-  Split = 'Split',
+  Add = 'add',
+  Edit = 'edit',
+  Switch = 'switch',
+  Split = 'split',
 }
 
 export type SelectPersonalNumberActionContainerProps = {
