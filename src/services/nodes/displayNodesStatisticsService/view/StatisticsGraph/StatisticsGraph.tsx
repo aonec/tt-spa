@@ -8,7 +8,7 @@ import {
   VictoryLabel,
   VictoryScatter,
 } from 'victory';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'antd/es/date-picker/style/index';
 import { GraphViewProps } from './StatisticsGraph.types';
 import {
@@ -74,13 +74,11 @@ export const GraphView: React.FC<GraphViewProps> = ({
     (reading) => reading.header === graphParam,
   );
 
-  const archiveValues = requiredArchiveValues?.data;
-
-  if (!archiveValues || archiveValues.length === 0) {
-    return <GraphEmptyData />;
-  }
-
-  const preparedArchiveValues = (() => {
+  const preparedArchiveValues = useMemo(() => {
+    const archiveValues = requiredArchiveValues?.data;
+    if (!archiveValues || archiveValues.length === 0) {
+      return null;
+    }
     const firstlyPreparedData = prepareData(archiveValues);
     const finallyData = prepareDataForNodeStatistic(
       firstlyPreparedData,
@@ -88,7 +86,11 @@ export const GraphView: React.FC<GraphViewProps> = ({
     );
 
     return finallyData;
-  })();
+  }, [requiredArchiveValues, reportType]);
+
+  if (!preparedArchiveValues) {
+    return <GraphEmptyData />;
+  }
 
   const archiveLength = preparedArchiveValues.length;
 
