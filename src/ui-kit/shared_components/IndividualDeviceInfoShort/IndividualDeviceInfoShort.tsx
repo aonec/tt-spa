@@ -16,6 +16,8 @@ export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
   onClick,
 }) => {
   const modelDescription = `${device.model || ''} ${device.mountPlace || ''}`;
+
+  const isSealExist = device.sealNumber;
   const sealInstallationDate = device.sealInstallationDate
     ? `(${moment(device.sealInstallationDate).format('DD.MM.YYYY')})`
     : '';
@@ -29,12 +31,16 @@ export const IndividualDeviceInfoShort: FC<IndividualDeviceInfoShortProps> = ({
         <SerialNumber>{device.serialNumber}</SerialNumber>
         <Model>{modelDescription}</Model>
       </RowWrapper>
-      {device.sealNumber && (
-        <SealWrapper>
-          Пломба <span>{device.sealNumber}</span>
-          <span>{sealInstallationDate}</span>
-        </SealWrapper>
-      )}
+      <SealWrapper>
+        {isSealExist && (
+          <>
+            Пломба
+            <span>{device.sealNumber}</span>
+            <span>{sealInstallationDate}</span>
+          </>
+        )}
+        {!isSealExist && <span>Нет пломбы</span>}
+      </SealWrapper>
     </Wrapper>
   );
 };
