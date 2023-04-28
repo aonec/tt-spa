@@ -1,11 +1,11 @@
-import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
+import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { createDomain } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
 import { PatchInspectorPayload } from './inspectorReassignmentService.types';
 
 const inspectorReassignmentServiceDomain = createDomain(
-  'inspectorrRassignmentService'
+  'inspectorrRassignmentService',
 );
 
 const $isModalOpen = inspectorReassignmentServiceDomain.createStore(false);
