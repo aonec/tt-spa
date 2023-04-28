@@ -2,6 +2,7 @@ import { PersonalNumberActions } from '../../selectPersonalNumberActionService/s
 
 export type PersonalNumberFormProps = {
   type: PersonalNumberActions;
+  formId: string;
   isMainPersonalAccountNumber?: boolean;
 };
 

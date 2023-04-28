@@ -7,7 +7,9 @@ export type ButtonProps = {
   size?: ButtonSizeType;
   floating?: boolean;
   isLoading?: boolean;
-} & HTMLAttributes<HTMLElement>;
+  htmlForm?: string;
+  htmlType?: 'submit' | 'button';
+} & HTMLAttributes<HTMLButtonElement>;
 
 export type ButtonSizeType = 'middle' | 'small';
 

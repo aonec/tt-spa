@@ -28,6 +28,7 @@ export const PersonalNumberPageContainer: FC<
   isLoading,
   cancelButtonText,
   saveButtonText,
+  formId,
 }) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -51,7 +52,7 @@ export const PersonalNumberPageContainer: FC<
         <Button type="ghost" onClick={history.goBack}>
           {cancelButtonText || 'Отмена'}
         </Button>
-        <Button disabled={isLoading} onClick={() => {}}>
+        <Button htmlType="submit" htmlForm={formId} disabled={isLoading}>
           {isLoading ? (
             <Loader show />
           ) : isSplit ? (

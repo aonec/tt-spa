@@ -24,6 +24,7 @@ import { PersonalNumberActions } from '../../selectPersonalNumberActionService/s
 export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   type,
   isMainPersonalAccountNumber,
+  formId,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
@@ -38,18 +39,23 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
         isMainAccountingNumber: false,
       },
       validationSchema: yup.object().shape({
-        name: yup.string().required('Это поле обязательно'),
-        openAt: yup.string().required('Это поле обязательно'),
-        personalAccountNumber: yup.string().required('Это поле обязательно'),
+        name: yup.string().nullable().required('Это поле обязательно'),
+        openAt: yup.string().nullable().required('Это поле обязательно'),
+        personalAccountNumber: yup
+          .string()
+          .nullable()
+          .required('Это поле обязательно'),
       }),
       validateOnBlur: false,
       validateOnChange: false,
       enableReinitialize: true,
-      onSubmit: (data) => {},
+      onSubmit: (data) => {
+        console.log('first');
+      },
     });
 
   return (
-    <Wrapper>
+    <Wrapper onSubmitCapture={handleSubmit} id={formId}>
       <FormItem label="Дата открытия лицевого счета">
         <DatePickerNative
           value={values.openAt}

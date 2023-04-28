@@ -6,6 +6,7 @@ export type PersonalNumberPageContainerProps = {
   apartment: ApartmentResponse | null;
   isLoading: boolean;
   titleText: string;
+  formId: string;
   cancelButtonText?: string;
   saveButtonText?: string;
 };
