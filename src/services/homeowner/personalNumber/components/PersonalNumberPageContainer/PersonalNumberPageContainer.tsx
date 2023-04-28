@@ -14,9 +14,7 @@ import { PersonalNumberActions } from '../../selectPersonalNumberActionService/s
 import { Loader } from 'ui-kit/Loader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
-const {
-  gates: { ApartmentGate },
-} = apartmentProfileService;
+
 
 export const PersonalNumberPageContainer: FC<
   PersonalNumberPageContainerProps
@@ -31,7 +29,6 @@ export const PersonalNumberPageContainer: FC<
   formId,
 }) => {
   const history = useHistory();
-  const { id } = useParams<{ id: string }>();
 
   const address = apartment && getApartmentAddressString(apartment);
 
@@ -39,7 +36,6 @@ export const PersonalNumberPageContainer: FC<
 
   return (
     <Wrapper>
-      <ApartmentGate apartmentId={Number(id)} />
       <GoBack />
       <Title>{titleText}</Title>
       <Address>

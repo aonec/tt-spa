@@ -1,6 +1,7 @@
-import { ApartmentResponse } from 'myApi';
+import { ApartmentResponse, HomeownerAccountCreateRequest } from 'myApi';
 
 export type AddPersonalNumberPageProps = {
-  apartment: ApartmentResponse | null;
+  apartment: ApartmentResponse;
   isLoading: boolean;
+  handleAddPersonalNumber: (payload: HomeownerAccountCreateRequest) => void;
 };

@@ -3,7 +3,7 @@ import { PersonalNumberActions } from '../../selectPersonalNumberActionService/s
 
 export type PersonalNumberPageContainerProps = {
   type: PersonalNumberActions;
-  apartment: ApartmentResponse | null;
+  apartment: ApartmentResponse ;
   isLoading: boolean;
   titleText: string;
   formId: string;

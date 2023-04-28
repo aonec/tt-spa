@@ -20,39 +20,52 @@ import { Input } from 'ui-kit/Input';
 import { TrashIcon } from 'ui-kit/icons';
 import { Switch } from 'antd';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
+import { HomeownerAccountCreateRequest } from 'myApi';
 
 export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   type,
   isMainPersonalAccountNumber,
   formId,
+  handleAddPersonalNumber,
+  apartmentId,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
-  const { values, setFieldValue, errors, handleSubmit } =
-    useFormik<PersonalNumberFormTypes>({
-      initialValues: {
-        name: null,
-        phoneNumber: null,
-        openAt: null,
-        personalAccountNumber: null,
-        paymentCode: null,
-        isMainAccountingNumber: false,
-      },
-      validationSchema: yup.object().shape({
-        name: yup.string().nullable().required('Это поле обязательно'),
-        openAt: yup.string().nullable().required('Это поле обязательно'),
-        personalAccountNumber: yup
-          .string()
-          .nullable()
-          .required('Это поле обязательно'),
-      }),
-      validateOnBlur: false,
-      validateOnChange: false,
-      enableReinitialize: true,
-      onSubmit: (data) => {
-        console.log('first');
-      },
-    });
+  const { values, setFieldValue, errors, handleSubmit } = useFormik({
+    initialValues: {
+      name: '',
+      phoneNumber: '',
+      openAt: '',
+      personalAccountNumber: '',
+      paymentCode: '',
+      isMainOnApartment: false,
+      apartmentId,
+    },
+    validationSchema: yup.object().shape({
+      name: yup.string().nullable().required('Это поле обязательно'),
+      openAt: yup.string().nullable().required('Это поле обязательно'),
+      personalAccountNumber: yup
+        .string()
+        .nullable()
+        .required('Это поле обязательно'),
+    }),
+    validateOnBlur: false,
+    validateOnChange: false,
+    enableReinitialize: true,
+    onSubmit: (data) => {
+      const {
+        isMainOnApartment,
+        name,
+        openAt,
+        paymentCode,
+        personalAccountNumber,
+        phoneNumber,
+        apartmentId,
+      } = data;
+
+      handleAddPersonalNumber && handleAddPersonalNumber(data);
+    },
+  });
 
   return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
@@ -107,14 +120,11 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       <FlexContainer>
         <SwitchWrapper
           onClick={() =>
-            setFieldValue(
-              'isMainAccountingNumber',
-              !values.isMainAccountingNumber,
-            )
+            setFieldValue('isMainAccountingNumber', !values.isMainOnApartment)
           }
         >
           <Switch
-            checked={values.isMainAccountingNumber}
+            checked={values.isMainOnApartment}
             disabled={isMainPersonalAccountNumber}
           />
           Основной лицевой счет
