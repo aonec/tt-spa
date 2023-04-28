@@ -26,6 +26,7 @@ import {
   formTicks,
   getPreparedData,
   getTickFormat,
+  prepareDataForNodeStatistic,
 } from './StatisticsGraph.utils';
 import { EResourceType } from 'myApi';
 import { renderForHeatAndDeltaMass } from './GraphLegend/GraphLegend.utils';
@@ -79,7 +80,15 @@ export const GraphView: React.FC<GraphViewProps> = ({
     return <GraphEmptyData />;
   }
 
-  const preparedArchiveValues = prepareData(archiveValues);
+  const preparedArchiveValues = (() => {
+    const firstlyPreparedData = prepareData(archiveValues);
+    const finallyData = prepareDataForNodeStatistic(
+      firstlyPreparedData,
+      reportType,
+    );
+
+    return finallyData;
+  })();
 
   const archiveLength = preparedArchiveValues.length;
 
@@ -149,7 +158,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
                 tasksByDate,
                 reportType,
                 maxValue,
-                minData: ticksData[0],
+                minDate: ticksData[0],
+                maxDate: ticksData[ticksData.length - 1],
               }),
             )}
             sortKey="x"
@@ -178,7 +188,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             }
             labels={() => ''}
             style={tooltipStyle}
-            data={archiveValues}
+            data={preparedArchiveValues}
             x="time"
             y="value"
           />
