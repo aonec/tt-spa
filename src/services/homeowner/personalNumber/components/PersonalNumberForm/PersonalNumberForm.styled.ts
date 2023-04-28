@@ -33,3 +33,11 @@ export const FlexContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+export const SwitchWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+`;

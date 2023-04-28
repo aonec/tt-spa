@@ -6,9 +6,13 @@ import {
   FlexContainer,
   GridContainer,
   GridContainerOwner,
+  SwitchWrapper,
   Wrapper,
 } from './PersonalNumberForm.styled';
-import { PersonalNumberFormProps } from './PersonalNumberForm.types';
+import {
+  PersonalNumberFormProps,
+  PersonalNumberFormTypes,
+} from './PersonalNumberForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
@@ -23,25 +27,26 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
-  const { values, setFieldValue, errors, handleSubmit } = useFormik({
-    initialValues: {
-      name: null,
-      phoneNumber: null,
-      openAt: null,
-      personalAccountNumber: null,
-      paymentCode: null,
-      isMainAccountingNumber: false,
-    },
-    validationSchema: yup.object().shape({
-      name: yup.string().required('Это поле обязательно'),
-      openAt: yup.string().required('Это поле обязательно'),
-      personalAccountNumber: yup.string().required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    enableReinitialize: true,
-    onSubmit: (data) => {},
-  });
+  const { values, setFieldValue, errors, handleSubmit } =
+    useFormik<PersonalNumberFormTypes>({
+      initialValues: {
+        name: null,
+        phoneNumber: null,
+        openAt: null,
+        personalAccountNumber: null,
+        paymentCode: null,
+        isMainAccountingNumber: false,
+      },
+      validationSchema: yup.object().shape({
+        name: yup.string().required('Это поле обязательно'),
+        openAt: yup.string().required('Это поле обязательно'),
+        personalAccountNumber: yup.string().required('Это поле обязательно'),
+      }),
+      validateOnBlur: false,
+      validateOnChange: false,
+      enableReinitialize: true,
+      onSubmit: (data) => {},
+    });
 
   return (
     <Wrapper>
@@ -79,9 +84,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           <Input
             placeholder="Введите ФИО"
             value={values.name || undefined}
-            onChange={(value) =>
-              setFieldValue('paymentCode', value.target.value)
-            }
+            onChange={(value) => setFieldValue('name', value.target.value)}
           />
           <ErrorMessage>{errors.name}</ErrorMessage>
         </FormItem>
@@ -90,20 +93,26 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
             placeholder="Введите телефон"
             value={values.phoneNumber || undefined}
             onChange={(value) =>
-              setFieldValue('paymentCode', value.target.value)
+              setFieldValue('phoneNumber', value.target.value)
             }
           />
         </FormItem>
       </GridContainerOwner>
       <FlexContainer>
-        <div>
+        <SwitchWrapper
+          onClick={() =>
+            setFieldValue(
+              'isMainAccountingNumber',
+              !values.isMainAccountingNumber,
+            )
+          }
+        >
           <Switch
             checked={values.isMainAccountingNumber}
-            onChange={(value) => setFieldValue('paymentCode', value)}
             disabled={isMainPersonalAccountNumber}
           />
           Основной лицевой счет
-        </div>
+        </SwitchWrapper>
         {isEdit && (
           <DeleteButton onClick={() => {}}>
             <TrashIcon />

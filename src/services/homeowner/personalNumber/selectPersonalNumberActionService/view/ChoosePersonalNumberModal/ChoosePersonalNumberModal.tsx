@@ -24,11 +24,11 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
       history.push(
         `/apartment/${apartment.id}/homeowners/${PersonalNumberActions.Add}`,
       );
+    } else {
+      history.push(
+        `/apartment/${apartment.id}/homeowners/${homeownerId}/${selectedAction}`,
+      );
     }
-
-    history.push(
-      `/apartment/${apartment.id}/homeowners/${homeownerId}/${selectedAction}`,
-    );
   };
 
   const activeHomeownerAccounts = useMemo(

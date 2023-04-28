@@ -20,7 +20,7 @@ const $isChoosePersonalNumberModalOpen = domain
 
 const $selectedAction = domain
   .createStore<PersonalNumberActions | null>(null)
-  .on(setAction, (_, action) => action);
+  .on(setAction, (_, action) => action)
 
 export const selectPersonalNumberActionService = {
   inputs: {
