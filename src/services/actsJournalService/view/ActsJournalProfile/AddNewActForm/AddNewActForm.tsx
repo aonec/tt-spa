@@ -54,7 +54,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
     () =>
       actCreated.watch(() => {
         setValues({ ...values, actJobDate: '', registryNumber: '' });
-        next(0);
+        next(-1);
       }).unsubscribe,
     [setValues, actCreated, values, next],
   );
