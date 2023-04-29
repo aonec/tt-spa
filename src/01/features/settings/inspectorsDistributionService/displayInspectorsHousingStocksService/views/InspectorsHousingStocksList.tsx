@@ -1,9 +1,9 @@
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Empty, Skeleton } from 'antd';
 import React, { FC, useMemo } from 'react';
 import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem/HousingStockItem';
 import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
 import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
+import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
 
 export const InspectorsHousingStocksList: FC<
   InspectorsHosuingsStocksListProps

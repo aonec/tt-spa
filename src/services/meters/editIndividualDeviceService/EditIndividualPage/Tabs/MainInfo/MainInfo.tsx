@@ -27,6 +27,7 @@ export const MainInfo: FC<MainInfoProps> = ({
   handleUpdateDevice,
   mountPlaces,
   onCancel,
+  isDeviceUpdating,
 }) => {
   const {
     model,
@@ -224,7 +225,9 @@ export const MainInfo: FC<MainInfoProps> = ({
         <Button type="ghost" onClick={() => onCancel()}>
           Отмена
         </Button>
-        <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
+        <ButtonSC isLoading={isDeviceUpdating} onClick={() => handleSubmit()}>
+          Сохранить
+        </ButtonSC>
       </Footer>
     </Wrapper>
   );

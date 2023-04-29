@@ -33,6 +33,9 @@ export const ObjectProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
   ]);
+  const isPermissionToEditHousingStock = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+  ]);
 
   return (
     <>
@@ -51,6 +54,7 @@ export const ObjectProfileContainer = () => {
           isPermitionToDownloadConsolidatedReport={
             isPermitionToDownloadConsolidatedReport
           }
+          isPermissionToEditHousingStock={isPermissionToEditHousingStock}
         />
       )}
     </>

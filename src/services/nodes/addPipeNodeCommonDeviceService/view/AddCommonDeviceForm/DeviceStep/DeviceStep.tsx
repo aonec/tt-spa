@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { getInitialDateFieldValue } from 'services/nodes/createNodeService/view/CreateNodePage/CommonData/CommonData.utils';
 import { DatePicker } from 'ui-kit/DatePicker';

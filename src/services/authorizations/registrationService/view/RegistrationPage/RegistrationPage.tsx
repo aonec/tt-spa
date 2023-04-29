@@ -18,8 +18,7 @@ import {
 import { RegistrationPageProps } from './RegistrationPage.types';
 import { ReactComponent as Emblem } from '../../../loginService/view/LoginPage/assets/emblem.svg';
 import { ReactComponent as LoginPageBackground } from '../../../loginService/view/LoginPage/assets/loginPageBackground.svg';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { Loader } from '01/components';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const RegistrationPage: FC<RegistrationPageProps> = ({
   handleConfirmRegistration,
@@ -101,15 +100,14 @@ export const RegistrationPage: FC<RegistrationPageProps> = ({
             <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
           </div>
 
-          <Loader show={isLoading} size={48}>
-            <ButtonLogin
-              floating
-              disabled={isLoading}
-              onClick={() => handleSubmit()}
-            >
-              Вход в систему
-            </ButtonLogin>
-          </Loader>
+          <ButtonLogin
+            floating
+            disabled={isLoading}
+            onClick={() => handleSubmit()}
+            isLoading={isLoading}
+          >
+            Вход в систему
+          </ButtonLogin>
         </Form>
       </RightBlockWrapper>
     </PageWrapper>

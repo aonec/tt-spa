@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
 import { accountingNodesFilterForm } from '../../models';
-import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useRef } from 'react';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -16,6 +15,8 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { getArrayByCountRange } from './Filter.utils';
+import { Select } from 'ui-kit/Select';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
@@ -53,21 +54,23 @@ export const AccountingNodesFilter = () => {
       <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="0.75fr 1.5fr 0.75fr" gap="15px">
-        <SelectSC
+        <Select
           placeholder="Город"
           ref={cityRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
           onChange={fields.city.onChange as any}
           value={fields.city.value}
           onFocus={clearValuesOnFocusCallback(0)}
+          small
         >
           {cities?.map((elem, index) => (
-            <SelectSC.Option key={index} value={elem}>
+            <Select.Option key={index} value={elem}>
               {elem}
-            </SelectSC.Option>
+            </Select.Option>
           ))}
-        </SelectSC>
-        <StyledAutocomplete
+        </Select>
+        <AutoComplete
+          small
           placeholder="Улица"
           ref={streetRef}
           value={fields.street.value}
@@ -79,7 +82,8 @@ export const AccountingNodesFilter = () => {
           onFocus={clearValuesOnFocusCallback(1)}
           options={options}
         />
-        <StyledAutocomplete
+        <AutoComplete
+          small
           placeholder="Дом"
           value={fields.house.value}
           onChange={fields.house.onChange}

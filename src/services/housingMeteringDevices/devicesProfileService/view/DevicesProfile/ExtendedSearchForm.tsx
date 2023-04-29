@@ -1,8 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { ConfigProvider, Select } from 'antd';
+import { ConfigProvider } from 'antd';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import {
-  StyledRangePicker,
   StyledContainerThreeItems,
   StyledSlider,
   StyledFormThreeRows,
@@ -10,12 +9,13 @@ import {
 import _ from 'lodash';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import { SelectSC } from 'services/tasks/tasksProfileService/view/SearchTasks/SearchTasks.styled';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { DeviceAddressSearchFieldsNameLookup } from './DevicesProfile.constants';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { FormItem } from 'ui-kit/FormItem';
+import { Select } from 'ui-kit/Select';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 const { Option } = Select;
 
@@ -78,7 +78,8 @@ export const ExtendedSearchForm: FC<{
       />
       <StyledContainerThreeItems>
         <FormItem label="Тип ресурса">
-          <SelectSC
+          <Select
+            small
             id="Resource"
             value={values['Filter.Resource']}
             placeholder="Все ресурсы"
@@ -89,11 +90,12 @@ export const ExtendedSearchForm: FC<{
             <Option value="HotWaterSupply">Горячая вода</Option>
             <Option value="ColdWaterSupply">Холодная вода</Option>
             <Option value="Electricity">Электричество</Option>
-          </SelectSC>
+          </Select>
         </FormItem>
 
         <FormItem label="Статус Узла">
-          <SelectSC
+          <Select
+            small
             id="NodeStatus"
             placeholder="Любой статус"
             value={values['Filter.NodeStatus']}
@@ -104,10 +106,11 @@ export const ExtendedSearchForm: FC<{
             <Option value="Registered">Сдан на коммерческий учет</Option>
             <Option value="OnReview">На утверждении</Option>
             <Option value="Prepared">Подговлен к сдаче</Option>
-          </SelectSC>
+          </Select>
         </FormItem>
         <FormItem label="Истекает дата поверки">
-          <SelectSC
+          <Select
+            small
             id="expirationDate"
             placeholder="Все"
             value={values['Filter.ExpiresCheckingDateAt']}
@@ -119,7 +122,7 @@ export const ExtendedSearchForm: FC<{
             <Option value="NextMonth">В ближайший месяц</Option>
             <Option value="NextTwoMonth">В следующие два месяца</Option>
             <Option value="Past">Истекла</Option>
-          </SelectSC>
+          </Select>
         </FormItem>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
@@ -140,7 +143,8 @@ export const ExtendedSearchForm: FC<{
         </FormItem>
         <FormItem label="Период действия акта допуска">
           <ConfigProvider>
-            <StyledRangePicker
+            <RangePicker
+              small
               value={[
                 values['Filter.CommercialDateRange.From']
                   ? moment(
@@ -168,7 +172,8 @@ export const ExtendedSearchForm: FC<{
           </ConfigProvider>
         </FormItem>
         <FormItem label="Сортировать по">
-          <SelectSC
+          <Select
+            small
             id="sortBy"
             placeholder="Улица"
             value={values.OrderBy}
@@ -176,7 +181,7 @@ export const ExtendedSearchForm: FC<{
           >
             <Option value="Descending">Улице (уб.)</Option>
             <Option value="Ascending">Улице (возр.)</Option>
-          </SelectSC>
+          </Select>
         </FormItem>
       </StyledContainerThreeItems>
     </StyledFormThreeRows>

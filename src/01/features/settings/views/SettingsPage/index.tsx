@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { PageHeader } from '../../../../shared/ui/PageHeader';
+import { PageHeader } from '../../../../../ui-kit/shared_components/PageHeader';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { InspectorsDistributionPage } from '../../inspectorsDistributionService/views/InspectorsDistributionPage';
 import { SettingsPageProps } from './types';

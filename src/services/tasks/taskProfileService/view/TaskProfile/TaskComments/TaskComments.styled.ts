@@ -1,5 +1,5 @@
-import { InputSC as Input } from '01/shared/ui/Fields';
 import styled from 'styled-components';
+import { Input } from 'ui-kit/Input';
 
 export const Wrapper = styled.div`
   margin-top: 24px;
@@ -26,7 +26,7 @@ export const IconWrapper = styled.div`
   justify-content: center;
 
   border-color: #f3f5f6;
-  background-color: #f3f5f6; ;
+  background-color: #f3f5f6;
 `;
 
 export const CommentInputWrapper = styled.div`

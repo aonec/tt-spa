@@ -2,19 +2,28 @@ import { $individualDevices } from '01/features/individualDevices/displayIndivid
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { translateMountPlace } from '01/utils/translateMountPlace';
-import { DateLine } from '01/_components/DateLine/DateLine';
 import { Checkbox } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import { IndividualDeviceListItemResponse } from 'myApi';
+import {
+  IndividualDeviceListItemResponse,
+  IndividualDeviceMountPlaceForFilterResponse,
+} from 'myApi';
 import React from 'react';
 import styled from 'styled-components';
 import { transferDevicesForm } from '../../models';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { DateRange } from 'ui-kit/shared_components/DateRange';
+import {
+  $allIndividualDeviceMountPlaces,
+  AllIndividualDeviceMountPlacesGate,
+} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 export const TransferDevices = () => {
   const devices = useStore($individualDevices);
+  const allIndividualDeviceMountPlaces = useStore(
+    $allIndividualDeviceMountPlaces,
+  );
   const { fields } = useForm(transferDevicesForm);
 
   function toggleDevice(id: number) {
@@ -22,7 +31,7 @@ export const TransferDevices = () => {
 
     if (hasDevice) {
       fields.individualDeviceIdsForSwitch.onChange(
-        fields.individualDeviceIdsForSwitch.value.filter((elem) => elem !== id)
+        fields.individualDeviceIdsForSwitch.value.filter((elem) => elem !== id),
       );
     } else {
       fields.individualDeviceIdsForSwitch.onChange([
@@ -35,7 +44,7 @@ export const TransferDevices = () => {
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
     index: number,
-    isSelected: boolean
+    isSelected: boolean,
   ) => (
     <Device
       key={index}
@@ -51,26 +60,36 @@ export const TransferDevices = () => {
           isActive={device.closingDate === null}
           closingReason={device.closingReason}
         />
-        <DateLine
-          lastCheckingDate={device.lastCheckingDate}
-          futureCheckingDate={device.futureCheckingDate}
-        />
+        <Container>
+          <DateRange
+            firstDate={device.lastCheckingDate}
+            lastDate={device.futureCheckingDate}
+            bold
+          />
+        </Container>
         <Space />
-        <div>{translateMountPlace(device.mountPlace)}</div>
+        <div>
+          {allIndividualDeviceMountPlaces &&
+            device.mountPlace &&
+            allIndividualDeviceMountPlaces.find(
+              (mountPlaceFromServer) =>
+                mountPlaceFromServer.name === device.mountPlace,
+            )?.description}
+        </div>
       </Flex>
     </Device>
   );
 
   return (
     <Wrap>
-      {devices
-        .map((value, index) =>
-          renderDevice(
-            value,
-            index,
-            fields.individualDeviceIdsForSwitch.value.includes(value.id)
-          )
-        )}
+      <AllIndividualDeviceMountPlacesGate />
+      {devices.map((value, index) =>
+        renderDevice(
+          value,
+          index,
+          fields.individualDeviceIdsForSwitch.value.includes(value.id),
+        ),
+      )}
     </Wrap>
   );
 };
@@ -80,27 +99,49 @@ export const Wrap = styled.div`
   margin-bottom: 25px;
 `;
 
+const Container = styled.div`
+  display: flex;
+  line-height: 1.2;
+  align-items: center;
+  white-space: nowrap;
+`;
+
 export const renderDevice = (
   device: IndividualDeviceListItemResponse,
-  index: number
-) => (
-  <Device key={index}>
-    <Flex>
-      <DeviceDataString device={device} />
-      <Space />
-      <DeviceStatus
-        isActive={device.closingDate === null}
-        closingReason={device.closingReason}
-      />
-      <DateLine
-        lastCheckingDate={device.lastCheckingDate}
-        futureCheckingDate={device.futureCheckingDate}
-      />
-      <Space />
-      <div>{translateMountPlace(device.mountPlace)}</div>
-    </Flex>
-  </Device>
-);
+  index: number,
+  allIndividualDeviceMountPlaces:
+    | IndividualDeviceMountPlaceForFilterResponse[]
+    | null,
+) => {
+  return (
+    <Device key={index}>
+      <Flex>
+        <DeviceDataString device={device} />
+        <Space />
+        <DeviceStatus
+          isActive={device.closingDate === null}
+          closingReason={device.closingReason}
+        />
+        <Container>
+          <DateRange
+            firstDate={device.lastCheckingDate}
+            lastDate={device.futureCheckingDate}
+            bold
+          />
+        </Container>
+        <Space />
+        <div>
+          {allIndividualDeviceMountPlaces &&
+            device.mountPlace &&
+            allIndividualDeviceMountPlaces.find(
+              (mountPlaceFromServer) =>
+                mountPlaceFromServer.name === device.mountPlace,
+            )?.description}
+        </div>
+      </Flex>
+    </Device>
+  );
+};
 
 const Device = styled.div`
   padding: 15px;

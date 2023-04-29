@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { ReportsListContainer } from './reportsListService';
 import { Wrapper } from './ReportsPage.styled';
 

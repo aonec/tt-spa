@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import styles from './DeviceSearchForm.module.scss';
-import { Select } from 'antd';
 import _ from 'lodash';
 import {
   FlexCenterRow,
@@ -12,18 +11,19 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
-  ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
-import { InputSC, SelectSC } from '01/shared/ui/Fields';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/housingMeteringDevices/devicesPageService/devicesPageService.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 import { SearchIcon } from 'ui-kit/icons';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { Button } from 'ui-kit/Button';
 
 const { Option } = Select;
 
@@ -93,7 +93,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     }
     return (
       <FormItem>
-        <InputSC
+        <Input
+          small
           onChange={(value) => {
             setSerialNumber(value.target.value);
           }}
@@ -126,7 +127,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="sortBy">
                   Сортировать по:
                 </StyledLabelSimple>
-                <SelectSC
+                <Select
+                  small
                   style={{ width: '65%' }}
                   value={values?.OrderBy}
                   placeholder="Дате проверки"
@@ -135,17 +137,17 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 >
                   <Option value="Descending">Улице (уб.)</Option>
                   <Option value="Ascending">Улице (возр.)</Option>
-                </SelectSC>
+                </Select>
               </FlexCenterRow>
             </FormItem>
-            <ResetButton
+            <Button
               type="ghost"
               onClick={handleClear}
               size="small"
               icon={<ClearIconSC />}
             >
               Сбросить
-            </ResetButton>
+            </Button>
           </StyledGrid>
 
           <Grid>
@@ -154,7 +156,8 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 <StyledLabelSimple htmlFor="expirationDate">
                   Истекает дата поверки:
                 </StyledLabelSimple>
-                <SelectSC
+                <Select
+                  small
                   placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}
@@ -166,7 +169,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   <Option value="NextMonth">В ближайший месяц</Option>
                   <Option value="NextTwoMonth">В следующие два месяца</Option>
                   <Option value="Past">Истекла</Option>
-                </SelectSC>
+                </Select>
               </StyledExpirationDate>
             </FormItem>
 

@@ -1,4 +1,3 @@
-import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import { EActResourceType, EActType, EDocumentType } from 'myApi';
@@ -23,6 +22,7 @@ import moment from 'moment';
 import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 import { DocumentsUploadContainer, Document } from 'ui-kit/DocumentsService';
 import { Input } from 'ui-kit/Input';
+import { Select } from 'ui-kit/Select';
 
 export const EditApartmentActForm: FC<EditApartmentActFormProps> = ({
   actTypes,

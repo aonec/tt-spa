@@ -9,8 +9,7 @@ import {
   ExistingStreetsGate,
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
-import { StyledAutocomplete, SelectSC } from '01/shared/ui/Fields';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
@@ -27,6 +26,8 @@ import {
 } from '../../models';
 import { SubscribersConsumptionExtendedSearch } from '../SubscribersConsumptionExtendedSearch';
 import { Wrapper } from './Search.styled';
+import { Select } from 'ui-kit/Select';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 const { inputs, outputs } = subscribersConsumptionService;
 
@@ -140,7 +141,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
         <ExistingCitiesGate />
         <ExistingStreetsGate City={fields.city.value} />
         <Grid temp={temp} gap="15px">
-          <SelectSC
+          <Select
+            small
             onBlur={onFindHandler}
             placeholder="Город"
             ref={cityRef}
@@ -149,12 +151,13 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             value={fields.city.value}
           >
             {cities?.map((elem, index) => (
-              <SelectSC.Option key={index} value={elem}>
+              <Select.Option key={index} value={elem}>
                 {elem}
-              </SelectSC.Option>
+              </Select.Option>
             ))}
-          </SelectSC>
-          <StyledAutocomplete
+          </Select>
+          <AutoComplete
+            small
             onBlur={onFindHandler}
             placeholder="Улица"
             ref={streetRef}
@@ -171,7 +174,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             options={options}
             onSelect={() => fields.street.onChange(streetMatch)}
           />
-          <StyledAutocomplete
+          <AutoComplete
+            small
             onBlur={onFindHandler}
             placeholder="Дом"
             value={fields.house.value}
@@ -184,7 +188,8 @@ export const Search: React.FC<{ isHousingStockHasCorpuses: boolean }> = ({
             }}
           />
           {isHousingStockHasCorpuses && (
-            <StyledAutocomplete
+            <AutoComplete
+              small
               onBlur={onFindHandler}
               placeholder="Корпус"
               value={fields.corpus.value}

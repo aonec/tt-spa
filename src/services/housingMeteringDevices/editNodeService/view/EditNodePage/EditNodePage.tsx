@@ -1,5 +1,5 @@
 import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
-import {} from '01/shared/ui/PageHeader';
+import {} from 'ui-kit/shared_components/PageHeader';
 import React, { FC, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';

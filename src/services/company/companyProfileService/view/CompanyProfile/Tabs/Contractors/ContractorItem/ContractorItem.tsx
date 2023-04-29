@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 import { Contacts, Name, Wrapper } from './ContractorItem.styled';
 import { ContractorItemProps } from './ContractorItem.types';
 import { usePhoneMask } from 'hooks/usePhoneMask';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const ContractorItem: FC<ContractorItemProps> = ({
   contractor,
@@ -34,14 +35,13 @@ export const ContractorItem: FC<ContractorItemProps> = ({
               });
               handleOpenEditContractorModal();
             },
-            color: 'default',
           },
           {
             title: 'Удалить подрячика',
             onClick: () => {
               catchContractorId({ id: contractor.id, name: contractor.name });
             },
-            color: 'danger',
+            color: ContextMenuButtonColor.danger,
           },
         ]}
       />

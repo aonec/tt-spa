@@ -32,6 +32,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({
           </IconWrapper>
         </div>
         <InputSC
+          small
           value={commentText}
           onChange={(e) => handleSetComment(e.target.value)}
         />

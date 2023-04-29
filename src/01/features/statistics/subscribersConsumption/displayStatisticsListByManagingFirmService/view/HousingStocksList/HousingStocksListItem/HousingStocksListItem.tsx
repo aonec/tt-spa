@@ -1,11 +1,9 @@
-import Arrow from '01/_components/Arrow/Arrow';
 import { Skeleton, Tooltip } from 'antd';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import {
   AddressWrapper,
   AppartmentNumberText,
-  ArrowWrapper,
   DownloadIconSC,
   DownloadIconWrapper,
   GroupWrapper,
@@ -13,6 +11,7 @@ import {
 } from './HousingStocksListItem.styled';
 import { HousingStocksListItemProps } from './HousingStocksListItem.types';
 import { StatisticsList } from '01/features/statistics/subscribersConsumption/components/StatisticsList';
+import { ListOpeningChevron } from 'ui-kit/shared_components/ListOpeningChevron';
 
 export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
   housingStock,
@@ -81,9 +80,7 @@ export const HousingStocksListItem: FC<HousingStocksListItemProps> = ({
           }}
           className="clickable"
         >
-          <ArrowWrapper isActive={isActive}>
-            <Arrow />
-          </ArrowWrapper>
+          <ListOpeningChevron isOpen={isActive} />
           <AddressWrapper isActive={isActive}>{addressString}</AddressWrapper>
         </GroupWrapper>
         <GroupWrapper>

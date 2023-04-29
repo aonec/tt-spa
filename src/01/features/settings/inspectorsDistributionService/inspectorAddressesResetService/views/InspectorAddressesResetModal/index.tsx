@@ -4,9 +4,11 @@ import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
 import { FormWrap } from './components';
 import { InspectorAddressesResetModalProps } from './types';
-import { Select } from '01/shared/ui/Select';
+import { Select } from 'ui-kit/Select';
 
-export const InspectorAddressesResetModal: FC<InspectorAddressesResetModalProps> = ({
+export const InspectorAddressesResetModal: FC<
+  InspectorAddressesResetModalProps
+> = ({
   isOpen,
   handleClose,
   handleResetAddress,

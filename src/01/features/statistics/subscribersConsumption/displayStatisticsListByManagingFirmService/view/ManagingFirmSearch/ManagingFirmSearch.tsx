@@ -1,4 +1,4 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
@@ -74,6 +74,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
       >
         <SearchFieldsWrapper>
           <SelectCitySC
+            small
             placeholder="Выберите город"
             value={selectedCity}
             onChange={(city) => selectCity(String(city))}
@@ -85,6 +86,7 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
             ))}
           </SelectCitySC>
           <SelectManagingFirmSC
+            small
             value={selectedManagingFirm || undefined}
             onChange={(value) => selectManagingFirm(String(value))}
             placeholder="Выберите домоуправление"

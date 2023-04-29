@@ -8,7 +8,7 @@ import { useStore } from 'effector-react';
 import { subscribersConsumptionService } from '../models';
 import { currentUserService } from 'services/currentUserService';
 import { Empty } from 'antd';
-import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
+import { TypeAddressToStart } from 'ui-kit/shared_components/TypeToStart';
 
 const { outputs } = subscribersConsumptionService;
 

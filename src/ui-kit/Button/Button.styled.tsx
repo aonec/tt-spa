@@ -53,11 +53,13 @@ export const IconWrapper = styled.div`
   margin-left: 10px;
 `;
 
-export const ButtonSC = styled(ButtonAntd)<{
+interface Button {
   btnType: ButtonStyleType;
   size: ButtonSizeType;
   floating?: boolean;
-}>`
+}
+
+export const ButtonSC = styled(ButtonAntd)<Button>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,10 +73,14 @@ export const ButtonSC = styled(ButtonAntd)<{
 
   &:not(&[disabled]):hover {
     transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0px
+      ${({ btnType }) => typesOfButton[btnType].shadowColor};
   }
 
   &:not(&[disabled]):active {
     transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0px
+      ${({ btnType }) => typesOfButton[btnType].shadowColor};
   }
 
   padding: 0 ${({ size }) => sizesOfButton[size].padding}px;
@@ -102,16 +108,5 @@ export const ButtonSC = styled(ButtonAntd)<{
 
   &[disabled] {
     opacity: 0.6;
-  }
-
-  &:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 4px 4px 0 ${({ btnType }) => typesOfButton[btnType].shadowColor};
-  }
-
-  &:active {
-    transform: translate(-2px, -2px);
-    box-shadow: 2px 2px 0 ${({ btnType }) => typesOfButton[btnType].shadowColor};
-    background-color: ${({ btnType }) => typesOfButton[btnType].shadowColor};
   }
 `;

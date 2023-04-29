@@ -24,7 +24,6 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Select } from 'ui-kit/Select';
 import { ResourceSelectSC } from 'ui-kit/shared_components/ResourceSelectSC';
-import { SelectSC } from '01/shared/ui/Fields';
 
 const { TabPane } = TabsSC;
 
@@ -108,7 +107,6 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
 
       <FilterBlock>
         <ResourceSelectSC
-          isShadow={false}
           resource={values.nodeResourceType}
           onChange={(value) => {
             setFieldValue('nodeResourceType', value);
@@ -116,8 +114,8 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
           }}
         />
 
-        <SelectSC
-          isShadow={false}
+        <Select
+          small
           onChange={(value) => {
             setFieldValue('houseManagementId', value);
             handleSubmit();
@@ -131,7 +129,7 @@ export const GroupWorkingRange: FC<GroupWorkingRangeProps> = ({
               </Select.Option>
             );
           })}
-        </SelectSC>
+        </Select>
       </FilterBlock>
 
       {isLoading && (

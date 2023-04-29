@@ -1,31 +1,51 @@
-import React, { FC, useMemo } from 'react';
-import { ObjectInfoRowField, ObjectInfoRowTitle } from './ObjectInfo.constants';
-import { RowWrapper, Wrapper } from './ObjectInfo.styled';
+import React, { FC } from 'react';
+import { Wrapper } from './ObjectInfo.styled';
 import { ObjectInfoProps } from './ObjectInfo.types';
-import { getObjectInfoFields } from './ObjectInfo.utils';
+import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
 
 export const ObjectInfo: FC<ObjectInfoProps> = ({ housingStock }) => {
-  const requiredFields = getObjectInfoFields(housingStock);
-
-  const fields = useMemo(
-    () =>
-      Object.entries(requiredFields).map(([field, value]) => {
-        const key = field as ObjectInfoRowField;
-        const title = ObjectInfoRowTitle[key];
-
-        return (
-          <>
-            {Boolean(value) && (
-              <RowWrapper>
-                <div>{title}</div>
-                <div>{value}</div>
-              </RowWrapper>
-            )}
-          </>
-        );
-      }),
-    [requiredFields]
+  return (
+    <Wrapper>
+      <CommonInfo
+        items={[
+          {
+            key: 'Город',
+            value: housingStock.address?.mainAddress?.city,
+          },
+          {
+            key: 'Домоуправление',
+            value: housingStock.houseManagement?.name,
+          },
+          {
+            key: 'Категория и тип здания',
+            value: housingStock.houseTypeString,
+          },
+          {
+            key: 'Количество этажей',
+            value: housingStock.numberOfFloors,
+          },
+          {
+            key: 'Наличие лифта',
+            value: housingStock.isThereElevator,
+          },
+          {
+            key: 'Количество квартир',
+            value: housingStock.numberOfApartments,
+          },
+          {
+            key: 'Общая площадь жилых помещений',
+            value: housingStock.totalLivingArea,
+          },
+          {
+            key: 'Общая площадь',
+            value: housingStock.totalArea,
+          },
+          {
+            key: 'Тепловой пункт',
+            value: housingStock.heatingStation?.name,
+          },
+        ]}
+      />
+    </Wrapper>
   );
-
-  return <Wrapper>{fields}</Wrapper>;
 };

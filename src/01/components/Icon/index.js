@@ -1,3 +1,0 @@
- 
-
-export { Icon } from './Icon';

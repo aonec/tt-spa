@@ -11,12 +11,12 @@ import {
 } from './ReportViewPage.styled';
 import { ReportViewPageProps } from './ReportViewPage.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import {
   ReportIconsDictionary,
   ReportNamesDictionary,
 } from 'services/reportsService/view/ReportsPage/ReportsPage.constants';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { ReportFiltrationForm } from './ReportFiltrationForm';
 import { getFiltersList } from './ReportViewPage.utils';
 import { ReportViewTable } from './ReportViewTable';

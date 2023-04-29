@@ -9,7 +9,7 @@ import {
   SearchWrapper,
 } from './Icons.styled';
 import { message } from 'antd';
-import { InputSC } from '01/shared/ui/Fields';
+import { Input } from 'ui-kit/Input';
 
 export default {
   title: 'Icons',
@@ -22,7 +22,8 @@ export const All = () => {
   return (
     <Wrapper>
       <SearchWrapper>
-        <InputSC
+        <Input
+          small
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           prefix={<Icons.SearchIcon />}

@@ -2,7 +2,7 @@ import {
   getSourceIcon,
   getSourceName,
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { Tooltip } from 'antd';
 import React, {
   ChangeEvent,

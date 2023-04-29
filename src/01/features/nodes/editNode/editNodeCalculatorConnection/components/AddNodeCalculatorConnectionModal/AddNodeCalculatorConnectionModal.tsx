@@ -8,7 +8,7 @@ import { ModalTT } from '../../../../../../shared/ui/ModalTT';
 import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 import { createCalcuatorService } from './CreateCalculatorModal/models';
 import { AddNodeCalculatorConnectionForm } from './models';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 
 interface Props {

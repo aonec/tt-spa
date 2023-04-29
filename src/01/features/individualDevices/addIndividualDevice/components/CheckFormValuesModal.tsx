@@ -2,11 +2,10 @@ import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountP
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
-import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, IndividualDeviceMountPlaceListResponse } from 'myApi';
+import { IndividualDeviceMountPlaceListResponse } from 'myApi';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import {
@@ -17,10 +16,10 @@ import {
   createIndividualDeviceFx,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
-import { StockIconTT } from '01/shared/ui/StockIconTT/StockIconTT';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Button } from 'ui-kit/Button';
 import { FileData } from 'ui-kit/DocumentsService/DocumentsService.types';
+import { ResourceInfo } from 'ui-kit/shared_components/ResourceInfo';
 
 interface ILine {
   name: string;
@@ -47,8 +46,9 @@ export const CheckFormValuesModal = () => {
       name: 'Ресурс',
       value: (
         <Flex>
-          <StockIconTT icon={deviceIcon?.icon} fill={deviceIcon?.color} />
-          <div>{getResourceName(fields.resource.value)}</div>
+          {fields.resource.value && (
+            <ResourceInfo resource={fields.resource.value} />
+          )}
         </Flex>
       ),
     },
@@ -197,12 +197,6 @@ const renderFile = (file: FileData & RemoveFile) => (
     <TrashIcon style={{ cursor: 'pointer' }} onClick={file.removeFile} />
   </StyledFile>
 );
-
-function getResourceName(resource: EResourceType | null) {
-  if (!resource) return null;
-
-  return allResources.find((elem) => elem.value === resource)?.label || null;
-}
 
 function getMountPlaceById(
   id: number | null,

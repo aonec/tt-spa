@@ -20,9 +20,9 @@ import { Tabs } from 'ui-kit/Tabs';
 import { MainInfo } from './Tabs/MainInfo';
 import { Documents } from './Tabs/Documents';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { PageHeader } from '01/shared/ui/PageHeader';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 
 export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   currentTab,
@@ -32,6 +32,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   handleUpdateDevice,
   mountPlaces,
   onCancel,
+  isDeviceUpdating,
 }) => {
   const address = individualDevice?.address;
 
@@ -92,6 +93,7 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
                 handleUpdateDevice={handleUpdateDevice}
                 mountPlaces={mountPlaces}
                 onCancel={onCancel}
+                isDeviceUpdating={isDeviceUpdating}
               />
             )}
           {currentTab === EditIndividualDeviceTabs.Documents && <Documents />}

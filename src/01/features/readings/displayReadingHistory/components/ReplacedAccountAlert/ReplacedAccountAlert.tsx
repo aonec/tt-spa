@@ -1,4 +1,4 @@
-import { Alert } from '01/shared/ui/Alert/Alert';
+import { Alert } from 'ui-kit/Alert/Alert';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { ArrowRightLongIcon } from 'ui-kit/icons';
@@ -11,6 +11,7 @@ import {
   HomeownerAccountChangeDate,
 } from './ReplacedAccountAlert.styled';
 import { ReplacedAccountAlertProps } from './ReplacedAccountAlert.types';
+import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   recentlyReplacedAccount,
@@ -18,14 +19,14 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   if (!recentlyReplacedAccount.replacedByAccount) {
     return null;
   }
-  
+
   const closedDate = moment(recentlyReplacedAccount.closedAt).format(
-    'DD.MM.YYYY'
+    'DD.MM.YYYY',
   );
 
   return (
     <ApartmentAlertWrapper>
-      <Alert type="info">
+      <Alert icon={AlertIconType.info}>
         <AlertContent>
           <AlertTextWrapper>
             Смена номера лицевого счёта

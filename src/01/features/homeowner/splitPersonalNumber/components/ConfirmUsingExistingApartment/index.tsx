@@ -1,7 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -16,6 +15,8 @@ import {
 import { renderDevice } from '../TransferDevices';
 import { confirmUsingExistingApartmentService } from './ConfirmUsingExistingApartmenService.model';
 import { PersonalNumber } from './ConfirmUsingExistingApartmentModal.styled';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { $allIndividualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 
 const { outputs } = confirmUsingExistingApartmentService;
 
@@ -44,6 +45,10 @@ export const ConfirmUsingExistingApartmentModal = () => {
   const isApartmentHasDevices = Boolean(devices?.length);
   const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);
 
+  const allIndividualDeviceMountPlaces = useStore(
+    $allIndividualDeviceMountPlaces,
+  );
+
   return (
     <>
       <ModalTT
@@ -54,7 +59,7 @@ export const ConfirmUsingExistingApartmentModal = () => {
         onSubmit={onSaveHandler}
         loading={pendingSplitRequest}
       >
-        <PendingLoader loading={pending}>
+        <WithLoader isLoading={pending}>
           <div style={{ color: 'gray', fontSize: 16 }}>
             Квартира по адресу{' '}
             <Link href={getLinkOnApartmentProfile()} target="blank">
@@ -81,8 +86,10 @@ export const ConfirmUsingExistingApartmentModal = () => {
             </>
           )}
           <Space />
-          {devices?.map(renderDevice)}
-        </PendingLoader>
+          {devices?.map((device, index) =>
+            renderDevice(device, index, allIndividualDeviceMountPlaces),
+          )}
+        </WithLoader>
       </ModalTT>
     </>
   );

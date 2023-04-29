@@ -10,7 +10,9 @@ export type DialogProps = {
   submitText?: string;
   cancelText?: string;
   isLoading?: boolean;
+  isDisabled?: boolean;
   description?: ReactNode;
   footer?: ReactNode;
   zIndex?: number;
+  children?: ReactNode;
 };

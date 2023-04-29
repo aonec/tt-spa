@@ -1,4 +1,3 @@
-import { Icon } from '01/shared/ui/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space } from '01/shared/ui/Layout/Space/Space';
@@ -15,8 +14,9 @@ import {
   ContextMenuWrapper,
 } from './MeteringDeviceReadingsLine.styled';
 import { useHistory } from 'react-router-dom';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { round } from 'utils/round';
+import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 
 interface Props {
   sliderIndex: number;
@@ -75,7 +75,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   const deviceData = (
     <Flex>
       <IconWrap>
-        <Icon name={node.counter?.resource!} />
+        <ResourceIconLookup resource={node.counter?.resource!} />
       </IconWrap>
       <Space w={11} />
       <div>

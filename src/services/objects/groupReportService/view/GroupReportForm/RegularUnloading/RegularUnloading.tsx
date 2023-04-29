@@ -1,4 +1,4 @@
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Switch } from 'antd';
 import { LabeledValue } from 'antd/lib/select';
 import moment from 'moment';

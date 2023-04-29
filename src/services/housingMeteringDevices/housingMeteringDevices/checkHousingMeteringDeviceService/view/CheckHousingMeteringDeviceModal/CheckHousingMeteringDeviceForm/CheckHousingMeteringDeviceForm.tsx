@@ -5,7 +5,7 @@ import {
   CheckHousingMeteringDeviceFormTypes,
 } from './CheckHousingMeteringDeviceForm.types';
 import { useFormik } from 'formik';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import moment from 'moment';
 import * as yup from 'yup';
 import { CheckDeviceRequest } from 'myApi';

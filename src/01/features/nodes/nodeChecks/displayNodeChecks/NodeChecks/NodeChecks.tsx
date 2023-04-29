@@ -1,7 +1,6 @@
 import React from 'react';
 import { FC } from 'react';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { CheckHistoryDocument } from './CheckHistoryDocument';
 import styled from 'styled-components';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -9,6 +8,7 @@ import { NodeCheckResponse } from 'myApi';
 import { EditNodeCheckPayload } from '../../checkNode/models';
 import { useParams } from 'react-router-dom';
 import { nodeService } from '01/features/nodes/displayNode/models';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 
 interface Props {
   documents: NodeCheckResponse[] | null;
@@ -38,7 +38,7 @@ export const NodeChecks: FC<Props> = (props) => {
     <>
       <NodeGate id={Number(nodeId)} />
       <Wrap>
-        <PendingLoader loading={pending}>
+        <WithLoader isLoading={pending}>
           <Header temp={checkHistoryTemp}>
             <div>Дата</div>
             <div>Тип</div>
@@ -53,7 +53,7 @@ export const NodeChecks: FC<Props> = (props) => {
               openEditCheckModal={openEditNodeCheckModal}
             />
           ))}
-        </PendingLoader>
+        </WithLoader>
         <Space />
         <CreateButton
           className="ant-btn-link"

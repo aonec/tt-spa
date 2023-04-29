@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { searchStateChanged } from '01/features/devicesReport/models';
 import { DevicesListContainer } from 'services/housingMeteringDevices/displayDevicesService/displayDevicesService.container';
 import { SearchDevices } from '../SearchDevices';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
 import { ExtendedSearchForm } from './ExtendedSearchForm';
 import { Wrapper } from './DevicesProfile.styled';

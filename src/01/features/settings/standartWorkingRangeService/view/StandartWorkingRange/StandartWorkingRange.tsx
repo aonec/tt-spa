@@ -110,7 +110,6 @@ export const StandartWorkingRange: FC<StandartWorkingRangeProps> = ({
       </TabsSC>
       <ResourceSelectWrapper>
         <ResourceSelectSC
-          isShadow={false}
           resource={values.nodeResourceType}
           onChange={(value) => {
             setFieldValue('nodeResourceType', value);

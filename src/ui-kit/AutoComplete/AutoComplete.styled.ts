@@ -1,19 +1,17 @@
 import { AutoComplete as AutoCompleteAntD } from 'antd';
 import styled from 'styled-components';
 
-export const AutoComplete = styled(AutoCompleteAntD)`
+export const AutoComplete = styled(AutoCompleteAntD)<{ small?: boolean }>`
+  height: ${({ small }) => (small ? '32px' : '48px')} !important;
+
   .ant-select-selector {
+    height: 100% !important;
     border-radius: 4px !important;
-    height: 48px !important;
-    padding: 4px 24px !important;
+    padding: ${({ small }) => (small ? '1px' : '8px')} 16px !important;
 
     .ant-select-selection-search .ant-select-selection-search-input {
-      height: 42px;
-      padding: 6px 12px 0 12px !important;
-    }
-
-    .ant-select-selection-placeholder {
-      margin-top: 5px;
+      padding: 0px;
+      margin: ${({ small }) => (small ? '0px' : '8px')} 4px !important;
     }
   }
 `;

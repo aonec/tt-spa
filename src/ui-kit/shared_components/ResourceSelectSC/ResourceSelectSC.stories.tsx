@@ -16,11 +16,7 @@ export const Search: ComponentStory<typeof ResourceSelectSC> = () => {
   return (
     <div style={{ width: 300 }}>
       <FormItem>
-        <ResourceSelectSC
-          isShadow={true}
-          resource={resource}
-          onChange={setResource}
-        />
+        <ResourceSelectSC resource={resource} onChange={setResource} />
       </FormItem>
     </div>
   );

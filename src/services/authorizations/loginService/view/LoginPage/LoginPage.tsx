@@ -19,8 +19,8 @@ import { Input } from 'ui-kit/Input';
 import { DevSettingsModal } from '01/features/developmentSettings';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 
 export const LoginPage: FC<LoginPageProps> = ({

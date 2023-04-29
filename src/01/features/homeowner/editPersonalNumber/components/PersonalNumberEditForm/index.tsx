@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Form, Switch } from 'antd';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
@@ -17,7 +17,7 @@ import {
   PersonalNumberFormMountPlaceType,
   PersonalNumberFormTypeGate,
 } from './personalNumberEditForm.controller';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Input } from 'ui-kit/Input';
 
 interface Props {

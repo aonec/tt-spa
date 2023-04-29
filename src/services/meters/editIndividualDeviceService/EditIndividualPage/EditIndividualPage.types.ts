@@ -15,6 +15,7 @@ export type EditIndividualPageProps = {
   }) => void;
   mountPlaces: IndividualDeviceMountPlaceListResponse[] | null;
   onCancel: () => void;
+  isDeviceUpdating: boolean;
 };
 
 export enum EditIndividualDeviceTabs {

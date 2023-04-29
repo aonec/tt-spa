@@ -1,5 +1,5 @@
 import { Address } from '01/features/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/views/HousingStockItem/HousingStockItem.styled';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import React, { FC } from 'react';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 import { Wrapper } from './ApartmentItem.styled';

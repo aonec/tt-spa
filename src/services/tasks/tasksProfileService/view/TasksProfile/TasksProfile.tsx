@@ -1,9 +1,14 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { SearchTasks } from '../SearchTasks';
 import { TasksList } from '../TasksList';
-import { PaginationSC, TabsSC, Wrapper } from './TasksProfile.styled';
+import {
+  FiltrationWrapper,
+  PaginationSC,
+  TabsSC,
+  Wrapper,
+} from './TasksProfile.styled';
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { TaskGroupingFilter } from 'myApi';
 import { Segmented } from 'ui-kit/Segmented';
@@ -86,15 +91,15 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         />
       </PageHeader>
       {tasksPageSegment === 'list' && (
-        <>
-          <TabsSC activeKey={grouptype} onChange={history.push}>
-            {!isSpectator && (
-              <TabPane tab={executingTabText} key="Executing"></TabPane>
-            )}
-            <TabPane tab={observingTabText} key="Observing"></TabPane>
-            <TabPane tab="Архив" key="Archived"></TabPane>
-          </TabsSC>
-          <Wrapper>
+        <div>
+          <FiltrationWrapper>
+            <TabsSC activeKey={grouptype} onChange={history.push}>
+              {!isSpectator && (
+                <TabPane tab={executingTabText} key="Executing"></TabPane>
+              )}
+              <TabPane tab={observingTabText} key="Observing"></TabPane>
+              <TabPane tab="Архив" key="Archived"></TabPane>
+            </TabsSC>
             <SearchTasks
               onSubmit={handleSearch}
               taskTypes={taskTypes}
@@ -107,6 +112,8 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               housingManagments={housingManagments}
               perpetrators={perpetrators}
             />
+          </FiltrationWrapper>
+          <Wrapper>
             <WithLoader isLoading={isLoading}>
               {Boolean(tasks?.length) ? (
                 tasksList
@@ -128,7 +135,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               />
             )}
           </Wrapper>
-        </>
+        </div>
       )}
       {tasksPageSegment === 'map' && <TasksMapContainer />}
     </div>
