@@ -1,11 +1,11 @@
 import {
+  ECalculatorOrderRule,
   EExpiresCheckingDateAt,
   EHouseCategory,
   ENodeCommercialAccountStatus,
-  ECalculatorOrderRule,
   EOrderByRule,
   EResourceType,
-} from '../../../../myApi';
+} from 'myApi';
 
 export interface CalculatorsListRequestPayload {
   'Filter.DiameterRange.From'?: number;

@@ -8,7 +8,7 @@ import {
   EOrderByRule,
   HousingByFilterResponse,
 } from 'myApi';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { createGate } from 'effector-react';
 import { GetHousingByFilterRequestPayload } from '../devicesPageService/individualDevicesProfileService/view/IndividualDevicesProfile/individualDevicesViewByAddressService/individualDevicesViewByAddressService.types';
 import { DevicesSearchType } from '../devicesPageService/devicesPageService.types';

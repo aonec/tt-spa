@@ -1,4 +1,4 @@
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { FormEvent } from 'react';
 import { DiamtersConfig } from 'services/currentUserService/currentUserService.types';
 import { DevicesSearchType } from 'services/housingMeteringDevices/devicesPageService/devicesPageService.types';

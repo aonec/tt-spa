@@ -29,7 +29,6 @@ import './actsJournal/displayActsJournal/models/init';
 import './actsJournal/displayActTypes/models/init';
 import './developmentSettings/models/init';
 import './addressIdSearch/models/init';
-import './carlculators/calculatorsInfo/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
 import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
