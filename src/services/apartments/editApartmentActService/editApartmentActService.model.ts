@@ -1,4 +1,3 @@
-import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { combine, createDomain, forward, guard, sample } from 'effector';
 import { ApartmentActResponse } from 'myApi';
 import { apartmentActsListService } from '../apartmentActsListService';
@@ -72,7 +71,6 @@ export const editApartmentActService = {
   },
   outputs: {
     $isModalOpen,
-    $actTypes,
     $editActIsLoading,
     $act,
   },

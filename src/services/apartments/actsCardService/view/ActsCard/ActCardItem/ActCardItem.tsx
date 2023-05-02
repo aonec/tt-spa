@@ -9,15 +9,12 @@ import {
   Wrapper,
 } from './ActCardItem.styled';
 import { ActCardItemProps } from './ActCardItem.types';
+import { ActTypesNamesLookup } from 'dictionaries';
 
-export const ActCardItem: FC<ActCardItemProps> = ({
-  act,
-  actTypes,
-  handleSaveFile,
-}) => {
+export const ActCardItem: FC<ActCardItemProps> = ({ act, handleSaveFile }) => {
   const document = act.document;
   const actNumber = act.registryNumber;
-  const actType = actTypes.find((filter) => act.actType === filter.key)?.value;
+  const actType = ActTypesNamesLookup[act.actType];
 
   const jobDate = moment(act.actJobDate).format('DD.MM.YYYY');
 

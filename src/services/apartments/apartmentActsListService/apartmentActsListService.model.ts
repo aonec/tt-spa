@@ -1,4 +1,3 @@
-import { $actTypes } from '01/features/actsJournal/displayActTypes/models';
 import { combine, createDomain, forward, sample } from 'effector';
 import { createGate } from 'effector-react';
 import moment from 'moment';
@@ -91,7 +90,6 @@ export const apartmentActsListService = {
   outputs: {
     $filteredActsList,
     $isLoading,
-    $actTypes,
     $actsFilter,
   },
   gates: { ApartmentActsListGate },
