@@ -1,4 +1,4 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { HomeownerAccountCreateRequest } from 'myApi';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';

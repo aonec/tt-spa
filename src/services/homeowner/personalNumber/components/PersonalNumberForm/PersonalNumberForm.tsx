@@ -56,8 +56,13 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       validateOnChange: false,
       enableReinitialize: true,
       onSubmit: (data) => {
-        handleAddPersonalNumber && handleAddPersonalNumber(data);
-        homeownerId && handleEditHomeownerAccount && handleEditHomeownerAccount(data);
+        apartmentId &&
+          handleAddPersonalNumber &&
+          handleAddPersonalNumber(data as any);
+
+        homeownerId &&
+          handleEditHomeownerAccount &&
+          handleEditHomeownerAccount(data);
       },
     });
 

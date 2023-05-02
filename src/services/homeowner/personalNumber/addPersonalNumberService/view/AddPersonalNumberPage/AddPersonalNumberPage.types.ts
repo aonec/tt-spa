@@ -1,7 +1,8 @@
-import { ApartmentResponse, HomeownerAccountCreateRequest } from 'myApi';
+import { ApartmentResponse } from 'myApi';
+import { PersonalNumberFormTypes } from 'services/homeowner/personalNumber/components/PersonalNumberForm/PersonalNumberForm.types';
 
 export type AddPersonalNumberPageProps = {
   apartment: ApartmentResponse | null;
   isLoading: boolean;
-  handleAddPersonalNumber: (payload: HomeownerAccountCreateRequest) => void;
+  handleAddPersonalNumber: (payload: PersonalNumberFormTypes) => void;
 };

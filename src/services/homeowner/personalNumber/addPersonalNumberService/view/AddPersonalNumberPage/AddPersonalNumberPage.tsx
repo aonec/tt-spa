@@ -12,7 +12,6 @@ export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
   isLoading,
   handleAddPersonalNumber,
 }) => {
- 
   const apartmentId = apartment?.id;
 
   return (

@@ -14,7 +14,6 @@ import {
 } from './editPersonalNumberService.api';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
-import { displayHomeownerService } from 'services/homeowner/displayHomeownerService';
 
 const domain = createDomain('editPersonalNumberService');
 
@@ -34,17 +33,7 @@ forward({
 
 const $editHomeownerAccountFormData = domain
   .createStore<PersonalNumberFormTypes | null>(null)
-  .on(handleEditHomeownerAccount, (_, form) => form)
-  .on(apartmentProfileService.outputs.$apartment, (_, data) => {
-    const form = {
-      name: data?.,
-      phoneNumber: currentAccount?.phoneNumber,
-      personalAccountNumber: currentAccount?.personalAccountNumber,
-      paymentCode: currentAccount?.paymentCode,
-      isMainAccountingNumber: currentAccount?.isMainPersonalAccountNumber,
-      openAt: currentAccount?.openAt,
-    };
-  });
+  .on(handleEditHomeownerAccount, (_, form) => form);
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -75,25 +64,26 @@ const $samePersonalAccountNumderId = domain
 
 const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
-sample({
-  clock: handleWithOnForcedEditHomeownerAccount,
-  source: combine(
-    $isForced,
-    $editHomeownerAccountFormData,
-    (isForced, formData) => ({
-      id: formData.homeownerId,
-      data: {
-        personalAccountNumber: formData?.personalAccountNumber,
-        paymentCode: formData?.paymentCode,
-        name: formData?.name,
-        phoneNumber: formData?.phoneNumber,
-        IsMainOnApartment: formData?.isMainOnApartment,
-        isForced: isForced,
-      } as HomeownerAccountUpdateRequest,
-    }),
-  ),
-  target: editHomeownerAccountEffect,
-});
+// sample({
+//   clock: handleWithOnForcedEditHomeownerAccount,
+//   source: combine(
+//     $isForced,
+//     $editHomeownerAccountFormData,
+//     (isForced, formData) =>
+//       formData && {
+//         id: formData.homeownerId,
+//         data: {
+//           personalAccountNumber: formData?.personalAccountNumber,
+//           paymentCode: formData?.paymentCode,
+//           name: formData?.name,
+//           phoneNumber: formData?.phoneNumber,
+//           IsMainOnApartment: formData?.isMainOnApartment,
+//           isForced: isForced,
+//         } as HomeownerAccountUpdateRequest,
+//       },
+//   ),
+//   target: editHomeownerAccountEffect,
+// });
 
 const $isLoading = editHomeownerAccountEffect.pending;
 
@@ -126,8 +116,8 @@ closeHomeownerAccountFx.failData.watch((error) => {
 export const editPersonalNumberService = {
   inputs: { handleEditHomeownerAccount, successEditHomeownerAccount },
   outputs: {
-    $homeowner: displayHomeownerService.outputs.$homeowner ,
     $isLoading,
+    $apartment: apartmentProfileService.outputs.$apartment,
   },
-  gates: {HomeownerGate: displayHomeownerService.gates.HomeownerGate  },
+  gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };

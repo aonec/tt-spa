@@ -1,4 +1,3 @@
-import { HomeownerAccountCreateRequest } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 
 export type PersonalNumberFormProps = {
@@ -7,7 +6,7 @@ export type PersonalNumberFormProps = {
   apartmentId?: number;
   isMainPersonalAccountNumber?: boolean;
   homeownerId?: number;
-  handleAddPersonalNumber?: (payload: HomeownerAccountCreateRequest) => void;
+  handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
 };
 

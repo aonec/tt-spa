@@ -7,17 +7,16 @@ import { editPersonalNumberService } from './editPersonalNumberService.model';
 const {
   inputs,
   outputs,
-  gates: { HomeownerGate },
+  gates: { ApartmentGate },
 } = editPersonalNumberService;
 
 export const EditPersonalNumberContainer = () => {
   const { id } = useParams<{ id: string }>();
   const apartmentId = id;
-  const { homeownerId } = useParams<{ homeownerId: string }>();
   const history = useHistory();
 
   const isLoading = useStore(outputs.$isLoading);
-  const homeowner = useStore(outputs.$homeowner);
+  const apartment = useStore(outputs.$apartment);
 
   const handleEditHomeownerAccount = useEvent(
     inputs.handleEditHomeownerAccount,
@@ -31,12 +30,12 @@ export const EditPersonalNumberContainer = () => {
 
   return (
     <>
-      <HomeownerGate id={homeownerId} />
+      <ApartmentGate apartmentId={Number(apartmentId)} />
 
       <EditPersonalNumberPage
-        homeowner={homeowner}
         isLoading={isLoading}
         handleEditHomeownerAccount={handleEditHomeownerAccount}
+        apartment={apartment}
       />
     </>
   );
