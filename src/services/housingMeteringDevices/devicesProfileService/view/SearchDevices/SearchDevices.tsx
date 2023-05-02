@@ -11,7 +11,6 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
-  ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
@@ -24,6 +23,7 @@ import { SearchIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { Button } from 'ui-kit/Button';
 
 const { Option } = Select;
 
@@ -140,14 +140,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 </Select>
               </FlexCenterRow>
             </FormItem>
-            <ResetButton
+            <Button
               type="ghost"
               onClick={handleClear}
               size="small"
               icon={<ClearIconSC />}
             >
               Сбросить
-            </ResetButton>
+            </Button>
           </StyledGrid>
 
           <Grid>

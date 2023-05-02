@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ClosingDate = styled.div`
   margin-top: 4px;
@@ -17,12 +16,21 @@ export const SerialNumberWrapper = styled.span`
   font-weight: 500;
 `;
 
-export const DeviceLink = styled(Link)`
+const clickableStyles = css`
+  color: #189ee9 !important;
+`;
+
+export const LinkWrapper = styled.div<{ clickable: boolean }>`
   display: flex;
   align-items: center;
 
   font-size: 16px;
   color: #272f5a;
+  cursor: pointer;
+
+  &:hover {
+    ${({ clickable }) => clickable && clickableStyles}
+  }
 `;
 
 export const ModelWrapper = styled.span`

@@ -7,7 +7,6 @@ import { useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { CheckLg, XLg } from 'react-bootstrap-icons';
 import styled from 'styled-components';
-import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
   $existingStreets,
@@ -24,14 +23,11 @@ import {
 import { Loader } from 'ui-kit/Loader';
 
 interface Props {
-  apartmentId?: MayBe<number>;
-  onChange?(id: number): void;
   firstInputRef?: any;
   onExit?(): void;
 }
 
-export const AddressIdSearch: FC<Props> = (props) => {
-  const { onExit, firstInputRef } = props;
+export const AddressIdSearch: FC<Props> = ({ onExit, firstInputRef }) => {
   const error = useStore($error);
 
   const fetchedApartmentId = useStore($apartmentSearchId);

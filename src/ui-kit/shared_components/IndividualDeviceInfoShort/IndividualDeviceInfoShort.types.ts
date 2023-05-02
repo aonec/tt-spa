@@ -1,6 +1,9 @@
-import { IndividualDeviceResponseFromDevicePage } from 'myApi';
+import {
+  IndividualDeviceResponse,
+  IndividualDeviceResponseFromDevicePage,
+} from 'myApi';
 
 export type IndividualDeviceInfoShortProps = {
-  device: IndividualDeviceResponseFromDevicePage;
+  device: IndividualDeviceResponseFromDevicePage | IndividualDeviceResponse;
   onClick?: () => void;
 };

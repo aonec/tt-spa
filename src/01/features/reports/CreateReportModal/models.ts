@@ -235,9 +235,13 @@ forward({
   to: openModalButtonClicked,
 });
 
-createReportFx.failData.watch((error) =>
-  message.error(error.response.data.error.Text),
-);
+createReportFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Что-то пошло не так',
+  );
+});
 
 const $loading = combine(createReportFx.pending, (...pendings) =>
   pendings.some(Boolean),
