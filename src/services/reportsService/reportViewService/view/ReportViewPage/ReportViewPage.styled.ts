@@ -12,6 +12,7 @@ export const HeaderWrapper = styled.div`
 
 export const ExtendedSearchWrapper = styled.div`
   margin-top: 42px;
+  margin-bottom: 16px;
 `;
 
 export const FiltrationInfoWrapper = styled.div`

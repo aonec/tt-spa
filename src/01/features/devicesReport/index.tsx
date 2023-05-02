@@ -33,7 +33,6 @@ export const DevicesReportModal = () => {
           {downloadError ? (
             <Alert
               message="Ошибка"
-              // description="Не удалось выгрузить список приборов. Попробуйте еще раз или обратитесь к администратору"
               description={downloadError}
               type="error"
               showIcon

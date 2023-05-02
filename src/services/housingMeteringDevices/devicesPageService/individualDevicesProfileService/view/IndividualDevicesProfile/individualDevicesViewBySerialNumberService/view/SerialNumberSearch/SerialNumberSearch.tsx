@@ -16,9 +16,9 @@ import {
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
 import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
-import { ResetButton } from 'services/housingMeteringDevices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { Button } from 'ui-kit/Button';
 
 export const IndividualDevicesViewBySerialNumberSearch: FC<
   IndividualDevicesViewBySerialNumberSearchProps
@@ -126,7 +126,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
           >
             Закрытые приборы
           </CheckboxSC>
-          <ResetButton
+          <Button
             type="ghost"
             onClick={() => {
               clearSearchPayload();
@@ -136,7 +136,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             icon={<ClearIconSC />}
           >
             Сбросить
-          </ResetButton>
+          </Button>
         </SearchFieldsWrapper>
       </IndividualDevicesExtendedSearch>
     </Wrapper>

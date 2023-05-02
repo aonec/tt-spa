@@ -19,7 +19,8 @@ export type PreparedArchiveValues = {
 };
 
 export type GetTaskXPosPayload = {
-  minData: string;
+  minDate: string;
+  maxDate: string;
   currentData?: string;
   reportType: ReportType;
 };

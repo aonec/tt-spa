@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import { Modal } from 'antd';
 
 export const ModalText = styled.p`
@@ -14,7 +14,6 @@ export const Footer = styled.div`
   align-items: center;
   padding-right: 32px;
   font-weight: 700;
-  gap: 16px;
 `;
 
 export const StyledModal = styled(Modal)`
@@ -40,7 +39,6 @@ export const StyledModal = styled(Modal)`
     margin-left: 16px;
   }
 `;
-
 
 export const Header = styled.h1`
   font-size: 32px;

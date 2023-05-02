@@ -12,12 +12,32 @@ const meta: ComponentMeta<typeof DatePicker> = {
 
 export default meta;
 
-export const Basic: ComponentStory<typeof DatePicker> = (args) => (
-  <div style={{ width: '300px', display: 'flex', justifyContent: 'center' }}>
+export const Overview: ComponentStory<typeof DatePicker> = (args) => (
+  <div
+    style={{
+      width: '300px',
+      display: 'flex',
+      justifyContent: 'center',
+      height: '400px',
+    }}
+  >
     <LocaleProvider locale={ruRu}>
       <DatePicker {...args} />
     </LocaleProvider>
   </div>
 );
 
-Basic.args = { format: 'DD.MM.YYYY' };
+Overview.args = { format: 'DD.MM.YYYY' };
+
+export const Small = () => (
+  <div
+    style={{
+      width: '300px',
+      display: 'flex',
+      justifyContent: 'center',
+      height: '400px',
+    }}
+  >
+    <DatePicker small />
+  </div>
+);

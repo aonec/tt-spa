@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
-import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import {
   ObjectProfileContainer,
@@ -51,6 +50,7 @@ import { EditObjectContainer } from 'services/objects/editObjectService';
 import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDeviceService';
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
+import { ActsJournalContainer } from 'services/actsJournalService';
 
 const { gates } = objectProfileService;
 
@@ -116,7 +116,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isSeniorOperator || isOperator) && (
                     <Route path="/actsJournal" exact>
-                      <ApartmentActs />
+                      <ActsJournalContainer />
                     </Route>
                   )}
 
