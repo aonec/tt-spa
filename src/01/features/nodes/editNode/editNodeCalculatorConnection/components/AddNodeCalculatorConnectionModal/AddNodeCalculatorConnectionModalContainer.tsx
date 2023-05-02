@@ -1,12 +1,12 @@
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
-import { calculatorsIntoHousingStockService } from '../../../../../carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.model';
 import { AddNodeCalculatorConnectionModal } from './AddNodeCalculatorConnectionModal';
 import {
   $isAddNodeCalculatorConnectionModalOpen,
   addNodeCalculatorService,
 } from './models';
 import { nodeService } from '../../../../displayNode/models';
+import { calculatorsListService } from 'services/calculators/calculatorsListService';
 
 export const AddNodeCalculatorConnectionModalContainer = () => {
   const closeModal = useEvent(
@@ -15,11 +15,9 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
   const isOpen = useStore($isAddNodeCalculatorConnectionModalOpen);
   const node = useStore(nodeService.outputs.$node);
 
-  const calculators = useStore(
-    calculatorsIntoHousingStockService.outputs.$calculators,
-  );
+  const calculators = useStore(calculatorsListService.outputs.$calculatorsList);
 
-  const { CalculatorsGate } = calculatorsIntoHousingStockService.inputs;
+  const { CalculatorsGate } = calculatorsListService.gates;
 
   const loading = useStore(addNodeCalculatorService.outputs.$loading);
 

@@ -1,4 +1,4 @@
-import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
 import { createDomain, forward, guard, sample } from 'effector';
 import { EffectFailDataAxiosError } from 'types';

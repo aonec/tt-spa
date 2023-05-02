@@ -1,4 +1,4 @@
-import { Address } from '01/features/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/views/HousingStockItem/HousingStockItem.styled';
+import { Address } from 'services/settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/views/HousingStockItem/HousingStockItem.styled';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import React, { FC } from 'react';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';

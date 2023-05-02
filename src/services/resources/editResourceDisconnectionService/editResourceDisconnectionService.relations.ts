@@ -1,4 +1,4 @@
-import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { forward } from 'effector';
 import { createResourceDisconnectionService } from '../createResourceDisconnectionService';
 import { editResourceDisconnectionService } from './editResourceDisconnectionService.model';
@@ -12,7 +12,8 @@ forward({
 });
 
 forward({
-  from: editResourceDisconnectionService.inputs.editResourceDisconnectionFx.doneData,
+  from: editResourceDisconnectionService.inputs.editResourceDisconnectionFx
+    .doneData,
   to: [
     createResourceDisconnectionService.inputs.closeModal,
     resourceDisablingScheduleServiceService.inputs
