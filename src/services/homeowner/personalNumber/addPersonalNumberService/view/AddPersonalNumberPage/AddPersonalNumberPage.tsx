@@ -12,10 +12,8 @@ export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
   isLoading,
   handleAddPersonalNumber,
 }) => {
-  if (!apartment) {
-    return null;
-  }
-  const apartmentId = apartment.id;
+ 
+  const apartmentId = apartment?.id;
 
   return (
     <Wrapper>

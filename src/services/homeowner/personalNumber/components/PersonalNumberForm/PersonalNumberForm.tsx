@@ -25,9 +25,10 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   type,
   isMainPersonalAccountNumber,
   formId,
-  handleAddPersonalNumber,
   apartmentId,
   homeownerId,
+  handleAddPersonalNumber,
+  handleEditHomeownerAccount,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
@@ -56,6 +57,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       enableReinitialize: true,
       onSubmit: (data) => {
         handleAddPersonalNumber && handleAddPersonalNumber(data);
+        homeownerId && handleEditHomeownerAccount && handleEditHomeownerAccount(data);
       },
     });
 

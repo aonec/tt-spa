@@ -10,7 +10,6 @@ import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
 import { Link, useHistory } from 'react-router-dom';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
-import { Loader } from 'ui-kit/Loader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
 
 export const PersonalNumberPageContainer: FC<
@@ -24,6 +23,7 @@ export const PersonalNumberPageContainer: FC<
   cancelButtonText,
   saveButtonText,
   formId,
+  homeowner,
 }) => {
   const history = useHistory();
 
@@ -45,14 +45,8 @@ export const PersonalNumberPageContainer: FC<
         <Button type="ghost" onClick={history.goBack}>
           {cancelButtonText || 'Отмена'}
         </Button>
-        <Button htmlType="submit" htmlForm={formId} disabled={isLoading}>
-          {isLoading ? (
-            <Loader show />
-          ) : isSplit ? (
-            saveButtonText || 'Далее'
-          ) : (
-            'Сохранить изменения'
-          )}
+        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
+          {isSplit ? saveButtonText || 'Далее' : 'Сохранить изменения'}
         </Button>
       </FlexContainer>
     </Wrapper>

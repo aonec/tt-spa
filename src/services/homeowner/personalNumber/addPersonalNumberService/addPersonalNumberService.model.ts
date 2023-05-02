@@ -1,14 +1,14 @@
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import { HomeownerAccountCreateRequest } from 'myApi';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { addHomeowner } from './addPersonalNumberService.api';
 import { message } from 'antd';
+import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 
 const domain = createDomain('addPersonalNumberService');
 
-const handleAddPersonalNumber =
-  domain.createEvent<HomeownerAccountCreateRequest>();
+const handleAddPersonalNumber = domain.createEvent<PersonalNumberFormTypes>();
 
 const addPersonalNumberFx = domain.createEffect<
   HomeownerAccountCreateRequest,
@@ -16,7 +16,21 @@ const addPersonalNumberFx = domain.createEffect<
   EffectFailDataAxiosErrorDataApartmentId
 >(addHomeowner);
 
-forward({ from: handleAddPersonalNumber, to: addPersonalNumberFx });
+sample({
+  clock: handleAddPersonalNumber,
+  filter: (data) => Boolean(data.apartmentId),
+  fn: (data) =>
+    ({
+      apartmentId: data.apartmentId,
+      name: data.name,
+      openAt: data.openAt,
+      personalAccountNumber: data.personalAccountNumber,
+      isMainOnApartment: data.isMainOnApartment,
+      paymentCode: data.paymentCode,
+      phoneNumber: data.phoneNumber,
+    } as HomeownerAccountCreateRequest),
+  target: addPersonalNumberFx,
+});
 
 const $isLoading = addPersonalNumberFx.pending;
 

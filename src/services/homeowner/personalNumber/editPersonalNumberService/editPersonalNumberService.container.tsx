@@ -1,28 +1,42 @@
-import React from 'react';
+import { useEvent, useStore } from 'effector-react';
+import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { EditPersonalNumberPage } from './view/EditPersonalNumberPage';
+import { editPersonalNumberService } from './editPersonalNumberService.model';
+
+const {
+  inputs,
+  outputs,
+  gates: { HomeownerGate },
+} = editPersonalNumberService;
 
 export const EditPersonalNumberContainer = () => {
   const { id } = useParams<{ id: string }>();
+  const apartmentId = id;
+  const { homeownerId } = useParams<{ homeownerId: string }>();
   const history = useHistory();
 
-  const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
+  const homeowner = useStore(outputs.$homeowner);
 
-  const handleAddPersonalNumber = useEvent(inputs.handleAddPersonalNumber);
+  const handleEditHomeownerAccount = useEvent(
+    inputs.handleEditHomeownerAccount,
+  );
 
   useEffect(() => {
-    return inputs.successAddPersonalNumber.watch(() => {
-      history.push(`/meters/apartments/${apartment?.id}`);
+    return inputs.successEditHomeownerAccount.watch(() => {
+      history.push(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartment?.id]);
+  }, [history, apartmentId]);
 
   return (
     <>
-      <ApartmentGate apartmentId={Number(id)} />
+      <HomeownerGate id={homeownerId} />
 
-      <AddPersonalNumberPage
-        apartment={apartment}
+      <EditPersonalNumberPage
+        homeowner={homeowner}
         isLoading={isLoading}
-        handleAddPersonalNumber={handleAddPersonalNumber}
+        handleEditHomeownerAccount={handleEditHomeownerAccount}
       />
     </>
   );

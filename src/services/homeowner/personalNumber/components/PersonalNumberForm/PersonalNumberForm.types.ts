@@ -4,10 +4,11 @@ import { PersonalNumberActions } from '../../selectPersonalNumberActionService/s
 export type PersonalNumberFormProps = {
   type: PersonalNumberActions;
   formId: string;
-  apartmentId: number;
+  apartmentId?: number;
   isMainPersonalAccountNumber?: boolean;
-  handleAddPersonalNumber?: (payload: HomeownerAccountCreateRequest) => void;
   homeownerId?: number;
+  handleAddPersonalNumber?: (payload: HomeownerAccountCreateRequest) => void;
+  handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
 };
 
 export type PersonalNumberFormTypes = {
@@ -17,6 +18,6 @@ export type PersonalNumberFormTypes = {
   personalAccountNumber: string;
   paymentCode: string;
   isMainOnApartment: boolean;
-  apartmentId: number;
+  apartmentId?: number ;
   homeownerId?: number;
 };

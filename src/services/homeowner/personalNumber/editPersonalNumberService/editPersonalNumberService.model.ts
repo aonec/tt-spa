@@ -13,6 +13,8 @@ import {
   putHomeownerAccount,
 } from './editPersonalNumberService.api';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
+import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
+import { displayHomeownerService } from 'services/homeowner/displayHomeownerService';
 
 const domain = createDomain('editPersonalNumberService');
 
@@ -32,7 +34,17 @@ forward({
 
 const $editHomeownerAccountFormData = domain
   .createStore<PersonalNumberFormTypes | null>(null)
-  .on(handleEditHomeownerAccount, (_, form) => form);
+  .on(handleEditHomeownerAccount, (_, form) => form)
+  .on(apartmentProfileService.outputs.$apartment, (_, data) => {
+    const form = {
+      name: data?.,
+      phoneNumber: currentAccount?.phoneNumber,
+      personalAccountNumber: currentAccount?.personalAccountNumber,
+      paymentCode: currentAccount?.paymentCode,
+      isMainAccountingNumber: currentAccount?.isMainPersonalAccountNumber,
+      openAt: currentAccount?.openAt,
+    };
+  });
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -69,7 +81,7 @@ sample({
     $isForced,
     $editHomeownerAccountFormData,
     (isForced, formData) => ({
-      id: formData?.homeownerId,
+      id: formData.homeownerId,
       data: {
         personalAccountNumber: formData?.personalAccountNumber,
         paymentCode: formData?.paymentCode,
@@ -82,6 +94,12 @@ sample({
   ),
   target: editHomeownerAccountEffect,
 });
+
+const $isLoading = editHomeownerAccountEffect.pending;
+
+const successEditHomeownerAccount = editHomeownerAccountEffect.doneData;
+
+successEditHomeownerAccount.watch(() => message.success('Успешно обновлен'));
 
 editHomeownerAccountEffect.failData.watch((error) => {
   if (
@@ -106,6 +124,10 @@ closeHomeownerAccountFx.failData.watch((error) => {
 });
 
 export const editPersonalNumberService = {
-  inputs: {},
-  outputs: {},
+  inputs: { handleEditHomeownerAccount, successEditHomeownerAccount },
+  outputs: {
+    $homeowner: displayHomeownerService.outputs.$homeowner ,
+    $isLoading,
+  },
+  gates: {HomeownerGate: displayHomeownerService.gates.HomeownerGate  },
 };
