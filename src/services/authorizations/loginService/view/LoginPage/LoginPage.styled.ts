@@ -84,5 +84,5 @@ export const ButtonDevSettings = styled(Button).attrs({
   type: 'ghost',
   size: 'small',
 })`
-  color: white;
+  color: white !important;
 `;
