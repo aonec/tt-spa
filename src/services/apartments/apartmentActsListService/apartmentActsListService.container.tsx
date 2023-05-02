@@ -1,4 +1,3 @@
-import { ApartmentActTypesGate } from '01/features/actsJournal/displayActTypes/models';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -29,7 +28,6 @@ export const ApartmentActsListContainer = () => {
 
   const documents = useStore(outputs.$filteredActsList);
   const isLoading = useStore(outputs.$isLoading);
-  const actTypes = useStore(outputs.$actTypes);
   const selectedFilters = useStore(outputs.$actsFilter);
 
   const handleOpeningCreateActModal = useEvent(
@@ -54,7 +52,6 @@ export const ApartmentActsListContainer = () => {
 
   return (
     <>
-      <ApartmentActTypesGate />
       <ApartmentActsListGate apartmentId={apartmentId} />
       <CreateApartmentActModalContainer />
       <EditApartmentActModalContainer />
@@ -68,7 +65,6 @@ export const ApartmentActsListContainer = () => {
         handleSaveFile={handleSaveFile}
         handleUpdateTypes={updateTypes}
         handleUpdateResources={updateResources}
-        actTypes={actTypes}
         selectedFilters={selectedFilters}
         isPermitionToChangeApartmentAct={isPermitionToChangeApartmentAct}
       />
