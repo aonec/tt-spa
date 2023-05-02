@@ -7,6 +7,7 @@ export type PersonalNumberFormProps = {
   apartmentId: number;
   isMainPersonalAccountNumber?: boolean;
   handleAddPersonalNumber?: (payload: HomeownerAccountCreateRequest) => void;
+  homeownerId?: number;
 };
 
 export type PersonalNumberFormTypes = {
@@ -16,4 +17,6 @@ export type PersonalNumberFormTypes = {
   personalAccountNumber: string;
   paymentCode: string;
   isMainOnApartment: boolean;
+  apartmentId: number;
+  homeownerId?: number;
 };

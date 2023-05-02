@@ -26,6 +26,14 @@ successAddPersonalNumber.watch(() =>
   message.success('Лицевой счет успешно изменен'),
 );
 
+addPersonalNumberFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
 export const addPersonalNumberService = {
   inputs: { handleAddPersonalNumber, successAddPersonalNumber },
   outputs: {

@@ -11,6 +11,7 @@ import {
 } from './PersonalNumberForm.styled';
 import {
   PersonalNumberFormProps,
+  PersonalNumberFormTypes,
 } from './PersonalNumberForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
@@ -26,44 +27,37 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   formId,
   handleAddPersonalNumber,
   apartmentId,
+  homeownerId,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
-  const { values, setFieldValue, errors, handleSubmit } = useFormik({
-    initialValues: {
-      name: '',
-      phoneNumber: '',
-      openAt: '',
-      personalAccountNumber: '',
-      paymentCode: '',
-      isMainOnApartment: false,
-      apartmentId,
-    },
-    validationSchema: yup.object().shape({
-      name: yup.string().nullable().required('Это поле обязательно'),
-      openAt: yup.string().nullable().required('Это поле обязательно'),
-      personalAccountNumber: yup
-        .string()
-        .nullable()
-        .required('Это поле обязательно'),
-    }),
-    validateOnBlur: false,
-    validateOnChange: false,
-    enableReinitialize: true,
-    onSubmit: (data) => {
-      const {
-        isMainOnApartment,
-        name,
-        openAt,
-        paymentCode,
-        personalAccountNumber,
-        phoneNumber,
+  const { values, setFieldValue, errors, handleSubmit } =
+    useFormik<PersonalNumberFormTypes>({
+      initialValues: {
+        name: '',
+        phoneNumber: '',
+        openAt: '',
+        personalAccountNumber: '',
+        paymentCode: '',
+        isMainOnApartment: false,
         apartmentId,
-      } = data;
-
-      handleAddPersonalNumber && handleAddPersonalNumber(data);
-    },
-  });
+        homeownerId,
+      },
+      validationSchema: yup.object().shape({
+        name: yup.string().nullable().required('Это поле обязательно'),
+        openAt: yup.string().nullable().required('Это поле обязательно'),
+        personalAccountNumber: yup
+          .string()
+          .nullable()
+          .required('Это поле обязательно'),
+      }),
+      validateOnBlur: false,
+      validateOnChange: false,
+      enableReinitialize: true,
+      onSubmit: (data) => {
+        handleAddPersonalNumber && handleAddPersonalNumber(data);
+      },
+    });
 
   return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
