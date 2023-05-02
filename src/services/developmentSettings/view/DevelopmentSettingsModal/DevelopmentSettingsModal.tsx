@@ -7,18 +7,14 @@ import { Form } from 'antd';
 import { Input } from 'ui-kit/Input';
 import { Button } from 'ui-kit/Button';
 import { Badge, DevUrlInputWrapper } from './DevelopmentSettingsModal.styled';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
-import { useForm } from 'effector-forms/dist';
 import { baseURL } from '01/axios';
-
-const { outputs } = developmentSettingsService;
 
 export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
   visible,
   closeDevSettingsModal,
+  devUrl,
+  setDevUrl,
 }) => {
-  const { fields } = useForm(outputs.devSettingsForm);
-
   return (
     <FormModal
       formId="dev-settings-form"
@@ -28,13 +24,13 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
             <DevUrlInputWrapper>
               <Input
                 small
-                value={fields.devUrl.value}
-                onChange={(e) => fields.devUrl.onChange(e.target.value)}
+                value={devUrl}
+                onChange={(e) => setDevUrl(e.target.value)}
               />
               <Button
                 size="small"
                 icon={<SettingsIcon />}
-                onClick={() => fields.devUrl.onChange(baseURL)}
+                onClick={() => setDevUrl(baseURL)}
               >
                 Reset
               </Button>

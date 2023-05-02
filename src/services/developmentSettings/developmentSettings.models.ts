@@ -1,6 +1,5 @@
 import axios from '01/axios';
 import { createDomain, createEvent } from 'effector';
-import { createForm } from 'effector-forms/dist';
 
 const domain = createDomain('developmentSettings');
 
@@ -14,22 +13,20 @@ if (devApiURL) {
 
 const apiURL = axios.defaults.baseURL;
 
-const devSettingsForm = createForm({
-  fields: {
-    devUrl: {
-      init: apiURL,
-    },
-  },
-});
-
 const openDevSettingsModal = domain.createEvent();
 const closeDevSettingsModal = createEvent();
+
+const setDevUrl = domain.createEvent<string>();
+
+const $devUrl = domain
+  .createStore(apiURL || '')
+  .on(setDevUrl, (_, devUrl) => devUrl);
 
 $isDevSettingsModalOpen
   .on(openDevSettingsModal, () => true)
   .reset(closeDevSettingsModal);
 
-devSettingsForm.fields.devUrl.$value.watch((url) => {
+$devUrl.watch((url) => {
   axios.defaults.baseURL = url;
 
   if (url) localStorage.setItem('dev-api-url', url);
@@ -39,9 +36,10 @@ export const developmentSettingsService = {
   inputs: {
     openDevSettingsModal,
     closeDevSettingsModal,
+    setDevUrl,
   },
   outputs: {
     $isDevSettingsModalOpen,
-    devSettingsForm,
+    $devUrl,
   },
 };
