@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AddPersonalNumberPage } from './view/AddPersonalNumberPage';
 import { addPersonalNumberService } from './addPersonalNumberService.model';
 import { useEvent, useStore } from 'effector-react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const {
   inputs,
@@ -12,15 +12,18 @@ const {
 
 export const AddPersonalNumberContainer = () => {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
 
   const handleAddPersonalNumber = useEvent(inputs.handleAddPersonalNumber);
 
-  if (!apartment) {
-    return null;
-  }
+  useEffect(() => {
+    return inputs.successAddPersonalNumber.watch(() => {
+      history.push(`/meters/apartments/${apartment?.id}`);
+    }).unsubscribe;
+  }, [history, apartment?.id]);
 
   return (
     <>

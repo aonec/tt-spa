@@ -11,7 +11,6 @@ import {
 } from './PersonalNumberForm.styled';
 import {
   PersonalNumberFormProps,
-  PersonalNumberFormTypes,
 } from './PersonalNumberForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
@@ -20,7 +19,6 @@ import { Input } from 'ui-kit/Input';
 import { TrashIcon } from 'ui-kit/icons';
 import { Switch } from 'antd';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
-import { HomeownerAccountCreateRequest } from 'myApi';
 
 export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   type,

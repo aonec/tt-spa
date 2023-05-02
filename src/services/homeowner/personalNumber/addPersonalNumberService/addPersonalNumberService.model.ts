@@ -3,6 +3,7 @@ import { HomeownerAccountCreateRequest } from 'myApi';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
 import { addHomeowner } from './addPersonalNumberService.api';
+import { message } from 'antd';
 
 const domain = createDomain('addPersonalNumberService');
 
@@ -19,8 +20,14 @@ forward({ from: handleAddPersonalNumber, to: addPersonalNumberFx });
 
 const $isLoading = addPersonalNumberFx.pending;
 
+const successAddPersonalNumber = addPersonalNumberFx.doneData;
+
+successAddPersonalNumber.watch(() =>
+  message.success('Лицевой счет успешно изменен'),
+);
+
 export const addPersonalNumberService = {
-  inputs: { handleAddPersonalNumber },
+  inputs: { handleAddPersonalNumber, successAddPersonalNumber },
   outputs: {
     $apartment: apartmentProfileService.outputs.$apartment,
     $isLoading,

@@ -8,13 +8,10 @@ import {
 import { PersonalNumberPageContainerProps } from './PersonalNumberPageContainer.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
+import { Link, useHistory } from 'react-router-dom';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { Loader } from 'ui-kit/Loader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
-
-
 
 export const PersonalNumberPageContainer: FC<
   PersonalNumberPageContainerProps

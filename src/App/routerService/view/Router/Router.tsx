@@ -39,7 +39,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { AddPersonalNumberPage } from '01/features/homeowner/addPersonalNumber';
 import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
 import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
 import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
@@ -507,7 +506,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route path="/apartment/:id/homeowners/add" exact>
-                      <AddPersonalNumberContainer />
+                      <AddPersonalNumberContainer /> 
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
