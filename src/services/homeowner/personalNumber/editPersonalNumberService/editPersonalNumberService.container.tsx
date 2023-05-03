@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { EditPersonalNumberPage } from './view/EditPersonalNumberPage';
 import { editPersonalNumberService } from './editPersonalNumberService.model';
+import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 
 const {
   inputs,
@@ -17,6 +18,13 @@ export const EditPersonalNumberContainer = () => {
 
   const isLoading = useStore(outputs.$isLoading);
   const apartment = useStore(outputs.$apartment);
+
+  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
+  const samePersonalAccountNumderId = useStore(
+    outputs.$samePersonalAccountNumderId,
+  );
+  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
+  const handleForced = useEvent(inputs.onForced);
 
   const handleEditHomeownerAccount = useEvent(
     inputs.handleEditHomeownerAccount,
@@ -36,6 +44,14 @@ export const EditPersonalNumberContainer = () => {
         isLoading={isLoading}
         handleEditHomeownerAccount={handleEditHomeownerAccount}
         apartment={apartment}
+        handleForced={inputs.onForced}
+      />
+
+      <ConfirmationAddingExistingPersonalNumber
+        isConfirmationModalOpen={isConfirmationModalOpen}
+        samePersonalAccountNumderId={samePersonalAccountNumderId}
+        confirmationModalClose={() => confirmationModalClose()}
+        handleForced={handleForced}
       />
     </>
   );

@@ -1,5 +1,6 @@
 import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
+import { Event } from 'effector';
 
 export type PersonalNumberFormProps = {
   type: PersonalNumberActions;
@@ -9,6 +10,7 @@ export type PersonalNumberFormProps = {
   homeowner?: HomeownerAccountListResponse;
   handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void;
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
+  handleForced?: Event<void>;
 };
 
 export type PersonalNumberFormTypes = {

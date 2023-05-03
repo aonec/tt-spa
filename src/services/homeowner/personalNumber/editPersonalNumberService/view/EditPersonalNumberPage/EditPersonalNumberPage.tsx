@@ -11,6 +11,7 @@ export const EditPersonalNumberPage: FC<EditPersonalNumberPageProps> = ({
   handleEditHomeownerAccount,
   isLoading,
   apartment,
+  handleForced,
 }) => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
 
@@ -31,6 +32,7 @@ export const EditPersonalNumberPage: FC<EditPersonalNumberPageProps> = ({
         formId={formId}
         handleEditHomeownerAccount={handleEditHomeownerAccount}
         homeowner={homeowner}
+        handleForced={handleForced}
       />
     </PersonalNumberPageContainer>
   );

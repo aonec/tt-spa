@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -29,6 +29,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleAddPersonalNumber,
   handleEditHomeownerAccount,
   homeowner,
+  handleForced,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
@@ -56,16 +57,17 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       validateOnChange: false,
       enableReinitialize: true,
       onSubmit: (data) => {
-        apartmentId &&
-          handleAddPersonalNumber &&
-          handleAddPersonalNumber(data);
+        apartmentId && handleAddPersonalNumber && handleAddPersonalNumber(data);
 
         data.homeownerId &&
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
-
       },
     });
+
+  useEffect(() => {
+    return handleForced?.watch(() => handleSubmit()).unsubscribe;
+  }, [handleForced, handleSubmit]);
 
   return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>

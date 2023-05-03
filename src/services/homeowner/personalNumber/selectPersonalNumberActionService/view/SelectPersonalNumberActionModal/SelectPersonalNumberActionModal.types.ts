@@ -3,4 +3,5 @@ import { PersonalNumberActions } from '../../selectPersonalNumberActionService.t
 export type SelectPersonalNumberActionModalProps = {
   isOpen: boolean;
   setAction: (payload: PersonalNumberActions) => PersonalNumberActions;
+  apartmentId: number;
 };

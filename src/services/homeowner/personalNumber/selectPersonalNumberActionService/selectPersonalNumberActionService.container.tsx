@@ -12,6 +12,8 @@ export const SelectPersonalNumberActionContainer: FC<
 > = ({ apartment }) => {
   const setAction = useEvent(inputs.setAction);
 
+  const setSelectActionModalOpen = useEvent(inputs.setSelectActionModalOpen);
+
   const setChoosePersonalNumberModalOpen = useEvent(
     inputs.setChoosePersonalNumberModalOpen,
   );
@@ -27,12 +29,14 @@ export const SelectPersonalNumberActionContainer: FC<
       <SelectPersonalNumberActionModal
         isOpen={isSelectActionModalOpen}
         setAction={setAction}
+        apartmentId={apartment.id}
       />
       <ChoosePersonalNumberModal
         isOpen={isChoosePersonalNumberModalOpen}
         setIsOpen={setChoosePersonalNumberModalOpen}
         apartment={apartment}
         selectedAction={selectedAction}
+        setSelectActionModalOpen={setSelectActionModalOpen}
       />
     </>
   );

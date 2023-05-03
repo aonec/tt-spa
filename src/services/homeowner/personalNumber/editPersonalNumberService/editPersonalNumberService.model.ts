@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { combine, createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountUpdateRequest,
@@ -23,17 +23,6 @@ const handleConfirmationModalClose = domain.createEvent();
 
 const handleEditHomeownerAccount =
   domain.createEvent<PersonalNumberFormTypes>();
-
-const handleWithOnForcedEditHomeownerAccount = domain.createEvent();
-
-forward({
-  from: [handleEditHomeownerAccount, onForced],
-  to: handleWithOnForcedEditHomeownerAccount,
-});
-
-const $editHomeownerAccountFormData = domain
-  .createStore<PersonalNumberFormTypes | null>(null)
-  .on(handleEditHomeownerAccount, (_, form) => form);
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -110,10 +99,17 @@ closeHomeownerAccountFx.failData.watch((error) => {
 });
 
 export const editPersonalNumberService = {
-  inputs: { handleEditHomeownerAccount, successEditHomeownerAccount },
+  inputs: {
+    handleEditHomeownerAccount,
+    successEditHomeownerAccount,
+    handleConfirmationModalClose,
+    onForced,
+  },
   outputs: {
     $isLoading,
     $apartment: apartmentProfileService.outputs.$apartment,
+    $samePersonalAccountNumderId,
+    $isConfirmationModalOpen,
   },
   gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };
