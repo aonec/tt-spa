@@ -51,6 +51,7 @@ import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDev
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
 import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
+import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
 
 const { gates } = objectProfileService;
 
@@ -522,7 +523,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/homeowners/:homeownerId/edit"
                       exact
                     >
-                      <EditHomeownerPersonalNumberPage />
+                      <EditPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (

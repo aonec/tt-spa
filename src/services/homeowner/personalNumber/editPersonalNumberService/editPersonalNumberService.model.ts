@@ -64,26 +64,22 @@ const $samePersonalAccountNumderId = domain
 
 const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
-// sample({
-//   clock: handleWithOnForcedEditHomeownerAccount,
-//   source: combine(
-//     $isForced,
-//     $editHomeownerAccountFormData,
-//     (isForced, formData) =>
-//       formData && {
-//         id: formData.homeownerId,
-//         data: {
-//           personalAccountNumber: formData?.personalAccountNumber,
-//           paymentCode: formData?.paymentCode,
-//           name: formData?.name,
-//           phoneNumber: formData?.phoneNumber,
-//           IsMainOnApartment: formData?.isMainOnApartment,
-//           isForced: isForced,
-//         } as HomeownerAccountUpdateRequest,
-//       },
-//   ),
-//   target: editHomeownerAccountEffect,
-// });
+sample({
+  clock: handleEditHomeownerAccount,
+  source: $isForced,
+  fn: (isForced, formData) => ({
+    id: formData.homeownerId!,
+    data: {
+      personalAccountNumber: formData.personalAccountNumber,
+      paymentCode: formData.paymentCode,
+      name: formData.name,
+      phoneNumber: formData.phoneNumber,
+      IsMainOnApartment: formData.isMainOnApartment,
+      isForced: isForced,
+    } as HomeownerAccountUpdateRequest,
+  }),
+  target: editHomeownerAccountEffect,
+});
 
 const $isLoading = editHomeownerAccountEffect.pending;
 

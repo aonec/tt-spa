@@ -1,17 +1,9 @@
 import React, { FC } from 'react';
-import {
-  Address,
-  FlexContainer,
-  Title,
-  Wrapper,
-} from './EditPersonalNumberPage.styled';
 import { EditPersonalNumberPageProps } from './EditPersonalNumberPage.types';
 import { PersonalNumberActions } from 'services/homeowner/personalNumber/selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { PersonalNumberForm } from 'services/homeowner/personalNumber/components/PersonalNumberForm';
-import { Link, useHistory } from 'react-router-dom';
-import { GoBack } from 'ui-kit/shared_components/GoBack';
-import { Button } from 'ui-kit/Button';
-import { getApartmentAddressString } from 'utils/getApartmentAddress';
+import { PersonalNumberPageContainer } from '../../../components/PersonalNumberPageContainer/PersonalNumberPageContainer';
+import { useParams } from 'react-router-dom';
 
 const formId = 'edit-personal-number-page';
 
@@ -20,32 +12,26 @@ export const EditPersonalNumberPage: FC<EditPersonalNumberPageProps> = ({
   isLoading,
   apartment,
 }) => {
-  const history = useHistory();
+  const { homeownerId } = useParams<{ homeownerId: string }>();
 
-  const address = apartment && getApartmentAddressString(apartment);
+  const homeowner = apartment?.homeownerAccounts?.find(
+    (homeownerAccount) => homeownerAccount.id === homeownerId,
+  );
 
   return (
-    <Wrapper>
-      <GoBack />
-      <Title>Редактирование лицевого счета</Title>
-      <Address>
-        <Link to={`/apartments/${apartment?.id}`}>{address}</Link>
-      </Address>
-
+    <PersonalNumberPageContainer
+      titleText="Редактирование лицевого счета"
+      apartment={apartment}
+      type={PersonalNumberActions.Edit}
+      isLoading={isLoading}
+      formId={formId}
+    >
       <PersonalNumberForm
-        type={PersonalNumberActions.Add}
+        type={PersonalNumberActions.Edit}
         formId={formId}
         handleEditHomeownerAccount={handleEditHomeownerAccount}
+        homeowner={homeowner}
       />
-
-      <FlexContainer>
-        <Button type="ghost" onClick={history.goBack}>
-          Отмена
-        </Button>
-        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
-          Сохранить изменения
-        </Button>
-      </FlexContainer>
-    </Wrapper>
+    </PersonalNumberPageContainer>
   );
 };

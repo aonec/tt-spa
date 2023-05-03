@@ -1,3 +1,4 @@
+import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 
 export type PersonalNumberFormProps = {
@@ -5,8 +6,8 @@ export type PersonalNumberFormProps = {
   formId: string;
   apartmentId?: number;
   isMainPersonalAccountNumber?: boolean;
-  homeownerId?: number;
-  handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void
+  homeowner?: HomeownerAccountListResponse;
+  handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void;
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
 };
 
@@ -17,6 +18,6 @@ export type PersonalNumberFormTypes = {
   personalAccountNumber: string;
   paymentCode: string;
   isMainOnApartment: boolean;
-  apartmentId?: number ;
-  homeownerId?: number;
+  apartmentId?: number;
+  homeownerId?: string;
 };

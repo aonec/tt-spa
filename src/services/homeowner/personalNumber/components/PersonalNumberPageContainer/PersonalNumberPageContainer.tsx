@@ -23,7 +23,6 @@ export const PersonalNumberPageContainer: FC<
   cancelButtonText,
   saveButtonText,
   formId,
-  homeowner,
 }) => {
   const history = useHistory();
 

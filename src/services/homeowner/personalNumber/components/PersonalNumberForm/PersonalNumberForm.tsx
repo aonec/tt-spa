@@ -26,23 +26,23 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   isMainPersonalAccountNumber,
   formId,
   apartmentId,
-  homeownerId,
   handleAddPersonalNumber,
   handleEditHomeownerAccount,
+  homeowner,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: '',
-        phoneNumber: '',
-        openAt: '',
-        personalAccountNumber: '',
-        paymentCode: '',
-        isMainOnApartment: false,
+        name: homeowner?.name || '',
+        phoneNumber: homeowner?.phoneNumber || '',
+        openAt: homeowner?.openAt || '',
+        personalAccountNumber: homeowner?.personalAccountNumber || '',
+        paymentCode: homeowner?.paymentCode || '',
+        isMainOnApartment: homeowner?.isMainPersonalAccountNumber || false,
         apartmentId,
-        homeownerId,
+        homeownerId: homeowner?.id,
       },
       validationSchema: yup.object().shape({
         name: yup.string().nullable().required('Это поле обязательно'),
@@ -58,11 +58,12 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       onSubmit: (data) => {
         apartmentId &&
           handleAddPersonalNumber &&
-          handleAddPersonalNumber(data as any);
+          handleAddPersonalNumber(data);
 
-        homeownerId &&
+        data.homeownerId &&
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
+
       },
     });
 
@@ -119,7 +120,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       <FlexContainer>
         <SwitchWrapper
           onClick={() =>
-            setFieldValue('isMainAccountingNumber', !values.isMainOnApartment)
+            setFieldValue('isMainOnApartment', !values.isMainOnApartment)
           }
         >
           <Switch
