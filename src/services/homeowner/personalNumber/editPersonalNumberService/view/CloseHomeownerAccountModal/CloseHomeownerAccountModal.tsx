@@ -6,7 +6,12 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
 import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
-import { GridContainer } from './CloseHomeownerAccountModal.styled';
+import {
+  AccountNumber,
+  GridContainer,
+  ModalTitle,
+} from './CloseHomeownerAccountModal.styled';
+import moment from 'moment';
 
 const formId = 'close-homeowner-account-modal';
 
@@ -19,17 +24,13 @@ export const CloseHomeownerAccountModal: FC<
   handleCloseHomeownerAccount,
   setVisible,
 }) => {
-  const title = `Вы действительно хотите закрыть лицевой счет ${
-    homeowner.personalAccountNumber || ''
-  }?`;
-
   const { values, setFieldValue, errors, handleSubmit } = useFormik({
     initialValues: {
-      closedAt: homeowner.closedAt || '',
+      closedAt: '',
       homeownerAccountId: homeowner.id,
     },
     validationSchema: yup.object().shape({
-      closedAt: yup.string().nullable().required('Это поле обязательно'),
+      closedAt: yup.string().required('Это поле обязательно'),
     }),
     validateOnBlur: false,
     validateOnChange: false,
@@ -41,7 +42,13 @@ export const CloseHomeownerAccountModal: FC<
 
   return (
     <FormModal
-      title={title}
+      title={
+        <>
+          <ModalTitle>Вы действительно хотите закрыть лицевой счет?</ModalTitle>
+          Номер лицевого счёта:{' '}
+          <AccountNumber>{homeowner.personalAccountNumber || ''}</AccountNumber>
+        </>
+      }
       visible={isVisible}
       onCancel={() => setVisible(false)}
       submitBtnText="Закрыть"
@@ -54,7 +61,12 @@ export const CloseHomeownerAccountModal: FC<
           <FormItem label="Дата закрытия текущего лицевого счета">
             <DatePickerNative
               value={values.closedAt}
-              onChange={(value) => setFieldValue('closedAt', value)}
+              onChange={(value) =>
+                setFieldValue(
+                  'closedAt',
+                  moment(value).startOf('day').format('YYYY-MM-DD'),
+                )
+              }
             />
             <ErrorMessage>{errors.closedAt}</ErrorMessage>
           </FormItem>

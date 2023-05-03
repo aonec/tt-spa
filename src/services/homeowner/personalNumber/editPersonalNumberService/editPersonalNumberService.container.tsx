@@ -52,6 +52,12 @@ export const EditPersonalNumberContainer = () => {
     }).unsubscribe;
   }, [history, apartmentId]);
 
+  useEffect(() => {
+    return inputs.successCloseHomeownerAccount.watch(() => {
+      history.push(`/meters/apartments/${apartmentId}`);
+    }).unsubscribe;
+  }, [history, apartmentId]);
+
   return (
     <>
       <ApartmentGate apartmentId={Number(apartmentId)} />
@@ -62,7 +68,9 @@ export const EditPersonalNumberContainer = () => {
         apartment={apartment}
         handleForced={inputs.onForced}
         homeowner={homeowner}
-        setVisibleCloseHomeownerAccountModal={setVisibleCloseHomeownerAccountModal}
+        setVisibleCloseHomeownerAccountModal={
+          setVisibleCloseHomeownerAccountModal
+        }
       />
 
       <ConfirmationAddingExistingPersonalNumber

@@ -29,9 +29,16 @@ const handleCloseHomeownerAccount =
 
 const setVisibleCloseHomeownerAccountModal = domain.createEvent<boolean>();
 
+const closeHomeownerAccountFx = domain.createEffect<
+  HomeownerAccountCloseRequest,
+  void,
+  EffectFailDataAxiosError
+>(closeHomeownerAccount);
+
 const $isVisibleCloseHomeownerAccountModal = domain
   .createStore<boolean>(false)
-  .on(setVisibleCloseHomeownerAccountModal, (_, data) => data);
+  .on(setVisibleCloseHomeownerAccountModal, (_, data) => data)
+  .reset(closeHomeownerAccountFx.doneData);
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -43,12 +50,6 @@ const editHomeownerAccountEffect = domain.createEffect<
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(putHomeownerAccount);
-
-const closeHomeownerAccountFx = domain.createEffect<
-  HomeownerAccountCloseRequest,
-  void,
-  EffectFailDataAxiosError
->(closeHomeownerAccount);
 
 const $samePersonalAccountNumderId = domain
   .createStore<number | null>(null)
@@ -93,8 +94,13 @@ const $isLoading = editHomeownerAccountEffect.pending;
 const $isLoadingClosingAccount = closeHomeownerAccountFx.pending;
 
 const successEditHomeownerAccount = editHomeownerAccountEffect.doneData;
+const successCloseHomeownerAccount = closeHomeownerAccountFx.doneData;
 
 successEditHomeownerAccount.watch(() => message.success('Успешно обновлен'));
+
+successCloseHomeownerAccount.watch(() =>
+  message.success('Лицевой счёт закрыт'),
+);
 
 editHomeownerAccountEffect.failData.watch((error) => {
   if (
@@ -126,6 +132,7 @@ export const editPersonalNumberService = {
     onForced,
     handleCloseHomeownerAccount,
     setVisibleCloseHomeownerAccountModal,
+    successCloseHomeownerAccount,
   },
   outputs: {
     $isLoading,

@@ -30,6 +30,7 @@ export const SelectPersonalNumberActionContainer: FC<
         isOpen={isSelectActionModalOpen}
         setAction={setAction}
         apartmentId={apartment.id}
+        setSelectActionModalOpen={setSelectActionModalOpen}
       />
       <ChoosePersonalNumberModal
         isOpen={isChoosePersonalNumberModalOpen}
