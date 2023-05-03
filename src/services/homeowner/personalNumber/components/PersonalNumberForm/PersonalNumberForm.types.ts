@@ -11,6 +11,7 @@ export type PersonalNumberFormProps = {
   handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void;
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
   handleForced?: Event<void>;
+  setVisibleCloseHomeownerAccountModal?: (payload: boolean) => void;
 };
 
 export type PersonalNumberFormTypes = {

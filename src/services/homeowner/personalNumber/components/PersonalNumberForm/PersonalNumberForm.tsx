@@ -30,6 +30,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleEditHomeownerAccount,
   homeowner,
   handleForced,
+  setVisibleCloseHomeownerAccountModal,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
@@ -132,7 +133,12 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           Основной лицевой счет
         </SwitchWrapper>
         {isEdit && (
-          <DeleteButton onClick={() => {}}>
+          <DeleteButton
+            onClick={() =>
+              setVisibleCloseHomeownerAccountModal &&
+              setVisibleCloseHomeownerAccountModal(true)
+            }
+          >
             <TrashIcon />
             Закрыть лицевой счет
           </DeleteButton>

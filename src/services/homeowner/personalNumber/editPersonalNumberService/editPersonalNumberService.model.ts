@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createDomain, sample } from 'effector';
+import { createDomain, forward, sample } from 'effector';
 import {
   HomeownerAccountCloseRequest,
   HomeownerAccountUpdateRequest,
@@ -23,6 +23,15 @@ const handleConfirmationModalClose = domain.createEvent();
 
 const handleEditHomeownerAccount =
   domain.createEvent<PersonalNumberFormTypes>();
+
+const handleCloseHomeownerAccount =
+  domain.createEvent<HomeownerAccountCloseRequest>();
+
+const setVisibleCloseHomeownerAccountModal = domain.createEvent<boolean>();
+
+const $isVisibleCloseHomeownerAccountModal = domain
+  .createStore<boolean>(false)
+  .on(setVisibleCloseHomeownerAccountModal, (_, data) => data);
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -75,7 +84,13 @@ sample({
   target: editHomeownerAccountEffect,
 });
 
+forward({
+  from: handleCloseHomeownerAccount,
+  to: closeHomeownerAccountFx,
+});
+
 const $isLoading = editHomeownerAccountEffect.pending;
+const $isLoadingClosingAccount = closeHomeownerAccountFx.pending;
 
 const successEditHomeownerAccount = editHomeownerAccountEffect.doneData;
 
@@ -109,12 +124,16 @@ export const editPersonalNumberService = {
     successEditHomeownerAccount,
     handleConfirmationModalClose,
     onForced,
+    handleCloseHomeownerAccount,
+    setVisibleCloseHomeownerAccountModal,
   },
   outputs: {
     $isLoading,
     $apartment: apartmentProfileService.outputs.$apartment,
     $samePersonalAccountNumderId,
     $isConfirmationModalOpen,
+    $isLoadingClosingAccount,
+    $isVisibleCloseHomeownerAccountModal,
   },
   gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };
