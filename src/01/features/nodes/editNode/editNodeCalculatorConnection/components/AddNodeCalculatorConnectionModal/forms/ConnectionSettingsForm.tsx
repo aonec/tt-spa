@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Flex } from '../../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
 import { Space } from '../../../../../../../shared/ui/Layout/Space/Space';
-import { addNodeCalculatorService } from '../models';
+import { addNodeCalculatorService } from '../AddNodeCalculatorConnectionModal.models';
 import { Input } from 'ui-kit/Input';
 
 export const ConnectionSettingsForm = () => {

@@ -1,23 +1,17 @@
-import React from 'react';
-import { useEvent, useStore } from 'effector-react';
-import { outputs, inputs, nodeService } from '../../displayNode/models';
-import { RemoveNodeCalculatorConnectionService } from './components/RemoveConnectionConfirmModal/models';
-import { useParams } from 'react-router-dom';
+import React, { FC } from 'react';
+import { useEvent } from 'effector-react';
+import { RemoveNodeCalculatorConnectionService } from './components/RemoveConnectionConfirmModal/RemoveConnectionConfirmModal.models';
 import { RemoveConnectionConfirmModalContainer } from './components/RemoveConnectionConfirmModal/RemoveConnectionConfirmModalContainer';
 import { AddNodeCalculatorConnectionModalContainer } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModalContainer';
-import { addNodeCalculatorService } from './components/AddNodeCalculatorConnectionModal/models';
-import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { addNodeCalculatorService } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModal.models';
 import { Empty } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { NodeConnection } from 'services/nodes/nodeProfileService/view/NodeProfilePage/NodeConnection';
+import { EditNodeCalculatorConnectionContainerProps } from './EditNodeCalculatorConnection.types';
 
-export const EditNodeCalculatorConnectionContainer = () => {
-  const { nodeId } = useParams<{ nodeId: string }>();
-
-  const { NodeGate } = inputs;
-  const node = useStore(outputs.$node);
-  const loading = useStore(nodeService.outputs.$loading);
-
+export const EditNodeCalculatorConnectionContainer: FC<
+  EditNodeCalculatorConnectionContainerProps
+> = ({ node }) => {
   const handleOpenConfirmModal = useEvent(
     RemoveNodeCalculatorConnectionService.inputs.openConfirmationModal,
   );
@@ -31,27 +25,24 @@ export const EditNodeCalculatorConnectionContainer = () => {
     <>
       <RemoveConnectionConfirmModalContainer />
       <AddNodeCalculatorConnectionModalContainer />
-      <NodeGate id={Number(nodeId)} />
-      <WithLoader isLoading={loading}>
-        {showCalculator && (
-          <NodeConnection
-            onEdit={() => handleEdit()}
-            onRemoveConnection={() => handleOpenConfirmModal()}
-            node={node!}
+      {showCalculator && (
+        <NodeConnection
+          onEdit={() => handleEdit()}
+          onRemoveConnection={() => handleOpenConfirmModal()}
+          node={node}
+        />
+      )}
+      {!showCalculator && (
+        <>
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="К узлу не подключен вычислитель"
           />
-        )}
-        {!showCalculator && (
-          <>
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="К узлу не подключен вычислитель"
-            />
-            <Button type="ghost" onClick={() => handleEdit()}>
-              + Подключить вычислитель
-            </Button>
-          </>
-        )}
-      </WithLoader>
+          <Button type="ghost" onClick={() => handleEdit()}>
+            + Подключить вычислитель
+          </Button>
+        </>
+      )}
     </>
   );
 };

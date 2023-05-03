@@ -1,8 +1,8 @@
 import { createDomain, forward, sample } from 'effector';
 import { PipeHousingMeteringDeviceListResponse } from 'myApi';
 import { message } from 'antd';
-import { editNodeService } from '../editNodeService';
 import { fetchDeletePipeDevice } from './deletePipeHousingMeteringDeviceService.api';
+import { editNodeService } from 'services/nodes/editNodeService';
 
 const domain = createDomain('deletePipeHousingMeteringDeviceService');
 

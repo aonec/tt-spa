@@ -1,6 +1,6 @@
 import React from 'react';
 import { RemoveConnectionConfirmModal } from './RemoveConnectionConfirmModal';
-import { outputs, inputs } from './models';
+import { outputs, inputs } from './RemoveConnectionConfirmModal.models';
 import { useStore } from 'effector-react';
 
 export const RemoveConnectionConfirmModalContainer = () => {

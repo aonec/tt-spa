@@ -5,9 +5,7 @@ import React, { FC } from 'react';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
-import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
-import { createCalcuatorService } from './CreateCalculatorModal/models';
-import { AddNodeCalculatorConnectionForm } from './models';
+import { AddNodeCalculatorConnectionForm } from './AddNodeCalculatorConnectionModal.models';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
 
@@ -18,6 +16,7 @@ interface Props {
   form: AddNodeCalculatorConnectionForm;
   loading: boolean;
   node?: PipeNodeResponse | null;
+  openCreateCalculatorModal: () => void;
 }
 
 const calculatorConnectionInputNumbers = [1, 2, 3];
@@ -29,6 +28,7 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
   form,
   loading,
   node,
+  openCreateCalculatorModal,
 }) => {
   const { fields, submit } = useForm(form);
   const calculator = node?.calculator;
@@ -45,7 +45,6 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
       onSubmit={submit}
       centered
     >
-      <CreateCalculatorModalContainer />
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Вычислитель, к которому подключен узел">
           <Select
@@ -66,12 +65,7 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
           </ErrorMessage>
         </Form.Item>
         <Flex style={{ transform: 'translateY(10px)' }}>
-          <Button
-            type="link"
-            onClick={() =>
-              createCalcuatorService.inputs.openCreateCalculatorModal()
-            }
-          >
+          <Button type="link" onClick={openCreateCalculatorModal}>
             + Добавить вычислитель
           </Button>
         </Flex>

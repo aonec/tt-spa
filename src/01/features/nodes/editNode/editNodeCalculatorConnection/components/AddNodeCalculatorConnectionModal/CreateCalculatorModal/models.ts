@@ -6,12 +6,13 @@ import {
   MeteringDeviceResponse,
 } from '../../../../../../../../myApi';
 import axios from 'axios';
-import { nodeService } from '../../../../../displayNode/models';
-import { addNodeCalculatorService } from '../models';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 import { Document } from 'ui-kit/DocumentsService';
+import { addNodeCalculatorService } from '../AddNodeCalculatorConnectionModal.models';
+import { editNodeService } from 'services/nodes/editNodeService';
+import { calculatorsListService } from 'services/calculators/calculatorsListService';
 
 const createCalcuatorDomain = createDomain();
 
@@ -74,7 +75,7 @@ const saveButtonClicked = createCalcuatorDomain.createEvent();
 
 sample({
   source: combine(
-    nodeService.outputs.$node,
+    editNodeService.outputs.$node,
     baseInfoAddNodeCalculatorConnectionForm.$values,
     addNodeCalculatorService.inputs.connectionSettingsForm.$values,
     CreateCalculatorGate.state,
@@ -133,6 +134,11 @@ sample({
   target:
     addNodeCalculatorService.inputs.addNodeCalculatorConnectionForm.fields
       .calculatorId.set,
+});
+
+forward({
+  from: createCalculatorFx.doneData,
+  to: calculatorsListService.inputs.refetchCalculators,
 });
 
 export const createCalcuatorService = {

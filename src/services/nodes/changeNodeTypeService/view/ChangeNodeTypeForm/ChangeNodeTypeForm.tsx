@@ -7,7 +7,6 @@ import {
 } from 'myApi';
 import React, { FC } from 'react';
 import { ChangeNodeTypeFormProps } from './ChangeNodeTypeForm.types';
-import { NodeRegistrationTypeLookup } from 'services/housingMeteringDevices/editNodeService/view/EditNodePage/EditNodePage.constants';
 import { FormItem } from 'ui-kit/FormItem';
 import { GroupWrapper } from './ChangeNodeTypeForm.styled';
 import { DatePicker } from 'ui-kit/DatePicker';
@@ -16,6 +15,7 @@ import { ChangeNodeStatusDocument } from 'services/nodes/changeNodeStatusService
 import { validationSchema } from './ChangeNodeTypeForm.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Select } from 'ui-kit/Select';
+import { NodeRegistrationTypeLookup } from 'dictionaries';
 
 export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
   formId,
@@ -56,7 +56,7 @@ export const ChangeNodeTypeForm: FC<ChangeNodeTypeFormProps> = ({
           >
             {Object.entries(NodeRegistrationTypeLookup).map(([key, value]) => (
               <Select.Option key={key} value={key}>
-                {value}
+                {value} узел
               </Select.Option>
             ))}
           </Select>

@@ -4,16 +4,21 @@ import { AddNodeCalculatorConnectionModal } from './AddNodeCalculatorConnectionM
 import {
   $isAddNodeCalculatorConnectionModalOpen,
   addNodeCalculatorService,
-} from './models';
-import { nodeService } from '../../../../displayNode/models';
+} from './AddNodeCalculatorConnectionModal.models';
 import { calculatorsListService } from 'services/calculators/calculatorsListService';
+import { editNodeService } from 'services/nodes/editNodeService';
+import { createCalcuatorService } from './CreateCalculatorModal/models';
+import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 
 export const AddNodeCalculatorConnectionModalContainer = () => {
   const closeModal = useEvent(
     addNodeCalculatorService.inputs.closeAddNodeCalculatorConnectionModal,
   );
+  const openCreateCalculatorModal = useEvent(
+    createCalcuatorService.inputs.openCreateCalculatorModal,
+  );
   const isOpen = useStore($isAddNodeCalculatorConnectionModalOpen);
-  const node = useStore(nodeService.outputs.$node);
+  const node = useStore(editNodeService.outputs.$node);
 
   const calculators = useStore(calculatorsListService.outputs.$calculatorsList);
 
@@ -24,6 +29,7 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
   return (
     <>
       {node && <CalculatorsGate housingStockId={node.housingStockId} />}
+      <CreateCalculatorModalContainer />
       <AddNodeCalculatorConnectionModal
         node={node}
         loading={loading}
@@ -31,6 +37,7 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
         calculators={calculators}
         isOpen={isOpen}
         onClose={() => closeModal()}
+        openCreateCalculatorModal={openCreateCalculatorModal}
       />
     </>
   );

@@ -1,8 +1,7 @@
-import { createDomain, forward, sample } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { CalculatorIntoHousingStockResponse } from 'myApi';
 import { getCalculatorsList } from './calculatorsListService.api';
-import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 
 const domain = createDomain('calculatorsListService');
 
@@ -23,15 +22,15 @@ const $calculatorsList = domain
 const $loading = fetchCalculatorsFx.pending;
 
 sample({
+  clock: CalculatorsGate.open.map(({ housingStockId }) => housingStockId),
+  target: fetchCalculatorsFx,
+});
+
+sample({
   clock: refetchCalculators,
   source: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
   filter: (housingStockId) => Boolean(housingStockId),
   target: fetchCalculatorsFx,
-});
-
-forward({
-  from: createCalcuatorService.events.newCalculatorCreated,
-  to: refetchCalculators,
 });
 
 export const calculatorsListService = {

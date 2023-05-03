@@ -1,7 +1,7 @@
-import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 import { createDomain } from 'effector';
 import { createNodeService } from 'services/nodes/createNodeService/createNodeService.model';
 import { CalculatorConnectionType } from './ConnectionSettings.types';
+import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 
 const domain = createDomain('connectionSettings');
 

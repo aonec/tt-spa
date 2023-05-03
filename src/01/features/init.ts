@@ -27,8 +27,6 @@ import './Inspectors/models/init';
 import './housingStocks/displayHousingStockCities/models/init';
 import './developmentSettings/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
-import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
-import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
 import './Inspectors/displayInspectors/displayInspectorsService.init';
 import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
 import '../../services/settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
