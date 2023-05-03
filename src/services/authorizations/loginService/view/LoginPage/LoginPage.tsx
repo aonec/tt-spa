@@ -66,7 +66,7 @@ export const LoginPage: FC<LoginPageProps> = ({
             <Label>Электронная почта</Label>
             <Input
               autoFocus
-              placeholder="Электронная почта"
+              placeholder="Введите email"
               type="email"
               readOnly={isLoading}
               value={values.email}
