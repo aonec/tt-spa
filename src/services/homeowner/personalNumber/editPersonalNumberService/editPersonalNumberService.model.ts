@@ -56,17 +56,22 @@ const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 sample({
   clock: handleEditHomeownerAccount,
   source: $isForced,
-  fn: (isForced, formData) => ({
-    id: formData.homeownerId!,
-    data: {
-      personalAccountNumber: formData.personalAccountNumber,
-      paymentCode: formData.paymentCode,
-      name: formData.name,
-      phoneNumber: formData.phoneNumber,
-      IsMainOnApartment: formData.isMainOnApartment,
-      isForced: isForced,
-    } as HomeownerAccountUpdateRequest,
-  }),
+  filter: (_, formData) => Boolean(formData.homeownerId),
+  fn: (isForced, formData) =>
+    ({
+      id: formData.homeownerId,
+      data: {
+        personalAccountNumber: formData.personalAccountNumber,
+        paymentCode: formData.paymentCode,
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+        IsMainOnApartment: formData.isMainOnApartment,
+        isForced: isForced,
+      },
+    } as {
+      id: string;
+      data: HomeownerAccountUpdateRequest;
+    }),
   target: editHomeownerAccountEffect,
 });
 

@@ -10,24 +10,45 @@ const domain = createDomain('addPersonalNumberService');
 
 const handleAddPersonalNumber = domain.createEvent<PersonalNumberFormTypes>();
 
+const onForced = domain.createEvent();
+const handleConfirmationModalClose = domain.createEvent();
+const $isForced = domain
+  .createStore<boolean>(false)
+  .on(onForced, () => true)
+  .reset(handleConfirmationModalClose);
+
 const addPersonalNumberFx = domain.createEffect<
   HomeownerAccountCreateRequest,
   void,
   EffectFailDataAxiosErrorDataApartmentId
 >(addHomeowner);
 
+const $samePersonalAccountNumderId = domain
+  .createStore<number | null>(null)
+  .on(addPersonalNumberFx.failData, (prev, errData) => {
+    if (errData.response.status === 409) {
+      return errData.response.data.error.Data.ApartmentId;
+    }
+    return prev;
+  })
+  .reset(handleConfirmationModalClose);
+
+const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
+
 sample({
   clock: handleAddPersonalNumber,
-  filter: (data) => Boolean(data.apartmentId),
-  fn: (data) =>
+  source: $isForced,
+  filter: (_, formData) => Boolean(formData.apartmentId),
+  fn: (isForced, formData) =>
     ({
-      apartmentId: data.apartmentId,
-      name: data.name,
-      openAt: data.openAt,
-      personalAccountNumber: data.personalAccountNumber,
-      isMainOnApartment: data.isMainOnApartment,
-      paymentCode: data.paymentCode,
-      phoneNumber: data.phoneNumber,
+      apartmentId: formData.apartmentId,
+      name: formData.name,
+      openAt: formData.openAt,
+      personalAccountNumber: formData.personalAccountNumber,
+      isMainOnApartment: formData.isMainOnApartment,
+      paymentCode: formData.paymentCode,
+      phoneNumber: formData.phoneNumber,
+      isForced,
     } as HomeownerAccountCreateRequest),
   target: addPersonalNumberFx,
 });
@@ -41,6 +62,12 @@ successAddPersonalNumber.watch(() =>
 );
 
 addPersonalNumberFx.failData.watch((error) => {
+  if (
+    error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
+  ) {
+    return;
+  }
+
   return message.error(
     error.response.data.error.Text ||
       error.response.data.error.Message ||
@@ -49,10 +76,17 @@ addPersonalNumberFx.failData.watch((error) => {
 });
 
 export const addPersonalNumberService = {
-  inputs: { handleAddPersonalNumber, successAddPersonalNumber },
+  inputs: {
+    handleAddPersonalNumber,
+    successAddPersonalNumber,
+    handleConfirmationModalClose,
+    onForced,
+  },
   outputs: {
     $apartment: apartmentProfileService.outputs.$apartment,
     $isLoading,
+    $isConfirmationModalOpen,
+    $samePersonalAccountNumderId,
   },
   gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };

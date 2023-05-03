@@ -3,6 +3,7 @@ import { AddPersonalNumberPage } from './view/AddPersonalNumberPage';
 import { addPersonalNumberService } from './addPersonalNumberService.model';
 import { useEvent, useStore } from 'effector-react';
 import { useHistory, useParams } from 'react-router-dom';
+import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 
 const {
   inputs,
@@ -16,6 +17,13 @@ export const AddPersonalNumberContainer = () => {
 
   const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
+
+  const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
+  const samePersonalAccountNumderId = useStore(
+    outputs.$samePersonalAccountNumderId,
+  );
+  const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
+  const handleForced = useEvent(inputs.onForced);
 
   const handleAddPersonalNumber = useEvent(inputs.handleAddPersonalNumber);
 
@@ -33,6 +41,14 @@ export const AddPersonalNumberContainer = () => {
         apartment={apartment}
         isLoading={isLoading}
         handleAddPersonalNumber={handleAddPersonalNumber}
+        handleForced={inputs.onForced}
+      />
+
+      <ConfirmationAddingExistingPersonalNumber
+        isConfirmationModalOpen={isConfirmationModalOpen}
+        samePersonalAccountNumderId={samePersonalAccountNumderId}
+        confirmationModalClose={() => confirmationModalClose()}
+        handleForced={handleForced}
       />
     </>
   );

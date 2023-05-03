@@ -11,6 +11,7 @@ export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
   apartment,
   isLoading,
   handleAddPersonalNumber,
+  handleForced,
 }) => {
   const apartmentId = apartment?.id;
 
@@ -28,6 +29,7 @@ export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
           formId={formId}
           handleAddPersonalNumber={handleAddPersonalNumber}
           apartmentId={apartmentId}
+          handleForced={handleForced}
         />
       </PersonalNumberPageContainer>
     </Wrapper>
