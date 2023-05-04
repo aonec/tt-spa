@@ -15,6 +15,8 @@ import {
 } from './editNodeService.api';
 import { NodeEditGrouptype } from './editNodeService.constants';
 import { addHosuingMeteringDeviceService } from './view/EditNodePage/addHosuingMeteringDeviceService';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const domain = createDomain('editNodeService');
 
@@ -41,13 +43,21 @@ const $node = domain
   .reset(clearStore);
 
 const updateNode = domain.createEvent<UpdatePipeNodeRequest>();
-const updateNodeFx = domain.createEffect(fetchUpdateNode);
+const updateNodeFx = domain.createEffect<
+  {
+    pipeNodeId: string;
+    payload: UpdatePipeNodeRequest;
+  },
+  void,
+  EffectFailDataAxiosError
+>(fetchUpdateNode);
 
 const NodeIdGate = createGate<{ nodeId: string }>();
 
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
 
 const $isLoading = getNodeFx.pending;
+const $isUpdateLoading = updateNodeFx.pending;
 
 forward({
   from: NodeIdGate.close,
@@ -89,6 +99,14 @@ sample({
   target: updateNodeFx,
 });
 
+updateNodeFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
 export const editNodeService = {
   inputs: {
     setEditNodeGrouptype,
@@ -100,6 +118,7 @@ export const editNodeService = {
     $isLoading,
     $editNodeGrouptype,
     $nodeZones,
+    $isUpdateLoading,
   },
   gates: { NodeIdGate, NodeResourceGate },
 };

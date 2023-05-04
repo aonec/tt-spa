@@ -10,4 +10,5 @@ export type EditNodeCommonInfoProps = {
   nodeZones: NodeServiceZoneResponse[];
   formId: string;
   updateNode: (payload: UpdatePipeNodeRequest) => void;
+  isLoading: boolean;
 };

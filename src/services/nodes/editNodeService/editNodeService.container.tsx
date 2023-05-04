@@ -8,17 +8,23 @@ import {
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { editNodeService } from './editNodeService.model';
 import { EditNodePage } from './view/EditNodePage';
+import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { CreateCalculatorModalContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/CreateCalculatorModalContainer';
+import { calculatorsListService } from 'services/calculators/calculatorsListService';
 
 const { gates, inputs, outputs } = editNodeService;
 const { NodeIdGate, NodeResourceGate } = gates;
+const { CalculatorsGate } = calculatorsListService.gates;
 
 export const EditNodeContainer = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
 
   const node = useStore(outputs.$node);
   const isLoading = useStore(outputs.$isLoading);
+  const isUpdateLoading = useStore(outputs.$isUpdateLoading);
   const grouptype = useStore(outputs.$editNodeGrouptype);
   const nodeZones = useStore(outputs.$nodeZones);
+  const calculators = useStore(calculatorsListService.outputs.$calculatorsList);
 
   const setGrouptype = useEvent(inputs.setEditNodeGrouptype);
   const openAddNewZonesModal = useEvent(
@@ -27,11 +33,16 @@ export const EditNodeContainer = () => {
 
   const refetchNode = useEvent(inputs.refetchNode);
   const updateNode = useEvent(inputs.updateNode);
+  const openCreateCalculatorModal = useEvent(
+    createCalcuatorService.inputs.openCreateCalculatorModal,
+  );
 
   return (
     <>
       <NodeIdGate nodeId={nodeId} />
+      {node && <CalculatorsGate housingStockId={node.housingStockId} />}
       <CreateNodeServiceZoneContainer />
+      <CreateCalculatorModalContainer />
 
       <WithLoader isLoading={isLoading}>
         {node && (
@@ -45,6 +56,9 @@ export const EditNodeContainer = () => {
               nodeZones={nodeZones}
               refetchNode={() => refetchNode()}
               updateNode={updateNode}
+              handleOpenCreateCalculatorModal={openCreateCalculatorModal}
+              calculators={calculators || []}
+              isUpdateLoading={isUpdateLoading}
             />
           </>
         )}

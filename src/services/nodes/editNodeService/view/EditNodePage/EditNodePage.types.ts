@@ -1,4 +1,5 @@
 import {
+  CalculatorIntoHousingStockResponse,
   NodeServiceZoneResponse,
   PipeNodeResponse,
   UpdatePipeNodeRequest,
@@ -13,4 +14,7 @@ export type EditNodePageProps = {
   nodeZones: NodeServiceZoneResponse[];
   refetchNode: () => void;
   updateNode: (payload: UpdatePipeNodeRequest) => void;
+  handleOpenCreateCalculatorModal: () => void;
+  calculators: CalculatorIntoHousingStockResponse[];
+  isUpdateLoading: boolean;
 };

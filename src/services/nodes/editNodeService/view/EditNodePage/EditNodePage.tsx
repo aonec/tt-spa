@@ -1,5 +1,3 @@
-import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
-import {} from 'ui-kit/shared_components/PageHeader';
 import React, { FC, useMemo } from 'react';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared_components/HeaderInfoString';
@@ -22,6 +20,7 @@ import { EditNodeRelatedDevices } from './EditNodeRelatedDevices';
 import { EditNodeUploadDocumentsContainer } from './editNodeUploadDocumentsService';
 import { IncorrectConfigAlert } from './IncorrectConfigAlert';
 import { NodeRegistrationTypeLookup } from 'dictionaries';
+import { EditCalculatorConnection } from './EditCalculatorConnection/EditCalculatorConnection';
 const { TabPane } = TabsSC;
 
 export const EditNodePage: FC<EditNodePageProps> = ({
@@ -32,6 +31,9 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   nodeZones,
   refetchNode,
   updateNode,
+  handleOpenCreateCalculatorModal,
+  calculators,
+  isUpdateLoading,
 }) => {
   const { number, address, resource, registrationType } = node;
 
@@ -88,14 +90,21 @@ export const EditNodePage: FC<EditNodePageProps> = ({
               nodeZones={nodeZones}
               formId={formId}
               updateNode={updateNode}
+              isLoading={isUpdateLoading}
             />
           </CommonInfoWrapper>
         </TabPane>
 
         <TabPane tab="Настройки соединения" key={NodeEditGrouptype.Connection}>
-          <ContentWrapper>
-            <EditNodeCalculatorConnectionContainer node={node} />
-          </ContentWrapper>
+          <CommonInfoWrapper>
+            <EditCalculatorConnection
+              handleOpenCreateCalculatorModal={handleOpenCreateCalculatorModal}
+              node={node}
+              handleUpdateNodeConnection={updateNode}
+              calculators={calculators}
+              isLoading={isUpdateLoading}
+            />
+          </CommonInfoWrapper>
         </TabPane>
 
         <TabPane tab="Подключенные приборы" key={NodeEditGrouptype.Devices}>

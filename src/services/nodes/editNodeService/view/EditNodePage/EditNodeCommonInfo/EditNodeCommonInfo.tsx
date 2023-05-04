@@ -31,6 +31,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
   nodeZones,
   formId,
   updateNode,
+  isLoading,
 }) => {
   const history = useHistory();
 
@@ -213,7 +214,9 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
           Отмена
         </Button>
 
-        <ButtonSC onClick={() => handleSubmit()}>Сохранить</ButtonSC>
+        <ButtonSC isLoading={isLoading} onClick={() => handleSubmit()}>
+          Сохранить
+        </ButtonSC>
       </FooterWrapper>
     </>
   );
