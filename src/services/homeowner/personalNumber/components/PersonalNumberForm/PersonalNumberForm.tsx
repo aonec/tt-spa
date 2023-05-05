@@ -37,12 +37,14 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: homeowner?.name || '',
-        phoneNumber: homeowner?.phoneNumber || '',
-        openAt: homeowner?.openAt || '',
-        personalAccountNumber: homeowner?.personalAccountNumber || '',
-        paymentCode: homeowner?.paymentCode || '',
-        isMainOnApartment: homeowner?.isMainPersonalAccountNumber || false,
+        name: (isEdit && homeowner?.name) || '',
+        phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
+        openAt: (isEdit && homeowner?.openAt) || '',
+        personalAccountNumber:
+          (isEdit && homeowner?.personalAccountNumber) || '',
+        paymentCode: (isEdit && homeowner?.paymentCode) || '',
+        isMainOnApartment:
+          (isEdit && homeowner?.isMainPersonalAccountNumber) || false,
         apartmentId,
         homeownerId: homeowner?.id,
       },

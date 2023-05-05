@@ -28,7 +28,9 @@ export const EditPersonalNumberPage: FC<EditPersonalNumberPageProps> = ({
         handleEditHomeownerAccount={handleEditHomeownerAccount}
         homeowner={homeowner}
         handleForced={handleForced}
-        setVisibleCloseHomeownerAccountModal={setVisibleCloseHomeownerAccountModal}
+        setVisibleCloseHomeownerAccountModal={
+          setVisibleCloseHomeownerAccountModal
+        }
       />
     </PersonalNumberPageContainer>
   );

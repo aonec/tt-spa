@@ -8,10 +8,11 @@ export type PersonalNumberFormProps = {
   apartmentId?: number;
   isMainPersonalAccountNumber?: boolean;
   homeowner?: HomeownerAccountListResponse;
+  setVisibleCloseHomeownerAccountModal?: (payload: boolean) => void;
   handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void;
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
+  handleSwitchHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
   handleForced?: Event<void>;
-  setVisibleCloseHomeownerAccountModal?: (payload: boolean) => void;
 };
 
 export type PersonalNumberFormTypes = {

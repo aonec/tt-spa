@@ -52,6 +52,7 @@ import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
 import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
 import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
+import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber/switchPersonalNumberService';
 
 const { gates } = objectProfileService;
 
@@ -507,7 +508,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
                     <Route path="/apartment/:id/homeowners/add" exact>
-                      <AddPersonalNumberContainer /> 
+                      <AddPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
@@ -531,7 +532,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/homeowners/:homeownerId/switch"
                       exact
                     >
-                      <SwitchPersonalNumberPage />
+                      <SwitchPersonalNumberContainer />
                     </Route>
                   )}
 

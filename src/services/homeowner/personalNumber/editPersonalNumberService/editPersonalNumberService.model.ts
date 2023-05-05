@@ -45,7 +45,7 @@ const $isForced = domain
   .on(onForced, () => true)
   .reset(handleConfirmationModalClose);
 
-const editHomeownerAccountEffect = domain.createEffect<
+const editHomeownerAccountFx = domain.createEffect<
   { id: string; data: HomeownerAccountUpdateRequest },
   void,
   EffectFailDataAxiosErrorDataApartmentId
@@ -53,7 +53,7 @@ const editHomeownerAccountEffect = domain.createEffect<
 
 const $samePersonalAccountNumderId = domain
   .createStore<number | null>(null)
-  .on(editHomeownerAccountEffect.failData, (prev, errData) => {
+  .on(editHomeownerAccountFx.failData, (prev, errData) => {
     if (errData.response.status === 409) {
       return errData.response.data.error.Data.ApartmentId;
     }
@@ -82,7 +82,7 @@ sample({
       id: string;
       data: HomeownerAccountUpdateRequest;
     }),
-  target: editHomeownerAccountEffect,
+  target: editHomeownerAccountFx,
 });
 
 forward({
@@ -90,10 +90,10 @@ forward({
   to: closeHomeownerAccountFx,
 });
 
-const $isLoading = editHomeownerAccountEffect.pending;
+const $isLoading = editHomeownerAccountFx.pending;
 const $isLoadingClosingAccount = closeHomeownerAccountFx.pending;
 
-const successEditHomeownerAccount = editHomeownerAccountEffect.doneData;
+const successEditHomeownerAccount = editHomeownerAccountFx.doneData;
 const successCloseHomeownerAccount = closeHomeownerAccountFx.doneData;
 
 successEditHomeownerAccount.watch(() => message.success('Успешно обновлен'));
@@ -102,7 +102,7 @@ successCloseHomeownerAccount.watch(() =>
   message.success('Лицевой счёт закрыт'),
 );
 
-editHomeownerAccountEffect.failData.watch((error) => {
+editHomeownerAccountFx.failData.watch((error) => {
   if (
     error.response.data.error.Code === 'HomeownerAccountAlreadyExistConflict'
   ) {
