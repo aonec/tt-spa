@@ -36,7 +36,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const CommonInfoWrapper = styled.div`
-  width: 560px;
+  width: 640px;
 `;
 
 export const PageHeaderSC = styled(PageHeader)`

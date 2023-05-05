@@ -11,6 +11,7 @@ import { EditNodePage } from './view/EditNodePage';
 import { createCalcuatorService } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 import { CreateCalculatorModalContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/CreateCalculatorModalContainer';
 import { calculatorsListService } from 'services/calculators/calculatorsListService';
+import { removeNodeCalculatorConnectionService } from './view/EditNodePage/removeConnectionService';
 
 const { gates, inputs, outputs } = editNodeService;
 const { NodeIdGate, NodeResourceGate } = gates;
@@ -36,6 +37,9 @@ export const EditNodeContainer = () => {
   const openCreateCalculatorModal = useEvent(
     createCalcuatorService.inputs.openCreateCalculatorModal,
   );
+  const openRemoveConnectionModal = useEvent(
+    removeNodeCalculatorConnectionService.inputs.openModal,
+  );
 
   return (
     <>
@@ -59,6 +63,7 @@ export const EditNodeContainer = () => {
               handleOpenCreateCalculatorModal={openCreateCalculatorModal}
               calculators={calculators || []}
               isUpdateLoading={isUpdateLoading}
+              openRemoveConnectionModal={openRemoveConnectionModal}
             />
           </>
         )}

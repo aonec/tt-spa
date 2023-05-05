@@ -17,4 +17,5 @@ export type EditNodePageProps = {
   handleOpenCreateCalculatorModal: () => void;
   calculators: CalculatorIntoHousingStockResponse[];
   isUpdateLoading: boolean;
+  openRemoveConnectionModal: (node: PipeNodeResponse) => void;
 };

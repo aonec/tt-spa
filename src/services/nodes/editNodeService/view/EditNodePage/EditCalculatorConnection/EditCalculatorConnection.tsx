@@ -17,6 +17,7 @@ import { Alert } from 'ui-kit/Alert';
 import { validationSchema } from './EditCalculatorConnection.constants';
 import { UpdatePipeNodeRequest } from 'myApi';
 import { useHistory } from 'react-router-dom';
+import { RemoveConnectionConfirmModalContainer } from '../removeConnectionService';
 
 const calculatorConnectionInputNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -26,6 +27,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
   handleUpdateNodeConnection,
   handleOpenCreateCalculatorModal,
   isLoading,
+  openRemoveConnectionModal,
 }) => {
   const history = useHistory();
 
@@ -41,7 +43,9 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
     validateOnChange: false,
     onSubmit: (values) => {
       const { calculatorId, entryNumber } = values;
-
+      if (calculatorId === 0) {
+        return openRemoveConnectionModal();
+      }
       if (!calculatorId || !entryNumber) {
         return;
       }
@@ -51,6 +55,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
 
   return (
     <>
+      <RemoveConnectionConfirmModalContainer />
       {node?.calculatorId && (
         <Alert>
           <AlertContentWrapper>
@@ -59,9 +64,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
               вычислителя. Чтобы отредактировать другие параметры вычислителя,
               перейдите в профиль прибора.
             </span>
-            <LinkSC to={`/calculators/${node?.calculatorId}/edit`}>
-              Перейти
-            </LinkSC>
+            <LinkSC to={`/calculators/${node?.calculatorId}`}>Перейти</LinkSC>
           </AlertContentWrapper>
         </Alert>
       )}
@@ -72,10 +75,11 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
               <Select
                 placeholder="Серийный номер или IP адрес"
                 value={values.calculatorId || undefined}
-                onChange={(calculatorId) =>
-                  setFieldValue('calculatorId', calculatorId)
-                }
+                onChange={(calculatorId) => {
+                  setFieldValue('calculatorId', calculatorId);
+                }}
               >
+                <Select.Option value={0}>Отсутствует</Select.Option>
                 {calculators?.map((calculator) => (
                   <Select.Option key={calculator.id} value={calculator.id}>
                     {calculator.serialNumber} ({calculator.model})
@@ -92,6 +96,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
         <FormItem label="Номер ввода">
           <Wrapper>
             <Select
+              disabled={!values.calculatorId}
               placeholder="Выберите номер ввода"
               value={values.entryNumber || undefined}
               onChange={(entryNumber) =>

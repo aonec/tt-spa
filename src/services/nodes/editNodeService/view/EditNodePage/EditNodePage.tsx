@@ -34,6 +34,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   handleOpenCreateCalculatorModal,
   calculators,
   isUpdateLoading,
+  openRemoveConnectionModal,
 }) => {
   const { number, address, resource, registrationType } = node;
 
@@ -103,6 +104,7 @@ export const EditNodePage: FC<EditNodePageProps> = ({
               handleUpdateNodeConnection={updateNode}
               calculators={calculators}
               isLoading={isUpdateLoading}
+              openRemoveConnectionModal={() => openRemoveConnectionModal(node)}
             />
           </CommonInfoWrapper>
         </TabPane>

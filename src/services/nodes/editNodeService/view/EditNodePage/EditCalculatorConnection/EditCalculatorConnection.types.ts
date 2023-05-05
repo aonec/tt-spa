@@ -10,4 +10,5 @@ export type AddCalculatorConnectionProps = {
   handleUpdateNodeConnection: (payload: UpdatePipeNodeRequest) => void;
   handleOpenCreateCalculatorModal: () => void;
   isLoading: boolean;
+  openRemoveConnectionModal: () => void;
 };
