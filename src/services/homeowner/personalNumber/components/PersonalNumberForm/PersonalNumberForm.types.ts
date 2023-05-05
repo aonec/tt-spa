@@ -11,7 +11,10 @@ export type PersonalNumberFormProps = {
   setVisibleCloseHomeownerAccountModal?: (payload: boolean) => void;
   handleAddPersonalNumber?: (payload: PersonalNumberFormTypes) => void;
   handleEditHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
-  handleSwitchHomeownerAccount?: (payload: PersonalNumberFormTypes) => void;
+  handleSwitchHomeownerAccount?: (payload: {
+    replaceableAccountId: string;
+    form: PersonalNumberFormTypes;
+  }) => void;
   handleForced?: Event<void>;
 };
 

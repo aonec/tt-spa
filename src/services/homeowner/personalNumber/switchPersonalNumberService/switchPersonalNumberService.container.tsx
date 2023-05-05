@@ -31,7 +31,7 @@ export const SwitchPersonalNumberContainer = () => {
   const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
   const handleForced = useEvent(inputs.onForced);
 
-  const handleEditHomeownerAccount = useEvent(
+  const handleSwitchHomeownerAccount = useEvent(
     inputs.handleSwitchHomeownerAccount,
   );
 
@@ -46,7 +46,7 @@ export const SwitchPersonalNumberContainer = () => {
       <ApartmentGate apartmentId={Number(apartmentId)} />
       <SwitchPersonalNumberPage
         isLoading={isLoading}
-        handleSwitchHomeownerAccount={handleEditHomeownerAccount}
+        handleSwitchHomeownerAccount={handleSwitchHomeownerAccount}
         apartment={apartment}
         handleForced={inputs.onForced}
         homeowner={homeowner}

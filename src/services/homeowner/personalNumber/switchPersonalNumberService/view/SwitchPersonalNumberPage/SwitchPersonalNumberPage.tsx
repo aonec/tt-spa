@@ -3,6 +3,7 @@ import { SwitchPersonalNumberPageProps } from './SwitchPersonalNumberPage.types'
 import { PersonalNumberPageContainer } from 'services/homeowner/personalNumber/components/PersonalNumberPageContainer';
 import { PersonalNumberForm } from 'services/homeowner/personalNumber/components/PersonalNumberForm';
 import { PersonalNumberActions } from 'services/homeowner/personalNumber/selectPersonalNumberActionService/selectPersonalNumberActionService.types';
+import { InputSC, Wrapper } from './SwitchPersonalNumberPage.styled';
 
 const formId = 'switch-personal-number-page';
 
@@ -13,6 +14,17 @@ export const SwitchPersonalNumberPage: FC<SwitchPersonalNumberPageProps> = ({
   homeowner,
   isLoading,
 }) => {
+  const ReplaceableAccountNumber = () => {
+    return (
+      <Wrapper>
+        <InputSC
+          disabled
+          value={homeowner?.personalAccountNumber || undefined}
+        />
+      </Wrapper>
+    );
+  };
+
   return (
     <PersonalNumberPageContainer
       titleText="Замена лицевого счета"
@@ -21,6 +33,7 @@ export const SwitchPersonalNumberPage: FC<SwitchPersonalNumberPageProps> = ({
       isLoading={isLoading}
       formId={formId}
     >
+      <ReplaceableAccountNumber />
       <PersonalNumberForm
         type={PersonalNumberActions.Switch}
         formId={formId}

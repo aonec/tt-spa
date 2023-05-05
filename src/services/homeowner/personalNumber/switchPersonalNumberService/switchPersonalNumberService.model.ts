@@ -12,8 +12,10 @@ const onForced = domain.createEvent();
 
 const handleConfirmationModalClose = domain.createEvent();
 
-const handleSwitchHomeownerAccount =
-  domain.createEvent<PersonalNumberFormTypes>();
+const handleSwitchHomeownerAccount = domain.createEvent<{
+  replaceableAccountId: string;
+  form: PersonalNumberFormTypes;
+}>();
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -41,11 +43,11 @@ const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 sample({
   clock: handleSwitchHomeownerAccount,
   source: $isForced,
-  filter: (_, formData) => Boolean(formData.homeownerId),
+  filter: (_, formData) => Boolean(formData.form.homeownerId),
   fn: (isForced, formData) =>
     ({
-      replaceableAccountId: 'string',
-      newHomeownerAccount: formData,
+      replaceableAccountId: formData.replaceableAccountId,
+      newHomeownerAccount: formData.form,
       isForced: isForced,
     } as HomeownerAccountReplaceRequest),
   target: switchHomeownerAccountFx,

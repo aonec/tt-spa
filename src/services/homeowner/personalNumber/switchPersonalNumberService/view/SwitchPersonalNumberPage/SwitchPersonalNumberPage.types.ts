@@ -5,7 +5,10 @@ import { PersonalNumberFormTypes } from 'services/homeowner/personalNumber/compo
 export type SwitchPersonalNumberPageProps = {
   isLoading: boolean;
   apartment: ApartmentResponse | null;
-  handleSwitchHomeownerAccount: (payload: PersonalNumberFormTypes) => void;
+  handleSwitchHomeownerAccount: (payload: {
+    replaceableAccountId: string;
+    form: PersonalNumberFormTypes;
+  }) => void;
   handleForced: Event<void>;
   homeowner: HomeownerAccountListResponse | undefined;
 };

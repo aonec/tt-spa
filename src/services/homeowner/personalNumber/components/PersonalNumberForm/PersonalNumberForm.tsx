@@ -31,6 +31,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   homeowner,
   handleForced,
   setVisibleCloseHomeownerAccountModal,
+  handleSwitchHomeownerAccount,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
@@ -65,6 +66,13 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
         data.homeownerId &&
           handleEditHomeownerAccount &&
           handleEditHomeownerAccount(data);
+
+        homeowner &&
+          handleSwitchHomeownerAccount &&
+          handleSwitchHomeownerAccount({
+            form: data,
+            replaceableAccountId: homeowner.id,
+          });
       },
     });
 
