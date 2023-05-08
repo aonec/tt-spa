@@ -1,93 +1,93 @@
 import React from 'react';
 import { FC } from 'react';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { CheckHistoryDocument } from './CheckHistoryDocument';
-import styled from 'styled-components';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { NodeCheckResponse } from 'myApi';
-import { EditNodeCheckPayload } from '../../checkNode/models';
-import { useParams } from 'react-router-dom';
-import { nodeService } from '01/features/nodes/displayNode/models';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { NodeChecksProps } from './NodeChecks.types';
+import {
+  Button,
+  DocumentInfoWrapper,
+  DocumentNameWrapper,
+  GroupWrapper,
+  IconsWrapper,
+  NoDocumentText,
+  styles,
+} from './NodeCheks.styled';
+import { Table } from 'ui-kit/Table';
+import moment from 'moment';
+import { CheckingActDocumentType } from './NodeCheks.constants';
+import {
+  DocumentIcon,
+  DownloadIcon,
+  PencilIcon,
+  TrashIcon,
+} from 'ui-kit/icons';
+import { saveDocument } from 'ui-kit/DocumentsService/DocumentsService.api';
 
-interface Props {
-  documents: NodeCheckResponse[] | null;
-  pending: boolean;
-  openCheckNodeModal(payload: void): void;
-  removeNodeCheck(id: number): void;
-  openEditNodeCheckModal(payload: EditNodeCheckPayload): void;
-}
-
-export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 2.5fr';
-
-const { gates } = nodeService;
-const { NodeGate } = gates;
-
-export const NodeChecks: FC<Props> = (props) => {
-  const {
-    documents,
-    pending,
-    openCheckNodeModal,
-    removeNodeCheck,
-    openEditNodeCheckModal,
-  } = props;
-
-  const { nodeId } = useParams<{ nodeId: string | undefined }>();
-
+export const NodeChecks: FC<NodeChecksProps> = ({
+  documents,
+  isLoading,
+  openCheckNodeModal,
+  removeNodeCheck,
+  openEditNodeCheckModal,
+}) => {
   return (
-    <>
-      <NodeGate id={Number(nodeId)} />
-      <Wrap>
-        <WithLoader isLoading={pending}>
-          <Header temp={checkHistoryTemp}>
-            <div>Дата</div>
-            <div>Тип</div>
-            <div>№ акта</div>
-            <div>Заключение</div>
-          </Header>
-          {documents?.map((document) => (
-            <CheckHistoryDocument
-              key={document.id}
-              document={document}
-              removeCheck={removeNodeCheck}
-              openEditCheckModal={openEditNodeCheckModal}
-            />
-          ))}
-        </WithLoader>
-        <Space />
-        <CreateButton
-          className="ant-btn-link"
-          onClick={() => openCheckNodeModal()}
-        >
-          + Создать проверку
-        </CreateButton>
-      </Wrap>
-    </>
+    <WithLoader isLoading={isLoading}>
+      <Table
+        elements={documents}
+        headerStyles={styles}
+        rowStyles={styles}
+        columns={[
+          {
+            label: 'Дата',
+            size: '0.7fr',
+            render: (nodeCheck) =>
+              moment(nodeCheck.checkingDate).format('DD.MM.YYYY'),
+            css: (isHeader) => `${!isHeader && 'font-weight: 600'}`,
+          },
+          {
+            label: '№',
+            size: '0.4fr',
+            render: (nodeCheck) => nodeCheck.registryNumber,
+          },
+          {
+            label: 'Тип',
+            size: '0.8fr',
+            render: (nodeCheck) => CheckingActDocumentType[nodeCheck.checkType],
+          },
+          {
+            label: 'Заключение',
+            size: '2.5fr',
+            render: (nodeCheck) => {
+              const { checkingAct } = nodeCheck;
+              if (!checkingAct) {
+                return null;
+              }
+              const { name } = checkingAct;
+
+              return (
+                <DocumentInfoWrapper>
+                  <GroupWrapper>
+                    <DocumentIcon />
+                    {name && <DocumentNameWrapper>{name}</DocumentNameWrapper>}
+                    {!name && <NoDocumentText>Нет документа</NoDocumentText>}
+                  </GroupWrapper>
+                  <IconsWrapper>
+                    <PencilIcon
+                      onClick={() => openEditNodeCheckModal(nodeCheck)}
+                    />
+                    <TrashIcon
+                      onClick={() => removeNodeCheck(checkingAct.id)}
+                    />
+                    <DownloadIcon onClick={() => saveDocument(checkingAct)} />
+                  </IconsWrapper>
+                </DocumentInfoWrapper>
+              );
+            },
+          },
+        ]}
+      />
+      <Button className="ant-btn-link" onClick={() => openCheckNodeModal()}>
+        + Создать проверку
+      </Button>
+    </WithLoader>
   );
 };
-
-export const Wrap = styled.div`
-  width: 720px;
-`;
-
-export const Header = styled(Grid)`
-  background: rgba(39, 47, 90, 0.04);
-  padding: 16px 24px;
-  border-bottom: 1px solid lightgray;
-
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
-
-export const ListItem = styled(Grid)`
-  padding: 16px 24px;
-  border-bottom: 1px solid lightgray;
-`;
-
-export const CreateButton = styled.div`
-  cursor: pointer;
-`;
