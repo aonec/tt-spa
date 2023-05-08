@@ -39,8 +39,17 @@ sample({
     filter: Boolean,
   }),
   clock: editNodeCheck,
-  fn: (source, clock) => ({ nodeId: source.nodeId, ...clock }),
+  fn: (source, clock) => ({
+    nodeId: source.nodeId,
+    checkId: source.id,
+    ...clock,
+  }),
   target: editNodeCheckFx,
+});
+
+sample({
+  clock: nodeCheckEdited,
+  target: closeModal,
 });
 
 editNodeCheckFx.doneData.watch(() =>

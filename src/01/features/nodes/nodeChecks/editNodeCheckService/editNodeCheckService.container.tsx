@@ -25,12 +25,13 @@ export const EditNodeCheckContainer = () => {
             handleSubmit={editNodeCheck}
             formId={formId}
             initialValues={initialValues}
+            isEdit
           />
         )
       }
       formId={formId}
       visible={isOpen}
-      onCancel={closeModal}
+      onCancel={() => closeModal()}
       loading={isLoading}
     />
   );

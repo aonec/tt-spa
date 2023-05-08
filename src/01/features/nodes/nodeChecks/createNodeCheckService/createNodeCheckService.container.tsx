@@ -18,10 +18,10 @@ export const CreateNodeCheckContainer = () => {
     <FormModal
       title="Создать проверку"
       submitBtnText="Создать проверку"
+      onCancel={() => closeModal()}
       form={<NodeCheckForm handleSubmit={createNodeCheck} formId={formId} />}
       formId={formId}
       visible={isOpen}
-      onCancel={closeModal}
       loading={isLoading}
     />
   );

@@ -11,23 +11,29 @@ import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { CheckingActDocumentType } from '../../../displayNodeChecks/NodeChecks/NodeCheks.constants';
 import { Document, DocumentsUploadContainer } from 'ui-kit/DocumentsService';
+import { validationSchema } from './NodeCheckForm.constants';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const NodeCheckForm: FC<NodeCheckFormProps> = ({
   handleSubmit,
   formId,
   initialValues,
+  isEdit,
 }) => {
   const [document, setDocument] = useState<Document | null>(
     initialValues?.checkingAct || null,
   );
 
-  const { values, setFieldValue, submitForm } =
+  const { values, setFieldValue, submitForm, errors } =
     useFormik<UpdateNodeCheckRequest>({
       initialValues: {
         checkingDate: initialValues?.checkingDate,
         checkType: initialValues?.checkType,
         registryNumber: initialValues?.registryNumber,
       },
+      validationSchema: isEdit ? null : validationSchema,
+      validateOnBlur: false,
+      validateOnChange: false,
       onSubmit: (values) =>
         handleSubmit({ ...values, documentId: document?.id }),
     });
@@ -50,6 +56,7 @@ export const NodeCheckForm: FC<NodeCheckFormProps> = ({
             }}
             value={values.checkingDate ? moment(values.checkingDate) : null}
           />
+          <ErrorMessage>{errors.checkingDate}</ErrorMessage>
         </FormItem>
         <FormItem label="Тип проверки">
           <Select
@@ -63,6 +70,7 @@ export const NodeCheckForm: FC<NodeCheckFormProps> = ({
               </Select.Option>
             ))}
           </Select>
+          <ErrorMessage>{errors.checkType}</ErrorMessage>
         </FormItem>
         <FormItem label="Номер документа">
           <Input
@@ -72,6 +80,7 @@ export const NodeCheckForm: FC<NodeCheckFormProps> = ({
             }
             placeholder="Введите номер"
           />
+          <ErrorMessage>{errors.registryNumber}</ErrorMessage>
         </FormItem>
       </Wrapper>
       <DocumentsUploadContainer
