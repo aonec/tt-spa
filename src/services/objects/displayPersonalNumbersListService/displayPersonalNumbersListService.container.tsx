@@ -6,6 +6,7 @@ import { displayPersonalNumbersListService } from './displayPersonalNumbersListS
 import { PersonalNumbersList } from './view/PersonalNumbersList';
 import { PersonalNumbersSearch } from './view/PersonalNumbersSearch';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 
 const { inputs, outputs, gates } = displayPersonalNumbersListService;
 const { SearchPersonalNumberGate } = gates;
@@ -30,7 +31,9 @@ export const DisplayPersonalNumbersListContainer: FC<HeaderInject> = ({
       <Header>
         <PersonalNumbersSearch handleSearch={handleSearch} cities={cities} />
       </Header>
-      <PersonalNumbersList apartments={apartments} isLoading={isLoading} />
+      <SizeWrapper>
+        <PersonalNumbersList apartments={apartments} isLoading={isLoading} />
+      </SizeWrapper>
       {isNotEmpty && !isLoading && (
         <PaginationSC
           showSizeChanger={false}

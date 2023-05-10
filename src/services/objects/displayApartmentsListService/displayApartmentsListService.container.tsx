@@ -5,6 +5,7 @@ import { displayApartmentsListService } from './displayApartmentsListService.mod
 import { ApartmentsList } from './view/ApartmentsList';
 import { ApartmentsSearch } from './view/ApartmentsSearch';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 
 export const ApartmentsListContainer: FC<HeaderInject> = ({ Header }) => {
   const { inputs, outputs } = displayApartmentsListService;
@@ -29,7 +30,9 @@ export const ApartmentsListContainer: FC<HeaderInject> = ({ Header }) => {
       <Header>
         <ApartmentsSearch handleSearch={handleSearch} />
       </Header>
-      <ApartmentsList apartments={apartments} isLoading={isLoading} />
+      <SizeWrapper>
+        <ApartmentsList apartments={apartments} isLoading={isLoading} />
+      </SizeWrapper>
       {isShowPagination && (
         <Pagination
           showSizeChanger={false}

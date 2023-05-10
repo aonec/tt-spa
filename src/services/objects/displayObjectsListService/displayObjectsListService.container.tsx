@@ -5,6 +5,7 @@ import { displayObjectsListService } from './displayObjectsListService.model';
 import { ObjectsList } from './view/ObjectsList';
 import { SearchObjects } from './view/SearchObjects';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
+import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 
 export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
   const pagedHousingStocks = useStore(
@@ -33,7 +34,9 @@ export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
       <Header>
         <SearchObjects handleSearch={handleSearch} />
       </Header>
-      <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
+      <SizeWrapper>
+        <ObjectsList isLoading={isLoading} housingStocks={housingStocks} />
+      </SizeWrapper>
       {isNotEmpty && !isLoading && (
         <Pagination
           showSizeChanger={false}

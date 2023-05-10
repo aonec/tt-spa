@@ -12,6 +12,7 @@ import {
   SearchTypesWrapper,
   FiltrationWrapper,
   HeaderCustomContentWrapper,
+  SizeWrapper,
 } from './ObjectsProfile.styled';
 import { HeaderInject, ObjectsProfileProps } from './ObjectsProfile.types';
 
@@ -95,22 +96,24 @@ export const ObjectsProfile: FC<ObjectsProfileProps> = ({
               menuButtons,
             }}
           />
-          <SearchTypesWrapper>
-            <Radio.Group value={searchType}>
-              <Link to={`/objects/${SearchType.Houses}`}>
-                <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
-              </Link>
-              <Link to={`/objects/${SearchType.Apartments}`}>
-                <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
-              </Link>
-              <Link to={`/objects/${SearchType.PersonaNumbers}`}>
-                <Radio value={SearchType.PersonaNumbers}>
-                  Поиск по лицевому счету
-                </Radio>
-              </Link>
-            </Radio.Group>
-          </SearchTypesWrapper>
-          <HeaderCustomContentWrapper>{children}</HeaderCustomContentWrapper>
+          <SizeWrapper>
+            <SearchTypesWrapper>
+              <Radio.Group value={searchType}>
+                <Link to={`/objects/${SearchType.Houses}`}>
+                  <Radio value={SearchType.Houses}>Поиск по адресу</Radio>
+                </Link>
+                <Link to={`/objects/${SearchType.Apartments}`}>
+                  <Radio value={SearchType.Apartments}>Поиск по квартире</Radio>
+                </Link>
+                <Link to={`/objects/${SearchType.PersonaNumbers}`}>
+                  <Radio value={SearchType.PersonaNumbers}>
+                    Поиск по лицевому счету
+                  </Radio>
+                </Link>
+              </Radio.Group>
+            </SearchTypesWrapper>
+            <HeaderCustomContentWrapper>{children}</HeaderCustomContentWrapper>
+          </SizeWrapper>
         </FiltrationWrapper>
       );
     },
