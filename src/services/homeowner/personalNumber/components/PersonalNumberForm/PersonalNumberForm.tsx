@@ -34,11 +34,12 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleSwitchHomeownerAccount,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
+  const isSplit = type === PersonalNumberActions.Split;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: (isEdit && homeowner?.name) || '',
+        name: ((isEdit || isSplit) && homeowner?.name) || '',
         phoneNumber: (isEdit && homeowner?.phoneNumber) || '',
         openAt: (isEdit && homeowner?.openAt) || '',
         personalAccountNumber:

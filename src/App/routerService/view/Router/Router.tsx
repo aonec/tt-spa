@@ -53,6 +53,7 @@ import { RegistrationContainer } from 'services/authorizations/registrationServi
 import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
 import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
 import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber/switchPersonalNumberService';
+import { SplitPersonalNumberContainer } from 'services/homeowner/personalNumber/splitPersonalNumberService';
 
 const { gates } = objectProfileService;
 
@@ -516,7 +517,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/homeowners/:homeownerId/split"
                       exact
                     >
-                      <SplitPersonalNumber />
+                      <SplitPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (
