@@ -1,11 +1,12 @@
 import { Pagination } from 'antd';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { FC } from 'react';
 import { displayApartmentsListService } from './displayApartmentsListService.model';
 import { ApartmentsList } from './view/ApartmentsList';
 import { ApartmentsSearch } from './view/ApartmentsSearch';
+import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 
-export const ApartmentsListContainer = () => {
+export const ApartmentsListContainer: FC<HeaderInject> = ({ Header }) => {
   const { inputs, outputs } = displayApartmentsListService;
 
   const handleSearch = useEvent(inputs.searchApartments);
@@ -25,7 +26,9 @@ export const ApartmentsListContainer = () => {
   return (
     <>
       <ApartmentsListGate />
-      <ApartmentsSearch handleSearch={handleSearch} />
+      <Header>
+        <ApartmentsSearch handleSearch={handleSearch} />
+      </Header>
       <ApartmentsList apartments={apartments} isLoading={isLoading} />
       {isShowPagination && (
         <Pagination

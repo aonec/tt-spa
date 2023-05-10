@@ -1,14 +1,27 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  margin-top: 8px;
+  margin-top: -32px;
   max-width: 960px;
 `;
 
 export const SearchTypesWrapper = styled.div`
   display: flex;
+  margin-top: 12px;
 `;
 
 export const ContentWrapper = styled.div`
-  margin-top: 15px;
+  margin-top: 16px;
+`;
+
+export const FiltrationWrapper = styled.div`
+  position: sticky;
+  top: 0px;
+  background: white;
+  z-index: 10;
+  padding-top: 16px;
+`;
+
+export const HeaderCustomContentWrapper = styled.div`
+  margin-top: 16px;
 `;
