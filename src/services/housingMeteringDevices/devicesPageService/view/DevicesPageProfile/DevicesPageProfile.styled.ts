@@ -16,3 +16,7 @@ export const FiltrationWrapper = styled.div`
 export const Wrapper = styled.div`
   margin-top: -16px;
 `;
+
+export const ContentWrapper = styled.div`
+  margin-left: 8px;
+`;

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
 import {
+  ContentWrapper,
   FiltrationWrapper,
   TabsSC,
   Wrapper,
@@ -50,10 +51,12 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
           />
         </TabsSC>
       </FiltrationWrapper>
-      {type === DevicesProfileTabsType.ODPU && <DevicesProfileContainer />}
-      {type === DevicesProfileTabsType.IndividualDevices && (
-        <IndividualDevicesProfileContainer />
-      )}
+      <ContentWrapper>
+        {type === DevicesProfileTabsType.ODPU && <DevicesProfileContainer />}
+        {type === DevicesProfileTabsType.IndividualDevices && (
+          <IndividualDevicesProfileContainer />
+        )}
+      </ContentWrapper>
     </Wrapper>
   );
 };
