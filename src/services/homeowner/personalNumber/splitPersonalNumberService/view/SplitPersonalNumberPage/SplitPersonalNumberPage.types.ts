@@ -5,5 +5,5 @@ export type SplitPersonalNumberPageProps = {
   stageNumber: number;
   apartment: ApartmentResponse | null;
   homeowner: HomeownerAccountListResponse | undefined;
-  handleSubmitSplit: (payload: SplitPersonalNumberSubmitData) => void;
+  handleSubmitSplitStage: (payload: SplitPersonalNumberSubmitData) => void;
 };

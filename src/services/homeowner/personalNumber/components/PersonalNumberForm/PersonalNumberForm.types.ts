@@ -16,7 +16,7 @@ export type PersonalNumberFormProps = {
     replaceableAccountId: string;
     form: PersonalNumberFormTypes;
   }) => void;
-  handleSubmitSplit?: (payload: SplitPersonalNumberSubmitData) => void;
+  handleSubmitSplitStage?: (payload: SplitPersonalNumberSubmitData) => void;
   handleForced?: Event<void>;
 };
 

@@ -9,3 +9,19 @@ export const splitHomeownerAccount = (payload: {
     `HomeownerAccounts/Split?isForced=${payload.isForced || false}`,
     payload.data,
   );
+
+export const doesApartmentExist = async ({
+  housingStockId,
+  apartmentNumber,
+}: {
+  housingStockId: number;
+  apartmentNumber: string;
+}): Promise<number | null> => {
+  const res: any = await axios.get(
+    `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
+  );
+
+  if (typeof res === 'number') return res;
+
+  return res?.successResponse;
+};
