@@ -1,5 +1,9 @@
 import React, { FC } from 'react';
-import { FormHeader, Wrapper } from './SplitPersonalNumberPage.styled';
+import {
+  FormHeader,
+  StepsWrapper,
+  Wrapper,
+} from './SplitPersonalNumberPage.styled';
 import { SplitPersonalNumberPageProps } from './SplitPersonalNumberPage.types';
 import { Steps } from 'antd';
 import { SwitchStage } from './stages/SwitchStage';
@@ -14,6 +18,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
   stageNumber,
   apartment,
   homeowner,
+  handleSubmitSplit,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -31,20 +36,24 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
         formId={formId}
       >
         {stageNumber === 1 && (
-          <SwitchStage homeowner={homeowner} formId={formId} />
+          <SwitchStage
+            homeowner={homeowner}
+            formId={formId}
+            handleSubmitSplit={handleSubmitSplit}
+          />
         )}
         {stageNumber === 2 && <AddNewApartmentStage />}
         {stageNumber === 3 && <TransferDevicesStage />}
       </PersonalNumberPageContainer>
 
-      <div>
+      <StepsWrapper>
         <FormHeader>Этапы разделения</FormHeader>
         <Steps direction="vertical" current={stageNumber - 1}>
           {stepTitles.map((step, key) => (
             <Step title={step} key={step} />
           ))}
         </Steps>
-      </div>
+      </StepsWrapper>
     </Wrapper>
   );
 };

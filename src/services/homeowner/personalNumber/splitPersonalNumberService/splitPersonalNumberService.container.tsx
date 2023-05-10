@@ -24,6 +24,8 @@ export const SplitPersonalNumberContainer = () => {
     (homeownerAccount) => homeownerAccount.id === homeownerId,
   );
 
+  const handleSubmitSplit = useEvent(inputs.handleSubmitSplit);
+
   return (
     <>
       <ApartmentGate apartmentId={Number(apartmentId)} />
@@ -31,6 +33,7 @@ export const SplitPersonalNumberContainer = () => {
         stageNumber={stageNumber}
         apartment={apartment}
         homeowner={homeowner}
+        handleSubmitSplit={handleSubmitSplit}
       />
     </>
   );

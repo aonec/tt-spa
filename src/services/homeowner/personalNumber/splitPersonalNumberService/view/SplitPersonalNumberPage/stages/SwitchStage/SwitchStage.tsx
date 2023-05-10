@@ -4,7 +4,11 @@ import { SwitchStageProps } from './SwitchStage.types';
 import { PersonalNumberForm } from 'services/homeowner/personalNumber/components/PersonalNumberForm';
 import { PersonalNumberActions } from 'services/homeowner/personalNumber/selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 
-export const SwitchStage: FC<SwitchStageProps> = ({ homeowner, formId }) => {
+export const SwitchStage: FC<SwitchStageProps> = ({
+  homeowner,
+  formId,
+  handleSubmitSplit,
+}) => {
   return (
     <>
       <Wrapper>
@@ -16,7 +20,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({ homeowner, formId }) => {
       <PersonalNumberForm
         type={PersonalNumberActions.Split}
         formId={formId}
-        // handleSwitchHomeownerAccount={handleSwitchHomeownerAccount}
+        handleSubmitSplit={handleSubmitSplit}
         homeowner={homeowner}
       />
     </>

@@ -32,6 +32,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleForced,
   setVisibleCloseHomeownerAccountModal,
   handleSwitchHomeownerAccount,
+  handleSubmitSplit,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
   const isSplit = type === PersonalNumberActions.Split;
