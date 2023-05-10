@@ -25,7 +25,6 @@ import './homeowner/addPersonalNumber/models/init';
 import './homeowner/splitPersonalNumber/models/init';
 import './Inspectors/models/init';
 import './housingStocks/displayHousingStockCities/models/init';
-import './developmentSettings/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
 import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
