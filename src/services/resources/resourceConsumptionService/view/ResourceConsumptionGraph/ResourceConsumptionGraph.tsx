@@ -164,6 +164,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
         style={{
           parent: {
             overflow: 'visible',
+            height,
           },
         }}
         height={height}

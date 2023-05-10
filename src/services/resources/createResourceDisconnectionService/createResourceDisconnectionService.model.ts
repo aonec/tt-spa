@@ -1,5 +1,5 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { resourceDisablingScheduleServiceService } from '01/features/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
+import { resourceDisablingScheduleServiceService } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingScheduleService.model';
 import { message } from 'antd';
 import { combine, createDomain, forward, sample, split } from 'effector';
 import {

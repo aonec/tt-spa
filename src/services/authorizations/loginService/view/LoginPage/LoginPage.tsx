@@ -16,7 +16,7 @@ import {
 import { ReactComponent as Emblem } from './assets/emblem.svg';
 import { ReactComponent as LoginPageBackground } from './assets/loginPageBackground.svg';
 import { Input } from 'ui-kit/Input';
-import { DevSettingsModal } from '01/features/developmentSettings';
+import { DevSettingsModal } from 'services/developmentSettings/developmentSettings.container';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
@@ -66,7 +66,7 @@ export const LoginPage: FC<LoginPageProps> = ({
             <Label>Электронная почта</Label>
             <Input
               autoFocus
-              placeholder="Электронная почта"
+              placeholder="Введите email"
               type="email"
               readOnly={isLoading}
               value={values.email}

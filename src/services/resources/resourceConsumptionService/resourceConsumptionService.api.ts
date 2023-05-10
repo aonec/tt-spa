@@ -10,7 +10,10 @@ import {
   ConsumptionDataPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
-import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
+import {
+  prepareDataForConsumptionGraph,
+  prepareDataForConsumptionGraphWithLastValue,
+} from './resourceConsumptionService.utils';
 import queryString from 'query-string';
 
 export const fetchConsumptionsForTwoMonth = async (
@@ -35,20 +38,28 @@ export const fetchConsumptionsForMonth = async (
   params: ConsumptionDataPayload,
 ): Promise<MonthConsumptionData> => {
   const housingMonthData = await fetchHousingConsumptionData(params);
+  const housingConsumptionArr = housingMonthData.housingConsumption || [];
 
   const normativeAndSubscriberData = await fetchNormativeConsumptionData(
     params,
   );
 
+  if (
+    !housingMonthData.housingConsumption ||
+    housingMonthData.housingConsumption.length === 0
+  ) {
+    throw new Error();
+  }
+
   return {
-    housing: prepareDataForConsumptionGraph(
-      housingMonthData.housingConsumption || [],
-    ),
-    normative: prepareDataForConsumptionGraph(
+    housing: prepareDataForConsumptionGraph(housingConsumptionArr),
+    normative: prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.normativeConsumption || [],
+      housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     ),
-    subscriber: prepareDataForConsumptionGraph(
+    subscriber: prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.subscriberConsumption || [],
+      housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     ),
   };
 };

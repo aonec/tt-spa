@@ -3,11 +3,11 @@ import { addAct, fetchActs } from './actsJournalService.api';
 import { AddApartmentActRequest, ApartmentActResponsePagedList } from 'myApi';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
-import { $apartmentSearchId } from '01/features/addressIdSearch/models';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { last } from 'lodash';
 import moment from 'moment';
+import { addressIdSearchService } from './addressIdSearchService';
 
 const domain = createDomain('actsJournalService');
 
@@ -54,7 +54,7 @@ sample({
 
 sample({
   source: sample({
-    source: $apartmentSearchId,
+    source: addressIdSearchService.outputs.$apartmentSearchId,
     filter: Boolean,
   }),
   clock: createAct,

@@ -64,9 +64,6 @@ const getSummaryConsumptionsFx = domain.createEffect<
 const $summaryConsumption = domain
   .createStore<GetSummaryHousingConsumptionsByResourcesResponse | null>(null)
   .on(getSummaryConsumptionsFx.doneData, (_, consumptions) => consumptions)
-  .on(clearData, () => ({
-    consumptions: [],
-  }))
   .reset(clearSummary);
 
 const ResourceConsumptionGate = createGate();
@@ -104,8 +101,8 @@ forward({
 
 getHousingConsumptionFx.failData.watch((error) => {
   return message.error(
-    error.response.data.error.Text ||
-      error.response.data.error.Message ||
+    error.response?.data.error.Text ||
+      error.response?.data.error.Message ||
       'Произошла ошибка',
   );
 });
