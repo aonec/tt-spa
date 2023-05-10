@@ -8,7 +8,7 @@ import {
   VictoryLabel,
   VictoryScatter,
 } from 'victory';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'antd/es/date-picker/style/index';
 import { GraphViewProps } from './StatisticsGraph.types';
 import {
@@ -26,6 +26,7 @@ import {
   formTicks,
   getPreparedData,
   getTickFormat,
+  prepareDataForNodeStatistic,
 } from './StatisticsGraph.utils';
 import { EResourceType } from 'myApi';
 import { renderForHeatAndDeltaMass } from './GraphLegend/GraphLegend.utils';
@@ -73,13 +74,23 @@ export const GraphView: React.FC<GraphViewProps> = ({
     (reading) => reading.header === graphParam,
   );
 
-  const archiveValues = requiredArchiveValues?.data;
+  const preparedArchiveValues = useMemo(() => {
+    const archiveValues = requiredArchiveValues?.data;
+    if (!archiveValues || archiveValues.length === 0) {
+      return null;
+    }
+    const firstlyPreparedData = prepareData(archiveValues);
+    const finallyData = prepareDataForNodeStatistic(
+      firstlyPreparedData,
+      reportType,
+    );
 
-  if (!archiveValues || archiveValues.length === 0) {
+    return finallyData;
+  }, [requiredArchiveValues, reportType]);
+
+  if (!preparedArchiveValues) {
     return <GraphEmptyData />;
   }
-
-  const preparedArchiveValues = prepareData(archiveValues);
 
   const archiveLength = preparedArchiveValues.length;
 
@@ -149,7 +160,8 @@ export const GraphView: React.FC<GraphViewProps> = ({
                 tasksByDate,
                 reportType,
                 maxValue,
-                minData: ticksData[0],
+                minDate: ticksData[0],
+                maxDate: ticksData[ticksData.length - 1],
               }),
             )}
             sortKey="x"
@@ -178,7 +190,7 @@ export const GraphView: React.FC<GraphViewProps> = ({
             }
             labels={() => ''}
             style={tooltipStyle}
-            data={archiveValues}
+            data={preparedArchiveValues}
             x="time"
             y="value"
           />

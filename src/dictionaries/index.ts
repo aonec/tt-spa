@@ -1,4 +1,5 @@
 import {
+  EActType,
   EClosingReason,
   EIndividualDeviceReportOption,
   EMagistralType,
@@ -86,4 +87,14 @@ export const ResourceNamesDictionary: { [key in EResourceType]: string } = {
   [EResourceType.HotWaterSupply]: 'Горячее водоснабжение',
   [EResourceType.Electricity]: 'Электроснабжение',
   [EResourceType.Heat]: 'Теплоснабжение',
+};
+
+export const ActTypesNamesLookup: { [key in EActType]: string } = {
+  [EActType.PlannedCheck]: 'Плановая проверка',
+  [EActType.UnplannedCheck]: 'Внеплановая проверка',
+  [EActType.ResourceDisconnect]: 'Отключение ресурса',
+  [EActType.ResourceConnect]: 'Подключение ресурса',
+  [EActType.HomeownerAccountCertificate]: 'Справка о лицевом счете',
+  [EActType.Admission]: 'Акт допуска',
+  [EActType.NonAdmission]: 'Акт недопуска',
 };

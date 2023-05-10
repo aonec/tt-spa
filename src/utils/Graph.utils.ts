@@ -2,6 +2,8 @@ import { maxBy, minBy } from 'lodash';
 import { EResourceType } from 'myApi';
 import { PreparedArchiveValues } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.types';
 
+const factor = 1.2;
+
 export function getMinAndMax<T>(
   data: (T & { value: number | null })[],
   minDelta: number,
@@ -9,8 +11,8 @@ export function getMinAndMax<T>(
   const minElementValue = minBy(data, (obj) => obj.value)?.value || 0;
   const maxElementValue = maxBy(data, (obj) => obj.value)?.value || 0;
 
-  let minValue = minElementValue > 0 ? 0 : 1.5 * minElementValue;
-  let maxValue = maxElementValue < 0 ? 0 : 1.5 * maxElementValue;
+  let minValue = minElementValue > 0 ? 0 : factor * minElementValue;
+  let maxValue = maxElementValue < 0 ? 0 : factor * maxElementValue;
 
   if (maxValue === minValue && minValue === 0) {
     maxValue += minDelta;

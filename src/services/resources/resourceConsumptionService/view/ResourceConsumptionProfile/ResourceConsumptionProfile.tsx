@@ -73,8 +73,8 @@ export const ResourceConsumptionProfile: FC<
                 setCheckedGraphTypes={setSelectedGraphTypes}
                 resource={resource}
                 isAdditionalAddress={Boolean(additionalConsumptionData)}
-                additionalAddress={'Основные адреса'}
-                currentAddress={'Адреса для сравнения'}
+                currentAddress={'Основные адреса'}
+                additionalAddress={'Адреса для сравнения'}
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)
