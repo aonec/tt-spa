@@ -1,7 +1,11 @@
 import React, { FC } from 'react';
 import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { showDownloadDeviceReportButtonClicked } from '01/features/devicesReport/models';
-import { TabsSC } from './DevicesPageProfile.styled';
+import {
+  FiltrationWrapper,
+  TabsSC,
+  Wrapper,
+} from './DevicesPageProfile.styled';
 import { DevicesPageProfileProps } from './DevicesPageProfile.types';
 import { DevicesProfileContainer } from 'services/housingMeteringDevices/devicesProfileService';
 import { IndividualDevicesProfileContainer } from '../../individualDevicesProfileService';
@@ -27,28 +31,29 @@ export const DevicesPageProfile: FC<DevicesPageProfileProps> = ({
   ];
 
   return (
-    <>
-      <PageHeader
-        title="Приборы"
-        contextMenu={{ menuButtons: menuButtonArr }}
-      />
-
-      <TabsSC
-        activeKey={type}
-        onChange={(activeKey) =>
-          setDevicesType(activeKey as DevicesProfileTabsType)
-        }
-      >
-        <TabsSC.TabPane tab="ОДПУ" key={DevicesProfileTabsType.ODPU}>
-          <DevicesProfileContainer />
-        </TabsSC.TabPane>
-        <TabsSC.TabPane
-          tab="ИПУ"
-          key={DevicesProfileTabsType.IndividualDevices}
+    <Wrapper>
+      <FiltrationWrapper>
+        <PageHeader
+          title="Приборы"
+          contextMenu={{ menuButtons: menuButtonArr }}
+        />
+        <TabsSC
+          activeKey={type}
+          onChange={(activeKey) =>
+            setDevicesType(activeKey as DevicesProfileTabsType)
+          }
         >
-          <IndividualDevicesProfileContainer />
-        </TabsSC.TabPane>
-      </TabsSC>
-    </>
+          <TabsSC.TabPane tab="ОДПУ" key={DevicesProfileTabsType.ODPU} />
+          <TabsSC.TabPane
+            tab="ИПУ"
+            key={DevicesProfileTabsType.IndividualDevices}
+          />
+        </TabsSC>
+      </FiltrationWrapper>
+      {type === DevicesProfileTabsType.ODPU && <DevicesProfileContainer />}
+      {type === DevicesProfileTabsType.IndividualDevices && (
+        <IndividualDevicesProfileContainer />
+      )}
+    </Wrapper>
   );
 };
