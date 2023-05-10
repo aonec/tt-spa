@@ -53,8 +53,9 @@ export const fetchConsumptionsForMonth = async (
 
   return {
     housing: prepareDataForConsumptionGraph(housingConsumptionArr),
-    normative: prepareDataForConsumptionGraph(
+    normative: prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.normativeConsumption || [],
+      housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     ),
     subscriber: prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.subscriberConsumption || [],
