@@ -3749,6 +3749,10 @@ export interface IndividualDeviceResponseFromDevicePage {
   /** @format date-time */
   futureCheckingDate?: string;
   consumption?: IndividualDeviceConsumption | null;
+  sealNumber?: string | null;
+
+  /** @format date-time */
+  sealInstallationDate?: string | null;
 }
 
 export interface IndividualDeviceResponseFromDevicePageSuccessApiResponse {

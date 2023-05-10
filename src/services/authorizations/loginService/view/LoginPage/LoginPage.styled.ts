@@ -76,8 +76,11 @@ export const ButtonLogin = styled(Button)`
 export const InputPassword = styled(AntInput.Password)`
   border-radius: 4px;
   height: 48px;
-  font-size: 16px;
   padding: 0px 16px;
+
+  .ant-input {
+    font-size: 16px;
+  }
 `;
 
 export const ButtonDevSettings = styled(Button).attrs({

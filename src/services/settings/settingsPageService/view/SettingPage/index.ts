@@ -1,1 +1,1 @@
-export { SettingPage } from './SettingPage'
+export { SettingPage } from './SettingPage';

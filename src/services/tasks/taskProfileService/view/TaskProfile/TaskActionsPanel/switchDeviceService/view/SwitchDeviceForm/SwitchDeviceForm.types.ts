@@ -7,7 +7,7 @@ import { CalculatorInfoItem } from 'services/calculators/calculatorsInfoService/
 export type SwitchDeviceFormProps = {
   device: MeteringDeviceResponse;
   handleChangeSwitchDevicePayload: (
-    payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>
+    payload: Omit<SwitchHousingMeteringDeviceRequest, 'deviceId'>,
   ) => void;
   isCalculator: boolean;
   calculatorInfos: CalculatorInfoItem[];

@@ -1,9 +1,10 @@
-import { AddressIdSearch } from '01/features/addressIdSearch';
-import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
+import {
+  DatePickerNative,
+  fromEnter,
+} from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { ChangeEvent, FC, useEffect, useMemo } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { Button } from 'ui-kit/Button';
 import {
   AddApartmentActFormik,
@@ -19,6 +20,10 @@ import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ActTypesNamesLookup } from 'dictionaries';
 import { actResourceNamesLookup } from 'ui-kit/shared_components/ResourceInfo/ResourceInfo.utils';
+import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
+import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
+
+const dataKey = 'add-new-act';
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -43,38 +48,33 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       },
     });
 
-  const {
-    keyDownEnterGuardedHandler,
-    refs: [registryNumberRef, documentTypeRef, recourceRef, addressRef],
-  } = useOnEnterSwitch(4);
+  const next = useSwitchInputOnEnter(dataKey, false);
 
   useEffect(
     () =>
       actCreated.watch(() => {
         setValues({ ...values, actJobDate: '', registryNumber: '' });
-        if (registryNumberRef.current.focus) {
-          registryNumberRef.current.focus();
-        }
+        next(-1);
       }).unsubscribe,
-    [setValues, actCreated, values, registryNumberRef],
+    [setValues, actCreated, values, next],
   );
 
-  const handleEnterOnRegistryNumberInput = useMemo(() => {
+  const handleEnterOnRegistryNumberInput = useCallback(() => {
     if (values.actResourceType) {
-      return keyDownEnterGuardedHandler(2);
+      return next(2);
     }
     if (values.actType) {
-      return keyDownEnterGuardedHandler(1);
+      return next(1);
     }
-    return keyDownEnterGuardedHandler(0);
-  }, [keyDownEnterGuardedHandler, values]);
+    return next(0);
+  }, [next, values]);
 
-  const handleEnterOnActTypeSelect = useMemo(() => {
+  const handleEnterOnActTypeSelect = useCallback(() => {
     if (values.actResourceType) {
-      return keyDownEnterGuardedHandler(2);
+      return next(2);
     }
-    return keyDownEnterGuardedHandler(1);
-  }, [keyDownEnterGuardedHandler, values]);
+    return next(1);
+  }, [next, values]);
 
   return (
     <>
@@ -87,15 +87,15 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             setFieldValue('registryNumber', e.target.value)
           }
           placeholder="Введите"
-          ref={registryNumberRef}
-          onKeyDown={handleEnterOnRegistryNumberInput}
+          data-reading-input={dataKey}
+          onKeyDown={(e) => fromEnter(handleEnterOnRegistryNumberInput)(e)}
         />
         <Select
+          data-reading-input={dataKey}
           value={values.actType || undefined}
           onChange={(actType) => setFieldValue('actType', actType)}
           placeholder="Выберите тип документа"
-          ref={documentTypeRef}
-          onKeyDown={handleEnterOnActTypeSelect}
+          onKeyDown={(e) => fromEnter(handleEnterOnActTypeSelect)(e)}
           showAction={['focus']}
           small
         >
@@ -106,13 +106,13 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           ))}
         </Select>
         <Select
+          data-reading-input={dataKey}
           value={values.actResourceType || undefined}
           onChange={(resourceType) =>
             setFieldValue('actResourceType', resourceType)
           }
           placeholder="Выберите"
-          ref={recourceRef}
-          onKeyDown={keyDownEnterGuardedHandler(2)}
+          onKeyDown={(e) => fromEnter(() => next(2))(e)}
           showAction={['focus']}
           small
         >
@@ -122,10 +122,10 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             </Select.Option>
           ))}
         </Select>
-        <AddressIdSearch
-          firstInputRef={addressRef}
-          onExit={() => {
-            document.getElementById('act-journal-date-picker')?.focus();
+        <AddressIdSearchContainer
+          dataKey={dataKey}
+          onEnter={(index) => {
+            next(index + 3);
           }}
         />
         <DatePickerNative
@@ -134,7 +134,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           value={values.actJobDate}
           onChange={(date) => setFieldValue('actJobDate', date)}
           placeholder="Дата"
-          id="act-journal-date-picker"
+          dataKey={dataKey}
         />
       </Wrapper>
       <ButtonsWrapper>

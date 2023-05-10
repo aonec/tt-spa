@@ -10,6 +10,7 @@ interface Props {
   id?: string;
   searchStyle?: boolean;
   fullSize?: boolean;
+  dataKey?: string;
   ref?:
     | ((instance: HTMLInputElement | null) => void)
     | RefObject<HTMLInputElement>
@@ -30,7 +31,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
       searchStyle,
       fullSize,
       onKeyDown,
-      inputData,
+      dataKey,
     },
     ref,
   ) => {
@@ -53,7 +54,7 @@ export const DatePickerNative: React.FC<Props> = React.forwardRef(
 
     return (
       <InputSC
-        data-reading-input={inputData}
+        data-reading-input={dataKey}
         fullSize={fullSize}
         searchStyle={searchStyle}
         id={id}
