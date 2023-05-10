@@ -9,7 +9,6 @@ const { inputs, outputs } = createApartmentActService;
 export const CreateApartmentActModalContainer = () => {
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$createActIsLoading);
-  const actTypes = useStore(outputs.$actTypes);
 
   const handleClose = useEvent(inputs.closeModal);
 
@@ -17,11 +16,7 @@ export const CreateApartmentActModalContainer = () => {
   const formId = 'create-apartment-document';
 
   const form = (
-    <CreateApartmentActForm
-      formId={formId}
-      handleSubmit={handleSubmit}
-      actTypes={actTypes}
-    />
+    <CreateApartmentActForm formId={formId} handleSubmit={handleSubmit} />
   );
 
   return (

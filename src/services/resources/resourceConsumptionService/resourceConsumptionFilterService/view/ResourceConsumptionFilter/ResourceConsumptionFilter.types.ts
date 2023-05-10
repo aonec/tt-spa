@@ -15,4 +15,5 @@ export type ResourceConsumptionFilterProps = {
   selectedCity: string | null;
   selectCity: (city: string) => void;
   isLoading: boolean;
+  handleClearSummary: () => void;
 };

@@ -3,7 +3,7 @@ import { AddPersonalNumberPage } from './view/AddPersonalNumberPage';
 import { addPersonalNumberService } from './addPersonalNumberService.model';
 import { useStore } from 'effector-react';
 
-const { inputs, outputs } = addPersonalNumberService;
+const { outputs } = addPersonalNumberService;
 
 export const AddPersonalNumberContainer = () => {
   const apartment = useStore(outputs.$apartment);

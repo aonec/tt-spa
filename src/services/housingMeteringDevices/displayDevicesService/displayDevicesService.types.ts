@@ -1,4 +1,4 @@
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import { CalculatorListResponse, HousingStockAddressResponse } from 'myApi';
 
 export type DevicesListContainerProps = {

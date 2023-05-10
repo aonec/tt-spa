@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
@@ -9,10 +8,10 @@ import {
   ClosingDate,
   DateLineWrapper,
   Wrapper,
-  DeviceLink,
   ModelWrapper,
   MountPlace,
   SerialNumberWrapper,
+  LinkWrapper,
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
 import { Tooltip } from 'antd';
@@ -24,9 +23,8 @@ import { useStore } from 'effector-react';
 
 export const IndividualDeviceInfoExtended: FC<
   IndividualDeviceInfoExtendedProps
-> = ({ device }) => {
+> = ({ device, onClick }) => {
   const isActive = device.closingDate === null;
-  const history = useHistory();
 
   const allIndividualDeviceMountPlaces = useStore(
     $allIndividualDeviceMountPlaces,
@@ -47,7 +45,7 @@ export const IndividualDeviceInfoExtended: FC<
       {!allIndividualDeviceMountPlaces && (
         <AllIndividualDeviceMountPlacesGate />
       )}
-      <DeviceLink to={history.location.pathname}>
+      <LinkWrapper onClick={onClick} clickable={Boolean(onClick)}>
         <ResourceIconLookup resource={device.resource} />
         <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
         <ModelWrapper>
@@ -61,7 +59,7 @@ export const IndividualDeviceInfoExtended: FC<
                 mountPlaceFromServer.name === device.mountPlace,
             )?.description}
         </MountPlace>
-      </DeviceLink>
+      </LinkWrapper>
       <ApartmentInfo>
         <DeviceStatus
           isActive={isActive}

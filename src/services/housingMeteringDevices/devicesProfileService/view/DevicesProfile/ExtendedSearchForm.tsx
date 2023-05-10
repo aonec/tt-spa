@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
-import { CalculatorsListRequestPayload } from '01/features/carlculators/calculatorsIntoHousingStockService/calculatorsIntoHousingStockService.types';
+import { CalculatorsListRequestPayload } from 'services/calculators/calculatorsListService/calculatorsListService.types';
 import {
   StyledContainerThreeItems,
   StyledSlider,

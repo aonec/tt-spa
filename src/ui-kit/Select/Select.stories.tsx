@@ -1,6 +1,7 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Select } from './Select.styled';
+import { NodeRegistrationTypeLookup } from 'dictionaries';
 
 const meta: ComponentMeta<typeof Select> = {
   title: 'Select',
@@ -33,3 +34,15 @@ Overview.args = {
   placeholder: 'Выберите тариф',
   style: { width: '100%' },
 };
+
+export const Small = () => (
+  <div style={{ width: '300px' }}>
+    <Select small placeholder="Выберите тип узла">
+      {Object.entries(NodeRegistrationTypeLookup).map(([key, value]) => (
+        <Select.Option key={key} value={key}>
+          {value}
+        </Select.Option>
+      ))}
+    </Select>
+  </div>
+);

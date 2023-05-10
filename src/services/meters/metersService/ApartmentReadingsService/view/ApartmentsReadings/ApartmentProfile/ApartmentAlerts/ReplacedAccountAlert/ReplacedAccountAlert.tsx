@@ -22,7 +22,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
 
   return (
     <ApartmentAlertWrapper>
-      <Alert type="info">
+      <Alert>
         <AlertContent>
           <AlertTextWrapper>
             Лицевой счет

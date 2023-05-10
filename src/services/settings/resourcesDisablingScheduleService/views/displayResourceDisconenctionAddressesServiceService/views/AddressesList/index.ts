@@ -1,0 +1,1 @@
+export { AddressesList } from './AddressesList';
