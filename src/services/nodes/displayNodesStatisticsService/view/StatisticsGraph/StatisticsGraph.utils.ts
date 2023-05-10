@@ -5,14 +5,63 @@ import {
   ReportType,
   PreparedArchiveValues,
 } from './StatisticsGraph.types';
-import { format } from 'date-fns';
+import { differenceInDays, differenceInHours, format } from 'date-fns';
+
+export function prepareDataForNodeStatistic(
+  unsortedData: PreparedArchiveValues[],
+  reportType: ReportType,
+) {
+  const data = sortArchiveArray(unsortedData);
+
+  const minTime = data[0].time;
+  const maxTime = data[data.length - 1].time;
+
+  let elemsCount = 0;
+
+  if (reportType === 'daily') {
+    elemsCount = differenceInDays(new Date(maxTime), new Date(minTime));
+  } else if (reportType === 'hourly') {
+    elemsCount = differenceInHours(new Date(maxTime), new Date(minTime));
+  }
+
+  const result = [];
+
+  for (let iterator = 0, index = 0; iterator < elemsCount; iterator++) {
+    const elem = data[index];
+    let diff = 0;
+
+    if (reportType === 'daily') {
+      diff = differenceInDays(new Date(elem.time), new Date(minTime));
+    } else if (reportType === 'hourly') {
+      diff = differenceInHours(new Date(elem.time), new Date(minTime));
+    }
+
+    if (diff === iterator) {
+      result.push(elem);
+      index++;
+    } else {
+      result.push({
+        time: moment(minTime).add(iterator, 'hours').format(),
+        value: 0,
+      });
+    }
+  }
+  return result;
+}
 
 const getTaskXPos = (payload: GetTaskXPosPayload) => {
-  const { currentData, minData, reportType } = payload;
+  let { currentData, minDate, maxDate, reportType } = payload;
+  const minDataMoment = moment(minDate).utcOffset(0).startOf('d');
+  const maxDataMoment = moment(maxDate).utcOffset(0, false);
 
-  const minDataMoment = moment(minData).utcOffset(0).startOf('d');
+  let diff = 0;
+  if (reportType === 'hourly') {
+    diff = moment(currentData).utc(true).diff(maxDataMoment, 'h');
+  } else {
+    diff = moment(currentData).utc(true).diff(maxDataMoment, 'd');
+  }
 
-  if (!currentData) {
+  if (!currentData || diff > 0) {
     return null;
   }
   if (reportType === 'hourly') {
@@ -25,20 +74,24 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
 export const getPreparedData = ({
   tasksByDate,
   maxValue,
-  minData,
+  minDate,
+  maxDate,
   reportType,
 }: {
   tasksByDate: DateTimeTaskStatisticsItemArrayDictionaryItem;
   reportType: ReportType;
   maxValue: number;
-  minData: string;
+  minDate: string;
+  maxDate: string;
 }) => {
   const tasksArr = tasksByDate.value || [];
+  const isAlone = tasksArr.length === 1;
 
   return {
     x: getTaskXPos({
-      currentData: tasksByDate?.key,
-      minData,
+      currentData: isAlone ? tasksArr[0]?.creationTime : tasksByDate?.key,
+      minDate,
+      maxDate,
       reportType,
     }),
     y: maxValue * 0.9,
@@ -52,17 +105,8 @@ export const getPreparedData = ({
   };
 };
 
-export const formatDate = (timeStamp: string): Date => {
-  const dateObject = new Date(timeStamp);
-  const millisecondsInHour = 60 * 1000;
-  const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
-  );
-  return date;
-};
-
 const getHourFromTimeStamp = (timeStamp: string): number => {
-  const date = formatDate(timeStamp);
+  const date = new Date(timeStamp);
   return +format(date, 'HH');
 };
 
@@ -72,7 +116,7 @@ const isHourMultiplySix = (timeStamp: string): boolean => {
 };
 
 const getDayFromTimeStamp = (timeStamp: string): number => {
-  const date = formatDate(timeStamp);
+  const date = new Date(timeStamp);
   return +format(date, 'dd');
 };
 
@@ -99,8 +143,8 @@ const formHourlyTicks = (
   const sortedArchive = sortArchiveArray(archiveArr);
 
   return [
+    sortedArchive[0],
     ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
-    sortedArchive[sortedArchive.length - 1],
   ];
 };
 
@@ -151,15 +195,15 @@ export const getTickFormat = (
   x: string,
 ) => {
   if (reportType === 'daily') {
-    return format(formatDate(x), 'dd.MM');
+    return format(new Date(x), 'dd.MM');
   }
   if (archiveArrLength <= 24) {
-    return format(formatDate(x), 'HH');
+    return format(new Date(x), 'HH');
   }
 
   if (archiveArrLength >= 97) {
-    return format(formatDate(x), 'H');
+    return format(new Date(x), 'H');
   }
 
-  return format(formatDate(x), 'HH:mm');
+  return format(new Date(x), 'HH:mm');
 };

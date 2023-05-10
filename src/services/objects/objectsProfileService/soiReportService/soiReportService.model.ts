@@ -16,7 +16,7 @@ import {
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { BlobResponseErrorType } from 'types';
 import { message } from 'antd';
-import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 
 const domain = createDomain('soiReportService');
 

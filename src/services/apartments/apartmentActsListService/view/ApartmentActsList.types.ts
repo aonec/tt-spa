@@ -3,7 +3,6 @@ import {
   DocumentResponse,
   EActResourceType,
   EActType,
-  EActTypeStringDictionaryItem,
 } from 'myApi';
 import { ActsFilter } from '../apartmentActsListService.types';
 
@@ -16,7 +15,6 @@ export type ApartmentActsListProps = {
   handleSaveFile: (document: DocumentResponse) => void;
   handleUpdateTypes: (types: EActType[]) => void;
   handleUpdateResources: (resources: EActResourceType[]) => void;
-  actTypes: EActTypeStringDictionaryItem[] | null;
   selectedFilters: ActsFilter;
   isPermitionToChangeApartmentAct: boolean;
 };

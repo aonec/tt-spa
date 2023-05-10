@@ -7,31 +7,31 @@ import {
 } from 'ui-kit/icons';
 import { Space } from '../../01/shared/ui/Layout/Space/Space';
 import { AlertWrap, IconWrapper, Wide } from './Alert.styled';
+import {
+  AlertColorLookup,
+  AlertIconType,
+  AlertProps,
+  AlertType,
+} from './Alert.types';
 
-interface Props {
-  type?: 'info' | 'stop' | 'warning' | 'incorrect';
-  color?: string;
-  iconColor?: string;
-}
-
-export const Alert: React.FC<Props> = ({
+export const Alert: React.FC<AlertProps> = ({
   children,
-  type = 'info',
-  color,
-  iconColor,
+  icon = AlertIconType.info,
+  type = AlertType.default,
 }) => {
-  const icons = {
-    info: InfoIcon,
-    stop: StopIcon,
-    warning: WarningIcon,
-    incorrect: IncorrectConfigurationIcon,
+  const icons: { [key in AlertIconType]: React.FC } = {
+    [AlertIconType.info]: InfoIcon,
+    [AlertIconType.stop]: StopIcon,
+    [AlertIconType.warning]: WarningIcon,
+    [AlertIconType.incorrect]: IncorrectConfigurationIcon,
   };
 
-  const Icon = icons[type];
+  const Icon = icons[icon];
+  const color = AlertColorLookup[type];
 
   return (
     <AlertWrap color={color}>
-      <IconWrapper color={iconColor}>
+      <IconWrapper color={color}>
         <Icon />
       </IconWrapper>
       <Space />
