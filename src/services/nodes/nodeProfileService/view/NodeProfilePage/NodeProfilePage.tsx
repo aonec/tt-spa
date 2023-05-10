@@ -31,7 +31,7 @@ import { CommonInfoTab } from './CommonInfoTab';
 import { HousingMeteringDevicesList } from './HousingMeteringDevicesList';
 import { NodeConnection } from './NodeConnection';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { DisplayNodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks';
+import { DisplayNodeChecksContainer } from 'services/nodes/displayNodeChecks';
 
 const { TabPane } = TabsSC;
 
