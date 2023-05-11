@@ -85,10 +85,11 @@ export const getPreparedData = ({
   maxDate: string;
 }) => {
   const tasksArr = tasksByDate.value || [];
+  const isAlone = tasksArr.length === 1;
 
   return {
     x: getTaskXPos({
-      currentData: tasksByDate?.key,
+      currentData: isAlone ? tasksArr[0]?.creationTime : tasksByDate?.key,
       minDate,
       maxDate,
       reportType,
@@ -104,17 +105,8 @@ export const getPreparedData = ({
   };
 };
 
-export const formatDate = (timeStamp: string): Date => {
-  const dateObject = new Date(timeStamp);
-  const millisecondsInHour = 60 * 1000;
-  const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
-  );
-  return date;
-};
-
 const getHourFromTimeStamp = (timeStamp: string): number => {
-  const date = formatDate(timeStamp);
+  const date = new Date(timeStamp);
   return +format(date, 'HH');
 };
 
@@ -124,7 +116,7 @@ const isHourMultiplySix = (timeStamp: string): boolean => {
 };
 
 const getDayFromTimeStamp = (timeStamp: string): number => {
-  const date = formatDate(timeStamp);
+  const date = new Date(timeStamp);
   return +format(date, 'dd');
 };
 
@@ -151,8 +143,8 @@ const formHourlyTicks = (
   const sortedArchive = sortArchiveArray(archiveArr);
 
   return [
+    sortedArchive[0],
     ...sortedArchive.filter((entry) => isHourMultiplySix(entry.time)),
-    sortedArchive[sortedArchive.length - 1],
   ];
 };
 
@@ -203,15 +195,15 @@ export const getTickFormat = (
   x: string,
 ) => {
   if (reportType === 'daily') {
-    return format(formatDate(x), 'dd.MM');
+    return format(new Date(x), 'dd.MM');
   }
   if (archiveArrLength <= 24) {
-    return format(formatDate(x), 'HH');
+    return format(new Date(x), 'HH');
   }
 
   if (archiveArrLength >= 97) {
-    return format(formatDate(x), 'H');
+    return format(new Date(x), 'H');
   }
 
-  return format(formatDate(x), 'HH:mm');
+  return format(new Date(x), 'HH:mm');
 };

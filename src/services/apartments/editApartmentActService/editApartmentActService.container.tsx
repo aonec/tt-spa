@@ -10,7 +10,6 @@ const formId = 'edit-apartment-document';
 export const EditApartmentActModalContainer = () => {
   const isOpen = useStore(outputs.$isModalOpen);
   const isLoading = useStore(outputs.$editActIsLoading);
-  const actTypes = useStore(outputs.$actTypes);
   const initialValues = useStore(outputs.$act);
 
   const handleClose = useEvent(inputs.closeModal);
@@ -24,11 +23,10 @@ export const EditApartmentActModalContainer = () => {
         formId={formId}
         handleSubmit={handleSubmit}
         handleDeleteAct={() => handleDeleteAct()}
-        actTypes={actTypes}
         initialValues={initialValues}
       />
     ),
-    [initialValues, actTypes, handleDeleteAct, handleSubmit],
+    [initialValues, handleDeleteAct, handleSubmit],
   );
   return (
     <FormModal

@@ -2,10 +2,6 @@ import { createDomain, guard, sample } from 'effector';
 import { EditCalculatorTabs } from './view/EditCalculatorPage/EditCalculatorPage.types';
 import { calculatorProfileService } from '../calculatorProfileService';
 import {
-  $calculatorTypesSelectItems,
-  CalculatorInfosGate,
-} from '01/features/carlculators/calculatorsInfo/models';
-import {
   getAlreadyExistingConnectionCalculator,
   putCalculator,
 } from './editCalculatorService.api';
@@ -20,6 +16,7 @@ import {
 } from 'myApi';
 import { createGate } from 'effector-react';
 import { message } from 'antd';
+import { calculatorsInfoService } from '../calculatorsInfoService';
 
 const domain = createDomain('editCalculatorService');
 
@@ -106,12 +103,13 @@ export const editCalculatorService = {
     $calculator: calculatorProfileService.outputs.$calculator,
     $isLoading: calculatorProfileService.outputs.$isLoading,
     $currentTab,
-    $calculatorTypesSelectItems,
+    $calculatorTypesSelectItems:
+      calculatorsInfoService.outputs.$calculatorTypesSelectItems,
     $sameConnectionCalculator,
     $isModalOpen,
   },
   gates: {
-    CalculatorInfosGate,
+    CalculatorInfosGate: calculatorsInfoService.gates.CalculatorInfosGate,
     SaveDeviceIdGate,
   },
 };
