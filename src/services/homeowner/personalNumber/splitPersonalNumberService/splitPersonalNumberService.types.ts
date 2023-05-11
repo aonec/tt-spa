@@ -1,13 +1,22 @@
-import { ApartmentCreateRequest } from 'myApi';
+import { HomeownerAccountCreateRequest } from 'myApi';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 
-type SwitchStageForm = {
+export type SwitchStage = {
   replaceableAccountId: string;
   form: PersonalNumberFormTypes;
 };
 
-type TransferStage = { individualDeviceIdsForSwitch: number };
+// export type AddNewApartmentStage = HomeownerAccountCreateRequest ;
+export type AddNewApartmentStage = {
+  personalAccountNumber: string;
+  name: string;
+  phoneNumber?: string | null;
+  openAt: string;
+  isMainOnApartment?: boolean;
+  paymentCode?: string | null;
+  apartmentId: number;
+  isForced?: boolean | null;
+  apartmentNumber: number;
+};
 
-export type SplitPersonalNumberSubmitData = Partial<
-  SwitchStageForm & ApartmentCreateRequest & TransferStage
->;
+export type TransferStage = { individualDeviceIdsForSwitch: number[] };

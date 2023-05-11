@@ -32,7 +32,6 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   handleForced,
   setVisibleCloseHomeownerAccountModal,
   handleSwitchHomeownerAccount,
-  handleSubmitSplitStage,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
   const isSplit = type === PersonalNumberActions.Split;
@@ -76,10 +75,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
             replaceableAccountId: homeowner.id,
           });
 
-          homeowner &&  handleSubmitSplitStage && handleSubmitSplitStage({
-          form: data,
-          replaceableAccountId: homeowner.id,
-        });
+        
       },
     });
 

@@ -1,7 +1,6 @@
-import { ApartmentResponse, HomeownerAccountListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from 'myApi';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
 import { Event } from 'effector';
-import { SplitPersonalNumberSubmitData } from '../../splitPersonalNumberService/splitPersonalNumberService.types';
 
 export type PersonalNumberFormProps = {
   type: PersonalNumberActions;
@@ -16,7 +15,6 @@ export type PersonalNumberFormProps = {
     replaceableAccountId: string;
     form: PersonalNumberFormTypes;
   }) => void;
-  handleSubmitSplitStage?: (payload: SplitPersonalNumberSubmitData) => void;
   handleForced?: Event<void>;
 };
 

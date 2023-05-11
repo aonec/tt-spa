@@ -1,9 +1,17 @@
 import { combine, createDomain, guard, sample } from 'effector';
 import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
-import { SplitPersonalNumberSubmitData } from './splitPersonalNumberService.types';
-import { doesApartmentExist, splitHomeownerAccount } from './splitPersonalNumberService.api';
+import {
+  AddNewApartmentStage,
+  SwitchStage,
+  TransferStage,
+} from './splitPersonalNumberService.types';
+import {
+  doesApartmentExist,
+  splitHomeownerAccount,
+} from './splitPersonalNumberService.api';
 import { HomeownerAccountSplitRequest } from 'myApi';
 import { EffectFailDataAxiosErrorDataApartmentId } from 'types';
+import moment from 'moment';
 
 const domain = createDomain('splitPersonalNumberService');
 
@@ -13,18 +21,24 @@ const goNextStage = domain.createEvent();
 const handleForceConfirmationModalClose = domain.createEvent();
 const onForced = domain.createEvent();
 
-const handleSubmitSplitStage =
-  domain.createEvent<SplitPersonalNumberSubmitData>();
+const handleSubmitSwitchStage = domain.createEvent<SwitchStage>();
+const handleSubmitAddNewApartmentStage =
+  domain.createEvent<AddNewApartmentStage>();
+const handleSubmitTransferDevicesStage = domain.createEvent<TransferStage>();
+
+const $apartment = apartmentProfileService.outputs.$apartment;
+
+const $switchStageData = domain
+  .createStore<SwitchStage | null>(null)
+  .on(handleSubmitSwitchStage, (_, data) => data);
+const $addNewApartmentStageData = domain
+  .createStore<AddNewApartmentStage | null>(null)
+  .on(handleSubmitAddNewApartmentStage, (_, data) => data);
+const $transferDevicesData = domain
+  .createStore<TransferStage | null>(null)
+  .on(handleSubmitTransferDevicesStage, (_, data) => data);
 
 const splitPersonalNumber = domain.createEvent();
-
-const $splitPersonalNumberData = domain
-  .createStore<SplitPersonalNumberSubmitData | null>(null)
-  .on(handleSubmitSplitStage, (oldData, newData) => ({
-    ...oldData,
-    ...newData,
-  }));
-// .reset(resetter);
 
 const $isForced = domain
   .createStore<boolean>(false)
@@ -39,15 +53,22 @@ const $stageNumber = domain
 
 guard({
   source: $stageNumber,
-  clock: handleSubmitSplitStage,
+  clock: [
+    handleSubmitTransferDevicesStage,
+    handleSubmitAddNewApartmentStage,
+    handleSubmitSwitchStage,
+  ],
   filter: (stageNumber) => stageNumber < 3,
   target: goNextStage,
 });
 
-const checkApartmentExistingFx = domain.createEffect<{
-  housingStockId: number;
-  apartmentNumber: string;
-}, number | null>(doesApartmentExist)
+const checkApartmentExistingFx = domain.createEffect<
+  {
+    housingStockId: number;
+    apartmentNumber: string;
+  },
+  number | null
+>(doesApartmentExist);
 
 const splitPersonalNumberFx = domain.createEffect<
   {
@@ -58,12 +79,12 @@ const splitPersonalNumberFx = domain.createEffect<
   EffectFailDataAxiosErrorDataApartmentId
 >(splitHomeownerAccount);
 
-const $checkedExistingApartmentId = domain.createStore<number | null>(null)
+const $checkedExistingApartmentId = domain
+  .createStore<number | null>(null)
   .on(checkApartmentExistingFx.doneData, (_, id) => {
     return id;
-  })
-  // .reset(SplitPersonalNumberGate.close, closeConfirmExistingApartmentModal);
-
+  });
+// .reset(SplitPersonalNumberGate.close, closeConfirmExistingApartmentModal);
 
 const $samePersonalAccountNumderId = domain
   .createStore<number | null>(null)
@@ -78,33 +99,72 @@ const $samePersonalAccountNumderId = domain
 const $isConfirmationModalOpen = $samePersonalAccountNumderId.map(Boolean);
 
 sample({
-  clock: checkApartmentExistingFx.doneData ,
-  filter:(value) => value === null ,
+  clock: checkApartmentExistingFx.doneData,
+  filter: (value) => value === null,
   fn: () => false,
   target: splitPersonalNumber,
 });
 
 sample({
   clock: splitPersonalNumber,
-
   source: combine(
-    $splitPersonalNumberData,
+    $apartment,
+    $switchStageData,
+    $addNewApartmentStageData,
+    $transferDevicesData,
     $isForced,
-    (splitPersonalNumberData, isForced) => ({
-      splitPersonalNumberData,
+    (
+      apartment,
+      switchStageData,
+      addNewApartmentStageData,
+      transferDevicesData,
       isForced,
-    }),
-  ),
-  fn: (store) => {
-    return {
+    ) => {
+      const accountForClosing = {
+        homeownerAccountId: switchStageData?.replaceableAccountId,
+        closedAt: moment().toISOString(true),
+      };
 
-      data: {accountForClosing: store.splitPersonalNumberData?.replaceableAccountId ,
-      homeownerAccountForSplittedApartment: HomeownerAccountCreateRequest,
-      individualDeviceIdsForSwitch: store.splitPersonalNumberData?.individualDeviceIdsForSwitch,
-      useExistingApartment: boolean,
-      newApartment:store.splitPersonalNumberData },
-      isForced : isForced
-    } as {
+      const homeownerAccountForSplittedApartment = {
+        apartmentId: apartment?.id,
+        ...switchStageData?.form,
+        openAt: moment(switchStageData?.form.openAt).toISOString(true),
+      };
+
+      const newHomeownerAccount = {
+        ...addNewApartmentStageData,
+        openAt: moment(addNewApartmentStageData?.openAt).toISOString(true),
+      };
+
+      const newApartment = {
+        housingStockId: apartment?.housingStock?.id,
+        number: addNewApartmentStageData?.apartmentNumber,
+        homeownerAccount: newHomeownerAccount,
+      };
+
+      const individualDeviceIdsForSwitch = [
+        ...transferDevicesData?.individualDeviceIdsForSwitch!,
+      ];
+
+      return {
+        data: {
+          accountForClosing,
+          homeownerAccountForSplittedApartment,
+          individualDeviceIdsForSwitch,
+          newApartment,
+        },
+        isForced,
+      };
+    },
+  ),
+  fn: (store, isSplitPersonalNumber) => {
+    return {
+      data: {
+        ...store.data,
+        useExistingApartment: isSplitPersonalNumber,
+      },
+      isForced: store.isForced,
+    } as unknown as {
       data: HomeownerAccountSplitRequest;
       isForced?: boolean;
     };
@@ -113,10 +173,10 @@ sample({
 });
 
 export const splitPersonalNumberService = {
-  inputs: { goNextStage, goBackStage, handleSubmitSplitStage },
+  inputs: { goNextStage, goBackStage },
   outputs: {
     $stageNumber,
-    $apartment: apartmentProfileService.outputs.$apartment,
+    $apartment,
   },
   gates: { ApartmentGate: apartmentProfileService.gates.ApartmentGate },
 };
