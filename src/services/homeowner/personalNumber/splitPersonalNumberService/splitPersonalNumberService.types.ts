@@ -1,4 +1,3 @@
-import { HomeownerAccountCreateRequest } from 'myApi';
 import { PersonalNumberFormTypes } from '../components/PersonalNumberForm/PersonalNumberForm.types';
 
 export type SwitchStage = {
@@ -6,7 +5,6 @@ export type SwitchStage = {
   form: PersonalNumberFormTypes;
 };
 
-// export type AddNewApartmentStage = HomeownerAccountCreateRequest ;
 export type AddNewApartmentStage = {
   personalAccountNumber: string;
   name: string;

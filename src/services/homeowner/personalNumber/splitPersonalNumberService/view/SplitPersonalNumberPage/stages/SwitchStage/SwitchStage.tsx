@@ -7,6 +7,7 @@ import { PersonalNumberActions } from 'services/homeowner/personalNumber/selectP
 export const SwitchStage: FC<SwitchStageProps> = ({
   homeowner,
   formId,
+  handleSubmitSwitchStage,
 }) => {
   return (
     <>
@@ -20,6 +21,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
         type={PersonalNumberActions.Split}
         formId={formId}
         homeowner={homeowner}
+        handleSubmitSwitchStage={handleSubmitSwitchStage}
       />
     </>
   );

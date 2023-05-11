@@ -54,9 +54,9 @@ const $stageNumber = domain
 guard({
   source: $stageNumber,
   clock: [
-    handleSubmitTransferDevicesStage,
-    handleSubmitAddNewApartmentStage,
     handleSubmitSwitchStage,
+    handleSubmitAddNewApartmentStage,
+    handleSubmitTransferDevicesStage,
   ],
   filter: (stageNumber) => stageNumber < 3,
   target: goNextStage,
@@ -143,7 +143,7 @@ sample({
       };
 
       const individualDeviceIdsForSwitch = [
-        ...transferDevicesData?.individualDeviceIdsForSwitch!,
+        ...(transferDevicesData?.individualDeviceIdsForSwitch || []),
       ];
 
       return {
@@ -173,7 +173,13 @@ sample({
 });
 
 export const splitPersonalNumberService = {
-  inputs: { goNextStage, goBackStage },
+  inputs: {
+    goNextStage,
+    goBackStage,
+    handleSubmitTransferDevicesStage,
+    handleSubmitAddNewApartmentStage,
+    handleSubmitSwitchStage,
+  },
   outputs: {
     $stageNumber,
     $apartment,
