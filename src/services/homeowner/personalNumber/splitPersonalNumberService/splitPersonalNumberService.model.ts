@@ -38,7 +38,7 @@ const $transferDevicesData = domain
   .createStore<TransferStage | null>(null)
   .on(handleSubmitTransferDevicesStage, (_, data) => data);
 
-const splitPersonalNumber = domain.createEvent();
+const splitPersonalNumber = domain.createEvent<boolean>();
 
 const $isForced = domain
   .createStore<boolean>(false)
