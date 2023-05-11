@@ -33,6 +33,8 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   setVisibleCloseHomeownerAccountModal,
   handleSwitchHomeownerAccount,
   handleSubmitSwitchStage,
+  handleSubmitAddNewApartmentStage,
+  apartmentNumber,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
   const isSplit = type === PersonalNumberActions.Split;
@@ -81,6 +83,20 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
           handleSubmitSwitchStage({
             form: data,
             replaceableAccountId: homeowner.id,
+          });
+
+        apartmentId &&
+          apartmentNumber &&
+          handleSubmitAddNewApartmentStage &&
+          handleSubmitAddNewApartmentStage({
+            personalAccountNumber: data.personalAccountNumber,
+            name: data.name,
+            phoneNumber: data.phoneNumber,
+            openAt: data.openAt,
+            isMainOnApartment: data.isMainOnApartment,
+            paymentCode: data.paymentCode,
+            apartmentId: apartmentId,
+            apartmentNumber,
           });
       },
     });
