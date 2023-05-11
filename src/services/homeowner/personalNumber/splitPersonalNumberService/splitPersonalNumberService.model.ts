@@ -99,10 +99,11 @@ sample({
     return {
 
       data: {accountForClosing: store.splitPersonalNumberData?.replaceableAccountId ,
-      homeownerAccountForSplittedApartment: HomeownerAccountCreateRequest;
-      individualDeviceIdsForSwitch?: number[] | null;
-      useExistingApartment: boolean;
-      newApartment: ApartmentCreateRequest;}
+      homeownerAccountForSplittedApartment: HomeownerAccountCreateRequest,
+      individualDeviceIdsForSwitch: store.splitPersonalNumberData?.individualDeviceIdsForSwitch,
+      useExistingApartment: boolean,
+      newApartment:store.splitPersonalNumberData },
+      isForced : isForced
     } as {
       data: HomeownerAccountSplitRequest;
       isForced?: boolean;
