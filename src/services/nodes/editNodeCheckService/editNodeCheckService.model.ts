@@ -1,25 +1,19 @@
 import { createDomain, sample } from 'effector';
-import { NodeCheckResponse, UpdateNodeCheckRequest } from 'myApi';
+import { UpdateNodeCheckRequest } from 'myApi';
 import { fetchUpdateNodeCheck } from './editNodeCheckService.api';
 import { message } from 'antd';
-import { UpdateNodeCheckPayload } from './editNodeCheckService.types';
+import {
+  NodeCheckInfo,
+  UpdateNodeCheckPayload,
+} from './editNodeCheckService.types';
 
 const domain = createDomain('editNodeCheckService');
 
-const openModal = domain.createEvent<
-  {
-    nodeId: number;
-  } & NodeCheckResponse
->();
+const openModal = domain.createEvent<NodeCheckInfo>();
 const closeModal = domain.createEvent();
 
 const $updateNodePayload = domain
-  .createStore<
-    | ({
-        nodeId: number;
-      } & NodeCheckResponse)
-    | null
-  >(null)
+  .createStore<NodeCheckInfo | null>(null)
   .on(openModal, (_, nodeCheck) => nodeCheck)
   .reset(closeModal);
 
@@ -34,10 +28,8 @@ const $isLoading = editNodeCheckFx.pending;
 const nodeCheckEdited = editNodeCheckFx.doneData;
 
 sample({
-  source: sample({
-    source: $updateNodePayload,
-    filter: Boolean,
-  }),
+  source: $updateNodePayload,
+  filter: Boolean,
   clock: editNodeCheck,
   fn: (source, clock) => ({
     nodeId: source.nodeId,

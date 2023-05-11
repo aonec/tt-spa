@@ -10,5 +10,5 @@ sample({
     editNodeCheckService.inputs.nodeCheckEdited,
     removeNodeCheckService.inputs.nodeCheckRemoved,
   ],
-  target: [displayNodeChecksService.inputs.refetchNodeChecks],
+  target: displayNodeChecksService.inputs.refetchNodeChecks,
 });

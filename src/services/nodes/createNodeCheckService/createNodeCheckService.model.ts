@@ -26,7 +26,8 @@ const $isLoading = createNodeCheckFx.pending;
 const nodeCheckCreated = createNodeCheckFx.doneData;
 
 sample({
-  source: sample({ source: $nodeId, filter: Boolean }),
+  source: $nodeId,
+  filter: Boolean,
   clock: sample({
     clock: createNodeCheck,
     filter: (payload): payload is CreateNodeCheckRequest =>
@@ -40,7 +41,7 @@ sample({
 
 sample({
   clock: nodeCheckCreated,
-  target: [closeModal],
+  target: closeModal,
 });
 
 createNodeCheckFx.doneData.watch(() =>
