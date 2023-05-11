@@ -24,7 +24,8 @@ const removeConnectionFx = domain.createEffect<
 >(fetchRemoveConnection);
 
 sample({
-  source: sample({ source: $node, filter: Boolean }),
+  source: $node,
+  filter: Boolean,
   clock: removeConnection,
   fn: (node) => ({
     resource: node.resource,
