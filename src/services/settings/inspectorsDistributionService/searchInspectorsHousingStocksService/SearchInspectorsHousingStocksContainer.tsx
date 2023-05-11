@@ -7,7 +7,7 @@ import { searchInspectorsHousingStockService } from './searchInspectorsHousingSt
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
-import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
+import { displayInspectorsService } from 'services/inspectors/displayInspectorsService/displayInspectorsService.models';
 import { displayHousingStockFiltersService } from '01/features/housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
 
 export const SearchInspectorsHousingStocksContainer = () => {
