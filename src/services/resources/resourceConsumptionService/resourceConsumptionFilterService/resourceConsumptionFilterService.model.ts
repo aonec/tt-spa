@@ -36,8 +36,7 @@ const $selectedHouseManagement = domain
 
 const $houseManagements = domain
   .createStore<HouseManagementWithStreetsResponse[]>([])
-  .on(getAddressesFx.doneData, (_, houseManagements) => houseManagements)
-  .reset(resourceConsumptionService.inputs.clearSummary);
+  .on(getAddressesFx.doneData, (_, houseManagements) => houseManagements);
 
 const setResource = domain.createEvent<EResourceType>();
 const $selectedResource = domain

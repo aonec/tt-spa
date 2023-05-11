@@ -30,6 +30,11 @@ sample({
 });
 
 forward({
+  from: CalculatorsGate.state.map(({ housingStockId }) => housingStockId),
+  to: fetchCalculatorsFx,
+});
+
+forward({
   from: createCalcuatorService.events.newCalculatorCreated,
   to: refetchCalculators,
 });

@@ -44,6 +44,8 @@ export const FormModal: React.FC<FormModalProps> = ({
       disabled={loading || disabled}
       type={submitButtonType}
       isLoading={loading}
+      htmlForm={formId}
+    
     >
       {submitBtnText}
     </Button>

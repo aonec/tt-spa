@@ -165,7 +165,7 @@ export const ApartmentInfo: FC<ApartmentInfoProps> = ({
               },
               {
                 title: 'Изменить лицевой счет',
-                onClick: openEditPersonalNumberModal,
+                onClick: () => openEditPersonalNumberModal(true),
               },
               {
                 title: 'Добавить новый прибор',
