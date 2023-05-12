@@ -40,9 +40,15 @@ export const EditObjectContainer = () => {
     !housingStock || housingStock.id !== housingStockIdNumber;
 
   useEffect(() => {
-    inputs.onPageCancel.watch(() =>
+    return inputs.onPageCancel.watch(() =>
       history.push(`/objects/profile/${housingStockId}`),
-    );
+    ).unsubscribe;
+  }, [history, housingStockId]);
+
+  useEffect(() => {
+    return inputs.successUpdate.watch(() =>
+      history.push(`/objects/profile/${housingStockId}`),
+    ).unsubscribe;
   }, [history, housingStockId]);
 
   return (

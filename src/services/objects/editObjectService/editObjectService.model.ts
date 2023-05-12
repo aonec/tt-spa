@@ -8,6 +8,7 @@ import { HousingStockResponse, HousingStockUpdateRequest } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
+import { message } from 'antd';
 
 const domain = createDomain('editObjectService');
 
@@ -37,6 +38,16 @@ sample({
   target: handleUpdateHousingStockFx,
 });
 
+const successUpdate = handleUpdateHousingStockFx.doneData;
+
+handleUpdateHousingStockFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
+
+successUpdate.watch(() => message.success('Дом успешно обновлён'));
+
 export const editObjectService = {
   inputs: {
     openCreateHeatingStationModal:
@@ -46,6 +57,7 @@ export const editObjectService = {
     heatingStationCapture: createObjectService.inputs.heatingStationCapture,
     onPageCancel,
     handleUpdateHousingStock,
+    successUpdate,
   },
   outputs: {
     $housingStock: objectProfileService.outputs.$housingStock,

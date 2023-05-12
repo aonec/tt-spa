@@ -247,7 +247,6 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
               </Button>
             </ButtonPadding>
             <Button
-              // sidePadding={25}
               onClick={() => handleSubmit()}
             >
               Сохранить

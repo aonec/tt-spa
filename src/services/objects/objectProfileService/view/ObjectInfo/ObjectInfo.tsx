@@ -2,6 +2,10 @@ import React, { FC } from 'react';
 import { Wrapper } from './ObjectInfo.styled';
 import { ObjectInfoProps } from './ObjectInfo.types';
 import { CommonInfo } from 'ui-kit/shared_components/CommonInfo';
+import {
+  ElevatorDictionary,
+  getElevatorType,
+} from '../../../createObjectService/view/CreateObjectPage/CreateObjectFinalStageModal/CreateObjectFinalStageModal.constants';
 
 export const ObjectInfo: FC<ObjectInfoProps> = ({ housingStock }) => {
   return (
@@ -26,7 +30,8 @@ export const ObjectInfo: FC<ObjectInfoProps> = ({ housingStock }) => {
           },
           {
             key: 'Наличие лифта',
-            value: housingStock.isThereElevator,
+            value:
+              ElevatorDictionary[getElevatorType(housingStock.isThereElevator)],
           },
           {
             key: 'Количество квартир',
