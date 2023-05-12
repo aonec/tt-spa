@@ -1,71 +1,47 @@
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useEvent, useStore } from 'effector-react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { resourceConsumptionService } from './resourceConsumptionService.model';
 import { ResourceConsumptionProfile } from './view/ResourceConsumptionProfile';
+import './resourceConsumptionService.relations';
+import { resourceConsumptionFilterService } from './resourceConsumptionFilterService';
 
 const { inputs, outputs, gates } = resourceConsumptionService;
 const { ResourceConsumptionGate } = gates;
 
 export const ResourceConsumptionContainer = () => {
   const isLoading = useStore(outputs.$isLoading);
+
   const resourceConsumptionFilter = useStore(
-    outputs.$resourceConsumptionFilter,
+    resourceConsumptionFilterService.outputs.$resourceConsumptionFilter,
+  );
+  const resource = useStore(
+    resourceConsumptionFilterService.outputs.$selectedResource,
   );
   const housingConsumptionData = useStore(outputs.$housingConsumptionData);
-  const selectedHouseManagement = useStore(outputs.$selectedHouseManagement);
-  const streetsListInHouseManagement = useStore(outputs.$addressesList);
-  const houseManagements = useStore(outputs.$houseManagements);
+  const summaryConsumption = useStore(outputs.$summaryConsumption);
   const selectedGraphTypes = useStore(outputs.$selectedGraphTypes);
   const additionalConsumptionData = useStore(outputs.$additionalConsumption);
-  const treeData = useStore(outputs.$treeData);
-  const selectedCity = useStore(outputs.$selectedCity);
 
-  const setResource = useEvent(inputs.setResource);
-  const setFilter = useEvent(inputs.setFilter);
-  const setHouseManagement = useEvent(inputs.selectHouseManagememt);
-  const handleClearData = useEvent(inputs.clearData);
-  const handleClearFilter = useEvent(inputs.clearStore);
+  const setResource = useEvent(
+    resourceConsumptionFilterService.inputs.setResource,
+  );
   const setSelectedGraphTypes = useEvent(inputs.setSelectedGraphTypes);
-  const handleClearAdditionalAddressData = useEvent(
-    inputs.clearAdditionalAddressData,
-  );
-  const selectCity = useEvent(inputs.selectCity);
-
-  const preparedHouseManagements = useMemo(
-    () =>
-      houseManagements.map((houseManagement) => ({
-        id: houseManagement.id,
-        name: houseManagement.name,
-      })),
-    [houseManagements],
-  );
 
   return (
     <>
       <ExistingCitiesGate />
       <ResourceConsumptionGate />
       <ResourceConsumptionProfile
-        isLoading={isLoading}
         resourceConsumptionFilter={resourceConsumptionFilter}
+        isLoading={isLoading}
         setResource={setResource}
-        setFilter={setFilter}
         housingConsumptionData={housingConsumptionData}
-        streetsList={streetsListInHouseManagement}
-        selectedHouseManagement={selectedHouseManagement}
-        setHouseManagement={setHouseManagement}
-        houseManagements={preparedHouseManagements}
-        handleClearData={() => handleClearData()}
-        handleClearFilter={() => handleClearFilter()}
         selectedGraphTypes={selectedGraphTypes}
         setSelectedGraphTypes={setSelectedGraphTypes}
         additionalConsumptionData={additionalConsumptionData}
-        handleClearAdditionalAddressData={() =>
-          handleClearAdditionalAddressData()
-        }
-        treeData={treeData}
-        selectedCity={selectedCity}
-        selectCity={selectCity}
+        summaryConsumption={summaryConsumption}
+        resource={resource}
       />
     </>
   );

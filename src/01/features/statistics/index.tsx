@@ -1,4 +1,4 @@
-import { PageHeader } from '01/shared/ui/PageHeader';
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import React, { useMemo } from 'react';
@@ -73,7 +73,6 @@ export const StatisticsPage = () => {
         >
           <SubscribersConsumption />
         </TabPane>
-        <TabPane tab="Анализ количества задач" key="tasks"></TabPane>
         <TabPane tab="Анализ потребления ресурсов" key="resourceConsumption">
           <ResourceConsumptionContainer />
         </TabPane>

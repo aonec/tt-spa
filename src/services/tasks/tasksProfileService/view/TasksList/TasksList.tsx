@@ -4,10 +4,10 @@ import { TasksListProps } from './TasksList.types';
 
 export const TasksList: FC<TasksListProps> = ({ tasks }) => {
   return (
-    <>
+    <div>
       {tasks.map((task) => (
         <TasksListItem key={task.id} task={task} />
       ))}
-    </>
+    </div>
   );
 };

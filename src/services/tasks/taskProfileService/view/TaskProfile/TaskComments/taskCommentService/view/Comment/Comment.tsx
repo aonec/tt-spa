@@ -33,10 +33,8 @@ export const Comment: FC<CommentProps> = ({
   const user = useStore(currentUserService.outputs.$currentUser);
   const isUserOwnComment = author === `${user?.firstName} ${user?.lastName}`;
 
-  const oldCommentText = comment.text;
-
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedComment, setComment] = useState(oldCommentText);
+  const [updatedComment, setComment] = useState(text);
 
   return (
     <Wrapper isEditing={isEditing}>
@@ -86,7 +84,7 @@ export const Comment: FC<CommentProps> = ({
                 type="ghost"
                 size="small"
                 onClick={() => {
-                  setComment(oldCommentText);
+                  setComment(text);
                   setIsEditing(false);
                 }}
               >

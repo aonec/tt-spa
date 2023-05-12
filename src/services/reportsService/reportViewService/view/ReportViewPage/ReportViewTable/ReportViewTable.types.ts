@@ -5,7 +5,9 @@ import {
   HousingDevicesConstructedReportResponse,
   IndividualDevicesConstructedReportResponse,
 } from 'myApi';
+import { EmployeeReportResponse } from 'services/reportsService/reportViewService/reportViewService.types';
 import { ReportType } from 'services/reportsService/view/ReportsPage/ReportsPage.types';
+import { EmployeeReportType } from '../ReportFiltrationForm/ReportFiltrationForm.types';
 
 export type ReportViewTableProps = {
   reportType: ReportType;
@@ -18,6 +20,8 @@ export type ReportViewTableProps = {
     | HousingDevicesConstructedReportResponse[]
     | null;
   homeownersReportData: HomeownersConstructedReportResponse[] | null;
+  emloyeeReportData: EmployeeReportResponse | null;
+  employeeReportType: EmployeeReportType | null;
 };
 
 export type ReportAddress = {

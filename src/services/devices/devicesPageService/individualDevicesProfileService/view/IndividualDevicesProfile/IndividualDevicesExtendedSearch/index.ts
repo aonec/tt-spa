@@ -1,1 +1,0 @@
-export { IndividualDevicesExtendedSearch } from './IndividualDevicesExtendedSearch'

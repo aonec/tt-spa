@@ -1,4 +1,3 @@
-import { StyledSelect } from '01/shared/ui/Select/components';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 import { Button } from 'ui-kit/Button';
@@ -10,6 +9,7 @@ import { ElevatorDictionary } from '../CreateObjectFinalStageModal/CreateObjectF
 import { PageTitle } from '../CreateObjectPage.styled';
 import {
   ButtonPadding,
+  ButtonSC,
   Footer,
   GridContainer,
   RightButtonBlock,
@@ -20,7 +20,9 @@ import {
   CreateObjectAdditionalInfoStageProps,
 } from './CreateObjectAdditionalInfoStage.types';
 
-export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStageProps> = ({
+export const CreateObjectAdditionalInfoStage: FC<
+  CreateObjectAdditionalInfoStageProps
+> = ({
   goBackStage,
   onPageCancel,
   handleSubmitCreateObject,
@@ -65,7 +67,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
         </FormItem>
 
         <FormItem label="Лифт">
-          <StyledSelect
+          <Select
             placeholder="Выберите из списка"
             onChange={(value) => setFieldValue('elevator', value)}
             value={values.elevator || undefined}
@@ -75,7 +77,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
                 {ElevatorDictionary[e]}
               </Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
         </FormItem>
       </GridContainer>
 
@@ -89,9 +91,7 @@ export const CreateObjectAdditionalInfoStage: FC<CreateObjectAdditionalInfoStage
               Отмена
             </Button>
           </ButtonPadding>
-          <Button sidePadding={25} onClick={() => handleSubmit()}>
-            Создать объект
-          </Button>
+          <ButtonSC onClick={() => handleSubmit()}>Создать объект</ButtonSC>
         </RightButtonBlock>
       </Footer>
     </Wrapper>

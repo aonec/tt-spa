@@ -1,3 +1,4 @@
+import { PageHeader } from 'ui-kit/shared_components/PageHeader';
 import styled from 'styled-components';
 
 export const HeaderInfo = styled.div`
@@ -13,8 +14,8 @@ export const AdditionalAddressWrapper = styled.span`
   font-weight: 400;
 `;
 
-export const HeaderWrapper = styled.div`
-  margin-top: 20px;
+export const PageHeaderSC = styled(PageHeader)`
+  margin-top: 16px;
 `;
 
 export const TabsWrapper = styled.div`
@@ -33,6 +34,17 @@ export const BaseContentWrapper = styled.div`
 
 export const CommonInfoWrapper = styled.div`
   max-width: 716px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+export const Deviceswrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  max-width: 860px;
 `;
 
 export const CardsWrapper = styled.div`

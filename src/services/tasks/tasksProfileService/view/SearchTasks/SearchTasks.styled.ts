@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { StyledContainerThreeItems } from 'services/devices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
-import { Select } from 'antd';
+import { StyledContainerThreeItems } from 'services/housingMeteringDevices/devicesProfileService/view/DevicesProfile/DevicesProfile.styled';
+import { Select } from 'ui-kit/Select';
 
 export const Wrapper = styled.div`
   display: grid;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const StyledContainerThreeItemsMainTypes = styled(
-  StyledContainerThreeItems
+  StyledContainerThreeItems,
 )`
   margin-top: 10px;
   grid-template-columns: 4fr 4fr 4fr;
@@ -34,26 +34,13 @@ export const StyledTooltiContainer = styled.div`
   }
 `;
 
-export const OverFlowSelectSC = styled(Select)<{ isShadow?: boolean }>`
+export const OverFlowSelectSC = styled(Select)`
   max-width: 300;
 
   & .ant-select-selection-item {
     text-overflow: ellipsis;
     max-width: 260px;
   }
-  .ant-select-selector {
-    border-radius: 4px !important;
-  }
-
-  box-shadow: ${({ isShadow = true }) =>
-    isShadow ? `0 4px 7px #02004b1f` : 'none'};
-`;
-
-export const SelectSC = styled(Select)<{ isShadow?: boolean }>`
-  width: 100%;
-  box-shadow: ${({ isShadow = true }) =>
-    isShadow ? `0 4px 7px #02004b1f` : 'none'};
-  border-radius: 20px !important;
   .ant-select-selector {
     border-radius: 4px !important;
   }

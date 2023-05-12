@@ -1,4 +1,3 @@
-import { InputSC } from '01/shared/ui/Fields';
 import { MagistralsDisctionary } from 'dictionaries';
 import React, { FC } from 'react';
 import { PipeIcon } from 'ui-kit/icons';
@@ -10,6 +9,7 @@ import {
   Wrapper,
 } from './ConfiguratePipe.styled';
 import { ConfiguratePipeProps } from './ConfiguratePipe.types';
+import { Input } from 'ui-kit/Input';
 
 export const ConfiguratePipe: FC<ConfiguratePipeProps> = ({
   handleChangeDiameter,
@@ -26,32 +26,32 @@ export const ConfiguratePipe: FC<ConfiguratePipeProps> = ({
       <GroupWrapper>
         <InputWrapper>
           <LabelSC>Магистраль</LabelSC>
-          <InputSC
+          <Input
+            small
             value={
               pipe.magistral ? MagistralsDisctionary[pipe.magistral] : undefined
             }
             disabled
-            isShadow={false}
           />
         </InputWrapper>
         <InputWrapper>
           <LabelSC>Номер</LabelSC>
-          <InputSC
+          <Input
+            small
             value={pipe.number || undefined}
             onChange={(e) => handleChangeNumber(Number(e.target.value))}
             placeholder={'0'}
-            isShadow={false}
             type="number"
           />
         </InputWrapper>
         <InputWrapper>
           <LabelSC>Диаметр</LabelSC>
-          <InputSC
+          <Input
+            small
             value={pipe.diameter || undefined}
             onChange={(e) => handleChangeDiameter(Number(e.target.value))}
             type="number"
             placeholder={'0'}
-            isShadow={false}
           />
         </InputWrapper>
       </GroupWrapper>

@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
+  max-width: 1200px;
   overflow-x: auto;
 `;
 
-export const Header = styled.div<{ temp: string }>`
+export const Header = styled.div<{ temp: string; css?: string }>`
   width: max-content;
   background: #f3f5f6;
-  padding: 0 16px;
-  height: 50px;
+  min-height: 50px;
   display: grid;
   grid-gap: 16px;
   grid-template-columns: ${({ temp }) => temp};
@@ -16,31 +16,34 @@ export const Header = styled.div<{ temp: string }>`
   font-weight: 400;
   font-size: 12px;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  width: 100%;
+  ${({ css }) => css || ''}
 `;
 
-export const Row = styled.div<{ temp: string }>`
+export const Row = styled.div<{ temp: string; css?: string }>`
   width: max-content;
-  padding: 0 16px;
   height: 50px;
   display: grid;
   grid-gap: 16px;
   grid-template-columns: ${({ temp }) => temp};
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   font-weight: 400;
   font-size: 14px;
   color: #272f5a;
-  width: 100%;
+  ${({ css }) => css || ''}
 `;
 
 export const PaginationWrapper = styled.div`
   margin: 16px;
 `;
 
-export const TableElement = styled.div`
+export const TableElement = styled.div<{ css?: string }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  padding-left: 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  ${({ css }) => css || ''}
 `;

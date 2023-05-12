@@ -3,18 +3,21 @@ import moment from 'moment';
 import {
   GetDataForHousingConsumptionPlotResponse,
   GetDataForIndividualDevicesConsumptionPlotResponse,
-  HouseManagementWithStreetsResponse,
+  GetSummaryHousingConsumptionsByResourcesResponse,
 } from 'myApi';
 import {
-  ConsumptionDataFilter,
   ConsumptionDataForTwoMonth,
+  ConsumptionDataPayload,
   MonthConsumptionData,
 } from './resourceConsumptionService.types';
-import { prepareDataForConsumptionGraph } from './resourceConsumptionService.utils';
+import {
+  prepareDataForConsumptionGraph,
+  prepareDataForConsumptionGraphWithLastValue,
+} from './resourceConsumptionService.utils';
 import queryString from 'query-string';
 
 export const fetchConsumptionsForTwoMonth = async (
-  params: ConsumptionDataFilter,
+  params: ConsumptionDataPayload,
 ): Promise<ConsumptionDataForTwoMonth> => {
   const prevMonth = moment(params.From).subtract(1, 'month');
   const paramsForPrevMonthRequest = {
@@ -32,42 +35,47 @@ export const fetchConsumptionsForTwoMonth = async (
 };
 
 export const fetchConsumptionsForMonth = async (
-  params: ConsumptionDataFilter,
+  params: ConsumptionDataPayload,
 ): Promise<MonthConsumptionData> => {
   const housingMonthData = await fetchHousingConsumptionData(params);
+  const housingConsumptionArr = housingMonthData.housingConsumption || [];
 
   const normativeAndSubscriberData = await fetchNormativeConsumptionData(
     params,
   );
 
+  if (
+    !housingMonthData.housingConsumption ||
+    housingMonthData.housingConsumption.length === 0
+  ) {
+    throw new Error();
+  }
+
   return {
-    housing: prepareDataForConsumptionGraph(
-      housingMonthData.housingConsumption || [],
-    ),
-    normative: prepareDataForConsumptionGraph(
+    housing: prepareDataForConsumptionGraph(housingConsumptionArr),
+    normative: prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.normativeConsumption || [],
+      housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     ),
-    subscriber: prepareDataForConsumptionGraph(
+    subscriber: prepareDataForConsumptionGraphWithLastValue(
       normativeAndSubscriberData.subscriberConsumption || [],
+      housingConsumptionArr[housingConsumptionArr.length - 1]?.key,
     ),
   };
 };
 
 export const fetchHousingConsumptionData = (
-  params: ConsumptionDataFilter,
+  params: ConsumptionDataPayload,
 ): Promise<GetDataForHousingConsumptionPlotResponse> =>
-  axios.get('PipeNodes/DataForHousingConsumptionPlot', {
+  axios.get('Nodes/DataForHousingConsumptionPlot', {
     params,
     paramsSerializer: (params) => {
       return queryString.stringify(params);
     },
-    headers: {
-      'api-version': 2,
-    },
   });
 
 export const fetchNormativeConsumptionData = (
-  params: ConsumptionDataFilter,
+  params: ConsumptionDataPayload,
 ): Promise<GetDataForIndividualDevicesConsumptionPlotResponse> =>
   axios.get(
     'IndividualDeviceReadings/DataForSubscriberAndNormativeConsumptionPlot',
@@ -82,14 +90,12 @@ export const fetchNormativeConsumptionData = (
     },
   );
 
-export const fetchAddresses = (
-  City: string,
-): Promise<HouseManagementWithStreetsResponse[]> =>
-  axios.get(
-    'HousingStocks/ExistingStreetsWithHousingStockNumbersWithHouseManagement',
-    {
-      params: {
-        City,
-      },
+export const fetchSummaryConsumption = (
+  params: ConsumptionDataPayload,
+): Promise<GetSummaryHousingConsumptionsByResourcesResponse> =>
+  axios.get('Nodes/SummaryHousingConsumptionsByResources', {
+    params,
+    paramsSerializer: (params) => {
+      return queryString.stringify(params);
     },
-  );
+  });

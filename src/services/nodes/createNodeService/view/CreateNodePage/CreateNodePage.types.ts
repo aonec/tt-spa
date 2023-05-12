@@ -22,5 +22,6 @@ export type CreateNodePageProps = {
   requestPayload: CreateNodeFormPayload;
   nodeServiceZones: NodeServiceZoneListResponse | null;
   openCreateNodeServiceZoneModal: () => void;
-  openConfiramtionModal: () => void;
+  validateNode: () => void;
+  isValidationLoading: boolean;
 };

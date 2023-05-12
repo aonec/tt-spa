@@ -6,7 +6,7 @@ import {
   Wrapper,
 } from './ReportListItem.styled';
 import { ReportListItemProps } from './ReportListItem.types';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import moment from 'moment';
 
 export const ReportListItem: FC<ReportListItemProps> = ({
@@ -20,7 +20,7 @@ export const ReportListItem: FC<ReportListItemProps> = ({
 
         return { ...acc, [lowerCaseKey]: value };
       },
-      {}
+      {},
     );
 
     return {

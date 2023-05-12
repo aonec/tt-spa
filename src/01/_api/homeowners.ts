@@ -10,7 +10,7 @@ import {
 import axios from '01/axios';
 
 export const getHomeownerCertificate = (
-  id: number,
+  id: string,
 ): Promise<HomeownerCertificateResponse> =>
   axios.get(`HomeownerAccounts/${id}/Certificate`);
 
@@ -38,6 +38,11 @@ export const addHomeowner = (
   reqestPayload: HomeownerAccountCreateRequest,
 ): Promise<void> => axios.post('HomeownerAccounts', reqestPayload);
 
-export const splitHomeownerAccount = (
-  data: HomeownerAccountSplitRequest,
-): Promise<void> => axios.post('HomeownerAccounts/Split', data);
+export const splitHomeownerAccount = (payload: {
+  data: HomeownerAccountSplitRequest;
+  isForced?: boolean;
+}): Promise<void> =>
+  axios.post(
+    `HomeownerAccounts/Split?isForced=${payload.isForced || false}`,
+    payload.data,
+  );

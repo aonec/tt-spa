@@ -24,6 +24,8 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
   configuration,
   handleDeletePipe,
   handleDeleteDevice,
+  isNodeConfigWithoutODPU,
+  handleEditDevice,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -31,9 +33,10 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
 
   const devicesCountText = getDevicesCountText(devicesCount);
 
-  const resource = useMemo(() => resourceFromConfig[configuration], [
-    configuration,
-  ]);
+  const resource = useMemo(
+    () => resourceFromConfig[configuration],
+    [configuration],
+  );
 
   return (
     <Wrapper>
@@ -56,7 +59,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
             isOpen={isOpen}
             onClick={() => setIsOpen((prev) => !prev)}
           />
-          {handleDeletePipe && (
+          {handleDeletePipe && !isNodeConfigWithoutODPU && (
             <TrashIconSC onClick={() => handleDeletePipe(pipe.id)} />
           )}
         </RighContentWrapper>
@@ -71,6 +74,7 @@ export const CommunicationPipeListItem: FC<CommunicationPipeListItemProps> = ({
               handleDeleteDevice={
                 handleDeleteDevice && (() => handleDeleteDevice(pipe.id, index))
               }
+              handleEditDevice={handleEditDevice}
             />
           ))}
         </div>

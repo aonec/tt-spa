@@ -1,5 +1,4 @@
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
@@ -19,8 +18,9 @@ import {
 import { message } from 'antd';
 import styled from 'styled-components';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmationAddingExistingPersonalNumber } from '../../../../services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
+import { Select } from 'ui-kit/Select';
 
 export const SwitchPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
@@ -56,7 +56,7 @@ export const SwitchPersonalNumberPage = () => {
         loading={pendingSwitch}
         title="Замена лицевого счета"
       >
-        <StyledSelect
+        <Select
           disabled
           value={personalAccountNumber || undefined}
           style={{ width: '50%' }}

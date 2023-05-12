@@ -158,7 +158,7 @@ export const forbiddenList: ForbiddenUrl[] = [
   },
   {
     methods: ['GET'],
-    regExp: /^PipeNodes\/DataForHousingConsumptionPlot$/,
+    regExp: /^Nodes\/DataForHousingConsumptionPlot$/,
   },
   {
     methods: ['GET'],
@@ -204,6 +204,10 @@ export const forbiddenList: ForbiddenUrl[] = [
   {
     methods: ['POST'],
     regExp: /^IndividualDevices\/\d+\/switch+$/,
+  },
+  {
+    methods: ['PUT'],
+    regExp: /^IndividualDevices\/\d+$/,
   },
   {
     methods: ['PUT'],

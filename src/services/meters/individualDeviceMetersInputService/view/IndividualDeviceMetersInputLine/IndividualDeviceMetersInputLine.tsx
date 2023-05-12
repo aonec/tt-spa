@@ -7,8 +7,7 @@ import { ESecuredIdentityRoleName } from 'myApi';
 import { HistoryIcon, StarIcon } from 'ui-kit/icons';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { getMeasurementUnit } from '../../individualDeviceMetersInputService.utils';
 import { MetersInputsBlock } from '../MetersInputsBlock';
@@ -19,11 +18,15 @@ import {
 } from './IndividualDeviceMetersInputLine.styled';
 import { IndividualDeviceMetersInputLineProps } from './IndividualDeviceMetersInputLine.types';
 import { getPreviousMeterTooltipTitle } from './individualDeviceMetersInputLine.utils';
-import { ContextMenuElement, Color } from '01/shared/ui/ContextMenuButton';
 import { apartmentIndividualDevicesMetersService } from 'services/meters/apartmentIndividualDevicesMetersService';
 import { editReadingsHistoryService } from 'services/meters/editReadingsHistoryService';
 import { SelectSwitchDeviceTypeModal } from './SelectSwitchDeviceTypeModal';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';
+import { currentUserService } from 'services/currentUserService';
+import {
+  ContextMenuButtonColor,
+  ContextMenuElement,
+} from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const IndividualDeviceMetersInputLine: FC<
   IndividualDeviceMetersInputLineProps
@@ -51,7 +54,7 @@ export const IndividualDeviceMetersInputLine: FC<
     editReadingsHistoryService.inputs.openModal,
   );
 
-  const managementFirmUser = useStore($currentManagingFirmUser);
+  const managementFirmUser = useStore(currentUserService.outputs.$currentUser);
 
   const isDeviceClosed = Boolean(device.closingDate);
 
@@ -100,13 +103,13 @@ export const IndividualDeviceMetersInputLine: FC<
       {
         title: 'Закрытие прибора',
         hidden: isDeviceClosed,
-        color: Color.danger,
+        color: ContextMenuButtonColor.danger,
         onClick: () => closingIndividualDeviceButtonClicked(device),
       },
       {
         title: 'Удалить прибор',
         hidden: !isSeniorOperator,
-        color: Color.danger,
+        color: ContextMenuButtonColor.danger,
         onClick: () => onDeleteIndividualDevice(device),
       },
       {

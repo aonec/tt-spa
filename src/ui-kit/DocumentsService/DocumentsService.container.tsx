@@ -1,4 +1,4 @@
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
+import { DragAndDrop } from 'ui-kit/DragAndDrop';
 import React, { FC } from 'react';
 import { useDocumentsUpload } from './DocumentsService.hook';
 import {
@@ -7,6 +7,8 @@ import {
 } from './DocumentsService.types';
 import { DocumentsLineUpload } from './view/DocumentsLineUpload';
 import { DocumentsList } from './view/DocumentsList';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { usePermission } from 'hooks/usePermission';
 
 const accept =
   'application/msword, application/vnd.ms-excel, application/pdf, image/*';
@@ -24,6 +26,13 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
     documents = [];
   }
 
+  const isPermitionToDeleteExistedDocument = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.ManagingFirmExecutor,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+    ESecuredIdentityRoleName.Controller,
+  ]);
+
   const { handleFile, isLoading, removeDocument } = useDocumentsUpload(
     documents,
     onChange,
@@ -37,7 +46,7 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
         <DragAndDrop
           disabled={isLoading}
           accept={accept}
-          fileHandler={(files) => handleFile(files[0], type)}
+          fileHandler={(files: FileList) => handleFile(files[0], type)}
           uniqId={uniqId}
           text={label}
           style={{
@@ -50,6 +59,9 @@ export const DocumentsUploadContainer: FC<DocumentsUploadContainerProps> = ({
           isLoading={isLoading}
           removeDocument={removeDocument}
           documents={documents}
+          isPermitionToDeleteExistedDocument={
+            isPermitionToDeleteExistedDocument
+          }
         />
       )}
     </div>

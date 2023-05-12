@@ -1,4 +1,3 @@
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { Empty } from 'antd';
 import { EActResourceType, EActType } from 'myApi';
 import React, { FC, useMemo } from 'react';
@@ -13,6 +12,8 @@ import {
   Wrapper,
 } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
+import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   acts,
@@ -23,10 +24,10 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   handleSaveFile,
   handleUpdateTypes,
   handleUpdateResources,
-  actTypes,
   selectedFilters,
+  isPermitionToChangeApartmentAct,
 }) => {
-  const isShowActsList = Boolean(acts?.length && !isLoading);
+  const isShowActsList = Boolean(acts?.length);
 
   const actsList = useMemo(
     () =>
@@ -34,19 +35,19 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
       acts?.map((act) => (
         <ApartmentActItem
           act={act}
-          actTypes={actTypes}
           openDeleteActModal={handleOpeningDeleteActModal}
           openEditActModal={handleOpeningEditActModal}
           saveFile={handleSaveFile}
           key={act.id}
+          isPermitionToChangeApartmentAct={isPermitionToChangeApartmentAct}
         />
       )),
     [
       acts,
-      actTypes,
       handleOpeningDeleteActModal,
       handleOpeningEditActModal,
       handleSaveFile,
+      isPermitionToChangeApartmentAct,
     ],
   );
 
@@ -54,21 +55,17 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
     ([key, value]) => ({ key: key as EActResourceType, value }),
   );
 
-  const allowedFilters = useMemo(
-    () =>
-      (actTypes || [])?.reduce((acc, { key, value }) => {
-        if (!key || !value) {
-          return acc;
-        }
-        return [...acc, { key, value }];
-      }, [] as { key: EActType; value: string }[]),
-    [actTypes],
+  const allowedFilters = Object.entries(ActTypesNamesLookup).map(
+    ([key, value]) => ({
+      key: key as EActType,
+      value,
+    }),
   );
 
   return (
     <>
       <Wrapper>
-        {!isLoading && (
+        <WithLoader isLoading={isLoading}>
           <ListHeader>
             <ColumnTitle>Дата</ColumnTitle>
             <ColumnTitle>№ акта</ColumnTitle>
@@ -94,23 +91,25 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
               </ExtendedSearchWrapper>
             </ColumnTitle>
           </ListHeader>
-        )}
 
-        {isShowActsList && actsList}
+          {isShowActsList && actsList}
 
-        {isLoading && <PendingLoader loading={isLoading} />}
-        {!acts.length && !isLoading && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет актов" />
-        )}
+          {!acts.length && (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="Нет актов"
+            />
+          )}
 
-        {!isLoading && (
-          <AddButton
-            className="ant-btn-link"
-            onClick={handleOpeningCreateActModal}
-          >
-            + Добавить акт
-          </AddButton>
-        )}
+          {isPermitionToChangeApartmentAct && (
+            <AddButton
+              className="ant-btn-link"
+              onClick={handleOpeningCreateActModal}
+            >
+              + Добавить акт
+            </AddButton>
+          )}
+        </WithLoader>
       </Wrapper>
     </>
   );

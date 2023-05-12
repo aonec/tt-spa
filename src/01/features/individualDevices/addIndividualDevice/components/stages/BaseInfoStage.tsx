@@ -2,11 +2,7 @@ import {
   $individualDeviceMountPlaces,
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { InputTT } from '01/tt-components';
-import { allResources } from '01/tt-components/localBases';
-import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { AutoComplete, Form, Select, Switch } from 'antd';
+import { AutoComplete, Form, Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
 import moment from 'moment';
@@ -15,20 +11,13 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { getBitDepthAndScaleFactor } from '../../utils';
-import {
-  $contractors,
-  ContractorsGate,
-} from '01/features/contractors/displayContractors/models';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { SwitchWrapper, TextWrapper } from './BaseInfoStage.styled';
 import { getIndividualDeviceRateNumByName } from 'utils/getIndividualDeviceRateNumByName';
 import {
@@ -36,7 +25,16 @@ import {
   $serialNumberForChecking,
   handleFetchSerialNumberForCheck,
 } from '01/features/individualDevices/switchIndividualDevice/models/init';
-import { Loader } from '01/components';
+import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
+import { Loader } from 'ui-kit/Loader';
+import { ResourceSelect } from 'ui-kit/shared_components/ResourceSelect';
+
+const {
+  outputs,
+  gates: { ContractorsGate },
+} = displayContractorsService;
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +44,7 @@ export const BaseInfoStage = () => {
 
   const { fields } = useForm(addIndividualDeviceForm);
 
-  const contractors = useStore($contractors);
+  const contractors = useStore(outputs.$contractors);
 
   const onChange = (e: any) => {
     const field = (fields as any)[e.target.name];
@@ -121,11 +119,11 @@ export const BaseInfoStage = () => {
       <FormItem
         label={`Текущие показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
       >
-        <InputTT
+        <Input
           type="number"
           placeholder="Введите текущие показания"
           onChange={onChangeDefaultReadings(1)}
-          value={fields.defaultReadings.value.value1}
+          value={fields.defaultReadings.value.value1 || undefined}
         />
         <ErrorMessage>
           {fields.defaultReadings.errorText({
@@ -136,11 +134,11 @@ export const BaseInfoStage = () => {
 
       {rateNum >= 2 && (
         <FormItem label="Первичные текущие прибора (Ночь)">
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите текущие показания"
             onChange={onChangeDefaultReadings(2)}
-            value={fields.defaultReadings.value.value2}
+            value={fields.defaultReadings.value.value2 || undefined}
           />
           <ErrorMessage>
             {fields.defaultReadings.errorText({
@@ -151,11 +149,11 @@ export const BaseInfoStage = () => {
       )}
       {rateNum >= 3 && (
         <FormItem>
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите текущие показания"
             onChange={onChangeDefaultReadings(3)}
-            value={fields.defaultReadings.value.value3}
+            value={fields.defaultReadings.value.value3 || undefined}
           />
           <ErrorMessage>
             {fields.defaultReadings.errorText({
@@ -187,8 +185,7 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Тип ресурса">
-          <StyledSelect
-            placeholder="Выберите тип ресурса"
+          <ResourceSelect
             onChange={(value: any) => {
               fields.resource.onChange(value);
 
@@ -200,22 +197,9 @@ export const BaseInfoStage = () => {
               fields.bitDepth.onChange(bitDepth);
               fields.scaleFactor.onChange(scaleFactor);
             }}
-            value={fields.resource.value || undefined}
-          >
-            {allResources.map((elem) => (
-              <Select.Option value={elem.value}>
-                <Flex>
-                  <StockIconTT
-                    icon={DeviceIcons[elem.value]?.icon}
-                    fill={DeviceIcons[elem.value]?.color}
-                    dark
-                  />
-                  <Space />
-                  <div>{elem.label}</div>
-                </Flex>
-              </Select.Option>
-            ))}
-          </StyledSelect>
+            resource={fields.resource.value}
+          />
+
           <ErrorMessage>
             {fields.resource.errorText({
               required: 'Это поле обязательное',
@@ -239,7 +223,7 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Серийный номер">
-          <InputTT
+          <Input
             type="text"
             placeholder="Введите серийный номер прибора"
             onChange={onChange}
@@ -264,7 +248,7 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Место установки">
-          <StyledSelect
+          <Select
             placeholder="Выберите место установки"
             value={fields.mountPlaceId.value || undefined}
             onChange={(value: any) => fields.mountPlaceId.onChange(value)}
@@ -272,7 +256,7 @@ export const BaseInfoStage = () => {
             {mountPlaces?.map((elem) => (
               <Select.Option value={elem.id}>{elem.description}</Select.Option>
             ))}
-          </StyledSelect>
+          </Select>
           <ErrorMessage>
             {fields.mountPlaceId.errorText({
               required: 'Это поле обязательное',
@@ -281,12 +265,12 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Разрядность">
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
             onChange={onChange}
-            value={fields.bitDepth.value}
+            value={fields.bitDepth.value || undefined}
           />
           <ErrorMessage>
             {fields.bitDepth.errorText({
@@ -296,12 +280,12 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Множитель">
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
             onChange={onChange}
-            value={fields.scaleFactor.value}
+            value={fields.scaleFactor.value || undefined}
           />
           <ErrorMessage>
             {fields.scaleFactor.errorText({
@@ -312,32 +296,32 @@ export const BaseInfoStage = () => {
       </FormWrap>
 
       <FormItem label="Тариф прибора">
-        <StyledSelect
+        <Select
           placeholder="Выберите тариф прибора"
           value={fields.rateType.value}
           onChange={(value) => value && fields.rateType.onChange(value as any)}
         >
-          <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
+          <Select.Option value={EIndividualDeviceRateType.OneZone}>
             Одна зона
-          </StyledSelect.Option>
-          <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
+          </Select.Option>
+          <Select.Option value={EIndividualDeviceRateType.TwoZone}>
             Две зоны
-          </StyledSelect.Option>
-          <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
+          </Select.Option>
+          <Select.Option value={EIndividualDeviceRateType.ThreeZone}>
             Три зоны
-          </StyledSelect.Option>
-        </StyledSelect>
+          </Select.Option>
+        </Select>
       </FormItem>
 
       <FormWrap>
         <FormItem
           label={`Первичные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
         >
-          <InputTT
+          <Input
             type="number"
             placeholder="Введите первичные показания"
             onChange={onChangeStartupReadings(1)}
-            value={fields.startupReadings.value.value1}
+            value={fields.startupReadings.value.value1 || undefined}
           />
           <ErrorMessage>
             {fields.startupReadings.errorText({
@@ -348,11 +332,11 @@ export const BaseInfoStage = () => {
 
         {rateNum >= 2 && (
           <FormItem label="Первичные показания прибора (Ночь)">
-            <InputTT
+            <Input
               type="number"
               placeholder="Введите первичные показания"
               onChange={onChangeStartupReadings(2)}
-              value={fields.startupReadings.value.value2}
+              value={fields.startupReadings.value.value2 || undefined}
             />
             <ErrorMessage>
               {fields.startupReadings.errorText({
@@ -363,11 +347,11 @@ export const BaseInfoStage = () => {
         )}
         {rateNum >= 3 && (
           <FormItem>
-            <InputTT
+            <Input
               type="number"
               placeholder="Введите первичные показания"
               onChange={onChangeStartupReadings(3)}
-              value={fields.startupReadings.value.value3}
+              value={fields.startupReadings.value.value3 || undefined}
             />
             <ErrorMessage>
               {fields.startupReadings.errorText({
@@ -406,9 +390,9 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Пломба">
-          <InputTT
+          <Input
             placeholder="Номер пломбы"
-            value={fields.magneticSealTypeName.value}
+            value={fields.magneticSealTypeName.value || undefined}
             onChange={onChange}
             name="magneticSealTypeName"
           />
@@ -423,7 +407,7 @@ export const BaseInfoStage = () => {
       </FormWrap>
 
       <FormItem label="Монтажная организация">
-        <StyledSelect
+        <Select
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }
@@ -431,11 +415,11 @@ export const BaseInfoStage = () => {
           placeholder="Выберите монтажную организацию"
         >
           {contractors?.map((elem) => (
-            <StyledSelect.Option value={elem.id} key={elem.id}>
+            <Select.Option value={elem.id} key={elem.id}>
               {elem.name}
-            </StyledSelect.Option>
+            </Select.Option>
           ))}
-        </StyledSelect>
+        </Select>
       </FormItem>
     </Wrap>
   );

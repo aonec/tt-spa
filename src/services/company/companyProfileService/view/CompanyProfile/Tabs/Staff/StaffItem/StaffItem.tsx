@@ -2,11 +2,12 @@ import React, { FC } from 'react';
 import { Cellphone, Name, Role, Wrapper } from './StaffItem.styled';
 import { StaffItemProps } from './StaffItem.types';
 import { useHistory } from 'react-router-dom';
-import { usePhoneMask } from '01/features/staff/addStaff/utils';
 import { sortUserRoles } from '../Staff.utils';
-import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { Tooltip } from 'antd';
-import { ContextMenuButton } from '01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton/ContextMenuButton';
+import { usePhoneMask } from 'hooks/usePhoneMask';
+import { StaffStatus } from 'ui-kit/shared_components/StaffStatus/StaffStatus';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const StaffItem: FC<StaffItemProps> = ({
   staff,
@@ -18,21 +19,18 @@ export const StaffItem: FC<StaffItemProps> = ({
   const history = useHistory();
   const phoneMask = usePhoneMask();
 
-  const {
-    firstName,
-    lastName,
-    middleName,
-    roles,
-    id,
-    cellphone,
-    status,
-  } = staff;
+  const { firstName, lastName, middleName, roles, id, cellphone, status } =
+    staff;
 
   const sortedRoles = sortUserRoles(roles || []);
   const rolesString = sortedRoles?.map(({ value }) => value).join(', ');
   return (
     <Wrapper key={staff.id}>
-      <Name>
+      <Name
+        onClick={() => {
+          history.push(`/userProfile/${id}`);
+        }}
+      >
         {lastName} {firstName} {middleName}
       </Name>
 
@@ -45,11 +43,11 @@ export const StaffItem: FC<StaffItemProps> = ({
       </Cellphone>
       {status?.type && <StaffStatus status={status?.type} />}
       <ContextMenuButton
+        size="small"
         menuButtons={[
           {
             title: 'Открыть профиль сотрудника',
             onClick: () => history.push(`/userProfile/${id}`),
-            color: 'default',
           },
           {
             title: 'Изменить статус',
@@ -57,13 +55,11 @@ export const StaffItem: FC<StaffItemProps> = ({
               handleOpenStatusChangeModal();
               handleCatchEmployeeStatusData({ id, status });
             },
-            color: 'default',
           },
           {
             title: 'Редактировать информацию о сотруднике',
             onClick: () =>
               history.push(`/companyProfile/editManagingFirmUser/${id}`),
-            color: 'default',
           },
           {
             title: 'Удалить сотрудника',
@@ -71,7 +67,7 @@ export const StaffItem: FC<StaffItemProps> = ({
               handleOpenDeleteModal();
               handleCatchEmployeeId(id);
             },
-            color: 'danger',
+            color: ContextMenuButtonColor.danger,
           },
         ]}
       />

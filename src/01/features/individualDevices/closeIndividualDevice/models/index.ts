@@ -3,11 +3,11 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceResponse,
 } from './../../../../../myApi';
-import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
 import { EffectFailDataAxiosError } from 'types';
+import { Document } from 'ui-kit/DocumentsService';
 
 export const $closingIndividualDevice =
   createStore<IndividualDeviceListItemResponse | null>(null);
@@ -23,7 +23,7 @@ export const $isClosingIndividualDeviceRequstSuccessfull = createStore<
 export const closeIndividualDeviceForm = createForm({
   fields: {
     documentIds: {
-      init: [] as FileData[],
+      init: [] as Document[],
     },
     closingDate: {
       init: null as null | string,

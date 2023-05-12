@@ -15,7 +15,7 @@ import { RangePicker } from 'ui-kit/RangePicker';
 import { getHousingStockAddress } from 'utils/getHousingStockAddress';
 import { getDatePeriod } from './ConsolidatedReportForm.utils';
 import * as yup from 'yup';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const ConsolidatedReportForm: FC<ConsolidatedReportFormProps> = ({
   formId,

@@ -1,8 +1,7 @@
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { useFormik } from 'formik';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
-import { SubscribersConsumptionExtendedSearch } from '../../../components/SubscribersConsumptionExtendedSearch';
 import {
   SearchFieldsWrapper,
   SelectCitySC,
@@ -13,14 +12,18 @@ import {
   ManagingFirmSearchProps,
   SubscriberStatisticsFormik,
 } from './ManagingFirmSearch.types';
+import { SubscribersConsumptionExtendedSearch } from '../../../components/SubscribersConsumptionExtendedSearch';
 
 export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
   cities,
   managingFirms,
   selectManagingFirm,
   selectedManagingFirm,
+  selectCity,
+  selectedCity,
   setFilter,
   filter,
+  managingFirmsLoading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
@@ -35,32 +38,31 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
         ColdWaterSupply: filter?.ColdWaterSupply || false,
         Electricity: filter?.Electricity || false,
         HotWaterSupply: filter?.HotWaterSupply || false,
-        ColdWaterSupplyConsumptionFrom: filter?.ColdWaterSupplyConsumptionFrom,
-        ColdWaterSupplyConsumptionTo: filter?.ColdWaterSupplyConsumptionTo,
-        ElectricitySupplyConsumptionFrom:
-          filter?.ElectricitySupplyConsumptionFrom,
-        ElectricitySupplyConsumptionTo: filter?.ElectricitySupplyConsumptionTo,
-        HotWaterSupplyConsumptionFrom: filter?.HotWaterSupplyConsumptionFrom,
-        HotWaterSupplyConsumptionTo: filter?.HotWaterSupplyConsumptionTo,
+        Heat: filter?.Heat,
+        'ColdWaterSupplyFilter.From': filter?.['ColdWaterSupplyFilter.From'],
+        'ColdWaterSupplyFilter.To': filter?.['ColdWaterSupplyFilter.To'],
+        'ElectricityFilter.From': filter?.['ElectricityFilter.From'],
+        'ElectricityFilter.To': filter?.['ElectricityFilter.To'],
+        'HotWaterSupplyFilter.From': filter?.['HotWaterSupplyFilter.From'],
+        'HotWaterSupplyFilter.To': filter?.['HotWaterSupplyFilter.To'],
+        'HeatFilter.From': filter?.['HeatFilter.From'],
+        'HeatFilter.To': filter?.['ElectricityFilter.To'],
         DateLastCheckFrom: filter?.DateLastCheckFrom,
         DateLastCheckTo: filter?.DateLastCheckTo,
         ExcludeApartments: isExcluded,
       },
-      enableReinitialize: true,
       onSubmit: setFilter,
     });
 
-  const isManagingFirmSelectDisabled = managingFirms.length === 0;
+  const isManagingFirmSelectDisabled =
+    managingFirmsLoading || managingFirms.length === 0;
 
   return (
     <Wrapper>
       <ExtendedSearch
         isOpen={isOpen}
         handleApply={submitForm}
-        handleClear={() => {
-          resetForm();
-          submitForm();
-        }}
+        handleClear={resetForm}
         handleClose={close}
         handleOpen={open}
         extendedSearchContent={
@@ -71,7 +73,12 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
         }
       >
         <SearchFieldsWrapper>
-          <SelectCitySC placeholder="Выберите город" disabled>
+          <SelectCitySC
+            small
+            placeholder="Выберите город"
+            value={selectedCity}
+            onChange={(city) => selectCity(String(city))}
+          >
             {cities.map((city) => (
               <SelectCitySC.Option key={city} value={city}>
                 {city}
@@ -79,14 +86,15 @@ export const ManagingFirmSearch: FC<ManagingFirmSearchProps> = ({
             ))}
           </SelectCitySC>
           <SelectManagingFirmSC
+            small
             value={selectedManagingFirm || undefined}
             onChange={(value) => selectManagingFirm(String(value))}
             placeholder="Выберите домоуправление"
             disabled={isManagingFirmSelectDisabled}
           >
             {managingFirms.map((managingFirm) => {
-              const key = managingFirm.key;
-              const value = managingFirm.value;
+              const key = managingFirm.id;
+              const value = managingFirm.name;
               if (!key || !value) {
                 return null;
               }

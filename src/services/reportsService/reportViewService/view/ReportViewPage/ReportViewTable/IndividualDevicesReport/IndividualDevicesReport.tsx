@@ -87,7 +87,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Дата последней поверки',
-          size: '150px',
+          size: '170px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
             moment(
@@ -95,8 +95,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ).format('DD.MM.YYYY'),
         },
         {
-          label: 'Дата слудующей поверки',
-          size: '150px',
+          label: 'Дата следующей поверки',
+          size: '170px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) =>
             moment(
@@ -105,7 +105,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Номер телефона',
-          size: '150px',
+          size: '400px',
           hidden: !isDeviceCheckingDateExpirationOption,
           render: (elem) => (
             <PhoneNumber>
@@ -147,7 +147,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Статус',
-          size: '230px',
+          size: '300px',
           hidden: !isClosedDeviceOption,
           render: (elem) => {
             const closingStatus =
@@ -167,16 +167,16 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ).format('DD.MM.YYYY');
 
             return (
-              <>
+              <div>
                 {`${closingStatus} ${closingReason}`}
                 <ClosingDate>{closingDate}</ClosingDate>
-              </>
+              </div>
             );
           },
         },
         {
           label: 'Дата последней поверки',
-          size: '150px',
+          size: '170px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             moment(elem.invalidCheckingDatesOption?.lastCheckingDate).format(
@@ -184,8 +184,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
         {
-          label: 'Дата слудующей поверки',
-          size: '150px',
+          label: 'Дата следующей поверки',
+          size: '170px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             moment(elem.invalidCheckingDatesOption?.futureCheckingDate).format(

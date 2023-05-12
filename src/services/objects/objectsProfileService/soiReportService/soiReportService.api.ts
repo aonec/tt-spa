@@ -1,6 +1,6 @@
 import { axios } from '01/axios';
 import { downloadURI } from '01/features/reports/CreateReportModal/utils';
-import { GetAddressesWithCityRequestPayload } from '01/features/settings/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
+import { GetAddressesWithCityRequestPayload } from 'services/workingRanges/uniqueWorkingRangeService/uniqueWorkingRangeService.types';
 import { omit } from 'lodash';
 import {
   HouseManagementResponse,

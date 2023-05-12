@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { ResourceIconLookup } from 'ui-kit/shared_components/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared_components/IndividualDeviceInfo/DeviceStatus';
@@ -9,20 +8,27 @@ import {
   ClosingDate,
   DateLineWrapper,
   Wrapper,
-  DeviceLink,
   ModelWrapper,
   MountPlace,
   SerialNumberWrapper,
+  LinkWrapper,
 } from './IndividualDeviceInfoExtended.styled';
 import { prepareDateForDateLine } from './IndividualDeviceInfoExtended.utils';
-import { translateMountPlace } from '01/utils/translateMountPlace';
 import { Tooltip } from 'antd';
+import {
+  $allIndividualDeviceMountPlaces,
+  AllIndividualDeviceMountPlacesGate,
+} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { useStore } from 'effector-react';
 
 export const IndividualDeviceInfoExtended: FC<
   IndividualDeviceInfoExtendedProps
-> = ({ device }) => {
+> = ({ device, onClick }) => {
   const isActive = device.closingDate === null;
-  const history = useHistory();
+
+  const allIndividualDeviceMountPlaces = useStore(
+    $allIndividualDeviceMountPlaces,
+  );
 
   const preparedLastCheckingDate = prepareDateForDateLine(
     device.lastCheckingDate,
@@ -36,14 +42,24 @@ export const IndividualDeviceInfoExtended: FC<
 
   return (
     <Wrapper>
-      <DeviceLink to={history.location.pathname}>
+      {!allIndividualDeviceMountPlaces && (
+        <AllIndividualDeviceMountPlacesGate />
+      )}
+      <LinkWrapper onClick={onClick} clickable={Boolean(onClick)}>
         <ResourceIconLookup resource={device.resource} />
         <SerialNumberWrapper>{device.serialNumber}</SerialNumberWrapper>
         <ModelWrapper>
           <Tooltip title={device.model}>{device.model}</Tooltip>
         </ModelWrapper>
-        <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
-      </DeviceLink>
+        <MountPlace>
+          {allIndividualDeviceMountPlaces &&
+            device.mountPlace &&
+            allIndividualDeviceMountPlaces.find(
+              (mountPlaceFromServer) =>
+                mountPlaceFromServer.name === device.mountPlace,
+            )?.description}
+        </MountPlace>
+      </LinkWrapper>
       <ApartmentInfo>
         <DeviceStatus
           isActive={isActive}

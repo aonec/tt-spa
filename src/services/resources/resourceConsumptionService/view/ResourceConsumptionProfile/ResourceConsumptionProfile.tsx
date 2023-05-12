@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { ResourceConsumptionGraphDataType } from '../../resourceConsumptionService.types';
-import { ResourceConsumptionFilter } from '../ResourceConsumptionFilter';
 import { ResourceConsumptionGraph } from '../ResourceConsumptionGraph';
 import { SelectResourceConsumptionType } from '../ResourceConsumptionGraph/SelectResourceConsumptionType';
 import { SelectResource } from '../SelectResource';
@@ -12,6 +11,7 @@ import {
   SelectedAddresses,
 } from './ResourceConsumptionProfile.types';
 import { getDisabledGraphTypes } from './ResourceConsumptionProfile.utils';
+import { ResourceConsumptionFilterContainer } from '../../resourceConsumptionFilterService';
 
 export const ResourceConsumptionProfile: FC<
   ResourceConsumptionProfileProps
@@ -19,24 +19,13 @@ export const ResourceConsumptionProfile: FC<
   isLoading,
   resourceConsumptionFilter,
   setResource,
-  setFilter,
   housingConsumptionData,
-  streetsList,
-  selectedHouseManagement,
-  setHouseManagement,
-  houseManagements,
-  handleClearData,
-  handleClearFilter,
   selectedGraphTypes,
   setSelectedGraphTypes,
   additionalConsumptionData,
-  handleClearAdditionalAddressData,
-  treeData,
-  selectCity,
-  selectedCity,
+  summaryConsumption,
+  resource,
 }) => {
-  const { ResourceType } = resourceConsumptionFilter || {};
-
   const [selectedAddresses, setSelectedAddresses] = useState<SelectedAddresses>(
     initialSelectedAddresses,
   );
@@ -60,14 +49,15 @@ export const ResourceConsumptionProfile: FC<
     <Wrapper>
       <GraphWrapper>
         <SelectResource
-          selectedResource={ResourceType || null}
+          selectedResource={resource}
           setResource={setResource}
+          summaryConsumption={summaryConsumption}
         />
 
         <WithLoader isLoading={isLoading}>
           <ResourceConsumptionGraph
             consumptionData={consumptionData}
-            resource={ResourceType}
+            resource={resource}
             startOfMonth={resourceConsumptionFilter?.From || ''}
             checked={selectedGraphTypes}
             additionalConsumptionData={additionalConsumptionData}
@@ -81,10 +71,10 @@ export const ResourceConsumptionProfile: FC<
                 disabled={getDisabledGraphTypes(housingConsumptionData)}
                 checked={selectedGraphTypes}
                 setCheckedGraphTypes={setSelectedGraphTypes}
-                resource={resourceConsumptionFilter?.ResourceType}
+                resource={resource}
                 isAdditionalAddress={Boolean(additionalConsumptionData)}
-                additionalAddress={'Основные адреса'}
-                currentAddress={'Адреса для сравнения'}
+                currentAddress={'Основные адреса'}
+                additionalAddress={'Адреса для сравнения'}
                 selectedAddresses={selectedAddresses}
                 setSelectedAddresses={(selected) =>
                   setSelectedAddresses(selected)
@@ -93,20 +83,7 @@ export const ResourceConsumptionProfile: FC<
             )}
         </WithLoader>
       </GraphWrapper>
-      <ResourceConsumptionFilter
-        setFilter={setFilter}
-        filter={resourceConsumptionFilter}
-        streetsList={streetsList}
-        selectedHouseManagement={selectedHouseManagement}
-        setHouseManagement={setHouseManagement}
-        houseManagements={houseManagements}
-        handleClearData={handleClearData}
-        handleClearFilter={handleClearFilter}
-        treeData={treeData}
-        handleClearAdditionalAddressData={handleClearAdditionalAddressData}
-        selectedCity={selectedCity}
-        selectCity={selectCity}
-      />
+      <ResourceConsumptionFilterContainer />
     </Wrapper>
   );
 };

@@ -5,7 +5,7 @@ import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { DatePicker } from 'ui-kit/DatePicker';
-import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'ui-kit/Button';
@@ -67,7 +67,6 @@ export const EditMainInfo: FC<EditMainInfoProps> = ({
 
       <FormItem label="Серийный номер">
         <Input
-          type="number"
           placeholder="Введите"
           value={values.serialNumber || undefined}
           onChange={(value) => {

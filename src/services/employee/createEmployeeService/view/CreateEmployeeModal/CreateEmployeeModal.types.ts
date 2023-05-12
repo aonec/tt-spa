@@ -16,4 +16,5 @@ export type CreateEmployeeModalProps = {
       }[]
     | null;
   handleCreateEmloyee: (payload: OrganizationUserCreateRequest) => void;
+  isLoading: boolean;
 };

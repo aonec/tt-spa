@@ -5,10 +5,8 @@ const clickableMixin = css`
 `;
 
 export const Wrapper = styled.div<{ clickable: boolean }>`
-  display: flex;
-  align-items: center;
   overflow: hidden;
-  max-width: 250px;
+  max-width: 220px;
   cursor: pointer;
   transition: 0.2s;
 
@@ -20,7 +18,7 @@ export const Wrapper = styled.div<{ clickable: boolean }>`
 `;
 
 export const SerialNumber = styled.div`
-  margin-left: 10px;
+  margin-left: 8px;
   font-size: 16px;
   color: #272f5a;
   white-space: nowrap;
@@ -29,16 +27,32 @@ export const SerialNumber = styled.div`
 `;
 
 export const Model = styled.div`
-  margin-left: 10px;
+  margin-left: 8px;
   font-size: 16px;
   color: #272f5a88;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
 export const IconWrapper = styled.div`
-  min-width: 15px;
+  min-width: 16px;
   display: flex;
   align-items: center;
+`;
+
+export const RowWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const SealWrapper = styled.div`
+  margin-left: 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #272f5ab2;
+  font-size: 12px;
 `;

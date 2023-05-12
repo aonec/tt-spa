@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
-import { Select, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { InputSC } from '01/shared/ui/Fields';
 import { ExtendedSearchTypes, taskCategotiesProps } from './SearchTasks.types';
 import {
   ApartmentNumberWrapper,
   OverFlowSelectSC,
-  SelectSC,
   StyledContainerAdressSection,
   StyledContainerThreeItemsMainTypes,
   StyledTooltiContainer,
@@ -30,6 +28,8 @@ import { AddressSearchFieldsNameLookup } from './SearchTasks.constants';
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
 import { FormItem } from 'ui-kit/FormItem';
 import { taskCategories } from './ToExecutionTasksExtendedSearchForm.constants';
+import { Select } from 'ui-kit/Select';
+import { Input } from 'ui-kit/Input';
 
 const { Option } = Select;
 
@@ -116,7 +116,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
               <QuestionCircleOutlined width={14} height={14} />
             </Tooltip>
           </StyledTooltiContainer>
-          <InputSC
+          <Input
+            small
             data-reading-input="tasksExtendedSearch"
             onChange={(value) =>
               setFieldValue('ApartmentNumber', value.target.value)
@@ -132,7 +133,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
       </StyledContainerAdressSection>
       <StyledContainerThreeItemsMainTypes>
         <FormItem label="Элемент инженерной сети">
-          <SelectSC
+          <Select
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Элемент"
@@ -148,10 +150,11 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
                 </Option>
               );
             })}
-          </SelectSC>
+          </Select>
         </FormItem>
         <FormItem label="Тип ресурса">
-          <SelectSC
+          <Select
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Тип ресурса"
@@ -169,10 +172,11 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
                 </Option>
               );
             })}
-          </SelectSC>
+          </Select>
         </FormItem>
         <FormItem label="Домоуправление">
-          <SelectSC
+          <Select
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             id="HouseManagementId"
@@ -191,12 +195,13 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
                   {value}
                 </Option>
               ))}
-          </SelectSC>
+          </Select>
         </FormItem>
       </StyledContainerThreeItemsMainTypes>
       <StyledContainerThreeItemsMainTypes>
         <FormItem label="Статус">
-          <SelectSC
+          <Select
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Статус"
@@ -214,10 +219,11 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
                 </Option>
               );
             })}
-          </SelectSC>
+          </Select>
         </FormItem>
         <FormItem label="Тип задачи">
           <OverFlowSelectSC
+            small
             data-reading-input="tasksExtendedSearch"
             id="TaskType"
             placeholder="Тип задачи"
@@ -236,7 +242,8 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
           </OverFlowSelectSC>
         </FormItem>
         <FormItem label="Исполнитель">
-          <SelectSC
+          <Select
+            small
             data-reading-input="tasksExtendedSearch"
             showAction={['focus']}
             placeholder="Исполнитель"
@@ -257,7 +264,7 @@ export const ToExecutionTasksExtendedSearchForm: React.FC<
                   {lastName} {firstName}
                 </Option>
               ))}
-          </SelectSC>
+          </Select>
         </FormItem>
       </StyledContainerThreeItemsMainTypes>
     </ToExecutionWrapper>

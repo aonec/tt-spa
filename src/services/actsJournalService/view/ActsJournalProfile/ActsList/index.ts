@@ -1,0 +1,1 @@
+export { ActsList } from './ActsList';

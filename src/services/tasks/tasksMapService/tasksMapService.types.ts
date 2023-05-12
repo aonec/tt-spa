@@ -9,7 +9,7 @@ export type GetHousingStocksWithTasksRequestPayload = {
   EngineeringElement?: ETaskEngineeringElement;
   ResourceTypes?: EResourceType[];
   TimeStatus?: EStageTimeStatus;
-  Type?: EManagingFirmTaskType;
+  TaskType?: EManagingFirmTaskType;
   ExecutorId?: number;
 };
 
