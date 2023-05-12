@@ -48,9 +48,8 @@ export const ObjectProfile: FC<ObjectProfileProps> = ({
             {
               title: 'Редактировать',
               onClick: () => history.push(`/objects/${housingStock.id}/edit`),
-              hidden:
-                !isPermissionToEditHousingStock ||
-                !featureToggles.editHousingStock,
+              hidden: !isPermissionToEditHousingStock,
+              // !featureToggles.editHousingStock,
             },
           ],
         }}
