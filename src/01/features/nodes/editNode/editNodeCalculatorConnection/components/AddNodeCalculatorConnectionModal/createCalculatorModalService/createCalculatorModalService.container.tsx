@@ -9,6 +9,7 @@ export const CreateCalculatorModalContainer = () => {
   const stepNumber = useStore(outputs.$stepNumber);
   const isOpen = useStore(outputs.$isOpen);
   const isLoading = useStore(outputs.$isLoading);
+  const payload = useStore(outputs.$requestPayload);
 
   const goPrevStep = useEvent(inputs.goPrevStep);
   const handleSubmitForm = useEvent(inputs.handleSubmitForm);
@@ -25,6 +26,7 @@ export const CreateCalculatorModalContainer = () => {
         closeModal={closeModal}
         isOpen={isOpen}
         isLoading={isLoading}
+        payload={payload}
       />
     </>
   );

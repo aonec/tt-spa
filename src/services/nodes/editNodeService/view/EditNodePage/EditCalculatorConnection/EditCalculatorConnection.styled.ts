@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 
 export const FooterWrapper = styled.div`
   width: 100%;
-  max-width: 560px;
+  max-width: 640px;
   display: flex;
   align-items: center;
   justify-content: flex-end;

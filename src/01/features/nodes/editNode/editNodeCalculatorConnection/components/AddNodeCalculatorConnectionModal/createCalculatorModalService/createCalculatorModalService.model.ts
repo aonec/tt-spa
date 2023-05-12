@@ -1,8 +1,10 @@
-import { createDomain, sample } from 'effector';
+import { combine, createDomain, sample } from 'effector';
 import { fetchCreateCalculator } from './createCalculatorModalService.api';
 import { CreateCalculatorRequest, MeteringDeviceResponse } from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { CreateCalculatorPayload } from './view/CreateCalculatorModal/CreateCalculatorModal.types';
+import { calculatorsListService } from 'services/calculators/calculatorsListService';
 
 const domain = createDomain('createCalculatorModalService');
 
@@ -35,17 +37,31 @@ const createCalculatorFx = domain.createEffect<
 const calculatorCreated = createCalculatorFx.doneData;
 const $isLoading = createCalculatorFx.pending;
 
-const updateRequestPayload =
-  domain.createEvent<Partial<CreateCalculatorRequest>>();
+const updateRequestPayload = domain.createEvent<CreateCalculatorPayload>();
 const $requestPayload = domain
-  .createStore<Partial<CreateCalculatorRequest>>({})
+  .createStore<CreateCalculatorPayload>({
+    isConnected: false,
+  })
   .on(updateRequestPayload, (prev, data) => ({ ...prev, ...data }))
   .reset(closeModal);
 
 sample({
-  source: $requestPayload,
+  source: combine(
+    $requestPayload,
+    $housingStockId,
+    (payload, housingStockId) => ({ ...payload, housingStockId }),
+  ),
   filter: (payload): payload is CreateCalculatorRequest =>
     Boolean(payload.serialNumber && payload.housingStockId && payload.infoId),
+  fn: (payload) =>
+    ({
+      ...payload,
+      documentsIds: [
+        payload.deviceAcceptanceAct?.id,
+        payload.devicePassport?.id,
+        payload.deviceTestCertificates?.id,
+      ].filter((documentId): documentId is number => Boolean(documentId)),
+    } as CreateCalculatorRequest),
   clock: handleSubmitForm,
   target: createCalculatorFx,
 });
@@ -53,13 +69,20 @@ sample({
 sample({
   source: $stepNumber,
   clock: updateRequestPayload,
-  filter: (stepNumber) => stepNumber < 4,
+  filter: (stepNumber) => stepNumber === 3,
+  target: handleSubmitForm,
+});
+
+sample({
+  source: $stepNumber,
+  clock: updateRequestPayload,
+  filter: (stepNumber) => stepNumber < 3,
   target: goNextStep,
 });
 
 sample({
   clock: calculatorCreated,
-  target: closeModal,
+  target: [calculatorsListService.inputs.refetchCalculators, closeModal],
 });
 
 calculatorCreated.watch(() => message.success('Вычислитель успешно создан!'));
@@ -77,5 +100,10 @@ export const createCalculatorModalService = {
     openModal,
     calculatorCreated,
   },
-  outputs: { $stepNumber, $isOpen, $isLoading },
+  outputs: {
+    $stepNumber,
+    $isOpen,
+    $isLoading,
+    $requestPayload,
+  },
 };

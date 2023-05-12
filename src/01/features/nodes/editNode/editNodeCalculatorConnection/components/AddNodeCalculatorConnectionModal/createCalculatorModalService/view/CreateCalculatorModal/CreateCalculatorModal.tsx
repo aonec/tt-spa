@@ -1,12 +1,12 @@
 import { useStore } from 'effector-react';
 import React, { FC, ReactNode, useMemo } from 'react';
-import { BaseInfoAddNodeCalculatorConnectionForm } from '../../../forms/BaseInfoAddNodeCalculatorConnectionForm';
-import { ConnectionSettingsForm } from '../../../forms/ConnectionSettingsForm';
-import { FilesUploadForm } from '../../../forms/FilesUploadsForm';
+import { BaseInfoForm } from './BaseInfoForm';
+import { ConnectionSettingsForm } from './ConnectionSettingsForm';
 import { calculatorsInfoService } from 'services/calculators/calculatorsInfoService';
 import { Tabs } from 'ui-kit/Tabs';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { CreateCalculatorModalProps } from './CreateCalculatorModal.types';
+import { CreateCalculatorModalFilesUploadForm } from './CreateCalculatorModalFilesUploadForm/CreateCalculatorModalFilesUploadForm';
 const { TabPane } = Tabs;
 
 const formIds: { [key in number]: string } = {
@@ -26,18 +26,49 @@ export const CreateCalculatorModal: FC<CreateCalculatorModalProps> = ({
   goPrevStep,
   handleSubmitForm,
   isLoading,
+  payload,
 }) => {
   const calculatorTypes = useStore(outputs.$calculatorTypesSelectItems);
-  const stepComponentDictionary: { [key: number]: ReactNode } = {
-    1: (
-      <BaseInfoAddNodeCalculatorConnectionForm
-        calculatorTypes={calculatorTypes}
-        formId={formIds[1]}
-      />
-    ),
-    2: <ConnectionSettingsForm formId={formIds[2]} />,
-    3: <FilesUploadForm formId={formIds[3]} />,
-  };
+  const stepComponentDictionary: { [key: number]: ReactNode } = useMemo(
+    () => ({
+      1: (
+        <BaseInfoForm
+          calculatorTypes={calculatorTypes}
+          formId={formIds[1]}
+          updatePayload={updatePayload}
+          initialValues={payload}
+        />
+      ),
+      2: (
+        <ConnectionSettingsForm
+          formId={formIds[2]}
+          updatePayload={updatePayload}
+          initialValues={payload}
+        />
+      ),
+      3: (
+        <CreateCalculatorModalFilesUploadForm
+          formId={formIds[3]}
+          updatePayload={updatePayload}
+          initialValues={payload}
+        />
+      ),
+    }),
+    [calculatorTypes, updatePayload, payload],
+  );
+
+  const form = useMemo(() => {
+    return (
+      <>
+        <Tabs defaultActiveKey="1" activeKey={String(stepNumber)}>
+          <TabPane tab="Шаг 1. Общие данные" key="1"></TabPane>
+          <TabPane tab="Шаг 2. Настройка соединения" key="2"></TabPane>
+          <TabPane tab="Шаг 3. Документы" key="3"></TabPane>
+        </Tabs>
+        {stepComponentDictionary[stepNumber]}
+      </>
+    );
+  }, [stepNumber, stepComponentDictionary]);
 
   const submitBtnText = useMemo(
     () => (stepNumber === 3 ? 'Сохранить' : 'Далее'),
@@ -57,17 +88,10 @@ export const CreateCalculatorModal: FC<CreateCalculatorModalProps> = ({
         onCancel={stepNumber === 1 ? closeModal : goPrevStep}
         submitBtnText={submitBtnText}
         cancelBtnText={cancelBtnText}
-        onSubmit={stepNumber === 3 ? handleSubmitForm : () => void null}
         title="Добавление нового вычислителя"
-        form={stepComponentDictionary[stepNumber]}
+        form={form}
         formId={formIds[stepNumber]}
-      >
-        <Tabs defaultActiveKey="1" activeKey={String(stepNumber)}>
-          <TabPane tab="Шаг 1. Общие данные" key="1"></TabPane>
-          <TabPane tab="Шаг 2. Настройка соединения" key="2"></TabPane>
-          <TabPane tab="Шаг 3. Документы" key="3"></TabPane>
-        </Tabs>
-      </FormModal>
+      ></FormModal>
     </>
   );
 };
