@@ -14,6 +14,7 @@ interface Props {
     model: string;
     label: string;
   }[];
+  formId: string;
 }
 
 export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({

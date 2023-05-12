@@ -5,7 +5,11 @@ import { DocumentsInputWrapper } from './FilesUploadsForm.styled';
 import { useForm } from 'effector-forms/dist';
 import { createCalcuatorService } from '../CreateCalculatorModal/models';
 
-export const FilesUploadForm: FC = () => {
+export type FilesUploadFormProps = {
+  formId: string;
+};
+
+export const FilesUploadForm: FC<FilesUploadFormProps> = ({ formId }) => {
   const { fields } = useForm(createCalcuatorService.forms.documentsForm);
 
   return (

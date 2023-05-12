@@ -1,5 +1,4 @@
 import { combine, createDomain, forward, sample } from 'effector';
-import { Stage } from './types';
 import { createForm } from 'effector-forms';
 import {
   CreateCalculatorRequest,
@@ -18,28 +17,14 @@ const createCalcuatorDomain = createDomain();
 
 const $isCreateCalculatorModalOpen = createCalcuatorDomain.createStore(false);
 
-const $stage = createCalcuatorDomain.createStore<Stage>('1');
+const $stage = createCalcuatorDomain.createStore<number>(1);
 
 const nextStage = createCalcuatorDomain.createEvent();
 const previousStage = createCalcuatorDomain.createEvent();
 
-const setStage = createCalcuatorDomain.createEvent<Stage>();
-
 const resetStage = createCalcuatorDomain.createEvent();
 
 const CreateCalculatorGate = createGate<{ housingStockId?: number }>();
-
-$stage.on(setStage, (_, value) => value);
-
-sample({
-  clock: resetStage,
-  fn: (): Stage => '1',
-  target: setStage,
-});
-
-$stage
-  .on(nextStage, (value) => String(Number(value) + 1) as Stage)
-  .on(previousStage, (value) => String(Number(value) - 1) as Stage);
 
 const openCreateCalculatorModal = createCalcuatorDomain.createEvent();
 const closeCreateCalculatorModal = createCalcuatorDomain.createEvent();

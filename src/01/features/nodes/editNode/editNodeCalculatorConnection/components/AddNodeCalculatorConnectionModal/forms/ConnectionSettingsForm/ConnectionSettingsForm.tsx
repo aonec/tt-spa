@@ -1,21 +1,25 @@
-import { Form, Switch } from 'antd';
+import { Switch } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import React from 'react';
-import styled from 'styled-components';
-import { Flex } from '../../../../../../../shared/ui/Layout/Flex';
-import { Grid } from '../../../../../../../shared/ui/Layout/Grid';
-import { Space } from '../../../../../../../shared/ui/Layout/Space/Space';
-import { addNodeCalculatorService } from '../AddNodeCalculatorConnectionModal.models';
+import React, { FC } from 'react';
+import { Flex } from '../../../../../../../../shared/ui/Layout/Flex';
+import { Space } from '../../../../../../../../shared/ui/Layout/Space/Space';
+import { addNodeCalculatorService } from '../../AddNodeCalculatorConnectionModal.models';
 import { Input } from 'ui-kit/Input';
+import { FormItem } from 'ui-kit/FormItem';
+import { Wrapper } from './ConnectionSettingsForm.styled';
+import { ConnectionSettingsFormProps } from './ConnectionSettingsForm.types';
+import { Form } from 'antd';
 
-export const ConnectionSettingsForm = () => {
+export const ConnectionSettingsForm: FC<ConnectionSettingsFormProps> = ({
+  formId,
+}) => {
   const { fields } = useForm(
     addNodeCalculatorService.inputs.connectionSettingsForm,
   );
 
   return (
-    <div>
-      <Wrap temp="1fr 1fr" gap="15px">
+    <Form id={formId}>
+      <Wrapper>
         <Flex>
           <Switch
             defaultChecked
@@ -28,15 +32,15 @@ export const ConnectionSettingsForm = () => {
           </div>
         </Flex>
         <div></div>
-        <Form.Item label="IP адрес вычислителя">
+        <FormItem label="IP адрес вычислителя">
           <Input
             value={fields.ipV4.value}
             onChange={(e: any) => fields.ipV4.onChange(e.target.value)}
             disabled={!fields.isConnected.value}
             placeholder="Введите IP адрес вычислителя"
           />
-        </Form.Item>
-        <Form.Item label="Порт">
+        </FormItem>
+        <FormItem label="Порт">
           <Input
             type="number"
             value={fields.port.value}
@@ -44,9 +48,9 @@ export const ConnectionSettingsForm = () => {
             disabled={!fields.isConnected.value}
             placeholder="Введите номер порта"
           />
-        </Form.Item>
-      </Wrap>
-      <Form.Item label="Сетевой адрес вычислителя">
+        </FormItem>
+      </Wrapper>
+      <FormItem label="Сетевой адрес вычислителя">
         <Input
           type="number"
           value={fields.deviceAddress.value}
@@ -54,9 +58,7 @@ export const ConnectionSettingsForm = () => {
           disabled={!fields.isConnected.value}
           placeholder="Введите сетевой адрес вычислителя "
         />
-      </Form.Item>
-    </div>
+      </FormItem>
+    </Form>
   );
 };
-
-const Wrap = styled(Grid)``;
