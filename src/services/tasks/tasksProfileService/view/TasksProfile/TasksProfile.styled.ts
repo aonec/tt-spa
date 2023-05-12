@@ -2,6 +2,10 @@ import { Pagination, Tabs } from 'antd';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
+  margin-top: -16px;
+`;
+
+export const ContentWrapper = styled.div`
   max-width: 960px;
 `;
 
@@ -22,7 +26,11 @@ export const FiltrationWrapper = styled.div`
   top: 0px;
   background: white;
   z-index: 10;
-  max-width: calc(960px + 32px);
   padding: 0 16px 0px 16px;
   transform: translateX(-16px);
+`;
+
+export const HeaderWrapper = styled.div<{ isList?: boolean }>`
+  padding-top: 16px;
+  width: ${({ isList }) => (isList ? 'calc(100% + 32px)' : '100%')};
 `;

@@ -10,6 +10,7 @@ import { WithLoader } from 'ui-kit/shared_components/WithLoader';
 import { Empty } from 'antd';
 import { Button } from 'ui-kit/Button';
 import { NodeConnection } from 'services/nodes/nodeProfileService/view/NodeProfilePage/NodeConnection';
+import { calculatorsListService } from 'services/calculators/calculatorsListService';
 
 export const EditNodeCalculatorConnectionContainer = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -27,8 +28,13 @@ export const EditNodeCalculatorConnectionContainer = () => {
 
   const showCalculator = Boolean(node?.calculator);
 
+  const { CalculatorsGate } = calculatorsListService.gates;
+
+  console.log(node?.housingStockId);
+
   return (
     <>
+      {node && <CalculatorsGate housingStockId={node.housingStockId} />}
       <RemoveConnectionConfirmModalContainer />
       <AddNodeCalculatorConnectionModalContainer />
       <NodeGate id={Number(nodeId)} />

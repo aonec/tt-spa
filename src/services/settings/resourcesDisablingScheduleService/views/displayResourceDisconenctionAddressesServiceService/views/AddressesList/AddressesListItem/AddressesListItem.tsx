@@ -12,10 +12,14 @@ export const AddressesListItem: FC<AddressesListItemProps> = ({
 }) => {
   const housingStocksNumber = housingStocks.reduce((acc, address) => {
     const number = address.address?.mainAddress?.number;
+    const corpus = address.address?.mainAddress?.corpus;
+
     if (!number) {
       return acc;
     }
-    return [...acc, number];
+    const addressText = corpus ? `${number} к.${corpus}` : number;
+
+    return [...acc, addressText];
   }, [] as string[]);
 
   return (

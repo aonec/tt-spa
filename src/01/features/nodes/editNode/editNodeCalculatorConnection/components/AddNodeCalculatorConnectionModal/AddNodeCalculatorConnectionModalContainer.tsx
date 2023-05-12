@@ -17,13 +17,10 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
 
   const calculators = useStore(calculatorsListService.outputs.$calculatorsList);
 
-  const { CalculatorsGate } = calculatorsListService.gates;
-
   const loading = useStore(addNodeCalculatorService.outputs.$loading);
 
   return (
     <>
-      {node && <CalculatorsGate housingStockId={node.housingStockId} />}
       <AddNodeCalculatorConnectionModal
         node={node}
         loading={loading}

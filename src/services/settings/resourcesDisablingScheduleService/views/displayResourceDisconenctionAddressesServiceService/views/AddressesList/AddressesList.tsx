@@ -24,7 +24,7 @@ export const AddressesList: FC<AddressesListProps> = ({ streets }) => {
           <Divider type="vertical" />
         </GroupWrapper>
         <GroupWrapper>
-          <div>Номер домов</div>
+          <div>Номера домов</div>
         </GroupWrapper>
       </Wrapper>
       {list}
