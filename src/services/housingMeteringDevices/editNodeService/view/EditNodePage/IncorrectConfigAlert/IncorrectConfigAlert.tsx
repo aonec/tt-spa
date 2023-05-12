@@ -1,4 +1,4 @@
-import { Alert } from '01/shared/ui/Alert';
+import { Alert } from 'ui-kit/Alert';
 import React, { FC, useState } from 'react';
 import {
   ErrorContentWrapper,
@@ -6,6 +6,7 @@ import {
   WarningsList,
 } from './IncorrectConfigAlert.styled';
 import { IncorrectConfigAlertProps } from './IncorrectConfigAlert.types';
+import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const IncorrectConfigAlert: FC<IncorrectConfigAlertProps> = ({
   validationResultArray,
@@ -14,7 +15,7 @@ export const IncorrectConfigAlert: FC<IncorrectConfigAlertProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Alert type="incorrect" color="FC525B">
+    <Alert type={AlertType.danger} icon={AlertIconType.incorrect}>
       <ErrorContentWrapper>
         <span>{description}</span>
 

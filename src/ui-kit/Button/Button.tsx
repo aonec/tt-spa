@@ -11,6 +11,8 @@ export const Button: FC<ButtonProps> = (props) => {
     size = 'middle',
     disabled = false,
     floating,
+    htmlForm,
+    htmlType,
     ...antdProps
   } = props;
 
@@ -21,6 +23,8 @@ export const Button: FC<ButtonProps> = (props) => {
       btnType={type}
       floating={floating}
       disabled={disabled || isLoading}
+      form={htmlForm}
+      htmlType={htmlType}
     >
       {props.children}
       {icon && !isLoading && <IconWrapper>{icon}</IconWrapper>}

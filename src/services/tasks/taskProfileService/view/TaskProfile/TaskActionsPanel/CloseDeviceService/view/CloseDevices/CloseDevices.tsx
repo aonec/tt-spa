@@ -1,4 +1,4 @@
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { Checkbox } from 'antd';
 import React, { FC } from 'react';
 import { IndividualDeviceInfoExtended } from 'ui-kit/shared_components/IndividualDeviceInfoExtended';

@@ -29,7 +29,7 @@ import {
 import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExistingApartment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
-import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmationAddingExistingPersonalNumber } from '../../../../services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 import { Select } from 'ui-kit/Select';
 
 export const SplitPersonalNumber = () => {

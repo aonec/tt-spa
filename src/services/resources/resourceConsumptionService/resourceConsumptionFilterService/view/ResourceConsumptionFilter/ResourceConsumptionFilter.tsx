@@ -36,6 +36,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   selectCity,
   selectedCity,
   isLoading,
+  handleClearSummary,
 }) => {
   const existingCities = useStore($existingCities);
   const [isAdditionalAddress, setIsAdditionalAddress] = useState(false);
@@ -76,15 +77,15 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
   }, [filter, setValues]);
 
   const handleReset = useCallback(() => {
-    setHouseManagement('');
-    handleClearData();
-    handleClearAdditionalAddressData();
     handleClearFilter();
+    handleClearData();
+    handleClearSummary();
+    handleClearAdditionalAddressData();
   }, [
-    setHouseManagement,
     handleClearData,
     handleClearFilter,
     handleClearAdditionalAddressData,
+    handleClearSummary,
   ]);
 
   return (
@@ -113,7 +114,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
           </FormItem>
           <FormItem label="Город">
             <Select
-              search
+              small
               disabled={!(existingCities || []).length}
               onChange={(value) => selectCity(String(value))}
               value={selectedCity || undefined}
@@ -129,7 +130,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         </FormWrapper>
         <FormItem label="Домоуправление">
           <Select
-            search
+            small
             disabled={!houseManagements.length}
             placeholder="Выберите из списка"
             value={selectedHouseManagement || undefined}

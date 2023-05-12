@@ -14,7 +14,7 @@ import {
   setAddPersonalNumberStatus,
 } from './models';
 import { useHistory } from 'react-router';
-import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmationAddingExistingPersonalNumber } from '../../../../services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const AddPersonalNumberPage = () => {

@@ -24,6 +24,7 @@ import { ConnectionInfo } from './ConnectionInfo';
 import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 const { TabPane } = Tabs;
 
@@ -111,7 +112,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         {
           title: 'Снять вычислитель с учёта',
           onClick: () => handleOpenCloseCalculatorModal(calculator),
-          color: 'danger',
+          color: ContextMenuButtonColor.danger,
           hidden: !isPermitionToCalculatorActions,
         },
       ],

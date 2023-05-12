@@ -11,19 +11,19 @@ import {
   Wrapper,
   Grid,
   StyledExpirationDate,
-  ResetButton,
 } from './SearchDevices.styled';
 import { SearchDevicesProps } from './SearchDevices.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { SearchDevicesFormikFieldsLookup } from './SearchDevices.constants';
 import { DevicesSearchType } from 'services/housingMeteringDevices/devicesPageService/devicesPageService.types';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { FormItem } from 'ui-kit/FormItem';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
 import { SearchIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { Button } from 'ui-kit/Button';
 
 const { Option } = Select;
 
@@ -94,7 +94,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     return (
       <FormItem>
         <Input
-          search
+          small
           onChange={(value) => {
             setSerialNumber(value.target.value);
           }}
@@ -128,7 +128,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   Сортировать по:
                 </StyledLabelSimple>
                 <Select
-                  search
+                  small
                   style={{ width: '65%' }}
                   value={values?.OrderBy}
                   placeholder="Дате проверки"
@@ -140,14 +140,14 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                 </Select>
               </FlexCenterRow>
             </FormItem>
-            <ResetButton
+            <Button
               type="ghost"
               onClick={handleClear}
               size="small"
               icon={<ClearIconSC />}
             >
               Сбросить
-            </ResetButton>
+            </Button>
           </StyledGrid>
 
           <Grid>
@@ -157,7 +157,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
                   Истекает дата поверки:
                 </StyledLabelSimple>
                 <Select
-                  search
+                  small
                   placeholder="Выберите"
                   style={{ width: '65%' }}
                   value={values['Filter.ExpiresCheckingDateAt']}

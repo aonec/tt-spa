@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
 import { accountingNodesFilterForm } from '../../models';
-import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useRef } from 'react';
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -17,6 +16,7 @@ import {
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { getArrayByCountRange } from './Filter.utils';
 import { Select } from 'ui-kit/Select';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
@@ -61,7 +61,7 @@ export const AccountingNodesFilter = () => {
           onChange={fields.city.onChange as any}
           value={fields.city.value}
           onFocus={clearValuesOnFocusCallback(0)}
-          search
+          small
         >
           {cities?.map((elem, index) => (
             <Select.Option key={index} value={elem}>
@@ -69,7 +69,8 @@ export const AccountingNodesFilter = () => {
             </Select.Option>
           ))}
         </Select>
-        <StyledAutocomplete
+        <AutoComplete
+          small
           placeholder="Улица"
           ref={streetRef}
           value={fields.street.value}
@@ -81,7 +82,8 @@ export const AccountingNodesFilter = () => {
           onFocus={clearValuesOnFocusCallback(1)}
           options={options}
         />
-        <StyledAutocomplete
+        <AutoComplete
+          small
           placeholder="Дом"
           value={fields.house.value}
           onChange={fields.house.onChange}

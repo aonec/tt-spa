@@ -1,6 +1,6 @@
 import React from 'react';
 import { FC } from 'react';
-import { ContextMenuButton } from '../../../01/shared/ui/ContextMenuButton';
+import { ContextMenuButton } from '../../ContextMenuButton/ContextMenuButton';
 import {
   ContentWrapper,
   PageHeaderStyled,

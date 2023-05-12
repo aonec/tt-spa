@@ -34,7 +34,7 @@ const fetchHousingStocksWithTasksFx = domain.createEffect<
 
 const $housingStocksWithTasks = domain
   .createStore<HousingStockWithTasksResponse[]>([])
-  .on(fetchHousingStocksWithTasksFx.doneData, (_, data) => data);
+  .on(fetchHousingStocksWithTasksFx.doneData, (_, data = []) => [...data]);
 
 const fetchTaskFx = domain.createEffect<number, TaskResponse>(getTask);
 

@@ -12,8 +12,8 @@ import {
   Wrapper,
 } from './IndividualDevicesAddressSearch.styled';
 import { IndividualDevicesAddressSearchProps } from './IndividualDevicesAddressSearch.types';
-import { ResetButton } from 'services/housingMeteringDevices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
+import { Button } from 'ui-kit/Button';
 
 export const IndividualDevicesAddressSearch: FC<
   IndividualDevicesAddressSearchProps
@@ -96,7 +96,7 @@ export const IndividualDevicesAddressSearch: FC<
             >
               Закрытые приборы
             </CheckboxSC>
-            <ResetButton
+            <Button
               type="ghost"
               onClick={() => {
                 clearSearchPayload();
@@ -106,7 +106,7 @@ export const IndividualDevicesAddressSearch: FC<
               icon={<ClearIconSC />}
             >
               Сбросить
-            </ResetButton>
+            </Button>
           </SearchInputsWrapper>
         </SearchWrapper>
       </IndividualDevicesExtendedSearch>

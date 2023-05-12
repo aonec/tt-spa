@@ -1613,6 +1613,7 @@ export enum EIndividualDeviceOrderRule {
   Resource = 'Resource',
   ApartmentNumber = 'ApartmentNumber',
   SerialNumber = 'SerialNumber',
+  Address = 'Address',
 }
 
 export enum EIndividualDeviceRateType {
@@ -2002,7 +2003,6 @@ export enum EStageActionType {
   AddEmailTemplate = 'AddEmailTemplate',
   AddPhotos = 'AddPhotos',
   SetApplicationCompletionDate = 'SetApplicationCompletionDate',
-  Returnable = 'Returnable',
   AddComment = 'AddComment',
   AddApartmentCheck = 'AddApartmentCheck',
   FixReading = 'FixReading',
@@ -3011,7 +3011,7 @@ export interface HousingStock {
 
 export interface HousingStockAddressCreateRequest {
   district?: string | null;
-  city: string;
+  city?: string | null;
   street: string;
   number: string;
   corpus?: string | null;
@@ -3037,11 +3037,18 @@ export interface HousingStockAddressResponse {
   additionalAddresses: HousingStockAddressItemResponse[] | null;
 }
 
+export interface HousingStockAddressUpdateRequest {
+  district?: string | null;
+  number?: string | null;
+  corpus?: string | null;
+}
+
 export interface HousingStockCreateRequest {
-  /** @format uuid */
-  heatingStationId: string;
   mainAddress: HousingStockAddressCreateRequest;
   otherAddresses?: HousingStockAddressCreateRequest[] | null;
+
+  /** @format uuid */
+  heatingStationId: string;
   coordinates?: PointResponse | null;
 
   /** @format uuid */
@@ -3051,12 +3058,36 @@ export interface HousingStockCreateRequest {
   nonResidentialHouseType?: ENonResidentialHouseType | null;
 
   /** @format int32 */
-  numberOfFloors?: number | null;
+  numberOfEntrances?: number | null;
 
   /** @format int32 */
-  numberOfEntrances?: number | null;
+  numberOfFloors?: number | null;
   isThereElevator?: boolean | null;
   index?: string | null;
+  city?: string | null;
+
+  /**
+   * @format int32
+   * @min 1800
+   * @max 2100
+   */
+  constructionYear?: number | null;
+
+  /** @format int32 */
+  numberOfApartments?: number | null;
+
+  /** @format double */
+  totalLivingArea?: number | null;
+
+  /** @format double */
+  areaOfNonResidential?: number | null;
+
+  /** @format double */
+  houseArea?: number | null;
+
+  /** @format double */
+  totalArea?: number | null;
+  hasIndividualHeatingStation?: boolean;
 }
 
 export interface HousingStockDeviceListResponse {
@@ -3179,9 +3210,6 @@ export interface HousingStockResponse {
 
   /** @format double */
   totalArea: number | null;
-
-  /** @format date-time */
-  constructionDate: string | null;
   hasIndividualHeatingStation: boolean;
   heatingStation: HeatingStationShortResponse | null;
   managementFirmName: string | null;
@@ -3197,6 +3225,9 @@ export interface HousingStockResponse {
 
   /** @format int32 */
   numberOfTasks: number;
+
+  /** @format int32 */
+  constructionYear: number | null;
 }
 
 export interface HousingStockResponseSuccessApiResponse {
@@ -3213,7 +3244,13 @@ export interface HousingStockShortResponse {
 }
 
 export interface HousingStockUpdateRequest {
-  houseCategory?: EHouseCategory | null;
+  /** @format uuid */
+  heatingStationId?: string | null;
+  hasIndividualHeatingStation?: boolean | null;
+  coordinates?: PointResponse | null;
+
+  /** @format uuid */
+  houseManagementId?: string | null;
   livingHouseType?: ELivingHouseType | null;
   nonResidentialHouseType?: ENonResidentialHouseType | null;
 
@@ -3223,6 +3260,14 @@ export interface HousingStockUpdateRequest {
   /** @format int32 */
   numberOfFloors?: number | null;
   isThereElevator?: boolean | null;
+  index?: string | null;
+
+  /**
+   * @format int32
+   * @min 1800
+   * @max 2100
+   */
+  constructionYear?: number | null;
 
   /** @format int32 */
   numberOfApartments?: number | null;
@@ -3238,24 +3283,6 @@ export interface HousingStockUpdateRequest {
 
   /** @format double */
   totalArea?: number | null;
-
-  /** @format date-time */
-  constructionDate?: string | null;
-  hasIndividualHeatingStation?: boolean | null;
-
-  /** @format uuid */
-  heatingStationId?: string | null;
-
-  /** @format uuid */
-  houseManagementId?: string | null;
-
-  /** @format int32 */
-  inspectorId?: number | null;
-
-  /** @format int32 */
-  inspectedDay?: number | null;
-  coordinates?: PointResponse | null;
-  index?: string | null;
 }
 
 export interface HousingStockWithCoordinatesResponse {
@@ -3749,6 +3776,10 @@ export interface IndividualDeviceResponseFromDevicePage {
   /** @format date-time */
   futureCheckingDate?: string;
   consumption?: IndividualDeviceConsumption | null;
+  sealNumber?: string | null;
+
+  /** @format date-time */
+  sealInstallationDate?: string | null;
 }
 
 export interface IndividualDeviceResponseFromDevicePageSuccessApiResponse {
@@ -5215,7 +5246,6 @@ export interface StageListResponseWrappedListResponseSuccessApiResponse {
 }
 
 export interface StagePushRequest {
-  comment?: string | null;
   emailNotify?: StageEmailNotifyRequest | null;
 
   /** @format int32 */
@@ -5240,21 +5270,19 @@ export interface StagePushRequest {
 
   /** @format date-time */
   applicationCompletionDate?: string | null;
+  comment?: string | null;
 }
 
 export interface StageResponse {
   /** @format int32 */
   id: number;
   potentialNextStageIds: number[] | null;
-
-  /** @format int32 */
-  number: number;
   name: string | null;
   perpetrator: OrganizationUserShortResponse | null;
   status: EStageStatus;
   actions: EStageActionType[] | null;
   additionalActions: EStageActionType[] | null;
-  allowedDocumentTypes: string[] | null;
+  allowedDocumentTypes: EDocumentType[] | null;
 
   /** @format date-time */
   closingTime: string | null;
@@ -5574,13 +5602,6 @@ export interface SwitchMagneticSealRequest {
   magneticSealTypeName?: string | null;
 }
 
-export interface TaskAssignToMultipleRequest {
-  taskIds: number[];
-
-  /** @format int32 */
-  nextPerpetratorId: number;
-}
-
 export interface TaskCommentRequest {
   comment?: string | null;
 }
@@ -5665,7 +5686,7 @@ export enum TaskGroupingFilter {
   Observing = 'Observing',
   NotArchived = 'NotArchived',
   Archived = 'Archived',
-  Returnable = 'Returnable',
+  Revertable = 'Revertable',
 }
 
 export interface TaskListResponse {
@@ -5687,7 +5708,6 @@ export interface TaskListResponse {
   address: FullAddressResponse | null;
   perpetrator: OrganizationUserShortResponse | null;
   hasChanged: boolean;
-  needsValidation: boolean;
   devices: MeteringDeviceSearchListResponse[] | null;
   pipeNode: PipeNodeResponse | null;
   mainHomeowner: HomeownerAccountListResponse | null;
@@ -5734,6 +5754,7 @@ export interface TaskResponse {
     | ETaskConfirmationTypeStringDictionaryItem[]
     | null;
   housingStockCoordinates: PointResponse | null;
+  canBeReverted: boolean;
 }
 
 export interface TaskResponseSuccessApiResponse {
@@ -5761,6 +5782,9 @@ export interface TaskStatisticsItem {
   isEmergency?: boolean;
   isClosed?: boolean;
   creationReason?: string | null;
+
+  /** @format date-time */
+  creationTime?: string;
 }
 
 export interface TaskStatisticsResponse {
@@ -6848,7 +6872,7 @@ export class Api<
      * @secure
      */
     authLogoutCreate: (data: LogoutRequest, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Auth/logout`,
         method: 'POST',
         body: data,
@@ -9012,6 +9036,77 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksAddressesCreate
+     * @summary HousingStocksCreate
+     * @request POST:/api/HousingStocks/{housingStockId}/Addresses
+     * @secure
+     */
+    housingStocksAddressesCreate: (
+      housingStockId: number,
+      data: HousingStockAddressCreateRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/Addresses`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksAddressesUpdate
+     * @summary HousingStocksUpdate
+     * @request PUT:/api/HousingStocks/{housingStockId}/Addresses/{addressId}
+     * @secure
+     */
+    housingStocksAddressesUpdate: (
+      housingStockId: number,
+      addressId: number,
+      data: HousingStockAddressUpdateRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/Addresses/${addressId}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
+     *
+     * @tags HousingStocks
+     * @name HousingStocksAddressesDelete
+     * @summary HousingStocksUpdate
+     * @request DELETE:/api/HousingStocks/{housingStockId}/Addresses/{addressId}
+     * @secure
+     */
+    housingStocksAddressesDelete: (
+      housingStockId: number,
+      addressId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/Addresses/${addressId}`,
+        method: 'DELETE',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags HousingStocks
@@ -10026,7 +10121,7 @@ export class Api<
      */
     individualDeviceReadingsDataForSubscriberAndNormativeConsumptionPlotList: (
       query: {
-        HousingStockId: number;
+        HousingStockIds: number[];
         ResourceType: EResourceType;
         From: string;
         To: string;
@@ -12093,61 +12188,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags PipeNodes
-     * @name PipeNodesDataForHousingConsumptionPlotList
-     * @summary HousingMeteringDeviceReadingsRead
-     * @request GET:/api/PipeNodes/DataForHousingConsumptionPlot
-     * @secure
-     */
-    pipeNodesDataForHousingConsumptionPlotList: (
-      query: {
-        HousingStockId: number;
-        ResourceType: EResourceType;
-        From: string;
-        To: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        GetDataForHousingConsumptionPlotResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/PipeNodes/DataForHousingConsumptionPlot`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li>
-     *
-     * @tags PipeNodes
-     * @name PipeNodesSummaryHousingConsumptionsByResourcesList
-     * @summary HousingMeteringDeviceReadingsRead
-     * @request GET:/api/PipeNodes/SummaryHousingConsumptionsByResources
-     * @secure
-     */
-    pipeNodesSummaryHousingConsumptionsByResourcesList: (
-      query: { HousingStockIds: number[]; From: string; To: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        GetSummaryHousingConsumptionsByResourcesResponseSuccessApiResponse,
-        ErrorApiResponse
-      >({
-        path: `/api/PipeNodes/SummaryHousingConsumptionsByResources`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
@@ -13626,28 +13666,6 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li>
-     *
-     * @tags Tasks
-     * @name TasksAssignMultipleCreate
-     * @summary TaskAssign
-     * @request POST:/api/Tasks/assignMultiple
-     * @secure
-     */
-    tasksAssignMultipleCreate: (
-      data: TaskAssignToMultipleRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/Tasks/assignMultiple`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
@@ -13660,24 +13678,6 @@ export class Api<
       this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/filters`,
         method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
-     *
-     * @tags Tasks
-     * @name TasksReturnCreate
-     * @summary TasksExecute
-     * @request POST:/api/Tasks/{taskId}/return
-     * @secure
-     */
-    tasksReturnCreate: (taskId: number, params: RequestParams = {}) =>
-      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Tasks/${taskId}/return`,
-        method: 'POST',
         secure: true,
         format: 'json',
         ...params,

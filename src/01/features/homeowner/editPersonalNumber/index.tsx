@@ -18,7 +18,7 @@ import {
 import { message } from 'antd';
 import { CloseHomeownerAccountModal } from './components/CloseHomeownerAccountModal';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { ConfirmationAddingExistingPersonalNumber } from './components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmationAddingExistingPersonalNumber } from '../../../../services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 import { PersonalNumberFormMountPlaceType } from './components/PersonalNumberEditForm/personalNumberEditForm.controller';
 
 export const EditHomeownerPersonalNumberPage = () => {

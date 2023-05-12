@@ -1,5 +1,5 @@
 import { useSwitchInputOnEnter } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage.hook';
-import { fromEnter } from '01/shared/ui/DatePickerNative';
+import { fromEnter } from 'ui-kit/shared_components/DatePickerNative';
 import { useFormik } from 'formik';
 import { EActResourceType, EApartmentStatus } from 'myApi';
 import React, { FC, useCallback } from 'react';
@@ -15,10 +15,10 @@ import {
   Wrapper,
 } from './SerialNumberSearch.styled';
 import { IndividualDevicesViewBySerialNumberSearchProps } from './SerialNumberSearch.types';
-import { ClearIconSC } from '01/shared/ui/ExtendedSearch/components';
-import { ResetButton } from 'services/housingMeteringDevices/devicesProfileService/view/SearchDevices/SearchDevices.styled';
+import { ClearIconSC } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
+import { Button } from 'ui-kit/Button';
 
 export const IndividualDevicesViewBySerialNumberSearch: FC<
   IndividualDevicesViewBySerialNumberSearchProps
@@ -68,7 +68,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
       >
         <SearchFieldsWrapper>
           <Input
-            search
+            small
             data-reading-input={'searchBySerialNumber'}
             prefix={<SearchIcon />}
             type="text"
@@ -81,7 +81,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             })}
           />
           <Select
-            search
+            small
             data-reading-input={'searchBySerialNumber'}
             placeholder="Ресурс"
             value={values.Resource || EActResourceType.All}
@@ -100,7 +100,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             ))}
           </Select>
           <Select
-            search
+            small
             data-reading-input={'searchBySerialNumber'}
             placeholder="Статус кв."
             value={values.ApartmentStatus || undefined}
@@ -126,7 +126,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
           >
             Закрытые приборы
           </CheckboxSC>
-          <ResetButton
+          <Button
             type="ghost"
             onClick={() => {
               clearSearchPayload();
@@ -136,7 +136,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
             icon={<ClearIconSC />}
           >
             Сбросить
-          </ResetButton>
+          </Button>
         </SearchFieldsWrapper>
       </IndividualDevicesExtendedSearch>
     </Wrapper>

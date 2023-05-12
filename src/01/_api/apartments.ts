@@ -9,7 +9,6 @@ import {
   EditApartmentCheckRequest,
 } from './../../myApi';
 import axios from '01/axios';
-import { FindApartmentIdQueryPayload } from '01/features/addressIdSearch/models';
 import { SetApartmentStatusRequest } from './apartments.types';
 
 export const getApartment = async (id: number): Promise<ApartmentResponse> => {
@@ -65,11 +64,6 @@ export const checkApartment = ({
   apartmentId: number;
   data: CreateApartmentCheckRequest;
 }): Promise<void> => axios.post(`Apartments/${apartmentId}/AddCheck`, data);
-
-export const findApartmentId = (
-  payload: FindApartmentIdQueryPayload,
-): Promise<number | null> =>
-  axios.get('Apartments/FindApartmentId', { params: payload });
 
 export interface RemoveCheckPayload {
   apartmentId: number;

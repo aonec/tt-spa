@@ -23,7 +23,7 @@ export const All = () => {
     <Wrapper>
       <SearchWrapper>
         <Input
-          search
+          small
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           prefix={<Icons.SearchIcon />}

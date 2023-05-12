@@ -27,6 +27,7 @@ import {
   Wrapper,
 } from './HousingMeteringDeviceProfile.styled';
 import { HousingMeteringDeviceProfileProps } from './HousingMeteringDeviceProfile.types';
+import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 const { TabPane } = TabsSC;
 
@@ -96,19 +97,17 @@ export const HousingMeteringDeviceProfile: FC<
                 onClick: () => {
                   push(`/housingMeteringDevices/${deviceId}/edit`);
                 },
-                color: 'default',
                 hidden: !isPermitionToEditHousingMeteringDevice,
               },
               {
                 title: 'Поверка ОДПУ',
                 onClick: () => handleCheckModalOpen(),
-                color: 'default',
                 hidden: !isPermitionToCheckHousingMeteringDevice,
               },
               {
                 title: 'Закрыть ОДПУ',
                 onClick: () => handleDeviceClosingModalOpen(),
-                color: 'danger',
+                color: ContextMenuButtonColor.danger,
                 hidden: !isPermitionToCloseHousingMeteringDevice,
               },
             ],

@@ -1,4 +1,4 @@
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { DatePickerNative } from 'ui-kit/shared_components/DatePickerNative';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';

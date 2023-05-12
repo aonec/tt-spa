@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { ExtendedSearch } from '01/shared/ui/ExtendedSearch';
+import { ExtendedSearch } from 'ui-kit/ExtendedSearch';
 import { AddressSearchContainer } from 'services/addressSearchService';
 import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { IndividualDevicesExtendedSearchProps } from './IndividualDevicesExtendedSearch.types';
@@ -99,7 +99,7 @@ export const IndividualDevicesExtendedSearch: FC<
           <FirstLineWrapper>
             <FormItem label="Ресурс">
               <Select
-                search
+                small
                 placeholder="Ресурс"
                 value={values.Resource || undefined}
                 onChange={(value) => {
@@ -121,7 +121,7 @@ export const IndividualDevicesExtendedSearch: FC<
             </FormItem>
             <FormItem label="Статус кв">
               <Select
-                search
+                small
                 placeholder="Статус кв"
                 value={values.ApartmentStatus || undefined}
                 onChange={(value) =>
@@ -138,7 +138,7 @@ export const IndividualDevicesExtendedSearch: FC<
             </FormItem>
             <FormItem label="Модель прибора">
               <Input
-                search
+                small
                 value={values.Model || undefined}
                 onChange={(event) => setFieldValue('Model', event.target.value)}
                 placeholder="Модель прибора"
@@ -147,7 +147,7 @@ export const IndividualDevicesExtendedSearch: FC<
             </FormItem>
             <FormItem label="Номер прибора">
               <Input
-                search
+                small
                 value={values.SerialNumber || undefined}
                 onChange={(event) =>
                   setFieldValue('SerialNumber', event.target.value)
@@ -160,7 +160,7 @@ export const IndividualDevicesExtendedSearch: FC<
           <SecondLineWrapper>
             <FormItem label="Место установки прибора">
               <Select
-                search
+                small
                 placeholder="Место установки прибора"
                 value={values.MountPlace || undefined}
                 onChange={(value) => setFieldValue('MountPlace', value || null)}
@@ -180,7 +180,7 @@ export const IndividualDevicesExtendedSearch: FC<
             </FormItem>
             <FormItem label="Причина закрытия ИПУ">
               <Select
-                search
+                small
                 placeholder="Причина закрытия ИПУ"
                 value={values.ClosingReason || undefined}
                 onChange={(value) =>
@@ -199,7 +199,7 @@ export const IndividualDevicesExtendedSearch: FC<
             </FormItem>
             <FormItem label="Дата окoнчания поверки">
               <Select
-                search
+                small
                 placeholder="Дата окoнчания поверки"
                 value={values.ExpiresCheckingDateAt || undefined}
                 onChange={(value) =>
