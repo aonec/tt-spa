@@ -54,9 +54,9 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   const initialValues = useMemo(
     () => ({
       houseManagementId: housingStock.houseManagement?.id || null,
-      houseCategory: housingStock.houseCategory || null,
-      livingHouseType: housingStock.livingHouseType || null,
-      nonResidentialHouseType: housingStock.nonResidentialHouseType || null,
+      // houseCategory: housingStock.houseCategory || null,
+      // livingHouseType: housingStock.livingHouseType || null,
+      // nonResidentialHouseType: housingStock.nonResidentialHouseType || null,
       heatingStationId: housingStock.heatingStation?.id || null,
     }),
     [housingStock],
@@ -122,9 +122,9 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
           <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
         </FormItem>
 
-        <SpaceLine />
+        {/* <SpaceLine /> */}
 
-        <GridContainer>
+        {/* <GridContainer>
           <FormItem label="Категория объекта">
             <Select
               placeholder="Выберите из списка"
@@ -184,9 +184,9 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
               </>
             )}
           </FormItem>
-        </GridContainer>
+        </GridContainer> */}
 
-        <SpaceLine />
+        {/* <SpaceLine /> */}
 
         {!values.heatingStationId && (
           <GridContainer>

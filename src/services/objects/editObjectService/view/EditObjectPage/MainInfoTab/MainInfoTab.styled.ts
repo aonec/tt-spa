@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 
 export const Footer = styled.div`
   display: flex;
-  margin-top: 12px;
+  margin-top: 26px;
   justify-content: flex-end;
 `;
 

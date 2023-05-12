@@ -25,7 +25,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
   onPageCancel,
   handleUpdateHousingStock,
 }) => {
-  const constructionYear = moment(housingStock.constructionDate).format('YYYY');
+  const constructionYear = moment(housingStock.constructionYear).format('YYYY');
 
   const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
@@ -35,7 +35,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
       apartments: housingStock.numberOfApartments,
       totalArea: housingStock.totalArea,
       totalLivingArea: housingStock.totalLivingArea,
-      constructionYear: constructionYear,
+      constructionYear: Number(constructionYear),
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -52,7 +52,9 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Количество этажей">
           <Input
             placeholder="Введите"
-            onChange={(value) => setFieldValue('floors', value.target.value)}
+            onChange={(value) =>
+              setFieldValue('floors', Number(value.target.value))
+            }
             value={values.floors || undefined}
             type="number"
           />
@@ -75,7 +77,9 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Число подъездов">
           <Input
             placeholder="Введите"
-            onChange={(value) => setFieldValue('entrances', value.target.value)}
+            onChange={(value) =>
+              setFieldValue('entrances', Number(value.target.value))
+            }
             value={values.entrances || undefined}
             type="number"
           />
@@ -85,7 +89,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           <Input
             placeholder="Введите"
             onChange={(value) =>
-              setFieldValue('apartments', value.target.value)
+              setFieldValue('apartments', Number(value.target.value))
             }
             value={values.apartments || undefined}
             type="number"
@@ -96,7 +100,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           <Input
             placeholder="Введите"
             onChange={(value) =>
-              setFieldValue('totalLivingArea', value.target.value)
+              setFieldValue('totalLivingArea', Number(value.target.value))
             }
             value={values.totalLivingArea || undefined}
             type="number"
@@ -106,7 +110,9 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
         <FormItem label="Общая площадь">
           <Input
             placeholder="Введите"
-            onChange={(value) => setFieldValue('totalArea', value.target.value)}
+            onChange={(value) =>
+              setFieldValue('totalArea', Number(value.target.value))
+            }
             value={values.totalArea || undefined}
             type="number"
           />
@@ -116,7 +122,7 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
           <Input
             placeholder="Введите"
             onChange={(value) =>
-              setFieldValue('constructionYear', value.target.value)
+              setFieldValue('constructionYear', Number(value.target.value))
             }
             value={values.constructionYear || undefined}
             type="number"
@@ -132,7 +138,6 @@ export const AdditionalInfoTab: FC<AdditionalInfoTabProps> = ({
             </Button>
           </ButtonPadding>
           <Button
-            // sidePadding={25}
             onClick={() => handleSubmit()}
           >
             Сохранить

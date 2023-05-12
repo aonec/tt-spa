@@ -9,7 +9,7 @@ import { ObjectInfo } from '../ObjectInfo';
 import { CityWrappper, PageHeaderSC, TabsSC } from './ObjectProfile.styled';
 import { ObjectProfileProps } from './ObjectProfile.types';
 import { RedirectToTasksContainer } from './redirectToTasks';
-import { featureToggles } from 'featureToggles';
+
 const { TabPane } = TabsSC;
 
 export const ObjectProfile: FC<ObjectProfileProps> = ({
