@@ -8,15 +8,9 @@ import {
 import { PersonalNumberPageContainerProps } from './PersonalNumberPageContainer.types';
 import { GoBack } from 'ui-kit/shared_components/GoBack';
 import { Button } from 'ui-kit/Button';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { apartmentProfileService } from 'services/apartments/apartmentProfileService';
+import { Link, useHistory } from 'react-router-dom';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService/selectPersonalNumberActionService.types';
-import { Loader } from 'ui-kit/Loader';
 import { getApartmentAddressString } from 'utils/getApartmentAddress';
-
-const {
-  gates: { ApartmentGate },
-} = apartmentProfileService;
 
 export const PersonalNumberPageContainer: FC<
   PersonalNumberPageContainerProps
@@ -31,7 +25,6 @@ export const PersonalNumberPageContainer: FC<
   formId,
 }) => {
   const history = useHistory();
-  const { id } = useParams<{ id: string }>();
 
   const address = apartment && getApartmentAddressString(apartment);
 
@@ -39,7 +32,6 @@ export const PersonalNumberPageContainer: FC<
 
   return (
     <Wrapper>
-      <ApartmentGate apartmentId={Number(id)} />
       <GoBack />
       <Title>{titleText}</Title>
       <Address>
@@ -52,14 +44,8 @@ export const PersonalNumberPageContainer: FC<
         <Button type="ghost" onClick={history.goBack}>
           {cancelButtonText || 'Отмена'}
         </Button>
-        <Button htmlType="submit" htmlForm={formId} disabled={isLoading}>
-          {isLoading ? (
-            <Loader show />
-          ) : isSplit ? (
-            saveButtonText || 'Далее'
-          ) : (
-            'Сохранить изменения'
-          )}
+        <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
+          {isSplit ? saveButtonText || 'Далее' : 'Сохранить изменения'}
         </Button>
       </FlexContainer>
     </Wrapper>

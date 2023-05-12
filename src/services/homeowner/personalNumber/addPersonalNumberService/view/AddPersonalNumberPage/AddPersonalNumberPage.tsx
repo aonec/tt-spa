@@ -10,7 +10,11 @@ const formId = 'add-personal-number-page-form';
 export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
   apartment,
   isLoading,
+  handleAddPersonalNumber,
+  handleForced,
 }) => {
+  const apartmentId = apartment?.id;
+
   return (
     <Wrapper>
       <PersonalNumberPageContainer
@@ -20,7 +24,13 @@ export const AddPersonalNumberPage: FC<AddPersonalNumberPageProps> = ({
         isLoading={isLoading}
         formId={formId}
       >
-        <PersonalNumberForm type={PersonalNumberActions.Add} formId={formId} />
+        <PersonalNumberForm
+          type={PersonalNumberActions.Add}
+          formId={formId}
+          handleAddPersonalNumber={handleAddPersonalNumber}
+          apartmentId={apartmentId}
+          handleForced={handleForced}
+        />
       </PersonalNumberPageContainer>
     </Wrapper>
   );

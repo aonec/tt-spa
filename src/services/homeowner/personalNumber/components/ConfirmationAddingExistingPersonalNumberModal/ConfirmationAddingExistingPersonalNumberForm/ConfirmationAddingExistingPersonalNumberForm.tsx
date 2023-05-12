@@ -7,7 +7,7 @@ import {
   TitleWrapper,
 } from './ConfirmationAddingExistingPersonalNumberForm.styled';
 import { ConfirmationAddingExistingPersonalNumberFormProps } from './ConfirmationAddingExistingPersonalNumberForm.types';
-import { getHousingStockItemAddress } from '../../../../../../../utils/getHousingStockItemAddress';
+import { getHousingStockItemAddress } from '../../../../../../utils/getHousingStockItemAddress';
 
 export const ConfirmationAddingExistingPersonalNumberForm: FC<
   ConfirmationAddingExistingPersonalNumberFormProps

@@ -12,12 +12,15 @@ import {
 } from 'ui-kit/icons';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { PersonalNumberActions } from '../../selectPersonalNumberActionService.types';
+import { useHistory } from 'react-router-dom';
 
 const formId = 'select-personal-number-action-modal';
 
 export const SelectPersonalNumberActionModal: FC<
   SelectPersonalNumberActionModalProps
-> = ({ isOpen, setAction }) => {
+> = ({ isOpen, setAction, apartmentId }) => {
+  const history = useHistory();
+
   return (
     <FormModal
       title="Выберите действие"
@@ -38,7 +41,14 @@ export const SelectPersonalNumberActionModal: FC<
             <StyledSelectItemTitle>Заменить лицевой счет</StyledSelectItemTitle>
           </SelectItem>
 
-          <SelectItem onClick={() => setAction(PersonalNumberActions.Add)}>
+          <SelectItem
+            onClick={() => {
+              setAction(PersonalNumberActions.Add);
+              history.push(
+                `/apartment/${apartmentId}/homeowners/${PersonalNumberActions.Add}`,
+              );
+            }}
+          >
             <PlusIcon />
             <StyledSelectItemTitle>
               Добавить новый лицевой счет к этой квартире

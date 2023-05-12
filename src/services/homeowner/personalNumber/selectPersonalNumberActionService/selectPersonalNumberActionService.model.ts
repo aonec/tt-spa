@@ -15,12 +15,18 @@ const $isSelectActionModalOpen = domain
 
 const $isChoosePersonalNumberModalOpen = domain
   .createStore<boolean>(false)
-  .on(setAction, () => true)
+  .on(setAction, (_, action) => {
+    if (action === PersonalNumberActions.Add) {
+      return false;
+    } else {
+      return true;
+    }
+  })
   .reset(setChoosePersonalNumberModalOpen);
 
 const $selectedAction = domain
   .createStore<PersonalNumberActions | null>(null)
-  .on(setAction, (_, action) => action)
+  .on(setAction, (_, action) => action);
 
 export const selectPersonalNumberActionService = {
   inputs: {
