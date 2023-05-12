@@ -20,6 +20,7 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
   homeowner,
   handleSubmitSwitchStage,
   handleSubmitAddNewApartmentStage,
+  goBackStage,
 }) => {
   const { Step } = Steps;
   const stepTitles = [
@@ -35,6 +36,9 @@ export const SplitPersonalNumberPage: FC<SplitPersonalNumberPageProps> = ({
         apartment={apartment}
         type={PersonalNumberActions.Split}
         formId={formId}
+        saveButtonText={stageNumber === 3 ? 'Сохранить' : void 0}
+        cancelButtonText={stageNumber !== 1 ? 'Назад' : void 0}
+        onCancelHandler={goBackStage}
       >
         {stageNumber === 1 && (
           <SwitchStage

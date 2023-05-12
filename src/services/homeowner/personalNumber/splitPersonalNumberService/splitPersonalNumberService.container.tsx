@@ -32,6 +32,8 @@ export const SplitPersonalNumberContainer = () => {
     inputs.handleSubmitTransferDevicesStage,
   );
 
+  const goBackStage = useEvent(inputs.goBackStage);
+
   return (
     <>
       <ApartmentGate apartmentId={Number(apartmentId)} />
@@ -41,6 +43,7 @@ export const SplitPersonalNumberContainer = () => {
         homeowner={homeowner}
         handleSubmitSwitchStage={handleSubmitSwitchStage}
         handleSubmitAddNewApartmentStage={handleSubmitAddNewApartmentStage}
+        goBackStage={goBackStage}
       />
     </>
   );

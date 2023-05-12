@@ -23,6 +23,7 @@ export const PersonalNumberPageContainer: FC<
   cancelButtonText,
   saveButtonText,
   formId,
+  onCancelHandler,
 }) => {
   const history = useHistory();
 
@@ -41,7 +42,7 @@ export const PersonalNumberPageContainer: FC<
       {children}
 
       <FlexContainer>
-        <Button type="ghost" onClick={history.goBack}>
+        <Button type="ghost" onClick={onCancelHandler || history.goBack}>
           {cancelButtonText || 'Отмена'}
         </Button>
         <Button htmlType="submit" htmlForm={formId} isLoading={isLoading}>
