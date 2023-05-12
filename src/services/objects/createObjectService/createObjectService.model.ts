@@ -95,7 +95,8 @@ const $houseManagements = domain
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
   .on(closePreviewModal, () => false)
-  .on(openPreviewModal, () => true);
+  .on(openPreviewModal, () => true)
+  .reset(resetter);
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
@@ -131,12 +132,14 @@ guard({
         floors,
         entrances,
         elevator,
+        constructionYear,
       } = data;
 
       if (!city || !street || !house || !heatingStationId || !objectCategory)
         return null;
 
       const payload: HousingStockCreateRequest = {
+        city: city,
         mainAddress: {
           city,
           street,
@@ -163,6 +166,7 @@ guard({
         isThereElevator: elevator
           ? IsElevatorDictionaryBoolean[elevator]
           : null,
+        constructionYear: Number(constructionYear) || null,
       };
 
       return payload;
@@ -179,6 +183,8 @@ createObjectFx.failData.watch((error) => {
 });
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
+
+const $isCreateLoading = createObjectFx.pending;
 
 export const createObjectService = {
   inputs: {
@@ -200,6 +206,7 @@ export const createObjectService = {
     $houseManagements,
     $isPreviewModalOpen,
     $heatingStations,
+    $isCreateLoading
   },
   gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
 };
