@@ -1,5 +1,5 @@
 import { createDomain, sample } from 'effector';
-import { CreateNodeCheckRequest, UpdateNodeCheckRequest } from 'myApi';
+import { UpdateNodeCheckRequest } from 'myApi';
 import { fetchCreateNodeCheck } from './createNodeCheckService.api';
 import { CreateNodeCheckPayload } from './createNodeCheckService.types';
 import { message } from 'antd';
@@ -27,15 +27,13 @@ const nodeCheckCreated = createNodeCheckFx.doneData;
 
 sample({
   source: $nodeId,
-  filter: Boolean,
-  clock: sample({
-    clock: createNodeCheck,
-    filter: (payload): payload is CreateNodeCheckRequest =>
-      Boolean(
-        payload?.checkType && payload?.checkingDate && payload?.registryNumber,
-      ),
-  }),
-  fn: (nodeId, payload) => ({ ...payload, nodeId }),
+  clock: createNodeCheck,
+  filter: (nodeId, payload) =>
+    Boolean(nodeId) &&
+    Boolean(
+      payload?.checkType && payload?.checkingDate && payload?.registryNumber,
+    ),
+  fn: (nodeId, payload) => ({ ...payload, nodeId } as CreateNodeCheckPayload),
   target: createNodeCheckFx,
 });
 
