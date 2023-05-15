@@ -52,8 +52,6 @@ const updateNodeFx = domain.createEffect<
   EffectFailDataAxiosError
 >(fetchUpdateNode);
 
-refetchNode.watch(() => console.log('refetch'));
-
 const NodeIdGate = createGate<{ nodeId: string }>();
 
 const NodeResourceGate = createGate<{ resource: EResourceType }>();
