@@ -4,9 +4,14 @@ import { useHistory, useParams } from 'react-router-dom';
 import { editObjectService } from './editObjectService.model';
 import { useEvent, useStore } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { createObjectService } from '../createObjectService';
 
 const { inputs, outputs, gates } = editObjectService;
 const { FetchObjectGate, CatchHousingStockId } = gates;
+
+const {
+  gates: { HeatingStationsFetchGate, HouseManagementsFetchGate },
+} = createObjectService;
 
 export const EditObjectContainer = () => {
   const { housingStockId } = useParams<{ housingStockId: string }>();
@@ -57,6 +62,8 @@ export const EditObjectContainer = () => {
       {isReasonToFetchHousingStock && (
         <FetchObjectGate objectId={housingStockIdNumber} />
       )}
+      <HouseManagementsFetchGate />
+      <HeatingStationsFetchGate />
       {housingStock && (
         <EditObjectPage
           housingStock={housingStock}
