@@ -40,13 +40,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       },
     });
 
-  const updateCity = (city: string) => onSubmit?.({ ...values, city });
-
-  useEffect(() => {
-    updateCity(values.city || '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.city]);
-
   const cities = useStore(outputs.cities);
   const streets = useStore(outputs.streets);
   const hasCorpuses = useStore(currentUserService.outputs.$hasCorpuses);
