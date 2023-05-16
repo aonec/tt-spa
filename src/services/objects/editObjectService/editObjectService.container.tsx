@@ -41,6 +41,16 @@ export const EditObjectContainer = () => {
   const onPageCancel = useEvent(inputs.onPageCancel);
   const handleUpdateHousingStock = useEvent(inputs.handleUpdateHousingStock);
 
+  const handleCreateHousingStockAddress = useEvent(
+    inputs.handleCreateHousingStockAddress,
+  );
+  const handleUpdateHousingStockAddress = useEvent(
+    inputs.handleUpdateHousingStockAddress,
+  );
+  const handleDeleteHousingStockAddress = useEvent(
+    inputs.handleDeleteHousingStockAddress,
+  );
+
   const isReasonToFetchHousingStock =
     !housingStock || housingStock.id !== housingStockIdNumber;
 
@@ -78,6 +88,9 @@ export const EditObjectContainer = () => {
           handleUpdateHousingStock={handleUpdateHousingStock}
           isHouseManagementsLoading={isHouseManagementsLoading}
           isHeatingStationsLoading={isHeatingStationsLoading}
+          handleCreateHousingStockAddress={handleCreateHousingStockAddress}
+          handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
+          handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
         />
       )}
     </>

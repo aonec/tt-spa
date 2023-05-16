@@ -29,6 +29,9 @@ export const AddressTab: FC<AddressTabProps> = ({
   existingCities,
   existingStreets,
   onPageCancel,
+  handleCreateHousingStockAddress,
+  handleDeleteHousingStockAddress,
+  handleUpdateHousingStockAddress,
 }) => {
   const { additionalAddresses, mainAddress } = address;
 

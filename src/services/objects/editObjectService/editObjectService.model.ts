@@ -3,8 +3,18 @@ import { objectProfileService } from '../objectProfileService';
 import { createObjectService } from '../createObjectService';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
-import { updateHousingStock } from './editObjectService.api';
-import { HousingStockResponse, HousingStockUpdateRequest } from 'myApi';
+import {
+  createHousingStockAddress,
+  deleteHousingStockAddress,
+  updateHousingStock,
+  updateHousingStockAddress,
+} from './editObjectService.api';
+import {
+  HousingStockAddressCreateRequest,
+  HousingStockAddressUpdateRequest,
+  HousingStockResponse,
+  HousingStockUpdateRequest,
+} from 'myApi';
 import { EffectFailDataAxiosError } from 'types';
 import { createGate } from 'effector-react';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
@@ -18,9 +28,21 @@ const CatchHousingStockId = createGate<{ housingStockId: number }>();
 const handleUpdateHousingStock =
   domain.createEvent<HousingStockUpdateRequest>();
 
+const handleCreateHousingStockAddress =
+  domain.createEvent<HousingStockAddressCreateRequest>();
+
+const handleUpdateHousingStockAddress = domain.createEvent<{
+  addressId: number;
+  data: HousingStockAddressUpdateRequest;
+}>();
+
+const handleDeleteHousingStockAddress = domain.createEvent<{
+  addressId: number;
+}>();
+
 const onPageCancel = domain.createEvent();
 
-const handleUpdateHousingStockFx = domain.createEffect<
+const updateHousingStockFx = domain.createEffect<
   {
     housingStockId: number;
     data: HousingStockUpdateRequest;
@@ -29,18 +51,80 @@ const handleUpdateHousingStockFx = domain.createEffect<
   EffectFailDataAxiosError
 >(updateHousingStock);
 
+const createHousingStockAddressFx = domain.createEffect<
+  {
+    housingStockId: number;
+    data: HousingStockAddressCreateRequest;
+  },
+  HousingStockResponse,
+  EffectFailDataAxiosError
+>(createHousingStockAddress);
+
+const updateHousingStockAddressFx = domain.createEffect<
+  {
+    housingStockId: number;
+    addressId: number;
+    data: HousingStockAddressUpdateRequest;
+  },
+  HousingStockResponse,
+  EffectFailDataAxiosError
+>(updateHousingStockAddress);
+
+const deleteHousingStockAddressFx = domain.createEffect<
+  {
+    housingStockId: number;
+    addressId: number;
+  },
+  HousingStockResponse,
+  EffectFailDataAxiosError
+>(deleteHousingStockAddress);
+
 sample({
   clock: handleUpdateHousingStock,
   source: CatchHousingStockId.state,
   fn: (gateState, clockPayload) => {
     return { housingStockId: gateState.housingStockId, data: clockPayload };
   },
-  target: handleUpdateHousingStockFx,
+  target: updateHousingStockFx,
 });
 
-const successUpdate = handleUpdateHousingStockFx.doneData;
+sample({
+  clock: handleCreateHousingStockAddress,
+  source: CatchHousingStockId.state,
+  fn: (gateState, clockPayload) => {
+    return { housingStockId: gateState.housingStockId, data: clockPayload };
+  },
+  target: createHousingStockAddressFx,
+});
 
-handleUpdateHousingStockFx.failData.watch((error) => {
+sample({
+  clock: handleUpdateHousingStockAddress,
+  source: CatchHousingStockId.state,
+  fn: (gateState, clockPayload) => {
+    return {
+      housingStockId: gateState.housingStockId,
+      addressId: clockPayload.addressId,
+      data: clockPayload.data,
+    };
+  },
+  target: updateHousingStockAddressFx,
+});
+
+sample({
+  clock: handleDeleteHousingStockAddress,
+  source: CatchHousingStockId.state,
+  fn: (gateState, clockPayload) => {
+    return {
+      housingStockId: gateState.housingStockId,
+      addressId: clockPayload.addressId,
+    };
+  },
+  target: deleteHousingStockAddressFx,
+});
+
+const successUpdate = updateHousingStockFx.doneData;
+
+updateHousingStockFx.failData.watch((error) => {
   message.error(
     error.response.data.error.Text || error.response.data.error.Message,
   );
@@ -58,6 +142,9 @@ export const editObjectService = {
     onPageCancel,
     handleUpdateHousingStock,
     successUpdate,
+    handleCreateHousingStockAddress,
+    handleUpdateHousingStockAddress,
+    handleDeleteHousingStockAddress,
   },
   outputs: {
     $housingStock: objectProfileService.outputs.$housingStock,
