@@ -94,9 +94,8 @@ const $houseManagements = domain
 
 const $isPreviewModalOpen = domain
   .createStore<boolean>(false)
-  .on(closePreviewModal, () => false)
   .on(openPreviewModal, () => true)
-  .reset(resetter);
+  .reset(resetter, closePreviewModal);
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
 
@@ -139,7 +138,7 @@ guard({
         return null;
 
       const payload: HousingStockCreateRequest = {
-        city: city,
+        city,
         mainAddress: {
           city,
           street,
@@ -206,7 +205,7 @@ export const createObjectService = {
     $houseManagements,
     $isPreviewModalOpen,
     $heatingStations,
-    $isCreateLoading
+    $isCreateLoading,
   },
   gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
 };
