@@ -132,6 +132,33 @@ updateHousingStockFx.failData.watch((error) => {
 
 successUpdate.watch(() => message.success('Дом успешно обновлён'));
 
+const $isDeleteLoading = deleteHousingStockAddressFx.pending;
+
+const successDeleteAddress = deleteHousingStockAddressFx.doneData;
+const successUpdateAddress = updateHousingStockAddressFx.doneData;
+const successCreateAddress = createHousingStockAddressFx.doneData;
+
+const $housingStock = objectProfileService.outputs.$housingStock
+  .on(successDeleteAddress, (_, housingStock) => housingStock)
+  .on(successUpdateAddress, (_, housingStock) => housingStock)
+  .on(successCreateAddress, (_, housingStock) => housingStock);
+
+deleteHousingStockAddressFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
+updateHousingStockAddressFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
+createHousingStockAddressFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text || error.response.data.error.Message,
+  );
+});
+
 export const editObjectService = {
   inputs: {
     openCreateHeatingStationModal:
@@ -147,13 +174,14 @@ export const editObjectService = {
     handleDeleteHousingStockAddress,
   },
   outputs: {
-    $housingStock: objectProfileService.outputs.$housingStock,
+    $housingStock,
     $houseManagements: createObjectService.outputs.$houseManagements,
     $isHouseManagementsLoading:
       createObjectService.outputs.$isHouseManagementsLoading,
     $heatingStations: displayHeatingStationsService.outputs.$heatingStations,
     $isHeatingStationsLoading:
       displayHeatingStationsService.outputs.$isHeatingStationsLoading,
+    $isDeleteLoading,
   },
   gates: {
     FetchObjectGate,

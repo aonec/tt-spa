@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import {
   AddButtonWrapper,
+  AutoCompleteSc,
   BlockTitle,
   ButtonPadding,
   DeleteButton,
@@ -15,7 +16,6 @@ import { AddressTabProps } from './AddressTab.types';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
-import { AutoComplete } from 'ui-kit/AutoComplete';
 import { Input } from 'ui-kit/Input';
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
@@ -23,15 +23,18 @@ import { Button } from 'ui-kit/Button';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+import _ from 'lodash';
 
 export const AddressTab: FC<AddressTabProps> = ({
   address,
+  index,
   existingCities,
   existingStreets,
   onPageCancel,
   handleCreateHousingStockAddress,
   handleDeleteHousingStockAddress,
   handleUpdateHousingStockAddress,
+  isDeleteLoading,
 }) => {
   const { additionalAddresses, mainAddress } = address;
 
@@ -41,12 +44,63 @@ export const AddressTab: FC<AddressTabProps> = ({
       street: mainAddress?.street || '',
       house: mainAddress?.number || null,
       corpus: mainAddress?.corpus || null,
-      // index: mainAddress?. || null,
+      index: index || null,
       additionalAddresses: additionalAddresses || [],
     },
     enableReinitialize: true,
+
     onSubmit: (data) => {
-      // handleSubmitCreateObject(data);
+      const { city, street, house, corpus } = data;
+      const submittedMainAddress = { city, street, house, corpus };
+      const initialMainAddress = {
+        city: mainAddress?.city,
+        street: mainAddress?.street,
+        house: mainAddress?.number,
+        corpus: mainAddress?.corpus,
+      };
+
+      const isMainAddressChanged = !_.isEqual(
+        submittedMainAddress,
+        initialMainAddress,
+      );
+      isMainAddressChanged &&
+        mainAddress &&
+        handleUpdateHousingStockAddress({
+          addressId: mainAddress.id,
+          data: {
+            number: submittedMainAddress.house,
+            corpus: submittedMainAddress.corpus,
+          },
+        });
+
+      data.additionalAddresses.forEach((submittedAdditionalAddress) => {
+        const currentInitialAdditionalAddress = additionalAddresses?.find(
+          (address) => address.id === submittedAdditionalAddress.id,
+        );
+        const isAdditionalAddressChanged = !_.isEqual(
+          submittedAdditionalAddress,
+          currentInitialAdditionalAddress,
+        );
+
+        currentInitialAdditionalAddress?.id &&
+          isAdditionalAddressChanged &&
+          handleUpdateHousingStockAddress({
+            addressId: submittedAdditionalAddress.id,
+            data: {
+              number: submittedAdditionalAddress.number,
+              corpus: submittedAdditionalAddress.corpus,
+            },
+          });
+
+        !currentInitialAdditionalAddress?.id &&
+          submittedAdditionalAddress.street &&
+          submittedAdditionalAddress.number &&
+          handleCreateHousingStockAddress({
+            street: submittedAdditionalAddress.street,
+            number: submittedAdditionalAddress.number,
+            corpus: submittedAdditionalAddress.corpus,
+          });
+      });
     },
     validateOnChange: false,
     // validationSchema,
@@ -85,6 +139,7 @@ export const AddressTab: FC<AddressTabProps> = ({
               onChange={(value) => setFieldValue('city', value)}
               value={values.city || undefined}
               placeholder="Выберите из списка"
+              disabled
             >
               {existingCities?.map((city) => (
                 <Select.Option value={city} key={city}>
@@ -96,7 +151,8 @@ export const AddressTab: FC<AddressTabProps> = ({
           </FormItem>
 
           <FormItem label="Улица">
-            <AutoComplete
+            <AutoCompleteSc
+              disabled
               placeholder="Улица"
               value={values.street}
               onChange={(value) => setFieldValue('street', value)}
@@ -126,13 +182,13 @@ export const AddressTab: FC<AddressTabProps> = ({
             </FormItem>
           </ItemGridWrapper>
 
-          <FormItem label="Индекс">
+          {/* <FormItem label="Индекс">
             <Input
               placeholder="Введите"
-              // value={values.index || undefined}
+              value={values.index || undefined}
               onChange={(value) => setFieldValue('index', value.target.value)}
             />
-          </FormItem>
+          </FormItem> */}
         </GridWrapper>
 
         <SpaceLine />
@@ -147,7 +203,7 @@ export const AddressTab: FC<AddressTabProps> = ({
               </FormItem>
 
               <FormItem label="Улица">
-                <AutoComplete
+                <AutoCompleteSc
                   placeholder="Улица"
                   onChange={(value) =>
                     additionalAddressesFieldOnChange(
@@ -170,7 +226,7 @@ export const AddressTab: FC<AddressTabProps> = ({
                     onChange={(value) =>
                       additionalAddressesFieldOnChange(
                         index,
-                        'house',
+                        'number',
                         value.target.value as string,
                       )
                     }
@@ -194,14 +250,21 @@ export const AddressTab: FC<AddressTabProps> = ({
             </GridWrapper>
             <DeleteButton
               className="ant-btn-link"
-              onClick={() =>
-                setFieldValue(
-                  'additionalAddresses',
-                  values.additionalAddresses.filter((el, i) => index !== i),
-                )
-              }
+              onClick={() => {
+                // setFieldValue(
+                //   'additionalAddresses',
+                //   values.additionalAddresses.filter((el, i) => index !== i),
+                // );
+
+                const currentAdditionalAddress = address;
+
+                currentAdditionalAddress?.id &&
+                  handleDeleteHousingStockAddress({
+                    addressId: currentAdditionalAddress.id,
+                  });
+              }}
             >
-              - Удалить адрес
+              – Удалить адрес
             </DeleteButton>
             <SpaceLine />
           </>
@@ -227,7 +290,6 @@ export const AddressTab: FC<AddressTabProps> = ({
               </Button>
             </ButtonPadding>
             <Button
-              // sidePadding={25}
               onClick={() => {
                 handleSubmit();
               }}

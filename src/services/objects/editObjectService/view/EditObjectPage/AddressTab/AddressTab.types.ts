@@ -6,6 +6,7 @@ import {
 
 export type AddressTabProps = {
   address: HousingStockAddressResponse;
+  index: string | null;
   existingCities: string[] | null;
   existingStreets: string[];
   onPageCancel: () => void;
@@ -17,4 +18,5 @@ export type AddressTabProps = {
     addressId: number;
     data: HousingStockAddressUpdateRequest;
   }) => void;
+  isDeleteLoading: boolean;
 };

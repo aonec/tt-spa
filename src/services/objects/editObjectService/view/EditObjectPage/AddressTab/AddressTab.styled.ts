@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 
 export const Wrapper = styled.div`
   width: 480px;
@@ -55,3 +56,7 @@ export const BlockTitle = styled.div`
   letter-spacing: 0em;
   user-select: none;
 `;
+
+export const AutoCompleteSc = styled(AutoComplete)`
+font-size: 16px;
+`

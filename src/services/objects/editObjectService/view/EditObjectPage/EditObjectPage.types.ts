@@ -29,6 +29,7 @@ export type EditObjectPageProps = {
     data: HousingStockAddressUpdateRequest;
   }) => void;
   handleDeleteHousingStockAddress: (payload: { addressId: number }) => void;
+  isDeleteLoading: boolean;
 };
 
 export enum EditObjectPageTabs {
