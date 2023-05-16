@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -25,18 +25,25 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
   type,
   isMainPersonalAccountNumber,
   formId,
+  apartmentId,
+  handleAddPersonalNumber,
+  handleEditHomeownerAccount,
+  homeowner,
+  handleForced,
 }) => {
   const isEdit = type === PersonalNumberActions.Edit;
 
   const { values, setFieldValue, errors, handleSubmit } =
     useFormik<PersonalNumberFormTypes>({
       initialValues: {
-        name: null,
-        phoneNumber: null,
-        openAt: null,
-        personalAccountNumber: null,
-        paymentCode: null,
-        isMainAccountingNumber: false,
+        name: homeowner?.name || '',
+        phoneNumber: homeowner?.phoneNumber || '',
+        openAt: homeowner?.openAt || '',
+        personalAccountNumber: homeowner?.personalAccountNumber || '',
+        paymentCode: homeowner?.paymentCode || '',
+        isMainOnApartment: homeowner?.isMainPersonalAccountNumber || false,
+        apartmentId,
+        homeownerId: homeowner?.id,
       },
       validationSchema: yup.object().shape({
         name: yup.string().nullable().required('Это поле обязательно'),
@@ -50,9 +57,17 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       validateOnChange: false,
       enableReinitialize: true,
       onSubmit: (data) => {
-        console.log('first');
+        apartmentId && handleAddPersonalNumber && handleAddPersonalNumber(data);
+
+        data.homeownerId &&
+          handleEditHomeownerAccount &&
+          handleEditHomeownerAccount(data);
       },
     });
+
+  useEffect(() => {
+    return handleForced?.watch(() => handleSubmit()).unsubscribe;
+  }, [handleForced, handleSubmit]);
 
   return (
     <Wrapper onSubmitCapture={handleSubmit} id={formId}>
@@ -107,14 +122,11 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       <FlexContainer>
         <SwitchWrapper
           onClick={() =>
-            setFieldValue(
-              'isMainAccountingNumber',
-              !values.isMainAccountingNumber,
-            )
+            setFieldValue('isMainOnApartment', !values.isMainOnApartment)
           }
         >
           <Switch
-            checked={values.isMainAccountingNumber}
+            checked={values.isMainOnApartment}
             disabled={isMainPersonalAccountNumber}
           />
           Основной лицевой счет

@@ -14,6 +14,7 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
   apartment,
   setIsOpen,
   selectedAction,
+  setSelectActionModalOpen,
 }) => {
   const history = useHistory();
 
@@ -54,6 +55,7 @@ export const ChoosePersonalNumberModal: FC<ChoosePersonalNumberModalProps> = ({
             onClick={() => {
               setIsOpen(false);
               setHomeownerId(null);
+              setSelectActionModalOpen(true);
             }}
           >
             Назад

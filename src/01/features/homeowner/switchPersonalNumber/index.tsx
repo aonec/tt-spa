@@ -18,7 +18,7 @@ import {
 import { message } from 'antd';
 import styled from 'styled-components';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { ConfirmationAddingExistingPersonalNumber } from '../editPersonalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
+import { ConfirmationAddingExistingPersonalNumber } from '../../../../services/homeowner/personalNumber/components/ConfirmationAddingExistingPersonalNumberModal';
 import { PersonalNumberFormMountPlaceType } from '../editPersonalNumber/components/PersonalNumberEditForm/personalNumberEditForm.controller';
 import { Select } from 'ui-kit/Select';
 

@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
-import { AddPersonalNumberPage } from './view/AddPersonalNumberPage';
-import { addPersonalNumberService } from './addPersonalNumberService.model';
 import { useEvent, useStore } from 'effector-react';
+import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { EditPersonalNumberPage } from './view/EditPersonalNumberPage';
+import { editPersonalNumberService } from './editPersonalNumberService.model';
 import { ConfirmationAddingExistingPersonalNumber } from '../components/ConfirmationAddingExistingPersonalNumberModal';
 
 const {
   inputs,
   outputs,
   gates: { ApartmentGate },
-} = addPersonalNumberService;
+} = editPersonalNumberService;
 
-export const AddPersonalNumberContainer = () => {
+export const EditPersonalNumberContainer = () => {
   const { id } = useParams<{ id: string }>();
+  const apartmentId = id;
   const history = useHistory();
 
-  const apartment = useStore(outputs.$apartment);
   const isLoading = useStore(outputs.$isLoading);
+  const apartment = useStore(outputs.$apartment);
 
   const isConfirmationModalOpen = useStore(outputs.$isConfirmationModalOpen);
   const samePersonalAccountNumderId = useStore(
@@ -25,22 +26,24 @@ export const AddPersonalNumberContainer = () => {
   const confirmationModalClose = useEvent(inputs.handleConfirmationModalClose);
   const handleForced = useEvent(inputs.onForced);
 
-  const handleAddPersonalNumber = useEvent(inputs.handleAddPersonalNumber);
+  const handleEditHomeownerAccount = useEvent(
+    inputs.handleEditHomeownerAccount,
+  );
 
   useEffect(() => {
-    return inputs.successAddPersonalNumber.watch(() => {
-      history.push(`/meters/apartments/${apartment?.id}`);
+    return inputs.successEditHomeownerAccount.watch(() => {
+      history.push(`/meters/apartments/${apartmentId}`);
     }).unsubscribe;
-  }, [history, apartment?.id]);
+  }, [history, apartmentId]);
 
   return (
     <>
-      <ApartmentGate apartmentId={Number(id)} />
+      <ApartmentGate apartmentId={Number(apartmentId)} />
 
-      <AddPersonalNumberPage
-        apartment={apartment}
+      <EditPersonalNumberPage
         isLoading={isLoading}
-        handleAddPersonalNumber={handleAddPersonalNumber}
+        handleEditHomeownerAccount={handleEditHomeownerAccount}
+        apartment={apartment}
         handleForced={inputs.onForced}
       />
 

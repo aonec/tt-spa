@@ -5,15 +5,27 @@ export const Wrapper = styled(Form)`
   margin-bottom: 20px;
 `;
 
-export const DeleteButton = styled.button`
+export const DeleteButton = styled.div`
+  display: flex;
   align-items: center;
   cursor: pointer;
   color: #a1a1a1;
   transition: 0.2s;
   user-select: none;
+  gap: 8px;
+  svg {
+    path {
+      fill: #a1a1a1;
+    }
+  }
 
   &:hover {
     color: red;
+    svg {
+      path {
+        fill: red;
+      }
+    }
   }
 `;
 

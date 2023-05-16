@@ -1,4 +1,4 @@
-import { FilterButton } from '01/features/actsJournal/displayActsJournal/components/filterButton/FIlterButton';
+import { FilterButton } from 'ui-kit/shared_components/filterButton/FIlterButton';
 import React, { useCallback } from 'react';
 import { CheckboxSC } from './FilterExtendedSearch.styled';
 import {

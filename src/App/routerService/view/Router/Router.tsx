@@ -37,7 +37,6 @@ import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
 import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
 import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
@@ -49,6 +48,7 @@ import { EditIndividualDeviceContainer } from 'services/meters/editIndividualDev
 import { LoginContainer } from 'services/authorizations/loginService';
 import { RegistrationContainer } from 'services/authorizations/registrationService';
 import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/addPersonalNumberService';
+import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
 import { SettingsPageContainer } from 'services/settings/settingsPageService';
 import { ActsJournalContainer } from 'services/actsJournalService';
 
@@ -522,7 +522,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
                       path="/apartment/:id/homeowners/:homeownerId/edit"
                       exact
                     >
-                      <EditHomeownerPersonalNumberPage />
+                      <EditPersonalNumberContainer />
                     </Route>
                   )}
                   {(isAdministrator || isSeniorOperator || isOperator) && (

@@ -6,4 +6,5 @@ export type ChoosePersonalNumberModalProps = {
   apartment: ApartmentResponse;
   setIsOpen: (payload: boolean) => void;
   selectedAction: PersonalNumberActions | null;
+  setSelectActionModalOpen: (payload: boolean) => void;
 };
