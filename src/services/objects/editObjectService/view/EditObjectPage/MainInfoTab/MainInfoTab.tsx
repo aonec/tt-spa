@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import {
   ButtonPadding,
   Footer,
@@ -9,18 +9,25 @@ import {
   WrapperLinkButton,
 } from './MainInfoTab.styled';
 import { MainInfoTabProps } from './MainInfoTab.types';
-import { createObjectService } from 'services/objects/createObjectService';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { HousingStockUpdateRequest } from 'myApi';
 import { sortBy } from 'lodash';
 import { LinkButton } from 'ui-kit/shared_components/LinkButton';
 import { Button } from 'ui-kit/Button';
 import { SelectedEntityPanel } from 'ui-kit/shared_components/SelectedEntityPanel';
-import { CreateHeatingStationContainer } from 'services/objects/heatingStations/createHeatingStationService';
+import {
+  CreateHeatingStationContainer,
+  createHeatingStationService,
+} from 'services/objects/heatingStations/createHeatingStationService';
 import { EditHeatingStationContainer } from 'services/objects/heatingStations/editHeatingStationService';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
+
+const {
+  inputs: { handleHeatingStationCreated },
+} = createHeatingStationService;
 
 const withoutHouseMagement = 'withoutHouseMagement';
 
@@ -51,12 +58,23 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
       handleUpdateHousingStock(data);
     },
     validateOnChange: false,
-    // validationSchema,
+    validationSchema: yup.object().shape({
+      houseManagement: yup.string().nullable(true),
+      heatingStationId: yup.string().nullable().required('Обязательное поле'),
+    }),
   });
 
   const heatingStationsValues = heatingStations?.items;
   const selectedHeatingStation = heatingStations?.items?.find(
     (station) => station.id === values.heatingStationId,
+  );
+
+  useEffect(
+    () =>
+      handleHeatingStationCreated.watch((newHeatingStationData) =>
+        setFieldValue('heatingStationId', newHeatingStationData?.id),
+      ),
+    [setFieldValue],
   );
 
   return (
@@ -84,9 +102,9 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
             }
             disabled={isHouseManagementsLoading}
           >
-            <Select.Option value={withoutHouseMagement}>
+            {/* <Select.Option value={withoutHouseMagement}>
               Без домоуправления
-            </Select.Option>
+            </Select.Option> */}
             {houseManagements?.map(
               (houseManagement) =>
                 houseManagement.name && (
