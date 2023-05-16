@@ -31,6 +31,8 @@ export const EditObjectContainer = () => {
   const isHeatingStationsLoading = useStore(outputs.$isHeatingStationsLoading);
 
   const isDeleteLoading = useStore(outputs.$isDeleteLoading);
+  const isUpdateLoading = useStore(outputs.$isUpdateLoading);
+  const isCreateLoading = useStore(outputs.$isCreateLoading);
 
   const openCreateHeatingStationModal = useEvent(
     inputs.openCreateHeatingStationModal,
@@ -94,6 +96,8 @@ export const EditObjectContainer = () => {
           handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
           handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
           isDeleteLoading={isDeleteLoading}
+          isCreateLoading={isCreateLoading}
+          isUpdateLoading={isUpdateLoading}
         />
       )}
     </>

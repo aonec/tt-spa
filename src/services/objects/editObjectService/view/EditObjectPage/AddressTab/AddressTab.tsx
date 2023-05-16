@@ -35,6 +35,8 @@ export const AddressTab: FC<AddressTabProps> = ({
   handleDeleteHousingStockAddress,
   handleUpdateHousingStockAddress,
   isDeleteLoading,
+  isCreateLoading,
+  isUpdateLoading,
 }) => {
   const { additionalAddresses, mainAddress } = address;
 
@@ -204,6 +206,7 @@ export const AddressTab: FC<AddressTabProps> = ({
 
               <FormItem label="Улица">
                 <AutoCompleteSc
+                  disabled={Boolean(address.id)}
                   placeholder="Улица"
                   onChange={(value) =>
                     additionalAddressesFieldOnChange(
@@ -250,12 +253,8 @@ export const AddressTab: FC<AddressTabProps> = ({
             </GridWrapper>
             <DeleteButton
               className="ant-btn-link"
+              isLoading={isDeleteLoading}
               onClick={() => {
-                // setFieldValue(
-                //   'additionalAddresses',
-                //   values.additionalAddresses.filter((el, i) => index !== i),
-                // );
-
                 const currentAdditionalAddress = address;
 
                 currentAdditionalAddress?.id &&
@@ -293,6 +292,7 @@ export const AddressTab: FC<AddressTabProps> = ({
               onClick={() => {
                 handleSubmit();
               }}
+              isLoading={isUpdateLoading || isCreateLoading}
             >
               Сохранить
             </Button>

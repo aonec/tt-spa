@@ -42,11 +42,11 @@ export const AddButtonWrapper = styled.div`
   width: max-content;
 `;
 
-export const DeleteButton = styled.div`
+export const DeleteButton = styled.div<{ isLoading: boolean }>`
   margin-top: 4px;
-  cursor: pointer;
   color: red;
   width: max-content;
+  cursor: ${({ isLoading }) => (isLoading ? 'wait' : 'pointer')};
 `;
 
 export const BlockTitle = styled.div`
@@ -58,5 +58,5 @@ export const BlockTitle = styled.div`
 `;
 
 export const AutoCompleteSc = styled(AutoComplete)`
-font-size: 16px;
-`
+  font-size: 16px;
+`;

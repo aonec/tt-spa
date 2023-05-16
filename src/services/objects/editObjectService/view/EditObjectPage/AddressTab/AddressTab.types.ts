@@ -19,4 +19,6 @@ export type AddressTabProps = {
     data: HousingStockAddressUpdateRequest;
   }) => void;
   isDeleteLoading: boolean;
+  isCreateLoading: boolean;
+  isUpdateLoading: boolean;
 };

@@ -28,6 +28,8 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   handleDeleteHousingStockAddress,
   handleUpdateHousingStockAddress,
   isDeleteLoading,
+  isCreateLoading,
+  isUpdateLoading,
 }) => {
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
@@ -60,6 +62,8 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
               handleDeleteHousingStockAddress={handleDeleteHousingStockAddress}
               handleUpdateHousingStockAddress={handleUpdateHousingStockAddress}
               isDeleteLoading={isDeleteLoading}
+              isUpdateLoading={isUpdateLoading}
+              isCreateLoading={isCreateLoading}
             />
           )}
         </Tabs.TabPane>

@@ -1,4 +1,4 @@
-import { createDomain, sample } from 'effector';
+import { createDomain, forward, merge, sample } from 'effector';
 import { objectProfileService } from '../objectProfileService';
 import { createObjectService } from '../createObjectService';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
@@ -133,6 +133,8 @@ updateHousingStockFx.failData.watch((error) => {
 successUpdate.watch(() => message.success('Дом успешно обновлён'));
 
 const $isDeleteLoading = deleteHousingStockAddressFx.pending;
+const $isUpdateLoading = updateHousingStockAddressFx.pending;
+const $isCreateLoading = createHousingStockAddressFx.pending;
 
 const successDeleteAddress = deleteHousingStockAddressFx.doneData;
 const successUpdateAddress = updateHousingStockAddressFx.doneData;
@@ -142,6 +144,13 @@ const $housingStock = objectProfileService.outputs.$housingStock
   .on(successDeleteAddress, (_, housingStock) => housingStock)
   .on(successUpdateAddress, (_, housingStock) => housingStock)
   .on(successCreateAddress, (_, housingStock) => housingStock);
+
+const handleMessage = merge([successCreateAddress, successUpdateAddress]);
+
+handleMessage.watch(() => {
+  message.destroy();
+  message.success('Адрес обновлён');
+});
 
 deleteHousingStockAddressFx.failData.watch((error) => {
   message.error(
@@ -182,6 +191,8 @@ export const editObjectService = {
     $isHeatingStationsLoading:
       displayHeatingStationsService.outputs.$isHeatingStationsLoading,
     $isDeleteLoading,
+    $isUpdateLoading,
+    $isCreateLoading,
   },
   gates: {
     FetchObjectGate,

@@ -30,6 +30,8 @@ export type EditObjectPageProps = {
   }) => void;
   handleDeleteHousingStockAddress: (payload: { addressId: number }) => void;
   isDeleteLoading: boolean;
+  isCreateLoading: boolean;
+  isUpdateLoading: boolean;
 };
 
 export enum EditObjectPageTabs {
