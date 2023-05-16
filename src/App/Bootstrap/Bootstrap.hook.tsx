@@ -14,7 +14,6 @@ export function useApp() {
     if (!token) {
       const redirectUrl = window.location.pathname;
 
-      localStorage.clear();
       push(stringifyUrl({ url: '/login', query: { redirectUrl } }));
     }
   }, [push]);
