@@ -32,6 +32,7 @@ export type EditObjectPageProps = {
   isDeleteLoading: boolean;
   isCreateLoading: boolean;
   isUpdateLoading: boolean;
+  handleRefetchHousingStock: () => void;
 };
 
 export enum EditObjectPageTabs {

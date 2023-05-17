@@ -21,4 +21,5 @@ export type AddressTabProps = {
   isDeleteLoading: boolean;
   isCreateLoading: boolean;
   isUpdateLoading: boolean;
+  handleRefetchHousingStock: () => void;
 };

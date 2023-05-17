@@ -55,6 +55,8 @@ export const EditObjectContainer = () => {
     inputs.handleDeleteHousingStockAddress,
   );
 
+  const handleRefetchHousingStock = useEvent(inputs.handleRefetchHousingStock);
+
   const isReasonToFetchHousingStock =
     !housingStock || housingStock.id !== housingStockIdNumber;
 
@@ -98,6 +100,7 @@ export const EditObjectContainer = () => {
           isDeleteLoading={isDeleteLoading}
           isCreateLoading={isCreateLoading}
           isUpdateLoading={isUpdateLoading}
+          handleRefetchHousingStock={handleRefetchHousingStock}
         />
       )}
     </>

@@ -102,9 +102,9 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
             }
             disabled={isHouseManagementsLoading}
           >
-            {/* <Select.Option value={withoutHouseMagement}>
+            <Select.Option value={withoutHouseMagement}>
               Без домоуправления
-            </Select.Option> */}
+            </Select.Option>
             {houseManagements?.map(
               (houseManagement) =>
                 houseManagement.name && (

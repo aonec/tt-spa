@@ -1,4 +1,4 @@
-import { createDomain, forward, merge, sample } from 'effector';
+import { createDomain, merge, sample } from 'effector';
 import { objectProfileService } from '../objectProfileService';
 import { createObjectService } from '../createObjectService';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
@@ -41,6 +41,8 @@ const handleDeleteHousingStockAddress = domain.createEvent<{
 }>();
 
 const onPageCancel = domain.createEvent();
+
+const handleRefetchHousingStock = domain.createEvent();
 
 const updateHousingStockFx = domain.createEffect<
   {
@@ -140,10 +142,19 @@ const successDeleteAddress = deleteHousingStockAddressFx.doneData;
 const successUpdateAddress = updateHousingStockAddressFx.doneData;
 const successCreateAddress = createHousingStockAddressFx.doneData;
 
-const $housingStock = objectProfileService.outputs.$housingStock
-  .on(successDeleteAddress, (_, housingStock) => housingStock)
-  .on(successUpdateAddress, (_, housingStock) => housingStock)
-  .on(successCreateAddress, (_, housingStock) => housingStock);
+const $housingStock = objectProfileService.outputs.$housingStock.on(
+  successDeleteAddress,
+  (_, housingStock) => housingStock,
+);
+
+sample({
+  clock: handleRefetchHousingStock,
+  source: CatchHousingStockId.state,
+  fn: (gateState) => {
+    return gateState.housingStockId;
+  },
+  target: objectProfileService.inputs.handleFetchHousingStock,
+});
 
 const handleMessage = merge([successCreateAddress, successUpdateAddress]);
 
@@ -181,6 +192,7 @@ export const editObjectService = {
     handleCreateHousingStockAddress,
     handleUpdateHousingStockAddress,
     handleDeleteHousingStockAddress,
+    handleRefetchHousingStock,
   },
   outputs: {
     $housingStock,

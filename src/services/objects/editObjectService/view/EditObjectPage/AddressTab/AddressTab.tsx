@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import {
   AddButtonWrapper,
   AutoCompleteSc,
@@ -37,6 +38,7 @@ export const AddressTab: FC<AddressTabProps> = ({
   isDeleteLoading,
   isCreateLoading,
   isUpdateLoading,
+  handleRefetchHousingStock,
 }) => {
   const { additionalAddresses, mainAddress } = address;
 
@@ -103,9 +105,15 @@ export const AddressTab: FC<AddressTabProps> = ({
             corpus: submittedAdditionalAddress.corpus,
           });
       });
+      setTimeout(() => handleRefetchHousingStock(), 500);
     },
     validateOnChange: false,
-    // validationSchema,
+    validationSchema: yup.object().shape({
+      city: yup.string().nullable().required('Обязательное поле'),
+      street: yup.string().nullable().required('Обязательное поле'),
+      house: yup.string().nullable().required('Обязательное поле'),
+      corpus: yup.string().nullable(),
+    }),
   });
 
   const additionalAddressesFieldOnChange = (
@@ -261,6 +269,12 @@ export const AddressTab: FC<AddressTabProps> = ({
                   handleDeleteHousingStockAddress({
                     addressId: currentAdditionalAddress.id,
                   });
+
+                !Boolean(currentAdditionalAddress?.id) &&
+                  setFieldValue(
+                    'additionalAddresses',
+                    values.additionalAddresses.filter((el, i) => index !== i),
+                  );
               }}
             >
               – Удалить адрес

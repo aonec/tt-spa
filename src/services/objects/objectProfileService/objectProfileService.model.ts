@@ -15,6 +15,8 @@ import { consolidatedReportService } from './consolidatedReportService';
 
 const domain = createDomain('objectProfileService');
 
+const handleFetchHousingStock = domain.createEvent<number>();
+
 const getHousingStockFx = domain.createEffect<number, HousingStockResponse>(
   fetchHousingStock,
 );
@@ -75,11 +77,14 @@ forward({
   to: resetGrouptype,
 });
 
+forward({ from: handleFetchHousingStock, to: getHousingStockFx });
+
 export const objectProfileService = {
   inputs: {
     setCurrentGroutype,
     openConsolidatedReportModal:
       consolidatedReportService.inputs.openConsolidatedReportModal,
+    handleFetchHousingStock,
   },
   outputs: {
     $housingStock,
