@@ -13,6 +13,7 @@ import {
 } from './ApartmentActsList.styled';
 import { ApartmentActsListProps } from './ApartmentActsList.types';
 import { WithLoader } from 'ui-kit/shared_components/WithLoader';
+import { ActTypesNamesLookup } from 'dictionaries';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   acts,
@@ -23,7 +24,6 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   handleSaveFile,
   handleUpdateTypes,
   handleUpdateResources,
-  actTypes,
   selectedFilters,
   isPermitionToChangeApartmentAct,
 }) => {
@@ -35,7 +35,6 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
       acts?.map((act) => (
         <ApartmentActItem
           act={act}
-          actTypes={actTypes}
           openDeleteActModal={handleOpeningDeleteActModal}
           openEditActModal={handleOpeningEditActModal}
           saveFile={handleSaveFile}
@@ -45,7 +44,6 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
       )),
     [
       acts,
-      actTypes,
       handleOpeningDeleteActModal,
       handleOpeningEditActModal,
       handleSaveFile,
@@ -57,15 +55,11 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
     ([key, value]) => ({ key: key as EActResourceType, value }),
   );
 
-  const allowedFilters = useMemo(
-    () =>
-      (actTypes || [])?.reduce((acc, { key, value }) => {
-        if (!key || !value) {
-          return acc;
-        }
-        return [...acc, { key, value }];
-      }, [] as { key: EActType; value: string }[]),
-    [actTypes],
+  const allowedFilters = Object.entries(ActTypesNamesLookup).map(
+    ([key, value]) => ({
+      key: key as EActType,
+      value,
+    }),
   );
 
   return (

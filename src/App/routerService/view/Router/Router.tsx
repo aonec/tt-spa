@@ -4,7 +4,6 @@ import { Layout, PageWrapper, Wrapper } from './Router.styled';
 import { RouterProps } from './Router.types';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { TasksRouter } from 'services/tasks/tasks.router';
-import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
 import {
   ObjectProfileContainer,
@@ -14,7 +13,6 @@ import { DevicesPageContainer } from 'services/housingMeteringDevices/devicesPag
 import { ChangeODPUContainer } from 'services/housingMeteringDevices/сhangeODPUService';
 import { EditElectricNodeContainer } from 'services/housingMeteringDevices/editElectricNodeService';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
-import { SettingsPageContainer } from '01/features/settings/SettingsPageContainer';
 import { StatisticsPage } from '01/features/statistics';
 import { Panel } from 'App/Panel';
 import { EditNodeContainer } from 'services/housingMeteringDevices/editNodeService';
@@ -32,16 +30,13 @@ import { CompanyProfileContainer } from 'services/company/companyProfileService'
 import { EditEmployeeContainer } from 'services/employee/editEmployeeService';
 import { ReportViewContainer } from 'services/reportsService/reportViewService';
 import { EditCalculatorContainer } from 'services/calculators/editCalculatorService';
-import { StandartWorkingRangeContainer } from '01/features/settings/standartWorkingRangeService';
-import { GroupWorkingRangeContainer } from '01/features/settings/groupWorkingRangeService';
-import { UniqueWorkingRangeContainer } from '01/features/settings/uniqueWorkingRangeService';
+import { StandartWorkingRangeContainer } from 'services/workingRanges/standartWorkingRangeService';
+import { GroupWorkingRangeContainer } from 'services/workingRanges/groupWorkingRangeService';
+import { UniqueWorkingRangeContainer } from 'services/workingRanges/uniqueWorkingRangeService';
 import { EditCompanyContainer } from 'services/company/editCompanyService';
 import { ReportsPageContainer } from '01/features/reports';
 import { featureToggles } from 'featureToggles';
 import { ReportsContainer } from 'services/reportsService';
-import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
-import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
-import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
@@ -54,6 +49,8 @@ import { AddPersonalNumberContainer } from 'services/homeowner/personalNumber/ad
 import { EditPersonalNumberContainer } from 'services/homeowner/personalNumber/editPersonalNumberService';
 import { SwitchPersonalNumberContainer } from 'services/homeowner/personalNumber/switchPersonalNumberService';
 import { SplitPersonalNumberContainer } from 'services/homeowner/personalNumber/splitPersonalNumberService';
+import { SettingsPageContainer } from 'services/settings/settingsPageService';
+import { ActsJournalContainer } from 'services/actsJournalService';
 
 const { gates } = objectProfileService;
 
@@ -119,7 +116,7 @@ export const Router: FC<RouterProps> = ({ roles, isRolesLoadded }) => {
 
                   {(isSeniorOperator || isOperator) && (
                     <Route path="/actsJournal" exact>
-                      <ApartmentActs />
+                      <ActsJournalContainer />
                     </Route>
                   )}
 
